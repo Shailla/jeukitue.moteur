@@ -1,0 +1,79 @@
+"plageOmni"
+"scene"
+"plage" affiche les vertex en noir, comme s'il les affiche avec les lumières actives mais toutes éteintes
+
+Idées ou choses à faire :
+
+-	Le joueur doit pouvoir s'arrêter net grâce à une touche. C'est par exemple des aérofreins
+
+-	Ecrire un destructeur pour les classes CMenu parce que les retour de menu sont gérés
+	un peu à l'arrache, chacun des menu efface un peu n'importe quel item ou machin à sa sortie
+
+-	Il semble que certains menus aient des fuites de mémoire. Principalement pour les listes d'arguments
+	passées à CMenu, on ne sait pas comment deleter un void* donc l'objet pointé désalloué correctement
+	
+Bugs connus :
+
+-	Pour le son, vérifier au lancement du programme que les choix de driver dans le fichier de configuration
+	sont compatibles avec l'installation. Par exemple si le jeu a été configuré sur un PC qui dispose
+	d'une carte son et qu'il est intallé sur un PC sans carte son il faut s'en rendre compte et modifier
+	la configuration.
+	
+-	A partir d'une certaine vitesse les personnages passent à travers les parois
+	Solution : Tenir compte de la vitesse lors du calcul des contact, plus la vitesse
+	est grande plus on doit facilement considérer qu'il y a contact
+	
+-	La gestion des contacts avec la map marche mal, elle est à repenser et à refaire
+	
+-	La sélection de certains paramètres audio dans Configuration->Audio->Drivers
+	provoque le plantage
+	Solution : ? (peut-être prévoir un système de configuration de secours)
+	
+-	Le "Tir laser" ne connait pas la taille des personnages
+	Solution : ajuster...
+	
+-	Le cri des personnages ne se déplace pas avec les personnages
+	Solution : finir la gestion des 'requêtes son' et y ajouter une fonction de mise à
+	jour des positions de toutes les requêtes
+	
+-	Les canaux réservés par 'CRequeteSon::Play' ne sont pas libérés
+	Solution : exécuter 'CRequeteSon::Check' de temps en temps, à la création d'un son
+	par exemple
+
+-	Le mode sélection ne fonctionne pas bien
+
+-	Utiliser la taxi-norme en première approximation pour les recherches de contact 3d et les trucs comme ça
+
+-	Quand on sort du menu "Multijoueur" le réseau est déconnecté même si une partie est en cours
+
+-	Les demandes de ping et infos serveur doivent être envoyées par la classe réseau, le socket
+	client ne doit être attaché qu'une fois que le client se joint à une partie serveur et ne doit servir
+	qu'au déroulement d'une partie
+	Y z'écoutent le même MAIS PAS DEPUIS LE MEME PORT DONC LE BIND N'EST PAS CORRECTE
+
+Bugs Résolus :
+
+-	Le moindre 'malloc' ou 'new' (par exmple malloc( 7 ) ) fait planter le jeu
+	Résolu : (10.3.3) Il y avait un 'new char(10)' quelques lignes avant, il a été remplacé
+	par 'new char[10]'
+
+-	Quand on entre dans le menu config/reseau pour en ressortir puis y réentrer ça bug
+	Resolu : (9.3.3) Les items droits implémentés dynamiquement n'était pas correctement libérés et
+	réinitialisés à la sortie du menu config/reseau
+	Remarque : voir pour une solution de la classe CMenu qui prendrait ce genre de problème en charge
+	toute seule
+
+-	Parfois les textures se mélangent
+	Résolu : (26.3.3) Configuration bios de la carte graphique était à AGP4x au lieu de AGP2x
+	
+-	Les images générées sont instables, on dirait que toutes les faces visibles ne
+	sont pas toujours affichées
+	Résolu : (26.3.3) Configuration bios de la carte graphique était à AGP4x au lieu de AGP2x
+
+-	Certaines fois les textures de texte (menu) disparaissent et ne réapparaisent pas
+	Résolu : (26.3.3) Configuration bios de la carte graphique était à AGP4x au lieu de AGP2x
+	
+-	Les textures ne se chargent pas et openGL emet une erreur "opération invalide" (ou quelque chose
+	comme ça)
+	Résolu : (4.9.3) Les fonction openGL de chargement de textures étaient exécutées dans un tread différent
+	(celui du timer en l'occurence) et openGL n'aime apparemment pas ça

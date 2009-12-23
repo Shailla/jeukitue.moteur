@@ -1,0 +1,7 @@
+
+Spécialisation		Texture	Avec normales
+
+SimpleGeo			non				non
+SimpleMaterialGeo	non				oui
+TextureMaterialGeo	oui				oui
+MultiMaterialGeo	multi			oui

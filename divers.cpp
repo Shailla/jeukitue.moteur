@@ -1,0 +1,303 @@
+
+#ifdef WIN32
+	#include <windows.h>
+#endif
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <iostream>
+#include <string>
+#include <list>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+#include <agar/core.h>
+#include "SDL.h"
+#include "fmod.h"
+#include "fmod_errors.h"
+#include "SDL_image.h"
+#include "SDL_net.h"
+#include "glfont2.h"
+using namespace glfont;
+
+#include "RessourcesLoader.h"
+#include "Trace.h"
+#include "utils_SDL.h"
+#include "DemonSons.h"
+#include "Son.h"
+#include "Textures.h"
+#include "Cfg.h"
+
+#include "divers.h"
+
+using namespace JKT_PACKAGE_SON;
+
+extern JKT_PACKAGE_SON::CDemonSons *DemonSons;
+
+void quit_tutorial()
+{
+TRACE().p( TRACE_OTHER, "quit_tutorial()" );
+	cerr << endl << "quit_tutorial()";
+	exit(0);
+}
+
+void quit_tutorial( int code )	// Quitte proprement le jeu
+{
+TRACE().p( TRACE_OTHER, "quit_tutorial(code=%d)", code );
+	cerr << endl << endl << "quit_tutorial( " << code << " )";
+	exit( code );
+}
+
+void quit_tutorial(const char* txt,int code)	// Quitte proprement le jeu
+{
+TRACE().p( TRACE_OTHER, "quit_tutorial(code=%d,txt=%s)", code, txt );
+	cerr << endl << endl << "quit_tutorial( " << code << "," << txt << ")";
+	exit( code );
+}
+
+void quit_JKT()
+{
+TRACE().p( TRACE_OTHER, "quit_JKT()" );
+	cerr << endl;
+	cerr << "Derniere erreur FMOD : " << FMOD_ErrorString(FSOUND_GetError()) << endl;
+	cerr << "Derniere erreur SDL : " << SDL_GetError() << endl;
+	cerr << "Derniere erreur SDL_Net : " << SDLNet_GetError() << endl;
+	cerr << "Derniere erreur openGL : " << gluErrorString( glGetError() ) << endl;
+    cerr << "Derniere erreur Agar : " << AG_GetError();
+	
+	FSOUND_Close();		// Fermeture d'FMOD
+	SDLNet_Quit();		// Fermeture d'SDL_Net
+	SDL_Quit();			// Fermeture de SDL
+}
+
+bool checkEventsForIntro( void )		// Vérifie si 'escape' ou le bouton souris ont été frappés
+{									// true si c'est le cas, false sinon
+    SDL_Event event;
+
+    while( SDL_PollEvent( &event ) )
+	{
+        switch( event.type )
+		{
+ 		case SDL_MOUSEBUTTONDOWN:	// Handle mouse button presses
+			if( event.button.button==SDL_BUTTON_LEFT )			// Si le bouton de gauche 
+				if( event.button.type==SDL_MOUSEBUTTONDOWN )	// est préssé
+					return true;	
+			
+			break;
+
+		case SDL_KEYDOWN:			// Handle key presses
+			if( event.key.keysym.sym==SDLK_ESCAPE || event.key.keysym.sym==SDLK_RETURN )
+				return true;
+			
+			break;
+
+        case SDL_QUIT:
+			quit_tutorial( 0 );
+            break;
+		
+		default:
+			break;
+        }
+    }
+	return false;
+}
+
+CSon* sonChariot;		// Son retour chariot machine à écrire
+CSon* sonTouche;		// Son frappe d'une touche clavier
+CSon* sonEspace;		// Son frappe de la touche espace clavier
+CSon* sonHurlement;		// Son hurlement du sauveur de la planète
+
+
+void load_Intro( int width, int height )
+{
+TRACE().p( TRACE_OTHER, "load_Intro(width=%d,height=%d)", width, height );
+	sonChariot = DemonSons->CreateSon( "./Sons/chariot.wav" );		// Son retour chariot machine à écrire
+	sonTouche = DemonSons->CreateSon( "./Sons/touche.wav" );		// Son frappe d'une touche clavier
+	sonEspace = DemonSons->CreateSon( "./Sons/espace.wav" );		// Son frappe de la touche espace clavier
+	sonHurlement = DemonSons->CreateSon( "./Sons/hurlement.wav" );	// Son hurlement du sauveur de la planète
+
+	load_IntroSub( width, height );
+
+	DemonSons->Delete( sonChariot );		// Son retour chariot machine à écrire
+	DemonSons->Delete( sonTouche );		// Son frappe d'une touche clavier
+	DemonSons->Delete( sonEspace );		// Son frappe de la touche espace clavier
+	DemonSons->Delete( sonHurlement );	// Son hurlement du sauveur de la planète
+}
+
+
+void load_IntroSub( int width, int height )
+{
+TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
+	GLFont fonteIntro;
+	unsigned int texFonteIntro;
+	string fileFonteIntro = "@Fonte\\FonteIntro.glf";	// Chargement de la fonte de caractères
+	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(fileFonteIntro);
+
+	string str1 = "Nous sommes en 2056.\n\nLa surface de la Terre n'est plus qu'un ocean d'acide.\nLa loi a laisse sa place a celle du plus fort et tout se regle\ndesormais lors de combats sans gland.\n\n      Voici le seul homme qui peut encore sauver la planete... ";
+	string str2 = "Alors, vous l'avez compris...\n   On est vraiment dans la merde !";
+	list< string > lignes;		// Lignes séparées par un retour chariot
+
+	srand( SDL_GetTicks() );	// Initialisation de la fonction rand() pour les nombres aléatoires
+
+	string introJKT = "@Fond\\intro_JKT2.jpg";
+	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(introJKT);
+	SDL_Surface *image1 = IMG_Load(introJKT.c_str());		// Lit le fichier image	
+	if(image1 == 0)
+	{
+		cerr << "\nErreur : Ouverture d'image (" << introJKT << ")" << endl;
+		return;
+	}
+
+	Uint8 *image2 = new Uint8[width*height*3];
+	
+	SDL_LockSurface( image1 );
+	gluScaleImage( GL_RGB, image1->w, image1->h, GL_UNSIGNED_BYTE, image1->pixels,
+		width, height, GL_UNSIGNED_BYTE, image2 ); 
+	SDL_UnlockSurface( image1 );
+	SDL_FreeSurface( image1 );
+
+	glGenTextures( 1, &texFonteIntro );
+	if( !fonteIntro.Create( fileFonteIntro, texFonteIntro ) )
+	{
+		TRACE().p( TRACE_ERROR, "loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro, texFonteIntro );
+		cerr << "Erreur : Echec d'ouverture de la fonte : " << fileFonteIntro << endl;
+	}
+	else
+	{
+		TRACE().p( TRACE_INFO, "loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro );
+	}
+
+	glMatrixMode( GL_PROJECTION ); 
+    glLoadIdentity();
+	gluOrtho2D(0.0, width, 0.0, height );
+	glMatrixMode( GL_MODELVIEW );	
+	glLoadIdentity();	
+
+	glEnable(GL_TEXTURE_2D);
+	glDisable( GL_DEPTH_TEST );
+	
+	fonteIntro.Begin();
+	list< string >::const_iterator iter;
+	float vertical;
+	char lettre;
+
+		// AFFICHAGE D'UN TEXTE D'INTRO, lettre par lettre (genre machine à écrire)
+	glColor3f( 1.0, 1.0, 1.0 );
+	for( unsigned int i=0 ; i<str1.length() ; i++ )
+	{
+		
+		lettre = str1[ i ];
+		
+		glClear( GL_COLOR_BUFFER_BIT );
+		
+		if( i==0 )
+			lignes.push_back( "" );
+
+		if( (lettre=='\n') )	// Si on a affaire à un passage à la ligne
+		{	
+			DemonSons->Play( sonChariot );	// Envoie le son retour chariot
+			lignes.push_back( "" );			// Et passe à la ligne
+			SDL_Delay( 700 );
+		}
+		else
+		{
+			if( lettre!= ' ' )	// Si c'est pas un espace
+				DemonSons->Play( sonTouche );	// Envoie le son pour une frappe de touche normale
+			else
+				DemonSons->Play( sonEspace );	// Sinon le son d'un espace
+			
+			SDL_Delay( 75 );
+			*lignes.rbegin() += lettre ; // Ajoute la lettre à la fin de la dernière ligne
+		}
+		
+			// Affichage du texte
+		vertical = height - 20.0f;
+		for( iter=lignes.begin() ; iter!=lignes.end() ; iter++ )	// Affiche chaque ligne du texte
+		{
+			fonteIntro.DrawString( *iter, 1.2f, 20.0f, vertical );
+			vertical -= 25.0f;
+		}
+
+		SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
+		SDL_Delay( (unsigned int)( 60.0f * ((float)rand()/(float)RAND_MAX) ) );	// Petite attente entre deux lettres consécutives
+		
+		if( checkEventsForIntro() )	// Vérifie si l'utilisateur veut sortir de l'intro
+		{
+			delete image2;		
+			return;
+		}
+	}
+	
+		// Attends un petit instant à la fin de l'affichage du texte complet
+	SDL_Delay( 300 );	
+	lignes.clear();	// Efface tout le texte
+
+		// AFFICHAGE DE L'IMAGE DU SAUVEUR DE LA PLANETE
+	glClear( GL_COLOR_BUFFER_BIT );		// Efface l'écran
+
+	DemonSons->Play( sonHurlement );	// Cri du sauveur de la planète
+	
+	glRasterPos2i( 0, 0 );		// A partir du coin de l'écran
+	glDrawPixels( width, height, GL_RGB, GL_UNSIGNED_BYTE, image2 );
+	
+	delete image2;
+
+	SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
+	SDL_Delay( 4000 );
+	
+	for( int i=0 ; i<35 ; i++ )		// Laisse quelques instants l'image affichée
+	{
+		SDL_Delay( 100 );
+		if( checkEventsForIntro() )	// Vérifie si l'utilisateur veut sortir de l'intro
+			return;
+	}
+
+		// AFFICHAGE DE LA FIN DU TEXTE D'INTRO, lettre par lettre (genre machine à écrire)
+	fonteIntro.Begin();
+	glColor3f( 1.0, 1.0, 1.0 );
+	for( unsigned int i=0 ; i<str2.length() ; i++ )
+	{
+		
+		lettre = str2[ i ];
+		
+		glClear( GL_COLOR_BUFFER_BIT );
+		
+		if( i==0 )
+			lignes.push_back( "" );
+
+		if( (lettre=='\n') )
+		{
+			DemonSons->Play( sonChariot );
+			lignes.push_back( "" );
+			SDL_Delay( 700 );
+		}
+		else
+		{
+			if( lettre!=' ' )	// Si c'est pas un espace
+				DemonSons->Play( sonTouche );	// Envoie le son d'une frappe de touche clavier normale
+			else
+				DemonSons->Play( sonEspace );	// Sinon celui de la frappe d'un espace
+
+			*lignes.rbegin() += lettre ; // Ajoute la lettre à la fin de la dernière ligne
+		}
+		
+			// Affichage de tout le texte
+		vertical = height - 360.0f;
+		for( iter=lignes.begin() ; iter!=lignes.end() ; iter++ )	// Affiche chaque ligne
+		{
+			fonteIntro.DrawString( *iter, 1.2f, 20.0f, vertical );
+			vertical -= 45.0f;
+		}
+
+		SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
+		SDL_Delay( 75 + (unsigned int)( 60.0f * ((float)rand()/(float)RAND_MAX) ) );	// Petite attente entre deux lettres consécutives
+
+		if( checkEventsForIntro() )	// Vérifie si l'utilisateur veut sortir de l'intro			
+			return;
+	}
+	
+	SDL_Delay( 1000 );
+
+	glDeleteTextures( 1, &texFonteIntro );	// Destruction de la texture de fonte
+}

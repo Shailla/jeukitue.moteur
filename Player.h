@@ -88,7 +88,7 @@ public :
 	void nom( const string &nom );
 	string nom() const;
 	void Skin( JKT_PACKAGE_MOTEUR3D::CMap *skin );
-	void setCri( char *nomFichier );					// Indique le son du cri du joueur
+	void setCri( const char *nomFichier );					// Indique le son du cri du joueur
 
 		// FONCTIONS
 private:

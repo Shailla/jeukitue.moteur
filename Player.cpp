@@ -185,7 +185,7 @@ CPlayer::~CPlayer()
 	}
 }
 
-void CPlayer::setCri( char *nomFichier )
+void CPlayer::setCri( const char *nomFichier )
 {
 	ID_Cri = DemonSons->CreateSon( nomFichier );
 	ID_ReqCri = DemonSons->PlayID( ID_Cri, true );

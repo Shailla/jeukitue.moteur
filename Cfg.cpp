@@ -636,7 +636,7 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 
 	SDL_EnableKeyRepeat( 500, 500 );	// Répétition des touches clavier
 
-	SDL_WM_SetCaption( "JKT 2003", "C'est un jeu qui tue !!!" );	// Titre et icon de la fenêtre
+	SDL_WM_SetCaption( "JKT 2010", "C'est un jeu qui tue !!!" );	// Titre et icon de la fenêtre
 	SDL_WM_SetIcon( IMG_Load( "icon.bmp" ), 0 );
 
 	char txt1[50];

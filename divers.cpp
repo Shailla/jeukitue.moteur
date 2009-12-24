@@ -59,12 +59,33 @@ TRACE().p( TRACE_OTHER, "quit_tutorial(code=%d,txt=%s)", code, txt );
 void quit_JKT()
 {
 TRACE().p( TRACE_OTHER, "quit_JKT()" );
+	string trace1 = "Derniere erreur FMOD : ";
+	trace1 += FMOD_ErrorString(FSOUND_GetError());
+
+	string trace2 = "Derniere erreur SDL : ";
+	trace2 += SDL_GetError();
+
+	string trace3 = "Derniere erreur SDL_Net : ";
+	trace3 += SDLNet_GetError();
+
+	string trace4 = "Derniere erreur openGL : ";
+	trace4 += (char*)gluErrorString( glGetError() );
+
+	string trace5 = "Derniere erreur Agar : ";
+	trace5 += AG_GetError();
+
+TRACE().p( TRACE_OTHER, trace1.c_str() );
+TRACE().p( TRACE_OTHER, trace2.c_str() );
+TRACE().p( TRACE_OTHER, trace3.c_str() );
+TRACE().p( TRACE_OTHER, trace4.c_str() );
+TRACE().p( TRACE_OTHER, trace5.c_str() );
+
 	cerr << endl;
-	cerr << "Derniere erreur FMOD : " << FMOD_ErrorString(FSOUND_GetError()) << endl;
-	cerr << "Derniere erreur SDL : " << SDL_GetError() << endl;
-	cerr << "Derniere erreur SDL_Net : " << SDLNet_GetError() << endl;
-	cerr << "Derniere erreur openGL : " << gluErrorString( glGetError() ) << endl;
-    cerr << "Derniere erreur Agar : " << AG_GetError();
+	cerr << trace1 << endl;
+	cerr << trace2 << endl;
+	cerr << trace3 << endl;
+	cerr << trace4 << endl;
+	cerr << trace5 << endl;
 	
 	FSOUND_Close();		// Fermeture d'FMOD
 	SDLNet_Quit();		// Fermeture d'SDL_Net
@@ -112,10 +133,21 @@ CSon* sonHurlement;		// Son hurlement du sauveur de la planète
 void load_Intro( int width, int height )
 {
 TRACE().p( TRACE_OTHER, "load_Intro(width=%d,height=%d)", width, height );
-	sonChariot = DemonSons->CreateSon( "./Sons/chariot.wav" );		// Son retour chariot machine à écrire
-	sonTouche = DemonSons->CreateSon( "./Sons/touche.wav" );		// Son frappe d'une touche clavier
-	sonEspace = DemonSons->CreateSon( "./Sons/espace.wav" );		// Son frappe de la touche espace clavier
-	sonHurlement = DemonSons->CreateSon( "./Sons/hurlement.wav" );	// Son hurlement du sauveur de la planète
+	string bruitChariot = "@Bruit\\chariot.wav";		// Chargement de la fonte de caractères
+	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(bruitChariot);
+	sonChariot = DemonSons->CreateSon( bruitChariot.c_str() );		// Son retour chariot machine à écrire
+	
+	string bruitTouche = "@Bruit\\touche.wav";		// Chargement de la fonte de caractères
+	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(bruitTouche);
+	sonTouche = DemonSons->CreateSon( bruitTouche.c_str() );		// Son frappe d'une touche clavier
+	
+	string bruitEspace = "@Bruit\\espace.wav";		// Chargement de la fonte de caractères
+	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(bruitEspace);
+	sonEspace = DemonSons->CreateSon( bruitEspace.c_str() );		// Son frappe de la touche espace clavier
+	
+	string bruitHurlement = "@Bruit\\hurlement.wav";		// Chargement de la fonte de caractères
+	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(bruitHurlement);
+	sonHurlement = DemonSons->CreateSon( bruitHurlement.c_str() );	// Son hurlement du sauveur de la planète
 
 	load_IntroSub( width, height );
 

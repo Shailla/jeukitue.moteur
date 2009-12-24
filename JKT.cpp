@@ -892,7 +892,39 @@ void play_handle_key_down( SDL_Event *event )
 			lanceMenuAide( 0 );
 			Aide = true;				
 			break;
-		
+
+		case SDLK_F3 :	
+			{
+				string trace1 = "Derniere erreur FMOD : ";
+				trace1 += FMOD_ErrorString(FSOUND_GetError());
+
+				string trace2 = "Derniere erreur SDL : ";
+				trace2 += SDL_GetError();
+
+				string trace3 = "Derniere erreur SDL_Net : ";
+				trace3 += SDLNet_GetError();
+
+				string trace4 = "Derniere erreur openGL : ";
+				trace4 += (char*)gluErrorString( glGetError() );
+
+				string trace5 = "Derniere erreur Agar : ";
+				trace5 += AG_GetError();
+
+TRACE().p( TRACE_OTHER, trace1.c_str() );
+TRACE().p( TRACE_OTHER, trace2.c_str() );
+TRACE().p( TRACE_OTHER, trace3.c_str() );
+TRACE().p( TRACE_OTHER, trace4.c_str() );
+TRACE().p( TRACE_OTHER, trace5.c_str() );
+
+				cerr << endl;
+				cerr << trace1 << endl;
+				cerr << trace2 << endl;
+				cerr << trace3 << endl;
+				cerr << trace4 << endl;
+				cerr << trace5 << endl;
+			}
+			break;
+
 		case SDLK_F4 :	
 			lanceMenuMode( 0 );
 			break;
@@ -1038,12 +1070,19 @@ bool openMAP( void *nomFichier )
 		// Création joueurs
 	Game.setPlayerList( 10 );	// Indique que la partie peut contenir jusqu'à 10 joueurs
 
+	// Récupération des ressources de cris des personnages
+	string cri1 = "@Bruit\\cri_1.wav";		// Chargement de la fonte de caractères
+	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(cri1);
+
+	string cri2 = "@Bruit\\cri_1.wav";		// Chargement de la fonte de caractères
+	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(cri2);
+
 		// Création du joueur principal
 	CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
 	erwin->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	erwin->changeContact( contactPlayer );		// Associe une fonction de gestion des contacts avec la map
 	erwin->Skin( pMapJoueur );
-	erwin->setCri(  "./Sons/cri_1.wav" );							// Cri du joueur
+	erwin->setCri( cri1.c_str() );							// Cri du joueur
 	erwin->nom( "ERWIN" );
 	erwin->init();				// Initialise certaines données
 	erwin->choiceOneEntryPoint();
@@ -1056,7 +1095,7 @@ bool openMAP( void *nomFichier )
 	julien->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	julien->changeContact( contactPlayer );		// Associe une fonction pour les contacts avec la map
 	julien->Skin( pMapJoueur2 );
-	julien->setCri( "./Sons/cri_1.wav" );
+	julien->setCri( cri1.c_str() );
 	julien->nom( "JULIEN" );
 	julien->init();
 	julien->choiceOneEntryPoint();
@@ -1068,7 +1107,7 @@ bool openMAP( void *nomFichier )
 	sprite->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	sprite->changeContact( contactSprite );		// Associe une fonction pour les contacts avec la map
 	sprite->Skin( pMapJoueur );
-	sprite->setCri( "./Sons/cri_2.wav" );
+	sprite->setCri( cri2.c_str() );
 	sprite->nom( "SPRITE" );
 	sprite->init();
 	sprite->choiceOneEntryPoint();
@@ -1228,7 +1267,9 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 		// Création d'un haut parleur qui se déplace pour tester le son 3D
 	machin = new CMachin();
-	CSon3D *son3D = DemonSons->CreateSon3D( "./Sons/drumloop.wav" );
+	string fichierSon3D = "@Musique\\drumloop.wav";		// Chargement de la fonte de caractères
+	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(fichierSon3D);
+	CSon3D *son3D = DemonSons->CreateSon3D( fichierSon3D.c_str() );
 	CReqSon *reqSon = DemonSons->PlayID( (CSon*)son3D, true );
 	reqSon->Boucle( true );
 	machin->req_son = reqSon;

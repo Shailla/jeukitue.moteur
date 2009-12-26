@@ -1,4 +1,10 @@
-#include "AgarController.h"
+#include <agar/core.h>
+#include <agar/gui.h>
+#include <agar/gui/style.h>
+
+#include "View.h"
+#include "Controller.h"
+#include "Viewer.h"
 
 #include "OpenCentralisateurView.h"
 
@@ -23,7 +29,10 @@ OpenCentralisateurView::OpenCentralisateurView(const AG_EventFn controllerCallba
     AG_SeparatorNewHoriz(m_window);
     
     // Bouton de connexion au serveur centralisateur
-    m_connection = AG_ButtonNewFn(m_window, 0, "Connecter", controllerCallback, "%d", AgarController::ConnectCentralisateurAction);
+    m_connection = AG_ButtonNewFn(m_window, 0, "Connecter", controllerCallback, "%d", Controller::ConnectCentralisateurAction);
+
+	// Bouton retour
+	m_retour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%d", Controller::MainMenuAction);
 
     AG_WindowSetGeometryAligned(m_window, AG_WINDOW_MC, 220, 150);
 
@@ -34,18 +43,6 @@ OpenCentralisateurView::OpenCentralisateurView(const AG_EventFn controllerCallba
 OpenCentralisateurView::~OpenCentralisateurView(void)
 {
     delete[] &m_adresseStr;
-}
-
-void OpenCentralisateurView::show(void)
-{
-    AG_WindowShow(m_window);
-    AG_WidgetFocus(m_window);
-}
-
-void OpenCentralisateurView::hide(void)
-{
-    AG_WindowHide(m_window);
-    AG_WidgetUnfocus(m_window);
 }
 
 int OpenCentralisateurView::getPort(void)

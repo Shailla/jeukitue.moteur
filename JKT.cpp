@@ -100,9 +100,9 @@ class CGame;
 #include "MoteurParticules.h"
 #include "Reseau.h"
 #include "enumReseau.h"
-#include "AgarController.h"
-#include "AgarView.h"
-#include "AgarController.h"
+#include "Controller.h"
+#include "Viewer.h"
+#include "Controller.h"
 #include "Fabrique.h"
 
 using namespace JKT_PACKAGE_MENU;
@@ -584,7 +584,7 @@ void display()	// Fonction principale d'affichage
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
 
-    AgarView* agarView = Fabrique::getAgarView();
+    Viewer* agarView = Fabrique::getAgarView();
     if(agarView->IsVisible()) {
         glEnable( GL_TEXTURE_2D );
 	    glDisable( GL_BLEND );
@@ -824,7 +824,7 @@ void menu_agar_handle_key_down( SDL_Event *event )
             {
     	        case SDLK_ESCAPE:
                     {
-                        AgarView* agarView = Fabrique::getAgarView();
+                        Viewer* agarView = Fabrique::getAgarView();
                         pFocus->SetPlayFocus();
 			            agarView->SetVisible(false);
                     }
@@ -1017,7 +1017,7 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 
 		case SDLK_F2:
             {
-                AgarView* agarView = Fabrique::getAgarView();
+                Viewer* agarView = Fabrique::getAgarView();
                 pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
 			    agarView->SetVisible(true);
             }

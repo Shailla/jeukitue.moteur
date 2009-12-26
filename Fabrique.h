@@ -1,20 +1,20 @@
 #ifndef __JKT__FABRIQUE_H
 #define __JKT__FABRIQUE_H
 
-#include "AgarController.h"
-#include "AgarView.h"
+#include "Controller.h"
+#include "Viewer.h"
 #include "Centralisateur.h"
 
 class Fabrique
 {
     static Centralisateur* m_centralisateur;
-    static AgarView* m_agarView;
-    static AgarController* m_agarController;
+    static Viewer* m_agarView;
+    static Controller* m_agarController;
 public:
     static void construct(void);
 
-    static AgarView* getAgarView();
-    static AgarController* getAgarController();
+    static Viewer* getAgarView();
+    static Controller* getAgarController();
     static Centralisateur* getCentralisateur();
 };
 

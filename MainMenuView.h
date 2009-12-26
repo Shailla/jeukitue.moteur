@@ -4,18 +4,18 @@
 #include <agar/core.h>
 #include <agar/gui.h>
 
-class MainMenuView
+#include "View.h"
+
+class Viewer;
+
+class MainMenuView : public View
 {
-    AG_Window *m_window;
     AG_Button* m_buttonOuvrirScene;
     AG_Button* m_buttonCentralisateur;
     AG_Button* m_buttonQuitter;
 public:
-    MainMenuView(const AG_EventFn controllerCallback);
+    MainMenuView(const AG_EventFn controllerCallback, Viewer* agarView);
     ~MainMenuView(void);
-
-    void show(void);
-    void hide(void);
 };
 
 #endif

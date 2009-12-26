@@ -4,21 +4,20 @@
 #include <agar/core.h>
 #include <agar/gui.h>
 
-class OpenCentralisateurView
+#include "View.h"
+
+class OpenCentralisateurView : public View
 {
-    AG_Window *m_window;
-    AG_Button* m_connection;
     AG_Textbox* m_userName;
     char m_userNameStr[40];
     AG_Textbox* m_adresse;
     char m_adresseStr[40];
     AG_Textbox* m_port;
+    AG_Button* m_connection;
+	AG_Button* m_retour;
 public:
     OpenCentralisateurView(const AG_EventFn controllerCallback);
     ~OpenCentralisateurView(void);
-    
-    void show(void);
-    void hide(void);
 
     char* getUserName(void);
     char* getAdresse(void);

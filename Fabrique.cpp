@@ -1,8 +1,8 @@
 #include "Fabrique.h"
 
 Centralisateur* Fabrique::m_centralisateur = 0;
-AgarView* Fabrique::m_agarView = 0;
-AgarController* Fabrique::m_agarController = 0;
+Viewer* Fabrique::m_agarView = 0;
+Controller* Fabrique::m_agarController = 0;
 
 void Fabrique::construct(void)
 {
@@ -10,8 +10,8 @@ void Fabrique::construct(void)
     m_centralisateur = new Centralisateur(udpController);
 
     // Agar initialization
-    m_agarView = new AgarView(AgarController::executeAction);
-    m_agarController = new AgarController(m_agarView);
+    m_agarView = new Viewer(Controller::executeAction);
+    m_agarController = new Controller(m_agarView);
 }
 
 Centralisateur* Fabrique::getCentralisateur()
@@ -19,12 +19,12 @@ Centralisateur* Fabrique::getCentralisateur()
     return m_centralisateur;
 }
 
-AgarView* Fabrique::getAgarView()
+Viewer* Fabrique::getAgarView()
 {
     return m_agarView;
 }
 
-AgarController* Fabrique::getAgarController()
+Controller* Fabrique::getAgarController()
 {
     return m_agarController;
 }

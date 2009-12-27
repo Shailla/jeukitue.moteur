@@ -11,7 +11,7 @@ protected:
 
 public:
 	CProjectil( CPlayer *player );
-	~CProjectil();
+	virtual ~CProjectil();
 
 	virtual void Affiche()=0;	// Affichage du projectil
 	virtual bool Refresh()=0;	// Effectue les calculs et les tests nécessaires

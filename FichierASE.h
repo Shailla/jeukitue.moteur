@@ -25,7 +25,7 @@ class CFichierASE : private ifstream
 
 	enum erreursFichier {
 		JKT_ERREUR_FICHIER_EOF,					// Fin du fichier prématurée
-		JKT_ERREUR_FICHIER_INVALIDE,			// Fichier ASE invalide 
+		JKT_ERREUR_FICHIER_INVALIDE,			// Fichier ASE invalide
 		JKT_ERREUR_FICHIER_MARTERIAUMANQUE,		// Un ou plusieurs matériaux manquent
 		JKT_ERREUR_FICHIER_MISSPARAM,			// Paramètre introuvable
 		JKT_ERREUR_FICHIER_ACCOLADE,			// Accolade inattendue

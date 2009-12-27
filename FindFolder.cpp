@@ -81,16 +81,16 @@ int CFindFolder::nbr()	// Nombre de fichiers du répertoire correspondant aux fil
 {
 	string name;
 	int num = 0;
-	
+
 	while( findNext( name ) )
 		num++;
-	
+
 	return num;
 }
 
 	// Trouve le fichier suivant correspondant aux filtres du répertoire
 bool CFindFolder::findNext(string &fichier)
-{	
+{
 #ifdef WIN32
 	struct _finddata_t fileinfo;
 	bool bTrouve1;		// Indique si un fichier correspondant au filtre 1 a été trouvé
@@ -129,7 +129,7 @@ bool CFindFolder::findNext(string &fichier)
 
 			if( m_FilterOpt1 )	// S'il y a un filtre optionnel
 			{
-					// Exécution du FILTRE 1		
+					// Exécution du FILTRE 1
 				if( fichier.size() >= strlen(m_FilterOpt1) )
 					if( string( fichier.begin(), fichier.begin()+strlen(m_FilterOpt1) ) == m_FilterOpt1 )
 						bTrouve1 = true;
@@ -138,8 +138,8 @@ bool CFindFolder::findNext(string &fichier)
 			if( bTrouve1 || !m_FilterOpt1 )	// S'il n'y a pas de 1er filtre ou que que celui-ci a trouvé quelque chose qui lui convient
 			{
 				if( m_FilterOpt2 )	// S'il y a un filtre optionnel
-				{	
-						// Exécution du FILTRE 2		
+				{
+						// Exécution du FILTRE 2
 					if( fichier.size() >= strlen(m_FilterOpt2))
 						if( string( fichier.end()-strlen(m_FilterOpt2), fichier.end() ) == m_FilterOpt2 )
 							bTrouve2 = true;
@@ -169,7 +169,7 @@ bool CFindFolder::findNext(string &fichier)
 		}
 	} while( bResult && !bTrouve );
 
-	if( bTrouve )			
+	if( bTrouve )
 	{
 		return true;
 	}
@@ -216,7 +216,7 @@ bool CFindFolder::findNext(string &fichier)
 
 			if( m_FilterOpt1 )	// S'il y a un filtre optionnel
 			{
-					// Exécution du FILTRE 1		
+					// Exécution du FILTRE 1
 				if( fichier.size() >= strlen(m_FilterOpt1) )
 					if( string( fichier.begin(), fichier.begin()+strlen(m_FilterOpt1) ) == m_FilterOpt1 )
 						bTrouve1 = true;
@@ -225,8 +225,8 @@ bool CFindFolder::findNext(string &fichier)
 			if( bTrouve1 || !m_FilterOpt1 )	// S'il n'y a pas de 1er filtre ou que que celui-ci a trouvé quelque chose qui lui convient
 			{
 				if( m_FilterOpt2 )	// S'il y a un filtre optionnel
-				{	
-						// Exécution du FILTRE 2		
+				{
+						// Exécution du FILTRE 2
 					if( fichier.size() >= strlen(m_FilterOpt2))
 						if( string( fichier.end()-strlen(m_FilterOpt2), fichier.end() ) == m_FilterOpt2 )
 							bTrouve2 = true;
@@ -256,7 +256,7 @@ bool CFindFolder::findNext(string &fichier)
 		}
 	} while( bResult && !bTrouve );
 
-	if( bTrouve )			
+	if( bTrouve )
 	{
 		return true;
 	}
@@ -299,7 +299,7 @@ int CFindFolder::rmdir( const char *dir )
 	// Permet de savoir si un élément est un répertoire ou non
 bool CFindFolder::isFolder( const char *dir )
 {
-#ifdef WIN32
+#ifdef VS
 	struct __stat64 buf;
 	int result;
 
@@ -310,7 +310,7 @@ bool CFindFolder::isFolder( const char *dir )
 		cerr << endl << "CFindFolder::isFolder(" << dir << ") Problem getting information";
 
 	return (buf.st_mode & _S_IFDIR)!=0;
-#elif defined(__linux__)
+#else
 	struct stat buf;
 	int result;
 

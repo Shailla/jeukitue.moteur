@@ -35,7 +35,7 @@ public:
 			m_adrX = adrXNew;
 		};
 
-		TAdr* Cherche(TAdr* adr) //Recherche le dernier bloc Adr de la liste chaînée	
+		TAdr* Cherche(TAdr* adr) //Recherche le dernier bloc Adr de la liste chaînée
 		{
 			if( adr )
 			{
@@ -44,11 +44,11 @@ public:
 					adr = adr->m_adrApres->Cherche( m_adrApres );
 				}
 			}
-			
+
 			return adr;
 		}
 
-		TAdr* Cherche(TAdr* adr, unsigned int i)	//Recherche le ième bloc Adr de la liste chaînée	
+		TAdr* Cherche(TAdr* adr, unsigned int i)	//Recherche le ième bloc Adr de la liste chaînée
 		{										//à partir de adr
 			if( i>1 )
 			{
@@ -57,13 +57,13 @@ public:
 				else
 					adr = 0;
 			}
-			
+
 			return adr;
 		}
 	};
 
 public:
-	typename typedef TAdr<X> Adr;
+	typedef TAdr<X> Adr;
 
 	Adr *m_adrAdr;				// Adresse du premier bloc Adr
 	Adr *m_adrCurseur;			// Position du curseur courant sur bloc Adr
@@ -73,14 +73,14 @@ public:
 	Tableau();
 	Tableau(X* adrX);
 	~Tableau();
-	
+
 		//Fonctions membres
 	void Ajoute(X* adrXNew);		// Ajoute un élément au tableau
 	void Enleve();					// Supprime l'élément pointé par le curseur
 	void Enleve(Adr *adr);		// Supprime l'élément demandé
 	X* Get();						// Retourne l'adresse du dernier objet X de Tableau
 	X* Get(unsigned int i);			// Retourne l'adresse du iième objet X de Tableau
-	Adr* Suivant(Adr *adr);	// Renvoie le bloc Adr après adr, 0 sinon	
+	Adr* Suivant(Adr *adr);	// Renvoie le bloc Adr après adr, 0 sinon
 	Adr* BeginAdr();				// Renvoie le premier bloc Adr
 	unsigned int Size();			// Retourne le nombre d'objets contenus
 };

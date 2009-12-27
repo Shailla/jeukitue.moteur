@@ -7,7 +7,7 @@ class Data
 {
 public:
     Data(void);
-    ~Data(void);
+    virtual ~Data(void);
 
     virtual UDPpacket* toPacket() = 0;
 };

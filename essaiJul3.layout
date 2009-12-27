@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug Win32" />
+	<File name="Centralisateur.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="601" topLine="11" />
+	</File>
+	<File name="Cfg.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="25287" topLine="736" />
+	</File>
+	<File name="Client.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="7878" topLine="290" />
+	</File>
+	<File name="DlgBoite.h" open="0" top="0" tabpos="0">
+		<Cursor position="701" topLine="35" />
+	</File>
+	<File name="Erreur.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="303" topLine="16" />
+	</File>
+	<File name="Erreur.h" open="0" top="0" tabpos="0">
+		<Cursor position="107" topLine="0" />
+	</File>
+	<File name="Fabrique.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="677" topLine="10" />
+	</File>
+	<File name="FichierASE.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="34830" topLine="1324" />
+	</File>
+	<File name="FichierASE.h" open="0" top="0" tabpos="0">
+		<Cursor position="2260" topLine="53" />
+	</File>
+	<File name="FindFolder.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6672" topLine="299" />
+	</File>
+	<File name="Game.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2289" topLine="101" />
+	</File>
+	<File name="Game.h" open="0" top="0" tabpos="0">
+		<Cursor position="1900" topLine="48" />
+	</File>
+	<File name="GenRef.h" open="0" top="0" tabpos="0">
+		<Cursor position="268" topLine="5" />
+	</File>
+	<File name="GeoMaker.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="9021" topLine="358" />
+	</File>
+	<File name="JKT.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="35389" topLine="1232" />
+	</File>
+	<File name="LightMaker.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="588" topLine="10" />
+	</File>
+	<File name="MainMenuView.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="2" topLine="0" />
+	</File>
+	<File name="Map.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="19909" topLine="685" />
+	</File>
+	<File name="Map.h" open="0" top="0" tabpos="0">
+		<Cursor position="128" topLine="0" />
+	</File>
+	<File name="MaterialTexture.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1201" topLine="7" />
+	</File>
+	<File name="MaterialTexture.h" open="0" top="0" tabpos="0">
+		<Cursor position="154" topLine="0" />
+	</File>
+	<File name="MultiMaterialGeo.h" open="0" top="0" tabpos="0">
+		<Cursor position="1958" topLine="38" />
+	</File>
+	<File name="OpenSceneView.h" open="0" top="0" tabpos="0">
+		<Cursor position="385" topLine="7" />
+	</File>
+	<File name="Photo.h" open="0" top="0" tabpos="0">
+		<Cursor position="247" topLine="0" />
+	</File>
+	<File name="RessourcesLoader.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2604" topLine="91" />
+	</File>
+	<File name="RessourcesLoader.h" open="0" top="0" tabpos="0">
+		<Cursor position="304" topLine="0" />
+	</File>
+	<File name="SignalementData.h" open="0" top="0" tabpos="0">
+		<Cursor position="70" topLine="0" />
+	</File>
+	<File name="SimpleGeo.h" open="0" top="0" tabpos="0">
+		<Cursor position="1717" topLine="43" />
+	</File>
+	<File name="SimpleMaterialGeo.h" open="0" top="0" tabpos="0">
+		<Cursor position="732" topLine="20" />
+	</File>
+	<File name="Tableau.h" open="0" top="0" tabpos="0">
+		<Cursor position="1652" topLine="58" />
+	</File>
+	<File name="TextureMaterialGeo.h" open="0" top="0" tabpos="0">
+		<Cursor position="1808" topLine="38" />
+	</File>
+	<File name="Trace.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6460" topLine="275" />
+	</File>
+	<File name="TraceMethod.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1174" topLine="59" />
+	</File>
+	<File name="Viewer.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="1279" topLine="49" />
+	</File>
+	<File name="Viewer.h" open="0" top="0" tabpos="4">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="XmlVocabulaire.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="5425" topLine="191" />
+	</File>
+	<File name="a_virer.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="377" topLine="5" />
+	</File>
+</CodeBlocks_layout_file>

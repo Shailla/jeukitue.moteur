@@ -36,7 +36,7 @@ public:
 class CDlgBoite:public CDlg
 {
 public:
-	static enum JKT_DLG {			// Les différents types de boîte de dialogue
+	enum JKT_DLG {			// Les différents types de boîte de dialogue
 		JKT_DLG_NULL,		// Boîte sans type particulier
 		JKT_DLG_INFO,		// Boîte d'info
 		JKT_DLG_ENCOURS,	// Boîte qui indique une tâche ne cours
@@ -45,7 +45,7 @@ public:
 	};
 private:
 	static bool m_B_INIT_CLASSE;	// Indique si la classe a déjà été initialisée
-	
+
 	static int texErreur;		// Texture de l'icone associée à un message d'erreur
 	static int texInfo;			// Texture de l'icone associée à un message d'information
 	static int texEnCours;		// Texture de l'icone associée à un message d'information
@@ -77,7 +77,7 @@ public:
 		// Constructeurs / destructeurs
 	CDlgBoite( const char *titre, const char *txt, PF fct_retour=0, JKT_DLG type=JKT_DLG_NULL );
 	CDlgBoite( const char *titre, const char *txt, PF fct_retour, CBouton &but1, CBouton &but2, CBouton &but3, JKT_DLG type=JKT_DLG_NULL );
-	~CDlgBoite(void);
+	virtual ~CDlgBoite(void);
 
 	void addBouton( int but, const char *txt, PF fct_go, void *arg=0 );
 

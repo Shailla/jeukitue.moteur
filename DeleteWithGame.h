@@ -9,13 +9,14 @@ class CDeleteWithGame;
 
 class CDeleteWithGame
 {
+
 public:
 		// Constructeur/destructeur
-	static set<CDeleteWithGame*> m_Tab;
-	static void DeleteAll();			// Détruit toutes les classes dérivées de CDeleteWithGame
-
 	CDeleteWithGame();
 	~CDeleteWithGame();
+
+    static set<CDeleteWithGame*>* m_Tab;
+	static void DeleteAll();			// Détruit toutes les classes dérivées de CDeleteWithGame
 };
 
 #endif

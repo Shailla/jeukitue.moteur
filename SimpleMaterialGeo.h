@@ -22,13 +22,13 @@ namespace JKT_PACKAGE_MOTEUR3D
 {
 
 class CSimpleMaterialGeo:public CGeo
-{	
+{
 	int m_OffsetMateriaux;		// Sert lors de la lecture des références matériaux
 	CMaterial* m_Material;		// Matériau utilisé
 	string tostring;
 
 	// VBO
-	static enum {	VBO_VERTEX=0, VBO_NORMAUX };
+	enum {	VBO_VERTEX=0, VBO_NORMAUX };
 	static const int VBO_BUFFER_SIZE = 2;
 	GLuint m_VboBufferNames[VBO_BUFFER_SIZE];
 public:
@@ -50,7 +50,7 @@ private:
 	void freeVBO();
 
 public:
-		// Destructeur		
+		// Destructeur
 	~CSimpleMaterialGeo();
 
 	float *m_TabVectNormaux;	// Pointeur sur le tableau des vecteurs normaux
@@ -64,11 +64,11 @@ public:
 	void EchangeXZ();			// Echange les coordonnées X et Z de l'objet
 	void EchangeYZ();			// Echange les coordonnées Y et Z de l'objet
 	void Scale(float scaleX, float scaleY, float scaleZ);	// Homothétie pondérée selon X, Y et Z de l'objet
-	
+
 	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
 	void GereContactPlayer(const float pos[3], CPlayer *player);
 	float GereLaser(float pos[3], CV3D &Dir, float dist);	// Voir la définition de la fonction
-	
+
 	void setMaterial(int matRef);	// Associe l'objet au matériau de référence matRef
 	void setNormalVertex(float *tab);			// Implémente les normales aux sommets
 	void setSubMat(int *tab);					// Implémente les réf de sous matériau
@@ -77,7 +77,7 @@ public:
 
 		// Fonctions pour l'interface CGeo
 	//bool LitFichier(CIfstreamMap &fichier);			// Lit un objet géo dans un fichier Map
-	//bool SaveNameType(ofstream &fichier);				// Sauve le nom du type d'objet géométrique	
+	//bool SaveNameType(ofstream &fichier);				// Sauve le nom du type d'objet géométrique
 	//bool SaveFichierMap(ofstream &fichier);			// Sauve l'objet géo dans un fichier Map
 	bool Save(TiXmlElement* element);
 	bool Lit(TiXmlElement* element);

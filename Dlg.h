@@ -14,7 +14,7 @@ class CDlg
 
 public:
 	CDlg(void);
-	~CDlg(void);
+	virtual ~CDlg(void);
 
 	static void SetMenuActif(CDlg *pMenu);				// Active un CDlg
 	static void menu_handle_key_down(SDL_Event *event);	// Appelle le gestionnaire du CDlg actif

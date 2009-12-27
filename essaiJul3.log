@@ -1,9 +1,370 @@
-﻿Build started 23/12/2009 22:00:35.
-     1>Project "H:\jkt\svn\trunk\moteur\essaiJul3.vcxproj" on node 1 (clean target(s)).
-     1>CoreClean:
-         Creating directory ".\Debug\".
-     1>Done Building Project "H:\jkt\svn\trunk\moteur\essaiJul3.vcxproj" (clean target(s)).
+﻿Build started 26/12/2009 13:50:02.
+     1>Project "D:\jkt_repo\moteur\essaiJul3.vcxproj" on node 23 (build target(s)).
+     1>_PrepareForBuild:
+         Touching ".\Debug\essaiJul3.unsuccessfulbuild".
+       ClCompile:
+         D:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ID:\jkt_repo\moteur\Libs\FreeType\include /I"D:\jkt_repo\moteur\Libs\Pre-built.2\include" /ID:\jkt_repo\moteur\Libs\Agar\include /ID:\jkt_repo\moteur\Libs\tinyxml_2_5_2 /ID:\jkt_repo\moteur\ /I"D:\jkt_repo\moteur\Libs\SDL_net-1.2.7\include" /ID:\jkt_repo\moteur\Libs\glFont /ID:\jkt_repo\moteur\Libs\fmodapi375win\api\inc /I"D:\jkt_repo\moteur\Libs\SDL-1.2.14\include" /I"D:\jkt_repo\moteur\Libs\SDL_image-1.2.10\include" /ID:\jkt_repo\moteur\Libs\glext /Z7 /nologo /W3 /WX- /Od /Ot /Oy- /D WIN32 /D _CONSOLE /D _DEBUG /D _VC80_UPGRADE=0x0700 /D _UNICODE /D UNICODE /GF /Gm- /EHsc /MDd /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\Debug/" /Fd".\Debug/vc100.pdb" /FR".\Debug\\" /Gd /TP /analyze- /errorReport:prompt audio.cpp DemonSons.cpp OpenSceneASEView.cpp OpenSceneMapView.cpp OpenSceneView.cpp ReqSon.cpp Son.cpp Dlg.cpp DlgBoite.cpp Focus.cpp Libs\glFont\glfont2.cpp Menu.cpp Portail.cpp Menu\MMenuPrinc.cpp Menu\MMenuPrinc2.cpp Menu\MOpenScene.cpp Menu\MOpenMAP.cpp Menu\MOpenASE.cpp Menu\MMultijoueur.cpp Menu\MMultijoueurClientInfo.cpp Menu\MMultijoueurClientPing.cpp Menu\MMultijoueurServeur.cpp Menu\MMultijoueurServeurLancepartie.cpp Menu\MConfiguration.cpp Menu\MDebug.cpp Menu\MReseau.cpp Menu\MDisplay.cpp Menu\MDisplaySize.cpp Menu\MCommandes.cpp Menu\MAudio.cpp Menu\MAudioDrivers.cpp Menu\MAudioOutput.cpp Menu\MAudioDriversDriver.cpp Menu\MAudioRecord.cpp Menu\MAide.cpp Menu\MMode.cpp contact.cpp FichierASE.cpp IfstreamMap.cpp Map.cpp MoteurParticules.cpp Mouve.cpp Particule.cpp View.cpp XmlVocabulaire.cpp ChanTex.cpp Geo.cpp GeoMaker.cpp GeoObject.cpp MultiMaterialGeo.cpp SimpleGeo.cpp SimpleMaterialGeo.cpp TextureMaterialGeo.cpp TexVertexList.cpp Light.cpp LightMaker.cpp LightOmni.cpp LightTarget.cpp Material.cpp MaterialMaker.cpp MaterialMulti.cpp MaterialTexture.cpp Textures.cpp Navette.cpp Porte.cpp Cfg.cpp Clavier.cpp divers.cpp Fabrique.cpp Game.cpp JKT.cpp Laser.cpp Photo.cpp Player.cpp Projectil.cpp RequeteProcess.cpp Rocket.cpp Erreur.cpp FindFolder.cpp GenRef.cpp math_vectoriel.cpp mathFast.cpp Tableau.cpp TableauIndex.cpp Trace.cpp TraceMethod.cpp utils_SDL.cpp V3D.cpp XmlHelper.cpp RessourcesLoader.cpp a_virer.cpp Client.cpp Reseau.cpp Server.cpp SPA.cpp Libs\tinyxml_2_5_2\tinystr.cpp Libs\tinyxml_2_5_2\tinyxml.cpp Libs\tinyxml_2_5_2\tinyxmlerror.cpp Libs\tinyxml_2_5_2\tinyxmlparser.cpp Centralisateur.cpp CentralisateurState.cpp UdpConnector.cpp UdpController.cpp Data.cpp ListData.cpp SignalementData.cpp JktException.cpp BindingUdpException.cpp CentralisateurException.cpp OpenUdpSocketException.cpp Controller.cpp Viewer.cpp MainMenuView.cpp OpenCentralisateurView.cpp /D "_CRT_SECURE_NO_DEPRECATE" 
+         audio.cpp
+         DemonSons.cpp
+         OpenSceneASEView.cpp
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(52): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(59): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         OpenSceneMapView.cpp
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(52): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(59): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         OpenSceneView.cpp
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(52): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(59): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         ReqSon.cpp
+         Son.cpp
+         Dlg.cpp
+         DlgBoite.cpp
+         Focus.cpp
+         glfont2.cpp
+         Menu.cpp
+         Portail.cpp
+         MMenuPrinc.cpp
+         MMenuPrinc2.cpp
+         MOpenScene.cpp
+         MOpenMAP.cpp
+         MOpenASE.cpp
+         MMultijoueur.cpp
+         MMultijoueurClientInfo.cpp
+         Generating Code...
+         Compiling...
+         MMultijoueurClientPing.cpp
+         MMultijoueurServeur.cpp
+         MMultijoueurServeurLancepartie.cpp
+         MConfiguration.cpp
+         MDebug.cpp
+         MReseau.cpp
+         MDisplay.cpp
+         MDisplaySize.cpp
+         MCommandes.cpp
+         MAudio.cpp
+         MAudioDrivers.cpp
+         MAudioOutput.cpp
+         MAudioDriversDriver.cpp
+         MAudioRecord.cpp
+         MAide.cpp
+         MMode.cpp
+         contact.cpp
+         FichierASE.cpp
+         IfstreamMap.cpp
+         Map.cpp
+         Generating Code...
+         Compiling...
+         MoteurParticules.cpp
+         Mouve.cpp
+         Particule.cpp
+         View.cpp
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(52): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(59): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         XmlVocabulaire.cpp
+         ChanTex.cpp
+         Geo.cpp
+         GeoMaker.cpp
+         GeoObject.cpp
+         MultiMaterialGeo.cpp
+         SimpleGeo.cpp
+         SimpleMaterialGeo.cpp
+         TextureMaterialGeo.cpp
+         TexVertexList.cpp
+         Light.cpp
+         LightMaker.cpp
+         LightOmni.cpp
+         LightTarget.cpp
+         Material.cpp
+         MaterialMaker.cpp
+         Generating Code...
+         Compiling...
+         MaterialMulti.cpp
+         MaterialTexture.cpp
+         Textures.cpp
+         Navette.cpp
+         Porte.cpp
+         Cfg.cpp
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(52): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(59): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         Clavier.cpp
+         divers.cpp
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(52): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(59): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         Fabrique.cpp
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(52): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(59): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         Game.cpp
+         JKT.cpp
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(52): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(59): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         Laser.cpp
+         Photo.cpp
+         Player.cpp
+         Projectil.cpp
+         RequeteProcess.cpp
+         Rocket.cpp
+         Erreur.cpp
+         FindFolder.cpp
+         GenRef.cpp
+         Generating Code...
+         Compiling...
+         math_vectoriel.cpp
+         mathFast.cpp
+         Tableau.cpp
+         TableauIndex.cpp
+         Trace.cpp
+         TraceMethod.cpp
+         utils_SDL.cpp
+         V3D.cpp
+         XmlHelper.cpp
+         RessourcesLoader.cpp
+         a_virer.cpp
+         Client.cpp
+         Reseau.cpp
+         Server.cpp
+         SPA.cpp
+         tinystr.cpp
+         tinyxml.cpp
+         tinyxmlerror.cpp
+         tinyxmlparser.cpp
+         Centralisateur.cpp
+         Generating Code...
+         Compiling...
+         CentralisateurState.cpp
+         UdpConnector.cpp
+     1>d:\jkt_repo\moteur\UdpConnector.h(27): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+     1>UdpConnector.cpp(48): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+         UdpController.cpp
+     1>d:\jkt_repo\moteur\UdpConnector.h(27): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+         Data.cpp
+         ListData.cpp
+         SignalementData.cpp
+     1>d:\jkt_repo\moteur\UdpConnector.h(27): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+         JktException.cpp
+         BindingUdpException.cpp
+         CentralisateurException.cpp
+         OpenUdpSocketException.cpp
+         Controller.cpp
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(52): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(59): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         Viewer.cpp
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(52): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(59): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         MainMenuView.cpp
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(52): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(59): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         OpenCentralisateurView.cpp
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(52): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+     1>D:\jkt_repo\moteur\Libs\Agar\include\agar/core/load_real.h(59): warning C4244: 'initializing' : conversion from 'double' to 'float', possible loss of data
+         Generating Code...
+     1>C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(935,5): warning MSB8012: TargetPath(D:\jkt_repo\moteur\.\Debug\essaiJul3.exe) does not match the Linker's OutputFile property value (D:\jkt_repo\moteur\Debug\essaiJul3.exe). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+       Link:
+         D:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:".\Debug/essaiJul3.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:D:\jkt_repo\moteur\Libs\FreeType\lib /LIBPATH:"D:\jkt_repo\moteur\Libs\Pre-built.2\lib" /LIBPATH:D:\jkt_repo\moteur\Libs\Agar\lib /LIBPATH:"D:\jkt_repo\moteur\Libs\SDL_net-1.2.7\lib" /LIBPATH:D:\jkt_repo\moteur\Libs\fmodapi375win\api\lib /LIBPATH:"D:\jkt_repo\moteur\Libs\SDL_image-1.2.10\lib" /LIBPATH:"D:\jkt_repo\moteur\Libs\SDL-1.2.14\lib" odbc32.lib odbccp32.lib OPENGL32.LIB SDL.lib SDL_image.lib fmodvc.lib GLU32.LIB SDL_net.lib SDLmain.lib ag_core.lib ag_gui.lib pthreadVC2.lib freetype.lib /NODEFAULTLIB:LIBCMT /NODEFAULTLIB:msvcrt.lib /MANIFEST:NO /DEBUG /PDB:".\Debug/essaiJul3.pdb" /MAP /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE:NO /IMPLIB:".\Debug\essaiJul3.lib" /MACHINE:X86 .\Debug/audio.obj
+         .\Debug/DemonSons.obj
+         .\Debug/OpenSceneASEView.obj
+         .\Debug/OpenSceneMapView.obj
+         .\Debug/OpenSceneView.obj
+         .\Debug/ReqSon.obj
+         .\Debug/Son.obj
+         .\Debug/Dlg.obj
+         .\Debug/DlgBoite.obj
+         .\Debug/Focus.obj
+         .\Debug/glfont2.obj
+         .\Debug/Menu.obj
+         .\Debug/Portail.obj
+         .\Debug/MMenuPrinc.obj
+         .\Debug/MMenuPrinc2.obj
+         .\Debug/MOpenScene.obj
+         .\Debug/MOpenMAP.obj
+         .\Debug/MOpenASE.obj
+         .\Debug/MMultijoueur.obj
+         .\Debug/MMultijoueurClientInfo.obj
+         .\Debug/MMultijoueurClientPing.obj
+         .\Debug/MMultijoueurServeur.obj
+         .\Debug/MMultijoueurServeurLancepartie.obj
+         .\Debug/MConfiguration.obj
+         .\Debug/MDebug.obj
+         .\Debug/MReseau.obj
+         .\Debug/MDisplay.obj
+         .\Debug/MDisplaySize.obj
+         .\Debug/MCommandes.obj
+         .\Debug/MAudio.obj
+         .\Debug/MAudioDrivers.obj
+         .\Debug/MAudioOutput.obj
+         .\Debug/MAudioDriversDriver.obj
+         .\Debug/MAudioRecord.obj
+         .\Debug/MAide.obj
+         .\Debug/MMode.obj
+         .\Debug/contact.obj
+         .\Debug/FichierASE.obj
+         .\Debug/IfstreamMap.obj
+         .\Debug/Map.obj
+         .\Debug/MoteurParticules.obj
+         .\Debug/Mouve.obj
+         .\Debug/Particule.obj
+         .\Debug/View.obj
+         .\Debug/XmlVocabulaire.obj
+         .\Debug/ChanTex.obj
+         .\Debug/Geo.obj
+         .\Debug/GeoMaker.obj
+         .\Debug/GeoObject.obj
+         .\Debug/MultiMaterialGeo.obj
+         .\Debug/SimpleGeo.obj
+         .\Debug/SimpleMaterialGeo.obj
+         .\Debug/TextureMaterialGeo.obj
+         .\Debug/TexVertexList.obj
+         .\Debug/Light.obj
+         .\Debug/LightMaker.obj
+         .\Debug/LightOmni.obj
+         .\Debug/LightTarget.obj
+         .\Debug/Material.obj
+         .\Debug/MaterialMaker.obj
+         .\Debug/MaterialMulti.obj
+         .\Debug/MaterialTexture.obj
+         .\Debug/Textures.obj
+         .\Debug/Navette.obj
+         .\Debug/Porte.obj
+         .\Debug/Cfg.obj
+         .\Debug/Clavier.obj
+         .\Debug/divers.obj
+         .\Debug/Fabrique.obj
+         .\Debug/Game.obj
+         .\Debug/JKT.obj
+         .\Debug/Laser.obj
+         .\Debug/Photo.obj
+         .\Debug/Player.obj
+         .\Debug/Projectil.obj
+         .\Debug/RequeteProcess.obj
+         .\Debug/Rocket.obj
+         .\Debug/Erreur.obj
+         .\Debug/FindFolder.obj
+         .\Debug/GenRef.obj
+         .\Debug/math_vectoriel.obj
+         .\Debug/mathFast.obj
+         .\Debug/Tableau.obj
+         .\Debug/TableauIndex.obj
+         .\Debug/Trace.obj
+         .\Debug/TraceMethod.obj
+         .\Debug/utils_SDL.obj
+         .\Debug/V3D.obj
+         .\Debug/XmlHelper.obj
+         .\Debug/RessourcesLoader.obj
+         .\Debug/a_virer.obj
+         .\Debug/Client.obj
+         .\Debug/Reseau.obj
+         .\Debug/Server.obj
+         .\Debug/SPA.obj
+         .\Debug/tinystr.obj
+         .\Debug/tinyxml.obj
+         .\Debug/tinyxmlerror.obj
+         .\Debug/tinyxmlparser.obj
+         .\Debug/Centralisateur.obj
+         .\Debug/CentralisateurState.obj
+         .\Debug/UdpConnector.obj
+         .\Debug/UdpController.obj
+         .\Debug/Data.obj
+         .\Debug/ListData.obj
+         .\Debug/SignalementData.obj
+         .\Debug/JktException.obj
+         .\Debug/BindingUdpException.obj
+         .\Debug/CentralisateurException.obj
+         .\Debug/OpenUdpSocketException.obj
+         .\Debug/Controller.obj
+         .\Debug/Viewer.obj
+         .\Debug/MainMenuView.obj
+         .\Debug/OpenCentralisateurView.obj /MACHINE:I386 
+     1>ag_core.lib(core.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
+     1>ag_core.lib(config.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(config.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(core.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(core.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(error.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(error.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(event.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(event.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(object.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(object.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(prop.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(prop.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(rcs.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(rcs.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(timeout.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(timeout.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(typesw.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(typesw.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(cpuinfo.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(cpuinfo.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(load_color.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(load_color.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(data_source.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(data_source.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(load_string.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(load_string.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(load_version.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(load_version.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(snprintf.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(snprintf.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(vsnprintf.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(vsnprintf.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(vasprintf.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(vasprintf.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(dir.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(dir.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(md5.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(md5.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(sha1.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(sha1.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(rmd160.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(rmd160.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(file.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(file.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_core.lib(string_compat.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_core.lib(string_compat.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(gui.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(gui.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(view.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(view.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(widget.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(widget.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(window.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(window.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(style.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(style.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(style_default.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(style_default.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(iconmgr.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(iconmgr.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(colors.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(colors.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(cursors.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(cursors.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(ttf.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(ttf.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(text.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(text.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(keymap_ascii.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(keymap_ascii.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(keymap_utf8.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(keymap_utf8.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(keymap_latin1.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(keymap_latin1.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(keymap_compose.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(keymap_compose.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(editable.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(editable.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(box.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(box.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(label.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(label.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(button.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(button.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(checkbox.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(checkbox.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(textbox.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(textbox.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(primitive.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(primitive.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(radio.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(radio.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(fixed_plotter.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(fixed_plotter.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(tlist.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(tlist.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(scrollbar.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(scrollbar.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(spinbutton.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(spinbutton.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(titlebar.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(titlebar.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(toolbar.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(toolbar.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(fspinbutton.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(fspinbutton.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(combo.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(combo.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(ucombo.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(ucombo.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(units.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(units.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(nlunits.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(nlunits.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(hsvpal.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(hsvpal.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(mspinbutton.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(mspinbutton.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(mfspinbutton.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(mfspinbutton.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(statusbar.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(statusbar.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(menu.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(menu.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(menu_view.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(menu_view.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(tableview.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(tableview.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(separator.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(separator.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(notebook.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(notebook.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(pixmap.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(pixmap.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(file_dlg.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(file_dlg.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(objsel.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(objsel.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(fixed.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(fixed.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(numerical.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(numerical.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(table.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(table.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(glview.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(glview.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(mpane.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(mpane.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(pane.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(pane.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(console.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(console.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(graph.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(graph.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(socket.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(socket.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(icon.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(icon.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(progress_bar.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(progress_bar.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(slider.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(slider.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(text_cache.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(text_cache.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+     1>ag_gui.lib(load_xcf.obj) : warning LNK4099: PDB 'vc80.pdb' was not found with 'ag_gui.lib(load_xcf.obj)' or at 'D:\jkt_repo\moteur\Debug\vc80.pdb'; linking object as if no debug info
+         essaiJul3.vcxproj -> D:\jkt_repo\moteur\.\Debug\essaiJul3.exe
+       BscMake:
+         D:\Program Files\Microsoft Visual Studio 10.0\VC\bin\bscmake.exe /nologo /o".\Debug\essaiJul3.bsc" .\Debug\audio.sbr .\Debug\DemonSons.sbr .\Debug\OpenSceneASEView.sbr .\Debug\OpenSceneMapView.sbr .\Debug\OpenSceneView.sbr .\Debug\ReqSon.sbr .\Debug\Son.sbr .\Debug\Dlg.sbr .\Debug\DlgBoite.sbr .\Debug\Focus.sbr .\Debug\glfont2.sbr .\Debug\Menu.sbr .\Debug\Portail.sbr .\Debug\MMenuPrinc.sbr .\Debug\MMenuPrinc2.sbr .\Debug\MOpenScene.sbr .\Debug\MOpenMAP.sbr .\Debug\MOpenASE.sbr .\Debug\MMultijoueur.sbr .\Debug\MMultijoueurClientInfo.sbr .\Debug\MMultijoueurClientPing.sbr .\Debug\MMultijoueurServeur.sbr .\Debug\MMultijoueurServeurLancepartie.sbr .\Debug\MConfiguration.sbr .\Debug\MDebug.sbr .\Debug\MReseau.sbr .\Debug\MDisplay.sbr .\Debug\MDisplaySize.sbr .\Debug\MCommandes.sbr .\Debug\MAudio.sbr .\Debug\MAudioDrivers.sbr .\Debug\MAudioOutput.sbr .\Debug\MAudioDriversDriver.sbr .\Debug\MAudioRecord.sbr .\Debug\MAide.sbr .\Debug\MMode.sbr .\Debug\contact.sbr .\Debug\FichierASE.sbr .\Debug\IfstreamMap.sbr .\Debug\Map.sbr .\Debug\MoteurParticules.sbr .\Debug\Mouve.sbr .\Debug\Particule.sbr .\Debug\View.sbr .\Debug\XmlVocabulaire.sbr .\Debug\ChanTex.sbr .\Debug\Geo.sbr .\Debug\GeoMaker.sbr .\Debug\GeoObject.sbr .\Debug\MultiMaterialGeo.sbr .\Debug\SimpleGeo.sbr .\Debug\SimpleMaterialGeo.sbr .\Debug\TextureMaterialGeo.sbr .\Debug\TexVertexList.sbr .\Debug\Light.sbr .\Debug\LightMaker.sbr .\Debug\LightOmni.sbr .\Debug\LightTarget.sbr .\Debug\Material.sbr .\Debug\MaterialMaker.sbr .\Debug\MaterialMulti.sbr .\Debug\MaterialTexture.sbr .\Debug\Textures.sbr .\Debug\Navette.sbr .\Debug\Porte.sbr .\Debug\Cfg.sbr .\Debug\Clavier.sbr .\Debug\divers.sbr .\Debug\Fabrique.sbr .\Debug\Game.sbr .\Debug\JKT.sbr .\Debug\Laser.sbr .\Debug\Photo.sbr .\Debug\Player.sbr .\Debug\Projectil.sbr .\Debug\RequeteProcess.sbr .\Debug\Rocket.sbr .\Debug\Erreur.sbr .\Debug\FindFolder.sbr .\Debug\GenRef.sbr .\Debug\math_vectoriel.sbr .\Debug\mathFast.sbr .\Debug\Tableau.sbr .\Debug\TableauIndex.sbr .\Debug\Trace.sbr .\Debug\TraceMethod.sbr .\Debug\utils_SDL.sbr .\Debug\V3D.sbr .\Debug\XmlHelper.sbr .\Debug\RessourcesLoader.sbr .\Debug\a_virer.sbr .\Debug\Client.sbr .\Debug\Reseau.sbr .\Debug\Server.sbr .\Debug\SPA.sbr .\Debug\tinystr.sbr .\Debug\tinyxml.sbr .\Debug\tinyxmlerror.sbr .\Debug\tinyxmlparser.sbr .\Debug\Centralisateur.sbr .\Debug\CentralisateurState.sbr .\Debug\UdpConnector.sbr .\Debug\UdpController.sbr .\Debug\Data.sbr .\Debug\ListData.sbr .\Debug\SignalementData.sbr .\Debug\JktException.sbr .\Debug\BindingUdpException.sbr .\Debug\CentralisateurException.sbr .\Debug\OpenUdpSocketException.sbr .\Debug\Controller.sbr .\Debug\Viewer.sbr .\Debug\MainMenuView.sbr .\Debug\OpenCentralisateurView.sbr
+       _AfterBuild:
+         Deleting file ".\Debug\essaiJul3.unsuccessfulbuild".
+         Touching ".\Debug\essaiJul3.lastbuildstate".
+     1>Done Building Project "D:\jkt_repo\moteur\essaiJul3.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.39
+Time Elapsed 00:03:53.85

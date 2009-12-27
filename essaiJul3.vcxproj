@@ -41,7 +41,7 @@
     <_ProjectFileVersion>10.0.21006.1</_ProjectFileVersion>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\Debug\</IntDir>
-    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\Release\</IntDir>
     <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</IgnoreImportLibrary>
@@ -55,16 +55,15 @@
       <AdditionalOptions>/D "_CRT_SECURE_NO_DEPRECATE" %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(ProjectDir)Libs\FreeType\include;$(ProjectDir)Libs\Pre-built.2\include;$(ProjectDir)Libs\Agar\include;$(ProjectDir)Libs\tinyxml_2_5_2;$(ProjectDir);$(ProjectDir)Libs\SDL_net-1.2.7\include;$(ProjectDir)Libs\glFont;$(ProjectDir)Libs\fmodapi375win\api\inc;$(ProjectDir)Libs\SDL-1.2.14\include;$(ProjectDir)Libs\SDL_image-1.2.10\include;$(ProjectDir)Libs\glext;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_CONSOLE;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <RuntimeTypeInfo>
+      </RuntimeTypeInfo>
       <PrecompiledHeaderOutputFile>.\Debug/essaiJul3.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
       <ObjectFileName>.\Debug/</ObjectFileName>
@@ -74,7 +73,10 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
-      <DisableSpecificWarnings>4290;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>
+      </DisableSpecificWarnings>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -95,6 +97,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention>
       </DataExecutionPrevention>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -103,7 +106,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Full</Optimization>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>$(ProjectDir)Libs\FreeType\include;$(ProjectDir)Libs\Pre-built.2\include;$(ProjectDir)Libs\Agar\include;$(ProjectDir)Libs\tinyxml_2_5_2;$(ProjectDir);$(ProjectDir)Libs\SDL_net-1.2.7\include;$(ProjectDir)Libs\glFont;$(ProjectDir)Libs\fmodapi375win\api\inc;$(ProjectDir)Libs\SDL-1.2.14\include;$(ProjectDir)Libs\SDL_image-1.2.10\include;$(ProjectDir)Libs\glext;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -118,6 +121,8 @@
       <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -145,6 +150,9 @@
   <ItemGroup>
     <ClCompile Include="audio.cpp" />
     <ClCompile Include="DemonSons.cpp" />
+    <ClCompile Include="OpenSceneASEView.cpp" />
+    <ClCompile Include="OpenSceneMapView.cpp" />
+    <ClCompile Include="OpenSceneView.cpp" />
     <ClCompile Include="ReqSon.cpp" />
     <ClCompile Include="Son.cpp" />
     <ClCompile Include="Dlg.cpp" />
@@ -183,6 +191,7 @@
     <ClCompile Include="MoteurParticules.cpp" />
     <ClCompile Include="Mouve.cpp" />
     <ClCompile Include="Particule.cpp" />
+    <ClCompile Include="View.cpp" />
     <ClCompile Include="XmlVocabulaire.cpp" />
     <ClCompile Include="ChanTex.cpp" />
     <ClCompile Include="Geo.cpp" />
@@ -249,14 +258,17 @@
     <ClCompile Include="BindingUdpException.cpp" />
     <ClCompile Include="CentralisateurException.cpp" />
     <ClCompile Include="OpenUdpSocketException.cpp" />
-    <ClCompile Include="AgarController.cpp" />
-    <ClCompile Include="AgarView.cpp" />
+    <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="Viewer.cpp" />
     <ClCompile Include="MainMenuView.cpp" />
     <ClCompile Include="OpenCentralisateurView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio.h" />
     <ClInclude Include="DemonSons.h" />
+    <ClInclude Include="OpenSceneASEView.h" />
+    <ClInclude Include="OpenSceneMapView.h" />
+    <ClInclude Include="OpenSceneView.h" />
     <ClInclude Include="ReqSon.h" />
     <ClInclude Include="Son.h" />
     <ClInclude Include="Dlg.h" />
@@ -296,6 +308,7 @@
     <ClInclude Include="MoteurParticules.h" />
     <ClInclude Include="Mouve.h" />
     <ClInclude Include="Particule.h" />
+    <ClInclude Include="View.h" />
     <ClInclude Include="XmlVocabulaire.h" />
     <ClInclude Include="ChanTex.h" />
     <ClInclude Include="Geo.h" />
@@ -360,19 +373,13 @@
     <ClInclude Include="BindingUdpException.h" />
     <ClInclude Include="CentralisateurException.h" />
     <ClInclude Include="OpenUdpSocketException.h" />
-    <ClInclude Include="AgarController.h" />
-    <ClInclude Include="AgarView.h" />
+    <ClInclude Include="Controller.h" />
+    <ClInclude Include="Viewer.h" />
     <ClInclude Include="MainMenuView.h" />
     <ClInclude Include="OpenCentralisateurView.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Bestiaire.txt" />
-    <None Include="Images\Armes.bmp" />
-    <None Include="Images\Confirm.bmp" />
-    <None Include="Images\EnCours.bmp" />
-    <None Include="Images\Erreur.bmp" />
-    <None Include="Images\Explosion.jpg" />
-    <None Include="Images\Info.bmp" />
     <None Include="A faire.Txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -6,6 +6,7 @@
 
 #include "V3D.h"
 #include "Tableau.h"
+#include "Erreur.h"
 
 class CGame;
 class CPlayer;
@@ -27,20 +28,20 @@ class CMap
 	vector<CGeo*> m_TabGeo;				// Liste des objets géométriques
 	vector<CMouve*> m_TabMouve;			// Liste des objets nécessitant une actualisation (portes,...)
 
-	bool Init();								// Initialisation de la CMap
+	bool Init() throw(JKT_PACKAGE_UTILS::CErreur);								// Initialisation de la CMap
 //	bool LitFichier(const string &nomFichier);	// Lecture de la CMap depuis un fichier *.map
 	bool Lit(const string &nomFichier);
 
-	int m_Selection;	// Object géo sélectionné 
+	int m_Selection;	// Object géo sélectionné
 	bool m_bSelection;	// Indique si le mode sélection est actif ou non
 public:
 	vector<CLight*> m_TabLight;			// Liste des lumières
-	vector<CMaterial*> m_TabMaterial;	// Liste des matériaux A VOIR : devrait être membre privé 
+	vector<CMaterial*> m_TabMaterial;	// Liste des matériaux A VOIR : devrait être membre privé
 	vector<CV3D> m_EntreeJoueurs;		// Liste des points d'entrée des joueurs sur la Map
 
 		// Constructeurs / destructeur
 	CMap();
-	CMap(const string &nomFichier );
+	CMap(const string &nomFichier ) throw(JKT_PACKAGE_UTILS::CErreur);
 	~CMap();
 
 		// Fonctions membres
@@ -49,7 +50,7 @@ public:
 
 	void Affiche();						// Affiche l'ensemble des éléments 3D de cette Map
 	void Refresh( CGame *game );		// Rafraichissement des classes listées dans m_TabMouve
-	
+
 	void Add(CGeo *geo);			// Ajoute un GeoObject à la map
 	void Add(CMaterial *mat);		// Ajoute un matériau à la map
 	void Add(CLight *light);		// Ajoute une lumière à la map

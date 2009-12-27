@@ -1,7 +1,7 @@
 #pragma once
 
 /**
-/*	Liste des tableaux de sommets de textures d'un objet
+	Liste des tableaux de sommets de textures d'un objet
 **/
 
 namespace JKT_PACKAGE_MOTEUR3D
@@ -10,7 +10,7 @@ namespace JKT_PACKAGE_MOTEUR3D
 class CTexVertexList
 {
 	/**
-	/*	Tableau de sommets de texture
+		Tableau de sommets de texture
 	**/
 	class CTexVertex
 	{
@@ -19,7 +19,7 @@ class CTexVertexList
 	public:
 		CTexVertex(float* tvertex, int nbr);
 		~CTexVertex();
-		
+
 		float* getTexVertex() const;
 		int getNbrTexVertex() const;
 	};

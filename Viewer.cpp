@@ -1,6 +1,9 @@
 #include "Viewer.h"
 
 #include <agar/gui/style.h>
+#include <agar/core.h>
+#include <agar/gui.h>
+#include <agar/gui/view.h>
 
 #include "MainMenuView.h"
 #include "OpenSceneView.h"
@@ -10,7 +13,7 @@
 
 Viewer::Viewer(AG_EventFn controllerCallback)
 {
-    m_isVisible = false; 
+    m_isVisible = false;
 
 	// Initialisation des styles
 	m_defaultWindowStyle = new AG_Style(agStyleDefault);
@@ -39,19 +42,19 @@ void Viewer::draw(void) {
 
         AG_TAILQ_FOREACH(win, &agView->windows, windows) {
 	        AG_ObjectLock(win);
-    		
+
 	        if (!win->visible) {
 		        AG_ObjectUnlock(win);
 		        continue;
 	        }
 
 	        AG_WidgetDraw(win);
-    	
-	        if (!(win->flags & AG_WINDOW_NOUPDATERECT)) {
-		        AG_QueueVideoUpdate(AGWIDGET(win)->x, AGWIDGET(win)->y,
-		                            AGWIDGET(win)->w, AGWIDGET(win)->h);
-	        }
-    	
+
+	      //  if (!(win->flags & AG_WINDOW_NOUPDATERECT)) {
+		  //      AG_QueueVideoUpdate(AGWIDGET(win)->x, AGWIDGET(win)->y,
+		  //                          AGWIDGET(win)->w, AGWIDGET(win)->h);
+	      //  }
+
 	        AG_ObjectUnlock(win);
         }
 

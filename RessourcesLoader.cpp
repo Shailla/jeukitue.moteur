@@ -10,16 +10,16 @@ namespace JKT_PACKAGE_UTILS
 {
 int RessourcesLoader::nbrElements = 9;
 char* RessourcesLoader::elementsNamesAndFolders[] =
-{	
+{
 	"@Fond",	".\\Ressources\\Images\\Fonds",		// Images de fond
 	"@Fonte",	".\\Ressources\\Images\\Fontes",	// Polices / fontes
 	"@Icone",	".\\Ressources\\Images\\Icones",	// Icones des menus
 	"@Texture",	".\\Ressources\\Images\\Textures",	// Images de textures par défaut
-	
+
 	"@Joueur",	".\\Ressources\\Maps\\Joueurs",		// Maps des joueurs par défaut
 	"@Arme",	".\\Ressources\\Maps\\Armes",		// Map des armes par défaut
 
-	"@Bruit",	".\\Ressources\\Sons\\Bruits",		// Bruits par défaut des Map	
+	"@Bruit",	".\\Ressources\\Sons\\Bruits",		// Bruits par défaut des Map
 	"@Jingle",	".\\Ressources\\Sons\\Jingles",		// Jingles des menus
 	"@Musique",	".\\Ressources\\Sons\\Musiques",	// Musiques par défaut
 };
@@ -39,7 +39,7 @@ bool RessourcesLoader::getFileRessource(const string& rep, string& file)
 			else {
 				nbr = nbr2;
 			}
-			
+
 			if(nbr == 1) {
 				file.replace(0,nbr,rep);
 				return true;
@@ -74,7 +74,7 @@ bool RessourcesLoader::getFileRessource(string& file)
 		else {
 			nbr = nbr2;
 		}
-		
+
 		if(nbr != string::npos)
 		{
 			string element = file.substr(0,nbr);
@@ -91,7 +91,7 @@ bool RessourcesLoader::getFileRessource(string& file)
 			}
 		}
 
-		if(!bTrouve) 
+		if(!bTrouve)
 		{
 			std::cerr << std::endl << "Ressource de type inconnu : " << file << std::endl;
 			exit(1);

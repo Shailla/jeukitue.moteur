@@ -111,6 +111,8 @@ using namespace JKT_PACKAGE_MOTEUR3D;
 using namespace JKT_PACKAGE_UTILS;
 using namespace JKT_PACKAGE_SON;
 
+#include "GenRef.h"
+
 #include "jkt.h"
 
 extern SDL_Surface *screen;
@@ -169,7 +171,7 @@ void gravitePlayer(CPlayer *player)	// Fonction implémentant la gravité
 {									// aux objets qui doivent la subire
 	float vect[3];
 	player->getVitesse( vect );
-	
+
 	vect[1] -= 0.5*quantumVitesse; // Ajout de gravité au joueur
 
 	player->setVitesse( vect );
@@ -192,7 +194,7 @@ void updateSon3D()
 		machin->vitesse.Z = -0.05f;
 	else if( machin->position.Z<-1.5f )
 		machin->vitesse.Z = 0.05f;
-	
+
 	machin->position += machin->vitesse;
 
 	CPlayer *erwin = Game.Erwin();
@@ -201,14 +203,14 @@ void updateSon3D()
 	float sinP = /*FastSin0( erwin->Phi/180.0f*Pi );*/	sinf( erwin->Phi()/180.0f*Pi );
 	float cosT = /*FastCos0( erwin->Teta/180.0f*Pi );*/	cosf( erwin->Teta()/180.0f*Pi );
 	float sinT = /*FastSin0( erwin->Teta/180.0f*Pi );*/	sinf( erwin->Teta()/180.0f*Pi );
-	
+
 	float fx = cosP*sinT;
 	float fy = -sinP;
 	float fz = -cosT*cosP;
 	float tx = -fabsf(sinP)*sinT;
 	float ty = cosP;
 	float tz = fabsf(sinP)*cosT;
-	
+
 	float pos_erwin[3];
 	erwin->getPosition( pos_erwin );
 	pos_erwin[2] = -pos_erwin[2];
@@ -220,8 +222,8 @@ void updateSon3D()
 
 		// Position du point d'écoute (le joueur)
 	FSOUND_3D_Listener_SetAttributes(pos_erwin, 0, fx,fy,fz,tx,ty,tz);
-		
-		// Position de l'émetteur du son	
+
+		// Position de l'émetteur du son
 	((CReqSon3D*)machin->req_son)->SetPosition( pos_machin );
 	FSOUND_Update();
 
@@ -298,7 +300,7 @@ void afficheInfo( Uint32 tempsDisplay )
 	int pos = 0;
 		// Affiche les temps total, de calcul et d'affichage
 	char cou[70];
-	sprintf( cou, "Ecarts : total=%0.6u ms, timer=%0.6u ms, display=%0.6u ms", ecart, ecartTimer, ecartDisplay );
+	sprintf( cou, "Ecarts : total=%.6u ms, timer=%.6u ms, display=%.6u ms", ecart, ecartTimer, ecartDisplay );
 	str = cou;
 	myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 
@@ -320,12 +322,12 @@ void afficheInfo( Uint32 tempsDisplay )
 		CPlayer *erwin = Game.Erwin();
 
 			// Affiche le Teta du joueur principal
-		sprintf( cou, "Tete : %0.5d", (int)erwin->Teta() );
+		sprintf( cou, "Tete : %.5d", (int)erwin->Teta() );
 		str = cou;
 		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 
 			// Affiche le Phi du joueur principal
-		sprintf( cou, "Phi : %0.5d", (int)erwin->Phi() );
+		sprintf( cou, "Phi : %.5d", (int)erwin->Phi() );
 		str = cou;
 		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 
@@ -341,31 +343,31 @@ void afficheInfo( Uint32 tempsDisplay )
 	if( Config.Debug.bSonPerformances )
 	{
 		unsigned int currentalloced, maxalloced;
-		sprintf( cou, "Son, usage CPU : %0.4f %%", FSOUND_GetCPUUsage() );
+		sprintf( cou, "Son, usage CPU : %.4f %%", FSOUND_GetCPUUsage() );
 		str = cou;
 		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 
 		FSOUND_GetMemoryStats( &currentalloced, &maxalloced );
-		
-		sprintf( cou, "Son, memory allocated : %0.5u ko", currentalloced/1024 );
+
+		sprintf( cou, "Son, memory allocated : %.5u ko", currentalloced/1024 );
 		str = cou;
 		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
-		
-		sprintf( cou, "Son, max memory allocated : %0.5u ko", maxalloced/1024 );
+
+		sprintf( cou, "Son, max memory allocated : %.5u ko", maxalloced/1024 );
 		str = cou;
 		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 	}
 
 	if( Config.Debug.bReseauDebit )
-	{	
+	{
 		float debit, taille;
-		
+
 		CSPA::getDebitRec( debit, taille );
 
 		sprintf( cou, "Debit en reception : %.5f ko/s (%.5f octets)", debit, taille );
 		str = cou;
 		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
-		
+
 		CSPA::getDebitEm( debit, taille );
 
 		sprintf( cou, "Debit en emmission : %.5f ko/s (%f octets)",
@@ -399,30 +401,28 @@ void afficheInfo( Uint32 tempsDisplay )
 			glVertex2f( droite, bas );
 
 		glDisable( GL_BLEND );
-		
+
 		for( int i=0 ; i < NBR_RAIES_SPECTRE ; i++ )
 		{
 			glColor3f( 0.0f, 1.0f, 0.0f );
 			glVertex2f( gauche + i*(largeur/(float)NBR_RAIES_SPECTRE), bas );
 			glVertex2f( gauche + (i+1)*(largeur/(float)NBR_RAIES_SPECTRE), bas );
-			
+
 			glColor3f( 1.0f, 0.0f, 0.0f );
 			glVertex2f( gauche + (i+1)*(largeur/(float)NBR_RAIES_SPECTRE), bas + hauteur*spectre[i] );
 			glVertex2f( gauche + i*(largeur/(float)NBR_RAIES_SPECTRE), bas + hauteur*spectre[i] );
 		}
-		
+
 		glEnd();
-		
+
 		glEnable( GL_TEXTURE_2D );
 		glDepthMask( GL_TRUE );
 		glEnable( GL_DEPTH_TEST );
 	}
 }
 
-static float merde = 0.0f;
-
 void display()	// Fonction principale d'affichage
-{	
+{
 	Uint32 temps = SDL_GetTicks();	// Temps au début du réaffichage
 
 		// AFFICHAGE DES ELEMENTS 3D
@@ -431,7 +431,7 @@ void display()	// Fonction principale d'affichage
 	gluPerspective( 60.0, Config.Display.X/Config.Display.Y, 0.01f, 100.0f );
 	glEnable( GL_DEPTH_TEST );
 	glMatrixMode( GL_MODELVIEW );
-	glLoadIdentity();	
+	glLoadIdentity();
 
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
@@ -450,10 +450,10 @@ void display()	// Fonction principale d'affichage
 
 			glRotated( erwin->Phi(), 1.0, 0.0, 0.0 );	// Rotation par rapport au plan horizontal
 			glRotated( erwin->Teta(), 0.0,1.0, 0.0 );	// Rotation par rapport à l'axe verticale
-			
+
 			erwin->getPosition( vect );
 			glTranslatef( -vect[0], -vect[1], vect[2] );	// Placement du point de vue
-						
+
 			glRotated( erwin->TetaVue(), 0.0,1.0, 0.0 );	// Rotation par rapport à l'axe verticale
 		}
 
@@ -462,13 +462,13 @@ void display()	// Fonction principale d'affichage
 		// C PA LE K
 
 			// Essai lumière
-		float light_position[] = { 0.6f, -0.1f, 0.0f, 1.0f };
+//		float light_position[] = { 0.6f, -0.1f, 0.0f, 1.0f };
 
-		float colorBlanc[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		float colorRouge[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-		float colorVert[] = { 0.0f, 1.0f, 0.0f, 1.0f };
-		float colorBleu[] = { 0.0f, 0.0f, 1.0f, 1.0f };
-		float colorNoir[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+//		float colorBlanc[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+//		float colorRouge[] = { 1.0f, 0.0f, 0.0f, 1.0f };
+//		float colorVert[] = { 0.0f, 1.0f, 0.0f, 1.0f };
+//		float colorBleu[] = { 0.0f, 0.0f, 1.0f, 1.0f };
+//		float colorNoir[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 /*		glPushMatrix();
 		merde += 0.01f;
@@ -488,7 +488,7 @@ void display()	// Fonction principale d'affichage
 
 		glPushMatrix();
 		glTranslatef( 0.0f, -0.4f, 0.0f );
-		
+
 		glMaterialfv( GL_FRONT_AND_BACK, GL_AMBIENT, colorNoir );
 		glMaterialfv( GL_FRONT_AND_BACK, GL_DIFFUSE, colorNoir );
 		glMaterialfv( GL_FRONT_AND_BACK, GL_SPECULAR, colorBlanc );
@@ -496,7 +496,7 @@ void display()	// Fonction principale d'affichage
 
 		gluSphere( gluNewQuadric(), 0.15, 16, 16 );
 		glPopMatrix();
-		
+
 		glDisable( GL_LIGHT0 );
 		glDisable( GL_LIGHTING );
 */
@@ -523,7 +523,7 @@ void display()	// Fonction principale d'affichage
 
 		glColor3f( 1.0f, 0.2f, 0.2f );
 		gluSphere( gluNewQuadric(), 0.05, 16, 16 );
-		
+
 		// C LE K
 
 		if( Game.Erwin() )
@@ -545,10 +545,10 @@ void display()	// Fonction principale d'affichage
 	// C LE K
 
 			// AFFICHAGE DES ELEMENTS AVANTS (TEXTE, SCORE, ...)
-	glMatrixMode( GL_PROJECTION ); 
+	glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
 	gluOrtho2D(0.0, Config.Display.X, 0.0, Config.Display.Y);
-	glMatrixMode( GL_MODELVIEW );	
+	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 
 	glEnable( GL_TEXTURE_2D );
@@ -557,7 +557,7 @@ void display()	// Fonction principale d'affichage
 
 	if( JKT_AfficheToutesTextures )
 		Game.afficheToutesTextures( Config.Display.X, Config.Display.Y );
-	
+
 	if( Game.Erwin() )
 	{
 		Game.Erwin()->AfficheIconesArmes();
@@ -570,7 +570,7 @@ void display()	// Fonction principale d'affichage
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
 	glColor3f( 1.0, 1.0, 1.0 );
-	
+
 	afficheInfo( SDL_GetTicks()-temps );	// Affiche les infos texte en avant plan
 
 	if( Aide )
@@ -608,7 +608,7 @@ void chopeLesEvenements()
 	SDL_PumpEvents();							// Collecte les évênements
 	Uint8 *keystate = SDL_GetKeyState( 0 );		//Récupère les touches clavier appuyées
 	Uint8 mouse = SDL_GetMouseState( 0, 0 );
-	
+
 	if( Game.Erwin() && (!Game.isModeServer()) )
 	{
 		CPlayer *erwin = Game.Erwin();
@@ -718,61 +718,61 @@ void chopeLesEvenements()
 			erwin->getClavier()->m_fAvance = -1.0;
 			erwin->getClavier()->m_bIndic = true;
 		}
-		
+
 		if( keystate[Config.Commandes.Avancer.key]||(mouse&SDL_BUTTON(Config.Commandes.Avancer.mouse)) )	//avant
 		{
 			erwin->getClavier()->m_fAvance = 1.0;
 			erwin->getClavier()->m_bIndic = true;
 		}
-		
+
 		if( keystate[Config.Commandes.Droite.key]||(mouse&SDL_BUTTON(Config.Commandes.Droite.mouse)) )	//droite
 		{
 			erwin->getClavier()->m_fDroite = 1.0;
 			erwin->getClavier()->m_bIndic = true;
 		}
-		
+
 		if( keystate[Config.Commandes.Tir1.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir1.mouse)) )	// Tire au laser
 		{
 			//erwin->Tir();		// Valide un tir
 		}
 
 		if( keystate[Config.Commandes.Monter.key]||(mouse&SDL_BUTTON(Config.Commandes.Monter.mouse)) )	//si bouton droit souris
-		{													//alors monte	
+		{													//alors monte
 			erwin->getClavier()->m_fMonte = 1.0;
 			erwin->getClavier()->m_bIndic = true;
 		}
 
 		if( keystate[Config.Commandes.Tir2.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir2.mouse)) )	//si bouton gauche souris
-		{													//alors tire un projectile qui rebondit	
+		{													//alors tire un projectile qui rebondit
 			CPlayer *balle;
 
 			float cosTeta = /*FastCos0( erwin->Teta/180.0f*Pi );	//*/cosf( erwin->Teta()/180.0f*Pi );
 			float sinTeta = /*FastSin0( erwin->Teta/180.0f*Pi );	//*/sinf( erwin->Teta()/180.0f*Pi );
 			float cosPhi = /*FastCos0( erwin->Phi/180.0f*Pi );	//*/cosf( erwin->Phi()/180.0f*Pi );
 			float sinPhi = /*FastSin0( erwin->Phi/180.0f*Pi );	//*/sinf( erwin->Phi()/180.0f*Pi );
-			
+
 			balle = new CPlayer(); //crée un autre joueur
 			float vect[3];
 			erwin->getPosition( vect );
 			balle->setPosition( vect[0], vect[1], vect[2]);		//positionne le projectile sur la map
-			
+
 			erwin->getVitesse( vect );
 			balle->changeVitesse( sinTeta*cosPhi*10*quantumVitesse + vect[0],
-				sinPhi*10*quantumVitesse + vect[1], 
+				sinPhi*10*quantumVitesse + vect[1],
 				cosTeta*cosPhi*10*quantumVitesse + vect[2]);
-			
+
 			balle->changeAction( gravitePlayer );	//associe au projectile une fonction de gravité
 			balle->changeContact( contactSprite );	//associe une fonction pour les contacts avec la map
-				
+
 			Game.pTabIndexPlayer->Ajoute(balle);			//ajoute le projectile à la liste des joueurs
 		}
 	}
 }
 
 void timer(Uint32 ecart)	//focntion qui s'exécute périodiquement et qui provoque l'affichage
-{	
+{
 	Uint32 temps = SDL_GetTicks();	// Temps au début du timer (->mesure du temps de calcul)
-	
+
 	frpTimer++;
 
 		// Réception des packets réseau
@@ -804,7 +804,7 @@ void timer(Uint32 ecart)	//focntion qui s'exécute périodiquement et qui provoque
 			}
 		}
 			Game.timer();
-			
+
 			// Transmission données par le réseau
 		if( Reseau.getOn() && (Game.getStatutServer()==JKT_STATUT_SERVER_PLAY) ) // Si partie serveur en cours
 		{
@@ -859,10 +859,10 @@ void play_handle_key_down( SDL_Event *event )
 				//rotation /rapport au plan horizontal (regarder en l'air)
 			erwin->Phi( erwin->Phi() + event->motion.yrel );
 			if(erwin->Phi()>90.0)
-				erwin->Phi( 90.0f );	
+				erwin->Phi( 90.0f );
 			if(erwin->Phi()<-90.0)
-				erwin->Phi( -90.0f );	
-				
+				erwin->Phi( -90.0f );
+
 				//rotation /rapport à l'axe verticale
 			erwin->Teta( erwin->Teta() + event->motion.xrel );
 			if(erwin->Teta()>180.0f)
@@ -886,14 +886,14 @@ void play_handle_key_down( SDL_Event *event )
 
 	case SDL_KEYDOWN:
 		switch( event->key.keysym.sym )
-		{	
-		case SDLK_F1 :	
+		{
+		case SDLK_F1 :
 			pFocus->SetMenuFocus();		// Place le focus sur le menu
 			lanceMenuAide( 0 );
-			Aide = true;				
+			Aide = true;
 			break;
 
-		case SDLK_F3 :	
+		case SDLK_F3 :
 			{
 				string trace1 = "Derniere erreur FMOD : ";
 				trace1 += FMOD_ErrorString(FSOUND_GetError());
@@ -925,25 +925,25 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 			}
 			break;
 
-		case SDLK_F4 :	
+		case SDLK_F4 :
 			lanceMenuMode( 0 );
 			break;
-		
+
 		case SDLK_g :		// Désactive / active la gravité (et annule la vitesse)
 			if( Game.getMap() )
 				Game.Gravite( !Game.Gravite() );
 			break;
-		
+
 		case SDLK_v :		// Désactive / active la gravité (et annule la vitesse)
 			if( Game.getMap() )
 				Game.Erwin()->changeVitesse(0.0f, 0.0f, 0.0f);
 			break;
-				
+
 		case SDLK_RETURN :	// Sauve le fichier map actuel
 			if( Game.getMap() )
 				Game.getMap()->Save( "save" );
 			break;
-		
+
 		case SDLK_KP_PLUS :
 			if( Game.getMap() && Game.getMap()->IsSelectionMode() )
 			{
@@ -961,7 +961,7 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 		case SDLK_s :
 			Game.getMap()->ChangeSelectionMode();
 			break;
-		
+
 		case SDLK_p :		// Demande la prise d'une photo au prochain display
 			Game.RequeteProcess.setTakePicture();
 			break;
@@ -984,7 +984,7 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 				Game.Erwin()->Phi( 0.0 );
 			}
 			break;
-		
+
 		case SDLK_n:
 			{
 				set<CSon*>::iterator p;
@@ -1010,7 +1010,7 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 				Game.Erwin( Game.pTabIndexPlayer->operator [](nbrMainPlayer) );
 			}
 			break;
-		
+
 		case SDLK_ESCAPE:
 			lanceMenuPrinc( 0 );
 			break;
@@ -1050,13 +1050,13 @@ static void process_events( void )
 bool openMAP( void *nomFichier )
 {
 	string nomFichierMap = (char*)nomFichier;
-	
+
 	if( !Game.openMap( nomFichierMap ) ) {
 		cerr << endl << "Erreur à l'ouvertur du fichier Map : " << nomFichierMap;
 		return false;
 	}
 
-		// Lecture du map du joueur	
+		// Lecture du map du joueur
 	CMap *pMapJoueur = new CMap( nomFichierJoueur );
 	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 	pMapJoueur->Scale( -0.15f, 0.15f, 0.15f );
@@ -1064,9 +1064,9 @@ bool openMAP( void *nomFichier )
 	CMap *pMapJoueur2 = new CMap( "GrosBonhomme" );
 	pMapJoueur2->EchangeXZ();					// Ajuste les coordonnées
 	pMapJoueur2->Scale( -0.80f, 0.80f, 0.80f );
-	
+
 	cout << endl;
-	
+
 		// Création joueurs
 	Game.setPlayerList( 10 );	// Indique que la partie peut contenir jusqu'à 10 joueurs
 
@@ -1112,16 +1112,16 @@ bool openMAP( void *nomFichier )
 	sprite->init();
 	sprite->choiceOneEntryPoint();
 	Game.pTabIndexPlayer->Ajoute( 2, sprite );				// Ajoute le joueur à la liste des joueurs
-	
+
 	return true;
 }
 
 void openMAP2( const string &nomFichierMap )
-{		
+{
 	if( !Game.openMap( nomFichierMap ) )
 		cerr << endl << "Erreur à l'ouverture du fichier Map : " << nomFichierMap;
-	
-		// Lecture du map du joueur	
+
+		// Lecture du map du joueur
 	CMap *pMapJoueur = new CMap( nomFichierJoueur );
 
 		// Ajuste les coordonnées
@@ -1136,7 +1136,7 @@ void boucle()
 	ecart=0;
 
 	for( ;; )	// Boucle principale du jeu
-	{ 
+	{
 		if( Game.RequeteProcess.isOuvreMap() )	// S'il y a une demande d'ouvertue de MAP
 		{
 			Aide = false;
@@ -1148,7 +1148,7 @@ void boucle()
 		if( Game.RequeteProcess.isTakePicture() )	// S'il y a une demande de prise de photo de la scène
 		{
 			CPhoto photo( Config.Display.X, Config.Display.Y );
-			
+
 			string fichier_photo("./Images/photo.bmp");
 			if( photo.Save( fichier_photo ) )
 				cout << "\nPhoto prise.";
@@ -1167,28 +1167,25 @@ void boucle()
 			oldTemps = temps;
 			temps = SDL_GetTicks();
 		}
-		
+
 		ecart = temps - oldTemps;
 
 			// Effectue tous les calculs du jeu
 		timer( ecart );
-		
+
 		ecartTimer = SDL_GetTicks() - temps;
 
 			// Dessine la scène 3D et les menus
-		display();				
+		display();
 
 		//ecartDisplay = SDL_GetTicks() - temps - ecartTimer;
-		
+
 		process_events();	// vérifie les évênements
 	}
 }
 
 int main(int argc, char** argv)
-{	
-		// ESSAI UTILISATION TinyXml
-	string nomFichierXml = "./Map/aaa.map.xml";
-	
+{
 TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 	atexit( quit_JKT );
@@ -1202,16 +1199,16 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 	cout << "\n\tRESUME DE L'INITIALISATION VIDEO";
 	Config.Display.Init();	// Initialisation vidéo (SDL + OpenGL)
 
-	Config.Reseau.Init();	// Initialisation du réseau	
+	Config.Reseau.Init();	// Initialisation du réseau
 
-	Config.Audio.Init();	// Initialisation audio 
+	Config.Audio.Init();	// Initialisation audio
 	Config.Ecrit();			// Enregistre les éventuelles modifications de la configuration
 
 	cout << "\n\tINFO DIVERSES";
-	
+
 		// Info réseau
 	IPaddress ipaddress;
-	if( !SDLNet_ResolveHost( &ipaddress, "localhost", 0 ) )	
+	if( !SDLNet_ResolveHost( &ipaddress, "localhost", 0 ) )
 	{
 		const char *host = SDLNet_ResolveIP( &ipaddress );
 		if( host )
@@ -1225,10 +1222,10 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
     }
 
     Fabrique::construct();
-	
+
 		// Création du démon de gestion des sons
 	DemonSons = new CDemonSons();
-	
+
 		// Lancement de l'introduction du jeu
 	load_Intro( Config.Display.X, Config.Display.Y );	// Affiche l'introduction du jeu
 
@@ -1238,7 +1235,7 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 		JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(fonte);
 		unsigned int texFonte;
 		glGenTextures(1, &texFonte);
-		
+
 		if( !myfont.Create(fonte.c_str(), texFonte) )
 		{
 			TRACE().p( TRACE_ERROR, "main() Echec ouverture texture de fonte (%s) : %d", fonte, texFonte );
@@ -1275,10 +1272,10 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 	machin->req_son = reqSon;
 	DemonSons->Play( machin->req_son );
 
-	init();			
+	init();
 
 		// Lancement de l'IHM, on entre dans le menu principal du jeu
-	lanceMenuPrinc( 0 );		
+	lanceMenuPrinc( 0 );
 
 		// Entrée dans la boucle principale du jeu
 	boucle();

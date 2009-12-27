@@ -3,6 +3,8 @@
 #include <string>
 #include <iostream>
 
+#include "Trace.h"
+
 #include "GenRef.h"
 
 using namespace std;
@@ -29,26 +31,28 @@ CGenRef::~CGenRef()
 unsigned int CGenRef::genRef()
 {
 	list<CBloc>::iterator iter = sequence.begin();
-	
+
 	list<CBloc>::iterator iterPremier = iter;	// Permier bloc
 	iter++;
-	list<CBloc>::iterator iterSecond = iter;		// Second bloc
+	list<CBloc>::iterator iterSecond = iter;	// Second bloc
 
-	int ref = ++(*iterPremier).m_Fin;	// Incrémente la fin du premier bloc
+	unsigned int ref = ++(*iterPremier).m_Fin;	// Incrémente la fin du premier bloc
 
 	if(iterSecond != sequence.end())	// S'il y a un second bloc
 	{
-		if(ref == (*iterSecond).m_Debut-1)	// Si fin du premier = début du second-1
-		{		// Dans ce cas raccorde les 2 blocs
-			(*iterPremier).m_Fin = (*iterSecond).m_Fin;
-			sequence.erase(iterSecond);
-		}
+	    if((*iterSecond).m_Debut > 0) {
+            if(ref == (unsigned int)((*iterSecond).m_Debut-1))	// Si fin du premier = début du second-1
+            {		// Dans ce cas raccorde les 2 blocs
+                (*iterPremier).m_Fin = (*iterSecond).m_Fin;
+                sequence.erase(iterSecond);
+            }
+	    }
 	}
 
 	return ref;
 }
 
-string CGenRef::toString() 
+string CGenRef::toString()
 {
 	ostringstream txt;
 	list<CBloc>::iterator iter = sequence.begin();
@@ -61,7 +65,7 @@ string CGenRef::toString()
 	return txt.str();
 }
 
-void CGenRef::delRef(unsigned ref) 
+void CGenRef::delRef(unsigned ref)
 {
 	if(ref == 0)
 	{
@@ -72,9 +76,9 @@ void CGenRef::delRef(unsigned ref)
 	list<CBloc>::iterator iter = sequence.begin();
 
 		// Recherche du bloc contenant 'ref'
-	for( ; iter!=sequence.end(); iter++) 
+	for( ; iter!=sequence.end(); iter++)
 	{
-		if(ref <= (*iter).m_Fin)
+		if(ref >= (*iter).m_Debut && ref <= (*iter).m_Fin)
 		{
 			break;
 		}
@@ -82,6 +86,7 @@ void CGenRef::delRef(unsigned ref)
 
 	if(iter == sequence.end() || ref<(*iter).m_Debut)
 	{
+		TRACE().p( TRACE_ERROR, "Tentative de suppression d'une référence inconnue 'ref=%d'", ref);
 		cout << endl << "Tentative de suppression d'une référence inconnue 'ref=" << ref << "'";
 		return;
 	}

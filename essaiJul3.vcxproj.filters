@@ -117,12 +117,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AgarController.cpp">
-      <Filter>MenuAgar</Filter>
-    </ClCompile>
-    <ClCompile Include="AgarView.cpp">
-      <Filter>MenuAgar</Filter>
-    </ClCompile>
     <ClCompile Include="audio.cpp">
       <Filter>Son</Filter>
     </ClCompile>
@@ -155,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="contact.cpp">
       <Filter>Moteur3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller.cpp">
+      <Filter>MenuAgar</Filter>
     </ClCompile>
     <ClCompile Include="Data.cpp">
       <Filter>Centralisateur\data</Filter>
@@ -354,6 +351,15 @@
     <ClCompile Include="OpenCentralisateurView.cpp">
       <Filter>MenuAgar</Filter>
     </ClCompile>
+    <ClCompile Include="OpenSceneASEView.cpp">
+      <Filter>MenuAgar</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenSceneMapView.cpp">
+      <Filter>MenuAgar</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenSceneView.cpp">
+      <Filter>MenuAgar</Filter>
+    </ClCompile>
     <ClCompile Include="OpenUdpSocketException.cpp">
       <Filter>Exceptions\Centralisateur</Filter>
     </ClCompile>
@@ -441,6 +447,12 @@
     <ClCompile Include="V3D.cpp">
       <Filter>Outils</Filter>
     </ClCompile>
+    <ClCompile Include="View.cpp">
+      <Filter>MenuAgar</Filter>
+    </ClCompile>
+    <ClCompile Include="Viewer.cpp">
+      <Filter>MenuAgar</Filter>
+    </ClCompile>
     <ClCompile Include="XmlHelper.cpp">
       <Filter>Outils</Filter>
     </ClCompile>
@@ -449,12 +461,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AgarController.h">
-      <Filter>MenuAgar</Filter>
-    </ClInclude>
-    <ClInclude Include="AgarView.h">
-      <Filter>MenuAgar</Filter>
-    </ClInclude>
     <ClInclude Include="audio.h">
       <Filter>Son</Filter>
     </ClInclude>
@@ -484,6 +490,9 @@
     </ClInclude>
     <ClInclude Include="contact.h">
       <Filter>Moteur3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>MenuAgar</Filter>
     </ClInclude>
     <ClInclude Include="Couleurs.h">
       <Filter>Moteur3D</Filter>
@@ -680,6 +689,15 @@
     <ClInclude Include="OpenCentralisateurView.h">
       <Filter>MenuAgar</Filter>
     </ClInclude>
+    <ClInclude Include="OpenSceneASEView.h">
+      <Filter>MenuAgar</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenSceneMapView.h">
+      <Filter>MenuAgar</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenSceneView.h">
+      <Filter>MenuAgar</Filter>
+    </ClInclude>
     <ClInclude Include="OpenUdpSocketException.h">
       <Filter>Exceptions\Centralisateur</Filter>
     </ClInclude>
@@ -770,6 +788,12 @@
     <ClInclude Include="V3D.h">
       <Filter>Outils</Filter>
     </ClInclude>
+    <ClInclude Include="View.h">
+      <Filter>MenuAgar</Filter>
+    </ClInclude>
+    <ClInclude Include="Viewer.h">
+      <Filter>MenuAgar</Filter>
+    </ClInclude>
     <ClInclude Include="XmlHelper.h">
       <Filter>Outils</Filter>
     </ClInclude>
@@ -779,26 +803,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="A faire.Txt" />
-    <None Include="Bestiaire.txt">
-      <Filter>Moteur3D\Geo</Filter>
-    </None>
-    <None Include="Images\Armes.bmp">
-      <Filter>Ressources</Filter>
-    </None>
-    <None Include="Images\Confirm.bmp">
-      <Filter>Ressources</Filter>
-    </None>
-    <None Include="Images\EnCours.bmp">
-      <Filter>Ressources</Filter>
-    </None>
-    <None Include="Images\Erreur.bmp">
-      <Filter>Ressources</Filter>
-    </None>
-    <None Include="Images\Explosion.jpg">
-      <Filter>Ressources</Filter>
-    </None>
-    <None Include="Images\Info.bmp">
-      <Filter>Ressources</Filter>
-    </None>
+    <None Include="Bestiaire.txt" />
   </ItemGroup>
 </Project>

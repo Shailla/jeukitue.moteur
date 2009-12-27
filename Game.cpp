@@ -43,7 +43,7 @@ CGame::CGame()
 {
 	m_Mode = JKT_MODE_PARTIE_NULL;
 
-	pTabIndexPlayer = 0;	// Pas de liste de joueurs 
+	pTabIndexPlayer = 0;	// Pas de liste de joueurs
 	m_pMap = 0;				// Pas de map
 	m_Erwin = 0;			// Pas de joueur actif
 	m_bGravite = true;		// Par défaut la gravité est active
@@ -70,7 +70,7 @@ bool CGame::isModeNull()
 }
 
 void CGame::setStatutClient( JKT_PACKAGE_RESEAU::StatutClient statut )
-{	
+{
 TRACE().p( TRACE_ERROR, "CGame::setStatusClient(status=%d) begin%T", statut, this );
 
 	Reseau.setStatutClient( statut );
@@ -79,7 +79,7 @@ TRACE().p( TRACE_ERROR, "CGame::setStatusClient() end%T", this );
 }
 
 JKT_PACKAGE_RESEAU::StatutClient CGame::getStatutClient()
-{	
+{
 TRACE().p( TRACE_ERROR, "CGame::getStatutClient() begin%T", this );
 
 	JKT_PACKAGE_RESEAU::StatutClient statut;
@@ -104,11 +104,11 @@ void CGame::quit()
 {
 	if( pTabIndexPlayer )
 		delete pTabIndexPlayer;
-	
+
 	pTabIndexPlayer = 0;
 }
 
-bool CGame::openMap( const string &nomFichierMap )
+bool CGame::openMap( const string &nomFichierMap ) throw(JKT_PACKAGE_UTILS::CErreur)
 {
 TRACE().p( TRACE_INFO, "CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(), this );
 
@@ -130,21 +130,21 @@ TRACE().p( TRACE_INFO, "CGame::openMap() -> %b end%T", result, this );
 }
 
 void CGame::setStatutServer( JKT_PACKAGE_RESEAU::StatutServer statut )
-{	
+{
 	if( m_Mode==JKT_MODE_PARTIE_SERVER )
 		Reseau.getServer()->setStatut( statut );
 }
 
 JKT_PACKAGE_RESEAU::StatutServer CGame::getStatutServer()
-{	
+{
 	if( m_Mode==JKT_MODE_PARTIE_SERVER )
-		return Reseau.getServer()->getStatut();		
+		return Reseau.getServer()->getStatut();
 	else
 		return JKT_STATUT_SERVER_NULL;
 }
 
 void CGame::Quit()
-{	
+{
 	m_Mode = JKT_MODE_PARTIE_NULL;
 
 	m_Erwin = 0;		// Oublie qu'il y a eu un joueur principal
@@ -164,34 +164,34 @@ void CGame::Quit()
 			cout << "\nDestruction d'un joueur";
 			//delete pTabIndexPlayer->operator []( curseur );
 		}
-	
+
 		cout << "\nDestruction de la liste des joueurs";
 		delete pTabIndexPlayer;	// Destruction du tableau des joueurs
 		pTabIndexPlayer = 0;
 	}
 	cout << "\nDestruction des joueurs end";
-	
+
 	m_Mode = JKT_MODE_PARTIE_NULL;	// Passe effectivemtn en mode 'aucune partie en cours'
 }
 
 void CGame::setModeNull()
 {
-	m_Mode = JKT_MODE_PARTIE_NULL;	
+	m_Mode = JKT_MODE_PARTIE_NULL;
 }
 
 void CGame::setModeLocal()
 {
-	m_Mode = JKT_MODE_PARTIE_LOCAL;	
+	m_Mode = JKT_MODE_PARTIE_LOCAL;
 }
 
 void CGame::setModeClient()
-{	
-	m_Mode = JKT_MODE_PARTIE_CLIENT;	
+{
+	m_Mode = JKT_MODE_PARTIE_CLIENT;
 }
 
 void CGame::setModeServer()
 {
-	m_Mode = JKT_MODE_PARTIE_SERVER;	
+	m_Mode = JKT_MODE_PARTIE_SERVER;
 }
 
 JKT_PACKAGE_RESEAU::CClient *CGame::getClient()
@@ -232,11 +232,11 @@ void CGame::AffichePlayers()
 {
 	CPlayer *player;
 	int curseur = -1;
-	
+
 	while( pTabIndexPlayer->bSuivant(curseur) )
 	{
 		player = pTabIndexPlayer->operator [](curseur);
-		
+
 		//if( player!=erwin )	// Si ce n'est pas le joueur actif=>affichage normal
 			player->Affiche(); //affiche un seul joueur pour le moment
 		player->AfficheProjectils(); // Affiche les projectils lancés par 'player'
@@ -300,7 +300,7 @@ void CGame::afficheViseur(int x, int y) const
 	glBegin( GL_LINES );
 		glVertex2i( -13,	0		);
 		glVertex2i( -3,		0		);
-		
+
 		glVertex2i( 13,		0		);
 		glVertex2i( 3,		0		);
 
@@ -317,7 +317,7 @@ void CGame::deplaceTousPlayer()
 {
 	CPlayer *player;
 	int curseur = -1;
- 
+
 	while( pTabIndexPlayer->bSuivant( curseur ) )
 	{
 		player = pTabIndexPlayer->operator [](curseur);
@@ -326,12 +326,12 @@ void CGame::deplaceTousPlayer()
 }
 
 void CGame::faitTousRequetesClavier()
-{	
+{
 	CPlayer *player;
 	int curseur = -1;
-	 
+
 	while( pTabIndexPlayer->bSuivant( curseur ) )	//exécute les requêtes clavier sur les joueurs
-	{	
+	{
 		player = pTabIndexPlayer->operator[](curseur);
 		player->faitRequeteClavier();
 	}
@@ -340,8 +340,8 @@ void CGame::faitTousRequetesClavier()
 void CGame::faitTousPlayerGravite()
 {
 	int curseur = -1;
-	CPlayer *player;			//Prends le premier player	
-	
+	CPlayer *player;			//Prends le premier player
+
 	while( pTabIndexPlayer->bSuivant( curseur ) )
 	{
 		player = pTabIndexPlayer->operator [](curseur);

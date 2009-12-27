@@ -53,7 +53,7 @@ protected:
 
 public :
 	CLight();
-	~CLight();
+	virtual ~CLight();
 		// Fonctions membres
 	virtual bool Lit(TiXmlElement* element) = 0;
 	virtual bool LitFichier(CIfstreamMap &fichier) = 0;	// Lit une light dans un fichier Map

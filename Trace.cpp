@@ -39,9 +39,9 @@ Trace::Trace()
 	int numeroFichier = -1, num;
 
 	char chemin[] = "./Traces/";
-	
+
 	CFindFolder folder( chemin, NOM_FICHIER_TRACE, EXT_FICHIER_TRACE );
-	
+
 	while( folder.findNext( name ) )
 	{
 		if( name.size() >= strlen(EXT_FICHIER_TRACE) )
@@ -53,7 +53,7 @@ Trace::Trace()
 				if( numeroFichier < 0 )
 					numeroFichier = 0;
 			}
-			else 
+			else
 			{
 				num = atoi( name.c_str() );
 				if( num > numeroFichier )
@@ -63,7 +63,7 @@ Trace::Trace()
 	}
 
 	CFindFolder folderXml( chemin, NOM_FICHIER_TRACE, EXT_XML_FICHIER_TRACE );
-	
+
 	while( folderXml.findNext(name) )
 	{
 		cout << endl << name << " ";
@@ -75,7 +75,7 @@ Trace::Trace()
 			if( numeroFichier < 0 )
 				numeroFichier = 0;
 		}
-		else 
+		else
 		{
 			num = atoi( name.c_str() );
 			if( num > numeroFichier )
@@ -93,9 +93,9 @@ Trace::Trace()
 	nomFichierXML << "./Traces/" << NOM_FICHIER_TRACE << numeroFichier << EXT_XML_FICHIER_TRACE;
 	m_FichierXML.open( nomFichierXML.str().c_str() );
 	m_FichierXML << "<?xml version='1.0' encoding='utf-8'?>" << endl << endl << "<TracesJKT>" << endl;
-	
-	m_Instance = this;	
-	
+
+	m_Instance = this;
+
 	SDL_mutexV( m_Mutex );
 }
 
@@ -107,9 +107,9 @@ Trace::~Trace()
 
 	m_FichierXML << endl << endl << "</TracesJKT>" << flush;
 	m_Fichier.flush();
-	
+
 	m_FichierXML.close();
-	m_Fichier.close();	
+	m_Fichier.close();
 
 	m_Instance = 0;
 
@@ -120,7 +120,7 @@ Trace &Trace::instance()
 {
 	if( !m_Instance )
 		m_Instance = new Trace();
-	
+
 	return *m_Instance;
 }
 
@@ -159,7 +159,7 @@ void Trace::print( int type, int line, const char *nomFichier, int indic, const 
 			ligne1 << "End\t";
 			ligneXML << "<end" << flush;
 			break;
-		}		
+		}
 
 			// Insère le nom du fichier tracé
 		ligne1 << nomFichier << "(" << line << ")" << flush;
@@ -173,11 +173,11 @@ void Trace::print( int type, int line, const char *nomFichier, int indic, const 
 			// Insère le temps relatif
 		ligne2 << SDL_GetTicks();
 		ligneXML << " temps=" << '"' << SDL_GetTicks() << '"' << flush;
-		
+
 		ligne.width( 10 );
 		ligne.setf( ios_base::left, ios_base::adjustfield );
 		ligne << ligne2.str() << flush;
-		
+
 			// Insère le numéro de thread et le pointeur this
 		ligne3 << "(thread=" << SDL_ThreadID() << ",this=";
 		ligneXML << " thread=" << '"' << SDL_ThreadID() << '"' << flush;
@@ -260,14 +260,14 @@ void Trace::print( int type, int line, const char *nomFichier, int indic, const 
 					}
 					case 'b':
 					{
-#ifdef WIN32
+#ifdef VS
 						bool a = va_arg( vl, bool );
 						if( a )
 							ligne5 << "true";
 						else
 							ligne5 << "false";
 						break;
-#elif defined(__linux__)
+#else
 						int a = va_arg( vl, int );
 						if( a )
 							ligne5 << "true";
@@ -278,11 +278,11 @@ void Trace::print( int type, int line, const char *nomFichier, int indic, const 
 					}
 					case 'f':
 					{
-#ifdef WIN32
+#ifdef VS
 						float a = va_arg( vl, float );
 						ligne5 <<  a;
 						break;
-#elif defined(__linux__)
+#else
 						double a = va_arg( vl, double );
 						ligne5 <<  a;
 						break;
@@ -328,7 +328,7 @@ void Trace::print( int type, int line, const char *nomFichier, int indic, const 
 				prec = false;
 			}
 		}
-		
+
 		ligne << ligne5.str() << endl << flush;
 		ligneXML << " texte=" << '"' << ligne5.str() << '"' << flush;
 

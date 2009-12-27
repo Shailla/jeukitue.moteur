@@ -40,7 +40,7 @@ CFichierASE::CFichierASE(const string &nomFichier, CMap *pMap, bool bAffiche)
 	{
 		m_bAffiche = bAffiche;
 		m_Trace.open( "traceConvertASE.log", ios_base::out );
-	
+
 		LitFichier(nomFichier, pMap);
 	}
 	catch( int val )	// Gestion des erreurs arrivées pendant la lecture du fichier ASE
@@ -52,11 +52,11 @@ CFichierASE::CFichierASE(const string &nomFichier, CMap *pMap, bool bAffiche)
 		case JKT_ERREUR_FICHIER_EOF:
 			trace() << "Erreur : Fin du fichier rencontree prematurement";
 			break;
-		
+
 		case JKT_ERREUR_FICHIER_INVALIDE:
 			trace() << "Erreur : Le fichier est invalide ou corrompu";
 			break;
-		
+
 		case JKT_ERREUR_FICHIER_MARTERIAUMANQUE:
 			trace() << "Erreur : Un ou plusieurs materiaux manquent";
 			break;
@@ -88,7 +88,7 @@ bool CFichierASE::operator!()
 	return !(*static_cast<ifstream *> (this));
 }
 
-CFichierASE& CFichierASE::find(const char *txt, int line) 
+CFichierASE& CFichierASE::find(const char *txt, int line)
 {
 	string mot;
 	do
@@ -97,10 +97,10 @@ CFichierASE& CFichierASE::find(const char *txt, int line)
 		{
 			m_Trace << "\nErreur (fichier.cpp::" << line << ") : Fin de fichier prematuree";
 			throw (int)JKT_ERREUR_FICHIER_EOF;	// Fin de fichier prématurée
-		}	
+		}
 
 		if( (mot=="{") || (mot=="}") )
-		{			
+		{
 			m_Trace << "\nErreur (fichier.cpp::" << line << ") : Parametre introuvable";
 			throw (int)JKT_ERREUR_FICHIER_MISSPARAM;	// Fin de fichier prématurée
 		}
@@ -136,7 +136,7 @@ void CFichierASE::findAccoladeF(int line)	// Trouve le prochain guillemet ouvran
 		{
 			m_Trace << "\nErreur (fichier.cpp::" << line << ") : Fin de fichier prematuree";
 			throw (int)JKT_ERREUR_FICHIER_EOF;	// Fin de fichier prématurée
-		}	
+		}
 		if( mot == "{" )
 		{
 			m_Trace << "\nErreur (fichier.cpp::" << line << ") : Accolade inattendue";
@@ -153,7 +153,7 @@ CFichierASE& CFichierASE::isNext(const char *txt, int line)
 	{
 		m_Trace << "\nErreur (fichier.cpp::" << line << ") : Fin de fichier prematuree";
 		throw (int)JKT_ERREUR_FICHIER_EOF;	// Fin de fichier prématurée
-	}	
+	}
 	if( mot != txt )
 	{
 		m_Trace << "\nErreur (fichier.cpp::" << line << ") : Parametre introuvable";
@@ -221,7 +221,7 @@ void CFichierASE::get(float &num, int line)
 CFichierASE::FACES *CFichierASE::LitFaces( unsigned int num )
 {
 	unsigned int index1, index2, index3, refTex;
-	FACES *faces = new FACES(num);	
+	FACES *faces = new FACES(num);
 
 	string mot;
 
@@ -234,7 +234,7 @@ CFichierASE::FACES *CFichierASE::LitFaces( unsigned int num )
 	for( unsigned int i=0 ; i<num ; i++)
 	{
 		find("*MESH_FACE", __LINE__);
-		
+
 		get(mot, __LINE__);
 		get(mot, __LINE__);
 
@@ -264,8 +264,8 @@ CLight* CFichierASE::litLightOmni()
 {
 	CLightOmni *pLightOmni;
 	string mot;
-	int accolade = 0;
-	
+//	int accolade = 0;
+
 	bool bPosition = false;		// Indique si la position a été trouvée
 	float position[ 3 ];
 
@@ -289,7 +289,7 @@ CLight* CFichierASE::litLightOmni()
 		trace() << "\nPosition de la lumière : ";
 		trace() << position[0] << ' ' << position[1] << ' ' << position[2];
 	}
-	
+
 	findAccoladeF(__LINE__);
 	findAccoladeO(__LINE__);
 
@@ -298,7 +298,7 @@ CLight* CFichierASE::litLightOmni()
 	get(color[0],__LINE__);
 	get(color[1],__LINE__);
 	get(color[2],__LINE__);
-	
+
 	color[3] = 1.0f;
 	bColor = true;
 
@@ -372,7 +372,7 @@ CLight *CFichierASE::litLightTarget()
 	position[0] /= fScale;
 	position[1] /= fScale;
 	position[2] /= fScale;
-	
+
 	if( m_bAffiche )
 	{
 		trace() << "\nPosition de la lumière : ";
@@ -387,7 +387,7 @@ CLight *CFichierASE::litLightTarget()
 	get(color[0],__LINE__);
 	get(color[1],__LINE__);
 	get(color[2],__LINE__);
-	
+
 	color[3] = 1.0f;
 
 	if( m_bAffiche )
@@ -457,7 +457,7 @@ CLight* CFichierASE::lightList()
 				accolade--;
 	}
 	while( accolade!=0 && !bSuite );
-		
+
 	return pLight;
 }
 
@@ -474,7 +474,7 @@ int* CFichierASE::LitTexFaces(int num)
 		trace() << "\nTABLEAU D'INDEX DE TEXTURES :\n";
 
 	for( int i=0 ; i<num ; i++)
-	{		
+	{
 		find("*MESH_TFACE", __LINE__);
 
 		get(index, __LINE__);
@@ -506,7 +506,7 @@ float* CFichierASE::LitVertex(unsigned int num)
 		trace() << "\nTABLEAU DE SOMMETS :\n";
 
 	findAccoladeO(__LINE__);
-	
+
 	for( unsigned int i=0 ; i<num ; i++)
 	{
 		find("*MESH_VERTEX", __LINE__);
@@ -519,7 +519,7 @@ float* CFichierASE::LitVertex(unsigned int num)
 		tab[3*i] = vertex1/fScale;
 		tab[(3*i)+1] = vertex2/fScale;
 		tab[(3*i)+2] = vertex3/fScale;
-		
+
 		if( m_bAffiche )
 			trace() <<"\n\t" <<index<<' '<<tab[3*i]<<' '<<tab[3*i+1]<<' '<< tab[3*i+2];
 	}
@@ -547,7 +547,7 @@ float* CFichierASE::LitTexVertex(unsigned int num)	// num=nombre de sommets de t
 		get(tab[(2*i)+1], __LINE__);
 		get(tab[2*i], __LINE__);
 		get(var, __LINE__);				// On ignore la 3° coordonnée de texture
-		
+
 		if( m_bAffiche )
 			trace()<<"\n\t"<<index<<' '<<tab[2*i]<<' '<<tab[(2*i)+1]<<' '<<var;
 	}
@@ -575,16 +575,16 @@ float* CFichierASE::LitNormaux(unsigned int numFaces, const float *row)
 	for( unsigned int i=0 ; i<numFaces ; i++)
 	{
 		find("*MESH_FACENORMAL", __LINE__);
-		
+
 		get(index, __LINE__);
 		get(normalFace1, __LINE__);
 		get(normalFace2, __LINE__);
 		get(normalFace3, __LINE__);		// Le vecteur normal à la face
 										// n'est pas utilisé
-		
+
 		if( m_bAffiche )
 			trace() << "\n" << index << normalFace1 << normalFace2 << normalFace3;
-				
+
 		get(mot, __LINE__);
 		get(index1,__LINE__);
 		get(normal[0], __LINE__);
@@ -595,7 +595,7 @@ float* CFichierASE::LitNormaux(unsigned int numFaces, const float *row)
 		tab[ 9*i + 0 ] = -resultNormal[0];
 		tab[ 9*i + 1 ] = resultNormal[1];
 		tab[ 9*i + 2 ] = resultNormal[2];
-		
+
 		get(mot, __LINE__);
 		get(index2, __LINE__);
 		get(normal[0], __LINE__);
@@ -606,7 +606,7 @@ float* CFichierASE::LitNormaux(unsigned int numFaces, const float *row)
 		tab[ 9*i + 3 ] = -resultNormal[0];
 		tab[ 9*i + 4 ] = resultNormal[1];
 		tab[ 9*i + 5 ] = resultNormal[2];
-		
+
 		get(mot, __LINE__);
 		get(index3, __LINE__);
 		get(normal[0], __LINE__);
@@ -639,7 +639,7 @@ CMaterial* CFichierASE::materiallist()
 		trace() << "\nLISTE DE MATOS";
 
 	find("*MATERIAL", __LINE__);
-			
+
 	get(uRef,__LINE__);	// Recherche la référence de l'obet matériau
 
 	findAccoladeO(__LINE__);
@@ -666,7 +666,7 @@ CMaterial* CFichierASE::materiallist()
 		trace() << "\nErreur (fichier.cpp::" << __LINE__ << ") : Type de materiau inconnu (" << mot << ")";
 		throw (int)CFichierASE::JKT_ERREUR_FICHIER_INVALIDE;	// Fin de fichier prématurée
 	}
-			
+
 	return pMaterial;
 }
 
@@ -713,7 +713,7 @@ CMaterialMulti* CFichierASE::materialMulti( unsigned int uRef )
 			get(pMaterialMulti->m_Specular[1],__LINE__);
 			get(pMaterialMulti->m_Specular[2],__LINE__);
 
-			if( m_bAffiche ) 
+			if( m_bAffiche )
 			{
 				trace() << "\nCouleur specular (multi) : ";
 				trace()<<pMaterialMulti->m_Specular[0]<<' '<<pMaterialMulti->m_Specular[1]<<' '<<pMaterialMulti->m_Specular[2];
@@ -723,7 +723,7 @@ CMaterialMulti* CFichierASE::materialMulti( unsigned int uRef )
 		{
 			int nbrTex;	// Nombre de sous-matériaux du matériau multiple
 			get(nbrTex,__LINE__);
-			
+
 			pMaterialMulti->NbrTex( nbrTex );
 			if( m_bAffiche )
 				trace() << "\nNombre de sous-materiaux : " << nbrTex;
@@ -801,7 +801,7 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 				{
 					if( *p==' ' )	// S'il y a un espace
 						k = p+1;	// alors vérifie si le caractère suivant est un '*' (->passe à la suite avec p+1)
-					else 
+					else
 						k = p;		// Sinon vérifie si le caractère actuel est un '*' (->passe à la suite avec p)
 				}
 				else
@@ -809,7 +809,7 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 					if( *p==' ' )	// S'il y a un espace
 						k = p+1;	// alors vérifie si le caractère suivant est un '*' (->passe à la suite avec p+1)
 					else
-						continue;	
+						continue;
 				}
 
 				if( k+1<canal.end() )	// Vérifie si la chaîne est encore assez longue pour contenir un '*'
@@ -828,11 +828,11 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 					}
 				}
 			}
-			
+
 			if( m_bAffiche )
 			{
 				//trace() << "\nCanal de texture : " << pMaterialTexture->m_CanalTex;
-			
+
 				if( !indic )	// Si aucun canal de texture explicite n'a été trouvé
 					trace() << " (par defaut)";
 			}
@@ -840,7 +840,7 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 		else if(mot=="*MAP_CLASS")
 		{
 			get(mot,__LINE__);
-			
+
 			CMaterialTexture *pMaterialTexture = 0;
 
 			if(mot=="\"Bitmap\"")
@@ -884,7 +884,7 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 			get(pMaterial->m_Specular[1],__LINE__);
 			get(pMaterial->m_Specular[2],__LINE__);
 
-			if( m_bAffiche ) 
+			if( m_bAffiche )
 			{
 				trace() << "\nCouleur specular : ";
 				trace()<<pMaterial->m_Specular[0]<<' '<<pMaterial->m_Specular[1]<<' '<<pMaterial->m_Specular[2];
@@ -907,7 +907,7 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 			}
 
 			get(nomFichier,__LINE__);
-				
+
 				// Enlève le premier guillemet
 			size_t coucou = nomFichier.find_first_of( '"' );
 			if( coucou!=npos )
@@ -928,7 +928,7 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 			accolade2--;
 	}
 	while( accolade2!=0 );
-	
+
 	return pMaterial;
 }
 
@@ -941,10 +941,10 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 	float row[9];
 
 	CGeoMaker *pGeoMaker = new CGeoMaker(pMap);
-	
+
 	if( m_bAffiche )
 		trace() << "\f"; //Changement de page
-	
+
 	findAccoladeO(__LINE__);
 
 	accolade = 2;
@@ -953,11 +953,11 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 
 	char ch;
 	string nom;
-	
+
 	do	// Recherche du guillemet ouvrant
 		get( ch, __LINE__);
 	while( ch!='\"' );
-	
+
 	do	// Lecture du nom de l'objet entre guillemets
 	{
 		get(ch, __LINE__);
@@ -970,7 +970,7 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 		if( ch!='\"' )
 			nom += ch;
 	}while( ch!='\"' );
-	
+
 	pGeoMaker->setName( nom );
 
 	if( m_bAffiche )
@@ -1003,7 +1003,7 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 		trace() << "\nRow2 : " << row[6] << "\t" << row[7] << "\t" << row[8] << endl;
 
 	while( accolade ) // Recherche le nombre de sommets apres le mot "*MESH_NUMVERTEX"
-	{		
+	{
 		get(mot, __LINE__);
 
 		if( mot=="*MESH_NUMVERTEX" )
@@ -1063,20 +1063,20 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 
 	if( m_bAffiche )
 		trace() << "\nLe fichier contient " << numVertex << " sommets et " << numFaces << "faces";
-	
+
 	tabV = LitVertex( numVertex );			// Lit les sommets
-	pGeoMaker->setVertex(numVertex, tabV);	
+	pGeoMaker->setVertex(numVertex, tabV);
 
 	FACES *Faces = LitFaces( numFaces );	// Place les index en mémoire
 	pGeoMaker->setFaces(numFaces, Faces->faces);
 	Faces->faces = 0;
-	
+
 	accolade++;		//LitVertex et LitFaces ne comptent pas les accolades
 
 	while( accolade ) //Recherche la couleur de l'objet apres le mot "*WIREFRAME_COLOR"
 	{
 		get(mot, __LINE__);
-		
+
 		if( mot=="*WIREFRAME_COLOR" )//Recherche l'éventuelle couleur de 'lobjet géo
 		{
 			float r,g,b;
@@ -1091,7 +1091,7 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 
 		}
 		else if( mot=="*MESH_NUMTVERTEX" )		// Recherche les éventuels sommets de texture
-		{										
+		{
 			get(numTexVertex, __LINE__);
 
 			if( numTexVertex )
@@ -1101,9 +1101,9 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 					// un élément nouveau en TabTex[1] comme ci-dessous
 					// A FAIRE : canoniser CChanTex
 				pGeoMaker->m_TabChanTex[1] = new CChanTex();
-				
+
 				float* texvertex = LitTexVertex(numTexVertex);	// Lecture des sommets de texture
-				
+
 				CChanTex* chantex = pGeoMaker->m_TabChanTex[1];
 				chantex->setTexVertex(numTexVertex, texvertex);
 
@@ -1113,16 +1113,16 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 			}
 		}
 		else if( mot=="*MESH_NUMTVFACES" )		//Recherche les éventuels index de sommets de texture
-		{										
+		{
 			get(numTexFaces, __LINE__);
-			
+
 			if( numTexFaces )
 			{
 				if( pGeoMaker->m_TabChanTex.size()==0 )
 				{
 					trace() << "\nErreur (fichier::geomobject) : Fichier ASE corrompu";
 					throw (int)CFichierASE::JKT_ERREUR_FICHIER_INVALIDE;	// Fin de fichier prématurée
-				}					
+				}
 
 				int* texfaces = LitTexFaces(numTexFaces);// Lecture des index de sommets de texture
 
@@ -1142,7 +1142,7 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 
 				// Création d'un nouveau canal de texture
 			CChanTex* chantex = new CChanTex();
-			
+
 				// Numéro de canal
 			get(canal, __LINE__);
 			findAccoladeF(__LINE__);
@@ -1156,10 +1156,10 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 
 			if( m_bAffiche )
 				trace() << "\nVERTEX DU CANAL DE TEXTURE " << canal;
-			
+
 				// Lecture des sommets de texture
 			float* texvertex = new float[ 2*numTVertex ];
-	
+
 			for( int i=0 ; i<numTVertex ; i++ )
 			{
 				get(mot, __LINE__);
@@ -1170,7 +1170,7 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 
 				if( m_bAffiche )
 					trace() << endl << i << " : " << vertex1 << "\t" << vertex2 << "\t" << vertex3;
-				
+
 				texvertex[ 2*i ] = vertex1;
 				texvertex[ 2*i+1 ] = vertex2;
 			}
@@ -1183,7 +1183,7 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 
 			get(numTFaces,__LINE__);	// Nombre d'index de texture du canal
 			isNext("*MESH_TFACELIST",__LINE__);
-					
+
 			findAccoladeO(__LINE__);	// Lecture de l'accolade ouvrante
 
 			if( m_bAffiche )
@@ -1197,17 +1197,17 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 				get(face1,__LINE__);
 				get(face2,__LINE__);
 				get(face3,__LINE__);	// Nombre d'index de texture du canal
-			
+
 				if( m_bAffiche )
 					trace() << endl << i << " : " << face1 << "\t" << face2 << "\t" << face3;
-			
+
 				texfaces[ 3*i ] = face1;
 				texfaces[ 3*i+1 ] = face2;
 				texfaces[ 3*i+2 ] = face3;
 			}
 
 			chantex->setTexFaces(numTFaces, texfaces);
-			
+
 			pGeoMaker->m_TabChanTex[ canal ] = chantex;
 
 			get(mot,__LINE__);	// On passe les 2 accolades fermantes
@@ -1217,8 +1217,8 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 		{
 			float *tab = LitNormaux( numFaces, row );	// Lecture des vecteurs normaux aux sommets
 			pGeoMaker->setNormals(numFaces*9, tab);
-			
-			accolade++; 
+
+			accolade++;
 		}
 		else if( mot=="*MATERIAL_REF" )		//Recherche l'éventuelle référence à un matériau
 		{
@@ -1245,12 +1245,12 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 	pGeoMaker->setOffsetMateriau(0);	// Mode lecture de fichier ASE
 	CGeo* geo = pGeoMaker->makeNewGeoInstance();
 
-	if(Faces) 
+	if(Faces)
 		delete Faces;
 
 	delete pGeoMaker;	// Détruit l'objet
 	pGeoMaker = 0;
-	
+
 	return geo;
 }
 
@@ -1267,7 +1267,7 @@ void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap)
 		if( mot=="*GEOMOBJECT" )		// Recherche des objets géométriques
 		{
 			CGeo *pGeo;
-			
+
 			nbr_GeoObject++;
 
 			pGeo = geomobject(pMap, nbr_GeoObject);
@@ -1302,7 +1302,7 @@ void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap)
 			findAccoladeO(__LINE__);
 			find("*MATERIAL_COUNT", __LINE__);
 			get(nbr_materiau,__LINE__);		// Récupère le nombre de matériaux
-			
+
 			if( m_bAffiche )
 				trace() << "Nombre de matériaux : " << nbr_materiau << endl;
 
@@ -1316,7 +1316,7 @@ void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap)
 					trace() << "\nErreur (fichier::" << __LINE__ << ") : Fichier ASE corrompu";
 					throw (int)CFichierASE::JKT_ERREUR_FICHIER_MARTERIAUMANQUE;
 				}
-					
+
 				if( m_bAffiche )
 					trace() << "\nMateriau " << nbr_materiau << "repertorie\n";
 				nbr_materiau--;
@@ -1329,7 +1329,7 @@ void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap)
 bool CFichierASE::LitFichierASE( const string &nomFichier, CMap *pMap, bool bAffiche )
 {
 	string nomFichierASE = "./ase/" + nomFichier + ".ase";	// Ajout de l'extension et du chemin
-	
+
 	try
 	{		// Ouverture du fichier ASE
 		CFichierASE from( nomFichierASE, pMap, bAffiche );
@@ -1338,7 +1338,7 @@ bool CFichierASE::LitFichierASE( const string &nomFichier, CMap *pMap, bool bAff
 	{
 		return false;
 	}
-	
+
 	return true;
 }
 

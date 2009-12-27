@@ -48,11 +48,11 @@ private:
 	int* m_TabFaces;			// Pointeur sur le tableau d'index des sommets
 
 	// VBO
-	static enum {	VBO_VERTEX=0, VBO_FACES };
+	enum {	VBO_VERTEX=0, VBO_FACES };
 	static const int VBO_BUFFER_SIZE = 2;
 	GLuint m_VboBufferNames[VBO_BUFFER_SIZE];
 public:
-		// Destructeur		
+		// Destructeur
 	~CSimpleGeo();
 		//Fonctions membres
 private:
@@ -77,7 +77,7 @@ public:
 
 		// Fonctions pour l'interface CGeo
 	//bool LitFichier( CIfstreamMap &fichier );			// Lit un objet géo dans un fichier Map
-	//bool SaveNameType( ofstream &fichier );				// Sauve le nom du type d'objet géométrique	
+	//bool SaveNameType( ofstream &fichier );				// Sauve le nom du type d'objet géométrique
 	//bool SaveFichierMap( ofstream &fichier );			// Sauve l'objet géo dans un fichier Map
 	bool Lit(TiXmlElement* element);
 	bool Save(TiXmlElement* element);

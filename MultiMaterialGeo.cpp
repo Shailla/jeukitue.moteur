@@ -58,8 +58,8 @@ CMultiMaterialGeo::CMultiMaterialGeo(CMap* map, const string& name,
 	m_NumVertex = 0;
 	m_OffsetMateriaux = -1;				// Inicateur non-initialisé (-1)
 	m_TabVectNormaux = NULL;
-	m_pNormalTriangle = NULL;			
-	m_TabVertex = NULL;					
+	m_pNormalTriangle = NULL;
+	m_TabVertex = NULL;
 	m_TabTexVertex = NULL;
 
 	setName(name);						// Nom de l'objet
@@ -68,7 +68,7 @@ CMultiMaterialGeo::CMultiMaterialGeo(CMap* map, const string& name,
 	setTexVertex(texvertex);			// Sommets de texture
 	m_CanauxNumbers = canauxnumbers;	// Canaux de texture associés aux faces
 	m_bSolid = solid;					// Objet solide ou éthéreux
-	m_Material = mat;					// Materiau multiple	
+	m_Material = mat;					// Materiau multiple
 
 	cout << "\nCMultiMaterialGeo";
 	for(int p=0 ; p<10 ; p++)
@@ -136,7 +136,7 @@ void CMultiMaterialGeo::freeVBO()
 }
 
 void CMultiMaterialGeo::setNormalVertex(float *tab)
-{	
+{
 	if(m_TabVectNormaux) {
 		delete[] m_TabVectNormaux;
 	}
@@ -150,7 +150,7 @@ void CMultiMaterialGeo::Affiche()
 
 	// Attachement VBO sommets
 	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_VERTEX]);
-	glVertexPointer(3, GL_FLOAT, 0, 0);	
+	glVertexPointer(3, GL_FLOAT, 0, 0);
 
 	// Attachement VBO vecteurs normaux
 	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_NORMAUX]);
@@ -159,7 +159,7 @@ void CMultiMaterialGeo::Affiche()
 	// Attachement VBO sommets de texture
 	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_TEXVERTEX]);
 	glTexCoordPointer(2, GL_FLOAT, 0, 0);
-	
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_NORMAL_ARRAY);
 
@@ -189,7 +189,7 @@ void CMultiMaterialGeo::Affiche()
 		{
 			cout << endl << "MultiMaterialGeo> Materiau inconnu";
 		}
-			
+
 		// Activation du matériau
 		material->Active();
 
@@ -208,7 +208,7 @@ void CMultiMaterialGeo::Affiche()
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
-const char* CMultiMaterialGeo::toString() 
+const char* CMultiMaterialGeo::toString()
 {
 	ostringstream ttt;
 	ttt << identifier << " Nom=" << getName() << " Mat=";
@@ -223,28 +223,28 @@ const char* CMultiMaterialGeo::toString()
 
 void CMultiMaterialGeo::AfficheSelection(float r,float v,float b)
 {
-	glDisable(GL_TEXTURE_2D);	
+	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
-	
+
 	glColor3f(r,v,b);
 
 	glLineWidth( 1 );
-	
+
 	glDisableClientState(GL_NORMAL_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, m_TabVertex);	//Initialisation du tableau de sommets	
+	glVertexPointer(3, GL_FLOAT, 0, m_TabVertex);	//Initialisation du tableau de sommets
 	glDrawArrays(JKT_RenderMode, 0, m_NumVertex);
 
 		//AFFICHAGE DES VECTEURS NORMAUX
 	if( Config.Debug.bAfficheNormaux )
-		AfficheNormals();	
+		AfficheNormals();
 }
 
 void CMultiMaterialGeo::AfficheNormals() {
 	float pos[3], bout[ 3 ];
 	float facteur = 0.05f;
 	if( m_TabVectNormaux )
-	{	
-		glBegin( GL_LINES );			
+	{
+		glBegin( GL_LINES );
 		for( int i=0; i < m_NumVertex ; i++ ) //dessine toutes les faces de la map
 		{
 			glColor3f( 1.0f, 0.0f, 0.0f );
@@ -259,13 +259,13 @@ void CMultiMaterialGeo::AfficheNormals() {
 			glVertex3fv( pos );
 			glVertex3fv( bout );
 		}
-		glEnd();		
+		glEnd();
 	}
 }
 
 void CMultiMaterialGeo::setOffsetMateriau(int offset)
 {
-	m_OffsetMateriaux = offset;	
+	m_OffsetMateriaux = offset;
 }
 
 int CMultiMaterialGeo::getOffsetMateriau() throw(CErreur)
@@ -291,7 +291,7 @@ void CMultiMaterialGeo::setMaterial(int ref)
 	}
 
 	CMaterialMulti *mat = (CMaterialMulti*)getMap()->m_TabMaterial[ nbrMat ];
-	
+
 	if( mat == 0 )
 	{
 		stringstream txt;
@@ -311,13 +311,13 @@ void CMultiMaterialGeo::MinMax()
 
 	for( int i=1 ; i<m_NumVertex ; i++ )
 	{
-		if( m_TabVertex[3*i] < minX )		//récupération des coordonnées du pavé englobant 
+		if( m_TabVertex[3*i] < minX )		//récupération des coordonnées du pavé englobant
 			minX = m_TabVertex[3*i];		//l'objet géo
 		if( m_TabVertex[(3*i)+1] < minY )
 			minY = m_TabVertex[(3*i)+1];
 		if( m_TabVertex[(3*i)+2] < minZ )
 			minZ = m_TabVertex[(3*i)+2];
-		
+
 		if( m_TabVertex[3*i] > maxX )
 			maxX = m_TabVertex[3*i];
 		if( m_TabVertex[(3*i)+1] > maxY )
@@ -339,7 +339,7 @@ void CMultiMaterialGeo::Bulle()
 	r0 = fabsf( minX-maxX );
 	r1 = fabsf( minY-maxY );
 	r2 = fabsf( minZ-maxZ );
-	
+
 	m_Rayon = sqrtf( (r0*r0) + (r1*r1) + (r2*r2) );
 }
 
@@ -378,7 +378,7 @@ CMultiMaterialGeo::~CMultiMaterialGeo()
 		delete[] m_TabVertex;
 		m_TabVertex = 0;
 	}
-	
+
 	if( m_pNormalTriangle )
 	{
 		delete[] m_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs préliminaires à la gestion des contacts)
@@ -474,7 +474,7 @@ bool CMultiMaterialGeo::Lit(TiXmlElement* el)
 
 	// Solidité
 	m_bSolid = Xml::LitSolidite(el);
-	
+
 	// Sommets
 	m_TabVertex = CGeoMaker::LitVertex(el, m_NumVertex);
 
@@ -498,7 +498,7 @@ bool CMultiMaterialGeo::Lit(TiXmlElement* el)
 	if(!CGeo::LitFichier(fichier))
 		return false;
 
-	fichier >> mot;		
+	fichier >> mot;
 	if( mot!="ReferenceMateriau" )
 	{
 		cerr << "005";
@@ -508,7 +508,7 @@ bool CMultiMaterialGeo::Lit(TiXmlElement* el)
 	int matRef = 0;
 	fichier >> matRef;
 	setMaterial( matRef );
-	
+
 	fichier >> mot;		// "Nombre de sommets"
 	if( mot!="NombreDeSommets" )
 	{
@@ -581,20 +581,20 @@ bool CMultiMaterialGeo::Lit(TiXmlElement* el)
 }*/
 
 /*bool CMultiMaterialGeo::SaveFichierMap(ofstream &fichier)
-{	
+{
 	int i=0;
 
 	if(!CGeo::SaveFichierMap(fichier))
 		return false;
 
 	fichier << "\n\tReferenceMateriau\t\t" <<	m_Material->getRef();
-	
+
 //	fichier << "\n\tNombreDeFaces\t\t\t" << m_NumFaces;					// Nombre de sommets
 
 	fichier << "\n\tSolidité\t\t\t" << m_bSolid;						// Solidité
-	
+
 		// Sommets
-	fichier << "\n\n\tSommets";		
+	fichier << "\n\n\tSommets";
 	for( i=0 ; i<m_NumVertex ; i++ )
 		fichier << "\n\t\t" << m_TabVertex[3*i] << "\t" << m_TabVertex[(3*i)+1] << "\t" << m_TabVertex[(3*i)+2];
 
@@ -632,9 +632,7 @@ bool CMultiMaterialGeo::Lit(TiXmlElement* el)
 }*/
 
 bool CMultiMaterialGeo::Save(TiXmlElement* element)
-{	
-	int i=0;
-
+{
 	// Sauve les données générales
 	TiXmlElement* elGeo = new TiXmlElement(Xml::GEO);
 	elGeo->SetAttribute(Xml::REF, getReference());
@@ -650,14 +648,14 @@ bool CMultiMaterialGeo::Save(TiXmlElement* element)
 
 	// Solidité
 	CGeoMaker::SaveSolidite(elGeo, m_bSolid);
-	
+
 	// Sommets
 	CGeoMaker::SaveVertex(elGeo, m_NumVertex, m_TabVertex);
-	
+
 	// Vecteurs normaux
 	if(m_TabVectNormaux)
 		CGeoMaker::SaveVecteursNormaux(elGeo, m_NumVertex, m_TabVectNormaux);
-	
+
 	// Sommets de texture
 	CGeoMaker::SaveTexVertex(elGeo, m_NumVertex, m_TabTexVertex);
 
@@ -667,7 +665,7 @@ bool CMultiMaterialGeo::Save(TiXmlElement* element)
 	return true;
 }
 
-float CMultiMaterialGeo::testContactTriangle( unsigned int i, const float posPlayer[3], float dist ) 
+float CMultiMaterialGeo::testContactTriangle( unsigned int i, const float posPlayer[3], float dist )
 {		// Test s'il y a contact entre un point P et le i° triangle de l'objet géo
 	float *normal = &m_pNormalTriangle[3*i];
 	float A[3], B[3], C[3], F[3], G[3], X[3], Y[3], Z[3];
@@ -677,18 +675,18 @@ float CMultiMaterialGeo::testContactTriangle( unsigned int i, const float posPla
 	Z[0] =  posPlayer[0] - m_TabVertex[ 3*i+0 ];
 	Z[1] =  posPlayer[1] - m_TabVertex[ 3*i+1 ];
 	Z[2] = -posPlayer[2] - m_TabVertex[ 3*i+2 ];
-	
+
 	distanceW = produitScalaire(normal, Z); //distance entre le plan du triangle et le joueur
 	if( distanceW >= dist )
 		return 1000.0f;		// Y'a pas contact
-	
+
 	if( distanceW <= - dist )
 		return 1000.0f;		// Y'a pas contact
 
 	X[0] = m_TabVertex[ 3*i+3 ] - m_TabVertex[ 3*i+0 ];
 	X[1] = m_TabVertex[ 3*i+4 ] - m_TabVertex[ 3*i+1 ];
 	X[2] = m_TabVertex[ 3*i+5 ] - m_TabVertex[ 3*i+2 ];
-	
+
 	produitVectoriel( X, normal, A );
 	normalise( A );
 		// test position P / droite AB
@@ -704,7 +702,7 @@ float CMultiMaterialGeo::testContactTriangle( unsigned int i, const float posPla
 		// test position P / droite AC
 	if( produitScalaire(B, Z) <= -dist )	// avant c'était 0.0
 		return 1000.0f;
-	
+
 		// calcul de F = vecteur BC
 	F[0] = Y[0] - X[0];
 	F[1] = Y[1] - X[1];
@@ -720,8 +718,8 @@ float CMultiMaterialGeo::testContactTriangle( unsigned int i, const float posPla
 		// test position P / droite BC
 	if( produitScalaire(C, G)>= dist )
 		return 1000.0f;
-	
-	return distanceW;	
+
+	return distanceW;
 }
 
 	// Renvoie la distance entre le point de position 'pos' et le plus proche triangle de l'objet
@@ -743,7 +741,7 @@ bool CMultiMaterialGeo::Contact( const float pos[3], float dist )
 }
 
 void CMultiMaterialGeo::GereContactPlayer( const float pos[3], CPlayer *player )
-{	
+{
 	float dist = 0.1f;	// Rayon de la sphère représentant le volume du joueur
 	float distanceW;
 	if( m_bSolid )	// Si l'objet est solide
@@ -753,7 +751,7 @@ void CMultiMaterialGeo::GereContactPlayer( const float pos[3], CPlayer *player )
 				distanceW = testContactTriangle( i, pos, dist );
 
 				if( distanceW<500.0f ) // Teste le contact avec le joueur (1.0f = valeur arbitraire mais grande)
-					player->exeContactFunc( &m_pNormalTriangle[3*i], distanceW );	// On a contact !	
+					player->exeContactFunc( &m_pNormalTriangle[3*i], distanceW );	// On a contact !
 			}
 }
 
@@ -781,7 +779,7 @@ float CMultiMaterialGeo::GereLaser( float pos[3], CV3D &Dir, float dist)
 
 	if( !m_bSolid )	// Si l'objet n'est pas solide, il ne peut être touché par le laser
 		return dist;	// => on sort en renvoyant 'dist'
-	
+
 		// Vérifie si le laser passe à proxomité de l'objet géo
 	CV3D CP;	// Vecteur allant du point origine du laser au centre de l'objet géo (=centre de la Bulle qui l'englobe)
 	CP.X = m_Centre[0] - pos[0];
@@ -794,9 +792,9 @@ float CMultiMaterialGeo::GereLaser( float pos[3], CV3D &Dir, float dist)
 	float rCarre = (0.001f+m_Rayon)*(0.001f+m_Rayon);
 	if( hCarre > rCarre )			// Si distance (laser-centre de la sphère) > rayon de la sphère
 		return dist;				// Alors le rayon laser ne touche pas l'objet
-	
+
 		// Vérifie si le laser touche une face de la map
-	vertex = m_TabVertex;					
+	vertex = m_TabVertex;
 	for( int i=0; i<m_NumVertex; i=i+3) //pour chaque triangle de l'objet géo.
 	{
 		normal = &m_pNormalTriangle[3*i];
@@ -805,19 +803,19 @@ float CMultiMaterialGeo::GereLaser( float pos[3], CV3D &Dir, float dist)
 		AP.X = pos[0]- vertex[ 3*i ];	//horizontal
 		AP.Y = pos[1]- vertex[ 3*i+1 ];	//vertical
 		AP.Z = -pos[2]-vertex[ 3*i+2 ];	//horizontal
-		
+
 			// normale au triangle
 		N.X = normal[0];
 		N.Y = normal[1];
 		N.Z = normal[2];
 
 		distanceVar = -(N^AP)/(N^Dir);
-		
+
 		if( distanceVar < 0.0f )	// Si la distance trouvée pour ce triangle est négative
 			continue;	// Passe au triangle suivant
 		if( distanceVar > dist )	// Si elle est supérieure à une autre déjà trouvée
 			continue;	// Passe au triangle suivant
-		
+
 		AB.X = vertex[ 3*i+3 ] - vertex[ 3*i ];
 		AB.Y = vertex[ 3*i+4 ] - vertex[ 3*i+1 ];
 		AB.Z = vertex[ 3*i+5 ] - vertex[ 3*i+2 ];

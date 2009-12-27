@@ -77,7 +77,7 @@ const char* Xml::TYPE = "Type";
 const char* Xml::VALEUR = "Valeur";
 const char* Xml::VRAI = "true";
 
-void Xml::SaveElement(TiXmlElement* element, const char* name, float valeur) 
+void Xml::SaveElement(TiXmlElement* element, const char* name, float valeur)
 {
 	stringstream ss;
 	ss << valeur;
@@ -88,7 +88,7 @@ void Xml::SaveElement(TiXmlElement* element, const char* name, float valeur)
 	element->LinkEndChild(el);
 }
 
-void Xml::SaveElement(TiXmlElement* element, const char* name, int valeur) 
+void Xml::SaveElement(TiXmlElement* element, const char* name, int valeur)
 {
 	TiXmlElement* el = new TiXmlElement(name);
 	el->SetAttribute(Xml::VALEUR, valeur);
@@ -96,10 +96,10 @@ void Xml::SaveElement(TiXmlElement* element, const char* name, int valeur)
 	element->LinkEndChild(el);
 }
 
-void Xml::SaveElement(TiXmlElement* element, const char* name, bool valeur) 
+void Xml::SaveElement(TiXmlElement* element, const char* name, bool valeur)
 {
 	TiXmlElement* el = new TiXmlElement(name);
-	
+
 	if(valeur)
 		el->SetAttribute(Xml::VALEUR, Xml::VRAI);
 	else
@@ -108,7 +108,7 @@ void Xml::SaveElement(TiXmlElement* element, const char* name, bool valeur)
 	element->LinkEndChild(el);
 }
 
-void Xml::SaveAttribut(TiXmlElement* element, const char* name, float valeur) 
+void Xml::SaveAttribut(TiXmlElement* element, const char* name, float valeur)
 {
 	stringstream ss;
 	ss << valeur;
@@ -155,7 +155,7 @@ unsigned int Xml::LitMaterialRef(TiXmlElement* el)
 {
 	double ref;
 	TiXmlElement* elMat = el->FirstChildElement(Xml::MATERIAU);
-	
+
 	if(!elMat)
 		throw CErreur(0, "Fichier Map corrompu : LitMaterialRef 1");
 
@@ -169,7 +169,7 @@ double Xml::LitValeur(TiXmlElement* el, const char* name)
 {
 	double valeur;
 	TiXmlElement* elVal = el->FirstChildElement(name);
-	
+
 	if(!elVal)
 		throw CErreur(0, "Fichier Map corrompu : LitValeur 1");
 
@@ -186,7 +186,7 @@ bool Xml::LitSolidite(TiXmlElement* el)
 
 	if(!elSol)
 		throw CErreur(0, "Fichier Map corrompu : solidite");
-	
+
 	const char* sol = elSol->Attribute(Xml::VALEUR);
 
 	if(!sol)

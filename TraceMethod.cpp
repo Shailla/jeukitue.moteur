@@ -14,7 +14,7 @@ using namespace std;
 #include "Trace.h"
 
 CTraceMethod::CTraceMethod( int ligne, const char *nomFichier, int category, void *ptr, char *txt, ... )
-{	
+{
 	m_Category = category;
 	m_Texte = txt;
 	m_ClassePtr = ptr;
@@ -22,12 +22,12 @@ CTraceMethod::CTraceMethod( int ligne, const char *nomFichier, int category, voi
 	m_Ligne = ligne;
 
 	stringstream texte;
-	
+
 	va_list vl;
 	bool prec = false;	// Indique que le caractère précédent était un %
 
 	va_start( vl, txt );
-		
+
 	for( int i=0 ; txt[i]!='\0' ; i++ )
 	{
 		if( !prec )
@@ -49,14 +49,14 @@ CTraceMethod::CTraceMethod( int ligne, const char *nomFichier, int category, voi
 				}
 				case 'b':
 				{
-#ifdef WIN32
+#ifdef VS
 					bool a = va_arg( vl, bool );
 					if( a )
 						texte << "true";
 					else
 						texte << "false";
 					break;
-#elif defined(__linux__)
+#else
 					int a = va_arg( vl, int );
 					if( a )
 						texte << "true";
@@ -67,11 +67,11 @@ CTraceMethod::CTraceMethod( int ligne, const char *nomFichier, int category, voi
 				}
 				case 'f':
 				{
-#ifdef WIN32
+#ifdef VS
 					float a = va_arg( vl, float );
 					texte <<  a;
 					break;
-#elif defined(__linux__)
+#else
 					double a = va_arg( vl, double );
 					texte <<  a;
 					break;

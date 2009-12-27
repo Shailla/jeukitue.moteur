@@ -119,7 +119,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigReseau(var=%x)", var );
 		MenuConfigReseau->add_ItemsDroits( i++, "Client" );
 		MenuConfigReseau->add_ItemsDroits( i++, Config.Reseau.getIpServer().c_str() );
 	}
-	
+
 	ostringstream port;
 	port << Config.Reseau.getPort();
 	MenuConfigReseau->add_ItemsDroits( i++, port.str().c_str() );
@@ -223,7 +223,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigReseauPort(var=%x)", arg );
 
 			case SDLK_RETURN:
 				int port;
-				port = atoi( stringPort.c_str() );	
+				port = atoi( stringPort.c_str() );
 				cout << endl <<stringPort << "\t" << port << endl;
 				Config.Reseau.setPort( port );
 				Config.Ecrit();	// Sauvegarde la configuration
@@ -239,10 +239,12 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigReseauPort(var=%x)", arg );
 			case SDLK_ESCAPE:
 				lanceMenuConfigReseau( 0 );
 				break;
+            default:
+				break;
 			}
 			break;
 
-		case SDL_MOUSEBUTTONDOWN:		
+		case SDL_MOUSEBUTTONDOWN:
 			lanceMenuConfigReseau( 0 );
 			break;
 

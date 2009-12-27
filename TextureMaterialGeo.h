@@ -46,13 +46,13 @@ private:
 	int getOffsetMateriau() throw(CErreur);
 	float* m_TabTexVertex;			// Coordonnées de texture
 	// VBO
-	static enum {	VBO_VERTEX=0, VBO_NORMAUX, VBO_TEXVERTEX };
+	enum {	VBO_VERTEX=0, VBO_NORMAUX, VBO_TEXVERTEX };
 	static const int VBO_BUFFER_SIZE = 3;
 	GLuint m_VboBufferNames[VBO_BUFFER_SIZE];
 	void initVBO();
 	void freeVBO();
 public:
-		// Destructeur		
+		// Destructeur
 	~CTextureMaterialGeo();
 
 	float *m_TabVectNormaux;	// Pointeur sur le tableau des vecteurs normaux
@@ -71,14 +71,14 @@ public:
 	void EchangeXZ();			// Echange les coordonnées X et Z de l'objet
 	void EchangeYZ();			// Echange les coordonnées Y et Z de l'objet
 	void Scale(float scaleX, float scaleY, float scaleZ);	// Homothétie pondérée selon X, Y et Z de l'objet
-	
+
 	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
 	void GereContactPlayer(const float pos[3], CPlayer *player);
 	float GereLaser(float pos[3], CV3D &Dir, float dist);	// Voir la définition de la fonction
-	
+
 		// Fonctions pour l'interface CGeo
 	//bool LitFichier(CIfstreamMap &fichier);			// Lit un objet géo dans un fichier Map
-	//bool SaveNameType(ofstream &fichier);				// Sauve le nom du type d'objet géométrique	
+	//bool SaveNameType(ofstream &fichier);				// Sauve le nom du type d'objet géométrique
 	//bool SaveFichierMap(ofstream &fichier);			// Sauve l'objet géo dans un fichier Map
 	bool Save(TiXmlElement* element);
 	bool Lit(TiXmlElement* el);

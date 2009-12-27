@@ -83,11 +83,12 @@
 				AdditionalOptions="/MACHINE:I386"
 				AdditionalDependencies="odbc32.lib odbccp32.lib OPENGL32.LIB SDL.lib SDL_image.lib fmodvc.lib GLU32.LIB SDL_net.lib SDLmain.lib ag_core.lib ag_gui.lib pthreadVC2.lib freetype.lib $(NOINHERIT)"
 				OutputFile=".\Debug/essaiJul3.exe"
-				LinkIncremental="2"
+				LinkIncremental="1"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;$(ProjectDir)Libs\FreeType\lib&quot;;&quot;$(ProjectDir)Libs\Pre-built.2\lib&quot;;&quot;$(ProjectDir)Libs\Agar\lib&quot;;&quot;$(ProjectDir)Libs\SDL_net-1.2.7\lib&quot;;&quot;$(ProjectDir)Libs\fmodapi375win\api\lib&quot;;&quot;$(ProjectDir)Libs\SDL_image-1.2.10\lib&quot;;&quot;$(ProjectDir)Libs\SDL-1.2.14\lib&quot;"
 				GenerateManifest="false"
-				IgnoreDefaultLibraryNames="LIBCMT;msvcrt.lib"
+				IgnoreAllDefaultLibraries="true"
+				IgnoreDefaultLibraryNames=""
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/essaiJul3.pdb"
 				GenerateMapFile="true"
@@ -100,6 +101,8 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
+				EmbedManifest="false"
+				UseFAT32Workaround="true"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -1244,19 +1247,11 @@
 			Name="MenuAgar"
 			>
 			<File
-				RelativePath=".\AgarController.cpp"
+				RelativePath=".\Controller.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\AgarController.h"
-				>
-			</File>
-			<File
-				RelativePath=".\AgarView.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\AgarView.h"
+				RelativePath=".\Controller.h"
 				>
 			</File>
 			<File
@@ -1273,6 +1268,46 @@
 			</File>
 			<File
 				RelativePath=".\OpenCentralisateurView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenSceneASEView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenSceneASEView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenSceneMapView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenSceneMapView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenSceneView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OpenSceneView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\View.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\View.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Viewer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Viewer.h"
 				>
 			</File>
 		</Filter>

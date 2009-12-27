@@ -11,7 +11,7 @@ class CMouve
 {
 public:
 	CMouve(void);
-	~CMouve(void);
+	virtual ~CMouve(void);
 
 	virtual void Refresh( CGame *game )=0;
 };

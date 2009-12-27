@@ -10,7 +10,7 @@
 /************************************************************************/
 /*																		*/
 /*			Cette classe est une interface,								*/
-/*			elle est la base de tout affichable en 3D.					*/	
+/*			elle est la base de tout affichable en 3D.					*/
 /*																		*/
 /************************************************************************/
 
@@ -34,7 +34,7 @@ protected:
 public:
 		// Constructeurs / destructeur
 	CGeo( CMap *map );
-	~CGeo();
+	virtual ~CGeo();
 
 		// Fonctions membres
 	CMap *getMap();			// Navigabilité vers l'objet qui contient cet objet (la Map étant l'objet racine)

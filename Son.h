@@ -21,11 +21,11 @@ public:
 	set<CReqSon*> m_TabReq;		// Liste des requêtes sur ce son
 	CDemonSons* pDemon;			// Pointeur sur le démon des sons
 	string nom;					// Nom du son (POUR LE DEBUG)
-	
+
 		// Constructeurs / Destructeur
 public:
 	CSon(CDemonSons* p,const char* name);
-	~CSon();
+	virtual ~CSon();
 
 	virtual CReqSon *PlayID( bool pause=false) = 0;
 };

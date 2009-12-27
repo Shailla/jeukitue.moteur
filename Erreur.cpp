@@ -20,8 +20,8 @@ string CErreur::toString() const {
 		txt += "msg='";
 		txt += msg + "', ";
 	}
-	
-	"code=";
+
+	txt += "code=";
 	txt += code;
 
 	return txt;

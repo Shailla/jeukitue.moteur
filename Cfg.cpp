@@ -61,7 +61,7 @@ void CCfg::Lit()
 TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 	string mot;
 	string nomFichierEntier = "./" + nomFichierConfig + ".ini";
-	
+
 	ifstream fichier( nomFichierEntier.c_str() );
 
 	do fichier >> mot;	while( mot!="-------------------------VIDEO-------------------------" );
@@ -83,26 +83,26 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 
 		do fichier >> mot;	while( mot!="Driver" );
 		fichier >> Audio.m_Driver;
-		
+
 		do fichier >> mot; while( mot!="DriverRecord" );
 		fichier >> Audio.m_DriverRecord;
 	}
 	do fichier >> mot;	while( mot!="-----------------------COMMANDES-----------------------" );
 	{
 		int crotte;
-		
+
 		do fichier >> mot;	while( mot!="Avancer" );
 		fichier >> crotte;
 		Commandes.Avancer.key = (SDLKey)crotte;
 		fichier >> crotte >> mot;
 		Commandes.Avancer.mouse = crotte;
-		
+
 		do fichier >> mot;	while( mot!="Reculer" );
 		fichier >> crotte;
 		Commandes.Reculer.key = (SDLKey)crotte;
 		fichier >> crotte >> mot;
 		Commandes.Reculer.mouse = crotte;
-		
+
 		do fichier >> mot;	while( mot!="Gauche" );
 		fichier >> crotte;
 		Commandes.Gauche.key = (SDLKey)crotte;
@@ -133,7 +133,7 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 		fichier >> crotte >> mot;
 		Commandes.Monter.mouse = crotte;
 	}
-	
+
 	do fichier >> mot;	while( mot!="------------------------RESEAU-------------------------" );
 	{
 		do fichier >> mot;	while( mot!="Serveur" );
@@ -204,7 +204,7 @@ void CCfg::Ecrit()
 	fichier << "\nTir1\t\t" << Commandes.Tir1.key << "\t" << Commandes.Tir1.mouse << "\t(" << Commandes.resolve(Commandes.Tir1) << ")";
 	fichier << "\nTir2\t\t" << Commandes.Tir2.key << "\t" << Commandes.Tir2.mouse << "\t(" << Commandes.resolve(Commandes.Tir2) << ")";
 	fichier << "\nMonter\t\t" << Commandes.Monter.key << "\t" << Commandes.Monter.mouse << "\t(" << Commandes.resolve(Commandes.Monter) << ")";
-	
+
 	fichier << "\n\n\n------------------------RESEAU-------------------------\n";
 	fichier << "\nServeur\t\t" << Reseau.serveur;
 	fichier << "\nip\t\t" << Reseau.m_IpServer;
@@ -450,7 +450,7 @@ bool CCfg::CAudio::Init()
 	}
 
 	FSOUND_DSP_SetActive( FSOUND_DSP_GetFFTUnit(), true );
-	
+
 	if( FSOUND_Record_GetNumDrivers()!=0 )	// Vérifie s'il y a un driver d'acquisition du son
 	{
 		if( m_DriverRecord<FSOUND_Record_GetNumDrivers() )
@@ -469,7 +469,7 @@ bool CCfg::CAudio::Init()
 			cerr << endl << "Driver de record son mal configuré, choix par défaut.";
 			m_DriverRecord = 0;	// Modification de la config => choix par défaut
 			if( !FSOUND_Record_SetDriver(0) )	// Sélection du driver de record par défaut
-			{															
+			{
 				cerr << "Erreur FSOUND_Record_SetDriver : " << FMOD_ErrorString(FSOUND_GetError()) << endl;
 				cerr << "\tAVIS AU PROGRAMMEUR" << endl
 					<< "Le programme va planter s'il y a une tentative d'utilisation du micro !!!" << endl;
@@ -521,7 +521,7 @@ void CCfg::CDisplay::Init()
 }
 
 void CCfg::CDisplay::InitSDL()
-{	
+{
 TRACE().p( TRACE_OTHER, "init_SDL(config) begin" );
 
 #ifdef WIN32
@@ -624,8 +624,8 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 	}
 
 	screen = SDL_SetVideoMode(X, Y, bpp, flags);		// Set the video mode
-	if( screen == 0)	
-	{    
+	if( screen == 0)
+	{
 		cerr << endl << "Error : Video mode set failed: " << SDL_GetError() << endl;
 		exit( 1 );
     }
@@ -655,8 +655,8 @@ TRACE().p( TRACE_OTHER, "setup_opengl(width=%d,height=%d) begin", X, Y );
 		// Informations openGL
 	cout << "Version openGL :\t" << glGetString( GL_VERSION );
 	cout << "\nModele de la carte graphique :\t" << glGetString( GL_RENDERER );
-	cout << "\nFabricant de la carte graphique :\t" << glGetString( GL_VENDOR ); 
-	cout << "\nExtensions openGL disponibles :\t" << glGetString( GL_EXTENSIONS ); 
+	cout << "\nFabricant de la carte graphique :\t" << glGetString( GL_VENDOR );
+	cout << "\nExtensions openGL disponibles :\t" << glGetString( GL_EXTENSIONS );
 	cout << "\nVersion GLU :\t\t" << gluGetString( GLU_VERSION );
 
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );	// Vide le tampon chromatique
@@ -732,8 +732,8 @@ TRACE().p( TRACE_OTHER, "changeVideoSize(config) begin" );
 		SDL_FreeSurface( screen );							// Vide la surface
 
 	screen = SDL_SetVideoMode( x, y, bpp, flags );	// Set the video mode
-	if(screen == 0)	
-	{    
+	if(screen == 0)
+	{
         cerr << "Video mode set failed: " << SDL_GetError() << endl;
 		exit( 1 );
     }

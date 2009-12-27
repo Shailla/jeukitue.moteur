@@ -82,10 +82,10 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() begin%T", this );
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
 		delete *iterGeo;
-	
+
 	m_TabGeo.clear();
-	m_TabMouve.clear();	
-	
+	m_TabMouve.clear();
+
 	vector<CMaterial*>::iterator iterMat;
 	for( iterMat=m_TabMaterial.begin() ; iterMat!=m_TabMaterial.end() ; iterMat++ )
 		delete *iterMat;
@@ -122,14 +122,14 @@ void CMap::Affiche()	// Affiche tous les objets géo de du Map
 	else
 	{
 		for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
-			(*iterGeo)->Affiche();			// Affichage de l'objet géo		
+			(*iterGeo)->Affiche();			// Affichage de l'objet géo
 	}
 
 	glDisable( GL_VERTEX_ARRAY );
 }
 
 void CMap::Add(CGeo* geo)
-{ 
+{
 	m_TabGeo.push_back( geo );	// Ajoute geo à la liste des objets affichables
 }
 
@@ -158,7 +158,7 @@ void CMap::decrementeSelection()
 	if(m_Selection < 0)
 	{
 		m_Selection = (int)m_TabGeo.size()-1;
-		
+
 		if(m_Selection < 0)
 			m_Selection = 0;
 	}
@@ -197,7 +197,7 @@ void CMap::GereContactPlayer( CPlayer *player )
 {
 	float pos[3];
 	player->getPosition( pos );
-	
+
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
 		(*iterGeo)->GereContactPlayer( pos, player );	// Gère les contacts entre l'objet géo et le joueur
@@ -229,11 +229,11 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeXY()%T", this );
 void CMap::EchangeXZ()
 {
 TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeXZ()%T", this );
-	
+
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
 		(*iterGeo)->EchangeXZ();
-	
+
 	vector<CLight*>::iterator iterLight;
 	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
 		(*iterLight)->EchangeXZ();
@@ -246,7 +246,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeYZ()%T", this );
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
 		(*iterGeo)->EchangeYZ();
-	
+
 	vector<CLight*>::iterator iterLight;
 	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
 		(*iterLight)->EchangeYZ();
@@ -255,7 +255,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeYZ()%T", this );
 void CMap::Scale( float scaleX, float scaleY, float scaleZ )
 {
 TRACE().p( TRACE_MOTEUR3D, "CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scaleX, scaleY, scaleZ, this );
-	
+
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
 		(*iterGeo)->Scale( scaleX, scaleY, scaleZ );
@@ -265,11 +265,11 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scale
 		(*iterLight)->Scale( scaleX, scaleY, scaleZ );
 }
 
-bool CMap::Lit(const string &nomFichier) 
+bool CMap::Lit(const string &nomFichier)
 {
 	string nomFichierComplet = string(nomFichier);
 	bool isResource = JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(nomFichierComplet);
-	
+
 	// Si le fichier Map n'est pas une resource alors c'est une map classique
 	if(!isResource) {
 		nomFichierComplet = ".\\map\\" + nomFichierComplet;
@@ -281,10 +281,10 @@ bool CMap::Lit(const string &nomFichier)
 
 	TiXmlDocument document(nomFichierXml.c_str());
 
-	if(document.LoadFile()) 
+	if(document.LoadFile())
 	{
 			// Element de map
-		TiXmlElement* elMap = document.FirstChildElement(Xml::MAP);		
+		TiXmlElement* elMap = document.FirstChildElement(Xml::MAP);
 		if(!elMap)
 			throw CErreur(0,"Fichier map corrompu");
 
@@ -379,7 +379,7 @@ TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichie
 	{
 			// Ouverture du fichier
 		CIfstreamMap::m_OffsetMateriaux = 0;
-		CIfstreamMap fichier( &m_TabMaterial );	
+		CIfstreamMap fichier( &m_TabMaterial );
 		if( !fichier.open( nomFichierMap ) )
 		{
 			string erreur( "Ouverture de fichier impossible (" );
@@ -409,7 +409,7 @@ TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichie
 			else if( mot==CGeoObject::identifier )		// Lecture d'un objet géométrique
 			{
 				CGeoObject *geo = new CGeoObject(this);	// Nouvel objet géométrique
-				
+
 				geo->setOffsetMateriau( fichier.OffsetMateriaux() );	// Décale les réf matériau de l'offset
 
 				if( !geo->LitFichier( fichier ) )		// Lit cet objet dans le fichier
@@ -418,14 +418,14 @@ TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichie
 					delete geo;
 					return false;		// Echec de la lecture du fichier Map
 				}
-				
+
 				geo->Init();
 				Add( geo );			// Ajoute-le à la map
 			}
 			else if( mot==CTextureMaterialGeo::identifier )		// Lecture d'un objet géométrique
 			{
 				CTextureMaterialGeo *geo = new CTextureMaterialGeo(this);	// Nouvel objet géométrique
-				
+
 				geo->setOffsetMateriau( fichier.OffsetMateriaux() );	// Décale les réf matériau de l'offset
 
 				if( !geo->LitFichier( fichier ) )		// Lit cet objet dans le fichier
@@ -434,14 +434,14 @@ TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichie
 					delete geo;
 					return false;		// Echec de la lecture du fichier Map
 				}
-				
+
 				geo->Init();
 				Add( geo );			// Ajoute-le à la map
 			}
 			else if( mot==CSimpleMaterialGeo::identifier )		// Lecture d'un objet géométrique
 			{
 				CSimpleMaterialGeo *geo = new CSimpleMaterialGeo(this);	// Nouvel objet géométrique
-				
+
 				geo->setOffsetMateriau(fichier.OffsetMateriaux());	// Décale les réf matériau de l'offset
 
 				if( !geo->LitFichier( fichier ) )		// Lit cet objet dans le fichier
@@ -450,7 +450,7 @@ TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichie
 					delete geo;
 					return false;		// Echec de la lecture du fichier Map
 				}
-				
+
 				geo->Init();
 				Add( geo );			// Ajoute-le à la map
 			}
@@ -465,39 +465,39 @@ TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichie
 					delete geo;
 					return false;		// Echec de la lecture du fichier Map
 				}
-				
+
 				geo->Init();
 				Add( geo );			// Ajoute-le à la map
 			}
 			else if( mot==CPorte::identifier)			// Lecture d'une porte
 			{
 				CPorte *porte = new CPorte( this );			// Nouvel objet géométrique
-				
+
 				porte->setOffsetMateriau( fichier.OffsetMateriaux() );	// Décale les réf matériau de l'offset
-				
+
 				if( !porte->LitFichier( fichier ) )		// Lit cet objet dans le fichier
 				{
 					cerr << "\nPorte corrompue dans : " << nomFichierMap;
 					delete porte;
 					return false;		// Echec de la lecture du fichier Map
 				}
-				
+
 				porte->Init();
 				Add( porte );			// Ajoute-la à la map
 			}
 			else if( mot==CNavette::identifier )		// Lecture d'une navette
 			{
 				CNavette *navette = new CNavette( this );			// Nouvel objet géométrique
-				
+
 				navette->setOffsetMateriau( fichier.OffsetMateriaux() );	// Décale les réf matériau de l'offset
-				
+
 				if( !navette->LitFichier( fichier ) )		// Lit cet objet dans le fichier
 				{
 					cerr << "\nPorte corrompue dans : " << nomFichierMap;
 					delete navette;
 					return false;		// Echec de la lecture du fichier Map
 				}
-				
+
 				navette->Init();
 				Add( navette );			// Ajoute-la à la map
 			}
@@ -581,7 +581,7 @@ TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichie
 									return false;		// Echec de la lecture du fichier Map
 								}
 								Add( matTex );
-								
+
 								fichier >> mot;
 							}
 
@@ -596,11 +596,11 @@ TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichie
 									return false;
 								}
 
-                                fichier >> mot;																
+                                fichier >> mot;
 								if( mot=="DATA_Porte" )
 								{
 									porte->LitFichierPorte( fichier );	// Lit les données porte
-									
+
 									porte->Init();
 									Add( porte );			// Ajoute-la à la map
 								}
@@ -654,11 +654,11 @@ TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichie
 									return false;
 								}
 
-                                fichier >> mot;																
+                                fichier >> mot;
 								if( mot=="DATA_Navette" )
 								{
 									navette->LitFichierNavette( fichier );	// Lit les données porte
-									
+
 									navette->Init();
 									Add( navette );			// Ajoute-la à la map
 								}
@@ -680,7 +680,7 @@ TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichie
 			}
 		}
 
-		cout << "\nLecture du fichier MAP (" << nomFichier << ") Ok !!!\n";		
+		cout << "\nLecture du fichier MAP (" << nomFichier << ") Ok !!!\n";
 		return true;
 	}
 
@@ -688,7 +688,7 @@ TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichie
 	{
 		cerr << "\nErreur (exeption) : " << erreur.toString();
 	}
-	
+
 	return false;
 }*/
 
@@ -792,10 +792,9 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::SaveFichierMap() Sauvegarde du fichier MAP Ok%
 bool CMap::Contact( const float pos[3], float dist )
 {
 	bool var = false;	// Pas de contact par défaut
-	float distanceW = 10000.0f;
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
-	{		
+	{
 		var = (*iterGeo)->Contact( pos, dist );
 		if( var )	// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
 			break;
@@ -815,7 +814,7 @@ void CMap::afficheToutesTextures( int x, int y )
 {
 	glEnable( GL_TEXTURE_2D );
 	int nbrX = 0;
-	int nbrY = 0; 
+	int nbrY = 0;
 
 	vector<CMaterial*>::iterator iter;
 	for( iter=m_TabMaterial.begin() ; iter!=m_TabMaterial.end() ; iter++ )
@@ -828,7 +827,7 @@ void CMap::afficheToutesTextures( int x, int y )
 			CMaterialTexture *matRef = (CMaterialTexture*)m;
 
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-			glBindTexture( GL_TEXTURE_2D, matRef->texName );	
+			glBindTexture( GL_TEXTURE_2D, matRef->texName );
 
 			glBegin( GL_QUADS );		//AVOIR : mettre les coord de tex dans glArrayElement
 				glTexCoord2f( 0.0f, 0.0f );
@@ -843,11 +842,11 @@ void CMap::afficheToutesTextures( int x, int y )
 				glTexCoord2f( 0.0f, 1.0f );
 				glVertex2i( (x/8)*nbrX,		(y/8)*(nbrY+1)	);
 			glEnd();
-			
+
 			glDisable( GL_TEXTURE_2D );
 			glColor3f( 1.0f, 0.0f, 0.0f );
 			glLineWidth( 2 );
-			
+
 			glBegin( GL_LINE_LOOP );		//AVOIR : mettre les coord de tex dans glArrayElement
 				glVertex2i( (x/8)*nbrX,		(y/8)*nbrY		);
 				glVertex2i( (x/8)*(nbrX+1), (y/8)*nbrY		);
@@ -882,11 +881,11 @@ void CMap::afficheToutesTextures( int x, int y )
 				float *texVertex = TabTex[ matMulti->m_TabMat[ m_TabSubMat[i] ]->m_CanalTex ]->TexVertex;
 				int *texFaces = TabTex[ matMulti->m_TabMat[ m_TabSubMat[i] ]->m_CanalTex ]->TexFaces;
 
-				glBindTexture( GL_TEXTURE_2D, matMulti->m_TabMat[ m_TabSubMat[i] ]->texName );	
-				
+				glBindTexture( GL_TEXTURE_2D, matMulti->m_TabMat[ m_TabSubMat[i] ]->texName );
+
 				glLineWidth( 1 );
 
-				glBegin( JKT_RenderMode );	//AVOIR : mettre les coord de tex dans glArrayElement		
+				glBegin( JKT_RenderMode );	//AVOIR : mettre les coord de tex dans glArrayElement
 					glTexCoord2fv( &texVertex[3*texFaces[3*i]] );
 					glArrayElement( m_TabFaces[3*i] );
 

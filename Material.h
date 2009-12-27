@@ -32,8 +32,8 @@ public:
 
 		// Constructeurs / Destructeur
 	CMaterial();
-	~CMaterial();
-	
+	virtual ~CMaterial();
+
 	MAT_TYPE Type() const;	// Retourne le type de matériau (simple, tree, ...)
 
 	virtual void LitTexture() {};	// Lit le fichier de texture associé au matériau

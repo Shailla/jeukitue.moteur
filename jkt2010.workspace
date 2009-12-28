@@ -2,7 +2,5 @@
 <CodeBlocks_workspace_file>
 	<Workspace title="Workspace">
 		<Project filename="jkt2010.cbp" active="1" />
-		<Project filename="..\..\essai\opengl\opengl.cbp" />
-		<Project filename="..\..\essai\sdl\sdl.cbp" />
 	</Workspace>
 </CodeBlocks_workspace_file>

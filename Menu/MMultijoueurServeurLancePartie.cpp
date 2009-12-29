@@ -20,8 +20,8 @@ using namespace std;
 #include "reseau/Server.h"
 #include "Focus.h"
 #include "reseau/Reseau.h"
-#include "Cfg.h"
-#include "Game.h"
+#include "main/Cfg.h"
+#include "main/Game.h"
 #include "reseau/enumReseau.h"
 
 #include "Menu/MMultijoueurServeurLancePartie.h"

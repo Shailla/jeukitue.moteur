@@ -3,7 +3,7 @@
 using namespace std;
 
 #include "menu/OpenCentralisateurView.h"
-#include "Fabrique.h"
+#include "main/Fabrique.h"
 #include "centralisateur/Centralisateur.h"
 #include "Portail.h"
 #include "util/Trace.h"

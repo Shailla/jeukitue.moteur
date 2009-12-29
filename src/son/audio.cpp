@@ -18,7 +18,7 @@ using namespace std;
 #include "util/Trace.h"
 #include "util/V3D.h"
 #include "son/DemonSons.h"
-#include "Cfg.h"
+#include "main/Cfg.h"
 
 #include "audio.h"
 

@@ -9,13 +9,13 @@ using namespace std;
 #include "sdl.h"
 #include "sdl_net.h"
 
-#include "Cfg.h"
-#include "TableauIndex.h"
+#include "main/Cfg.h"
+#include "util/TableauIndex.h"
 #include "util/Tableau.cpp"
 #include "reseau/SPA.h"
-#include "Player.h"
+#include "main/Player.h"
 #include "reseau/Reseau.h"
-#include "Game.h"
+#include "main/Game.h"
 #include "enumReseau.h"
 
 #include "Portail.h"

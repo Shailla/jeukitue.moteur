@@ -12,9 +12,9 @@ using namespace std;
 #include "DlgBoite.h"
 #include "Menu.h"
 
-#include "Game.h"
+#include "main/Game.h"
 #include "Focus.h"
-#include "Cfg.h"
+#include "main/Cfg.h"
 #include "util/Trace.h"
 
 #include "Menu/MAide.h"

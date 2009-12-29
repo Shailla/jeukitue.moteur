@@ -14,11 +14,11 @@
 
 using namespace std;
 
-#include "Material.h"
-#include "MaterialMulti.h"
-#include "MaterialTexture.h"
+#include "spatial/materiau/Material.h"
+#include "spatial/materiau/MaterialMulti.h"
+#include "spatial/materiau/MaterialTexture.h"
 
-#include "Geo.h"
+#include "spatial/geo/Geo.h"
 
 namespace JKT_PACKAGE_MOTEUR3D
 {
@@ -68,7 +68,7 @@ public:
 	int m_NumVertex;			// Nbre de sommets
 	int m_NumFaces;				// Nbre d'index de sommets
 	int m_NumTexVertex;			// Nbre de sommets de texture, "0" si pas de texture associée
-	int m_NumTexFaces;			// Nbre d'index de sommets de texture	
+	int m_NumTexFaces;			// Nbre d'index de sommets de texture
 
 	float *m_TabVertex;			// Pointeur sur le tableau de sommets
 	int *m_TabFaces;			// Pointeur sur le tableau d'index des sommets
@@ -80,7 +80,7 @@ public:
 		//Constructeurs / Destructeur
 	CGeoObject( CMap *Map, unsigned int nbrVertex, unsigned int nbrFaces );
 	CGeoObject( CMap *Map );
-		
+
 	~CGeoObject();
 
 		//Fonctions membres
@@ -88,7 +88,7 @@ private:
 	void MinMax();			// Calcul les variables MinX,...,MaxZ de cet objet géométrique
 	void Bulle();			// Calcul les variables 'centre' et rayon
 	void ConstruitBase();	// Construit les vecteurs normaux aux triangles de l'objet géo
-	
+
 	void AfficheWithMaterialMultiTexture( CMaterialMulti *mat );
 	void AfficheWithMaterialTexture( CMaterialTexture *mat );
 	void AfficheWithMaterialSimple( CMaterial *mat );
@@ -112,7 +112,7 @@ public:
 		// Fonctions pour l'interface CGeo
 	bool LitFichier( CIfstreamMap &fichier );			// Lit un objet géo dans un fichier Map
 	bool LitFichierGeoObject( CIfstreamMap &fichier );	// Lit un objet géo dans un fichier
-	bool SaveNameType( ofstream &fichier );				// Sauve le nom du type d'objet géométrique	
+	bool SaveNameType( ofstream &fichier );				// Sauve le nom du type d'objet géométrique
 	bool SaveFichierMap( ofstream &fichier );			// Sauve l'objet géo dans un fichier Map
 	void OffsetMateriau( int offset );					// Décale la référence matériau de l'offset
 

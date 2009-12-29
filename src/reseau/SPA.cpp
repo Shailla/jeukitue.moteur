@@ -10,7 +10,7 @@ using namespace std;
 #include "util/Erreur.h"
 
 #include "reseau/SPA.h"
-#include "Player.h"
+#include "main/Player.h"
 
 namespace JKT_PACKAGE_RESEAU
 {

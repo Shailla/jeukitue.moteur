@@ -16,7 +16,7 @@ class CGeoObject;
 class CPorte;
 class CReseau;
 
-#include "Game.h"
+#include "main/Game.h"
 #include "Focus.h"
 
 #include "Menu/MMenuPrinc.h"

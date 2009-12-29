@@ -17,7 +17,7 @@ using namespace std;
 #include "reseau/Client.h"
 #include "reseau/Server.h"
 #include "Focus.h"
-#include "Cfg.h"
+#include "main/Cfg.h"
 #include "reseau/Reseau.h"
 #include "util/Trace.h"
 

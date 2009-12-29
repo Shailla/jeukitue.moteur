@@ -17,9 +17,9 @@ using namespace glfont;
 
 class CGame;
 #include "util/Trace.h"
-#include "IfstreamMap.h"
+#include "spatial/IfstreamMap.h"
 #include "Focus.h"
-#include "Cfg.h"
+#include "main/Cfg.h"
 
 #include "Dlg.h"
 #include "DlgBoite.h"

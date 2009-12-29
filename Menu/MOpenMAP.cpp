@@ -14,7 +14,7 @@ using namespace std;
 #include "util/FindFolder.h"
 #include "DlgBoite.h"
 #include "Menu.h"
-#include "Game.h"
+#include "main/Game.h"
 #include "Focus.h"
 #include "util/Trace.h"
 #include "Menu/MMenuPrinc.h"

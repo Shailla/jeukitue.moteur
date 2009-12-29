@@ -18,13 +18,13 @@ class CGame;
 
 #include "util/Erreur.h"
 #include "util/V3D.h"
-#include "Cfg.h"
+#include "main/Cfg.h"
 #include "reseau/SPA.h"
-#include "Player.h"
+#include "main/Player.h"
 #include "reseau/Client.h"
 #include "reseau/Server.h"
-#include "contact.h"
-#include "Game.h"
+#include "spatial/contact.h"
+#include "main/Game.h"
 #include "util/Trace.h"
 
 #include "enumReseau.h"

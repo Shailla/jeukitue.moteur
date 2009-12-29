@@ -13,7 +13,7 @@ using namespace std;
 #include "Menu.h"
 #include "util/Trace.h"
 #include "Focus.h"
-#include "Cfg.h"
+#include "main/Cfg.h"
 
 #include "Menu/MReseau.h"
 #include "Menu/MConfiguration.h"

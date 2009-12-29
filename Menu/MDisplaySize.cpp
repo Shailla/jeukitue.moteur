@@ -8,14 +8,14 @@
 #include <iostream>
 using namespace std;
 
+#include "SDL.h"
+
 #include "DlgBoite.h"
 #include "Menu.h"
-
-#include "Cfg.h"
+#include "main/Cfg.h"
 #include "Focus.h"
 #include "util/Trace.h"
-#include "SDL.h"
-#include "divers.h"
+#include "main/divers.h"
 
 #include "Menu/MReseau.h"
 

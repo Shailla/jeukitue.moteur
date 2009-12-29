@@ -9,7 +9,7 @@ using namespace std;
 
 #include "DlgBoite.h"
 #include "Menu.h"
-#include "Game.h"
+#include "main/Game.h"
 #include "Focus.h"
 
 #include "Menu/MMenuPrinc2.h"

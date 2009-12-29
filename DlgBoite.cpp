@@ -13,8 +13,8 @@ using namespace std;
 
 #include "util/Trace.h"
 #include "util/Erreur.h"
-#include "Textures.h"
-#include "Cfg.h"
+#include "spatial/materiau/Textures.h"
+#include "main/Cfg.h"
 #include "Focus.h"
 
 #include "DlgBoite.h"

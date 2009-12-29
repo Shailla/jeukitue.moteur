@@ -42,8 +42,8 @@
 			<Add directory="Libs\glFont" />
 			<Add directory="Libs\glext" />
 			<Add directory="Libs\tinyxml_2_5_2" />
-			<Add directory="D:\jkt_repo_2008\moteur\" />
-			<Add directory="D:\jkt_repo_2008\moteur\src" />
+			<Add directory="." />
+			<Add directory="src" />
 		</Compiler>
 		<Linker>
 			<Add library="mingw32" />

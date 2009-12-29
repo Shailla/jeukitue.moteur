@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="Copie de menu_textes.h" open="1" top="1" tabpos="3">
-		<Cursor position="253" topLine="1785" />
+	<File name="Copie de menu_textes.h" open="0" top="0" tabpos="3">
+		<Cursor position="253" topLine="1771" />
 	</File>
 	<File name="DeleteWithGame.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="529" topLine="3" />
@@ -13,8 +13,8 @@
 	<File name="Dlg.h" open="0" top="0" tabpos="0">
 		<Cursor position="335" topLine="9" />
 	</File>
-	<File name="DlgBoite.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="300" topLine="11" />
+	<File name="DlgBoite.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="194" topLine="0" />
 	</File>
 	<File name="DlgBoite.h" open="0" top="0" tabpos="0">
 		<Cursor position="2625" topLine="60" />
@@ -100,10 +100,10 @@
 	<File name="Portail.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="286" topLine="14" />
 	</File>
-	<File name="Portail.h" open="1" top="0" tabpos="2">
+	<File name="Portail.h" open="0" top="0" tabpos="2">
 		<Cursor position="0" topLine="0" />
 	</File>
-	<File name="TypeSon.h" open="1" top="0" tabpos="1">
+	<File name="TypeSon.h" open="0" top="0" tabpos="1">
 		<Cursor position="0" topLine="0" />
 	</File>
 	<File name="ifstreamWork.cpp" open="0" top="0" tabpos="0">

@@ -11,12 +11,12 @@
 
 using namespace std;
 
-#include "DlgBoite.h"
-#include "Menu.h"
+#include "Menu/DlgBoite.h"
+#include "Menu/Menu.h"
 
 #include "reseau/Client.h"
 #include "reseau/Server.h"
-#include "Focus.h"
+#include "main/Focus.h"
 #include "main/Cfg.h"
 #include "reseau/Reseau.h"
 #include "util/Trace.h"

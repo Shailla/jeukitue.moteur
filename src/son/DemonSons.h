@@ -10,7 +10,7 @@ requête sur ce son chaque fois qu'une rocket explose. Il se peut bien-sûr que pl
 explose en même temps.
 
 Il existe 2 façons de jouer un son :
-	
+
 	- la plus simple joue le son une seule fois sans que l'on puisse modifier la façon dont
 	il est joué en cours. Par exemple l'explosion d'une rocket est
 	parfaitement localisée dans l'espace. Dans ce cas la requête est crée de façon transparente
@@ -35,7 +35,7 @@ Il existe 2 façons de jouer un son :
 
 using namespace std;
 
-#include "TypeSon.h"
+#include "son/TypeSon.h"
 
 namespace JKT_PACKAGE_SON {
 
@@ -61,11 +61,11 @@ public:
 	CSon* CreateSon(const char *nomFichierSon, TYPE_SON type=SON_MONO);	// Charge un CSon à partir d'un fichier wave
 	CSon3D* CreateSon3D(const char *nomFichierSon);	// Charge un CSon3D à partir d'un fichier wave
 	void Delete( CSon *son );	// Supprime un son du démon (et ses requêtes bien entendu)
-	
+
 	void Play( CSon* id );			// Joue un son sans retour d'identifiant de requête
 	void Play( CReqSon *id );		// (re)joue un son qui possède déjà une requête
 	CReqSon* PlayID( CSon* id, bool pause=false );	// Joue un son avec retour d'identifiant de requête
-	void Refresh();				
+	void Refresh();
 	void Delete( CReqSon *req );	// Destruction/suppression d'une requête
 };
 

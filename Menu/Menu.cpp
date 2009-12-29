@@ -18,12 +18,12 @@ using namespace glfont;
 class CGame;
 #include "util/Trace.h"
 #include "spatial/IfstreamMap.h"
-#include "Focus.h"
+#include "main/Focus.h"
 #include "main/Cfg.h"
 
-#include "Dlg.h"
-#include "DlgBoite.h"
-#include "Menu.h"
+#include "Menu/Dlg.h"
+#include "Menu/DlgBoite.h"
+#include "Menu/Menu.h"
 
 using namespace JKT_PACKAGE_MENU;
 

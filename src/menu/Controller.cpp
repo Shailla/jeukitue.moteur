@@ -5,7 +5,7 @@ using namespace std;
 #include "menu/OpenCentralisateurView.h"
 #include "main/Fabrique.h"
 #include "centralisateur/Centralisateur.h"
-#include "Portail.h"
+#include "Menu/Portail.h"
 #include "util/Trace.h"
 
 #include "menu/Controller.h"

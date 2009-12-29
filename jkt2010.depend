@@ -7910,3 +7910,30 @@
 	"SDL.h"
 	"utils_SDL.h"
 
+1262111664 source:h:\jkt\svn\trunk\moteur\menu\dlg.cpp
+	"Dlg.h"
+
+1262111664 h:\jkt\svn\trunk\moteur\menu\dlg.h
+	"SDL.h"
+
+1262114671 source:h:\jkt\svn\trunk\moteur\menu\dlgboite.cpp
+	<string>
+	<iostream>
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	"SDL.h"
+	"glfont2.h"
+	"util/Trace.h"
+	"util/Erreur.h"
+	"spatial/materiau/Textures.h"
+	"main/Cfg.h"
+	"main/Focus.h"
+	"Menu/DlgBoite.h"
+
+1262111664 h:\jkt\svn\trunk\moteur\src\main\focus.h
+
+1262111664 h:\jkt\svn\trunk\moteur\menu\dlgboite.h
+	<vector>
+	"Dlg.h"
+

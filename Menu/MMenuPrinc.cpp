@@ -4,8 +4,8 @@
 	/*							*/
 	/****************************/
 
-#include "DlgBoite.h"
-#include "Menu.h"
+#include "Menu/DlgBoite.h"
+#include "Menu/Menu.h"
 #include "util/Trace.h"
 
 class CMaterial;
@@ -17,7 +17,7 @@ class CPorte;
 class CReseau;
 
 #include "main/Game.h"
-#include "Focus.h"
+#include "main/Focus.h"
 
 #include "Menu/MMenuPrinc.h"
 

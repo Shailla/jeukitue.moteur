@@ -10,10 +10,10 @@ using namespace std;
 
 #include "SDL.h"
 
-#include "DlgBoite.h"
-#include "Menu.h"
+#include "Menu/DlgBoite.h"
+#include "Menu/Menu.h"
 #include "main/Cfg.h"
-#include "Focus.h"
+#include "main/Focus.h"
 #include "util/Trace.h"
 #include "main/divers.h"
 

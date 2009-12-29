@@ -11,8 +11,8 @@
 
 using namespace std;
 
-#include "DlgBoite.h"
-#include "Menu.h"
+#include "Menu/DlgBoite.h"
+#include "Menu/Menu.h"
 
 using namespace JKT_PACKAGE_MENU;
 
@@ -35,7 +35,7 @@ class CPorte;
 #include "main/RequeteProcess.h"
 #include "spatial/Map.h"
 #include "main/Game.h"
-#include "Focus.h"
+#include "main/Focus.h"
 #include "main/Cfg.h"
 #include "util/Trace.h"
 

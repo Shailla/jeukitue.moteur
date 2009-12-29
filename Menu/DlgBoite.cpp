@@ -15,9 +15,9 @@ using namespace std;
 #include "util/Erreur.h"
 #include "spatial/materiau/Textures.h"
 #include "main/Cfg.h"
-#include "Focus.h"
+#include "main/Focus.h"
 
-#include "DlgBoite.h"
+#include "Menu/DlgBoite.h"
 
 using namespace glfont;
 using namespace JKT_PACKAGE_MENU;

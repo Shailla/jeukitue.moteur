@@ -12,13 +12,13 @@
 using namespace std;
 
 #include "util/FindFolder.h"
-#include "DlgBoite.h"
-#include "Menu.h"
+#include "Menu/DlgBoite.h"
+#include "Menu/Menu.h"
 #include "util/Trace.h"
 
 #include "reseau/Client.h"
 #include "reseau/Server.h"
-#include "Focus.h"
+#include "main/Focus.h"
 #include "reseau/Reseau.h"
 #include "main/Cfg.h"
 #include "main/Game.h"

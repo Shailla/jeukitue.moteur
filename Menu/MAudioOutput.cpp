@@ -7,11 +7,11 @@
 #include <fstream>
 using namespace std;
 
-#include "DlgBoite.h"
-#include "Menu.h"
+#include "Menu/DlgBoite.h"
+#include "Menu/Menu.h"
 
 #include "main/Game.h"
-#include "Focus.h"
+#include "main/Focus.h"
 #include "main/Cfg.h"
 #include "util/Trace.h"
 

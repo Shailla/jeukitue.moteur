@@ -85,10 +85,10 @@ class CGame;
 #include "spatial/contact.h"		//Fonctions utilisées pour le contact
 #include "main/divers.h"		//Initialisation d'SDL
 #include "son/audio.h"
-#include "DlgBoite.h"
-#include "Portail.h"
-#include "Menu.h"			// Fonctions de gestion du menu
-#include "Focus.h"			// Gestion du focus
+#include "Menu/DlgBoite.h"
+#include "Menu/Portail.h"
+#include "Menu/Menu.h"			// Fonctions de gestion du menu
+#include "main/Focus.h"			// Gestion du focus
 #include "spatial/materiau/Textures.h"
 #include "util/TableauIndex.h"
 #include "reseau/Client.h"

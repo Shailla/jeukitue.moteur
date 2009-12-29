@@ -49,7 +49,7 @@ using namespace std;
 using namespace glfont;
 
 #include "GenRef.h"
-#include "RessourcesLoader.h"
+#include "ressource/RessourcesLoader.h"
 #include "math_vectoriel.h"		//Fonctions de calculs vectoriels
 #include "V3D.h"
 #include "mathFast.h"
@@ -77,32 +77,31 @@ class CGame;
 #include "MaterialMulti.h"
 #include "Light.h"			//Lumières de la map
 #include "Map.h"
-#include "DemonSons.h"
-#include "Son.h"
-#include "ReqSon.h"
-#include "SPA.h"
+#include "son/DemonSons.h"
+#include "son/Son.h"
+#include "son/ReqSon.h"
+#include "reseau/SPA.h"
 #include "Player.h"			//Paramètres du joueur
 #include "contact.h"		//Fonctions utilisées pour le contact
 #include "divers.h"		//Initialisation d'SDL
-#include "audio.h"
+#include "son/audio.h"
 #include "DlgBoite.h"
 #include "Portail.h"
 #include "Menu.h"			// Fonctions de gestion du menu
 #include "Focus.h"			// Gestion du focus
 #include "Textures.h"
 #include "TableauIndex.h"
-#include "Client.h"
-#include "Server.h"
+#include "reseau/Client.h"
+#include "reseau/Server.h"
 #include "RequeteProcess.h"
 #include "Game.h"
 #include "V3D.h"
 #include "Particule.h"
 #include "MoteurParticules.h"
-#include "Reseau.h"
-#include "enumReseau.h"
-#include "Controller.h"
-#include "Viewer.h"
-#include "Controller.h"
+#include "reseau/Reseau.h"
+#include "reseau/enumReseau.h"
+#include "menu/Controller.h"
+#include "menu/Viewer.h"
 #include "Fabrique.h"
 
 using namespace JKT_PACKAGE_MENU;

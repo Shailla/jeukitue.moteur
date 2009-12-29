@@ -15,12 +15,12 @@ using namespace std;
 #include "Menu.h"
 #include "Trace.h"
 
-#include "Client.h"
-#include "Server.h"
-#include "Reseau.h"
+#include "reseau/Client.h"
+#include "reseau/Server.h"
+#include "reseau/Reseau.h"
 #include "Focus.h"
 #include "Cfg.h"
-#include "Reseau.h"
+#include "reseau/Reseau.h"
 
 #include "Menu/MMultijoueur.h"
 
@@ -80,19 +80,19 @@ void refreshPingserver()
 {
 	if( bAttenteMenuPing )
 	{
-		Uint32 ping = Reseau.getPingClientServer();	
+		Uint32 ping = Reseau.getPingClientServer();
 		if( ping!=-1 )
 		{
-			if( ping >=9999 )	// Délai trop long ! 
+			if( ping >=9999 )	// Délai trop long !
 			{
 				MenuPingserver.add_ItemsDroits( 0, "----" );
 				bAttenteMenuPing = false;
 			}
 			else
-			{	
+			{
 				stringstream str;
 				str << ping << " ms";;
-				
+
 				MenuPingserver.add_ItemsDroits( 0, str.str().c_str() );
 				bAttenteMenuPing = false;
 			}

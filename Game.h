@@ -7,7 +7,7 @@
 #include "Erreur.h"
 #include "TableauIndex.h"
 #include "RequeteProcess.h"
-#include "enumReseau.h"
+#include "reseau/enumReseau.h"
 
 namespace JKT_PACKAGE_RESEAU
 {
@@ -25,12 +25,12 @@ class CPlayer;
 	// Cette classe est destinée à contenir toutes les paramètres vivants, c'est à dire
 	// toutes les données et variables de la partie en cours, du réseau...
 
-class CGame	
+class CGame
 {
 	CPlayer *m_Erwin;							// Pointeur sur le joueur actif
 	JKT_PACKAGE_MOTEUR3D::CMap	*m_pMap;		// Map en cours de jeu
 	int m_Mode;									// Mode de jeu (parie normale, client ou serveur
-	bool m_bGravite;							// Indique si la gravité est active	
+	bool m_bGravite;							// Indique si la gravité est active
 
 public:
 	enum modePartie {
@@ -55,10 +55,10 @@ public:
 	bool isModeServer();	// Indique si une partie serveur est en cours
 	void Quit();			// Passe en mode aucun jeu en cours
 	bool Gravite() const;	// Indique si la gravité est active
-	void Gravite(bool gravite);	
-	
-		// Gestion de la Map 
-	JKT_PACKAGE_MOTEUR3D::CMap *getMap();			
+	void Gravite(bool gravite);
+
+		// Gestion de la Map
+	JKT_PACKAGE_MOTEUR3D::CMap *getMap();
 	bool openMap( const string &nomFichierMap ) throw(JKT_PACKAGE_UTILS::CErreur);
 
 		// Gestion du mode
@@ -86,7 +86,7 @@ public:
 	void GereContactPlayers();		// Gère les contacts entre tous les joueurs et la map
 	void setPlayerList(int nbr);	// Indique le nombre de joueurs de la partie
 	void quit();					// Quitte la partie en cours
-	
+
 		// Gestion du joueur principal (actif)
 	CPlayer *Erwin();								// Revoie le joueur principal
 	void Erwin( CPlayer *erwin );					// Set le joueur principal
@@ -95,7 +95,7 @@ public:
 	void afficheToutesTextures(int x, int y) const;
 	void afficheViseur(int x, int y) const;			// Affiche le joueur à la position voulue sur l'écran
 	void deplaceTousPlayer();
-	void faitTousRequetesClavier();				
+	void faitTousRequetesClavier();
 	void faitTousPlayerGravite();
 	void timer();
 };

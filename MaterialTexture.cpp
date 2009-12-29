@@ -18,7 +18,7 @@ using namespace std;
 #include "Trace.h"
 #include "Material.h"
 #include "MaterialMaker.h"
-#include "RessourcesLoader.h"
+#include "ressource/RessourcesLoader.h"
 
 #include "MaterialTexture.h"
 
@@ -35,7 +35,7 @@ CMaterialTexture::CMaterialTexture( const CMaterial &mat )
 {
 		// Copie des attributs de 'mat'
 	m_Type = MAT_TYPE_TEXTURE;
-	
+
 	m_Ambient[0] = mat.m_Ambient[0];	m_Ambient[1] = mat.m_Ambient[1];		m_Ambient[2] = mat.m_Ambient[2];
 	m_Diffuse[0] = mat.m_Diffuse[0];	m_Diffuse[1] = mat.m_Diffuse[1];	m_Diffuse[2] = mat.m_Diffuse[2];
 	m_Specular[0] = mat.m_Specular[0];	m_Specular[1] = mat.m_Specular[1];	m_Specular[2] = mat.m_Specular[2];
@@ -53,7 +53,7 @@ CMaterialTexture::~CMaterialTexture()
 void CMaterialTexture::LitTexture() throw(JKT_PACKAGE_UTILS::CErreur)
 {
 TRACE().p( TRACE_MOTEUR3D,"CMaterialTexture::LitTexture() fichier=%s begin%T",m_FichierTexture.c_str(), this );
-	
+
 	bool changed = RessourcesLoader::getFileRessource(m_FichierTexture);
 	texName = LitFichierTexture(m_FichierTexture);
 
@@ -67,7 +67,7 @@ bool CMaterialTexture::Lit(TiXmlElement* element, string &repertoire)
 	// Référence
 	if(!element->Attribute(Xml::REF, &ref))
 		throw CErreur(0, "Fichier map corrompu : Reference materiau");
-	
+
 	m_Ref = (unsigned int)ref;
 
 	// Couleurs
@@ -101,23 +101,23 @@ bool CMaterialTexture::LitFichier( CIfstreamMap &fichier )
 
 	fichier >> m_FichierTexture;
 	RessourcesLoader::getFileRessource(fichier.getFileName(),m_FichierTexture);
-		
+
 	fichier >> mot;
 	if( mot!="Ambient" )
 		return false;	// Fichier corrompu
-	
+
 	fichier >> m_Ambient[0] >> m_Ambient[1] >> m_Ambient[2];
 
 	fichier >> mot;
 	if( mot!="Diffuse" )
 		return false;	// Fichier corrompu
-	
+
 	fichier >> m_Diffuse[0] >> m_Diffuse[1] >> m_Diffuse[2];
 
 	fichier >> mot;
 	if( mot!="Specular" )
 		return false;
-	
+
 	fichier >> m_Specular[0] >> m_Specular[1] >> m_Specular[2];
 
 	return true;
@@ -144,7 +144,7 @@ bool CMaterialTexture::Save(TiXmlElement* element)
 	elMat->SetAttribute(Xml::TYPE, Xml::TEXTURE);
 	elMat->SetAttribute(Xml::REF, getRef());
 	element->LinkEndChild(elMat);
-	
+
 		// Couleurs de matériau
 	CGeoMaker::SaveCouleur3fv(elMat, Xml::AMBIANTE, m_Ambient);
 	CGeoMaker::SaveCouleur3fv(elMat, Xml::DIFFUSE, m_Diffuse);

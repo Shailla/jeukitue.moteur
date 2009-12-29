@@ -39,12 +39,12 @@ class CGame;
 #include "GeoObject.h"
 #include "Porte.h"
 #include "Navette.h"
-#include "DemonSons.h"
-#include "SPA.h"
+#include "son/DemonSons.h"
+#include "reseau/SPA.h"
 #include "Player.h"
 #include "V3D.h"
 #include "GeoMaker.h"
-#include "RessourcesLoader.h"
+#include "ressource/RessourcesLoader.h"
 
 #include "Map.h"
 

@@ -25,7 +25,7 @@ extern bool Aide;
 extern CCfg Config;
 
 #include "Menu/MAudio.h"
-#include "audio.h"
+#include "son/audio.h"
 
 namespace JKT_PACKAGE_MENU
 {
@@ -65,8 +65,8 @@ void lanceMenuConfigAudioDrivers(void *var)
 TRACE().p( TRACE_MENU, "lanceMenuConfigAudioDrivers(var=%x)", var );
 	MenuConfigAudioDrivers.add_ItemsDroits( 0, resolveOutput(Config.Audio.m_Output) );
 	MenuConfigAudioDrivers.add_ItemsDroits( 1, resolveMixer(Config.Audio.m_Mixer) );
-	MenuConfigAudioDrivers.add_ItemsDroits( 2, (char*)resolveDriver(Config.Audio.m_Driver) );	
-	MenuConfigAudioDrivers.add_ItemsDroits( 3, (char*)resolveDriverRecord(Config.Audio.m_DriverRecord) );	
+	MenuConfigAudioDrivers.add_ItemsDroits( 2, (char*)resolveDriver(Config.Audio.m_Driver) );
+	MenuConfigAudioDrivers.add_ItemsDroits( 3, (char*)resolveDriverRecord(Config.Audio.m_DriverRecord) );
 
 	CDlg::SetMenuActif( &MenuConfigAudioDrivers );
 }

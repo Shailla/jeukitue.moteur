@@ -21,7 +21,7 @@ class CGame;
 #include "GeoMaker.h"
 #include "MaterialTexture.h"
 #include "GeoObject.h"
-#include "DemonSons.h"
+#include "son/DemonSons.h"
 #include "Player.h"
 #include "Game.h"
 
@@ -54,10 +54,10 @@ void CPorte::Init()			// Initialisation de l'objet géométrique
 void CPorte::Affiche()		// Fonction d'affichage de la porte
 {
 	glPushMatrix();
-		
+
 	glTranslatef( 0.0f, m_fOuverture, 0.0f );	// Translation de la porte de la valeur de son ouverture
 	CGeoObject::Affiche();						// Affichage
-	
+
 	glPopMatrix();
 }
 
@@ -85,7 +85,7 @@ void CPorte::Affiche()		// Fonction d'affichage de la porte
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierPorte";
 		throw CErreur( 0, erreur );
-	}		
+	}
 
 	if( !( fichier>>mot ) )		// Lecture de la vitesse de la porte
 	{
@@ -154,11 +154,11 @@ void CPorte::Affiche()		// Fonction d'affichage de la porte
 /*bool CPorte::SaveFichierMap( ofstream &fichier )	// Sauve l'objet géo dans un fichier Map
 {
 	fichier << "\n\n\nPorte\n";						// Type objet porte
-	
+
 	fichier << "\n\tMarge\t" <<	m_fMarge;			// Marge de la porte lors de son ouverture
 	fichier << "\n\tVitesse\t" << m_fVitesse;		// Vitesse de la porte
 	fichier << "\n\tDeclenche\t" <<	m_fDeclenche;	// Distance de la porte qui déclenche son mécanisme
-	
+
 	if( !CGeoObject::SaveFichierMap( fichier ) )
 		return false;		// La sauvegarde a echoue
 
@@ -173,11 +173,11 @@ bool CPorte::Save(TiXmlElement* element)	// Sauve l'objet géo dans un fichier Ma
 	elGeo->SetAttribute("Nom", getName());
 	elGeo->SetAttribute("Type", "Porte");
 	element->LinkEndChild(elGeo);
-	
+
 	Xml::SaveElement(elGeo, "Marget", m_fMarge);	// Marge de la porte lors de son ouverture
 	Xml::SaveElement(elGeo, "Vitesse", m_fVitesse);	// Vitesse de la porte
 	Xml::SaveElement(elGeo, "Declenche", m_fDeclenche);	// Distance de la porte qui déclenche son mécanisme
-	
+
 	if( !CGeoObject::Save( elGeo ) )
 		return false;		// La sauvegarde a echoue
 
@@ -234,14 +234,14 @@ void CPorte::Refresh( CGame *game )
 		if( m_fOuverture < m_fMarge )	// Si la porte n'est pas entièrement ouverte
 			m_fOuverture += m_fVitesse;		// Commande son ouverture
 
-		if( m_fOuverture > m_fMarge )	
+		if( m_fOuverture > m_fMarge )
 			m_fOuverture = m_fMarge;	// Mais elle peut pas dépasser son ouverture maximale
 	}
 	else
 	{
 		if( m_fOuverture > 0.0f )	// Si la porte n'est pas fermée
 			m_fOuverture -= m_fVitesse;		// Commande sa fermeture
-		
+
 		if( m_fOuverture < 0.0f )	// Mais la porte peut pas descendre sous terre !
 			m_fOuverture = 0.0f;
 	}

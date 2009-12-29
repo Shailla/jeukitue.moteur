@@ -1,0 +1,84 @@
+
+
+#ifndef __JKT__CLIENT_H
+#define __JKT__CLIENT_H
+
+#include "SDL.h"
+#include "SDL_net.h"
+#include "reseau/enumReseau.h"
+#include "reseau/SPA.h"
+
+class CPlayer;
+
+namespace JKT_PACKAGE_RESEAU
+{
+
+class CClient
+{
+public:
+	class CInfoServer
+	{
+		bool m_bReady;						// Informe si ces infos ont été actualisées depuis la dernière requête d'infos
+	public:
+		string nom;						// Nom du serveur
+		string map;						// Nom de la MAP jouée sur le serveur
+		CInfoServer();
+		CInfoServer &operator=( CInfoServer &infoServer );
+		void Ready( bool ready );
+		bool Ready();
+	};
+
+private:
+	Uint32 m_timePingClientServer;	// Temps à l'envoie d'un ping du client vers le serveur
+	int m_pingClientServer;			// Temps qu'à mis le dernier ping client->serveur
+
+	CInfoServer m_InfoServer;		// Map en cours, nom du serveur, ...
+
+	int m_uNbrPlayers;				// Nombre de joueurs sur le serveur
+	int m_MaxPlayers;				// Nombre maximum de joueurs sur le serveur
+
+public:
+	SDLNet_SocketSet socketSet;		// Les sockets à écouter
+	CSPA spaMaitre;
+	StatutClient m_Statut;			// Etat du client (demande de connexion envoyée, connecté, ...)
+	int IDpersonnel;				// Identifiant du joueur (sur ce PC)
+	string nomMAP;					// Nom de la MAP en cours
+
+		// Constructeurs/destructeurs
+	CClient();
+	~CClient();
+
+	void sendRequestInfoToServer();
+	void sendPingToServer();
+	void sendJoinTheGame( string &nomPlayer );
+
+	void recoit();
+
+	void setStatut(StatutClient statut);		// Renseigne l'état du client (déconnecté,connecté, partie en cours...)
+	StatutClient getStatut();				// Retourne l'état du client
+
+	void setMaxPlayers(int nbr);	// Crée le tableau des joueurs et enregistre le nombre de joueurs maxi
+	int getMaxPlayers();			// Retourne le nombre maximum de joueurs
+
+	unsigned int nbrPlayers();		// Donne le nombre de joueurs sur la MAP en cours
+	void nbrPlayers(unsigned int nbr);	// Implémente le nombre de joueurs sur la MAP en cours
+	bool AjoutePlayer(int pos,CPlayer *player);	// Ajoute un joueur dans la liste des joueurs
+	CPlayer* GetPlayer(int pos);	// Retourne un pointeur sur l'élément indexé 'pos'
+	int SuivantPlayer( int pos );	// Renvoie l'index de l'élément après l'élément indexé par 'pos'
+
+	void decodeConnecte( Uint16, Uint16 ); //Décode les paquets recus du réseau
+	bool decodeNonConnecte( Uint16 code1, Uint16 code2 );
+	bool ouvre( const string &address, Uint16 port );
+	CInfoServer getInfoServer();
+	int getPingClientServeur();
+	void emet( CPlayer &player );
+
+private:
+	void decodeRecap( Uint16 code2 );	// Gestion des msg de récapitulation de partie
+	void decodeError( Uint16 code2 );		// Gestion des msg d'erreur
+};
+
+}	// JKT_PACKAGE_RESEAU
+
+#endif
+

@@ -21,7 +21,7 @@ class CGame;
 #include "GeoMaker.h"
 #include "MaterialTexture.h"
 #include "GeoObject.h"
-#include "DemonSons.h"
+#include "son/DemonSons.h"
 #include "Game.h"
 
 #include "Navette.h"
@@ -124,7 +124,7 @@ void CPointNavette::SavePoint(TiXmlElement* element)
 {
 		// Sauve les données générales
 	TiXmlElement* elPoi = new TiXmlElement("Point");
-	
+
 		// Vitesse
 	Xml::SaveElement(elPoi, "Vitesse", m_Vitesse);
 
@@ -157,11 +157,11 @@ void CNavette::Init()			// Initialisation de l'objet géométrique
 void CNavette::Affiche()		// Fonction d'affichage de la navette
 {
 	glPushMatrix();
-		
+
 	glTranslatef( m_Position.X, m_Position.Y, m_Position.Z );
 
 	CGeoObject::Affiche();						// Affichage
-	
+
 	glPopMatrix();
 }
 
@@ -177,7 +177,7 @@ void CNavette::Affiche()		// Fonction d'affichage de la navette
 		erreur += ") dans LitFichierNavette";
 		throw CErreur( 1, erreur );
 	}
-	if( mot!="NbrPoints" )			
+	if( mot!="NbrPoints" )
 	{
 		string erreur( "\nFichier corrompu (" );
 		erreur += fichier.getFileFullName();
@@ -190,7 +190,7 @@ void CNavette::Affiche()		// Fonction d'affichage de la navette
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
 		throw CErreur( 3, erreur );
-	}		
+	}
 	for( int i=0 ; i<nbrPoints ; i++ )
 	{
 		CPointNavette point;
@@ -221,9 +221,9 @@ void CNavette::Affiche()		// Fonction d'affichage de la navette
 /*bool CNavette::SaveFichierMap( ofstream &fichier )	// Sauve l'objet géo dans un fichier Map
 {
 	fichier << "\n\n\nNavette\n";						// Type objet navette
-	
+
 	fichier << "\n\tNbrPoints\t" <<	(unsigned int)m_ListePoints.size();			// Marge de la navette lors de son ouverture
-	
+
 	vector<CPointNavette>::iterator iter;
 	for( iter=m_ListePoints.begin() ; iter!=m_ListePoints.end() ; iter++ )
 		(*iter).SaveFichierPoint( fichier );
@@ -242,9 +242,9 @@ bool CNavette::Save(TiXmlElement* element)	// Sauve l'objet géo dans un fichier 
 	elGeo->SetAttribute("Nom", getName());
 	elGeo->SetAttribute("Type", "Navette");
 	element->LinkEndChild(elGeo);
-	
+
 	Xml::SaveElement(elGeo, "NbrPoints", (int)m_ListePoints.size());
-	
+
 	vector<CPointNavette>::iterator iter;
 	for( iter=m_ListePoints.begin() ; iter!=m_ListePoints.end() ; iter++ )
 		(*iter).SavePoint( elGeo );
@@ -268,7 +268,7 @@ int CNavette::prochainPoint( int i )
 		m_Position = m_ListePoints[ i ].m_Position;
 		m_Position -= m_Centre;
 		m_Vitesse = m_ListePoints[ i ].m_Vitesse;
-		
+
 		if( m_distPoints )
 			m_Direction = ecart.directeur() * m_Vitesse;
 		else
@@ -283,7 +283,7 @@ int CNavette::prochainPoint( int i )
 		m_Position = m_ListePoints[ i ].m_Position;
 		m_Position -= m_Centre;
 		m_Vitesse = m_ListePoints[ i ].m_Vitesse;
-		
+
 		if( m_distPoints )
 			m_Direction = ecart.directeur() * m_Vitesse;
 		else
@@ -299,7 +299,7 @@ int CNavette::prochainPoint( int i )
 		m_Position = m_ListePoints[ i ].m_Position;
 		m_Position -= m_Centre;
 		m_Vitesse = m_ListePoints[ i ].m_Vitesse;
-		
+
 		if( m_distPoints )
 			m_Direction = ecart.directeur() * m_Vitesse;
 		else

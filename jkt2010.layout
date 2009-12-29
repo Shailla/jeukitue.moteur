@@ -1,40 +1,313 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="Client.cpp" open="0" top="0" tabpos="0">
-		<Cursor position="7878" topLine="293" />
+	<File name="Cfg.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="469" topLine="22" />
 	</File>
-	<File name="Data.h" open="0" top="0" tabpos="0">
-		<Cursor position="84" topLine="0" />
+	<File name="Copie de menu_textes.h" open="0" top="0" tabpos="0">
+		<Cursor position="37596" topLine="1565" />
 	</File>
-	<File name="DeleteWithGame.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="258" topLine="6" />
+	<File name="DeleteWithGame.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="529" topLine="9" />
 	</File>
-	<File name="DeleteWithGame.h" open="1" top="0" tabpos="2">
-		<Cursor position="0" topLine="0" />
+	<File name="DeleteWithGame.h" open="0" top="0" tabpos="2">
+		<Cursor position="282" topLine="1" />
+	</File>
+	<File name="Dlg.h" open="0" top="0" tabpos="0">
+		<Cursor position="335" topLine="9" />
+	</File>
+	<File name="DlgBoite.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="105" topLine="99" />
+	</File>
+	<File name="DlgBoite.h" open="0" top="0" tabpos="0">
+		<Cursor position="2625" topLine="60" />
+	</File>
+	<File name="Erreur.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="318" topLine="14" />
+	</File>
+	<File name="Erreur.h" open="0" top="0" tabpos="0">
+		<Cursor position="356" topLine="9" />
 	</File>
 	<File name="Extensions.h" open="0" top="0" tabpos="0">
 		<Cursor position="62" topLine="0" />
 	</File>
+	<File name="Fabrique.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="451" topLine="10" />
+	</File>
+	<File name="Fabrique.h" open="0" top="0" tabpos="0">
+		<Cursor position="177" topLine="4" />
+	</File>
+	<File name="FichierASE.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6756" topLine="260" />
+	</File>
 	<File name="FindFolder.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="6711" topLine="298" />
 	</File>
+	<File name="Game.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="327" topLine="15" />
+	</File>
+	<File name="Game.h" open="0" top="0" tabpos="0">
+		<Cursor position="2" topLine="0" />
+	</File>
+	<File name="GenRef.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="672" topLine="30" />
+	</File>
+	<File name="GenRef.h" open="0" top="0" tabpos="0">
+		<Cursor position="901" topLine="23" />
+	</File>
+	<File name="Geo.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="218" topLine="6" />
+	</File>
+	<File name="Geo.h" open="0" top="0" tabpos="0">
+		<Cursor position="877" topLine="24" />
+	</File>
+	<File name="GeoMaker.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="24484" topLine="922" />
+	</File>
+	<File name="GeoMaker.h" open="1" top="1" tabpos="2">
+		<Cursor position="2" topLine="0" />
+	</File>
+	<File name="GeoObject.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="613" topLine="29" />
+	</File>
+	<File name="GeoObject.h" open="0" top="0" tabpos="0">
+		<Cursor position="683" topLine="23" />
+	</File>
+	<File name="IfstreamMap.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="220" topLine="3" />
+	</File>
+	<File name="JKT.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1522" topLine="46" />
+	</File>
+	<File name="Laser.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="243" topLine="12" />
+	</File>
+	<File name="Laser.h" open="0" top="0" tabpos="0">
+		<Cursor position="108" topLine="0" />
+	</File>
+	<File name="Light.h" open="0" top="0" tabpos="0">
+		<Cursor position="173" topLine="6" />
+	</File>
+	<File name="LightOmni.h" open="0" top="0" tabpos="0">
+		<Cursor position="231" topLine="12" />
+	</File>
+	<File name="LightTarget.h" open="0" top="0" tabpos="0">
+		<Cursor position="240" topLine="21" />
+	</File>
+	<File name="Map.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="955" topLine="41" />
+	</File>
 	<File name="Material.h" open="0" top="0" tabpos="0">
-		<Cursor position="199" topLine="6" />
+		<Cursor position="896" topLine="21" />
+	</File>
+	<File name="MaterialMulti.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="4706" topLine="198" />
+	</File>
+	<File name="MaterialTexture.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="365" topLine="15" />
+	</File>
+	<File name="MaterialTexture.h" open="0" top="0" tabpos="0">
+		<Cursor position="236" topLine="5" />
 	</File>
 	<File name="Menu\MAide.cpp" open="0" top="0" tabpos="0">
 		<Cursor position="195" topLine="4" />
 	</File>
-	<File name="Son.h" open="0" top="0" tabpos="1">
-		<Cursor position="205" topLine="6" />
+	<File name="Menu\MAudioDrivers.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="493" topLine="22" />
+	</File>
+	<File name="Menu\MMode.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="527" topLine="24" />
+	</File>
+	<File name="Menu\MMultijoueur.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="374" topLine="15" />
+	</File>
+	<File name="Menu\MMultijoueurClientInfo.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="394" topLine="16" />
+	</File>
+	<File name="Menu\MMultijoueurClientPing.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="422" topLine="17" />
+	</File>
+	<File name="Menu\MMultijoueurServeur.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="394" topLine="16" />
+	</File>
+	<File name="Menu\MMultijoueurServeurLancePartie.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="482" topLine="7" />
+	</File>
+	<File name="Menu\MOpenASE.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="11068" topLine="401" />
+	</File>
+	<File name="Menu\MOpenMAP.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="199" topLine="90" />
+	</File>
+	<File name="Menu\MReseau.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6492" topLine="144" />
+	</File>
+	<File name="Mouve.h" open="0" top="0" tabpos="0">
+		<Cursor position="119" topLine="4" />
+	</File>
+	<File name="MultiMaterialGeo.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="15724" topLine="629" />
+	</File>
+	<File name="Navette.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="388" topLine="18" />
+	</File>
+	<File name="Navette.h" open="0" top="0" tabpos="0">
+		<Cursor position="709" topLine="25" />
+	</File>
+	<File name="Player.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="552" topLine="28" />
+	</File>
+	<File name="Player.h" open="0" top="0" tabpos="0">
+		<Cursor position="173" topLine="5" />
+	</File>
+	<File name="Porte.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="388" topLine="18" />
+	</File>
+	<File name="Porte.h" open="0" top="0" tabpos="0">
+		<Cursor position="244" topLine="30" />
+	</File>
+	<File name="Projectil.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="34" topLine="0" />
+	</File>
+	<File name="Projectil.h" open="0" top="0" tabpos="0">
+		<Cursor position="185" topLine="1" />
+	</File>
+	<File name="Rocket.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="355" topLine="16" />
+	</File>
+	<File name="Rocket.h" open="0" top="0" tabpos="0">
+		<Cursor position="151" topLine="2" />
+	</File>
+	<File name="SimpleGeo.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="512" topLine="25" />
+	</File>
+	<File name="Tableau.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="30" topLine="0" />
+	</File>
+	<File name="TableauIndex.h" open="0" top="0" tabpos="0">
+		<Cursor position="1278" topLine="6" />
+	</File>
+	<File name="TexVertexList.h" open="0" top="0" tabpos="0">
+		<Cursor position="152" topLine="6" />
+	</File>
+	<File name="Textures.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="237" topLine="9" />
 	</File>
 	<File name="Textures.h" open="0" top="0" tabpos="4">
-		<Cursor position="2" topLine="0" />
+		<Cursor position="162" topLine="0" />
 	</File>
-	<File name="UdpController.cpp" open="0" top="0" tabpos="3">
-		<Cursor position="1439" topLine="39" />
+	<File name="Trace.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="6237" topLine="246" />
+	</File>
+	<File name="Trace.h" open="0" top="0" tabpos="0">
+		<Cursor position="606" topLine="4" />
+	</File>
+	<File name="TraceMethod.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1219" topLine="112" />
 	</File>
 	<File name="divers.cpp" open="0" top="0" tabpos="2">
-		<Cursor position="6297" topLine="187" />
+		<Cursor position="410" topLine="18" />
+	</File>
+	<File name="src\centralisateur\Centralisateur.cpp" open="0" top="0" tabpos="1">
+		<Cursor position="84" topLine="0" />
+	</File>
+	<File name="src\centralisateur\CentralisateurState.cpp" open="0" top="0" tabpos="2">
+		<Cursor position="25" topLine="0" />
+	</File>
+	<File name="src\centralisateur\UdpConnector.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="257" topLine="0" />
+	</File>
+	<File name="src\centralisateur\UdpConnector.h" open="0" top="0" tabpos="0">
+		<Cursor position="118" topLine="0" />
+	</File>
+	<File name="src\centralisateur\UdpController.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="25" topLine="0" />
+	</File>
+	<File name="src\centralisateur\data\Data.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="30" topLine="0" />
+	</File>
+	<File name="src\centralisateur\data\ListData.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="10" topLine="0" />
+	</File>
+	<File name="src\centralisateur\data\ListData.h" open="0" top="0" tabpos="0">
+		<Cursor position="86" topLine="0" />
+	</File>
+	<File name="src\centralisateur\data\SignalementData.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="134" topLine="1" />
+	</File>
+	<File name="src\centralisateur\data\SignalementData.h" open="0" top="0" tabpos="0">
+		<Cursor position="167" topLine="1" />
+	</File>
+	<File name="src\exception\JktException.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="20" topLine="0" />
+	</File>
+	<File name="src\exception\centralisateur\BindingUdpException.h" open="0" top="0" tabpos="0">
+		<Cursor position="113" topLine="0" />
+	</File>
+	<File name="src\exception\centralisateur\CentralisateurException.h" open="0" top="0" tabpos="0">
+		<Cursor position="38" topLine="0" />
+	</File>
+	<File name="src\exception\centralisateur\OpenUdpSocketException.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="35" topLine="0" />
+	</File>
+	<File name="src\exception\centralisateur\OpenUdpSocketException.h" open="0" top="0" tabpos="0">
+		<Cursor position="134" topLine="0" />
+	</File>
+	<File name="src\menu\Controller.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="137" topLine="1" />
+	</File>
+	<File name="src\menu\MainMenuView.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="149" topLine="0" />
+	</File>
+	<File name="src\menu\MainMenuView.h" open="0" top="0" tabpos="0">
+		<Cursor position="128" topLine="0" />
+	</File>
+	<File name="src\menu\OpenCentralisateurView.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="147" topLine="0" />
+	</File>
+	<File name="src\menu\OpenCentralisateurView.h" open="0" top="0" tabpos="0">
+		<Cursor position="140" topLine="0" />
+	</File>
+	<File name="src\menu\OpenSceneASEView.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="147" topLine="0" />
+	</File>
+	<File name="src\menu\OpenSceneASEView.h" open="0" top="0" tabpos="0">
+		<Cursor position="87" topLine="0" />
+	</File>
+	<File name="src\menu\OpenSceneMapView.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="147" topLine="0" />
+	</File>
+	<File name="src\menu\OpenSceneMapView.h" open="0" top="0" tabpos="0">
+		<Cursor position="87" topLine="0" />
+	</File>
+	<File name="src\menu\OpenSceneView.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="147" topLine="0" />
+	</File>
+	<File name="src\menu\OpenSceneView.h" open="0" top="0" tabpos="0">
+		<Cursor position="130" topLine="0" />
+	</File>
+	<File name="src\menu\View.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="15" topLine="0" />
+	</File>
+	<File name="src\menu\Viewer.h" open="0" top="0" tabpos="0">
+		<Cursor position="115" topLine="0" />
+	</File>
+	<File name="src\reseau\Client.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="165" topLine="5" />
+	</File>
+	<File name="src\reseau\Client.h" open="0" top="0" tabpos="0">
+		<Cursor position="113" topLine="3" />
+	</File>
+	<File name="src\reseau\Reseau.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="489" topLine="25" />
+	</File>
+	<File name="src\reseau\SPA.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="169" topLine="6" />
+	</File>
+	<File name="src\reseau\Server.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="310" topLine="13" />
+	</File>
+	<File name="src\reseau\a_virer.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="401" topLine="12" />
 	</File>
 </CodeBlocks_layout_file>

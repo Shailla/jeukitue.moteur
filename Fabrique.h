@@ -1,9 +1,9 @@
 #ifndef __JKT__FABRIQUE_H
 #define __JKT__FABRIQUE_H
 
-#include "Controller.h"
-#include "Viewer.h"
-#include "Centralisateur.h"
+#include "menu/Controller.h"
+#include "menu/Viewer.h"
+#include "centralisateur/Centralisateur.h"
 
 class Fabrique
 {

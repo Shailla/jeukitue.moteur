@@ -30,13 +30,13 @@ class CGame;
 #include "Projectil.h"
 #include "Clavier.h"
 #include "Map.h"
-#include "DemonSons.h"
-#include "ReqSon.h"
+#include "son/DemonSons.h"
+#include "son/ReqSon.h"
 #include "Erreur.h"
 #include "Textures.h"
 #include "Cfg.h"
 #include "Game.h"
-#include "SPA.h"
+#include "reseau/SPA.h"
 
 using namespace JKT_PACKAGE_SON;
 using namespace JKT_PACKAGE_UTILS;
@@ -50,7 +50,7 @@ extern CGame Game;
 #define DISTANCE_INTER_JOUEURS_ENTRY_POINT 0.8f
 const float Pi = 3.14159265f;
 
-int CPlayer::m_TexArmes = -1;	
+int CPlayer::m_TexArmes = -1;
 
 CPlayer::CPlayer()
 {
@@ -60,7 +60,7 @@ CPlayer::CPlayer()
 	m_Position[0] = 0.0f;		// Position d'origine
 	m_Position[1] = 0.0f;
 	m_Position[2] = 0.0f;
-		
+
 	m_Vitesse[0] = 0.0f;		// Vitesse nulle
 	m_Vitesse[1] = 0.0f;
 	m_Vitesse[2] = 0.0f;
@@ -74,13 +74,13 @@ CPlayer::CPlayer()
 
 	m_TetaVue = 0.0f;			// Orientation du point de vue par rapport au joueur
 	m_PhiVue = 0.0f;
-	
+
 	m_pClavier = 0;
 	actionFunc = 0;			// Pas d'action périodique à réaliser
 	contactFunc = 0;		// Pas d'action à réaliser lors d'un contact avec la map
 
 	m_pSkin = 0;				// Pas de skin associé par défaut
-	
+
 	ID_Cri = 0;				// Le cri du joueur n'a pas encore été chargé
 	ID_ReqCri = 0;			// Y'a pas encore la requête sur le cri non plus
 
@@ -107,7 +107,7 @@ void CPlayer::AfficheIconesArmes()
 	{
 			// Affichage des icones des armes
 		glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
-		glBindTexture( GL_TEXTURE_2D, m_TexArmes );	
+		glBindTexture( GL_TEXTURE_2D, m_TexArmes );
 		glDepthMask( GL_FALSE );
 		glEnable( GL_BLEND );
 		glEnable( GL_TEXTURE_2D );
@@ -116,13 +116,13 @@ void CPlayer::AfficheIconesArmes()
 		glBegin( GL_QUADS );
 			glTexCoord2f( 1.0f, 0.0f );
 			glVertex2f( (float)Config.Display.X-50.0f,	(float)Config.Display.Y/2+(m_NbrArmes*50/2)	);
-			
+
 			glTexCoord2f( 1.0f, 1.0f );
 			glVertex2f( (float)Config.Display.X,		(float)Config.Display.Y/2+(m_NbrArmes*50/2)	);
-			
+
 			glTexCoord2f( 0.0f, 1.0f );
 			glVertex2f( (float)Config.Display.X,		(float)Config.Display.Y/2-(m_NbrArmes*50/2)	);
-			
+
 			glTexCoord2f( 0.0f, 0.0f );
 			glVertex2f( (float)Config.Display.X-50.0f,	(float)Config.Display.Y/2-(m_NbrArmes*50/2)	);
 		glEnd();
@@ -151,7 +151,7 @@ void CPlayer::ActiveArmeUp()	// Rends l'arme suivante active
 		m_ArmeActif = 0;
 }
 
-void CPlayer::ActiveArmeDown()	// Rends l'arme précédente active 
+void CPlayer::ActiveArmeDown()	// Rends l'arme précédente active
 {
 	m_ArmeActif--;
 	if( m_ArmeActif < 0 )
@@ -213,7 +213,7 @@ void CPlayer::choiceOneEntryPoint()
 		vector< vector<CV3D>::iterator > liste;
 		vector<CV3D>::iterator iterEntry;
 		vector<CPlayer*>::iterator iterPlayer;
-		
+
 			// Fait la liste des points d'entrée se trouvant à une distance supérieure
 			// à DISTANCE_INTER_JOUEURS_ENTRY_POINT de tout autre joueur
 		for( iterEntry=Game.getMap()->m_EntreeJoueurs.begin() ; iterEntry!=Game.getMap()->m_EntreeJoueurs.end() ; iterEntry++ )
@@ -224,7 +224,7 @@ void CPlayer::choiceOneEntryPoint()
 			while( Game.pTabIndexPlayer->bSuivant( curseur ) )
 			{
 				player = Game.pTabIndexPlayer->operator [](curseur);
-				
+
 				if( player != this )	// Si le joueur en question n'est pas le joueur actuel
 				{
 					distance = (*iterEntry);
@@ -325,18 +325,18 @@ void CPlayer::changeContact(void (*contact)(CPlayer *player, float *normal, floa
 }
 
 void CPlayer::Affiche()
-{	
+{
 	glPushMatrix();
-	glTranslatef( m_Position[0], m_Position[1], -m_Position[2] );		
-	glRotated( 90.0f, 0.0f, 1.0f, 0.0f );	
+	glTranslatef( m_Position[0], m_Position[1], -m_Position[2] );
+	glRotated( 90.0f, 0.0f, 1.0f, 0.0f );
 	glRotated( -m_Teta, 0.0f, 1.0f, 0.0f ); //Rotation par rapport à l'axe verticale
 
 	if( m_pSkin )
 	{
 		m_pSkin->Affiche();
-		
+
 		const float taille = 0.01f;
-		
+
 		glBegin(GL_QUADS);
 			glColor3f( 1.0, 0.0, 0.0);
 			glVertex3f( -taille, -taille, -taille );
@@ -355,7 +355,7 @@ void CPlayer::Affiche()
 			glVertex3f( -taille, taille, -taille );
 			glVertex3f( -taille, taille, taille );
 			glVertex3f( -taille, -taille, taille );
-			
+
 			glColor3f( 0.0, 0.5, 0.5);
 			glVertex3f( -taille, -taille, -taille );
 			glVertex3f( taille, -taille, -taille );
@@ -382,7 +382,7 @@ void CPlayer::tuer()
 void CPlayer::AfficheProjectils()	// Affiche tous les projectils
 {
 	CProjectil *pro;
-	
+
 	Tableau<CProjectil>::Adr *adr = TabProjectil.BeginAdr();
 	while( adr ) //tant que ce n'est pas le dernier objet géométrique de la liste
 	{
@@ -400,7 +400,7 @@ void CPlayer::Tir()
 	{}
 	else if( ArmeActif()==1 )	// Si l'arme active de erwin est le rocket
 	{
-		TabProjectil.Ajoute( new CLaser( this ) );					
+		TabProjectil.Ajoute( new CLaser( this ) );
 	}
 	else if( ArmeActif()==2 )	// Si l'arme active de erwin est le rocket
 	{
@@ -417,7 +417,7 @@ void CPlayer::RefreshProjectils()
 	while( adr ) //tant que ce n'est pas le dernier objet géométrique de la liste
 	{
 		pro = adr->m_adrX;
-		
+
 		if( !pro->Refresh() )			// Affichage de l'objet géo
 		{
 				// L'objet 'pro' a signalé la fin de sa vie, il doit être détruit
@@ -425,7 +425,7 @@ void CPlayer::RefreshProjectils()
 
 			TabProjectil.Enleve( adr );
 			delete pro;
-		}	
+		}
 		else
 		{
 				// L'objet 'pro' a signalé qu'il reste vivant
@@ -537,9 +537,9 @@ void CPlayer::deplace()
 	if( fabsf(Pente())>0.707f )	// Si la pente est inférieure à 45°
 	{
 		if( (fabsf(getClavier()->m_fDroite)<quantumVitesse/(5.f)) &&
-				(fabsf(getClavier()->m_fAvance)<quantumVitesse/(5.f)) )	
+				(fabsf(getClavier()->m_fAvance)<quantumVitesse/(5.f)) )
 				// S'il n'y a pas de requête de déplacement=>ralenti le joueur
-		{		
+		{
 			getVitesse( vect );
 
 			if( norme( vect )>quantumVitesse/2 )
@@ -559,7 +559,7 @@ void CPlayer::deplace()
 				vect[2] = 0;
 				setVitesse( vect );
 			}
-		}		
+		}
 	}
 
 	float position[3], vitesse[3];
@@ -569,15 +569,15 @@ void CPlayer::deplace()
 	position[1] += vitesse[1];//de sa vitesse
 	position[2] += vitesse[2];
 	setPosition( position );
-	
+
 
 	if( fabsf(Pente()) > 0.707f )	//Si la pente est inférieure à 45°=>limite la vitesse
 	{
 		norm = norme( vitesse );
-	
+
 		if( norm > 10.0*quantumVitesse )	//Limitation de la norme de la vitesse du joueur
 		{									//à 10 fois quantumVitesse
-			normalise( vitesse );  
+			normalise( vitesse );
 			vitesse[0] = vitesse[0]*10.0f*quantumVitesse;
 			vitesse[1] = vitesse[1]*10.0f*quantumVitesse;
 			vitesse[2] = vitesse[2]*10.0f*quantumVitesse;
@@ -590,8 +590,8 @@ void CPlayer::deplace()
 void CPlayer::faitRequeteClavier()
 {
 	const float quantumVitesse = 0.003f;
-	float cosTeta = /*FastCos0(erwin->Teta/180.0f*Pi);*/	cosf(m_Teta/180.0f*Pi);	
-	float sinTeta = /*FastSin0(erwin->Teta/180.0f*Pi);*/	sinf(m_Teta/180.0f*Pi);	
+	float cosTeta = /*FastCos0(erwin->Teta/180.0f*Pi);*/	cosf(m_Teta/180.0f*Pi);
+	float sinTeta = /*FastSin0(erwin->Teta/180.0f*Pi);*/	sinf(m_Teta/180.0f*Pi);
 	float vect[3];
 
 	getVitesse( vect );

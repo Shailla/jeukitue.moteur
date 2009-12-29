@@ -25,7 +25,7 @@ using namespace std;
 
 #include "Extensions.h"
 #include "Trace.h"
-#include "audio.h"
+#include "son/audio.h"
 
 #include "Cfg.h"
 

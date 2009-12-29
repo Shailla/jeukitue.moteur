@@ -19,8 +19,8 @@ using namespace std;
 #include "Tableau.cpp"
 #include "Game.h"
 #include "Map.h"
-#include "DemonSons.h"
-#include "SPA.h"
+#include "son/DemonSons.h"
+#include "reseau/SPA.h"
 #include "Player.h"
 #include "Textures.h"
 #include "Erreur.h"
@@ -74,16 +74,16 @@ CRocket::CRocket( CPlayer *player )
 	INIT_CLASSE();	// Initialise la classe (normalement ça a déjà été fait !!!)
 
 		// Calcul de la direction du tir
-	m_Dir.X = /*FastSin0( player->Teta/180.0f*Pi )*FastCos0( player->Phi/180.0f*Pi );*/ 
+	m_Dir.X = /*FastSin0( player->Teta/180.0f*Pi )*FastCos0( player->Phi/180.0f*Pi );*/
 		sinf( player->Teta()/180.0f*Pi )*cosf( player->Phi()/180.0f*Pi );
-	m_Dir.Y = /*-FastSin0( player->Phi/180.0f*Pi ) ;*/										
+	m_Dir.Y = /*-FastSin0( player->Phi/180.0f*Pi ) ;*/
 		-sinf( player->Phi()/180.0f*Pi ) ;
-	m_Dir.Z = /*-FastCos0( player->Teta/180.0f*Pi )*FastCos0( player->Phi/180.0f*Pi ) ;*/	
+	m_Dir.Z = /*-FastCos0( player->Teta/180.0f*Pi )*FastCos0( player->Phi/180.0f*Pi ) ;*/
 		cosf( player->Teta()/180.0f*Pi )*cosf( player->Phi()/180.0f*Pi ) ;
-	
+
 	player->getPosition( pos );
 	m_Pos = pos;	// Position de départ de la rocket
-	m_Teta = player->Teta();			// Orientation de la rocket	
+	m_Teta = player->Teta();			// Orientation de la rocket
 	m_Phi = player->Phi();			//
 	m_State = ROCKET_STATE_DEPL;		// Etat de départ
 	m_Taille = ROCKET_RAYON;
@@ -96,11 +96,11 @@ CRocket::~CRocket()
 void CRocket::Affiche_S1()
 {
 	glPushMatrix();
-	glTranslatef( m_Pos.X, m_Pos.Y, -m_Pos.Z );		
-	//glRotated( 90.0f, 0.0f, 1.0f, 0.0f );	
+	glTranslatef( m_Pos.X, m_Pos.Y, -m_Pos.Z );
+	//glRotated( 90.0f, 0.0f, 1.0f, 0.0f );
 	glRotated( -m_Teta, 0.0f, 1.0f, 0.0f ); //Rotation par rapport à l'axe verticale
 	glRotated( -m_Phi, 1.0, 0.0, 0.0 );
-	
+
 	pMapRocket->Affiche();
 
 /*	glBegin(GL_QUADS);
@@ -157,7 +157,7 @@ void CRocket::Affiche_S2()
 
 	glEnable( GL_TEXTURE_2D );
 	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
-	glBindTexture( GL_TEXTURE_2D, m_TexExplosion );	
+	glBindTexture( GL_TEXTURE_2D, m_TexExplosion );
 	glEnable( GL_BLEND );
 	glDepthMask( GL_FALSE );
 
@@ -171,22 +171,22 @@ void CRocket::Affiche_S2()
 
 	CV3D pos_explosion;
 	pos_explosion = m_Pos - m_Dir*0.04f;	// Recule un peu l'explosion par rapport à la position où elle se passe
-	glTranslatef( pos_explosion.X, pos_explosion.Y, -pos_explosion.Z );		
+	glTranslatef( pos_explosion.X, pos_explosion.Y, -pos_explosion.Z );
 
 	glBegin( GL_QUADS );
 		glTexCoord2f( 0.0f, 0.0f );
 		glVertex3f( a.X, a.Y, a.Z );
-		
+
 		glTexCoord2f( 0.0f, 1.0f );
 		glVertex3f( b.X, b.Y, b.Z );
-		
+
 		glTexCoord2f( 1.0f, 1.0f );
 		glVertex3f( c.X, c.Y, c.Z );
-		
+
 		glTexCoord2f( 1.0f, 0.0f );
 		glVertex3f( d.X, d.Y, d.Z );
 	glEnd();
-	
+
 	glDepthMask( GL_TRUE );
 	glDisable( GL_BLEND );
 	glPopMatrix();
@@ -195,10 +195,10 @@ void CRocket::Affiche_S2()
 {
 	glEnable( GL_TEXTURE_2D );
 	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
-	glBindTexture( GL_TEXTURE_2D, m_TexExplosion );	
-	
+	glBindTexture( GL_TEXTURE_2D, m_TexExplosion );
+
 	glPushMatrix();
-	glTranslatef( m_Pos.X, m_Pos.Y, -m_Pos.Z );		
+	glTranslatef( m_Pos.X, m_Pos.Y, -m_Pos.Z );
 
 	glColor4f( 1.0f, 1.0f, 1.0f, 0.5f );
 	glBegin(GL_QUADS);
@@ -296,7 +296,7 @@ void CRocket::Deplace()
 		// Vérifie si un joueur passe assez près de la rocket pour déclencher son explosion
 	CPlayer *playerTouche = 0;	// Eventuel touché par la rocket
 	CPlayer *player;
-	int curseur = -1;				
+	int curseur = -1;
 	while( Game.pTabIndexPlayer->bSuivant( curseur ) )
 	{
 		player = Game.pTabIndexPlayer->operator [](curseur);
@@ -306,7 +306,7 @@ void CRocket::Deplace()
 			EH.X = pos2[0] - pos[0];
 			EH.Y = pos2[1] - pos[1];
 			EH.Z = pos2[2] - pos[2];
-		
+
 			if( EH.norme() < DISTANCE_TOUCHE )
 				playerTouche = player;	// Se souvient quel joeur est touché
 		}
@@ -325,7 +325,7 @@ bool CRocket::Refresh()
 
 	switch( m_State )
 	{
-	case ROCKET_STATE_DEPL:		// La rocket est en déplacement	
+	case ROCKET_STATE_DEPL:		// La rocket est en déplacement
 		Deplace();
 		break;
 
@@ -337,7 +337,7 @@ bool CRocket::Refresh()
 		m_Taille += 0.002f;	// La taille de la rocket augmente pour simuler l'explosion
 		if( m_Taille > 0.1f )
 			vie = false;	// Destruction de CRocket (fin de vie de la rocket)
-	
+
 	default:
 		break;
 	}

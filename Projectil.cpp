@@ -1,7 +1,7 @@
 
 #include "V3D.h"
-#include "DemonSons.h"
-#include "SPA.h"
+#include "son/DemonSons.h"
+#include "reseau/SPA.h"
 #include "Player.h"
 
 #include "Projectil.h"

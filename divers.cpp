@@ -21,11 +21,11 @@ using namespace std;
 #include "glfont2.h"
 using namespace glfont;
 
-#include "RessourcesLoader.h"
+#include "ressource/RessourcesLoader.h"
 #include "Trace.h"
 #include "utils_SDL.h"
-#include "DemonSons.h"
-#include "Son.h"
+#include "son/DemonSons.h"
+#include "son/Son.h"
 #include "Textures.h"
 #include "Cfg.h"
 
@@ -86,7 +86,7 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 	cerr << trace3 << endl;
 	cerr << trace4 << endl;
 	cerr << trace5 << endl;
-	
+
 	FSOUND_Close();		// Fermeture d'FMOD
 	SDLNet_Quit();		// Fermeture d'SDL_Net
 	SDL_Quit();			// Fermeture de SDL
@@ -101,22 +101,22 @@ bool checkEventsForIntro( void )		// Vérifie si 'escape' ou le bouton souris ont
         switch( event.type )
 		{
  		case SDL_MOUSEBUTTONDOWN:	// Handle mouse button presses
-			if( event.button.button==SDL_BUTTON_LEFT )			// Si le bouton de gauche 
+			if( event.button.button==SDL_BUTTON_LEFT )			// Si le bouton de gauche
 				if( event.button.type==SDL_MOUSEBUTTONDOWN )	// est préssé
-					return true;	
-			
+					return true;
+
 			break;
 
 		case SDL_KEYDOWN:			// Handle key presses
 			if( event.key.keysym.sym==SDLK_ESCAPE || event.key.keysym.sym==SDLK_RETURN )
 				return true;
-			
+
 			break;
 
         case SDL_QUIT:
 			quit_tutorial( 0 );
             break;
-		
+
 		default:
 			break;
         }
@@ -136,15 +136,15 @@ TRACE().p( TRACE_OTHER, "load_Intro(width=%d,height=%d)", width, height );
 	string bruitChariot = "@Bruit\\chariot.wav";		// Chargement de la fonte de caractères
 	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(bruitChariot);
 	sonChariot = DemonSons->CreateSon( bruitChariot.c_str() );		// Son retour chariot machine à écrire
-	
+
 	string bruitTouche = "@Bruit\\touche.wav";		// Chargement de la fonte de caractères
 	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(bruitTouche);
 	sonTouche = DemonSons->CreateSon( bruitTouche.c_str() );		// Son frappe d'une touche clavier
-	
+
 	string bruitEspace = "@Bruit\\espace.wav";		// Chargement de la fonte de caractères
 	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(bruitEspace);
 	sonEspace = DemonSons->CreateSon( bruitEspace.c_str() );		// Son frappe de la touche espace clavier
-	
+
 	string bruitHurlement = "@Bruit\\hurlement.wav";		// Chargement de la fonte de caractères
 	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(bruitHurlement);
 	sonHurlement = DemonSons->CreateSon( bruitHurlement.c_str() );	// Son hurlement du sauveur de la planète
@@ -174,7 +174,7 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 
 	string introJKT = "@Fond\\intro_JKT2.jpg";
 	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(introJKT);
-	SDL_Surface *image1 = IMG_Load(introJKT.c_str());		// Lit le fichier image	
+	SDL_Surface *image1 = IMG_Load(introJKT.c_str());		// Lit le fichier image
 	if(image1 == 0)
 	{
 		cerr << "\nErreur : Ouverture d'image (" << introJKT << ")" << endl;
@@ -182,10 +182,10 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	}
 
 	Uint8 *image2 = new Uint8[width*height*3];
-	
+
 	SDL_LockSurface( image1 );
 	gluScaleImage( GL_RGB, image1->w, image1->h, GL_UNSIGNED_BYTE, image1->pixels,
-		width, height, GL_UNSIGNED_BYTE, image2 ); 
+		width, height, GL_UNSIGNED_BYTE, image2 );
 	SDL_UnlockSurface( image1 );
 	SDL_FreeSurface( image1 );
 
@@ -200,15 +200,15 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 		TRACE().p( TRACE_INFO, "loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro );
 	}
 
-	glMatrixMode( GL_PROJECTION ); 
+	glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
 	gluOrtho2D(0.0, width, 0.0, height );
-	glMatrixMode( GL_MODELVIEW );	
-	glLoadIdentity();	
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
 
 	glEnable(GL_TEXTURE_2D);
 	glDisable( GL_DEPTH_TEST );
-	
+
 	fonteIntro.Begin();
 	list< string >::const_iterator iter;
 	float vertical;
@@ -218,16 +218,16 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	glColor3f( 1.0, 1.0, 1.0 );
 	for( unsigned int i=0 ; i<str1.length() ; i++ )
 	{
-		
+
 		lettre = str1[ i ];
-		
+
 		glClear( GL_COLOR_BUFFER_BIT );
-		
+
 		if( i==0 )
 			lignes.push_back( "" );
 
 		if( (lettre=='\n') )	// Si on a affaire à un passage à la ligne
-		{	
+		{
 			DemonSons->Play( sonChariot );	// Envoie le son retour chariot
 			lignes.push_back( "" );			// Et passe à la ligne
 			SDL_Delay( 700 );
@@ -238,11 +238,11 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 				DemonSons->Play( sonTouche );	// Envoie le son pour une frappe de touche normale
 			else
 				DemonSons->Play( sonEspace );	// Sinon le son d'un espace
-			
+
 			SDL_Delay( 75 );
 			*lignes.rbegin() += lettre ; // Ajoute la lettre à la fin de la dernière ligne
 		}
-		
+
 			// Affichage du texte
 		vertical = height - 20.0f;
 		for( iter=lignes.begin() ; iter!=lignes.end() ; iter++ )	// Affiche chaque ligne du texte
@@ -253,31 +253,31 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 
 		SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
 		SDL_Delay( (unsigned int)( 60.0f * ((float)rand()/(float)RAND_MAX) ) );	// Petite attente entre deux lettres consécutives
-		
+
 		if( checkEventsForIntro() )	// Vérifie si l'utilisateur veut sortir de l'intro
 		{
-			delete image2;		
+			delete image2;
 			return;
 		}
 	}
-	
+
 		// Attends un petit instant à la fin de l'affichage du texte complet
-	SDL_Delay( 300 );	
+	SDL_Delay( 300 );
 	lignes.clear();	// Efface tout le texte
 
 		// AFFICHAGE DE L'IMAGE DU SAUVEUR DE LA PLANETE
 	glClear( GL_COLOR_BUFFER_BIT );		// Efface l'écran
 
 	DemonSons->Play( sonHurlement );	// Cri du sauveur de la planète
-	
+
 	glRasterPos2i( 0, 0 );		// A partir du coin de l'écran
 	glDrawPixels( width, height, GL_RGB, GL_UNSIGNED_BYTE, image2 );
-	
+
 	delete image2;
 
 	SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
 	SDL_Delay( 4000 );
-	
+
 	for( int i=0 ; i<35 ; i++ )		// Laisse quelques instants l'image affichée
 	{
 		SDL_Delay( 100 );
@@ -290,11 +290,11 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	glColor3f( 1.0, 1.0, 1.0 );
 	for( unsigned int i=0 ; i<str2.length() ; i++ )
 	{
-		
+
 		lettre = str2[ i ];
-		
+
 		glClear( GL_COLOR_BUFFER_BIT );
-		
+
 		if( i==0 )
 			lignes.push_back( "" );
 
@@ -313,7 +313,7 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 
 			*lignes.rbegin() += lettre ; // Ajoute la lettre à la fin de la dernière ligne
 		}
-		
+
 			// Affichage de tout le texte
 		vertical = height - 360.0f;
 		for( iter=lignes.begin() ; iter!=lignes.end() ; iter++ )	// Affiche chaque ligne
@@ -325,10 +325,10 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 		SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
 		SDL_Delay( 75 + (unsigned int)( 60.0f * ((float)rand()/(float)RAND_MAX) ) );	// Petite attente entre deux lettres consécutives
 
-		if( checkEventsForIntro() )	// Vérifie si l'utilisateur veut sortir de l'intro			
+		if( checkEventsForIntro() )	// Vérifie si l'utilisateur veut sortir de l'intro
 			return;
 	}
-	
+
 	SDL_Delay( 1000 );
 
 	glDeleteTextures( 1, &texFonteIntro );	// Destruction de la texture de fonte

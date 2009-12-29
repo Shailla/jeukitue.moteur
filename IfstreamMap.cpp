@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#include "RessourcesLoader.h"
+#include "ressource/RessourcesLoader.h"
 #include "Erreur.h"
 #include "Tableau.cpp"
 #include "Material.h"
@@ -20,7 +20,7 @@ CIfstreamMap::CIfstreamMap( vector<CMaterial*> *tab )
 {
 	bFin = false;	// Fin de fichier non atteinte
 	next = 0;		// Pas de sous-fichier par défaut
-	
+
 	tabMat = tab;
 }
 
@@ -73,7 +73,7 @@ inline bool CIfstreamMap::operator !() {	return bFin;	}
 CIfstreamMap& CIfstreamMap::operator >>( string &mot )
 {
 	if( next )		// Si on est dans un sous-fichier
-	{		// Cas du sous-fichier		
+	{		// Cas du sous-fichier
 		if( !(next->operator >>( mot )) )
 		{
 			cout << "\nFIN DE SOUS FICHIER (" << next->getFileFullName() << ") DETECTEE DANS (" << getFileFullName() << ")";
@@ -84,26 +84,26 @@ CIfstreamMap& CIfstreamMap::operator >>( string &mot )
 		}
 	}
 	else
-	{		// Cas du fichier 'current'	
-		if( !((*(static_cast<ifstream *>(this))) >> mot) ) 
+	{		// Cas du fichier 'current'
+		if( !((*(static_cast<ifstream *>(this))) >> mot) )
 			bFin = true;			// Fin de fichier atteinte
 
 		if( mot=="#include" )	// Si inclusion de fichier
 		{
 			string nomInclude;
-			if( !((*(static_cast<ifstream *>(this))) >> nomInclude) ) 
+			if( !((*(static_cast<ifstream *>(this))) >> nomInclude) )
 				bFin = true;		// Fin de fichier atteinte
-			
+
 			cout << "\n#include " << nomInclude;
 
 			next = new CIfstreamMap( tabMat );		// Ouverture du sous-fichier
 			if( !next->open( nomInclude ) )
 			{
 				string erreur;
-				erreur = "\nErreur : #include " + nomInclude + " -> Impossible";			
+				erreur = "\nErreur : #include " + nomInclude + " -> Impossible";
 				throw CErreur( 0, erreur );
 			}
-			
+
 			if( !(next->operator >>( mot )) )
 			{
 				cout << "\nFIN DE SOUS FICHIER (" << next->getFileFullName() << ") DANS (" << getFileFullName() << ")";
@@ -120,7 +120,7 @@ CIfstreamMap& CIfstreamMap::operator >>( string &mot )
 			operator >>( mot );
 		}
 	}
-	
+
 	return *this;
 }
 
@@ -189,7 +189,7 @@ CIfstreamMap& CIfstreamMap::operator>>( unsigned int &val )
 
 	return *this;
 }
-	
+
 CIfstreamMap& CIfstreamMap::operator>>( int &val )
 {
 	if( next )		// Si on n'est pas dans un sous-fichier

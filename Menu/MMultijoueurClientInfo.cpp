@@ -15,11 +15,11 @@ using namespace std;
 #include "Menu.h"
 #include "Trace.h"
 
-#include "Client.h"
-#include "Server.h"
+#include "reseau/Client.h"
+#include "reseau/Server.h"
 #include "Focus.h"
 #include "Cfg.h"
-#include "Reseau.h"
+#include "reseau/Reseau.h"
 
 #include "Menu/MMultijoueur.h"
 
@@ -79,7 +79,7 @@ void refreshInfoserver()
 	{
 		MenuInfoserver.add_ItemsDroits( 0, Reseau.getInfoServer().nom.c_str() );
 		MenuInfoserver.add_ItemsDroits( 1, Reseau.getInfoServer().map.c_str() );
-		
+
 		Reseau.getInfoServer().Ready( false );
 	}
 }
@@ -91,7 +91,7 @@ TRACE().p( TRACE_MENU, "lanceInfoServer(var=%x)", arg );
 	MenuInfoserver.add_ItemsDroits( 0, "????" );
 	MenuInfoserver.add_ItemsDroits( 1, "????" );
 	Reseau.sendRequestInfoServer();		// Envoie ses infos au serveur
-	
+
 	CDlg::SetMenuActif( &MenuInfoserver );
 }
 

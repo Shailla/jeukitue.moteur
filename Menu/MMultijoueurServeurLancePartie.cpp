@@ -16,13 +16,13 @@ using namespace std;
 #include "Menu.h"
 #include "Trace.h"
 
-#include "Client.h"
-#include "Server.h"
+#include "reseau/Client.h"
+#include "reseau/Server.h"
 #include "Focus.h"
-#include "Reseau.h"
+#include "reseau/Reseau.h"
 #include "Cfg.h"
 #include "Game.h"
-#include "enumReseau.h"
+#include "reseau/enumReseau.h"
 
 #include "Menu/MMultijoueurServeurLancePartie.h"
 
@@ -58,7 +58,7 @@ TRACE().p( TRACE_MENU, "retourPartiemulti(var=%x)", arg );
 	CDlg::SetMenuActif( 0 );
 	if( MenuPartiemulti )
 		delete MenuPartiemulti;
-	
+
 	MenuPartiemulti = 0;
 
 	lanceMenuMultijoueurserveur( (void*)false );	// Sans demande de connection
@@ -80,7 +80,7 @@ void lanceMenuPartiemulti(void *var)
 {
 TRACE().p( TRACE_MENU, "lanceMenuPartiemulti(var=%x)", var );
 	int nbrFichier = 0;		// Nombre de fichiers ASE à prendre en compte
-	
+
 	PF *liste_suivant_partiemulti;
 	char **item_menu_partiemulti;
 	void **liste_argument_partiemulti;
@@ -154,7 +154,7 @@ TRACE().p( TRACE_MENU, "lanceMenuPartiemulti(var=%x)", var );
 		if( item_menu_partiemulti[ i ] )
 			delete item_menu_partiemulti[ i ];
 	}
-	
+
 	delete[] liste_suivant_partiemulti;
 	delete[] liste_argument_partiemulti;
 	delete[] item_menu_partiemulti;

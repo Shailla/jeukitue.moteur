@@ -12,9 +12,9 @@ using namespace std;
 #include "Cfg.h"
 #include "TableauIndex.h"
 #include "Tableau.cpp"
-#include "SPA.h"
+#include "reseau/SPA.h"
 #include "Player.h"
-#include "Reseau.h"
+#include "reseau/Reseau.h"
 #include "Game.h"
 #include "enumReseau.h"
 
@@ -244,7 +244,7 @@ char title_menu_open_scene[] = "OUVRIR UNE SCENE";
 
 PF liste_suivant_open_scene[] =
 {
-	lanceMenuConvertASE, 
+	lanceMenuConvertASE,
 	lanceMenuOpenMAP,
 };
 
@@ -348,7 +348,7 @@ void refreshInfoserver()
 	{
 		MenuInfoserver.add_ItemsDroits( 0, Reseau.infoServer.nom.c_str() );
 		MenuInfoserver.add_ItemsDroits( 1, Reseau.infoServer.map.c_str() );
-		
+
 		Reseau.infoServer.ready = false;
 	}
 }
@@ -358,7 +358,7 @@ void lanceInfoserver(void *arg)
 	MenuInfoserver.add_ItemsDroits( 0, "????" );
 	MenuInfoserver.add_ItemsDroits( 1, "????" );
 	Reseau.sendRequestInfoServer();		// Envoie ses infos au serveur
-	
+
 	CDlg::SetMenuActif( &MenuInfoserver );
 }
 
@@ -399,14 +399,14 @@ void refreshPingserver()
 	Uint32 ping = Reseau.getPingClientServer();
 	if( ping!=-1 )
 	{
-		if( ping >9999 ) 
+		if( ping >9999 )
 			ping = 9999;
 		char cou[8];
 		string str;
 		_itoa( ping, cou, 10 );				// Convertit le temps en string
 		str += cou;
 		str += " ms";
-		
+
 		MenuPingserver.add_ItemsDroits( 0, str.c_str() );
 	}
 }
@@ -415,7 +415,7 @@ void lancePingserver(void *arg)
 {
 	Reseau.sendPingClientServer();		// Envoie un ping au serveur
 	MenuPingserver.add_ItemsDroits( 0, "????" );
-	
+
 	CDlg::SetMenuActif( &MenuPingserver );
 }
 
@@ -510,11 +510,11 @@ void suivantPartiemulti(void *arg)
 
 void lanceMenuPartiemulti(void *var)
 {
-	
+
 	struct _finddata_t fileinfo;
 	long hFile;
 	int nbrFichier = 0;		// Nombre de fichiers ASE à prendre en compte
-	
+
 	PF *liste_suivant_partiemulti;
 	char **item_menu_partiemulti;
 	void **liste_argument_partiemulti;
@@ -594,7 +594,7 @@ void lanceMenuOpenMAP(void *var)
 	struct _finddata_t fileinfo;
 	long hFile;
 	int nbrFichier = 0;		// Nombre de fichiers ASE à prendre en compte
-	
+
 	PF *liste_suivant_open_MAP;
 	char **item_menu_open_MAP;
 	void **liste_argument_open_MAP;
@@ -674,7 +674,7 @@ CMenu *MenuOpenASE;
 char title_menu_open_ASE[] = "Convertir une Scene ASE";
 
 void retourASE(void *var)	// Libérations mémoire et retour au menu supérieur
-{	
+{
 	delete MenuOpenASE;
 	CDlg::SetMenuActif( 0 );
 
@@ -706,7 +706,7 @@ void lanceMenuConvertASE(void *var)
 	struct _finddata_t fileinfo;
 	long hFile;
 	int nbrFichier = 0;		// Nombre de fichiers ASE à prendre en compte
-	
+
 	PF *liste_suivant_open_ASE;
 	char **item_menu_open_ASE;
 	void **liste_argument_open_ASE;
@@ -813,7 +813,7 @@ PF liste_suivant_convert_ASE_confirmNO[] =
 	lanceMenuOpenScene,
 };
 
-void retour_confirm_ASE_NO(void *var)	
+void retour_confirm_ASE_NO(void *var)
 {
 	delete menu;
 	lanceMenuOpenScene( NULL );
@@ -824,7 +824,7 @@ void lanceMenuConvertASEConfirmNO( int msg )
 	char erreur_invalide[] = "Fichier ASE invalide";
 	char erreur_creationRep[] = "Creation de repertoire texture impossible";
 	char erreur_copieTex[] = "Copie de fichier de texture impossible";
-	
+
 	char **item_menu_convert_ASE_confirmNO = new char*;
 
 	switch( msg )
@@ -833,12 +833,12 @@ void lanceMenuConvertASEConfirmNO( int msg )
 		item_menu_convert_ASE_confirmNO[0] = new char[strlen( erreur_invalide )+1];
 		strcpy( item_menu_convert_ASE_confirmNO[0], erreur_invalide );
 		break;
-	
+
 	case 2:
 		item_menu_convert_ASE_confirmNO[0] = new char[strlen( erreur_creationRep )+1];
 		strcpy( item_menu_convert_ASE_confirmNO[0], erreur_creationRep );
 		break;
-	
+
 	case 3:
 		item_menu_convert_ASE_confirmNO[0] = new char[strlen( erreur_copieTex )+1];
 		strcpy( item_menu_convert_ASE_confirmNO[0], erreur_copieTex );
@@ -918,7 +918,7 @@ char *item_menu_config_debug[] =
 };
 
 void retourMenuConfigDebug( void *arg)
-{	
+{
 	lanceMenuConfig( NULL );
 }
 
@@ -944,7 +944,7 @@ void actu_menu_config_debug_SonUsageCPU(void *arg)
 {
 	Config.Debug.bSonUsageCPU = !Config.Debug.bSonUsageCPU;
 	Config.Ecrit();
-	
+
 	lanceMenuConfigDebug( NULL );
 }
 
@@ -952,7 +952,7 @@ void actu_menu_config_debug_AfficheFichier(void *arg)
 {
 	Config.Debug.bAfficheFichier = !Config.Debug.bAfficheFichier;
 	Config.Ecrit();
-	
+
 	lanceMenuConfigDebug( NULL );
 }
 
@@ -1008,9 +1008,9 @@ void lanceMenuConfigReseau(void *var)
 
 	MenuConfigReseau = new CMenu(title_menu_config_reseau, item_menu_config_reseau, nbr,
 						liste_suivant_config_reseau, retourReseau );
-	
+
 	CDlg::SetMenuActif( MenuConfigReseau );
-	
+
 	if( Config.Reseau.serveur )
 	{
 		MenuConfigReseau->add_ItemsDroits( 0, "Serveur" );
@@ -1144,63 +1144,63 @@ void lanceDisplay640_480(void*)
 	Config.Ecrit();
 }
 
-void lanceDisplay800_600(void*) 
+void lanceDisplay800_600(void*)
 {
 	Config.Display.X = 800;
 	Config.Display.Y = 600;
 	Config.Ecrit();
 }
 
-void lanceDisplay1024_768(void*) 
+void lanceDisplay1024_768(void*)
 {
 	Config.Display.X = 1024;
 	Config.Display.Y = 768;
 	Config.Ecrit();
 }
 
-void lanceDisplay1152_864(void*) 
+void lanceDisplay1152_864(void*)
 {
 	Config.Display.X = 1152;
 	Config.Display.Y = 864;
 	Config.Ecrit();
 }
 
-void lanceDisplay1280_720(void*) 
+void lanceDisplay1280_720(void*)
 {
 	Config.Display.X = 1280;
 	Config.Display.Y = 720;
 	Config.Ecrit();
 }
 
-void lanceDisplay1280_768(void*) 
+void lanceDisplay1280_768(void*)
 {
 	Config.Display.X = 1280;
 	Config.Display.Y = 768;
 	Config.Ecrit();
 }
 
-void lanceDisplay1280_960(void*) 
+void lanceDisplay1280_960(void*)
 {
 	Config.Display.X = 1280;
 	Config.Display.Y = 960;
 	Config.Ecrit();
 }
 
-void lanceDisplay1280_1024(void*) 
+void lanceDisplay1280_1024(void*)
 {
 	Config.Display.X = 1280;
 	Config.Display.Y = 1024;
 	Config.Ecrit();
 }
 
-void lanceDisplay1600_900(void*) 
+void lanceDisplay1600_900(void*)
 {
 	Config.Display.X = 1600;
 	Config.Display.Y = 900;
 	Config.Ecrit();
 }
 
-void lanceDisplay1600_1024(void*) 
+void lanceDisplay1600_1024(void*)
 {
 	Config.Display.X = 1600;
 	Config.Display.Y = 1024;
@@ -1208,7 +1208,7 @@ void lanceDisplay1600_1024(void*)
 	Config.Ecrit();
 }
 
-void lanceDisplay1600_1200(void*) 
+void lanceDisplay1600_1200(void*)
 {
 	Config.Display.X = 1600;
 	Config.Display.Y = 1200;
@@ -1258,13 +1258,13 @@ CMenu MenuConfigCommandes(title_menu_config_commandes, item_menu_config_commande
 
 void lanceMenuConfigCommandes(void *var)
 {
-	MenuConfigCommandes.add_ItemsDroits( 0, Config.Commandes.resolve(Config.Commandes.Avancer) );	
-	MenuConfigCommandes.add_ItemsDroits( 1, Config.Commandes.resolve(Config.Commandes.Reculer) );	
-	MenuConfigCommandes.add_ItemsDroits( 2, Config.Commandes.resolve(Config.Commandes.Gauche) );	
+	MenuConfigCommandes.add_ItemsDroits( 0, Config.Commandes.resolve(Config.Commandes.Avancer) );
+	MenuConfigCommandes.add_ItemsDroits( 1, Config.Commandes.resolve(Config.Commandes.Reculer) );
+	MenuConfigCommandes.add_ItemsDroits( 2, Config.Commandes.resolve(Config.Commandes.Gauche) );
 	MenuConfigCommandes.add_ItemsDroits( 3, Config.Commandes.resolve(Config.Commandes.Droite) );
-	MenuConfigCommandes.add_ItemsDroits( 4, Config.Commandes.resolve(Config.Commandes.Tir1) );	
-	MenuConfigCommandes.add_ItemsDroits( 5, Config.Commandes.resolve(Config.Commandes.Tir2) );	
-	MenuConfigCommandes.add_ItemsDroits( 6, Config.Commandes.resolve(Config.Commandes.Monter) );	
+	MenuConfigCommandes.add_ItemsDroits( 4, Config.Commandes.resolve(Config.Commandes.Tir1) );
+	MenuConfigCommandes.add_ItemsDroits( 5, Config.Commandes.resolve(Config.Commandes.Tir2) );
+	MenuConfigCommandes.add_ItemsDroits( 6, Config.Commandes.resolve(Config.Commandes.Monter) );
 	CDlg::SetMenuActif( &MenuConfigCommandes );
 }
 
@@ -1300,7 +1300,7 @@ void lanceMenuConfigCommandesAvancer(void *arg)
 			break;
 		}
 
-		
+
 		MenuConfigCommandes.bItemsDroits = false;
 		MenuConfigCommandes.mode = 0;
 		lanceMenuConfigCommandes(NULL);
@@ -1338,7 +1338,7 @@ void lanceMenuConfigCommandesReculer(void *arg)
 		default:
 			break;
 		}
-		
+
 		MenuConfigCommandes.bItemsDroits = false;
 		MenuConfigCommandes.mode = 0;
 		lanceMenuConfigCommandes(NULL);
@@ -1414,7 +1414,7 @@ void lanceMenuConfigCommandesDroite(void *arg)
 		default:
 			break;
 		}
-			
+
 		MenuConfigCommandes.bItemsDroits = false;
 		MenuConfigCommandes.mode = 0;
 		lanceMenuConfigCommandes(NULL);
@@ -1452,7 +1452,7 @@ void lanceMenuConfigCommandesTir1(void *arg)
 		default:
 			break;
 		}
-		
+
 		MenuConfigCommandes.bItemsDroits = false;
 		MenuConfigCommandes.mode = 0;
 		lanceMenuConfigCommandes(NULL);
@@ -1568,7 +1568,7 @@ void lanceMenuConfigAudio(void *var)
 	/*   MENU CONFIGURATION AUDIO DRIVERS	*/
 	/*										*/
 	/****************************************/
-#include "audio.h"
+#include "son/audio.h"
 void lanceMenuConfigAudioDriversOutput(void *arg);
 void lanceMenuConfigAudioDriversMixer(void *arg) {};
 void lanceMenuConfigAudioDriversDriver(void *arg);
@@ -1599,8 +1599,8 @@ void lanceMenuConfigAudioDrivers(void *var)
 {
 	MenuConfigAudioDrivers.add_ItemsDroits( 0, resolveOutput(Config.Audio.Output) );
 	MenuConfigAudioDrivers.add_ItemsDroits( 1, resolveMixer(Config.Audio.Mixer) );
-	MenuConfigAudioDrivers.add_ItemsDroits( 2, (char*)resolveDriver(Config.Audio.Driver) );	
-	MenuConfigAudioDrivers.add_ItemsDroits( 3, (char*)resolveDriverRecord(Config.Audio.DriverRecord) );	
+	MenuConfigAudioDrivers.add_ItemsDroits( 2, (char*)resolveDriver(Config.Audio.Driver) );
+	MenuConfigAudioDrivers.add_ItemsDroits( 3, (char*)resolveDriverRecord(Config.Audio.DriverRecord) );
 
 	CDlg::SetMenuActif( &MenuConfigAudioDrivers );
 }
@@ -1706,7 +1706,7 @@ char title_menu_config_audio_drivers_driver[] = "DRIVER";
 CMenu *MenuDriver;
 
 void retourDriver(void *var)	// Libérations mémoire et retour au menu supérieur
-{	
+{
 	CDlg::SetMenuActif( 0 );
 	delete MenuDriver;
 
@@ -1724,7 +1724,7 @@ void lanceDriver(void *arg)
 void lanceMenuConfigAudioDriversDriver(void *var)
 {
 	int nbrDriver = FSOUND_GetNumDrivers();	// Nombre driver possibles
-	
+
 	PF *liste_suivant;
 	char **item_menu;
 	void **liste_argument;
@@ -1766,7 +1766,7 @@ char title_menu_config_audio_drivers_record[] = "RECORD";
 CMenu *MenuRecord;
 
 void retourRecord(void *var)	// Libérations mémoire et retour au menu supérieur
-{	
+{
 	CDlg::SetMenuActif( 0 );
 	delete MenuRecord;
 
@@ -1784,7 +1784,7 @@ void lanceRecord(void *arg)
 void lanceMenuConfigAudioDriversRecord(void *var)
 {
 	int nbrRecord = FSOUND_Record_GetNumDrivers();	// Nombre driver possibles
-	
+
 	PF *liste_suivant;
 	char **item_menu;
 	void **liste_argument;

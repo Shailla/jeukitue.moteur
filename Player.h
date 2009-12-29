@@ -8,7 +8,7 @@ using namespace std;
 
 #include "Tableau.h"
 #include "V3D.h"
-#include "SPA.h"
+#include "reseau/SPA.h"
 
 class CRequete;
 class CProjectil;
@@ -18,9 +18,9 @@ namespace JKT_PACKAGE_MOTEUR3D
 	class CMap;
 }
 namespace JKT_PACKAGE_SON
-{	
-	class CSon;	
-	class CReqSon;	
+{
+	class CSon;
+	class CReqSon;
 }
 
 class CPlayer
@@ -54,7 +54,7 @@ class CPlayer
 	string m_Nom;							// Nom du perso
 	JKT_PACKAGE_MOTEUR3D::CMap *m_pSkin;	// Gueule du joueur
 
-public :		
+public :
 	JKT_PACKAGE_RESEAU::CSPA spa;		// spa associé au proxy-joueur
 
 	void Tir();
@@ -101,7 +101,7 @@ public:
 	void Affiche();			// Fonction d'affichage du joueur
 
 	void ActiveArmeUp();		// Rends l'arme suivante active
-	void ActiveArmeDown();		// Rends l'arme précédente active 
+	void ActiveArmeDown();		// Rends l'arme précédente active
 	void AfficheIconesArmes();
 	int ArmeActif();			// Renvoi le numéro de l'arme active
 	void AfficheProjectils();	// Affiche les projectils lancés par ce joueur

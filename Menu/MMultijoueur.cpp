@@ -14,11 +14,11 @@ using namespace std;
 #include "DlgBoite.h"
 #include "Menu.h"
 
-#include "Client.h"
-#include "Server.h"
+#include "reseau/Client.h"
+#include "reseau/Server.h"
 #include "Focus.h"
 #include "Cfg.h"
-#include "Reseau.h"
+#include "reseau/Reseau.h"
 #include "Trace.h"
 
 #include "Menu/MMultijoueur.h"
@@ -100,13 +100,13 @@ TRACE().p( TRACE_MENU, "lanceMenuMultijoueurclientconnect(var=%x)", var );
 void lanceMenuMultijoueurclient(void *arg)
 {
 TRACE().p( TRACE_MENU, "lanceMenuMultijoueurclient(var=%x)", arg );
-	CDlg::SetMenuActif( &MenuMultijoueurclient);	
+	CDlg::SetMenuActif( &MenuMultijoueurclient);
 }
 
 void lanceJoindrePartie( void *arg)
 {
 TRACE().p( TRACE_MENU, "lanceJoindrePartie(var=%x)", arg );
-	Reseau.sendJoinTheGame();		
+	Reseau.sendJoinTheGame();
 }
 
 void lanceMenuMultijoueur(void *var)

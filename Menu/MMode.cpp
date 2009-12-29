@@ -27,11 +27,11 @@ class CPorte;
 #include "IfstreamMap.h"
 #include "TableauIndex.h"
 #include "Projectil.h"
-#include "DemonSons.h"
-#include "SPA.h"
+#include "son/DemonSons.h"
+#include "reseau/SPA.h"
 #include "Player.h"
-#include "Client.h"
-#include "Server.h"
+#include "reseau/Client.h"
+#include "reseau/Server.h"
 #include "RequeteProcess.h"
 #include "Map.h"
 #include "Game.h"
@@ -100,7 +100,7 @@ CMenu MenuModeSelection( "MODE SELECTION", item_menu_Mode_Selection, 2,
 void lanceMenuMode(void *var)
 {
 TRACE().p( TRACE_MENU, "lanceMenuMode(var=%x)", var );
-	CDlg::SetMenuActif( &MenuMode ); 
+	CDlg::SetMenuActif( &MenuMode );
 	pFocus->SetMenuFocus();		// Mets le focus sur le menu
 	Aide = true;
 }

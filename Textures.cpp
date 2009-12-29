@@ -12,7 +12,7 @@
 using namespace std;
 
 #include "Erreur.h"
-#include "RessourcesLoader.h"
+#include "ressource/RessourcesLoader.h"
 #include "utils_SDL.h"
 
 #include "Textures.h"
@@ -28,7 +28,7 @@ unsigned int LitFichierTexture(const string &nomFichier) throw(CErreur)
 	#define hauteur 128
 
 	unsigned int texName = 0;
-	
+
 	string fichier = nomFichier;
 	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(fichier);
 
@@ -68,7 +68,7 @@ unsigned int LitFichierTexture(const string &nomFichier) throw(CErreur)
 			tab[(unsigned int)i][(unsigned int)j][2] = blue;
 			tab[(unsigned int)i][(unsigned int)j][3] = (Uint8)0;
 		}
-	
+
 	SDL_UnlockSurface( image );
 	SDL_FreeSurface( image );
 
@@ -131,7 +131,7 @@ unsigned int LitFichierTextureAlpha( const string &nomFichier, float alpha )
 			tab[(unsigned int)i][(unsigned int)j][2] = blue;
 			tab[(unsigned int)i][(unsigned int)j][3] = Alpha;
 		}
-	
+
 	SDL_UnlockSurface( image );
 	SDL_FreeSurface( image );
 

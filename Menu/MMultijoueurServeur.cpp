@@ -15,11 +15,11 @@ using namespace std;
 #include "Menu.h"
 #include "Trace.h"
 
-#include "Client.h"
-#include "Server.h"
+#include "reseau/Client.h"
+#include "reseau/Server.h"
 #include "Focus.h"
 #include "Cfg.h"
-#include "Reseau.h"
+#include "reseau/Reseau.h"
 
 #include "Menu/MMultijoueur.h"
 

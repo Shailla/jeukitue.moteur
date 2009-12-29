@@ -2,7 +2,7 @@
 
 #include "SDL.h"
 
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "Focus.h"
 
@@ -17,12 +17,12 @@ TRACE().p( TRACE_MENU, "CFocus::CFocus(play=%x,menu=%x)%T", play, menu, this );
 	play_handle_key_down = play;	// Implémente le focus dédié à une partie en cours
 	menu_handle_key_down = menu;	// Implémente le focus dédié au menu
 	menu_agar_handle_key_down = menuAgar;	// Implémente le focus dédié au menu
-	
+
 	focus_actif_handle_key_down = menu;	// Choix du focus actif par défaut
 }
 
 void CFocus::SetPlayFocus()	// Choisi la fonction focus dédiée à une partie en cours
-{		
+{
 TRACE().p( TRACE_MENU, "CFocus::SetPlayFocus()%T", this );
 	if( focus_actif_handle_key_down != play_handle_key_down )
 	{

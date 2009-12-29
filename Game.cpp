@@ -14,10 +14,10 @@ using namespace std;
 
 class CGame;
 
-#include "Erreur.h"
-#include "V3D.h"
-#include "Tableau.cpp"
-#include "TableauIndex.cpp"
+#include "util/Erreur.h"
+#include "util/V3D.h"
+#include "util/Tableau.cpp"
+#include "util/TableauIndex.cpp"
 #include "son/DemonSons.h"
 #include "reseau/SPA.h"
 #include "Player.h"
@@ -26,7 +26,7 @@ class CGame;
 #include "RequeteProcess.h"
 #include "Map.h"
 #include "reseau/Reseau.h"
-#include "Trace.h"
+#include "util/Trace.h"
 #include "Clavier.h"
 
 #include "reseau/enumReseau.h"

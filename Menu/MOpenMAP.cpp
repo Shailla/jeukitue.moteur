@@ -11,12 +11,12 @@
 #endif
 using namespace std;
 
-#include "FindFolder.h"
+#include "util/FindFolder.h"
 #include "DlgBoite.h"
 #include "Menu.h"
 #include "Game.h"
 #include "Focus.h"
-#include "Trace.h"
+#include "util/Trace.h"
 #include "Menu/MMenuPrinc.h"
 
 #include "MOpenScene.h"
@@ -61,7 +61,7 @@ void suivantMAP(void *arg)
 	else {
 		CDlgBoite* BoiteEchec = new CDlgBoite( "Echec lecture fichier Map", "La lecture du fichier Map a echoue", lanceMenuPrinc, CDlgBoite::JKT_DLG_ERREUR );
 		BoiteEchec->addBouton( 2, "Ok", lanceMenuPrinc );
-	
+
 		CDlg::SetMenuActif(BoiteEchec);
 	}
 }
@@ -70,7 +70,7 @@ void lanceMenuOpenMAP(void *var)
 {
 TRACE().p( TRACE_MENU, "lanceMenuOpenMAP(var=%x)", var );
 	int nbrFichier = 0;		// Nombre de fichiers ASE à prendre en compte
-	
+
 	PF *liste_suivant_open_MAP;
 	char **item_menu_open_MAP;
 	void **liste_argument_open_MAP;
@@ -88,7 +88,7 @@ TRACE().p( TRACE_MENU, "lanceMenuOpenMAP(var=%x)", var );
 	folder.reset();
 
 	while( folder.findNext( name ) )
-	{	
+	{
 		name.erase( name.find_last_of( "." ) );
 		name.erase( name.find_last_of( "." ) );
 		liste_suivant_open_MAP[nbrFichier] = suivantMAP;
@@ -98,7 +98,7 @@ TRACE().p( TRACE_MENU, "lanceMenuOpenMAP(var=%x)", var );
 		strcpy( (char*)(liste_argument_open_MAP[nbrFichier]), name.c_str() );
 		nbrFichier++;
 	}
-	
+
 	MenuOpenMAP = new CMenu( "OUVRIR UNE SCENE MAP", item_menu_open_MAP, nbrFichier,
 						liste_suivant_open_MAP, retourMAP, liste_argument_open_MAP );
 

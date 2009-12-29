@@ -17,10 +17,10 @@ using namespace std;
 class CGame;
 
 #include "XmlVocabulaire.h"
-#include "Trace.h"
-#include "TraceMethod.h"
-#include "Erreur.h"
-#include "Tableau.cpp"
+#include "util/Trace.h"
+#include "util/TraceMethod.h"
+#include "util/Erreur.h"
+#include "util/Tableau.cpp"
 #include "Material.h"
 #include "MaterialMaker.h"
 #include "IfstreamMap.h"
@@ -42,7 +42,7 @@ class CGame;
 #include "son/DemonSons.h"
 #include "reseau/SPA.h"
 #include "Player.h"
-#include "V3D.h"
+#include "util/V3D.h"
 #include "GeoMaker.h"
 #include "ressource/RessourcesLoader.h"
 

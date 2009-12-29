@@ -22,8 +22,8 @@ using namespace std;
 using namespace glfont;
 
 #include "ressource/RessourcesLoader.h"
-#include "Trace.h"
-#include "utils_SDL.h"
+#include "util/Trace.h"
+#include "util/utils_SDL.h"
 #include "son/DemonSons.h"
 #include "son/Son.h"
 #include "Textures.h"

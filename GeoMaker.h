@@ -15,7 +15,7 @@
 
 #include "tinyxml.h"
 
-#include "Erreur.h"
+#include "util/Erreur.h"
 
 #include "Geo.h"
 
@@ -36,10 +36,10 @@ class CGeoMaker
 {
 	string m_Nom;	// Nom de l'objet
 	CMap* m_Map;
-	
+
 	int m_NumColor;		// Valeur 0, 3 ou 4 qui correspond à 'pas de couleur', 'couleur sans alpha' ou 'couleur avec alpha'
 	float *m_Color;
-	
+
 	// Matériau
 	bool m_bMaterialTexture;	// "true" si l'objet est associé à un matériau
 	int m_MaterialRef;			// Référence du matériau associé
@@ -49,14 +49,14 @@ class CGeoMaker
 	// Sommets
 	int m_NumVertex;			// Nbre de sommets
 	float* m_TabVertex;			// Pointeur sur le tableau de sommets
-	
+
 	// Index de sommets
 	int m_NumFaces;				// Nbre d'index de sommets
 	int* m_TabFaces;			// Pointeur sur le tableau d'index des sommets
 
 	// Vecteurs normaux
 	float* m_TabVectNormaux;	// Tableau des vecteurs normaux
-	
+
 	// Coordonnées de texture
 	CTexVertexList *m_TexVertexListe;	// Liste des tableaux de coordonnées de texture
 
@@ -79,7 +79,7 @@ public:
 	void setFaces(int nbr, int* tab);		// Données du tableau des index de faces
 	void setNormals(int nbr, float* tab) throw(JKT_PACKAGE_UTILS::CErreur);	// Données du tableau des vecteurs normaux
 	void setMaterialRef(int ref);			// Associe l'objet à un matériau
-	void setSubMat(int* tab);	
+	void setSubMat(int* tab);
 	static void SaveVertex(TiXmlElement* element, unsigned int nbr, float* vertex);		// Sauve les sommets d'un objet géo
 	static void SaveFaces(TiXmlElement* element, unsigned int nbr, int* faces);	// Sauve les sommets de texture d'un object géo
 	static void SaveTexVertex(TiXmlElement* element, unsigned int nbr, float* texvertex);	// Sauve les sommets de texture d'un object géo
@@ -105,7 +105,7 @@ private:
 	CSimpleMaterialGeo* makeSimpleMaterialGeo(CMaterial* mat);
 	CMultiMaterialGeo* makeMultiMaterialGeo(CMaterialMulti* mat);
 	CTextureMaterialGeo* makeTextureMaterialGeo(CMaterialTexture* mat);
-	
+
 	void lineariseVertex();		// Désindexe les sommets
 	void lineariseTexVertex();	// Désindexe les coord. de texture dans leurs canaux
 	void optimiseSubMat(map<int,int> &canauxnumbers);

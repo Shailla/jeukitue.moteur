@@ -16,7 +16,7 @@ using namespace std;
 using namespace glfont;
 
 class CGame;
-#include "Trace.h"
+#include "util/Trace.h"
 #include "IfstreamMap.h"
 #include "Focus.h"
 #include "Cfg.h"
@@ -46,9 +46,9 @@ CMenu::CMenu( char *newTitle, char **newItems, int nbrItems,
 {
 TRACE().p( TRACE_MENU, "CMenu::CMenu(newTitle=%s,nbrItems=%d,...)%T", newTitle, nbrItems, this );
 		// Titre du menu
-	titre = new char[ strlen( newTitle )+1 ];	
-	strcpy( titre, newTitle );		
-	
+	titre = new char[ strlen( newTitle )+1 ];
+	strcpy( titre, newTitle );
+
 		// Items (verticaux)
 	choixY = 0;							// On focus sur le premier item du menu
 	nbrChoixY = nbrItems;				// Nombre d'items
@@ -58,7 +58,7 @@ TRACE().p( TRACE_MENU, "CMenu::CMenu(newTitle=%s,nbrItems=%d,...)%T", newTitle, 
 		items[ i ] = new char[ strlen(newItems[i] )+1 ];
 		strcpy( items[ i ], newItems[ i ] );
 	}
-	
+
 		// Fonctions suivantes des items
 	fonction_suivante = new PF[ nbrChoixY ];
 	for( int i=0 ; i<nbrChoixY ; i++ )
@@ -99,13 +99,13 @@ TRACE().p( TRACE_MENU, "CMenu::~CMenu() titre=%s%T", titre, this );
 		// Fonctions suivantes des items
 	if( fonction_suivante )
 		delete fonction_suivante;
-		
+
 		// Arguments des fonctions suivantes des items
 	if( arg )
 	{
 		delete arg;
 	}
-	
+
 	del_ItemsDroits();
 	del_ItemsRem();
 }
@@ -121,7 +121,7 @@ void CMenu::afficheItems()
 {
 	int i = 0;
 
-		// Affichage de la barre de défilement 
+		// Affichage de la barre de défilement
 	if( nbrChoixY>MAXITEM )	// S'il y a beaucoup d'items à afficher
 	{
 		glDisable(GL_TEXTURE_2D);
@@ -135,7 +135,7 @@ void CMenu::afficheItems()
 			dim = 4;
 
 			// Position du curseur sur la barre
-		float pos = ( ( MAXITEM * 20 )-8 - dim ) * ( float(choixY) / float(nbrChoixY-1) );	
+		float pos = ( ( MAXITEM * 20 )-8 - dim ) * ( float(choixY) / float(nbrChoixY-1) );
 
 		glBegin( GL_QUADS );
 				// Affichage de la barre
@@ -144,7 +144,7 @@ void CMenu::afficheItems()
 			glVertex2f( 240+CORX, 300-4					+CORY);
 			glVertex2f( 220+CORX, 300-4					+CORY);
 			glVertex2f( 220+CORX, 300-(MAXITEM*20)+4	+CORY);
-			
+
 				// Affichage du curseur de la barre
 			glColor3f( 1.0, 0.0, 0.0 );
 			glVertex2f( 238+CORX, 300-4			+ CORY - pos );
@@ -156,7 +156,7 @@ void CMenu::afficheItems()
 		glEnable(GL_TEXTURE_2D);
 		glEnable(GL_BLEND);
 	}
-	
+
 	if( nbrChoixY > MAXITEM )
 	{
 		if( choixY < (MAXITEM / 2) + 1 )
@@ -174,13 +174,13 @@ void CMenu::afficheItems()
 		// Affichage des items du menu
 	while( i<MAXITEM && i+ajust<nbrChoixY )
 	{
-		if( i+ajust==choixY )	
+		if( i+ajust==choixY )
 			glColor3f( 1.0, 0.0, 0.0 );		// Couleur rouge si focussé
 		else if( fonction_suivante[ i+ajust ] == 0 )
 			glColor3f( 0.6f, 0.6f, 0.6f );
 		else
 			glColor3f( 1.0, 1.0, 1.0 );		// Couleur blanche par défaut
-		
+
 		myfont.DrawString( items[i+ajust], TAILLEFONT, float(260+CORX), float(300+CORY-(i*20)) );
 		i++;
 	}
@@ -196,11 +196,11 @@ void CMenu::afficheItemsDroits()
 		{
 			if( fonction_suivante[ i+ajust ]==0 )
 				glColor3f( 0.6f, 0.6f, 0.6f );
-			else if( i+ajust==choixY && bItemsDroits )	
+			else if( i+ajust==choixY && bItemsDroits )
 				glColor3f( 0.0, 1.0, 0.0 );		// Couleur blanche par défaut
 			else
 				glColor3f( 1.0, 1.0, 1.0 );		// Couleur rouge si focussé
-			
+
 			if( items_droits[i+ajust] )
 				myfont.DrawString( items_droits[i+ajust], TAILLEFONT, float(430+CORX), float(300+CORY-(i*20)) );
 			i++;
@@ -213,7 +213,7 @@ void CMenu::afficheItemsRem()
 	if( items_rem )
 	{
 			// Affichage de la remarque associée à l'item focussé
-		glColor3f( 0.5f, 0.5f, 0.5f );			
+		glColor3f( 0.5f, 0.5f, 0.5f );
 		if( items_rem[choixY] )
 			myfont.DrawString( items_rem[choixY], TAILLEFONT, 100, 50+CORY );
 	}
@@ -265,7 +265,7 @@ void CMenu::add_ItemsDroits(int num, const char *txt)	// Implémente le num° item
 		for( int i=0 ; i<nbrChoixY ; i++ )
 			items_droits[i] = 0;
 	}
-		
+
 	if( items_droits[ num ] )
 		delete items_droits[ num ];
 
@@ -308,7 +308,7 @@ void CMenu::del_ItemsDroits()	// Efface la liste des items droits
 	{
 		for( int i=0 ; i<nbrChoixY ; i++ )
 			if( items_droits[ i ] )
-				delete items_droits[ i ];	
+				delete items_droits[ i ];
 		delete items_droits;
 	}
 
@@ -331,7 +331,7 @@ void CMenu::del_ItemsRem()
 void CMenu::KeyDown( SDL_Event *event )
 {
 	switch( event->key.keysym.sym )
-	{	
+	{
 	case SDLK_ESCAPE:
 		if( fonction_retour )
 			fonction_retour( 0 );
@@ -367,7 +367,7 @@ void CMenu::KeyDown( SDL_Event *event )
 	}
 }
 
-void CMenu::MouseBoutonDown( SDL_Event *event ) 
+void CMenu::MouseBoutonDown( SDL_Event *event )
 {
 	if( event->button.button==SDL_BUTTON_RIGHT )
 	{
@@ -425,7 +425,7 @@ void CMenu::handle_key_down( SDL_Event *event )
 			break;
 		}
 		break;
-	
+
 	case 1:	// Mode saisie de touches
 		enter()((void*)event);
 		break;

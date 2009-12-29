@@ -4,8 +4,8 @@
 
 #include "tinyxml.h"
 
-#include "V3D.h"
-#include "GenRef.h"
+#include "util/V3D.h"
+#include "util/GenRef.h"
 
 /************************************************************************/
 /*																		*/

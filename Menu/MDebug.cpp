@@ -12,7 +12,7 @@ using namespace std;
 
 #include "Focus.h"
 #include "Cfg.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "Menu/MMenuPrinc.h"
 
@@ -105,7 +105,7 @@ void actu_menu_config_debug_SonPerformances(void *arg)
 {
 	Config.Debug.bSonPerformances = !Config.Debug.bSonPerformances;
 	Config.Ecrit();
-	
+
 	lanceMenuConfigDebug( 0 );
 }
 
@@ -113,7 +113,7 @@ void actu_menu_config_debug_ReseauDebit(void *arg)
 {
 	Config.Debug.bReseauDebit = !Config.Debug.bReseauDebit;
 	Config.Ecrit();
-	
+
 	lanceMenuConfigDebug( 0 );
 }
 
@@ -121,7 +121,7 @@ void actu_menu_config_debug_SonSpectre(void *arg)
 {
 	Config.Debug.bSonSpectre = !Config.Debug.bSonSpectre;
 	Config.Ecrit();
-	
+
 	lanceMenuConfigDebug( 0 );
 }
 
@@ -129,7 +129,7 @@ void actu_menu_config_debug_AfficheFichier(void *arg)
 {
 	Config.Debug.bAfficheFichier = !Config.Debug.bAfficheFichier;
 	Config.Ecrit();
-	
+
 	lanceMenuConfigDebug( 0 );
 }
 
@@ -137,7 +137,7 @@ void actu_menu_config_debug_AfficheNormaux(void *arg)
 {
 	Config.Debug.bAfficheNormaux = !Config.Debug.bAfficheNormaux;
 	Config.Ecrit();
-	
+
 	lanceMenuConfigDebug( 0 );
 }
 

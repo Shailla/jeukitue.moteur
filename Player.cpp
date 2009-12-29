@@ -21,10 +21,10 @@ using namespace std;
 
 class CGame;
 
-#include "math_vectoriel.h"
-#include "Trace.h"
-#include "V3D.h"
-#include "Tableau.cpp"
+#include "util/math_vectoriel.h"
+#include "util/Trace.h"
+#include "util/V3D.h"
+#include "util/Tableau.cpp"
 #include "Laser.h"
 #include "Rocket.h"
 #include "Projectil.h"
@@ -32,7 +32,7 @@ class CGame;
 #include "Map.h"
 #include "son/DemonSons.h"
 #include "son/ReqSon.h"
-#include "Erreur.h"
+#include "util/Erreur.h"
 #include "Textures.h"
 #include "Cfg.h"
 #include "Game.h"

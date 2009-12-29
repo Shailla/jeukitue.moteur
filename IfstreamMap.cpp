@@ -6,8 +6,8 @@
 using namespace std;
 
 #include "ressource/RessourcesLoader.h"
-#include "Erreur.h"
-#include "Tableau.cpp"
+#include "util/Erreur.h"
+#include "util/Tableau.cpp"
 #include "Material.h"
 
 #include "IfstreamMap.h"

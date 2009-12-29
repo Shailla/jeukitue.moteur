@@ -13,7 +13,7 @@ using namespace std;
 
 #include "DlgBoite.h"
 #include "Menu.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "reseau/Client.h"
 #include "reseau/Server.h"

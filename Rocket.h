@@ -2,7 +2,7 @@
 #ifndef __JKT__ROCKET_H
 #define __JKT__ROCKET_H
 
-#include "V3D.h"
+#include "util/V3D.h"
 #include "Map.h"
 
 #include "Projectil.h"
@@ -18,12 +18,12 @@ class CRocket:public CProjectil
 	static bool m_B_INIT_CLASSE;	// Indique si la classe a été initialisée
 	static int m_TexExplosion;		// N° de texture pour l'explosion de la rocket
 	static JKT_PACKAGE_MOTEUR3D::CMap *pMapRocket;	// Map associée à l'image de la rocket
-	
+
 	CV3D m_Pos;		// Position de la rocket
 	CV3D m_Dir;		// Direction de la rocket
 	float m_Teta;
 	float m_Phi;
-	
+
 	ROCKET_STATE m_State;
 	float m_Taille;
 
@@ -33,7 +33,7 @@ class CRocket:public CProjectil
 
 public:
 	static bool INIT_CLASSE();	// Initialisation de la classe
-	
+
 	CRocket( CPlayer *player );
 	~CRocket();
 

@@ -13,7 +13,7 @@ using namespace std;
 #include "Game.h"
 #include "Focus.h"
 #include "Cfg.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "Menu/MAudio.h"
 

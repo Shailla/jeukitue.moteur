@@ -6,7 +6,7 @@ using namespace std;
 #include "Fabrique.h"
 #include "centralisateur/Centralisateur.h"
 #include "Portail.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "menu/Controller.h"
 

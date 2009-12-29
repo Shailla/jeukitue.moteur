@@ -13,8 +13,8 @@ using namespace std;
 
 #include "SDL.h"
 
-#include "Erreur.h"
-#include "V3D.h"
+#include "util/Erreur.h"
+#include "util/V3D.h"
 #include "son/DemonSons.h"
 #include "reseau/SPA.h"
 #include "Player.h"

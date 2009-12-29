@@ -17,9 +17,9 @@ class CGame;
 extern int JKT_RenderMode;
 
 #include "XmlVocabulaire.h"
-#include "Tableau.cpp"
-#include "math_vectoriel.h"
-#include "V3D.h"
+#include "util/Tableau.cpp"
+#include "util/math_vectoriel.h"
+#include "util/V3D.h"
 
 #include "TexVertexList.h"
 #include "Material.h"

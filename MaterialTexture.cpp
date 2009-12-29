@@ -15,7 +15,7 @@ using namespace std;
 #include "IfstreamMap.h"
 #include "GeoMaker.h"
 #include "Textures.h"
-#include "Trace.h"
+#include "util/Trace.h"
 #include "Material.h"
 #include "MaterialMaker.h"
 #include "ressource/RessourcesLoader.h"

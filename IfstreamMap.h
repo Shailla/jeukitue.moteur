@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#include "Tableau.h"
+#include "util/Tableau.h"
 
 using namespace JKT_PACKAGE_UTILS;
 
@@ -34,7 +34,7 @@ public:
 	const string& getFileName();
 
 	int OffsetMateriaux();	// Renvoie l'offset matériaux actuel
-	
+
 	CIfstreamMap &operator >>( string &mot );
 	CIfstreamMap &operator>>( float &val );
 	CIfstreamMap &operator>>( bool &val );

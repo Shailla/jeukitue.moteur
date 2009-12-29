@@ -12,7 +12,7 @@ using namespace std;
 
 #include "XmlVocabulaire.h"
 #include "MaterialMaker.h"
-#include "math_vectoriel.h"
+#include "util/math_vectoriel.h"
 #include "IfstreamMap.h"
 #include "GeoMaker.h"
 #include "Light.h"
@@ -40,11 +40,11 @@ void CLightTarget::SetDirection( float direction[3] )
 	m_Direction[ 3 ] = 1.0f;
 }
 
-bool CLightTarget::Lit(TiXmlElement* element) 
+bool CLightTarget::Lit(TiXmlElement* element)
 {
 	double ref;
 	const char* type;
-	
+
 	// Référence
 	if(!element->Attribute(Xml::REF, &ref))
 		throw CErreur(0, "Fichier Map corrompu : Lumiere ref");
@@ -185,7 +185,7 @@ void CLightTarget::Active()
 
 	CLight::Active();
 
-	glLightfv( m_refLight, GL_POSITION, fff ); 
+	glLightfv( m_refLight, GL_POSITION, fff );
 	glLightfv( m_refLight, GL_AMBIENT, m_ColorAmbient );
 	glLightfv( m_refLight, GL_DIFFUSE, m_ColorDiffuse );
 	glLightfv( m_refLight, GL_SPECULAR, m_ColorSpecular );

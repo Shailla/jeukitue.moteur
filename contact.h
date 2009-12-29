@@ -2,7 +2,7 @@
 #ifndef __CONTACT_H
 #define __CONTACT_H
 
-#include "TableauIndex.cpp"
+#include "util/TableauIndex.cpp"
 
 namespace JKT_PACKAGE_MOTEUR3D
 {

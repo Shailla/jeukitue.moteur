@@ -11,7 +11,7 @@ using namespace std;
 
 #include "Cfg.h"
 #include "TableauIndex.h"
-#include "Tableau.cpp"
+#include "util/Tableau.cpp"
 #include "reseau/SPA.h"
 #include "Player.h"
 #include "reseau/Reseau.h"

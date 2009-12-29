@@ -11,13 +11,13 @@
 
 using namespace std;
 
-#include "Trace.h"
 #include "SDL.h"
 #include "fmod.h"
 #include "fmod_errors.h"	/* optional */
 
-#include "V3D.h"
-#include "DemonSons.h"
+#include "util/Trace.h"
+#include "util/V3D.h"
+#include "son/DemonSons.h"
 #include "Cfg.h"
 
 #include "audio.h"

@@ -13,7 +13,7 @@ using namespace std;
 
 #include "Focus.h"
 #include "Cfg.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "Menu/MMenuPrinc.h"
 
@@ -79,14 +79,14 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigCommandes(var=%x)", var );
 	MenuConfigCommandes.bItemsDroits = false;
 	MenuConfigCommandes.mode = 0;
 
-	MenuConfigCommandes.add_ItemsDroits( 0, Config.Commandes.resolve(Config.Commandes.Avancer) );	
-	MenuConfigCommandes.add_ItemsDroits( 1, Config.Commandes.resolve(Config.Commandes.Reculer) );	
-	MenuConfigCommandes.add_ItemsDroits( 2, Config.Commandes.resolve(Config.Commandes.Gauche) );	
+	MenuConfigCommandes.add_ItemsDroits( 0, Config.Commandes.resolve(Config.Commandes.Avancer) );
+	MenuConfigCommandes.add_ItemsDroits( 1, Config.Commandes.resolve(Config.Commandes.Reculer) );
+	MenuConfigCommandes.add_ItemsDroits( 2, Config.Commandes.resolve(Config.Commandes.Gauche) );
 	MenuConfigCommandes.add_ItemsDroits( 3, Config.Commandes.resolve(Config.Commandes.Droite) );
-	MenuConfigCommandes.add_ItemsDroits( 4, Config.Commandes.resolve(Config.Commandes.Tir1) );	
-	MenuConfigCommandes.add_ItemsDroits( 5, Config.Commandes.resolve(Config.Commandes.Tir2) );	
-	MenuConfigCommandes.add_ItemsDroits( 6, Config.Commandes.resolve(Config.Commandes.Monter) );	
-	
+	MenuConfigCommandes.add_ItemsDroits( 4, Config.Commandes.resolve(Config.Commandes.Tir1) );
+	MenuConfigCommandes.add_ItemsDroits( 5, Config.Commandes.resolve(Config.Commandes.Tir2) );
+	MenuConfigCommandes.add_ItemsDroits( 6, Config.Commandes.resolve(Config.Commandes.Monter) );
+
 	CDlg::SetMenuActif( &MenuConfigCommandes );
 }
 
@@ -153,7 +153,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesReculer(var=%x)", arg );
 				Config.Commandes.Reculer.key = event->key.keysym.sym;
 				Config.Commandes.Reculer.mouse = 0;
 				Config.Ecrit();	// Sauvegarde la configuration
-			
+
 				lanceMenuConfigCommandes( 0 );
 			}
 			else
@@ -166,7 +166,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesReculer(var=%x)", arg );
 			Config.Commandes.Reculer.mouse = event->button.button;
 			Config.Commandes.Reculer.key = (SDLKey)0;
 			Config.Ecrit();		// Sauvegarde la configuration
-		
+
 			lanceMenuConfigCommandes( 0 );
 			break;
 
@@ -282,7 +282,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesTir1(var=%x)", arg );
 				Config.Commandes.Tir1.key = event->key.keysym.sym;
 				Config.Commandes.Tir1.mouse = 0;
 				Config.Ecrit();	// Sauvegarde la configuration
-				
+
 				lanceMenuConfigCommandes(0);
 			}
 			else

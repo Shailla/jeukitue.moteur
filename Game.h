@@ -4,8 +4,8 @@
 #ifndef __JKT__GAME_H
 #define __JKT__GAME_H
 
-#include "Erreur.h"
-#include "TableauIndex.h"
+#include "util/Erreur.h"
+#include "util/TableauIndex.h"
 #include "RequeteProcess.h"
 #include "reseau/enumReseau.h"
 

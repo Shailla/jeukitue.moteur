@@ -13,7 +13,7 @@
 using namespace std;
 
 #include "fmod.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "Son.h"
 
@@ -34,7 +34,7 @@ TRACE().p( TRACE_SON, "CSon::~CSon() nom=%s%T", nom.c_str(), this );
 
 	set<CReqSon*>::iterator p;		// Destruction de toutes les requêtes sur ce son
 	for( p = m_TabReq.begin() ; p != m_TabReq.end() ; p++ )
-	{	
+	{
 		pDemon->Erase( *p );		// Supprime la requête de la liste appartenant au démon
 		delete *p;
 	}
@@ -49,7 +49,7 @@ CSonMono::CSonMono(CDemonSons* p, const char *nomFichierSon)	// Constructeur ave
 {
 TRACE().p( TRACE_SON, "CSonMono::CSonMono(nomFichierSon=%s)%T", nomFichierSon, this );
 	m_Sample = FSOUND_Sample_Load( FSOUND_FREE, nomFichierSon, FSOUND_MONO, 0, 0 );
-	
+
 	if( m_Sample==0 )
 	{
 TRACE().p( TRACE_ERROR, "CSonMono::CSonMono() %s%T", nomFichierSon, this );
@@ -68,7 +68,7 @@ CSonStereo::CSonStereo(CDemonSons* p,const char *nomFichierSon)	// Constructeur 
 {
 TRACE().p( TRACE_SON, "CSonStereo::CSonStereo(nomFichierSon=%s,...)%T", nomFichierSon, this );
 	m_Sample = FSOUND_Sample_Load( FSOUND_FREE, nomFichierSon, FSOUND_STEREO, 0, 0 );
-	
+
 	if( m_Sample==0 )
 	{
 TRACE().p( TRACE_ERROR, "CSonStereo::CSonStereo() %s%T", nomFichierSon, this );

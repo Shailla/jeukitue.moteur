@@ -6,8 +6,8 @@
 #include <vector>
 using namespace std;
 
-#include "Tableau.h"
-#include "V3D.h"
+#include "util/Tableau.h"
+#include "util/V3D.h"
 #include "reseau/SPA.h"
 
 class CRequete;

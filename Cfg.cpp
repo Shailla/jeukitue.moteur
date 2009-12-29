@@ -24,7 +24,7 @@ using namespace std;
 #include "fmod_errors.h"
 
 #include "Extensions.h"
-#include "Trace.h"
+#include "util/Trace.h"
 #include "son/audio.h"
 
 #include "Cfg.h"

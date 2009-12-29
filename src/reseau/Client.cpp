@@ -5,14 +5,14 @@
 
 using namespace std;
 
-#include "Erreur.h"
-#include "V3D.h"
-#include "TableauIndex.cpp"
+#include "util/Erreur.h"
+#include "util/V3D.h"
+#include "util/TableauIndex.cpp"
 #include "reseau/SPA.h"
 #include "Player.h"
 #include "reseau/Client.h"
 #include "RequeteProcess.h"
-#include "Trace.h"
+#include "util/Trace.h"
 #include "contact.h"
 #include "Clavier.h"
 #include "Game.h"

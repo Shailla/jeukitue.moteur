@@ -45,19 +45,19 @@ using namespace std;
 #include "fmod_errors.h"	/* optional */
 #include "glfont2.h"
 #include "tinyxml.h"
-#include "XmlHelper.h"
+#include "util/XmlHelper.h"
 using namespace glfont;
 
-#include "GenRef.h"
+#include "util/GenRef.h"
 #include "ressource/RessourcesLoader.h"
-#include "math_vectoriel.h"		//Fonctions de calculs vectoriels
-#include "V3D.h"
-#include "mathFast.h"
-#include "Trace.h"				// Gestion du fichier de traces
-#include "Tableau.cpp"			//Liste chaînée
-#include "TableauIndex.cpp"		//Liste Indexée
-#include "FindFolder.h"
-#include "Erreur.h"
+#include "util/math_vectoriel.h"		//Fonctions de calculs vectoriels
+#include "util/V3D.h"
+#include "util/mathFast.h"
+#include "util/Trace.h"				// Gestion du fichier de traces
+#include "util/Tableau.cpp"			//Liste chaînée
+#include "util/TableauIndex.cpp"		//Liste Indexée
+#include "util/FindFolder.h"
+#include "util/Erreur.h"
 
 class CGame;
 
@@ -90,12 +90,12 @@ class CGame;
 #include "Menu.h"			// Fonctions de gestion du menu
 #include "Focus.h"			// Gestion du focus
 #include "Textures.h"
-#include "TableauIndex.h"
+#include "util/TableauIndex.h"
 #include "reseau/Client.h"
 #include "reseau/Server.h"
 #include "RequeteProcess.h"
 #include "Game.h"
-#include "V3D.h"
+#include "util/V3D.h"
 #include "Particule.h"
 #include "MoteurParticules.h"
 #include "reseau/Reseau.h"
@@ -110,7 +110,7 @@ using namespace JKT_PACKAGE_MOTEUR3D;
 using namespace JKT_PACKAGE_UTILS;
 using namespace JKT_PACKAGE_SON;
 
-#include "GenRef.h"
+#include "util/GenRef.h"
 
 #include "jkt.h"
 

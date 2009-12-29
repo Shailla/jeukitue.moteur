@@ -7,7 +7,7 @@
 #endif
 #include <GL/gl.h>
 
-#include "Trace.h"
+#include "util/Trace.h"
 
 using namespace std;
 
@@ -190,7 +190,7 @@ void CLight::SetColor( const float color[4] )
 
 void CLight::Active()
 {
-	if( !m_nbrLightActivated )		// Si toutes les lumières sont éteintes 
+	if( !m_nbrLightActivated )		// Si toutes les lumières sont éteintes
 		glEnable( GL_LIGHTING );	// allume l'éclairage
 
 	m_nbrLightActivated++;			// Indique qu'une lumière de plus est allumée

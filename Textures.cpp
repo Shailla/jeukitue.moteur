@@ -11,9 +11,9 @@
 
 using namespace std;
 
-#include "Erreur.h"
+#include "util/Erreur.h"
 #include "ressource/RessourcesLoader.h"
-#include "utils_SDL.h"
+#include "util/utils_SDL.h"
 
 #include "Textures.h"
 

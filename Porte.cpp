@@ -15,8 +15,8 @@ using namespace std;
 class CGame;
 
 #include "XmlVocabulaire.h"
-#include "Erreur.h"
-#include "V3D.h"
+#include "util/Erreur.h"
+#include "util/V3D.h"
 #include "IfstreamMap.h"
 #include "GeoMaker.h"
 #include "MaterialTexture.h"

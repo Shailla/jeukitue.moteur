@@ -12,9 +12,9 @@ using namespace std;
 #include "SDL.h"
 #include "SDL_net.h"
 
-#include "Erreur.h"
-#include "V3D.h"
-#include "TableauIndex.cpp"
+#include "util/Erreur.h"
+#include "util/V3D.h"
+#include "util/TableauIndex.cpp"
 #include "IfstreamMap.h"
 #include "reseau/SPA.h"
 #include "Player.h"
@@ -22,7 +22,7 @@ using namespace std;
 #include "reseau/Server.h"
 #include "Clavier.h"
 #include "contact.h"
-#include "Trace.h"
+#include "util/Trace.h"
 #include "Game.h"
 
 #include "reseau/enumReseau.h"

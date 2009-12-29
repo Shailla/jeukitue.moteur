@@ -4,9 +4,9 @@
 
 #include <vector>
 
-#include "V3D.h"
-#include "Tableau.h"
-#include "Erreur.h"
+#include "util/V3D.h"
+#include "util/Tableau.h"
+#include "util/Erreur.h"
 
 class CGame;
 class CPlayer;

@@ -8,8 +8,8 @@
 #include "SDL.h"
 
 #include "sdl_net.h"
-#include "Erreur.h"
-#include "V3D.h"
+#include "util/Erreur.h"
+#include "util/V3D.h"
 #include "Cfg.h"
 //#include "reseau/SPA.h"
 //#include "Player.h"
@@ -17,7 +17,7 @@
 //#include "reseau/Server.h"
 //#include "contact.h"
 //#include "Game.h"
-//#include "Trace.h"
+//#include "util/Trace.h"
 
 //#include "reseau/enumReseau.h"
 //#include "reseau/Reseau.h"

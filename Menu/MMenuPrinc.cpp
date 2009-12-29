@@ -6,7 +6,7 @@
 
 #include "DlgBoite.h"
 #include "Menu.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 class CMaterial;
 class CLight;
@@ -48,7 +48,7 @@ TRACE().p( TRACE_MENU, "lanceMenuTest(var=%x)", var );
 	BoiteTest->addBouton( 1, "Menu", lanceMenuPrinc );
 	BoiteTest->addBouton( 2, "Test", lanceMenuTestencours );
 	BoiteTest->addBouton( 3, "Rien", 0 );
-	
+
 	CDlg::SetMenuActif( BoiteTest );
 }
 

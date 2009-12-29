@@ -6,8 +6,8 @@
 #include <fstream>
 #include <map>
 
-#include "V3D.h"
-#include "math_vectoriel.h"
+#include "util/V3D.h"
+#include "util/math_vectoriel.h"
 #include "Player.h"
 
 #include "contact.h"
@@ -29,16 +29,16 @@ void contactPlayer(CPlayer *player, float *normal, float distanceW)
 	if( distanceW > 0.0 )	//vérifie si le joueur
 	{						//s'approche ou s'éloigne
 		if( caca > 0.0)		//de la surface du triangle
-		{				
+		{
 			vitesse[0] += caca*normal[0]; //rend le vecteur vitesse du joueur parallèle
 			vitesse[1] += caca*normal[1];	//à la surface du triangle
-			vitesse[2] -= caca*normal[2]; 
+			vitesse[2] -= caca*normal[2];
 		}
 	}
 	else					//vérifie si le joueur
 	{						//s'approche ou s'éloigne
 		if( caca < 0.0)		//de la surface du triangle
-		{					
+		{
 			vitesse[0] += caca*normal[0]; //rend le vecteur vitesse du joueur parallèle
 			vitesse[1] += caca*normal[1];	//à la surface du triangle
 			vitesse[2] -= caca*normal[2];
@@ -64,13 +64,13 @@ void contactSprite(CPlayer *sprite, float *normal, float distanceW)	//fonction d
 	if( distanceW > 0.0 )	//vérifie si le joueur
 	{						//s'approche ou s'éloigne
 		if( caca > 0.0)		//de la surface du triangle
-		{				
+		{
 			float oldNorm = norme(vitesse);
 			vitesse[0] += 2*caca*normal[0];	//inverse la composante du vecteur vitesse
 			vitesse[1] += 2*caca*normal[1];	//orthogonale à la surface du triangle, pour
 			vitesse[2] -= 2*caca*normal[2];	//produire un effet de rebond
 			normalise(vitesse);				//tout en conservant la norme
-			vitesse[0] *= oldNorm; 
+			vitesse[0] *= oldNorm;
 			vitesse[1] *= oldNorm;
 			vitesse[2] *= oldNorm;
 		}
@@ -84,9 +84,9 @@ void contactSprite(CPlayer *sprite, float *normal, float distanceW)	//fonction d
 			vitesse[1] += 2*caca*normal[1];	//orthogonale à la surface du triangle, pour
 			vitesse[2] -= 2*caca*normal[2];	//produire un effet de rebond
 			normalise(vitesse);				//tout en conservant la norme
-			vitesse[0] *= oldNorm; 
+			vitesse[0] *= oldNorm;
 			vitesse[1] *= oldNorm;
-			vitesse[2] *= oldNorm;						
+			vitesse[2] *= oldNorm;
 		}
 	}
 

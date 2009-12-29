@@ -11,10 +11,10 @@
 #endif
 using namespace std;
 
-#include "FindFolder.h"
+#include "util/FindFolder.h"
 #include "DlgBoite.h"
 #include "Menu.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "reseau/Client.h"
 #include "reseau/Server.h"

@@ -16,10 +16,10 @@ using namespace std;
 #include "SDL.h"
 #include "SDL_thread.h"
 
-#include "FindFolder.h"
+#include "util/FindFolder.h"
 #include "DlgBoite.h"
 #include "Menu.h"
-#include "Trace.h"
+#include "util/Trace.h"
 #include "Game.h"
 #include "Focus.h"
 #include "MaterialTexture.h"
@@ -81,7 +81,7 @@ bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep )
 	mat, pMapASE, nomRep.c_str() );
 	TRACE().p( TRACE_MOTEUR3D, "copieTexture() Fichier de texture=%s",
 	mat->m_FichierTexture.c_str() );
-	
+
 	fstream from;	// Fichier source pour la copie du fichier de texture
 	fstream to;		// Fichier destination pour la copie du fichier de texture
 
@@ -117,7 +117,7 @@ bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep )
 	}
 
 		// Copie du fichier proprement dite
-	while( from.get( ch ) ) 
+	while( from.get( ch ) )
 		to.put( ch );
 
 		// Vérifie si la copie s'est bien passé
@@ -145,8 +145,8 @@ void retourConfirmOui( void *arg )
 TRACE().p( TRACE_MENU, "retourConfirmOui(var=%x)", arg );
 	delete BoiteConfirmOk;
 
-	
-	
+
+
 	if(openMAP(arg)) {
 		Aide = false;
 		pFocus->SetPlayFocus();
@@ -155,7 +155,7 @@ TRACE().p( TRACE_MENU, "retourConfirmOui(var=%x)", arg );
 	else {
 		CDlgBoite* BoiteEchec = new CDlgBoite("Echec lecture fichier Map", "La lecture du fichier Map a echoue", lanceMenuPrinc, CDlgBoite::JKT_DLG_ERREUR);
 		BoiteEchec->addBouton( 2, "Ok", lanceMenuPrinc );
-	
+
 		CDlg::SetMenuActif( BoiteEchec );
 	}
 }
@@ -201,7 +201,7 @@ bool deleteOnlyFiles( string &fichier, const string &path )
 			cout << "\nDeleting file : " << var;
 
 			if( remove( var.c_str() ) )
-				return false;		
+				return false;
 		}
 	}
 
@@ -248,7 +248,7 @@ bool delDirectory( const string &path )
 
 			if( !delDirectory( var ) )
 				return false;
-			
+
 			if( !CFindFolder::chmod( var.c_str(), true, true ) )
 				cerr << endl << "MOpenASE::delDirectory(" << path << ")" << endl;
 
@@ -309,11 +309,11 @@ int threadConvertASE_1( void *arg )
 	pMapASE = new CMap();		// Crée une classe pour recevoir les données de la map
 
 		// Conversion fichier ASE -> fichier Map
-	if(	!CFichierASE::LitFichierASE( nomFichierASE, pMapASE, Config.Debug.bAfficheFichier ) )	// Lit le fichier ASE de la map 
+	if(	!CFichierASE::LitFichierASE( nomFichierASE, pMapASE, Config.Debug.bAfficheFichier ) )	// Lit le fichier ASE de la map
 	{
 		cerr << endl << "Erreur : Lecture du fichier ASE impossible ou fichier corrompu";
 		delete pMapASE;
-		
+
 		erreur( "Lecture du fichier ASE impossible ou fichier corrompu" );
 
 		return 0;	// Les choses se sont mal passées pour la conversion du fichier
@@ -462,7 +462,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConvertASE(var=%x)", var );
 
 	MenuOpenASE = new CMenu( "Convertir une Scene ASE", item_menu_open_ASE, nbrFichier,
 						liste_suivant_open_ASE, retourASE, liste_argument_open_ASE );
-	
+
 	delete[] liste_suivant_open_ASE;
 	delete[] liste_argument_open_ASE;
 	delete[] item_menu_open_ASE;

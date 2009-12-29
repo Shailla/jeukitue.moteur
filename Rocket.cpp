@@ -11,19 +11,18 @@
 
 using namespace std;
 
-#include "Erreur.h"
-#include "Trace.h"
-#include "V3D.h"
+#include "util/Erreur.h"
+#include "util/Trace.h"
+#include "util/V3D.h"
 #include "Projectil.h"
-#include "TableauIndex.h"
-#include "Tableau.cpp"
+#include "util/TableauIndex.h"
+#include "util/Tableau.cpp"
 #include "Game.h"
 #include "Map.h"
 #include "son/DemonSons.h"
 #include "reseau/SPA.h"
 #include "Player.h"
 #include "Textures.h"
-#include "Erreur.h"
 #include "Map.h"
 
 #include "Rocket.h"

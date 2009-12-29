@@ -15,7 +15,7 @@ using namespace std;
 #include "Game.h"
 #include "Focus.h"
 #include "Cfg.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "Menu/MAudio.h"
 
@@ -61,12 +61,12 @@ void lanceMenuConfigAudioDriversRecord(void *var)
 {
 TRACE().p( TRACE_MENU, "lanceMenuConfigAudioDriversRecord(var=%x)", var );
 	int nbrRecord = FSOUND_Record_GetNumDrivers();	// Nombre driver possibles
-	
+
 	PF *liste_suivant;
 	char **item_menu;
 	void **liste_argument;
 
-	liste_suivant = new PF[nbrRecord]; 
+	liste_suivant = new PF[nbrRecord];
 	liste_argument = new void*[nbrRecord];
 	item_menu = new char*[nbrRecord];
 
@@ -83,11 +83,11 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigAudioDriversRecord(var=%x)", var );
 	MenuRecord = new CMenu( "RECORD",
 						item_menu, nbrRecord,
 						liste_suivant, retourRecord, liste_argument );
-	
+
 	delete[] liste_suivant;
 	delete[] item_menu;
 	delete[] liste_argument;
-	
+
 	CDlg::SetMenuActif( MenuRecord );
 }
 

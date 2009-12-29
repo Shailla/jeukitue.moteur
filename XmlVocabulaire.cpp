@@ -3,7 +3,7 @@
 
 using namespace std;
 
-#include "Erreur.h"
+#include "util/Erreur.h"
 
 #include "XmlVocabulaire.h"
 

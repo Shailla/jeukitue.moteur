@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#include "math_vectoriel.h"
+#include "util/math_vectoriel.h"
 #include "LightOmni.h"
 #include "LightTarget.h"
 #include "MaterialMulti.h"

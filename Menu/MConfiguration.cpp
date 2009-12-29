@@ -9,9 +9,8 @@ using namespace std;
 
 #include "DlgBoite.h"
 #include "Menu.h"
-#include "Trace.h"
+#include "util/Trace.h"
 #include "Focus.h"
-#include "Trace.h"
 
 #include "Menu/MMenuPrinc.h"
 

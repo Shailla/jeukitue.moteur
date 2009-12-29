@@ -4,7 +4,7 @@
 using namespace std;
 
 #include "XmlVocabulaire.h"
-#include "Erreur.h"
+#include "util/Erreur.h"
 #include "MaterialTexture.h"
 #include "MaterialMulti.h"
 #include "MaterialMaker.h"
@@ -18,7 +18,7 @@ namespace JKT_PACKAGE_MOTEUR3D
 
 CMaterial* CMaterialMaker::Lit(TiXmlElement* el, string &repertoire)
 {
-	if(strcmp(el->Value(), Xml::MATERIAU)) 
+	if(strcmp(el->Value(), Xml::MATERIAU))
 	{
 		string erreur = "Fichier map corrompu : '";
 		erreur += Xml::MATERIAU;

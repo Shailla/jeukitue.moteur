@@ -3,7 +3,7 @@
 
 #include "Mouve.h"
 
-#include "V3D.h"
+#include "util/V3D.h"
 
 class CGame;
 class CPlayer;
@@ -21,14 +21,14 @@ class CPorte:public CGeoObject, public CMouve
 	float m_fOuverture;		// Ouverture courante de la porte ( 0.0f <= m_fOuverture <= m_fMarge )
 	float m_fVitesse;		// Vitesse d'ouverture de la porte (en unité float/milliseconde)
 	float m_fDeclenche;		// Distance de la porte qui déclenche son mécanisme
-	
+
 public:
 	static const char* identifier;
 	CPorte( CMap *map );
 	~CPorte();
 
 	void Init();					// Initialisation de l'objet géométrique
-	
+
 	void Affiche();					// Fonction d'affichage de l'objet géométrique
 	void Refresh( CGame *game );	// Rafraichissement des données, position, vitesse, ... de l'objet
 

@@ -11,7 +11,7 @@ using namespace std;
 #include "Menu.h"
 #include "Game.h"
 #include "Focus.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "MMenuPrinc.h"
 
@@ -42,7 +42,7 @@ void lanceMenuOpenMAP(void *var);
 
 PF liste_suivant_open_scene[] =
 {
-	lanceMenuConvertASE, 
+	lanceMenuConvertASE,
 	lanceMenuOpenMAP,
 };
 

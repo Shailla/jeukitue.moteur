@@ -257,7 +257,7 @@
 
 1261758236 d:\jkt_repo_2008\moteur\centralisateurstate.h
 
-1262042782 source:d:\jkt_repo_2008\moteur\cfg.cpp
+1262084379 source:d:\jkt_repo_2008\moteur\cfg.cpp
 	<string>
 	<fstream>
 	<iostream>
@@ -275,7 +275,7 @@
 	"fmod.h"
 	"fmod_errors.h"
 	"Extensions.h"
-	"Trace.h"
+	"util/Trace.h"
 	"son/audio.h"
 	"Cfg.h"
 
@@ -1120,11 +1120,11 @@
 	"SDL.h"
 	"SDL_net.h"
 
-1262042219 d:\jkt_repo_2008\moteur\player.h
+1262083962 d:\jkt_repo_2008\moteur\player.h
 	<string>
 	<vector>
-	"Tableau.h"
-	"V3D.h"
+	"util/Tableau.h"
+	"util/V3D.h"
 	"reseau/SPA.h"
 
 1261865269 d:\jkt_repo_2008\moteur\tableau.h
@@ -1140,12 +1140,12 @@
 1261758236 d:\jkt_repo_2008\moteur\requeteprocess.h
 	<string>
 
-1261758234 d:\jkt_repo_2008\moteur\contact.h
-	"TableauIndex.cpp"
+1262085254 d:\jkt_repo_2008\moteur\contact.h
+	"util/TableauIndex.cpp"
 
-1262042305 d:\jkt_repo_2008\moteur\game.h
-	"Erreur.h"
-	"TableauIndex.h"
+1262083996 d:\jkt_repo_2008\moteur\game.h
+	"util/Erreur.h"
+	"util/TableauIndex.h"
 	"RequeteProcess.h"
 	"reseau/enumReseau.h"
 
@@ -1238,7 +1238,7 @@
 1261943121 d:\jkt_repo_2008\moteur\dlg.h
 	"SDL.h"
 
-1261758238 source:d:\jkt_repo_2008\moteur\dlgboite.cpp
+1262083982 source:d:\jkt_repo_2008\moteur\dlgboite.cpp
 	<string>
 	<iostream>
 	<windows.h>
@@ -1246,8 +1246,8 @@
 	<GL/glu.h>
 	"SDL.h"
 	"glfont2.h"
-	"Trace.h"
-	"Erreur.h"
+	"util/Trace.h"
+	"util/Erreur.h"
 	"Textures.h"
 	"Cfg.h"
 	"Focus.h"
@@ -1257,8 +1257,8 @@
 	<vector>
 	<iostream>
 
-1261758238 d:\jkt_repo_2008\moteur\textures.h
-	"Erreur.h"
+1262084246 d:\jkt_repo_2008\moteur\textures.h
+	"util/Erreur.h"
 
 1261758236 d:\jkt_repo_2008\moteur\focus.h
 
@@ -1273,11 +1273,11 @@
 1261866306 source:d:\jkt_repo_2008\moteur\fabrique.cpp
 	"Fabrique.h"
 
-1261944770 source:d:\jkt_repo_2008\moteur\fichierase.cpp
+1262084716 source:d:\jkt_repo_2008\moteur\fichierase.cpp
 	<string>
 	<fstream>
 	<sstream>
-	"math_vectoriel.h"
+	"util/math_vectoriel.h"
 	"LightOmni.h"
 	"LightTarget.h"
 	"MaterialMulti.h"
@@ -1322,38 +1322,38 @@
 	"MaterialTexture.h"
 	"Material.h"
 
-1261867475 d:\jkt_repo_2008\moteur\materialtexture.h
+1262084084 d:\jkt_repo_2008\moteur\materialtexture.h
 	<iostream>
 	<string>
 	"Material.h"
-	"Erreur.h"
+	"util/Erreur.h"
 
 1261942984 d:\jkt_repo_2008\moteur\material.h
 	<iostream>
 	<string>
 	"tinyxml.h"
 
-1261758237 d:\jkt_repo_2008\moteur\geomaker.h
+1262084000 d:\jkt_repo_2008\moteur\geomaker.h
 	<map>
 	<fstream>
 	"tinyxml.h"
-	"Erreur.h"
+	"util/Erreur.h"
 	"Geo.h"
 
-1261942998 d:\jkt_repo_2008\moteur\geo.h
+1262084701 d:\jkt_repo_2008\moteur\geo.h
 	"tinyxml.h"
-	"V3D.h"
-	"GenRef.h"
+	"util/V3D.h"
+	"util/GenRef.h"
 
 1261939721 d:\jkt_repo_2008\moteur\genref.h
 	<list>
 	<string>
 
-1261867541 d:\jkt_repo_2008\moteur\map.h
+1262084078 d:\jkt_repo_2008\moteur\map.h
 	<vector>
-	"V3D.h"
-	"Tableau.h"
-	"Erreur.h"
+	"util/V3D.h"
+	"util/Tableau.h"
+	"util/Erreur.h"
 
 1261865401 d:\jkt_repo_2008\moteur\fichierase.h
 	<string>
@@ -1374,12 +1374,12 @@
 	<sys/stat.h>
 	<dirent.h>
 
-1261758236 source:d:\jkt_repo_2008\moteur\focus.cpp
+1262084839 source:d:\jkt_repo_2008\moteur\focus.cpp
 	"SDL.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Focus.h"
 
-1262042977 source:d:\jkt_repo_2008\moteur\game.cpp
+1262085183 source:d:\jkt_repo_2008\moteur\game.cpp
 	<cmath>
 	<fstream>
 	<iostream>
@@ -1388,10 +1388,10 @@
 	<windows.h>
 	<GL/gl.h>
 	<GL/glu.h>
-	"Erreur.h"
-	"V3D.h"
-	"Tableau.cpp"
-	"TableauIndex.cpp"
+	"util/Erreur.h"
+	"util/V3D.h"
+	"util/Tableau.cpp"
+	"util/TableauIndex.cpp"
 	"son/DemonSons.h"
 	"reseau/SPA.h"
 	"Player.h"
@@ -1400,7 +1400,7 @@
 	"RequeteProcess.h"
 	"Map.h"
 	"reseau/Reseau.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Clavier.h"
 	"reseau/enumReseau.h"
 	"Game.h"
@@ -1422,20 +1422,20 @@
 	"Trace.h"
 	"GenRef.h"
 
-1261758236 source:d:\jkt_repo_2008\moteur\geo.cpp
+1262085197 source:d:\jkt_repo_2008\moteur\geo.cpp
 	<string>
 	<fstream>
 	<iostream>
-	"GenRef.h"
+	"util/GenRef.h"
 	"IfstreamMap.h"
 	"Geo.h"
 
-1261758238 d:\jkt_repo_2008\moteur\ifstreammap.h
+1262083874 d:\jkt_repo_2008\moteur\ifstreammap.h
 	<string>
 	<vector>
-	"Tableau.h"
+	"util/Tableau.h"
 
-1261944833 source:d:\jkt_repo_2008\moteur\geomaker.cpp
+1262085220 source:d:\jkt_repo_2008\moteur\geomaker.cpp
 	<string>
 	<fstream>
 	<set>
@@ -1444,9 +1444,9 @@
 	<sstream>
 	<windows.h>
 	"XmlVocabulaire.h"
-	"Tableau.cpp"
-	"math_vectoriel.h"
-	"V3D.h"
+	"util/Tableau.cpp"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
 	"TexVertexList.h"
 	"Material.h"
 	"Geo.h"
@@ -1494,7 +1494,7 @@
 	"Geo.h"
 	"GeoMaker.h"
 
-1262043005 source:d:\jkt_repo_2008\moteur\geoobject.cpp
+1262085244 source:d:\jkt_repo_2008\moteur\geoobject.cpp
 	<string>
 	<fstream>
 	<set>
@@ -1505,9 +1505,9 @@
 	<GL/GL.H>
 	<GL/GLU.H>
 	"XmlVocabulaire.h"
-	"Tableau.cpp"
-	"math_vectoriel.h"
-	"V3D.h"
+	"util/Tableau.cpp"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
 	"Material.h"
 	"IfstreamMap.h"
 	"GeoMaker.h"
@@ -1540,20 +1540,20 @@
 
 1261832343 d:\jkt_repo_2008\moteur\\map
 
-1261758235 source:d:\jkt_repo_2008\moteur\ifstreammap.cpp
+1262084005 source:d:\jkt_repo_2008\moteur\ifstreammap.cpp
 	<string>
 	<fstream>
 	<iostream>
-	"RessourcesLoader.h"
-	"Erreur.h"
-	"Tableau.cpp"
+	"ressource/RessourcesLoader.h"
+	"util/Erreur.h"
+	"util/Tableau.cpp"
 	"Material.h"
 	"IfstreamMap.h"
 
 1261867238 d:\jkt_repo_2008\moteur\ressourcesloader.h
 	<string>
 
-1262042825 source:d:\jkt_repo_2008\moteur\jkt.cpp
+1262085352 source:d:\jkt_repo_2008\moteur\jkt.cpp
 	<string>
 	<set>
 	<iostream>
@@ -1575,17 +1575,17 @@
 	"fmod_errors.h"
 	"glfont2.h"
 	"tinyxml.h"
-	"XmlHelper.h"
-	"GenRef.h"
-	"RessourcesLoader.h"
-	"math_vectoriel.h"
-	"V3D.h"
-	"mathFast.h"
-	"Trace.h"
-	"Tableau.cpp"
-	"TableauIndex.cpp"
-	"FindFolder.h"
-	"Erreur.h"
+	"util/XmlHelper.h"
+	"util/GenRef.h"
+	"ressource/RessourcesLoader.h"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
+	"util/mathFast.h"
+	"util/Trace.h"
+	"util/Tableau.cpp"
+	"util/TableauIndex.cpp"
+	"util/FindFolder.h"
+	"util/Erreur.h"
 	"Cfg.h"
 	"Material.h"
 	"IfstreamMap.h"
@@ -1615,12 +1615,12 @@
 	"Menu.h"
 	"Focus.h"
 	"Textures.h"
-	"TableauIndex.h"
+	"util/TableauIndex.h"
 	"reseau/Client.h"
 	"reseau/Server.h"
 	"RequeteProcess.h"
 	"Game.h"
-	"V3D.h"
+	"util/V3D.h"
 	"Particule.h"
 	"MoteurParticules.h"
 	"reseau/Reseau.h"
@@ -1628,7 +1628,7 @@
 	"menu/Controller.h"
 	"menu/Viewer.h"
 	"Fabrique.h"
-	"GenRef.h"
+	"util/GenRef.h"
 	"jkt.h"
 
 1261758235 d:\jkt_repo_2008\moteur\xmlhelper.h
@@ -1636,8 +1636,8 @@
 
 1261758235 d:\jkt_repo_2008\moteur\mathfast.h
 
-1261758238 d:\jkt_repo_2008\moteur\rocket.h
-	"V3D.h"
+1262085316 d:\jkt_repo_2008\moteur\rocket.h
+	"util/V3D.h"
 	"Map.h"
 	"Projectil.h"
 
@@ -1646,13 +1646,13 @@
 1261758238 d:\jkt_repo_2008\moteur\laser.h
 	"Projectil.h"
 
-1261758237 d:\jkt_repo_2008\moteur\porte.h
+1262085331 d:\jkt_repo_2008\moteur\porte.h
 	"Mouve.h"
-	"V3D.h"
+	"util/V3D.h"
 
-1261758236 d:\jkt_repo_2008\moteur\navette.h
+1262085341 d:\jkt_repo_2008\moteur\navette.h
 	"Mouve.h"
-	"V3D.h"
+	"util/V3D.h"
 
 1261867247 d:\jkt_repo_2008\moteur\photo.h
 	<string>
@@ -1662,18 +1662,18 @@
 
 1261758234 d:\jkt_repo_2008\moteur\menu.h
 
-1261758237 d:\jkt_repo_2008\moteur\particule.h
-	"V3D.h"
+1262085363 d:\jkt_repo_2008\moteur\particule.h
+	"util/V3D.h"
 
-1261758236 d:\jkt_repo_2008\moteur\moteurparticules.h
-	"V3D.h"
+1262085373 d:\jkt_repo_2008\moteur\moteurparticules.h
+	"util/V3D.h"
 
 1261758236 d:\jkt_repo_2008\moteur\jkt.h
 
 1261758236 source:d:\jkt_repo_2008\moteur\jktexception.cpp
 	"JktException.h"
 
-1262043047 source:d:\jkt_repo_2008\moteur\laser.cpp
+1262084010 source:d:\jkt_repo_2008\moteur\laser.cpp
 	<windows.h>
 	<GL/gl.h>
 	<GL/glu.h>
@@ -1681,8 +1681,8 @@
 	<cmath>
 	<map>
 	"SDL.h"
-	"Erreur.h"
-	"V3D.h"
+	"util/Erreur.h"
+	"util/V3D.h"
 	"son/DemonSons.h"
 	"reseau/SPA.h"
 	"Player.h"
@@ -1708,17 +1708,17 @@
 	"tinyxml.h"
 	<windows.h>
 
-1261758237 source:d:\jkt_repo_2008\moteur\light.cpp
+1262085401 source:d:\jkt_repo_2008\moteur\light.cpp
 	<string>
 	<fstream>
 	<iostream>
 	<windows.h>
 	<GL/gl.h>
-	"Trace.h"
+	"util/Trace.h"
 	"Light.h"
 
-1261867243 source:d:\jkt_repo_2008\moteur\lightmaker.cpp
-	"Erreur.h"
+1262084054 source:d:\jkt_repo_2008\moteur\lightmaker.cpp
+	"util/Erreur.h"
 	"XmlVocabulaire.h"
 	"Light.h"
 	"LightOmni.h"
@@ -1739,7 +1739,7 @@
 	"Light.h"
 	"LightOmni.h"
 
-1261758237 source:d:\jkt_repo_2008\moteur\lighttarget.cpp
+1262085413 source:d:\jkt_repo_2008\moteur\lighttarget.cpp
 	<fstream>
 	<iostream>
 	<windows.h>
@@ -1747,7 +1747,7 @@
 	<GL/glu.h>
 	"XmlVocabulaire.h"
 	"MaterialMaker.h"
-	"math_vectoriel.h"
+	"util/math_vectoriel.h"
 	"IfstreamMap.h"
 	"GeoMaker.h"
 	"Light.h"
@@ -1778,7 +1778,7 @@
 	<agar/gui.h>
 	"View.h"
 
-1262043071 source:d:\jkt_repo_2008\moteur\map.cpp
+1262084069 source:d:\jkt_repo_2008\moteur\map.cpp
 	<string>
 	<fstream>
 	<iostream>
@@ -1789,10 +1789,10 @@
 	"SDL.h"
 	"tinyxml.h"
 	"XmlVocabulaire.h"
-	"Trace.h"
-	"TraceMethod.h"
-	"Erreur.h"
-	"Tableau.cpp"
+	"util/Trace.h"
+	"util/TraceMethod.h"
+	"util/Erreur.h"
+	"util/Tableau.cpp"
 	"Material.h"
 	"MaterialMaker.h"
 	"IfstreamMap.h"
@@ -1814,9 +1814,9 @@
 	"son/DemonSons.h"
 	"reseau/SPA.h"
 	"Player.h"
-	"V3D.h"
+	"util/V3D.h"
 	"GeoMaker.h"
-	"RessourcesLoader.h"
+	"ressource/RessourcesLoader.h"
 	"Map.h"
 
 1261758236 d:\jkt_repo_2008\moteur\tracemethod.h
@@ -1833,15 +1833,15 @@
 	"GeoMaker.h"
 	"Material.h"
 
-1261758238 source:d:\jkt_repo_2008\moteur\materialmaker.cpp
+1262085433 source:d:\jkt_repo_2008\moteur\materialmaker.cpp
 	<string>
 	"XmlVocabulaire.h"
-	"Erreur.h"
+	"util/Erreur.h"
 	"MaterialTexture.h"
 	"MaterialMulti.h"
 	"MaterialMaker.h"
 
-1261758235 source:d:\jkt_repo_2008\moteur\materialmulti.cpp
+1262085445 source:d:\jkt_repo_2008\moteur\materialmulti.cpp
 	<windows.h>
 	<GL/gl.h>
 	<iostream>
@@ -1852,11 +1852,11 @@
 	"GeoMaker.h"
 	"MaterialMaker.h"
 	"IfstreamMap.h"
-	"Trace.h"
-	"TraceMethod.h"
+	"util/Trace.h"
+	"util/TraceMethod.h"
 	"MaterialMulti.h"
 
-1261758235 source:d:\jkt_repo_2008\moteur\materialtexture.cpp
+1262085456 source:d:\jkt_repo_2008\moteur\materialtexture.cpp
 	<windows.h>
 	<GL/gl.h>
 	<string>
@@ -1867,13 +1867,13 @@
 	"IfstreamMap.h"
 	"GeoMaker.h"
 	"Textures.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Material.h"
 	"MaterialMaker.h"
-	"RessourcesLoader.h"
+	"ressource/RessourcesLoader.h"
 	"MaterialTexture.h"
 
-1261758236 source:d:\jkt_repo_2008\moteur\menu.cpp
+1262085466 source:d:\jkt_repo_2008\moteur\menu.cpp
 	<iostream>
 	<set>
 	<fstream>
@@ -1883,7 +1883,7 @@
 	<GL/glu.h>
 	"SDL.h"
 	"glfont2.h"
-	"Trace.h"
+	"util/Trace.h"
 	"IfstreamMap.h"
 	"Focus.h"
 	"Cfg.h"
@@ -1891,7 +1891,7 @@
 	"DlgBoite.h"
 	"Menu.h"
 
-1261758179 source:d:\jkt_repo_2008\moteur\menu\maide.cpp
+1262085480 source:d:\jkt_repo_2008\moteur\menu\maide.cpp
 	<fstream>
 	<iostream>
 	"DlgBoite.h"
@@ -1899,7 +1899,7 @@
 	"Game.h"
 	"Focus.h"
 	"Cfg.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Menu/MAide.h"
 
 1261942928 d:\jkt_repo_2008\moteur\\dlgboite.h
@@ -1911,9 +1911,9 @@
 
 1261758234 d:\jkt_repo_2008\moteur\\menu.h
 
-1262042305 d:\jkt_repo_2008\moteur\\game.h
-	"Erreur.h"
-	"TableauIndex.h"
+1262083996 d:\jkt_repo_2008\moteur\\game.h
+	"util/Erreur.h"
+	"util/TableauIndex.h"
 	"RequeteProcess.h"
 	"reseau/enumReseau.h"
 
@@ -1945,14 +1945,14 @@
 
 1261758179 d:\jkt_repo_2008\moteur\\menu\maide.h
 
-1261758179 source:d:\jkt_repo_2008\moteur\menu\maudio.cpp
+1262085491 source:d:\jkt_repo_2008\moteur\menu\maudio.cpp
 	<fstream>
 	"DlgBoite.h"
 	"Menu.h"
 	"Game.h"
 	"Focus.h"
 	"Cfg.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Menu/MAudio.h"
 	"Menu/MConfiguration.h"
 
@@ -1960,14 +1960,14 @@
 
 1261758179 d:\jkt_repo_2008\moteur\\menu\mconfiguration.h
 
-1262042795 source:d:\jkt_repo_2008\moteur\menu\maudiodrivers.cpp
+1262085500 source:d:\jkt_repo_2008\moteur\menu\maudiodrivers.cpp
 	<fstream>
 	"DlgBoite.h"
 	"Menu.h"
 	"Game.h"
 	"Focus.h"
 	"Cfg.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Menu/MAudioDrivers.h"
 	"Menu/MAudio.h"
 	"son/audio.h"
@@ -1976,7 +1976,7 @@
 
 1261758236 d:\jkt_repo_2008\moteur\\audio.h
 
-1261758179 source:d:\jkt_repo_2008\moteur\menu\maudiodriversdriver.cpp
+1262085510 source:d:\jkt_repo_2008\moteur\menu\maudiodriversdriver.cpp
 	<fstream>
 	"fmod.h"
 	"DlgBoite.h"
@@ -1984,25 +1984,25 @@
 	"Game.h"
 	"Focus.h"
 	"Cfg.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Menu/MAudio.h"
 	"Menu/MAudioDrivers.h"
 
-1261758179 source:d:\jkt_repo_2008\moteur\menu\maudiooutput.cpp
+1262085520 source:d:\jkt_repo_2008\moteur\menu\maudiooutput.cpp
 	<fstream>
 	"DlgBoite.h"
 	"Menu.h"
 	"Game.h"
 	"Focus.h"
 	"Cfg.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Menu/MAudio.h"
 	"fmod.h"
 	"MAudioDrivers.h"
 
 1261758179 d:\jkt_repo_2008\moteur\menu\maudiodrivers.h
 
-1261758179 source:d:\jkt_repo_2008\moteur\menu\maudiorecord.cpp
+1262085529 source:d:\jkt_repo_2008\moteur\menu\maudiorecord.cpp
 	<fstream>
 	"fmod.h"
 	"DlgBoite.h"
@@ -2010,62 +2010,61 @@
 	"Game.h"
 	"Focus.h"
 	"Cfg.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Menu/MAudio.h"
 	"Menu/MAudioDrivers.h"
 
-1261758179 source:d:\jkt_repo_2008\moteur\menu\mcommandes.cpp
+1262085539 source:d:\jkt_repo_2008\moteur\menu\mcommandes.cpp
 	<fstream>
 	<iostream>
 	"DlgBoite.h"
 	"Menu.h"
 	"Focus.h"
 	"Cfg.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Menu/MMenuPrinc.h"
 	"Menu/MConfiguration.h"
 
 1261758179 d:\jkt_repo_2008\moteur\\menu\mmenuprinc.h
 
-1261758179 source:d:\jkt_repo_2008\moteur\menu\mconfiguration.cpp
+1262085552 source:d:\jkt_repo_2008\moteur\menu\mconfiguration.cpp
 	<fstream>
 	"DlgBoite.h"
 	"Menu.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Focus.h"
-	"Trace.h"
 	"Menu/MMenuPrinc.h"
 
-1261758178 source:d:\jkt_repo_2008\moteur\menu\mdebug.cpp
+1262085561 source:d:\jkt_repo_2008\moteur\menu\mdebug.cpp
 	<fstream>
 	"DlgBoite.h"
 	"Menu.h"
 	"Focus.h"
 	"Cfg.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Menu/MMenuPrinc.h"
 	"Menu/MConfiguration.h"
 
-1261758179 source:d:\jkt_repo_2008\moteur\menu\mdisplay.cpp
+1262085569 source:d:\jkt_repo_2008\moteur\menu\mdisplay.cpp
 	<sstream>
 	"DlgBoite.h"
 	"Menu.h"
 	"Focus.h"
 	"Cfg.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Menu/MReseau.h"
 	"Menu/MConfiguration.h"
 
 1261758179 d:\jkt_repo_2008\moteur\\menu\mreseau.h
 
-1261758179 source:d:\jkt_repo_2008\moteur\menu\mdisplaysize.cpp
+1262085578 source:d:\jkt_repo_2008\moteur\menu\mdisplaysize.cpp
 	<fstream>
 	<iostream>
 	"DlgBoite.h"
 	"Menu.h"
 	"Cfg.h"
 	"Focus.h"
-	"Trace.h"
+	"util/Trace.h"
 	"SDL.h"
 	"divers.h"
 	"Menu/MReseau.h"
@@ -2075,10 +2074,10 @@
 
 1261758179 d:\jkt_repo_2008\moteur\\menu\mdisplaysize.h
 
-1261758179 source:d:\jkt_repo_2008\moteur\menu\mmenuprinc.cpp
+1262085586 source:d:\jkt_repo_2008\moteur\menu\mmenuprinc.cpp
 	"DlgBoite.h"
 	"Menu.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Game.h"
 	"Focus.h"
 	"Menu/MMenuPrinc.h"
@@ -2093,15 +2092,15 @@
 
 1261758179 d:\jkt_repo_2008\moteur\\menu\mmenuprinc2.h
 
-1262043640 source:d:\jkt_repo_2008\moteur\menu\mmode.cpp
+1262085609 source:d:\jkt_repo_2008\moteur\menu\mmode.cpp
 	<fstream>
 	<windows.h>
 	"DlgBoite.h"
 	"Menu.h"
-	"V3D.h"
-	"Tableau.h"
+	"util/V3D.h"
+	"util/Tableau.h"
 	"IfstreamMap.h"
-	"TableauIndex.h"
+	"util/TableauIndex.h"
 	"Projectil.h"
 	"son/DemonSons.h"
 	"reseau/SPA.h"
@@ -2113,17 +2112,17 @@
 	"Game.h"
 	"Focus.h"
 	"Cfg.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Menu/MMode.h"
 
 1261758236 d:\jkt_repo_2008\moteur\\v3d.h
 
 1261865269 d:\jkt_repo_2008\moteur\\tableau.h
 
-1261758238 d:\jkt_repo_2008\moteur\\ifstreammap.h
+1262083874 d:\jkt_repo_2008\moteur\\ifstreammap.h
 	<string>
 	<vector>
-	"Tableau.h"
+	"util/Tableau.h"
 
 1261943032 d:\jkt_repo_2008\moteur\\projectil.h
 
@@ -2142,11 +2141,11 @@
 	"SDL.h"
 	"SDL_net.h"
 
-1262042219 d:\jkt_repo_2008\moteur\\player.h
+1262083962 d:\jkt_repo_2008\moteur\\player.h
 	<string>
 	<vector>
-	"Tableau.h"
-	"V3D.h"
+	"util/Tableau.h"
+	"util/V3D.h"
 	"reseau/SPA.h"
 
 1261758238 d:\jkt_repo_2008\moteur\\client.h
@@ -2158,15 +2157,15 @@
 1261758238 d:\jkt_repo_2008\moteur\\server.h
 	"enumReseau.h"
 
-1261867541 d:\jkt_repo_2008\moteur\\map.h
+1262084078 d:\jkt_repo_2008\moteur\\map.h
 	<vector>
-	"V3D.h"
-	"Tableau.h"
-	"Erreur.h"
+	"util/V3D.h"
+	"util/Tableau.h"
+	"util/Erreur.h"
 
 1261758179 d:\jkt_repo_2008\moteur\\menu\mmode.h
 
-1262042419 source:d:\jkt_repo_2008\moteur\menu\mmultijoueur.cpp
+1262085621 source:d:\jkt_repo_2008\moteur\menu\mmultijoueur.cpp
 	<fstream>
 	<windows.h>
 	"DlgBoite.h"
@@ -2176,7 +2175,7 @@
 	"Focus.h"
 	"Cfg.h"
 	"reseau/Reseau.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Menu/MMultijoueur.h"
 	"Menu/MMenuPrinc.h"
 	"Menu/MMultijoueurClientInfo.h"
@@ -2192,12 +2191,12 @@
 
 1261758179 d:\jkt_repo_2008\moteur\\menu\mmultijoueurclientping.h
 
-1262042430 source:d:\jkt_repo_2008\moteur\menu\mmultijoueurclientinfo.cpp
+1262085630 source:d:\jkt_repo_2008\moteur\menu\mmultijoueurclientinfo.cpp
 	<fstream>
 	<windows.h>
 	"DlgBoite.h"
 	"Menu.h"
-	"Trace.h"
+	"util/Trace.h"
 	"reseau/Client.h"
 	"reseau/Server.h"
 	"Focus.h"
@@ -2206,12 +2205,12 @@
 	"Menu/MMultijoueur.h"
 	"Menu/MMultijoueurClientInfo.h"
 
-1262042448 source:d:\jkt_repo_2008\moteur\menu\mmultijoueurclientping.cpp
+1262085639 source:d:\jkt_repo_2008\moteur\menu\mmultijoueurclientping.cpp
 	<fstream>
 	<windows.h>
 	"DlgBoite.h"
 	"Menu.h"
-	"Trace.h"
+	"util/Trace.h"
 	"reseau/Client.h"
 	"reseau/Server.h"
 	"reseau/Reseau.h"
@@ -2221,12 +2220,12 @@
 	"Menu/MMultijoueur.h"
 	"Menu/MMultijoueurClientInfo.h"
 
-1262042460 source:d:\jkt_repo_2008\moteur\menu\mmultijoueurserveur.cpp
+1262085656 source:d:\jkt_repo_2008\moteur\menu\mmultijoueurserveur.cpp
 	<fstream>
 	<windows.h>
 	"DlgBoite.h"
 	"Menu.h"
-	"Trace.h"
+	"util/Trace.h"
 	"reseau/Client.h"
 	"reseau/Server.h"
 	"Focus.h"
@@ -2238,14 +2237,14 @@
 
 1261758179 d:\jkt_repo_2008\moteur\\menu\mmultijoueurserveurlancepartie.h
 
-1262042499 source:d:\jkt_repo_2008\moteur\menu\mmultijoueurserveurlancepartie.cpp
+1262087982 source:d:\jkt_repo_2008\moteur\menu\mmultijoueurserveurlancepartie.cpp
 	<fstream>
 	<io.h>
 	<windows.h>
-	"FindFolder.h"
+	"util/FindFolder.h"
 	"DlgBoite.h"
 	"Menu.h"
-	"Trace.h"
+	"util/Trace.h"
 	"reseau/Client.h"
 	"reseau/Server.h"
 	"Focus.h"
@@ -2264,17 +2263,17 @@
 
 1261758179 d:\jkt_repo_2008\moteur\\menu\mmultijoueurserveur.h
 
-1261758179 source:d:\jkt_repo_2008\moteur\menu\mopenase.cpp
+1262087996 source:d:\jkt_repo_2008\moteur\menu\mopenase.cpp
 	<fstream>
 	<iostream>
 	<io.h>
 	<direct.h>
 	"SDL.h"
 	"SDL_thread.h"
-	"FindFolder.h"
+	"util/FindFolder.h"
 	"DlgBoite.h"
 	"Menu.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Game.h"
 	"Focus.h"
 	"MaterialTexture.h"
@@ -2286,11 +2285,11 @@
 	"MOpenScene.h"
 	"Menu/MOpenASE.h"
 
-1261867475 d:\jkt_repo_2008\moteur\\materialtexture.h
+1262084084 d:\jkt_repo_2008\moteur\\materialtexture.h
 	<iostream>
 	<string>
 	"Material.h"
-	"Erreur.h"
+	"util/Erreur.h"
 
 1261942984 d:\jkt_repo_2008\moteur\\material.h
 	<iostream>
@@ -2309,46 +2308,46 @@
 
 1261758179 d:\jkt_repo_2008\moteur\\menu\mopenase.h
 
-1261758179 source:d:\jkt_repo_2008\moteur\menu\mopenmap.cpp
+1262088016 source:d:\jkt_repo_2008\moteur\menu\mopenmap.cpp
 	<fstream>
 	<iostream>
 	<io.h>
-	"FindFolder.h"
+	"util/FindFolder.h"
 	"DlgBoite.h"
 	"Menu.h"
 	"Game.h"
 	"Focus.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Menu/MMenuPrinc.h"
 	"MOpenScene.h"
 	"MOpenMAP.h"
 
 1261758179 d:\jkt_repo_2008\moteur\menu\mopenmap.h
 
-1261758179 source:d:\jkt_repo_2008\moteur\menu\mopenscene.cpp
+1262085699 source:d:\jkt_repo_2008\moteur\menu\mopenscene.cpp
 	<fstream>
 	"DlgBoite.h"
 	"Menu.h"
 	"Game.h"
 	"Focus.h"
-	"Trace.h"
+	"util/Trace.h"
 	"MMenuPrinc.h"
 
 1261758179 d:\jkt_repo_2008\moteur\menu\mmenuprinc.h
 
-1261943380 source:d:\jkt_repo_2008\moteur\menu\mreseau.cpp
+1262085670 source:d:\jkt_repo_2008\moteur\menu\mreseau.cpp
 	<sstream>
 	<string>
 	<iostream>
 	"DlgBoite.h"
 	"Menu.h"
-	"Trace.h"
+	"util/Trace.h"
 	"Focus.h"
 	"Cfg.h"
 	"Menu/MReseau.h"
 	"Menu/MConfiguration.h"
 
-1261758236 source:d:\jkt_repo_2008\moteur\moteurparticules.cpp
+1262085674 source:d:\jkt_repo_2008\moteur\moteurparticules.cpp
 	<vector>
 	<windows.h>
 	<GL/gl.h>
@@ -2356,15 +2355,15 @@
 	<cmath>
 	<iostream>
 	"SDL.h"
-	"V3D.h"
-	"Trace.h"
+	"util/V3D.h"
+	"util/Trace.h"
 	"Particule.h"
 	"MoteurParticules.h"
 
 1261758237 source:d:\jkt_repo_2008\moteur\mouve.cpp
 	"Mouve.h"
 
-1261945411 source:d:\jkt_repo_2008\moteur\multimaterialgeo.cpp
+1262088034 source:d:\jkt_repo_2008\moteur\multimaterialgeo.cpp
 	<string>
 	<fstream>
 	<set>
@@ -2376,9 +2375,9 @@
 	<GL/GLU.H>
 	"Extensions.h"
 	"XmlVocabulaire.h"
-	"Tableau.cpp"
-	"math_vectoriel.h"
-	"V3D.h"
+	"util/Tableau.cpp"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
 	"IfstreamMap.h"
 	"TexVertexList.h"
 	"Geo.h"
@@ -2391,7 +2390,7 @@
 	"MaterialMulti.h"
 	"MultiMaterialGeo.h"
 
-1262043821 source:d:\jkt_repo_2008\moteur\navette.cpp
+1262084094 source:d:\jkt_repo_2008\moteur\navette.cpp
 	<fstream>
 	<iostream>
 	<set>
@@ -2400,8 +2399,8 @@
 	<windows.h>
 	<GL/gl.h>
 	"XmlVocabulaire.h"
-	"Erreur.h"
-	"V3D.h"
+	"util/Erreur.h"
+	"util/V3D.h"
 	"IfstreamMap.h"
 	"GeoMaker.h"
 	"MaterialTexture.h"
@@ -2463,9 +2462,9 @@
 1261758236 d:\jkt_repo_2008\moteur\openudpsocketexception.h
 	"centralisateurexception.h"
 
-1261758238 source:d:\jkt_repo_2008\moteur\particule.cpp
+1262088048 source:d:\jkt_repo_2008\moteur\particule.cpp
 	"SDL.h"
-	"V3D.h"
+	"util/V3D.h"
 	"Particule.h"
 
 1261758238 source:d:\jkt_repo_2008\moteur\photo.cpp
@@ -2478,7 +2477,7 @@
 	<GL/glu.h>
 	"photo.h"
 
-1262042830 source:d:\jkt_repo_2008\moteur\player.cpp
+1262088062 source:d:\jkt_repo_2008\moteur\player.cpp
 	<string>
 	<vector>
 	<set>
@@ -2492,10 +2491,10 @@
 	"fmod_errors.h"
 	"SDL.h"
 	"glfont2.h"
-	"math_vectoriel.h"
-	"Trace.h"
-	"V3D.h"
-	"Tableau.cpp"
+	"util/math_vectoriel.h"
+	"util/Trace.h"
+	"util/V3D.h"
+	"util/Tableau.cpp"
 	"Laser.h"
 	"Rocket.h"
 	"Projectil.h"
@@ -2503,17 +2502,17 @@
 	"Map.h"
 	"son/DemonSons.h"
 	"son/ReqSon.h"
-	"Erreur.h"
+	"util/Erreur.h"
 	"Textures.h"
 	"Cfg.h"
 	"Game.h"
 	"reseau/SPA.h"
 	"Player.h"
 
-1261758235 source:d:\jkt_repo_2008\moteur\portail.cpp
+1262085677 source:d:\jkt_repo_2008\moteur\portail.cpp
 	<fstream>
 	"SDL.h"
-	"Trace.h"
+	"util/Trace.h"
 	"IfstreamMap.h"
 	"Focus.h"
 	"Cfg.h"
@@ -2522,7 +2521,7 @@
 	"Menu.h"
 	"Portail.h"
 
-1262043865 source:d:\jkt_repo_2008\moteur\porte.cpp
+1262084215 source:d:\jkt_repo_2008\moteur\porte.cpp
 	<fstream>
 	<iostream>
 	<set>
@@ -2531,8 +2530,8 @@
 	<windows.h>
 	<GL/gl.h>
 	"XmlVocabulaire.h"
-	"Erreur.h"
-	"V3D.h"
+	"util/Erreur.h"
+	"util/V3D.h"
 	"IfstreamMap.h"
 	"GeoMaker.h"
 	"MaterialTexture.h"
@@ -2542,8 +2541,8 @@
 	"Game.h"
 	"Porte.h"
 
-1262042754 source:d:\jkt_repo_2008\moteur\projectil.cpp
-	"V3D.h"
+1262088077 source:d:\jkt_repo_2008\moteur\projectil.cpp
+	"util/V3D.h"
 	"son/DemonSons.h"
 	"reseau/SPA.h"
 	"Player.h"
@@ -2589,26 +2588,25 @@
 	<iostream>
 	"RessourcesLoader.h"
 
-1262043967 source:d:\jkt_repo_2008\moteur\rocket.cpp
+1262084240 source:d:\jkt_repo_2008\moteur\rocket.cpp
 	<windows.h>
 	<GL/gl.h>
 	<GL/glu.h>
 	<fstream>
 	<map>
 	<cmath>
-	"Erreur.h"
-	"Trace.h"
-	"V3D.h"
+	"util/Erreur.h"
+	"util/Trace.h"
+	"util/V3D.h"
 	"Projectil.h"
-	"TableauIndex.h"
-	"Tableau.cpp"
+	"util/TableauIndex.h"
+	"util/Tableau.cpp"
 	"Game.h"
 	"Map.h"
 	"son/DemonSons.h"
 	"reseau/SPA.h"
 	"Player.h"
 	"Textures.h"
-	"Erreur.h"
 	"Map.h"
 	"Rocket.h"
 
@@ -2659,7 +2657,7 @@
 	"Data.h"
 	"BindingUdpException.h"
 
-1262043980 source:d:\jkt_repo_2008\moteur\simplegeo.cpp
+1262088094 source:d:\jkt_repo_2008\moteur\simplegeo.cpp
 	<string>
 	<fstream>
 	<set>
@@ -2671,9 +2669,9 @@
 	<GL/GLU.H>
 	"Extensions.h"
 	"XmlVocabulaire.h"
-	"Tableau.cpp"
-	"math_vectoriel.h"
-	"V3D.h"
+	"util/Tableau.cpp"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
 	"IfstreamMap.h"
 	"Geo.h"
 	"Mouve.h"
@@ -2686,7 +2684,7 @@
 	"Player.h"
 	"SimpleGeo.h"
 
-1261758238 source:d:\jkt_repo_2008\moteur\simplematerialgeo.cpp
+1262088109 source:d:\jkt_repo_2008\moteur\simplematerialgeo.cpp
 	<string>
 	<fstream>
 	<set>
@@ -2698,9 +2696,9 @@
 	<GL/GLU.H>
 	"Extensions.h"
 	"XmlVocabulaire.h"
-	"Tableau.cpp"
-	"math_vectoriel.h"
-	"V3D.h"
+	"util/Tableau.cpp"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
 	"IfstreamMap.h"
 	"Geo.h"
 	"Mouve.h"
@@ -2734,7 +2732,7 @@
 1261758238 source:d:\jkt_repo_2008\moteur\texvertexlist.cpp
 	"TexVertexList.h"
 
-1261758238 source:d:\jkt_repo_2008\moteur\texturematerialgeo.cpp
+1262088133 source:d:\jkt_repo_2008\moteur\texturematerialgeo.cpp
 	<string>
 	<fstream>
 	<set>
@@ -2746,9 +2744,9 @@
 	<GL/GLU.H>
 	"Extensions.h"
 	"XmlVocabulaire.h"
-	"Tableau.cpp"
-	"math_vectoriel.h"
-	"V3D.h"
+	"util/Tableau.cpp"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
 	"IfstreamMap.h"
 	"Geo.h"
 	"Mouve.h"
@@ -2760,7 +2758,7 @@
 	"MaterialTexture.h"
 	"TextureMaterialGeo.h"
 
-1261758235 source:d:\jkt_repo_2008\moteur\textures.cpp
+1262088148 source:d:\jkt_repo_2008\moteur\textures.cpp
 	<windows.h>
 	<GL/gl.h>
 	<GL/glu.h>
@@ -2768,9 +2766,9 @@
 	<iostream>
 	"SDL.h"
 	"SDL_image.h"
-	"Erreur.h"
-	"RessourcesLoader.h"
-	"utils_SDL.h"
+	"util/Erreur.h"
+	"ressource/RessourcesLoader.h"
+	"util/utils_SDL.h"
 	"Textures.h"
 
 1261758237 d:\jkt_repo_2008\moteur\utils_sdl.h
@@ -2830,9 +2828,9 @@
 1261758237 source:d:\jkt_repo_2008\moteur\xmlhelper.cpp
 	"XmlHelper.h"
 
-1261867657 source:d:\jkt_repo_2008\moteur\xmlvocabulaire.cpp
+1262084250 source:d:\jkt_repo_2008\moteur\xmlvocabulaire.cpp
 	<sstream>
-	"Erreur.h"
+	"util/Erreur.h"
 	"XmlVocabulaire.h"
 
 1261867662 source:d:\jkt_repo_2008\moteur\a_virer.cpp
@@ -2859,19 +2857,19 @@
 	"Cfg.h"
 	"audio.h"
 
-1261758235 source:d:\jkt_repo_2008\moteur\contact.cpp
+1262088159 source:d:\jkt_repo_2008\moteur\contact.cpp
 	<string>
 	<vector>
 	<set>
 	<cmath>
 	<fstream>
 	<map>
-	"V3D.h"
-	"math_vectoriel.h"
+	"util/V3D.h"
+	"util/math_vectoriel.h"
 	"Player.h"
 	"contact.h"
 
-1261758236 source:d:\jkt_repo_2008\moteur\divers.cpp
+1262085686 source:d:\jkt_repo_2008\moteur\divers.cpp
 	<windows.h>
 	<GL/gl.h>
 	<GL/glu.h>
@@ -2887,11 +2885,11 @@
 	"SDL_image.h"
 	"SDL_net.h"
 	"glfont2.h"
-	"RessourcesLoader.h"
-	"Trace.h"
-	"utils_SDL.h"
-	"DemonSons.h"
-	"Son.h"
+	"ressource/RessourcesLoader.h"
+	"util/Trace.h"
+	"util/utils_SDL.h"
+	"son/DemonSons.h"
+	"son/Son.h"
 	"Textures.h"
 	"Cfg.h"
 	"divers.h"
@@ -2905,11 +2903,11 @@
 	<GL/gl.h>
 	"glfont2.h"
 
-1261758238 source:d:\jkt_repo_2008\moteur\ifstreamwork.cpp
+1262084254 source:d:\jkt_repo_2008\moteur\ifstreamwork.cpp
 	<string>
 	<fstream>
 	<iostream>
-	"Erreur.h"
+	"util/Erreur.h"
 	"ifstreamWork.h"
 
 1261758236 d:\jkt_repo_2008\moteur\ifstreamwork.h
@@ -3920,4 +3918,276 @@
 	<string>
 
 1261758236 d:\jkt_repo_2008\moteur\src\son\reqson.h
+
+1261758236 d:\jkt_repo_2008\moteur\src\util\trace.h
+	<string>
+	<fstream>
+	<sstream>
+	"SDL.h"
+	"SDL_thread.h"
+
+1261758238 d:\jkt_repo_2008\moteur\src\util\erreur.h
+	<string>
+
+1261758238 d:\jkt_repo_2008\moteur\src\util\math_vectoriel.h
+
+1261758236 d:\jkt_repo_2008\moteur\src\util\v3d.h
+
+1261939721 d:\jkt_repo_2008\moteur\src\util\genref.h
+	<list>
+	<string>
+
+1261865269 d:\jkt_repo_2008\moteur\src\util\tableau.h
+
+1261758237 d:\jkt_repo_2008\moteur\src\util\tableau.cpp
+	<iostream>
+	"Tableau.h"
+
+1261758238 d:\jkt_repo_2008\moteur\src\util\tableauindex.cpp
+	"TableauIndex.h"
+
+1261758235 d:\jkt_repo_2008\moteur\src\util\tableauindex.h
+
+1261867238 d:\jkt_repo_2008\moteur\src\ressource\ressourcesloader.h
+	<string>
+
+1261758235 d:\jkt_repo_2008\moteur\src\util\xmlhelper.h
+	"tinyxml.h"
+
+1261758235 d:\jkt_repo_2008\moteur\src\util\mathfast.h
+
+1261758238 d:\jkt_repo_2008\moteur\src\util\findfolder.h
+	<sys/types.h>
+	<sys/stat.h>
+	<dirent.h>
+
+1261758236 d:\jkt_repo_2008\moteur\src\util\tracemethod.h
+	<string>
+
+1261758237 d:\jkt_repo_2008\moteur\src\util\utils_sdl.h
+
+1262085680 source:d:\jkt_repo_2008\moteur\src\menu\controller.cpp
+	<iostream>
+	"menu/OpenCentralisateurView.h"
+	"Fabrique.h"
+	"centralisateur/Centralisateur.h"
+	"Portail.h"
+	"util/Trace.h"
+	"menu/Controller.h"
+
+1262022764 d:\jkt_repo_2008\moteur\src\menu\opencentralisateurview.h
+	<agar/core.h>
+	<agar/gui.h>
+	"menu/View.h"
+
+1262024126 d:\jkt_repo_2008\moteur\\fabrique.h
+	"menu/Controller.h"
+	"menu/Viewer.h"
+	"centralisateur/Centralisateur.h"
+
+1261758235 d:\jkt_repo_2008\moteur\\portail.h
+
+1262022777 source:d:\jkt_repo_2008\moteur\src\menu\mainmenuview.cpp
+	<agar/core.h>
+	<agar/gui.h>
+	<agar/gui/style.h>
+	"menu/View.h"
+	"menu/Controller.h"
+	"menu/Viewer.h"
+	"menu/MainMenuView.h"
+
+1262022773 d:\jkt_repo_2008\moteur\src\menu\mainmenuview.h
+	<agar/core.h>
+	<agar/gui.h>
+	"menu/View.h"
+
+1262022770 source:d:\jkt_repo_2008\moteur\src\menu\opencentralisateurview.cpp
+	<agar/core.h>
+	<agar/gui.h>
+	<agar/gui/style.h>
+	"menu/View.h"
+	"menu/Controller.h"
+	"menu/Viewer.h"
+	"menu/OpenCentralisateurView.h"
+
+1262022760 source:d:\jkt_repo_2008\moteur\src\menu\opensceneaseview.cpp
+	<agar/core.h>
+	<agar/gui.h>
+	<agar/gui/style.h>
+	"menu/View.h"
+	"menu/Controller.h"
+	"menu/Viewer.h"
+	"menu/OpenSceneASEView.h"
+
+1262022754 d:\jkt_repo_2008\moteur\src\menu\opensceneaseview.h
+	"menu/View.h"
+
+1262022750 source:d:\jkt_repo_2008\moteur\src\menu\openscenemapview.cpp
+	<agar/core.h>
+	<agar/gui.h>
+	<agar/gui/style.h>
+	"menu/View.h"
+	"menu/Controller.h"
+	"menu/Viewer.h"
+	"menu/OpenSceneMapView.h"
+
+1262022741 d:\jkt_repo_2008\moteur\src\menu\openscenemapview.h
+	"menu/View.h"
+
+1262022737 source:d:\jkt_repo_2008\moteur\src\menu\opensceneview.cpp
+	<agar/core.h>
+	<agar/gui.h>
+	<agar/gui/style.h>
+	"menu/View.h"
+	"menu/Controller.h"
+	"menu/Viewer.h"
+	"menu/OpenSceneView.h"
+
+1262022727 d:\jkt_repo_2008\moteur\src\menu\opensceneview.h
+	<agar/core.h>
+	<agar/gui.h>
+	"menu/View.h"
+
+1262022723 source:d:\jkt_repo_2008\moteur\src\menu\view.cpp
+	"menu/View.h"
+
+1262022345 source:d:\jkt_repo_2008\moteur\src\menu\viewer.cpp
+	"Viewer.h"
+	<agar/gui/style.h>
+	<agar/core.h>
+	<agar/gui.h>
+	<agar/gui/view.h>
+	"menu/MainMenuView.h"
+	"menu/OpenSceneView.h"
+	"menu/OpenSceneASEView.h"
+	"menu/OpenSceneMapView.h"
+	"menu/OpenCentralisateurView.h"
+
+1262084265 source:d:\jkt_repo_2008\moteur\src\reseau\client.cpp
+	<fstream>
+	<set>
+	<map>
+	"util/Erreur.h"
+	"util/V3D.h"
+	"util/TableauIndex.cpp"
+	"reseau/SPA.h"
+	"Player.h"
+	"reseau/Client.h"
+	"RequeteProcess.h"
+	"util/Trace.h"
+	"contact.h"
+	"Clavier.h"
+	"Game.h"
+	"enumReseau.h"
+	"reseau/Client.h"
+
+1262085254 d:\jkt_repo_2008\moteur\\contact.h
+	"util/TableauIndex.cpp"
+
+1261758238 d:\jkt_repo_2008\moteur\\clavier.h
+
+1262084289 source:d:\jkt_repo_2008\moteur\src\reseau\reseau.cpp
+	<iostream>
+	<vector>
+	<fstream>
+	<set>
+	<map>
+	<windows.h>
+	"SDL.h"
+	"SDL_net.h"
+	"util/Erreur.h"
+	"util/V3D.h"
+	"Cfg.h"
+	"reseau/SPA.h"
+	"Player.h"
+	"reseau/Client.h"
+	"reseau/Server.h"
+	"contact.h"
+	"Game.h"
+	"util/Trace.h"
+	"enumReseau.h"
+	"reseau/Reseau.h"
+
+1262084294 source:d:\jkt_repo_2008\moteur\src\reseau\spa.cpp
+	<iostream>
+	<sstream>
+	"SDL.h"
+	"SDL_net.h"
+	"util/Trace.h"
+	"util/Erreur.h"
+	"reseau/SPA.h"
+	"Player.h"
+
+1262084311 source:d:\jkt_repo_2008\moteur\src\reseau\server.cpp
+	<string>
+	<vector>
+	<set>
+	<cmath>
+	<fstream>
+	<map>
+	<iostream>
+	"SDL.h"
+	"SDL_net.h"
+	"util/Erreur.h"
+	"util/V3D.h"
+	"util/TableauIndex.cpp"
+	"IfstreamMap.h"
+	"reseau/SPA.h"
+	"Player.h"
+	"reseau/Client.h"
+	"reseau/Server.h"
+	"Clavier.h"
+	"contact.h"
+	"util/Trace.h"
+	"Game.h"
+	"reseau/enumReseau.h"
+	"reseau/Server.h"
+
+1262085689 source:d:\jkt_repo_2008\moteur\src\reseau\a_virer.cpp
+	<string>
+	<windows.h>
+	"SDL.h"
+	"sdl_net.h"
+	"util/Erreur.h"
+	"util/V3D.h"
+	"Cfg.h"
+
+1261867673 source:d:\jkt_repo_2008\moteur\src\ressource\ressourcesloader.cpp
+	<string>
+	<iostream>
+	"RessourcesLoader.h"
+
+1262085693 source:d:\jkt_repo_2008\moteur\src\son\demonsons.cpp
+	<iostream>
+	<conio.h>
+	<windows.h>
+	"wincompat.h"
+	"util/Trace.h"
+	"fmod.h"
+	"fmod_errors.h"
+	"Son.h"
+	"ReqSon.h"
+	"DemonSons.h"
+
+1261758237 source:d:\jkt_repo_2008\moteur\src\son\reqson.cpp
+	<conio.h>
+	<windows.h>
+	"wincompat.h"
+	<vector>
+	<iostream>
+	"fmod.h"
+	"Son.h"
+	"ReqSon.h"
+
+1262085696 source:d:\jkt_repo_2008\moteur\src\son\son.cpp
+	<conio.h>
+	<windows.h>
+	"wincompat.h"
+	<iostream>
+	<map>
+	"fmod.h"
+	"util/Trace.h"
+	"Son.h"
+	"ReqSon.h"
+	"DemonSons.h"
 

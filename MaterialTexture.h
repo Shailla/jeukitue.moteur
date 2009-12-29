@@ -5,7 +5,7 @@
 #include <string>
 
 #include "Material.h"
-#include "Erreur.h"
+#include "util/Erreur.h"
 
 namespace JKT_PACKAGE_MOTEUR3D
 {

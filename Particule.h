@@ -2,7 +2,7 @@
 #ifndef __JKT__PARTICULE_H
 #define __JKT__PARTICULE_H
 
-#include "V3D.h"
+#include "util/V3D.h"
 
 using namespace JKT_PACKAGE_UTILS;
 
@@ -19,7 +19,7 @@ public:
 	float masse;					// Masse de la particule
 	unsigned int date2naissance;	// Instant de création de la particule
 	unsigned int duree2vie;			// Durée de vie de la particule
-	bool visible;					// Indique si la particule est visible ou non 
+	bool visible;					// Indique si la particule est visible ou non
 	unsigned int number;	// DEBUG
 		// Constructeurs
 	CParticule();

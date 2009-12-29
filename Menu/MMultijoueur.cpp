@@ -19,7 +19,7 @@ using namespace std;
 #include "Focus.h"
 #include "Cfg.h"
 #include "reseau/Reseau.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "Menu/MMultijoueur.h"
 

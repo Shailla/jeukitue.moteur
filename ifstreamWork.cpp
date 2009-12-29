@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#include "Erreur.h"
+#include "util/Erreur.h"
 
 #include "ifstreamWork.h"
 
@@ -50,7 +50,7 @@ char *ifstreamWork::nameFichier()
 {	return txt;		}
 
 inline bool ifstreamWork::operator !() {	return bFin;	}
-	
+
 /*	if( next )	// Si un (ou plusieurs) sous-fichier est ouvert
 	{
 		if( next->eof() )	// Si ce(s) sous-fichier(s) est fermé
@@ -58,16 +58,16 @@ inline bool ifstreamWork::operator !() {	return bFin;	}
 		else
 			return false;	// S'il(s) est pas fermé indique qu'on a pas fini de lire les données
 	}
-	else	
+	else
 	{
-		return bFin;	
+		return bFin;
 	}
 }*/
 
 ifstreamWork& ifstreamWork::operator>>( string &mot )
 {
 	if( next )		// Si on est dans un sous-fichier
-	{		// Cas du sous-fichier		
+	{		// Cas du sous-fichier
 		if( !(next->operator >>( mot )) )
 		{
 			cout << "\nFIN DE SOUS FICHIER (" << next->txt << ") DETECTEE DANS " << txt;
@@ -80,28 +80,28 @@ ifstreamWork& ifstreamWork::operator>>( string &mot )
 	else
 	{
 			// Cas du fichier 'current'
-		if( !(current >>(mot)) ) 
+		if( !(current >>(mot)) )
 			bFin = true;			// Fin de fichier atteinte
 
 		if( mot=="#include" )	// Si inclusion de fichier
 		{
 			string nomInclude;
-			if( !(current>>(nomInclude)) ) 
+			if( !(current>>(nomInclude)) )
 			{
 				bFin = true;		// Fin de fichier atteinte
 				return *this;
 			}
-			
+
 			cout << "\n#include " << nomInclude;
 
 			next = new ifstreamWork();		// Ouverture du sous-fichier
 			if( !next->open( nomInclude ) )
 			{
 				string erreur;
-				erreur = "\nErreur : #include " + nomInclude + " -> Impossible";			
+				erreur = "\nErreur : #include " + nomInclude + " -> Impossible";
 				throw JKT_PACKAGE_UTILS::CErreur( 0, erreur );
 			}
-			
+
 			if( !(next->operator >>( mot )) )
 			{
 				cout << "\nFIN DE SOUS FICHIER (" << next->txt << ") DETECTEE DANS " << txt;
@@ -112,7 +112,7 @@ ifstreamWork& ifstreamWork::operator>>( string &mot )
 			}
 		}
 	}
-	
+
 	return *this;
 }
 
@@ -197,9 +197,9 @@ ifstreamWork& ifstreamWork::operator>>( int &val )
 	}
 	else
 	{
-		if( !(current>>val) ) 
+		if( !(current>>val) )
 			bFin = true;		// Fin de fichier atteinte
 	}
-		
+
 	return *this;
 }

@@ -15,7 +15,7 @@ using namespace std;
 #include "Game.h"
 #include "Focus.h"
 #include "Cfg.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "Menu/MAudio.h"
 
@@ -61,7 +61,7 @@ void lanceMenuConfigAudioDriversDriver(void *var)
 {
 TRACE().p( TRACE_MENU, "lanceMenuConfigDriversDriver(var=%x)", var );
 	int nbrDriver = FSOUND_GetNumDrivers();	// Nombre driver possibles
-	
+
 	PF *liste_suivant;
 	char **item_menu;
 	void **liste_argument;

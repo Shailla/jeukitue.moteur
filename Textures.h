@@ -4,7 +4,7 @@
 #ifndef __JKT__TEXTURES_H
 #define __JKT__TEXTURES_H
 
-#include "Erreur.h"
+#include "util/Erreur.h"
 
 namespace JKT_PACKAGE_MOTEUR3D
 {

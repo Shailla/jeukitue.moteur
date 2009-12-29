@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#include "Trace.h"
+#include "util/Trace.h"
 #include "fmod.h"
 #include "fmod_errors.h"	/* optional */
 
@@ -53,12 +53,12 @@ TRACE().p( TRACE_SON, "CDemonSons::CreateSon(nomFichierSon=%s,type=%d)%T",nomFic
 			son = new CSonMono( this, nomFichierSon );
 			m_TabSon.insert( son );
 			break;
-		
+
 		case SON_STEREO:
 			son = new CSonStereo( this, nomFichierSon );
 			m_TabSon.insert( son );
 			break;
-		
+
 		case SON_3D:
 			son = new CSon3D( this, nomFichierSon );
 			m_TabSon.insert( son );
@@ -75,7 +75,7 @@ TRACE().p( TRACE_SON, "CDemonSons::CreateSon(nomFichierSon=%s,type=%d)%T",nomFic
 			delete son;
 		son = 0;	// La création du son n'a pas eu lieu
 	}
-	
+
 	CSon* id = son;
 	return id;
 }
@@ -125,7 +125,7 @@ TRACE().p( TRACE_SON, "CDemonSons::Delete(son=%x)%T", son, this);
 		cerr << "\nTentative de detruire un son inexistant";
 		return;
 	}
-		
+
 	m_TabSon.erase( s );	// Supprime le son de la liste du démon
 
 	delete son;
@@ -182,7 +182,7 @@ void CDemonSons::Refresh()	// Vérifie si des requêtes volatiles sont arrivées à 
 				delete p->first;
 					// Trouve la et supprime la de la liste des requêtes du son
 				set<CReqSon*>::iterator rson = p->second->m_TabReq.find( p->first );
-				p->second->m_TabReq.erase( rson );				
+				p->second->m_TabReq.erase( rson );
 					// Supprime la de la liste des requêtes du démon
 				m_TabReq.erase( p );
 			}

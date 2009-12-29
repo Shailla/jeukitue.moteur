@@ -16,8 +16,8 @@ using namespace std;
 
 class CGame;
 
-#include "Erreur.h"
-#include "V3D.h"
+#include "util/Erreur.h"
+#include "util/V3D.h"
 #include "Cfg.h"
 #include "reseau/SPA.h"
 #include "Player.h"
@@ -25,7 +25,7 @@ class CGame;
 #include "reseau/Server.h"
 #include "contact.h"
 #include "Game.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "enumReseau.h"
 #include "reseau/Reseau.h"

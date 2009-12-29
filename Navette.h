@@ -3,7 +3,7 @@
 
 #include "Mouve.h"
 
-#include "V3D.h"
+#include "util/V3D.h"
 
 class CGame;
 
@@ -15,15 +15,15 @@ class CIstreamMap;
 
 class CPointNavette
 {
-public:	
+public:
 	static const char* identifier;
 	float m_Vitesse;	// Vitesse de la navette à partir de ce point
 	CV3D m_Position;	// Position de ce point du trajet de la navette
-	
+
 	CPointNavette( const CPointNavette& pp );
 	CPointNavette();
 	~CPointNavette();
-	
+
 	void operator =( const CPointNavette &pp );
 	void LitFichierPoint( CIfstreamMap &fichier );
 	void SaveFichierPoint( ostream &fichier );
@@ -49,7 +49,7 @@ public:
 	~CNavette();
 
 	void Init();					// Initialisation de l'objet géométrique
-	
+
 	void Affiche();					// Fonction d'affichage de l'objet géométrique
 	void Refresh( CGame *game );	// Rafraichissement des données, position, vitesse, ... de l'objet
 

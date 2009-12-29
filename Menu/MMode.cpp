@@ -22,10 +22,10 @@ class CMouve;
 class CGame;
 class CGeoObject;
 class CPorte;
-#include "V3D.h"
-#include "Tableau.h"
+#include "util/V3D.h"
+#include "util/Tableau.h"
 #include "IfstreamMap.h"
-#include "TableauIndex.h"
+#include "util/TableauIndex.h"
 #include "Projectil.h"
 #include "son/DemonSons.h"
 #include "reseau/SPA.h"
@@ -37,7 +37,7 @@ class CPorte;
 #include "Game.h"
 #include "Focus.h"
 #include "Cfg.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "Menu/MMode.h"
 

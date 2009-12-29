@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#include "GenRef.h"
+#include "util/GenRef.h"
 #include "IfstreamMap.h"
 
 #include "Geo.h"
@@ -28,7 +28,7 @@ CGeo::~CGeo()
 CMap *CGeo::getMap()
 {	return pMap;	}
 
-unsigned int CGeo::getReference() 
+unsigned int CGeo::getReference()
 {
 	return m_Reference;
 }
@@ -47,7 +47,7 @@ unsigned int CGeo::getReference()
 	char ch;
 
 		// Lecture de la référence de l'object
-	fichier >> mot;	
+	fichier >> mot;
 	if( mot!="Reference" )
 	{
 		cerr << __LINE__;
@@ -58,13 +58,13 @@ unsigned int CGeo::getReference()
 
 
 		// Lecture du nom de l'objet géo entre guillemets
-	fichier >> mot;	
+	fichier >> mot;
 	if( mot!="Nom" )
 	{
 		cerr << __LINE__;
 		return false;
 	}
-	
+
 	fichier >> ch;		// Recherche du guillemet ouvrant
 	if( ch!='\"' )
 	{
@@ -84,9 +84,9 @@ unsigned int CGeo::getReference()
 		if( ch!='\"' )
 			nom += ch;
 	}while( ch!='\"' );
-		
+
 	setName( nom );
-	
+
 	return true;
 }*/
 

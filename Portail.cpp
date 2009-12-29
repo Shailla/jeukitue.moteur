@@ -14,7 +14,7 @@ class CGame;
 class CGeoObject;
 class CPorte;
 
-#include "Trace.h"
+#include "util/Trace.h"
 #include "IfstreamMap.h"
 #include "Focus.h"
 #include "Cfg.h"

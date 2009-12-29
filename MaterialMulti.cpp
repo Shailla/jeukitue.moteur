@@ -14,8 +14,8 @@ using namespace std;
 #include "GeoMaker.h"
 #include "MaterialMaker.h"
 #include "IfstreamMap.h"
-#include "Trace.h"
-#include "TraceMethod.h"
+#include "util/Trace.h"
+#include "util/TraceMethod.h"
 
 #include "MaterialMulti.h"
 
@@ -34,7 +34,7 @@ int CMaterialMulti::NbrTex()
 {	return m_NbrTex;	}
 
 void CMaterialMulti::NbrTex( int nbr )
-{	
+{
 	m_NbrTex = nbr;
 	m_TabMat = new CMaterial*[ nbr ];	// Création du tableau des sous-matériaux
 	for( int i=0 ; i<nbr ; i++ )
@@ -86,7 +86,7 @@ bool CMaterialMulti::LitFichier( CIfstreamMap &fichier )
 	fichier >> mot;
 	if( mot!="Ambient" )
 		return false;	// Fichier corrompu
-	
+
 	fichier >> m_Ambient[0] >> m_Ambient[1] >> m_Ambient[2];
 
 	fichier >> mot;
@@ -97,7 +97,7 @@ bool CMaterialMulti::LitFichier( CIfstreamMap &fichier )
 	fichier >> mot;
 	if( mot!="Specular" )
 		return false;
-	
+
 	fichier >> m_Specular[0] >> m_Specular[1] >> m_Specular[2];
 
 	fichier >> mot;
@@ -175,7 +175,7 @@ bool CMaterialMulti::Lit(TiXmlElement* element, string &repertoire)
 	double ref;
 	if(!element->Attribute(Xml::REF, &ref))
 		throw CErreur(0, "Fichier map corrompu : Reference materiau");
-	
+
 	m_Ref = (unsigned int)ref;
 
 	// Couleurs
@@ -184,7 +184,7 @@ bool CMaterialMulti::Lit(TiXmlElement* element, string &repertoire)
 	Xml::LitCouleur3fv(element, Xml::SPECULAR, m_Specular);
 
 	TiXmlElement* elSma = element->FirstChildElement(Xml::SOUSMATERIAUX);
-	
+
 	if(!elSma)
 		throw CErreur(0, "Fichier map corrompu : Sous-materiaux");
 
@@ -192,7 +192,7 @@ bool CMaterialMulti::Lit(TiXmlElement* element, string &repertoire)
 	double nbrSSMat;
 	if(!elSma->Attribute(Xml::NBR, &nbrSSMat))
 		throw CErreur(0, "Fichier map corrompu : Nombre de sous-materiaux");
-	
+
 	m_NbrTex = (int)nbrSSMat;
 
 	// Liste des sous-matériaux
@@ -221,7 +221,7 @@ bool CMaterialMulti::Save(TiXmlElement* element)
 	elMat->SetAttribute(Xml::TYPE, Xml::MULTI);
 	elMat->SetAttribute(Xml::REF, getRef());
 	element->LinkEndChild(elMat);
-	
+
 	// Couleurs
 	CGeoMaker::SaveCouleur3fv(elMat, Xml::AMBIANTE, m_Ambient);
 	CGeoMaker::SaveCouleur3fv(elMat, Xml::DIFFUSE, m_Diffuse);

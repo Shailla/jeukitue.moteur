@@ -11,8 +11,8 @@
 
 using namespace std;
 
-#include "Trace.h"
-#include "Erreur.h"
+#include "util/Trace.h"
+#include "util/Erreur.h"
 #include "Textures.h"
 #include "Cfg.h"
 #include "Focus.h"
@@ -48,7 +48,7 @@ int CDlgBoite::texEnCours = -1;
 
 CBouton::CBouton()
 {
-	m_bFocus = false;	
+	m_bFocus = false;
 	m_bActif = false;
 	txt = 0;
 }
@@ -75,7 +75,7 @@ void CBouton::operator =(CBouton &but)
 }
 
 void CBouton::ExecFctGo()
-{	
+{
 	if( m_FctGo )
 		m_FctGo( m_Arg );
 	else
@@ -91,7 +91,7 @@ void CBouton::focus( bool indic )
 void CBouton::put( const char *t )
 {
 	m_bActif = true;
-	
+
 	if( txt )
 		delete[] txt;
 
@@ -118,11 +118,11 @@ void CBouton::afficheCadre()
 	float color_fond[] = { 0.8f, 0.8f, 0.9f };
 	float color_bord[] = { 0.6f, 0.6f, 1.0f };
 	int rend;
-	
+
 	for( int i=0 ; i<2 ; i++ )
 	{
 		if( i==0 )
-		{	
+		{
 			glColor3fv( color_fond );
 			rend = GL_QUADS;
 		}
@@ -132,7 +132,7 @@ void CBouton::afficheCadre()
 			rend = GL_LINE_LOOP;
 			glLineWidth( 2 );
 		}
-		
+
 		glBegin( rend );
 				// Affichage de la barre
 			glVertex2f( 0.0f,				0.0f			);
@@ -210,7 +210,7 @@ CDlgBoite::CDlgBoite( const char *titre, const char *txt, PF fct_retour, CBouton
 	: CDlg()
 {
 	m_Type = type;
-	
+
 	m_Titre = new char[ strlen( titre ) + 1 ];
 	strcpy( m_Titre, titre );
 
@@ -222,7 +222,7 @@ CDlgBoite::CDlgBoite( const char *titre, const char *txt, PF fct_retour, CBouton
 	m_Bouton1 = but1;
 	m_Bouton2 = but2;
 	m_Bouton3 = but3;
-	
+
 	m_Focus = 1;
 }
 
@@ -272,12 +272,12 @@ void CDlgBoite::afficheCadre()
 	glDisable( GL_BLEND );
 	glDepthMask( GL_FALSE );
 	glDisable( GL_DEPTH_TEST );
-	
+
 		// Affiche le fond de la boîte en mode GL_QUADS, puis les contours en mode GL_LINE_LOOP
 	for( int i=0 ; i<2 ; i++ )
 	{
 		if( i==0 )
-		{	
+		{
 			glColor3fv( color_fond );
 			rend = GL_QUADS;
 		}
@@ -287,7 +287,7 @@ void CDlgBoite::afficheCadre()
 			rend = GL_LINE_LOOP;
 			glLineWidth( 4 );
 		}
-		
+
 		glBegin( rend );
 				// Affichage du cadre à proprement dit
 			glVertex2f( CORX + TAILLEBX,	CORY + TAILLEBY	);
@@ -348,7 +348,7 @@ void CDlgBoite::afficheBouton()
 		case 1:
 			glPushMatrix();
 				glTranslatef( CORX + 15.0f, CORY + 10.0f, 0.0f );
-				
+
 				if( m_Focus==1 )
 					m_Bouton1.focus( true );
 				else
@@ -360,7 +360,7 @@ void CDlgBoite::afficheBouton()
 		case 2:
 			glPushMatrix();
 				glTranslatef( CORX + 130.0f, CORY + 10.0f, 0.0f );
-				
+
 				if( m_Focus==2 )
 					m_Bouton2.focus( true );
 				else
@@ -372,7 +372,7 @@ void CDlgBoite::afficheBouton()
 		case 3:
 			glPushMatrix();
 				glTranslatef( CORX + 245.0f, CORY + 10.0f, 0.0f );
-				
+
 				if( m_Focus==3 )
 					m_Bouton3.focus( true );
 				else
@@ -420,23 +420,23 @@ void CDlgBoite::afficheIcone()
 				return;
 			break;
 		}
-		
+
 		glEnable( GL_TEXTURE_2D );
 		glDepthMask( GL_FALSE );
 		glDisable( GL_BLEND );
 		glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
-		glBindTexture( GL_TEXTURE_2D, tex );	
+		glBindTexture( GL_TEXTURE_2D, tex );
 
 		glBegin( GL_QUADS );
 			glTexCoord2f( 0.0f, 0.0f );
 			glVertex2f( CORX + 10,	CORY + TAILLEBY - 80	);
-			
+
 			glTexCoord2f( 0.0f, 1.0f );
 			glVertex2f( CORX + 40,	CORY + TAILLEBY - 80	);
-			
+
 			glTexCoord2f( 1.0f, 1.0f );
 			glVertex2f( CORX + 40,	CORY + TAILLEBY - 50	);
-			
+
 			glTexCoord2f( 1.0f, 0.0f );
 			glVertex2f( CORX + 10,	CORY + TAILLEBY - 50	);
 		glEnd();
@@ -460,7 +460,7 @@ void CDlgBoite::right()
 		switch( m_Focus )
 		{
 		case 1:
-			m_Focus = 2;			
+			m_Focus = 2;
 			if( m_Bouton2.m_bActif )
 				cbon = true;
 			break;
@@ -493,12 +493,12 @@ void CDlgBoite::left()
 				cbon = true;
 			break;
 		case 2:
-			m_Focus = 1;			
+			m_Focus = 1;
 			if( m_Bouton1.m_bActif )
 				cbon = true;
 			break;
 		case 3:
-			m_Focus = 2;			
+			m_Focus = 2;
 			if( m_Bouton2.m_bActif )
 				cbon = true;
 			break;
@@ -511,7 +511,7 @@ void CDlgBoite::left()
 void CDlgBoite::KeyDown( SDL_Event *event )
 {
 	switch( event->key.keysym.sym )
-	{	
+	{
 	case SDLK_RETURN:
 		switch( m_Focus )
 		{
@@ -644,9 +644,9 @@ void CDlgBoite::handle_key_down( SDL_Event *event )
 		break;
 
 	case SDL_KEYDOWN:
-		KeyDown( event );		
+		KeyDown( event );
 		break;
-	
+
 	default:
 		break;
 	}

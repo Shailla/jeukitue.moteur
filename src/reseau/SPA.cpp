@@ -6,8 +6,8 @@ using namespace std;
 #include "SDL.h"
 #include "SDL_net.h"
 
-#include "Trace.h"
-#include "Erreur.h"
+#include "util/Trace.h"
+#include "util/Erreur.h"
 
 #include "reseau/SPA.h"
 #include "Player.h"

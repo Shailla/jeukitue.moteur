@@ -12,7 +12,7 @@ using namespace std;
 
 #include "Focus.h"
 #include "Cfg.h"
-#include "Trace.h"
+#include "util/Trace.h"
 
 #include "Menu/MReseau.h"
 

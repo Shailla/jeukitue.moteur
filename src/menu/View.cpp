@@ -1,9 +1,9 @@
 #include "menu/View.h"
 
-View::View(void)
+View::View(const AG_EventFn controllerCallback)
 {
+    m_controllerCallback = controllerCallback;
 }
-
 
 View::~View(void)
 {

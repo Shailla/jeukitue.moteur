@@ -8,12 +8,13 @@ class View
 {
 protected:
 	AG_Window *m_window;
+	AG_EventFn m_controllerCallback;
 public:
-	View(void);
-	~View(void);
+	View(const AG_EventFn controllerCallback);
+	virtual ~View(void);
 
-	void show(void);
-    void hide(void);
+	virtual void show(void);
+    virtual void hide(void);
 };
 
 #endif

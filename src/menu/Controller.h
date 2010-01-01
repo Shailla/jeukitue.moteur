@@ -14,6 +14,7 @@ public:
     static const int OpenSceneAction;
 	static const int OpenSceneASEAction;
 	static const int OpenSceneMapAction;
+	static const int OpenOneSceneMapAction;
     static const int QuitAction;
     static const int ConnectCentralisateurAction;
 

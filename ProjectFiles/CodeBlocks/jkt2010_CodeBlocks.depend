@@ -1,0 +1,2777 @@
+# depslib dependency file v1.0
+1262111563 source:h:\jkt\svn\trunk\moteur\libs\tinyxml_2_5_2\tinystr.cpp
+	"tinystr.h"
+
+1262111564 h:\jkt\svn\trunk\moteur\libs\tinyxml_2_5_2\tinystr.h
+	<assert.h>
+	<string.h>
+
+1262111563 source:h:\jkt\svn\trunk\moteur\libs\tinyxml_2_5_2\tinyxml.cpp
+	<ctype.h>
+	<sstream>
+	<iostream>
+	"tinyxml.h"
+
+1262111563 h:\jkt\svn\trunk\moteur\libs\tinyxml_2_5_2\tinyxml.h
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<assert.h>
+	<string>
+	<iostream>
+	<sstream>
+	"tinystr.h"
+
+1262111563 source:h:\jkt\svn\trunk\moteur\libs\tinyxml_2_5_2\tinyxmlerror.cpp
+	"tinyxml.h"
+
+1262111564 source:h:\jkt\svn\trunk\moteur\libs\tinyxml_2_5_2\tinyxmlparser.cpp
+	<ctype.h>
+	<stddef.h>
+	"tinyxml.h"
+	<windows.h>
+
+1262111664 source:h:\jkt\svn\trunk\moteur\menu\dlg.cpp
+	"Dlg.h"
+
+1262111664 h:\jkt\svn\trunk\moteur\menu\dlg.h
+	"SDL.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_audio.h"
+	"SDL_cdrom.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_loadso.h"
+	"SDL_mutex.h"
+	"SDL_rwops.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_video.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<iconv.h>
+	"begin_code.h"
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_config.h
+	"SDL_platform.h"
+	<stdarg.h>
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_platform.h
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\begin_code.h
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\close_code.h
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_endian.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_cdrom.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_cpuinfo.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_active.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_quit.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_active.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keysym.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_keysym.h
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_video.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111518 h:\jkt\svn\trunk\moteur\libs\sdl-1.2.14-mingw\include\sdl\sdl_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262114671 source:h:\jkt\svn\trunk\moteur\menu\dlgboite.cpp
+	<string>
+	<iostream>
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	"SDL.h"
+	"glfont2.h"
+	"util/Trace.h"
+	"util/Erreur.h"
+	"spatial/materiau/Textures.h"
+	"main/Cfg.h"
+	"main/Focus.h"
+	"Menu/DlgBoite.h"
+
+1262111561 h:\jkt\svn\trunk\moteur\libs\glfont\glfont2.h
+	<vector>
+	<iostream>
+
+1262111624 h:\jkt\svn\trunk\moteur\src\util\trace.h
+	<string>
+	<fstream>
+	<sstream>
+	"SDL.h"
+	"SDL_thread.h"
+
+1262111624 h:\jkt\svn\trunk\moteur\src\util\erreur.h
+	<string>
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\materiau\textures.h
+	"util/Erreur.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\main\cfg.h
+	<string>
+	<windows.h>
+	"SDL.h"
+	"GL/gl.h"
+	"glext.h"
+
+1262111538 h:\jkt\svn\trunk\moteur\libs\glext\glext.h
+	<windows.h>
+	<stddef.h>
+
+1262111664 h:\jkt\svn\trunk\moteur\src\main\focus.h
+
+1262111664 h:\jkt\svn\trunk\moteur\menu\dlgboite.h
+	<vector>
+	"Dlg.h"
+
+1262114968 source:h:\jkt\svn\trunk\moteur\menu\maide.cpp
+	<fstream>
+	<iostream>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"main/Game.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"util/Trace.h"
+	"Menu/MAide.h"
+
+1262111664 h:\jkt\svn\trunk\moteur\menu\menu.h
+
+1262111623 h:\jkt\svn\trunk\moteur\src\main\game.h
+	"util/Erreur.h"
+	"util/TableauIndex.h"
+	"main/RequeteProcess.h"
+	"reseau/enumReseau.h"
+
+1262111624 h:\jkt\svn\trunk\moteur\src\util\tableauindex.h
+
+1262111623 h:\jkt\svn\trunk\moteur\src\main\requeteprocess.h
+	<string>
+
+1262111622 h:\jkt\svn\trunk\moteur\src\reseau\enumreseau.h
+
+1262111664 h:\jkt\svn\trunk\moteur\menu\maide.h
+
+1262114704 source:h:\jkt\svn\trunk\moteur\menu\maudio.cpp
+	<fstream>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"main/Game.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"util/Trace.h"
+	"Menu/MAudio.h"
+	"Menu/MConfiguration.h"
+
+1262111664 h:\jkt\svn\trunk\moteur\menu\maudio.h
+
+1262111664 h:\jkt\svn\trunk\moteur\menu\mconfiguration.h
+
+1262114715 source:h:\jkt\svn\trunk\moteur\menu\maudiodrivers.cpp
+	<fstream>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"main/Game.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"util/Trace.h"
+	"Menu/MAudioDrivers.h"
+	"Menu/MAudio.h"
+	"son/audio.h"
+
+1262111664 h:\jkt\svn\trunk\moteur\menu\maudiodrivers.h
+
+1262111621 h:\jkt\svn\trunk\moteur\src\son\audio.h
+
+1262114722 source:h:\jkt\svn\trunk\moteur\menu\maudiodriversdriver.cpp
+	<fstream>
+	"fmod.h"
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"main/Game.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"util/Trace.h"
+	"Menu/MAudio.h"
+	"Menu/MAudioDrivers.h"
+
+1262111574 h:\jkt\svn\trunk\moteur\libs\fmodapi375win\api\inc\fmod.h
+
+1262114731 source:h:\jkt\svn\trunk\moteur\menu\maudiooutput.cpp
+	<fstream>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"main/Game.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"util/Trace.h"
+	"Menu/MAudio.h"
+	"fmod.h"
+	"MAudioDrivers.h"
+
+1262114738 source:h:\jkt\svn\trunk\moteur\menu\maudiorecord.cpp
+	<fstream>
+	"fmod.h"
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"main/Game.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"util/Trace.h"
+	"Menu/MAudio.h"
+	"Menu/MAudioDrivers.h"
+
+1262114745 source:h:\jkt\svn\trunk\moteur\menu\mcommandes.cpp
+	<fstream>
+	<iostream>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"util/Trace.h"
+	"Menu/MMenuPrinc.h"
+	"Menu/MConfiguration.h"
+
+1262111663 h:\jkt\svn\trunk\moteur\menu\mmenuprinc.h
+
+1262114753 source:h:\jkt\svn\trunk\moteur\menu\mconfiguration.cpp
+	<fstream>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"util/Trace.h"
+	"main/Focus.h"
+	"Menu/MMenuPrinc.h"
+
+1262114769 source:h:\jkt\svn\trunk\moteur\menu\mdebug.cpp
+	<fstream>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"util/Trace.h"
+	"Menu/MMenuPrinc.h"
+	"Menu/MConfiguration.h"
+
+1262114777 source:h:\jkt\svn\trunk\moteur\menu\mdisplay.cpp
+	<sstream>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"util/Trace.h"
+	"Menu/MReseau.h"
+	"Menu/MConfiguration.h"
+
+1262111663 h:\jkt\svn\trunk\moteur\menu\mreseau.h
+
+1262114785 source:h:\jkt\svn\trunk\moteur\menu\mdisplaysize.cpp
+	<fstream>
+	<iostream>
+	"SDL.h"
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"main/Cfg.h"
+	"main/Focus.h"
+	"util/Trace.h"
+	"main/divers.h"
+	"Menu/MReseau.h"
+	"Menu/MDisplaySize.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\main\divers.h
+
+1262111663 h:\jkt\svn\trunk\moteur\menu\mdisplaysize.h
+
+1262114798 source:h:\jkt\svn\trunk\moteur\menu\mmenuprinc.cpp
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"util/Trace.h"
+	"main/Game.h"
+	"main/Focus.h"
+	"Menu/MMenuPrinc.h"
+
+1262114806 source:h:\jkt\svn\trunk\moteur\menu\mmenuprinc2.cpp
+	<fstream>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"main/Game.h"
+	"main/Focus.h"
+	"Menu/MMenuPrinc2.h"
+
+1262111663 h:\jkt\svn\trunk\moteur\menu\mmenuprinc2.h
+
+1262114814 source:h:\jkt\svn\trunk\moteur\menu\mmode.cpp
+	<fstream>
+	<windows.h>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"util/V3D.h"
+	"util/Tableau.h"
+	"spatial/IfstreamMap.h"
+	"util/TableauIndex.h"
+	"main/Projectil.h"
+	"son/DemonSons.h"
+	"reseau/SPA.h"
+	"main/Player.h"
+	"reseau/Client.h"
+	"reseau/Server.h"
+	"main/RequeteProcess.h"
+	"spatial/Map.h"
+	"main/Game.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"util/Trace.h"
+	"Menu/MMode.h"
+
+1262111624 h:\jkt\svn\trunk\moteur\src\util\v3d.h
+
+1262111624 h:\jkt\svn\trunk\moteur\src\util\tableau.h
+
+1262111627 h:\jkt\svn\trunk\moteur\src\spatial\ifstreammap.h
+	<string>
+	<vector>
+	"util/Tableau.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\main\projectil.h
+
+1262115373 h:\jkt\svn\trunk\moteur\src\son\demonsons.h
+	"fmod.h"
+	"fmod_errors.h"
+	<set>
+	<map>
+	"son/TypeSon.h"
+
+1262111574 h:\jkt\svn\trunk\moteur\libs\fmodapi375win\api\inc\fmod_errors.h
+
+1262173739 h:\jkt\svn\trunk\moteur\map
+
+1262111664 h:\jkt\svn\trunk\moteur\src\son\typeson.h
+
+1262111622 h:\jkt\svn\trunk\moteur\src\reseau\spa.h
+	<iostream>
+	<string>
+	"SDL.h"
+	"SDL_net.h"
+
+1262111568 h:\jkt\svn\trunk\moteur\libs\sdl_net-1.2.7\include\sdl_net.h
+	"SDL.h"
+	"SDL_endian.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\main\player.h
+	<string>
+	<vector>
+	"util/Tableau.h"
+	"util/V3D.h"
+	"reseau/SPA.h"
+
+1262111622 h:\jkt\svn\trunk\moteur\src\reseau\client.h
+	"SDL.h"
+	"SDL_net.h"
+	"reseau/enumReseau.h"
+	"reseau/SPA.h"
+
+1262111622 h:\jkt\svn\trunk\moteur\src\reseau\server.h
+	"enumReseau.h"
+
+1262111627 h:\jkt\svn\trunk\moteur\src\spatial\map.h
+	<vector>
+	"util/V3D.h"
+	"util/Tableau.h"
+	"util/Erreur.h"
+
+1262111663 h:\jkt\svn\trunk\moteur\menu\mmode.h
+
+1262114823 source:h:\jkt\svn\trunk\moteur\menu\mmultijoueur.cpp
+	<fstream>
+	<windows.h>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"reseau/Client.h"
+	"reseau/Server.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"reseau/Reseau.h"
+	"util/Trace.h"
+	"Menu/MMultijoueur.h"
+	"Menu/MMenuPrinc.h"
+	"Menu/MMultijoueurClientInfo.h"
+	"Menu/MMultijoueurClientPing.h"
+	"Menu/MMultijoueur.h"
+
+1262111622 h:\jkt\svn\trunk\moteur\src\reseau\reseau.h
+	"enumReseau.h"
+
+1262111663 h:\jkt\svn\trunk\moteur\menu\mmultijoueur.h
+
+1262111663 h:\jkt\svn\trunk\moteur\menu\mmultijoueurclientinfo.h
+
+1262111664 h:\jkt\svn\trunk\moteur\menu\mmultijoueurclientping.h
+
+1262114830 source:h:\jkt\svn\trunk\moteur\menu\mmultijoueurclientinfo.cpp
+	<fstream>
+	<windows.h>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"util/Trace.h"
+	"reseau/Client.h"
+	"reseau/Server.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"reseau/Reseau.h"
+	"Menu/MMultijoueur.h"
+	"Menu/MMultijoueurClientInfo.h"
+
+1262114838 source:h:\jkt\svn\trunk\moteur\menu\mmultijoueurclientping.cpp
+	<fstream>
+	<windows.h>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"util/Trace.h"
+	"reseau/Client.h"
+	"reseau/Server.h"
+	"reseau/Reseau.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"reseau/Reseau.h"
+	"Menu/MMultijoueur.h"
+	"Menu/MMultijoueurClientInfo.h"
+
+1262114846 source:h:\jkt\svn\trunk\moteur\menu\mmultijoueurserveur.cpp
+	<fstream>
+	<windows.h>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"util/Trace.h"
+	"reseau/Client.h"
+	"reseau/Server.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"reseau/Reseau.h"
+	"Menu/MMultijoueur.h"
+	"Menu/MMenuPrinc.h"
+	"Menu/MMultijoueurServeurLancePartie.h"
+
+1262111663 h:\jkt\svn\trunk\moteur\menu\mmultijoueurserveurlancepartie.h
+
+1262114855 source:h:\jkt\svn\trunk\moteur\menu\mmultijoueurserveurlancepartie.cpp
+	<fstream>
+	<io.h>
+	<windows.h>
+	"util/FindFolder.h"
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"util/Trace.h"
+	"reseau/Client.h"
+	"reseau/Server.h"
+	"main/Focus.h"
+	"reseau/Reseau.h"
+	"main/Cfg.h"
+	"main/Game.h"
+	"reseau/enumReseau.h"
+	"Menu/MMultijoueurServeurLancePartie.h"
+	"Menu/MMenuPrinc.h"
+	"Menu/MMultijoueurServeur.h"
+
+1262173580 h:\jkt\svn\trunk\moteur\src\util\findfolder.h
+	<sys/types.h>
+	<sys/stat.h>
+	<dirent.h>
+
+1262111664 h:\jkt\svn\trunk\moteur\menu\mmultijoueurserveur.h
+
+1262114867 source:h:\jkt\svn\trunk\moteur\menu\mopenase.cpp
+	<fstream>
+	<iostream>
+	<io.h>
+	<direct.h>
+	"SDL.h"
+	"SDL_thread.h"
+	"util/FindFolder.h"
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"util/Trace.h"
+	"main/Game.h"
+	"main/Focus.h"
+	"spatial/materiau/MaterialTexture.h"
+	"spatial/materiau/MaterialMulti.h"
+	"spatial/Map.h"
+	"main/Cfg.h"
+	"spatial/FichierASE.h"
+	"Menu/MMenuPrinc.h"
+	"MOpenScene.h"
+	"Menu/MOpenASE.h"
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\materiau\materialtexture.h
+	<iostream>
+	<string>
+	"spatial/materiau/Material.h"
+	"util/Erreur.h"
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\materiau\material.h
+	<iostream>
+	<string>
+	"tinyxml.h"
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\materiau\materialmulti.h
+	<iostream>
+	"spatial/materiau/MaterialTexture.h"
+	"spatial/materiau/Material.h"
+
+1262111627 h:\jkt\svn\trunk\moteur\src\spatial\fichierase.h
+	<string>
+
+1262111663 h:\jkt\svn\trunk\moteur\menu\mopenscene.h
+
+1262111663 h:\jkt\svn\trunk\moteur\menu\mopenase.h
+
+1262114876 source:h:\jkt\svn\trunk\moteur\menu\mopenmap.cpp
+	<fstream>
+	<iostream>
+	<io.h>
+	"util/FindFolder.h"
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"main/Game.h"
+	"main/Focus.h"
+	"util/Trace.h"
+	"Menu/MMenuPrinc.h"
+	"MOpenScene.h"
+	"MOpenMAP.h"
+
+1262111663 h:\jkt\svn\trunk\moteur\menu\mopenmap.h
+
+1262114887 source:h:\jkt\svn\trunk\moteur\menu\mopenscene.cpp
+	<fstream>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"main/Game.h"
+	"main/Focus.h"
+	"util/Trace.h"
+	"MMenuPrinc.h"
+
+1262114895 source:h:\jkt\svn\trunk\moteur\menu\mreseau.cpp
+	<sstream>
+	<string>
+	<iostream>
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"util/Trace.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"Menu/MReseau.h"
+	"Menu/MConfiguration.h"
+
+1262114910 source:h:\jkt\svn\trunk\moteur\menu\menu.cpp
+	<iostream>
+	<set>
+	<fstream>
+	<map>
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	"SDL.h"
+	"glfont2.h"
+	"util/Trace.h"
+	"spatial/IfstreamMap.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"Menu/Dlg.h"
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+
+1262115624 source:h:\jkt\svn\trunk\moteur\menu\portail.cpp
+	<fstream>
+	"SDL.h"
+	"util/Trace.h"
+	"spatial/IfstreamMap.h"
+	"main/Focus.h"
+	"main/Cfg.h"
+	"Menu/Dlg.h"
+	"Menu/DlgBoite.h"
+	"Menu/Menu.h"
+	"Menu/Portail.h"
+
+1262111664 h:\jkt\svn\trunk\moteur\menu\portail.h
+
+1262111670 source:h:\jkt\svn\trunk\moteur\src\deletewithgame.cpp
+	<set>
+	"DeleteWithGame.h"
+
+1262111664 h:\jkt\svn\trunk\moteur\src\deletewithgame.h
+	<set>
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\centralisateur\centralisateur.cpp
+	"centralisateur/data/SignalementData.h"
+	"centralisateur/Centralisateur.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\centralisateur\data\signalementdata.h
+	<string>
+	"SDL_net.h"
+	"centralisateur/data/Data.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\centralisateur\data\data.h
+	"SDL_net.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\centralisateur\centralisateur.h
+	<string>
+	"UdpController.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\centralisateur\udpcontroller.h
+	<string>
+	"SDL_net.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\centralisateur\centralisateurstate.cpp
+	"centralisateur/CentralisateurState.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\centralisateur\centralisateurstate.h
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\centralisateur\udpconnector.cpp
+	<string>
+	<iostream>
+	"SDL_net.h"
+	"exception/centralisateur/BindingUdpException.h"
+	"exception/centralisateur/OpenUdpSocketException.h"
+	"centralisateur/UdpController.h"
+	"centralisateur/UdpConnector.h"
+
+1262111627 h:\jkt\svn\trunk\moteur\src\exception\centralisateur\bindingudpexception.h
+	"exception/centralisateur/CentralisateurException.h"
+
+1262111627 h:\jkt\svn\trunk\moteur\src\exception\centralisateur\centralisateurexception.h
+	"exception/JktException.h"
+
+1262111627 h:\jkt\svn\trunk\moteur\src\exception\jktexception.h
+
+1262111627 h:\jkt\svn\trunk\moteur\src\exception\centralisateur\openudpsocketexception.h
+	"exception/centralisateur/CentralisateurException.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\centralisateur\udpconnector.h
+	"SDL_net.h"
+	"centralisateur/data/Data.h"
+	"exception/centralisateur/BindingUdpException.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\centralisateur\udpcontroller.cpp
+	"centralisateur/UdpConnector.h"
+	"centralisateur/data/SignalementData.h"
+	"centralisateur/UdpController.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\centralisateur\data\data.cpp
+	"centralisateur/data/Data.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\centralisateur\data\listdata.cpp
+	"centralisateur/data/ListData.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\centralisateur\data\listdata.h
+	"centralisateur/data/Data.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\centralisateur\data\signalementdata.cpp
+	<string>
+	"SDL_net.h"
+	"centralisateur/UdpConnector.h"
+	"centralisateur/UdpController.h"
+	"centralisateur/data/SignalementData.h"
+
+1262111627 source:h:\jkt\svn\trunk\moteur\src\exception\jktexception.cpp
+	"exception/JktException.h"
+
+1262111627 source:h:\jkt\svn\trunk\moteur\src\exception\centralisateur\bindingudpexception.cpp
+	"exception/centralisateur/BindingUdpException.h"
+
+1262111627 source:h:\jkt\svn\trunk\moteur\src\exception\centralisateur\centralisateurexception.cpp
+	"exception/centralisateur/CentralisateurException.h"
+
+1262111627 source:h:\jkt\svn\trunk\moteur\src\exception\centralisateur\openudpsocketexception.cpp
+	"exception/centralisateur/OpenUdpSocketException.h"
+
+1262111669 source:h:\jkt\svn\trunk\moteur\src\ifstreamwork.cpp
+	<string>
+	<fstream>
+	<iostream>
+	"util/Erreur.h"
+	"ifstreamWork.h"
+
+1262111664 h:\jkt\svn\trunk\moteur\src\ifstreamwork.h
+
+1262200865 source:h:\jkt\svn\trunk\moteur\src\main\cfg.cpp
+	<string>
+	<fstream>
+	<iostream>
+	<agar/config/have_opengl.h>
+	<agar/core.h>
+	<agar/gui.h>
+	<windows.h>
+	<io.h>
+	<direct.h>
+	<SDL.h>
+	<SDL_net.h>
+	<SDL_image.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	"fmod.h"
+	"fmod_errors.h"
+	"main/Extensions.h"
+	"util/Trace.h"
+	"son/audio.h"
+	"main/Cfg.h"
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_opengl.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core.h
+	<agar/core/core_begin.h>
+	<agar/core/core_init.h>
+	<agar/core/error.h>
+	<agar/core/string_compat.h>
+	<agar/core/snprintf.h>
+	<agar/core/vsnprintf.h>
+	<agar/core/vasprintf.h>
+	<agar/core/data_source.h>
+	<agar/core/load_den.h>
+	<agar/core/load_integral.h>
+	<agar/core/load_real.h>
+	<agar/core/load_string.h>
+	<agar/core/load_version.h>
+	<agar/core/version.h>
+	<agar/core/object.h>
+	<agar/core/list.h>
+	<agar/core/tree.h>
+	<agar/core/config.h>
+	<agar/core/rcs.h>
+	<agar/core/file.h>
+	<agar/core/dir.h>
+	<agar/core/dso.h>
+	<agar/core/time.h>
+	<agar/core/db.h>
+	<agar/core/dbobject.h>
+	<agar/core/core_close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\core_begin.h
+	<agar/config/ag_debug.h>
+	<agar/config/ag_lockdebug.h>
+	<agar/config/ag_legacy.h>
+	<agar/config/ag_threads.h>
+	<agar/core/threads.h>
+	<agar/config/_mk_have_stdlib_h.h>
+	<stdlib.h>
+	<agar/config/_mk_have_unistd_h.h>
+	<unistd.h>
+	<string.h>
+	<stdio.h>
+	<agar/core/limits.h>
+	<agar/core/queue.h>
+	<agar/core/cpuinfo.h>
+	<agar/config/_mk_big_endian.h>
+	<agar/config/_mk_little_endian.h>
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\ag_debug.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\ag_lockdebug.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\ag_legacy.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\ag_threads.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\threads.h
+	<agar/config/have_pthreads.h>
+	<pthread.h>
+	<signal.h>
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_pthreads.h
+
+1262111579 h:\jkt\svn\trunk\moteur\libs\pre-built.2\include\pthread.h
+	<windows.h>
+	"config.h"
+	<time.h>
+	<signal.h>
+	<setjmp.h>
+	<limits.h>
+	"need_errno.h"
+	<errno.h>
+	<sched.h>
+	<sys/types.h>
+
+1262111579 h:\jkt\svn\trunk\moteur\libs\pre-built.2\include\sched.h
+	"need_errno.h"
+	<errno.h>
+	<sys/types.h>
+	<time.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\begin.h
+	<agar/core/types.h>
+	<agar/core/attributes.h>
+	<agar/config/enable_nls.h>
+	<libintl.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\types.h
+	<agar/config/_mk_have_sys_types_h.h>
+	<sys/types.h>
+	<agar/config/have_64bit.h>
+	<agar/config/have_long_double.h>
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\_mk_have_sys_types_h.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_64bit.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_long_double.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\attributes.h
+	<agar/config/have_aligned_attribute.h>
+	<agar/config/have_bounded_attribute.h>
+	<agar/config/have_const_attribute.h>
+	<agar/config/have_deprecated_attribute.h>
+	<agar/config/have_format_attribute.h>
+	<agar/config/have_nonnull_attribute.h>
+	<agar/config/have_noreturn_attribute.h>
+	<agar/config/have_packed_attribute.h>
+	<agar/config/have_pure_attribute.h>
+	<agar/config/have_warn_unused_result_attribute.h>
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_aligned_attribute.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_bounded_attribute.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_const_attribute.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_deprecated_attribute.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_format_attribute.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_nonnull_attribute.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_noreturn_attribute.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_packed_attribute.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_pure_attribute.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_warn_unused_result_attribute.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\enable_nls.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\close.h
+	<agar/core/close_types.h>
+	<agar/core/close_attributes.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\close_types.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\close_attributes.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\_mk_have_stdlib_h.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\_mk_have_unistd_h.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\limits.h
+	<agar/config/_mk_have_limits_h.h>
+	<agar/config/_mk_have_float_h.h>
+	<agar/config/have_long_long.h>
+	<agar/config/have_long_double.h>
+	<limits.h>
+	<float.h>
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\_mk_have_limits_h.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\_mk_have_float_h.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_long_long.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\queue.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\cpuinfo.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\_mk_big_endian.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\_mk_little_endian.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\core_init.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\error.h
+	<agar/config/free_null_is_a_noop.h>
+	<agar/config/_mk_have_stdlib_h.h>
+	<stdlib.h>
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\free_null_is_a_noop.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\string_compat.h
+	<agar/config/_mk_have_sys_types_h.h>
+	<sys/types.h>
+	<ctype.h>
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\snprintf.h
+	<agar/config/_mk_have_sys_types_h.h>
+	<sys/types.h>
+	<agar/config/have_snprintf.h>
+	<stdio.h>
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_snprintf.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\vsnprintf.h
+	<agar/config/_mk_have_sys_types_h.h>
+	<agar/config/have_vsnprintf.h>
+	<sys/types.h>
+	<stdarg.h>
+	<stdio.h>
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\have_vsnprintf.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\vasprintf.h
+	<stdarg.h>
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\data_source.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\load_den.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\load_integral.h
+	<agar/core/byteswap.h>
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\byteswap.h
+	<agar/config/have_64bit.h>
+	<agar/config/have_long_double.h>
+	<agar/config/_mk_big_endian.h>
+	<agar/config/_mk_little_endian.h>
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\load_real.h
+	<agar/config/have_long_double.h>
+	<agar/core/byteswap.h>
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\load_string.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\load_version.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\version.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\object.h
+	<agar/core/timeout.h>
+	<agar/core/class.h>
+	<agar/core/begin.h>
+	<agar/core/close.h>
+	<agar/core/variable.h>
+	<agar/core/event.h>
+	<agar/core/prop.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\timeout.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\class.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\variable.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\event.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\prop.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\list.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\tree.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\config.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\rcs.h
+	<agar/config/ag_network.h>
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\ag_network.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\file.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\dir.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\dso.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\time.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\db.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\dbobject.h
+	<agar/core/begin.h>
+	<agar/core/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\core\core_close.h
+
+1262202299 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui.h
+	<agar/core/core_begin.h>
+	<agar/gui/view.h>
+	<agar/gui/iconmgr.h>
+	<agar/gui/icons.h>
+	<agar/gui/primitive.h>
+	<agar/gui/box.h>
+	<agar/gui/button.h>
+	<agar/gui/checkbox.h>
+	<agar/gui/combo.h>
+	<agar/gui/console.h>
+	<agar/gui/editable.h>
+	<agar/gui/file_dlg.h>
+	<agar/gui/file_selector.h>
+	<agar/gui/fixed.h>
+	<agar/gui/font_selector.h>
+	<agar/gui/fspinbutton.h>
+	<agar/gui/fixed_plotter.h>
+	<agar/gui/glview.h>
+	<agar/gui/graph.h>
+	<agar/gui/hbox.h>
+	<agar/gui/hsvpal.h>
+	<agar/gui/icon.h>
+	<agar/gui/keymap.h>
+	<agar/gui/label.h>
+	<agar/gui/menu.h>
+	<agar/gui/mfspinbutton.h>
+	<agar/gui/mpane.h>
+	<agar/gui/mspinbutton.h>
+	<agar/gui/notebook.h>
+	<agar/gui/numerical.h>
+	<agar/gui/objsel.h>
+	<agar/gui/pane.h>
+	<agar/gui/pixmap.h>
+	<agar/gui/progress_bar.h>
+	<agar/gui/radio.h>
+	<agar/gui/scrollbar.h>
+	<agar/gui/scrollview.h>
+	<agar/gui/separator.h>
+	<agar/gui/socket.h>
+	<agar/gui/spinbutton.h>
+	<agar/gui/slider.h>
+	<agar/gui/statusbar.h>
+	<agar/gui/table.h>
+	<agar/gui/treetbl.h>
+	<agar/gui/text.h>
+	<agar/gui/textbox.h>
+	<agar/gui/text_cache.h>
+	<agar/gui/tlist.h>
+	<agar/gui/toolbar.h>
+	<agar/gui/ucombo.h>
+	<agar/gui/units.h>
+	<agar/gui/vbox.h>
+	<agar/gui/window.h>
+	<agar/gui/load_color.h>
+	<agar/core/core_close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\view.h
+	<SDL.h>
+	<agar/config/have_opengl.h>
+	<agar/config/view_8bpp.h>
+	<agar/config/view_16bpp.h>
+	<agar/config/view_24bpp.h>
+	<agar/config/view_32bpp.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+	<agar/gui/iconmgr.h>
+	<agar/gui/load_surface.h>
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\view_8bpp.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\view_16bpp.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\view_24bpp.h
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\view_32bpp.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\begin.h
+	<agar/core/types.h>
+	<agar/core/attributes.h>
+	<agar/config/enable_nls.h>
+	<libintl.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\close.h
+	<agar/core/close_types.h>
+	<agar/core/close_attributes.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\iconmgr.h
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\load_surface.h
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\icons.h
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\primitive.h
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\box.h
+	<agar/gui/widget.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\widget.h
+	<agar/config/have_opengl.h>
+	<agar/config/have_long_double.h>
+	<agar/gui/colors.h>
+	<agar/gui/view.h>
+	<agar/gui/style.h>
+	<agar/gui/begin.h>
+	<agar/gui/widget_legacy.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\colors.h
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\style.h
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\widget_legacy.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\button.h
+	<agar/gui/widget.h>
+	<agar/gui/label.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\label.h
+	<agar/gui/widget.h>
+	<agar/gui/text.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\text.h
+	<agar/config/have_opengl.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\checkbox.h
+	<agar/gui/widget.h>
+	<agar/gui/label.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\combo.h
+	<agar/gui/widget.h>
+	<agar/gui/textbox.h>
+	<agar/gui/button.h>
+	<agar/gui/window.h>
+	<agar/gui/tlist.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\textbox.h
+	<agar/gui/widget.h>
+	<agar/gui/editable.h>
+	<agar/gui/scrollbar.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\editable.h
+	<agar/gui/widget.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\scrollbar.h
+	<agar/gui/widget.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\window.h
+	<agar/gui/widget.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\tlist.h
+	<agar/gui/scrollbar.h>
+	<agar/gui/menu.h>
+	<agar/gui/label.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\menu.h
+	<agar/gui/widget.h>
+	<agar/gui/window.h>
+	<agar/gui/toolbar.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\toolbar.h
+	<agar/gui/widget.h>
+	<agar/gui/box.h>
+	<agar/gui/button.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\console.h
+	<agar/gui/widget.h>
+	<agar/gui/scrollbar.h>
+	<agar/gui/text.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\file_dlg.h
+	<agar/gui/widget.h>
+	<agar/gui/textbox.h>
+	<agar/gui/button.h>
+	<agar/gui/window.h>
+	<agar/gui/tlist.h>
+	<agar/gui/combo.h>
+	<agar/gui/pane.h>
+	<agar/gui/label.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\pane.h
+	<agar/gui/widget.h>
+	<agar/gui/box.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\file_selector.h
+	<agar/gui/widget.h>
+	<agar/gui/textbox.h>
+	<agar/gui/button.h>
+	<agar/gui/window.h>
+	<agar/gui/file_dlg.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\fixed.h
+	<agar/gui/widget.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\font_selector.h
+	<agar/gui/pane.h>
+	<agar/gui/box.h>
+	<agar/gui/tlist.h>
+	<agar/gui/numerical.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\numerical.h
+	<agar/gui/widget.h>
+	<agar/gui/textbox.h>
+	<agar/gui/button.h>
+	<agar/gui/ucombo.h>
+	<agar/gui/units.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\ucombo.h
+	<agar/gui/widget.h>
+	<agar/gui/button.h>
+	<agar/gui/window.h>
+	<agar/gui/tlist.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\units.h
+	<agar/config/historical_units.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623220 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\config\historical_units.h
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\fspinbutton.h
+	<agar/gui/widget.h>
+	<agar/gui/textbox.h>
+	<agar/gui/button.h>
+	<agar/gui/ucombo.h>
+	<agar/gui/units.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\fixed_plotter.h
+	<agar/gui/widget.h>
+	<agar/gui/label.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\glview.h
+	<agar/gui/widget.h>
+	<agar/config/have_opengl.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\graph.h
+	<agar/gui/widget.h>
+	<agar/gui/scrollbar.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\hbox.h
+	<agar/gui/box.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\hsvpal.h
+	<agar/gui/scrollbar.h>
+	<agar/gui/menu.h>
+	<agar/gui/window.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\icon.h
+	<agar/gui/widget.h>
+	<agar/gui/text.h>
+	<agar/gui/label.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\keymap.h
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\mfspinbutton.h
+	<agar/gui/widget.h>
+	<agar/gui/textbox.h>
+	<agar/gui/button.h>
+	<agar/gui/ucombo.h>
+	<agar/gui/units.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\mpane.h
+	<agar/gui/widget.h>
+	<agar/gui/box.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\mspinbutton.h
+	<agar/gui/widget.h>
+	<agar/gui/textbox.h>
+	<agar/gui/button.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\notebook.h
+	<agar/gui/widget.h>
+	<agar/gui/box.h>
+	<agar/gui/text.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\objsel.h
+	<agar/gui/widget.h>
+	<agar/gui/combo.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\pixmap.h
+	<agar/gui/widget.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\progress_bar.h
+	<agar/gui/widget.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\radio.h
+	<agar/gui/widget.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\scrollview.h
+	<agar/gui/widget.h>
+	<agar/gui/scrollbar.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\separator.h
+	<agar/gui/widget.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\socket.h
+	<agar/gui/widget.h>
+	<agar/gui/text.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\spinbutton.h
+	<agar/gui/widget.h>
+	<agar/gui/textbox.h>
+	<agar/gui/button.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\slider.h
+	<agar/gui/widget.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\statusbar.h
+	<agar/gui/widget.h>
+	<agar/gui/box.h>
+	<agar/gui/label.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\table.h
+	<agar/gui/scrollbar.h>
+	<agar/gui/menu.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\treetbl.h
+	<agar/gui/label.h>
+	<agar/gui/scrollbar.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\text_cache.h
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\vbox.h
+	<agar/gui/box.h>
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1251623208 h:\jkt\svn\trunk\moteur\libs\agar-1.3.4-recompile\include\agar\gui\load_color.h
+	<agar/gui/begin.h>
+	<agar/gui/close.h>
+
+1262111578 h:\jkt\svn\trunk\moteur\libs\sdl_image-1.2.10\include\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\main\extensions.h
+	"glext.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\main\clavier.cpp
+	"main/Clavier.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\main\clavier.h
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\main\fabrique.cpp
+	"main/Fabrique.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\main\fabrique.h
+	"menu/Controller.h"
+	"menu/Viewer.h"
+	"centralisateur/Centralisateur.h"
+
+1262172056 h:\jkt\svn\trunk\moteur\src\menu\controller.h
+	<agar/core.h>
+	<agar/gui.h>
+	"Viewer.h"
+
+1262111621 h:\jkt\svn\trunk\moteur\src\menu\viewer.h
+	<agar/core.h>
+	<agar/gui.h>
+	"menu/View.h"
+
+1262175659 h:\jkt\svn\trunk\moteur\src\menu\view.h
+	<agar/core.h>
+	<agar/gui.h>
+
+1262111669 source:h:\jkt\svn\trunk\moteur\src\main\focus.cpp
+	"SDL.h"
+	"util/Trace.h"
+	"Focus.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\main\game.cpp
+	<cmath>
+	<fstream>
+	<iostream>
+	<map>
+	<set>
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	"util/Erreur.h"
+	"util/V3D.h"
+	"util/Tableau.cpp"
+	"util/TableauIndex.cpp"
+	"son/DemonSons.h"
+	"reseau/SPA.h"
+	"main/Player.h"
+	"reseau/Client.h"
+	"reseau/Server.h"
+	"main/RequeteProcess.h"
+	"spatial/Map.h"
+	"reseau/Reseau.h"
+	"util/Trace.h"
+	"main/Clavier.h"
+	"reseau/enumReseau.h"
+	"main/Game.h"
+
+1262111624 h:\jkt\svn\trunk\moteur\src\util\tableau.cpp
+	<iostream>
+	"Tableau.h"
+
+1262111624 h:\jkt\svn\trunk\moteur\src\util\tableauindex.cpp
+	"TableauIndex.h"
+
+1262115628 source:h:\jkt\svn\trunk\moteur\src\main\jkt.cpp
+	<string>
+	<set>
+	<iostream>
+	<fstream>
+	<cmath>
+	<sstream>
+	<windows.h>
+	<io.h>
+	<direct.h>
+	<agar/config/have_opengl.h>
+	<agar/core.h>
+	<agar/gui.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	"SDL.h"
+	"SDL_image.h"
+	"SDL_net.h"
+	"fmod.h"
+	"fmod_errors.h"
+	"glfont2.h"
+	"tinyxml.h"
+	"util/XmlHelper.h"
+	"util/GenRef.h"
+	"ressource/RessourcesLoader.h"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
+	"util/mathFast.h"
+	"util/Trace.h"
+	"util/Tableau.cpp"
+	"util/TableauIndex.cpp"
+	"util/FindFolder.h"
+	"util/Erreur.h"
+	"main/Cfg.h"
+	"spatial/materiau/Material.h"
+	"spatial/IfstreamMap.h"
+	"spatial/geo/Geo.h"
+	"spatial/Mouve.h"
+	"spatial/geo/GeoObject.h"
+	"Rocket.h"
+	"Laser.h"
+	"spatial/objet/Porte.h"
+	"spatial/objet/Navette.h"
+	"main/Clavier.h"
+	"Photo.h"
+	"spatial/materiau/MaterialTexture.h"
+	"spatial/materiau/MaterialMulti.h"
+	"spatial/light/Light.h"
+	"spatial/Map.h"
+	"son/DemonSons.h"
+	"son/Son.h"
+	"son/ReqSon.h"
+	"reseau/SPA.h"
+	"main/Player.h"
+	"spatial/contact.h"
+	"main/divers.h"
+	"son/audio.h"
+	"Menu/DlgBoite.h"
+	"Menu/Portail.h"
+	"Menu/Menu.h"
+	"main/Focus.h"
+	"spatial/materiau/Textures.h"
+	"util/TableauIndex.h"
+	"reseau/Client.h"
+	"reseau/Server.h"
+	"main/RequeteProcess.h"
+	"main/Game.h"
+	"util/V3D.h"
+	"spatial/Particule.h"
+	"spatial/MoteurParticules.h"
+	"reseau/Reseau.h"
+	"reseau/enumReseau.h"
+	"menu/Controller.h"
+	"menu/Viewer.h"
+	"main/Fabrique.h"
+	"util/GenRef.h"
+	"jkt.h"
+
+1262111669 h:\jkt\svn\trunk\moteur\src\main\glfont2.h
+	<vector>
+	<iostream>
+
+1262111624 h:\jkt\svn\trunk\moteur\src\util\xmlhelper.h
+	"tinyxml.h"
+
+1262111624 h:\jkt\svn\trunk\moteur\src\util\genref.h
+	<list>
+	<string>
+
+1262111623 h:\jkt\svn\trunk\moteur\src\ressource\ressourcesloader.h
+	<string>
+
+1262111624 h:\jkt\svn\trunk\moteur\src\util\math_vectoriel.h
+
+1262111624 h:\jkt\svn\trunk\moteur\src\util\mathfast.h
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\geo\geo.h
+	"tinyxml.h"
+	"util/V3D.h"
+	"util/GenRef.h"
+
+1262111627 h:\jkt\svn\trunk\moteur\src\spatial\mouve.h
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\geo\geoobject.h
+	<map>
+	<fstream>
+	"spatial/materiau/Material.h"
+	"spatial/materiau/MaterialMulti.h"
+	"spatial/materiau/MaterialTexture.h"
+	"spatial/geo/Geo.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\main\rocket.h
+	"util/V3D.h"
+	"spatial/Map.h"
+	"main/Projectil.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\main\laser.h
+	"main/Projectil.h"
+
+1262111625 h:\jkt\svn\trunk\moteur\src\spatial\objet\porte.h
+	"spatial/Mouve.h"
+	"util/V3D.h"
+
+1262111625 h:\jkt\svn\trunk\moteur\src\spatial\objet\navette.h
+	"spatial/Mouve.h"
+	"util/V3D.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\main\photo.h
+	<string>
+	"sdl.h"
+
+1262111625 h:\jkt\svn\trunk\moteur\src\spatial\light\light.h
+	<iostream>
+	"tinyxml.h"
+
+1262111621 h:\jkt\svn\trunk\moteur\src\son\son.h
+	<map>
+	<set>
+	<string>
+
+1262111621 h:\jkt\svn\trunk\moteur\src\son\reqson.h
+
+1262111627 h:\jkt\svn\trunk\moteur\src\spatial\contact.h
+	"util/TableauIndex.cpp"
+
+1262111627 h:\jkt\svn\trunk\moteur\src\spatial\particule.h
+	"util/V3D.h"
+
+1262111627 h:\jkt\svn\trunk\moteur\src\spatial\moteurparticules.h
+	"util/V3D.h"
+
+1262111623 h:\jkt\svn\trunk\moteur\src\main\jkt.h
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\main\laser.cpp
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<fstream>
+	<cmath>
+	<map>
+	"SDL.h"
+	"util/Erreur.h"
+	"util/V3D.h"
+	"son/DemonSons.h"
+	"reseau/SPA.h"
+	"main/Player.h"
+	"main/Game.h"
+	"spatial/Map.h"
+	"Laser.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\main\photo.cpp
+	<string>
+	<iostream>
+	<windows.h>
+	<io.h>
+	<direct.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	"photo.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\main\player.cpp
+	<string>
+	<vector>
+	<set>
+	<fstream>
+	<map>
+	<cmath>
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	"fmod.h"
+	"fmod_errors.h"
+	"SDL.h"
+	"glfont2.h"
+	"util/math_vectoriel.h"
+	"util/Trace.h"
+	"util/V3D.h"
+	"util/Tableau.cpp"
+	"main/Laser.h"
+	"main/Rocket.h"
+	"main/Projectil.h"
+	"main/Clavier.h"
+	"spatial/Map.h"
+	"son/DemonSons.h"
+	"son/ReqSon.h"
+	"util/Erreur.h"
+	"spatial/materiau/Textures.h"
+	"main/Cfg.h"
+	"main/Game.h"
+	"reseau/SPA.h"
+	"main/Player.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\main\projectil.cpp
+	"util/V3D.h"
+	"son/DemonSons.h"
+	"reseau/SPA.h"
+	"main/Player.h"
+	"main/Projectil.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\main\requeteprocess.cpp
+	"main/RequeteProcess.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\main\rocket.cpp
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<fstream>
+	<map>
+	<cmath>
+	"util/Erreur.h"
+	"util/Trace.h"
+	"util/V3D.h"
+	"main/Projectil.h"
+	"util/TableauIndex.h"
+	"util/Tableau.cpp"
+	"main/Game.h"
+	"spatial/Map.h"
+	"son/DemonSons.h"
+	"reseau/SPA.h"
+	"main/Player.h"
+	"spatial/materiau/Textures.h"
+	"spatial/Map.h"
+	"Rocket.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\main\divers.cpp
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<iostream>
+	<string>
+	<list>
+	<vector>
+	<cmath>
+	<agar/core.h>
+	"SDL.h"
+	"fmod.h"
+	"fmod_errors.h"
+	"SDL_image.h"
+	"SDL_net.h"
+	"glfont2.h"
+	"ressource/RessourcesLoader.h"
+	"util/Trace.h"
+	"util/utils_SDL.h"
+	"son/DemonSons.h"
+	"son/Son.h"
+	"spatial/materiau/Textures.h"
+	"main/Cfg.h"
+	"main/divers.h"
+
+1262111624 h:\jkt\svn\trunk\moteur\src\util\utils_sdl.h
+
+1262111664 source:h:\jkt\svn\trunk\moteur\src\main\glfont2.cpp
+	<string>
+	<utility>
+	<iostream>
+	<fstream>
+	<windows.h>
+	<GL/gl.h>
+	"glfont2.h"
+
+1262189559 source:h:\jkt\svn\trunk\moteur\src\menu\controller.cpp
+	<iostream>
+	"menu/OpenCentralisateurView.h"
+	"main/Fabrique.h"
+	"centralisateur/Centralisateur.h"
+	"Menu/Portail.h"
+	"util/Trace.h"
+	"menu/Controller.h"
+
+1262111621 h:\jkt\svn\trunk\moteur\src\menu\opencentralisateurview.h
+	<agar/core.h>
+	<agar/gui.h>
+	"menu/View.h"
+
+1262176926 source:h:\jkt\svn\trunk\moteur\src\menu\mainmenuview.cpp
+	<agar/core.h>
+	<agar/gui.h>
+	<agar/gui/style.h>
+	"menu/View.h"
+	"menu/Controller.h"
+	"menu/Viewer.h"
+	"menu/MainMenuView.h"
+
+1262111621 h:\jkt\svn\trunk\moteur\src\menu\mainmenuview.h
+	<agar/core.h>
+	<agar/gui.h>
+	"menu/View.h"
+
+1262176961 source:h:\jkt\svn\trunk\moteur\src\menu\opencentralisateurview.cpp
+	<agar/core.h>
+	<agar/gui.h>
+	<agar/gui/style.h>
+	"menu/View.h"
+	"menu/Controller.h"
+	"menu/Viewer.h"
+	"menu/OpenCentralisateurView.h"
+
+1262176957 source:h:\jkt\svn\trunk\moteur\src\menu\opensceneaseview.cpp
+	<agar/core.h>
+	<agar/gui.h>
+	<agar/gui/style.h>
+	"menu/View.h"
+	"menu/Controller.h"
+	"menu/Viewer.h"
+	"menu/OpenSceneASEView.h"
+
+1262111621 h:\jkt\svn\trunk\moteur\src\menu\opensceneaseview.h
+	"menu/View.h"
+
+1262207971 source:h:\jkt\svn\trunk\moteur\src\menu\openscenemapview.cpp
+	<fstream>
+	<iostream>
+	<io.h>
+	<agar/core.h>
+	<agar/gui.h>
+	<agar/gui/style.h>
+	"util/FindFolder.h"
+	"menu/View.h"
+	"menu/Controller.h"
+	"menu/Viewer.h"
+	"menu/OpenSceneMapView.h"
+
+1262187711 h:\jkt\svn\trunk\moteur\src\menu\openscenemapview.h
+	"menu/View.h"
+
+1262176949 source:h:\jkt\svn\trunk\moteur\src\menu\opensceneview.cpp
+	<agar/core.h>
+	<agar/gui.h>
+	<agar/gui/style.h>
+	"menu/View.h"
+	"menu/Controller.h"
+	"menu/Viewer.h"
+	"menu/OpenSceneView.h"
+
+1262111621 h:\jkt\svn\trunk\moteur\src\menu\opensceneview.h
+	<agar/core.h>
+	<agar/gui.h>
+	"menu/View.h"
+
+1262182627 source:h:\jkt\svn\trunk\moteur\src\menu\view.cpp
+	"menu/View.h"
+
+1262111621 source:h:\jkt\svn\trunk\moteur\src\menu\viewer.cpp
+	"Viewer.h"
+	<agar/gui/style.h>
+	<agar/core.h>
+	<agar/gui.h>
+	<agar/gui/view.h>
+	"menu/MainMenuView.h"
+	"menu/OpenSceneView.h"
+	"menu/OpenSceneASEView.h"
+	"menu/OpenSceneMapView.h"
+	"menu/OpenCentralisateurView.h"
+
+1262111622 source:h:\jkt\svn\trunk\moteur\src\reseau\client.cpp
+	<fstream>
+	<set>
+	<map>
+	"util/Erreur.h"
+	"util/V3D.h"
+	"util/TableauIndex.cpp"
+	"reseau/SPA.h"
+	"main/Player.h"
+	"reseau/Client.h"
+	"main/RequeteProcess.h"
+	"util/Trace.h"
+	"spatial/contact.h"
+	"main/Clavier.h"
+	"main/Game.h"
+	"enumReseau.h"
+	"reseau/Client.h"
+
+1262111622 source:h:\jkt\svn\trunk\moteur\src\reseau\reseau.cpp
+	<iostream>
+	<vector>
+	<fstream>
+	<set>
+	<map>
+	<windows.h>
+	"SDL.h"
+	"SDL_net.h"
+	"util/Erreur.h"
+	"util/V3D.h"
+	"main/Cfg.h"
+	"reseau/SPA.h"
+	"main/Player.h"
+	"reseau/Client.h"
+	"reseau/Server.h"
+	"spatial/contact.h"
+	"main/Game.h"
+	"util/Trace.h"
+	"enumReseau.h"
+	"reseau/Reseau.h"
+
+1262111622 source:h:\jkt\svn\trunk\moteur\src\reseau\spa.cpp
+	<iostream>
+	<sstream>
+	"SDL.h"
+	"SDL_net.h"
+	"util/Trace.h"
+	"util/Erreur.h"
+	"reseau/SPA.h"
+	"main/Player.h"
+
+1262111622 source:h:\jkt\svn\trunk\moteur\src\reseau\server.cpp
+	<string>
+	<vector>
+	<set>
+	<cmath>
+	<fstream>
+	<map>
+	<iostream>
+	"SDL.h"
+	"SDL_net.h"
+	"util/Erreur.h"
+	"util/V3D.h"
+	"util/TableauIndex.cpp"
+	"spatial/IfstreamMap.h"
+	"reseau/SPA.h"
+	"main/Player.h"
+	"reseau/Client.h"
+	"reseau/Server.h"
+	"main/Clavier.h"
+	"spatial/contact.h"
+	"util/Trace.h"
+	"main/Game.h"
+	"reseau/enumReseau.h"
+	"reseau/Server.h"
+
+1262111622 source:h:\jkt\svn\trunk\moteur\src\reseau\a_virer.cpp
+	<string>
+	<windows.h>
+	"SDL.h"
+	"sdl_net.h"
+	"util/Erreur.h"
+	"util/V3D.h"
+	"main/Cfg.h"
+
+1262111623 source:h:\jkt\svn\trunk\moteur\src\ressource\ressourcesloader.cpp
+	<string>
+	<iostream>
+	"RessourcesLoader.h"
+
+1262111621 source:h:\jkt\svn\trunk\moteur\src\son\demonsons.cpp
+	<iostream>
+	<conio.h>
+	<windows.h>
+	"wincompat.h"
+	"util/Trace.h"
+	"fmod.h"
+	"fmod_errors.h"
+	"Son.h"
+	"ReqSon.h"
+	"DemonSons.h"
+
+1262111574 h:\jkt\svn\trunk\moteur\libs\fmodapi375win\api\inc\wincompat.h
+	<sys/time.h>
+	<sys/types.h>
+	<unistd.h>
+	<termios.h>
+	<stdio.h>
+	<stdlib.h>
+
+1262111621 source:h:\jkt\svn\trunk\moteur\src\son\reqson.cpp
+	<conio.h>
+	<windows.h>
+	"wincompat.h"
+	<vector>
+	<iostream>
+	"fmod.h"
+	"Son.h"
+	"ReqSon.h"
+
+1262111621 source:h:\jkt\svn\trunk\moteur\src\son\son.cpp
+	<conio.h>
+	<windows.h>
+	"wincompat.h"
+	<iostream>
+	<map>
+	"fmod.h"
+	"util/Trace.h"
+	"Son.h"
+	"ReqSon.h"
+	"DemonSons.h"
+
+1262111621 source:h:\jkt\svn\trunk\moteur\src\son\audio.cpp
+	<conio.h>
+	<windows.h>
+	"wincompat.h"
+	<vector>
+	<iostream>
+	"SDL.h"
+	"fmod.h"
+	"fmod_errors.h"
+	"util/Trace.h"
+	"util/V3D.h"
+	"son/DemonSons.h"
+	"main/Cfg.h"
+	"audio.h"
+
+1262111627 source:h:\jkt\svn\trunk\moteur\src\spatial\fichierase.cpp
+	<string>
+	<fstream>
+	<sstream>
+	"util/math_vectoriel.h"
+	"spatial/light/LightOmni.h"
+	"spatial/light/LightTarget.h"
+	"spatial/materiau/MaterialMulti.h"
+	"spatial/materiau/MaterialTexture.h"
+	"spatial/geo/GeoMaker.h"
+	"spatial/Map.h"
+	"spatial/geo/ChanTex.h"
+	"spatial/FichierASE.h"
+
+1262111625 h:\jkt\svn\trunk\moteur\src\spatial\light\lightomni.h
+	<iostream>
+	"tinyxml.h"
+	"spatial/light/Light.h"
+
+1262111625 h:\jkt\svn\trunk\moteur\src\spatial\light\lighttarget.h
+	<iostream>
+	"spatial/light/Light.h"
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\geo\geomaker.h
+	<map>
+	<fstream>
+	"tinyxml.h"
+	"util/Erreur.h"
+	"spatial/geo/Geo.h"
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\geo\chantex.h
+
+1262111627 source:h:\jkt\svn\trunk\moteur\src\spatial\ifstreammap.cpp
+	<string>
+	<fstream>
+	<iostream>
+	"ressource/RessourcesLoader.h"
+	"util/Erreur.h"
+	"util/Tableau.cpp"
+	"spatial/materiau/Material.h"
+	"spatial/IfstreamMap.h"
+
+1262111627 source:h:\jkt\svn\trunk\moteur\src\spatial\map.cpp
+	<string>
+	<fstream>
+	<iostream>
+	<map>
+	<vector>
+	<windows.h>
+	<GL/gl.h>
+	"SDL.h"
+	"tinyxml.h"
+	"spatial/XmlVocabulaire.h"
+	"util/Trace.h"
+	"util/TraceMethod.h"
+	"util/Erreur.h"
+	"util/Tableau.cpp"
+	"spatial/materiau/Material.h"
+	"spatial/materiau/MaterialMaker.h"
+	"spatial/IfstreamMap.h"
+	"spatial/materiau/MaterialTexture.h"
+	"spatial/materiau/MaterialMulti.h"
+	"spatial/light/Light.h"
+	"spatial/light/LightOmni.h"
+	"spatial/light/LightTarget.h"
+	"spatial/light/LightMaker.h"
+	"spatial/Mouve.h"
+	"spatial/geo/Geo.h"
+	"spatial/geo/SimpleGeo.h"
+	"spatial/geo/SimpleMaterialGeo.h"
+	"spatial/geo/MultiMaterialGeo.h"
+	"spatial/geo/TextureMaterialGeo.h"
+	"spatial/geo/GeoObject.h"
+	"spatial/objet/Porte.h"
+	"spatial/objet/Navette.h"
+	"son/DemonSons.h"
+	"reseau/SPA.h"
+	"main/Player.h"
+	"util/V3D.h"
+	"spatial/geo/GeoMaker.h"
+	"ressource/RessourcesLoader.h"
+	"spatial/Map.h"
+
+1262111627 h:\jkt\svn\trunk\moteur\src\spatial\xmlvocabulaire.h
+	"tinyxml.h"
+
+1262111624 h:\jkt\svn\trunk\moteur\src\util\tracemethod.h
+	<string>
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\materiau\materialmaker.h
+	<string>
+	"tinyxml.h"
+	"spatial/materiau/Material.h"
+
+1262111625 h:\jkt\svn\trunk\moteur\src\spatial\light\lightmaker.h
+	"tinyxml.h"
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\geo\simplegeo.h
+	<map>
+	<fstream>
+	<windows.h>
+	<GL/GL.H>
+	"spatial/geo/Geo.h"
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\geo\simplematerialgeo.h
+	<map>
+	<fstream>
+	"spatial/geo/Geo.h"
+	"spatial/geo/GeoMaker.h"
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\geo\multimaterialgeo.h
+	<map>
+	<fstream>
+	"spatial/geo/ChanTex.h"
+	"spatial/geo/Geo.h"
+	"spatial/geo/GeoMaker.h"
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\geo\texturematerialgeo.h
+	<map>
+	<fstream>
+	"tinyxml.h"
+	"spatial/geo/ChanTex.h"
+	"spatial/geo/Geo.h"
+	"spatial/geo/GeoMaker.h"
+
+1262111627 source:h:\jkt\svn\trunk\moteur\src\spatial\moteurparticules.cpp
+	<vector>
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<cmath>
+	<iostream>
+	"SDL.h"
+	"util/V3D.h"
+	"util/Trace.h"
+	"spatial/Particule.h"
+	"MoteurParticules.h"
+
+1262111627 source:h:\jkt\svn\trunk\moteur\src\spatial\mouve.cpp
+	"spatial/Mouve.h"
+
+1262111627 source:h:\jkt\svn\trunk\moteur\src\spatial\particule.cpp
+	"SDL.h"
+	"util/V3D.h"
+	"spatial/Particule.h"
+
+1262111627 source:h:\jkt\svn\trunk\moteur\src\spatial\xmlvocabulaire.cpp
+	<sstream>
+	"util/Erreur.h"
+	"spatial/XmlVocabulaire.h"
+
+1262111627 source:h:\jkt\svn\trunk\moteur\src\spatial\contact.cpp
+	<string>
+	<vector>
+	<set>
+	<cmath>
+	<fstream>
+	<map>
+	"util/V3D.h"
+	"util/math_vectoriel.h"
+	"main/Player.h"
+	"spatial/contact.h"
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\geo\chantex.cpp
+	"ChanTex.h"
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\geo\geo.cpp
+	<string>
+	<fstream>
+	<iostream>
+	"util/GenRef.h"
+	"spatial/IfstreamMap.h"
+	"spatial/geo/Geo.h"
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\geo\geomaker.cpp
+	<string>
+	<fstream>
+	<set>
+	<cmath>
+	<map>
+	<sstream>
+	<windows.h>
+	"spatial/XmlVocabulaire.h"
+	"util/Tableau.cpp"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
+	"spatial/geo/TexVertexList.h"
+	"spatial/materiau/Material.h"
+	"spatial/geo/Geo.h"
+	"spatial/geo/SimpleGeo.h"
+	"spatial/geo/SimpleMaterialGeo.h"
+	"spatial/geo/MultiMaterialGeo.h"
+	"spatial/geo/TextureMaterialGeo.h"
+	"spatial/geo/ChanTex.h"
+	"spatial/materiau/MaterialTexture.h"
+	"spatial/materiau/MaterialMulti.h"
+	"spatial/light/Light.h"
+	"spatial/Map.h"
+	"spatial/geo/GeoMaker.h"
+
+1262111626 h:\jkt\svn\trunk\moteur\src\spatial\geo\texvertexlist.h
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\geo\geoobject.cpp
+	<string>
+	<fstream>
+	<set>
+	<cmath>
+	<map>
+	<sstream>
+	<windows.h>
+	<GL/GL.H>
+	<GL/GLU.H>
+	"spatial/XmlVocabulaire.h"
+	"util/Tableau.cpp"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
+	"spatial/materiau/Material.h"
+	"spatial/IfstreamMap.h"
+	"spatial/geo/GeoMaker.h"
+	"spatial/geo/Geo.h"
+	"spatial/Mouve.h"
+	"spatial/materiau/MaterialTexture.h"
+	"spatial/materiau/MaterialMulti.h"
+	"spatial/geo/ChanTex.h"
+	"spatial/light/Light.h"
+	"spatial/Map.h"
+	"son/DemonSons.h"
+	"reseau/SPA.h"
+	"main/Player.h"
+	"spatial/contact.h"
+	"spatial/Couleurs.h"
+	"main/Cfg.h"
+	"GeoObject.h"
+
+1262111627 h:\jkt\svn\trunk\moteur\src\spatial\couleurs.h
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\geo\multimaterialgeo.cpp
+	<string>
+	<fstream>
+	<set>
+	<cmath>
+	<map>
+	<sstream>
+	<windows.h>
+	<GL/GL.H>
+	<GL/GLU.H>
+	"main/Extensions.h"
+	"spatial/XmlVocabulaire.h"
+	"util/Tableau.cpp"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
+	"spatial/IfstreamMap.h"
+	"spatial/geo/TexVertexList.h"
+	"spatial/geo/Geo.h"
+	"spatial/Mouve.h"
+	"spatial/light/Light.h"
+	"spatial/Map.h"
+	"main/Player.h"
+	"spatial/contact.h"
+	"main/Cfg.h"
+	"spatial/materiau/MaterialMulti.h"
+	"spatial/geo/MultiMaterialGeo.h"
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\geo\simplegeo.cpp
+	<string>
+	<fstream>
+	<set>
+	<cmath>
+	<map>
+	<sstream>
+	<windows.h>
+	<GL/GL.H>
+	<GL/GLU.H>
+	"main/Extensions.h"
+	"spatial/XmlVocabulaire.h"
+	"util/Tableau.cpp"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
+	"spatial/IfstreamMap.h"
+	"spatial/geo/Geo.h"
+	"spatial/Mouve.h"
+	"spatial/light/Light.h"
+	"spatial/Map.h"
+	"son/DemonSons.h"
+	"spatial/contact.h"
+	"main/Cfg.h"
+	"spatial/geo/GeoMaker.h"
+	"main/Player.h"
+	"SimpleGeo.h"
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\geo\simplematerialgeo.cpp
+	<string>
+	<fstream>
+	<set>
+	<cmath>
+	<map>
+	<sstream>
+	<windows.h>
+	<GL/GL.H>
+	<GL/GLU.H>
+	"main/Extensions.h"
+	"spatial/XmlVocabulaire.h"
+	"util/Tableau.cpp"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
+	"spatial/IfstreamMap.h"
+	"spatial/geo/Geo.h"
+	"spatial/Mouve.h"
+	"spatial/light/Light.h"
+	"spatial/Map.h"
+	"main/Player.h"
+	"spatial/contact.h"
+	"main/Cfg.h"
+	"spatial/materiau/Material.h"
+	"spatial/geo/SimpleMaterialGeo.h"
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\geo\texvertexlist.cpp
+	"TexVertexList.h"
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\geo\texturematerialgeo.cpp
+	<string>
+	<fstream>
+	<set>
+	<cmath>
+	<map>
+	<sstream>
+	<windows.h>
+	<GL/GL.H>
+	<GL/GLU.H>
+	"main/Extensions.h"
+	"spatial/XmlVocabulaire.h"
+	"util/Tableau.cpp"
+	"util/math_vectoriel.h"
+	"util/V3D.h"
+	"spatial/IfstreamMap.h"
+	"spatial/geo/Geo.h"
+	"spatial/Mouve.h"
+	"spatial/light/Light.h"
+	"spatial/Map.h"
+	"main/Player.h"
+	"spatial/contact.h"
+	"main/Cfg.h"
+	"spatial/materiau/MaterialTexture.h"
+	"spatial/geo/TextureMaterialGeo.h"
+
+1262111625 source:h:\jkt\svn\trunk\moteur\src\spatial\light\light.cpp
+	<string>
+	<fstream>
+	<iostream>
+	<windows.h>
+	<GL/gl.h>
+	"util/Trace.h"
+	"spatial/light/Light.h"
+
+1262111625 source:h:\jkt\svn\trunk\moteur\src\spatial\light\lightmaker.cpp
+	"util/Erreur.h"
+	"spatial/XmlVocabulaire.h"
+	"spatial/light/Light.h"
+	"spatial/light/LightOmni.h"
+	"spatial/light/LightTarget.h"
+	"spatial/light/LightMaker.h"
+
+1262111625 source:h:\jkt\svn\trunk\moteur\src\spatial\light\lightomni.cpp
+	<fstream>
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	"spatial/XmlVocabulaire.h"
+	"spatial/IfstreamMap.h"
+	"spatial/geo/GeoMaker.h"
+	"spatial/light/Light.h"
+	"spatial/light/LightOmni.h"
+
+1262111625 source:h:\jkt\svn\trunk\moteur\src\spatial\light\lighttarget.cpp
+	<fstream>
+	<iostream>
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	"spatial/XmlVocabulaire.h"
+	"spatial/materiau/MaterialMaker.h"
+	"util/math_vectoriel.h"
+	"spatial/IfstreamMap.h"
+	"spatial/geo/GeoMaker.h"
+	"spatial/light/Light.h"
+	"spatial/light/LightTarget.h"
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\materiau\material.cpp
+	<windows.h>
+	<GL/gl.h>
+	<string>
+	<fstream>
+	"spatial/XmlVocabulaire.h"
+	"MaterialMaker.h"
+	"spatial/IfstreamMap.h"
+	"spatial/geo/GeoMaker.h"
+	"spatial/materiau/Material.h"
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\materiau\materialmaker.cpp
+	<string>
+	"spatial/XmlVocabulaire.h"
+	"util/Erreur.h"
+	"spatial/materiau/MaterialTexture.h"
+	"spatial/materiau/MaterialMulti.h"
+	"spatial/materiau/MaterialMaker.h"
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\materiau\materialmulti.cpp
+	<windows.h>
+	<GL/gl.h>
+	<iostream>
+	<string>
+	<fstream>
+	"spatial/XmlVocabulaire.h"
+	"spatial/materiau/Material.h"
+	"spatial/geo/GeoMaker.h"
+	"spatial/materiau/MaterialMaker.h"
+	"spatial/IfstreamMap.h"
+	"util/Trace.h"
+	"util/TraceMethod.h"
+	"MaterialMulti.h"
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\materiau\materialtexture.cpp
+	<windows.h>
+	<GL/gl.h>
+	<string>
+	<fstream>
+	<iostream>
+	"SDL.h"
+	"spatial/XmlVocabulaire.h"
+	"spatial/IfstreamMap.h"
+	"spatial/geo/GeoMaker.h"
+	"spatial/materiau/Textures.h"
+	"util/Trace.h"
+	"spatial/materiau/Material.h"
+	"spatial/materiau/MaterialMaker.h"
+	"ressource/RessourcesLoader.h"
+	"spatial/materiau/MaterialTexture.h"
+
+1262111626 source:h:\jkt\svn\trunk\moteur\src\spatial\materiau\textures.cpp
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<string>
+	<iostream>
+	"SDL.h"
+	"SDL_image.h"
+	"util/Erreur.h"
+	"ressource/RessourcesLoader.h"
+	"util/utils_SDL.h"
+	"spatial/materiau/Textures.h"
+
+1262111625 source:h:\jkt\svn\trunk\moteur\src\spatial\objet\navette.cpp
+	<fstream>
+	<iostream>
+	<set>
+	<string>
+	<map>
+	<windows.h>
+	<GL/gl.h>
+	"spatial/XmlVocabulaire.h"
+	"util/Erreur.h"
+	"util/V3D.h"
+	"spatial/IfstreamMap.h"
+	"spatial/geo/GeoMaker.h"
+	"spatial/materiau/MaterialTexture.h"
+	"spatial/geo/GeoObject.h"
+	"son/DemonSons.h"
+	"main/Game.h"
+	"Navette.h"
+
+1262111625 source:h:\jkt\svn\trunk\moteur\src\spatial\objet\porte.cpp
+	<fstream>
+	<iostream>
+	<set>
+	<string>
+	<map>
+	<windows.h>
+	<GL/gl.h>
+	"spatial/XmlVocabulaire.h"
+	"util/Erreur.h"
+	"util/V3D.h"
+	"spatial/IfstreamMap.h"
+	"spatial/geo/GeoMaker.h"
+	"spatial/materiau/MaterialTexture.h"
+	"spatial/geo/GeoObject.h"
+	"son/DemonSons.h"
+	"main/Player.h"
+	"main/Game.h"
+	"spatial/objet/Porte.h"
+
+1262111624 source:h:\jkt\svn\trunk\moteur\src\util\erreur.cpp
+	<string>
+	"Erreur.h"
+
+1262173580 source:h:\jkt\svn\trunk\moteur\src\util\findfolder.cpp
+	<string>
+	<iostream>
+	<sys/stat.h>
+	<io.h>
+	<direct.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<dirent.h>
+	"FindFolder.h"
+
+1262111624 source:h:\jkt\svn\trunk\moteur\src\util\genref.cpp
+	<sstream>
+	<string>
+	<iostream>
+	"Trace.h"
+	"GenRef.h"
+
+1262111624 source:h:\jkt\svn\trunk\moteur\src\util\tableau.cpp
+	<iostream>
+	"Tableau.h"
+
+1262111624 source:h:\jkt\svn\trunk\moteur\src\util\tableauindex.cpp
+	"TableauIndex.h"
+
+1262111624 source:h:\jkt\svn\trunk\moteur\src\util\trace.cpp
+	<iostream>
+	<fstream>
+	<string>
+	<stdarg.h>
+	"SDL.h"
+	"SDL_thread.h"
+	"FindFolder.h"
+	"Trace.h"
+
+1262111624 source:h:\jkt\svn\trunk\moteur\src\util\tracemethod.cpp
+	<iostream>
+	<io.h>
+	<stdarg.h>
+	<sstream>
+	"TraceMethod.h"
+	"Trace.h"
+
+1262111624 source:h:\jkt\svn\trunk\moteur\src\util\v3d.cpp
+	<cmath>
+	<iostream>
+	"V3D.h"
+
+1262111624 source:h:\jkt\svn\trunk\moteur\src\util\xmlhelper.cpp
+	"XmlHelper.h"
+
+1262111624 source:h:\jkt\svn\trunk\moteur\src\util\mathfast.cpp
+	"mathFast.h"
+
+1262111624 source:h:\jkt\svn\trunk\moteur\src\util\math_vectoriel.cpp
+	<cmath>
+	<iostream>
+	"math_vectoriel.h"
+
+1262111624 source:h:\jkt\svn\trunk\moteur\src\util\utils_sdl.cpp
+	"SDL.h"
+	"utils_SDL.h"
+

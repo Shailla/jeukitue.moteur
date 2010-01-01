@@ -9,6 +9,7 @@
 #include "menu/OpenCentralisateurView.h"
 
 OpenCentralisateurView::OpenCentralisateurView(const AG_EventFn controllerCallback)
+:View(controllerCallback)
 {
     m_window = AG_WindowNew(0);
     AG_WindowSetCaption(m_window, "Centralisateur");
@@ -32,10 +33,10 @@ OpenCentralisateurView::OpenCentralisateurView(const AG_EventFn controllerCallba
     m_connection = AG_ButtonNewFn(m_window, 0, "Connecter", controllerCallback, "%d", Controller::ConnectCentralisateurAction);
 
 	// Bouton retour
+	AG_SeparatorNewHoriz(m_window);
 	m_retour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%d", Controller::MainMenuAction);
 
-    AG_WindowSetGeometryAligned(m_window, AG_WINDOW_MC, 220, 150);
-
+    AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);
 	AG_WindowShow(m_window);
     hide();
 }

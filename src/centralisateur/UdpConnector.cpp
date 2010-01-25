@@ -6,59 +6,35 @@
 #include "exception/centralisateur/BindingUdpException.h"
 #include "exception/centralisateur/OpenUdpSocketException.h"
 #include "centralisateur/UdpController.h"
-
+#include "util/Trace.h"
 #include "centralisateur/UdpConnector.h"
 
 using namespace std;
 
 /**
     Constructeur
-    portEcoute : numéro du port d'écoute de la facade
+    portLocal : numéro du port d'écoute de la facade
 */
 UdpConnector::UdpConnector(UdpController* udpController,
                            const int portLocal)
 {
     m_channel = -1;   // Uninitialized channel value
     m_udpController = udpController;
-
-    m_socketSet = SDLNet_AllocSocketSet(16);
-    if(!m_socketSet) {
-        const char* message = SDLNet_GetError();
-        cerr << "\nSDLNet_AllocSocketSet: " << message;
-        throw OpenUdpSocketException(portLocal, message);
-    }
-
-    m_socket = SDLNet_UDP_Open(portLocal);
-
-    if(!m_socket) {
-        const char* message = SDLNet_GetError();
-        cerr << "\nSDLNet_UDP_Open: " << message;
-        throw OpenUdpSocketException(portLocal, message);
-    }
-
-    int numused = SDLNet_UDP_AddSocket(m_socketSet, m_socket);
-    if(numused==-1)
-    {
-        const char* message = SDLNet_GetError();
-        cerr << "\nSDLNet_UDP_AddSocket: " << message;
-        throw OpenUdpSocketException(portLocal, message);
-    }
+	m_portLocal = portLocal;
 }
 
-void UdpConnector::connect(const char* ip, const int port) throw (BindingUdpException)
+/**
+	Connection à une entité distante
+	ip: adresse IP de l'entité distante
+	port: port de l'entité distante
+*/
+void UdpConnector::connect(char* ipDistant, int portDistant) throw (BindingUdpException)
 {
-    SDLNet_ResolveHost(&m_adresse, ip, port);
-
-    m_channel = SDLNet_UDP_Bind(m_socket, -1, &m_adresse);
-
-    if(m_channel == -1) {
-        const char* message = SDLNet_GetError();
-        cerr << "\nSDLNet_UDP_Bind: " << message;
-        throw BindingUdpException(message);
-    }
-
+	m_ipDistant = ipDistant;
+	m_portDistant = portDistant;
     m_isAlive = true;
     m_thread = SDL_CreateThread(UdpConnector::runReceive, (void*)this);
+	SDL_Delay(1000);
 }
 
 UdpConnector::~UdpConnector(void)
@@ -94,22 +70,66 @@ int UdpConnector::runReceive(void* udpConnectorPtr)
 
 int UdpConnector::receive()
 {
+	// Ouverture de la socket
+	m_socket = SDLNet_UDP_Open(m_portLocal);
+    if(!m_socket) {
+        const char* message = SDLNet_GetError();
+        cerr << "\nSDLNet_UDP_Open: " << message;
+		TRACE().p( TRACE_ERROR, "SDLNet_UDP_Open: '%s'", message );
+        throw OpenUdpSocketException(m_portLocal, message);
+    }
+
+	// Gestion de la socket dans un pool de sockets
+	m_socketSet = SDLNet_AllocSocketSet(16);
+    if(!m_socketSet) {
+        const char* message = SDLNet_GetError();
+        cerr << "\nSDLNet_AllocSocketSet: " << message;
+		TRACE().p( TRACE_ERROR, "SDLNet_AllocSocketSet: '%s'", message );
+        throw OpenUdpSocketException(m_portLocal, message);
+    }
+
+    int numused = SDLNet_UDP_AddSocket(m_socketSet, m_socket);
+    if(numused==-1)
+    {
+        const char* message = SDLNet_GetError();
+        cerr << "\nSDLNet_UDP_AddSocket: " << message;
+		TRACE().p( TRACE_ERROR, "SDLNet_UDP_AddSocket: '%s'", message );
+        throw OpenUdpSocketException(m_portLocal, message);
+    }
+
+    SDLNet_ResolveHost(&m_adresse, m_ipDistant, m_portDistant);
+
+    m_channel = SDLNet_UDP_Bind(m_socket, -1, &m_adresse);
+    if(m_channel == -1) {
+        const char* message = SDLNet_GetError();
+        cerr << "\nSDLNet_UDP_Bind: " << message;
+		TRACE().p( TRACE_ERROR, "SDLNet_UDP_Bind: '%s'", message );
+        throw BindingUdpException(message);
+    }
+
     while(m_isAlive)
     {
         // Wait an UDP packet for 1 seconde
-        int numReady = SDLNet_CheckSockets( m_socketSet, 1000 );	// Nombre de sockets ayant une activité détectée
+		int numReady = SDLNet_CheckSockets( m_socketSet, 1000 );	// Nombre de sockets ayant une activité détectée
 
         if( numReady==-1 )
         {
-	        cout << "SDLNet_CheckSockets: " << SDLNet_GetError();
+			const char* message = SDLNet_GetError();
+			cerr << "\nSDLNet_CheckSockets: " << message;
+			TRACE().p( TRACE_ERROR, "SDLNet_CheckSockets: '%s'", message );
+			perror("SDLNet_CheckSockets");
         }
         else if( numReady )
         {
-            UDPpacket packet;
+            UDPpacket *packet = SDLNet_AllocPacket( 65535 );
+			int numrecv;
 
-            int numrecv = SDLNet_UDP_Recv(m_socket, &packet);
+			if( SDLNet_SocketReady( m_socket ) ) {
+				numrecv = SDLNet_UDP_Recv(m_socket, packet);
+			}
+
             if(numrecv) {
-                m_udpController->receive(&packet);
+                m_udpController->receive(packet);
             }
         }
     }

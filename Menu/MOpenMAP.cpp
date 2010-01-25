@@ -32,7 +32,7 @@ class CGame;
 class CGeoObject;
 class CPorte;
 
-bool openMAP(void *arg);
+bool openMAP(const void *arg);
 
 extern CGame Game;
 extern CFocus *pFocus;

@@ -583,23 +583,22 @@ void display()	// Fonction principale d'affichage
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
 
-    Viewer* agarView = Fabrique::getAgarView();
-    if(agarView->IsVisible()) {
+    Viewer* menuViewer = Fabrique::getAgarView();
+    if(menuViewer->IsVisible()) {
         glEnable( GL_TEXTURE_2D );
 	    glDisable( GL_BLEND );
         glDisable( GL_DEPTH_TEST );
 
         glOrtho(0, agView->w, agView->h, 0, -1.0, 1.0);
 
-        agarView->draw();
+        menuViewer->draw();
 
         glDisable( GL_TEXTURE_2D );
 	    glDisable( GL_BLEND );
 	}
 
-	// C LE K
-
-	SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
+	// Echange des buffers graphique -> affiche à l'écran
+	SDL_GL_SwapBuffers();
 }
 
 void chopeLesEvenements()
@@ -1046,7 +1045,7 @@ static void process_events( void )
     }
 }
 
-bool openMAP( void *nomFichier )
+bool openMAP( const void *nomFichier )
 {
 	string nomFichierMap = (char*)nomFichier;
 
@@ -1144,6 +1143,13 @@ void boucle()
 			pFocus->SetPlayFocus();
 		}
 
+		if( Game.RequeteProcess.isOuvreMapLocal() )	// S'il y a une demande d'ouvertue de MAP
+		{
+			Aide = false;
+			openMAP( Game.RequeteProcess.getOuvreMap().c_str() );	// Ouvre la MAP voulue
+			pFocus->SetPlayFocus();
+		}
+
 		if( Game.RequeteProcess.isTakePicture() )	// S'il y a une demande de prise de photo de la scène
 		{
 			CPhoto photo( Config.Display.X, Config.Display.Y );
@@ -1155,7 +1161,7 @@ void boucle()
 				cerr << "\nEchec a la prise de la photo";
 		}
 
-			// Mesure du temps écoulé depuis les derniers calculs
+		// Mesure du temps écoulé depuis les derniers calculs
 		if(temps == 0)
 		{
 			temps = SDL_GetTicks();
@@ -1169,12 +1175,12 @@ void boucle()
 
 		ecart = temps - oldTemps;
 
-			// Effectue tous les calculs du jeu
+		// Effectue tous les calculs du jeu
 		timer( ecart );
 
 		ecartTimer = SDL_GetTicks() - temps;
 
-			// Dessine la scène 3D et les menus
+		// Dessine la scène 3D et les menus
 		display();
 
 		//ecartDisplay = SDL_GetTicks() - temps - ecartTimer;

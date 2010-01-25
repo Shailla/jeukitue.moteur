@@ -5,6 +5,8 @@
 
 class Data
 {
+protected:
+	static const int CODE_DATA_SIZE = 4;
 public:
     Data(void);
     virtual ~Data(void);

@@ -17,6 +17,7 @@ public:
 
     void connecter(char* userName, char* adresseIp, int port);
     void sendSignalement(void);
+	void sendMessageChat(const string& message, const string& userName);
 };
 
 #endif

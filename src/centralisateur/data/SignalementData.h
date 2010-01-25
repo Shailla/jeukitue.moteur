@@ -15,7 +15,7 @@ public:
     SignalementData(void);
     ~SignalementData(void);
 
-    void setUserName(string& userName);
+    void setUserName(const string& userName);
 
     UDPpacket* toPacket(void);
 };

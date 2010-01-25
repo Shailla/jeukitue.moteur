@@ -134,6 +134,15 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 		Commandes.Monter.mouse = crotte;
 	}
 
+	do fichier >> mot;	while( mot!="--------------------CENTRALISATEUR---------------------" );
+	{
+		do fichier >> mot;	while( mot!="ip" );
+		fichier >> Centralisateur.m_IpServer;
+
+		do fichier >> mot;	while( mot!="port" );
+		fichier >> Centralisateur.m_Port;
+	}
+
 	do fichier >> mot;	while( mot!="------------------------RESEAU-------------------------" );
 	{
 		do fichier >> mot;	while( mot!="Serveur" );
@@ -204,6 +213,10 @@ void CCfg::Ecrit()
 	fichier << "\nTir1\t\t" << Commandes.Tir1.key << "\t" << Commandes.Tir1.mouse << "\t(" << Commandes.resolve(Commandes.Tir1) << ")";
 	fichier << "\nTir2\t\t" << Commandes.Tir2.key << "\t" << Commandes.Tir2.mouse << "\t(" << Commandes.resolve(Commandes.Tir2) << ")";
 	fichier << "\nMonter\t\t" << Commandes.Monter.key << "\t" << Commandes.Monter.mouse << "\t(" << Commandes.resolve(Commandes.Monter) << ")";
+
+	fichier << "\n\n\n--------------------CENTRALISATEUR---------------------\n";
+	fichier << "\nip\t\t" << Centralisateur.m_IpServer;
+	fichier << "\nport\t\t" << Centralisateur.m_Port;
 
 	fichier << "\n\n\n------------------------RESEAU-------------------------\n";
 	fichier << "\nServeur\t\t" << Reseau.serveur;

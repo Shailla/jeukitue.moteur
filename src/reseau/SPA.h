@@ -39,7 +39,7 @@ public:
 	CSPA();
 	~CSPA();
 
-	bool open( const IPaddress &address );					// Ouverture en mode client
+	bool open( const IPaddress &address );				// Ouverture en mode client
 	bool open( const string &remIp, Uint16 remPort );	// Ouverture en mode client
 	bool open( Uint16 locPort );						// Ouverture en mode serveur
 	void close();

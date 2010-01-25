@@ -6,18 +6,16 @@
 
 #include "menu/View.h"
 
-class OpenCentralisateurView : public View
+class ConfigCentralisateurView : public View
 {
-    AG_Textbox* m_userName;
-    char m_userNameStr[40];
     AG_Textbox* m_adresse;
     char m_adresseStr[40];
     AG_Textbox* m_port;
     AG_Button* m_connection;
 	AG_Button* m_retour;
 public:
-    OpenCentralisateurView(const AG_EventFn controllerCallback);
-    ~OpenCentralisateurView(void);
+    ConfigCentralisateurView(const AG_EventFn controllerCallback);
+    ~ConfigCentralisateurView(void);
 
     char* getUserName(void);
     char* getAdresse(void);

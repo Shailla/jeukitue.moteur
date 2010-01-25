@@ -36,7 +36,7 @@ using namespace std;
 using namespace JKT_PACKAGE_MENU;
 using namespace JKT_PACKAGE_MOTEUR3D;
 
-bool openMAP( void *arg );
+bool openMAP( const void *arg );
 
 extern CGame Game;
 extern CFocus *pFocus;

@@ -6,7 +6,9 @@
 
 #include "menu/View.h"
 class MainMenuView;
-class OpenCentralisateurView;
+class ConfigurationView;
+class ConfigCentralisateurView;
+class CentralisateurView;
 class OpenSceneView;
 class OpenSceneASEView;
 class OpenSceneMapView;
@@ -17,11 +19,14 @@ class Viewer
 
 	// Fenêtres
     View* m_mainMenuView;
-    OpenCentralisateurView* m_openCentralisateurView;
+	CentralisateurView* m_centralisateurView;
+	View* m_multijoueursView;
+	View* m_configurationView;
+    ConfigCentralisateurView* m_configCentralisateurView;
 	View* m_openSceneView;
-	View* m_openSceneASEView;
-	View* m_openSceneMapView;
-
+	OpenSceneASEView* m_openSceneASEView;
+	OpenSceneMapView* m_openSceneMapView;
+	View* _openSceneAseEcraseRepView;
 
 	// Styles
 	AG_Style *m_defaultWindowStyle;
@@ -33,13 +38,20 @@ public:
     bool IsVisible(void);
 
     void showMainMenu(void);
-    void showOpenCentralisateur(void);
+	void showMultijoueurs(void);
+	void showCentralisateur(void);
+	void showConfiguration(void);
+    void showConfigCentralisateur(void);
 	void showOpenScene(void);
 	void showOpenSceneASE(void);
+	void showOpenSceneASEEcraseRep(void);
 	void showOpenSceneMap(void);
 
 	// Accesseurs des fenêtres
-    OpenCentralisateurView* getOpenCentralisateurView(void);
+    ConfigCentralisateurView* getConfigCentralisateurView(void);
+	OpenSceneMapView* getOpenSceneMapView(void);
+	OpenSceneASEView* getOpenSceneASEView(void);
+	CentralisateurView* getCentralisateurView(void);
 
 	// Accesseurs des styles
 	AG_Style* Viewer::getDefaultWindowStyle();

@@ -1,7 +1,12 @@
+#include <vector>
+
+using namespace std;
+
 #include <agar/core.h>
 #include <agar/gui.h>
 #include <agar/gui/style.h>
 
+#include "util/FindFolder.h"
 #include "menu/View.h"
 #include "menu/Controller.h"
 #include "menu/Viewer.h"
@@ -11,20 +16,71 @@
 OpenSceneASEView::OpenSceneASEView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
-	m_window = AG_WindowNew(0);
-    AG_WindowSetCaption(m_window, "Ouvrir une scene ASE");
-	AG_LabelNewStatic(m_window, 0, "Not-implemented");
+	m_window = AG_WindowNew(AG_WINDOW_NOMOVE);
+	AG_WindowSetCaption(m_window, "Importer une scene ASE");
 
+    // Scrollview qui contiendra toutes les map disponibles
+	_scrollview = AG_ScrollviewNew(m_window, AG_SCROLLVIEW_NOPAN_X);
+	AG_Expand(_scrollview);
+
+    // Bouton retour
     AG_SeparatorNewHoriz(m_window);
-	m_buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%d", Controller::OpenSceneAction);
-	AG_ExpandHoriz(m_buttonRetour);
+	AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", m_controllerCallback, "%i", Controller::OpenSceneAction);
+	AG_ExpandHoriz(buttonRetour);
 
-    AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);
+	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);
 	AG_WindowShow(m_window);
+
     hide();
 }
 
 
 OpenSceneASEView::~OpenSceneASEView(void)
 {
+}
+
+void OpenSceneASEView::show(void)
+{
+	// Supprime les map trouvées précédemment
+	vector<AG_Button*>::iterator iter = _aseButtons.begin();
+	
+	while(iter<_aseButtons.end()) {
+		AG_ObjectDelete(*iter);
+		iter++;
+	}
+
+	_aseButtons.clear();
+	_aseNames.clear();
+
+    // Création d'un bouton pour chaque Map disponible
+    string aseName;
+	CFindFolder folder( "./ASE/", 0, ".ASE" );
+	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
+	folder.reset();
+
+	int mapNumber = 0;
+	while( folder.findNext( aseName ) )
+	{
+		aseName.erase( aseName.find_last_of( "." ) );
+
+		AG_Button* button = AG_ButtonNewFn(_scrollview,
+										   0,
+										   aseName.c_str(),
+										   m_controllerCallback,
+										   "%i,%i",
+										   Controller::OpenASEAction,
+										   mapNumber++);		
+		_aseButtons.push_back(button);
+		_aseNames.push_back(aseName);
+	}
+
+	// Rafraichissement de la page
+	AG_WindowUpdate(m_window);
+
+	View::show();
+}
+
+string OpenSceneASEView::getAseName(const int aseNumber)
+{
+	return _aseNames.at(aseNumber);
 }

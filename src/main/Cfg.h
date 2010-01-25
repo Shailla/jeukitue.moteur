@@ -70,11 +70,24 @@ class CCfg
 		void ChangeVideoSize(int x, int y);
 	};
 
+	class CCentralisateur
+	{
+		friend class CCfg;
+	protected:
+		Uint16 m_Port;				// Port à utiliser
+		string m_IpServer;			// Adresse IP du serveur (s'il s'agit d'un client)
+	public:
+		Uint16 getPort() const			{ return m_Port; }
+		void setPort( Uint16 port )		{ m_Port = port; }
+		string getIp() const		{ return m_IpServer; }
+		void setIp( string ip )		{ m_IpServer = ip; }
+	};
+
 	class CReseau		// Informations sur la config réseau
 	{
 		friend class CCfg;
 	protected:
-		Uint16 m_Port;	// Port à utiliser
+		Uint16 m_Port;			// Port à utiliser
 		string m_IpServer;		// Adresse IP du serveur (s'il s'agit d'un client)
 	public:
 		bool serveur;	// true s'il s'agit d'un serveur, false si c'est un client
@@ -103,12 +116,13 @@ class CCfg
 	string nomFichierConfig;
 
 public:
-	CDisplay Display;		// Configuration de l'affichage
-	CAudio Audio;			// Configuration audio
-	CCommandes Commandes;	// Configuration des commandes
-	CReseau Reseau;			// Configuration du réseau
-	CJoueur Joueur;			// Informations sur le joueur principal (nom,...)
-	CDebug Debug;			// Paramètres servant au débuggage
+	CDisplay Display;				// Configuration de l'affichage
+	CAudio Audio;					// Configuration audio
+	CCommandes Commandes;			// Configuration des commandes
+	CCentralisateur Centralisateur;	// Configuration de la connexion au centralisateur
+	CReseau Reseau;					// Configuration du réseau
+	CJoueur Joueur;					// Informations sur le joueur principal (nom,...)
+	CDebug Debug;					// Paramètres servant au débuggage
 		
 	CCfg();
 

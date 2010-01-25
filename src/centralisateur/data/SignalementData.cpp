@@ -16,21 +16,30 @@ SignalementData::~SignalementData(void)
 {
 }
 
-void SignalementData::setUserName(string& userName)
+void SignalementData::setUserName(const string& userName)
 {
     m_userName = userName;
 }
 
 UDPpacket* SignalementData::toPacket(void)
 {
-    int taille =  4     // Code signalement
+    int taille =  CODE_DATA_SIZE     // Code signalement
                 + 4     // Taille du nom d'utilisateur
                 + (int)m_userName.length();  // Nom d'utilisateur
 
     Uint8* data = new Uint8[taille];
-    SDLNet_Write32((Uint32)UdpController::CODE_Signalement, data);
-    SDLNet_Write32((Uint32)m_userName.length(), data+4);
-    strcpy((char*)&data[8], m_userName.c_str());
+	Uint8* current = data;
+
+	// Code
+    SDLNet_Write32((Uint32)UdpController::CODE_U_Signalement, data);
+	current += CODE_DATA_SIZE;
+	
+	// Taille du nom d'utilisateur
+	SDLNet_Write32((Uint32)m_userName.length(), current);
+	current += 4;
+
+	// Nom d'utilisateur
+    strcpy((char*)current, m_userName.c_str());
 
     UDPpacket *packet = new UDPpacket();
     packet->data = data;

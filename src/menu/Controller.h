@@ -1,6 +1,8 @@
 #ifndef __JKT__AGARCONTROLLER_H
 #define __JKT__AGARCONTROLLER_H
 
+#include <string>
+
 #include <agar/core.h>
 #include <agar/gui.h>
 
@@ -9,14 +11,23 @@
 class Controller
 {
 public:
-    static const int MainMenuAction;
-	static const int OpenCentralisateurAction;
-    static const int OpenSceneAction;
-	static const int OpenSceneASEAction;
-	static const int OpenSceneMapAction;
-	static const int OpenOneSceneMapAction;
-    static const int QuitAction;
-    static const int ConnectCentralisateurAction;
+	enum {
+		MainMenuAction = 0,
+		MultijoueursAction,
+		LanceServeurAction,
+		CentralisateurAction,
+		ConfigurationAction,
+		ConfigCentralisateurAction,
+		OpenSceneAction,
+		OpenSceneASEAction,
+		OpenSceneMapAction,
+		OpenSceneASEEcraseRepOuiAction,
+		OpenSceneASEEcraseRepNonAction,
+		OpenMapAction,
+		OpenASEAction,
+		SendGlobalChatTextAction,
+		QuitAction,
+		SaveConfigCentralisateurAction};
 
     static Viewer* m_agarView;
 
@@ -24,6 +35,7 @@ public:
     ~Controller(void);
 
     static void executeAction(AG_Event *event);
+	static void openMap(const std::string& mapName);
 };
 
 #endif

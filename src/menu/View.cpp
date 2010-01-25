@@ -1,5 +1,7 @@
 #include "menu/View.h"
 
+#include <iostream>
+
 View::View(const AG_EventFn controllerCallback)
 {
     m_controllerCallback = controllerCallback;
@@ -11,8 +13,8 @@ View::~View(void)
 
 void View::show(void)
 {
-    AG_WindowShow(m_window);
-    AG_WidgetFocus(m_window);
+	AG_WindowShow(m_window);
+	AG_WidgetFocus(m_window);
 }
 
 void View::hide(void)

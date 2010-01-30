@@ -1326,7 +1326,7 @@ void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap)
 }
 
 
-bool CFichierASE::LitFichierASE( const string &nomFichier, CMap *pMap, bool bAffiche )
+bool CFichierASE::LitFichierASE( const string nomFichier, CMap *pMap, bool bAffiche )
 {
 	string nomFichierASE = "./ase/" + nomFichier + ".ase";	// Ajout de l'extension et du chemin
 

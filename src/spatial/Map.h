@@ -46,7 +46,7 @@ public:
 
 		// Fonctions membres
 //	bool SaveFichierMap(const string &nomFichier);		// Sauvegarde du CMap dans un fichier *.map
-	bool Save(const string &nomFichier);	// Sauvegarde du CMap dans un fichier *.map.xml
+	bool Save(const string nomFichier);	// Sauvegarde du CMap dans un fichier *.map.xml
 
 	void Affiche();						// Affiche l'ensemble des éléments 3D de cette Map
 	void Refresh( CGame *game );		// Rafraichissement des classes listées dans m_TabMouve

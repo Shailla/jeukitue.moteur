@@ -16,13 +16,11 @@
 #include "menu/OpenSceneASEView.h"
 #include "menu/OpenSceneMapView.h"
 #include "menu/OpenSceneASEEcraseRepView.h"
+#include "menu/ConsoleAvancementView.h"
 
 Viewer::Viewer(AG_EventFn controllerCallback)
 {
     m_isVisible = false;
-
-	// Initialisation des styles
-	m_defaultWindowStyle = new AG_Style(agStyleDefault);
 
 	// Initialisation des fenêtres
     m_mainMenuView = new MainMenuView(controllerCallback, this);
@@ -34,6 +32,7 @@ Viewer::Viewer(AG_EventFn controllerCallback)
 	m_openSceneASEView = new OpenSceneASEView(controllerCallback);
 	m_openSceneMapView = new OpenSceneMapView(controllerCallback);
 	_openSceneAseEcraseRepView = new OpenSceneASEEcraseRepView(controllerCallback);
+	_consoleAvancementView = new ConsoleAvancementView(controllerCallback);
 }
 
 Viewer::~Viewer(void)
@@ -46,6 +45,7 @@ Viewer::~Viewer(void)
 	delete m_openSceneASEView;
 	delete m_openSceneMapView;
 	delete _openSceneAseEcraseRepView;
+	delete _consoleAvancementView;
 }
 
 void Viewer::draw(void) {
@@ -76,11 +76,6 @@ void Viewer::draw(void) {
     }
 }
 
-AG_Style* Viewer::getDefaultWindowStyle()
-{
-	return m_defaultWindowStyle;
-}
-
 bool Viewer::IsVisible(void)
 {
     return m_isVisible;
@@ -89,6 +84,20 @@ bool Viewer::IsVisible(void)
 void Viewer::SetVisible(const bool isVisible)
 {
     m_isVisible = isVisible;
+}
+
+void Viewer::hideAll(void)
+{
+    m_mainMenuView->hide();
+	m_centralisateurView->hide();
+	m_multijoueursView->hide();
+	m_configurationView->hide();
+    m_configCentralisateurView->hide();
+	m_openSceneView->hide();
+	m_openSceneASEView->hide();
+	m_openSceneMapView->hide();
+	_openSceneAseEcraseRepView->hide();
+	_consoleAvancementView->hide();
 }
 
 void Viewer::showMainMenu(void)
@@ -102,6 +111,7 @@ void Viewer::showMainMenu(void)
 	m_openSceneASEView->hide();
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
+	_consoleAvancementView->hide();
 }
 
 void Viewer::showMultijoueurs(void)
@@ -115,6 +125,7 @@ void Viewer::showMultijoueurs(void)
 	m_openSceneASEView->hide();
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
+	_consoleAvancementView->hide();
 }
 
 void Viewer::showCentralisateur(void)
@@ -128,6 +139,7 @@ void Viewer::showCentralisateur(void)
 	m_openSceneASEView->hide();
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
+	_consoleAvancementView->hide();
 }
 
 void Viewer::showConfiguration(void)
@@ -141,6 +153,7 @@ void Viewer::showConfiguration(void)
 	m_openSceneASEView->hide();
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
+	_consoleAvancementView->hide();
 }
 
 
@@ -155,6 +168,7 @@ void Viewer::showConfigCentralisateur(void)
 	m_openSceneASEView->hide();
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
+	_consoleAvancementView->hide();
 }
 
 void Viewer::showOpenScene(void)
@@ -168,6 +182,7 @@ void Viewer::showOpenScene(void)
 	m_openSceneASEView->hide();
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
+	_consoleAvancementView->hide();
 }
 
 void Viewer::showOpenSceneASE(void)
@@ -181,6 +196,7 @@ void Viewer::showOpenSceneASE(void)
 	m_openSceneASEView->show();
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
+	_consoleAvancementView->hide();
 }
 
 void Viewer::showOpenSceneASEEcraseRep(void)
@@ -194,6 +210,7 @@ void Viewer::showOpenSceneASEEcraseRep(void)
 	m_openSceneASEView->hide();
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->show();
+	_consoleAvancementView->hide();
 }
 
 void Viewer::showOpenSceneMap(void)
@@ -207,6 +224,21 @@ void Viewer::showOpenSceneMap(void)
 	m_openSceneASEView->hide();
 	m_openSceneMapView->show();
 	_openSceneAseEcraseRepView->hide();
+	_consoleAvancementView->hide();
+}
+
+void Viewer::showConsoleAvancementView(void)
+{
+    m_mainMenuView->hide();
+	m_centralisateurView->hide();
+	m_multijoueursView->hide();
+	m_configurationView->hide();
+    m_configCentralisateurView->hide();
+	m_openSceneView->hide();
+	m_openSceneASEView->hide();
+	m_openSceneMapView->hide();
+	_openSceneAseEcraseRepView->hide();
+	_consoleAvancementView->show();
 }
 
 ConfigCentralisateurView* Viewer::getConfigCentralisateurView(void)
@@ -228,3 +260,14 @@ CentralisateurView* Viewer::getCentralisateurView(void)
 {
     return m_centralisateurView;
 }
+
+OpenSceneASEEcraseRepView* Viewer::getOpenSceneASEEcraseRepView(void)
+{
+    return _openSceneAseEcraseRepView;
+}
+
+ConsoleAvancementView* Viewer::getConsoleAvancementView(void)
+{
+    return _consoleAvancementView;
+}
+

@@ -35,7 +35,6 @@ public:
     ~Controller(void);
 
     static void executeAction(AG_Event *event);
-	static void openMap(const std::string& mapName);
 };
 
 #endif

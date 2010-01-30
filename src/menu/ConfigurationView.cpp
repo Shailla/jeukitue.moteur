@@ -9,14 +9,25 @@
 ConfigurationView::ConfigurationView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
-	m_window = AG_WindowNew(0);
+	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
     AG_WindowSetCaption(m_window, "Configuration");
 
-    AG_Button* buttonCentralisateur = AG_ButtonNewFn(m_window, 0, "Centralisateur", controllerCallback, "%i", Controller::ConfigCentralisateurAction);
-    AG_SeparatorNewHoriz(m_window);
-    AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::MainMenuAction);
+	// Configuration Audio
+    AG_Button* buttonAudio = AG_ButtonNewFn(m_window, 0, "Audio", controllerCallback, "%i", Controller::ConfigCentralisateurAction);
+	AG_ExpandHoriz(buttonAudio);
 
-    AG_ExpandHoriz(buttonCentralisateur);
+	// Configuration Vidéo
+    AG_Button* buttonVideo = AG_ButtonNewFn(m_window, 0, "Video", controllerCallback, "%i", Controller::ConfigCentralisateurAction);
+	AG_ExpandHoriz(buttonVideo);
+
+	// Configuration Centralisateur
+    AG_Button* buttonCentralisateur = AG_ButtonNewFn(m_window, 0, "Centralisateur", controllerCallback, "%i", Controller::ConfigCentralisateurAction);
+	AG_ExpandHoriz(buttonCentralisateur);
+	
+	// Bouton retour
+    AG_SeparatorNewHoriz(m_window);
+
+	AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::MainMenuAction);
     AG_ExpandHoriz(buttonRetour);
 
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);

@@ -16,7 +16,7 @@ using namespace std;
 OpenSceneASEView::OpenSceneASEView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
-	m_window = AG_WindowNew(AG_WINDOW_NOMOVE);
+	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
 	AG_WindowSetCaption(m_window, "Importer une scene ASE");
 
     // Scrollview qui contiendra toutes les map disponibles

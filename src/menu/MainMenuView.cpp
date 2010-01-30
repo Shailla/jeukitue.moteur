@@ -11,7 +11,7 @@
 MainMenuView::MainMenuView(const AG_EventFn controllerCallback, Viewer* agarView)
 :View(controllerCallback)
 {
-	m_window = AG_WindowNew(0);
+	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
     AG_WindowSetCaption(m_window, "Menu principal");
 
     m_buttonOuvrirScene = AG_ButtonNewFn(m_window, 0, "Ouvrir une scene", controllerCallback, "%i", Controller::OpenSceneAction);
@@ -24,8 +24,6 @@ MainMenuView::MainMenuView(const AG_EventFn controllerCallback, Viewer* agarView
 	AG_ExpandHoriz(m_buttonMultijoueurs);
     AG_ExpandHoriz(m_buttonConfiguration);
     AG_ExpandHoriz(m_buttonQuitter);
-
-	AG_SetStyle(m_window, agarView->getDefaultWindowStyle());
 
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);
 	AG_WindowShow(m_window);

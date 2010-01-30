@@ -6,6 +6,8 @@ using namespace std;
 #include "menu/ConfigCentralisateurView.h"
 #include "menu/OpenSceneMapView.h"
 #include "menu/OpenSceneASEView.h"
+#include "menu/OpenSceneASEEcraseRepView.h"
+#include "menu/ConsoleAvancementView.h"
 #include "main/Fabrique.h"
 #include "centralisateur/Centralisateur.h"
 #include "Menu/Portail.h"
@@ -13,15 +15,25 @@ using namespace std;
 #include "main/Game.h"
 #include "main/Focus.h"
 #include "main/Cfg.h"
+#include "spatial/Map.h"
+#include "spatial/materiau/MaterialTexture.h"
+#include "spatial/materiau/MaterialMulti.h"
+#include "spatial/AseImporter.h"
+#include "util/FindFolder.h"
 
 #include "menu/Controller.h"
+
+using namespace JKT_PACKAGE_MENU;
+using namespace JKT_PACKAGE_MOTEUR3D;
 
 extern CGame Game;
 extern CCfg Config;
 extern JKT_PACKAGE_MENU::CFocus *pFocus;
 extern bool Aide;
 void quit_tutorial( int code );
-bool openMAP(const void *arg);
+bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep );
+void openMap(const std::string& mapName);
+bool openMAP( const void *arg );
 
 Viewer* Controller::m_agarView;
 
@@ -117,19 +129,62 @@ void Controller::executeAction(AG_Event *event)
 			string nomRep = "./Map/" + aseName;
 
 			if( CFindFolder::mkdir( nomRep.c_str() )!=0 )	// Création du répertoire pour les textures
-			{		// Si un répertoire existe déjà, demande s'il faut l'écraser
+			{	
+				// Si un répertoire existe déjà, demande s'il faut l'écraser
+				OpenSceneASEEcraseRepView* view = m_agarView->getOpenSceneASEEcraseRepView();
+				view->setRepName(nomRep);	// Nom du répertoire du fichier Ase
+				view->setAseName(aseName);	// Nom du fichier Ase
+
 				m_agarView->showOpenSceneASEEcraseRep();
 			}
 			else {
-				// TODO Import du fichier ASE
+				try {
+					ConsoleAvancementView* console = m_agarView->getConsoleAvancementView();
+					console->init("Import fichier ASE");
+					m_agarView->showConsoleAvancementView();
+
+					// Import du fichier ASE
+					AseImporter::lanceImportAse(aseName, console);
+				}
+				catch(CErreur erreur)
+				{
+					stringstream texte;
+					texte << "Echec d'import ASE : " << erreur.toString();
+					AG_TextMsg(AG_MSG_ERROR, texte.str().c_str());
+				}
 			}
         }
         break;
 
 	case OpenSceneASEEcraseRepOuiAction:
+		{
+			OpenSceneASEEcraseRepView* view = m_agarView->getOpenSceneASEEcraseRepView();
+			
+			try {
+				// Suppression du répertoire
+				string repName = view->getRepName();
+				AseImporter::supprimeRepertoire(repName);
+				
+				// Import du fichier ASE
+				ConsoleAvancementView* console = m_agarView->getConsoleAvancementView();
+				console->init("Import fichier ASE");
+				m_agarView->showConsoleAvancementView();
+
+				string aseName = view->getAseName();
+				AseImporter::lanceImportAse(aseName, console);
+			}
+			catch(CErreur erreur)
+			{
+				stringstream texte;
+				texte << "Echec d'import ASE : " << erreur.toString();
+				AG_TextMsg(AG_MSG_ERROR, texte.str().c_str());
+			}
+		}
 		break;
 
 	case OpenSceneASEEcraseRepNonAction:
+		m_agarView->showMainMenu();
+		AG_TextMsg(AG_MSG_INFO, "Import annule");
 		break;
 
 
@@ -141,7 +196,7 @@ void Controller::executeAction(AG_Event *event)
 			Config.Centralisateur.setPort(view->getPort());
 			Config.Ecrit();
 
-			AG_TextMsg(AG_MSG_WARNING, "Configuration mise à jour");
+			AG_TextMsg(AG_MSG_WARNING, "Configuration mise a jour");
 		}
 		break;
 
@@ -156,7 +211,7 @@ void Controller::executeAction(AG_Event *event)
     }
 }
 
-void Controller::openMap(const string& mapName)
+void openMap(const string& mapName)
 {
 	if(openMAP( mapName.c_str() )) {
 		Aide = false;
@@ -167,3 +222,4 @@ void Controller::openMap(const string& mapName)
 		AG_TextMsg(AG_MSG_WARNING, "Echec d'ouverture de la Map %s", mapName);
 	}
 }
+

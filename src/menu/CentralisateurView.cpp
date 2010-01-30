@@ -12,10 +12,17 @@
 CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
-	m_window = AG_WindowNew(0);
+	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
     AG_WindowSetCaption(m_window, "Centralisateur");
 
-	AG_Pane* paneHoriz = AG_PaneNewHoriz(m_window, AG_PANE_EXPAND);
+	AG_Notebook* book = AG_NotebookNew(m_window, 0);
+	AG_Expand(book);
+
+	/******************************
+		Onglet de chat
+	******************************/
+	AG_NotebookTab* tabChat = AG_NotebookAddTab(book, "Chat", AG_BOX_VERT);
+	AG_Pane* paneHoriz = AG_PaneNewHoriz(tabChat, AG_PANE_EXPAND);
 	AG_Button* button1 = AG_ButtonNew(paneHoriz->div[0], 0, "Coucou");
 	AG_PaneMoveDividerPct(paneHoriz, 20);
 
@@ -39,13 +46,24 @@ CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
 	AG_Button* buttonSend = AG_ButtonNewFn(paneVert->div[1], 0, "Envoyer", controllerCallback, "%i", Controller::SendGlobalChatTextAction);
 	
 
+	/******************************
+		Onglet des scores
+	******************************/
+	AG_NotebookTab* tabScores = AG_NotebookAddTab(book, "Scores", AG_BOX_VERT);
+
+
+	/******************************
+		Onglet des téléchargements
+	******************************/
+	AG_NotebookTab* tabDownload = AG_NotebookAddTab(book, "Telechargements", AG_BOX_VERT);
+
+
 	// Bouton retour
 	AG_SeparatorNewHoriz(m_window);
     AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::MultijoueursAction);
-    AG_ExpandHoriz(buttonRetour);
 
 	// Disposition de la fenêtre
-    AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 70);
+    AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 70, 70);
 	AG_WindowShow(m_window);
     hide();
 }

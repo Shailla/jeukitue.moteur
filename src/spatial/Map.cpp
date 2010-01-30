@@ -743,7 +743,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::SaveFichierMap() Sauvegarde du fichier MAP Ok%
 	return true;
 }*/
 
-bool CMap::Save(const string &nomFichier)
+bool CMap::Save(const string nomFichier)
 {
 TRACE().p( TRACE_MOTEUR3D, "CMap::Save() %T", this );
 

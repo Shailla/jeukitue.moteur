@@ -12,6 +12,8 @@ class CentralisateurView;
 class OpenSceneView;
 class OpenSceneASEView;
 class OpenSceneMapView;
+class OpenSceneASEEcraseRepView;
+class ConsoleAvancementView;
 
 class Viewer
 {
@@ -26,10 +28,8 @@ class Viewer
 	View* m_openSceneView;
 	OpenSceneASEView* m_openSceneASEView;
 	OpenSceneMapView* m_openSceneMapView;
-	View* _openSceneAseEcraseRepView;
-
-	// Styles
-	AG_Style *m_defaultWindowStyle;
+	OpenSceneASEEcraseRepView* _openSceneAseEcraseRepView;
+	ConsoleAvancementView* _consoleAvancementView;
 public:
     Viewer(AG_EventFn controllerCallback);
     ~Viewer(void);
@@ -37,6 +37,7 @@ public:
     void SetVisible(bool);
     bool IsVisible(void);
 
+	void hideAll(void);
     void showMainMenu(void);
 	void showMultijoueurs(void);
 	void showCentralisateur(void);
@@ -46,15 +47,18 @@ public:
 	void showOpenSceneASE(void);
 	void showOpenSceneASEEcraseRep(void);
 	void showOpenSceneMap(void);
+	void showConsoleAvancementView(void);
 
 	// Accesseurs des fenêtres
     ConfigCentralisateurView* getConfigCentralisateurView(void);
 	OpenSceneMapView* getOpenSceneMapView(void);
 	OpenSceneASEView* getOpenSceneASEView(void);
 	CentralisateurView* getCentralisateurView(void);
+	OpenSceneASEEcraseRepView* getOpenSceneASEEcraseRepView();
+	ConsoleAvancementView* getConsoleAvancementView();
 
 	// Accesseurs des styles
-	AG_Style* Viewer::getDefaultWindowStyle();
+	AG_Style* getDefaultWindowStyle();
 };
 
 #endif

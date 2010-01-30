@@ -16,7 +16,7 @@ extern CCfg Config;
 ConfigCentralisateurView::ConfigCentralisateurView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
-    m_window = AG_WindowNew(0);
+    m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
     AG_WindowSetCaption(m_window, "Centralisateur");
 
     // Champ adress IP du serveur centralisateur

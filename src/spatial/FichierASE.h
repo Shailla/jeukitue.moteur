@@ -66,7 +66,7 @@ class CFichierASE : private ifstream
 	bool isGet(string &mot, int line);
 
 public:
-	static bool LitFichierASE( const string &nomFichier, CMap *pMap, bool bAffiche );
+	static bool LitFichierASE( const string nomFichier, CMap *pMap, bool bAffiche );
 };
 
 }	//namespace JKT_PACKAGE_MOTEUR3D

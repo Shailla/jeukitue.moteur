@@ -9,7 +9,7 @@
 MultijoueursView::MultijoueursView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
-	m_window = AG_WindowNew(0);
+	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
     AG_WindowSetCaption(m_window, "Multi-joueurs");
 
 	AG_Button* buttonMultijoueurs = AG_ButtonNewFn(m_window, 0, "Lancer un serveur", controllerCallback, "%i", Controller::LanceServeurAction);

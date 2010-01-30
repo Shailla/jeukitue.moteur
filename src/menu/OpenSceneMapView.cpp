@@ -24,7 +24,7 @@ using namespace std;
 OpenSceneMapView::OpenSceneMapView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
-	m_window = AG_WindowNew(AG_WINDOW_NOMOVE);
+	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
 	AG_WindowSetCaption(m_window, "Ouvrir une scene Map");
 
     // Scrollview qui contiendra toutes les map disponibles

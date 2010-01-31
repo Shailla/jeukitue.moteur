@@ -352,6 +352,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\menu\ConfigurationVideoView.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\menu\ConfigurationView.cpp"
 					>
 				</File>
@@ -999,6 +1003,10 @@
 				</File>
 				<File
 					RelativePath=".\src\menu\ConfigCentralisateurView.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\ConfigurationVideoView.h"
 					>
 				</File>
 				<File

@@ -15,6 +15,7 @@ public:
 		MainMenuAction = 0,
 		MultijoueursAction,
 		LanceServeurAction,
+		LanceServeurMapAction,
 		CentralisateurAction,
 		ConfigurationAction,
 		ConfigCentralisateurAction,

@@ -8,6 +8,7 @@ using namespace std;
 #include "menu/OpenSceneASEView.h"
 #include "menu/OpenSceneASEEcraseRepView.h"
 #include "menu/ConsoleAvancementView.h"
+#include "menu/LanceServeurView.h"
 #include "main/Fabrique.h"
 #include "centralisateur/Centralisateur.h"
 #include "Menu/Portail.h"
@@ -103,6 +104,24 @@ void Controller::executeAction(AG_Event *event)
 	case OpenSceneMapAction:
         m_agarView->showOpenSceneMap();
         break;
+
+	// Ecran de choix d'une Map à lancer en mode serveur
+	case LanceServeurAction:
+		m_agarView->showLanceServeurView();
+		break;
+
+	case LanceServeurMapAction:
+        {
+            // Récupération du nom de la Map à ouvrir
+			int mapNumber = AG_INT(2);
+			LanceServeurView* view = m_agarView->getLanceServeurView();
+			string mapName = view->getMapName(mapNumber);
+
+			// Ouverture de la Map
+            //Game.RequeteProcess.setOuvreMapLocal(mapName);
+			AG_TextMsg(AG_MSG_INFO, "Serveur avec la map : %s", mapName.c_str());
+        }
+		break;
 
 	// Ouverture d'une Map en mode de jeu local
 	case OpenMapAction:

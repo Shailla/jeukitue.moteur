@@ -65,6 +65,7 @@
 				OutputFile="$(OutDir)\jkt2010Debug.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;$(ProjectDir)Libs\FreeType\lib&quot;;&quot;$(ProjectDir)Libs\Agar-1.3.4\lib&quot;;&quot;$(ProjectDir)Libs\SDL_net-1.2.7\lib&quot;;&quot;$(ProjectDir)Libs\fmodapi375win\api\lib&quot;;&quot;$(ProjectDir)Libs\SDL_image-1.2.10\lib&quot;;&quot;$(ProjectDir)Libs\SDL-1.2.14\lib&quot;"
+				IgnoreDefaultLibraryNames="MSVCRT;LIBCMT"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -141,7 +142,8 @@
 				AdditionalDependencies="odbc32.lib odbccp32.lib OPENGL32.LIB SDL.lib SDL_image.lib fmodvc.lib GLU32.LIB SDL_net.lib SDLmain.lib ag_core.lib ag_gui.lib pthreadVC2.lib freetype.lib winmm.lib"
 				OutputFile="$(OutDir)\jkt2010Release.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="&quot;$(ProjectDir)Libs\FreeType\lib&quot;;&quot;$(ProjectDir)Libs\Pre-built.2\lib&quot;;&quot;$(ProjectDir)Libs\Agar-1.3.4\lib&quot;;&quot;$(ProjectDir)Libs\SDL_net-1.2.7\lib&quot;;&quot;$(ProjectDir)Libs\fmodapi375win\api\lib&quot;;&quot;$(ProjectDir)Libs\SDL_image-1.2.10\lib&quot;;&quot;$(ProjectDir)Libs\SDL-1.2.14\lib&quot;"
+				AdditionalLibraryDirectories="&quot;$(ProjectDir)Libs\FreeType\lib&quot;;&quot;$(ProjectDir)Libs\Agar-1.3.4\lib&quot;;&quot;$(ProjectDir)Libs\SDL_net-1.2.7\lib&quot;;&quot;$(ProjectDir)Libs\fmodapi375win\api\lib&quot;;&quot;$(ProjectDir)Libs\SDL_image-1.2.10\lib&quot;;&quot;$(ProjectDir)Libs\SDL-1.2.14\lib&quot;"
+				IgnoreDefaultLibraryNames="MSVCRT;LIBCMT"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -359,6 +361,10 @@
 				</File>
 				<File
 					RelativePath=".\src\menu\Controller.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\LanceServeurView.cpp"
 					>
 				</File>
 				<File
@@ -1005,6 +1011,10 @@
 				</File>
 				<File
 					RelativePath=".\src\menu\Controller.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\LanceServeurView.h"
 					>
 				</File>
 				<File

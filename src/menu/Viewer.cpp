@@ -17,6 +17,7 @@
 #include "menu/OpenSceneMapView.h"
 #include "menu/OpenSceneASEEcraseRepView.h"
 #include "menu/ConsoleAvancementView.h"
+#include "menu/LanceServeurView.h"
 
 Viewer::Viewer(AG_EventFn controllerCallback)
 {
@@ -98,6 +99,7 @@ void Viewer::hideAll(void)
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
+	_lanceServeurView->hide();
 }
 
 void Viewer::showMainMenu(void)
@@ -112,6 +114,7 @@ void Viewer::showMainMenu(void)
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
+	_lanceServeurView->hide();
 }
 
 void Viewer::showMultijoueurs(void)
@@ -126,6 +129,7 @@ void Viewer::showMultijoueurs(void)
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
+	_lanceServeurView->hide();
 }
 
 void Viewer::showCentralisateur(void)
@@ -140,6 +144,7 @@ void Viewer::showCentralisateur(void)
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
+	_lanceServeurView->hide();
 }
 
 void Viewer::showConfiguration(void)
@@ -154,6 +159,7 @@ void Viewer::showConfiguration(void)
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
+	_lanceServeurView->hide();
 }
 
 
@@ -169,6 +175,7 @@ void Viewer::showConfigCentralisateur(void)
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
+	_lanceServeurView->hide();
 }
 
 void Viewer::showOpenScene(void)
@@ -183,6 +190,7 @@ void Viewer::showOpenScene(void)
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
+	_lanceServeurView->hide();
 }
 
 void Viewer::showOpenSceneASE(void)
@@ -197,6 +205,7 @@ void Viewer::showOpenSceneASE(void)
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
+	_lanceServeurView->hide();
 }
 
 void Viewer::showOpenSceneASEEcraseRep(void)
@@ -211,6 +220,7 @@ void Viewer::showOpenSceneASEEcraseRep(void)
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->show();
 	_consoleAvancementView->hide();
+	_lanceServeurView->hide();
 }
 
 void Viewer::showOpenSceneMap(void)
@@ -225,6 +235,7 @@ void Viewer::showOpenSceneMap(void)
 	m_openSceneMapView->show();
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
+	_lanceServeurView->hide();
 }
 
 void Viewer::showConsoleAvancementView(void)
@@ -239,6 +250,22 @@ void Viewer::showConsoleAvancementView(void)
 	m_openSceneMapView->hide();
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->show();
+	_lanceServeurView->hide();
+}
+
+void Viewer::showLanceServeurView(void)
+{
+    m_mainMenuView->hide();
+	m_centralisateurView->hide();
+	m_multijoueursView->hide();
+	m_configurationView->hide();
+    m_configCentralisateurView->hide();
+	m_openSceneView->hide();
+	m_openSceneASEView->hide();
+	m_openSceneMapView->hide();
+	_openSceneAseEcraseRepView->hide();
+	_consoleAvancementView->hide();
+	_lanceServeurView->show();
 }
 
 ConfigCentralisateurView* Viewer::getConfigCentralisateurView(void)
@@ -269,5 +296,10 @@ OpenSceneASEEcraseRepView* Viewer::getOpenSceneASEEcraseRepView(void)
 ConsoleAvancementView* Viewer::getConsoleAvancementView(void)
 {
     return _consoleAvancementView;
+}
+
+LanceServeurView* Viewer::getLanceServeurView(void)
+{
+    return _lanceServeurView;
 }
 

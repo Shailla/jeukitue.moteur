@@ -12,9 +12,15 @@ MultijoueursView::MultijoueursView(const AG_EventFn controllerCallback)
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
     AG_WindowSetCaption(m_window, "Multi-joueurs");
 
+
+	// Lancer un partie multijoueurs locale
 	AG_Button* buttonMultijoueurs = AG_ButtonNewFn(m_window, 0, "Lancer un serveur", controllerCallback, "%i", Controller::LanceServeurAction);
-    AG_Button* buttonCentralisateur = AG_ButtonNewFn(m_window, 0, "Connexion au centralisateur", controllerCallback, "%i", Controller::CentralisateurAction);
+
+	// Connexion au Centralisateur
+	AG_Button* buttonCentralisateur = AG_ButtonNewFn(m_window, 0, "Connexion au centralisateur", controllerCallback, "%i", Controller::CentralisateurAction);
     AG_SeparatorNewHoriz(m_window);
+
+	// Bouton retour
     AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::MainMenuAction);
 
     AG_ExpandHoriz(buttonMultijoueurs);

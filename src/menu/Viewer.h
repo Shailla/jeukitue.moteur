@@ -14,6 +14,7 @@ class OpenSceneASEView;
 class OpenSceneMapView;
 class OpenSceneASEEcraseRepView;
 class ConsoleAvancementView;
+class LanceServeurView;
 
 class Viewer
 {
@@ -30,6 +31,7 @@ class Viewer
 	OpenSceneMapView* m_openSceneMapView;
 	OpenSceneASEEcraseRepView* _openSceneAseEcraseRepView;
 	ConsoleAvancementView* _consoleAvancementView;
+	LanceServeurView* _lanceServeurView;
 public:
     Viewer(AG_EventFn controllerCallback);
     ~Viewer(void);
@@ -48,6 +50,7 @@ public:
 	void showOpenSceneASEEcraseRep(void);
 	void showOpenSceneMap(void);
 	void showConsoleAvancementView(void);
+	void showLanceServeurView(void);
 
 	// Accesseurs des fenêtres
     ConfigCentralisateurView* getConfigCentralisateurView(void);
@@ -56,9 +59,7 @@ public:
 	CentralisateurView* getCentralisateurView(void);
 	OpenSceneASEEcraseRepView* getOpenSceneASEEcraseRepView();
 	ConsoleAvancementView* getConsoleAvancementView();
-
-	// Accesseurs des styles
-	AG_Style* getDefaultWindowStyle();
+	LanceServeurView* getLanceServeurView();
 };
 
 #endif

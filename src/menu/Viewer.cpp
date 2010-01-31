@@ -18,6 +18,7 @@
 #include "menu/OpenSceneASEEcraseRepView.h"
 #include "menu/ConsoleAvancementView.h"
 #include "menu/LanceServeurView.h"
+#include "menu/ConfigurationVideoView.h"
 
 Viewer::Viewer(AG_EventFn controllerCallback)
 {
@@ -34,6 +35,8 @@ Viewer::Viewer(AG_EventFn controllerCallback)
 	m_openSceneMapView = new OpenSceneMapView(controllerCallback);
 	_openSceneAseEcraseRepView = new OpenSceneASEEcraseRepView(controllerCallback);
 	_consoleAvancementView = new ConsoleAvancementView(controllerCallback);
+	_lanceServeurView = new LanceServeurView(controllerCallback);
+	_configurationVideoView = new ConfigurationVideoView(controllerCallback);
 }
 
 Viewer::~Viewer(void)
@@ -47,6 +50,8 @@ Viewer::~Viewer(void)
 	delete m_openSceneMapView;
 	delete _openSceneAseEcraseRepView;
 	delete _consoleAvancementView;
+	delete _lanceServeurView;
+	delete _configurationVideoView;
 }
 
 void Viewer::draw(void) {
@@ -100,6 +105,7 @@ void Viewer::hideAll(void)
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
 	_lanceServeurView->hide();
+	_configurationVideoView->hide();
 }
 
 void Viewer::showMainMenu(void)
@@ -115,6 +121,7 @@ void Viewer::showMainMenu(void)
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
 	_lanceServeurView->hide();
+	_configurationVideoView->hide();
 }
 
 void Viewer::showMultijoueurs(void)
@@ -130,6 +137,7 @@ void Viewer::showMultijoueurs(void)
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
 	_lanceServeurView->hide();
+	_configurationVideoView->hide();
 }
 
 void Viewer::showCentralisateur(void)
@@ -145,6 +153,7 @@ void Viewer::showCentralisateur(void)
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
 	_lanceServeurView->hide();
+	_configurationVideoView->hide();
 }
 
 void Viewer::showConfiguration(void)
@@ -160,6 +169,7 @@ void Viewer::showConfiguration(void)
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
 	_lanceServeurView->hide();
+	_configurationVideoView->hide();
 }
 
 
@@ -176,6 +186,7 @@ void Viewer::showConfigCentralisateur(void)
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
 	_lanceServeurView->hide();
+	_configurationVideoView->hide();
 }
 
 void Viewer::showOpenScene(void)
@@ -191,6 +202,7 @@ void Viewer::showOpenScene(void)
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
 	_lanceServeurView->hide();
+	_configurationVideoView->hide();
 }
 
 void Viewer::showOpenSceneASE(void)
@@ -206,6 +218,7 @@ void Viewer::showOpenSceneASE(void)
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
 	_lanceServeurView->hide();
+	_configurationVideoView->hide();
 }
 
 void Viewer::showOpenSceneASEEcraseRep(void)
@@ -221,6 +234,7 @@ void Viewer::showOpenSceneASEEcraseRep(void)
 	_openSceneAseEcraseRepView->show();
 	_consoleAvancementView->hide();
 	_lanceServeurView->hide();
+	_configurationVideoView->hide();
 }
 
 void Viewer::showOpenSceneMap(void)
@@ -236,6 +250,7 @@ void Viewer::showOpenSceneMap(void)
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
 	_lanceServeurView->hide();
+	_configurationVideoView->hide();
 }
 
 void Viewer::showConsoleAvancementView(void)
@@ -251,6 +266,7 @@ void Viewer::showConsoleAvancementView(void)
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->show();
 	_lanceServeurView->hide();
+	_configurationVideoView->hide();
 }
 
 void Viewer::showLanceServeurView(void)
@@ -266,6 +282,23 @@ void Viewer::showLanceServeurView(void)
 	_openSceneAseEcraseRepView->hide();
 	_consoleAvancementView->hide();
 	_lanceServeurView->show();
+	_configurationVideoView->hide();
+}
+
+void Viewer::showConfigurationVideoView(void)
+{
+    m_mainMenuView->hide();
+	m_centralisateurView->hide();
+	m_multijoueursView->hide();
+	m_configurationView->hide();
+    m_configCentralisateurView->hide();
+	m_openSceneView->hide();
+	m_openSceneASEView->hide();
+	m_openSceneMapView->hide();
+	_openSceneAseEcraseRepView->hide();
+	_consoleAvancementView->hide();
+	_lanceServeurView->hide();
+	_configurationVideoView->show();
 }
 
 ConfigCentralisateurView* Viewer::getConfigCentralisateurView(void)

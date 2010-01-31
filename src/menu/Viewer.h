@@ -15,6 +15,7 @@ class OpenSceneMapView;
 class OpenSceneASEEcraseRepView;
 class ConsoleAvancementView;
 class LanceServeurView;
+class ConfigurationVideoView;
 
 class Viewer
 {
@@ -32,6 +33,7 @@ class Viewer
 	OpenSceneASEEcraseRepView* _openSceneAseEcraseRepView;
 	ConsoleAvancementView* _consoleAvancementView;
 	LanceServeurView* _lanceServeurView;
+	ConfigurationVideoView* _configurationVideoView;
 public:
     Viewer(AG_EventFn controllerCallback);
     ~Viewer(void);
@@ -51,6 +53,7 @@ public:
 	void showOpenSceneMap(void);
 	void showConsoleAvancementView(void);
 	void showLanceServeurView(void);
+	void showConfigurationVideoView(void);
 
 	// Accesseurs des fenêtres
     ConfigCentralisateurView* getConfigCentralisateurView(void);

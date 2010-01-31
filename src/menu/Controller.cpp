@@ -16,6 +16,10 @@ using namespace std;
 #include "main/Game.h"
 #include "main/Focus.h"
 #include "main/Cfg.h"
+#include "reseau/SPA.h"
+#include "reseau/Client.h"
+#include "reseau/Server.h"
+#include "reseau/Reseau.h"
 #include "spatial/Map.h"
 #include "spatial/materiau/MaterialTexture.h"
 #include "spatial/materiau/MaterialMulti.h"
@@ -35,6 +39,8 @@ void quit_tutorial( int code );
 bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep );
 void openMap(const std::string& mapName);
 bool openMAP( const void *arg );
+void openMAP2( const string &nomFichierMap );
+extern JKT_PACKAGE_RESEAU::CReseau Reseau;
 
 Viewer* Controller::m_agarView;
 
@@ -64,6 +70,10 @@ void Controller::executeAction(AG_Event *event)
     case ConfigurationAction:
         m_agarView->showConfiguration();
         break;
+
+	case ConfigurationVideoAction:
+		m_agarView->showConfigurationVideoView();
+		break;
 
     case CentralisateurAction:
 		{
@@ -117,9 +127,23 @@ void Controller::executeAction(AG_Event *event)
 			LanceServeurView* view = m_agarView->getLanceServeurView();
 			string mapName = view->getMapName(mapNumber);
 
-			// Ouverture de la Map
-            //Game.RequeteProcess.setOuvreMapLocal(mapName);
-			AG_TextMsg(AG_MSG_INFO, "Serveur avec la map : %s", mapName.c_str());
+			// Connexion du serveur
+			if( !Reseau.ouvreServer( Config.Reseau.getPort() ) )
+			{
+				AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du serveur");
+			}
+			else
+			{
+				// Ouverture de la Map sur le serveur
+				JKT_PACKAGE_RESEAU::CServer *server = Game.getServer();
+				pFocus->SetPlayFocus();
+				Aide = false;
+				server->nomMAP = mapName;		// Informe le serveur sur le nom de la MAP lancée
+				openMAP2( server->nomMAP );		// Ouvre cette MAP
+				Game.setPlayerList( server->maxPlayers );
+				server->setStatut( JKT_PACKAGE_RESEAU::JKT_STATUT_SERVER_PLAY );
+				server->bGame = true;				// Indique qu'une partie est en cours
+			}
         }
 		break;
 

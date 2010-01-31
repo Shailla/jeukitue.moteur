@@ -18,6 +18,7 @@ public:
 		LanceServeurMapAction,
 		CentralisateurAction,
 		ConfigurationAction,
+		ConfigurationVideoAction,
 		ConfigCentralisateurAction,
 		OpenSceneAction,
 		OpenSceneASEAction,

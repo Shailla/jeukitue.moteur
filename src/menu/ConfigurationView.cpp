@@ -13,11 +13,11 @@ ConfigurationView::ConfigurationView(const AG_EventFn controllerCallback)
     AG_WindowSetCaption(m_window, "Configuration");
 
 	// Configuration Audio
-    AG_Button* buttonAudio = AG_ButtonNewFn(m_window, 0, "Audio", controllerCallback, "%i", Controller::ConfigCentralisateurAction);
+    AG_Button* buttonAudio = AG_ButtonNewFn(m_window, 0, "Audio", controllerCallback, "%i", -1);
 	AG_ExpandHoriz(buttonAudio);
 
 	// Configuration Vidéo
-    AG_Button* buttonVideo = AG_ButtonNewFn(m_window, 0, "Video", controllerCallback, "%i", Controller::ConfigCentralisateurAction);
+    AG_Button* buttonVideo = AG_ButtonNewFn(m_window, 0, "Video", controllerCallback, "%i", Controller::ConfigurationVideoAction);
 	AG_ExpandHoriz(buttonVideo);
 
 	// Configuration Centralisateur

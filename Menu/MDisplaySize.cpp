@@ -58,7 +58,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigVideoDisplay(var=%x)", var );
 		// Récupère la liste des modes vidéo disponibles
 	SDL_Rect **modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
 
-		// Compte le nombre de modes disponibles
+	// Compte le nombre de modes disponibles
 	for( nbr=0 ; modes[nbr] ; nbr++ );	// Le ';' est tout à fait normal !!!
 
 	PF *liste_suivants = new PF[ nbr ];

@@ -26,6 +26,7 @@ using namespace std;
 #include "main/Extensions.h"
 #include "util/Trace.h"
 #include "son/audio.h"
+#include "ressource/RessourcesLoader.h"
 
 #include "main/Cfg.h"
 
@@ -650,7 +651,10 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 	SDL_EnableKeyRepeat( 500, 500 );	// Répétition des touches clavier
 
 	SDL_WM_SetCaption( "JKT 2010", "C'est un jeu qui tue !!!" );	// Titre et icon de la fenêtre
-	SDL_WM_SetIcon( IMG_Load( "icon.bmp" ), 0 );
+	
+	string iconeFichier = "@Icone/Icone.bmp";
+	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(iconeFichier);
+	SDL_WM_SetIcon( IMG_Load( iconeFichier.c_str() ), 0 );
 
 	char txt1[50];
 	cout << "\nDriver video :\t\t";

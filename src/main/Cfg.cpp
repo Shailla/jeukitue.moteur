@@ -600,6 +600,13 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 	cout << endl << "blit_fill : " << info->blit_fill;
 	cout << endl << "video_mem : " << info->video_mem << endl;
 
+	// Icone et titre
+	SDL_WM_SetCaption( "JKT 2010", "C'est un jeu qui tue !!!" );	// Titre et icon de la fenêtre
+	
+	string iconeFichier = "@Icone/Icone.bmp";
+	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(iconeFichier);
+	SDL_WM_SetIcon( IMG_Load( iconeFichier.c_str() ), 0 );
+
     flags = SDL_OPENGL | SDL_RESIZABLE;
 
 	if( Fullscreen() )
@@ -649,12 +656,6 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 	SDL_WM_GrabInput( SDL_GRAB_ON );	//Active le mode déplacement relatif de la souris
 
 	SDL_EnableKeyRepeat( 500, 500 );	// Répétition des touches clavier
-
-	SDL_WM_SetCaption( "JKT 2010", "C'est un jeu qui tue !!!" );	// Titre et icon de la fenêtre
-	
-	string iconeFichier = "@Icone/Icone.bmp";
-	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(iconeFichier);
-	SDL_WM_SetIcon( IMG_Load( iconeFichier.c_str() ), 0 );
 
 	char txt1[50];
 	cout << "\nDriver video :\t\t";

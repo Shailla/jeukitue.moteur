@@ -151,18 +151,19 @@ TRACE().p( TRACE_OTHER, "load_Intro(width=%d,height=%d)", width, height );
 
 	load_IntroSub( width, height );
 
-	DemonSons->Delete( sonChariot );		// Son retour chariot machine à écrire
+	DemonSons->Delete( sonChariot );	// Son retour chariot machine à écrire
 	DemonSons->Delete( sonTouche );		// Son frappe d'une touche clavier
 	DemonSons->Delete( sonEspace );		// Son frappe de la touche espace clavier
 	DemonSons->Delete( sonHurlement );	// Son hurlement du sauveur de la planète
 }
 
 
-void load_IntroSub( int width, int height )
+void load_IntroSub(const int width, const int height )
 {
 TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	GLFont fonteIntro;
 	unsigned int texFonteIntro;
+
 	string fileFonteIntro = "@Fonte\\FonteIntro.glf";	// Chargement de la fonte de caractères
 	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(fileFonteIntro);
 
@@ -174,9 +175,10 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 
 	string introJKT = "@Fond\\intro_JKT2.jpg";
 	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(introJKT);
+	cout << "\nImage intro JKT : " << introJKT;
 	SDL_Surface *image1 = IMG_Load(introJKT.c_str());		// Lit le fichier image
-	if(image1 == 0)
-	{
+
+	if(image1 == 0) {
 		cerr << "\nErreur : Ouverture d'image (" << introJKT << ")" << endl;
 		return;
 	}
@@ -190,13 +192,12 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	SDL_FreeSurface( image1 );
 
 	glGenTextures( 1, &texFonteIntro );
-	if( !fonteIntro.Create( fileFonteIntro, texFonteIntro ) )
-	{
+
+	if( !fonteIntro.Create( fileFonteIntro, texFonteIntro ) ) {
 		TRACE().p( TRACE_ERROR, "loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro, texFonteIntro );
 		cerr << "Erreur : Echec d'ouverture de la fonte : " << fileFonteIntro << endl;
 	}
-	else
-	{
+	else {
 		TRACE().p( TRACE_INFO, "loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro );
 	}
 
@@ -206,6 +207,7 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 
+
 	glEnable(GL_TEXTURE_2D);
 	glDisable( GL_DEPTH_TEST );
 
@@ -214,11 +216,14 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	float vertical;
 	char lettre;
 
-		// AFFICHAGE D'UN TEXTE D'INTRO, lettre par lettre (genre machine à écrire)
-	glColor3f( 1.0, 1.0, 1.0 );
-	for( unsigned int i=0 ; i<str1.length() ; i++ )
-	{
 
+	/* ***********************************************
+	/* AFFICHAGE D'UN TEXTE D'INTRO
+	/* lettre par lettre (genre machine à écrire)
+	/* ***********************************************/
+
+	glColor3f( 1.0, 1.0, 1.0 );
+	for( int i=0 ; i<str1.length() ; i++ ) {
 		lettre = str1[ i ];
 
 		glClear( GL_COLOR_BUFFER_BIT );
@@ -226,27 +231,24 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 		if( i==0 )
 			lignes.push_back( "" );
 
-		if( (lettre=='\n') )	// Si on a affaire à un passage à la ligne
-		{
+		if( (lettre=='\n') ) {	// Si on a affaire à un passage à la ligne
 			DemonSons->Play( sonChariot );	// Envoie le son retour chariot
 			lignes.push_back( "" );			// Et passe à la ligne
 			SDL_Delay( 700 );
 		}
-		else
-		{
+		else {
 			if( lettre!= ' ' )	// Si c'est pas un espace
 				DemonSons->Play( sonTouche );	// Envoie le son pour une frappe de touche normale
 			else
 				DemonSons->Play( sonEspace );	// Sinon le son d'un espace
 
-			SDL_Delay( 75 );
+			SDL_Delay( 45 );
 			*lignes.rbegin() += lettre ; // Ajoute la lettre à la fin de la dernière ligne
 		}
 
 			// Affichage du texte
 		vertical = height - 20.0f;
-		for( iter=lignes.begin() ; iter!=lignes.end() ; iter++ )	// Affiche chaque ligne du texte
-		{
+		for( iter=lignes.begin() ; iter!=lignes.end() ; iter++ ) {	// Affiche chaque ligne du texte
 			fonteIntro.DrawString( *iter, 1.2f, 20.0f, vertical );
 			vertical -= 25.0f;
 		}
@@ -254,18 +256,24 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 		SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
 		SDL_Delay( (unsigned int)( 60.0f * ((float)rand()/(float)RAND_MAX) ) );	// Petite attente entre deux lettres consécutives
 
-		if( checkEventsForIntro() )	// Vérifie si l'utilisateur veut sortir de l'intro
-		{
+		if( checkEventsForIntro() ) {	// Vérifie si l'utilisateur veut sortir de l'intro
+			glDeleteTextures( 1, &texFonteIntro );	// Destruction de la texture de fonte
 			delete image2;
 			return;
 		}
 	}
 
 		// Attends un petit instant à la fin de l'affichage du texte complet
-	SDL_Delay( 300 );
+	SDL_Delay( 400 );
 	lignes.clear();	// Efface tout le texte
 
-		// AFFICHAGE DE L'IMAGE DU SAUVEUR DE LA PLANETE
+
+	/* ***********************************************
+	/* AFFICHAGE DE L'IMAGE DU SAUVEUR DE LA PLANETE
+	/* ***********************************************/
+
+	glDisable(GL_TEXTURE_2D);
+	glDisable( GL_DEPTH_TEST );
 	glClear( GL_COLOR_BUFFER_BIT );		// Efface l'écran
 
 	DemonSons->Play( sonHurlement );	// Cri du sauveur de la planète
@@ -275,22 +283,32 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 
 	delete image2;
 
+	glEnable(GL_TEXTURE_2D);
+	glDisable( GL_DEPTH_TEST );
+
+
 	SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
 	SDL_Delay( 4000 );
 
-	for( int i=0 ; i<35 ; i++ )		// Laisse quelques instants l'image affichée
-	{
+	for( int i=0 ; i<35 ; i++ ) {		// Laisse quelques instants l'image affichée
 		SDL_Delay( 100 );
-		if( checkEventsForIntro() )	// Vérifie si l'utilisateur veut sortir de l'intro
+
+		if( checkEventsForIntro() ) {	// Vérifie si l'utilisateur veut sortir de l'intro
+			glDeleteTextures( 1, &texFonteIntro );	// Destruction de la texture de fonte
 			return;
+		}
 	}
 
-		// AFFICHAGE DE LA FIN DU TEXTE D'INTRO, lettre par lettre (genre machine à écrire)
+
+	/* ***********************************************
+	/* AFFICHAGE DE LA FIN DU TEXTE D'INTRO
+	/* lettre par lettre (genre machine à écrire)
+	/* ***********************************************/
+		
 	fonteIntro.Begin();
 	glColor3f( 1.0, 1.0, 1.0 );
-	for( unsigned int i=0 ; i<str2.length() ; i++ )
+	for( int i=0 ; i<str2.length() ; i++ )
 	{
-
 		lettre = str2[ i ];
 
 		glClear( GL_COLOR_BUFFER_BIT );
@@ -325,11 +343,18 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 		SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
 		SDL_Delay( 75 + (unsigned int)( 60.0f * ((float)rand()/(float)RAND_MAX) ) );	// Petite attente entre deux lettres consécutives
 
-		if( checkEventsForIntro() )	// Vérifie si l'utilisateur veut sortir de l'intro
+		if( checkEventsForIntro() )	{	// Vérifie si l'utilisateur veut sortir de l'intro
+			glDeleteTextures( 1, &texFonteIntro );	// Destruction de la texture de fonte
 			return;
+		}
 	}
 
 	SDL_Delay( 1000 );
+
+
+	/* *******************************
+	/* Destruction des ressources
+	/* *******************************/
 
 	glDeleteTextures( 1, &texFonteIntro );	// Destruction de la texture de fonte
 }

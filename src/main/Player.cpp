@@ -105,6 +105,9 @@ void CPlayer::AfficheIconesArmes()
 {
 	if( m_TexArmes!=-1 )
 	{
+		float X = (float)Config.Display.X;
+		float Y = (float)Config.Display.Y/2;
+
 			// Affichage des icones des armes
 		glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
 		glBindTexture( GL_TEXTURE_2D, m_TexArmes );
@@ -115,16 +118,16 @@ void CPlayer::AfficheIconesArmes()
 
 		glBegin( GL_QUADS );
 			glTexCoord2f( 1.0f, 0.0f );
-			glVertex2f( (float)Config.Display.X-50.0f,	(float)Config.Display.Y/2+(m_NbrArmes*50/2)	);
+			glVertex2f( X-50.0f,	Y+(m_NbrArmes*50/2)	);
 
 			glTexCoord2f( 1.0f, 1.0f );
-			glVertex2f( (float)Config.Display.X,		(float)Config.Display.Y/2+(m_NbrArmes*50/2)	);
+			glVertex2f( X,			Y+(m_NbrArmes*50/2)	);
 
 			glTexCoord2f( 0.0f, 1.0f );
-			glVertex2f( (float)Config.Display.X,		(float)Config.Display.Y/2-(m_NbrArmes*50/2)	);
+			glVertex2f( X,			Y-(m_NbrArmes*50/2)	);
 
 			glTexCoord2f( 0.0f, 0.0f );
-			glVertex2f( (float)Config.Display.X-50.0f,	(float)Config.Display.Y/2-(m_NbrArmes*50/2)	);
+			glVertex2f( X-50.0f,	Y-(m_NbrArmes*50/2)	);
 		glEnd();
 
 			// Affichage du focus sur l'arme active
@@ -136,10 +139,10 @@ void CPlayer::AfficheIconesArmes()
 		glColor3f( 1.0f, 0.0f, 0.0f );
 
 		glBegin( GL_LINE_LOOP );
-			glVertex2f( (float)Config.Display.X-50.0f,	(float)Config.Display.Y/2 - (m_NbrArmes*50/2) + 50	+ m_ArmeActif*50.0f	);
-			glVertex2f( (float)Config.Display.X,		(float)Config.Display.Y/2 - (m_NbrArmes*50/2) + 50	+ m_ArmeActif*50.0f	);
-			glVertex2f( (float)Config.Display.X,		(float)Config.Display.Y/2 - (m_NbrArmes*50/2)		+ m_ArmeActif*50.0f	);
-			glVertex2f( (float)Config.Display.X-50.0f,	(float)Config.Display.Y/2 - (m_NbrArmes*50/2)		+ m_ArmeActif*50.0f	);
+			glVertex2f( X-50.0f,	Y/2 - (m_NbrArmes*50/2) + 50	+ m_ArmeActif*50.0f	);
+			glVertex2f( X,			Y/2 - (m_NbrArmes*50/2) + 50	+ m_ArmeActif*50.0f	);
+			glVertex2f( X,			Y/2 - (m_NbrArmes*50/2)	+ m_ArmeActif*50.0f	);
+			glVertex2f( X-50.0f,	Y/2 - (m_NbrArmes*50/2)	+ m_ArmeActif*50.0f	);
 		glEnd();
 	}
 }

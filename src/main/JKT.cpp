@@ -1030,10 +1030,8 @@ static void process_events( void )
 {
     SDL_Event event;
 
-    while( SDL_PollEvent( &event ) )
-	{
-        switch( event.type )
-		{
+    while( SDL_PollEvent( &event ) ) {
+        switch( event.type ) {
         case SDL_QUIT:
 			quit_tutorial( 0 );
             break;
@@ -1047,6 +1045,10 @@ static void process_events( void )
 
 bool openMAP( const void *nomFichier )
 {
+	/**************************************
+	* Ouverture de la Map proprement dite
+	**************************************/
+
 	string nomFichierMap = (char*)nomFichier;
 
 	if( !Game.openMap( nomFichierMap ) ) {
@@ -1054,7 +1056,15 @@ bool openMAP( const void *nomFichier )
 		return false;
 	}
 
-		// Lecture du map du joueur
+	// Création joueurs
+	Game.setPlayerList( 10 );	// Indique que la partie peut contenir jusqu'à 10 joueurs
+
+
+	/**************************************
+	* Chargement de Map pour les joueurs
+	**************************************/
+
+		// Lecture de map de joueurs
 	CMap *pMapJoueur = new CMap( nomFichierJoueur );
 	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 	pMapJoueur->Scale( -0.15f, 0.15f, 0.15f );
@@ -1065,15 +1075,22 @@ bool openMAP( const void *nomFichier )
 
 	cout << endl;
 
-		// Création joueurs
-	Game.setPlayerList( 10 );	// Indique que la partie peut contenir jusqu'à 10 joueurs
+
+	/**************************************
+	* Chargement de sons pour les joueurs
+	**************************************/
 
 	// Récupération des ressources de cris des personnages
-	string cri1 = "@Bruit\\cri_1.wav";		// Chargement de la fonte de caractères
+	string cri1 = "@Bruit\\cri_1.wav";
 	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(cri1);
 
-	string cri2 = "@Bruit\\cri_1.wav";		// Chargement de la fonte de caractères
+	string cri2 = "@Bruit\\cri_1.wav";
 	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(cri2);
+
+
+	/***********************************
+	* Création des joueurs dans la Map
+	***********************************/
 
 		// Création du joueur principal
 	CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
@@ -1135,21 +1152,41 @@ void boucle()
 
 	for( ;; )	// Boucle principale du jeu
 	{
+		// Y a-t-il demande d'ouverture d'une map en mode jeu multijoueurs ?
 		if( Game.RequeteProcess.isOuvreMap() )	// S'il y a une demande d'ouvertue de MAP
 		{
 			Aide = false;
-			openMAP2( Game.RequeteProcess.getOuvreMap() );	// Ouvre la MAP voulue
-			Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );	// Indique que la partie est lancée
-			pFocus->SetPlayFocus();
+			const string* mapName = Game.RequeteProcess.getOuvreMap();
+
+			openMAP2( *mapName );	// Ouvre la MAP voulue
+
+			Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );	// Indique que la partie est lancée en mode client
+			pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
+			Fabrique::getAgarView()->SetVisible(false);		// Masquage du menu
+
+			delete mapName;
 		}
 
+		// Y a-t-il demande d'ouverture d'une map en mode jeu local ?
 		if( Game.RequeteProcess.isOuvreMapLocal() )	// S'il y a une demande d'ouvertue de MAP
 		{
-			Aide = false;
-			openMAP( Game.RequeteProcess.getOuvreMap().c_str() );	// Ouvre la MAP voulue
-			pFocus->SetPlayFocus();
+			const string* mapName = Game.RequeteProcess.getOuvreMap();
+
+			// Ouverture de la Map
+			if(openMAP( mapName->c_str() )) {
+				Aide = false;
+				pFocus->SetPlayFocus();					// Met l'interception des commandes sur le mode jeu
+				Fabrique::getAgarView()->SetVisible(false);		// Masquage du menu
+				Game.setModeLocal();							// Jeu en mode jeu local
+			}
+			else {
+				cout << "Echec d'ouverture de la Map '" << *mapName << "'";
+			}
+
+			delete mapName;
 		}
 
+		// Y a-t-il une demande de prise de screenshot ?
 		if( Game.RequeteProcess.isTakePicture() )	// S'il y a une demande de prise de photo de la scène
 		{
 			CPhoto photo( Config.Display.X, Config.Display.Y );
@@ -1162,13 +1199,11 @@ void boucle()
 		}
 
 		// Mesure du temps écoulé depuis les derniers calculs
-		if(temps == 0)
-		{
+		if(temps == 0) {
 			temps = SDL_GetTicks();
 			oldTemps = temps;
 		}
-		else
-		{
+		else {
 			oldTemps = temps;
 			temps = SDL_GetTicks();
 		}

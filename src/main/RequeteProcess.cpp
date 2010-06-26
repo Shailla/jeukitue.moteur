@@ -1,4 +1,6 @@
 
+#include <iostream>
+
 #include "main/RequeteProcess.h"
 
 CRequeteProcess::CRequeteProcess()
@@ -22,12 +24,13 @@ void CRequeteProcess::setOuvreMap( string nomMAP )
 	m_MapAOuvrir = nomMAP;	// Nom de la MAP en question
 }
 
-string CRequeteProcess::getOuvreMap()
+string* CRequeteProcess::getOuvreMap()
 {
-	string nom = m_MapAOuvrir;
-	m_MapAOuvrir.clear();
 	m_bOpenMap = false;
 	m_bOpenMapLocal = false;
+
+	string* nom = new string(m_MapAOuvrir);
+	m_MapAOuvrir.clear();
 
 	return nom;
 }

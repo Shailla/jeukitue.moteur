@@ -1,7 +1,9 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 
+#include "util/FindFolder.h"
 #include "RessourcesLoader.h"
 
 using namespace std;
@@ -100,4 +102,43 @@ bool RessourcesLoader::getFileRessource(string& file)
 
 	return bTrouve;	// Indique si une ressource a été trouvée
 }
+
+vector<string> RessourcesLoader::getMaps() {
+	std::vector<std::string> mapNames;
+	string mapName;
+	CFindFolder folder( "./Map/", 0, ".map.xml" );
+	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
+	folder.reset();
+
+	int mapNumber = 0;
+	while( folder.findNext( mapName ) )
+	{
+		mapName.erase( mapName.find_last_of( "." ) );
+		mapName.erase( mapName.find_last_of( "." ) );
+		
+		mapNames.push_back(mapName);
+	}
+
+	return mapNames;
+}
+
+vector<string> RessourcesLoader::getPlayerMaps() {
+	std::vector<std::string> mapNames;
+	string mapName;
+	CFindFolder folder( "./Ressources/Maps/Joueurs/", 0, ".map.xml" );
+	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
+	folder.reset();
+
+	int mapNumber = 0;
+	while( folder.findNext( mapName ) )
+	{
+		mapName.erase( mapName.find_last_of( "." ) );
+		mapName.erase( mapName.find_last_of( "." ) );
+		
+		mapNames.push_back(mapName);
+	}
+
+	return mapNames;
+}
+
 };

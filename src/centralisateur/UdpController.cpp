@@ -7,6 +7,7 @@
 #include "main/Fabrique.h"
 #include "menu/Viewer.h"
 #include "menu/CentralisateurView.h"
+#include "menu/ConsoleView.h"
 
 #include "centralisateur/UdpController.h"
 
@@ -109,8 +110,14 @@ void UdpController::receive(UDPpacket* packet)
 		message[tailleMessage] = '\0';
 
 		Viewer* viewer = Fabrique::getAgarView();
-		CentralisateurView* view = viewer->getCentralisateurView();
-		view->addChatMessage(playerName, message);
+
+		// Show the chat message in the centralisateur window
+		CentralisateurView* centralisateurView = viewer->getCentralisateurView();
+		centralisateurView->addChatMessage(playerName, message);
+
+		// Show the chat message in the console window
+		ConsoleView* consoleView = viewer->getConsoleView();
+		consoleView->addChatMessage(playerName, message);
 	}
 
     // Unknown code

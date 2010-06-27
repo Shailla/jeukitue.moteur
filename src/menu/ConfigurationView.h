@@ -1,6 +1,8 @@
 #ifndef __JKT__CONFIGURATIONVIEW_H
 #define __JKT__CONFIGURATIONVIEW_H
 
+#include <string>
+
 #include <agar/core.h>
 #include <agar/gui.h>
 

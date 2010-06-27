@@ -66,6 +66,17 @@ TRACE().p( TRACE_MENU, "CFocus::SetMenuFocus()%T", this );
 	}
 }
 
+void CFocus::SwitchPlayOrConsoleFocus()
+{
+TRACE().p( TRACE_MENU, "CFocus::ChangePlayOrConsoleFocus()%T", this );
+	if( focus_actif_handle_key_down == play_handle_key_down ) {
+		SetMenuAgarFocus();	
+	}
+	else if(focus_actif_handle_key_down == menu_agar_handle_key_down) {
+		SetPlayFocus();
+	}
+}
+
 void CFocus::ExecFocus( SDL_Event *event )	// Exécute la fonction de focus pour l'évênement 'event'
 {
 	focus_actif_handle_key_down( event );

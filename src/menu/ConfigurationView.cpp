@@ -12,6 +12,10 @@ ConfigurationView::ConfigurationView(const AG_EventFn controllerCallback)
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
     AG_WindowSetCaption(m_window, "Configuration");
 
+	// Configuration Joueur
+    AG_Button* buttonJoueur = AG_ButtonNewFn(m_window, 0, "Joueur", controllerCallback, "%i", Controller::ConfigurationJoueurAction);
+	AG_ExpandHoriz(buttonJoueur);
+
 	// Configuration Audio
     AG_Button* buttonAudio = AG_ButtonNewFn(m_window, 0, "Audio", controllerCallback, "%i", -1);
 	AG_ExpandHoriz(buttonAudio);

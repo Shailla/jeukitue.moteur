@@ -7,8 +7,8 @@ namespace JKT_PACKAGE_MENU
 
 class CFocus
 {
-	void (*play_handle_key_down)( SDL_Event *event );		// Handle en cours de jeu
-	void (*menu_handle_key_down)( SDL_Event *event );		// Handle pour le menu
+	void (*play_handle_key_down)( SDL_Event *event );			// Handle en cours de jeu
+	void (*menu_handle_key_down)( SDL_Event *event );			// Handle pour le menu
 	void (*menu_agar_handle_key_down)( SDL_Event *event );		// Handle pour le menu Agar
 
 	void (*focus_actif_handle_key_down)( SDL_Event *event );	// Handle pour le focus actif
@@ -18,7 +18,8 @@ public:
 
 	void SetPlayFocus();						// Place le focus sur le jeu
 	void SetMenuFocus();						// Place le focus sur le menu
-	void SetMenuAgarFocus();						// Place le focus sur le menu
+	void SetMenuAgarFocus();					// Place le focus sur le menu
+	void SwitchPlayOrConsoleFocus();			// Place le focus sur le menu
 
 	void ExecFocus( SDL_Event *Event );	// Exécute la fonction de focus
 };

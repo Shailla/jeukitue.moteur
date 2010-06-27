@@ -27,7 +27,7 @@ MainMenuView::MainMenuView(const AG_EventFn controllerCallback, Viewer* agarView
 
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);
 	AG_WindowShow(m_window);
-    show();
+    hide();
 }
 
 MainMenuView::~MainMenuView(void)

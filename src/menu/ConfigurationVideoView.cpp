@@ -44,8 +44,7 @@ ConfigurationVideoView::ConfigurationVideoView(const AG_EventFn controllerCallba
     hide();
 }
 
-ConfigurationVideoView::~ConfigurationVideoView(void)
-{
+ConfigurationVideoView::~ConfigurationVideoView(void) {
 }
 
 void ConfigurationVideoView::show(void)

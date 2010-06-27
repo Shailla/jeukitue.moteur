@@ -100,7 +100,8 @@ class CCfg
 	class CJoueur		// Informations du joueur
 	{
 	public:
-		string nom;
+		string nom;			// Nom du joueur
+		string mapName;		// Nom de la map réprésentant le skin du joueur
 	};
 
 	class CDebug

@@ -223,7 +223,7 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	/* ***********************************************/
 
 	glColor3f( 1.0, 1.0, 1.0 );
-	for( int i=0 ; i<str1.length() ; i++ ) {
+	for( unsigned int i=0 ; i<str1.length() ; i++ ) {
 		lettre = str1[ i ];
 
 		glClear( GL_COLOR_BUFFER_BIT );
@@ -307,7 +307,7 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 		
 	fonteIntro.Begin();
 	glColor3f( 1.0, 1.0, 1.0 );
-	for( int i=0 ; i<str2.length() ; i++ )
+	for( unsigned int i=0 ; i<str2.length() ; i++ )
 	{
 		lettre = str2[ i ];
 

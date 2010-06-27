@@ -16,30 +16,32 @@ class OpenSceneASEEcraseRepView;
 class ConsoleAvancementView;
 class LanceServeurView;
 class ConfigurationVideoView;
+class ConfigurationJoueurView;
+class ConsoleView;
 
-class Viewer
-{
-    bool m_isVisible;
-
+class Viewer {
 	// Fenêtres
-    View* m_mainMenuView;
-	CentralisateurView* m_centralisateurView;
-	View* m_multijoueursView;
-	View* m_configurationView;
-    ConfigCentralisateurView* m_configCentralisateurView;
-	View* m_openSceneView;
-	OpenSceneASEView* m_openSceneASEView;
-	OpenSceneMapView* m_openSceneMapView;
+    View* _mainMenuView;
+	CentralisateurView* _centralisateurView;
+	View* _multijoueursView;
+	View* _configurationView;
+    ConfigCentralisateurView* _configCentralisateurView;
+	View* _openSceneView;
+	OpenSceneASEView* _openSceneASEView;
+	OpenSceneMapView* _openSceneMapView;
 	OpenSceneASEEcraseRepView* _openSceneAseEcraseRepView;
 	ConsoleAvancementView* _consoleAvancementView;
 	LanceServeurView* _lanceServeurView;
 	ConfigurationVideoView* _configurationVideoView;
+	ConfigurationJoueurView* _configurationJoueurView;
+	ConsoleView* _consoleView;
+
+	void showOrHide(View* view, View* viewToShow);
+	void showView(View* view);
 public:
     Viewer(AG_EventFn controllerCallback);
     ~Viewer(void);
     void draw(void);
-    void SetVisible(bool);
-    bool IsVisible(void);
 
 	void hideAll(void);
     void showMainMenu(void);
@@ -54,15 +56,21 @@ public:
 	void showConsoleAvancementView(void);
 	void showLanceServeurView(void);
 	void showConfigurationVideoView(void);
+	void showConfigurationJoueurView(void);
+	
+	void showConsoleView(void);
+	void hideConsoleView(void);
 
 	// Accesseurs des fenêtres
     ConfigCentralisateurView* getConfigCentralisateurView(void);
 	OpenSceneMapView* getOpenSceneMapView(void);
 	OpenSceneASEView* getOpenSceneASEView(void);
 	CentralisateurView* getCentralisateurView(void);
-	OpenSceneASEEcraseRepView* getOpenSceneASEEcraseRepView();
-	ConsoleAvancementView* getConsoleAvancementView();
-	LanceServeurView* getLanceServeurView();
+	OpenSceneASEEcraseRepView* getOpenSceneASEEcraseRepView(void);
+	ConsoleAvancementView* getConsoleAvancementView(void);
+	LanceServeurView* getLanceServeurView(void);
+	ConsoleView* getConsoleView(void);
+	ConfigurationJoueurView* getConfigurationJoueurView(void);
 };
 
 #endif

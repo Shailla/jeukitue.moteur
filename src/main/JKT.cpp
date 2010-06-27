@@ -103,6 +103,7 @@ class CGame;
 #include "menu/Controller.h"
 #include "menu/Viewer.h"
 #include "main/Fabrique.h"
+#include "menu/ConsoleView.h"
 
 using namespace JKT_PACKAGE_MENU;
 using namespace JKT_PACKAGE_RESEAU;
@@ -583,19 +584,23 @@ void display()	// Fonction principale d'affichage
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
 
+
+	/****************************************
+	/* Dessin des menus Agar
+	/****************************************/
+
     Viewer* menuViewer = Fabrique::getAgarView();
-    if(menuViewer->IsVisible()) {
-        glEnable( GL_TEXTURE_2D );
-	    glDisable( GL_BLEND );
-        glDisable( GL_DEPTH_TEST );
+    
+    glEnable( GL_TEXTURE_2D );
+    glDisable( GL_BLEND );
+    glDisable( GL_DEPTH_TEST );
 
-        glOrtho(0, agView->w, agView->h, 0, -1.0, 1.0);
+    glOrtho(0, agView->w, agView->h, 0, -1.0, 1.0);
 
-        menuViewer->draw();
+    menuViewer->draw();
 
-        glDisable( GL_TEXTURE_2D );
-	    glDisable( GL_BLEND );
-	}
+	glDisable( GL_TEXTURE_2D );
+    glDisable( GL_BLEND );
 
 	// Echange des buffers graphique -> affiche à l'écran
 	SDL_GL_SwapBuffers();
@@ -824,7 +829,7 @@ void menu_agar_handle_key_down( SDL_Event *event )
                     {
                         Viewer* agarView = Fabrique::getAgarView();
                         pFocus->SetPlayFocus();
-			            agarView->SetVisible(false);
+			            agarView->hideAll();
                     }
                     break;
                 default:
@@ -1017,8 +1022,11 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
             {
                 Viewer* agarView = Fabrique::getAgarView();
                 pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
-			    agarView->SetVisible(true);
+			    agarView->showMainMenu();
             }
+		    break;
+		case SDLK_F5:
+            pFocus->SwitchPlayOrConsoleFocus();		// Place le focus sur le menu
 		    break;
 		default:
 			break;
@@ -1051,6 +1059,8 @@ bool openMAP( const void *nomFichier )
 
 	string nomFichierMap = (char*)nomFichier;
 
+	Fabrique::getAgarView()->getConsoleView()->setMapOuverte(nomFichierMap);
+
 	if( !Game.openMap( nomFichierMap ) ) {
 		cerr << endl << "Erreur à l'ouvertur du fichier Map : " << nomFichierMap;
 		return false;
@@ -1069,7 +1079,8 @@ bool openMAP( const void *nomFichier )
 	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 	pMapJoueur->Scale( -0.15f, 0.15f, 0.15f );
 
-	CMap *pMapJoueur2 = new CMap( "GrosBonhomme" );
+	//CMap *pMapJoueur2 = new CMap( "GrosBonhomme" );
+	CMap *pMapJoueur2 = new CMap( nomFichierJoueur );
 	pMapJoueur2->EchangeXZ();					// Ajuste les coordonnées
 	pMapJoueur2->Scale( -0.80f, 0.80f, 0.80f );
 
@@ -1133,6 +1144,8 @@ bool openMAP( const void *nomFichier )
 
 void openMAP2( const string &nomFichierMap )
 {
+	Fabrique::getAgarView()->getConsoleView()->setMapOuverte(nomFichierMap);
+
 	if( !Game.openMap( nomFichierMap ) )
 		cerr << endl << "Erreur à l'ouverture du fichier Map : " << nomFichierMap;
 
@@ -1162,9 +1175,11 @@ void boucle()
 
 			Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );	// Indique que la partie est lancée en mode client
 			pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
-			Fabrique::getAgarView()->SetVisible(false);		// Masquage du menu
+			Fabrique::getAgarView()->hideAll();		// Masquage du menu
 
 			delete mapName;
+
+			Fabrique::getAgarView()->showConsoleView();
 		}
 
 		// Y a-t-il demande d'ouverture d'une map en mode jeu local ?
@@ -1176,7 +1191,7 @@ void boucle()
 			if(openMAP( mapName->c_str() )) {
 				Aide = false;
 				pFocus->SetPlayFocus();					// Met l'interception des commandes sur le mode jeu
-				Fabrique::getAgarView()->SetVisible(false);		// Masquage du menu
+				Fabrique::getAgarView()->hideAll();		// Masquage du menu
 				Game.setModeLocal();							// Jeu en mode jeu local
 			}
 			else {
@@ -1184,6 +1199,8 @@ void boucle()
 			}
 
 			delete mapName;
+
+			Fabrique::getAgarView()->showConsoleView();
 		}
 
 		// Y a-t-il une demande de prise de screenshot ?

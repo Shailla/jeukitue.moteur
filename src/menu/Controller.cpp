@@ -8,6 +8,7 @@ using namespace std;
 #include "menu/OpenSceneASEView.h"
 #include "menu/OpenSceneASEEcraseRepView.h"
 #include "menu/ConsoleAvancementView.h"
+#include "menu/ConfigurationJoueurView.h"
 #include "menu/LanceServeurView.h"
 #include "main/Fabrique.h"
 #include "centralisateur/Centralisateur.h"
@@ -44,21 +45,17 @@ extern JKT_PACKAGE_RESEAU::CReseau Reseau;
 
 Viewer* Controller::m_agarView;
 
-Controller::Controller(Viewer* agarView)
-{
+Controller::Controller(Viewer* agarView) {
     m_agarView = agarView;
 }
 
-Controller::~Controller(void)
-{
+Controller::~Controller(void) {
 }
 
-void Controller::executeAction(AG_Event *event)
-{
+void Controller::executeAction(AG_Event *event) {
     int action = AG_INT(1);
 
-    switch(action)
-    {
+    switch(action) {
 	case MainMenuAction:
 		m_agarView->showMainMenu();
 		break;
@@ -73,6 +70,10 @@ void Controller::executeAction(AG_Event *event)
 
 	case ConfigurationVideoAction:
 		m_agarView->showConfigurationVideoView();
+		break;
+
+	case ConfigurationJoueurAction:
+		m_agarView->showConfigurationJoueurView();
 		break;
 
     case CentralisateurAction:
@@ -230,6 +231,15 @@ void Controller::executeAction(AG_Event *event)
 	case OpenSceneASEEcraseRepNonAction:
 		m_agarView->showMainMenu();
 		AG_TextMsg(AG_MSG_INFO, "Import annule");
+		break;
+
+	case SaveConfigJoueurAction:
+		{
+			ConfigurationJoueurView* view = m_agarView->getConfigurationJoueurView();
+			Config.Joueur.nom = view->getJoueurName();
+			Config.Joueur.mapName = view->getJoueurMapName();
+			Config.Ecrit();
+		}
 		break;
 
 

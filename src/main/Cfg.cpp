@@ -160,6 +160,9 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 	{
 		do fichier >> mot;	while( mot!="Nom" );
 		fichier >> Joueur.nom;
+
+		do fichier >> mot;	while( mot!="MapNom" );
+		fichier >> Joueur.mapName;
 	}
 
 	do fichier >> mot;	while( mot!="------------------------DEBUG-------------------------" );
@@ -226,6 +229,7 @@ void CCfg::Ecrit()
 
 	fichier << "\n\n\n------------------------JOUEUR-------------------------\n";
 	fichier << "\nNom\t\t" << Joueur.nom;
+	fichier << "\nMapNom\t\t" << Joueur.mapName;
 
 	fichier << "\n\n\n------------------------DEBUG-------------------------\n";
 	fichier << "\nSonPerformances\t\t" << Debug.bSonPerformances;

@@ -19,6 +19,7 @@ public:
 		CentralisateurAction,
 		ConfigurationAction,
 		ConfigurationVideoAction,
+		ConfigurationJoueurAction,
 		ConfigCentralisateurAction,
 		OpenSceneAction,
 		OpenSceneASEAction,
@@ -28,8 +29,10 @@ public:
 		OpenMapAction,
 		OpenASEAction,
 		SendGlobalChatTextAction,
+		ConsoleUserExecuteAction,
 		QuitAction,
-		SaveConfigCentralisateurAction};
+		SaveConfigCentralisateurAction,
+		SaveConfigJoueurAction};
 
     static Viewer* m_agarView;
 

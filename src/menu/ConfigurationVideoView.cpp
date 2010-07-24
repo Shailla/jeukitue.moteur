@@ -19,10 +19,11 @@ ConfigurationVideoView::ConfigurationVideoView(const AG_EventFn controllerCallba
 :View(controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
-    AG_WindowSetCaption(m_window, "Configuration");
+    AG_WindowSetCaption(m_window, "Vidéo");
 
 	// Résolution
 	_resoCombo = AG_ComboNew(m_window, 0, "Resolution");
+	AG_WidgetDisable(_resoCombo->tbox);
 	AG_ExpandHoriz(_resoCombo);
 	AG_ComboSizeHint(_resoCombo, "XXXX*XXXX", 10);
 

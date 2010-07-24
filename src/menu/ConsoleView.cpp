@@ -99,3 +99,7 @@ void ConsoleView::setMapOuverte(const std::string& mapName) {
 void ConsoleView::clearTextToSend(void) {
 	memset(_commandToExecute, '\0', sizeof(_commandToExecute));
 }
+
+void ConsoleView::addConsoleEntry(const std::string& entryName, const std::string& entryValue) {
+	_consoleEntries.insert(pair<string, string>(entryName, entryValue));
+}

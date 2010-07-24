@@ -97,7 +97,7 @@ class CGame;
 #include "main/Game.h"
 #include "util/V3D.h"
 #include "spatial/Particule.h"
-#include "spatial/MoteurParticules.h"
+#include "spatial/MoteurParticulesNeige.h"
 #include "reseau/Reseau.h"
 #include "reseau/enumReseau.h"
 #include "menu/Controller.h"
@@ -159,7 +159,7 @@ void setTemps(const string& note) {
 	tempsFile << endl << ecartDisplay << "\t" << note;
 }
 
-JKT_PACKAGE_MOTEUR3D::CMoteurParticules *moteurParticules;
+JKT_PACKAGE_MOTEUR3D::CMoteurParticulesNeige *moteurParticules;
 float tempsMoteur;	// Pour le moteur de particules
 unsigned int frpsTimer = 0, frpTimer = 0;
 
@@ -1075,12 +1075,14 @@ bool openMAP( const void *nomFichier )
 	**************************************/
 
 		// Lecture de map de joueurs
-	CMap *pMapJoueur = new CMap( nomFichierJoueur );
+	string mapJoueurPrincipal;
+	mapJoueurPrincipal.append("@Joueur\\").append(Config.Joueur.mapName);
+
+	CMap *pMapJoueur = new CMap( mapJoueurPrincipal );
 	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 	pMapJoueur->Scale( -0.15f, 0.15f, 0.15f );
 
-	//CMap *pMapJoueur2 = new CMap( "GrosBonhomme" );
-	CMap *pMapJoueur2 = new CMap( nomFichierJoueur );
+	CMap *pMapJoueur2 = new CMap( "GrosBonhomme" );
 	pMapJoueur2->EchangeXZ();					// Ajuste les coordonnées
 	pMapJoueur2->Scale( -0.80f, 0.80f, 0.80f );
 
@@ -1314,7 +1316,7 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 		// Mise en place du moteur de particules pour la neige, réfléchir où mettre ça
 	CV3D posMoteurParticules( -2.35f, 1.5f, 0.0f );
-	moteurParticules = new CMoteurParticules( posMoteurParticules, 1000, 0.05f );
+	moteurParticules = new CMoteurParticulesNeige( posMoteurParticules, 1000, 0.05f );
 
 		// Délai d'attente après l'intro du jeu, je sais plus à quoi il sert
 	SDL_Delay( 1000 );

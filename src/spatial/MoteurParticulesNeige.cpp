@@ -16,7 +16,7 @@ using namespace std;
 #include "util/Trace.h"
 
 #include "spatial/Particule.h"
-#include "MoteurParticules.h"
+#include "CMoteurParticulesNeige.h"
 
 namespace JKT_PACKAGE_MOTEUR3D
 {
@@ -24,9 +24,9 @@ namespace JKT_PACKAGE_MOTEUR3D
 #define CSTE_K	1.0f
 #define TAILLE_TEX 0.04f		// Dimension de la texture carrée de la particule
 
-CMoteurParticules::CMoteurParticules(CV3D pos_centre, unsigned int nbr, float m)
+CMoteurParticulesNeige::CMoteurParticulesNeige(CV3D pos_centre, unsigned int nbr, float m)
 {
-TRACE().p( TRACE_MOTEUR3D, "CMoteurParticules::CMoteurParticules(pos_centre,nbr=%u,m=%f) begin%T", nbr, m, this );
+TRACE().p( TRACE_MOTEUR3D, "CMoteurParticulesNeige::CMoteurParticulesNeige(pos_centre,nbr=%u,m=%f) begin%T", nbr, m, this );
 	CV3D posRND;
 
 	centre = pos_centre;		// Centre attracteur
@@ -57,12 +57,12 @@ TRACE().p( TRACE_MOTEUR3D, "CMoteurParticules::CMoteurParticules(pos_centre,nbr=
 		ListeParticules[i].visible = true;
 		ListeParticules[i].date2naissance -= (unsigned int)((posRND.Y/1.5f)*10000);
 	}
-TRACE().p( TRACE_MOTEUR3D, "CMoteurParticules::CMoteurParticules() end%T", this );
+TRACE().p( TRACE_MOTEUR3D, "CMoteurParticulesNeige::CMoteurParticulesNeige() end%T", this );
 }
 
-void CMoteurParticules::GenereTextureParticule()
+void CMoteurParticulesNeige::GenereTextureParticule()
 {
-TRACE().p( TRACE_MOTEUR3D, "CMoteurParticules::GenereTextureParticule() begin%T", this );
+TRACE().p( TRACE_MOTEUR3D, "CMoteurParticulesNeige::GenereTextureParticule() begin%T", this );
 	unsigned char *pixels = new unsigned char[32*32*4*sizeof(unsigned char)];
 
 	unsigned int i = 0;
@@ -96,10 +96,10 @@ TRACE().p( TRACE_MOTEUR3D, "CMoteurParticules::GenereTextureParticule() begin%T"
 
 	delete[] pixels;
 
-TRACE().p( TRACE_MOTEUR3D, "CMoteurParticules::GenereTextureParticule() Texture neige : %d end%T", texName, this );
+TRACE().p( TRACE_MOTEUR3D, "CMoteurParticulesNeige::GenereTextureParticule() Texture neige : %d end%T", texName, this );
 }
 
-void CMoteurParticules::Affiche()
+void CMoteurParticulesNeige::Affiche()
 {
 	unsigned int tempsICI;
 	CV3D Var, accRND;

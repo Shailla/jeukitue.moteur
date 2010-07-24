@@ -36,6 +36,7 @@ ConfigurationJoueurView::ConfigurationJoueurView(const AG_EventFn controllerCall
 	// Map du skin du joueur
 	_playerMapCombo = AG_ComboNew(m_window, 0, "Map :");
 	AG_TextboxBindUTF8(_playerMapCombo->tbox, _joueurMapName, sizeof(_joueurMapName));
+	AG_WidgetDisable(_playerMapCombo->tbox);
 	AG_ExpandHoriz(_playerMapCombo);
 	AG_ComboSizeHint(_playerMapCombo, "12345678901234567890", 10);
 

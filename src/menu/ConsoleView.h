@@ -3,6 +3,9 @@
 
 #include <string>
 #include <vector>
+#include <map>
+
+using namespace std;
 
 #include <agar/core.h>
 #include <agar/gui.h>
@@ -15,6 +18,7 @@ class ConsoleView : public View
 	AG_Textbox* _textboxToExecute;
 	std::string _consoleText;
 	char _commandToExecute[200];
+	std::map<string, string> _consoleEntries;
 
 	AG_Label* _mapOuverteLabel;
 public:
@@ -26,6 +30,8 @@ public:
 	void addChatMessage(const char* playerName, const char* message);
 
 	void setMapOuverte(const std::string& mapName);
+
+	void addConsoleEntry(const std::string& entryName, const std::string& entryValue);
 };
 
 #endif

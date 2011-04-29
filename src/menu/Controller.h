@@ -32,7 +32,10 @@ public:
 		ConsoleUserExecuteAction,
 		QuitAction,
 		SaveConfigCentralisateurAction,
-		SaveConfigJoueurAction};
+		SaveConfigJoueurAction,
+		ReloadDownloadFilesAction,
+		DownloadOneFileAction
+	};
 
     static Viewer* m_agarView;
 

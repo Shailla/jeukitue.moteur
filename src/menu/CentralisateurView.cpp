@@ -4,19 +4,27 @@
 #include <agar/core.h>
 #include <agar/gui.h>
 
+#include "SDL_net.h"
+
 #include "menu/View.h"
 #include "menu/Controller.h"
+#include "reseau/TcpUtils.h"
+#include "exception/centralisateur/CentralisateurTcpException.h"
 
 #include "menu/CentralisateurView.h"
+
+using namespace std;
+using namespace JktNet;
 
 CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
-	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
+	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS | AG_WINDOW_NOMOVE);
     AG_WindowSetCaption(m_window, "Centralisateur");
 
 	AG_Notebook* book = AG_NotebookNew(m_window, 0);
 	AG_Expand(book);
+
 
 	/******************************
 		Onglet de chat
@@ -56,7 +64,15 @@ CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
 		Onglet des téléchargements
 	******************************/
 	AG_NotebookTab* tabDownload = AG_NotebookAddTab(book, "Telechargements", AG_BOX_VERT);
-
+	AG_Button* buttonMAJDownloads = AG_ButtonNewFn(tabDownload, 0, "Recharger", controllerCallback, "%i", Controller::ReloadDownloadFilesAction);
+	_downloadFileTable = AG_TableNew(tabDownload, 0);
+	AG_TableAddCol(_downloadFileTable, "Nom", "<8888888888888888>", NULL);
+	AG_TableAddCol(_downloadFileTable, "Categorie", "<888888888888888>", NULL);
+	AG_TableAddCol(_downloadFileTable, "Version", "<888888>", NULL);
+	AG_TableAddCol(_downloadFileTable, "Taille", "<888888>", NULL);
+	AG_TableAddCol(_downloadFileTable, "Description", NULL, NULL);
+	AG_TableAddCol(_downloadFileTable, "Action", "<88888888888>", NULL);
+	AG_Expand(_downloadFileTable);
 
 	// Bouton retour
 	AG_SeparatorNewHoriz(m_window);
@@ -70,6 +86,33 @@ CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
 
 CentralisateurView::~CentralisateurView(void)
 {
+}
+
+void CentralisateurView::updateDownloadFileList(vector<DownloadFileItem> items)
+{
+	AG_TableBegin(_downloadFileTable);
+
+	for(vector<DownloadFileItem>::iterator iter = items.begin() ; iter != items.end() ; iter++)
+	{
+		DownloadFileItem item = *iter;
+
+		char* category;
+		if(item._category == CategoryDonwloadFile::MAP) {
+			category = "Map de jeu";
+		}
+		else if(item._category == CategoryDonwloadFile::MAP_PLAYER) {
+			category = "Map de joueur";
+		}
+		else {
+			category = "Inconnu";
+		}
+
+		AG_Button* buttonDownload = AG_ButtonNewFn(NULL, 0, "Telecharger", m_controllerCallback, "%i,%l", Controller::DownloadOneFileAction, item._identifier);
+		AG_TableAddRow(_downloadFileTable, "%s:%s:%s:%d:%s:%[W]", item._nom.c_str(), category, "Version", item._taille, item._description.c_str(), buttonDownload);
+	}
+
+	AG_TableEnd(_downloadFileTable);
+	AG_Expand(_downloadFileTable);
 }
 
 const char* CentralisateurView::getTextToSend(void) const

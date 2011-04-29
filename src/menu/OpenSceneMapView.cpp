@@ -61,7 +61,7 @@ void OpenSceneMapView::show(void)
 	_mapNames.clear();
 
     // Création d'un bouton pour chaque Map disponible
-	_mapNames = JKT_PACKAGE_UTILS::RessourcesLoader::getMaps();
+	_mapNames = JktUtils::RessourcesLoader::getMaps();
 
 	vector<string>::iterator iterMap = _mapNames.begin();
 	int mapNumber = 0;

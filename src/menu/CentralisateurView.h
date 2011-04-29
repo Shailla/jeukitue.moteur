@@ -3,10 +3,12 @@
 
 #include <string>
 #include <vector>
+using namespace std;
 
 #include <agar/core.h>
 #include <agar/gui.h>
 
+#include "centralisateur/data/DownloadFileItem.h"
 #include "menu/View.h"
 
 class CentralisateurView : public View
@@ -16,6 +18,8 @@ class CentralisateurView : public View
 	std::string _receivedText;
 	char _textToSend[200];
 	std::vector<char*> _playerList;
+	AG_Table* _downloadFileTable;
+
 public:
 	CentralisateurView(const AG_EventFn controllerCallback);
 	~CentralisateurView(void);
@@ -24,6 +28,9 @@ public:
 	void clearTextToSend();
 	void addChatMessage(const char* playerName, const char* message);
 	void setPlayerList(char** playerList, int nombreJoueurs);
+
+	// Met à jour la liste des fichiers téléchargeables dans l'IHM
+	void updateDownloadFileList(vector<DownloadFileItem> items);
 };
 
 #endif

@@ -69,7 +69,7 @@ void ConfigurationJoueurView::show(void) {
 	// Résolutions d'écran disponibles
 	AG_TlistClear(_playerMapCombo->list);
 
-	std::vector<string> mapNames = JKT_PACKAGE_UTILS::RessourcesLoader::getPlayerMaps();
+	std::vector<string> mapNames = JktUtils::RessourcesLoader::getPlayerMaps();
 
 	std::vector<string>::iterator iter = mapNames.begin();
 

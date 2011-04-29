@@ -18,6 +18,7 @@ class LanceServeurView;
 class ConfigurationVideoView;
 class ConfigurationJoueurView;
 class ConsoleView;
+class ProgressBarView;
 
 class Viewer {
 	// Fenêtres
@@ -35,6 +36,7 @@ class Viewer {
 	ConfigurationVideoView* _configurationVideoView;
 	ConfigurationJoueurView* _configurationJoueurView;
 	ConsoleView* _consoleView;
+	ProgressBarView* _progressBarView;
 
 	void showOrHide(View* view, View* viewToShow);
 	void showView(View* view);
@@ -66,6 +68,7 @@ public:
 	OpenSceneMapView* getOpenSceneMapView(void);
 	OpenSceneASEView* getOpenSceneASEView(void);
 	CentralisateurView* getCentralisateurView(void);
+	ProgressBarView* getProgressBarView(void);
 	OpenSceneASEEcraseRepView* getOpenSceneASEEcraseRepView(void);
 	ConsoleAvancementView* getConsoleAvancementView(void);
 	LanceServeurView* getLanceServeurView(void);

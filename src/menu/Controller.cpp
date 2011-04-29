@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -10,8 +11,11 @@ using namespace std;
 #include "menu/ConsoleAvancementView.h"
 #include "menu/ConfigurationJoueurView.h"
 #include "menu/LanceServeurView.h"
+#include "menu/ProgressBarView.h"
 #include "main/Fabrique.h"
 #include "centralisateur/Centralisateur.h"
+#include "centralisateur/TcpConnector.h"
+#include "centralisateur/data/DownloadFileItem.h"
 #include "Menu/Portail.h"
 #include "util/Trace.h"
 #include "main/Game.h"
@@ -29,19 +33,19 @@ using namespace std;
 
 #include "menu/Controller.h"
 
-using namespace JKT_PACKAGE_MENU;
-using namespace JKT_PACKAGE_MOTEUR3D;
+using namespace JktMenu;
+using namespace JktMoteur;
 
 extern CGame Game;
 extern CCfg Config;
-extern JKT_PACKAGE_MENU::CFocus *pFocus;
+extern JktMenu::CFocus *pFocus;
 extern bool Aide;
 void quit_tutorial( int code );
 bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep );
 void openMap(const std::string& mapName);
 bool openMAP( const void *arg );
 void openMAP2( const string &nomFichierMap );
-extern JKT_PACKAGE_RESEAU::CReseau Reseau;
+extern JktNet::CReseau Reseau;
 
 Viewer* Controller::m_agarView;
 
@@ -136,13 +140,13 @@ void Controller::executeAction(AG_Event *event) {
 			else
 			{
 				// Ouverture de la Map sur le serveur
-				JKT_PACKAGE_RESEAU::CServer *server = Game.getServer();
+				JktNet::CServer *server = Game.getServer();
 				pFocus->SetPlayFocus();
 				Aide = false;
 				server->nomMAP = mapName;		// Informe le serveur sur le nom de la MAP lancée
 				openMAP2( server->nomMAP );		// Ouvre cette MAP
 				Game.setPlayerList( server->maxPlayers );
-				server->setStatut( JKT_PACKAGE_RESEAU::JKT_STATUT_SERVER_PLAY );
+				server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
 				server->bGame = true;				// Indique qu'une partie est en cours
 			}
         }
@@ -255,13 +259,54 @@ void Controller::executeAction(AG_Event *event) {
 		}
 		break;
 
+	// Mise à jour de la page des fichiers téléchargeables par le jeu
+	case ReloadDownloadFilesAction:
+		{
+			try {
+				Centralisateur* centralisateur = Fabrique::getCentralisateur();
+				vector<DownloadFileItem> items = centralisateur->askDownloadFileList(4635);
+
+				CentralisateurView* view = m_agarView->getCentralisateurView();
+				view->updateDownloadFileList(items);
+			}
+			catch(CentralisateurTcpException exception) {
+				AG_TextMsg(AG_MSG_WARNING, "Impossible d'obtenir la listes des fichiers en telechargement");
+			}
+		}
+		break;
+
+	// Mise à jour de la page des fichiers téléchargeables par le jeu
+	case DownloadOneFileAction:
+		{
+			long fileId = AG_LONG(2);
+
+			try {
+				Centralisateur* centralisateur = Fabrique::getCentralisateur();
+
+				ProgressBarView* view = m_agarView->getProgressBarView();
+				
+				int* progress = view->getProgressPtr();
+				*progress = 0;
+
+				char* currentOperationMessage = view->getCurrentOperationMessagePtr();
+
+				view->show();
+
+				centralisateur->downloadOneFile(4635, fileId, progress, currentOperationMessage);
+			}
+			catch(CentralisateurTcpException exception) {
+				AG_TextMsg(AG_MSG_WARNING, "Erreur lors du telechargement");
+			}
+		}
+		break;
+
     case QuitAction:
-		quit_tutorial( 0 );
+		quit_tutorial(0);
 		break;
 
     default:
 		TRACE().p( TRACE_ERROR, "Unknown action : %d!", action );
-        AG_TextMsg(AG_MSG_WARNING, "Unknown action : %d!", action);
+        AG_TextMsg(AG_MSG_WARNING, "Action inconnue : %d!", action);
         break;
     }
 }

@@ -21,6 +21,7 @@
 #include "menu/ConfigurationVideoView.h"
 #include "menu/ConfigurationJoueurView.h"
 #include "menu/ConsoleView.h"
+#include "menu/ProgressBarView.h"
 
 Viewer::Viewer(AG_EventFn controllerCallback) {
 	// Initialisation des fenêtres
@@ -38,6 +39,7 @@ Viewer::Viewer(AG_EventFn controllerCallback) {
 	_configurationVideoView = new ConfigurationVideoView(controllerCallback);
 	_configurationJoueurView = new ConfigurationJoueurView(controllerCallback);
 	_consoleView = new ConsoleView(controllerCallback);
+	_progressBarView = new ProgressBarView(controllerCallback);
 }
 
 Viewer::~Viewer(void) {
@@ -54,6 +56,7 @@ Viewer::~Viewer(void) {
 	delete _configurationVideoView;
 	delete _configurationJoueurView;
 	delete _consoleView;
+	delete _progressBarView;
 }
 
 void Viewer::draw(void) {
@@ -108,6 +111,7 @@ void Viewer::showView(View* view) {
 	showOrHide(_lanceServeurView, view);
 	showOrHide(_configurationVideoView, view);
 	showOrHide(_configurationJoueurView, view);
+	showOrHide(_progressBarView, view);
 }
 
 void Viewer::showMainMenu(void) {
@@ -134,10 +138,8 @@ void Viewer::showConfiguration(void) {
 	showView(_configurationView);
 }
 
-
 void Viewer::showConfigCentralisateur(void) {
     showView(_configCentralisateurView);
-
 }
 
 void Viewer::showOpenScene(void) {
@@ -186,6 +188,10 @@ OpenSceneASEView* Viewer::getOpenSceneASEView(void) {
 
 CentralisateurView* Viewer::getCentralisateurView(void) {
     return _centralisateurView;
+}
+
+ProgressBarView* Viewer::getProgressBarView(void) {
+    return _progressBarView;
 }
 
 OpenSceneASEEcraseRepView* Viewer::getOpenSceneASEEcraseRepView(void) {

@@ -228,6 +228,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\centralisateur\TcpConnector.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\centralisateur\UdpConnector.cpp"
 					>
 				</File>
@@ -272,6 +276,10 @@
 					</File>
 					<File
 						RelativePath=".\src\exception\centralisateur\CentralisateurException.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\exception\centralisateur\CentralisateurTcpException.cpp"
 						>
 					</File>
 					<File
@@ -352,6 +360,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\menu\ConfigurationJoueurView.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\menu\ConfigurationVideoView.cpp"
 					>
 				</File>
@@ -361,6 +373,10 @@
 				</File>
 				<File
 					RelativePath=".\src\menu\ConsoleAvancementView.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\ConsoleView.cpp"
 					>
 				</File>
 				<File
@@ -393,6 +409,10 @@
 				</File>
 				<File
 					RelativePath=".\src\menu\OpenSceneView.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\ProgressBarView.cpp"
 					>
 				</File>
 				<File
@@ -437,6 +457,10 @@
 				</File>
 				<File
 					RelativePath=".\src\spatial\MoteurParticules.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\spatial\MoteurParticulesNeige.cpp"
 					>
 				</File>
 				<File
@@ -621,6 +645,10 @@
 				</File>
 				<File
 					RelativePath=".\src\reseau\SPA.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\reseau\TcpUtils.cpp"
 					>
 				</File>
 			</Filter>
@@ -810,6 +838,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\spatial\MoteurParticulesNeige.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\spatial\Mouve.h"
 					>
 				</File>
@@ -993,6 +1025,10 @@
 					RelativePath=".\src\reseau\SPA.h"
 					>
 				</File>
+				<File
+					RelativePath=".\src\reseau\TcpUtils.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="menu"
@@ -1006,6 +1042,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\menu\ConfigurationJoueurView.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\menu\ConfigurationVideoView.h"
 					>
 				</File>
@@ -1015,6 +1055,10 @@
 				</File>
 				<File
 					RelativePath=".\src\menu\ConsoleAvancementView.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\ConsoleView.h"
 					>
 				</File>
 				<File
@@ -1047,6 +1091,10 @@
 				</File>
 				<File
 					RelativePath=".\src\menu\OpenSceneView.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\menu\ProgressBarView.h"
 					>
 				</File>
 				<File
@@ -1145,6 +1193,10 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\exception\centralisateur\CentralisateurTcpException.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\exception\centralisateur\OpenUdpSocketException.h"
 						>
 					</File>
@@ -1162,6 +1214,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\centralisateur\TcpConnector.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\centralisateur\UdpConnector.h"
 					>
 				</File>
@@ -1174,6 +1230,10 @@
 					>
 					<File
 						RelativePath=".\src\centralisateur\data\Data.h"
+						>
+					</File>
+					<File
+						RelativePath=".\src\centralisateur\data\DownloadFileItem.h"
 						>
 					</File>
 					<File

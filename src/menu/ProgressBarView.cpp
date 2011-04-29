@@ -28,7 +28,7 @@ ProgressBarView::ProgressBarView(const AG_EventFn controllerCallback)
 	_progress = &progressBar->value;
 
 	// Message indiquant l'opération en cours
-	AG_LabelText(m_window, _currentOperationMessage);
+//	AG_LabelText(m_window, _currentOperationMessage);
 
     hide();
 }

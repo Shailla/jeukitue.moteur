@@ -10,7 +10,7 @@
 
 class CPlayer;
 
-namespace JKT_PACKAGE_RESEAU
+namespace JktNet
 {
 
 class CClient
@@ -78,7 +78,7 @@ private:
 	void decodeError( Uint16 code2 );		// Gestion des msg d'erreur
 };
 
-}	// JKT_PACKAGE_RESEAU
+}	// JktNet
 
 #endif
 

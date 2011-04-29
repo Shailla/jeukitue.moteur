@@ -26,7 +26,7 @@ void openMAP2( const string &nomFichierMap );
 
 extern CGame Game;
 
-namespace JKT_PACKAGE_RESEAU
+namespace JktNet
 {
 
 CClient::CClient()
@@ -425,7 +425,7 @@ TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse JTG%T", this );
 					player = new CPlayer();
 
 					player->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
-					player->changeContact( JKT_PACKAGE_MOTEUR3D::contactPlayer );		// Associe une fonction de gestion des contacts avec la map
+					player->changeContact( JktMoteur::contactPlayer );		// Associe une fonction de gestion des contacts avec la map
 
 					Uint16 id = spaMaitre.read16();		// Identifiant du joueur
 					string nom_p = player->nom();
@@ -553,4 +553,4 @@ void CClient::emet( CPlayer &player )
 	spaMaitre.send();
 }
 
-}	// JKT_PACKAGE_RESEAU
+}	// JktNet

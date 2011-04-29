@@ -11,7 +11,7 @@ using namespace std;
 
 class CPlayer;
 
-namespace JKT_PACKAGE_RESEAU
+namespace JktNet
 {
 
 class CSPA
@@ -82,7 +82,7 @@ public:
 	static void getDebitEm( float &debit, float &taille );	// Calcul le débit en émmission depuis le dernier calcul de celui-ci
 };
 
-}	// JKT_PACKAGE_RESEAU
+}	// JktNet
 
 #endif
 

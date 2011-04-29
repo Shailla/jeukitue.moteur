@@ -12,7 +12,7 @@ using namespace std;
 #include "reseau/SPA.h"
 #include "main/Player.h"
 
-namespace JKT_PACKAGE_RESEAU
+namespace JktNet
 {
 
 int CSPA::m_BytesRec = 0;	// Nombre d'octets pour le comptage du débit en réception
@@ -425,4 +425,4 @@ void CSPA::getDebitEm( float &debit, float &taille )
 	taille = m_fTailleEm;
 }
 
-}	// JKT_PACKAGE_RESEAU
+}	// JktNet

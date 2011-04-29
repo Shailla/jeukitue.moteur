@@ -2,11 +2,9 @@
 #ifndef __JKT__SERVER_H
 #define __JKT__SERVER_H
 
-#include "enumReseau.h"
-
 class CPlayer;
 
-namespace JKT_PACKAGE_RESEAU
+namespace JktNet
 {
 
 class CServer	// Contient les données courantes du serveur (nombre de joueur, partie en cours,...)
@@ -51,7 +49,7 @@ private:
 	void switchJTG(CSPA *spa,Uint16 code2);
 };
 
-}	// JKT_PACKAGE_RESEAU
+}	// JktNet
 
 #endif
 

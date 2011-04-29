@@ -2,7 +2,7 @@
 #ifndef __JKT__ENUM_H
 #define __JKT__ENUM_H
 
-namespace JKT_PACKAGE_RESEAU
+namespace JktNet
 {
 
 enum enteteServer {
@@ -50,7 +50,7 @@ enum StatutClient {		// Etats du client
 	JKT_STATUT_CLIENT_PLAY,			// Indique que la partie est en cours
 };
 
-}	// JKT_PACKAGE_RESEAU
+}	// JktNet
 
 #endif
 

@@ -28,14 +28,14 @@ using namespace std;
 #include "reseau/enumReseau.h"
 #include "reseau/Server.h"
 
-void JKT_PACKAGE_MOTEUR3D::contactPlayer(CPlayer *player, float *normal, float distanceW);
+void JktMoteur::contactPlayer(CPlayer *player, float *normal, float distanceW);
 void gravitePlayer(CPlayer *player);
 void openMAP2( const string &nomFichierMap );
 
 extern CGame Game;
 class CMap;
 
-namespace JKT_PACKAGE_RESEAU
+namespace JktNet
 {
 
 CServer::CServer()
@@ -160,7 +160,7 @@ TRACE().p( TRACE_RESEAU, "CServer::acceptPlayer(spa=%x) begin%T", spa, this );
 
 	player = new CPlayer();							// Crée le réceptacle du nouveau joueur
 	player->changeAction( gravitePlayer );			// Associe au joueur une fonction de gravité
-	player->changeContact( JKT_PACKAGE_MOTEUR3D::contactPlayer );	// Associe une fonction de gestion des contacts avec la map
+	player->changeContact( JktMoteur::contactPlayer );	// Associe une fonction de gestion des contacts avec la map
 	spa->readChar( nomNewPlayer );					// Récupère le nom du nouveau joueur
 	player->nom( nomNewPlayer );					// Enregistre le nom du nouveau joueur
 	player->init();

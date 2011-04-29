@@ -12,7 +12,7 @@
 	- UDP_PING, UDP_ACK : Réponse à un ping
 */
 
-namespace JKT_PACKAGE_RESEAU
+namespace JktNet
 {
 
 class CReseau
@@ -54,7 +54,7 @@ public:
 	CClient::CInfoServer getInfoServer();	// Récupère les dervières info obtenues du serveur
 };
 
-}	// JKT_PACKAGE_RESEAU
+}	// JktNet
 
 #endif
 

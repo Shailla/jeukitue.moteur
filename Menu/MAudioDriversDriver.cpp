@@ -19,7 +19,7 @@ using namespace std;
 
 #include "Menu/MAudio.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 extern CGame Game;
 extern CMenu MenuPrinc2;
@@ -29,7 +29,7 @@ extern CCfg Config;
 #include "Menu/MAudioDrivers.h"
 extern char **remarquesDriver;
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 	/************************************************/
 	/*												*/
@@ -96,4 +96,4 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigDriversDriver(var=%x)", var );
 	CDlg::SetMenuActif( MenuDriver );
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

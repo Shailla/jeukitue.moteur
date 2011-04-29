@@ -2,7 +2,7 @@
 
 #include "Dlg.h"
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 
 CDlg* CDlg::pMenuActif = 0;
@@ -45,4 +45,4 @@ CDlg::~CDlg(void)
 {
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

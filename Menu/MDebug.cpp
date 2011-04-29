@@ -16,7 +16,7 @@ using namespace std;
 
 #include "Menu/MMenuPrinc.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 class CGame;
 
@@ -27,7 +27,7 @@ extern CCfg Config;
 
 #include "Menu/MConfiguration.h"
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 extern CMenu MenuPrinc2;
 
@@ -141,4 +141,4 @@ void actu_menu_config_debug_AfficheNormaux(void *arg)
 	lanceMenuConfigDebug( 0 );
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

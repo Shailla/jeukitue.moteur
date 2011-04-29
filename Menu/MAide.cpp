@@ -19,7 +19,7 @@ using namespace std;
 
 #include "Menu/MAide.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 extern CGame Game;
 extern CMenu MenuPrinc2;
@@ -27,7 +27,7 @@ extern CFocus *pFocus;
 extern bool Aide;
 extern CCfg Config;
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 
 	/****************/
@@ -103,4 +103,4 @@ TRACE().p( TRACE_MENU, "lanceMenuAideEssai(var=%x)", var );
 	CDlg::SetMenuActif( &MenuAideEssai );
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

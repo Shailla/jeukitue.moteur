@@ -14,7 +14,7 @@ using namespace std;
 
 #include "Menu/MMenuPrinc.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 class CGame;
 
@@ -23,7 +23,7 @@ extern CMenu MenuPrinc2;
 extern CFocus *pFocus;
 extern bool Aide;
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 	/************************/
 	/*						*/
@@ -65,4 +65,4 @@ TRACE().p( TRACE_MENU, "lanceMenuConfig(var=%x)", var );
 	CDlg::SetMenuActif( &MenuConfig );
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

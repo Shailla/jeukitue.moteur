@@ -16,7 +16,7 @@ using namespace std;
 
 #include "Menu/MReseau.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 class CGame;
 
@@ -27,7 +27,7 @@ extern CCfg Config;
 
 #include "Menu/MConfiguration.h"
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 extern CMenu MenuPrinc2;
 
@@ -79,4 +79,4 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigVideoFullscreenOnOff(var=%x)", var );
 	lanceMenuConfigVideo( 0 );
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

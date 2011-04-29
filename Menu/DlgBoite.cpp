@@ -20,15 +20,15 @@ using namespace std;
 #include "Menu/DlgBoite.h"
 
 using namespace glfont;
-using namespace JKT_PACKAGE_MENU;
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktMenu;
+using namespace JktUtils;
 
 extern CCfg Config;
 extern bool Aide;
 extern GLFont myfont;
 extern CFocus *pFocus;
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 
 #define TAILLEFONT 0.5f
@@ -168,16 +168,16 @@ TRACE().p( TRACE_MENU, "CDlgBoite::INIT_CLASSE()" );
 			// Lecture des sons et images des styles de boites de dialogue
 		try
 		{
-			texErreur = JKT_PACKAGE_MOTEUR3D::LitFichierTexture("@Icone/Erreur.bmp");
+			texErreur = JktMoteur::LitFichierTexture("@Icone/Erreur.bmp");
 			TRACE().p( TRACE_INFO, "CDlgBoite::INIT_CLASSE() Texture d'icone d'erreur : %d", texErreur );
 
-			texConfirm = JKT_PACKAGE_MOTEUR3D::LitFichierTexture("@Icone/Confirm.bmp");
+			texConfirm = JktMoteur::LitFichierTexture("@Icone/Confirm.bmp");
 			TRACE().p( TRACE_INFO, "CDlgBoite::INIT_CLASSE() Texture de confirmation : %d", texConfirm );
 
-			texInfo = JKT_PACKAGE_MOTEUR3D::LitFichierTexture("@Icone/Info.bmp");
+			texInfo = JktMoteur::LitFichierTexture("@Icone/Info.bmp");
 			TRACE().p( TRACE_INFO, "CDlgBoite::INIT_CLASSE() Texture d'information : %d", texInfo );
 
-			texEnCours = JKT_PACKAGE_MOTEUR3D::LitFichierTexture("@Icone/EnCours.bmp");
+			texEnCours = JktMoteur::LitFichierTexture("@Icone/EnCours.bmp");
 			TRACE().p( TRACE_INFO, "CDlgBoite::INIT_CLASSE() Texture de tache en cours : %d", texEnCours );
 		}
 		catch( CErreur erreur )
@@ -652,4 +652,4 @@ void CDlgBoite::handle_key_down( SDL_Event *event )
 	}
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

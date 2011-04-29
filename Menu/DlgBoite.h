@@ -7,7 +7,7 @@ using namespace std;
 
 #include "Dlg.h"
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 
 typedef void (*PF)(void *);
@@ -86,6 +86,6 @@ public:
 	void handle_key_down( SDL_Event *event );
 };
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu
 
 #endif

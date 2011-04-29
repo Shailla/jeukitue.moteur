@@ -4,7 +4,7 @@
 
 #include "SDL.h"
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 
 class CDlg
@@ -26,6 +26,6 @@ public:
 	virtual void handle_key_down( SDL_Event *event )=0;	// Réagit aux frappes de touches
 };
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu
 
 #endif

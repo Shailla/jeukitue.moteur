@@ -37,7 +37,7 @@ using namespace std;
 
 #include "son/TypeSon.h"
 
-namespace JKT_PACKAGE_SON {
+namespace JktSon {
 
 class CSon;
 class CSon3D;
@@ -69,6 +69,6 @@ public:
 	void Delete( CReqSon *req );	// Destruction/suppression d'une requête
 };
 
-}	// namespace JKT_PACKAGE_SON
+}	// namespace JktSon
 #endif
 

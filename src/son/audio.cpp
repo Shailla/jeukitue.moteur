@@ -22,7 +22,7 @@ using namespace std;
 
 #include "audio.h"
 
-using namespace JKT_PACKAGE_SON;
+using namespace JktSon;
 
 extern CCfg Config;
 //char **remarquesDriver;

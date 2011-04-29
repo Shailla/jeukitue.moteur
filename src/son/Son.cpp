@@ -19,7 +19,7 @@ using namespace std;
 
 #include "ReqSon.h"
 #include "DemonSons.h"
-using namespace JKT_PACKAGE_SON;
+using namespace JktSon;
 CSon::CSon( CDemonSons* p,const char *name )
 {
 TRACE().p( TRACE_SON, "CSon::CSon(nom=%s,...)%T", name, this );

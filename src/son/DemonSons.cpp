@@ -19,7 +19,7 @@ using namespace std;
 
 #include "DemonSons.h"
 
-using namespace JKT_PACKAGE_SON;
+using namespace JktSon;
 
 CDemonSons::CDemonSons()
 {

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 int RessourcesLoader::nbrElements = 9;
 char* RessourcesLoader::elementsNamesAndFolders[] =

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 
 class RessourcesLoader

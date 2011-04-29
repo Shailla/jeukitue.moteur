@@ -9,13 +9,13 @@
 #include "main/RequeteProcess.h"
 #include "reseau/enumReseau.h"
 
-namespace JKT_PACKAGE_RESEAU
+namespace JktNet
 {
 	class CClient ;
 	class CServer;
 }
 
-namespace  JKT_PACKAGE_MOTEUR3D
+namespace  JktMoteur
 {
 	class CMap;
 }
@@ -28,7 +28,7 @@ class CPlayer;
 class CGame
 {
 	CPlayer *m_Erwin;							// Pointeur sur le joueur actif
-	JKT_PACKAGE_MOTEUR3D::CMap	*m_pMap;		// Map en cours de jeu
+	JktMoteur::CMap	*m_pMap;		// Map en cours de jeu
 	int m_Mode;									// Mode de jeu (parie normale, client ou serveur
 	bool m_bGravite;							// Indique si la gravité est active
 
@@ -40,7 +40,7 @@ public:
 		JKT_MODE_PARTIE_SERVER,		// Mode serveur de jeu
 	};
 
-	JKT_PACKAGE_UTILS::CTableauIndex<CPlayer> *pTabIndexPlayer;	// Liste indexée des joueurs
+	JktUtils::CTableauIndex<CPlayer> *pTabIndexPlayer;	// Liste indexée des joueurs
 
 	CRequeteProcess RequeteProcess;		// Requetes inter-processus
 
@@ -58,8 +58,8 @@ public:
 	void Gravite(bool gravite);
 
 		// Gestion de la Map
-	JKT_PACKAGE_MOTEUR3D::CMap *getMap();
-	bool openMap( const string &nomFichierMap ) throw(JKT_PACKAGE_UTILS::CErreur);
+	JktMoteur::CMap *getMap();
+	bool openMap( const string &nomFichierMap ) throw(JktUtils::CErreur);
 
 		// Gestion du mode
 	void setModeNull();					// Passe en mode "pas de jeu en cours"
@@ -69,15 +69,15 @@ public:
 
 		// Gestion du client
 	void setModeClient();							// Crée la classe Client pour un jeu en mode client
-	JKT_PACKAGE_RESEAU::CClient *getClient();		// Retourne le pointeur sur la classe CClient
-	void setStatutClient( JKT_PACKAGE_RESEAU::StatutClient statut );	// Renseigne le statut du client
-	JKT_PACKAGE_RESEAU::StatutClient getStatutClient();							// Donne le statut du client
+	JktNet::CClient *getClient();		// Retourne le pointeur sur la classe CClient
+	void setStatutClient( JktNet::StatutClient statut );	// Renseigne le statut du client
+	JktNet::StatutClient getStatutClient();							// Donne le statut du client
 
 		// Gestion du serveur
 	void setModeServer();							// Crée la classe Server pour un jeu en mode serveur
-	JKT_PACKAGE_RESEAU::CServer *getServer();		// Retourne le pointeur sur la classe CServer
-	void setStatutServer( JKT_PACKAGE_RESEAU::StatutServer statut );				// Renseigne le statut du serveur
-	JKT_PACKAGE_RESEAU::StatutServer getStatutServer();							// Donne le statut du serveur
+	JktNet::CServer *getServer();		// Retourne le pointeur sur la classe CServer
+	void setStatutServer( JktNet::StatutServer statut );				// Renseigne le statut du serveur
+	JktNet::StatutServer getStatutServer();							// Donne le statut du serveur
 
 		// Gestion du jeu
 	void AffichePlayers();			// Affiche tous les joueurs

@@ -13,11 +13,11 @@ using namespace std;
 class CRequete;
 class CProjectil;
 class CClavier;
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 	class CMap;
 }
-namespace JKT_PACKAGE_SON
+namespace JktSon
 {
 	class CSon;
 	class CReqSon;
@@ -34,10 +34,10 @@ class CPlayer
 	int m_NbrArmes;			// Nombre d'armes
 	static int m_TexArmes;	// Textures de l'icone des armes
 
-	JKT_PACKAGE_UTILS::Tableau<CProjectil> TabProjectil;		// Liste des projectils de ce joueur
+	JktUtils::Tableau<CProjectil> TabProjectil;		// Liste des projectils de ce joueur
 
-	JKT_PACKAGE_SON::CSon* ID_Cri;
-	JKT_PACKAGE_SON::CReqSon* ID_ReqCri;	// Requete son de cri du personnage
+	JktSon::CSon* ID_Cri;
+	JktSon::CReqSon* ID_ReqCri;	// Requete son de cri du personnage
 
 		// Position, vitesse et orientation du joueur
 	float m_Position[3];		// Vecteur position du joueur
@@ -52,10 +52,10 @@ class CPlayer
 
 	float m_Pente;	// Sert à calculer si le joueur glisse sur une pente de la map ou non
 	string m_Nom;							// Nom du perso
-	JKT_PACKAGE_MOTEUR3D::CMap *m_pSkin;	// Gueule du joueur
+	JktMoteur::CMap *m_pSkin;	// Gueule du joueur
 
 public :
-	JKT_PACKAGE_RESEAU::CSPA spa;		// spa associé au proxy-joueur
+	JktNet::CSPA spa;		// spa associé au proxy-joueur
 
 	void Tir();
 	void RefreshProjectils();
@@ -67,7 +67,7 @@ public :
 		// Fonctions spatiales (vitesse, position, ...) et accesseurs
 	void setPosition(float x, float y, float z);		// change la position du joueur
 	void setPosition(const float position[3]);		// change la position du joueur
-	void setPosition(const JKT_PACKAGE_UTILS::CV3D& pos );				// change la position du joueur
+	void setPosition(const JktUtils::CV3D& pos );				// change la position du joueur
 	void setVitesse(const float vit[3]);				// Change la vitesse du joueur
 	void getPosition(float pos[3]) const;				// renvoie le pointeur sur la position du joueur
 	void choiceOneEntryPoint();							// Choisi un point d'entrée sur la Map
@@ -87,7 +87,7 @@ public :
 	void Pente( float pente );
 	void nom( const string &nom );
 	string nom() const;
-	void Skin( JKT_PACKAGE_MOTEUR3D::CMap *skin );
+	void Skin( JktMoteur::CMap *skin );
 	void setCri( const char *nomFichier );					// Indique le son du cri du joueur
 
 		// FONCTIONS

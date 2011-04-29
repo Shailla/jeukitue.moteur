@@ -608,7 +608,7 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 	SDL_WM_SetCaption( "JKT 2010", "C'est un jeu qui tue !!!" );	// Titre et icon de la fenêtre
 	
 	string iconeFichier = "@Icone/Icone.bmp";
-	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(iconeFichier);
+	JktUtils::RessourcesLoader::getFileRessource(iconeFichier);
 	SDL_WM_SetIcon( IMG_Load( iconeFichier.c_str() ), 0 );
 
     flags = SDL_OPENGL | SDL_RESIZABLE;
@@ -716,10 +716,10 @@ TRACE().p( TRACE_OTHER, "setup Agar" );
     AG_AgarVersion agarVersion;
     AG_GetVersion(&agarVersion);
 
-    cout << "\nVersion Agar : [major=" << agarVersion.major;
-    cout << ", minor=" << agarVersion.minor;
-    cout << ", patch=" << agarVersion.patch;
-    cout << ", release=" << agarVersion.release << "]";
+    cout << "\nVersion Agar : " << agarVersion.major;
+    cout << "." << agarVersion.minor;
+    cout << "." << agarVersion.patch;
+    cout << " [" << agarVersion.release << "]";
 
 	// Configuration Agar (librairie de gestion du menu)
 	if(AG_InitCore("event1", 0) == -1 || AG_InitVideoSDL(screen, flags) == -1)

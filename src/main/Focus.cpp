@@ -6,7 +6,7 @@
 
 #include "Focus.h"
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 
 CFocus::CFocus(	void (*play)(SDL_Event *event),
@@ -82,4 +82,4 @@ void CFocus::ExecFocus( SDL_Event *event )	// Exécute la fonction de focus pour 
 	focus_actif_handle_key_down( event );
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

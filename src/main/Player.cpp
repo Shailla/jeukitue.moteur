@@ -38,8 +38,8 @@ class CGame;
 #include "main/Game.h"
 #include "reseau/SPA.h"
 
-using namespace JKT_PACKAGE_SON;
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktSon;
+using namespace JktUtils;
 
 extern CCfg Config;
 extern CDemonSons *DemonSons;
@@ -90,7 +90,7 @@ CPlayer::CPlayer()
 	{
 		try
 		{
-			m_TexArmes = JKT_PACKAGE_MOTEUR3D::LitFichierTextureAlpha( "@Icone/Armes.bmp", 0.75f );
+			m_TexArmes = JktMoteur::LitFichierTextureAlpha( "@Icone/Armes.bmp", 0.75f );
 			TRACE().p( TRACE_OTHER, "CPlayer::CPlayer() Texture d'icone des armes : %d%T", m_TexArmes, this );
 		}
 		catch( CErreur erreur )
@@ -526,7 +526,7 @@ string CPlayer::nom() const
 	return m_Nom;
 }
 
-void CPlayer::Skin( JKT_PACKAGE_MOTEUR3D::CMap *skin )
+void CPlayer::Skin( JktMoteur::CMap *skin )
 {
 	m_pSkin = skin;
 }

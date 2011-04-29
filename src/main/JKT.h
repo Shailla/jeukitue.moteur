@@ -16,7 +16,7 @@ bool JKT_AfficheToutesTextures = false;
 
 string nomFichierConfig = "config";
 
-JKT_PACKAGE_MENU::CFocus *pFocus;
+JktMenu::CFocus *pFocus;
 
 int nbrMainPlayer = 0;	//nbre de joueurs sur la map
 
@@ -28,7 +28,7 @@ SDL_Event event_SDL;
 
 bool Aide = false;
 
-extern JKT_PACKAGE_SON::CDemonSons *DemonSons;	// Requêtes des son à jouer
+extern JktSon::CDemonSons *DemonSons;	// Requêtes des son à jouer
 
 Uint32 tempsTimer = 0;		// Temps pris par la fonction 'timer'
 Uint32 tempsDisplay = 0;	// Temps pris par la fonction 'display'

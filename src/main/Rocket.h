@@ -17,7 +17,7 @@ class CRocket:public CProjectil
 
 	static bool m_B_INIT_CLASSE;	// Indique si la classe a été initialisée
 	static int m_TexExplosion;		// N° de texture pour l'explosion de la rocket
-	static JKT_PACKAGE_MOTEUR3D::CMap *pMapRocket;	// Map associée à l'image de la rocket
+	static JktMoteur::CMap *pMapRocket;	// Map associée à l'image de la rocket
 
 	CV3D m_Pos;		// Position de la rocket
 	CV3D m_Dir;		// Direction de la rocket

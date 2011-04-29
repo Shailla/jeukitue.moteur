@@ -23,7 +23,7 @@ using namespace std;
 
 #include "Laser.h"
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
 #define Pi 3.14159265f
 #define DUREE_VIE	100			// Durée de vie du laser en millisecondes

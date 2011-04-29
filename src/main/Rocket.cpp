@@ -27,13 +27,13 @@ using namespace std;
 
 #include "Rocket.h"
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
 extern CGame Game;
 
 int CRocket::m_TexExplosion = -1;		// Texture pour l'explosion de la rocket
 bool CRocket::m_B_INIT_CLASSE = false;	// Par défaut la classe n'a pas encore été initialisée
-JKT_PACKAGE_MOTEUR3D::CMap* CRocket::pMapRocket = 0;			// Image 3D de la rocket
+JktMoteur::CMap* CRocket::pMapRocket = 0;			// Image 3D de la rocket
 
 #define Pi 3.14159265f
 #define ROCKET_RAYON			0.01f
@@ -48,7 +48,7 @@ TRACE().p( TRACE_OTHER, "CRocket::INIT_CLASSE()" );
 	{
 		try
 		{
-			m_TexExplosion = JKT_PACKAGE_MOTEUR3D::LitFichierTextureAlpha( "@Texture/Explosion.jpg", 0.75f );
+			m_TexExplosion = JktMoteur::LitFichierTextureAlpha( "@Texture/Explosion.jpg", 0.75f );
 			TRACE().p( TRACE_OTHER, "loadSubIntro() Texture de fonte : %d", m_TexExplosion );
 		}
 		catch( CErreur erreur )
@@ -58,7 +58,7 @@ TRACE().p( TRACE_OTHER, "CRocket::INIT_CLASSE()" );
 			return false;	// L'initialisation a échoué
 		}
 
-		pMapRocket = new JKT_PACKAGE_MOTEUR3D::CMap("@Arme\\Missile");
+		pMapRocket = new JktMoteur::CMap("@Arme\\Missile");
 
 		m_B_INIT_CLASSE = true;	// Indique que l'initialisation a été faite
 	}

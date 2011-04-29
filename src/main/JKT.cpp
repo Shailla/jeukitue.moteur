@@ -97,6 +97,7 @@ class CGame;
 #include "main/Game.h"
 #include "util/V3D.h"
 #include "spatial/Particule.h"
+#include "spatial/MoteurParticules.h"
 #include "spatial/MoteurParticulesNeige.h"
 #include "reseau/Reseau.h"
 #include "reseau/enumReseau.h"
@@ -105,11 +106,11 @@ class CGame;
 #include "main/Fabrique.h"
 #include "menu/ConsoleView.h"
 
-using namespace JKT_PACKAGE_MENU;
-using namespace JKT_PACKAGE_RESEAU;
-using namespace JKT_PACKAGE_MOTEUR3D;
-using namespace JKT_PACKAGE_UTILS;
-using namespace JKT_PACKAGE_SON;
+using namespace JktMenu;
+using namespace JktNet;
+using namespace JktMoteur;
+using namespace JktUtils;
+using namespace JktSon;
 
 #include "util/GenRef.h"
 
@@ -159,7 +160,7 @@ void setTemps(const string& note) {
 	tempsFile << endl << ecartDisplay << "\t" << note;
 }
 
-JKT_PACKAGE_MOTEUR3D::CMoteurParticulesNeige *moteurParticules;
+JktMoteur::CMoteurParticules* moteurParticulesNeige;
 float tempsMoteur;	// Pour le moteur de particules
 unsigned int frpsTimer = 0, frpTimer = 0;
 
@@ -536,7 +537,7 @@ void display()	// Fonction principale d'affichage
 
 		// C LE K
 
-		moteurParticules->Affiche();	// Le moteur de particules affiche toutes ses particules
+		moteurParticulesNeige->Affiche();	// Le moteur de particules affiche toutes ses particules
 
 		glDisable( GL_BLEND );
 		glDepthMask( GL_TRUE );
@@ -1095,10 +1096,10 @@ bool openMAP( const void *nomFichier )
 
 	// Récupération des ressources de cris des personnages
 	string cri1 = "@Bruit\\cri_1.wav";
-	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(cri1);
+	JktUtils::RessourcesLoader::getFileRessource(cri1);
 
 	string cri2 = "@Bruit\\cri_1.wav";
-	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(cri2);
+	JktUtils::RessourcesLoader::getFileRessource(cri2);
 
 
 	/***********************************
@@ -1291,7 +1292,7 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 		// Initialisation pour les menus et boîtes de dialogue
 	{
 		string fonte = "@Fonte\\Fonte.glf";		// Chargement de la fonte de caractères
-		JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(fonte);
+		JktUtils::RessourcesLoader::getFileRessource(fonte);
 		unsigned int texFonte;
 		glGenTextures(1, &texFonte);
 
@@ -1315,8 +1316,8 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 		return 1;	// Erreur fatale si CRocket ne peut être initialisée
 
 		// Mise en place du moteur de particules pour la neige, réfléchir où mettre ça
-	CV3D posMoteurParticules( -2.35f, 1.5f, 0.0f );
-	moteurParticules = new CMoteurParticulesNeige( posMoteurParticules, 1000, 0.05f );
+	CV3D posMoteurParticulesNeige( -2.35f, 1.5f, 0.0f );
+	moteurParticulesNeige = new CMoteurParticulesNeige( posMoteurParticulesNeige, 1000, 0.05f );
 
 		// Délai d'attente après l'intro du jeu, je sais plus à quoi il sert
 	SDL_Delay( 1000 );
@@ -1324,7 +1325,7 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 		// Création d'un haut parleur qui se déplace pour tester le son 3D
 	machin = new CMachin();
 	string fichierSon3D = "@Musique\\drumloop.wav";		// Chargement de la fonte de caractères
-	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(fichierSon3D);
+	JktUtils::RessourcesLoader::getFileRessource(fichierSon3D);
 	CSon3D *son3D = DemonSons->CreateSon3D( fichierSon3D.c_str() );
 	CReqSon *reqSon = DemonSons->PlayID( (CSon*)son3D, true );
 	reqSon->Boucle( true );

@@ -2,7 +2,7 @@
 #ifndef __JKT__FOCUS_H
 #define __JKT__FOCUS_H
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 
 class CFocus
@@ -24,7 +24,7 @@ public:
 	void ExecFocus( SDL_Event *Event );	// Exécute la fonction de focus
 };
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu
 
 #endif
 

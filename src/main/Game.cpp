@@ -32,7 +32,7 @@ class CGame;
 #include "reseau/enumReseau.h"
 #include "main/Game.h"
 
-using namespace JKT_PACKAGE_RESEAU;
+using namespace JktNet;
 
 extern float delta;
 extern CReseau Reseau;
@@ -69,7 +69,7 @@ bool CGame::isModeNull()
 	return m_Mode == JKT_MODE_PARTIE_NULL;
 }
 
-void CGame::setStatutClient( JKT_PACKAGE_RESEAU::StatutClient statut )
+void CGame::setStatutClient( JktNet::StatutClient statut )
 {
 TRACE().p( TRACE_ERROR, "CGame::setStatusClient(status=%d) begin%T", statut, this );
 
@@ -78,11 +78,11 @@ TRACE().p( TRACE_ERROR, "CGame::setStatusClient(status=%d) begin%T", statut, thi
 TRACE().p( TRACE_ERROR, "CGame::setStatusClient() end%T", this );
 }
 
-JKT_PACKAGE_RESEAU::StatutClient CGame::getStatutClient()
+JktNet::StatutClient CGame::getStatutClient()
 {
 TRACE().p( TRACE_ERROR, "CGame::getStatutClient() begin%T", this );
 
-	JKT_PACKAGE_RESEAU::StatutClient statut;
+	JktNet::StatutClient statut;
 	if( m_Mode==JKT_MODE_PARTIE_CLIENT )
 		statut = Reseau.getStatutClient();
 	else
@@ -108,7 +108,7 @@ void CGame::quit()
 	pTabIndexPlayer = 0;
 }
 
-bool CGame::openMap( const string &nomFichierMap ) throw(JKT_PACKAGE_UTILS::CErreur)
+bool CGame::openMap( const string &nomFichierMap ) throw(JktUtils::CErreur)
 {
 TRACE().p( TRACE_INFO, "CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(), this );
 
@@ -118,9 +118,9 @@ TRACE().p( TRACE_INFO, "CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap
 		delete m_pMap;
 
 	try {
-		m_pMap = new JKT_PACKAGE_MOTEUR3D::CMap( nomFichierMap );
+		m_pMap = new JktMoteur::CMap( nomFichierMap );
 	}
-	catch(JKT_PACKAGE_UTILS::CErreur erreur) {
+	catch(JktUtils::CErreur erreur) {
 		cerr << endl << erreur.toString() << endl;
 		result = false;
 	}
@@ -129,13 +129,13 @@ TRACE().p( TRACE_INFO, "CGame::openMap() -> %b end%T", result, this );
 	return result;
 }
 
-void CGame::setStatutServer( JKT_PACKAGE_RESEAU::StatutServer statut )
+void CGame::setStatutServer( JktNet::StatutServer statut )
 {
 	if( m_Mode==JKT_MODE_PARTIE_SERVER )
 		Reseau.getServer()->setStatut( statut );
 }
 
-JKT_PACKAGE_RESEAU::StatutServer CGame::getStatutServer()
+JktNet::StatutServer CGame::getStatutServer()
 {
 	if( m_Mode==JKT_MODE_PARTIE_SERVER )
 		return Reseau.getServer()->getStatut();
@@ -194,10 +194,10 @@ void CGame::setModeServer()
 	m_Mode = JKT_MODE_PARTIE_SERVER;
 }
 
-JKT_PACKAGE_RESEAU::CClient *CGame::getClient()
+JktNet::CClient *CGame::getClient()
 {	return Reseau.getClient();		}
 
-JKT_PACKAGE_RESEAU::CServer *CGame::getServer()
+JktNet::CServer *CGame::getServer()
 {	return Reseau.getServer();		}
 
 void CGame::Refresh()
@@ -273,7 +273,7 @@ void CGame::deleteErwin()
 	m_Erwin = 0;
 }
 
-JKT_PACKAGE_MOTEUR3D::CMap *CGame::getMap()
+JktMoteur::CMap *CGame::getMap()
 {
 	return m_pMap;
 }

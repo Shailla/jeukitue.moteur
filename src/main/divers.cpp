@@ -31,9 +31,9 @@ using namespace glfont;
 
 #include "main/divers.h"
 
-using namespace JKT_PACKAGE_SON;
+using namespace JktSon;
 
-extern JKT_PACKAGE_SON::CDemonSons *DemonSons;
+extern JktSon::CDemonSons *DemonSons;
 
 void quit_tutorial()
 {
@@ -134,19 +134,19 @@ void load_Intro( int width, int height )
 {
 TRACE().p( TRACE_OTHER, "load_Intro(width=%d,height=%d)", width, height );
 	string bruitChariot = "@Bruit\\chariot.wav";		// Chargement de la fonte de caractères
-	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(bruitChariot);
+	JktUtils::RessourcesLoader::getFileRessource(bruitChariot);
 	sonChariot = DemonSons->CreateSon( bruitChariot.c_str() );		// Son retour chariot machine à écrire
 
 	string bruitTouche = "@Bruit\\touche.wav";		// Chargement de la fonte de caractères
-	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(bruitTouche);
+	JktUtils::RessourcesLoader::getFileRessource(bruitTouche);
 	sonTouche = DemonSons->CreateSon( bruitTouche.c_str() );		// Son frappe d'une touche clavier
 
 	string bruitEspace = "@Bruit\\espace.wav";		// Chargement de la fonte de caractères
-	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(bruitEspace);
+	JktUtils::RessourcesLoader::getFileRessource(bruitEspace);
 	sonEspace = DemonSons->CreateSon( bruitEspace.c_str() );		// Son frappe de la touche espace clavier
 
 	string bruitHurlement = "@Bruit\\hurlement.wav";		// Chargement de la fonte de caractères
-	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(bruitHurlement);
+	JktUtils::RessourcesLoader::getFileRessource(bruitHurlement);
 	sonHurlement = DemonSons->CreateSon( bruitHurlement.c_str() );	// Son hurlement du sauveur de la planète
 
 	load_IntroSub( width, height );
@@ -165,7 +165,7 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	unsigned int texFonteIntro;
 
 	string fileFonteIntro = "@Fonte\\FonteIntro.glf";	// Chargement de la fonte de caractères
-	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(fileFonteIntro);
+	JktUtils::RessourcesLoader::getFileRessource(fileFonteIntro);
 
 	string str1 = "Nous sommes en 2056.\n\nLa surface de la Terre n'est plus qu'un ocean d'acide.\nLa loi a laisse sa place a celle du plus fort et tout se regle\ndesormais lors de combats sans gland.\n\n      Voici le seul homme qui peut encore sauver la planete... ";
 	string str2 = "Alors, vous l'avez compris...\n   On est vraiment dans la merde !";
@@ -174,7 +174,7 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	srand( SDL_GetTicks() );	// Initialisation de la fonction rand() pour les nombres aléatoires
 
 	string introJKT = "@Fond\\intro_JKT2.jpg";
-	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(introJKT);
+	JktUtils::RessourcesLoader::getFileRessource(introJKT);
 	cout << "\nImage intro JKT : " << introJKT;
 	SDL_Surface *image1 = IMG_Load(introJKT.c_str());		// Lit le fichier image
 

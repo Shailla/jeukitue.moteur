@@ -1,32 +1,45 @@
 #include <string>
 
+#include "centralisateur/UdpController.h"
+#include "centralisateur/TcpConnector.h"
 #include "centralisateur/data/SignalementData.h"
+#include "centralisateur/data/DownloadFileItem.h"
 
 #include "centralisateur/Centralisateur.h"
 
 Centralisateur::Centralisateur(UdpController* udpController)
 {
-    m_udpController = udpController;
+    _udpController = udpController;
 }
 
 Centralisateur::~Centralisateur(void)
 {
-    delete m_udpController;
+    delete _udpController;
 }
 
 void Centralisateur::connecter(char* userName, char* ipCentralisateur, int portCentralisateur)
 {
-    const int m_portLocal = 39455;
-    m_userName = userName;
-    m_udpController->connect(userName, m_portLocal, ipCentralisateur, portCentralisateur);
+    const int _portLocal = 39455;
+    _userName = userName;
+    _udpController->connect(userName, _portLocal, ipCentralisateur, portCentralisateur);
 }
 
 void Centralisateur::sendSignalement()
 {
-    m_udpController->sendSignalement(m_userName);
+    _udpController->sendSignalement(_userName);
 }
 
 void Centralisateur::sendMessageChat(const std::string& message, const std::string& userName)
 {
-    m_udpController->sendMessageChat(message, userName);
+    _udpController->sendMessageChat(message, userName);
+}
+
+vector<DownloadFileItem> Centralisateur::askDownloadFileList(const int port) throw(CentralisateurTcpException)
+{
+    return JktNet::TcpConnector::askDownloadFileList(port);
+}
+
+void Centralisateur::downloadOneFile(const int port, const long fileId, int* progress, char* currentOperationMessage) throw(CentralisateurTcpException)
+{
+    JktNet::TcpConnector::downloadOneFile(port, fileId, progress, currentOperationMessage);
 }

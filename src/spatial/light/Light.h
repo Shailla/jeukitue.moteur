@@ -6,7 +6,7 @@
 
 #include "tinyxml.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CIfstreamMap;
@@ -75,7 +75,7 @@ public :
 	void SetColor( const float color[4] );
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

@@ -19,7 +19,7 @@
 
 #include "spatial/geo/Geo.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 class CMap;
 class CSimpleGeo;
@@ -77,7 +77,7 @@ public:
 	void setColor4(float r, float v, float b, float a);
 	void setVertex(int nbr, float* tab);	// Données du tableau des sommets
 	void setFaces(int nbr, int* tab);		// Données du tableau des index de faces
-	void setNormals(int nbr, float* tab) throw(JKT_PACKAGE_UTILS::CErreur);	// Données du tableau des vecteurs normaux
+	void setNormals(int nbr, float* tab) throw(JktUtils::CErreur);	// Données du tableau des vecteurs normaux
 	void setMaterialRef(int ref);			// Associe l'objet à un matériau
 	void setSubMat(int* tab);
 	static void SaveVertex(TiXmlElement* element, unsigned int nbr, float* vertex);		// Sauve les sommets d'un objet géo
@@ -111,7 +111,7 @@ private:
 	void optimiseSubMat(map<int,int> &canauxnumbers);
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

@@ -4,7 +4,7 @@
 
 class CGame;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CMouve
@@ -16,7 +16,7 @@ public:
 	virtual void Refresh( CGame *game )=0;
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

@@ -10,9 +10,9 @@ using namespace std;
 
 #include "spatial/geo/Geo.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
-JKT_PACKAGE_UTILS::CGenRef CGeo::GENREF;
+JktUtils::CGenRef CGeo::GENREF;
 
 CGeo::CGeo( CMap *map )
 {
@@ -106,4 +106,4 @@ bool CGeo::Contact( const float pos[3], float dist )
 	return false;
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

@@ -12,7 +12,7 @@ using namespace std;
 
 #include "spatial/IfstreamMap.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 int CIfstreamMap::m_OffsetMateriaux = 0;
 
@@ -256,4 +256,4 @@ CIfstreamMap& CIfstreamMap::get( char &ch )
 	return *this;
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

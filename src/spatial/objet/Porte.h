@@ -8,7 +8,7 @@
 class CGame;
 class CPlayer;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CMap;
@@ -43,7 +43,7 @@ public:
 	float GereLaser( float pos[3], CV3D &Dir, float dist );
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

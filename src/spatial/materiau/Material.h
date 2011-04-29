@@ -6,7 +6,7 @@
 #include <string>
 #include "tinyxml.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CIfstreamMap;
@@ -48,7 +48,7 @@ public:
 	void setRef(unsigned int ref);
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

@@ -5,7 +5,7 @@
 
 #include "spatial/Particule.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 CParticule::CParticule()
@@ -54,4 +54,4 @@ void CParticule::Reset( CV3D pos, CV3D vit )	// Fait renaître la particule
 	vitesse = vit;							// et sa vitesse
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

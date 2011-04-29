@@ -7,7 +7,7 @@
 #include "spatial/materiau/Material.h"
 #include "util/Erreur.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CMaterialTexture:public CMaterial
@@ -23,7 +23,7 @@ public:
 	~CMaterialTexture();
 
 		// Fonctions membres
-	void LitTexture() throw(JKT_PACKAGE_UTILS::CErreur); // Lit le fichier de texture associé au matériau
+	void LitTexture() throw(JktUtils::CErreur); // Lit le fichier de texture associé au matériau
 	bool Lit(TiXmlElement* el, string &repertoire);
 	bool LitFichier(CIfstreamMap &fichier);
 	bool SaveFichierMap(std::ofstream &fichier);
@@ -32,7 +32,7 @@ public:
 	void Desactive();
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

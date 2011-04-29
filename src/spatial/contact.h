@@ -4,13 +4,13 @@
 
 #include "util/TableauIndex.cpp"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 void contactPlayer(CPlayer *player, float *normal, float distanceW);
 void contactSprite(CPlayer *sprite, float *normal, float distanceW);	//fonction de rebond sur
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

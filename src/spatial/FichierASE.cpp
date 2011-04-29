@@ -16,7 +16,7 @@ using namespace std;
 
 #include "spatial/FichierASE.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 #define fScale (300.0f)
 
@@ -406,7 +406,7 @@ CLight *CFichierASE::litLightTarget()
 
 		// Calcul de la direction de la lumière
 	float base[] = { 0.0f, 0.0f, -1.0f };
-	JKT_PACKAGE_UTILS::produitMatriciel(row, base, direction );
+	JktUtils::produitMatriciel(row, base, direction );
 
 		// Création et paramètrage de la lumière
 	CLightTarget *pLightTarget = new CLightTarget();
@@ -591,7 +591,7 @@ float* CFichierASE::LitNormaux(unsigned int numFaces, const float *row)
 		get(normal[1], __LINE__);
 		get(normal[2], __LINE__);
 
-		JKT_PACKAGE_UTILS::produitMatriciel(row, normal, resultNormal);
+		JktUtils::produitMatriciel(row, normal, resultNormal);
 		tab[ 9*i + 0 ] = -resultNormal[0];
 		tab[ 9*i + 1 ] = resultNormal[1];
 		tab[ 9*i + 2 ] = resultNormal[2];
@@ -602,7 +602,7 @@ float* CFichierASE::LitNormaux(unsigned int numFaces, const float *row)
 		get(normal[1], __LINE__);
 		get(normal[2], __LINE__);
 
-		JKT_PACKAGE_UTILS::produitMatriciel(row, normal, resultNormal);
+		JktUtils::produitMatriciel(row, normal, resultNormal);
 		tab[ 9*i + 3 ] = -resultNormal[0];
 		tab[ 9*i + 4 ] = resultNormal[1];
 		tab[ 9*i + 5 ] = resultNormal[2];
@@ -613,7 +613,7 @@ float* CFichierASE::LitNormaux(unsigned int numFaces, const float *row)
 		get(normal[1], __LINE__);
 		get(normal[2], __LINE__);
 
-		JKT_PACKAGE_UTILS::produitMatriciel(row, normal, resultNormal);
+		JktUtils::produitMatriciel(row, normal, resultNormal);
 		tab[ 9*i + 6 ] = -resultNormal[0];
 		tab[ 9*i + 7 ] = resultNormal[1];
 		tab[ 9*i + 8 ] = resultNormal[2];
@@ -1342,4 +1342,4 @@ bool CFichierASE::LitFichierASE( const string nomFichier, CMap *pMap, bool bAffi
 	return true;
 }
 
-}	//namespace JKT_PACKAGE_MOTEUR3D
+}	//namespace JktMoteur

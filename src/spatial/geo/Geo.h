@@ -16,9 +16,9 @@
 
 class CPlayer;
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CMap;
@@ -26,7 +26,7 @@ class CIfstreamMap;
 
 class CGeo
 {
-	static JKT_PACKAGE_UTILS::CGenRef GENREF;
+	static JktUtils::CGenRef GENREF;
 	CMap *pMap;			// Navigabilité vers l'objet parent
 	string m_Nom;				// Nom donné à au géo
 protected:
@@ -62,7 +62,7 @@ public:
 	virtual const char* toString()=0;	// Description résumée de l'objet
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

@@ -8,9 +8,9 @@ using namespace std;
 
 #include "util/Tableau.h"
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 class CMaterial;
 
@@ -45,7 +45,7 @@ public:
 	CIfstreamMap& get( char &ch );
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

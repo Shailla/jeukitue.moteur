@@ -7,7 +7,7 @@
 
 class CGame;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CMap;
@@ -64,7 +64,7 @@ public:
 	void GereContactPlayer( const float pos[3], CPlayer *player );
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

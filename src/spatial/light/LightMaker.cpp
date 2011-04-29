@@ -7,7 +7,7 @@
 
 #include "spatial/light/LightMaker.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 CLight* CLightMaker::Lit(TiXmlElement* element)
@@ -20,7 +20,7 @@ CLight* CLightMaker::Lit(TiXmlElement* element)
 	else if(!strcmp(Xml::TARGET, type))
 		light = new CLightTarget();
 	else
-		throw JKT_PACKAGE_UTILS::CErreur(0, "Fichier Map corrompu : Lumiere de type inconnu");
+		throw JktUtils::CErreur(0, "Fichier Map corrompu : Lumiere de type inconnu");
 
 	light->Lit(element);
 

@@ -26,7 +26,7 @@ class CGame;
 
 #include "Navette.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 const char* CNavette::identifier = "Navette";
@@ -344,4 +344,4 @@ void CNavette::GereContactPlayer( const float pos[3], CPlayer *player )
 	CGeoObject::GereContactPlayer( newPos, player );
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

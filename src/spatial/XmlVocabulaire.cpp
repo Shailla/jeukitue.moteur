@@ -7,7 +7,7 @@ using namespace std;
 
 #include "spatial/XmlVocabulaire.h"
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
 // Map
 const char* Xml::GEOS = "Geos";

@@ -6,14 +6,14 @@
 
 #include "util/Erreur.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
-unsigned int LitFichierTexture( const std::string &nomFichier ) throw(JKT_PACKAGE_UTILS::CErreur);
+unsigned int LitFichierTexture( const std::string &nomFichier ) throw(JktUtils::CErreur);
 unsigned int LitFichierTextureAlpha( const std::string &nomFichier, float alpha );
 
 Uint32 getPixel(SDL_Surface *surface, int x, int y);
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

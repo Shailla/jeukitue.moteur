@@ -8,7 +8,7 @@ using namespace std;
 
 class ConsoleAvancementView;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CMaterialTexture;
@@ -26,7 +26,7 @@ public:
 	static void lanceImportAse(const string& aseFilename, ConsoleAvancementView* console);
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

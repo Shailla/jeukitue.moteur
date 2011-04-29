@@ -18,7 +18,7 @@ using namespace std;
 #include "spatial/geo/Geo.h"
 #include "spatial/geo/GeoMaker.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CSimpleMaterialGeo:public CGeo
@@ -89,7 +89,7 @@ public:
 	const char* toString();
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

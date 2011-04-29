@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CFichierASE : private ifstream
@@ -69,6 +69,6 @@ public:
 	static bool LitFichierASE( const string nomFichier, CMap *pMap, bool bAffiche );
 };
 
-}	//namespace JKT_PACKAGE_MOTEUR3D
+}	//namespace JktMoteur
 
 #endif

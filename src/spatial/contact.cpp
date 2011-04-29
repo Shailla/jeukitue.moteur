@@ -12,10 +12,10 @@
 
 #include "spatial/contact.h"
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 using namespace std;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 void contactPlayer(CPlayer *player, float *normal, float distanceW)
@@ -93,4 +93,4 @@ void contactSprite(CPlayer *sprite, float *normal, float distanceW)	//fonction d
 	sprite->setVitesse( vitesse );
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

@@ -7,7 +7,7 @@
 
 #include "spatial/materiau/Material.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CMaterialMaker

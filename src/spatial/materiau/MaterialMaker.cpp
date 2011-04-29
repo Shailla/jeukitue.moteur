@@ -9,9 +9,9 @@ using namespace std;
 #include "spatial/materiau/MaterialMulti.h"
 #include "spatial/materiau/MaterialMaker.h"
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 

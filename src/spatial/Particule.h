@@ -4,9 +4,9 @@
 
 #include "util/V3D.h"
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CParticule
@@ -31,6 +31,6 @@ public:
 	void Reset( CV3D pos, CV3D vit );			// Réinitialise la particule à une nouvelle position
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif

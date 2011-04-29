@@ -8,7 +8,7 @@
 
 #include "spatial/light/Light.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CLightOmni : public CLight
@@ -26,6 +26,6 @@ public:
 	void Desactive();
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif

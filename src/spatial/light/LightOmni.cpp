@@ -18,7 +18,7 @@ using namespace std;
 
 extern float GLIGHTX, GLIGHTY, GLIGHTZ;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 CLightOmni::CLightOmni()
@@ -150,4 +150,4 @@ void CLightOmni::Desactive()
 	CLight::Desactive();
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

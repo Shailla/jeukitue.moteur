@@ -4,7 +4,7 @@
 	Liste des tableaux de sommets de textures d'un objet
 **/
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CTexVertexList

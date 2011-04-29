@@ -13,7 +13,7 @@ using namespace std;
 
 #include "spatial/light/Light.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 int CLight::m_nbrLightActivated = 0;	// Nombre de lumières actuellement activées
@@ -210,4 +210,4 @@ void CLight::Desactive()
 	freeLight( m_refLight );		// Libère la lumière
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

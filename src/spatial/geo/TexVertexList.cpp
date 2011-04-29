@@ -1,7 +1,7 @@
 #include "TexVertexList.h"
 
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 CTexVertexList::CTexVertex::CTexVertex(float* tvertex, int nbr) 

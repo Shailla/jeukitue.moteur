@@ -22,7 +22,7 @@ using namespace std;
 
 #include "spatial/materiau/MaterialTexture.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 CMaterialTexture::CMaterialTexture()
@@ -50,7 +50,7 @@ CMaterialTexture::~CMaterialTexture()
 {
 }
 
-void CMaterialTexture::LitTexture() throw(JKT_PACKAGE_UTILS::CErreur)
+void CMaterialTexture::LitTexture() throw(JktUtils::CErreur)
 {
 TRACE().p( TRACE_MOTEUR3D,"CMaterialTexture::LitTexture() fichier=%s begin%T",m_FichierTexture.c_str(), this );
 
@@ -171,4 +171,4 @@ void CMaterialTexture::Desactive() {
 	glDisable( GL_TEXTURE_2D );
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

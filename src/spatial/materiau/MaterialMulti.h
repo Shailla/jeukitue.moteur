@@ -7,7 +7,7 @@
 
 #include "spatial/materiau/Material.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CMaterialMulti:public CMaterial
@@ -33,6 +33,6 @@ public:
 	const char* toString();
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif

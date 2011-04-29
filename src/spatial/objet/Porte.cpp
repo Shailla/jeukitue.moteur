@@ -27,7 +27,7 @@ class CGame;
 
 #include "spatial/objet/Porte.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 const char* CPorte::identifier = "Porte";
@@ -247,4 +247,4 @@ void CPorte::Refresh( CGame *game )
 	}
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

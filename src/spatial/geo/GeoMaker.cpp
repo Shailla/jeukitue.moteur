@@ -36,13 +36,13 @@ extern int JKT_RenderMode;
 
 #include "spatial/geo/GeoMaker.h"
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
 class CCfg;
 
 extern CCfg Config;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 		//Constructeurs / Destructeur
@@ -896,7 +896,7 @@ CGeo* CGeoMaker::Lit(TiXmlElement* el, CMap* pMap)
 		cout << endl << "Y EN A UN !!!!!!!!!!!!!!!!!!!!!!!! " << geo->getName();
 	}
 	else
-		throw JKT_PACKAGE_UTILS::CErreur(0, "Fichier Map corrompu : Geo de type inconnu");
+		throw JktUtils::CErreur(0, "Fichier Map corrompu : Geo de type inconnu");
 
 	return geo;
 }
@@ -973,4 +973,4 @@ void CGeoMaker::SaveSousMateriaux(TiXmlElement* el, map<int,int>& canaux)
 	el->LinkEndChild(elCan);
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

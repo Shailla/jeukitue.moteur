@@ -16,15 +16,16 @@ using namespace std;
 #include "util/Trace.h"
 
 #include "spatial/Particule.h"
-#include "CMoteurParticulesNeige.h"
+#include "MoteurParticulesNeige.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 #define CSTE_K	1.0f
 #define TAILLE_TEX 0.04f		// Dimension de la texture carrée de la particule
 
 CMoteurParticulesNeige::CMoteurParticulesNeige(CV3D pos_centre, unsigned int nbr, float m)
+	:CMoteurParticules()
 {
 TRACE().p( TRACE_MOTEUR3D, "CMoteurParticulesNeige::CMoteurParticulesNeige(pos_centre,nbr=%u,m=%f) begin%T", nbr, m, this );
 	CV3D posRND;
@@ -178,4 +179,4 @@ void CMoteurParticulesNeige::Affiche()
 	glDisable( GL_TEXTURE_2D );
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

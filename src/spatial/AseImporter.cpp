@@ -17,9 +17,9 @@ using namespace std;
 
 extern CCfg Config;
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 bool AseImporter::supprimeRepertoire(const string& repName)
@@ -373,4 +373,4 @@ TRACE().p( TRACE_MOTEUR3D, "copieTexture() Ok" );
 	return true;
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

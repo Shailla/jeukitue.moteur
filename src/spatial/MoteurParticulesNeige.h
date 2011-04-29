@@ -1,10 +1,13 @@
+#ifndef __JKT__MOTEURPARTICULESNEIGE_H
+#define __JKT__MOTEURPARTICULESNEIGE_H
 
 #include "util/V3D.h"
+#include "spatial/MoteurParticules.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
-class CMoteurParticulesNeige
+class CMoteurParticulesNeige : public CMoteurParticules
 {
 		// Variables
 	unsigned int nbrParticules;		// Nombre max de particules
@@ -26,4 +29,6 @@ public:
 	void Affiche();		// Affiche l'ensemble des particules
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
+
+#endif

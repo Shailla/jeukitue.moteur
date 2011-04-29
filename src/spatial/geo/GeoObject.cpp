@@ -41,7 +41,7 @@ extern int JKT_RenderMode;
 
 #include "GeoObject.h"
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
 extern CCfg Config;
 
@@ -49,7 +49,7 @@ extern CCfg Config;
 void initTemps();
 void setTemps(const string& note);
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 class CGeoObject;
 class CPorte;
@@ -1226,4 +1226,4 @@ float CGeoObject::GereLaser(float pos[3], CV3D &Dir, float dist)
 	return dist;	// Renvoie la distance trouvée
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

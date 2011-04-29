@@ -22,7 +22,7 @@ using namespace std;
 
 #include "spatial/geo/Geo.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 class CSimpleGeo:public CGeo
@@ -89,7 +89,7 @@ public:
 	const char* toString();
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

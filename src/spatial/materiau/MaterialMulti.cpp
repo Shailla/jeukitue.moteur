@@ -19,7 +19,7 @@ using namespace std;
 
 #include "MaterialMulti.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 CMaterialMulti::CMaterialMulti()
@@ -243,4 +243,4 @@ const char* CMaterialMulti::toString()
 	return CMaterial::toString();
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

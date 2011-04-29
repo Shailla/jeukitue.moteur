@@ -17,9 +17,9 @@ using namespace std;
 
 #include "spatial/materiau/Textures.h"
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 unsigned int LitFichierTexture(const string &nomFichier) throw(CErreur)
@@ -30,7 +30,7 @@ unsigned int LitFichierTexture(const string &nomFichier) throw(CErreur)
 	unsigned int texName = 0;
 
 	string fichier = nomFichier;
-	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(fichier);
+	JktUtils::RessourcesLoader::getFileRessource(fichier);
 
 	SDL_Surface *image;
 
@@ -96,7 +96,7 @@ unsigned int LitFichierTextureAlpha( const string &nomFichier, float alpha )
 	SDL_Surface *image;
 
 	string fichier = nomFichier;
-	JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(fichier);
+	JktUtils::RessourcesLoader::getFileRessource(fichier);
 
 	image = IMG_Load(fichier.c_str());		// Lit le fichier image de la texture
 	if(image == 0)
@@ -149,4 +149,4 @@ unsigned int LitFichierTextureAlpha( const string &nomFichier, float alpha )
 	return texName;
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

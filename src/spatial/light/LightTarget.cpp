@@ -21,7 +21,7 @@ using namespace std;
 
 extern float GLIGHTX, GLIGHTY, GLIGHTZ;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 CLightTarget::CLightTarget(void)
@@ -240,4 +240,4 @@ void CLightTarget::SetFallOff( float falloff )
 	m_fFallOff = falloff;
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

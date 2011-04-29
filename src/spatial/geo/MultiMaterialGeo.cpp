@@ -36,11 +36,11 @@ extern int JKT_RenderMode;
 
 #include "spatial/geo/MultiMaterialGeo.h"
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
 extern CCfg Config;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 class CGeoObject;
 class CPorte;
@@ -848,4 +848,4 @@ float CMultiMaterialGeo::GereLaser( float pos[3], CV3D &Dir, float dist)
 	return dist;	// Renvoie la distance trouvée
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

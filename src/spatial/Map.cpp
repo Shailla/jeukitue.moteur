@@ -50,9 +50,9 @@ class CGame;
 
 extern CGame Game;
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 CMap::CMap()
@@ -61,7 +61,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() begin%T", this );
 	m_bSelection = false;
 }
 
-CMap::CMap(const string &nomFichier) throw(JKT_PACKAGE_UTILS::CErreur)
+CMap::CMap(const string &nomFichier) throw(JktUtils::CErreur)
 {
 TRACE().p( TRACE_MOTEUR3D, "CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str(), this );
 	if( !Lit( nomFichier )) {
@@ -268,7 +268,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scale
 bool CMap::Lit(const string &nomFichier)
 {
 	string nomFichierComplet = string(nomFichier);
-	bool isResource = JKT_PACKAGE_UTILS::RessourcesLoader::getFileRessource(nomFichierComplet);
+	bool isResource = JktUtils::RessourcesLoader::getFileRessource(nomFichierComplet);
 
 	// Si le fichier Map n'est pas une resource alors c'est une map classique
 	if(!isResource) {
@@ -692,7 +692,7 @@ TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichie
 	return false;
 }*/
 
-bool CMap::Init() throw(JKT_PACKAGE_UTILS::CErreur)	// Initialisation de la CMap
+bool CMap::Init() throw(JktUtils::CErreur)	// Initialisation de la CMap
 {
 	// Letcure des fichiers de texture
 	vector<CMaterial*>::iterator iterMat;
@@ -904,4 +904,4 @@ void CMap::afficheToutesTextures( int x, int y )
 	}
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

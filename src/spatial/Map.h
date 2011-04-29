@@ -11,9 +11,9 @@
 class CGame;
 class CPlayer;
 
-using namespace JKT_PACKAGE_UTILS;
+using namespace JktUtils;
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 class CGeo;
 class CLight;
@@ -28,7 +28,7 @@ class CMap
 	vector<CGeo*> m_TabGeo;				// Liste des objets géométriques
 	vector<CMouve*> m_TabMouve;			// Liste des objets nécessitant une actualisation (portes,...)
 
-	bool Init() throw(JKT_PACKAGE_UTILS::CErreur);								// Initialisation de la CMap
+	bool Init() throw(JktUtils::CErreur);								// Initialisation de la CMap
 //	bool LitFichier(const string &nomFichier);	// Lecture de la CMap depuis un fichier *.map
 	bool Lit(const string &nomFichier);
 
@@ -41,7 +41,7 @@ public:
 
 		// Constructeurs / destructeur
 	CMap();
-	CMap(const string &nomFichier ) throw(JKT_PACKAGE_UTILS::CErreur);
+	CMap(const string &nomFichier ) throw(JktUtils::CErreur);
 	~CMap();
 
 		// Fonctions membres
@@ -79,7 +79,7 @@ public:
 	bool IsSelectionMode();
 };
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur
 
 #endif
 

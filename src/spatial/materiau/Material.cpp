@@ -15,7 +15,7 @@ using namespace std;
 
 #include "spatial/materiau/Material.h"
 
-namespace JKT_PACKAGE_MOTEUR3D
+namespace JktMoteur
 {
 
 CMaterial::CMaterial()
@@ -150,4 +150,4 @@ void CMaterial::setRef(unsigned int ref)
 	m_Ref = ref;
 }
 
-}	// JKT_PACKAGE_MOTEUR3D
+}	// JktMoteur

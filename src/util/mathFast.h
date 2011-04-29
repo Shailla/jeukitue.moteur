@@ -1,5 +1,5 @@
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 
 float FastSin0(float fAngle);
@@ -13,4 +13,4 @@ float FastTan1(float fAngle);
 float FastInvTan0(float fValue);
 float FastInvTan1(float fValue);
 
-}	// JKT_PACKAGE_UTILS
+}	// JktUtils

@@ -9,7 +9,7 @@
 
 using namespace std;
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 
 CGenRef::CBloc::CBloc(unsigned int debut, unsigned int fin)

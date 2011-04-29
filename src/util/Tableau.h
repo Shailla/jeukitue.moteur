@@ -9,7 +9,7 @@
 //ou du dernier élément																//
 //////////////////////////////////////////////////////////////////////////////////////
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 
 template <class X> class Tableau {
@@ -85,7 +85,7 @@ public:
 	unsigned int Size();			// Retourne le nombre d'objets contenus
 };
 
-}	// JKT_PACKAGE_UTILS
+}	// JktUtils
 
 #endif
 

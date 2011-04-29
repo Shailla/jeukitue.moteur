@@ -6,7 +6,7 @@ using namespace std;
 
 #include "V3D.h"
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 
 CV3D::CV3D()
@@ -155,4 +155,4 @@ void CV3D::get( float vec[3] )
 	vec[2] = Z;
 }
 
-}	// JKT_PACKAGE_UTILS
+}	// JktUtils

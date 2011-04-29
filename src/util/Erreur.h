@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 
 class CErreur		// Classe pour l'émission d'erreurs par exception
@@ -18,7 +18,7 @@ public:
 	std::string toString() const;
 };
 
-}	// JKT_PACKAGE_UTILS
+}	// JktUtils
 
 #endif
 

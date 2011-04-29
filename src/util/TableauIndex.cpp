@@ -5,7 +5,7 @@
 
 #include "TableauIndex.h"
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 
 template<class X>
@@ -111,7 +111,7 @@ inline
 bool CTableauIndex<X>::bSuivant( int &pos )
 {	return ( ( pos = Suivant(pos) )< getMax() );	}
 
-}	// JKT_PACKAGE_UTILS
+}	// JktUtils
 
 #endif
 

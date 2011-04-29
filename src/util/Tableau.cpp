@@ -9,7 +9,7 @@ using namespace std;
 
 #include "Tableau.h"
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 template<class X>	
 Tableau<X>::Tableau()
@@ -187,7 +187,7 @@ unsigned int Tableau<X>::Size()
 	return m_uConteur;
 }
 
-}	// JKT_PACKAGE_UTILS
+}	// JktUtils
 
 #endif
 

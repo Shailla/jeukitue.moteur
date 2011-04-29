@@ -2,7 +2,7 @@
 #ifndef __JKT__V3D_H
 #define __JKT__V3D_H
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 
 class CV3D
@@ -43,7 +43,7 @@ public:
 	void setNull();				// Donne une valeur nulle au vecteur
 };
 
-}	// JKT_PACKAGE_UTILS
+}	// JktUtils
 
 #endif 
 

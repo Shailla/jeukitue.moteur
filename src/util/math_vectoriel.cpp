@@ -4,7 +4,7 @@
 
 #include "math_vectoriel.h"
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 
 float produitScalaire(const float *A, const float *B)
@@ -40,4 +40,4 @@ void produitMatriciel(const float *row, const float *A, float *B)		// B = row * 
 	B[2] = (row[2]*A[0]) + (row[5]*A[1]) + (row[8]*A[2]);
 }
 
-}	// JKT_PACKAGE_UTILS
+}	// JktUtils

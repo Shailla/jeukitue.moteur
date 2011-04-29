@@ -5,7 +5,7 @@ using namespace std;
 
 #include "Erreur.h"
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 
 CErreur::CErreur( int c, const string &m )
@@ -27,4 +27,4 @@ string CErreur::toString() const {
 	return txt;
 }
 
-}	// JKT_PACKAGE_UTILS
+}	// JktUtils

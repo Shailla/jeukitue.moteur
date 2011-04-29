@@ -2,7 +2,7 @@
 #ifndef __JKT__TABLEAUINDEX_H
 #define __JKT__TABLEAUINDEX_H
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 
 template <class X> class CTableauIndex
@@ -28,7 +28,7 @@ public:
 	bool bSuivant( int &pos );		// Comme Suivant + document pos + vérifie si dernier élément
 };
 
-}	// JKT_PACKAGE_UTILS
+}	// JktUtils
 
 #endif
 

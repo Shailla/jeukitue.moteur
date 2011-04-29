@@ -1,7 +1,7 @@
 
 #include "mathFast.h"
 
-namespace JKT_PACKAGE_UTILS
+namespace JktUtils
 {
 
 float FastSin0 (float fAngle)
@@ -162,5 +162,5 @@ float FastInvTan1 (float fValue)
 	return fResult;
 }
 
-}	// JKT_PACKAGE_UTILS
+}	// JktUtils
 

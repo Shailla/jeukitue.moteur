@@ -25,14 +25,14 @@ class CGame;
 #include "Menu/DlgBoite.h"
 #include "Menu/Menu.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 extern CFocus *pFocus;
 extern bool Aide;
 extern GLFont myfont;
 extern CCfg Config;
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 
 #define TAILLEFONT 0.8f
@@ -432,4 +432,4 @@ void CMenu::handle_key_down( SDL_Event *event )
 	}
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

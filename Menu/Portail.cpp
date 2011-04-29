@@ -32,7 +32,7 @@ void lanceMenuMultijoueur(void *var);	// Menu pour le jeu multi-joueurs
 void lanceMenuTest(void *var);
 void quit_tutorial( int code );
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 extern CFocus *pFocus;
 
@@ -44,4 +44,4 @@ TRACE().p( TRACE_MENU, "quit_JKTici(%x)", var );
 
 #include "Menu/Portail.h"
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

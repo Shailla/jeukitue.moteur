@@ -21,7 +21,7 @@ class CReseau;
 
 #include "Menu/MMenuPrinc.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 extern CReseau Reseau;
 extern CGame Game;
@@ -30,7 +30,7 @@ extern bool Aide;
 
 void quit_JKT();
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 extern CMenu MenuPrinc2;
 
@@ -92,4 +92,4 @@ TRACE().p( TRACE_MENU, "lanceMenuPrinc(var=%x)", var );
 	Aide = true;
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

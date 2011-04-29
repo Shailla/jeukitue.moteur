@@ -2,7 +2,7 @@
 #ifndef __JKT__MENU_H
 #define __JKT__MENU_H
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 
 typedef void (*PF)(void *);
@@ -55,7 +55,7 @@ public:
 	void handle_key_down( SDL_Event *event );	// Réagit aux touches claviers
 };
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu
 
 #endif
 

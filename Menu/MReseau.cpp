@@ -18,7 +18,7 @@ using namespace std;
 #include "Menu/MReseau.h"
 #include "Menu/MConfiguration.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 class CGame;
 
@@ -28,7 +28,7 @@ extern CFocus *pFocus;
 extern bool Aide;
 extern CCfg Config;
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 
 	/********************************/
@@ -254,4 +254,4 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigReseauPort(var=%x)", arg );
 	}
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

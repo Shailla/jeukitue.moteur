@@ -26,12 +26,12 @@ using namespace std;
 
 #include "Menu/MMultijoueurServeurLancePartie.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 extern CGame Game;
 extern CFocus *pFocus;
 extern bool Aide;
-extern JKT_PACKAGE_RESEAU::CReseau Reseau;
+extern JktNet::CReseau Reseau;
 extern CCfg Config;
 
 #include "Menu/MMenuPrinc.h"
@@ -40,7 +40,7 @@ extern CCfg Config;
 void openMAP(void *arg);
 void openMAP2( const string &nomFichierMap );
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 extern CMenu MenuMultijoueurserveur;
 
@@ -66,13 +66,13 @@ TRACE().p( TRACE_MENU, "retourPartiemulti(var=%x)", arg );
 
 void suivantPartiemulti(void *arg)
 {
-	JKT_PACKAGE_RESEAU::CServer *server = Game.getServer();
+	JktNet::CServer *server = Game.getServer();
 	pFocus->SetPlayFocus();
 	Aide = false;
 	server->nomMAP = (char*)arg;		// Informe le serveur sur le nom de la MAP lancée
 	openMAP2( server->nomMAP );			// Ouvre cette MAP
 	Game.setPlayerList( server->maxPlayers );
-	server->setStatut( JKT_PACKAGE_RESEAU::JKT_STATUT_SERVER_PLAY );
+	server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
 	server->bGame = true;				// Indique qu'une partie est en cours
 }
 
@@ -162,4 +162,4 @@ TRACE().p( TRACE_MENU, "lanceMenuPartiemulti(var=%x)", var );
 	CDlg::SetMenuActif( MenuPartiemulti );
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

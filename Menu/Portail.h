@@ -1,6 +1,6 @@
 
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 
 void afficheMenu();						// Affiche l'aide du jeu
@@ -11,4 +11,4 @@ void lanceMenuPrinc(void *var);
 void lanceMenuModeSelection(void *var);
 void lanceMenuOpenScene(void *var);
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

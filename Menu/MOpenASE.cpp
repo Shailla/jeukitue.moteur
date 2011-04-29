@@ -33,8 +33,8 @@ using namespace std;
 
 #include "Menu/MOpenASE.h"
 
-using namespace JKT_PACKAGE_MENU;
-using namespace JKT_PACKAGE_MOTEUR3D;
+using namespace JktMenu;
+using namespace JktMoteur;
 
 bool openMAP( const void *arg );
 
@@ -42,9 +42,9 @@ extern CGame Game;
 extern CFocus *pFocus;
 extern bool Aide;
 extern CCfg Config;
-JKT_PACKAGE_MOTEUR3D::CMap *pMapASE;
+JktMoteur::CMap *pMapASE;
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 extern CMenu MenuPrinc2;
 
@@ -470,4 +470,4 @@ TRACE().p( TRACE_MENU, "lanceMenuConvertASE(var=%x)", var );
 	CDlg::SetMenuActif( MenuOpenASE );
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

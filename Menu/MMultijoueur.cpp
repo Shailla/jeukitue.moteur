@@ -29,11 +29,11 @@ class CMouve;
 class CGame;
 class CGeoObject;
 class CPorte;
-class JKT_PACKAGE_RESEAU::CReseau;
+class JktNet::CReseau;
 
 extern CGame Game;
 extern bool Aide;
-extern JKT_PACKAGE_RESEAU::CReseau Reseau;
+extern JktNet::CReseau Reseau;
 extern CCfg Config;
 
 	/************************************/
@@ -47,11 +47,11 @@ extern CCfg Config;
 #include "Menu/MMultijoueurClientPing.h"
 #include "Menu/MMultijoueur.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 void lanceJoindrePartie( void *arg );		// Se connecte sur la partie active sur le serveur
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 extern CFocus *pFocus;
 
@@ -119,4 +119,4 @@ TRACE().p( TRACE_MENU, "lanceMenuMultijoueur(var=%x)", var );
 		lanceMenuMultijoueurclientconnect( 0 );
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

@@ -25,7 +25,7 @@ using namespace std;
 
 #include "Menu/MMultijoueurClientInfo.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 class CMaterial;
 class CLight;
@@ -38,11 +38,11 @@ class CReseau;
 extern CGame Game;
 extern CFocus *pFocus;
 extern bool Aide;
-extern JKT_PACKAGE_RESEAU::CReseau Reseau;
+extern JktNet::CReseau Reseau;
 extern CCfg Config;
 
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 	/************************************/
 	/*									*/
@@ -95,4 +95,4 @@ TRACE().p( TRACE_MENU, "lanceInfoServer(var=%x)", arg );
 	CDlg::SetMenuActif( &MenuInfoserver );
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

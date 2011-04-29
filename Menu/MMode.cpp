@@ -14,7 +14,7 @@ using namespace std;
 #include "Menu/DlgBoite.h"
 #include "Menu/Menu.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 class CMaterial;
 class CLight;
@@ -47,7 +47,7 @@ extern CFocus *pFocus;
 extern bool Aide;
 extern CCfg Config;
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 	/****************/
 	/*				*/
@@ -111,4 +111,4 @@ TRACE().p( TRACE_MENU, "lanceMenuModeSelection(var=%x)", var );
 	CDlg::SetMenuActif( &MenuModeSelection );
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

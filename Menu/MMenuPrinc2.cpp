@@ -14,7 +14,7 @@ using namespace std;
 
 #include "Menu/MMenuPrinc2.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 class CMaterial;
 class CLight;
@@ -29,7 +29,7 @@ extern bool Aide;
 
 void quit_JKT();
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 extern CMenu MenuPrinc;
 
@@ -72,4 +72,4 @@ char *item_menu_princ2[] =
 
 CMenu MenuPrinc2( "MENU PRINCIPAL", item_menu_princ2, 5, liste_suivant_princ2, 0 );
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

@@ -23,7 +23,7 @@ using namespace std;
 
 #include "MOpenMAP.h"
 
-using namespace JKT_PACKAGE_MENU;
+using namespace JktMenu;
 
 class CMaterial;
 class CLight;
@@ -38,7 +38,7 @@ extern CGame Game;
 extern CFocus *pFocus;
 extern bool Aide;
 
-namespace JKT_PACKAGE_MENU
+namespace JktMenu
 {
 extern CMenu MenuPrinc2;
 
@@ -114,4 +114,4 @@ TRACE().p( TRACE_MENU, "retourMAP(var=%x)", var );
 	lanceMenuOpenScene( 0 );
 }
 
-}	// JKT_PACKAGE_MENU
+}	// JktMenu

@@ -5,7 +5,7 @@
 #include <agar/gui/style.h>
 #include <agar/core.h>
 #include <agar/gui.h>
-#include <agar/gui/view.h>
+//#include <agar/gui/view.h>
 
 #include "menu/MainMenuView.h"
 #include "menu/CentralisateurView.h"

@@ -10,15 +10,22 @@
 #include "SDL.h"
 #include "SDL_thread.h"
 
+
+/********************************************************************************
+*  If you don't want to compile with the trace system activated,
+*  undefine TRACE_ACTIVE
+********************************************************************************/
+
+//#undef TRACE_ACTIVE
+#define TRACE_ACTIVE
+
+
+
 enum TraceType {
 	TRACE_NORMAL,
 	TRACE_BEGIN,
 	TRACE_END,
 };
-
-// If you don't want to activate the trace system, undefine TRACE_ACTIVE
-//#undef TRACE_ACTIVE
-#define TRACE_ACTIVE
 
 #ifdef TRACE_ACTIVE
 	#define TRACE()	Donnees(__LINE__,__FILE__)
@@ -45,8 +52,8 @@ class Donnees
 	int m_Line;
 	const char *m_NomFichier;
 public:
-	Donnees( int line, const char *nomFichier );
-	void p(int indic, const char *txt , ... );
+	Donnees(int line, const char *nomFichier);
+	void p(int indic, const char *txt, ... );
 };
 
 std::ofstream mFichier();

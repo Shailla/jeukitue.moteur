@@ -12,15 +12,15 @@ using namespace std;
 
 class ProgressBarView : public View
 {
-	int* _progress;
+	int* _progressPourcentagePtr;
 	char _currentOperationMessage[50];
 
 public:
 	ProgressBarView(const AG_EventFn controllerCallback);
 	~ProgressBarView(void);
 
-	int* getProgressPtr();
-	char* getCurrentOperationMessagePtr();
+	void setProgressPercentage(const int progressPourcentage);
+	void setCurrentOperationMessage(const char* currentOperationMessage);
 };
 
 #endif

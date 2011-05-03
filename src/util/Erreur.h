@@ -9,11 +9,11 @@ namespace JktUtils
 class CErreur		// Classe pour l'émission d'erreurs par exception
 {
 public:
-	std::string msg;	// Message d'erreur
-	int code;			// Code de l'erreur
+	std::string _msg;	// Message d'erreur
+	int _code;			// Code de l'erreur
 
 		// Constructeur
-	CErreur(int c, const std::string &m);
+	CErreur(const int code, const std::string &msg);
 
 	std::string toString() const;
 };

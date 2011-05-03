@@ -3,10 +3,16 @@
 #include <iostream>
 #include <vector>
 
+#include "ressource/RessourceConstantes.h"
 #include "util/FindFolder.h"
 #include "RessourcesLoader.h"
 
 using namespace std;
+
+const char* MAP_DIRECTORY =			"./Map/";						// Répertoire des MAP de jeu
+const char* PLAYER_MAP_DIRECTORY =	"./Ressources/Maps/Joueurs/";	// Répertoire des MAP des skins de joueurs		
+
+const char* TEMPORARY_DIRECTORY =	"./Tmp/";						// Répertoire temporaire de travail
 
 namespace JktUtils
 {
@@ -106,7 +112,7 @@ bool RessourcesLoader::getFileRessource(string& file)
 vector<string> RessourcesLoader::getMaps() {
 	std::vector<std::string> mapNames;
 	string mapName;
-	CFindFolder folder( "./Map/", 0, ".map.xml" );
+	CFindFolder folder( MAP_DIRECTORY, 0, ".map.xml" );
 	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
 	folder.reset();
 
@@ -125,7 +131,7 @@ vector<string> RessourcesLoader::getMaps() {
 vector<string> RessourcesLoader::getPlayerMaps() {
 	std::vector<std::string> mapNames;
 	string mapName;
-	CFindFolder folder( "./Ressources/Maps/Joueurs/", 0, ".map.xml" );
+	CFindFolder folder( PLAYER_MAP_DIRECTORY, 0, ".map.xml" );
 	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
 	folder.reset();
 

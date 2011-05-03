@@ -97,17 +97,17 @@ void CentralisateurView::updateDownloadFileList(vector<DownloadFileItem> items)
 		DownloadFileItem item = *iter;
 
 		char* category;
-		if(item._category == CategoryDonwloadFile::MAP) {
+		if(item._category == MAP) {
 			category = "Map de jeu";
 		}
-		else if(item._category == CategoryDonwloadFile::MAP_PLAYER) {
+		else if(item._category == MAP_PLAYER) {
 			category = "Map de joueur";
 		}
 		else {
 			category = "Inconnu";
 		}
 
-		AG_Button* buttonDownload = AG_ButtonNewFn(NULL, 0, "Telecharger", m_controllerCallback, "%i,%l", Controller::DownloadOneFileAction, item._identifier);
+		AG_Button* buttonDownload = AG_ButtonNewFn(NULL, 0, "Telecharger", m_controllerCallback, "%i,%li", Controller::DownloadOneFileAction, item._identifier);
 		AG_TableAddRow(_downloadFileTable, "%s:%s:%s:%d:%s:%[W]", item._nom.c_str(), category, "Version", item._taille, item._description.c_str(), buttonDownload);
 	}
 

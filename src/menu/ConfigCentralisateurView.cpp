@@ -49,7 +49,7 @@ ConfigCentralisateurView::ConfigCentralisateurView(const AG_EventFn controllerCa
 
 ConfigCentralisateurView::~ConfigCentralisateurView(void)
 {
-    delete m_adresseStr;
+    delete[] &m_adresseStr;
 }
 
 int ConfigCentralisateurView::getPort(void)

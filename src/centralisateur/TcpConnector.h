@@ -9,6 +9,7 @@ using namespace std;
 
 #include "exception/centralisateur/CentralisateurTcpException.h"
 #include "centralisateur/data/DownloadFileItem.h"
+#include "menu/ProgressBarView.h"
 
 namespace JktNet
 {
@@ -17,7 +18,7 @@ class TcpConnector
 {
 public:
 	static vector<DownloadFileItem> askDownloadFileList(const int port) throw(CentralisateurTcpException);
-	static void downloadOneFile(const int port, const long fileId, int* progress, char* currentOperationMessage) throw(CentralisateurTcpException);
+	static void downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) throw(CentralisateurTcpException);
 };
 
 }

@@ -2,8 +2,12 @@
 #include <fstream>
 
 #include "SDL_net.h"
+#include "ZipArchive.h"
 
 #include "reseau/TcpUtils.h"
+#include "util/FindFolder.h"
+#include "ressource/RessourceConstantes.h"
+#include "menu/ProgressBarView.h"
 
 #include "centralisateur/TcpConnector.h"
 
@@ -61,6 +65,8 @@ vector<DownloadFileItem> TcpConnector::askDownloadFileList(const int port) throw
 		item._description = CTcpUtils::loadString(socket);
 
 		list.push_back(item);
+
+		cout << endl << "Download id='" << item._identifier << "', nom='" << item._nom << "', taille='" << item._taille << "'";
 	}
 
 	// Fermeture de la socket
@@ -72,23 +78,23 @@ vector<DownloadFileItem> TcpConnector::askDownloadFileList(const int port) throw
 struct DownloadOneFileThreadData
 {
 	int _port;
-	int* _progress;
-	char* _currentOperationMessage;
+	long _downloadId;
+	ProgressBarView* _progressView;
 };
 
 int downloadOneFileThread(void* threadData)
 {
-	int* progressValue = ((DownloadOneFileThreadData*) threadData)->_progress;
 	int port = ((DownloadOneFileThreadData*) threadData)->_port;
-	char* currentOperationMessage = ((DownloadOneFileThreadData*) threadData)->_currentOperationMessage;
-	
-	*progressValue = 0;
+	long downloadId = ((DownloadOneFileThreadData*) threadData)->_downloadId;
+	ProgressBarView* progressView = ((DownloadOneFileThreadData*) threadData)->_progressView;
+
+	// Initialisation de la barre de progression
+	progressView->setProgressPercentage(0);
+	progressView->setCurrentOperationMessage("Connection au centralisateur...");
 
 	// Open a TCP connection to the Centralisateur exchange files service
 	IPaddress ip;
 	TCPsocket socket;
-
-	strcpy(currentOperationMessage, "Connection au centralisateur...");
 
 	if(SDLNet_ResolveHost(&ip,"localhost", port) == -1) {
 		throw CentralisateurTcpException("Resolve host error");
@@ -100,7 +106,7 @@ int downloadOneFileThread(void* threadData)
 	}
 
 	// Send a TCP request to obtain the file
-	strcpy(currentOperationMessage, "Envoi de la demande du fichier...");
+	progressView->setCurrentOperationMessage("Envoi de la demande du fichier...");
 
 	Uint8* dataCommand = new Uint8[4];
 	SDLNet_Write32((Uint32)2, dataCommand);
@@ -112,7 +118,7 @@ int downloadOneFileThread(void* threadData)
 
 	// Send the identifier of the file
 	Uint8* dataIdentifier = new Uint8[8];
-	JktNet_Write64((Uint64)2, dataIdentifier);
+	JktNet_Write64((Uint64)downloadId, dataIdentifier);
 	result = SDLNet_TCP_Send(socket, dataIdentifier, 8);
 
 	if(result < 8) {
@@ -121,59 +127,105 @@ int downloadOneFileThread(void* threadData)
 
 
 	/**************************************/
-	/* Get file data                      */
+	/* Receive the file data              */
 	/**************************************/
-	strcpy(currentOperationMessage, "Transfert du fichier...");
+	progressView->setCurrentOperationMessage("Transfert du fichier...");
 
 	DownloadFileItem item;
 
-	// Identifier of the file
-	item._identifier = CTcpUtils::loadLong(socket);
+	int responseCode = CTcpUtils::loadInteger(socket);
 
-	// Name of the file (size of the name followed by the name itself)
-	item._nom = CTcpUtils::loadString(socket);
+	if(responseCode = 10) {
+		// Identifier of the file
+		item._identifier = CTcpUtils::loadLong(socket);
 
-	// Category of the file (MAP, MAP_PLAYER, ...)
-	item._category = static_cast<CategoryDonwloadFile>(CTcpUtils::loadInteger(socket));
+		// Name of the file (size of the name followed by the name itself)
+		item._nom = CTcpUtils::loadString(socket);
 
-	// Size of the file (size of the name followed by the name itself)
-	item._taille = CTcpUtils::loadInteger(socket);
+		// Category of the file (MAP, MAP_PLAYER, ...)
+		item._category = static_cast<CategoryDonwloadFile>(CTcpUtils::loadInteger(socket));
 
-	// Contenu du fichier
-	ofstream file("c:/out.txt");
+		// Size of the file (size of the name followed by the name itself)
+		item._taille = CTcpUtils::loadInteger(socket);
 
-	if(!file)
-	{
-		cerr << "Erreur ouverture du fichier";
+		// Création d'un fichier temporaire
+		string tmpFilename = TEMPORARY_DIRECTORY;
+		tmpFilename.append(item._nom);
+		tmpFilename.append(".tmp");
+
+		ofstream tmpFile(tmpFilename.c_str(), ios_base::trunc | ios_base::binary);	// Toute ancienne donnée dans le fichier est écrasée
+
+		if(!tmpFile) {
+			cerr << "Erreur ouverture du fichier";
+		}
+
+		int accompli = 0;
+
+		char byte;
+		for(int i=0 ; i<item._taille ; i++) {
+			SDLNet_TCP_Recv(socket, &byte, 1);
+			tmpFile.put(byte);
+			
+			accompli++;
+
+			// Mise à jour de la barre de progression
+			progressView->setProgressPercentage((accompli * 100) / item._taille);
+		}
+
+		// Fermeture des flux
+		progressView->setCurrentOperationMessage("Fermeture du flux du fichier...");
+		tmpFile.flush();
+		tmpFile.close();
+
+		progressView->setCurrentOperationMessage("Fermeture du flux du fichier...");
+		SDLNet_TCP_Close(socket);
+
+		// Création du répertoire de la Map
+		string destDirectory = MAP_DIRECTORY;
+		destDirectory.append(item._nom).append("/");
+
+		if(CFindFolder::mkdir(destDirectory.c_str()) != 0) {
+			cerr << endl << "Le repertoire '" << destDirectory << "' existe deja";
+		}
+
+		// Décompression de l'archive
+		progressView->setCurrentOperationMessage("Ouverture de l'archive...");
+
+		CZipArchive zip;
+		zip.Open((LPCTSTR)tmpFilename.c_str());
+
+		for(int i = 0 ; i < zip.GetCount() ; i++) {
+			CZipFileHeader* fileHeader = zip.GetFileInfo(i);
+			CZipString currentFileName = fileHeader->GetFileName();
+			string destFileName(destDirectory);
+			destFileName.append(currentFileName);
+
+			zip.ExtractFile(i, (LPCTSTR)destFileName.c_str());
+		}
+
+		zip.Close();
+
+		// Suppression du fichier temporaire
+		progressView->setCurrentOperationMessage("Suppression du fichier temporaire...");
+		remove(tmpFilename.c_str());
+
+		// Fin
+		progressView->setCurrentOperationMessage("Termine.");
+	}
+	else {
+		// Fin avec erreur
+		progressView->setCurrentOperationMessage("Erreur : Le telechargement n'existe pas.");
 	}
 
-	int accompli = 0;
-
-	char byte;
-	for(int i=0 ; i<item._taille ; i++) {
-		SDLNet_TCP_Recv(socket, &byte, 1);
-		file.put(byte);
-		
-		accompli++;
-		*progressValue = (int) ((accompli * 100) / item._taille);
-	}
-
-	// Fermeture des flux
-	strcpy(currentOperationMessage, "Fermeture du flux du fichier...");
-	file.close();
-
-	strcpy(currentOperationMessage, "Fermeture de la socket...");
-	SDLNet_TCP_Close(socket);
-
-	strcpy(currentOperationMessage, "Termine.");
+	return 0;
 }
 
-void TcpConnector::downloadOneFile(const int port, const long fileId, int* progress, char* currentOperationMessage) throw(CentralisateurTcpException)
+void TcpConnector::downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) throw(CentralisateurTcpException)
 {
 	DownloadOneFileThreadData* threadData = new DownloadOneFileThreadData();
 	threadData->_port = port;
-	threadData->_progress = progress;
-	threadData->_currentOperationMessage = currentOperationMessage;
+	threadData->_downloadId = downloadId;
+	threadData->_progressView = progressView;
 
 	SDL_CreateThread(downloadOneFileThread, (void*)threadData);
 }

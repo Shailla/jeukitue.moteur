@@ -23,7 +23,7 @@ CV3D::CV3D(float x, float y, float z)
 	Z = z;
 }
 
-CV3D::CV3D( const float b[3] )
+CV3D::CV3D(const float b[3])
 {
 	X = b[0];
 	Y = b[1];

@@ -64,8 +64,8 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() begin%T", this );
 CMap::CMap(const string &nomFichier) throw(JktUtils::CErreur)
 {
 TRACE().p( TRACE_MOTEUR3D, "CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str(), this );
-	if( !Lit( nomFichier )) {
-		cout << endl << "Erreur à la lecture du fichier MAP : " << nomFichier;
+	if( !Lit(nomFichier) ) {
+		cerr << endl << "Erreur à la lecture du fichier MAP : " << nomFichier;
 	}
 
 	m_bSelection = false;
@@ -78,7 +78,7 @@ CMap::~CMap()
 {
 TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() begin%T", this );
 
-		// Destruction des objets géo
+	// Destruction des objets géo
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
 		delete *iterGeo;
@@ -86,13 +86,17 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() begin%T", this );
 	m_TabGeo.clear();
 	m_TabMouve.clear();
 
+	// Destruction des matériaux
 	vector<CMaterial*>::iterator iterMat;
+
 	for( iterMat=m_TabMaterial.begin() ; iterMat!=m_TabMaterial.end() ; iterMat++ )
 		delete *iterMat;
 
 	m_TabMaterial.clear();
 
+	// Destruction des lumières
 	vector<CLight*>::iterator iterLight;
+
 	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
 		delete *iterLight;
 
@@ -281,27 +285,24 @@ bool CMap::Lit(const string &nomFichier)
 
 	TiXmlDocument document(nomFichierXml.c_str());
 
-	if(document.LoadFile())
-	{
-			// Element de map
+	if(document.LoadFile()) {
+		// Element de map
 		TiXmlElement* elMap = document.FirstChildElement(Xml::MAP);
 		if(!elMap)
 			throw CErreur(0,"Fichier map corrompu");
 
-			// Lecture des matériaux
+		// Lecture des matériaux
 		TiXmlElement* elMat = elMap->FirstChildElement(Xml::MATERIAUX);
-		if(elMat)
-		{
-			for(TiXmlElement* el=elMat->FirstChildElement(); el!=0; el=el->NextSiblingElement())
-			{
-				if(strcmp(Xml::MATERIAU, el->Value()))
-				{
-					string erreur = "Fichier map corrompu : '";
+
+		if(elMat) {
+			for(TiXmlElement* el=elMat->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
+				if(strcmp(Xml::MATERIAU, el->Value())) {
+					string erreur = "Fichier MAP corrompu : '";
 					erreur += Xml::MATERIAU;
 					erreur += "' attendu, '";
 					erreur += el->Value();
 					erreur += "' recu";
-					throw CErreur(0, erreur.c_str());
+					throw CErreur(0, erreur);
 				}
 
 				CMaterial* mat = CMaterialMaker::Lit(el, repertoireBinaires);
@@ -311,10 +312,10 @@ bool CMap::Lit(const string &nomFichier)
 			}
 		}
 
-			// Lecture des lumières
+		// Lecture des lumières
 		TiXmlElement* elLight = elMap->FirstChildElement(Xml::LUMIERES);
-		if(elLight)
-		{
+
+		if(elLight) {
 			for(TiXmlElement* el=elLight->FirstChildElement(); el!=0; el=el->NextSiblingElement())
 			{
 				if(strcmp(Xml::LUMIERE, el->Value()))
@@ -324,7 +325,7 @@ bool CMap::Lit(const string &nomFichier)
 					erreur += "' attendu, '";
 					erreur += el->Value();
 					erreur += "' recu";
-					throw CErreur(0, erreur.c_str());
+					throw CErreur(0, erreur);
 				}
 
 				CLight* lum = CLightMaker::Lit(el);
@@ -334,20 +335,18 @@ bool CMap::Lit(const string &nomFichier)
 			}
 		}
 
-			// Lecture des objets géométriques
+		// Lecture des objets géométriques
 		TiXmlElement* elGeo = elMap->FirstChildElement(Xml::GEOS);
-		if(elGeo)
-		{
-			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement())
-			{
-				if(strcmp(Xml::GEO, el->Value()))
-				{
+
+		if(elGeo) {
+			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
+				if(strcmp(Xml::GEO, el->Value())) {
 					string erreur = "Fichier map corrompu : '";
 					erreur += Xml::GEO;
 					erreur += "' attendu, '";
 					erreur += el->Value();
 					erreur += "' recu";
-					throw CErreur(0, erreur.c_str());
+					throw CErreur(0, erreur);
 				}
 
 				CGeo* geo = CGeoMaker::Lit(el, this);
@@ -359,9 +358,8 @@ bool CMap::Lit(const string &nomFichier)
 
 		result = true;
 	}
-	else
-	{
-		cout << endl << "Ouverture impossible : " << nomFichierXml;
+	else {
+		cerr << endl << "Ouverture impossible : " << nomFichierXml;
 	}
 
 	return result;

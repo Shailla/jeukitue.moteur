@@ -15,7 +15,7 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_PLAIN|AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
 
-	AG_Notebook* book = AG_NotebookNew(m_window, 0 );
+	AG_Notebook* book = AG_NotebookNew(m_window, 0);
 	AG_Expand(book);
 
 	/******************************
@@ -68,7 +68,7 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	// Disposition de la fenêtre	
 	AG_WidgetUpdate(book);
 	AG_NotebookSelectTab (book, tabMain);
-	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_BC, 100, 40);
+	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_BL, 40, 20);
 	AG_WindowShow(m_window);
 
     hide();

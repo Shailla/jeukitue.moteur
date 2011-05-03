@@ -15,7 +15,7 @@ public:
 		// Constructeurs
 	CV3D();
 	CV3D(float x, float y, float z);
-	CV3D( const float b[3] );
+	CV3D(const float b[3]);
 
 		// Opérateurs
 	void operator=( CV3D b );				// Affectation

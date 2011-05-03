@@ -19,7 +19,7 @@ using namespace std;
 /*
     OpenSceneMapView affiche dans une scrollview la liste des map disponibles dans
     le répertoire Map du jeu.
-    On peut en choisir une, visualiser son apperçu et lancer une partie avec cette map.
+    On peut en choisir une et lancer une partie avec cette map.
 */
 OpenSceneMapView::OpenSceneMapView(const AG_EventFn controllerCallback)
 :View(controllerCallback)

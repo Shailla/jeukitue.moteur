@@ -1145,19 +1145,21 @@ bool openMAP( const void *nomFichier )
 	return true;
 }
 
-void openMAP2( const string &nomFichierMap )
+void openMAP2(const string &nomFichierMap)
 {
 	Fabrique::getAgarView()->getConsoleView()->setMapOuverte(nomFichierMap);
 
-	if( !Game.openMap( nomFichierMap ) )
-		cerr << endl << "Erreur à l'ouverture du fichier Map : " << nomFichierMap;
-
+	if( !Game.openMap(nomFichierMap) ) {
+		cerr << endl << "Erreur a l'ouverture du fichier Map : " << nomFichierMap;
+	}
+	else {
 		// Lecture du map du joueur
-	CMap *pMapJoueur = new CMap( nomFichierJoueur );
+		CMap *pMapJoueur = new CMap(nomFichierJoueur);
 
 		// Ajuste les coordonnées
-	pMapJoueur->EchangeXZ();
-	pMapJoueur->Scale( -0.15f, 0.15f, 0.15f );
+		pMapJoueur->EchangeXZ();
+		pMapJoueur->Scale( -0.15f, 0.15f, 0.15f );
+	}
 }
 
 void boucle()

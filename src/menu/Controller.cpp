@@ -178,7 +178,7 @@ void Controller::executeAction(AG_Event *event) {
 			// Ouverture de la Map
 			string nomRep = "./Map/" + aseName;
 
-			if( CFindFolder::mkdir( nomRep.c_str() )!=0 )	// Création du répertoire pour les textures
+			if(CFindFolder::mkdir(nomRep.c_str()) != 0)	// Création du répertoire pour les textures
 			{	
 				// Si un répertoire existe déjà, demande s'il faut l'écraser
 				OpenSceneASEEcraseRepView* view = m_agarView->getOpenSceneASEEcraseRepView();
@@ -278,21 +278,16 @@ void Controller::executeAction(AG_Event *event) {
 	// Mise à jour de la page des fichiers téléchargeables par le jeu
 	case DownloadOneFileAction:
 		{
-			long fileId = AG_LONG(2);
+			long downloadId = AG_LONG(2);
 
 			try {
 				Centralisateur* centralisateur = Fabrique::getCentralisateur();
 
 				ProgressBarView* view = m_agarView->getProgressBarView();
 				
-				int* progress = view->getProgressPtr();
-				*progress = 0;
-
-				char* currentOperationMessage = view->getCurrentOperationMessagePtr();
-
 				view->show();
 
-				centralisateur->downloadOneFile(4635, fileId, progress, currentOperationMessage);
+				centralisateur->downloadOneFile(4635, downloadId, view);
 			}
 			catch(CentralisateurTcpException exception) {
 				AG_TextMsg(AG_MSG_WARNING, "Erreur lors du telechargement");
@@ -309,17 +304,5 @@ void Controller::executeAction(AG_Event *event) {
         AG_TextMsg(AG_MSG_WARNING, "Action inconnue : %d!", action);
         break;
     }
-}
-
-void openMap(const string& mapName)
-{
-	if(openMAP( mapName.c_str() )) {
-		Aide = false;
-		pFocus->SetPlayFocus();
-		Game.setModeLocal();
-	}
-	else {
-		AG_TextMsg(AG_MSG_WARNING, "Echec d'ouverture de la Map %s", mapName);
-	}
 }
 

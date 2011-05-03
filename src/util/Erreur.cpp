@@ -8,21 +8,26 @@ using namespace std;
 namespace JktUtils
 {
 
-CErreur::CErreur( int c, const string &m )
-{
-	code = c;
-	msg = m;
+CErreur::CErreur(int code, const string &msg) {
+	_code = code;
+	_msg = msg;
 }
 
 string CErreur::toString() const {
-	string txt;
-	if(msg.length() > 0) {
-		txt += "msg='";
-		txt += msg + "', ";
+	string txt = "[";
+
+	// Code
+	txt += "code='";
+	txt += _code;
+	txt += "'";
+
+	// Message
+	if(_msg.length() > 0) {
+		txt += ", msg='";
+		txt += _msg + "'";
 	}
 
-	txt += "code=";
-	txt += code;
+	txt += "]";
 
 	return txt;
 }

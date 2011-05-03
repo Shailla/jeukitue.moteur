@@ -39,7 +39,7 @@ vector<DownloadFileItem> Centralisateur::askDownloadFileList(const int port) thr
     return JktNet::TcpConnector::askDownloadFileList(port);
 }
 
-void Centralisateur::downloadOneFile(const int port, const long fileId, int* progress, char* currentOperationMessage) throw(CentralisateurTcpException)
+void Centralisateur::downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) throw(CentralisateurTcpException)
 {
-    JktNet::TcpConnector::downloadOneFile(port, fileId, progress, currentOperationMessage);
+    JktNet::TcpConnector::downloadOneFile(port, downloadId, progressView);
 }

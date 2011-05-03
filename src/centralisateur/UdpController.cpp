@@ -74,7 +74,7 @@ void UdpController::receive(UDPpacket* packet)
 		current +=4;
 		char** playerList = new char*[nombreJoueurs];
 
-		for(int i=0 ; i<nombreJoueurs ; i++) {
+		for(unsigned int i=0 ; i<nombreJoueurs ; i++) {
 		// Taille et nom du joueur qui a envoyé le message
 			Uint32 taillePlayerName = SDLNet_Read32(current);
 			current +=4;

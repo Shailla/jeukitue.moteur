@@ -10,6 +10,7 @@ using namespace std;
 #include "exception/centralisateur/CentralisateurTcpException.h"
 
 #include "UdpController.h"
+#include "menu/ProgressBarView.h"
 
 class Centralisateur
 {
@@ -25,7 +26,7 @@ public:
 	void sendMessageChat(const string& message, const string& userName);
 
 	vector<DownloadFileItem> askDownloadFileList(const int port) throw(CentralisateurTcpException);
-	void downloadOneFile(const int port, const long fileId, int* progress, char* currentOperationMessage) throw(CentralisateurTcpException);
+	void downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) throw(CentralisateurTcpException);
 };
 
 #endif

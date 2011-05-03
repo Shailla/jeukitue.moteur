@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:jkt="http://jkt" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://jkt" elementFormDefault="qualified">
+	<!-- ================================================================================================================================================  
+		MAP
+		==============================================================================================================================================  -->
+	<xs:element name="Map">
+		<xs:annotation>
+			<xs:documentation>Description d'une scène 3D (formes des objets, lumières, textures, ...)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Materiaux">
+					<xs:annotation>
+						<xs:documentation>Matériaux présents dans la scène</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Materiau" type="jkt:Materiau" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Lumieres">
+					<xs:annotation>
+						<xs:documentation>Lumières présents dans la scène</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Lumiere" type="jkt:Lumiere" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Geos">
+					<xs:annotation>
+						<xs:documentation>Formes 3D présentes dans la scène</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Geo" type="jkt:Geo" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ================================================================================================================================================  
+		MATERIAUX
+		==============================================================================================================================================  -->
+	<xs:complexType name="Materiau" abstract="true">
+		<xs:attribute name="Ref" type="xs:integer">
+			<xs:annotation>
+				<xs:documentation>Référence du matériau</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<!-- ============================== TextureMateriau ============================== -->
+	<xs:complexType name="TextureMateriau">
+		<xs:annotation>
+			<xs:documentation>Matériau simple de type texture</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="jkt:Materiau">
+				<xs:sequence>
+					<xs:element name="Ambiante" type="jkt:Couleur"/>
+					<xs:element name="Diffuse" type="jkt:Couleur"/>
+					<xs:element name="Specular" type="jkt:Couleur"/>
+					<xs:element name="Nom" type="xs:string"/>
+				</xs:sequence>
+				<xs:attribute name="Type">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Texture"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ============================== MultiMateriau ============================== -->
+	<xs:complexType name="MultiMateriau">
+		<xs:annotation>
+			<xs:documentation>Matériau simple de type texture</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="jkt:Materiau">
+				<xs:sequence>
+					<xs:element name="Ambiante" type="jkt:Couleur"/>
+					<xs:element name="Diffuse" type="jkt:Couleur"/>
+					<xs:element name="Specular" type="jkt:Couleur"/>
+					<xs:element name="SousMateriaux" minOccurs="0" maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Materiau" type="jkt:Materiau"/>
+							</xs:sequence>
+							<xs:attribute name="Nbr" type="xs:integer"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="Type">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Multi"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================================================================================================================  
+		LUMIERES
+		==============================================================================================================================================  -->
+	<xs:complexType name="Lumiere">
+		<xs:attribute name="Ref" type="xs:integer"/>
+	</xs:complexType>
+	<!-- ================================================================================================================================================  
+		GEOS
+		==============================================================================================================================================  -->
+	<xs:complexType name="Geo" abstract="true">
+		<xs:attribute name="Ref" type="xs:integer"/>
+		<xs:attribute name="Nom" type="xs:string"/>
+	</xs:complexType>
+	<!-- ============================== SimpleGeo ============================== -->
+	<xs:complexType name="SimpleGeo">
+		<xs:complexContent>
+			<xs:extension base="jkt:Geo">
+				<xs:sequence>
+					<xs:element name="Solide">
+						<xs:complexType>
+							<xs:attribute name="Valeur">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="false"/>
+										<xs:enumeration value="true"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:attribute>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Couleur" type="jkt:Couleur"/>
+					<xs:element name="Sommets">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="S" minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:attribute name="X" type="xs:decimal"/>
+										<xs:attribute name="Y" type="xs:decimal"/>
+										<xs:attribute name="Z" type="xs:decimal"/>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="Nbr" type="xs:integer"/>
+						</xs:complexType>
+					</xs:element>
+					<xs:element name="Faces">
+						<xs:complexType>
+							<xs:sequence>
+								<xs:element name="Sommet" minOccurs="0" maxOccurs="unbounded">
+									<xs:complexType>
+										<xs:attribute name="S1" type="xs:integer"/>
+										<xs:attribute name="S2" type="xs:integer"/>
+										<xs:attribute name="S3" type="xs:integer"/>
+									</xs:complexType>
+								</xs:element>
+							</xs:sequence>
+							<xs:attribute name="Nbr" type="xs:integer"/>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+				<xs:attribute name="Type">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Simple"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ================================================================================================================================================  
+		COMMON
+		==============================================================================================================================================  -->
+	<xs:complexType name="Couleur">
+		<xs:sequence>
+			<xs:element name="R" type="xs:string"/>
+			<xs:element name="G" type="xs:string"/>
+			<xs:element name="B" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

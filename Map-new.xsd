@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:jkt="http://jkt/map2" xmlns:jkt-common="http://jkt/map2/common" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://jkt/map2" elementFormDefault="qualified">
+	<xs:import namespace="http://jkt/map2/common" schemaLocation="jkt-map-common.xsd"/>
+	<!-- ================================================================================================================================================  
+		MAP
+		==============================================================================================================================================  -->
+	<xs:element name="Map2">
+		<xs:annotation>
+			<xs:documentation>Map de jeu</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="objet" type="jkt:TObjet" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- ============================== Type objet ============================== -->
+	<xs:complexType name="TObjet">
+		<xs:annotation>
+			<xs:documentation>Type : Objet réellement visible dans la scène à une position donnée</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="position" type="jkt-common:TPosition" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="ref" type="xs:integer" use="required"/>
+	</xs:complexType>
+</xs:schema>

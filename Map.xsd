@@ -52,10 +52,10 @@
 			</xs:annotation>
 		</xs:attribute>
 	</xs:complexType>
-	<!-- ============================== TextureMateriau ============================== -->
-	<xs:complexType name="TextureMateriau">
+	<!-- ============================== SimpleMateriau ============================== -->
+	<xs:complexType name="SimpleMateriau">
 		<xs:annotation>
-			<xs:documentation>Matériau simple de type texture</xs:documentation>
+			<xs:documentation>Matériau simple</xs:documentation>
 		</xs:annotation>
 		<xs:complexContent>
 			<xs:extension base="jkt:Materiau">
@@ -63,7 +63,33 @@
 					<xs:element name="Ambiante" type="jkt:Couleur"/>
 					<xs:element name="Diffuse" type="jkt:Couleur"/>
 					<xs:element name="Specular" type="jkt:Couleur"/>
-					<xs:element name="Nom" type="xs:string"/>
+				</xs:sequence>
+				<xs:attribute name="Type">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Simple"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<!-- ============================== TextureMateriau ============================== -->
+	<xs:complexType name="TextureMateriau">
+		<xs:annotation>
+			<xs:documentation>Matériau de type texture</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="jkt:Materiau">
+				<xs:sequence>
+					<xs:element name="Ambiante" type="jkt:Couleur"/>
+					<xs:element name="Diffuse" type="jkt:Couleur"/>
+					<xs:element name="Specular" type="jkt:Couleur"/>
+					<xs:element name="Fichier">
+						<xs:complexType>
+							<xs:attribute name="Nom" type="xs:string"/>
+						</xs:complexType>
+					</xs:element>
 				</xs:sequence>
 				<xs:attribute name="Type">
 					<xs:simpleType>
@@ -110,6 +136,25 @@
 		==============================================================================================================================================  -->
 	<xs:complexType name="Lumiere">
 		<xs:attribute name="Ref" type="xs:integer"/>
+	</xs:complexType>
+	<!-- ============================== TargetLumiere ============================== -->
+	<xs:complexType name="TargetLumiere">
+		<xs:complexContent>
+			<xs:extension base="jkt:Lumiere">
+				<xs:sequence>
+					<xs:element name="Ambiante" type="jkt:Couleur"/>
+					<xs:element name="Diffuse" type="jkt:Couleur"/>
+					<xs:element name="Specular" type="jkt:Couleur"/>
+				</xs:sequence>
+				<xs:attribute name="Type">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Target"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:attribute>
+			</xs:extension>
+		</xs:complexContent>
 	</xs:complexType>
 	<!-- ================================================================================================================================================  
 		GEOS

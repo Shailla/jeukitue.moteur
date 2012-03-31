@@ -1,4 +1,4 @@
-# Install script for directory: H:/jkt/svn/trunk/moteur_cmake/src
+# Install script for directory: H:/jkt/svn/trunk/moteur/sources
 
 # Set the install prefix
 IF(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -33,7 +33,7 @@ ELSE(CMAKE_INSTALL_COMPONENT)
   SET(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 ENDIF(CMAKE_INSTALL_COMPONENT)
 
-FILE(WRITE "H:/jkt/svn/trunk/moteur_cmake/build/EclipseCDT4-MinGW-Makefiles/${CMAKE_INSTALL_MANIFEST}" "")
+FILE(WRITE "H:/jkt/svn/trunk/moteur/project/EclipseCDT4-MinGW-Makefiles/${CMAKE_INSTALL_MANIFEST}" "")
 FOREACH(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  FILE(APPEND "H:/jkt/svn/trunk/moteur_cmake/build/EclipseCDT4-MinGW-Makefiles/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  FILE(APPEND "H:/jkt/svn/trunk/moteur/project/EclipseCDT4-MinGW-Makefiles/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 ENDFOREACH(file)

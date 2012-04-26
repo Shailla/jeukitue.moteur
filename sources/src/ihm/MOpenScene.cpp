@@ -24,10 +24,6 @@ class CGame;
 class CGeoObject;
 class CPorte;
 
-extern CGame Game;
-extern CMenu MenuPrinc2;
-extern CFocus *pFocus;
-extern bool Aide;
 
 namespace JktMenu
 {
@@ -46,7 +42,7 @@ PF liste_suivant_open_scene[] =
 	lanceMenuOpenMAP,
 };
 
-char *item_menu_open_scene[] =
+const char *item_menu_open_scene[] =
 {
 	"Convertir une scene ASE",
 	"Ouvrir une scene MAP",

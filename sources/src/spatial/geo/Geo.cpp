@@ -33,6 +33,10 @@ unsigned int CGeo::getReference()
 	return m_Reference;
 }
 
+void CGeo::initGL() {}
+
+void CGeo::freeGL() {}
+
 /*bool CGeo::SaveFichierMap(ofstream &fichier)
 {
 	fichier << "\tReference\t\t" << getReference();

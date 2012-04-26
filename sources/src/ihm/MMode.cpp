@@ -41,11 +41,8 @@ class CPorte;
 
 #include "ihm/MMode.h"
 
-extern CGame Game;
-extern CMenu MenuPrinc2;
 extern CFocus *pFocus;
 extern bool Aide;
-extern CCfg Config;
 
 namespace JktMenu
 {
@@ -63,7 +60,7 @@ PF liste_suivant_mode[] =
 };
 
 
-char *item_menu_mode[] =
+const char *item_menu_mode[] =
 {
 	"MODE SELECTION",
 };
@@ -88,7 +85,7 @@ PF liste_suivant_Mode_Selection[] =
 	fonctionModeSelection2,
 };
 
-char *item_menu_Mode_Selection[] =
+const char *item_menu_Mode_Selection[] =
 {
 	"SOLIDITE",
 	"SUPPRESSION",

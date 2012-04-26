@@ -38,12 +38,9 @@ using namespace JktMoteur;
 
 extern CGame Game;
 extern CCfg Config;
-extern JktMenu::CFocus *pFocus;
+extern CFocus *pFocus;
 extern bool Aide;
-void quit_tutorial( int code );
-bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep );
-void openMap(const std::string& mapName);
-bool openMAP( const void *arg );
+void quit_game( int code );
 void openMAP2( const string &nomFichierMap );
 extern JktNet::CReseau Reseau;
 
@@ -61,23 +58,23 @@ void Controller::executeAction(AG_Event *event) {
 
     switch(action) {
 	case MainMenuAction:
-		m_agarView->showMainMenu();
+		m_agarView->showView(Viewer::MAIN_MENU_VIEW);
 		break;
 
 	case MultijoueursAction:
-		m_agarView->showMultijoueurs();
+		m_agarView->showView(Viewer::MULTIJOUEURS_VIEW);
 		break;
 
     case ConfigurationAction:
-        m_agarView->showConfiguration();
+        m_agarView->showView(Viewer::CONFIGURATION_VIEW);
         break;
 
 	case ConfigurationVideoAction:
-		m_agarView->showConfigurationVideoView();
+		m_agarView->showView(Viewer::CONFIGURATION_VIDEO_VIEW);
 		break;
 
 	case ConfigurationJoueurAction:
-		m_agarView->showConfigurationJoueurView();
+		m_agarView->showView(Viewer::CONFIGURATION_JOUEUR_VIEW);
 		break;
 
     case CentralisateurAction:
@@ -88,18 +85,18 @@ void Controller::executeAction(AG_Event *event) {
 				                      Config.Centralisateur.getPort());
 	        centralisateur->sendSignalement();
 
-			m_agarView->showCentralisateur();
+			m_agarView->showView(Viewer::CENTRALISATEUR_VIEW);
 		}
         break;
 
     case ConfigCentralisateurAction:
-        m_agarView->showConfigCentralisateur();
+        m_agarView->showView(Viewer::CONFIG_CENTRALISATEUR_VIEW);
         break;
 
 	// Envoi d'un message de chat sur le serveur centralisateur
 	case SendGlobalChatTextAction:
 		{
-			CentralisateurView* view = m_agarView->getCentralisateurView();
+			CentralisateurView* view = (CentralisateurView*)m_agarView->getView(Viewer::CENTRALISATEUR_VIEW);
 			const char* textToSend = view->getTextToSend();
 			Centralisateur* centralisateur = Fabrique::getCentralisateur();
 			centralisateur->sendMessageChat(string(textToSend), Config.Joueur.nom.c_str());
@@ -108,28 +105,28 @@ void Controller::executeAction(AG_Event *event) {
 		break;
 
     case OpenSceneAction:
-        m_agarView->showOpenScene();
+        m_agarView->showView(Viewer::OPEN_SCENE_VIEW);
         break;
 
     case OpenSceneASEAction:
-        m_agarView->showOpenSceneASE();
+        m_agarView->showView(Viewer::OPEN_SCENE_ASE_VIEW);
         break;
 
 	// Ouverture de l'écran de choix d'une Map en mode de jeu local
 	case OpenSceneMapAction:
-        m_agarView->showOpenSceneMap();
+        m_agarView->showView(Viewer::OPEN_SCENE_MAP_VIEW);
         break;
 
 	// Ecran de choix d'une Map à lancer en mode serveur
 	case LanceServeurAction:
-		m_agarView->showLanceServeurView();
+		m_agarView->showView(Viewer::LANCE_SERVEUR_VIEW);
 		break;
 
 	case LanceServeurMapAction:
         {
             // Récupération du nom de la Map à ouvrir
 			int mapNumber = AG_INT(2);
-			LanceServeurView* view = m_agarView->getLanceServeurView();
+			LanceServeurView* view = (LanceServeurView*)m_agarView->getView(Viewer::LANCE_SERVEUR_VIEW);
 			string mapName = view->getMapName(mapNumber);
 
 			// Connexion du serveur
@@ -157,7 +154,7 @@ void Controller::executeAction(AG_Event *event) {
         {
             // Récupération du nom de la Map à ouvrir
 			int mapNumber = AG_INT(2);
-			OpenSceneMapView* view = m_agarView->getOpenSceneMapView();
+			OpenSceneMapView* view = (OpenSceneMapView*)m_agarView->getView(Viewer::OPEN_SCENE_MAP_VIEW);
 			string mapName = view->getMapName(mapNumber);
 
 			cout << "Ouverture de la Map '" << mapName << "'";
@@ -172,7 +169,7 @@ void Controller::executeAction(AG_Event *event) {
         {
             // Récupération du nom de la Map à ouvrir
 			int aseNumber = AG_INT(2);
-			OpenSceneASEView* view = m_agarView->getOpenSceneASEView();
+			OpenSceneASEView* view = (OpenSceneASEView*)m_agarView->getView(Viewer::OPEN_SCENE_ASE_VIEW);
 			string aseName = view->getAseName(aseNumber);
 
 			// Ouverture de la Map
@@ -181,22 +178,22 @@ void Controller::executeAction(AG_Event *event) {
 			if(CFindFolder::mkdir(nomRep.c_str()) != 0)	// Création du répertoire pour les textures
 			{	
 				// Si un répertoire existe déjà, demande s'il faut l'écraser
-				OpenSceneASEEcraseRepView* view = m_agarView->getOpenSceneASEEcraseRepView();
+				OpenSceneASEEcraseRepView* view = (OpenSceneASEEcraseRepView*)m_agarView->getView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
 				view->setRepName(nomRep);	// Nom du répertoire du fichier Ase
 				view->setAseName(aseName);	// Nom du fichier Ase
 
-				m_agarView->showOpenSceneASEEcraseRep();
+				m_agarView->showView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
 			}
 			else {
 				try {
-					ConsoleAvancementView* console = m_agarView->getConsoleAvancementView();
+					ConsoleAvancementView* console = (ConsoleAvancementView*)m_agarView->getView(Viewer::CONSOLE_AVANCEMENT_VIEW);
 					console->init("Import fichier ASE");
-					m_agarView->showConsoleAvancementView();
+					m_agarView->showView(Viewer::CONSOLE_AVANCEMENT_VIEW);
 
 					// Import du fichier ASE
 					AseImporter::lanceImportAse(aseName, console);
 				}
-				catch(CErreur erreur)
+				catch(CErreur& erreur)
 				{
 					stringstream texte;
 					texte << "Echec d'import ASE : " << erreur.toString();
@@ -208,7 +205,7 @@ void Controller::executeAction(AG_Event *event) {
 
 	case OpenSceneASEEcraseRepOuiAction:
 		{
-			OpenSceneASEEcraseRepView* view = m_agarView->getOpenSceneASEEcraseRepView();
+			OpenSceneASEEcraseRepView* view = (OpenSceneASEEcraseRepView*)m_agarView->getView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
 			
 			try {
 				// Suppression du répertoire
@@ -216,14 +213,14 @@ void Controller::executeAction(AG_Event *event) {
 				AseImporter::supprimeRepertoire(repName);
 				
 				// Import du fichier ASE
-				ConsoleAvancementView* console = m_agarView->getConsoleAvancementView();
+				ConsoleAvancementView* console = (ConsoleAvancementView*)m_agarView->getView(Viewer::CONSOLE_AVANCEMENT_VIEW);
 				console->init("Import fichier ASE");
-				m_agarView->showConsoleAvancementView();
+				m_agarView->showView(Viewer::CONSOLE_AVANCEMENT_VIEW);
 
 				string aseName = view->getAseName();
 				AseImporter::lanceImportAse(aseName, console);
 			}
-			catch(CErreur erreur)
+			catch(CErreur &erreur)
 			{
 				stringstream texte;
 				texte << "Echec d'import ASE : " << erreur.toString();
@@ -233,13 +230,13 @@ void Controller::executeAction(AG_Event *event) {
 		break;
 
 	case OpenSceneASEEcraseRepNonAction:
-		m_agarView->showMainMenu();
+		m_agarView->showView(Viewer::MAIN_MENU_VIEW);
 		AG_TextMsg(AG_MSG_INFO, "Import annule");
 		break;
 
 	case SaveConfigJoueurAction:
 		{
-			ConfigurationJoueurView* view = m_agarView->getConfigurationJoueurView();
+			ConfigurationJoueurView* view = (ConfigurationJoueurView*)m_agarView->getView(Viewer::CONFIGURATION_JOUEUR_VIEW);
 			Config.Joueur.nom = view->getJoueurName();
 			Config.Joueur.mapName = view->getJoueurMapName();
 			Config.Ecrit();
@@ -250,7 +247,7 @@ void Controller::executeAction(AG_Event *event) {
 	// Mise à jour de la configuration du centralisateur
 	case SaveConfigCentralisateurAction:
 		{
-            ConfigCentralisateurView* view = m_agarView->getConfigCentralisateurView();
+            ConfigCentralisateurView* view = (ConfigCentralisateurView*)m_agarView->getView(Viewer::CONFIG_CENTRALISATEUR_VIEW);
 			Config.Centralisateur.setIp(view->getAdresse());
 			Config.Centralisateur.setPort(view->getPort());
 			Config.Ecrit();
@@ -266,10 +263,10 @@ void Controller::executeAction(AG_Event *event) {
 				Centralisateur* centralisateur = Fabrique::getCentralisateur();
 				vector<DownloadFileItem> items = centralisateur->askDownloadFileList(4635);
 
-				CentralisateurView* view = m_agarView->getCentralisateurView();
+				CentralisateurView* view = (CentralisateurView*)m_agarView->getView(Viewer::CENTRALISATEUR_VIEW);
 				view->updateDownloadFileList(items);
 			}
-			catch(CentralisateurTcpException exception) {
+			catch(CentralisateurTcpException& exception) {
 				AG_TextMsg(AG_MSG_WARNING, "Impossible d'obtenir la listes des fichiers en telechargement");
 			}
 		}
@@ -283,20 +280,20 @@ void Controller::executeAction(AG_Event *event) {
 			try {
 				Centralisateur* centralisateur = Fabrique::getCentralisateur();
 
-				ProgressBarView* view = m_agarView->getProgressBarView();
+				ProgressBarView* view = (ProgressBarView*)m_agarView->getView(Viewer::PROGRESS_BAR_VIEW);
 				
 				view->show();
 
 				centralisateur->downloadOneFile(4635, downloadId, view);
 			}
-			catch(CentralisateurTcpException exception) {
+			catch(CentralisateurTcpException& exception) {
 				AG_TextMsg(AG_MSG_WARNING, "Erreur lors du telechargement");
 			}
 		}
 		break;
 
     case QuitAction:
-		quit_tutorial(0);
+		quit_game(0);
 		break;
 
     default:

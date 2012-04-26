@@ -28,7 +28,7 @@ class CMap
 	vector<CGeo*> m_TabGeo;				// Liste des objets géométriques
 	vector<CMouve*> m_TabMouve;			// Liste des objets nécessitant une actualisation (portes,...)
 
-	bool Init() throw(JktUtils::CErreur);								// Initialisation de la CMap
+	bool Init() throw(JktUtils::CErreur);		// Initialisation de la CMap
 //	bool LitFichier(const string &nomFichier);	// Lecture de la CMap depuis un fichier *.map
 	bool Lit(const string &nomFichier);
 
@@ -45,6 +45,9 @@ public:
 	~CMap();
 
 		// Fonctions membres
+	bool initGL();		// Initialisation dans le contexte OpenGL
+	bool freeGL();		// Initialisation dans le contexte OpenGL
+
 //	bool SaveFichierMap(const string &nomFichier);		// Sauvegarde du CMap dans un fichier *.map
 	bool Save(const string nomFichier);	// Sauvegarde du CMap dans un fichier *.map.xml
 

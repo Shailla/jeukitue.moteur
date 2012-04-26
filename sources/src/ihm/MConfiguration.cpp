@@ -18,11 +18,6 @@ using namespace JktMenu;
 
 class CGame;
 
-extern CGame Game;
-extern CMenu MenuPrinc2;
-extern CFocus *pFocus;
-extern bool Aide;
-
 namespace JktMenu
 {
 	/************************/
@@ -47,7 +42,7 @@ PF liste_suivant_config[] =
 	lanceMenuConfigDebug,
 };
 
-char *item_menu_config[] =
+const char *item_menu_config[] =
 {
 	"Video",
 	"Audio",
@@ -56,8 +51,7 @@ char *item_menu_config[] =
 	"Debug",
 };
 
-CMenu MenuConfig(title_menu_config, item_menu_config, 5,
-						liste_suivant_config, lanceMenuPrinc );
+CMenu MenuConfig(title_menu_config, (const char**)item_menu_config, 5, liste_suivant_config, lanceMenuPrinc );
 
 void lanceMenuConfig(void *var)
 {

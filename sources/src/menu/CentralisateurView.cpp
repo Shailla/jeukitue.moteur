@@ -96,7 +96,7 @@ void CentralisateurView::updateDownloadFileList(vector<DownloadFileItem> items)
 	{
 		DownloadFileItem item = *iter;
 
-		char* category;
+		const char* category;
 		if(item._category == MAP) {
 			category = "Map de jeu";
 		}

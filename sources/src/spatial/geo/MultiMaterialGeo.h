@@ -49,8 +49,8 @@ private:
 	enum {	VBO_VERTEX=0, VBO_NORMAUX, VBO_TEXVERTEX };
 	static const int VBO_BUFFER_SIZE = 3;
 	GLuint m_VboBufferNames[VBO_BUFFER_SIZE];
-	void initVBO();
-	void freeVBO();
+	void initGL();
+	void freeGL();
 public:
 		// Destructeur
 	~CMultiMaterialGeo();

@@ -21,7 +21,7 @@ On a à nouveau 1 seul bloc : {0,1,2,3,4,5,6,7}
 
 */
 
-#include <list>
+#include <vector>
 #include <string>
 
 namespace JktUtils
@@ -35,7 +35,7 @@ class CGenRef
 		unsigned int m_Fin;		// Fin du bloc
 		CBloc(unsigned int,unsigned int);
 	};
-	std::list<CBloc> sequence;
+	std::vector<CBloc> sequence;
 public:
 	CGenRef();
 	~CGenRef();

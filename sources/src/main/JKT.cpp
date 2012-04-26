@@ -81,7 +81,7 @@ class CGame;
 #include "son/Son.h"
 #include "son/ReqSon.h"
 #include "reseau/SPA.h"
-#include "main/Player.h"			//Paramètres du joueur
+#include "main/Player.h"
 #include "spatial/contact.h"		//Fonctions utilisées pour le contact
 #include "main/divers.h"		//Initialisation d'SDL
 #include "son/audio.h"
@@ -105,6 +105,9 @@ class CGame;
 #include "menu/Viewer.h"
 #include "main/Fabrique.h"
 #include "menu/ConsoleView.h"
+#include "game/GameDto.h"
+#include "game/MapLoader.h"
+#include "spatial/contact.h"
 
 using namespace JktMenu;
 using namespace JktNet;
@@ -116,11 +119,39 @@ using namespace JktSon;
 
 #include "jkt.h"
 
-extern SDL_Surface *screen;
-
 float GLIGHTX, GLIGHTY, GLIGHTZ;
 GLFont myfont;
-extern AG_Window *agarWindows;
+
+bool indicSpace = true;		//gère si la théière animée part ou revient
+float positionSpace = 0.0;	 //position de la théière animée
+
+CCfg Config;		// Contient la configuration du jeu
+CGame Game;		// Contient toutes les données vivantes du jeu
+
+const char nomFichierJoueur[] = "@Joueur\\joueurTex";
+
+int JKT_RenderMode = GL_TRIANGLES;	// Rendu normal ou en mode filaire
+bool JKT_AfficheToutesTextures = false;
+
+string nomFichierConfig = "config";
+
+CFocus *pFocus;
+
+int nbrMainPlayer = 0;	//nbre de joueurs sur la map
+
+SDL_Event event;	//évênement SDL pour la gestion des input (clavier/souris/joystick...)
+
+SDL_TimerID timer_ID = 0;
+void *param = 0;
+SDL_Event event_SDL;
+
+bool Aide = false;
+
+extern JktSon::CDemonSons *DemonSons;	// Requêtes des son à jouer
+
+Uint32 tempsTimer = 0;		// Temps pris par la fonction 'timer'
+Uint32 tempsDisplay = 0;	// Temps pris par la fonction 'display'
+
 
 class CMachin
 {
@@ -437,8 +468,6 @@ void display()	// Fonction principale d'affichage
 
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-	// C PA LE K
-
 	if( Game.getMap() )	// Si il y a une map a afficher
 	{
 		if( Game.Erwin() )	// S'il y a un joueur principal
@@ -504,12 +533,10 @@ void display()	// Fonction principale d'affichage
 */
 		glEnable( GL_DEPTH_TEST );
 
-		// C PA LE K
 		Game.getMap()->Affiche();	// Affichage de la map
-		// C LE K
 		Game.AfficheProjectils();
 
-			// Dessine les axes dans la map	(sert au repérage pour la conception du jeu)
+		// Dessine les axes dans la map	(sert au repérage pour la conception du jeu)
 		glLineWidth( 3 );
 		glBegin( GL_LINES );	// Déssine les axes X Y Z
 			glColor3f( 1.0f, 0.0f, 0.0f);	// Axe des X
@@ -527,17 +554,15 @@ void display()	// Fonction principale d'affichage
 		gluSphere( gluNewQuadric(), 0.05, 16, 16 );
 
 		// C LE K
-
 		if( Game.Erwin() )
 			updateSon3D();	// Positionne le joueur et les objets bruyants dans l'espace sonore
 
-			// AFFICHAGE DES PARTICULES
+		// AFFICHAGE DES PARTICULES
 		glEnable( GL_BLEND );
 		glDepthMask( GL_FALSE );
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE );
 
 		// C LE K
-
 		moteurParticulesNeige->Affiche();	// Le moteur de particules affiche toutes ses particules
 
 		glDisable( GL_BLEND );
@@ -833,7 +858,7 @@ void menu_agar_handle_key_down( SDL_Event *event )
                     {
                         Viewer* agarView = Fabrique::getAgarView();
                         pFocus->SetPlayFocus();
-			            agarView->hideAll();
+			            agarView->hideAllViews();
                     }
                     break;
                 default:
@@ -1026,7 +1051,7 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
             {
                 Viewer* agarView = Fabrique::getAgarView();
                 pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
-			    agarView->showMainMenu();
+			    agarView->showView(Viewer::MAIN_MENU_VIEW);
             }
 		    break;
 		case SDLK_F5:
@@ -1035,6 +1060,8 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 		default:
 			break;
 		}
+
+		break;
 	}
 }
 
@@ -1045,7 +1072,7 @@ static void process_events( void )
     while( SDL_PollEvent( &event ) ) {
         switch( event.type ) {
         case SDL_QUIT:
-			quit_tutorial( 0 );
+			quit_game( 0 );
             break;
 
 		default:
@@ -1055,15 +1082,13 @@ static void process_events( void )
     }
 }
 
-bool openMAP( const void *nomFichier )
+bool openMAP3(const void *nomFichier)
 {
 	/**************************************
 	* Ouverture de la Map proprement dite
 	**************************************/
 
 	string nomFichierMap = (char*)nomFichier;
-
-	Fabrique::getAgarView()->getConsoleView()->setMapOuverte(nomFichierMap);
 
 	if( !Game.openMap( nomFichierMap ) ) {
 		cerr << endl << "Erreur à l'ouvertur du fichier Map : " << nomFichierMap;
@@ -1084,11 +1109,11 @@ bool openMAP( const void *nomFichier )
 
 	CMap *pMapJoueur = new CMap( mapJoueurPrincipal );
 	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
-	pMapJoueur->Scale( -0.15f, 0.15f, 0.15f );
+	pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
 
 	CMap *pMapJoueur2 = new CMap( "GrosBonhomme" );
 	pMapJoueur2->EchangeXZ();					// Ajuste les coordonnées
-	pMapJoueur2->Scale( -0.80f, 0.80f, 0.80f );
+	pMapJoueur2->Scale( -0.10f, 0.10f, 0.10f );
 
 	cout << endl;
 
@@ -1109,19 +1134,19 @@ bool openMAP( const void *nomFichier )
 	* Création des joueurs dans la Map
 	***********************************/
 
-		// Création du joueur principal
+	// Création du joueur principal
 	CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
 	erwin->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	erwin->changeContact( contactPlayer );		// Associe une fonction de gestion des contacts avec la map
 	erwin->Skin( pMapJoueur );
-	erwin->setCri( cri1.c_str() );							// Cri du joueur
+	erwin->setCri( cri1.c_str() );				// Cri du joueur
 	erwin->nom( "ERWIN" );
-	erwin->init();				// Initialise certaines données
+	erwin->init();								// Initialise certaines données
 	erwin->choiceOneEntryPoint();
-	Game.Erwin( erwin );		// Indique que 'erwin' est le joueur principal
-	Game.pTabIndexPlayer->Ajoute( 0, erwin );		// Ajoute le joueur principal à la liste des joueurs
+	Game.Erwin( erwin );						// Indique que 'erwin' est le joueur principal
+	Game.pTabIndexPlayer->Ajoute( 0, erwin );	// Ajoute le joueur principal à la liste des joueurs
 
-		// Création d'un second joueur
+	// Création d'un second joueur
 	CPlayer *julien;
 	julien = new CPlayer();						// Crée un autre joueur
 	julien->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
@@ -1131,9 +1156,9 @@ bool openMAP( const void *nomFichier )
 	julien->nom( "JULIEN" );
 	julien->init();
 	julien->choiceOneEntryPoint();
-	Game.pTabIndexPlayer->Ajoute( 1, julien );				// Ajoute le joueur à la liste des joueurs
+	Game.pTabIndexPlayer->Ajoute( 1, julien );	// Ajoute le joueur à la liste des joueurs
 
-		// Création d'un troisième joueur
+	// Création d'un troisième joueur
 	CPlayer *sprite;
 	sprite = new CPlayer();						// Crée un autre joueur
 	sprite->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
@@ -1143,14 +1168,13 @@ bool openMAP( const void *nomFichier )
 	sprite->nom( "SPRITE" );
 	sprite->init();
 	sprite->choiceOneEntryPoint();
-	Game.pTabIndexPlayer->Ajoute( 2, sprite );				// Ajoute le joueur à la liste des joueurs
+	Game.pTabIndexPlayer->Ajoute( 2, sprite );	// Ajoute le joueur à la liste des joueurs
 
 	return true;
 }
 
-void openMAP2(const string &nomFichierMap)
-{
-	Fabrique::getAgarView()->getConsoleView()->setMapOuverte(nomFichierMap);
+void openMAP2(const string& nomFichierMap) {
+	((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setMapOuverte(nomFichierMap);
 
 	if( !Game.openMap(nomFichierMap) ) {
 		cerr << endl << "Erreur a l'ouverture du fichier Map : " << nomFichierMap;
@@ -1165,6 +1189,8 @@ void openMAP2(const string &nomFichierMap)
 	}
 }
 
+GameDto* gameDto;
+
 void boucle()
 {
 	Uint32 temps=0;
@@ -1177,38 +1203,110 @@ void boucle()
 		if( Game.RequeteProcess.isOuvreMap() )	// S'il y a une demande d'ouvertue de MAP
 		{
 			Aide = false;
-			const string* mapName = Game.RequeteProcess.getOuvreMap();
+			const string mapName = Game.RequeteProcess.getOuvreMap();
 
-			openMAP2( *mapName );	// Ouvre la MAP voulue
+			openMAP2( mapName );	// Ouvre la MAP voulue
 
-			Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );	// Indique que la partie est lancée en mode client
-			pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
-			Fabrique::getAgarView()->hideAll();		// Masquage du menu
+			Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );		// Indique que la partie est lancée en mode client
+			pFocus->SetPlayFocus();								// Met l'interception des commandes sur le mode jeu
 
-			delete mapName;
-
-			Fabrique::getAgarView()->showConsoleView();
+			Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
 		}
 
-		// Y a-t-il demande d'ouverture d'une map en mode jeu local ?
-		if( Game.RequeteProcess.isOuvreMapLocal() )	// S'il y a une demande d'ouvertue de MAP
-		{
-			const string* mapName = Game.RequeteProcess.getOuvreMap();
+		/*
+		 * Exécution de l'ouverture d'une MAP locale si besoin
+		 */
+		int etape = Game.RequeteProcess.getOuvreMapLocaleEtape();
 
-			// Ouverture de la Map
-			if(openMAP( mapName->c_str() )) {
+		switch(etape) {
+		case CRequeteProcess::OMLE_AUCUNE:				// Aucune ouverture de MAP locale en cours
+			// Nothing to do
+			break;
+
+		case CRequeteProcess::OMLE_DEMANDE:
+			{
+				Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);	// Affichage de la console
+
+				// Fermeture de la MAP courante et destruction des joueurs
+				CMap* currentMap = Game.getMap();
+				if(currentMap) {
+					currentMap->freeGL();
+					Game.changeActiveMap(NULL);
+				}
+
+				Game.Erwin(NULL);
+
+				if(Game.pTabIndexPlayer) {
+					CPlayer *player;
+					int playerIndex = -1;
+					while( Game.pTabIndexPlayer->bSuivant(playerIndex)) {
+						player = Game.pTabIndexPlayer->operator [](playerIndex);
+						player->freeGL();
+					}
+
+					delete Game.pTabIndexPlayer;
+					Game.pTabIndexPlayer = NULL;
+				}
+
+				// Lancement ouverture MAP demandée
+				const string mapName = Game.RequeteProcess.getOuvreMap();
+
+				gameDto = new GameDto(mapName);
+
+				Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_OUVERTURE_EN_COURS);
+
+				MapLoader::launcheGameLoading(gameDto);		// Lance l'ouverture de la MAP
+			}
+			break;
+
+		case CRequeteProcess::OMLE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la méthode "openMap"
+			// Nothing to do
+			break;
+
+		case CRequeteProcess::OMLE_OUVERTURE:
+			{
+				// Activation de la MAP ouverte
+				CMap* map = gameDto->getMap();
+				map->initGL();
+				Game.changeActiveMap(map);
+
+				// Définition des joueurs
+				Game.setPlayerList(gameDto->getPlayersMaxNumber());
+
+				CPlayer* erwin = gameDto->getErwin();
+
+
+				int i = 0;
+
+				if(erwin != NULL) {
+					Game.Erwin(erwin);								// Indique que 'erwin' est le joueur principal
+					Game.pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
+				}
+
+				for(vector<CPlayer*>::iterator iter = gameDto->getPlayers().begin() ; iter != gameDto->getPlayers().end() ; ++iter) {
+					Game.pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
+				}
+
+				CPlayer *player;
+				int playerIndex = -1;
+				while(Game.pTabIndexPlayer->bSuivant(playerIndex)) {
+					player = Game.pTabIndexPlayer->operator [](playerIndex);
+					player->initGL();
+					player->choiceOneEntryPoint();
+				}
+
+				delete gameDto;
+
+				// Lancement du jeu en mode local
 				Aide = false;
-				pFocus->SetPlayFocus();					// Met l'interception des commandes sur le mode jeu
-				Fabrique::getAgarView()->hideAll();		// Masquage du menu
-				Game.setModeLocal();							// Jeu en mode jeu local
-			}
-			else {
-				cout << "Echec d'ouverture de la Map '" << *mapName << "'";
-			}
+				pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
+				Game.setModeLocal();						// Jeu en mode jeu local
+				Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_AUCUNE);
 
-			delete mapName;
-
-			Fabrique::getAgarView()->showConsoleView();
+				cout << "\nFINI";
+				cout.flush();
+			}
+			break;
 		}
 
 		// Y a-t-il une demande de prise de screenshot ?
@@ -1236,7 +1334,7 @@ void boucle()
 		ecart = temps - oldTemps;
 
 		// Effectue tous les calculs du jeu
-		timer( ecart );
+		timer(ecart);
 
 		ecartTimer = SDL_GetTicks() - temps;
 
@@ -1249,8 +1347,7 @@ void boucle()
 	}
 }
 
-int main(int argc, char** argv)
-{
+int main(int argc, char** argv) {
 TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 	atexit( quit_JKT );
@@ -1276,25 +1373,26 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 	if( !SDLNet_ResolveHost( &ipaddress, "localhost", 0 ) )
 	{
 		const char *host = SDLNet_ResolveIP( &ipaddress );
+
 		if( host )
 			cout << "\nNom de la machine locale : " << host;
 		else
-			cout << "\nNom de la machine locale : " << "Inconnu";
+			cout << "\nNom de la machine locale : Inconnu";
 	}
 	else
     {
-		cout << "\nNom de la machine locale : " << "Inconnu";
+		cout << "\nNom de la machine locale : Inconnu";
     }
 
     Fabrique::construct();
 
-		// Création du démon de gestion des sons
+	// Création du démon de gestion des sons
 	DemonSons = new CDemonSons();
 
-		// Lancement de l'introduction du jeu
+	// Lancement de l'introduction du jeu
 	load_Intro( Config.Display.X, Config.Display.Y );	// Affiche l'introduction du jeu
 
-		// Initialisation pour les menus et boîtes de dialogue
+	// Initialisation pour les menus et boîtes de dialogue
 	{
 		string fonte = "@Fonte\\Fonte.glf";		// Chargement de la fonte de caractères
 		JktUtils::RessourcesLoader::getFileRessource(fonte);

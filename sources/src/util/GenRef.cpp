@@ -30,11 +30,11 @@ CGenRef::~CGenRef()
 
 unsigned int CGenRef::genRef()
 {
-	list<CBloc>::iterator iter = sequence.begin();
+	vector<CBloc>::iterator iter = sequence.begin();
 
-	list<CBloc>::iterator iterPremier = iter;	// Permier bloc
+	vector<CBloc>::iterator iterPremier = iter;	// Permier bloc
 	iter++;
-	list<CBloc>::iterator iterSecond = iter;	// Second bloc
+	vector<CBloc>::iterator iterSecond = iter;	// Second bloc
 
 	unsigned int ref = ++(*iterPremier).m_Fin;	// Incrémente la fin du premier bloc
 
@@ -55,7 +55,7 @@ unsigned int CGenRef::genRef()
 string CGenRef::toString()
 {
 	ostringstream txt;
-	list<CBloc>::iterator iter = sequence.begin();
+	vector<CBloc>::iterator iter = sequence.begin();
 
 	for( ; iter!=sequence.end(); iter++)
 	{
@@ -73,7 +73,7 @@ void CGenRef::delRef(unsigned ref)
 		return;
 	}
 
-	list<CBloc>::iterator iter = sequence.begin();
+	vector<CBloc>::iterator iter = sequence.begin();
 
 		// Recherche du bloc contenant 'ref'
 	for( ; iter!=sequence.end(); iter++)

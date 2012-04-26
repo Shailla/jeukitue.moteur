@@ -21,11 +21,9 @@ using namespace std;
 
 using namespace JktMenu;
 
-extern CGame Game;
-extern CMenu MenuPrinc2;
 extern CFocus *pFocus;
 extern bool Aide;
-extern CCfg Config;
+
 
 namespace JktMenu
 {
@@ -46,7 +44,7 @@ PF liste_suivant_aide[] =
 };
 
 
-char *item_menu_aide[] =
+const char* item_menu_aide[] =
 {
 	"G DESACTIVE OU ACTIVE LA GRAVITE",
 	"C CHANGE DE JOUEUR ACTIF",
@@ -88,7 +86,7 @@ TRACE().p( TRACE_MENU, "lanceMenuAide(var=%x)", var );
 	Aide = true;
 }
 
-char *item_menu_Aide_Essai[] =
+const char *item_menu_Aide_Essai[] =
 {
 	"CHOIX 1",
 	"CHOIX 2",

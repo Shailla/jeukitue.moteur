@@ -5,7 +5,6 @@
 #include <agar/gui/style.h>
 #include <agar/core.h>
 #include <agar/gui.h>
-//#include <agar/gui/view.h>
 
 #include "menu/MainMenuView.h"
 #include "menu/CentralisateurView.h"
@@ -25,38 +24,56 @@
 
 Viewer::Viewer(AG_EventFn controllerCallback) {
 	// Initialisation des fenêtres
-    _mainMenuView = new MainMenuView(controllerCallback, this);
-	_multijoueursView = new MultijoueursView(controllerCallback);
-	_centralisateurView = new CentralisateurView(controllerCallback);
-	_configurationView = new ConfigurationView(controllerCallback);
-	_configCentralisateurView = new ConfigCentralisateurView(controllerCallback);
-    _openSceneView = new OpenSceneView(controllerCallback);
-	_openSceneASEView = new OpenSceneASEView(controllerCallback);
-	_openSceneMapView = new OpenSceneMapView(controllerCallback);
-	_openSceneAseEcraseRepView = new OpenSceneASEEcraseRepView(controllerCallback);
-	_consoleAvancementView = new ConsoleAvancementView(controllerCallback);
-	_lanceServeurView = new LanceServeurView(controllerCallback);
-	_configurationVideoView = new ConfigurationVideoView(controllerCallback);
-	_configurationJoueurView = new ConfigurationJoueurView(controllerCallback);
-	_consoleView = new ConsoleView(controllerCallback);
-	_progressBarView = new ProgressBarView(controllerCallback);
+	_views[MAIN_MENU_VIEW] = new MainMenuView(controllerCallback, this);
+	_views[MULTIJOUEURS_VIEW] = new MultijoueursView(controllerCallback);
+	_views[CENTRALISATEUR_VIEW] = new CentralisateurView(controllerCallback);
+	_views[CONFIGURATION_VIEW] = new ConfigurationView(controllerCallback);
+	_views[CONFIG_CENTRALISATEUR_VIEW] = new ConfigCentralisateurView(controllerCallback);
+	_views[OPEN_SCENE_VIEW] = new OpenSceneView(controllerCallback);
+	_views[OPEN_SCENE_ASE_VIEW] = new OpenSceneASEView(controllerCallback);
+	_views[OPEN_SCENE_MAP_VIEW] = new OpenSceneMapView(controllerCallback);
+	_views[OPEN_SCENE_ASE_ECRASE_REP_VIEW] = new OpenSceneASEEcraseRepView(controllerCallback);
+	_views[CONSOLE_AVANCEMENT_VIEW] = new ConsoleAvancementView(controllerCallback);
+	_views[LANCE_SERVEUR_VIEW] = new LanceServeurView(controllerCallback);
+	_views[CONFIGURATION_VIDEO_VIEW] = new ConfigurationVideoView(controllerCallback);
+	_views[CONFIGURATION_JOUEUR_VIEW] = new ConfigurationJoueurView(controllerCallback);
+	_views[CONSOLE_VIEW] = new ConsoleView(controllerCallback);
+	_views[PROGRESS_BAR_VIEW] = new ProgressBarView(controllerCallback);
 }
 
 Viewer::~Viewer(void) {
-    delete _mainMenuView;
-    delete _multijoueursView;
-	delete _configurationView;
-	delete _configCentralisateurView;
-	delete _openSceneView;
-	delete _openSceneASEView;
-	delete _openSceneMapView;
-	delete _openSceneAseEcraseRepView;
-	delete _consoleAvancementView;
-	delete _lanceServeurView;
-	delete _configurationVideoView;
-	delete _configurationJoueurView;
-	delete _consoleView;
-	delete _progressBarView;
+	map<VIEWS, View*>::iterator iter;
+
+	for(iter = _views.begin() ; iter != _views.end() ; iter++) {
+		delete (*iter).second;
+	}
+}
+
+void Viewer::showView(VIEWS view) {
+	// Hide all views but show the requested view
+	map<VIEWS, View*>::iterator iter;
+
+	for(iter = _views.begin() ; iter != _views.end() ; iter++) {
+		if((*iter).first == view) {
+			(*iter).second->show();
+		}
+		else {
+			(*iter).second->hide();
+		}
+	}
+}
+
+void Viewer::hideAllViews(void) {
+	// Hide all views but show the requested view
+	map<VIEWS, View*>::iterator iter;
+
+	for(iter = _views.begin() ; iter != _views.end() ; iter++) {
+		(*iter).second->hide();
+	}
+}
+
+View* Viewer::getView(VIEWS view) {
+	return _views[view];
 }
 
 void Viewer::draw(void) {
@@ -84,133 +101,4 @@ void Viewer::draw(void) {
     AG_UnlockVFS(agView);
 }
 
-void Viewer::hideAll(void) {
-	showView(NULL);
-}
-
-void Viewer::showOrHide(View* view, View* viewToShow) {
-	if(view == viewToShow) {
-		view->show();
-	}
-	else {
-		view->hide();
-	}
-}
-
-void Viewer::showView(View* view) {
-	showOrHide(_mainMenuView, view);
-	showOrHide(_centralisateurView, view);
-	showOrHide(_multijoueursView, view);
-	showOrHide(_configurationView, view);
-    showOrHide(_configCentralisateurView, view);
-	showOrHide(_openSceneView, view);
-	showOrHide(_openSceneASEView, view);
-	showOrHide(_openSceneMapView, view);
-	showOrHide(_openSceneAseEcraseRepView, view);
-	showOrHide(_consoleAvancementView, view);
-	showOrHide(_lanceServeurView, view);
-	showOrHide(_configurationVideoView, view);
-	showOrHide(_configurationJoueurView, view);
-	showOrHide(_progressBarView, view);
-}
-
-void Viewer::showMainMenu(void) {
-    showView(_mainMenuView);
-}
-
-void Viewer::showMultijoueurs(void) {
-	showView(_multijoueursView);
-}
-
-void Viewer::showConsoleView(void) {
-	_consoleView->show();
-}
-
-void Viewer::hideConsoleView(void) {
-	_consoleView->hide();
-}
-
-void Viewer::showCentralisateur(void) {
-	showView(_centralisateurView);
-}
-
-void Viewer::showConfiguration(void) {
-	showView(_configurationView);
-}
-
-void Viewer::showConfigCentralisateur(void) {
-    showView(_configCentralisateurView);
-}
-
-void Viewer::showOpenScene(void) {
-	showView(_openSceneView);
-}
-
-void Viewer::showOpenSceneASE(void) {
-	showView(_openSceneASEView);
-}
-
-void Viewer::showOpenSceneASEEcraseRep(void) {
-	showView(_openSceneAseEcraseRepView);
-}
-
-void Viewer::showOpenSceneMap(void) {
-	showView(_openSceneMapView);
-}
-
-void Viewer::showConsoleAvancementView(void) {
-	showView(_consoleAvancementView);
-}
-
-void Viewer::showLanceServeurView(void) {
-	showView(_lanceServeurView);
-}
-
-void Viewer::showConfigurationVideoView(void) {
-	showView(_configurationVideoView);
-}
-
-void Viewer::showConfigurationJoueurView(void) {
-	showView(_configurationJoueurView);
-}
-
-ConfigCentralisateurView* Viewer::getConfigCentralisateurView(void) {
-    return _configCentralisateurView;
-}
-
-OpenSceneMapView* Viewer::getOpenSceneMapView(void) {
-    return _openSceneMapView;
-}
-
-OpenSceneASEView* Viewer::getOpenSceneASEView(void) {
-    return _openSceneASEView;
-}
-
-CentralisateurView* Viewer::getCentralisateurView(void) {
-    return _centralisateurView;
-}
-
-ProgressBarView* Viewer::getProgressBarView(void) {
-    return _progressBarView;
-}
-
-OpenSceneASEEcraseRepView* Viewer::getOpenSceneASEEcraseRepView(void) {
-    return _openSceneAseEcraseRepView;
-}
-
-ConsoleAvancementView* Viewer::getConsoleAvancementView(void) {
-    return _consoleAvancementView;
-}
-
-LanceServeurView* Viewer::getLanceServeurView(void) {
-    return _lanceServeurView;
-}
-
-ConsoleView* Viewer::getConsoleView(void) {
-    return _consoleView;
-}
-
-ConfigurationJoueurView* Viewer::getConfigurationJoueurView(void) {
-    return _configurationJoueurView;
-}
 

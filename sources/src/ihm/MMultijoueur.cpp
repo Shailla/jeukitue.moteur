@@ -29,10 +29,7 @@ class CMouve;
 class CGame;
 class CGeoObject;
 class CPorte;
-class JktNet::CReseau;
 
-extern CGame Game;
-extern bool Aide;
 extern JktNet::CReseau Reseau;
 extern CCfg Config;
 
@@ -49,14 +46,10 @@ extern CCfg Config;
 
 using namespace JktMenu;
 
-void lanceJoindrePartie( void *arg );		// Se connecte sur la partie active sur le serveur
 
 namespace JktMenu
 {
-extern CFocus *pFocus;
-
 void lanceMenuMultijoueurserveur( void *arg );
-void lanceMultijoueurclient( void *arg );
 
 void retourMultijoueurclient( void *arg )
 {
@@ -72,7 +65,7 @@ PF liste_suivant_multijoueurclient[] =
 	lancePingserver,
 };
 
-char *item_menu_multijoueurclient[] =
+const char *item_menu_multijoueurclient[] =
 {
 	"Info serveur",
 	"Joindre partie",

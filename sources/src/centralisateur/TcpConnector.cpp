@@ -135,7 +135,7 @@ int downloadOneFileThread(void* threadData)
 
 	int responseCode = CTcpUtils::loadInteger(socket);
 
-	if(responseCode = 10) {
+	if(responseCode == 10) {
 		// Identifier of the file
 		item._identifier = CTcpUtils::loadLong(socket);
 

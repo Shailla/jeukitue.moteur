@@ -104,7 +104,7 @@ CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 CMAKE_GNUtoMS:BOOL=OFF
 
 //Install path prefix, prepended onto install directories.
-CMAKE_INSTALL_PREFIX:PATH=C:/Program Files/jkt
+CMAKE_INSTALL_PREFIX:PATH=H:/jkt/svn/trunk/moteur/deploy
 
 //Path to a program.
 CMAKE_LINKER:FILEPATH=c:/MinGW/bin/ld.exe
@@ -137,7 +137,7 @@ CMAKE_OBJCOPY:FILEPATH=c:/MinGW/bin/objcopy.exe
 CMAKE_OBJDUMP:FILEPATH=c:/MinGW/bin/objdump.exe
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=jkt
+CMAKE_PROJECT_NAME:STATIC=JeuKiTue
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=c:/MinGW/bin/ranlib.exe
@@ -180,6 +180,12 @@ CMAKE_USE_RELATIVE_PATHS:BOOL=OFF
 // during the make.  This is useful for debugging only. With Visual
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=OFF
+
+//Value Computed by CMake
+JeuKiTue_BINARY_DIR:STATIC=H:/jkt/svn/trunk/moteur/project/EclipseCDT4-MinGW-Makefiles
+
+//Value Computed by CMake
+JeuKiTue_SOURCE_DIR:STATIC=H:/jkt/svn/trunk/moteur/sources
 
 //Value Computed by CMake
 jkt_BINARY_DIR:STATIC=H:/jkt/svn/trunk/moteur/project/EclipseCDT4-MinGW-Makefiles

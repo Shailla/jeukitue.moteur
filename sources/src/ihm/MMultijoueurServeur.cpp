@@ -32,14 +32,12 @@ class CGame;
 class CGeoObject;
 class CPorte;
 
-extern CGame Game;
-extern CFocus *pFocus;
-extern bool Aide;
 extern JktNet::CReseau Reseau;
 extern CCfg Config;
 
 #include "ihm/MMenuPrinc.h"
 #include "ihm/MMultijoueurServeurLancePartie.h"
+
 
 namespace JktMenu
 {
@@ -55,7 +53,7 @@ PF liste_suivant_multijoueurserveur[] =
 	lanceMenuPartiemulti,
 };
 
-char *item_menu_multijoueurserveur[] =
+const char *item_menu_multijoueurserveur[] =
 {
 	"Lancer une partie",
 };

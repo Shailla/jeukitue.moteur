@@ -48,8 +48,6 @@ class CGame;
 
 #include "spatial/Map.h"
 
-extern CGame Game;
-
 using namespace JktUtils;
 
 namespace JktMoteur
@@ -125,8 +123,9 @@ void CMap::Affiche()	// Affiche tous les objets géo de du Map
 	}
 	else
 	{
-		for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
+		for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ ) {
 			(*iterGeo)->Affiche();			// Affichage de l'objet géo
+		}
 	}
 
 	glDisable( GL_VERTEX_ARRAY );
@@ -694,13 +693,43 @@ bool CMap::Init() throw(JktUtils::CErreur)	// Initialisation de la CMap
 {
 	// Letcure des fichiers de texture
 	vector<CMaterial*>::iterator iterMat;
-	for( iterMat=m_TabMaterial.begin() ; iterMat!=m_TabMaterial.end() ; iterMat++ )
-		(*iterMat)->LitTexture();
+	for( iterMat=m_TabMaterial.begin() ; iterMat!=m_TabMaterial.end() ; iterMat++ ) {
+		CMaterial* material = *iterMat;
+		material->LitTexture();
+	}
 
 	// Initialisation des object géométriques
 	vector<CGeo*>::iterator iterGeo;
-	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++)
-		(*iterGeo)->Init();
+	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++) {
+		CGeo* geo = (*iterGeo);
+		geo->Init();
+	}
+
+	return true;
+}
+
+bool CMap::initGL()
+{
+	// Initialisation des object géométriques dans le contexte OpenGL
+	vector<CGeo*>::iterator iterGeo;
+
+	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++) {
+		CGeo* geo = (*iterGeo);
+		geo->initGL();
+	}
+
+	return true;
+}
+
+bool CMap::freeGL()
+{
+	// Initialisation des object géométriques dans le contexte OpenGL
+	vector<CGeo*>::iterator iterGeo;
+
+	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++) {
+		CGeo* geo = (*iterGeo);
+		geo->freeGL();
+	}
 
 	return true;
 }

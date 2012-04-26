@@ -43,6 +43,8 @@ public:
 	unsigned int getReference();	// Renvoie la référence de l'objet
 
 		// Interface
+	virtual void initGL()=0;							// Initialisation de l'objet géométrique
+	virtual void freeGL()=0;							// Libération des ressources de l'objet dans le contexte OpenGL
 	virtual void Init()=0;								// Initialisation de l'objet géométrique
 	virtual void Affiche()=0;							// Affiche l'objet géométrique
 	virtual void AfficheSelection(float r,float v,float b)=0;	// Affiche l'objet géométrique en couleur unique

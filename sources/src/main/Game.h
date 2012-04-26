@@ -27,10 +27,10 @@ class CPlayer;
 
 class CGame
 {
-	CPlayer *m_Erwin;							// Pointeur sur le joueur actif
+	CPlayer *m_Erwin;				// Pointeur sur le joueur actif
 	JktMoteur::CMap	*m_pMap;		// Map en cours de jeu
-	int m_Mode;									// Mode de jeu (parie normale, client ou serveur
-	bool m_bGravite;							// Indique si la gravité est active
+	int m_Mode;						// Mode de jeu (parie normale, client ou serveur
+	bool m_bGravite;				// Indique si la gravité est active
 
 public:
 	enum modePartie {
@@ -59,6 +59,7 @@ public:
 
 		// Gestion de la Map
 	JktMoteur::CMap *getMap();
+	void changeActiveMap(JktMoteur::CMap* map);
 	bool openMap( const string &nomFichierMap ) throw(JktUtils::CErreur);
 
 		// Gestion du mode
@@ -68,10 +69,10 @@ public:
 	void setModeLocal();					// Passe en mode de jeu local
 
 		// Gestion du client
-	void setModeClient();							// Crée la classe Client pour un jeu en mode client
-	JktNet::CClient *getClient();		// Retourne le pointeur sur la classe CClient
+	void setModeClient();									// Crée la classe Client pour un jeu en mode client
+	JktNet::CClient *getClient();							// Retourne le pointeur sur la classe CClient
 	void setStatutClient( JktNet::StatutClient statut );	// Renseigne le statut du client
-	JktNet::StatutClient getStatutClient();							// Donne le statut du client
+	JktNet::StatutClient getStatutClient();					// Donne le statut du client
 
 		// Gestion du serveur
 	void setModeServer();							// Crée la classe Server pour un jeu en mode serveur

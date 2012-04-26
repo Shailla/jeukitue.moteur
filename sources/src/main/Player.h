@@ -95,6 +95,9 @@ private:
 	void createClavier();	// Crée la gestion par clavier du joueur
 public:
 	void init();			// Initialise certaines données du joueur
+	void initGL();
+	void freeGL();
+
 	CClavier *getClavier();	// Retourne le pointeur sur la classe clavier du joueur
 	void exeActionFunc();	// Exécute l'action périodique associée au joueur
 	void exeContactFunc( float *normal, float distanceW);	// Exécute fonction gestion contacts avec joueur

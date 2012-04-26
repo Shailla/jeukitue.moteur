@@ -94,7 +94,6 @@ void CSimpleMaterialGeo::Init()
 	MinMax();			// Mesure les minimums et maximums de l'objet géo
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
 	ConstruitBase();	// Construit la table des vecteurs normaux
-	initVBO();
 }
 
 void CSimpleMaterialGeo::setNormalVertex(float *tab)
@@ -106,7 +105,7 @@ void CSimpleMaterialGeo::setNormalVertex(float *tab)
 	m_TabVectNormaux = tab;
 }
 
-void CSimpleMaterialGeo::initVBO()
+void CSimpleMaterialGeo::initGL()
 {
 	glGenBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 
@@ -117,7 +116,7 @@ void CSimpleMaterialGeo::initVBO()
 	glBufferData(GL_ARRAY_BUFFER, m_NumVertex*3*sizeof(float), m_TabVectNormaux, GL_STATIC_DRAW);
 }
 
-void CSimpleMaterialGeo::freeVBO()
+void CSimpleMaterialGeo::freeGL()
 {
 	glDeleteBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 }
@@ -353,19 +352,15 @@ void CSimpleMaterialGeo::ConstruitBase()
 		//DESTRUCTEUR
 CSimpleMaterialGeo::~CSimpleMaterialGeo()
 {
-	if( m_TabVertex )
-	{
+	if(m_TabVertex) {
 		delete[] m_TabVertex;
 		m_TabVertex = 0;
 	}
 
-	if( m_pNormalTriangle )
-	{
+	if(m_pNormalTriangle) {
 		delete[] m_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs préliminaires à la gestion des contacts)
 		m_pNormalTriangle = 0;
 	}
-
-	freeVBO();
 }
 
 void CSimpleMaterialGeo::EchangeXY()	// Echange les axes X et Y de l'objet
@@ -373,7 +368,7 @@ void CSimpleMaterialGeo::EchangeXY()	// Echange les axes X et Y de l'objet
 	float varX, varY;
 	float vnX, vnY;
 
-	for( int i=0 ; i<m_NumVertex ; i++ )
+	for(int i=0 ; i<m_NumVertex ; i++)
 	{
 		// Sommets
 		varX = m_TabVertex[ 3*i + 0 ];
@@ -396,7 +391,7 @@ void CSimpleMaterialGeo::EchangeXZ()	// Echange les axes X et Y de l'objet
 	float varX, varZ;
 	float vnX, vnZ;
 
-	for( int i=0 ; i<m_NumVertex ; i++ )
+	for(int i=0 ; i<m_NumVertex ; i++)
 	{
 		// Sommets
 		varX = m_TabVertex[ 3*i + 0 ];
@@ -419,7 +414,7 @@ void CSimpleMaterialGeo::EchangeYZ()	// Echange les axes X et Y de l'objet
 	float varY, varZ;
 	float vnY, vnZ;
 
-	for( int i=0 ; i<m_NumVertex ; i++ )
+	for(int i=0 ; i<m_NumVertex ; i++)
 	{
 		// Sommets
 		varY = m_TabVertex[ 3*i + 1 ];

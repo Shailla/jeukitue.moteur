@@ -21,10 +21,6 @@ using namespace std;
 
 using namespace JktMenu;
 
-extern CGame Game;
-extern CMenu MenuPrinc2;
-extern CFocus *pFocus;
-extern bool Aide;
 extern CCfg Config;
 
 	/************************************************/
@@ -81,7 +77,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigAudioDriversRecord(var=%x)", var );
 	}
 
 	MenuRecord = new CMenu( "RECORD",
-						item_menu, nbrRecord,
+						(const char**)item_menu, nbrRecord,
 						liste_suivant, retourRecord, liste_argument );
 
 	delete[] liste_suivant;

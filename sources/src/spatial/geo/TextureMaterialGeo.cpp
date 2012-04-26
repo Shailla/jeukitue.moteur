@@ -96,10 +96,9 @@ void CTextureMaterialGeo::Init()
 	MinMax();			// Mesure les minimums et maximums de l'objet géo
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
 	ConstruitBase();	// Construit la table des vecteurs normaux
-	initVBO();
 }
 
-void CTextureMaterialGeo::initVBO()
+void CTextureMaterialGeo::initGL()
 {
 	glGenBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 
@@ -116,7 +115,7 @@ void CTextureMaterialGeo::initVBO()
 	glBufferData(GL_ARRAY_BUFFER, m_NumVertex*2*sizeof(float), m_TabTexVertex, GL_STATIC_DRAW);
 }
 
-void CTextureMaterialGeo::freeVBO()
+void CTextureMaterialGeo::freeGL()
 {
 	glDeleteBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 }

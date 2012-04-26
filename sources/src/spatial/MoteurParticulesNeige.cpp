@@ -111,9 +111,9 @@ void CMoteurParticulesNeige::Affiche()
 
 		// Calcul du plan orthogonal à l'axe de la vue
 	GLfloat mat[16];
-	glGetFloatv( GL_MODELVIEW_MATRIX, mat );
-	CV3D v_droit( mat[0], mat[4], mat[8] );
-	CV3D v_haut( mat[1], mat[5], mat[9] );
+	glGetFloatv(GL_MODELVIEW_MATRIX, mat);
+	CV3D v_droit(mat[0], mat[4], mat[8]);
+	CV3D v_haut(mat[1], mat[5], mat[9]);
 	CV3D a, b, c, d;
 
 	glEnable( GL_TEXTURE_2D );

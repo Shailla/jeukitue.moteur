@@ -21,10 +21,6 @@ using namespace std;
 
 using namespace JktMenu;
 
-extern CGame Game;
-extern CMenu MenuPrinc2;
-extern CFocus *pFocus;
-extern bool Aide;
 extern CCfg Config;
 #include "ihm/MAudioDrivers.h"
 extern char **remarquesDriver;
@@ -81,7 +77,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigDriversDriver(var=%x)", var );
 	}
 
 	MenuDriver = new CMenu( "DRIVER",
-						item_menu, nbrDriver,
+						(const char**)item_menu, nbrDriver,
 						liste_suivant, retourDriver, liste_argument );
 
 	for( int i=0 ; i<nbrDriver ; i++ )

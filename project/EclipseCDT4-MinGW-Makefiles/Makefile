@@ -566,6 +566,54 @@ src/exception/centralisateur/OpenUdpSocketException.cpp.s:
 	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/exception/centralisateur/OpenUdpSocketException.cpp.s
 .PHONY : src/exception/centralisateur/OpenUdpSocketException.cpp.s
 
+src/game/GameDto.obj: src/game/GameDto.cpp.obj
+.PHONY : src/game/GameDto.obj
+
+# target to build an object file
+src/game/GameDto.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/game/GameDto.cpp.obj
+.PHONY : src/game/GameDto.cpp.obj
+
+src/game/GameDto.i: src/game/GameDto.cpp.i
+.PHONY : src/game/GameDto.i
+
+# target to preprocess a source file
+src/game/GameDto.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/game/GameDto.cpp.i
+.PHONY : src/game/GameDto.cpp.i
+
+src/game/GameDto.s: src/game/GameDto.cpp.s
+.PHONY : src/game/GameDto.s
+
+# target to generate assembly for a file
+src/game/GameDto.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/game/GameDto.cpp.s
+.PHONY : src/game/GameDto.cpp.s
+
+src/game/MapLoader.obj: src/game/MapLoader.cpp.obj
+.PHONY : src/game/MapLoader.obj
+
+# target to build an object file
+src/game/MapLoader.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/game/MapLoader.cpp.obj
+.PHONY : src/game/MapLoader.cpp.obj
+
+src/game/MapLoader.i: src/game/MapLoader.cpp.i
+.PHONY : src/game/MapLoader.i
+
+# target to preprocess a source file
+src/game/MapLoader.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/game/MapLoader.cpp.i
+.PHONY : src/game/MapLoader.cpp.i
+
+src/game/MapLoader.s: src/game/MapLoader.cpp.s
+.PHONY : src/game/MapLoader.s
+
+# target to generate assembly for a file
+src/game/MapLoader.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/game/MapLoader.cpp.s
+.PHONY : src/game/MapLoader.cpp.s
+
 src/ifstreamWork.obj: src/ifstreamWork.cpp.obj
 .PHONY : src/ifstreamWork.obj
 
@@ -3344,6 +3392,12 @@ help:
 	@echo ... src/exception/centralisateur/OpenUdpSocketException.obj
 	@echo ... src/exception/centralisateur/OpenUdpSocketException.i
 	@echo ... src/exception/centralisateur/OpenUdpSocketException.s
+	@echo ... src/game/GameDto.obj
+	@echo ... src/game/GameDto.i
+	@echo ... src/game/GameDto.s
+	@echo ... src/game/MapLoader.obj
+	@echo ... src/game/MapLoader.i
+	@echo ... src/game/MapLoader.s
 	@echo ... src/ifstreamWork.obj
 	@echo ... src/ifstreamWork.i
 	@echo ... src/ifstreamWork.s

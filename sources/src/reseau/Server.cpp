@@ -30,7 +30,6 @@ using namespace std;
 
 void JktMoteur::contactPlayer(CPlayer *player, float *normal, float distanceW);
 void gravitePlayer(CPlayer *player);
-void openMAP2( const string &nomFichierMap );
 
 extern CGame Game;
 class CMap;

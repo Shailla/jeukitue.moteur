@@ -40,8 +40,7 @@ namespace JktMenu
 #define CORX	0
 #define CORY	100
 
-CMenu::CMenu( char *newTitle, char **newItems, int nbrItems,
-		PF *fct_suivante, PF fct_retour, void **liste_arg, PFV fct_refresh )
+CMenu::CMenu(const char *newTitle, const char **newItems, int nbrItems, PF *fct_suivante, PF fct_retour, void **liste_arg, PFV fct_refresh )
 		:CDlg()
 {
 TRACE().p( TRACE_MENU, "CMenu::CMenu(newTitle=%s,nbrItems=%d,...)%T", newTitle, nbrItems, this );

@@ -21,17 +21,12 @@ using namespace JktMenu;
 
 class CGame;
 
-extern CGame Game;
-extern CFocus *pFocus;
-extern bool Aide;
 extern CCfg Config;
 
 #include "ihm/MConfiguration.h"
 
 namespace JktMenu
 {
-extern CMenu MenuPrinc2;
-
 void lanceMenuConfigCommandesAvancer(void *arg);
 void lanceMenuConfigCommandesReculer(void *arg);
 void lanceMenuConfigCommandesGauche(void *arg);
@@ -59,7 +54,7 @@ PF liste_suivant_config_commandes[] =
 	lanceMenuConfigCommandesMonter,
 };
 
-char *item_menu_config_commandes[] =
+const char *item_menu_config_commandes[] =
 {
 	"Avancer",
 	"Reculer",

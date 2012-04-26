@@ -18,7 +18,7 @@ const char* TEMPORARY_DIRECTORY =	"./Tmp/";						// Répertoire temporaire de tra
 namespace JktUtils
 {
 int RessourcesLoader::nbrElements = 9;
-char* RessourcesLoader::elementsNamesAndFolders[] =
+const char* RessourcesLoader::elementsNamesAndFolders[] =
 {
 	"@Fond",	".\\Ressources\\Images\\Fonds",		// Images de fond
 	"@Fonte",	".\\Ressources\\Images\\Fontes",	// Polices / fontes

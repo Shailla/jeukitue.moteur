@@ -38,8 +38,6 @@ extern int JKT_RenderMode;
 
 using namespace JktUtils;
 
-extern CCfg Config;
-
 namespace JktMoteur
 {
 class CGeoObject;
@@ -107,7 +105,6 @@ void CSimpleGeo::Init()
 	MinMax();			// Mesure les minimums et maximums de l'objet géo
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
 	ConstruitBase();	// Construit la table des vecteurs normaux
-	initVBO();			// Initialise les données dans le VBO de la carte graphique
 }
 
 void CSimpleGeo::setFaces(int num, int *tab)
@@ -128,7 +125,7 @@ void CSimpleGeo::setFaces(int num, int *tab)
 	}
 }
 
-void CSimpleGeo::initVBO()
+void CSimpleGeo::initGL()
 {
 	glGenBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 
@@ -139,7 +136,7 @@ void CSimpleGeo::initVBO()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_NumFaces*3*sizeof(unsigned int), m_TabFaces, GL_STATIC_DRAW);
 }
 
-void CSimpleGeo::freeVBO()
+void CSimpleGeo::freeGL()
 {
 	glDeleteBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 }
@@ -151,7 +148,7 @@ void CSimpleGeo::Affiche()
 
 	glColor3fv(m_Color);
 
-	glLineWidth( 1 );
+	glLineWidth(1);
 
 	// Attachement des VBO
 	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_VERTEX]);
@@ -176,25 +173,25 @@ const char* CSimpleGeo::toString()
 	return tostring.c_str();
 }
 
-void CSimpleGeo::AfficheSelection(float r,float v,float b)
+void CSimpleGeo::AfficheSelection(float r, float v, float b)
 {
-	glVertexPointer( 3, GL_FLOAT, 0, m_TabVertex );	//Initialisation du tableau de sommets
+	glVertexPointer(3, GL_FLOAT, 0, m_TabVertex);	//Initialisation du tableau de sommets
 
 	glColor3f(r, v, b); // Définit la couleur de l'objet géo.
 
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 
-	glLineWidth( 1 );
+	glLineWidth(1);
 
-	glDrawElements(JKT_RenderMode,3*m_NumFaces,GL_UNSIGNED_INT,m_TabFaces);
+	glDrawElements(JKT_RenderMode, 3*m_NumFaces, GL_UNSIGNED_INT, m_TabFaces);
 }
 
 void CSimpleGeo::MinMax()
 {
-	minX = maxX = m_TabVertex[ 0 ];
-	minY = maxY = m_TabVertex[ 1 ];
-	minZ = maxZ = m_TabVertex[ 2 ];
+	minX = maxX = m_TabVertex[0];
+	minY = maxY = m_TabVertex[1];
+	minZ = maxZ = m_TabVertex[2];
 
 	for( int i=1 ; i<m_NumVertex ; i++ )
 	{
@@ -266,7 +263,6 @@ CSimpleGeo::~CSimpleGeo()
 		m_TabVertex = 0;
 	}
 
-
 	if( m_TabFaces )
 	{
 		delete[] m_TabFaces;
@@ -278,8 +274,6 @@ CSimpleGeo::~CSimpleGeo()
 		delete[] m_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs préliminaires à la gestion des contacts)
 		m_pNormalTriangle = 0;
 	}
-
-	freeVBO();
 }
 
 void CSimpleGeo::EchangeXY()	// Echange les axes X et Y de l'objet

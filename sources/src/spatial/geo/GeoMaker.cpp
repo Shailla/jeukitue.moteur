@@ -14,8 +14,6 @@ using namespace std;
 
 class CGame;
 
-extern int JKT_RenderMode;
-
 #include "spatial/XmlVocabulaire.h"
 #include "util/Tableau.cpp"
 #include "util/math_vectoriel.h"
@@ -39,8 +37,6 @@ extern int JKT_RenderMode;
 using namespace JktUtils;
 
 class CCfg;
-
-extern CCfg Config;
 
 namespace JktMoteur
 {
@@ -235,8 +231,7 @@ CSimpleMaterialGeo* CGeoMaker::makeSimpleMaterialGeo(CMaterial* mat) {
 	if(m_TabFaces)
 		lineariseVertex();
 
-	CSimpleMaterialGeo* geo = new CSimpleMaterialGeo(m_Map, m_Nom, mat,
-		m_NumVertex, m_TabVertex, m_TabVectNormaux);
+	CSimpleMaterialGeo* geo = new CSimpleMaterialGeo(m_Map, m_Nom, mat, m_NumVertex, m_TabVertex, m_TabVectNormaux);
 
 	m_TabVectNormaux = 0;
 	m_TabVertex = 0;
@@ -480,9 +475,9 @@ void CGeoMaker::lineariseVertex()	// Renvoie le tableau de vertex sous forme non
 			// Linéarise les vertex à partir du tableau des indices et des vertex indexés
 		for(int i=0; i<m_NumVertex ; i++)	// Pour chaque face de la forme
 		{
-			vertex[i*3 + 0] = m_TabVertex[(3*m_TabFaces[i]) + 0];
-			vertex[i*3 + 1] = m_TabVertex[(3*m_TabFaces[i]) + 1];
-			vertex[i*3 + 2] = m_TabVertex[(3*m_TabFaces[i]) + 2];
+			vertex[(i*3) + 0] = m_TabVertex[(3*m_TabFaces[i]) + 0];
+			vertex[(i*3) + 1] = m_TabVertex[(3*m_TabFaces[i]) + 1];
+			vertex[(i*3) + 2] = m_TabVertex[(3*m_TabFaces[i]) + 2];
 		}
 
 		delete[] m_TabVertex;
@@ -518,7 +513,7 @@ void CGeoMaker::SaveVertex(TiXmlElement *element, unsigned int nbr, float* verte
 	TiXmlElement* elSom = new TiXmlElement("Sommets");
 	elSom->SetAttribute(Xml::NBR, nbr);
 
-	for(unsigned int i=0 ; i<nbr ; i++)
+	for(int i=0 ; i<nbr ; i++)
 	{
 		stringstream ss0, ss1, ss2;
 
@@ -539,8 +534,6 @@ void CGeoMaker::SaveVertex(TiXmlElement *element, unsigned int nbr, float* verte
 
 float* CGeoMaker::LitVertex(TiXmlElement *element, int &nbr)
 {
-	double nombre;
-
 	TiXmlElement* elSom = element->FirstChildElement(Xml::SOMMETS);
 	if(!elSom) {
 		string str = "Fichier Map corrompu : LitVertex - ";
@@ -549,35 +542,46 @@ float* CGeoMaker::LitVertex(TiXmlElement *element, int &nbr)
 	}
 
 	// Nombre de sommets
-	if(!elSom->Attribute(Xml::NBR, &nombre))
+	if(!elSom->Attribute(Xml::NBR, &nbr))
 		throw CErreur(0, "Fichier Map corrompu : LitVertex 2");
-	nbr = (unsigned int)nombre;
 
 	// Vertex
 	float* vertex = new float[nbr*3];
 	int i=0;
 
+	double a, b, c;
 	for(TiXmlElement* el=elSom->FirstChildElement(Xml::S); el!=0; el=el->NextSiblingElement())
 	{
-		double a, b, c;
-
-		if(!el->Attribute(Xml::X, &a))
-			throw CErreur(0, "Fichier Map corrompu : LitVertex 4");
-
-		if(!el->Attribute(Xml::Y, &b))
-			throw CErreur(0, "Fichier Map corrompu : LitVertex 5");
-
-		if(!el->Attribute(Xml::Z, &c))
-			throw CErreur(0, "Fichier Map corrompu : LitVertex 6");
-
-		if(i >= nbr)
+		if(i >= nbr) {
+			delete[] vertex;
 			throw CErreur(0, "Fichier Map corrompu : LitVertex 7");
+		}
+
+		if(!el->Attribute(Xml::X, &a)) {
+			delete[] vertex;
+			throw CErreur(0, "Fichier Map corrompu : LitVertex 4");
+		}
+
+		if(!el->Attribute(Xml::Y, &b)) {
+			delete[] vertex;
+			throw CErreur(0, "Fichier Map corrompu : LitVertex 5");
+		}
+
+		if(!el->Attribute(Xml::Z, &c)) {
+			delete[] vertex;
+			throw CErreur(0, "Fichier Map corrompu : LitVertex 6");
+		}
 
 		vertex[3*i + 0] = (float)a;
 		vertex[3*i + 1] = (float)b;
 		vertex[3*i + 2] = (float)c;
 
 		i++;
+	}
+
+	if(i != nbr) {
+		delete[] vertex;
+		throw CErreur(0, "Fichier Map corrompu : Pas assez de sommets");
 	}
 
 	return vertex;
@@ -603,23 +607,33 @@ float* CGeoMaker::LitTexVertex(TiXmlElement *element, int &nbr)
 	float* texvertex = new float[nbr*2];
 	int i=0;
 
+	double a, b;
 	for(TiXmlElement* el=elSom->FirstChildElement(Xml::S); el!=0; el=el->NextSiblingElement())
 	{
-		double a, b;
+		if(i >= nbr) {
+			delete[] texvertex;
+			throw CErreur(0, "Fichier Map corrompu : Pas assez de sommets de texture");
+		}
 
-		if(!el->Attribute(Xml::U, &a))
+		if(!el->Attribute(Xml::U, &a)) {
+			delete[] texvertex;
 			throw CErreur(0, "Fichier Map corrompu : LitTexVertex 4");
+		}
 
-		if(!el->Attribute(Xml::V, &b))
+		if(!el->Attribute(Xml::V, &b)) {
+			delete[] texvertex;
 			throw CErreur(0, "Fichier Map corrompu : LitTexVertex 5");
-
-		if(i >= nbr)
-			throw CErreur(0, "Fichier Map corrompu : LitTexVertex 7");
+		}
 
 		texvertex[2*i + 0] = (float)a;
 		texvertex[2*i + 1] = (float)b;
 
 		i++;
+	}
+
+	if(i != nbr) {
+		delete[] texvertex;
+		throw CErreur(0, "Fichier Map corrompu : Trop de sommets de texture");
 	}
 
 	return texvertex;
@@ -657,43 +671,51 @@ CTexVertexList* CGeoMaker::LitMultiTexVertex(TiXmlElement* element)
 
 float* CGeoMaker::LitVecteursNormaux(TiXmlElement *element, int& nbr)
 {
-	double nombre;
-	float* vectnormaux;
-
 	TiXmlElement* elSom = element->FirstChildElement(Xml::VECTEURSNORMAUX);
 	if(!elSom)
 		return 0;
 
 	// Nombre de sommets
-	if(!elSom->Attribute(Xml::NBR, &nombre))
+	if(!elSom->Attribute(Xml::NBR, &nbr))
 		throw CErreur(0, "Fichier Map corrompu : LitVecteursNormaux 2");
-	nbr = (unsigned int)nombre;
 
 	// Vecteurs normaux
-	vectnormaux = new float[nbr*3];
+	float* vectnormaux = new float[nbr*3];
 	int i=0;
 
+	double a, b, c;
 	for(TiXmlElement* el=elSom->FirstChildElement(Xml::S); el!=0; el=el->NextSiblingElement())
 	{
-		double a, b, c;
+		if(i >= nbr) {
+			delete[] vectnormaux;
+			throw CErreur(0, "Fichier Map corrompu : Trop de vecteurs normaux");
+		}
 
-		if(!el->Attribute(Xml::X, &a))
+		if(!el->Attribute(Xml::X, &a)) {
+			delete[] vectnormaux;
 			throw CErreur(0, "Fichier Map corrompu : LitVecteursNormaux 4");
+		}
 
-		if(!el->Attribute(Xml::Y, &b))
+		if(!el->Attribute(Xml::Y, &b)) {
+			delete[] vectnormaux;
 			throw CErreur(0, "Fichier Map corrompu : LitVecteursNormaux 5");
+		}
 
-		if(!el->Attribute(Xml::Z, &c))
+		if(!el->Attribute(Xml::Z, &c)) {
+			delete[] vectnormaux;
 			throw CErreur(0, "Fichier Map corrompu : LitVecteursNormaux 6");
-
-		if(i >= nbr)
-			throw CErreur(0, "Fichier Map corrompu : LitVecteursNormaux 7");
+		}
 
 		vectnormaux[3*i + 0] = (float)a;
 		vectnormaux[3*i + 1] = (float)b;
 		vectnormaux[3*i + 2] = (float)c;
 
 		i++;
+	}
+
+	if(i != nbr) {
+		delete[] vectnormaux;
+		throw CErreur(0, "Fichier Map corrompu : Pas assez de vecteurs normaux");
 	}
 
 	return vectnormaux;
@@ -793,42 +815,51 @@ void CGeoMaker::SaveFaces(TiXmlElement *element, unsigned int nbr, int* faces)
 
 int* CGeoMaker::LitFaces(TiXmlElement *element, int &nbr)
 {
-	double nombre;
-
 	TiXmlElement* elFac = element->FirstChildElement(Xml::FACES);
 	if(!elFac)
 		throw CErreur(0, "Fichier Map corrompu : LitFaces 1");
 
 	// Nombre de sommets
-	if(!elFac->Attribute(Xml::NBR, &nombre))
+	if(!elFac->Attribute(Xml::NBR, &nbr))
 		throw CErreur(0, "Fichier Map corrompu : LitFaces 2");
-	nbr = (unsigned int)nombre;
 
 	// Vertex
 	int* faces = new int[nbr*3];
 	int i=0;
 
+	double a, b, c;
 	for(TiXmlElement* el=elFac->FirstChildElement(Xml::SOMMET); el!=0; el=el->NextSiblingElement())
 	{
-		double a, b, c;
+		if(i >= nbr) {
+			delete[] faces;
+			throw CErreur(0, "Fichier Map corrompu : Trop de faces");
+		}
 
-		if(!el->Attribute(Xml::S1, &a))
-			throw CErreur(0, "Fichier Map corrompu : LitFaces 3");
+		if(!el->Attribute(Xml::S1, &a)) {
+			delete[] faces;
+			throw CErreur(0, "Fichier Map corrompu : S1 manquant");
+		}
 
-		if(!el->Attribute(Xml::S2, &b))
-			throw CErreur(0, "Fichier Map corrompu : LitFaces 4");
+		if(!el->Attribute(Xml::S2, &b)) {
+			delete[] faces;
+			throw CErreur(0, "Fichier Map corrompu : S2 manquant");
+		}
 
-		if(!el->Attribute(Xml::S3, &c))
-			throw CErreur(0, "Fichier Map corrompu : LitFaces 5");
-
-		if(i >= nbr)
-			throw CErreur(0, "Fichier Map corrompu : LitFaces 6");
+		if(!el->Attribute(Xml::S3, &c)) {
+			delete[] faces;
+			throw CErreur(0, "Fichier Map corrompu : S3 manquant");
+		}
 
 		faces[3*i + 0] = (int)a;
 		faces[3*i + 1] = (int)b;
 		faces[3*i + 2] = (int)c;
 
 		i++;
+	}
+
+	if(i != nbr) {
+		delete[] faces;
+		throw CErreur(0, "Fichier Map corrompu : Il manque des faces");
 	}
 
 	return faces;

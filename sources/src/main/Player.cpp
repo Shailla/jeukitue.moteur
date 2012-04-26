@@ -93,7 +93,7 @@ CPlayer::CPlayer()
 			m_TexArmes = JktMoteur::LitFichierTextureAlpha( "@Icone/Armes.bmp", 0.75f );
 			TRACE().p( TRACE_OTHER, "CPlayer::CPlayer() Texture d'icone des armes : %d%T", m_TexArmes, this );
 		}
-		catch( CErreur erreur )
+		catch(CErreur& erreur)
 		{
 			TRACE().p( TRACE_ERROR, "CPlayer::CPlayer() Echec de lecture de texture d'icone des armes%T", this );
 			m_TexArmes = -1;
@@ -250,8 +250,8 @@ void CPlayer::choiceOneEntryPoint()
 		}
 
 		int choice;
-		size_t nbr;
-		if( nbr = liste.size() )	// S'il y a des entrées à une distance convenable de tout joueur
+		size_t nbr = liste.size();
+		if(nbr)						// S'il y a des entrées à une distance convenable de tout joueur
 		{							// Alors choisi l'une d'elles au hasard
 			choice = (int)(nbr * ((float)rand()/(float)RAND_MAX));
 			if( choice == nbr )
@@ -259,7 +259,7 @@ void CPlayer::choiceOneEntryPoint()
 			setPosition( *(liste[choice]) );
 		}
 		else
-		{							// Sinon prends en une au hasard dans la liste
+		{							// Sinon prends-en une au hasard dans la liste
 			cout << "\nAu pif";
 			nbr = Game.getMap()->m_EntreeJoueurs.size();
 			choice = (int)(nbr * ((float)rand()/(float)RAND_MAX));
@@ -441,6 +441,16 @@ void CPlayer::RefreshProjectils()
 
 void CPlayer::init()
 {
+}
+
+void CPlayer::initGL()
+{
+	m_pSkin->initGL();
+}
+
+void CPlayer::freeGL()
+{
+	m_pSkin->freeGL();
 }
 
 void CPlayer::createClavier()

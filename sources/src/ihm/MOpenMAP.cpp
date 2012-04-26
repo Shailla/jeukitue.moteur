@@ -32,7 +32,7 @@ class CGame;
 class CGeoObject;
 class CPorte;
 
-bool openMAP(const void *arg);
+bool openMAP3(const void *arg);
 
 extern CGame Game;
 extern CFocus *pFocus;
@@ -40,7 +40,6 @@ extern bool Aide;
 
 namespace JktMenu
 {
-extern CMenu MenuPrinc2;
 
 	/************************/
 	/*						*/
@@ -53,7 +52,7 @@ CMenu *MenuOpenMAP;
 
 void suivantMAP(void *arg)
 {
-	if(openMAP( arg )) {
+	if(openMAP3( arg )) {
 		Aide = false;
 		pFocus->SetPlayFocus();
 		Game.setModeLocal();
@@ -99,7 +98,7 @@ TRACE().p( TRACE_MENU, "lanceMenuOpenMAP(var=%x)", var );
 		nbrFichier++;
 	}
 
-	MenuOpenMAP = new CMenu( "OUVRIR UNE SCENE MAP", item_menu_open_MAP, nbrFichier,
+	MenuOpenMAP = new CMenu( "OUVRIR UNE SCENE MAP", (const char**)item_menu_open_MAP, nbrFichier,
 						liste_suivant_open_MAP, retourMAP, liste_argument_open_MAP );
 
 	CDlg::SetMenuActif( MenuOpenMAP );

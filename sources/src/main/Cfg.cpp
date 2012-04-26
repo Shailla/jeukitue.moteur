@@ -24,9 +24,11 @@ using namespace std;
 #include "fmod_errors.h"
 
 #include "main/Extensions.h"
+#include "main/divers.h"
 #include "util/Trace.h"
 #include "son/audio.h"
 #include "ressource/RessourcesLoader.h"
+
 
 #include "main/Cfg.h"
 
@@ -61,11 +63,17 @@ void CCfg::Lit()
 {
 TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 	string mot;
+
 	string nomFichierEntier = "./" + nomFichierConfig + ".ini";
+	ifstream fichier(nomFichierEntier.c_str());
 
-	ifstream fichier( nomFichierEntier.c_str() );
+	if(!fichier) {
+		quit_game("Erreur ouverture fichier de configuration '" + nomFichierEntier + "'", 1);
+	}
 
-	do fichier >> mot;	while( mot!="-------------------------VIDEO-------------------------" );
+	do fichier >> mot;
+	while( mot!="-------------------------VIDEO-------------------------");
+
 	{
 		do fichier >> mot;	while( mot!="Display" );	// Propriétés d'affichage
 		fichier >> Display.X >> Display.Y;
@@ -74,7 +82,9 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 		fichier >> Display.m_bFullscreen;
 	}
 
-	do fichier >> mot;	while( mot!="-------------------------AUDIO-------------------------" );
+	do fichier >> mot;
+	while( mot!="-------------------------AUDIO-------------------------" );
+
 	{
 		do fichier >> mot;	while( mot!="Output" );
 		fichier >> Audio.m_Output;
@@ -88,7 +98,10 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 		do fichier >> mot; while( mot!="DriverRecord" );
 		fichier >> Audio.m_DriverRecord;
 	}
-	do fichier >> mot;	while( mot!="-----------------------COMMANDES-----------------------" );
+
+	do fichier >> mot;
+	while( mot!="-----------------------COMMANDES-----------------------" );
+
 	{
 		int crotte;
 
@@ -135,7 +148,9 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 		Commandes.Monter.mouse = crotte;
 	}
 
-	do fichier >> mot;	while( mot!="--------------------CENTRALISATEUR---------------------" );
+	do fichier >> mot;
+	while( mot!="--------------------CENTRALISATEUR---------------------" );
+
 	{
 		do fichier >> mot;	while( mot!="ip" );
 		fichier >> Centralisateur.m_IpServer;
@@ -144,7 +159,9 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 		fichier >> Centralisateur.m_Port;
 	}
 
-	do fichier >> mot;	while( mot!="------------------------RESEAU-------------------------" );
+	do fichier >> mot;
+	while( mot!="------------------------RESEAU-------------------------" );
+
 	{
 		do fichier >> mot;	while( mot!="Serveur" );
 			fichier >> Reseau.serveur;
@@ -156,7 +173,9 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 		fichier >> Reseau.m_Port;
 	}
 
-	do fichier >> mot;	while( mot!="------------------------JOUEUR-------------------------" );
+	do fichier >> mot;
+	while( mot!="------------------------JOUEUR-------------------------" );
+
 	{
 		do fichier >> mot;	while( mot!="Nom" );
 		fichier >> Joueur.nom;
@@ -165,7 +184,9 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 		fichier >> Joueur.mapName;
 	}
 
-	do fichier >> mot;	while( mot!="------------------------DEBUG-------------------------" );
+	do fichier >> mot;
+	while( mot!="------------------------DEBUG-------------------------" );
+
 	{
 		do fichier >> mot;	while( mot!="SonPerformances" );
 		fichier >> Debug.bSonPerformances;
@@ -241,7 +262,7 @@ void CCfg::Ecrit()
 	fichier.close();
 }
 
-char *CCfg::CCommandes::resolve(CComID com)
+const char* CCfg::CCommandes::resolve(CComID com)
 {
 	if( com.key!=0 )
 		return resolve( com.key );
@@ -249,7 +270,7 @@ char *CCfg::CCommandes::resolve(CComID com)
 		return resolve( com.mouse );
 }
 
-char *CCfg::CCommandes::resolve(Uint8 mouse)
+const char* CCfg::CCommandes::resolve(Uint8 mouse)
 {
 	switch( mouse )
 	{
@@ -262,146 +283,150 @@ char *CCfg::CCommandes::resolve(Uint8 mouse)
 	}
 }
 
-char *CCfg::CCommandes::resolve(SDLKey sym)
+const char* CCfg::CCommandes::resolve(SDLKey sym)
 {
+	const char* result;
+
 	switch( sym )
 	{
-	case SDLK_BACKSPACE:	return "BACKSPACE";		break;
-	case SDLK_TAB:			return "TAB";			break;
-	case SDLK_CLEAR:		return "clear";			break;
-	case SDLK_RETURN:		return "ENTER";			break;
-	case SDLK_PAUSE:		return "pause";			break;
-	case SDLK_ESCAPE:		return "escape";		break;
-	case SDLK_SPACE:		return "space";			break;
-	case SDLK_EXCLAIM:		return "!";				break;
-	case SDLK_QUOTEDBL:		return "guillemets";	break;
-	case SDLK_HASH:			return "#";				break;
-	case SDLK_DOLLAR:		return "$";				break;
-	case SDLK_AMPERSAND:	return "&";				break;
-	case SDLK_QUOTE:		return "'";				break;
-	case SDLK_LEFTPAREN:	return "(";				break;
-	case SDLK_RIGHTPAREN:	return ")";				break;
-	case SDLK_ASTERISK:		return "*";				break;
-	case SDLK_PLUS:			return "+";				break;
-	case SDLK_COMMA:		return ",";				break;
-	case SDLK_MINUS:		return "-";				break;
-	case SDLK_PERIOD:		return ".";				break;
-	case SDLK_SLASH:		return "/";				break;
-	case SDLK_0:			return "0";				break;
-	case SDLK_1:			return "1";				break;
-	case SDLK_2:			return "2";				break;
-	case SDLK_3:			return "3";				break;
-	case SDLK_4:			return "4";				break;
-	case SDLK_5:			return "5";				break;
-	case SDLK_6:			return "6";				break;
-	case SDLK_7:			return "7";				break;
-	case SDLK_8:			return "8";				break;
-	case SDLK_9:			return "9";				break;
-	case SDLK_COLON:		return ":";				break;
-	case SDLK_SEMICOLON:	return ";";				break;
-	case SDLK_LESS:			return "<";				break;
-	case SDLK_EQUALS:		return "=";				break;
-	case SDLK_GREATER:		return ">";				break;
-	case SDLK_QUESTION:		return "?";				break;
-	case SDLK_AT:			return "@";				break;
-	case SDLK_LEFTBRACKET:	return "[";				break;
-	case SDLK_BACKSLASH:	return "\\";			break;
-	case SDLK_RIGHTBRACKET:	return "]";				break;
-	case SDLK_CARET:		return "^";				break;
-	case SDLK_UNDERSCORE:	return "_";				break;
-	case SDLK_BACKQUOTE:	return "`";				break;
-	case SDLK_a:			return "a";				break;
-	case SDLK_b:			return "b";				break;
-	case SDLK_c:			return "c";				break;
-	case SDLK_d:			return "d";				break;
-	case SDLK_e:			return "e";				break;
-	case SDLK_f:			return "f";				break;
-	case SDLK_g:			return "g";				break;
-	case SDLK_h:			return "h";				break;
-	case SDLK_i:			return "i";				break;
-	case SDLK_j:			return "j";				break;
-	case SDLK_k:			return "k";				break;
-	case SDLK_l:			return "l";				break;
-	case SDLK_m:			return "m";				break;
-	case SDLK_n:			return "n";				break;
-	case SDLK_o:			return "o";				break;
-	case SDLK_p:			return "p";				break;
-	case SDLK_q:			return "q";				break;
-	case SDLK_r:			return "r";				break;
-	case SDLK_s:			return "s";				break;
-	case SDLK_t:			return "t";				break;
-	case SDLK_u:			return "u";				break;
-	case SDLK_v:			return "v";				break;
-	case SDLK_w:			return "w";				break;
-	case SDLK_x:			return "x";				break;
-	case SDLK_y:			return "y";				break;
-	case SDLK_z:			return "z";				break;
-	case SDLK_DELETE:		return "delete";		break;
-	case SDLK_KP0:			return "KP0";			break;
-	case SDLK_KP1:			return "KP1";			break;
-	case SDLK_KP2:			return "KP2";			break;
-	case SDLK_KP3:			return "KP3";			break;
-	case SDLK_KP4:			return "KP4";			break;
-	case SDLK_KP5:			return "KP5";			break;
-	case SDLK_KP6:			return "KP6";			break;
-	case SDLK_KP7:			return "KP7";			break;
-	case SDLK_KP8:			return "KP8";			break;
-	case SDLK_KP9:			return "KP9";			break;
-	case SDLK_KP_PERIOD:	return "KP_.";			break;
-	case SDLK_KP_DIVIDE:	return "KP_/";			break;
-	case SDLK_KP_MULTIPLY:	return "KP_*";			break;
-	case SDLK_KP_MINUS:		return "KP_-";			break;
-	case SDLK_KP_PLUS:		return "KP_+";			break;
-	case SDLK_KP_ENTER:		return "KP_ENTER";		break;
-	case SDLK_KP_EQUALS:	return "KP_=";			break;
-	case SDLK_UP:			return "up_arrow";		break;
-	case SDLK_DOWN:			return "down_arrow";	break;
-	case SDLK_RIGHT:		return "right_arrow";	break;
-	case SDLK_LEFT:			return "left_arrow";	break;
-	case SDLK_INSERT:		return "insert";		break;
-	case SDLK_HOME:			return "home";			break;
-	case SDLK_END:			return "end";			break;
-	case SDLK_PAGEUP:		return "page_up";		break;
-	case SDLK_PAGEDOWN:		return "page_down";		break;
-	case SDLK_F1:			return "F1";			break;
-	case SDLK_F2:			return "F2";			break;
-	case SDLK_F3:			return "F3";			break;
-	case SDLK_F4:			return "F4";			break;
-	case SDLK_F5:			return "F5";			break;
-	case SDLK_F6:			return "F6";			break;
-	case SDLK_F7:			return "F7";			break;
-	case SDLK_F8:			return "F8";			break;
-	case SDLK_F9:			return "F9";			break;
-	case SDLK_F10:			return "F10";			break;
-	case SDLK_F11:			return "F11";			break;
-	case SDLK_F12:			return "F12";			break;
-	case SDLK_F13:			return "F13";			break;
-	case SDLK_F14:			return "F14";			break;
-	case SDLK_F15:			return "F15";			break;
-	case SDLK_NUMLOCK:		return "numlock";		break;
-	case SDLK_CAPSLOCK:		return "capslock";		break;
-	case SDLK_SCROLLOCK:	return "scrollock";		break;
-	case SDLK_RSHIFT:		return "right_shift";	break;
-	case SDLK_LSHIFT:		return "left_shift";	break;
-	case SDLK_RCTRL:		return "right_ctrl";	break;
-	case SDLK_LCTRL:		return "left_ctrl";		break;
-	case SDLK_RALT:			return "right_alt";		break;
-	case SDLK_LALT:			return "left_alt";		break;
-	case SDLK_RMETA:		return "right_meta";	break;
-	case SDLK_LMETA:		return "left_meta";		break;
-	case SDLK_LSUPER:		return "left_windows";	break;
-	case SDLK_RSUPER:		return "right_windows";	break;
-	case SDLK_MODE:			return "mode_shift";	break;
-	case SDLK_HELP:			return "help";			break;
-	case SDLK_PRINT:		return "print-screen";	break;
-	case SDLK_SYSREQ:		return "SysRq";			break;
-	case SDLK_BREAK:		return "break";			break;
-	case SDLK_MENU:			return "menu";			break;
-	case SDLK_POWER:		return "power";			break;
-	case SDLK_EURO:			return "euro";			break;
+	case SDLK_BACKSPACE:	result = "BACKSPACE";		break;
+	case SDLK_TAB:			result = "TAB";				break;
+	case SDLK_CLEAR:		result = "clear";			break;
+	case SDLK_RETURN:		result = "ENTER";			break;
+	case SDLK_PAUSE:		result = "pause";			break;
+	case SDLK_ESCAPE:		result = "escape";			break;
+	case SDLK_SPACE:		result = "space";			break;
+	case SDLK_EXCLAIM:		result = "!";				break;
+	case SDLK_QUOTEDBL:		result = "guillemets";		break;
+	case SDLK_HASH:			result = "#";				break;
+	case SDLK_DOLLAR:		result = "$";				break;
+	case SDLK_AMPERSAND:	result = "&";				break;
+	case SDLK_QUOTE:		result = "'";				break;
+	case SDLK_LEFTPAREN:	result = "(";				break;
+	case SDLK_RIGHTPAREN:	result = ")";				break;
+	case SDLK_ASTERISK:		result = "*";				break;
+	case SDLK_PLUS:			result = "+";				break;
+	case SDLK_COMMA:		result = ",";				break;
+	case SDLK_MINUS:		result = "-";				break;
+	case SDLK_PERIOD:		result = ".";				break;
+	case SDLK_SLASH:		result = "/";				break;
+	case SDLK_0:			result = "0";				break;
+	case SDLK_1:			result = "1";				break;
+	case SDLK_2:			result = "2";				break;
+	case SDLK_3:			result = "3";				break;
+	case SDLK_4:			result = "4";				break;
+	case SDLK_5:			result = "5";				break;
+	case SDLK_6:			result = "6";				break;
+	case SDLK_7:			result = "7";				break;
+	case SDLK_8:			result = "8";				break;
+	case SDLK_9:			result = "9";				break;
+	case SDLK_COLON:		result = ":";				break;
+	case SDLK_SEMICOLON:	result = ";";				break;
+	case SDLK_LESS:			result = "<";				break;
+	case SDLK_EQUALS:		result = "=";				break;
+	case SDLK_GREATER:		result = ">";				break;
+	case SDLK_QUESTION:		result = "?";				break;
+	case SDLK_AT:			result = "@";				break;
+	case SDLK_LEFTBRACKET:	result = "[";				break;
+	case SDLK_BACKSLASH:	result = "\\";				break;
+	case SDLK_RIGHTBRACKET:	result = "]";				break;
+	case SDLK_CARET:		result = "^";				break;
+	case SDLK_UNDERSCORE:	result = "_";				break;
+	case SDLK_BACKQUOTE:	result = "`";				break;
+	case SDLK_a:			result = "a";				break;
+	case SDLK_b:			result = "b";				break;
+	case SDLK_c:			result = "c";				break;
+	case SDLK_d:			result = "d";				break;
+	case SDLK_e:			result = "e";				break;
+	case SDLK_f:			result = "f";				break;
+	case SDLK_g:			result = "g";				break;
+	case SDLK_h:			result = "h";				break;
+	case SDLK_i:			result = "i";				break;
+	case SDLK_j:			result = "j";				break;
+	case SDLK_k:			result = "k";				break;
+	case SDLK_l:			result = "l";				break;
+	case SDLK_m:			result = "m";				break;
+	case SDLK_n:			result = "n";				break;
+	case SDLK_o:			result = "o";				break;
+	case SDLK_p:			result = "p";				break;
+	case SDLK_q:			result = "q";				break;
+	case SDLK_r:			result = "r";				break;
+	case SDLK_s:			result = "s";				break;
+	case SDLK_t:			result = "t";				break;
+	case SDLK_u:			result = "u";				break;
+	case SDLK_v:			result = "v";				break;
+	case SDLK_w:			result = "w";				break;
+	case SDLK_x:			result = "x";				break;
+	case SDLK_y:			result = "y";				break;
+	case SDLK_z:			result = "z";				break;
+	case SDLK_DELETE:		result = "delete";			break;
+	case SDLK_KP0:			result = "KP0";				break;
+	case SDLK_KP1:			result = "KP1";				break;
+	case SDLK_KP2:			result = "KP2";				break;
+	case SDLK_KP3:			result = "KP3";				break;
+	case SDLK_KP4:			result = "KP4";				break;
+	case SDLK_KP5:			result = "KP5";				break;
+	case SDLK_KP6:			result = "KP6";				break;
+	case SDLK_KP7:			result = "KP7";				break;
+	case SDLK_KP8:			result = "KP8";				break;
+	case SDLK_KP9:			result = "KP9";				break;
+	case SDLK_KP_PERIOD:	result = "KP_.";			break;
+	case SDLK_KP_DIVIDE:	result = "KP_/";			break;
+	case SDLK_KP_MULTIPLY:	result = "KP_*";			break;
+	case SDLK_KP_MINUS:		result = "KP_-";			break;
+	case SDLK_KP_PLUS:		result = "KP_+";			break;
+	case SDLK_KP_ENTER:		result = "KP_ENTER";		break;
+	case SDLK_KP_EQUALS:	result = "KP_=";			break;
+	case SDLK_UP:			result = "up_arrow";		break;
+	case SDLK_DOWN:			result = "down_arrow";		break;
+	case SDLK_RIGHT:		result = "right_arrow";		break;
+	case SDLK_LEFT:			result = "left_arrow";		break;
+	case SDLK_INSERT:		result = "insert";			break;
+	case SDLK_HOME:			result = "home";			break;
+	case SDLK_END:			result = "end";				break;
+	case SDLK_PAGEUP:		result = "page_up";			break;
+	case SDLK_PAGEDOWN:		result = "page_down";		break;
+	case SDLK_F1:			result = "F1";				break;
+	case SDLK_F2:			result = "F2";				break;
+	case SDLK_F3:			result = "F3";				break;
+	case SDLK_F4:			result = "F4";				break;
+	case SDLK_F5:			result = "F5";				break;
+	case SDLK_F6:			result = "F6";				break;
+	case SDLK_F7:			result = "F7";				break;
+	case SDLK_F8:			result = "F8";				break;
+	case SDLK_F9:			result = "F9";				break;
+	case SDLK_F10:			result = "F10";				break;
+	case SDLK_F11:			result = "F11";				break;
+	case SDLK_F12:			result = "F12";				break;
+	case SDLK_F13:			result = "F13";				break;
+	case SDLK_F14:			result = "F14";				break;
+	case SDLK_F15:			result = "F15";				break;
+	case SDLK_NUMLOCK:		result = "numlock";			break;
+	case SDLK_CAPSLOCK:		result = "capslock";		break;
+	case SDLK_SCROLLOCK:	result = "scrollock";		break;
+	case SDLK_RSHIFT:		result = "right_shift";		break;
+	case SDLK_LSHIFT:		result = "left_shift";		break;
+	case SDLK_RCTRL:		result = "right_ctrl";		break;
+	case SDLK_LCTRL:		result = "left_ctrl";		break;
+	case SDLK_RALT:			result = "right_alt";		break;
+	case SDLK_LALT:			result = "left_alt";		break;
+	case SDLK_RMETA:		result = "right_meta";		break;
+	case SDLK_LMETA:		result = "left_meta";		break;
+	case SDLK_LSUPER:		result = "left_windows";	break;
+	case SDLK_RSUPER:		result = "right_windows";	break;
+	case SDLK_MODE:			result = "mode_shift";		break;
+	case SDLK_HELP:			result = "help";			break;
+	case SDLK_PRINT:		result = "print-screen";	break;
+	case SDLK_SYSREQ:		result = "SysRq";			break;
+	case SDLK_BREAK:		result = "break";			break;
+	case SDLK_MENU:			result = "menu";			break;
+	case SDLK_POWER:		result = "power";			break;
+	case SDLK_EURO:			result = "euro";			break;
 
-	default:				return "INCONNU";		break;
+	default:				result = "INCONNU";			break;
 	}
+
+	return result;
 }
 
 bool CCfg::CAudio::Init()
@@ -675,11 +700,11 @@ void CCfg::CDisplay::InitOpenGL()
 {
 TRACE().p( TRACE_OTHER, "setup_opengl(width=%d,height=%d) begin", X, Y );
 		// Informations openGL
-	cout << "Version openGL :\t" << glGetString( GL_VERSION );
-	cout << "\nModele de la carte graphique :\t" << glGetString( GL_RENDERER );
-	cout << "\nFabricant de la carte graphique :\t" << glGetString( GL_VENDOR );
-	cout << "\nExtensions openGL disponibles :\t" << glGetString( GL_EXTENSIONS );
-	cout << "\nVersion GLU :\t\t" << gluGetString( GLU_VERSION );
+	cout << "Version openGL :\t" << glGetString(GL_VERSION);
+	cout << "\nModele de la carte graphique :\t" << glGetString(GL_RENDERER );
+	cout << "\nFabricant de la carte graphique :\t" << glGetString(GL_VENDOR );
+	cout << "\nExtensions openGL disponibles :\t" << glGetString(GL_EXTENSIONS);
+	cout << "\nVersion GLU :\t\t" << gluGetString(GLU_VERSION);
 
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );	// Vide le tampon chromatique
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
@@ -699,12 +724,27 @@ TRACE().p( TRACE_OTHER, "setup_opengl(width=%d,height=%d) begin", X, Y );
 	glBufferData = (PFNGLBUFFERDATAARBPROC)wglGetProcAddress("glBufferDataARB");
 	glDeleteBuffers = (PFNGLDELETEBUFFERSARBPROC)wglGetProcAddress("glDeleteBuffersARB");
 
-	if(!glGenBuffers)
+	if(!glGenBuffers) {
+		cerr << "\nError : glGenBuffersARB not found\n";
 		exit(1);
-	if(!glBindBuffer)
+	}
+
+	if(!glBindBuffer) {
+		cerr << "\nError : glBindBufferARB not found\n";
 		exit(1);
-	if(!glBufferData)
+	}
+
+	if(!glBufferData) {
+		cerr << "\nError : glBufferDataARB not found\n";
 		exit(1);
+	}
+
+	if(!glDeleteBuffers) {
+		cerr << "\nError : glDeleteBuffersARB not found\n";
+		exit(1);
+	}
+
+	cout << "\nErreur OpenGL : " << gluErrorString(glGetError());
 
 TRACE().p( TRACE_OTHER, "setup_opengl() end" );
 }

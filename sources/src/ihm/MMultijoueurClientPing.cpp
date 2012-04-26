@@ -36,11 +36,8 @@ class CGeoObject;
 class CPorte;
 class CReseau;
 
-extern CGame Game;
-extern CFocus *pFocus;
-extern bool Aide;
 extern JktNet::CReseau Reseau;
-extern CCfg Config;
+
 
 namespace JktMenu
 {
@@ -61,7 +58,7 @@ PF liste_suivant_pingserver[] =
 	actuPing,
 };
 
-char *item_menu_pingserver[] =
+const char *item_menu_pingserver[] =
 {
 	"Actualiser",
 };

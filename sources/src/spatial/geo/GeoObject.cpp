@@ -46,9 +46,6 @@ using namespace JktUtils;
 extern CCfg Config;
 
 
-void initTemps();
-void setTemps(const string& note);
-
 namespace JktMoteur
 {
 class CGeoObject;
@@ -226,7 +223,7 @@ void CGeoObject::AfficheWithMaterialSimple(CMaterial *mat)
 				pos[ 1 ] = m_TabVertex[ m_TabFaces[3*i]*3 + 1 ];
 				pos[ 2 ] = m_TabVertex[ m_TabFaces[3*i]*3 + 2 ];
 
-				bout[ 0 ] = (m_TabVectNormaux[ (9*i)+0   ]*facteur) + pos[ 0 ];
+				bout[ 0 ] = (m_TabVectNormaux[ (9*i)+0 ]*facteur) + pos[ 0 ];
 				bout[ 1 ] = (m_TabVectNormaux[ (9*i)+1 ]*facteur) + pos[ 1 ];
 				bout[ 2 ] = (m_TabVectNormaux[ (9*i)+2 ]*facteur) + pos[ 2 ];
 
@@ -345,7 +342,6 @@ void CGeoObject::AfficheWithMaterialMultiTexture(CMaterialMulti *mat)
 		}
 		else if( mat->m_TabMat[ m_TabSubMat[i] ]->Type() == CMaterial::MAT_TYPE_SIMPLE )
 		{
-			cout << "\nAOIZODIJZDOIJZOAJDOJZ";
 /*			CMaterial *matSimple = mat->m_TabMat[ m_TabSubMat[i] ];
 			float *texVertex = TabTex[ matSimple->m_CanalTex ]->TexVertex;
 			int *texFaces = TabTex[ matSimple->m_CanalTex ]->TexFaces;
@@ -576,18 +572,16 @@ void CGeoObject::Scale( float scaleX, float scaleY, float scaleZ )
 {
 	for( int i=0 ; i<m_NumVertex ; i++ )
 	{
-		m_TabVertex[ (3*i) ] *= scaleX;
+		m_TabVertex[ (3*i)+0 ] *= scaleX;
 		m_TabVertex[ (3*i)+1 ] *= scaleY;
 		m_TabVertex[ (3*i)+2 ] *= scaleZ;
 	}
 
-	if( m_TabVectNormaux )
-	{
-		for( int i=0 ; i<(m_NumFaces*3) ; i++ )
-		{
-			m_TabVectNormaux[ (3*i)] *= scaleX;
-			m_TabVectNormaux[ (3*i)+1] *= scaleY;
-			m_TabVectNormaux[ (3*i)+2] *= scaleZ;
+	if( m_TabVectNormaux ) {
+		for( int i=0 ; i<(m_NumFaces*3) ; i++ ) {
+			m_TabVectNormaux[ (3*i)+0 ] *= scaleX;
+			m_TabVectNormaux[ (3*i)+1 ] *= scaleY;
+			m_TabVectNormaux[ (3*i)+2 ] *= scaleZ;
 
 			normalise( &m_TabVectNormaux[ 3*i ] );
 		}

@@ -23,12 +23,9 @@ class CReseau;
 
 using namespace JktMenu;
 
-extern CReseau Reseau;
 extern CGame Game;
 extern CFocus *pFocus;
 extern bool Aide;
-
-void quit_JKT();
 
 namespace JktMenu
 {
@@ -68,7 +65,7 @@ PF liste_suivant_princ[] =
 	quit_JKTici,
 };
 
-char *item_menu_princ[] =
+const char *item_menu_princ[] =
 {
 	"Ouvrir une scene",
 	"Multi-joueurs",

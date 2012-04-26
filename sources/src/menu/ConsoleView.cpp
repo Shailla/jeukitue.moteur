@@ -27,27 +27,22 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	AG_PaneMoveDividerPct(vPane, 50);
 
 	// Panel des messages reçus
-	_consoleTextbox = AG_TextboxNew(	vPane->div[0],
-										AG_TEXTBOX_MULTILINE|AG_TEXTBOX_EXPAND,
-										NULL);
+	_consoleTextbox = AG_TextboxNew(vPane->div[0], AG_TEXTBOX_MULTILINE|AG_TEXTBOX_EXPAND, NULL);
 	
 	
-	//AG_WidgetDisable(_consoleTextbox);
+	AG_WidgetDisable(_consoleTextbox);
 	
 	// Panel de commande utilisateur à exécuter
 	//AG_Pane* paneHoriz = AG_PaneNewVert(paneVert->div[1], AG_PANE_EXPAND);
 	//AG_PaneMoveDividerPct(paneHoriz, 50);
 
-	_textboxToExecute = AG_TextboxNew(	vPane->div[1],
-										AG_TEXTBOX_HFILL,
-										NULL);
+	_textboxToExecute = AG_TextboxNew(vPane->div[1], AG_TEXTBOX_HFILL, NULL);
+
 	memset(_commandToExecute, '\0', sizeof(_commandToExecute));
 	memcpy(_commandToExecute, "Execution", sizeof("Execution"));
 	AG_TextboxBindUTF8(_textboxToExecute, _commandToExecute, sizeof(_commandToExecute));
 
 	//AG_Button* buttonSend = AG_ButtonNewFn(paneHoriz->div[1], 0, "Executer", controllerCallback, "%i", Controller::ConsoleUserExecuteAction);
-
-	addChatMessage("Coucou", "Message");
 
 	/******************************
 		Onglet des scores
@@ -68,7 +63,7 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	// Disposition de la fenêtre	
 	AG_WidgetUpdate(book);
 	AG_NotebookSelectTab (book, tabMain);
-	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_BL, 40, 20);
+	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_BL, 40, 60);
 	AG_WindowShow(m_window);
 
     hide();
@@ -81,25 +76,13 @@ const char* ConsoleView::getCommandToExecute(void) const {
 	return _commandToExecute;
 }
 
-void ConsoleView::addChatMessage(const char* playerName, const char *message) {
-	_consoleText.append("\n");
-	_consoleText.append(playerName);
-	_consoleText.append("> ");
-	_consoleText.append(message);
-	AG_TextboxSetString(_consoleTextbox, _consoleText.c_str());
+void ConsoleView::println(const char* event) {
+	_consoleText.append("\n").append(event);
+	AG_LabelText(_mapOuverteLabel, _consoleText.c_str());
 }
 
 void ConsoleView::setMapOuverte(const std::string& mapName) {
 	std::string label;
 	label.append("Map ouverte : '").append(mapName).append("'");
 	AG_LabelText(_mapOuverteLabel, label.c_str() );
-}
-
-
-void ConsoleView::clearTextToSend(void) {
-	memset(_commandToExecute, '\0', sizeof(_commandToExecute));
-}
-
-void ConsoleView::addConsoleEntry(const std::string& entryName, const std::string& entryValue) {
-	_consoleEntries.insert(pair<string, string>(entryName, entryValue));
 }

@@ -111,10 +111,9 @@ void CMultiMaterialGeo::Init()
 	MinMax();			// Mesure les minimums et maximums de l'objet géo
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
 	ConstruitBase();	// Construit la table des vecteurs normaux
-	initVBO();
 }
 
-void CMultiMaterialGeo::initVBO()
+void CMultiMaterialGeo::initGL()
 {
 	glGenBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 
@@ -131,7 +130,7 @@ void CMultiMaterialGeo::initVBO()
 	glBufferData(GL_ARRAY_BUFFER, m_NumVertex*2*sizeof(float), m_TabTexVertex, GL_STATIC_DRAW);
 }
 
-void CMultiMaterialGeo::freeVBO()
+void CMultiMaterialGeo::freeGL()
 {
 	glDeleteBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 }
@@ -391,8 +390,6 @@ CMultiMaterialGeo::~CMultiMaterialGeo()
 		delete[] m_TabTexVertex;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs préliminaires à la gestion des contacts)
 		m_TabTexVertex = 0;
 	}
-
-	freeVBO();
 }
 
 void CMultiMaterialGeo::EchangeXY()	// Echange les axes X et Y de l'objet

@@ -6,7 +6,6 @@
 #include <GL/glu.h>
 #include <iostream>
 #include <string>
-#include <list>
 #include <vector>
 #include <cmath>
 
@@ -35,24 +34,34 @@ using namespace JktSon;
 
 extern JktSon::CDemonSons *DemonSons;
 
-void quit_tutorial()
+void quit_game()
 {
-TRACE().p( TRACE_OTHER, "quit_tutorial()" );
-	cerr << endl << "quit_tutorial()";
+TRACE().p( TRACE_OTHER, "quit_game()" );
+	cerr << endl << "quit_game()";
 	exit(0);
 }
 
-void quit_tutorial( int code )	// Quitte proprement le jeu
+void quit_game(int code)	// Quitte proprement le jeu
 {
-TRACE().p( TRACE_OTHER, "quit_tutorial(code=%d)", code );
+TRACE().p( TRACE_OTHER, "quit_game(code=%d)", code );
 	cerr << endl << endl << "quit_tutorial( " << code << " )";
+	cerr.flush();
 	exit( code );
 }
 
-void quit_tutorial(const char* txt,int code)	// Quitte proprement le jeu
+void quit_game(const char* txt, int code)	// Quitte proprement le jeu
 {
-TRACE().p( TRACE_OTHER, "quit_tutorial(code=%d,txt=%s)", code, txt );
-	cerr << endl << endl << "quit_tutorial( " << code << "," << txt << ")";
+TRACE().p( TRACE_OTHER, "quit_game(code=%d,txt=%s)", code, txt );
+	cerr << endl << endl << "quit_game( " << code << "," << txt << ")";
+	cerr.flush();
+	exit( code );
+}
+
+void quit_game(const string& txt, int code)	// Quitte proprement le jeu
+{
+TRACE().p( TRACE_OTHER, "quit_game(code=%d,txt=%s)", code, txt.c_str() );
+	cerr << endl << endl << "quit_game( " << code << "," << txt << ")";
+	cerr.flush();
 	exit( code );
 }
 
@@ -87,9 +96,13 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 	cerr << trace4 << endl;
 	cerr << trace5 << endl;
 
+	cerr.flush();
+
 	FSOUND_Close();		// Fermeture d'FMOD
 	SDLNet_Quit();		// Fermeture d'SDL_Net
 	SDL_Quit();			// Fermeture de SDL
+
+	cout << "Erreur OpenGL : " << gluErrorString(glGetError());
 }
 
 bool checkEventsForIntro( void )		// Vérifie si 'escape' ou le bouton souris ont été frappés
@@ -114,8 +127,8 @@ bool checkEventsForIntro( void )		// Vérifie si 'escape' ou le bouton souris ont
 			break;
 
         case SDL_QUIT:
-			quit_tutorial( 0 );
-            break;
+			quit_game(0);
+			break;
 
 		default:
 			break;
@@ -169,7 +182,7 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 
 	string str1 = "Nous sommes en 2056.\n\nLa surface de la Terre n'est plus qu'un ocean d'acide.\nLa loi a laisse sa place a celle du plus fort et tout se regle\ndesormais lors de combats sans gland.\n\n      Voici le seul homme qui peut encore sauver la planete... ";
 	string str2 = "Alors, vous l'avez compris...\n   On est vraiment dans la merde !";
-	list< string > lignes;		// Lignes séparées par un retour chariot
+	vector< string > lignes;		// Lignes séparées par un retour chariot
 
 	srand( SDL_GetTicks() );	// Initialisation de la fonction rand() pour les nombres aléatoires
 
@@ -212,7 +225,7 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	glDisable( GL_DEPTH_TEST );
 
 	fonteIntro.Begin();
-	list< string >::const_iterator iter;
+	vector< string >::const_iterator iter;
 	float vertical;
 	char lettre;
 

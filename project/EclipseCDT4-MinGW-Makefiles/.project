@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>jkt@EclipseCDT4-MinGW-Makefiles</name>
+	<name>JeuKiTue-Debug@EclipseCDT4-MinGW-Makefiles</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -119,7 +119,7 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>[Subprojects]/jkt</name>
+			<name>[Subprojects]/JeuKiTue</name>
 			<type>2</type>
 			<location>H:/jkt/svn/trunk/moteur/sources</location>
 		</link>
@@ -217,6 +217,16 @@
 			<name>[Targets]/[exe] jkt/Source Files/JktException.cpp</name>
 			<type>1</type>
 			<location>H:/jkt/svn/trunk/moteur/sources/src/exception/JktException.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/GameDto.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/game/GameDto.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/MapLoader.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/game/MapLoader.cpp</location>
 		</link>
 		<link>
 			<name>[Targets]/[exe] jkt/Source Files/ifstreamWork.cpp</name>

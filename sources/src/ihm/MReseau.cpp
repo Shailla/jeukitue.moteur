@@ -22,10 +22,6 @@ using namespace JktMenu;
 
 class CGame;
 
-extern CGame Game;
-extern CMenu MenuPrinc2;
-extern CFocus *pFocus;
-extern bool Aide;
 extern CCfg Config;
 
 namespace JktMenu
@@ -37,7 +33,6 @@ namespace JktMenu
 	/*								*/
 	/********************************/
 void lanceMenuConfigReseauSwitch(void *arg);
-void lanceMenuConfigReseauIp(void *arg);
 void lanceMenuConfigReseauPort(void *arg);
 
 CMenu *MenuConfigReseau = 0;
@@ -101,7 +96,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigReseau(var=%x)", var );
 	if( MenuConfigReseau )
 		delete MenuConfigReseau;
 
-	MenuConfigReseau = new CMenu(title_menu_config_reseau, item_menu_config_reseau, nbr,
+	MenuConfigReseau = new CMenu(title_menu_config_reseau, (const char**)item_menu_config_reseau, nbr,
 						liste_suivant_config_reseau, retourReseau );
 
 	delete[] liste_suivant_config_reseau;

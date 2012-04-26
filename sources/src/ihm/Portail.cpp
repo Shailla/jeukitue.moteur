@@ -22,24 +22,15 @@ class CPorte;
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
 
-extern bool Aide;
-extern CCfg Config;
-
-void quit_JKT();
-void lanceMenuConfig(void *var);		// Menu de configuration vidéo, son, réseau, clavier,...
-void lanceMenuOpenScene(void *var);		// Menu d'ouverture fichiers ASE et MAP
-void lanceMenuMultijoueur(void *var);	// Menu pour le jeu multi-joueurs
-void lanceMenuTest(void *var);
-void quit_tutorial( int code );
+void quit_game( int code );
 
 namespace JktMenu
 {
-extern CFocus *pFocus;
 
 void quit_JKTici(void *var)
 {
 TRACE().p( TRACE_MENU, "quit_JKTici(%x)", var );
-	quit_tutorial( 0 );
+	quit_game( 0 );
 }
 
 #include "ihm/Portail.h"

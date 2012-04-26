@@ -23,17 +23,12 @@ using namespace JktMenu;
 
 class CGame;
 
-extern CGame Game;
-extern CFocus *pFocus;
-extern bool Aide;
 extern CCfg Config;
 
 #include "ihm/MDisplaySize.h"
 
 namespace JktMenu
 {
-extern CMenu MenuPrinc2;
-
 void lanceDisplaySizeChange(void*);
 void retourVideoSize(void *arg);
 
@@ -77,8 +72,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigVideoDisplay(var=%x)", var );
 		liste_arguments[i] = new rect( modes[i]->w, modes[i]->h );
 	}
 
-	MenuConfigVideoDisplaySize = new CMenu( "DIMENSIONS D'ECRAN", items_menu, nbr,
-						liste_suivants, retourVideoSize, liste_arguments );
+	MenuConfigVideoDisplaySize = new CMenu( "DIMENSIONS D'ECRAN", (const char**)items_menu, nbr, liste_suivants, retourVideoSize, liste_arguments );
 
 	for(int i=0 ; i<nbr ; i++ )
 		delete items_menu[i];

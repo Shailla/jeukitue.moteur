@@ -29,8 +29,7 @@ public:
 	
 	bool bItemsDroits;		// Items droits sélectionné ou non
 
-	CMenu( char *newTitre, char **newItems, int nbrItems,
-		PF *fct_suivante, PF fct_retour, void **liste_arg=0, PFV fct_refresh=0 );
+	CMenu(const char *newTitre, const char **newItems, int nbrItems, PF *fct_suivante, PF fct_retour, void **liste_arg=0, PFV fct_refresh=0);
 	~CMenu();
 
 	void afficheTitre();			// Affiche le titre associé à cette classe menu

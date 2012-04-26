@@ -11,7 +11,7 @@ namespace JktUtils
 class RessourcesLoader
 {
 	static int nbrElements;
-	static char *elementsNamesAndFolders[];
+	static const char *elementsNamesAndFolders[];
 
 public:
 	static bool getFileRessource(string& file);

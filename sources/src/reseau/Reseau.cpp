@@ -30,13 +30,10 @@ class CGame;
 #include "enumReseau.h"
 #include "reseau/Reseau.h"
 
-extern JktUtils::CTableauIndex<CPlayer> *pTabIndexPlayer;
 extern CCfg Config;
 extern CGame Game;
 
 void JktMoteur::contactPlayer(CPlayer *player, float *normal, float distanceW);
-void gravitePlayer(CPlayer *player);
-void openMAP2( const string &nomFichierMap );
 
 namespace JktNet
 {

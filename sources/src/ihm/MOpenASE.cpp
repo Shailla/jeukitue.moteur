@@ -36,7 +36,7 @@ using namespace std;
 using namespace JktMenu;
 using namespace JktMoteur;
 
-bool openMAP( const void *arg );
+bool openMAP3( const void *arg );
 
 extern CGame Game;
 extern CFocus *pFocus;
@@ -46,7 +46,6 @@ JktMoteur::CMap *pMapASE;
 
 namespace JktMenu
 {
-extern CMenu MenuPrinc2;
 
 	/************************/
 	/*						*/
@@ -54,7 +53,6 @@ extern CMenu MenuPrinc2;
 	/*						*/
 	/************************/
 	// Prototypes
-void lanceBoiteConvertASE( void *var );
 int threadConvertASE_2( void *arg );
 
 CMenu *MenuOpenASE;
@@ -145,9 +143,7 @@ void retourConfirmOui( void *arg )
 TRACE().p( TRACE_MENU, "retourConfirmOui(var=%x)", arg );
 	delete BoiteConfirmOk;
 
-
-
-	if(openMAP(arg)) {
+	if(openMAP3(arg)) {
 		Aide = false;
 		pFocus->SetPlayFocus();
 		Game.setModeLocal();
@@ -175,7 +171,7 @@ TRACE().p( TRACE_MENU, "retourErreur(var=%x)", arg );
 	lanceMenuOpenScene( 0 );
 }
 
-void erreur( char *msg )
+void erreur(const char *msg )
 {
 	BoiteErreur = new CDlgBoite( "Erreur", msg, retourErreur, CDlgBoite::JKT_DLG_ERREUR );
 	BoiteErreur->addBouton( 2, "Ok", retourErreur );
@@ -460,7 +456,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConvertASE(var=%x)", var );
 		}
 	}*/
 
-	MenuOpenASE = new CMenu( "Convertir une Scene ASE", item_menu_open_ASE, nbrFichier,
+	MenuOpenASE = new CMenu( "Convertir une Scene ASE", (const char**)item_menu_open_ASE, nbrFichier,
 						liste_suivant_open_ASE, retourASE, liste_argument_open_ASE );
 
 	delete[] liste_suivant_open_ASE;

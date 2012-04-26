@@ -19,9 +19,6 @@ using namespace std;
 
 using namespace JktMenu;
 
-extern CGame Game;
-extern CFocus *pFocus;
-extern bool Aide;
 extern CCfg Config;
 
 #include "fmod.h"
@@ -29,8 +26,6 @@ extern CCfg Config;
 
 namespace JktMenu
 {
-extern CMenu MenuPrinc2;
-
 void lanceOutput1(void *arg);
 void lanceOutput2(void *arg);
 void lanceOutput3(void *arg);
@@ -50,7 +45,7 @@ PF liste_suivant_config_audio_drivers_output[] =
 	lanceOutput4,
 };
 
-char *item_menu_config_audio_drivers_output[] =
+const char *item_menu_config_audio_drivers_output[] =
 {
 #ifdef _WIN32
 	"Direct Sound",
@@ -65,10 +60,10 @@ char *item_menu_config_audio_drivers_output[] =
 #endif
 };
 
-CMenu MenuConfigAudioDriversOutput( "DRIVERS OUTPUT",
+CMenu MenuConfigAudioDriversOutput("DRIVERS OUTPUT",
 								   item_menu_config_audio_drivers_output, 4,
-									liste_suivant_config_audio_drivers_output,
-									lanceMenuConfigAudioDrivers );
+								   liste_suivant_config_audio_drivers_output,
+								   lanceMenuConfigAudioDrivers);
 
 void lanceMenuConfigAudioDriversOutput(void *var)
 {

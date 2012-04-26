@@ -24,21 +24,15 @@ class CGeoObject;
 class CPorte;
 
 extern CGame Game;
-extern CFocus *pFocus;
-extern bool Aide;
-
-void quit_JKT();
 
 namespace JktMenu
 {
-extern CMenu MenuPrinc;
 
 void quit_JKTici( void *var );
 void lanceMenuConfig( void *var );			// Menu de configuration vidéo, son, réseau, clavier,...
 void lanceMenuOpenScene( void *var );		// Menu d'ouverture fichiers ASE et MAP
 void lanceMenuMultijoueur( void *var );		// Menu pour le jeu multi-joueurs
 void lanceMenuPrinc( void *var );
-void lanceMenuTest( void *var );
 
 	/****************************/
 	/*							*/
@@ -61,7 +55,7 @@ PF liste_suivant_princ2[] =
 	quit_JKTici,
 };
 
-char *item_menu_princ2[] =
+const char *item_menu_princ2[] =
 {
 	"Ouvrir une scene",
 	"Multi-joueurs",

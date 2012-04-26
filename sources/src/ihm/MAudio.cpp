@@ -19,16 +19,11 @@ using namespace std;
 
 using namespace JktMenu;
 
-extern CGame Game;
-extern CFocus *pFocus;
-extern bool Aide;
-extern CCfg Config;
-
 #include "ihm/MConfiguration.h"
+
 
 namespace JktMenu
 {
-extern CMenu MenuPrinc2;
 
 void lanceMenuConfigAudioDrivers(void*);
 
@@ -45,7 +40,7 @@ PF liste_suivant_config_audio[] =
 	lanceMenuConfigAudioDrivers,
 };
 
-char *item_menu_config_audio[] =
+const char *item_menu_config_audio[] =
 {
 	"Drivers",
 };

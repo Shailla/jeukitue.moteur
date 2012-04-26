@@ -20,17 +20,12 @@ using namespace JktMenu;
 
 class CGame;
 
-extern CGame Game;
-extern CFocus *pFocus;
-extern bool Aide;
 extern CCfg Config;
 
 #include "ihm/MConfiguration.h"
 
 namespace JktMenu
 {
-extern CMenu MenuPrinc2;
-
 void lanceMenuConfigVideoDisplay(void*);
 void lanceMenuConfigVideoFullscreenOnOff(void*);
 
@@ -46,7 +41,7 @@ PF liste_suivant_config_video[] =
 	lanceMenuConfigVideoFullscreenOnOff,
 };
 
-char *item_menu_config_video[] =
+const char *item_menu_config_video[] =
 {
 	"Display",
 	"Fullscreen",

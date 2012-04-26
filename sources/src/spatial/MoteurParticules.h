@@ -13,7 +13,7 @@ private:
 public:
 		// Constructeurs
 	CMoteurParticules(void);
-	~CMoteurParticules(void);
+	virtual ~CMoteurParticules(void);
 
 		// Fonctions membres
 	virtual void Affiche() = 0;		// Affiche l'ensemble des particules

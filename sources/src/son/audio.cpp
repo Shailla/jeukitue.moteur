@@ -24,45 +24,52 @@ using namespace std;
 
 using namespace JktSon;
 
-extern CCfg Config;
 //char **remarquesDriver;
 CDemonSons *DemonSons;	// Requêtes des son à jouer
 
-char *resolveOutput( int output )
+const char *resolveOutput(int output)
 {
+	const char* result;
+
 	switch( output )
 	{
-		case FSOUND_OUTPUT_NOSOUND:	return "NoSound";						break;
-		case FSOUND_OUTPUT_WINMM:	return "Windows Multimedia Waveout";	break;
-		case FSOUND_OUTPUT_DSOUND:	return "Direct Sound";					break;
-		case FSOUND_OUTPUT_ASIO:	return "ASIO";							break;
-		case FSOUND_OUTPUT_ALSA:	return "ALSA 0.9-Advanced Linux Sound Architecture";	break;
-		case FSOUND_OUTPUT_ESD:		return "ESD-Elightment Sound Daemon";	break;
-		case FSOUND_OUTPUT_OSS:		return "OSS-Open Sound System";			break;
-		default:					return "OUTPUT inconnu";		break;
+		case FSOUND_OUTPUT_NOSOUND:	result = "NoSound";						break;
+		case FSOUND_OUTPUT_WINMM:	result = "Windows Multimedia Waveout";	break;
+		case FSOUND_OUTPUT_DSOUND:	result = "Direct Sound";					break;
+		case FSOUND_OUTPUT_ASIO:	result = "ASIO";							break;
+		case FSOUND_OUTPUT_ALSA:	result = "ALSA 0.9-Advanced Linux Sound Architecture";	break;
+		case FSOUND_OUTPUT_ESD:		result = "ESD-Elightment Sound Daemon";	break;
+		case FSOUND_OUTPUT_OSS:		result = "OSS-Open Sound System";			break;
+		default:					result = "OUTPUT inconnu";		break;
 	}
+
+	return result;
 }
 
-char *resolveMixer( int mixer )
+const char *resolveMixer(int mixer)
 {
+	const char* result;
+
 	switch( mixer )
 	{
-		case FSOUND_MIXER_BLENDMODE:	return "FSOUND_MIXER_BLENDMODE";		break;
-		case FSOUND_MIXER_MMXP5:		return "FSOUND_MIXER_MMXP5";			break;
-		case FSOUND_MIXER_MMXP6:		return "FSOUND_MIXER_MMXP6";			break;
-		case FSOUND_MIXER_QUALITY_FPU:	return "FSOUND_MIXER_QUALITY_FPU";		break;
-		case FSOUND_MIXER_QUALITY_MMXP5:return "FSOUND_MIXER_QUALITY_MMXP5";	break;
-		case FSOUND_MIXER_QUALITY_MMXP6:return "FSOUND_MIXER_QUALITY_MMXP6";	break;
-		default:						return "MIXER inconnu";					break;
+		case FSOUND_MIXER_BLENDMODE:	result = "FSOUND_MIXER_BLENDMODE";		break;
+		case FSOUND_MIXER_MMXP5:		result = "FSOUND_MIXER_MMXP5";			break;
+		case FSOUND_MIXER_MMXP6:		result = "FSOUND_MIXER_MMXP6";			break;
+		case FSOUND_MIXER_QUALITY_FPU:	result = "FSOUND_MIXER_QUALITY_FPU";		break;
+		case FSOUND_MIXER_QUALITY_MMXP5:result = "FSOUND_MIXER_QUALITY_MMXP5";	break;
+		case FSOUND_MIXER_QUALITY_MMXP6:result = "FSOUND_MIXER_QUALITY_MMXP6";	break;
+		default:						result = "MIXER inconnu";					break;
 	}
+
+	return result;
 }
 
-const char *resolveDriver( int driver )
+const char *resolveDriver(int driver)
 {
-	return FSOUND_GetDriverName( driver );
+	return FSOUND_GetDriverName(driver);
 }
 
-const char *resolveDriverRecord( int record )
+const char *resolveDriverRecord(int record)
 {
-	return FSOUND_Record_GetDriverName( record );
+	return FSOUND_Record_GetDriverName(record);
 }

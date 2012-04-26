@@ -48,9 +48,9 @@ class CCfg
 		CComID Tir1;		// Tir primaire
 		CComID Tir2;		// Tir secondaire
 		CComID Monter;		// Monter
-		char *resolve(CComID com);		// Retourne la touche ou le bouton en texte
-		char *resolve(Uint8 mouse);		// Retourne le bouton souris en texte
-		char *resolve(SDLKey sym);		// Retourne la touche en texte
+		const char* resolve(CComID com);		// Retourne la touche ou le bouton en texte
+		const char* resolve(Uint8 mouse);		// Retourne le bouton souris en texte
+		const char* resolve(SDLKey sym);		// Retourne la touche en texte
 	};
 
 	class CDisplay

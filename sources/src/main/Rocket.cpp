@@ -51,7 +51,7 @@ TRACE().p( TRACE_OTHER, "CRocket::INIT_CLASSE()" );
 			m_TexExplosion = JktMoteur::LitFichierTextureAlpha( "@Texture/Explosion.jpg", 0.75f );
 			TRACE().p( TRACE_OTHER, "loadSubIntro() Texture de fonte : %d", m_TexExplosion );
 		}
-		catch( CErreur erreur )
+		catch(CErreur &erreur)
 		{
 			cerr << "\nEchec lecture icone d'explosion du rocket";
 			m_TexExplosion = -1;
@@ -336,6 +336,7 @@ bool CRocket::Refresh()
 		m_Taille += 0.002f;	// La taille de la rocket augmente pour simuler l'explosion
 		if( m_Taille > 0.1f )
 			vie = false;	// Destruction de CRocket (fin de vie de la rocket)
+		break;
 
 	default:
 		break;

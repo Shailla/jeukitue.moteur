@@ -180,7 +180,7 @@ TRACE().p( TRACE_MENU, "CDlgBoite::INIT_CLASSE()" );
 			texEnCours = JktMoteur::LitFichierTexture("@Icone/EnCours.bmp");
 			TRACE().p( TRACE_INFO, "CDlgBoite::INIT_CLASSE() Texture de tache en cours : %d", texEnCours );
 		}
-		catch( CErreur erreur )
+		catch(CErreur& erreur)
 		{
 			return false;
 		}

@@ -3,6 +3,9 @@
 
 #include <agar/core.h>
 #include <agar/gui.h>
+#include <map>
+
+using namespace std;
 
 #include "menu/View.h"
 class MainMenuView;
@@ -21,59 +24,34 @@ class ConsoleView;
 class ProgressBarView;
 
 class Viewer {
-	// Fenêtres
-    View* _mainMenuView;
-	CentralisateurView* _centralisateurView;
-	View* _multijoueursView;
-	View* _configurationView;
-    ConfigCentralisateurView* _configCentralisateurView;
-	View* _openSceneView;
-	OpenSceneASEView* _openSceneASEView;
-	OpenSceneMapView* _openSceneMapView;
-	OpenSceneASEEcraseRepView* _openSceneAseEcraseRepView;
-	ConsoleAvancementView* _consoleAvancementView;
-	LanceServeurView* _lanceServeurView;
-	ConfigurationVideoView* _configurationVideoView;
-	ConfigurationJoueurView* _configurationJoueurView;
-	ConsoleView* _consoleView;
-	ProgressBarView* _progressBarView;
+public:
+	enum VIEWS {
+		HIDE_ALL_VIEW = 0,
+		MAIN_MENU_VIEW,
+		CENTRALISATEUR_VIEW,
+		MULTIJOUEURS_VIEW,
+		CONFIGURATION_VIEW,
+		CONFIG_CENTRALISATEUR_VIEW,
+		OPEN_SCENE_VIEW,
+		OPEN_SCENE_ASE_VIEW,
+		OPEN_SCENE_MAP_VIEW,
+		OPEN_SCENE_ASE_ECRASE_REP_VIEW,
+		CONSOLE_AVANCEMENT_VIEW,
+		LANCE_SERVEUR_VIEW,
+		CONFIGURATION_VIDEO_VIEW,
+		CONFIGURATION_JOUEUR_VIEW,
+		CONSOLE_VIEW,
+		PROGRESS_BAR_VIEW
+	};
 
-	void showOrHide(View* view, View* viewToShow);
-	void showView(View* view);
+	map<VIEWS, View*> _views;
 public:
     Viewer(AG_EventFn controllerCallback);
     ~Viewer(void);
+    void showView(VIEWS view);
+    View* getView(VIEWS view);
+    void hideAllViews(void);
     void draw(void);
-
-	void hideAll(void);
-    void showMainMenu(void);
-	void showMultijoueurs(void);
-	void showCentralisateur(void);
-	void showConfiguration(void);
-    void showConfigCentralisateur(void);
-	void showOpenScene(void);
-	void showOpenSceneASE(void);
-	void showOpenSceneASEEcraseRep(void);
-	void showOpenSceneMap(void);
-	void showConsoleAvancementView(void);
-	void showLanceServeurView(void);
-	void showConfigurationVideoView(void);
-	void showConfigurationJoueurView(void);
-	
-	void showConsoleView(void);
-	void hideConsoleView(void);
-
-	// Accesseurs des fenêtres
-    ConfigCentralisateurView* getConfigCentralisateurView(void);
-	OpenSceneMapView* getOpenSceneMapView(void);
-	OpenSceneASEView* getOpenSceneASEView(void);
-	CentralisateurView* getCentralisateurView(void);
-	ProgressBarView* getProgressBarView(void);
-	OpenSceneASEEcraseRepView* getOpenSceneASEEcraseRepView(void);
-	ConsoleAvancementView* getConsoleAvancementView(void);
-	LanceServeurView* getLanceServeurView(void);
-	ConsoleView* getConsoleView(void);
-	ConfigurationJoueurView* getConfigurationJoueurView(void);
 };
 
 #endif

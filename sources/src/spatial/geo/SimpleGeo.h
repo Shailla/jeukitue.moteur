@@ -34,6 +34,8 @@ public:
 	CSimpleGeo(CMap *map, const string& name, unsigned int nbrVertex, float* vertex, unsigned int nbrFaces, int* faces, float* color, bool solid=true);
 	CSimpleGeo(CMap *map);
 	void Init();								// Initialisation de l'objet
+	void initGL();
+	void freeGL();
 private:
 	float minX, minY, minZ, maxX, maxY, maxZ;	// Coordonnées du pavé englobant l'objet géo
 	float m_Centre[3];			// Centre de la sphère englobant l'objet
@@ -59,8 +61,6 @@ private:
 	void MinMax();			// Calcul les variables MinX,...,MaxZ de cet objet géométrique
 	void Bulle();			// Calcul les variables 'centre' et rayon
 	void ConstruitBase();	// Construit les vecteurs normaux aux triangles de l'objet géo
-	void initVBO();			// Initialise les données dans le VBO de la carte graphique
-	void freeVBO();			// Libère les VBO
 
 public:
 	void EchangeXY();			// Echange les coordonnées X et Y de l'objet

@@ -34,7 +34,6 @@ class CGame;
 
 using namespace JktNet;
 
-extern float delta;
 extern CReseau Reseau;
 
 #define Pi 3.14159265f			//nombre pi pour les calculs
@@ -43,9 +42,9 @@ CGame::CGame()
 {
 	m_Mode = JKT_MODE_PARTIE_NULL;
 
-	pTabIndexPlayer = 0;	// Pas de liste de joueurs
-	m_pMap = 0;				// Pas de map
-	m_Erwin = 0;			// Pas de joueur actif
+	pTabIndexPlayer = NULL;	// Pas de liste de joueurs
+	m_pMap = NULL;			// Pas de map
+	m_Erwin = NULL;			// Pas de joueur actif
 	m_bGravite = true;		// Par défaut la gravité est active
 }
 
@@ -102,7 +101,7 @@ void CGame::setPlayerList(int nbr)
 
 void CGame::quit()
 {
-	if( pTabIndexPlayer )
+	if(pTabIndexPlayer)
 		delete pTabIndexPlayer;
 
 	pTabIndexPlayer = 0;
@@ -120,13 +119,20 @@ TRACE().p( TRACE_INFO, "CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap
 	try {
 		m_pMap = new JktMoteur::CMap( nomFichierMap );
 	}
-	catch(JktUtils::CErreur erreur) {
+	catch(JktUtils::CErreur& erreur) {
 		cerr << endl << erreur.toString() << endl;
 		result = false;
 	}
 
 TRACE().p( TRACE_INFO, "CGame::openMap() -> %b end%T", result, this );
 	return result;
+}
+
+void CGame::changeActiveMap(JktMoteur::CMap* map) {
+	if( m_pMap )
+		delete m_pMap;
+
+	m_pMap = map;
 }
 
 void CGame::setStatutServer( JktNet::StatutServer statut )
@@ -237,9 +243,8 @@ void CGame::AffichePlayers()
 	{
 		player = pTabIndexPlayer->operator [](curseur);
 
-		//if( player!=erwin )	// Si ce n'est pas le joueur actif=>affichage normal
-			player->Affiche(); //affiche un seul joueur pour le moment
-		player->AfficheProjectils(); // Affiche les projectils lancés par 'player'
+		player->Affiche(); 				//affiche un seul joueur pour le moment
+		player->AfficheProjectils(); 	// Affiche les projectils lancés par 'player'
 	}
 }
 

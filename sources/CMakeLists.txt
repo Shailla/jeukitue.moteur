@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 2.6)
 cmake_policy(SET CMP0015 NEW)
-		
+
 #Configuration du projet
-project(jkt)
+project(JeuKiTue)
+set(CMAKE_BUILD_TYPE Debug)
 set(EXECUTABLE_OUTPUT_PATH ../../deploy/${CMAKE_BUILD_TYPE})
 
 include_directories("src")

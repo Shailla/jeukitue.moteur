@@ -86,8 +86,8 @@ void UdpController::receive(UDPpacket* packet)
 		}
 
 		Viewer* viewer = Fabrique::getAgarView();
-		CentralisateurView* view = viewer->getCentralisateurView();
-		view->setPlayerList(playerList, nombreJoueurs);
+		CentralisateurView* centralisateurView = (CentralisateurView*)viewer->getView(Viewer::CENTRALISATEUR_VIEW);
+		centralisateurView->setPlayerList(playerList, nombreJoueurs);
 	}
 
 	// Receive a chat message
@@ -112,12 +112,8 @@ void UdpController::receive(UDPpacket* packet)
 		Viewer* viewer = Fabrique::getAgarView();
 
 		// Show the chat message in the centralisateur window
-		CentralisateurView* centralisateurView = viewer->getCentralisateurView();
+		CentralisateurView* centralisateurView = (CentralisateurView*)viewer->getView(Viewer::CENTRALISATEUR_VIEW);
 		centralisateurView->addChatMessage(playerName, message);
-
-		// Show the chat message in the console window
-		ConsoleView* consoleView = viewer->getConsoleView();
-		consoleView->addChatMessage(playerName, message);
 	}
 
     // Unknown code

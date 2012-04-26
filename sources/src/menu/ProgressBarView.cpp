@@ -11,8 +11,6 @@
 
 #include "menu/ProgressBarView.h"
 
-extern CCfg Config;
-
 ProgressBarView::ProgressBarView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {

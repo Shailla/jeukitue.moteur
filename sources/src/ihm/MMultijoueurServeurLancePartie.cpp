@@ -31,18 +31,14 @@ using namespace JktMenu;
 extern CGame Game;
 extern CFocus *pFocus;
 extern bool Aide;
-extern JktNet::CReseau Reseau;
-extern CCfg Config;
 
 #include "ihm/MMenuPrinc.h"
 #include "ihm/MMultijoueurServeur.h"
 
-void openMAP(void *arg);
 void openMAP2( const string &nomFichierMap );
 
 namespace JktMenu
 {
-extern CMenu MenuMultijoueurserveur;
 
 	/****************************************************/
 	/*													*/
@@ -146,7 +142,7 @@ TRACE().p( TRACE_MENU, "lanceMenuPartiemulti(var=%x)", var );
 		}
 	}*/
 
-	MenuPartiemulti = new CMenu( "LANCER UNE PARTIE SERVEUR", item_menu_partiemulti, nbrFichier,
+	MenuPartiemulti = new CMenu( "LANCER UNE PARTIE SERVEUR", (const char**)item_menu_partiemulti, nbrFichier,
 						liste_suivant_partiemulti, retourPartiemulti, liste_argument_partiemulti );
 
 	for( int i=0 ; i< nbrFichier ; i++ )

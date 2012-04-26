@@ -36,6 +36,8 @@ public:
 	CSimpleMaterialGeo(CMap *map, const string& name, CMaterial *mat, unsigned int nbrVertex, float* vertex, float* normals, bool solid=true);
 	CSimpleMaterialGeo(CMap *map);
 	void Init();								// Initialisation de l'objet
+	void initGL();
+	void freeGL();
 private:
 	float minX, minY, minZ, maxX, maxY, maxZ;	// Coordonnées du pavé englobant l'objet géo
 	float m_Centre[3];			// Centre de la sphère englobant l'objet

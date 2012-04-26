@@ -235,16 +235,6 @@
 <pathentry kind="mac" name="__GXX_RTTI" path="" value="1"/>
 <pathentry kind="mac" name="__EXCEPTIONS" path="" value="1"/>
 <pathentry kind="mac" name="__WCHAR_UNSIGNED__" path="" value="1"/>
-<pathentry include="H:/jkt/svn/trunk/moteur/sources/src" kind="inc" path="" system="true"/>
-<pathentry include="H:/jkt/svn/trunk/moteur/sources/libs/SDL-1.2.14-MinGW/include/SDL" kind="inc" path="" system="true"/>
-<pathentry include="H:/jkt/svn/trunk/moteur/sources/libs/SDL_net-1.2.7/include" kind="inc" path="" system="true"/>
-<pathentry include="H:/jkt/svn/trunk/moteur/sources/libs/SDL_image-1.2.10/include" kind="inc" path="" system="true"/>
-<pathentry include="H:/jkt/svn/trunk/moteur/sources/libs/agar-1.3.4-recompile/include" kind="inc" path="" system="true"/>
-<pathentry include="H:/jkt/svn/trunk/moteur/sources/libs/ziparchive/ZipArchive" kind="inc" path="" system="true"/>
-<pathentry include="H:/jkt/svn/trunk/moteur/sources/libs/fmodapi375win/api/inc" kind="inc" path="" system="true"/>
-<pathentry include="H:/jkt/svn/trunk/moteur/sources/libs/glFont" kind="inc" path="" system="true"/>
-<pathentry include="H:/jkt/svn/trunk/moteur/sources/libs/glext" kind="inc" path="" system="true"/>
-<pathentry include="H:/jkt/svn/trunk/moteur/sources/libs/tinyxml_2_6_1" kind="inc" path="" system="true"/>
 <pathentry include="c:/MinGW/lib/gcc/mingw32/4.6.2/include" kind="inc" path="" system="true"/>
 <pathentry include="c:/MinGW/include" kind="inc" path="" system="true"/>
 <pathentry include="c:/MinGW/lib/gcc/mingw32/4.6.2/include-fixed" kind="inc" path="" system="true"/>
@@ -706,6 +696,48 @@
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
 <buildTarget>src/exception/centralisateur/OpenUdpSocketException.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/game/GameDto.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/game/GameDto.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/game/GameDto.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/game/GameDto.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/game/GameDto.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/game/GameDto.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/game/MapLoader.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/game/MapLoader.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/game/MapLoader.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/game/MapLoader.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/game/MapLoader.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/game/MapLoader.cpp.s</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
@@ -3110,6 +3142,6 @@
 </cconfiguration>
 </storageModule>
 <storageModule moduleId="cdtBuildSystem" version="4.0.0">
-<project id="jkt.null.1" name="jkt"/>
+<project id="JeuKiTue.null.1" name="JeuKiTue"/>
 </storageModule>
 </cproject>

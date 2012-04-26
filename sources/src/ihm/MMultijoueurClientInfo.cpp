@@ -35,11 +35,7 @@ class CGeoObject;
 class CPorte;
 class CReseau;
 
-extern CGame Game;
-extern CFocus *pFocus;
-extern bool Aide;
 extern JktNet::CReseau Reseau;
-extern CCfg Config;
 
 
 namespace JktMenu
@@ -58,7 +54,7 @@ PF liste_suivant_infoserver[] =
 	0,
 };
 
-char *item_menu_infoserver[] =
+const char *item_menu_infoserver[] =
 {
 	"Nom serveur",
 	"Map active",

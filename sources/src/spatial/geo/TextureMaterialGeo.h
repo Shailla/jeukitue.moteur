@@ -34,6 +34,8 @@ public:
 	CTextureMaterialGeo(CMap* map, const string& name, CMaterialTexture* mat, unsigned int nbrfaces, float* vertex, float* normals, float* texvertex, bool solid=true);
 	CTextureMaterialGeo(CMap *map);
 	void Init();								// Initialisation de l'objet
+	void initGL();
+	void freeGL();
 private:
 	float minX, minY, minZ, maxX, maxY, maxZ;	// Coordonnées du pavé englobant l'objet géo
 	float m_Centre[3];			// Centre de la sphère englobant l'objet

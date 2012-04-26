@@ -5,56 +5,80 @@
 
 CRequeteProcess::CRequeteProcess()
 {
-	m_bOpenMap = false;		// Aucune demande d'ouverture de MAP
+	_mutex = SDL_CreateMutex();
+
+	SDL_mutexP(_mutex);
+	_bOpenMap = false;		// Aucune demande d'ouverture de MAP
+	_openMapLocalEtape = OMLE_AUCUNE;		// Indique la présence d'une demande d'ouverture d'une MAP
+	SDL_mutexV(_mutex);
 }
 
 CRequeteProcess::~CRequeteProcess()
 {
+	SDL_DestroyMutex(_mutex);
 }
 
 void CRequeteProcess::setOuvreMapLocal( string nomMAP )
 {
-	m_bOpenMapLocal = true;		// Indique la présence d'une demande d'ouverture d'une MAP
-	m_MapAOuvrir = nomMAP;	// Nom de la MAP en question
+	SDL_mutexP(_mutex);
+	_openMapLocalEtape = OMLE_DEMANDE;		// Indique la présence d'une demande d'ouverture d'une MAP
+	_MapAOuvrir = nomMAP;	// Nom de la MAP en question
+	SDL_mutexV(_mutex);
 }
 
 void CRequeteProcess::setOuvreMap( string nomMAP )
 {
-	m_bOpenMap = true;		// Indique la présence d'une demande d'ouverture d'une MAP
-	m_MapAOuvrir = nomMAP;	// Nom de la MAP en question
+	SDL_mutexP(_mutex);
+	_bOpenMap = true;		// Indique la présence d'une demande d'ouverture d'une MAP
+	_MapAOuvrir = nomMAP;	// Nom de la MAP en question
+	SDL_mutexV(_mutex);
 }
 
-string* CRequeteProcess::getOuvreMap()
+string CRequeteProcess::getOuvreMap()
 {
-	m_bOpenMap = false;
-	m_bOpenMapLocal = false;
+	SDL_mutexP(_mutex);
+	string map = string(_MapAOuvrir);
 
-	string* nom = new string(m_MapAOuvrir);
-	m_MapAOuvrir.clear();
+	_bOpenMap = false;
+	_MapAOuvrir.clear();
+	SDL_mutexV(_mutex);
 
-	return nom;
+	return map;
 }
 
 bool CRequeteProcess::isOuvreMap()
-{	return m_bOpenMap;			}
+{	return _bOpenMap;			}
 
-bool CRequeteProcess::isOuvreMapLocal()
-{	return m_bOpenMapLocal;			}
+void CRequeteProcess::setOuvreMapLocaleEtape(OUVRE_MAP_LOCALE_ETAPES etape) {
+	SDL_mutexP(_mutex);
+	_openMapLocalEtape = etape;
+	SDL_mutexV(_mutex);
+}
+
+int CRequeteProcess::getOuvreMapLocaleEtape()
+{
+	SDL_mutexP(_mutex);
+	OUVRE_MAP_LOCALE_ETAPES etape = _openMapLocalEtape;
+	SDL_mutexV(_mutex);
+
+	return etape;
+}
 
 void CRequeteProcess::setTakePicture()
 {
-	m_bTakePicture = true;
+	_bTakePicture = true;
 }
 
 bool CRequeteProcess::isTakePicture()
 {
 	bool result = false;
 
-	if( m_bTakePicture )
-	{
-		m_bTakePicture = false;
+	SDL_mutexP(_mutex);
+	if( _bTakePicture ) {
+		_bTakePicture = false;
 		result = true;
 	}
+	SDL_mutexV(_mutex);
 
 	return result;
 }

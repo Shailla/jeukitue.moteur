@@ -110,101 +110,101 @@ jkt/fast:
 	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/build
 .PHONY : jkt/fast
 
-libs/tinyxml_2_6_1/tinystr.obj: libs/tinyxml_2_6_1/tinystr.cpp.obj
-.PHONY : libs/tinyxml_2_6_1/tinystr.obj
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.obj: H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.obj
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.obj
 
 # target to build an object file
-libs/tinyxml_2_6_1/tinystr.cpp.obj:
-	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/libs/tinyxml_2_6_1/tinystr.cpp.obj
-.PHONY : libs/tinyxml_2_6_1/tinystr.cpp.obj
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.obj
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.obj
 
-libs/tinyxml_2_6_1/tinystr.i: libs/tinyxml_2_6_1/tinystr.cpp.i
-.PHONY : libs/tinyxml_2_6_1/tinystr.i
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.i: H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.i
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.i
 
 # target to preprocess a source file
-libs/tinyxml_2_6_1/tinystr.cpp.i:
-	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/libs/tinyxml_2_6_1/tinystr.cpp.i
-.PHONY : libs/tinyxml_2_6_1/tinystr.cpp.i
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.i
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.i
 
-libs/tinyxml_2_6_1/tinystr.s: libs/tinyxml_2_6_1/tinystr.cpp.s
-.PHONY : libs/tinyxml_2_6_1/tinystr.s
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.s: H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.s
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.s
 
 # target to generate assembly for a file
-libs/tinyxml_2_6_1/tinystr.cpp.s:
-	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/libs/tinyxml_2_6_1/tinystr.cpp.s
-.PHONY : libs/tinyxml_2_6_1/tinystr.cpp.s
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.s
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.s
 
-libs/tinyxml_2_6_1/tinyxml.obj: libs/tinyxml_2_6_1/tinyxml.cpp.obj
-.PHONY : libs/tinyxml_2_6_1/tinyxml.obj
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.obj: H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.obj
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.obj
 
 # target to build an object file
-libs/tinyxml_2_6_1/tinyxml.cpp.obj:
-	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/libs/tinyxml_2_6_1/tinyxml.cpp.obj
-.PHONY : libs/tinyxml_2_6_1/tinyxml.cpp.obj
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.obj
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.obj
 
-libs/tinyxml_2_6_1/tinyxml.i: libs/tinyxml_2_6_1/tinyxml.cpp.i
-.PHONY : libs/tinyxml_2_6_1/tinyxml.i
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.i: H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.i
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.i
 
 # target to preprocess a source file
-libs/tinyxml_2_6_1/tinyxml.cpp.i:
-	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/libs/tinyxml_2_6_1/tinyxml.cpp.i
-.PHONY : libs/tinyxml_2_6_1/tinyxml.cpp.i
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.i
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.i
 
-libs/tinyxml_2_6_1/tinyxml.s: libs/tinyxml_2_6_1/tinyxml.cpp.s
-.PHONY : libs/tinyxml_2_6_1/tinyxml.s
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.s: H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.s
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.s
 
 # target to generate assembly for a file
-libs/tinyxml_2_6_1/tinyxml.cpp.s:
-	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/libs/tinyxml_2_6_1/tinyxml.cpp.s
-.PHONY : libs/tinyxml_2_6_1/tinyxml.cpp.s
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.s
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.s
 
-libs/tinyxml_2_6_1/tinyxmlerror.obj: libs/tinyxml_2_6_1/tinyxmlerror.cpp.obj
-.PHONY : libs/tinyxml_2_6_1/tinyxmlerror.obj
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.obj: H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.obj
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.obj
 
 # target to build an object file
-libs/tinyxml_2_6_1/tinyxmlerror.cpp.obj:
-	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/libs/tinyxml_2_6_1/tinyxmlerror.cpp.obj
-.PHONY : libs/tinyxml_2_6_1/tinyxmlerror.cpp.obj
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.obj
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.obj
 
-libs/tinyxml_2_6_1/tinyxmlerror.i: libs/tinyxml_2_6_1/tinyxmlerror.cpp.i
-.PHONY : libs/tinyxml_2_6_1/tinyxmlerror.i
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.i: H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.i
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.i
 
 # target to preprocess a source file
-libs/tinyxml_2_6_1/tinyxmlerror.cpp.i:
-	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/libs/tinyxml_2_6_1/tinyxmlerror.cpp.i
-.PHONY : libs/tinyxml_2_6_1/tinyxmlerror.cpp.i
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.i
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.i
 
-libs/tinyxml_2_6_1/tinyxmlerror.s: libs/tinyxml_2_6_1/tinyxmlerror.cpp.s
-.PHONY : libs/tinyxml_2_6_1/tinyxmlerror.s
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.s: H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.s
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.s
 
 # target to generate assembly for a file
-libs/tinyxml_2_6_1/tinyxmlerror.cpp.s:
-	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/libs/tinyxml_2_6_1/tinyxmlerror.cpp.s
-.PHONY : libs/tinyxml_2_6_1/tinyxmlerror.cpp.s
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.s
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.s
 
-libs/tinyxml_2_6_1/tinyxmlparser.obj: libs/tinyxml_2_6_1/tinyxmlparser.cpp.obj
-.PHONY : libs/tinyxml_2_6_1/tinyxmlparser.obj
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.obj: H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.obj
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.obj
 
 # target to build an object file
-libs/tinyxml_2_6_1/tinyxmlparser.cpp.obj:
-	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/libs/tinyxml_2_6_1/tinyxmlparser.cpp.obj
-.PHONY : libs/tinyxml_2_6_1/tinyxmlparser.cpp.obj
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.obj
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.obj
 
-libs/tinyxml_2_6_1/tinyxmlparser.i: libs/tinyxml_2_6_1/tinyxmlparser.cpp.i
-.PHONY : libs/tinyxml_2_6_1/tinyxmlparser.i
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.i: H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.i
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.i
 
 # target to preprocess a source file
-libs/tinyxml_2_6_1/tinyxmlparser.cpp.i:
-	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/libs/tinyxml_2_6_1/tinyxmlparser.cpp.i
-.PHONY : libs/tinyxml_2_6_1/tinyxmlparser.cpp.i
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.i
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.i
 
-libs/tinyxml_2_6_1/tinyxmlparser.s: libs/tinyxml_2_6_1/tinyxmlparser.cpp.s
-.PHONY : libs/tinyxml_2_6_1/tinyxmlparser.s
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.s: H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.s
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.s
 
 # target to generate assembly for a file
-libs/tinyxml_2_6_1/tinyxmlparser.cpp.s:
-	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/libs/tinyxml_2_6_1/tinyxmlparser.cpp.s
-.PHONY : libs/tinyxml_2_6_1/tinyxmlparser.cpp.s
+H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.s
+.PHONY : H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.s
 
 src/DeleteWithGame.obj: src/DeleteWithGame.cpp.obj
 .PHONY : src/DeleteWithGame.obj
@@ -2222,6 +2222,78 @@ src/ressource/RessourcesLoader.cpp.s:
 	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/ressource/RessourcesLoader.cpp.s
 .PHONY : src/ressource/RessourcesLoader.cpp.s
 
+src/service/MapService.obj: src/service/MapService.cpp.obj
+.PHONY : src/service/MapService.obj
+
+# target to build an object file
+src/service/MapService.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/MapService.cpp.obj
+.PHONY : src/service/MapService.cpp.obj
+
+src/service/MapService.i: src/service/MapService.cpp.i
+.PHONY : src/service/MapService.i
+
+# target to preprocess a source file
+src/service/MapService.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/MapService.cpp.i
+.PHONY : src/service/MapService.cpp.i
+
+src/service/MapService.s: src/service/MapService.cpp.s
+.PHONY : src/service/MapService.s
+
+# target to generate assembly for a file
+src/service/MapService.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/MapService.cpp.s
+.PHONY : src/service/MapService.cpp.s
+
+src/service/dto/AseFileInformationDto.obj: src/service/dto/AseFileInformationDto.cpp.obj
+.PHONY : src/service/dto/AseFileInformationDto.obj
+
+# target to build an object file
+src/service/dto/AseFileInformationDto.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/dto/AseFileInformationDto.cpp.obj
+.PHONY : src/service/dto/AseFileInformationDto.cpp.obj
+
+src/service/dto/AseFileInformationDto.i: src/service/dto/AseFileInformationDto.cpp.i
+.PHONY : src/service/dto/AseFileInformationDto.i
+
+# target to preprocess a source file
+src/service/dto/AseFileInformationDto.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/dto/AseFileInformationDto.cpp.i
+.PHONY : src/service/dto/AseFileInformationDto.cpp.i
+
+src/service/dto/AseFileInformationDto.s: src/service/dto/AseFileInformationDto.cpp.s
+.PHONY : src/service/dto/AseFileInformationDto.s
+
+# target to generate assembly for a file
+src/service/dto/AseFileInformationDto.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/dto/AseFileInformationDto.cpp.s
+.PHONY : src/service/dto/AseFileInformationDto.cpp.s
+
+src/service/dto/MapInformationDto.obj: src/service/dto/MapInformationDto.cpp.obj
+.PHONY : src/service/dto/MapInformationDto.obj
+
+# target to build an object file
+src/service/dto/MapInformationDto.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/dto/MapInformationDto.cpp.obj
+.PHONY : src/service/dto/MapInformationDto.cpp.obj
+
+src/service/dto/MapInformationDto.i: src/service/dto/MapInformationDto.cpp.i
+.PHONY : src/service/dto/MapInformationDto.i
+
+# target to preprocess a source file
+src/service/dto/MapInformationDto.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/dto/MapInformationDto.cpp.i
+.PHONY : src/service/dto/MapInformationDto.cpp.i
+
+src/service/dto/MapInformationDto.s: src/service/dto/MapInformationDto.cpp.s
+.PHONY : src/service/dto/MapInformationDto.s
+
+# target to generate assembly for a file
+src/service/dto/MapInformationDto.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/dto/MapInformationDto.cpp.s
+.PHONY : src/service/dto/MapInformationDto.cpp.s
+
 src/son/DemonSons.obj: src/son/DemonSons.cpp.obj
 .PHONY : src/son/DemonSons.obj
 
@@ -3335,18 +3407,18 @@ help:
 	@echo ... edit_cache
 	@echo ... jkt
 	@echo ... rebuild_cache
-	@echo ... libs/tinyxml_2_6_1/tinystr.obj
-	@echo ... libs/tinyxml_2_6_1/tinystr.i
-	@echo ... libs/tinyxml_2_6_1/tinystr.s
-	@echo ... libs/tinyxml_2_6_1/tinyxml.obj
-	@echo ... libs/tinyxml_2_6_1/tinyxml.i
-	@echo ... libs/tinyxml_2_6_1/tinyxml.s
-	@echo ... libs/tinyxml_2_6_1/tinyxmlerror.obj
-	@echo ... libs/tinyxml_2_6_1/tinyxmlerror.i
-	@echo ... libs/tinyxml_2_6_1/tinyxmlerror.s
-	@echo ... libs/tinyxml_2_6_1/tinyxmlparser.obj
-	@echo ... libs/tinyxml_2_6_1/tinyxmlparser.i
-	@echo ... libs/tinyxml_2_6_1/tinyxmlparser.s
+	@echo ... H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.obj
+	@echo ... H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.i
+	@echo ... H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.s
+	@echo ... H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.obj
+	@echo ... H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.i
+	@echo ... H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.s
+	@echo ... H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.obj
+	@echo ... H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.i
+	@echo ... H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.s
+	@echo ... H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.obj
+	@echo ... H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.i
+	@echo ... H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.s
 	@echo ... src/DeleteWithGame.obj
 	@echo ... src/DeleteWithGame.i
 	@echo ... src/DeleteWithGame.s
@@ -3599,6 +3671,15 @@ help:
 	@echo ... src/ressource/RessourcesLoader.obj
 	@echo ... src/ressource/RessourcesLoader.i
 	@echo ... src/ressource/RessourcesLoader.s
+	@echo ... src/service/MapService.obj
+	@echo ... src/service/MapService.i
+	@echo ... src/service/MapService.s
+	@echo ... src/service/dto/AseFileInformationDto.obj
+	@echo ... src/service/dto/AseFileInformationDto.i
+	@echo ... src/service/dto/AseFileInformationDto.s
+	@echo ... src/service/dto/MapInformationDto.obj
+	@echo ... src/service/dto/MapInformationDto.i
+	@echo ... src/service/dto/MapInformationDto.s
 	@echo ... src/son/DemonSons.obj
 	@echo ... src/son/DemonSons.i
 	@echo ... src/son/DemonSons.s

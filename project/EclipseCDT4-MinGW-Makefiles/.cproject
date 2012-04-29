@@ -235,6 +235,16 @@
 <pathentry kind="mac" name="__GXX_RTTI" path="" value="1"/>
 <pathentry kind="mac" name="__EXCEPTIONS" path="" value="1"/>
 <pathentry kind="mac" name="__WCHAR_UNSIGNED__" path="" value="1"/>
+<pathentry include="H:/jkt/svn/trunk/moteur/sources/src" kind="inc" path="" system="true"/>
+<pathentry include="H:/jkt/svn/trunk/moteur/libs/SDL-1.2.14-MinGW/include/SDL" kind="inc" path="" system="true"/>
+<pathentry include="H:/jkt/svn/trunk/moteur/libs/SDL_net-1.2.7/include" kind="inc" path="" system="true"/>
+<pathentry include="H:/jkt/svn/trunk/moteur/libs/SDL_image-1.2.10/include" kind="inc" path="" system="true"/>
+<pathentry include="H:/jkt/svn/trunk/moteur/libs/agar-1.3.4-recompile/include" kind="inc" path="" system="true"/>
+<pathentry include="H:/jkt/svn/trunk/moteur/libs/ziparchive/ZipArchive" kind="inc" path="" system="true"/>
+<pathentry include="H:/jkt/svn/trunk/moteur/libs/fmodapi375win/api/inc" kind="inc" path="" system="true"/>
+<pathentry include="H:/jkt/svn/trunk/moteur/libs/glFont" kind="inc" path="" system="true"/>
+<pathentry include="H:/jkt/svn/trunk/moteur/libs/glext" kind="inc" path="" system="true"/>
+<pathentry include="H:/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1" kind="inc" path="" system="true"/>
 <pathentry include="c:/MinGW/lib/gcc/mingw32/4.6.2/include" kind="inc" path="" system="true"/>
 <pathentry include="c:/MinGW/include" kind="inc" path="" system="true"/>
 <pathentry include="c:/MinGW/lib/gcc/mingw32/4.6.2/include-fixed" kind="inc" path="" system="true"/>
@@ -300,87 +310,87 @@
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
-<target name="[obj] libs/tinyxml_2_6_1/tinystr.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="[obj] H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
-<buildTarget>libs/tinyxml_2_6_1/tinystr.cpp.obj</buildTarget>
+<buildTarget>H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.obj</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
-<target name="[pre] libs/tinyxml_2_6_1/tinystr.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="[pre] H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
-<buildTarget>libs/tinyxml_2_6_1/tinystr.cpp.i</buildTarget>
+<buildTarget>H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.i</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
-<target name="[to asm] libs/tinyxml_2_6_1/tinystr.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="[to asm] H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
-<buildTarget>libs/tinyxml_2_6_1/tinystr.cpp.s</buildTarget>
+<buildTarget>H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp.s</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
-<target name="[obj] libs/tinyxml_2_6_1/tinyxml.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="[obj] H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
-<buildTarget>libs/tinyxml_2_6_1/tinyxml.cpp.obj</buildTarget>
+<buildTarget>H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.obj</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
-<target name="[pre] libs/tinyxml_2_6_1/tinyxml.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="[pre] H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
-<buildTarget>libs/tinyxml_2_6_1/tinyxml.cpp.i</buildTarget>
+<buildTarget>H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.i</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
-<target name="[to asm] libs/tinyxml_2_6_1/tinyxml.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="[to asm] H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
-<buildTarget>libs/tinyxml_2_6_1/tinyxml.cpp.s</buildTarget>
+<buildTarget>H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp.s</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
-<target name="[obj] libs/tinyxml_2_6_1/tinyxmlerror.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="[obj] H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
-<buildTarget>libs/tinyxml_2_6_1/tinyxmlerror.cpp.obj</buildTarget>
+<buildTarget>H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.obj</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
-<target name="[pre] libs/tinyxml_2_6_1/tinyxmlerror.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="[pre] H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
-<buildTarget>libs/tinyxml_2_6_1/tinyxmlerror.cpp.i</buildTarget>
+<buildTarget>H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.i</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
-<target name="[to asm] libs/tinyxml_2_6_1/tinyxmlerror.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="[to asm] H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
-<buildTarget>libs/tinyxml_2_6_1/tinyxmlerror.cpp.s</buildTarget>
+<buildTarget>H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp.s</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
-<target name="[obj] libs/tinyxml_2_6_1/tinyxmlparser.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="[obj] H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
-<buildTarget>libs/tinyxml_2_6_1/tinyxmlparser.cpp.obj</buildTarget>
+<buildTarget>H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.obj</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
-<target name="[pre] libs/tinyxml_2_6_1/tinyxmlparser.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="[pre] H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
-<buildTarget>libs/tinyxml_2_6_1/tinyxmlparser.cpp.i</buildTarget>
+<buildTarget>H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.i</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
-<target name="[to asm] libs/tinyxml_2_6_1/tinyxmlparser.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<target name="[to asm] H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
-<buildTarget>libs/tinyxml_2_6_1/tinyxmlparser.cpp.s</buildTarget>
+<buildTarget>H_/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp.s</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
@@ -2145,6 +2155,69 @@
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
 <buildTarget>src/ressource/RessourcesLoader.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/service/MapService.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/MapService.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/service/MapService.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/MapService.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/service/MapService.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/MapService.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/service/dto/AseFileInformationDto.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/dto/AseFileInformationDto.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/service/dto/AseFileInformationDto.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/dto/AseFileInformationDto.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/service/dto/AseFileInformationDto.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/dto/AseFileInformationDto.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/service/dto/MapInformationDto.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/dto/MapInformationDto.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/service/dto/MapInformationDto.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/dto/MapInformationDto.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/service/dto/MapInformationDto.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/dto/MapInformationDto.cpp.s</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>

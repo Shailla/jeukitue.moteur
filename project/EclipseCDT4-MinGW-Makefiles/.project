@@ -564,6 +564,21 @@
 			<location>H:/jkt/svn/trunk/moteur/sources/src/ressource/RessourcesLoader.cpp</location>
 		</link>
 		<link>
+			<name>[Targets]/[exe] jkt/Source Files/AseFileInformationDto.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/service/dto/AseFileInformationDto.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/MapInformationDto.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/service/dto/MapInformationDto.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/MapService.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/service/MapService.cpp</location>
+		</link>
+		<link>
 			<name>[Targets]/[exe] jkt/Source Files/audio.cpp</name>
 			<type>1</type>
 			<location>H:/jkt/svn/trunk/moteur/sources/src/son/audio.cpp</location>
@@ -796,22 +811,22 @@
 		<link>
 			<name>[Targets]/[exe] jkt/Source Files/tinyxml.cpp</name>
 			<type>1</type>
-			<location>H:/jkt/svn/trunk/moteur/sources/libs/tinyxml_2_6_1/tinyxml.cpp</location>
+			<location>H:/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxml.cpp</location>
 		</link>
 		<link>
 			<name>[Targets]/[exe] jkt/Source Files/tinystr.cpp</name>
 			<type>1</type>
-			<location>H:/jkt/svn/trunk/moteur/sources/libs/tinyxml_2_6_1/tinystr.cpp</location>
+			<location>H:/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinystr.cpp</location>
 		</link>
 		<link>
 			<name>[Targets]/[exe] jkt/Source Files/tinyxmlerror.cpp</name>
 			<type>1</type>
-			<location>H:/jkt/svn/trunk/moteur/sources/libs/tinyxml_2_6_1/tinyxmlerror.cpp</location>
+			<location>H:/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlerror.cpp</location>
 		</link>
 		<link>
 			<name>[Targets]/[exe] jkt/Source Files/tinyxmlparser.cpp</name>
 			<type>1</type>
-			<location>H:/jkt/svn/trunk/moteur/sources/libs/tinyxml_2_6_1/tinyxmlparser.cpp</location>
+			<location>H:/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1/tinyxmlparser.cpp</location>
 		</link>
 		<link>
 			<name>[Targets]/[exe] jkt/Header Files</name>

@@ -108,6 +108,10 @@ void Controller::executeAction(AG_Event *event) {
         m_agarView->showView(Viewer::OPEN_SCENE_VIEW);
         break;
 
+    case AboutAction:
+        m_agarView->showView(Viewer::ABOUT_VIEW);
+        break;
+
     case OpenSceneASEAction:
         m_agarView->showView(Viewer::OPEN_SCENE_ASE_VIEW);
         break;

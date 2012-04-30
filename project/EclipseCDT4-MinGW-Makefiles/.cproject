@@ -1633,6 +1633,27 @@
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
+<target name="[obj] src/menu/AboutView.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/menu/AboutView.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/menu/AboutView.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/menu/AboutView.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/menu/AboutView.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/menu/AboutView.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
 <target name="[obj] src/menu/CentralisateurView.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
@@ -2158,6 +2179,27 @@
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
+<target name="[obj] src/service/InformationService.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/InformationService.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/service/InformationService.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/InformationService.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/service/InformationService.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/InformationService.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
 <target name="[obj] src/service/MapService.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
@@ -2218,6 +2260,27 @@
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
 <buildTarget>src/service/dto/MapInformationDto.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/service/dto/VersionsDto.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/dto/VersionsDto.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/service/dto/VersionsDto.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/dto/VersionsDto.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/service/dto/VersionsDto.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/dto/VersionsDto.cpp.s</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>

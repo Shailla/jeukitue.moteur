@@ -13,6 +13,7 @@ class Controller
 public:
 	enum {
 		MainMenuAction = 0,
+		AboutAction,
 		MultijoueursAction,
 		LanceServeurAction,
 		LanceServeurMapAction,

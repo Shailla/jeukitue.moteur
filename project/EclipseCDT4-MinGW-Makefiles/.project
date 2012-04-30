@@ -439,6 +439,11 @@
 			<location>H:/jkt/svn/trunk/moteur/sources/src/main/Rocket.cpp</location>
 		</link>
 		<link>
+			<name>[Targets]/[exe] jkt/Source Files/AboutView.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/menu/AboutView.cpp</location>
+		</link>
+		<link>
 			<name>[Targets]/[exe] jkt/Source Files/CentralisateurView.cpp</name>
 			<type>1</type>
 			<location>H:/jkt/svn/trunk/moteur/sources/src/menu/CentralisateurView.cpp</location>
@@ -572,6 +577,16 @@
 			<name>[Targets]/[exe] jkt/Source Files/MapInformationDto.cpp</name>
 			<type>1</type>
 			<location>H:/jkt/svn/trunk/moteur/sources/src/service/dto/MapInformationDto.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/VersionsDto.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/service/dto/VersionsDto.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/InformationService.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/service/InformationService.cpp</location>
 		</link>
 		<link>
 			<name>[Targets]/[exe] jkt/Source Files/MapService.cpp</name>

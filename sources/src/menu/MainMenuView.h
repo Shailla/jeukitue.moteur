@@ -10,10 +10,11 @@ class Viewer;
 
 class MainMenuView : public View
 {
-    AG_Button* m_buttonOuvrirScene;
-	AG_Button* m_buttonMultijoueurs;
-    AG_Button* m_buttonConfiguration;
-    AG_Button* m_buttonQuitter;
+    AG_Button* _buttonOuvrirScene;
+	AG_Button* _buttonMultijoueurs;
+    AG_Button* _buttonConfiguration;
+    AG_Button* _About;
+    AG_Button* _buttonQuitter;
 public:
     MainMenuView(const AG_EventFn controllerCallback, Viewer* agarView);
     ~MainMenuView(void);

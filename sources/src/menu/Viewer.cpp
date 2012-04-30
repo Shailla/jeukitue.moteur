@@ -7,6 +7,7 @@
 #include <agar/gui.h>
 
 #include "menu/MainMenuView.h"
+#include "menu/AboutView.h"
 #include "menu/CentralisateurView.h"
 #include "menu/MultijoueursView.h"
 #include "menu/ConfigurationView.h"
@@ -25,6 +26,7 @@
 Viewer::Viewer(AG_EventFn controllerCallback) {
 	// Initialisation des fenêtres
 	_views[MAIN_MENU_VIEW] = new MainMenuView(controllerCallback, this);
+	_views[ABOUT_VIEW] = new AboutView(controllerCallback, this);
 	_views[MULTIJOUEURS_VIEW] = new MultijoueursView(controllerCallback);
 	_views[CENTRALISATEUR_VIEW] = new CentralisateurView(controllerCallback);
 	_views[CONFIGURATION_VIEW] = new ConfigurationView(controllerCallback);

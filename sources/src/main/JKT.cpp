@@ -585,20 +585,19 @@ void display()	// Fonction principale d'affichage
 	if( JKT_AfficheToutesTextures )
 		Game.afficheToutesTextures( Config.Display.X, Config.Display.Y );
 
-	if( Game.Erwin() )
-	{
+	if(Game.Erwin()) {
 		Game.Erwin()->AfficheIconesArmes();
 		Game.afficheViseur(Config.Display.X/2, Config.Display.Y/2);
 		glDepthMask( GL_TRUE );
 	}
 
-	glEnable( GL_TEXTURE_2D );
-	glEnable( GL_BLEND );
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-	glColor3f( 1.0, 1.0, 1.0 );
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glColor3f(1.0, 1.0, 1.0 );
 
-	afficheInfo( SDL_GetTicks()-temps );	// Affiche les infos texte en avant plan
+	afficheInfo(SDL_GetTicks()-temps);	// Affiche les infos texte en avant plan
 
 	if( Aide )
 		CDlg::afficheMenuActif();
@@ -621,8 +620,6 @@ void display()	// Fonction principale d'affichage
     glEnable( GL_TEXTURE_2D );
     glDisable( GL_BLEND );
     glDisable( GL_DEPTH_TEST );
-
-
 
     glOrtho(0, agView->w, agView->h, 0, -1.0, 1.0);
 

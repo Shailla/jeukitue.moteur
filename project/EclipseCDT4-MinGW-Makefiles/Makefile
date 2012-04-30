@@ -1622,6 +1622,30 @@ src/main/glfont2.cpp.s:
 	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/main/glfont2.cpp.s
 .PHONY : src/main/glfont2.cpp.s
 
+src/menu/AboutView.obj: src/menu/AboutView.cpp.obj
+.PHONY : src/menu/AboutView.obj
+
+# target to build an object file
+src/menu/AboutView.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/menu/AboutView.cpp.obj
+.PHONY : src/menu/AboutView.cpp.obj
+
+src/menu/AboutView.i: src/menu/AboutView.cpp.i
+.PHONY : src/menu/AboutView.i
+
+# target to preprocess a source file
+src/menu/AboutView.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/menu/AboutView.cpp.i
+.PHONY : src/menu/AboutView.cpp.i
+
+src/menu/AboutView.s: src/menu/AboutView.cpp.s
+.PHONY : src/menu/AboutView.s
+
+# target to generate assembly for a file
+src/menu/AboutView.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/menu/AboutView.cpp.s
+.PHONY : src/menu/AboutView.cpp.s
+
 src/menu/CentralisateurView.obj: src/menu/CentralisateurView.cpp.obj
 .PHONY : src/menu/CentralisateurView.obj
 
@@ -2222,6 +2246,30 @@ src/ressource/RessourcesLoader.cpp.s:
 	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/ressource/RessourcesLoader.cpp.s
 .PHONY : src/ressource/RessourcesLoader.cpp.s
 
+src/service/InformationService.obj: src/service/InformationService.cpp.obj
+.PHONY : src/service/InformationService.obj
+
+# target to build an object file
+src/service/InformationService.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/InformationService.cpp.obj
+.PHONY : src/service/InformationService.cpp.obj
+
+src/service/InformationService.i: src/service/InformationService.cpp.i
+.PHONY : src/service/InformationService.i
+
+# target to preprocess a source file
+src/service/InformationService.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/InformationService.cpp.i
+.PHONY : src/service/InformationService.cpp.i
+
+src/service/InformationService.s: src/service/InformationService.cpp.s
+.PHONY : src/service/InformationService.s
+
+# target to generate assembly for a file
+src/service/InformationService.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/InformationService.cpp.s
+.PHONY : src/service/InformationService.cpp.s
+
 src/service/MapService.obj: src/service/MapService.cpp.obj
 .PHONY : src/service/MapService.obj
 
@@ -2293,6 +2341,30 @@ src/service/dto/MapInformationDto.s: src/service/dto/MapInformationDto.cpp.s
 src/service/dto/MapInformationDto.cpp.s:
 	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/dto/MapInformationDto.cpp.s
 .PHONY : src/service/dto/MapInformationDto.cpp.s
+
+src/service/dto/VersionsDto.obj: src/service/dto/VersionsDto.cpp.obj
+.PHONY : src/service/dto/VersionsDto.obj
+
+# target to build an object file
+src/service/dto/VersionsDto.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/dto/VersionsDto.cpp.obj
+.PHONY : src/service/dto/VersionsDto.cpp.obj
+
+src/service/dto/VersionsDto.i: src/service/dto/VersionsDto.cpp.i
+.PHONY : src/service/dto/VersionsDto.i
+
+# target to preprocess a source file
+src/service/dto/VersionsDto.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/dto/VersionsDto.cpp.i
+.PHONY : src/service/dto/VersionsDto.cpp.i
+
+src/service/dto/VersionsDto.s: src/service/dto/VersionsDto.cpp.s
+.PHONY : src/service/dto/VersionsDto.s
+
+# target to generate assembly for a file
+src/service/dto/VersionsDto.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/dto/VersionsDto.cpp.s
+.PHONY : src/service/dto/VersionsDto.cpp.s
 
 src/son/DemonSons.obj: src/son/DemonSons.cpp.obj
 .PHONY : src/son/DemonSons.obj
@@ -3596,6 +3668,9 @@ help:
 	@echo ... src/main/glfont2.obj
 	@echo ... src/main/glfont2.i
 	@echo ... src/main/glfont2.s
+	@echo ... src/menu/AboutView.obj
+	@echo ... src/menu/AboutView.i
+	@echo ... src/menu/AboutView.s
 	@echo ... src/menu/CentralisateurView.obj
 	@echo ... src/menu/CentralisateurView.i
 	@echo ... src/menu/CentralisateurView.s
@@ -3671,6 +3746,9 @@ help:
 	@echo ... src/ressource/RessourcesLoader.obj
 	@echo ... src/ressource/RessourcesLoader.i
 	@echo ... src/ressource/RessourcesLoader.s
+	@echo ... src/service/InformationService.obj
+	@echo ... src/service/InformationService.i
+	@echo ... src/service/InformationService.s
 	@echo ... src/service/MapService.obj
 	@echo ... src/service/MapService.i
 	@echo ... src/service/MapService.s
@@ -3680,6 +3758,9 @@ help:
 	@echo ... src/service/dto/MapInformationDto.obj
 	@echo ... src/service/dto/MapInformationDto.i
 	@echo ... src/service/dto/MapInformationDto.s
+	@echo ... src/service/dto/VersionsDto.obj
+	@echo ... src/service/dto/VersionsDto.i
+	@echo ... src/service/dto/VersionsDto.s
 	@echo ... src/son/DemonSons.obj
 	@echo ... src/son/DemonSons.i
 	@echo ... src/son/DemonSons.s

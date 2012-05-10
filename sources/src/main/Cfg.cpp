@@ -4,8 +4,10 @@
 #include <iostream>
 
 #include <agar/config/have_opengl.h>
+#include <agar/config/have_sdl.h>
 #include <agar/core.h>
 #include <agar/gui.h>
+#include <agar/gui/opengl.h>
 
 using namespace std;
 
@@ -556,8 +558,7 @@ bool CCfg::CAudio::Init()
 	return true;
 }
 
-void CCfg::CDisplay::Init()
-{
+void CCfg::CDisplay::Init() {
 	InitSDL();
 	InitOpenGL();
     InitAgar();
@@ -756,16 +757,20 @@ TRACE().p( TRACE_OTHER, "setup Agar" );
     AG_AgarVersion agarVersion;
     AG_GetVersion(&agarVersion);
 
-    cout << "\nVersion Agar : " << agarVersion.major;
+    cout << endl << "Version Agar : " << agarVersion.major;
     cout << "." << agarVersion.minor;
     cout << "." << agarVersion.patch;
     cout << " [" << agarVersion.release << "]";
 
 	// Configuration Agar (librairie de gestion du menu)
-	if(AG_InitCore("event1", 0) == -1 || AG_InitVideoSDL(screen, flags) == -1)
-	{
-		cerr << "\nERREUR d'initialisation Agar";
+	if(AG_InitCore("agar", 0) == -1 || AG_InitVideoSDL(screen, flags) == -1) {
+		cerr << "\nERREUR d'initialisation Agar : '" << AG_GetError() << "'";
 	}
+
+	// Noms des drivers disponibles pour Agar
+	char drvNames[256];
+	AG_ListDriverNames(drvNames, sizeof(drvNames));
+	cout << endl << "Available drivers : " << drvNames;
 }
 
 bool CCfg::CDisplay::chargeGLExtension(const char* ext, string& extensions) {
@@ -777,7 +782,7 @@ bool CCfg::CDisplay::chargeGLExtension(const char* ext, string& extensions) {
 	}
 	else
 	{
-		cout << endl << "Extension non-supportée : " << ext ;
+		cerr << endl << "Extension non-supportée : " << ext ;
 		return false;
 	}
 }
@@ -786,7 +791,7 @@ void CCfg::CDisplay::ChangeVideoSize(int x, int y)
 {
 TRACE().p( TRACE_OTHER, "changeVideoSize(config) begin" );
 	if( !SDL_VideoModeOK(x, y, bpp, flags) ) {
-		cout << "\nMode video invalide :\t\t" << endl;
+		cerr << "\nMode video invalide :\t\t" << endl;
 		return;
 	}
 

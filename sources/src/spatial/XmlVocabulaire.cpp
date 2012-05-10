@@ -10,10 +10,14 @@ using namespace std;
 using namespace JktUtils;
 
 // Map
-const char* Xml::GEOS = "Geos";
 const char* Xml::MAP = "Map";
+const char* Xml::ENTRYPOINTS = "EntryPoints";
 const char* Xml::MATERIAUX = "Materiaux";
 const char* Xml::LUMIERES = "Lumieres";
+const char* Xml::GEOS = "Geos";
+
+// Points d'entrée joeurs
+const char* Xml::ENTRYPOINT = "EntryPoint";
 
 // Géo
 const char* Xml::GEO = "Geo";

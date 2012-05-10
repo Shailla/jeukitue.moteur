@@ -11,7 +11,9 @@
 using namespace std;
 
 const char* MAP_DIRECTORY =			"./Map/";						// Répertoire des MAP de jeu
-const char* PLAYER_MAP_DIRECTORY =	"./Ressources/Maps/Joueurs/";	// Répertoire des MAP des skins de joueurs		
+const char* PLAYER_MAP_DIRECTORY =	"./Ressources/Maps/Joueurs/";	// Répertoire des scripts des plugins
+
+const char* PLUGINS_DIRECTORY =		"./plugins/";					// Répertoire des MAP de jeu
 
 const char* TEMPORARY_DIRECTORY =	"./Tmp/";						// Répertoire temporaire de travail
 
@@ -118,8 +120,7 @@ vector<string> RessourcesLoader::getMaps() {
 	folder.reset();
 
 	int mapNumber = 0;
-	while( folder.findNext( mapName ) )
-	{
+	while(folder.findNext(mapName)) {
 		mapName.erase( mapName.find_last_of( "." ) );
 		mapName.erase( mapName.find_last_of( "." ) );
 		

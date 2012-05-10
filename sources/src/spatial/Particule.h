@@ -13,9 +13,9 @@ class CParticule
 {
 public:
 		// Paramètres
-	CV3D position;
-	CV3D vitesse;
-	CV3D acceleration;
+	JktUtils::CV3D position;
+	JktUtils::CV3D vitesse;
+	JktUtils::CV3D acceleration;
 	float masse;					// Masse de la particule
 	unsigned int date2naissance;	// Instant de création de la particule
 	unsigned int duree2vie;			// Durée de vie de la particule

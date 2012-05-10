@@ -28,6 +28,14 @@ ConfigurationView::ConfigurationView(const AG_EventFn controllerCallback)
     AG_Button* buttonCentralisateur = AG_ButtonNewFn(m_window, 0, "Centralisateur", controllerCallback, "%i", Controller::ConfigCentralisateurAction);
 	AG_ExpandHoriz(buttonCentralisateur);
 	
+	// Configuration Plugins
+    AG_Button* buttonPluginsManagement = AG_ButtonNewFn(m_window, 0, "Plugins", controllerCallback, "%i", Controller::PluginsManagementAction);
+	AG_ExpandHoriz(buttonPluginsManagement);
+
+	// Configuration Agar
+    AG_Button* buttonAgarConfiguration = AG_ButtonNewFn(m_window, 0, "Configuration Agar", controllerCallback, "%i", Controller::AgarConfigurationAction);
+	AG_ExpandHoriz(buttonAgarConfiguration);
+
 	// Bouton retour
     AG_SeparatorNewHoriz(m_window);
 

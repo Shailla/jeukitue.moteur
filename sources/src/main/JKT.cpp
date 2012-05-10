@@ -26,8 +26,12 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 	#include <direct.h>
 #endif
 #include <agar/config/have_opengl.h>
+#include <agar/config/have_sdl.h>
 #include <agar/core.h>
 #include <agar/gui.h>
+#include <agar/gui/cursors.h>
+#include <agar/gui/sdl.h>
+#include <agar/gui/opengl.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 
@@ -209,13 +213,20 @@ void gravitePlayer(CPlayer *player)	// Fonction implémentant la gravité
 	player->setVitesse( vect );
 }
 
-void init( void )		//INITIALISATION DU JEU
-{
+/**
+ * Initialise les menu du jeu, affiche le menu principal et place le focus dessus.
+ */
+void initMenu(void) {
 	pFocus = new CFocus(play_handle_key_down,
 						CDlg::menu_handle_key_down,
 						menu_agar_handle_key_down);
 	pFocus->SetPlayFocus();
 	Aide = false;
+
+	// Lancement de l'IHM, on entre dans le menu principal du jeu
+    Viewer* agarView = Fabrique::getAgarView();
+    pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
+    agarView->showView(Viewer::MAIN_MENU_VIEW);
 }
 
 void updateSon3D()
@@ -621,8 +632,7 @@ void display()	// Fonction principale d'affichage
     glDisable( GL_BLEND );
     glDisable( GL_DEPTH_TEST );
 
-    glOrtho(0, agView->w, agView->h, 0, -1.0, 1.0);
-
+    glOrtho(0, (double)agDriverSw->w, (double)agDriverSw->h, 0.0, -1.0, 1.0);
     menuViewer->draw();
 
 	glDisable( GL_TEXTURE_2D );
@@ -845,12 +855,10 @@ void timer(Uint32 ecart)	//focntion qui s'exécute périodiquement et qui provoque
 	tempsTimer = SDL_GetTicks() - temps; // Temps pris par la fonction 'timer' => affichage
 }
 
-void menu_agar_handle_key_down( SDL_Event *event )
-{
+void menu_agar_handle_key_down(SDL_Event *event) {
     switch(event->type) {
         case SDL_KEYDOWN:
-		    switch( event->key.keysym.sym )
-            {
+		    switch(event->key.keysym.sym) {
     	        case SDLK_ESCAPE:
                     {
                         Viewer* agarView = Fabrique::getAgarView();
@@ -859,12 +867,16 @@ void menu_agar_handle_key_down( SDL_Event *event )
                     }
                     break;
                 default:
-                    AG_ProcessEvent(event);
+                	AG_DriverEvent ag_event;
+                	AG_SDL_TranslateEvent(agDriverSw, event, &ag_event);
+                	AG_ProcessEvent(NULL, &ag_event);
                     break;
             }
             break;
         default:
-            AG_ProcessEvent(event);
+        	AG_DriverEvent ag_event;
+        	AG_SDL_TranslateEvent(agDriverSw, event, &ag_event);
+            AG_ProcessEvent(NULL, &ag_event);
             break;
     }
 }
@@ -1005,8 +1017,7 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 			JKT_AfficheToutesTextures = !JKT_AfficheToutesTextures;
 			break;
 		case SDLK_o :		// Retour du joueur à la position d'origine avec vitesse nulle
-			if( Game.Erwin() )
-			{
+			if(Game.Erwin()) {
 				Game.Erwin()->choiceOneEntryPoint();
 				Game.Erwin()->changeVitesse( 0.0f, 0.0f, 0.0f );
 				Game.Erwin()->Teta( 0.0 );
@@ -1028,8 +1039,7 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 
 		case SDLK_c :	// Change le joueur principal (=> change le point de vue et l'interraction clavier)
 			cout << endl << "Nombre de joeurs dans la partie : " << Game.pTabIndexPlayer->getNbr();
-			if( Game.getMap() )
-			{
+			if(Game.getMap()) {
 				nbrMainPlayer = Game.pTabIndexPlayer->Suivant( nbrMainPlayer ); //prends le nbrMainPlayer°ième joueur
 				if( nbrMainPlayer>=Game.pTabIndexPlayer->getMax() )	// si on a atteint la fin de la liste
 				{
@@ -1041,19 +1051,21 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 			break;
 
 		case SDLK_ESCAPE:
-			lanceMenuPrinc( 0 );
-			break;
-
-		case SDLK_F2:
             {
                 Viewer* agarView = Fabrique::getAgarView();
                 pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
 			    agarView->showView(Viewer::MAIN_MENU_VIEW);
             }
 		    break;
+
+		case SDLK_F2:
+			lanceMenuPrinc( 0 );
+			break;
+
 		case SDLK_F5:
             pFocus->SwitchPlayOrConsoleFocus();		// Place le focus sur le menu
 		    break;
+
 		default:
 			break;
 		}
@@ -1188,17 +1200,14 @@ void openMAP2(const string& nomFichierMap) {
 
 GameDto* gameDto;
 
-void boucle()
-{
+void boucle() {
 	Uint32 temps=0;
 	Uint32 oldTemps=0;
 	ecart=0;
 
-	for( ;; )	// Boucle principale du jeu
-	{
+	for( ;; ) {		// Boucle principale du jeu
 		// Y a-t-il demande d'ouverture d'une map en mode jeu multijoueurs ?
-		if( Game.RequeteProcess.isOuvreMap() )	// S'il y a une demande d'ouvertue de MAP
-		{
+		if( Game.RequeteProcess.isOuvreMap() ) {		// S'il y a une demande d'ouvertue de MAP
 			Aide = false;
 			const string mapName = Game.RequeteProcess.getOuvreMap();
 
@@ -1307,8 +1316,7 @@ void boucle()
 		}
 
 		// Y a-t-il une demande de prise de screenshot ?
-		if( Game.RequeteProcess.isTakePicture() )	// S'il y a une demande de prise de photo de la scène
-		{
+		if( Game.RequeteProcess.isTakePicture() ) {	// S'il y a une demande de prise de photo de la scène
 			CPhoto photo( Config.Display.X, Config.Display.Y );
 
 			string fichier_photo("./Images/photo.bmp");
@@ -1349,6 +1357,8 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 	atexit( quit_JKT );
 
+	srand(SDL_GetTicks());		// Initialisation de la fonction rand() pour les nombres aléatoires
+
 	string fichier;
 
 	Config.AfficheDateCompilation();		// Affiche le n° de version du programme
@@ -1356,7 +1366,7 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 	Config.Lit();							// Lit le fichier de configuration
 
 	cout << "\n\tRESUME DE L'INITIALISATION VIDEO";
-	Config.Display.Init();	// Initialisation vidéo (SDL + OpenGL)
+	Config.Display.Init();	// Initialisation SDL, OpenGL et Agar
 
 	Config.Reseau.Init();	// Initialisation du réseau
 
@@ -1367,8 +1377,7 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 		// Info réseau
 	IPaddress ipaddress;
-	if( !SDLNet_ResolveHost( &ipaddress, "localhost", 0 ) )
-	{
+	if(!SDLNet_ResolveHost( &ipaddress, "localhost", 0 )) {
 		const char *host = SDLNet_ResolveIP( &ipaddress );
 
 		if( host )
@@ -1376,8 +1385,7 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 		else
 			cout << "\nNom de la machine locale : Inconnu";
 	}
-	else
-    {
+	else {
 		cout << "\nNom de la machine locale : Inconnu";
     }
 
@@ -1396,35 +1404,33 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 		unsigned int texFonte;
 		glGenTextures(1, &texFonte);
 
-		if( !myfont.Create(fonte.c_str(), texFonte) )
-		{
+		if( !myfont.Create(fonte.c_str(), texFonte) ) {
 			TRACE().p( TRACE_ERROR, "main() Echec ouverture texture de fonte (%s) : %d", fonte.c_str(), texFonte );
 			cerr << "\nErreur : Echec d'ouverture de la fonte : " << fonte << endl;
 		}
-		else
-		{
+		else {
 			TRACE().p( TRACE_INFO, "main() Texture de fonte (%s) : %d", fonte.c_str(), texFonte );
 		}
 	}
 
-		// Initialisation de la classe CDlgBoite pour l'IHM
+	// Initialisation de la classe CDlgBoite pour l'IHM
 	if( !CDlgBoite::INIT_CLASSE() )
 		return 1;	// Erreur fatale si la classe n'a pas pu être initialisée
 
-		// Initialisation de la classe CRocket, réfléchir où mettre cette initialisation
+	// Initialisation de la classe CRocket, réfléchir où mettre cette initialisation
 	if( !CRocket::INIT_CLASSE() )
 		return 1;	// Erreur fatale si CRocket ne peut être initialisée
 
-		// Mise en place du moteur de particules pour la neige, réfléchir où mettre ça
+	// Mise en place du moteur de particules pour la neige, réfléchir où mettre ça
 	CV3D posMoteurParticulesNeige( -2.35f, 1.5f, 0.0f );
 	moteurParticulesNeige = new CMoteurParticulesNeige( posMoteurParticulesNeige, 1000, 0.05f );
 
-		// Délai d'attente après l'intro du jeu, je sais plus à quoi il sert
+	// Délai d'attente après l'intro du jeu, je sais plus à quoi il sert
 	SDL_Delay( 1000 );
 
-		// Création d'un haut parleur qui se déplace pour tester le son 3D
+	// Création d'un haut parleur qui se déplace pour tester le son 3D
 	machin = new CMachin();
-	string fichierSon3D = "@Musique\\drumloop.wav";		// Chargement de la fonte de caractères
+	string fichierSon3D = "@Musique\\drumloop.wav";
 	JktUtils::RessourcesLoader::getFileRessource(fichierSon3D);
 	CSon3D *son3D = DemonSons->CreateSon3D( fichierSon3D.c_str() );
 	CReqSon *reqSon = DemonSons->PlayID( (CSon*)son3D, true );
@@ -1432,12 +1438,9 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 	machin->req_son = reqSon;
 	DemonSons->Play( machin->req_son );
 
-	init();
+	initMenu();
 
-		// Lancement de l'IHM, on entre dans le menu principal du jeu
-	lanceMenuPrinc( 0 );
-
-		// Entrée dans la boucle principale du jeu
+	// Entrée dans la boucle principale du jeu
 	boucle();
 
 	return 1;	// On ne devrait normalement jamais exécuter cette ligne

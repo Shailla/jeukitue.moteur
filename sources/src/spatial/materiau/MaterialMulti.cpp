@@ -46,10 +46,8 @@ CMaterial* CMaterialMulti::getMat(int i)
 	return m_TabMat[i];
 }
 
-CMaterialMulti::~CMaterialMulti()
-{
-	if( m_TabMat )
-	{
+CMaterialMulti::~CMaterialMulti() {
+	if( m_TabMat ) {
 		for( int i=0 ; i<m_NbrTex ; i++ )
 			if( m_TabMat[ i ] )
 				delete m_TabMat[ i ];
@@ -58,11 +56,11 @@ CMaterialMulti::~CMaterialMulti()
 	}
 }
 
-void CMaterialMulti::LitTexture()
-{
+void CMaterialMulti::initGL() {
 	cout << "\nLecture des fichiers de texture multiple (ref. " << getRef() << ")";
-	for( int i=0 ; i<NbrTex() ; i++ )
-		m_TabMat[ i ]->LitTexture();
+
+	for(int i=0 ; i<NbrTex() ; i++)
+		m_TabMat[i]->initGL();
 }
 
 bool CMaterialMulti::LitFichier( CIfstreamMap &fichier )

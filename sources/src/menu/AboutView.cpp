@@ -11,14 +11,14 @@
 #include "menu/AboutView.h"
 
 AboutView::AboutView(const AG_EventFn controllerCallback, Viewer* agarView)
-:View(controllerCallback)
-{
+:View(controllerCallback) {
 	// Collecte des informations
 	JktService::VersionsDto versions = JktService::InformationService::loadVersions();
 
-	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
+	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS | AG_WINDOW_NOMOVE);
     AG_WindowSetCaption(m_window, "A propos");
 
+    AG_LabelNew(m_window, 0, string("Date de compilation : ").append(__DATE__).c_str());
     AG_LabelNew(m_window, 0, string("Version OpenGL : ").append(versions.getOpenGlVersion()).c_str());
     AG_LabelNew(m_window, 0, string("Version GLU : ").append(versions.getGluVersion()).c_str());
     AG_LabelNew(m_window, 0, string("Version FMOD : ").append(versions.getFmodVersion()).c_str());
@@ -34,7 +34,6 @@ AboutView::AboutView(const AG_EventFn controllerCallback, Viewer* agarView)
     AG_ExpandHoriz(buttonRetour);
 
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);
-	AG_WindowShow(m_window);
     hide();
 }
 

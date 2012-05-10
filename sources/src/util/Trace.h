@@ -70,7 +70,7 @@ class Trace
 	~Trace();
 
 public:
-	static Trace &instance();
+	static Trace& instance();
 	void print( int type, int line, const char *nomFichier, int indic, const char *txt , va_list &vl );
 	void print_old( int type, int line, const char *nomFichier, int indic, const char *txt, ... );
 };

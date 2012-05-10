@@ -1,30 +1,34 @@
 #include "main/Fabrique.h"
 
-Centralisateur* Fabrique::m_centralisateur = 0;
-Viewer* Fabrique::m_agarView = 0;
-Controller* Fabrique::m_agarController = 0;
+using namespace JktPlugin;
 
-void Fabrique::construct(void)
-{
+Centralisateur* Fabrique::_centralisateur = 0;
+Viewer* Fabrique::_agarView = 0;
+Controller* Fabrique::_agarController = 0;
+PluginEngine* Fabrique::_pluginEngine = 0;
+
+void Fabrique::construct(void) {
     UdpController* udpController = new UdpController();
-    m_centralisateur = new Centralisateur(udpController);
+    _centralisateur = new Centralisateur(udpController);
 
     // Agar initialization
-    m_agarView = new Viewer(Controller::executeAction);
-    m_agarController = new Controller(m_agarView);
+    _agarView = new Viewer(Controller::executeAction);
+    _agarController = new Controller(_agarView);
+    _pluginEngine = new PluginEngine();
 }
 
-Centralisateur* Fabrique::getCentralisateur()
-{
-    return m_centralisateur;
+Centralisateur* Fabrique::getCentralisateur() {
+    return _centralisateur;
 }
 
-Viewer* Fabrique::getAgarView()
-{
-    return m_agarView;
+Viewer* Fabrique::getAgarView() {
+    return _agarView;
 }
 
-Controller* Fabrique::getAgarController()
-{
-    return m_agarController;
+Controller* Fabrique::getAgarController() {
+    return _agarController;
+}
+
+PluginEngine* Fabrique::getPluginEngine() {
+    return _pluginEngine;
 }

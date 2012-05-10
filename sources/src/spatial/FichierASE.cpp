@@ -11,6 +11,7 @@ using namespace std;
 #include "spatial/materiau/MaterialMulti.h"
 #include "spatial/materiau/MaterialTexture.h"
 #include "spatial/geo/GeoMaker.h"
+#include "spatial/geo/EntryPoint.h"
 #include "spatial/Map.h"
 #include "spatial/geo/ChanTex.h"
 
@@ -22,13 +23,13 @@ namespace JktMoteur
 
 CFichierASE::FACES::FACES(int num)
 {
-	faces = new int[ 3*num ];
-	texRef = new int[ num ];
+	faces = new int[3*num];
+	texRef = new int[num];
 }
-CFichierASE::FACES::~FACES()
-{
+CFichierASE::FACES::~FACES() {
 	if(faces)
 		delete[] faces;
+
 	if(texRef)
 		delete[] texRef;
 }
@@ -36,8 +37,7 @@ CFichierASE::FACES::~FACES()
 CFichierASE::CFichierASE(const string &nomFichier, CMap *pMap, bool bAffiche)
 : ifstream(nomFichier.c_str(), ios::in)
 {
-	try
-	{
+	try {
 		m_bAffiche = bAffiche;
 		m_Trace.open( "traceConvertASE.log", ios_base::out );
 
@@ -78,30 +78,44 @@ CFichierASE::~CFichierASE(void)
 		m_Trace.close();
 }
 
-ofstream& CFichierASE::trace()
-{
+/**
+ * Supprime le premier et le dernier caractère d'une chaîne de caractères.
+ */
+string CFichierASE::extractGuillemetsDelimitedString(string str) {
+	// Enlève le premier guillemet
+	size_t pos = str.find_first_of( '"' );
+	if(pos != npos)
+		str.erase( pos, 1 );
+
+	// Enlève le dernier guillemet
+	pos = str.find_last_of( '"' );
+	if(pos != npos)
+		str.erase( pos, 1 );
+
+	return str;
+}
+
+ofstream& CFichierASE::trace() {
 	return m_Trace;
 }
 
-bool CFichierASE::operator!()
-{
+bool CFichierASE::operator!() {
 	return !(*static_cast<ifstream *> (this));
 }
 
-CFichierASE& CFichierASE::find(const char *txt, int line)
-{
+CFichierASE& CFichierASE::find(const char *txt, int line) {
 	string mot;
-	do
-	{
+
+	do {
 		if( !(*static_cast<ifstream *> (this) >>( mot)) )	// Recherche du nom de l'objet
 		{
-			m_Trace << "\nErreur (fichier.cpp::" << line << ") : Fin de fichier prematuree";
+			m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
 			throw (int)JKT_ERREUR_FICHIER_EOF;	// Fin de fichier prématurée
 		}
 
 		if( (mot=="{") || (mot=="}") )
 		{
-			m_Trace << "\nErreur (fichier.cpp::" << line << ") : Parametre introuvable";
+			m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Parametre introuvable";
 			throw (int)JKT_ERREUR_FICHIER_MISSPARAM;	// Fin de fichier prématurée
 		}
 	} while( mot != txt );
@@ -109,37 +123,37 @@ CFichierASE& CFichierASE::find(const char *txt, int line)
 	return *this;
 }
 
-void CFichierASE::findAccoladeO(int line)	// Trouve le prochain guillemet ouvrant du fichier
+void CFichierASE::findAccoladeDebut(int line)	// Trouve le prochain guillemet ouvrant du fichier
 {
 	string mot;
 	do
 	{
 		if( !(*static_cast<ifstream *> (this) >>( mot )) )	// Recherche du nom de l'objet
 		{
-			m_Trace << "\nErreur (fichier.cpp::" << line << ") : Fin de fichier prematuree";
+			m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
 			throw (int)JKT_ERREUR_FICHIER_EOF;	// Fin de fichier prématurée
 		}
 		if( mot == "}" )
 		{
-			m_Trace << "\nErreur (fichier.cpp::" << line << ") : Accolade inattendue";
+			m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Accolade inattendue";
 			throw (int)JKT_ERREUR_FICHIER_ACCOLADE;	// Fin de fichier prématurée
 		}
 	} while( mot != "{" );
 }
 
-void CFichierASE::findAccoladeF(int line)	// Trouve le prochain guillemet ouvrant du fichier
+void CFichierASE::findAccoladeFin(int line)	// Trouve le prochain guillemet ouvrant du fichier
 {
 	string mot;
 	do
 	{
 		if( !(*static_cast<ifstream *> (this) >>( mot)) )	// Recherche du nom de l'objet
 		{
-			m_Trace << "\nErreur (fichier.cpp::" << line << ") : Fin de fichier prematuree";
+			m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
 			throw (int)JKT_ERREUR_FICHIER_EOF;	// Fin de fichier prématurée
 		}
 		if( mot == "{" )
 		{
-			m_Trace << "\nErreur (fichier.cpp::" << line << ") : Accolade inattendue";
+			m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Accolade inattendue";
 			throw (int)JKT_ERREUR_FICHIER_ACCOLADE;	// Fin de fichier prématurée
 		}
 	} while( mot != "}" );
@@ -151,12 +165,12 @@ CFichierASE& CFichierASE::isNext(const char *txt, int line)
 
 	if( !(*static_cast<ifstream *> (this) >>( mot)) )	// Recherche du nom de l'objet
 	{
-		m_Trace << "\nErreur (fichier.cpp::" << line << ") : Fin de fichier prematuree";
+		m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
 		throw (int)JKT_ERREUR_FICHIER_EOF;	// Fin de fichier prématurée
 	}
 	if( mot != txt )
 	{
-		m_Trace << "\nErreur (fichier.cpp::" << line << ") : Parametre introuvable";
+		m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Parametre introuvable";
 		throw (int)JKT_ERREUR_FICHIER_MISSPARAM;	// Fin de fichier prématurée
 	}
 	return *this;
@@ -166,7 +180,7 @@ void CFichierASE::get(string &mot, int line)
 {
 	if( !(*static_cast<ifstream *> (this) >>( mot )) )	// Recherche du nom de l'objet
 	{
-		m_Trace << "\nErreur (fichier.cpp::" << line << ") : Fin de fichier prematuree";
+		m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
 		throw (int)JKT_ERREUR_FICHIER_EOF;	// Fin de fichier prématurée
 	}
 }
@@ -175,7 +189,7 @@ void CFichierASE::get(char &ch, int line)
 {
 	if( !(*static_cast<ifstream *> (this) >>( ch )) )	// Recherche du nom de l'objet
 	{
-		m_Trace << "\nErreur (fichier.cpp::" << line << ") : Fin de fichier prematuree";
+		m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
 		throw (int)JKT_ERREUR_FICHIER_EOF;	// Fin de fichier prématurée
 	}
 }
@@ -195,7 +209,7 @@ void CFichierASE::get(int &num, int line)
 {
 	if( !(*static_cast<ifstream *> (this) >>( num )) )	// Recherche du nom de l'objet
 	{
-		m_Trace << "\nErreur (fichier.cpp::" << line << ") : Fin de fichier prematuree";
+		m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
 		throw (int)JKT_ERREUR_FICHIER_EOF;	// Fin de fichier prématurée
 	}
 }
@@ -204,7 +218,7 @@ void CFichierASE::get(unsigned int &num, int line)
 {
 	if( !(*static_cast<ifstream *> (this) >>( num )) )	// Recherche du nom de l'objet
 	{
-		m_Trace << "\nErreur (fichier.cpp::" << line << ") : Fin de fichier prematuree";
+		m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
 		throw (int)JKT_ERREUR_FICHIER_EOF;	// Fin de fichier prématurée
 	}
 }
@@ -213,7 +227,7 @@ void CFichierASE::get(float &num, int line)
 {
 	if( !(*static_cast<ifstream *> (this) >>( num )) )	// Recherche du nom de l'objet
 	{
-		m_Trace << "\nErreur (fichier.cpp::" << line << ") : Fin de fichier prematuree";
+		m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
 		throw (int)JKT_ERREUR_FICHIER_EOF;	// Fin de fichier prématurée
 	}
 }
@@ -228,8 +242,8 @@ CFichierASE::FACES *CFichierASE::LitFaces( unsigned int num )
 	if( m_bAffiche )
 		trace() << "\nTABLEAU D'INDEX :\n";
 
-	findAccoladeF(__LINE__);
-	findAccoladeO(__LINE__);
+	findAccoladeFin(__LINE__);
+	findAccoladeDebut(__LINE__);
 
 	for( unsigned int i=0 ; i<num ; i++)
 	{
@@ -260,6 +274,45 @@ CFichierASE::FACES *CFichierASE::LitFaces( unsigned int num )
 	return faces;
 }
 
+EntryPoint* CFichierASE::litEntryPoint() {
+	trace() << "\n\tEntryPoint";
+	EntryPoint *entryPoint = NULL;
+	string mot;
+
+	bool bPosition = false;		// Indique si la position a été trouvée
+	float position[ 3 ];
+
+	bool bColor = false;
+	float color[3];
+
+	findAccoladeDebut(__LINE__);
+	find("*TM_POS", __LINE__);
+
+	get(position[0],__LINE__);
+	get(position[1],__LINE__);
+	get(position[2],__LINE__);
+
+	position[0] /= fScale;
+	position[1] /= fScale;
+	position[2] /= fScale;
+
+	bPosition = true;
+
+	if(bPosition) {
+		entryPoint = new EntryPoint(position);
+	}
+
+	if( m_bAffiche )
+	{
+		trace() << "\n\tPosition du point d'entree : ";
+		trace() << position[0] << ' ' << position[1] << ' ' << position[2];
+	}
+
+	findAccoladeFin(__LINE__);
+
+	return entryPoint;
+}
+
 CLight* CFichierASE::litLightOmni()
 {
 	CLightOmni *pLightOmni;
@@ -272,7 +325,7 @@ CLight* CFichierASE::litLightOmni()
 	bool bColor = false;
 	float color[4];
 
-	findAccoladeO(__LINE__);
+	findAccoladeDebut(__LINE__);
 	find("*TM_POS", __LINE__);
 
 	get(position[0],__LINE__);
@@ -290,8 +343,8 @@ CLight* CFichierASE::litLightOmni()
 		trace() << position[0] << ' ' << position[1] << ' ' << position[2];
 	}
 
-	findAccoladeF(__LINE__);
-	findAccoladeO(__LINE__);
+	findAccoladeFin(__LINE__);
+	findAccoladeDebut(__LINE__);
 
 	find("*LIGHT_COLOR", __LINE__);
 
@@ -308,7 +361,7 @@ CLight* CFichierASE::litLightOmni()
 		trace() << color[0] << ' ' << color[1] << ' ' << color[2];
 	}
 
-	findAccoladeF(__LINE__);
+	findAccoladeFin(__LINE__);
 
 	if( bPosition && bColor )
 	{
@@ -329,7 +382,7 @@ CLight *CFichierASE::litLightTarget()
 	float position[3], row[9], direction[3], color[4];
 	float falloff;
 
-	findAccoladeO(__LINE__);
+	findAccoladeDebut(__LINE__);
 	find("*TM_ROW0", __LINE__);
 
 	get(row[0],__LINE__);
@@ -379,8 +432,8 @@ CLight *CFichierASE::litLightTarget()
 		trace() << position[0] << ' ' << position[1] << ' ' << position[2];
 	}
 
-	findAccoladeF(__LINE__);
-	findAccoladeO(__LINE__);
+	findAccoladeFin(__LINE__);
+	findAccoladeDebut(__LINE__);
 
 	find("*LIGHT_COLOR", __LINE__ );	// Recherche l'éventuelle couleur de 'lobjet géo
 
@@ -402,7 +455,7 @@ CLight *CFichierASE::litLightTarget()
 	if( m_bAffiche )
 		trace() << "\nFallOff : " << falloff;
 
-	findAccoladeF(__LINE__);
+	findAccoladeFin(__LINE__);
 
 		// Calcul de la direction de la lumière
 	float base[] = { 0.0f, 0.0f, -1.0f };
@@ -441,14 +494,12 @@ CLight* CFichierASE::lightList()
 				pLight = litLightOmni();
 				bSuite = true;	// On peut passer à la suite de la lecture du fichier
 			}
-			else if( mot == "Target" )
-			{
+			else if( mot == "Target" ) {
 				pLight = litLightTarget();
 				bSuite = true;	// On peut passer à la suite de la lecture du fichier
 			}
-			else
-			{
-				trace() << "\nErreur (fichier.cpp::" << __LINE__ << ") : Lumiere de type inconnu";
+			else {
+				trace() << "\nErreur (FichierASE.cpp::" << __LINE__ << ") : Lumiere de type inconnu";
 			}
 		}
 		else if( mot=="{" )
@@ -461,6 +512,40 @@ CLight* CFichierASE::lightList()
 	return pLight;
 }
 
+EntryPoint* CFichierASE::litHelper() {
+	string mot;
+
+	findAccoladeDebut(__LINE__);
+
+	EntryPoint *entryPoint = NULL;
+	if( m_bAffiche )
+		trace() << "\nLECTURE D'UN HELPER";
+
+	// Lecture du NODE NAME
+	find("*NODE_NAME", __LINE__);
+	get(mot,__LINE__);
+	string nodeName = extractGuillemetsDelimitedString(mot);
+
+	// Lecture du HELPER CLASS
+	find("*HELPER_CLASS", __LINE__);
+	get(mot,__LINE__);
+	string helperClass = extractGuillemetsDelimitedString(mot);
+
+
+	// Les helpers de type point dont le nom commence par EntryPoint définissent les points d'entrée de la Map
+	if(helperClass == "PointHelper" && nodeName.compare(0, strlen("EntryPoint") - 1, "EntryPoint")) {
+		entryPoint = litEntryPoint();
+	}
+	else {		// Ignore le helper car il n'est pas d'un type reconnu par JKT
+		findAccoladeDebut(__LINE__);
+		findAccoladeFin(__LINE__);
+	}
+
+	findAccoladeFin(__LINE__);
+
+	return entryPoint;
+}
+
 int* CFichierASE::LitTexFaces(int num)
 {
 	int index, tface1, tface2, tface3;
@@ -468,7 +553,7 @@ int* CFichierASE::LitTexFaces(int num)
 
 	int *tab = new int[3*num];
 
-	findAccoladeO(__LINE__);
+	findAccoladeDebut(__LINE__);
 
 	if( m_bAffiche )
 		trace() << "\nTABLEAU D'INDEX DE TEXTURES :\n";
@@ -487,7 +572,7 @@ int* CFichierASE::LitTexFaces(int num)
 		tab[ (3*i)+2 ] = tface3;
 
 		if( m_bAffiche )
-			trace()<<"\n\t"<<index<<' '<<tab[ 3*i ]<<' '<<tab[ 3*i+1 ]<<' '<<tab[ 3*i+2 ];
+			trace()<<"\n\t" << index << ' ' << tab[ 3*i ] << ' ' << tab[ 3*i+1 ] << ' ' << tab[ 3*i+2 ];
 	}
 
 	return tab;
@@ -505,7 +590,7 @@ float* CFichierASE::LitVertex(unsigned int num)
 	if( m_bAffiche )
 		trace() << "\nTABLEAU DE SOMMETS :\n";
 
-	findAccoladeO(__LINE__);
+	findAccoladeDebut(__LINE__);
 
 	for( unsigned int i=0 ; i<num ; i++)
 	{
@@ -537,7 +622,7 @@ float* CFichierASE::LitTexVertex(unsigned int num)	// num=nombre de sommets de t
 	if( m_bAffiche )
 		trace() << "\nTABLEAU DE SOMMETS DE TEXTURES :\n";
 
-	findAccoladeO(__LINE__);
+	findAccoladeDebut(__LINE__);
 
 	for( unsigned int i=0 ; i<num ; i++)
 	{
@@ -570,7 +655,7 @@ float* CFichierASE::LitNormaux(unsigned int numFaces, const float *row)
 	if( m_bAffiche )
 		trace() << "\nTABLEAU DE VECTEURS NORMAUX : " << numFaces << " faces" << endl;
 
-	findAccoladeO(__LINE__);
+	findAccoladeDebut(__LINE__);
 
 	for( unsigned int i=0 ; i<numFaces ; i++)
 	{
@@ -642,7 +727,7 @@ CMaterial* CFichierASE::materiallist()
 
 	get(uRef,__LINE__);	// Recherche la référence de l'obet matériau
 
-	findAccoladeO(__LINE__);
+	findAccoladeDebut(__LINE__);
 
 	find("*MATERIAL_CLASS", __LINE__);		// Recherche le type d'obet matériau
 
@@ -651,26 +736,23 @@ CMaterial* CFichierASE::materiallist()
 	if( m_bAffiche )
 		trace() << "\nMateriau de type : " << mot << " (" << uRef << ")";
 
-	if( mot=="\"Standard\"" )	// S'il s'agit d'un matériau de type standard
-	{
+	if( mot=="\"Standard\"" ) {	// S'il s'agit d'un matériau de type standard
 		trace() << "\nMateriau Standard";
 		pMaterial = materialStandard( uRef );
 	}
-	else if( (mot=="\"Multi/sous-objet\"") || (mot=="\"Multi/Sub-Object\"") )	// S'il s'agit d'un matériau multiple
-	{
+	else if((mot=="\"Multi/sous-objet\"") || (mot=="\"Multi/Sub-Object\"")) {	// S'il s'agit d'un matériau multiple
 		trace() << "\nMateriau Multi";
 		pMaterial = materialMulti( uRef );
 	}
-	else
-	{
-		trace() << "\nErreur (fichier.cpp::" << __LINE__ << ") : Type de materiau inconnu (" << mot << ")";
+	else {
+		trace() << "\nErreur (FichierASE.cpp::" << __LINE__ << ") : Type de materiau inconnu (" << mot << ")";
 		throw (int)CFichierASE::JKT_ERREUR_FICHIER_INVALIDE;	// Fin de fichier prématurée
 	}
 
 	return pMaterial;
 }
 
-CMaterialMulti* CFichierASE::materialMulti( unsigned int uRef )
+CMaterialMulti* CFichierASE::materialMulti(unsigned int uRef)
 {
 	unsigned int accolade2 = 1;
 	int indexTex = 0;				// Index du sous-matériau en cours de lecture
@@ -679,18 +761,15 @@ CMaterialMulti* CFichierASE::materialMulti( unsigned int uRef )
 	CMaterialMulti *pMaterialMulti = new CMaterialMulti();
 	pMaterialMulti->setRef(uRef);
 
-	do
-	{
+	do {
 		get(mot,__LINE__);
 
-		if( mot=="*MATERIAL_AMBIENT" )			//Recherche l'éventuelle couleur ambiante de l'objet geo
-		{
+		if( mot=="*MATERIAL_AMBIENT" ) {			//Recherche l'éventuelle couleur ambiante de l'objet geo
 			get(pMaterialMulti->m_Ambient[0],__LINE__);
 			get(pMaterialMulti->m_Ambient[1],__LINE__);
 			get(pMaterialMulti->m_Ambient[2],__LINE__);
 
-			if(m_bAffiche)
-			{
+			if(m_bAffiche) {
 				trace() << "\nCouleur ambiante (multi) : ";
 				trace()<<pMaterialMulti->m_Ambient[0]<<' '<<pMaterialMulti->m_Ambient[1]<<' '<<pMaterialMulti->m_Ambient[2];
 			}
@@ -701,8 +780,7 @@ CMaterialMulti* CFichierASE::materialMulti( unsigned int uRef )
 			get(pMaterialMulti->m_Diffuse[1],__LINE__);
 			get(pMaterialMulti->m_Diffuse[2],__LINE__);
 
-			if(m_bAffiche)
-			{
+			if(m_bAffiche) {
 				trace() << "\nCouleur diffuse (multi) : ";
 				trace()<<pMaterialMulti->m_Diffuse[0]<<' '<<pMaterialMulti->m_Diffuse[1]<<' '<<pMaterialMulti->m_Diffuse[2];
 			}
@@ -713,30 +791,28 @@ CMaterialMulti* CFichierASE::materialMulti( unsigned int uRef )
 			get(pMaterialMulti->m_Specular[1],__LINE__);
 			get(pMaterialMulti->m_Specular[2],__LINE__);
 
-			if( m_bAffiche )
-			{
+			if( m_bAffiche ) {
 				trace() << "\nCouleur specular (multi) : ";
 				trace()<<pMaterialMulti->m_Specular[0]<<' '<<pMaterialMulti->m_Specular[1]<<' '<<pMaterialMulti->m_Specular[2];
 			}
 		}
-		else if( mot=="*NUMSUBMTLS" )
-		{
+		else if( mot=="*NUMSUBMTLS" ) {
 			int nbrTex;	// Nombre de sous-matériaux du matériau multiple
 			get(nbrTex,__LINE__);
 
 			pMaterialMulti->NbrTex( nbrTex );
+
 			if( m_bAffiche )
 				trace() << "\nNombre de sous-materiaux : " << nbrTex;
 		}
-		else if( mot=="*SUBMATERIAL" )
-		{
+		else if( mot=="*SUBMATERIAL" ) {
 			unsigned int uRef;
 			get(uRef,__LINE__);	// Recherche la référence de l'obet sous-matériau
 
 			if( m_bAffiche )
 				trace() << "\n\tSous-Materiau ref. : " << uRef;
 
-			findAccoladeO(__LINE__);
+			findAccoladeDebut(__LINE__);
 
 			find("*MATERIAL_CLASS", __LINE__);	// Place toi à la définition du type de matériaux
 
@@ -764,25 +840,21 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 	pMaterial->setRef(uRef);
 	string::iterator k;
 
-	do
-	{
+	do {
 		get(mot,__LINE__);
 
-		if( mot=="*MAP_NAME" )	// Lecture du nom du matériau
-		{
+		if( mot=="*MAP_NAME" ) {	// Lecture du nom du matériau
 			string canal;
 			char lettre;
 
 			get(lettre, __LINE__);	// Prends le guillemet d'ouverture
 
-			if( lettre!='\"' )
-			{
+			if( lettre!='\"' ) {
 				trace() << "\nErreur (fichier::materiallist) : Fichier ASE corrompu (\")";
 				throw (int)CFichierASE::JKT_ERREUR_FICHIER_INVALIDE;	// Fin de fichier prématurée
 			}
 
-			for( ;; )	// Prends les mots jusqu'à la fermeture des guillemets
-			{
+			for( ;; ) {	// Prends les mots jusqu'à la fermeture des guillemets
 				get(lettre,__LINE__);
 
 				if( lettre!='\"' )
@@ -795,8 +867,8 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 			//pMaterialTexture->m_CanalTex = 1;		// Canal par défaut
 			indic = false;
 
-			for( string::iterator p=canal.begin() ; p+1<canal.end() ; p++ )
-			{	// p+<canal.end() car la chaîne doit contenir au moins un '*' et un chiffre
+			for( string::iterator p=canal.begin() ; p+1<canal.end() ; p++ ) {
+				// p+<canal.end() car la chaîne doit contenir au moins un '*' et un chiffre
 				if( p==canal.begin() )	// Si on en est pas au 1° caractère de la chaîne
 				{
 					if( *p==' ' )	// S'il y a un espace
@@ -829,39 +901,33 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 				}
 			}
 
-			if( m_bAffiche )
-			{
+			if( m_bAffiche ) {
 				//trace() << "\nCanal de texture : " << pMaterialTexture->m_CanalTex;
 
 				if( !indic )	// Si aucun canal de texture explicite n'a été trouvé
 					trace() << " (par defaut)";
 			}
 		}
-		else if(mot=="*MAP_CLASS")
-		{
+		else if(mot=="*MAP_CLASS") {
 			get(mot,__LINE__);
 
 			CMaterialTexture *pMaterialTexture = 0;
 
-			if(mot=="\"Bitmap\"")
-			{
+			if(mot=="\"Bitmap\"") {
 				pMaterialTexture = new CMaterialTexture( *pMaterial );
 				delete pMaterial;
 				pMaterial = pMaterialTexture;
 			}
-			else
-			{
+			else {
 				pMaterialTexture = (CMaterialTexture*)pMaterial;
 			}
 		}
-		else if( mot=="*MATERIAL_AMBIENT" )			//Recherche l'éventuelle couleur ambiante de l'objet geo
-		{
+		else if( mot=="*MATERIAL_AMBIENT" ) {			//Recherche l'éventuelle couleur ambiante de l'objet geo
 			get(pMaterial->m_Ambient[0],__LINE__);
 			get(pMaterial->m_Ambient[1],__LINE__);
 			get(pMaterial->m_Ambient[2],__LINE__);
 
-			if(m_bAffiche)
-			{
+			if(m_bAffiche) {
 				trace() << "\nCouleur ambiante : ";
 				trace()<<pMaterial->m_Ambient[0]<<' '<<pMaterial->m_Ambient[1]<<' '<<pMaterial->m_Ambient[2];
 			}
@@ -872,8 +938,7 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 			get(pMaterial->m_Diffuse[1],__LINE__);
 			get(pMaterial->m_Diffuse[2],__LINE__);
 
-			if(m_bAffiche)
-			{
+			if(m_bAffiche) {
 				trace() << "\nCouleur diffuse : ";
 				trace()<<pMaterial->m_Diffuse[0]<<' '<<pMaterial->m_Diffuse[1]<<' '<<pMaterial->m_Diffuse[2];
 			}
@@ -884,8 +949,7 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 			get(pMaterial->m_Specular[1],__LINE__);
 			get(pMaterial->m_Specular[2],__LINE__);
 
-			if( m_bAffiche )
-			{
+			if( m_bAffiche ) {
 				trace() << "\nCouleur specular : ";
 				trace()<<pMaterial->m_Specular[0]<<' '<<pMaterial->m_Specular[1]<<' '<<pMaterial->m_Specular[2];
 			}
@@ -895,27 +959,26 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 			string nomFichier;
 			CMaterialTexture *pMaterialTexture = 0;
 
-			if( pMaterial->Type() != CMaterial::MAT_TYPE_TEXTURE )
-			{
+			if( pMaterial->Type() != CMaterial::MAT_TYPE_TEXTURE ) {
 				pMaterialTexture = new CMaterialTexture( *pMaterial );
 				delete pMaterial;
 				pMaterial = pMaterialTexture;
 			}
-			else
-			{
+			else {
 				pMaterialTexture = (CMaterialTexture*)pMaterial;
 			}
 
 			get(nomFichier,__LINE__);
 
-				// Enlève le premier guillemet
-			size_t coucou = nomFichier.find_first_of( '"' );
-			if( coucou!=npos )
-				nomFichier.erase( coucou, 1 );
-				// Enlève le dernier guillemet
-			coucou = nomFichier.find_last_of( '"' );
-			if( coucou!=npos )
-				nomFichier.erase( coucou, 1 );
+			// Enlève le premier guillemet
+			size_t pos = nomFichier.find_first_of( '"' );
+			if(pos != npos)
+				nomFichier.erase( pos, 1 );
+
+			// Enlève le dernier guillemet
+			pos = nomFichier.find_last_of( '"' );
+			if(pos != npos)
+				nomFichier.erase( pos, 1 );
 
 			pMaterialTexture->m_FichierTexture = nomFichier;
 
@@ -932,7 +995,7 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 	return pMaterial;
 }
 
-CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géométrique dans le
+CGeo* CFichierASE::litGeomobject(CMap *pMap, unsigned int nbr) //Lit un objet géométrique dans le
 {										// fichier et le place en mémoire puis retourne son pointeur
 	unsigned int accolade = 0;
 	unsigned int numVertex=0, numFaces=0, numTexVertex=0, numTexFaces=0;
@@ -945,7 +1008,7 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 	if( m_bAffiche )
 		trace() << "\f"; //Changement de page
 
-	findAccoladeO(__LINE__);
+	findAccoladeDebut(__LINE__);
 
 	accolade = 2;
 
@@ -958,25 +1021,24 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 		get( ch, __LINE__);
 	while( ch!='\"' );
 
-	do	// Lecture du nom de l'objet entre guillemets
-	{
+	do {		// Lecture du nom de l'objet entre guillemets
 		get(ch, __LINE__);
 
-		if( ch=='\n' )
-		{
+		if( ch=='\n' ) {
 			trace() << "\nErreur (fichier::geomobject 2) : Fichier ASE corrompu";
 			throw (int)CFichierASE::JKT_ERREUR_FICHIER_INVALIDE;		// Fichier invalide (il aurait dû y avoir une accolade ouvrante ici)
 		}
+
 		if( ch!='\"' )
 			nom += ch;
-	}while( ch!='\"' );
+	} while( ch!='\"' );
 
 	pGeoMaker->setName( nom );
 
 	if( m_bAffiche )
 		trace() << "\nNom de l'objet geo : " << nom;
 
-	findAccoladeO(__LINE__);
+	findAccoladeDebut(__LINE__);
 
 		// Lecture des paramètres de transformation pour les normales
 	find("*TM_ROW0", __LINE__);
@@ -1002,24 +1064,19 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 	if( m_bAffiche )
 		trace() << "\nRow2 : " << row[6] << "\t" << row[7] << "\t" << row[8] << endl;
 
-	while( accolade ) // Recherche le nombre de sommets apres le mot "*MESH_NUMVERTEX"
-	{
+	while( accolade ) { // Recherche le nombre de sommets apres le mot "*MESH_NUMVERTEX"
 		get(mot, __LINE__);
 
-		if( mot=="*MESH_NUMVERTEX" )
-		{
+		if( mot=="*MESH_NUMVERTEX" ) {
 			get(numVertex, __LINE__);
 
-			if( numVertex!=0 )
-			{
+			if( numVertex!=0 ) {
 				if( m_bAffiche )
 					trace() << "\nIl y a " << numVertex << " sommets dans l'objet geometrique " << nbr;
 				break;
 			}
-			else		// Ignore l'objet s'il ne contient aucun sommet
-			{
-				while( accolade )
-				{
+			else {		// Ignore l'objet s'il ne contient aucun sommet
+				while( accolade ) {
 					get(mot, __LINE__);
 
 					if( mot=="{" )	// Compte une accolade
@@ -1027,6 +1084,7 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 					else if( mot=="}" )	// Décompte une accolade
 						accolade--;
 				}
+
 				return 0;
 			}
 		}
@@ -1040,18 +1098,15 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 	{
 		get(mot, __LINE__);
 
-		if( mot=="*MESH_NUMFACES" )
-		{
+		if( mot=="*MESH_NUMFACES" ) {
 			get(numFaces, __LINE__);
 
-			if( numFaces!=0 )
-			{
+			if( numFaces!=0 ) {
 				if( m_bAffiche )
 					trace() << "\nIl y a " << numFaces <<" faces dans l'objet geometrique " << nbr;
 				break;
 			}
-			else
-			{
+			else {
 				trace() << "\nNombre de faces non valide\n";
 			}
 		}
@@ -1077,7 +1132,7 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 	{
 		get(mot, __LINE__);
 
-		if( mot=="*WIREFRAME_COLOR" )//Recherche l'éventuelle couleur de 'lobjet géo
+		if( mot=="*WIREFRAME_COLOR" )	//Recherche l'éventuelle couleur de 'lobjet géo
 		{
 			float r,g,b;
 			get(r, __LINE__);
@@ -1145,14 +1200,14 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 
 				// Numéro de canal
 			get(canal, __LINE__);
-			findAccoladeF(__LINE__);
+			findAccoladeFin(__LINE__);
 
 				// Nombre de sommets de texture
 			find("*MESH_NUMTVERTEX",__LINE__);
 			get(numTVertex,__LINE__);	// Nombre d'index de texture du canal
 
 			isNext("*MESH_TVERTLIST",__LINE__);
-			findAccoladeO(__LINE__);
+			findAccoladeDebut(__LINE__);
 
 			if( m_bAffiche )
 				trace() << "\nVERTEX DU CANAL DE TEXTURE " << canal;
@@ -1178,13 +1233,13 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 			chantex->setTexVertex(numTVertex, texvertex);
 
 				// Nombre d'index de sommets de texture
-			findAccoladeF(__LINE__);
+			findAccoladeFin(__LINE__);
 			isNext("*MESH_NUMTVFACES",__LINE__);
 
 			get(numTFaces,__LINE__);	// Nombre d'index de texture du canal
 			isNext("*MESH_TFACELIST",__LINE__);
 
-			findAccoladeO(__LINE__);	// Lecture de l'accolade ouvrante
+			findAccoladeDebut(__LINE__);	// Lecture de l'accolade ouvrante
 
 			if( m_bAffiche )
 				trace() << "\nINDEX DU CANAL DE TEXTURE " << canal;
@@ -1254,72 +1309,97 @@ CGeo* CFichierASE::geomobject(CMap *pMap, unsigned int nbr) //Lit un objet géomé
 	return geo;
 }
 
-void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap)
-{
+void CFichierASE::LitGroupe(const string &nomFichier, CMap *pMap, unsigned int &nbr_GeoObject) {
+	string mot;
+
+	// Lit le nom du groupe
+	get(mot,__LINE__);
+	string groupName = extractGuillemetsDelimitedString(mot);
+
+	findAccoladeDebut(__LINE__);
+
+	while(isGet(mot, __LINE__)) {
+		if(mot == "*GEOMOBJECT") {		// Recherche des objets géométriques
+			CGeo *pGeo = litGeomobject(pMap, nbr_GeoObject + 1);
+
+			if(pGeo) {	// Si pas d'erreur mets le dans le tableau d'objets géo
+				pMap->Add( pGeo );
+				nbr_GeoObject++;
+			}
+			else {
+				trace() << "\nAttention : Un objet geometrique est corrompu => ignore";
+			}
+		}
+	}
+}
+
+void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap) {
 	unsigned int nbr_GeoObject = 0;
 	string mot;
 
 	if( m_bAffiche )
 		trace() << "\nLecture du fichier ASE : " << nomFichier << endl;
 
-	while( isGet(mot, __LINE__) )
-	{
-		if( mot=="*GEOMOBJECT" )		// Recherche des objets géométriques
-		{
+	while(isGet(mot, __LINE__)) {
+		if(mot == "**GROUP") {
+			LitGroupe(nomFichier, pMap, nbr_GeoObject);
+		}
+		else if(mot == "*GEOMOBJECT") {		// Recherche des objets géométriques
 			CGeo *pGeo;
 
-			nbr_GeoObject++;
+			pGeo = litGeomobject(pMap, nbr_GeoObject + 1);
 
-			pGeo = geomobject(pMap, nbr_GeoObject);
-			if( pGeo )	// Si pas d'erreur mets le dans le tableau d'objets géo
-			{
+			if(pGeo) {	// Si pas d'erreur mets le dans le tableau d'objets géo
 				pMap->Add( pGeo );
+				nbr_GeoObject++;
 			}
-			else
-			{
+			else {
 				trace() << "\nAttention : Un objet geometrique est corrompu => ignore";
 			}
 		}
-		else if( mot=="*LIGHTOBJECT" )		// Recherche des lumières
-		{
+		else if(mot == "*LIGHTOBJECT") {	// Recherche des lumières
 			CLight *pLight;
 
 			pLight = lightList();
-			if( pLight )		//Si pas d'erreur mets le dans le tableau d'objets géo
-			{
+
+			if(pLight) {	//Si pas d'erreur mets le dans le tableau d'objets géo
 				pMap->Add( pLight );
 			}
-			else				//Sinon libère sa mémoire
-			{
+			else {			//Sinon libère sa mémoire
 				trace() << "\nErreur : Une lumiere est corrompue => ignore";
 			}
 		}
-		else if( mot=="*MATERIAL_LIST" )	// Recherche des matériaux
-		{
+		else if(mot == "*MATERIAL_LIST") {	// Recherche des matériaux
 			CMaterial *pMaterial;
 			int nbr_materiau;	// Nombre de matériaux du fichier ASE
 
-			findAccoladeO(__LINE__);
+			findAccoladeDebut(__LINE__);
 			find("*MATERIAL_COUNT", __LINE__);
 			get(nbr_materiau,__LINE__);		// Récupère le nombre de matériaux
 
-			if( m_bAffiche )
+			if(m_bAffiche)
 				trace() << "Nombre de matériaux : " << nbr_materiau << endl;
 
-			while( nbr_materiau )	// Lecture de tous les matériaux
-			{
+			while(nbr_materiau) {	// Lecture de tous les matériaux
 				pMaterial = materiallist();
-				if( pMaterial )
-					pMap->Add( pMaterial ) ;
-				else
-				{
+
+				if(pMaterial)
+					pMap->Add(pMaterial) ;
+				else {
 					trace() << "\nErreur (fichier::" << __LINE__ << ") : Fichier ASE corrompu";
 					throw (int)CFichierASE::JKT_ERREUR_FICHIER_MARTERIAUMANQUE;
 				}
 
-				if( m_bAffiche )
-					trace() << "\nMateriau " << nbr_materiau << "repertorie\n";
+				if(m_bAffiche)
+					trace() << "\nMateriau " << nbr_materiau << " repertorie\n";
 				nbr_materiau--;
+			}
+		}
+		else if(mot == "*HELPEROBJECT") {
+			EntryPoint* entryPoint = litHelper();
+
+			if(entryPoint != NULL) {
+				pMap->add(*entryPoint);
 			}
 		}
 	}
@@ -1334,8 +1414,7 @@ bool CFichierASE::LitFichierASE( const string nomFichier, CMap *pMap, bool bAffi
 	{		// Ouverture du fichier ASE
 		CFichierASE from( nomFichierASE, pMap, bAffiche );
 	}
-	catch(bool)
-	{
+	catch(bool) {
 		return false;
 	}
 

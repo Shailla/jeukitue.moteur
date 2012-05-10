@@ -89,7 +89,7 @@ int CFindFolder::nbr()	// Nombre de fichiers du répertoire correspondant aux fil
 	return num;
 }
 
-	// Trouve le fichier suivant correspondant aux filtres du répertoire
+// Trouve le fichier suivant correspondant aux filtres du répertoire
 bool CFindFolder::findNext(string &fichier)
 {
 #ifdef WIN32
@@ -298,8 +298,10 @@ int CFindFolder::rmdir( const char *dir )
 }
 
 	// Permet de savoir si un élément est un répertoire ou non
-bool CFindFolder::isFolder( const char *dir )
+bool CFindFolder::isFolder(const string& directory)
 {
+	const char* dir = directory.c_str();
+
 #ifdef VS
 	struct __stat64 buf;
 	int result;

@@ -147,8 +147,7 @@ void CLight::Scale( float scaleX, float scaleY, float scaleZ )	// Homothétie pon
 	m_Position[ 2 ] *= scaleZ;
 }
 
-void CLight::SetPosition( const float position[4] )
-{
+void CLight::SetPosition( const float position[4] ) {
 	m_Position[0] = position[0];
 	m_Position[1] = position[1];
 	m_Position[2] = position[2];
@@ -157,39 +156,34 @@ void CLight::SetPosition( const float position[4] )
 	cout << endl << "Position lumiere : " << position[0] << "  " << position[1] << "  " << position[2] << "  " << position[3] << endl;
 }
 
-void CLight::SetColorAmbient( const float color[4] )
-{
+void CLight::SetColorAmbient( const float color[4] ) {
 	m_ColorAmbient[0] = color[0];
 	m_ColorAmbient[1] = color[1];
 	m_ColorAmbient[2] = color[2];
 	m_ColorAmbient[3] = color[3];
 }
 
-void CLight::SetColorDiffuse( const float color[4] )
-{
+void CLight::SetColorDiffuse( const float color[4] ) {
 	m_ColorDiffuse[0] = color[0];
 	m_ColorDiffuse[1] = color[1];
 	m_ColorDiffuse[2] = color[2];
 	m_ColorDiffuse[3] = color[3];
 }
 
-void CLight::SetColorSpecular( const float color[4] )
-{
+void CLight::SetColorSpecular( const float color[4] ) {
 	m_ColorSpecular[0] = color[0];
 	m_ColorSpecular[1] = color[1];
 	m_ColorSpecular[2] = color[2];
 	m_ColorSpecular[3] = color[3];
 }
 
-void CLight::SetColor( const float color[4] )
-{
+void CLight::SetColor( const float color[4] ) {
 	SetColorAmbient(color);
 	SetColorDiffuse(color);
 	SetColorSpecular(color);
 }
 
-void CLight::Active()
-{
+void CLight::Active() {
 	if( !m_nbrLightActivated )		// Si toutes les lumières sont éteintes
 		glEnable( GL_LIGHTING );	// allume l'éclairage
 
@@ -199,8 +193,7 @@ void CLight::Active()
 	glEnable( m_refLight );
 }
 
-void CLight::Desactive()
-{
+void CLight::Desactive() {
 	m_nbrLightActivated--;
 	glDisable( m_refLight );
 

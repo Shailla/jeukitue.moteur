@@ -16,8 +16,8 @@ class CMoteurParticulesNeige : public CMoteurParticules
 	unsigned int texName;			// Texture de la particule
 	unsigned lastTempsNew;			// Date de la dernière création d'une particule
 public:
-	CV3D centre;						// Position du centre attracteur
-	CV3D vitesse;
+	JktUtils::CV3D centre;						// Position du centre attracteur
+	JktUtils::CV3D vitesse;
 		// Fonctions membres
 private:
 	void GenereTextureParticule();

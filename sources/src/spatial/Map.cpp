@@ -32,6 +32,7 @@ class CGame;
 #include "spatial/light/LightMaker.h"
 #include "spatial/Mouve.h"
 #include "spatial/geo/Geo.h"
+#include "spatial/geo/EntryPoint.h"
 #include "spatial/geo/SimpleGeo.h"
 #include "spatial/geo/SimpleMaterialGeo.h"
 #include "spatial/geo/MultiMaterialGeo.h"
@@ -44,6 +45,7 @@ class CGame;
 #include "main/Player.h"
 #include "util/V3D.h"
 #include "spatial/geo/GeoMaker.h"
+#include "spatial/geo/EntryPointMaker.h"
 #include "ressource/RessourcesLoader.h"
 
 #include "spatial/Map.h"
@@ -136,8 +138,7 @@ void CMap::Add(CGeo* geo)
 	m_TabGeo.push_back( geo );	// Ajoute geo à la liste des objets affichables
 }
 
-void CMap::Add( CMaterial *mat )
-{
+void CMap::Add( CMaterial *mat ) {
 	m_TabMaterial.push_back( mat );	// Ajoute mat à la liste des objets affichables
 }
 
@@ -155,11 +156,9 @@ void CMap::incrementeSelection()
 	}
 }
 
-void CMap::decrementeSelection()
-{
+void CMap::decrementeSelection() {
 	m_Selection--;
-	if(m_Selection < 0)
-	{
+	if(m_Selection < 0) {
 		m_Selection = (int)m_TabGeo.size()-1;
 
 		if(m_Selection < 0)
@@ -167,25 +166,30 @@ void CMap::decrementeSelection()
 	}
 }
 
-void CMap::ChangeSelectionMode()
-{
+void CMap::ChangeSelectionMode() {
 	m_bSelection = !m_bSelection;
 	m_Selection = 0;
 }
 
-bool CMap::IsSelectionMode()
-{
+bool CMap::IsSelectionMode() {
 	return m_bSelection;
 }
 
-const char* CMap::getSelectedName()
-{
+const char* CMap::getSelectedName() {
 	CGeo* geo = m_TabGeo[m_Selection];
 	return geo->toString();
 }
 
-void CMap::Add( CPorte *porte )
-{		// Une porte est avant tout un objet géo
+void CMap::add(EntryPoint entryPoint) {
+	_entryPoints.push_back(entryPoint);
+}
+
+vector<EntryPoint>& CMap::getEntryPointsList() {
+	return _entryPoints;
+}
+
+void CMap::Add( CPorte *porte ) {
+	// Une porte est avant tout un objet géo
 	m_TabGeo.push_back( porte );		// Ajoute porte à la liste des objets affichables
 	m_TabMouve.push_back( porte );		// Ajoute porte à la liste des objets à rafraichir
 }
@@ -216,53 +220,77 @@ float CMap::GereLaserPlayer( float *pos, CV3D &Dir, float dist )
 	return dist;	// Renvoie la distance du premier contact trouvé entre le laser et une face d'objet géo
 }
 
-void CMap::EchangeXY()
-{
+void CMap::EchangeXY() {
 TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeXY()%T", this );
 
+	// Entry points
+	vector<EntryPoint>::iterator iterEntry;
+	for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
+		(*iterEntry).EchangeXY();
+
+	// Geo
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
 		(*iterGeo)->EchangeXY();
 
+	// Lights
 	vector<CLight*>::iterator iterLight;
 	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
 		(*iterLight)->EchangeXY();
 }
 
-void CMap::EchangeXZ()
-{
+void CMap::EchangeXZ() {
 TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeXZ()%T", this );
 
+	// Entry points
+	vector<EntryPoint>::iterator iterEntry;
+	for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
+		(*iterEntry).EchangeXZ();
+
+	// Geo
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
 		(*iterGeo)->EchangeXZ();
 
+	// Lights
 	vector<CLight*>::iterator iterLight;
 	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
 		(*iterLight)->EchangeXZ();
 }
 
-void CMap::EchangeYZ()
-{
+void CMap::EchangeYZ() {
 TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeYZ()%T", this );
 
+	// Entry points
+	vector<EntryPoint>::iterator iterEntry;
+	for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
+		(*iterEntry).EchangeYZ();
+
+	// Geo
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
 		(*iterGeo)->EchangeYZ();
 
+	// Lights
 	vector<CLight*>::iterator iterLight;
 	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
 		(*iterLight)->EchangeYZ();
 }
 
-void CMap::Scale( float scaleX, float scaleY, float scaleZ )
-{
+void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
 TRACE().p( TRACE_MOTEUR3D, "CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scaleX, scaleY, scaleZ, this );
 
+	// Entry points
+	vector<EntryPoint>::iterator iterEntry;
+	for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
+		(*iterEntry).Scale(scaleX, scaleY, scaleZ);
+
+	// Geo
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
 		(*iterGeo)->Scale( scaleX, scaleY, scaleZ );
 
+	// Lights
 	vector<CLight*>::iterator iterLight;
 	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
 		(*iterLight)->Scale( scaleX, scaleY, scaleZ );
@@ -289,6 +317,29 @@ bool CMap::Lit(const string &nomFichier)
 		TiXmlElement* elMap = document.FirstChildElement(Xml::MAP);
 		if(!elMap)
 			throw CErreur(0,"Fichier map corrompu");
+
+		// Lecture des point d'entrée des joueurs
+		{
+			TiXmlElement* elEntry = elMap->FirstChildElement(Xml::ENTRYPOINTS);
+
+			if(elEntry) {
+				for(TiXmlElement* el=elEntry->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
+					if(strcmp(Xml::ENTRYPOINT, el->Value())) {
+						string erreur = "Fichier MAP corrompu : '";
+						erreur += Xml::MATERIAU;
+						erreur += "' attendu, '";
+						erreur += el->Value();
+						erreur += "' recu";
+						throw CErreur(0, erreur);
+					}
+
+					EntryPoint* entry = EntryPointMaker::Lit(el);
+
+					if(entry)
+						add(*entry);
+				}
+			}
+		}
 
 		// Lecture des matériaux
 		TiXmlElement* elMat = elMap->FirstChildElement(Xml::MATERIAUX);
@@ -689,17 +740,10 @@ TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichie
 	return false;
 }*/
 
-bool CMap::Init() throw(JktUtils::CErreur)	// Initialisation de la CMap
-{
-	// Letcure des fichiers de texture
-	vector<CMaterial*>::iterator iterMat;
-	for( iterMat=m_TabMaterial.begin() ; iterMat!=m_TabMaterial.end() ; iterMat++ ) {
-		CMaterial* material = *iterMat;
-		material->LitTexture();
-	}
-
+bool CMap::Init() throw(JktUtils::CErreur) {	// Initialisation de la CMap
 	// Initialisation des object géométriques
 	vector<CGeo*>::iterator iterGeo;
+
 	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++) {
 		CGeo* geo = (*iterGeo);
 		geo->Init();
@@ -708,8 +752,15 @@ bool CMap::Init() throw(JktUtils::CErreur)	// Initialisation de la CMap
 	return true;
 }
 
-bool CMap::initGL()
-{
+bool CMap::initGL() {
+	// Letcure des fichiers de texture
+	vector<CMaterial*>::iterator iterMat;
+
+	for( iterMat=m_TabMaterial.begin() ; iterMat!=m_TabMaterial.end() ; iterMat++ ) {
+		CMaterial* material = *iterMat;
+		material->initGL();
+	}
+
 	// Initialisation des object géométriques dans le contexte OpenGL
 	vector<CGeo*>::iterator iterGeo;
 
@@ -777,7 +828,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::Save() %T", this );
 		// CREATION DES FICHIERS
 	string nomFichierMap = "./map/" + nomFichier + ".map.xml";
 
-		// Initialisation du doc XML
+	// Initialisation du doc XML
 	TiXmlDocument document;
 	TiXmlDeclaration *decl = new TiXmlDeclaration("1.0","UTF-8","");
 	document.LinkEndChild(decl);
@@ -785,28 +836,45 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::Save() %T", this );
 	TiXmlElement *elMap = new TiXmlElement("Map");
 	document.LinkEndChild(elMap);
 
-		// SAUVEGARDE DES MATERIAUX
-	TiXmlElement *elMat = new TiXmlElement("Materiaux");
-	elMap->LinkEndChild(elMat);
-	vector<CMaterial*>::iterator iterMat;
-	for( iterMat=m_TabMaterial.begin() ; iterMat!=m_TabMaterial.end() ; iterMat++ )
-		(*iterMat)->Save(elMat);		// Sauvegarde du matériau
+	// Sauvegarde des points d'entrée des joueurs
+	{
+		TiXmlElement *elEntryPoint = new TiXmlElement(Xml::ENTRYPOINTS);
+		elMap->LinkEndChild(elEntryPoint);
+		vector<EntryPoint>::iterator iterEntryPoint;
 
-		// SAUVEGARDE DES LUMIERES
-	TiXmlElement *elLum = new TiXmlElement("Lumieres");
-	elMap->LinkEndChild(elLum);
-	vector<CLight*>::iterator iterLight;
-	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
-		(*iterLight)->Save( elLum );
+		for( iterEntryPoint=_entryPoints.begin() ; iterEntryPoint!=_entryPoints.end() ; iterEntryPoint++ )
+			(*iterEntryPoint).Save( elEntryPoint );		// Sauvegarde des paramètres de l'objet
+	}
 
+	// Sauvegarde des materiaux
+	{
+		TiXmlElement *elMat = new TiXmlElement(Xml::MATERIAUX);
+		elMap->LinkEndChild(elMat);
+		vector<CMaterial*>::iterator iterMat;
 
-		// SAUVEGARDE DES OBJETS GEOMETRIQUES
-	TiXmlElement *elGeo = new TiXmlElement("Geos");
-	elMap->LinkEndChild(elGeo);
-	vector<CGeo*>::iterator iterGeo;
-	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
-		(*iterGeo)->Save( elGeo );		// Sauvegarde des paramètres de l'objet
+		for( iterMat=m_TabMaterial.begin() ; iterMat!=m_TabMaterial.end() ; iterMat++ )
+			(*iterMat)->Save(elMat);		// Sauvegarde du matériau
+	}
 
+	// Sauvegarde des lumieres
+	{
+		TiXmlElement *elLum = new TiXmlElement(Xml::LUMIERES);
+		elMap->LinkEndChild(elLum);
+		vector<CLight*>::iterator iterLight;
+
+		for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
+			(*iterLight)->Save( elLum );
+	}
+
+	// Sauvegarde des objets geometriques
+	{
+		TiXmlElement *elGeo = new TiXmlElement(Xml::GEOS);
+		elMap->LinkEndChild(elGeo);
+		vector<CGeo*>::iterator iterGeo;
+
+		for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
+			(*iterGeo)->Save( elGeo );		// Sauvegarde des paramètres de l'objet
+	}
 
 	document.SaveFile(nomFichierMap.c_str());
 

@@ -30,6 +30,7 @@ class CGame;
 #include "main/Projectil.h"
 #include "main/Clavier.h"
 #include "spatial/Map.h"
+#include "spatial/geo/EntryPoint.h"
 #include "son/DemonSons.h"
 #include "son/ReqSon.h"
 #include "util/Erreur.h"
@@ -40,6 +41,7 @@ class CGame;
 
 using namespace JktSon;
 using namespace JktUtils;
+using namespace JktMoteur;
 
 extern CCfg Config;
 extern CDemonSons *DemonSons;
@@ -204,82 +206,72 @@ void CPlayer::setPosition( float x, float y, float z ) //change la position du j
 	m_Position[2] = z;
 }
 
-void CPlayer::choiceOneEntryPoint()
-{
-	if( Game.getMap()->m_EntreeJoueurs.size() >= 1 )
-	{
+void CPlayer::choiceOneEntryPoint() {
+	if(Game.getMap()->getEntryPointsList().size() >= 1) {
 		CPlayer *player;
 		bool valide;
 		float pos[3];
 		int curseur;
 		CV3D distance;
-		vector< vector<CV3D>::iterator > liste;
-		vector<CV3D>::iterator iterEntry;
+		vector< vector<EntryPoint>::iterator > liste;
+		vector<EntryPoint>::iterator iterEntry;
 		vector<CPlayer*>::iterator iterPlayer;
 
 			// Fait la liste des points d'entrée se trouvant à une distance supérieure
 			// à DISTANCE_INTER_JOUEURS_ENTRY_POINT de tout autre joueur
-		for( iterEntry=Game.getMap()->m_EntreeJoueurs.begin() ; iterEntry!=Game.getMap()->m_EntreeJoueurs.end() ; iterEntry++ )
-		{
+		for(iterEntry=Game.getMap()->getEntryPointsList().begin() ; iterEntry!=Game.getMap()->getEntryPointsList().end() ; iterEntry++) {
 			curseur = -1;
 			valide = false;
 
-			while( Game.pTabIndexPlayer->bSuivant( curseur ) )
-			{
+			while(Game.pTabIndexPlayer->bSuivant(curseur)) {
 				player = Game.pTabIndexPlayer->operator [](curseur);
 
-				if( player != this )	// Si le joueur en question n'est pas le joueur actuel
-				{
-					distance = (*iterEntry);
-					player->getPosition( pos );
+				if( player != this ) {	// Si le joueur en question n'est pas le joueur actuel
+					distance = (*iterEntry).getEntryPosition();
+					player->getPosition(pos);
 					distance -= pos;
-					if( distance.norme() < DISTANCE_INTER_JOUEURS_ENTRY_POINT )
-					{
+
+					if(distance.norme() < DISTANCE_INTER_JOUEURS_ENTRY_POINT) {
 						valide = false;		// Le point d'entrée est trop proche d'un des joueurs
 						break;				// On passe au point d'entrée suivant
 					}
-					else
-					{
+					else {
 						valide = true;
 					}
 				}
 			}
 
-			if( valide )	// Si le point d'entrée suffisament distant de tout joueur, souviens-t'en
-				liste.push_back( iterEntry );
+			if( valide )	// Si le point d'entrée est suffisament distant de tout joueur, souviens-t'en
+				liste.push_back(iterEntry);
 		}
 
-		int choice;
+
 		size_t nbr = liste.size();
-		if(nbr)						// S'il y a des entrées à une distance convenable de tout joueur
-		{							// Alors choisi l'une d'elles au hasard
-			choice = (int)(nbr * ((float)rand()/(float)RAND_MAX));
-			if( choice == nbr )
-				choice--;
-			setPosition( *(liste[choice]) );
+
+		if(nbr) {	// S'il y a des entrées à une distance convenable de tout joueur
+			int choice = rand() % nbr;
+			setPosition((*(liste[choice])).getEntryPosition());	// alors choisi l'une d'elles au hasard
+			cout << endl << "LOIN : -" << choice << "-";
 		}
-		else
-		{							// Sinon prends-en une au hasard dans la liste
-			cout << "\nAu pif";
-			nbr = Game.getMap()->m_EntreeJoueurs.size();
-			choice = (int)(nbr * ((float)rand()/(float)RAND_MAX));
-			if( choice == nbr )
-				choice--;
-			setPosition( Game.getMap()->m_EntreeJoueurs[choice] );
+		else {							// sinon prends-en une au hasard dans la liste
+			nbr = Game.getMap()->getEntryPointsList().size();
+			int choice = rand() % nbr;
+			setPosition(Game.getMap()->getEntryPointsList()[choice].getEntryPosition());
+			cout << endl << "AU PIF : -" << choice << "-";
 		}
 	}
-	else
-	{
+	else {
 		CV3D pos( 1.0, 0.5, 0.0 );
 		setPosition( pos );
 	}
 }
 
-void CPlayer::setPosition( const CV3D& pos ) //change la position du joueur
-{
+void CPlayer::setPosition(const CV3D& pos) {	//change la position du joueur
 	m_Position[0] = pos.X;
 	m_Position[1] = pos.Y;
 	m_Position[2] = pos.Z;
+
+	cout << " POSITION " << pos.X << " " << pos.Y << " " << pos.Z;
 }
 
 void CPlayer::setPosition( const float pos[3] ) //change la position du joueur

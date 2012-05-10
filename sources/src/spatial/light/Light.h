@@ -54,12 +54,14 @@ protected:
 public :
 	CLight();
 	virtual ~CLight();
-		// Fonctions membres
-	virtual bool Lit(TiXmlElement* element) = 0;
-	virtual bool LitFichier(CIfstreamMap &fichier) = 0;	// Lit une light dans un fichier Map
-	virtual bool SaveFichierMap(std::ofstream &fichier) = 0;	// Sauve la light dans un fichier Map
-	virtual bool Save(TiXmlElement* element) = 0;	// Sauve la light dans un fichier Map
 
+	// Méthodes de sérialisation
+	virtual bool Lit(TiXmlElement* element) = 0;				// Lit une light dans un fichier Map format XML
+	virtual bool LitFichier(CIfstreamMap &fichier) = 0;			// Lit une light dans un fichier Map
+	virtual bool SaveFichierMap(std::ofstream &fichier) = 0;	// Sauve la light dans un fichier Map
+	virtual bool Save(TiXmlElement* element) = 0;				// Sauve la light dans un fichier Map format XML
+
+	// Méthodes de manipulation géométrique
 	virtual void EchangeXY();			// Echange les coordonnées X et Y de l'objet
 	virtual void EchangeXZ();			// Echange les coordonnées X et Z de l'objet
 	virtual void EchangeYZ();			// Echange les coordonnées Y et Z de l'objet

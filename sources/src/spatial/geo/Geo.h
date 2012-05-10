@@ -24,8 +24,7 @@ namespace JktMoteur
 class CMap;
 class CIfstreamMap;
 
-class CGeo
-{
+class CGeo {
 	static JktUtils::CGenRef GENREF;
 	CMap *pMap;			// Navigabilité vers l'objet parent
 	string m_Nom;				// Nom donné à au géo

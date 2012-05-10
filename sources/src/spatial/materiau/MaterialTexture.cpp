@@ -50,8 +50,7 @@ CMaterialTexture::~CMaterialTexture()
 {
 }
 
-void CMaterialTexture::LitTexture() throw(JktUtils::CErreur)
-{
+void CMaterialTexture::initGL() throw(JktUtils::CErreur) {
 TRACE().p( TRACE_MOTEUR3D,"CMaterialTexture::LitTexture() fichier=%s begin%T",m_FichierTexture.c_str(), this );
 
 	bool changed = RessourcesLoader::getFileRessource(m_FichierTexture);

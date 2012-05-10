@@ -24,10 +24,10 @@ public:
 	virtual ~MapService();
 
 	/** Read the list of the ASE files in the ASE directory. */
-	void loadAseDirectoryContent(vector<AseFileInformationDto>& content);
+	static void loadAseDirectoryContent(vector<AseFileInformationDto>& content);
 
 	/** Read the list of the MAP files in the ASE directory. */
-	void loadMapDirectoryContent(vector<MapInformationDto>& content);
+	static void loadMapDirectoryContent(vector<MapInformationDto>& content);
 };
 
 #endif /* MAPSERVICE_H_ */

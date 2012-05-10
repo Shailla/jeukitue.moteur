@@ -28,7 +28,7 @@ CMaterial* CMaterialMaker::Lit(TiXmlElement* el, string &repertoire)
 		throw CErreur(0, erreur.c_str());
 	}
 
-	CMaterial* mat = 0;
+	CMaterial* mat = NULL;
 	const char* type = el->Attribute(Xml::TYPE);
 
 	if(!strcmp(Xml::SIMPLE, type))

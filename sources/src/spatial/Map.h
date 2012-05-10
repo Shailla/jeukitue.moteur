@@ -4,9 +4,9 @@
 
 #include <vector>
 
-#include "util/V3D.h"
 #include "util/Tableau.h"
 #include "util/Erreur.h"
+#include "util/V3D.h"
 
 class CGame;
 class CPlayer;
@@ -22,6 +22,7 @@ class CMaterial;
 class CPorte;
 class CNavette;
 class CGeoObject;
+class EntryPoint;
 
 class CMap
 {
@@ -29,15 +30,14 @@ class CMap
 	vector<CMouve*> m_TabMouve;			// Liste des objets nécessitant une actualisation (portes,...)
 
 	bool Init() throw(JktUtils::CErreur);		// Initialisation de la CMap
-//	bool LitFichier(const string &nomFichier);	// Lecture de la CMap depuis un fichier *.map
 	bool Lit(const string &nomFichier);
 
-	int m_Selection;	// Object géo sélectionné
-	bool m_bSelection;	// Indique si le mode sélection est actif ou non
+	int m_Selection;				// Object géo sélectionné
+	bool m_bSelection;				// Indique si le mode sélection est actif ou non
+	vector<EntryPoint> _entryPoints;		// Liste des points d'entrée des joueurs sur la Map
 public:
 	vector<CLight*> m_TabLight;			// Liste des lumières
 	vector<CMaterial*> m_TabMaterial;	// Liste des matériaux A VOIR : devrait être membre privé
-	vector<CV3D> m_EntreeJoueurs;		// Liste des points d'entrée des joueurs sur la Map
 
 		// Constructeurs / destructeur
 	CMap();
@@ -70,7 +70,7 @@ public:
 														// géo (ils sont multipliés par scale)
 		// A VOIR Fonctions qui n'ont rien à faire ici
 	void GereContactPlayer(CPlayer *player);	// Gère tous les contacts entre la map et les joueurs
-	float GereLaserPlayer(float *pos, CV3D &Dir, float dist );	// Envoie d'un laser sur la map
+	float GereLaserPlayer(float *pos, JktUtils::CV3D &Dir, float dist );	// Envoie d'un laser sur la map
 
 	void afficheToutesTextures(int x, int y);
 
@@ -80,6 +80,10 @@ public:
 	void ChangeSelectionMode();
 	const char* getSelectedName();
 	bool IsSelectionMode();
+
+	// Points d'entrée des personnages joueurs
+	void add(EntryPoint entryPoint);
+	vector<EntryPoint>& getEntryPointsList();
 };
 
 }	// JktMoteur

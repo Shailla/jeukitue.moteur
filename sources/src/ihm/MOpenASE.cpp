@@ -186,17 +186,15 @@ TRACE().p( TRACE_MENU, "retourEcraserRep(var=%x)", arg );
 	lanceMenuOpenScene( 0 );
 }
 
-bool deleteOnlyFiles( string &fichier, const string &path )
-{
+bool deleteOnlyFiles(string &fichier, const string &path) {
 	string var;
-	if( (fichier!="..") && (fichier!=".") )	// Si ni "..", ni "."
-	{
+
+	if((fichier!="..") && (fichier!=".")) {		// Si ni "..", ni "."
 		var = path + fichier;
-		if( !CFindFolder::isFolder(var.c_str()) )	// Si ce n'est pas un répertoire (=>fichier)
-		{
+		if( !CFindFolder::isFolder(var) ) {		// Si ce n'est pas un répertoire (=>fichier)
 			cout << "\nDeleting file : " << var;
 
-			if( remove( var.c_str() ) )
+			if(remove(var.c_str()))
 				return false;
 		}
 	}
@@ -204,18 +202,17 @@ bool deleteOnlyFiles( string &fichier, const string &path )
 	return true;
 }
 
-bool delDirectory( const string &path )
-{
+bool delDirectory(const string &path) {
 	cout << "\n\nPATH\t : " << path;
 	string var;
 //	struct _finddata_t fileinfo;
 //	intptr_t hFile;
 	string fichier;
 
-	CFindFolder folder( path.c_str(), 0, 0 );
-	while( folder.findNext(fichier) )
-	{
-		if( !deleteOnlyFiles( fichier, path ) )
+	CFindFolder folder(path.c_str(), 0, 0);
+
+	while(folder.findNext(fichier)) {
+		if(!deleteOnlyFiles(fichier, path))
 			return false;
 	}
 
@@ -235,6 +232,7 @@ bool delDirectory( const string &path )
 	}*/
 
 	folder.reset();
+
 	while( folder.findNext(fichier) )
 	{
 		if( (fichier!="..") && (fichier!=".") )	// Si ni "..", ni "."
@@ -259,23 +257,18 @@ bool delDirectory( const string &path )
 	return true;
 }
 
-void yesEcraseRep( void *arg )
-{
+void yesEcraseRep(void *arg) {
 	string var;
-	string path = "./Map/";
-	path += (char*)arg;
-	path += '/';
+	string path = string("./Map/").append((char*)arg).append("/");
 
 	delete BoiteEcraseRep;
 	CDlg::SetMenuActif( BoiteConvertASE );
 
-	if( !delDirectory( path ) )	// Efface récursivement tout ce qui se trouve dans le répertoire path
-	{
+	if(!delDirectory(path)) {	// Efface récursivement tout ce qui se trouve dans le répertoire path
 		cerr << "\nErreur : Au moins une entree ne peut etre supprimee";
 		erreur( "Au moins une entree ne peut etre supprime" );
 	}
-	else
-	{
+	else {
 		SDL_CreateThread( threadConvertASE_2, arg );
 	}
 }
@@ -295,7 +288,7 @@ void ecraserRepOuiNon( void *arg )
 	CDlg::SetMenuActif( BoiteEcraseRep );
 }
 
-int threadConvertASE_1( void *arg )
+int threadConvertASE_1(void *arg)
 {
 	string nomFichierASE = (char*)arg;
 
@@ -304,13 +297,13 @@ int threadConvertASE_1( void *arg )
 
 	pMapASE = new CMap();		// Crée une classe pour recevoir les données de la map
 
-		// Conversion fichier ASE -> fichier Map
-	if(	!CFichierASE::LitFichierASE( nomFichierASE, pMapASE, Config.Debug.bAfficheFichier ) )	// Lit le fichier ASE de la map
+	// Conversion fichier ASE -> fichier Map
+	if(	!CFichierASE::LitFichierASE(nomFichierASE.c_str(), pMapASE, Config.Debug.bAfficheFichier ) )	// Lit le fichier ASE de la map
 	{
-		cerr << endl << "Erreur : Lecture du fichier ASE impossible ou fichier corrompu";
+		cerr << endl << "Erreur : Lecture du fichier ASE impossible ou fichier corrompu 2";
 		delete pMapASE;
 
-		erreur( "Lecture du fichier ASE impossible ou fichier corrompu" );
+		erreur( "Lecture du fichier ASE impossible ou fichier corrompu 2" );
 
 		return 0;	// Les choses se sont mal passées pour la conversion du fichier
 	}

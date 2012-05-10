@@ -35,7 +35,13 @@ public:
 		SaveConfigCentralisateurAction,
 		SaveConfigJoueurAction,
 		ReloadDownloadFilesAction,
-		DownloadOneFileAction
+		DownloadOneFileAction,
+		PluginsManagementAction,
+		PluginActivateAction,
+		PluginDeactivateAction,
+		PluginExecuteAction,
+		DebugAction,
+		AgarConfigurationAction
 	};
 
     static Viewer* m_agarView;

@@ -8,7 +8,7 @@ int main(int argc, char** argv);
 void quit_tutorial();								// Quitte sans code d'erreur
 void quit_game( int code );							// Quitte avec code d'erreur
 void gravitePlayer(CPlayer *player);				//fonction implémentant la gravité
-void init(void);
+void initMenu(void);
 void keyboard(unsigned char key, int x, int y);		// agit en fonction du clavier
 void display(void);									// Affiche l'écran
 unsigned int timer(unsigned int nbr, void *fct);	//focntion qui s'exécute périodiquement et qui provoque l'affichage

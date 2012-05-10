@@ -8,6 +8,8 @@ class Xml
 {
 public:
 	static const char* MAP;
+	static const char* ENTRYPOINTS;
+	static const char* ENTRYPOINT;
 	static const char* MATERIAUX;
 	static const char* LUMIERES;
 	static const char* LUMIERE;

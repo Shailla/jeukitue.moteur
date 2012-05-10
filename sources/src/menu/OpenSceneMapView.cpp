@@ -87,7 +87,6 @@ void OpenSceneMapView::show(void)
 	View::show();
 }
 
-string OpenSceneMapView::getMapName(const int mapNumber)
-{
+string OpenSceneMapView::getMapName(const int mapNumber) {
 	return _mapNames.at(mapNumber);
 }

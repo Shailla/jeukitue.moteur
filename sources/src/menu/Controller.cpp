@@ -3,9 +3,17 @@
 
 using namespace std;
 
+#include <GL/gl.h>
+#include <GL/glu.h>
+
+#include <agar/core.h>
+#include <agar/gui.h>
+#include <agar/dev.h>
+
 #include "menu/CentralisateurView.h"
 #include "menu/ConfigCentralisateurView.h"
 #include "menu/OpenSceneMapView.h"
+#include "menu/PluginsManagementView.h"
 #include "menu/OpenSceneASEView.h"
 #include "menu/OpenSceneASEEcraseRepView.h"
 #include "menu/ConsoleAvancementView.h"
@@ -30,11 +38,13 @@ using namespace std;
 #include "spatial/materiau/MaterialMulti.h"
 #include "spatial/AseImporter.h"
 #include "util/FindFolder.h"
+#include "plugin/PluginEngine.h"
 
 #include "menu/Controller.h"
 
 using namespace JktMenu;
 using namespace JktMoteur;
+using namespace JktPlugin;
 
 extern CGame Game;
 extern CCfg Config;
@@ -108,6 +118,10 @@ void Controller::executeAction(AG_Event *event) {
         m_agarView->showView(Viewer::OPEN_SCENE_VIEW);
         break;
 
+    case PluginsManagementAction:
+        m_agarView->showView(Viewer::PLUGINS_MANAGEMENT_VIEW);
+        break;
+
     case AboutAction:
         m_agarView->showView(Viewer::ABOUT_VIEW);
         break;
@@ -162,11 +176,71 @@ void Controller::executeAction(AG_Event *event) {
 			string mapName = view->getMapName(mapNumber);
 
 			cout << "Ouverture de la Map '" << mapName << "'";
-
 			// Ouverture de la Map
             Game.RequeteProcess.setOuvreMapLocal(mapName);
         }
         break;
+
+    // Activation d'un plugin
+	case PluginActivateAction:
+		{
+			// Récupération du nom de la Map à ouvrir
+			int pluginNumber = AG_INT(2);
+			PluginsManagementView* view = (PluginsManagementView*)m_agarView->getView(Viewer::PLUGINS_MANAGEMENT_VIEW);
+			string pluginName = view->getPluginName(pluginNumber);
+
+			cout << endl << "Activate plugin : '" << pluginName << "'";
+
+			PluginEngine* pluginEngine = Fabrique::getPluginEngine();
+			pluginEngine->activatePlugin(pluginName);
+		}
+		break;
+
+    // Désactivation d'un plugin
+	case PluginDeactivateAction:
+		{
+			// Récupération du nom de la Map à ouvrir
+			int pluginNumber = AG_INT(2);
+			PluginsManagementView* view = (PluginsManagementView*)m_agarView->getView(Viewer::PLUGINS_MANAGEMENT_VIEW);
+			string pluginName = view->getPluginName(pluginNumber);
+
+			cout << endl << "Deactivate plugin : '" << pluginName << "'";
+
+			PluginEngine* pluginEngine = Fabrique::getPluginEngine();
+			pluginEngine->deactivatePlugin(pluginName);
+		}
+		break;
+
+	// Exécution d'un plugin
+	case PluginExecuteAction:
+		{
+			// Récupération du nom de la Map à ouvrir
+			int pluginNumber = AG_INT(2);
+			PluginsManagementView* view = (PluginsManagementView*)m_agarView->getView(Viewer::PLUGINS_MANAGEMENT_VIEW);
+			string pluginName = view->getPluginName(pluginNumber);
+
+			cout << endl << "Deactivate plugin : '" << pluginName << "'";
+
+			PluginEngine* pluginEngine = Fabrique::getPluginEngine();
+			pluginEngine->executePlugin(pluginName);
+		}
+		break;
+
+	// Menu de configuration d'Agar
+	case AgarConfigurationAction:
+		{
+			DEV_ConfigShow();
+		}
+		break;
+
+	case DebugAction:
+		{
+			stringstream openGlError;
+			openGlError << "Deniere erreur OpenGL : '" << gluErrorString(glGetError()) << "'";
+			cerr << openGlError.str();
+			AG_TextMsg(AG_MSG_ERROR, openGlError.str().c_str());
+		}
+		break;
 
 	// Import d'un fichier ASE
 	case OpenASEAction:
@@ -177,10 +251,9 @@ void Controller::executeAction(AG_Event *event) {
 			string aseName = view->getAseName(aseNumber);
 
 			// Ouverture de la Map
-			string nomRep = "./Map/" + aseName;
+			string nomRep = "./Map/" + aseName + "/";
 
-			if(CFindFolder::mkdir(nomRep.c_str()) != 0)	// Création du répertoire pour les textures
-			{	
+			if(CFindFolder::mkdir(nomRep.c_str()) != 0)	{	// Création du répertoire pour les textures
 				// Si un répertoire existe déjà, demande s'il faut l'écraser
 				OpenSceneASEEcraseRepView* view = (OpenSceneASEEcraseRepView*)m_agarView->getView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
 				view->setRepName(nomRep);	// Nom du répertoire du fichier Ase
@@ -197,8 +270,7 @@ void Controller::executeAction(AG_Event *event) {
 					// Import du fichier ASE
 					AseImporter::lanceImportAse(aseName, console);
 				}
-				catch(CErreur& erreur)
-				{
+				catch(CErreur& erreur) {
 					stringstream texte;
 					texte << "Echec d'import ASE : " << erreur.toString();
 					AG_TextMsg(AG_MSG_ERROR, texte.str().c_str());

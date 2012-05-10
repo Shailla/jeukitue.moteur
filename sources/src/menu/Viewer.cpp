@@ -22,6 +22,7 @@
 #include "menu/ConfigurationJoueurView.h"
 #include "menu/ConsoleView.h"
 #include "menu/ProgressBarView.h"
+#include "menu/PluginsManagementView.h"
 
 Viewer::Viewer(AG_EventFn controllerCallback) {
 	// Initialisation des fenêtres
@@ -32,6 +33,7 @@ Viewer::Viewer(AG_EventFn controllerCallback) {
 	_views[CONFIGURATION_VIEW] = new ConfigurationView(controllerCallback);
 	_views[CONFIG_CENTRALISATEUR_VIEW] = new ConfigCentralisateurView(controllerCallback);
 	_views[OPEN_SCENE_VIEW] = new OpenSceneView(controllerCallback);
+	_views[PLUGINS_MANAGEMENT_VIEW] = new PluginsManagementView(controllerCallback);
 	_views[OPEN_SCENE_ASE_VIEW] = new OpenSceneASEView(controllerCallback);
 	_views[OPEN_SCENE_MAP_VIEW] = new OpenSceneMapView(controllerCallback);
 	_views[OPEN_SCENE_ASE_ECRASE_REP_VIEW] = new OpenSceneASEEcraseRepView(controllerCallback);
@@ -81,26 +83,19 @@ View* Viewer::getView(VIEWS view) {
 void Viewer::draw(void) {
 	AG_Window *win;
 
-    AG_LockVFS(agView);
+    AG_LockVFS(&agDrivers);
 
-	//AG_BeginRendering();
+    AG_FOREACH_WINDOW(win, agDriverSw) {
+    	AG_ObjectLock(win);
 
-    AG_TAILQ_FOREACH(win, &agView->windows, windows) {
-        AG_ObjectLock(win);
-
-        if (!win->visible) {
-	        AG_ObjectUnlock(win);
-	        continue;
+        if(win->visible) {
+        	AG_WidgetDraw(win);
         }
-
-        AG_WidgetDraw(win);
 
         AG_ObjectUnlock(win);
     }
 
-	//AG_EndRendering();
-
-    AG_UnlockVFS(agView);
+    AG_UnlockVFS(&agDrivers);
 }
 
 

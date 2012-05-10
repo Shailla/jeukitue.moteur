@@ -34,10 +34,12 @@ class CFichierASE : private ifstream
 	CFichierASE(const std::string &nomFichier, CMap *pMap, bool bAffiche);
 	~CFichierASE();
 
+	EntryPoint* litEntryPoint();
 	CLight* litLightOmni();
 	CLight* litLightTarget();
 	FACES* LitFaces( unsigned int num );
 	CLight* lightList();
+	EntryPoint* litHelper();
 	int* LitTexFaces(int num);
 	float* LitVertex(unsigned int num);
 	float* LitTexVertex(unsigned int num);
@@ -45,16 +47,20 @@ class CFichierASE : private ifstream
 	CMaterial* materiallist();
 	CMaterialMulti* materialMulti( unsigned int uRef );
 	CMaterial* materialStandard(unsigned int uRef);
-	CGeo* geomobject(CMap *pMap, unsigned int nbr);
+	CGeo* litGeomobject(CMap *pMap, unsigned int nbr);
 	void LitFichier(const string &nomFichier, CMap *pMap);
+	void LitGroupe(const string &nomFichier, CMap *pMap, unsigned int& nbr_GeoObject);
+
+	string extractGuillemetsDelimitedString(const string str);
 
 
 	bool operator!();
 	ofstream& trace();	// Référence au fichier de trace de la lecture du fichier
 
 	CFichierASE& find(const char *txt, int line);		// Trouve le texte 'txt' dans le fichier
-	void findAccoladeO(int line);				// Trouve le prochain guillemet ouvrant du fichier
-	void findAccoladeF(int line);				// Trouve le prochain guillemet ouvrant du fichier
+	void findAccoladeDebut(int line);				// Trouve le prochain guillemet ouvrant du fichier
+	void findAccoladeFin(int line);				// Trouve le prochain guillemet ouvrant du fichier
+
 	void get( string &mot, int line );
 	void get( float &val, int line );
 	void get( bool &val, int line );

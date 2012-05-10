@@ -36,7 +36,6 @@ TRACE().p( TRACE_MOTEUR3D, "CMoteurParticulesNeige::CMoteurParticulesNeige(pos_c
 	ListeParticules = new CParticule[nbr];	// Liste des particules du moteur
 	GenereTextureParticule();	// Génère la texture affichée pour les particules
 	lastTempsNew = SDL_GetTicks();
-	srand( lastTempsNew );		// Initialisation de la fonction rand() pour les nombres aléatoires
 	vitesse.X = vitesse.Y = vitesse.Z = 0.0f;
 
 	for( unsigned int i=0 ; i<nbr ; i++)	// Initialisation des particules

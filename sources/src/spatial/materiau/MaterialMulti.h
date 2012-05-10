@@ -22,7 +22,7 @@ public:
 	~CMaterialMulti();
 
 		// Fonctions membres
-	void LitTexture();
+	void initGL();
 	void NbrTex(int nbr);		// Implémente le nombre de sous-matériaux
 	int NbrTex();				// Renvoie le nombre de sous-matériaux
 	CMaterial* getMat(int i);	// Renvoie le sous-matériau d'index i

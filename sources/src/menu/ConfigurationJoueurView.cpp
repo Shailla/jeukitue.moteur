@@ -80,7 +80,6 @@ void ConfigurationJoueurView::show(void) {
 	}
 
 	// Mode plein écran actif
-	
 	memset(_joueurName, '\0', sizeof(_joueurName));
 	Config.Joueur.nom.copy(_joueurName, Config.Joueur.nom.length(), 0);
 

@@ -5,6 +5,7 @@
 using namespace std;
 
 #include "util/Erreur.h"
+#include "util/StringUtils.h"
 #include "main/Cfg.h"
 #include "util/Trace.h"
 #include "spatial/AseImporter.h"
@@ -30,11 +31,10 @@ bool AseImporter::supprimeRepertoire(const string& repName)
 //	intptr_t hFile;
 	string fichier;
 
-	CFindFolder folder( repName.c_str(), 0, 0 );
-	while( folder.findNext(fichier) )
-	{
-		if( !deleteOnlyFiles( fichier, repName ) )
-		{
+	CFindFolder folder(repName.c_str(), 0, 0);
+
+	while(folder.findNext(fichier)) {
+		if(!deleteOnlyFiles( fichier, repName)) {
 			stringstream texte;
 			texte << "Erreur deleteOnlyFiles(" << fichier << "," << repName << ")";
 			TRACE().p( TRACE_ERROR, texte.str().c_str() );
@@ -59,15 +59,13 @@ bool AseImporter::supprimeRepertoire(const string& repName)
 	}*/
 
 	folder.reset();
-	while( folder.findNext(fichier) )
-	{
-		if( (fichier!="..") && (fichier!=".") )	// Si ni "..", ni "."
-		{
+
+	while(folder.findNext(fichier)) {
+		if((fichier!="..") && (fichier!=".")) {	// Si ni "..", ni "."
 			var = repName + fichier;
 			var += '/';
 
-			if( !delDirectory( var ) )
-			{
+			if(!delDirectory(var)) {
 				stringstream texte;
 				texte << "Erreur delDirectory(" << var << ")" << endl;
 				TRACE().p( TRACE_ERROR, texte.str().c_str() );
@@ -75,8 +73,7 @@ bool AseImporter::supprimeRepertoire(const string& repName)
 				throw CErreur(0, texte.str());
 			}
 
-			if( !CFindFolder::chmod( var.c_str(), true, true ) )
-			{
+			if(!CFindFolder::chmod( var.c_str(), true, true)) {
 				stringstream texte;
 				texte << "Erreur CFindFolder::chmod(" << repName << ")" << endl;
 				TRACE().p( TRACE_ERROR, texte.str().c_str() );
@@ -98,8 +95,7 @@ bool AseImporter::supprimeRepertoire(const string& repName)
 	return true;
 }
 
-bool AseImporter::delDirectory( const string &path )
-{
+bool AseImporter::delDirectory(const string &path) {
 	cout << "\n\nPATH\t : " << path;
 	string var;
 //	struct _finddata_t fileinfo;
@@ -142,8 +138,7 @@ bool AseImporter::delDirectory( const string &path )
 			var = path + fichier;
 			var += '/';
 
-			if( !delDirectory( var ) )
-			{
+			if(!delDirectory( var )) {
 				stringstream texte;
 				texte << "Erreur delDirectory(" << var << ")";
 				TRACE().p( TRACE_ERROR, texte.str().c_str() );
@@ -151,8 +146,7 @@ bool AseImporter::delDirectory( const string &path )
 				throw CErreur(0, texte.str());
 			}
 
-			if( !CFindFolder::chmod( var.c_str(), true, true ) )
-			{
+			if(!CFindFolder::chmod( var.c_str(), true, true )) {
 				stringstream texte;
 				texte << endl << "MOpenASE::delDirectory(" << path << ")" << endl;
 				TRACE().p( TRACE_ERROR, texte.str().c_str() );
@@ -160,8 +154,7 @@ bool AseImporter::delDirectory( const string &path )
 				throw CErreur(0, texte.str());
 			}
 
-			if( CFindFolder::rmdir( var.c_str() ) )
-			{
+			if(CFindFolder::rmdir(var.c_str())) {
 				stringstream texte;
 				texte << "\nErreur _rmdir : " << var;
 				TRACE().p( TRACE_ERROR, texte.str().c_str() );
@@ -174,18 +167,15 @@ bool AseImporter::delDirectory( const string &path )
 	return true;
 }
 
-bool AseImporter::deleteOnlyFiles( string &fichier, const string &path )
+bool AseImporter::deleteOnlyFiles(string &fichier, const string& path )
 {
 	string var;
-	if( (fichier!="..") && (fichier!=".") )	// Si ni "..", ni "."
-	{
+	if( (fichier!="..") && (fichier!=".") )	{	// Si ni "..", ni "."
 		var = path + fichier;
-		if( !CFindFolder::isFolder(var.c_str()) )	// Si ce n'est pas un répertoire (=>fichier)
-		{
+		if(!CFindFolder::isFolder(var))	{	// Si ce n'est pas un répertoire (=>fichier)
 			cout << "\nDeleting file : " << var;
 
-			if( remove( var.c_str() ) )
-			{
+			if(remove( var.c_str())) {
 				stringstream texte;
 				texte << "Erreur remove(" << var << ")";
 				TRACE().p( TRACE_ERROR, texte.str().c_str() );
@@ -202,11 +192,7 @@ void AseImporter::lanceImportAse(const string& aseFilename, ConsoleAvancementVie
 {
 	void** arg = new void*[2];
 
-	char* ase = new char[aseFilename.length() + 1]();
-	aseFilename.copy(ase, aseFilename.length());
-	ase[aseFilename.length()] = '\0';
-	arg[0] = ase;
-
+	arg[0] = StringUtils::toChars(aseFilename);
 	arg[1] = console;
 
 	SDL_CreateThread(importAse, arg);
@@ -214,8 +200,14 @@ void AseImporter::lanceImportAse(const string& aseFilename, ConsoleAvancementVie
 
 int AseImporter::importAse(void* arg)
 {
-	char* aseFilename = (char*)((void**)arg)[0];
+	// Récupération et désallocation des paramètres du thread
+	string aseFileName = (char*)((void**)arg)[0];
 	ConsoleAvancementView* console = (ConsoleAvancementView*)((void**)arg)[1];
+
+	delete[] (char*)((void**)arg)[0];
+	delete[] (void**)arg;
+
+
 	CMap* pMapASE = NULL;
 
 	try {
@@ -224,11 +216,11 @@ int AseImporter::importAse(void* arg)
 		pMapASE = new CMap();		// Crée une classe pour recevoir les données de la map
 
 			// Conversion fichier ASE -> fichier Map
-		if(	!CFichierASE::LitFichierASE( aseFilename, pMapASE, Config.Debug.bAfficheFichier ) )	// Lit le fichier ASE de la map
+		if(	!CFichierASE::LitFichierASE(aseFileName, pMapASE, Config.Debug.bAfficheFichier))	// Lit le fichier ASE de la map
 		{
-			TRACE().p( TRACE_ERROR, "Erreur : Lecture du fichier ASE impossible ou fichier corrompu" );
-			cerr << endl << "Erreur : Lecture du fichier ASE impossible ou fichier corrompu";
-			throw CErreur(0, "Erreur : Lecture du fichier ASE impossible ou fichier corrompu");
+			TRACE().p( TRACE_ERROR, "Erreur : Lecture du fichier ASE impossible ou fichier corrompu 1" );
+			cerr << endl << "Erreur : Lecture du fichier ASE impossible ou fichier corrompu 1";
+			throw CErreur(0, "Erreur : Lecture du fichier ASE impossible ou fichier corrompu 1");
 		}
 
 		console->addMsg("Ajustement dimensions / orientation...");
@@ -236,10 +228,10 @@ int AseImporter::importAse(void* arg)
 		pMapASE->Scale( -1.0f, 1.0f, 1.0f );
 
 			// Transfert des fichiers de texture dans le répertoire du fichier Map
-		string nomRep = string("./Map/") + aseFilename;
+		string nomRep = string("./Map/") + aseFileName;
 
 		console->addMsg("Enregistrement...");
-		pMapASE->Save(aseFilename);
+		pMapASE->Save(aseFileName.c_str());
 
 		CMaterial *mat;
 		vector<CMaterial*>::iterator iter;
@@ -279,10 +271,9 @@ int AseImporter::importAse(void* arg)
 		console->addMsg("Import ASE termine.");
 		console->enableOkButton();
 	}
-	catch(CErreur erreur)
+	catch(CErreur& erreur)
 	{
-		if(pMapASE != NULL)
-		{
+		if(pMapASE != NULL) {
 			delete pMapASE;
 		}
 
@@ -292,9 +283,6 @@ int AseImporter::importAse(void* arg)
 
 		console->addMsg("Import interrompu.");
 	}
-
-	delete aseFilename;
-	delete (void**)arg;
 
 	return 0;
 }

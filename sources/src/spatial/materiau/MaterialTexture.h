@@ -23,7 +23,7 @@ public:
 	~CMaterialTexture();
 
 		// Fonctions membres
-	void LitTexture() throw(JktUtils::CErreur); // Lit le fichier de texture associé au matériau
+	void initGL() throw(JktUtils::CErreur); // Lit le fichier de texture associé au matériau
 	bool Lit(TiXmlElement* el, string &repertoire);
 	bool LitFichier(CIfstreamMap &fichier);
 	bool SaveFichierMap(std::ofstream &fichier);

@@ -1,0 +1,1 @@
+-I/usr/local/include/agar -I/usr/local/include/SDL -D_GNU_SOURCE=1 -Dmain=SDL_main  -I/usr/local/include/freetype2 -I/usr/local/include        

@@ -88,8 +88,7 @@ CentralisateurView::~CentralisateurView(void)
 {
 }
 
-void CentralisateurView::updateDownloadFileList(vector<DownloadFileItem> items)
-{
+void CentralisateurView::updateDownloadFileList(vector<DownloadFileItem> items) {
 	AG_TableBegin(_downloadFileTable);
 
 	for(vector<DownloadFileItem>::iterator iter = items.begin() ; iter != items.end() ; iter++)

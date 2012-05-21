@@ -27,7 +27,7 @@ MultijoueursView::MultijoueursView(const AG_EventFn controllerCallback)
 	AG_ExpandHoriz(buttonCentralisateur);
     AG_ExpandHoriz(buttonRetour);
 
-    AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);
+    AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 25, 50);
 	AG_WindowShow(m_window);
     hide();
 }

@@ -239,12 +239,13 @@
 <pathentry include="H:/jkt/svn/trunk/moteur/libs/SDL-1.2.14-MinGW/include/SDL" kind="inc" path="" system="true"/>
 <pathentry include="H:/jkt/svn/trunk/moteur/libs/SDL_net-1.2.7/include" kind="inc" path="" system="true"/>
 <pathentry include="H:/jkt/svn/trunk/moteur/libs/SDL_image-1.2.10/include" kind="inc" path="" system="true"/>
-<pathentry include="H:/jkt/svn/trunk/moteur/libs/agar-1.3.4-recompile/include" kind="inc" path="" system="true"/>
+<pathentry include="H:/jkt/svn/trunk/moteur/libs/agar-1.4.1-mingw32/usr/local/include" kind="inc" path="" system="true"/>
 <pathentry include="H:/jkt/svn/trunk/moteur/libs/ziparchive/ZipArchive" kind="inc" path="" system="true"/>
 <pathentry include="H:/jkt/svn/trunk/moteur/libs/fmodapi375win/api/inc" kind="inc" path="" system="true"/>
 <pathentry include="H:/jkt/svn/trunk/moteur/libs/glFont" kind="inc" path="" system="true"/>
 <pathentry include="H:/jkt/svn/trunk/moteur/libs/glext" kind="inc" path="" system="true"/>
 <pathentry include="H:/jkt/svn/trunk/moteur/libs/tinyxml_2_6_1" kind="inc" path="" system="true"/>
+<pathentry include="H:/jkt/svn/trunk/moteur/libs/lua-5.0.3/include" kind="inc" path="" system="true"/>
 <pathentry include="c:/MinGW/lib/gcc/mingw32/4.6.2/include" kind="inc" path="" system="true"/>
 <pathentry include="c:/MinGW/include" kind="inc" path="" system="true"/>
 <pathentry include="c:/MinGW/lib/gcc/mingw32/4.6.2/include-fixed" kind="inc" path="" system="true"/>
@@ -1969,6 +1970,27 @@
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
+<target name="[obj] src/menu/PluginsManagementView.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/menu/PluginsManagementView.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/menu/PluginsManagementView.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/menu/PluginsManagementView.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/menu/PluginsManagementView.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/menu/PluginsManagementView.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
 <target name="[obj] src/menu/ProgressBarView.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
@@ -2029,6 +2051,468 @@
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
 <buildTarget>src/menu/Viewer.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/PluginContext.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/PluginContext.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/PluginContext.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/PluginContext.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/PluginContext.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/PluginContext.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/PluginEngine.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/PluginEngine.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/PluginEngine.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/PluginEngine.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/PluginEngine.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/PluginEngine.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/api/gui/PluginBox.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginBox.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/api/gui/PluginBox.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginBox.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/api/gui/PluginBox.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginBox.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/api/gui/PluginButton.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginButton.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/api/gui/PluginButton.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginButton.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/api/gui/PluginButton.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginButton.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/api/gui/PluginCheckbox.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginCheckbox.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/api/gui/PluginCheckbox.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginCheckbox.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/api/gui/PluginCheckbox.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginCheckbox.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/api/gui/PluginGuiController.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginGuiController.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/api/gui/PluginGuiController.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginGuiController.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/api/gui/PluginGuiController.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginGuiController.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/api/gui/PluginNotebook.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginNotebook.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/api/gui/PluginNotebook.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginNotebook.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/api/gui/PluginNotebook.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginNotebook.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/api/gui/PluginNumeric.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginNumeric.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/api/gui/PluginNumeric.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginNumeric.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/api/gui/PluginNumeric.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginNumeric.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/api/gui/PluginPanel.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginPanel.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/api/gui/PluginPanel.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginPanel.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/api/gui/PluginPanel.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginPanel.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/api/gui/PluginTab.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginTab.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/api/gui/PluginTab.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginTab.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/api/gui/PluginTab.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginTab.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/api/gui/PluginWindow.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginWindow.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/api/gui/PluginWindow.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginWindow.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/api/gui/PluginWindow.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/api/gui/PluginWindow.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/lua/LuaGlobalMethods.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/LuaGlobalMethods.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/lua/LuaGlobalMethods.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/LuaGlobalMethods.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/lua/LuaGlobalMethods.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/LuaGlobalMethods.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/lua/LuaUtils.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/LuaUtils.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/lua/LuaUtils.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/LuaUtils.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/lua/LuaUtils.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/LuaUtils.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/lua/proxy/gui/PluginTabProxy.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginTabProxy.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/lua/proxy/gui/PluginTabProxy.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginTabProxy.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/lua/proxy/gui/PluginTabProxy.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginTabProxy.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.s</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
@@ -2200,6 +2684,27 @@
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
+<target name="[obj] src/service/LuaService.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/LuaService.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/service/LuaService.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/LuaService.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/service/LuaService.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/LuaService.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
 <target name="[obj] src/service/MapService.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
@@ -2218,6 +2723,27 @@
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
 <buildTarget>src/service/MapService.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/service/dto/AdvancedConfigurationDto.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/dto/AdvancedConfigurationDto.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/service/dto/AdvancedConfigurationDto.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/dto/AdvancedConfigurationDto.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/service/dto/AdvancedConfigurationDto.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/service/dto/AdvancedConfigurationDto.cpp.s</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
@@ -2596,6 +3122,48 @@
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
 <buildTarget>src/spatial/geo/ChanTex.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/spatial/geo/EntryPoint.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/spatial/geo/EntryPoint.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/spatial/geo/EntryPoint.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/spatial/geo/EntryPoint.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/spatial/geo/EntryPoint.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/spatial/geo/EntryPoint.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/spatial/geo/EntryPointMaker.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/spatial/geo/EntryPointMaker.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/spatial/geo/EntryPointMaker.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/spatial/geo/EntryPointMaker.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/spatial/geo/EntryPointMaker.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/spatial/geo/EntryPointMaker.cpp.s</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>
@@ -3058,6 +3626,27 @@
 <buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
 <buildArguments></buildArguments>
 <buildTarget>src/util/GenRef.cpp.s</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[obj] src/util/StringUtils.cpp.obj" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/util/StringUtils.cpp.obj</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[pre] src/util/StringUtils.cpp.i" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/util/StringUtils.cpp.i</buildTarget>
+<stopOnError>true</stopOnError>
+<useDefaultCommand>false</useDefaultCommand>
+</target>
+<target name="[to asm] src/util/StringUtils.cpp.s" path="" targetID="org.eclipse.cdt.make.MakeTargetBuilder">
+<buildCommand>c:/MinGW/bin/mingw32-make.exe</buildCommand>
+<buildArguments></buildArguments>
+<buildTarget>src/util/StringUtils.cpp.s</buildTarget>
 <stopOnError>true</stopOnError>
 <useDefaultCommand>false</useDefaultCommand>
 </target>

@@ -50,19 +50,16 @@ CCfg::CCfg()
 TRACE().p( TRACE_OTHER, "Cfg::Cfg()%T", this );
 }
 
-void CCfg::AfficheDateCompilation()
-{
+void CCfg::AfficheDateCompilation() {
 	cout << "Date de compilation : " << __DATE__ << endl;
 }
 
-void CCfg::NommeConfig( const string &nomFichier )
-{
+void CCfg::NommeConfig(const string &nomFichier) {
 TRACE().p( TRACE_OTHER, "Cfg::NommeConfig(nomFichier=%s)%T", nomFichier.c_str(), this );
 	nomFichierConfig = nomFichier;
 }
 
-void CCfg::Lit()
-{
+void CCfg::Lit() {
 TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 	string mot;
 
@@ -184,6 +181,12 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 
 		do fichier >> mot;	while( mot!="MapNom" );
 		fichier >> Joueur.mapName;
+
+		do fichier >> mot;	while( mot!="OutlineVisibility" );
+		fichier >> Joueur.outlineVisibility;
+
+		do fichier >> mot;	while( mot!="SkinVisibility" );
+		fichier >> Joueur.skinVisibility;
 	}
 
 	do fichier >> mot;
@@ -209,8 +212,7 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 	fichier.close();
 }
 
-void CCfg::Ecrit()
-{
+void CCfg::Ecrit() {
 	string nomFichierEntier = "./" + nomFichierConfig + ".ini";
 	ofstream fichier( nomFichierEntier.c_str() );
 
@@ -223,12 +225,10 @@ void CCfg::Ecrit()
 	fichier << "\nMixer\t\t" << Audio.m_Mixer << "\t(" << resolveMixer(Audio.m_Mixer) << ")";
 	fichier << "\nDriver\t\t" << Audio.m_Driver << "\t(" << resolveDriver(Audio.m_Driver) << ")";
 
-	if( Audio.m_DriverRecord!=-1 )
-	{
+	if( Audio.m_DriverRecord!=-1 ) {
 		fichier << "\nDriverRecord\t" << Audio.m_DriverRecord << "\t(" << resolveDriverRecord(Audio.m_DriverRecord) << ")";
 	}
-	else
-	{
+	else {
 		fichier << "\nDriverRecord\t" << Audio.m_DriverRecord << "\t( Pas de driver d'acquisition )";
 	}
 
@@ -253,6 +253,8 @@ void CCfg::Ecrit()
 	fichier << "\n\n\n------------------------JOUEUR-------------------------\n";
 	fichier << "\nNom\t\t" << Joueur.nom;
 	fichier << "\nMapNom\t\t" << Joueur.mapName;
+	fichier << "\nOutlineVisibility\t\t" << Joueur.outlineVisibility;
+	fichier << "\nSkinVisibility\t\t" << Joueur.skinVisibility;
 
 	fichier << "\n\n\n------------------------DEBUG-------------------------\n";
 	fichier << "\nSonPerformances\t\t" << Debug.bSonPerformances;
@@ -264,17 +266,15 @@ void CCfg::Ecrit()
 	fichier.close();
 }
 
-const char* CCfg::CCommandes::resolve(CComID com)
-{
-	if( com.key!=0 )
+const char* CCfg::CCommandes::resolve(const CComID com) {
+	if(com.key != 0)
 		return resolve( com.key );
 	else
 		return resolve( com.mouse );
 }
 
-const char* CCfg::CCommandes::resolve(Uint8 mouse)
-{
-	switch( mouse )
+const char* CCfg::CCommandes::resolve(const Uint8 mouse) {
+	switch(mouse)
 	{
 	case 1:		return "Souris_gauche";
 	case 2:		return "Souris_centre";
@@ -285,12 +285,10 @@ const char* CCfg::CCommandes::resolve(Uint8 mouse)
 	}
 }
 
-const char* CCfg::CCommandes::resolve(SDLKey sym)
-{
+const char* CCfg::CCommandes::resolve(const SDLKey sym) {
 	const char* result;
 
-	switch( sym )
-	{
+	switch(sym) {
 	case SDLK_BACKSPACE:	result = "BACKSPACE";		break;
 	case SDLK_TAB:			result = "TAB";				break;
 	case SDLK_CLEAR:		result = "clear";			break;
@@ -431,15 +429,14 @@ const char* CCfg::CCommandes::resolve(SDLKey sym)
 	return result;
 }
 
-bool CCfg::CAudio::Init()
-{
+bool CCfg::CAudio::Init() {
 	TRACE().p( TRACE_SON, "CCfg::CAudio::Init()" );
 	unsigned int caps = 0;
 
 		// Initialisation audio de FMOD
 	cout << "\nVersion de FMOD\t\t" << FSOUND_GetVersion() << endl;
-	if( FSOUND_GetVersion() < FMOD_VERSION )
-	{
+
+	if(FSOUND_GetVersion() < FMOD_VERSION) {
 		cout << "Error : You are using the wrong DLL version!  You should be using FMOD" <<
 			FMOD_VERSION << endl;
 		return false;
@@ -449,10 +446,12 @@ bool CCfg::CAudio::Init()
 
 	remarquesDriver = new char*[FSOUND_GetNumDrivers()];
 	string rem;
-	for( int i=0 ; i<FSOUND_GetNumDrivers() ; i++)
+
+	for(int i=0 ; i<FSOUND_GetNumDrivers() ; i++)
 	{
 		FSOUND_GetDriverCaps(i, &caps);
 		rem = "";
+
 		if (!caps)
 			rem = "Supporte software mode uniquement. Supporte mal 3D sound hardware. ";
 		if (caps & FSOUND_CAPS_HARDWARE)
@@ -461,26 +460,25 @@ bool CCfg::CAudio::Init()
 			rem += "Supporte EAX 2 reverb. ";
 		if (caps & FSOUND_CAPS_EAX3)
 			rem += "Supporte EAX 3 reverb. ";
+
 		remarquesDriver[i] = new char[rem.size()];
 		strcpy( remarquesDriver[i], rem.c_str() );
 	}
 
-	if( FSOUND_GetNumDrivers!=0 )	// Vérifie s'il y a un driver pour le son
+	if(FSOUND_GetNumDrivers != 0)	// Vérifie s'il y a un driver pour le son
 	{
-		if( m_Driver<FSOUND_GetNumDrivers() )
-		{
-			FSOUND_SetDriver( m_Driver );	// Sélection du driver configuré
+		if(m_Driver<FSOUND_GetNumDrivers() ) {
+			FSOUND_SetDriver(m_Driver);	// Sélection du driver configuré
 		}
 		else	// Le driver configuré ne peut pas fonctionner
 		{
 			cerr << endl << "Driver son mal configuré, choix par défaut.";
 			m_Driver = 0;	// Modification du fichier de configuration
-			FSOUND_SetDriver( 0 );						// Choix du driver par défaut
+			FSOUND_SetDriver(0);						// Choix du driver par défaut
 		}
 	}
-	else
-	{
-			// Pas de driver son
+	else {
+		// Pas de driver son
 		cerr << endl << "Aucun driver son détecté.";
 	}
 
@@ -496,10 +494,8 @@ bool CCfg::CAudio::Init()
 
 	FSOUND_DSP_SetActive( FSOUND_DSP_GetFFTUnit(), true );
 
-	if( FSOUND_Record_GetNumDrivers()!=0 )	// Vérifie s'il y a un driver d'acquisition du son
-	{
-		if( m_DriverRecord<FSOUND_Record_GetNumDrivers() )
-		{
+	if( FSOUND_Record_GetNumDrivers()!=0 ) {	// Vérifie s'il y a un driver d'acquisition du son
+		if( m_DriverRecord<FSOUND_Record_GetNumDrivers() ) {
 			if( !FSOUND_Record_SetDriver(m_DriverRecord))	// Sélection du driver
 			{															// d'entrée pour le micro
 				cerr << "Erreur FSOUND_Record_SetDriver : " << FMOD_ErrorString(FSOUND_GetError()) << endl;
@@ -509,12 +505,10 @@ bool CCfg::CAudio::Init()
 				return -1;*/
 			}
 		}
-		else	// Le driver de record ne peut pas fonctionner
-		{
+		else {		// Le driver de record ne peut pas fonctionner
 			cerr << endl << "Driver de record son mal configuré, choix par défaut.";
 			m_DriverRecord = 0;	// Modification de la config => choix par défaut
-			if( !FSOUND_Record_SetDriver(0) )	// Sélection du driver de record par défaut
-			{
+			if( !FSOUND_Record_SetDriver(0) ) {		// Sélection du driver de record par défaut
 				cerr << "Erreur FSOUND_Record_SetDriver : " << FMOD_ErrorString(FSOUND_GetError()) << endl;
 				cerr << "\tAVIS AU PROGRAMMEUR" << endl
 					<< "Le programme va planter s'il y a une tentative d'utilisation du micro !!!" << endl;
@@ -523,8 +517,7 @@ bool CCfg::CAudio::Init()
 			}
 		}
 	}
-	else
-	{		// Aucun driver d'acquisition du son détecté
+	else {		// Aucun driver d'acquisition du son détecté
 		m_DriverRecord = -1;
 		cerr << endl << "Aucun driver d'acquisition du son détecté.";
 	}
@@ -536,6 +529,7 @@ bool CCfg::CAudio::Init()
 	cout << "FSOUND Driver        : " << resolveDriver(FSOUND_GetDriver()) << endl;
 
 	FSOUND_GetDriverCaps(FSOUND_GetDriver(), &caps);
+
 	if (!caps)
 		cout << "\tCe driver supporte seulement le mode software.\n\tIl ne supporte pas bien le son 3D.\n";
 	if (caps & FSOUND_CAPS_HARDWARE)
@@ -545,8 +539,7 @@ bool CCfg::CAudio::Init()
 	if (caps & FSOUND_CAPS_EAX3)
 		cout << "\t- Ce driver supporte l'EAX 3 reverb!\n";
 
-	cout << "FSOUND Record Driver : " <<
-		resolveDriverRecord(FSOUND_Record_GetDriver()) << endl;
+	cout << "FSOUND Record Driver : " << resolveDriverRecord(FSOUND_Record_GetDriver()) << endl;
 
 	int num2d, num3d, total;
 	FSOUND_GetNumHWChannels( &num2d, &num3d, &total );
@@ -564,8 +557,7 @@ void CCfg::CDisplay::Init() {
     InitAgar();
 }
 
-void CCfg::CDisplay::InitSDL()
-{
+void CCfg::CDisplay::InitSDL() {
 TRACE().p( TRACE_OTHER, "init_SDL(config) begin" );
 
 #ifdef WIN32
@@ -588,33 +580,32 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 
     bpp = info->vfmt->BitsPerPixel;
 
-    if( SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 8 )==-1 )
-	{
+    if( SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 8 )==-1 ) {
 		cerr << "Erreur init_SDL : SDL_GL_RED_SIZE\n";
 		exit( 1 );
 	}
-    if( SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 )==-1 )
-	{
+
+    if( SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 )==-1 ) {
 		cerr << "Erreur init_SDL : SDL_GL_GREEN_SIZE\n";
 		exit( 1 );
 	}
-    if( SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 )==-1 )
-	{
+
+    if( SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 )==-1 ) {
 		cerr << "Erreur init_SDL : SDL_GL_BLUE_SIZE\n";
 		exit( 1 );
 	}
-	if( SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 )==-1 )
-	{
+
+    if( SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 )==-1 ) {
 		cerr << "Erreur init_SDL : SDL_GL_ALPHE_SIZE\n";
 		exit( 1 );
 	}
-    if( SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 )==-1 )
-	{
+
+	if( SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 )==-1 ) {
 		cerr << "Erreur init_SDL : SDL_GL_DEPTH_SIZE\n";
 			exit( 1 );
 	}
-    if( SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 )==-1 )
-	{
+
+    if( SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 )==-1 ) {
 		cerr << "Erreur init_SDL : SDL_GL_DOUBLEBUFFER\n";
 		exit( 1 );
 	}
@@ -646,19 +637,16 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 	SDL_Rect **modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
 
 		// Check if there are any modes available
-	if( modes == (SDL_Rect **)0 )
-	{
+	if( modes == (SDL_Rect **)0 ) {
 		cout << endl << "Aucun mode video n'est disponible" << endl;
 		exit( 1 );
 	}
 
 	/* Check if our resolution is restricted */
-	if(modes == (SDL_Rect **)-1)
-	{
+	if(modes == (SDL_Rect **)-1) {
 		cout << endl << "Tous les modes video sont disponibles" << endl;
 	}
-	else
-	{
+	else {
 	/* Print valid modes */
 		cout << endl << "Modes video disponibles : " << endl;
 
@@ -666,8 +654,7 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 			cout << "\t" << modes[i]->w << " x " << modes[i]->h << endl;
 	}
 
-	if( !SDL_VideoModeOK(X, Y, bpp, flags) )
-	{
+	if( !SDL_VideoModeOK(X, Y, bpp, flags) ) {
 		cout << endl << "WARNING : Mode video indisponible =>";
 		cout << "mode choisi par defaut, corrigez la configuration" << endl;
 		X = modes[0]->w;
@@ -675,8 +662,8 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 	}
 
 	screen = SDL_SetVideoMode(X, Y, bpp, flags);		// Set the video mode
-	if( screen == 0)
-	{
+
+	if( screen == 0) {
 		cerr << endl << "Error : Video mode set failed: " << SDL_GetError() << endl;
 		exit( 1 );
     }
@@ -697,8 +684,7 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 TRACE().p( TRACE_OTHER, "init_SDL(config) end" );
 }
 
-void CCfg::CDisplay::InitOpenGL()
-{
+void CCfg::CDisplay::InitOpenGL() {
 TRACE().p( TRACE_OTHER, "setup_opengl(width=%d,height=%d) begin", X, Y );
 		// Informations openGL
 	cout << "Version openGL :\t" << glGetString(GL_VERSION);
@@ -750,8 +736,7 @@ TRACE().p( TRACE_OTHER, "setup_opengl(width=%d,height=%d) begin", X, Y );
 TRACE().p( TRACE_OTHER, "setup_opengl() end" );
 }
 
-void CCfg::CDisplay::InitAgar()
-{
+void CCfg::CDisplay::InitAgar() {
 TRACE().p( TRACE_OTHER, "setup Agar" );
 		// Informations Agar
     AG_AgarVersion agarVersion;
@@ -775,20 +760,17 @@ TRACE().p( TRACE_OTHER, "setup Agar" );
 
 bool CCfg::CDisplay::chargeGLExtension(const char* ext, string& extensions) {
 		// Recherche de l'extension qui nous intéresse : GL_ARB_texture_compression
-	if (extensions.find(ext) != std::string::npos)
-	{
+	if (extensions.find(ext) != std::string::npos) {
 		cout << endl << "Extension supportée : " << ext ;
 		return true;
 	}
-	else
-	{
+	else {
 		cerr << endl << "Extension non-supportée : " << ext ;
 		return false;
 	}
 }
 
-void CCfg::CDisplay::ChangeVideoSize(int x, int y)
-{
+void CCfg::CDisplay::ChangeVideoSize(int x, int y) {
 TRACE().p( TRACE_OTHER, "changeVideoSize(config) begin" );
 	if( !SDL_VideoModeOK(x, y, bpp, flags) ) {
 		cerr << "\nMode video invalide :\t\t" << endl;
@@ -813,10 +795,8 @@ TRACE().p( TRACE_OTHER, "changeVideoSize(config) begin" );
 TRACE().p( TRACE_OTHER, "changeVideoSize() end" );
 }
 
-void CCfg::CReseau::Init()
-{
-		if( SDLNet_Init() == -1 )
-	{
+void CCfg::CReseau::Init() {
+	if(SDLNet_Init() == -1) {
 TRACE().p( TRACE_ERROR, "SDLNet_Init() failed : %s", SDLNet_GetError() );
 		cerr << endl << "Error : SDLNet_Init : %¨s\n" << SDLNet_GetError();
 		exit( 1 );

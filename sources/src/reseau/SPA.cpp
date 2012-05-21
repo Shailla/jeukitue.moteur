@@ -77,24 +77,22 @@ TRACE().p( TRACE_RESEAU, "CSPA::open(address=[%s,%d]) begin%T", SDLNet_ResolveIP
 
 	m_Ip = address;
 
-	if( result )
-	{
+	if(result) {
 		m_Socket = SDLNet_UDP_Open( 0 );		// Ouverture d'un socket client
-		if( !m_Socket )
-		{
+
+		if(!m_Socket) {
 TRACE().p( TRACE_ERROR, "CSPA::open() : %s%T", SDLNet_GetError(), this );
 			cerr << "SDLnet_UDP_Open(0) : " << SDLNet_GetError();
 
 			result = false;
 		}
 	}
-			// Attachement du socket à l'IP de l'autre
-	if( result )
-	{
+
+	// Attachement du socket à l'IP de l'autre
+	if(result) {
 		m_PacketOut->channel = SDLNet_UDP_Bind( m_Socket, -1, &m_Ip );
 		m_PacketIn->channel = m_PacketOut->channel;
-		if( m_PacketOut->channel == -1 )
-		{
+		if(m_PacketOut->channel == -1) {
 TRACE().p( TRACE_ERROR, "CSPA::open() : %s%T", SDLNet_GetError(), this );
 			cerr << endl << "SDLNet_UDP_Bind : " << SDLNet_GetError();
 
@@ -109,16 +107,14 @@ TRACE().p( TRACE_RESEAU, "CSPA::open() -> %b end%T", result, this );
 	return result;
 }
 
-bool CSPA::open( Uint16 locPort )
-{
+bool CSPA::open(Uint16 locPort) {
 TRACE().p( TRACE_RESEAU, "CSPA::open(locPort=%d) begin%T", locPort, this );
 	bool result = true;
 
 	SDLNet_ResolveHost( &m_Ip, 0, locPort );
 
 	m_Socket = SDLNet_UDP_Open( locPort );		// Ouverture d'un socket UDP serveur
-	if( !m_Socket )
-	{		// Socket principale non-ouverte
+	if(!m_Socket) {		// Socket principale non-ouverte
 TRACE().p( TRACE_ERROR, "CSPA::open() : %s%T", SDLNet_GetError(), this );
 cerr << endl << "SDLnet_UDP_Open(" << locPort << ") : " << SDLNet_GetError() << endl;
 		result = false;	// Echec de l'ouverture du serveur
@@ -128,8 +124,7 @@ TRACE().p( TRACE_RESEAU, "CSPA::open() -> %b end%T", result, this );
 	return result;
 }
 
-void CSPA::close()
-{
+void CSPA::close() {
 TRACE().p( TRACE_RESEAU, "CSPA::close() begin%T", this );
 	SDLNet_UDP_Unbind( m_Socket, m_PacketOut->channel );	// Libération du canal
 	SDLNet_UDP_Close( m_Socket );	// Libération du socket principal
@@ -142,27 +137,23 @@ void CSPA::init()	// Initialise la position dans le paquet
 	m_uPosition = 0;
 }
 
-unsigned int CSPA::getPosition() const
-{
+unsigned int CSPA::getPosition() const {
 	return m_uPosition;
 }
 
-void CSPA::addCode( Uint16 code1, Uint16 code2 )
-{
+void CSPA::addCode(Uint16 code1, Uint16 code2) {
 	SDLNet_Write16( code1, m_PacketOut->data+m_uPosition );
 	SDLNet_Write16( code2, m_PacketOut->data+2+m_uPosition );
 	m_uPosition += 4;
 }
 
-void CSPA::readCode( Uint16 &code1, Uint16 &code2 )
-{
+void CSPA::readCode(Uint16 &code1, Uint16 &code2) {
 	code1 = SDLNet_Read16( m_PacketIn->data+m_uPosition );
 	code2 = SDLNet_Read16( m_PacketIn->data+2+m_uPosition );
 	m_uPosition += 4;
 }
 
-void CSPA::add16( Uint16 var )
-{
+void CSPA::add16(Uint16 var) {
 	SDLNet_Write16( var, m_PacketOut->data+m_uPosition );
 	m_uPosition += 2;
 }
@@ -170,21 +161,18 @@ void CSPA::add16( Uint16 var )
 void CSPA::add16InPosition( unsigned int position, Uint16 var )
 {	SDLNet_Write16( var, m_PacketOut->data+position );	}
 
-Uint16 CSPA::read16()
-{
+Uint16 CSPA::read16() {
 	Uint16 var =  SDLNet_Read16( m_PacketIn->data+m_uPosition );
 	m_uPosition += 2;
 	return var;
 }
 
-void CSPA::add32( Uint32 var )
-{
+void CSPA::add32(Uint32 var) {
 	SDLNet_Write32( var, m_PacketOut->data+m_uPosition );
 	m_uPosition += 4;
 }
 
-Uint32 CSPA::read32()
-{
+Uint32 CSPA::read32() {
 	Uint32 var = SDLNet_Read32( m_PacketIn->data+m_uPosition );
 	m_uPosition += 4;
 	return var;

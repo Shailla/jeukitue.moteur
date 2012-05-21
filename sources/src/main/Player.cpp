@@ -1,4 +1,3 @@
-
 #include <string>
 #include <vector>
 #include <set>
@@ -52,10 +51,11 @@ extern CGame Game;
 #define DISTANCE_INTER_JOUEURS_ENTRY_POINT 0.8f
 const float Pi = 3.14159265f;
 
+
+bool CPlayer::_contourVisibility = false;
 int CPlayer::m_TexArmes = -1;
 
-CPlayer::CPlayer()
-{
+CPlayer::CPlayer() {
 	m_ArmeActif = 0;		// Pas d'arme active
 	m_NbrArmes = 3;			// Nombre d'armes
 
@@ -77,36 +77,31 @@ CPlayer::CPlayer()
 	m_TetaVue = 0.0f;			// Orientation du point de vue par rapport au joueur
 	m_PhiVue = 0.0f;
 
-	m_pClavier = 0;
-	actionFunc = 0;			// Pas d'action périodique à réaliser
-	contactFunc = 0;		// Pas d'action à réaliser lors d'un contact avec la map
+	m_pClavier = NULL;
+	actionFunc = NULL;			// Pas d'action périodique à réaliser
+	contactFunc = NULL;		// Pas d'action à réaliser lors d'un contact avec la map
 
-	m_pSkin = 0;				// Pas de skin associé par défaut
+	m_pSkin = NULL;				// Pas de skin associé par défaut
 
-	ID_Cri = 0;				// Le cri du joueur n'a pas encore été chargé
-	ID_ReqCri = 0;			// Y'a pas encore la requête sur le cri non plus
+	ID_Cri = NULL;				// Le cri du joueur n'a pas encore été chargé
+	ID_ReqCri = NULL;			// Y'a pas encore la requête sur le cri non plus
 
 	createClavier();		// Crée la classe qui gère les requêtes de mouvement, tir ...
 
-	if( m_TexArmes==-1 )
-	{
-		try
-		{
+	if( m_TexArmes==-1 ) {
+		try {
 			m_TexArmes = JktMoteur::LitFichierTextureAlpha( "@Icone/Armes.bmp", 0.75f );
 			TRACE().p( TRACE_OTHER, "CPlayer::CPlayer() Texture d'icone des armes : %d%T", m_TexArmes, this );
 		}
-		catch(CErreur& erreur)
-		{
+		catch(CErreur& erreur) {
 			TRACE().p( TRACE_ERROR, "CPlayer::CPlayer() Echec de lecture de texture d'icone des armes%T", this );
 			m_TexArmes = -1;
 		}
 	}
 }
 
-void CPlayer::AfficheIconesArmes()
-{
-	if( m_TexArmes!=-1 )
-	{
+void CPlayer::AfficheIconesArmes() {
+	if( m_TexArmes!=-1 ) {
 		float X = (float)Config.Display.X;
 		float Y = (float)Config.Display.Y/2;
 
@@ -274,7 +269,7 @@ void CPlayer::setPosition(const CV3D& pos) {	//change la position du joueur
 	cout << " POSITION " << pos.X << " " << pos.Y << " " << pos.Z;
 }
 
-void CPlayer::setPosition( const float pos[3] ) //change la position du joueur
+void CPlayer::setPosition(const float pos[3]) //change la position du joueur
 {
 	m_Position[0] = pos[0];
 	m_Position[1] = pos[1];
@@ -288,88 +283,87 @@ void CPlayer::getPosition( float pos[3] ) const	//retourne le pointeur sur la po
 	pos[2] = m_Position[2];
 }
 
-void CPlayer::changeVitesse( float vx, float vy, float vz ) //change la vitesse du joueur
+void CPlayer::changeVitesse(float vx, float vy, float vz) //change la vitesse du joueur
 {
 	m_Vitesse[0] = vx;
 	m_Vitesse[1] = vy;
 	m_Vitesse[2] = vz;
 }
 
-void CPlayer::getVitesse( float vit[3] ) const	//retourne le pointeur sur la vitesse du joueur
+void CPlayer::getVitesse(float vit[3]) const	//retourne le pointeur sur la vitesse du joueur
 {
 	vit[0] = m_Vitesse[0];
 	vit[1] = m_Vitesse[1];
 	vit[2] = m_Vitesse[2];
 }
 
-void CPlayer::setVitesse( const float vit[3] )
-{
+void CPlayer::setVitesse(const float vit[3]) {
 	m_Vitesse[0] = vit[0];
 	m_Vitesse[1] = vit[1];
 	m_Vitesse[2] = vit[2];
 }
 
-void CPlayer::changeAction(void (*action)(CPlayer *player))
-{
+void CPlayer::changeAction(void (*action)(CPlayer *player)) {
 	actionFunc = action;	//définit l'action périodique à réaliser
 }
 
-void CPlayer::changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW))
-{
+void CPlayer::changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW)) {
 	contactFunc = contact;	//définit l'action à réaliser lors d'un contact avec la map
 }
 
-void CPlayer::Affiche()
-{
+void CPlayer::Affiche() {
 	glPushMatrix();
-	glTranslatef( m_Position[0], m_Position[1], -m_Position[2] );
-	glRotated( 90.0f, 0.0f, 1.0f, 0.0f );
-	glRotated( -m_Teta, 0.0f, 1.0f, 0.0f ); //Rotation par rapport à l'axe verticale
+	glTranslatef(m_Position[0], m_Position[1], -m_Position[2]);
+	glRotated(90.0f, 0.0f, 1.0f, 0.0f);
+	glRotated(-m_Teta, 0.0f, 1.0f, 0.0f); //Rotation par rapport à l'axe verticale
 
-	if( m_pSkin )
-	{
-		m_pSkin->Affiche();
+	// Affiche un ellipsoïde qui trace les contours physiques du joueur si le jeu est configuré pour
+	if(Config.Joueur.outlineVisibility)
+		gluSphere(gluNewQuadric(), 0.1f, 16, 16);
 
-		const float taille = 0.01f;
+	// Affiche le skin du joueur s'il existe et si le jeu est configuré pour
+	if(Config.Joueur.skinVisibility)
+		if(m_pSkin)
+			m_pSkin->Affiche();
 
-		glBegin(GL_QUADS);
-			glColor3f( 1.0, 0.0, 0.0);
-			glVertex3f( -taille, -taille, -taille );
-			glVertex3f( taille, -taille, -taille );
-			glVertex3f( taille, taille, -taille );
-			glVertex3f( -taille, taille, -taille );
-
-			glColor3f( 0.0, 1.0, 0.0);
-			glVertex3f( -taille, -taille, taille );
-			glVertex3f( taille, -taille, taille );
-			glVertex3f( taille, taille, taille );
-			glVertex3f( -taille, taille, taille );
-
-			glColor3f( 0.0, 0.0, 1.0);
-			glVertex3f( -taille, -taille, -taille );
-			glVertex3f( -taille, taille, -taille );
-			glVertex3f( -taille, taille, taille );
-			glVertex3f( -taille, -taille, taille );
-
-			glColor3f( 0.0, 0.5, 0.5);
-			glVertex3f( -taille, -taille, -taille );
-			glVertex3f( taille, -taille, -taille );
-			glVertex3f( taille, -taille, taille );
-			glVertex3f( -taille, -taille, taille );
-
-			glColor3f( 0.4f, 0.9f, 0.6f);
-			glVertex3f( -taille, taille, -taille );
-			glVertex3f( taille, taille, -taille );
-			glVertex3f( taille, taille, taille );
-			glVertex3f( -taille, taille, taille );
-		glEnd();
-	}
+//		const float taille = 0.01f;
+//
+//		glBegin(GL_QUADS);
+//			glColor3f( 1.0, 0.0, 0.0);
+//			glVertex3f( -taille, -taille, -taille );
+//			glVertex3f( taille, -taille, -taille );
+//			glVertex3f( taille, taille, -taille );
+//			glVertex3f( -taille, taille, -taille );
+//
+//			glColor3f( 0.0, 1.0, 0.0);
+//			glVertex3f( -taille, -taille, taille );
+//			glVertex3f( taille, -taille, taille );
+//			glVertex3f( taille, taille, taille );
+//			glVertex3f( -taille, taille, taille );
+//
+//			glColor3f( 0.0, 0.0, 1.0);
+//			glVertex3f( -taille, -taille, -taille );
+//			glVertex3f( -taille, taille, -taille );
+//			glVertex3f( -taille, taille, taille );
+//			glVertex3f( -taille, -taille, taille );
+//
+//			glColor3f( 0.0, 0.5, 0.5);
+//			glVertex3f( -taille, -taille, -taille );
+//			glVertex3f( taille, -taille, -taille );
+//			glVertex3f( taille, -taille, taille );
+//			glVertex3f( -taille, -taille, taille );
+//
+//			glColor3f( 0.4f, 0.9f, 0.6f);
+//			glVertex3f( -taille, taille, -taille );
+//			glVertex3f( taille, taille, -taille );
+//			glVertex3f( taille, taille, taille );
+//			glVertex3f( -taille, taille, taille );
+//		glEnd();
 
 	glPopMatrix();
 }
 
-void CPlayer::tuer()
-{
+void CPlayer::tuer() {
 	if( !ID_ReqCri->IsPlaying() )
 		DemonSons->Play( ID_ReqCri );	// (Re)Joue le cri
 }
@@ -387,43 +381,36 @@ void CPlayer::AfficheProjectils()	// Affiche tous les projectils
 	}
 }
 
-void CPlayer::Tir()
-{
+void CPlayer::Tir() {
 	CV3D Dir;
 
-	if( ArmeActif()==0 )	// Si l'arme active de erwin est le rocket
-	{}
-	else if( ArmeActif()==1 )	// Si l'arme active de erwin est le rocket
-	{
-		TabProjectil.Ajoute( new CLaser( this ) );
+	if(ArmeActif() == 1) {			// Si l'arme active de erwin est le rocket
+		TabProjectil.Ajoute(new CLaser(this));
 	}
-	else if( ArmeActif()==2 )	// Si l'arme active de erwin est le rocket
-	{
-		TabProjectil.Ajoute( new CRocket( this ) );
+	else if(ArmeActif() == 2) {		// Si l'arme active de erwin est le rocket
+		TabProjectil.Ajoute(new CRocket(this));
 	}
 }
 
-void CPlayer::RefreshProjectils()
-{
+void CPlayer::RefreshProjectils() {
 	CProjectil *pro;
 	Tableau<CProjectil>::Adr *adrSuivant;
 
 	Tableau<CProjectil>::Adr *adr = TabProjectil.BeginAdr();
-	while( adr ) //tant que ce n'est pas le dernier objet géométrique de la liste
-	{
+
+	while(adr) {	//tant que ce n'est pas le dernier objet géométrique de la liste
 		pro = adr->m_adrX;
 
-		if( !pro->Refresh() )			// Affichage de l'objet géo
+		if(!pro->Refresh())			// Affichage de l'objet géo
 		{
-				// L'objet 'pro' a signalé la fin de sa vie, il doit être détruit
+			// L'objet 'pro' a signalé la fin de sa vie, il doit être détruit
 			adrSuivant = TabProjectil.Suivant( adr );	//Passe à l'objet géométrique suivant
 
 			TabProjectil.Enleve( adr );
 			delete pro;
 		}
-		else
-		{
-				// L'objet 'pro' a signalé qu'il reste vivant
+		else {
+			// L'objet 'pro' a signalé qu'il reste vivant
 			adrSuivant = TabProjectil.Suivant( adr );	//Passe à l'objet géométrique suivant
 		}
 
@@ -431,17 +418,14 @@ void CPlayer::RefreshProjectils()
 	}
 }
 
-void CPlayer::init()
-{
+void CPlayer::init() {
 }
 
-void CPlayer::initGL()
-{
+void CPlayer::initGL() {
 	m_pSkin->initGL();
 }
 
-void CPlayer::freeGL()
-{
+void CPlayer::freeGL() {
 	m_pSkin->freeGL();
 }
 
@@ -451,104 +435,85 @@ void CPlayer::createClavier()
 void CPlayer::exeActionFunc()	// Exécute l'action périodique associée au joueur
 {	actionFunc( this );		}
 
-void CPlayer::exeContactFunc( float *normal, float distanceW)	// Exécute fonction gestion contacts avec joueur
+void CPlayer::exeContactFunc(float *normal, float distanceW)	// Exécute fonction gestion contacts avec joueur
 {	contactFunc( this, normal, distanceW );	}
 
-float CPlayer::Phi() const
-{
+float CPlayer::Phi() const {
 	return m_Phi;
 }
 
-float CPlayer::Teta() const
-{
+float CPlayer::Teta() const {
 	return m_Teta;
 }
 
-float CPlayer::PhiVue() const
-{
+float CPlayer::PhiVue() const {
 	return m_PhiVue;
 }
 
-float CPlayer::TetaVue() const
-{
+float CPlayer::TetaVue() const {
 	return m_TetaVue;
 }
 
-void CPlayer::getPosVue( float vect[3] ) const
-{
+void CPlayer::getPosVue(float vect[3]) const {
 	vect[0] = m_PosVue[0];
 	vect[1] = m_PosVue[1];
 	vect[2] = m_PosVue[2];
 }
 
-void CPlayer::TetaVue( float tetaVue )
-{
+void CPlayer::TetaVue(float tetaVue) {
 	m_TetaVue = tetaVue;
 }
 
-void CPlayer::PhiVue( float phiVue )
-{
+void CPlayer::PhiVue( float phiVue ) {
 	m_PhiVue = phiVue;
 }
 
-void CPlayer::setPosVue( const float posVue[3] )
-{
+void CPlayer::setPosVue(const float posVue[3]) {
 	m_PosVue[0] = posVue[0];
 	m_PosVue[1] = posVue[1];
 	m_PosVue[2] = posVue[2];
 }
 
-void CPlayer::Phi( float phi )
-{
+void CPlayer::Phi(float phi) {
 	m_Phi = phi;
 }
 
-void CPlayer::Teta( float teta )
-{
+void CPlayer::Teta(float teta) {
 	m_Teta = teta;
 }
 
-float CPlayer::Pente() const
-{
+float CPlayer::Pente() const {
 	return m_Pente;
 }
 
-void CPlayer::Pente( float pente )
-{
+void CPlayer::Pente(float pente) {
 	m_Pente = pente;
 }
 
-void CPlayer::nom( const string &nom )
-{
+void CPlayer::nom(const string &nom) {
 	m_Nom = nom;
 }
 
-string CPlayer::nom() const
-{
+string CPlayer::nom() const {
 	return m_Nom;
 }
 
-void CPlayer::Skin( JktMoteur::CMap *skin )
-{
+void CPlayer::Skin(JktMoteur::CMap *skin) {
 	m_pSkin = skin;
 }
 
-void CPlayer::deplace()
-{
+void CPlayer::deplace() {
 	const float quantumVitesse = 0.003f;
 	float norm;
 	float vect[3];
 
-	if( fabsf(Pente())>0.707f )	// Si la pente est inférieure à 45°
-	{
-		if( (fabsf(getClavier()->m_fDroite)<quantumVitesse/(5.f)) &&
-				(fabsf(getClavier()->m_fAvance)<quantumVitesse/(5.f)) )
+	if( fabsf(Pente())>0.707f ) {	// Si la pente est inférieure à 45°
+		if( (fabsf(getClavier()->m_fDroite)<quantumVitesse/(5.f)) && (fabsf(getClavier()->m_fAvance)<quantumVitesse/(5.f)) )
 				// S'il n'y a pas de requête de déplacement=>ralenti le joueur
 		{
 			getVitesse( vect );
 
-			if( norme( vect )>quantumVitesse/2 )
-			{
+			if(norme(vect) > quantumVitesse/2) {
 				float var = 1 - ( quantumVitesse/(2*norme( vect )) );
 
 				vect[0] = vect[0]*var;
@@ -557,8 +522,7 @@ void CPlayer::deplace()
 
 				setVitesse( vect );
 			}
-			else
-			{
+			else {
 				vect[0] = 0;
 				vect[1] = 0;
 				vect[2] = 0;
@@ -568,20 +532,18 @@ void CPlayer::deplace()
 	}
 
 	float position[3], vitesse[3];
-	getPosition( position );
-	getVitesse( vitesse );
-	position[0] += vitesse[0];//incrémente la position du joueur
-	position[1] += vitesse[1];//de sa vitesse
+	getPosition(position);
+	getVitesse(vitesse);
+	position[0] += vitesse[0];	//incrémente la position du joueur
+	position[1] += vitesse[1];	//de sa vitesse
 	position[2] += vitesse[2];
-	setPosition( position );
+	setPosition(position);
 
 
-	if( fabsf(Pente()) > 0.707f )	//Si la pente est inférieure à 45°=>limite la vitesse
-	{
+	if(fabsf(Pente()) > 0.707f) {	//Si la pente est inférieure à 45°=>limite la vitesse
 		norm = norme( vitesse );
 
-		if( norm > 10.0*quantumVitesse )	//Limitation de la norme de la vitesse du joueur
-		{									//à 10 fois quantumVitesse
+		if(norm > 10.0*quantumVitesse) {	//Limitation de la norme de la vitesse du joueur à 10 fois quantumVitesse
 			normalise( vitesse );
 			vitesse[0] = vitesse[0]*10.0f*quantumVitesse;
 			vitesse[1] = vitesse[1]*10.0f*quantumVitesse;
@@ -592,8 +554,7 @@ void CPlayer::deplace()
 	}
 }
 
-void CPlayer::faitRequeteClavier()
-{
+void CPlayer::faitRequeteClavier() {
 	const float quantumVitesse = 0.003f;
 	float cosTeta = /*FastCos0(erwin->Teta/180.0f*Pi);*/	cosf(m_Teta/180.0f*Pi);
 	float sinTeta = /*FastSin0(erwin->Teta/180.0f*Pi);*/	sinf(m_Teta/180.0f*Pi);

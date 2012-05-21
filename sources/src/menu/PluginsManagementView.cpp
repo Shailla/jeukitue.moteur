@@ -32,9 +32,7 @@ PluginsManagementView::PluginsManagementView(const AG_EventFn controllerCallback
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
 	AG_WindowSetCaption(m_window, "Gestion des plugins");
 
-    // Scrollview qui contiendra toutes les map disponibles
-	_scrollview = AG_ScrollviewNew(m_window, AG_SCROLLVIEW_NOPAN_X);
-	AG_Expand(_scrollview);
+	_scrollview = AG_ScrollviewNew(m_window, AG_SCROLLVIEW_EXPAND | AG_SCROLLVIEW_NOPAN_X);
 
     // Bouton retour
     AG_SeparatorNewHoriz(m_window);
@@ -50,48 +48,7 @@ PluginsManagementView::PluginsManagementView(const AG_EventFn controllerCallback
 PluginsManagementView::~PluginsManagementView(void) {
 }
 
-void PluginsManagementView::show(void)
-{
-	// Supprime les labels des plugins
-	vector<AG_Label*>::iterator iterLabel = _pluginLabels.begin();
-
-	while(iterLabel < _pluginLabels.end()) {
-		AG_ObjectDelete(*iterLabel);
-		iterLabel++;
-	}
-
-	_pluginLabels.clear();
-
-	// Supprime les boutons d'activation des plugins
-	vector<AG_Button*>::iterator iterActivateButton = _pluginActivateButtons.begin();
-
-	while(iterActivateButton < _pluginActivateButtons.end()) {
-		AG_ObjectDelete(*iterActivateButton);
-		iterActivateButton++;
-	}
-
-	_pluginActivateButtons.clear();
-
-	// Supprime les boutons de désactivation des plugins
-	vector<AG_Button*>::iterator iterDeactivateButton = _pluginDeactivateButtons.begin();
-	
-	while(iterDeactivateButton < _pluginDeactivateButtons.end()) {
-		AG_ObjectDelete(*iterDeactivateButton);
-		iterDeactivateButton++;
-	}
-
-	_pluginDeactivateButtons.clear();
-
-	// Supprime les boutons de désactivation des plugins
-	vector<AG_Button*>::iterator iterExecuteButton = _pluginExecuteButtons.begin();
-
-	while(iterExecuteButton < _pluginExecuteButtons.end()) {
-		AG_ObjectDelete(*iterExecuteButton);
-		iterExecuteButton++;
-	}
-
-	_pluginDeactivateButtons.clear();
-
+void PluginsManagementView::show(void) {
 	// Supprime boxes des plugins
 	vector<AG_Box*>::iterator iterBox = _pluginBoxs.begin();
 
@@ -116,36 +73,35 @@ void PluginsManagementView::show(void)
 	int pluginNumber = 0;
 	while(iterPluginName < _pluginNames.end()) {
 		string pluginName = *iterPluginName;
-		AG_Box* box = AG_BoxNewHoriz(_scrollview, AG_BOX_HOMOGENOUS | AG_BOX_HFILL);
+		AG_Box* box = AG_BoxNewHoriz(_scrollview, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
 
-		AG_Label* label = AG_LabelNew(box, 0, pluginName.c_str());
-		AG_Button* buttonActivate = AG_ButtonNewFn(box,
+		// Nom du plugin
+		AG_Box* boxPluginName = AG_BoxNewHoriz(box, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
+		AG_Label* label = AG_LabelNew(boxPluginName, 0, pluginName.c_str());
+		AG_ExpandHoriz(label);
+
+		// Boutons associés au plugin ("Activer", "Désactiver", "Exécuter")
+		AG_Box* boxButtons = AG_BoxNewHoriz(box, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
+
+		AG_Button* buttonActivate = AG_ButtonNewFn(boxButtons,
 									   	   0,
 									   	   "Activer",
 									   	   m_controllerCallback,
 									   	   "%i,%i",
 									   	   Controller::PluginActivateAction,
 									   	   pluginNumber);
-		AG_Button* buttonDeactivate = AG_ButtonNewFn(box,
+		AG_ExpandHoriz(buttonActivate);
+
+		AG_Button* buttonDeactivate = AG_ButtonNewFn(boxButtons,
 									   	   0,
 									   	   "Desactiver",
 									   	   m_controllerCallback,
 									   	   "%i,%i",
 									   	   Controller::PluginDeactivateAction,
 									   	   pluginNumber);
-		AG_Button* buttonExecute = AG_ButtonNewFn(box,
-									   	   0,
-									   	   "Executer",
-									   	   m_controllerCallback,
-									   	   "%i,%i",
-									   	   Controller::PluginExecuteAction,
-									   	   pluginNumber);
+		AG_ExpandHoriz(buttonDeactivate);
 
 		_pluginBoxs.push_back(box);
-		_pluginLabels.push_back(label);
-		_pluginActivateButtons.push_back(buttonActivate);
-		_pluginDeactivateButtons.push_back(buttonDeactivate);
-		_pluginExecuteButtons.push_back(buttonExecute);
 
 		iterPluginName++;
 		pluginNumber++;

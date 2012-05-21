@@ -18,17 +18,15 @@
 
 using namespace std;
 
-class CCfg
-{
-	class CComID
-	{
+class CCfg {
+
+	class CComID {
 	public:
 		SDLKey key;		// Touche du clavier correspondant
 		int mouse;		// Touche de la souris correspondant
 	};
 
-	class CAudio
-	{ 
+	class CAudio {
 	public :
 		int m_Output;
 		int m_Mixer;
@@ -38,8 +36,7 @@ class CCfg
 		bool Init();
 	};
 
-	class CCommandes
-	{
+	class CCommandes {
 	public:
 		CComID Avancer;		// Avancer
 		CComID Reculer;		// Reculer
@@ -48,13 +45,12 @@ class CCfg
 		CComID Tir1;		// Tir primaire
 		CComID Tir2;		// Tir secondaire
 		CComID Monter;		// Monter
-		const char* resolve(CComID com);		// Retourne la touche ou le bouton en texte
-		const char* resolve(Uint8 mouse);		// Retourne le bouton souris en texte
-		const char* resolve(SDLKey sym);		// Retourne la touche en texte
+		const char* resolve(CComID com);			// Retourne la touche ou le bouton en texte
+		const char* resolve(Uint8 mouse);			// Retourne le bouton souris en texte
+		const char* resolve(const SDLKey sym);		// Retourne la touche en texte
 	};
 
-	class CDisplay
-	{
+	class CDisplay {
 		friend class CCfg;
 		bool m_bFullscreen;
 		void InitSDL();
@@ -70,8 +66,7 @@ class CCfg
 		void ChangeVideoSize(int x, int y);
 	};
 
-	class CCentralisateur
-	{
+	class CCentralisateur {
 		friend class CCfg;
 	protected:
 		Uint16 m_Port;				// Port à utiliser
@@ -83,8 +78,7 @@ class CCfg
 		void setIp( string ip )		{ m_IpServer = ip; }
 	};
 
-	class CReseau		// Informations sur la config réseau
-	{
+	class CReseau {		// Informations sur la config réseau
 		friend class CCfg;
 	protected:
 		Uint16 m_Port;			// Port à utiliser
@@ -97,15 +91,16 @@ class CCfg
 		void Init();
 	};
 
-	class CJoueur		// Informations du joueur
-	{
+	class CJoueur {		// Informations du joueur
 	public:
-		string nom;			// Nom du joueur
-		string mapName;		// Nom de la map réprésentant le skin du joueur
+		string nom;					// Nom du joueur
+		string mapName;				// Nom de la map réprésentant le skin du joueur
+		bool skinVisibility;		// Indique si le joueur (son skin) est affiché ou non
+		bool outlineVisibility;		// Indique si les contours physiques du joueur (ellipsoïde qui l'entoure) est visible
+
 	};
 
-	class CDebug
-	{
+	class CDebug {
 	public:
 		bool bSonPerformances;		// Indique si l'usage CPU du son doit être affiché
 		bool bSonSpectre;			// Affiche le spectre sonore
@@ -127,7 +122,7 @@ public:
 		
 	CCfg();
 
-	void NommeConfig( const string &nomFichier );
+	void NommeConfig(const string &nomFichier);
 	void AfficheDateCompilation();		// Affiche le n° de version du programme
 
 	void Lit();			// Lit le fichier de configuration

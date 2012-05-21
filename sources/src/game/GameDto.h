@@ -35,7 +35,7 @@ public:
 	CPlayer* getErwin();
 	void setErwin(CPlayer* erwin);
 
-	vector<CPlayer*> getPlayers();
+	vector<CPlayer*>& getPlayers();
 
 	CMap* getMap();
 	void setMap(CMap* map);

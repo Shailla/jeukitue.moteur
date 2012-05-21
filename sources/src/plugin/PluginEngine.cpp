@@ -9,7 +9,18 @@
 
 using namespace std;
 
-#include "plugin/api/gui/LuaWindowProxy.h"
+#include "plugin/lua/proxy/cfg/PluginConfigurationProxy.h"
+#include "plugin/lua/proxy/gui/PluginBoxProxy.h"
+#include "plugin/lua/proxy/gui/PluginButtonProxy.h"
+#include "plugin/lua/proxy/gui/PluginCheckboxProxy.h"
+#include "plugin/lua/proxy/gui/PluginNotebookProxy.h"
+#include "plugin/lua/proxy/gui/PluginNumericProxy.h"
+#include "plugin/lua/proxy/gui/PluginTabProxy.h"
+#include "plugin/lua/proxy/gui/PluginWindowProxy.h"
+#include "plugin/lua/LuaUtils.h"
+#include "plugin/lua/LuaGlobalMethods.h"
+
+using namespace JktPlugin;
 
 #include "plugin/PluginEngine.h"
 
@@ -17,72 +28,198 @@ extern const char* PLUGINS_DIRECTORY;
 
 namespace JktPlugin {
 
+std::map<string, PluginContext*> PluginEngine::_mapNamePlugin;
+std::map<const lua_State*, PluginContext*> PluginEngine::_mapLuaContext;
+
 PluginEngine::PluginEngine() {
 }
 
 PluginEngine::~PluginEngine() {
 }
 
-void report_lua_errors(lua_State *L, int status) {
-	if (status != 0) {
-		cerr << "-- " << lua_tostring(L, -1) << endl;
-		lua_pop(L, 1); // remove error message
-	}
+PluginContext* PluginEngine::getPluginContext(string& pluginName) {
+	return _mapNamePlugin[pluginName];
 }
 
-void PluginEngine::activatePlugin(const string& pluginName) {
-	PluginContext* pluginContext = _pluginMap[pluginName];
+PluginContext* PluginEngine::getPluginContext(const lua_State* L) {
+	return _mapLuaContext[L];
+}
 
-	if(pluginContext == NULL) {
-		lua_State* luaState = lua_open();
+/**
+ * Activate the plugin.
+ */
+void PluginEngine::activatePlugin(string& pluginName) {
+	PluginContext* pluginContext = getPluginContext(pluginName);
 
-		luaopen_io(luaState); 		// provides io.*
-		luaopen_base(luaState);
-		luaopen_table(luaState);
-		luaopen_string(luaState);
-		luaopen_math(luaState);
-		luaopen_loadlib(luaState);
+	if(pluginContext != NULL) {
+		cerr << endl << "Le plugin est déjà actif '" << pluginName << "'";
+		pluginContext->logError("Tentative d'activation du plugin alors qu'il est déjà actif");
+		return;
+	}
 
-		// Ouverture du fichier Lua
-		string pluginPath = string(PLUGINS_DIRECTORY).append(pluginName).append("/").append(pluginName).append(".lua");
-		cout << endl << "Activation of plugin : '" << pluginPath << "'";
-		int result = luaL_loadfile(luaState, pluginPath.c_str());
 
-		// Déclaration des fonctions Lua
-		Lunar<LuaWindowProxy>::Register(luaState);
+	/* ******************************************************************************
+	 * Initialisation des variables
+	 * *****************************************************************************/
 
-		if(result == 0) {
-			pluginContext = new PluginContext(luaState);
-			_pluginMap[pluginName] = pluginContext;
-		}
-		else {
-			cerr << endl << "Echec d'ouverture du fichier du plugin '" << pluginName << "'";
-		}
+	string pluginDirectory = string(PLUGINS_DIRECTORY).append(pluginName).append("/");
+	cout << endl << "Activation of plugin : '" << pluginName << "' in '" << pluginDirectory << "'";
+
+
+	/* ******************************************************************************
+	 * Création du logger du plugin
+	 * *****************************************************************************/
+
+	pluginContext = new PluginContext(pluginName, pluginDirectory);
+
+
+	/* ******************************************************************************
+	 * Initialisation Lua
+	 * *****************************************************************************/
+
+	pluginContext->logInfo("Démarrage de l'activation du plugin...");
+
+	lua_State* L = lua_open();
+
+	luaopen_io(L); 		// provides io.*
+	luaopen_base(L);
+	luaopen_table(L);
+	luaopen_string(L);
+	luaopen_math(L);
+	luaopen_loadlib(L);
+
+	pluginContext->setLuaState(L);
+
+
+	/* ******************************************************************************
+	 * Initialisation du contexte du plugin
+	 * *****************************************************************************/
+
+	pluginContext->logInfo("Consolidation du contexte...");
+
+	_mapNamePlugin[pluginName] = pluginContext;
+	_mapLuaContext[L] = pluginContext;
+
+
+	/* *******************************************************************************
+	 * Déclaration des fonctions et classes mises à disposition dans les plugins
+	 * ******************************************************************************/
+
+	// Initialisation des fonctions dans Lua
+	pluginContext->logInfo("Initialisation des fonctions Lua...");
+
+	lua_register(L, "getScreenSize", &PluginConfigurationProxy::getScreenSize);
+
+	lua_register(L, "isPlayerSkinVisible", &PluginConfigurationProxy::isPlayerSkinVisible);
+	lua_register(L, "setPlayerSkinVisibility", &PluginConfigurationProxy::setPlayerSkinVisibility);
+
+	lua_register(L, "isPlayerOutlineVisible", &PluginConfigurationProxy::isPlayerOutlineVisible);
+	lua_register(L, "setPlayerOutlineVisibility", &PluginConfigurationProxy::setPlayerOutlineVisibility);
+
+	lua_register(L, "log", &LuaGlobalMethods::log);
+
+	// Initialisation des classes dans Lua
+	pluginContext->logInfo("Initialisation des classes Lua...");
+
+	Lunar<PluginCheckboxProxy>::Register(L);
+	Lunar<PluginButtonProxy>::Register(L);
+	Lunar<PluginBoxProxy>::Register(L);
+	Lunar<PluginNotebookProxy>::Register(L);
+	Lunar<PluginNumericProxy>::Register(L);
+	Lunar<PluginTabProxy>::Register(L);
+	Lunar<PluginWindowProxy>::Register(L);
+
+
+	/* ******************************************************************************
+	 * Chargement du fichier Lua du plugin
+	 * *****************************************************************************/
+
+	string pluginFile = string(pluginDirectory).append(pluginName).append(".lua");
+	pluginContext->logInfo(string("Chargement du script '").append(pluginFile).append("'..."));
+
+	int status = luaL_loadfile(L, pluginFile.c_str());
+
+	if(status != 0) {
+		pluginContext->logError("Echec de chargement du fichier du plugin");
+		pluginContext->logLuaError(status);
+		lua_close(L);
+		delete pluginContext;
+
+		return;
+	}
+
+
+	/* *******************************************************************************
+	 * Initialisation du script
+	 * ******************************************************************************/
+
+	pluginContext->logInfo("Initialisation du script...");
+
+	// Appel principal pour l'initialisation du script chargé
+	if(lua_pcall(L, 0, LUA_MULTRET, 0) != 0) {
+		pluginContext->logError("Impossible d'initialiser le script.");
+		pluginContext->logLuaError(status);
+		lua_close(L);
+
+		_mapNamePlugin.erase(pluginName);
+		_mapLuaContext.erase(L);
+
+		delete pluginContext;
+
+		return;
+	}
+
+
+	/* *******************************************************************************
+	 * Exécution de la méthode d'initialisation du plugin
+	 * ******************************************************************************/
+
+	pluginContext->logInfo("Exécution de la fonction onLoad du script...");
+
+	lua_getglobal(L, "onLoad");
+
+	// Vérifie si la fonction d'initialisation du plugin existe bien
+	if(!lua_isfunction(L, -1)) {
+		// la fonction n'existe pas
+		lua_pop(L, 1);
+
+		pluginContext->logError("La fonction 'onLoad' n'existe pas, votre plugin doit définir cette fonction.");
+		pluginContext->logLuaError(status);
+		lua_close(L);
+
+		_mapNamePlugin.erase(pluginName);
+		_mapLuaContext.erase(L);
+
+		delete pluginContext;
+
+		return;
+	}
+
+	// Exécution de la méthode d'init du plugin
+	lua_call(L, 0, 0);
+
+	pluginContext->logInfo("Plugin activé.");
+}
+
+/**
+ * Deactivate the plugin.
+ */
+void PluginEngine::deactivatePlugin(string& pluginName) {
+	PluginContext* pluginContext = getPluginContext(pluginName);
+
+	if(pluginContext != NULL) {
+		pluginContext->logInfo("Début de désactivation du plugin");
+
+		lua_close(pluginContext->getLuaState());
+
+		_mapLuaContext.erase(pluginContext->getLuaState());
+		_mapNamePlugin.erase(pluginName);
+
+		pluginContext->logInfo("Plugin désactivé");
+		delete pluginContext;
 	}
 	else {
-		cerr << endl << "Le plugin est déjà actif '" << pluginName << "'";
-	}
-}
-
-void PluginEngine::executePlugin(const string& pluginName) {
-	PluginContext* pluginContext = _pluginMap[pluginName];
-
-	if(pluginContext != NULL) {
-		lua_State* state = pluginContext->getLuaState();
-		int result = lua_pcall(state, 0, LUA_MULTRET, 0);
-
-		report_lua_errors(state, result);
-	}
-}
-
-void PluginEngine::deactivatePlugin(const string& pluginName) {
-	PluginContext* pluginContext = _pluginMap[pluginName];
-
-	if(pluginContext != NULL) {
-		lua_State* luaState = pluginContext->getLuaState();
-		lua_close(luaState);
-		_pluginMap.erase(pluginName);
-		delete pluginContext;
+		cerr << endl << "Le plugin ne peut pas être désactivé, il n'est pas actif '" << pluginName << "'";
 	}
 }
 

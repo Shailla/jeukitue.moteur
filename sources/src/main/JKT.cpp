@@ -130,7 +130,7 @@ bool indicSpace = true;		//gère si la théière animée part ou revient
 float positionSpace = 0.0;	 //position de la théière animée
 
 CCfg Config;		// Contient la configuration du jeu
-CGame Game;		// Contient toutes les données vivantes du jeu
+CGame Game;			// Contient toutes les données vivantes du jeu
 
 const char nomFichierJoueur[] = "@Joueur\\joueurTex";
 
@@ -479,29 +479,25 @@ void display()	// Fonction principale d'affichage
 
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-	if( Game.getMap() )	// Si il y a une map a afficher
-	{
-		if( Game.Erwin() )	// S'il y a un joueur principal
-		{
+	if(Game.getMap()) {		// Si il y a une map a afficher
+		if(Game.Erwin()) {		// S'il y a un joueur principal
 			float vect[3];
 			CPlayer *erwin = Game.Erwin();
 
-			erwin->getPosVue( vect );
-			glTranslatef( -vect[0], -vect[1], vect[2] );	// Placement du point de vue
-			glRotated( erwin->PhiVue(), 1.0, 0.0, 0.0 );	// Rotation par rapport au plan horizontal
+			erwin->getPosVue(vect);
+			glTranslatef(-vect[0], -vect[1], vect[2]);	// Placement du point de vue
+			glRotated(erwin->PhiVue(), 1.0, 0.0, 0.0);	// Rotation par rapport au plan horizontal
 
-			glRotated( erwin->Phi(), 1.0, 0.0, 0.0 );	// Rotation par rapport au plan horizontal
-			glRotated( erwin->Teta(), 0.0,1.0, 0.0 );	// Rotation par rapport à l'axe verticale
+			glRotated(erwin->Phi(), 1.0, 0.0, 0.0);	// Rotation par rapport au plan horizontal
+			glRotated(erwin->Teta(), 0.0,1.0, 0.0);	// Rotation par rapport à l'axe verticale
 
-			erwin->getPosition( vect );
-			glTranslatef( -vect[0], -vect[1], vect[2] );	// Placement du point de vue
+			erwin->getPosition(vect);
+			glTranslatef(-vect[0], -vect[1], vect[2]);	// Placement du point de vue
 
-			glRotated( erwin->TetaVue(), 0.0,1.0, 0.0 );	// Rotation par rapport à l'axe verticale
+			glRotated(erwin->TetaVue(), 0.0,1.0, 0.0);	// Rotation par rapport à l'axe verticale
 		}
 
 		Game.AffichePlayers();		// Affiche tous les joueurs
-
-		// C PA LE K
 
 			// Essai lumière
 //		float light_position[] = { 0.6f, -0.1f, 0.0f, 1.0f };
@@ -564,7 +560,6 @@ void display()	// Fonction principale d'affichage
 		glColor3f( 1.0f, 0.2f, 0.2f );
 		gluSphere( gluNewQuadric(), 0.05, 16, 16 );
 
-		// C LE K
 		if( Game.Erwin() )
 			updateSon3D();	// Positionne le joueur et les objets bruyants dans l'espace sonore
 
@@ -573,16 +568,16 @@ void display()	// Fonction principale d'affichage
 		glDepthMask( GL_FALSE );
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE );
 
-		// C LE K
 		moteurParticulesNeige->Affiche();	// Le moteur de particules affiche toutes ses particules
 
 		glDisable( GL_BLEND );
 		glDepthMask( GL_TRUE );
 	}
 
-	// C LE K
 
-			// AFFICHAGE DES ELEMENTS AVANTS (TEXTE, SCORE, ...)
+	/* ******************************************************
+	/* AFFICHAGE DES ELEMENTS AVANTS (TEXTE, SCORE, ...)
+	 * *****************************************************/
 	glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
 	gluOrtho2D(0.0, Config.Display.X, 0.0, Config.Display.Y);
@@ -622,39 +617,42 @@ void display()	// Fonction principale d'affichage
     glLoadIdentity();
 
 
-	/****************************************
+	/*****************************************
 	/* Dessin des menus Agar
 	/****************************************/
 
-    Viewer* menuViewer = Fabrique::getAgarView();
-    
     glEnable( GL_TEXTURE_2D );
     glDisable( GL_BLEND );
     glDisable( GL_DEPTH_TEST );
 
     glOrtho(0, (double)agDriverSw->w, (double)agDriverSw->h, 0.0, -1.0, 1.0);
-    menuViewer->draw();
+
+    Fabrique::getAgarView()->draw();
 
 	glDisable( GL_TEXTURE_2D );
     glDisable( GL_BLEND );
 
-	// Echange des buffers graphique -> affiche à l'écran
+
+	/*****************************************
+	/* Echange des buffers graphique -> affiche à l'écran.
+	/****************************************/
+
 	SDL_GL_SwapBuffers();
 }
 
 void chopeLesEvenements()
 {
 	SDL_PumpEvents();							// Collecte les évênements
-	Uint8 *keystate = SDL_GetKeyState( 0 );		//Récupère les touches clavier appuyées
-	Uint8 mouse = SDL_GetMouseState( 0, 0 );
+	Uint8 *keystate = SDL_GetKeyState(0);		// Récupère les touches clavier appuyées
+	Uint8 mouse = SDL_GetMouseState(0, 0);
 
 	if( Game.Erwin() && (!Game.isModeServer()) )
 	{
 		CPlayer *erwin = Game.Erwin();
 
-		if( keystate[SDLK_a] )
-		{
+		if( keystate[SDLK_a] ) {
 			erwin->TetaVue( erwin->TetaVue() + 0.2f );
+
 			if( erwin->TetaVue() > 180.0f )
 				erwin->TetaVue( erwin->TetaVue() - 360.0f );
 		}
@@ -677,8 +675,7 @@ void chopeLesEvenements()
 		if( keystate[SDLK_k] )
 			GLIGHTZ -= 0.003f;
 
-		if( keystate[SDLK_q] )
-		{
+		if( keystate[SDLK_q] ) {
 			erwin->TetaVue( erwin->TetaVue() - 0.2f );
 			if( erwin->TetaVue() < -180.0f )
 				erwin->TetaVue( erwin->TetaVue() + 360.0f );
@@ -687,63 +684,58 @@ void chopeLesEvenements()
 		if( keystate[SDLK_w] )
 		{
 			erwin->PhiVue( erwin->PhiVue() + 0.2f );
+
 			if( erwin->PhiVue() > 180.0f )
 				erwin->PhiVue( erwin->PhiVue() - 360.0f );
 		}
 
-		if( keystate[SDLK_s] )
-		{
+		if( keystate[SDLK_s] ) {
 			erwin->PhiVue( erwin->PhiVue() - 0.2f );
+
 			if( erwin->PhiVue() < -180.0f )
 				erwin->PhiVue( erwin->PhiVue() + 360.0f );
 		}
 
-		if( keystate[SDLK_e] )
-		{
+		if( keystate[SDLK_e] ) {
 			float posVue[3];
-			erwin->getPosVue( posVue );
+			erwin->getPosVue(posVue);
 			posVue[0] += 0.003f;
-			erwin->setPosVue( posVue );
+			erwin->setPosVue(posVue);
 		}
 
-		if( keystate[SDLK_d] )
-		{
+		if( keystate[SDLK_d] ) {
 			float posVue[3];
-			erwin->getPosVue( posVue );
+			erwin->getPosVue(posVue);
 			posVue[0] -= 0.003f;
-			erwin->setPosVue( posVue );
+			erwin->setPosVue(posVue);
 		}
 
-		if( keystate[SDLK_r] )
-		{
+		if( keystate[SDLK_r] ) {
 			float posVue[3];
-			erwin->getPosVue( posVue );
+			erwin->getPosVue(posVue);
 			posVue[1] += 0.003f;
-			erwin->setPosVue( posVue );
+			erwin->setPosVue(posVue);
 		}
 
-		if( keystate[SDLK_f] )
-		{
+		if( keystate[SDLK_f] ) {
 			float posVue[3];
-			erwin->getPosVue( posVue );
+			erwin->getPosVue(posVue);
 			posVue[1] -= 0.003f;
-			erwin->setPosVue( posVue );
+			erwin->setPosVue(posVue);
 		}
 
-		if( keystate[SDLK_t] )
-		{
+		if( keystate[SDLK_t] ) {
 			float posVue[3];
-			erwin->getPosVue( posVue );
+			erwin->getPosVue(posVue);
 			posVue[2] += 0.003f;
-			erwin->setPosVue( posVue );
+			erwin->setPosVue(posVue);
 		}
 
-		if( keystate[SDLK_g] )
-		{
+		if( keystate[SDLK_g] ) {
 			float posVue[3];
-			erwin->getPosVue( posVue );
+			erwin->getPosVue(posVue);
 			posVue[2] -= 0.003f;
-			erwin->setPosVue( posVue );
+			erwin->setPosVue(posVue);
 		}
 
 		if ( keystate[Config.Commandes.Gauche.key]||(mouse&SDL_BUTTON(Config.Commandes.Gauche.mouse)) )	//gauche

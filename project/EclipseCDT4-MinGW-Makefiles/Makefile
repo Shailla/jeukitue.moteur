@@ -2006,6 +2006,30 @@ src/menu/OpenSceneView.cpp.s:
 	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/menu/OpenSceneView.cpp.s
 .PHONY : src/menu/OpenSceneView.cpp.s
 
+src/menu/PluginsManagementView.obj: src/menu/PluginsManagementView.cpp.obj
+.PHONY : src/menu/PluginsManagementView.obj
+
+# target to build an object file
+src/menu/PluginsManagementView.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/menu/PluginsManagementView.cpp.obj
+.PHONY : src/menu/PluginsManagementView.cpp.obj
+
+src/menu/PluginsManagementView.i: src/menu/PluginsManagementView.cpp.i
+.PHONY : src/menu/PluginsManagementView.i
+
+# target to preprocess a source file
+src/menu/PluginsManagementView.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/menu/PluginsManagementView.cpp.i
+.PHONY : src/menu/PluginsManagementView.cpp.i
+
+src/menu/PluginsManagementView.s: src/menu/PluginsManagementView.cpp.s
+.PHONY : src/menu/PluginsManagementView.s
+
+# target to generate assembly for a file
+src/menu/PluginsManagementView.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/menu/PluginsManagementView.cpp.s
+.PHONY : src/menu/PluginsManagementView.cpp.s
+
 src/menu/ProgressBarView.obj: src/menu/ProgressBarView.cpp.obj
 .PHONY : src/menu/ProgressBarView.obj
 
@@ -2077,6 +2101,534 @@ src/menu/Viewer.s: src/menu/Viewer.cpp.s
 src/menu/Viewer.cpp.s:
 	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/menu/Viewer.cpp.s
 .PHONY : src/menu/Viewer.cpp.s
+
+src/plugin/PluginContext.obj: src/plugin/PluginContext.cpp.obj
+.PHONY : src/plugin/PluginContext.obj
+
+# target to build an object file
+src/plugin/PluginContext.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/PluginContext.cpp.obj
+.PHONY : src/plugin/PluginContext.cpp.obj
+
+src/plugin/PluginContext.i: src/plugin/PluginContext.cpp.i
+.PHONY : src/plugin/PluginContext.i
+
+# target to preprocess a source file
+src/plugin/PluginContext.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/PluginContext.cpp.i
+.PHONY : src/plugin/PluginContext.cpp.i
+
+src/plugin/PluginContext.s: src/plugin/PluginContext.cpp.s
+.PHONY : src/plugin/PluginContext.s
+
+# target to generate assembly for a file
+src/plugin/PluginContext.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/PluginContext.cpp.s
+.PHONY : src/plugin/PluginContext.cpp.s
+
+src/plugin/PluginEngine.obj: src/plugin/PluginEngine.cpp.obj
+.PHONY : src/plugin/PluginEngine.obj
+
+# target to build an object file
+src/plugin/PluginEngine.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/PluginEngine.cpp.obj
+.PHONY : src/plugin/PluginEngine.cpp.obj
+
+src/plugin/PluginEngine.i: src/plugin/PluginEngine.cpp.i
+.PHONY : src/plugin/PluginEngine.i
+
+# target to preprocess a source file
+src/plugin/PluginEngine.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/PluginEngine.cpp.i
+.PHONY : src/plugin/PluginEngine.cpp.i
+
+src/plugin/PluginEngine.s: src/plugin/PluginEngine.cpp.s
+.PHONY : src/plugin/PluginEngine.s
+
+# target to generate assembly for a file
+src/plugin/PluginEngine.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/PluginEngine.cpp.s
+.PHONY : src/plugin/PluginEngine.cpp.s
+
+src/plugin/api/gui/PluginBox.obj: src/plugin/api/gui/PluginBox.cpp.obj
+.PHONY : src/plugin/api/gui/PluginBox.obj
+
+# target to build an object file
+src/plugin/api/gui/PluginBox.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginBox.cpp.obj
+.PHONY : src/plugin/api/gui/PluginBox.cpp.obj
+
+src/plugin/api/gui/PluginBox.i: src/plugin/api/gui/PluginBox.cpp.i
+.PHONY : src/plugin/api/gui/PluginBox.i
+
+# target to preprocess a source file
+src/plugin/api/gui/PluginBox.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginBox.cpp.i
+.PHONY : src/plugin/api/gui/PluginBox.cpp.i
+
+src/plugin/api/gui/PluginBox.s: src/plugin/api/gui/PluginBox.cpp.s
+.PHONY : src/plugin/api/gui/PluginBox.s
+
+# target to generate assembly for a file
+src/plugin/api/gui/PluginBox.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginBox.cpp.s
+.PHONY : src/plugin/api/gui/PluginBox.cpp.s
+
+src/plugin/api/gui/PluginButton.obj: src/plugin/api/gui/PluginButton.cpp.obj
+.PHONY : src/plugin/api/gui/PluginButton.obj
+
+# target to build an object file
+src/plugin/api/gui/PluginButton.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginButton.cpp.obj
+.PHONY : src/plugin/api/gui/PluginButton.cpp.obj
+
+src/plugin/api/gui/PluginButton.i: src/plugin/api/gui/PluginButton.cpp.i
+.PHONY : src/plugin/api/gui/PluginButton.i
+
+# target to preprocess a source file
+src/plugin/api/gui/PluginButton.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginButton.cpp.i
+.PHONY : src/plugin/api/gui/PluginButton.cpp.i
+
+src/plugin/api/gui/PluginButton.s: src/plugin/api/gui/PluginButton.cpp.s
+.PHONY : src/plugin/api/gui/PluginButton.s
+
+# target to generate assembly for a file
+src/plugin/api/gui/PluginButton.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginButton.cpp.s
+.PHONY : src/plugin/api/gui/PluginButton.cpp.s
+
+src/plugin/api/gui/PluginCheckbox.obj: src/plugin/api/gui/PluginCheckbox.cpp.obj
+.PHONY : src/plugin/api/gui/PluginCheckbox.obj
+
+# target to build an object file
+src/plugin/api/gui/PluginCheckbox.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginCheckbox.cpp.obj
+.PHONY : src/plugin/api/gui/PluginCheckbox.cpp.obj
+
+src/plugin/api/gui/PluginCheckbox.i: src/plugin/api/gui/PluginCheckbox.cpp.i
+.PHONY : src/plugin/api/gui/PluginCheckbox.i
+
+# target to preprocess a source file
+src/plugin/api/gui/PluginCheckbox.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginCheckbox.cpp.i
+.PHONY : src/plugin/api/gui/PluginCheckbox.cpp.i
+
+src/plugin/api/gui/PluginCheckbox.s: src/plugin/api/gui/PluginCheckbox.cpp.s
+.PHONY : src/plugin/api/gui/PluginCheckbox.s
+
+# target to generate assembly for a file
+src/plugin/api/gui/PluginCheckbox.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginCheckbox.cpp.s
+.PHONY : src/plugin/api/gui/PluginCheckbox.cpp.s
+
+src/plugin/api/gui/PluginGuiController.obj: src/plugin/api/gui/PluginGuiController.cpp.obj
+.PHONY : src/plugin/api/gui/PluginGuiController.obj
+
+# target to build an object file
+src/plugin/api/gui/PluginGuiController.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginGuiController.cpp.obj
+.PHONY : src/plugin/api/gui/PluginGuiController.cpp.obj
+
+src/plugin/api/gui/PluginGuiController.i: src/plugin/api/gui/PluginGuiController.cpp.i
+.PHONY : src/plugin/api/gui/PluginGuiController.i
+
+# target to preprocess a source file
+src/plugin/api/gui/PluginGuiController.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginGuiController.cpp.i
+.PHONY : src/plugin/api/gui/PluginGuiController.cpp.i
+
+src/plugin/api/gui/PluginGuiController.s: src/plugin/api/gui/PluginGuiController.cpp.s
+.PHONY : src/plugin/api/gui/PluginGuiController.s
+
+# target to generate assembly for a file
+src/plugin/api/gui/PluginGuiController.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginGuiController.cpp.s
+.PHONY : src/plugin/api/gui/PluginGuiController.cpp.s
+
+src/plugin/api/gui/PluginNotebook.obj: src/plugin/api/gui/PluginNotebook.cpp.obj
+.PHONY : src/plugin/api/gui/PluginNotebook.obj
+
+# target to build an object file
+src/plugin/api/gui/PluginNotebook.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginNotebook.cpp.obj
+.PHONY : src/plugin/api/gui/PluginNotebook.cpp.obj
+
+src/plugin/api/gui/PluginNotebook.i: src/plugin/api/gui/PluginNotebook.cpp.i
+.PHONY : src/plugin/api/gui/PluginNotebook.i
+
+# target to preprocess a source file
+src/plugin/api/gui/PluginNotebook.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginNotebook.cpp.i
+.PHONY : src/plugin/api/gui/PluginNotebook.cpp.i
+
+src/plugin/api/gui/PluginNotebook.s: src/plugin/api/gui/PluginNotebook.cpp.s
+.PHONY : src/plugin/api/gui/PluginNotebook.s
+
+# target to generate assembly for a file
+src/plugin/api/gui/PluginNotebook.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginNotebook.cpp.s
+.PHONY : src/plugin/api/gui/PluginNotebook.cpp.s
+
+src/plugin/api/gui/PluginNumeric.obj: src/plugin/api/gui/PluginNumeric.cpp.obj
+.PHONY : src/plugin/api/gui/PluginNumeric.obj
+
+# target to build an object file
+src/plugin/api/gui/PluginNumeric.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginNumeric.cpp.obj
+.PHONY : src/plugin/api/gui/PluginNumeric.cpp.obj
+
+src/plugin/api/gui/PluginNumeric.i: src/plugin/api/gui/PluginNumeric.cpp.i
+.PHONY : src/plugin/api/gui/PluginNumeric.i
+
+# target to preprocess a source file
+src/plugin/api/gui/PluginNumeric.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginNumeric.cpp.i
+.PHONY : src/plugin/api/gui/PluginNumeric.cpp.i
+
+src/plugin/api/gui/PluginNumeric.s: src/plugin/api/gui/PluginNumeric.cpp.s
+.PHONY : src/plugin/api/gui/PluginNumeric.s
+
+# target to generate assembly for a file
+src/plugin/api/gui/PluginNumeric.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginNumeric.cpp.s
+.PHONY : src/plugin/api/gui/PluginNumeric.cpp.s
+
+src/plugin/api/gui/PluginPanel.obj: src/plugin/api/gui/PluginPanel.cpp.obj
+.PHONY : src/plugin/api/gui/PluginPanel.obj
+
+# target to build an object file
+src/plugin/api/gui/PluginPanel.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginPanel.cpp.obj
+.PHONY : src/plugin/api/gui/PluginPanel.cpp.obj
+
+src/plugin/api/gui/PluginPanel.i: src/plugin/api/gui/PluginPanel.cpp.i
+.PHONY : src/plugin/api/gui/PluginPanel.i
+
+# target to preprocess a source file
+src/plugin/api/gui/PluginPanel.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginPanel.cpp.i
+.PHONY : src/plugin/api/gui/PluginPanel.cpp.i
+
+src/plugin/api/gui/PluginPanel.s: src/plugin/api/gui/PluginPanel.cpp.s
+.PHONY : src/plugin/api/gui/PluginPanel.s
+
+# target to generate assembly for a file
+src/plugin/api/gui/PluginPanel.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginPanel.cpp.s
+.PHONY : src/plugin/api/gui/PluginPanel.cpp.s
+
+src/plugin/api/gui/PluginTab.obj: src/plugin/api/gui/PluginTab.cpp.obj
+.PHONY : src/plugin/api/gui/PluginTab.obj
+
+# target to build an object file
+src/plugin/api/gui/PluginTab.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginTab.cpp.obj
+.PHONY : src/plugin/api/gui/PluginTab.cpp.obj
+
+src/plugin/api/gui/PluginTab.i: src/plugin/api/gui/PluginTab.cpp.i
+.PHONY : src/plugin/api/gui/PluginTab.i
+
+# target to preprocess a source file
+src/plugin/api/gui/PluginTab.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginTab.cpp.i
+.PHONY : src/plugin/api/gui/PluginTab.cpp.i
+
+src/plugin/api/gui/PluginTab.s: src/plugin/api/gui/PluginTab.cpp.s
+.PHONY : src/plugin/api/gui/PluginTab.s
+
+# target to generate assembly for a file
+src/plugin/api/gui/PluginTab.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginTab.cpp.s
+.PHONY : src/plugin/api/gui/PluginTab.cpp.s
+
+src/plugin/api/gui/PluginWindow.obj: src/plugin/api/gui/PluginWindow.cpp.obj
+.PHONY : src/plugin/api/gui/PluginWindow.obj
+
+# target to build an object file
+src/plugin/api/gui/PluginWindow.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginWindow.cpp.obj
+.PHONY : src/plugin/api/gui/PluginWindow.cpp.obj
+
+src/plugin/api/gui/PluginWindow.i: src/plugin/api/gui/PluginWindow.cpp.i
+.PHONY : src/plugin/api/gui/PluginWindow.i
+
+# target to preprocess a source file
+src/plugin/api/gui/PluginWindow.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginWindow.cpp.i
+.PHONY : src/plugin/api/gui/PluginWindow.cpp.i
+
+src/plugin/api/gui/PluginWindow.s: src/plugin/api/gui/PluginWindow.cpp.s
+.PHONY : src/plugin/api/gui/PluginWindow.s
+
+# target to generate assembly for a file
+src/plugin/api/gui/PluginWindow.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/api/gui/PluginWindow.cpp.s
+.PHONY : src/plugin/api/gui/PluginWindow.cpp.s
+
+src/plugin/lua/LuaGlobalMethods.obj: src/plugin/lua/LuaGlobalMethods.cpp.obj
+.PHONY : src/plugin/lua/LuaGlobalMethods.obj
+
+# target to build an object file
+src/plugin/lua/LuaGlobalMethods.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/LuaGlobalMethods.cpp.obj
+.PHONY : src/plugin/lua/LuaGlobalMethods.cpp.obj
+
+src/plugin/lua/LuaGlobalMethods.i: src/plugin/lua/LuaGlobalMethods.cpp.i
+.PHONY : src/plugin/lua/LuaGlobalMethods.i
+
+# target to preprocess a source file
+src/plugin/lua/LuaGlobalMethods.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/LuaGlobalMethods.cpp.i
+.PHONY : src/plugin/lua/LuaGlobalMethods.cpp.i
+
+src/plugin/lua/LuaGlobalMethods.s: src/plugin/lua/LuaGlobalMethods.cpp.s
+.PHONY : src/plugin/lua/LuaGlobalMethods.s
+
+# target to generate assembly for a file
+src/plugin/lua/LuaGlobalMethods.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/LuaGlobalMethods.cpp.s
+.PHONY : src/plugin/lua/LuaGlobalMethods.cpp.s
+
+src/plugin/lua/LuaUtils.obj: src/plugin/lua/LuaUtils.cpp.obj
+.PHONY : src/plugin/lua/LuaUtils.obj
+
+# target to build an object file
+src/plugin/lua/LuaUtils.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/LuaUtils.cpp.obj
+.PHONY : src/plugin/lua/LuaUtils.cpp.obj
+
+src/plugin/lua/LuaUtils.i: src/plugin/lua/LuaUtils.cpp.i
+.PHONY : src/plugin/lua/LuaUtils.i
+
+# target to preprocess a source file
+src/plugin/lua/LuaUtils.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/LuaUtils.cpp.i
+.PHONY : src/plugin/lua/LuaUtils.cpp.i
+
+src/plugin/lua/LuaUtils.s: src/plugin/lua/LuaUtils.cpp.s
+.PHONY : src/plugin/lua/LuaUtils.s
+
+# target to generate assembly for a file
+src/plugin/lua/LuaUtils.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/LuaUtils.cpp.s
+.PHONY : src/plugin/lua/LuaUtils.cpp.s
+
+src/plugin/lua/proxy/cfg/PluginConfigurationProxy.obj: src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/cfg/PluginConfigurationProxy.obj
+
+# target to build an object file
+src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.obj
+
+src/plugin/lua/proxy/cfg/PluginConfigurationProxy.i: src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/cfg/PluginConfigurationProxy.i
+
+# target to preprocess a source file
+src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.i
+
+src/plugin/lua/proxy/cfg/PluginConfigurationProxy.s: src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/cfg/PluginConfigurationProxy.s
+
+# target to generate assembly for a file
+src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp.s
+
+src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.obj: src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.obj
+
+# target to build an object file
+src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.obj
+
+src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.i: src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.i
+
+# target to preprocess a source file
+src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.i
+
+src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.s: src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.s
+
+# target to generate assembly for a file
+src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp.s
+
+src/plugin/lua/proxy/gui/PluginBoxProxy.obj: src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginBoxProxy.obj
+
+# target to build an object file
+src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.obj
+
+src/plugin/lua/proxy/gui/PluginBoxProxy.i: src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginBoxProxy.i
+
+# target to preprocess a source file
+src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.i
+
+src/plugin/lua/proxy/gui/PluginBoxProxy.s: src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginBoxProxy.s
+
+# target to generate assembly for a file
+src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginBoxProxy.cpp.s
+
+src/plugin/lua/proxy/gui/PluginButtonProxy.obj: src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginButtonProxy.obj
+
+# target to build an object file
+src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.obj
+
+src/plugin/lua/proxy/gui/PluginButtonProxy.i: src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginButtonProxy.i
+
+# target to preprocess a source file
+src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.i
+
+src/plugin/lua/proxy/gui/PluginButtonProxy.s: src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginButtonProxy.s
+
+# target to generate assembly for a file
+src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginButtonProxy.cpp.s
+
+src/plugin/lua/proxy/gui/PluginCheckboxProxy.obj: src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginCheckboxProxy.obj
+
+# target to build an object file
+src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.obj
+
+src/plugin/lua/proxy/gui/PluginCheckboxProxy.i: src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginCheckboxProxy.i
+
+# target to preprocess a source file
+src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.i
+
+src/plugin/lua/proxy/gui/PluginCheckboxProxy.s: src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginCheckboxProxy.s
+
+# target to generate assembly for a file
+src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp.s
+
+src/plugin/lua/proxy/gui/PluginNotebookProxy.obj: src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginNotebookProxy.obj
+
+# target to build an object file
+src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.obj
+
+src/plugin/lua/proxy/gui/PluginNotebookProxy.i: src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginNotebookProxy.i
+
+# target to preprocess a source file
+src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.i
+
+src/plugin/lua/proxy/gui/PluginNotebookProxy.s: src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginNotebookProxy.s
+
+# target to generate assembly for a file
+src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp.s
+
+src/plugin/lua/proxy/gui/PluginNumericProxy.obj: src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginNumericProxy.obj
+
+# target to build an object file
+src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.obj
+
+src/plugin/lua/proxy/gui/PluginNumericProxy.i: src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginNumericProxy.i
+
+# target to preprocess a source file
+src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.i
+
+src/plugin/lua/proxy/gui/PluginNumericProxy.s: src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginNumericProxy.s
+
+# target to generate assembly for a file
+src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginNumericProxy.cpp.s
+
+src/plugin/lua/proxy/gui/PluginTabProxy.obj: src/plugin/lua/proxy/gui/PluginTabProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginTabProxy.obj
+
+# target to build an object file
+src/plugin/lua/proxy/gui/PluginTabProxy.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginTabProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginTabProxy.cpp.obj
+
+src/plugin/lua/proxy/gui/PluginTabProxy.i: src/plugin/lua/proxy/gui/PluginTabProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginTabProxy.i
+
+# target to preprocess a source file
+src/plugin/lua/proxy/gui/PluginTabProxy.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginTabProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginTabProxy.cpp.i
+
+src/plugin/lua/proxy/gui/PluginTabProxy.s: src/plugin/lua/proxy/gui/PluginTabProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginTabProxy.s
+
+# target to generate assembly for a file
+src/plugin/lua/proxy/gui/PluginTabProxy.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginTabProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginTabProxy.cpp.s
+
+src/plugin/lua/proxy/gui/PluginWindowProxy.obj: src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginWindowProxy.obj
+
+# target to build an object file
+src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.obj
+.PHONY : src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.obj
+
+src/plugin/lua/proxy/gui/PluginWindowProxy.i: src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginWindowProxy.i
+
+# target to preprocess a source file
+src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.i
+.PHONY : src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.i
+
+src/plugin/lua/proxy/gui/PluginWindowProxy.s: src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginWindowProxy.s
+
+# target to generate assembly for a file
+src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.s
+.PHONY : src/plugin/lua/proxy/gui/PluginWindowProxy.cpp.s
 
 src/reseau/Client.obj: src/reseau/Client.cpp.obj
 .PHONY : src/reseau/Client.obj
@@ -2270,6 +2822,30 @@ src/service/InformationService.cpp.s:
 	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/InformationService.cpp.s
 .PHONY : src/service/InformationService.cpp.s
 
+src/service/LuaService.obj: src/service/LuaService.cpp.obj
+.PHONY : src/service/LuaService.obj
+
+# target to build an object file
+src/service/LuaService.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/LuaService.cpp.obj
+.PHONY : src/service/LuaService.cpp.obj
+
+src/service/LuaService.i: src/service/LuaService.cpp.i
+.PHONY : src/service/LuaService.i
+
+# target to preprocess a source file
+src/service/LuaService.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/LuaService.cpp.i
+.PHONY : src/service/LuaService.cpp.i
+
+src/service/LuaService.s: src/service/LuaService.cpp.s
+.PHONY : src/service/LuaService.s
+
+# target to generate assembly for a file
+src/service/LuaService.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/LuaService.cpp.s
+.PHONY : src/service/LuaService.cpp.s
+
 src/service/MapService.obj: src/service/MapService.cpp.obj
 .PHONY : src/service/MapService.obj
 
@@ -2293,6 +2869,30 @@ src/service/MapService.s: src/service/MapService.cpp.s
 src/service/MapService.cpp.s:
 	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/MapService.cpp.s
 .PHONY : src/service/MapService.cpp.s
+
+src/service/dto/AdvancedConfigurationDto.obj: src/service/dto/AdvancedConfigurationDto.cpp.obj
+.PHONY : src/service/dto/AdvancedConfigurationDto.obj
+
+# target to build an object file
+src/service/dto/AdvancedConfigurationDto.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/dto/AdvancedConfigurationDto.cpp.obj
+.PHONY : src/service/dto/AdvancedConfigurationDto.cpp.obj
+
+src/service/dto/AdvancedConfigurationDto.i: src/service/dto/AdvancedConfigurationDto.cpp.i
+.PHONY : src/service/dto/AdvancedConfigurationDto.i
+
+# target to preprocess a source file
+src/service/dto/AdvancedConfigurationDto.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/dto/AdvancedConfigurationDto.cpp.i
+.PHONY : src/service/dto/AdvancedConfigurationDto.cpp.i
+
+src/service/dto/AdvancedConfigurationDto.s: src/service/dto/AdvancedConfigurationDto.cpp.s
+.PHONY : src/service/dto/AdvancedConfigurationDto.s
+
+# target to generate assembly for a file
+src/service/dto/AdvancedConfigurationDto.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/service/dto/AdvancedConfigurationDto.cpp.s
+.PHONY : src/service/dto/AdvancedConfigurationDto.cpp.s
 
 src/service/dto/AseFileInformationDto.obj: src/service/dto/AseFileInformationDto.cpp.obj
 .PHONY : src/service/dto/AseFileInformationDto.obj
@@ -2725,6 +3325,54 @@ src/spatial/geo/ChanTex.s: src/spatial/geo/ChanTex.cpp.s
 src/spatial/geo/ChanTex.cpp.s:
 	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/spatial/geo/ChanTex.cpp.s
 .PHONY : src/spatial/geo/ChanTex.cpp.s
+
+src/spatial/geo/EntryPoint.obj: src/spatial/geo/EntryPoint.cpp.obj
+.PHONY : src/spatial/geo/EntryPoint.obj
+
+# target to build an object file
+src/spatial/geo/EntryPoint.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/spatial/geo/EntryPoint.cpp.obj
+.PHONY : src/spatial/geo/EntryPoint.cpp.obj
+
+src/spatial/geo/EntryPoint.i: src/spatial/geo/EntryPoint.cpp.i
+.PHONY : src/spatial/geo/EntryPoint.i
+
+# target to preprocess a source file
+src/spatial/geo/EntryPoint.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/spatial/geo/EntryPoint.cpp.i
+.PHONY : src/spatial/geo/EntryPoint.cpp.i
+
+src/spatial/geo/EntryPoint.s: src/spatial/geo/EntryPoint.cpp.s
+.PHONY : src/spatial/geo/EntryPoint.s
+
+# target to generate assembly for a file
+src/spatial/geo/EntryPoint.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/spatial/geo/EntryPoint.cpp.s
+.PHONY : src/spatial/geo/EntryPoint.cpp.s
+
+src/spatial/geo/EntryPointMaker.obj: src/spatial/geo/EntryPointMaker.cpp.obj
+.PHONY : src/spatial/geo/EntryPointMaker.obj
+
+# target to build an object file
+src/spatial/geo/EntryPointMaker.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/spatial/geo/EntryPointMaker.cpp.obj
+.PHONY : src/spatial/geo/EntryPointMaker.cpp.obj
+
+src/spatial/geo/EntryPointMaker.i: src/spatial/geo/EntryPointMaker.cpp.i
+.PHONY : src/spatial/geo/EntryPointMaker.i
+
+# target to preprocess a source file
+src/spatial/geo/EntryPointMaker.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/spatial/geo/EntryPointMaker.cpp.i
+.PHONY : src/spatial/geo/EntryPointMaker.cpp.i
+
+src/spatial/geo/EntryPointMaker.s: src/spatial/geo/EntryPointMaker.cpp.s
+.PHONY : src/spatial/geo/EntryPointMaker.s
+
+# target to generate assembly for a file
+src/spatial/geo/EntryPointMaker.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/spatial/geo/EntryPointMaker.cpp.s
+.PHONY : src/spatial/geo/EntryPointMaker.cpp.s
 
 src/spatial/geo/Geo.obj: src/spatial/geo/Geo.cpp.obj
 .PHONY : src/spatial/geo/Geo.obj
@@ -3254,6 +3902,30 @@ src/util/GenRef.cpp.s:
 	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/util/GenRef.cpp.s
 .PHONY : src/util/GenRef.cpp.s
 
+src/util/StringUtils.obj: src/util/StringUtils.cpp.obj
+.PHONY : src/util/StringUtils.obj
+
+# target to build an object file
+src/util/StringUtils.cpp.obj:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/util/StringUtils.cpp.obj
+.PHONY : src/util/StringUtils.cpp.obj
+
+src/util/StringUtils.i: src/util/StringUtils.cpp.i
+.PHONY : src/util/StringUtils.i
+
+# target to preprocess a source file
+src/util/StringUtils.cpp.i:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/util/StringUtils.cpp.i
+.PHONY : src/util/StringUtils.cpp.i
+
+src/util/StringUtils.s: src/util/StringUtils.cpp.s
+.PHONY : src/util/StringUtils.s
+
+# target to generate assembly for a file
+src/util/StringUtils.cpp.s:
+	$(MAKE) -f CMakeFiles\jkt.dir\build.make CMakeFiles/jkt.dir/src/util/StringUtils.cpp.s
+.PHONY : src/util/StringUtils.cpp.s
+
 src/util/Tableau.obj: src/util/Tableau.cpp.obj
 .PHONY : src/util/Tableau.obj
 
@@ -3716,6 +4388,9 @@ help:
 	@echo ... src/menu/OpenSceneView.obj
 	@echo ... src/menu/OpenSceneView.i
 	@echo ... src/menu/OpenSceneView.s
+	@echo ... src/menu/PluginsManagementView.obj
+	@echo ... src/menu/PluginsManagementView.i
+	@echo ... src/menu/PluginsManagementView.s
 	@echo ... src/menu/ProgressBarView.obj
 	@echo ... src/menu/ProgressBarView.i
 	@echo ... src/menu/ProgressBarView.s
@@ -3725,6 +4400,72 @@ help:
 	@echo ... src/menu/Viewer.obj
 	@echo ... src/menu/Viewer.i
 	@echo ... src/menu/Viewer.s
+	@echo ... src/plugin/PluginContext.obj
+	@echo ... src/plugin/PluginContext.i
+	@echo ... src/plugin/PluginContext.s
+	@echo ... src/plugin/PluginEngine.obj
+	@echo ... src/plugin/PluginEngine.i
+	@echo ... src/plugin/PluginEngine.s
+	@echo ... src/plugin/api/gui/PluginBox.obj
+	@echo ... src/plugin/api/gui/PluginBox.i
+	@echo ... src/plugin/api/gui/PluginBox.s
+	@echo ... src/plugin/api/gui/PluginButton.obj
+	@echo ... src/plugin/api/gui/PluginButton.i
+	@echo ... src/plugin/api/gui/PluginButton.s
+	@echo ... src/plugin/api/gui/PluginCheckbox.obj
+	@echo ... src/plugin/api/gui/PluginCheckbox.i
+	@echo ... src/plugin/api/gui/PluginCheckbox.s
+	@echo ... src/plugin/api/gui/PluginGuiController.obj
+	@echo ... src/plugin/api/gui/PluginGuiController.i
+	@echo ... src/plugin/api/gui/PluginGuiController.s
+	@echo ... src/plugin/api/gui/PluginNotebook.obj
+	@echo ... src/plugin/api/gui/PluginNotebook.i
+	@echo ... src/plugin/api/gui/PluginNotebook.s
+	@echo ... src/plugin/api/gui/PluginNumeric.obj
+	@echo ... src/plugin/api/gui/PluginNumeric.i
+	@echo ... src/plugin/api/gui/PluginNumeric.s
+	@echo ... src/plugin/api/gui/PluginPanel.obj
+	@echo ... src/plugin/api/gui/PluginPanel.i
+	@echo ... src/plugin/api/gui/PluginPanel.s
+	@echo ... src/plugin/api/gui/PluginTab.obj
+	@echo ... src/plugin/api/gui/PluginTab.i
+	@echo ... src/plugin/api/gui/PluginTab.s
+	@echo ... src/plugin/api/gui/PluginWindow.obj
+	@echo ... src/plugin/api/gui/PluginWindow.i
+	@echo ... src/plugin/api/gui/PluginWindow.s
+	@echo ... src/plugin/lua/LuaGlobalMethods.obj
+	@echo ... src/plugin/lua/LuaGlobalMethods.i
+	@echo ... src/plugin/lua/LuaGlobalMethods.s
+	@echo ... src/plugin/lua/LuaUtils.obj
+	@echo ... src/plugin/lua/LuaUtils.i
+	@echo ... src/plugin/lua/LuaUtils.s
+	@echo ... src/plugin/lua/proxy/cfg/PluginConfigurationProxy.obj
+	@echo ... src/plugin/lua/proxy/cfg/PluginConfigurationProxy.i
+	@echo ... src/plugin/lua/proxy/cfg/PluginConfigurationProxy.s
+	@echo ... src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.obj
+	@echo ... src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.i
+	@echo ... src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.s
+	@echo ... src/plugin/lua/proxy/gui/PluginBoxProxy.obj
+	@echo ... src/plugin/lua/proxy/gui/PluginBoxProxy.i
+	@echo ... src/plugin/lua/proxy/gui/PluginBoxProxy.s
+	@echo ... src/plugin/lua/proxy/gui/PluginButtonProxy.obj
+	@echo ... src/plugin/lua/proxy/gui/PluginButtonProxy.i
+	@echo ... src/plugin/lua/proxy/gui/PluginButtonProxy.s
+	@echo ... src/plugin/lua/proxy/gui/PluginCheckboxProxy.obj
+	@echo ... src/plugin/lua/proxy/gui/PluginCheckboxProxy.i
+	@echo ... src/plugin/lua/proxy/gui/PluginCheckboxProxy.s
+	@echo ... src/plugin/lua/proxy/gui/PluginNotebookProxy.obj
+	@echo ... src/plugin/lua/proxy/gui/PluginNotebookProxy.i
+	@echo ... src/plugin/lua/proxy/gui/PluginNotebookProxy.s
+	@echo ... src/plugin/lua/proxy/gui/PluginNumericProxy.obj
+	@echo ... src/plugin/lua/proxy/gui/PluginNumericProxy.i
+	@echo ... src/plugin/lua/proxy/gui/PluginNumericProxy.s
+	@echo ... src/plugin/lua/proxy/gui/PluginTabProxy.obj
+	@echo ... src/plugin/lua/proxy/gui/PluginTabProxy.i
+	@echo ... src/plugin/lua/proxy/gui/PluginTabProxy.s
+	@echo ... src/plugin/lua/proxy/gui/PluginWindowProxy.obj
+	@echo ... src/plugin/lua/proxy/gui/PluginWindowProxy.i
+	@echo ... src/plugin/lua/proxy/gui/PluginWindowProxy.s
 	@echo ... src/reseau/Client.obj
 	@echo ... src/reseau/Client.i
 	@echo ... src/reseau/Client.s
@@ -3749,9 +4490,15 @@ help:
 	@echo ... src/service/InformationService.obj
 	@echo ... src/service/InformationService.i
 	@echo ... src/service/InformationService.s
+	@echo ... src/service/LuaService.obj
+	@echo ... src/service/LuaService.i
+	@echo ... src/service/LuaService.s
 	@echo ... src/service/MapService.obj
 	@echo ... src/service/MapService.i
 	@echo ... src/service/MapService.s
+	@echo ... src/service/dto/AdvancedConfigurationDto.obj
+	@echo ... src/service/dto/AdvancedConfigurationDto.i
+	@echo ... src/service/dto/AdvancedConfigurationDto.s
 	@echo ... src/service/dto/AseFileInformationDto.obj
 	@echo ... src/service/dto/AseFileInformationDto.i
 	@echo ... src/service/dto/AseFileInformationDto.s
@@ -3806,6 +4553,12 @@ help:
 	@echo ... src/spatial/geo/ChanTex.obj
 	@echo ... src/spatial/geo/ChanTex.i
 	@echo ... src/spatial/geo/ChanTex.s
+	@echo ... src/spatial/geo/EntryPoint.obj
+	@echo ... src/spatial/geo/EntryPoint.i
+	@echo ... src/spatial/geo/EntryPoint.s
+	@echo ... src/spatial/geo/EntryPointMaker.obj
+	@echo ... src/spatial/geo/EntryPointMaker.i
+	@echo ... src/spatial/geo/EntryPointMaker.s
 	@echo ... src/spatial/geo/Geo.obj
 	@echo ... src/spatial/geo/Geo.i
 	@echo ... src/spatial/geo/Geo.s
@@ -3872,6 +4625,9 @@ help:
 	@echo ... src/util/GenRef.obj
 	@echo ... src/util/GenRef.i
 	@echo ... src/util/GenRef.s
+	@echo ... src/util/StringUtils.obj
+	@echo ... src/util/StringUtils.i
+	@echo ... src/util/StringUtils.s
 	@echo ... src/util/Tableau.obj
 	@echo ... src/util/Tableau.i
 	@echo ... src/util/Tableau.s

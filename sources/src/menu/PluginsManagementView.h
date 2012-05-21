@@ -13,10 +13,6 @@ class PluginsManagementView : public View
 {
 	AG_Scrollview* _scrollview;
 	std::vector<AG_Box*> _pluginBoxs;
-	std::vector<AG_Button*> _pluginActivateButtons;
-	std::vector<AG_Button*> _pluginDeactivateButtons;
-	std::vector<AG_Button*> _pluginExecuteButtons;
-	std::vector<AG_Label*> _pluginLabels;
 	std::vector<std::string> _pluginNames;
 public:
 	PluginsManagementView(const AG_EventFn controllerCallback);

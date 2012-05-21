@@ -39,7 +39,6 @@ public:
 		PluginsManagementAction,
 		PluginActivateAction,
 		PluginDeactivateAction,
-		PluginExecuteAction,
 		DebugAction,
 		AgarConfigurationAction
 	};

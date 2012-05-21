@@ -14,9 +14,9 @@ MainMenuView::MainMenuView(const AG_EventFn controllerCallback, Viewer* agarView
 :View(controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
-    AG_WindowSetCaption(m_window, "Menu principal");
+	AG_WindowSetCaption(m_window, "Menu principal");
 
-    _buttonOuvrirScene = AG_ButtonNewFn(m_window, 0, "Ouvrir une scène", controllerCallback, "%i", Controller::OpenSceneAction);
+    _buttonOuvrirScene = AG_ButtonNewFn(m_window, 0, "Ouvrir une scene", controllerCallback, "%i", Controller::OpenSceneAction);
 	_buttonMultijoueurs = AG_ButtonNewFn(m_window, 0, "Multi-joueurs", controllerCallback, "%i", Controller::MultijoueursAction);
 	_buttonConfiguration = AG_ButtonNewFn(m_window, 0, "Configuration", controllerCallback, "%i", Controller::ConfigurationAction);
 	_About = AG_ButtonNewFn(m_window, 0, "A propos", controllerCallback, "%i", Controller::AboutAction);
@@ -32,7 +32,7 @@ MainMenuView::MainMenuView(const AG_EventFn controllerCallback, Viewer* agarView
     AG_ExpandHoriz(_debug);
     AG_ExpandHoriz(_buttonQuitter);
 
-    AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);
+    AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 25, 50);
     hide();
 }
 

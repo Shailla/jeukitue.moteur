@@ -24,15 +24,18 @@ extern "C" {
 namespace JktPlugin {
 
 class PluginEngine {
-	std::map<string, PluginContext*> _pluginMap;
+	static std::map<std::string, PluginContext*> _mapNamePlugin;
+	static std::map<const lua_State*, PluginContext*> _mapLuaContext;
 
 public:
 	PluginEngine();
 	virtual ~PluginEngine();
 
-	void activatePlugin(const string& pluginName);
-	void deactivatePlugin(const string& pluginName);
-	void executePlugin(const string& pluginName);
+	void activatePlugin(std::string& pluginName);
+	void deactivatePlugin(std::string& pluginName);
+
+	static PluginContext* getPluginContext(std::string& pluginName);
+	static PluginContext* getPluginContext(const lua_State* L);
 };
 
 } /* namespace JktPlugin */

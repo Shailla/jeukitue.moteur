@@ -38,8 +38,7 @@ extern CReseau Reseau;
 
 #define Pi 3.14159265f			//nombre pi pour les calculs
 
-CGame::CGame()
-{
+CGame::CGame() {
 	m_Mode = JKT_MODE_PARTIE_NULL;
 
 	pTabIndexPlayer = NULL;	// Pas de liste de joueurs
@@ -48,28 +47,23 @@ CGame::CGame()
 	m_bGravite = true;		// Par défaut la gravité est active
 }
 
-bool CGame::isModeServer()
-{
+bool CGame::isModeServer() {
 	return m_Mode == JKT_MODE_PARTIE_SERVER;
 }
 
-bool CGame::isModeClient()
-{
+bool CGame::isModeClient() {
 	return m_Mode == JKT_MODE_PARTIE_CLIENT;
 }
 
-bool CGame::isModeLocal()
-{
+bool CGame::isModeLocal() {
 	return m_Mode == JKT_MODE_PARTIE_LOCAL;
 }
 
-bool CGame::isModeNull()
-{
+bool CGame::isModeNull() {
 	return m_Mode == JKT_MODE_PARTIE_NULL;
 }
 
-void CGame::setStatutClient( JktNet::StatutClient statut )
-{
+void CGame::setStatutClient( JktNet::StatutClient statut ) {
 TRACE().p( TRACE_ERROR, "CGame::setStatusClient(status=%d) begin%T", statut, this );
 
 	Reseau.setStatutClient( statut );
@@ -77,8 +71,7 @@ TRACE().p( TRACE_ERROR, "CGame::setStatusClient(status=%d) begin%T", statut, thi
 TRACE().p( TRACE_ERROR, "CGame::setStatusClient() end%T", this );
 }
 
-JktNet::StatutClient CGame::getStatutClient()
-{
+JktNet::StatutClient CGame::getStatutClient() {
 TRACE().p( TRACE_ERROR, "CGame::getStatutClient() begin%T", this );
 
 	JktNet::StatutClient statut;
@@ -91,24 +84,21 @@ TRACE().p( TRACE_ERROR, "CGame::getStatutClient() -> %d end%T", statut, this );
 	return statut;
 }
 
-void CGame::setPlayerList(int nbr)
-{
+void CGame::setPlayerList(int nbr) {
 	if( pTabIndexPlayer )
 		delete pTabIndexPlayer;
 
 	pTabIndexPlayer = new CTableauIndex<CPlayer>( nbr, true );
 }
 
-void CGame::quit()
-{
+void CGame::quit() {
 	if(pTabIndexPlayer)
 		delete pTabIndexPlayer;
 
 	pTabIndexPlayer = 0;
 }
 
-bool CGame::openMap( const string &nomFichierMap ) throw(JktUtils::CErreur)
-{
+bool CGame::openMap(const string &nomFichierMap) throw(JktUtils::CErreur) {
 TRACE().p( TRACE_INFO, "CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(), this );
 
 	bool result = true;
@@ -135,38 +125,34 @@ void CGame::changeActiveMap(JktMoteur::CMap* map) {
 	m_pMap = map;
 }
 
-void CGame::setStatutServer( JktNet::StatutServer statut )
-{
+void CGame::setStatutServer(JktNet::StatutServer statut) {
 	if( m_Mode==JKT_MODE_PARTIE_SERVER )
 		Reseau.getServer()->setStatut( statut );
 }
 
-JktNet::StatutServer CGame::getStatutServer()
-{
+JktNet::StatutServer CGame::getStatutServer() {
 	if( m_Mode==JKT_MODE_PARTIE_SERVER )
 		return Reseau.getServer()->getStatut();
 	else
 		return JKT_STATUT_SERVER_NULL;
 }
 
-void CGame::Quit()
-{
+void CGame::Quit() {
 	m_Mode = JKT_MODE_PARTIE_NULL;
 
 	m_Erwin = 0;		// Oublie qu'il y a eu un joueur principal
 
-	if( m_pMap )
-	{
+	if( m_pMap ) {
 		delete m_pMap;
 		m_pMap = 0;
 	}
 
 	cout << "\nDestruction des joueurs begin";
 	int curseur = -1;
-	if( pTabIndexPlayer )
+
+	if(pTabIndexPlayer)
 	{
-		while( pTabIndexPlayer->bSuivant( curseur ) )
-		{
+		while( pTabIndexPlayer->bSuivant(curseur) ) {
 			cout << "\nDestruction d'un joueur";
 			//delete pTabIndexPlayer->operator []( curseur );
 		}
@@ -180,23 +166,19 @@ void CGame::Quit()
 	m_Mode = JKT_MODE_PARTIE_NULL;	// Passe effectivemtn en mode 'aucune partie en cours'
 }
 
-void CGame::setModeNull()
-{
+void CGame::setModeNull() {
 	m_Mode = JKT_MODE_PARTIE_NULL;
 }
 
-void CGame::setModeLocal()
-{
+void CGame::setModeLocal() {
 	m_Mode = JKT_MODE_PARTIE_LOCAL;
 }
 
-void CGame::setModeClient()
-{
+void CGame::setModeClient() {
 	m_Mode = JKT_MODE_PARTIE_CLIENT;
 }
 
-void CGame::setModeServer()
-{
+void CGame::setModeServer() {
 	m_Mode = JKT_MODE_PARTIE_SERVER;
 }
 
@@ -206,8 +188,7 @@ JktNet::CClient *CGame::getClient()
 JktNet::CServer *CGame::getServer()
 {	return Reseau.getServer();		}
 
-void CGame::Refresh()
-{
+void CGame::Refresh() {
 		// Rafraichissement de la map
 	m_pMap->Refresh( this );
 
@@ -234,13 +215,11 @@ void CGame::GereContactPlayers()	// Gère les contacts de tous les joueurs avec l
 	}
 }
 
-void CGame::AffichePlayers()
-{
+void CGame::AffichePlayers() {
 	CPlayer *player;
 	int curseur = -1;
 
-	while( pTabIndexPlayer->bSuivant(curseur) )
-	{
+	while( pTabIndexPlayer->bSuivant(curseur) ) {
 		player = pTabIndexPlayer->operator [](curseur);
 
 		player->Affiche(); 				//affiche un seul joueur pour le moment
@@ -250,9 +229,10 @@ void CGame::AffichePlayers()
 
 void CGame::AfficheProjectils()	// Affiche tous les projectils
 {
-		// Rafraichissement des projectils des joueurs
+	// Rafraichissement des projectils des joueurs
 	CPlayer *player;
 	int curseur = -1;
+
 	while( pTabIndexPlayer->bSuivant( curseur ) )	// Pour chaque joueur
 	{
 		player = pTabIndexPlayer->operator [](curseur);
@@ -261,25 +241,21 @@ void CGame::AfficheProjectils()	// Affiche tous les projectils
 	}
 }
 
-CPlayer *CGame::Erwin()
-{
+CPlayer *CGame::Erwin() {
 	return m_Erwin;
 }
 
-void CGame::Erwin( CPlayer *erwin )
-{
+void CGame::Erwin(CPlayer *erwin) {
 	m_Erwin = erwin;
 }
 
-void CGame::deleteErwin()
-{
+void CGame::deleteErwin() {
 	if( m_Erwin )
 		delete m_Erwin;
 	m_Erwin = 0;
 }
 
-JktMoteur::CMap *CGame::getMap()
-{
+JktMoteur::CMap *CGame::getMap() {
 	return m_pMap;
 }
 
@@ -289,8 +265,7 @@ void CGame::afficheToutesTextures( int x, int y ) const		// Affiche à l'écran to
 		m_pMap->afficheToutesTextures( x, y );
 }
 
-void CGame::afficheViseur(int x, int y) const
-{
+void CGame::afficheViseur(int x, int y) const {
 		// Affichage du focus sur l'arme active
 	glDisable( GL_TEXTURE_2D );
 	glDepthMask( GL_FALSE );
@@ -318,20 +293,17 @@ void CGame::afficheViseur(int x, int y) const
 	glPopMatrix();
 }
 
-void CGame::deplaceTousPlayer()
-{
+void CGame::deplaceTousPlayer() {
 	CPlayer *player;
 	int curseur = -1;
 
-	while( pTabIndexPlayer->bSuivant( curseur ) )
-	{
+	while( pTabIndexPlayer->bSuivant(curseur) ) {
 		player = pTabIndexPlayer->operator [](curseur);
 		player->deplace();
 	}
 }
 
-void CGame::faitTousRequetesClavier()
-{
+void CGame::faitTousRequetesClavier() {
 	CPlayer *player;
 	int curseur = -1;
 
@@ -342,8 +314,7 @@ void CGame::faitTousRequetesClavier()
 	}
 }
 
-void CGame::faitTousPlayerGravite()
-{
+void CGame::faitTousPlayerGravite() {
 	int curseur = -1;
 	CPlayer *player;			//Prends le premier player
 
@@ -354,10 +325,8 @@ void CGame::faitTousPlayerGravite()
 	}
 }
 
-void CGame::timer()
-{
-	if( m_Erwin )
-	{
+void CGame::timer() {
+	if( m_Erwin ) {
 		if( m_bGravite )			// Si la gravité est active
 			faitTousPlayerGravite();
 
@@ -373,12 +342,10 @@ void CGame::timer()
 	deplaceTousPlayer();	//déplace tous les joueurs de leurs vitesses
 }
 
-void CGame::Gravite(bool gravite)
-{
+void CGame::Gravite(bool gravite) {
 	m_bGravite = gravite;
 }
 
-bool CGame::Gravite() const
-{
+bool CGame::Gravite() const {
 	return m_bGravite;
 }

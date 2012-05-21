@@ -5,19 +5,68 @@
  *      Author: Erwin
  */
 
+using namespace std;
+
+#include <agar/core.h>
+
 #include "plugin/PluginContext.h"
 
 namespace JktPlugin {
 
-PluginContext::PluginContext(lua_State* luaState) {
-	_luaState = luaState;
+const char* PluginContext::LOG_USER_PREFIX = 		"USER       : ";
+const char* PluginContext::LOG_INFO_PREFIX = 		"INFO       : ";
+const char* PluginContext::LOG_ERROR_PREFIX = 		"ERREUR     : ";
+const char* PluginContext::LOG_ERROR_LUA_PREFIX = 	"ERREUR LUA : ";
+
+PluginContext::PluginContext(const string& pluginName, const string& pluginDirectory) : _pluginName(pluginName) {
+	// TODO Gérer l'erreur d'ouverture du fichier de log
+	string pluginLogFile = string(pluginDirectory).append(pluginName).append(".log");
+	_logFile.open(pluginLogFile.c_str());
 }
 
 PluginContext::~PluginContext() {
+	// Fermeture propre du fichier de logs du plugin
+	_logFile.flush();
+	_logFile.close();
 }
 
 lua_State* PluginContext::getLuaState() {
 	return _luaState;
+}
+
+void PluginContext::setLuaState(lua_State* luaState) {
+	_luaState = luaState;
+}
+
+/**
+ * Emet une trace demandé par le script Lua dans le fichier de log du plugin.
+ */
+void PluginContext::logUser(const string& trace) {
+	_logFile << endl << LOG_USER_PREFIX << trace.c_str() << flush;
+}
+
+/**
+ * Emet une trace d'information dans le fichier de log du plugin.
+ */
+void PluginContext::logInfo(const string& trace) {
+	_logFile << endl << LOG_INFO_PREFIX << trace.c_str() << flush;
+}
+
+/**
+ * Emet une trace d'erreur dans le fichier de log du plugin.
+ */
+void PluginContext::logError(const string& trace) {
+	_logFile << endl << LOG_ERROR_PREFIX << trace.c_str() << flush;
+}
+
+/**
+ * Si une erreur Lua s'est produite alors émet une trace dans le fichier de log du plugin.
+ */
+void PluginContext::logLuaError(const int status) {
+	if (status != 0) {
+		_logFile << endl << LOG_ERROR_LUA_PREFIX << lua_tostring(_luaState, -1) << flush;
+		lua_pop(_luaState, 1);
+	}
 }
 
 } /* namespace JktPlugin */

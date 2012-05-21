@@ -23,29 +23,30 @@ namespace JktSon
 	class CReqSon;
 }
 
-class CPlayer
-{
+class CPlayer {
+	static bool _contourVisibility; 		// Affiche ou non un ellipsoïde dessinant les contours physiques du joueur
+	static int m_TexArmes;	// Textures de l'icone des armes
+
 	CClavier *m_pClavier;	//pointeur sur la class des requêtes clavier
 
-		//POINTEURS SUR LES FONCTIONS SPECIALES
+	//POINTEURS SUR LES FONCTIONS SPECIALES
 	void (*actionFunc)(CPlayer *player);	//fonction périodique à réaliser (gravité par exemple)
 	void (*contactFunc)(CPlayer *player, float *normal, float distanceW); //focntion agissant lors d'un contact avec la map
 	int m_ArmeActif;		// Numéro de l'arme actuellement active
 	int m_NbrArmes;			// Nombre d'armes
-	static int m_TexArmes;	// Textures de l'icone des armes
 
 	JktUtils::Tableau<CProjectil> TabProjectil;		// Liste des projectils de ce joueur
 
 	JktSon::CSon* ID_Cri;
 	JktSon::CReqSon* ID_ReqCri;	// Requete son de cri du personnage
 
-		// Position, vitesse et orientation du joueur
+	// POSITION, VITESSE ET ORIENTATION DU JOUEUR
 	float m_Position[3];		// Vecteur position du joueur
 	float m_Vitesse[3];			// Vecteur vitesse du joueur
 	float m_Teta;				// Orientation du joueur par rapport à la verticale
 	float m_Phi;				// Orientation du joueur par rapport au plan horizontal
 
-		// Position et orientation du point de vue par rapport au joueur
+	// POSITION ET ORIENTATION DU POINT DE VUE PAR RAPPORT AU JOUEUR
 	float m_TetaVue;
 	float m_PhiVue;
 	float m_PosVue[3];
@@ -90,7 +91,6 @@ public :
 	void Skin( JktMoteur::CMap *skin );
 	void setCri( const char *nomFichier );					// Indique le son du cri du joueur
 
-		// FONCTIONS
 private:
 	void createClavier();	// Crée la gestion par clavier du joueur
 public:
@@ -98,23 +98,23 @@ public:
 	void initGL();
 	void freeGL();
 
-	CClavier *getClavier();	// Retourne le pointeur sur la classe clavier du joueur
-	void exeActionFunc();	// Exécute l'action périodique associée au joueur
+	CClavier *getClavier();		// Retourne le pointeur sur la classe clavier du joueur
+	void exeActionFunc();		// Exécute l'action périodique associée au joueur
 	void exeContactFunc( float *normal, float distanceW);	// Exécute fonction gestion contacts avec joueur
-	void Affiche();			// Fonction d'affichage du joueur
+	void Affiche();				// Fonction d'affichage du joueur
 
 	void ActiveArmeUp();		// Rends l'arme suivante active
 	void ActiveArmeDown();		// Rends l'arme précédente active
 	void AfficheIconesArmes();
 	int ArmeActif();			// Renvoi le numéro de l'arme active
 	void AfficheProjectils();	// Affiche les projectils lancés par ce joueur
-		// INTERACTIONS
-	void tuer();	// Tue le joueur
+
+	// INTERACTIONS
+	void tuer();				// Tue le joueur
 
 		//FONCTIONS DE MISE EN PLACE DES FONCTIONS SPECIALES
 	void changeAction(void (*action)(CPlayer *player));//change la fonction à effectuer par défaut
-	void changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW));//change la fonction à effectuer lors
-														//d'un contact avec la map
+	void changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW));//change la fonction à effectuer lors d'un contact avec la map
 	void deplace();
 	void faitRequeteClavier();
 };

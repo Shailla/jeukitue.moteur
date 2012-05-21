@@ -18,8 +18,7 @@ using namespace std;
 namespace JktMoteur
 {
 
-void contactPlayer(CPlayer *player, float *normal, float distanceW)
-{
+void contactPlayer(CPlayer *player, float *normal, float distanceW) {
 	float vitesse[3];
 	player->getVitesse( vitesse );
 	float caca = -(vitesse[0]*normal[0])

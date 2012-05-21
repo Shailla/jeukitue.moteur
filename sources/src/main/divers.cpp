@@ -34,8 +34,7 @@ using namespace JktSon;
 
 extern JktSon::CDemonSons *DemonSons;
 
-void quit_game()
-{
+void quit_game() {
 TRACE().p( TRACE_OTHER, "quit_game()" );
 	cerr << endl << "quit_game()";
 	exit(0);
@@ -65,8 +64,7 @@ TRACE().p( TRACE_OTHER, "quit_game(code=%d,txt=%s)", code, txt.c_str() );
 	exit( code );
 }
 
-void quit_JKT()
-{
+void quit_JKT() {
 TRACE().p( TRACE_OTHER, "quit_JKT()" );
 	string trace1 = "Derniere erreur FMOD : ";
 	trace1 += FMOD_ErrorString(FSOUND_GetError());
@@ -105,14 +103,12 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 	cout << "Erreur OpenGL : " << gluErrorString(glGetError());
 }
 
-bool checkEventsForIntro( void )		// Vérifie si 'escape' ou le bouton souris ont été frappés
+bool checkEventsForIntro(void)		// Vérifie si 'escape' ou le bouton souris ont été frappés
 {									// true si c'est le cas, false sinon
     SDL_Event event;
 
-    while( SDL_PollEvent( &event ) )
-	{
-        switch( event.type )
-		{
+    while( SDL_PollEvent( &event ) ) {
+        switch( event.type ) {
  		case SDL_MOUSEBUTTONDOWN:	// Handle mouse button presses
 			if( event.button.button==SDL_BUTTON_LEFT )			// Si le bouton de gauche
 				if( event.button.type==SDL_MOUSEBUTTONDOWN )	// est préssé
@@ -143,8 +139,7 @@ CSon* sonEspace;		// Son frappe de la touche espace clavier
 CSon* sonHurlement;		// Son hurlement du sauveur de la planète
 
 
-void load_Intro( int width, int height )
-{
+void load_Intro( int width, int height ) {
 TRACE().p( TRACE_OTHER, "load_Intro(width=%d,height=%d)", width, height );
 	string bruitChariot = "@Bruit\\chariot.wav";		// Chargement de la fonte de caractères
 	JktUtils::RessourcesLoader::getFileRessource(bruitChariot);
@@ -171,8 +166,7 @@ TRACE().p( TRACE_OTHER, "load_Intro(width=%d,height=%d)", width, height );
 }
 
 
-void load_IntroSub(const int width, const int height )
-{
+void load_IntroSub(const int width, const int height ) {
 TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	GLFont fonteIntro;
 	unsigned int texFonteIntro;
@@ -320,8 +314,8 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 		
 	fonteIntro.Begin();
 	glColor3f( 1.0, 1.0, 1.0 );
-	for( unsigned int i=0 ; i<str2.length() ; i++ )
-	{
+
+	for(unsigned int i=0 ; i<str2.length() ; i++) {
 		lettre = str2[ i ];
 
 		glClear( GL_COLOR_BUFFER_BIT );
@@ -329,14 +323,12 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 		if( i==0 )
 			lignes.push_back( "" );
 
-		if( (lettre=='\n') )
-		{
+		if( (lettre=='\n') ) {
 			DemonSons->Play( sonChariot );
 			lignes.push_back( "" );
 			SDL_Delay( 700 );
 		}
-		else
-		{
+		else {
 			if( lettre!=' ' )	// Si c'est pas un espace
 				DemonSons->Play( sonTouche );	// Envoie le son d'une frappe de touche clavier normale
 			else
@@ -347,6 +339,7 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 
 			// Affichage de tout le texte
 		vertical = height - 360.0f;
+
 		for( iter=lignes.begin() ; iter!=lignes.end() ; iter++ )	// Affiche chaque ligne
 		{
 			fonteIntro.DrawString( *iter, 1.2f, 20.0f, vertical );

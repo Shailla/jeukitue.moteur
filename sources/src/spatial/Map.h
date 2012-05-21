@@ -66,10 +66,9 @@ public:
 	void EchangeXY();							// Echange les coordonnées X et Y des objets géo du map
 	void EchangeXZ();							// Echange les coordonnées X et Z des objets géo du map
 	void EchangeYZ();							// Echange les coordonnées Y et Z des objets géo du map
-	void Scale(float scaleX, float sclaeY, float scaleZ);	// Homothétie sur les objets
-														// géo (ils sont multipliés par scale)
+	void Scale(float scaleX, float sclaeY, float scaleZ);	// Homothétie sur les objets géo (ils sont multipliés par scale)
 		// A VOIR Fonctions qui n'ont rien à faire ici
-	void GereContactPlayer(CPlayer *player);	// Gère tous les contacts entre la map et les joueurs
+	void GereContactPlayer(CPlayer *player);								// Gère tous les contacts entre la map et les joueurs
 	float GereLaserPlayer(float *pos, JktUtils::CV3D &Dir, float dist );	// Envoie d'un laser sur la map
 
 	void afficheToutesTextures(int x, int y);

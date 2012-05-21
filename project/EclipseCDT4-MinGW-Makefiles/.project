@@ -519,6 +519,11 @@
 			<location>H:/jkt/svn/trunk/moteur/sources/src/menu/OpenSceneView.cpp</location>
 		</link>
 		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginsManagementView.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/menu/PluginsManagementView.cpp</location>
+		</link>
+		<link>
 			<name>[Targets]/[exe] jkt/Source Files/ProgressBarView.cpp</name>
 			<type>1</type>
 			<location>H:/jkt/svn/trunk/moteur/sources/src/menu/ProgressBarView.cpp</location>
@@ -532,6 +537,116 @@
 			<name>[Targets]/[exe] jkt/Source Files/Viewer.cpp</name>
 			<type>1</type>
 			<location>H:/jkt/svn/trunk/moteur/sources/src/menu/Viewer.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginBox.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/api/gui/PluginBox.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginButton.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/api/gui/PluginButton.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginCheckbox.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/api/gui/PluginCheckbox.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginGuiController.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/api/gui/PluginGuiController.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginNotebook.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/api/gui/PluginNotebook.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginNumeric.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/api/gui/PluginNumeric.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginPanel.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/api/gui/PluginPanel.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginTab.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/api/gui/PluginTab.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginWindow.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/api/gui/PluginWindow.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/LuaGlobalMethods.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/lua/LuaGlobalMethods.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/LuaUtils.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/lua/LuaUtils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginConfigurationProxy.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/lua/proxy/cfg/PluginConfigurationProxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/AbstractPluginPanelProxy.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/lua/proxy/gui/AbstractPluginPanelProxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginBoxProxy.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/lua/proxy/gui/PluginBoxProxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginButtonProxy.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/lua/proxy/gui/PluginButtonProxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginCheckboxProxy.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/lua/proxy/gui/PluginCheckboxProxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginNotebookProxy.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/lua/proxy/gui/PluginNotebookProxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginNumericProxy.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/lua/proxy/gui/PluginNumericProxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginTabProxy.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/lua/proxy/gui/PluginTabProxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginWindowProxy.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/lua/proxy/gui/PluginWindowProxy.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginContext.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/PluginContext.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/PluginEngine.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/plugin/PluginEngine.cpp</location>
 		</link>
 		<link>
 			<name>[Targets]/[exe] jkt/Source Files/a_virer.cpp</name>
@@ -569,6 +684,11 @@
 			<location>H:/jkt/svn/trunk/moteur/sources/src/ressource/RessourcesLoader.cpp</location>
 		</link>
 		<link>
+			<name>[Targets]/[exe] jkt/Source Files/AdvancedConfigurationDto.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/service/dto/AdvancedConfigurationDto.cpp</location>
+		</link>
+		<link>
 			<name>[Targets]/[exe] jkt/Source Files/AseFileInformationDto.cpp</name>
 			<type>1</type>
 			<location>H:/jkt/svn/trunk/moteur/sources/src/service/dto/AseFileInformationDto.cpp</location>
@@ -587,6 +707,11 @@
 			<name>[Targets]/[exe] jkt/Source Files/InformationService.cpp</name>
 			<type>1</type>
 			<location>H:/jkt/svn/trunk/moteur/sources/src/service/InformationService.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/LuaService.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/service/LuaService.cpp</location>
 		</link>
 		<link>
 			<name>[Targets]/[exe] jkt/Source Files/MapService.cpp</name>
@@ -632,6 +757,16 @@
 			<name>[Targets]/[exe] jkt/Source Files/ChanTex.cpp</name>
 			<type>1</type>
 			<location>H:/jkt/svn/trunk/moteur/sources/src/spatial/geo/ChanTex.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/EntryPoint.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/spatial/geo/EntryPoint.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/EntryPointMaker.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/spatial/geo/EntryPointMaker.cpp</location>
 		</link>
 		<link>
 			<name>[Targets]/[exe] jkt/Source Files/Geo.cpp</name>
@@ -787,6 +922,11 @@
 			<name>[Targets]/[exe] jkt/Source Files/math_vectoriel.cpp</name>
 			<type>1</type>
 			<location>H:/jkt/svn/trunk/moteur/sources/src/util/math_vectoriel.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[exe] jkt/Source Files/StringUtils.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/sources/src/util/StringUtils.cpp</location>
 		</link>
 		<link>
 			<name>[Targets]/[exe] jkt/Source Files/Tableau.cpp</name>

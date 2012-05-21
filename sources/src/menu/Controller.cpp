@@ -211,21 +211,6 @@ void Controller::executeAction(AG_Event *event) {
 		}
 		break;
 
-	// Exécution d'un plugin
-	case PluginExecuteAction:
-		{
-			// Récupération du nom de la Map à ouvrir
-			int pluginNumber = AG_INT(2);
-			PluginsManagementView* view = (PluginsManagementView*)m_agarView->getView(Viewer::PLUGINS_MANAGEMENT_VIEW);
-			string pluginName = view->getPluginName(pluginNumber);
-
-			cout << endl << "Deactivate plugin : '" << pluginName << "'";
-
-			PluginEngine* pluginEngine = Fabrique::getPluginEngine();
-			pluginEngine->executePlugin(pluginName);
-		}
-		break;
-
 	// Menu de configuration d'Agar
 	case AgarConfigurationAction:
 		{

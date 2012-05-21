@@ -36,7 +36,7 @@ void GameDto::setPlayersMaxNumber(int playersMaxNumber) {
 	_playersMaxNumber = playersMaxNumber;
 }
 
-vector<CPlayer*> GameDto::getPlayers() {
+vector<CPlayer*>& GameDto::getPlayers() {
 	return _players;
 }
 

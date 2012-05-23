@@ -13,21 +13,18 @@ using namespace std;
 
 #include "photo.h"
 
-CPhoto::CPhoto( int x, int y )
-{	
-	m_Ptr = new Uint8[ x*y*3 ];
+CPhoto::CPhoto(int x, int y) {
+	m_Ptr = new Uint8[x*y*3];
 	m_X = x;
 	m_Y = y;
 }
 
-CPhoto::~CPhoto()			
-{	
+CPhoto::~CPhoto() {
 	if( m_Ptr )
 		delete[] m_Ptr;		
 }
 
-bool CPhoto::Save( string &nomFichier )
-{
+bool CPhoto::Save( string &nomFichier ) {
 	Uint32 rmask, gmask, bmask, amask;
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
     rmask = 0xff000000;
@@ -45,10 +42,8 @@ bool CPhoto::Save( string &nomFichier )
 	
 		// Mirroir sur l'image pour la remettre dans le bon sens
 	Uint8 a, b, c, d, e, f;
-	for( int i=0 ; i< m_Y-i-1 ; i++ )
-	{
-		for( int j=0 ; j < m_X ; j++ )
-		{
+	for( int i=0 ; i< m_Y-i-1 ; i++ ) {
+		for( int j=0 ; j < m_X ; j++ ) {
 			a = m_Ptr[ (i*m_X + j)*3 ];
 			b = m_Ptr[ (i*m_X + j)*3 + 1 ];
 			c = m_Ptr[ (i*m_X + j)*3 + 2 ];
@@ -69,14 +64,12 @@ bool CPhoto::Save( string &nomFichier )
 	}
 	
 	SDL_Surface *surface = SDL_CreateRGBSurfaceFrom( m_Ptr, m_X, m_Y, 24, m_X*3, rmask, gmask, bmask, amask );	
-	if( !surface )
-	{
+	if( !surface ) {
 		cerr << "\nErreur (CPhoto::SDL_CreateRGBSurfaceFrom) : " << SDL_GetError();
 		return false;
 	}
 	
-	if( SDL_SaveBMP( surface, nomFichier.c_str() ) == -1 )
-	{
+	if( SDL_SaveBMP( surface, nomFichier.c_str() ) == -1 ) {
 		cerr << "\nErreur (CPhoto::SDL_SaveBMP) : " << SDL_GetError() << nomFichier;
 		return false;
 	}

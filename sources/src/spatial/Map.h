@@ -13,8 +13,7 @@ class CPlayer;
 
 using namespace JktUtils;
 
-namespace JktMoteur
-{
+namespace JktMoteur {
 class CGeo;
 class CLight;
 class CMouve;
@@ -61,7 +60,7 @@ public:
 	void Add(CPorte *porte);		// Ajoute une porte à la map
 	void Add(CNavette *navette);	// Ajoute une navette à la map
 
-	bool Contact(const float pos[3], float dist);	// Indique s'il y a un triangle à une distance inférieure à 'dist' de la position 'pos'
+	bool Contact(const float pos[3], const float dist);	// Indique s'il y a un triangle à une distance inférieure à 'dist' de la position 'pos'
 
 	void EchangeXY();							// Echange les coordonnées X et Y des objets géo du map
 	void EchangeXZ();							// Echange les coordonnées X et Z des objets géo du map
@@ -71,7 +70,7 @@ public:
 	void GereContactPlayer(CPlayer *player);								// Gère tous les contacts entre la map et les joueurs
 	float GereLaserPlayer(float *pos, JktUtils::CV3D &Dir, float dist );	// Envoie d'un laser sur la map
 
-	void afficheToutesTextures(int x, int y);
+	void afficheToutesTextures(const int x, const int y);
 
 		// Mode sélection
 	void incrementeSelection();	// Sélectionne l'objet géo suivant

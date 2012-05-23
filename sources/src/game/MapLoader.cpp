@@ -67,7 +67,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 	console->println(string("Lecture du skin '").append(mapJoueurPrincipal).append("'...").c_str());
 	cout << string("Lecture du skin '").append(mapJoueurPrincipal).append("'...").c_str();
 
-	CMap *pMapJoueur = new CMap( mapJoueurPrincipal );
+	CMap *pMapJoueur = new CMap(mapJoueurPrincipal);
 	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 	console->println("Scaling du skin");
 	cout << "Scaling du skin";
@@ -77,7 +77,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 	console->println("Lecture du skin 'GrosBonhomme'...");
 	cout << "\nLecture du skin 'GrosBonhomme'...";
 
-	CMap *pMapJoueur2 = new CMap( "GrosBonhomme" );
+	CMap *pMapJoueur2 = new CMap("GrosBonhomme");
 	pMapJoueur2->EchangeXZ();					// Ajuste les coordonnées
 	console->println("Scaling du skin");
 	cout << "Scaling du skin";

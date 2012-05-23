@@ -83,4 +83,54 @@ int PluginConfigurationProxy::setPlayerOutlineVisibility(lua_State* L) {
 	return 0;
 }
 
+/**
+ * Indique si un cube d'1 mètre de côté est affiché, il sert à calibrer les dimensions dans la scène.
+ *    - Return 1 : boolean, true le cube d'un mètre est affiché, false sinon
+ */
+int PluginConfigurationProxy::isCubicMeterVisible(lua_State* L) {
+	LuaUtils::checkLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
+
+	lua_pushboolean(L, Config.Joueur.cubicMeterVisibility);
+
+	return 1;
+}
+
+/**
+ * Afficher ou non un cube d'1 mètre de côté est affiché, il sert à calibrer les dimensions dans la scène.
+ *    - Param 1 : boolean, true si un cube d'1 mètre de côté est affiché, false sinon
+ */
+int PluginConfigurationProxy::setCubicMeterVisibility(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_BOOLEAN)) {
+		bool cubicMeterVisibility = lua_toboolean(L, 1);
+		Config.Joueur.cubicMeterVisibility = cubicMeterVisibility;
+	}
+
+	return 0;
+}
+
+/**
+ * Indique si les axes d'1 mètre de côté sont affichés, ils servent à calibrer les dimensions dans la scène.
+ *    - Return 1 : boolean, true si les axes d'1 mètre de côté sont affichés, false sinon
+ */
+int PluginConfigurationProxy::isAxesMeterVisible(lua_State* L) {
+	LuaUtils::checkLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
+
+	lua_pushboolean(L, Config.Joueur.axesMeterVisibility);
+
+	return 1;
+}
+
+/**
+ * Afficher ou non les axes d'1 mètre de côté sont affichés, ils servent à calibrer les dimensions dans la scène.
+ *    - Param 1 : boolean, true si les axes d'1 mètre de côté sont affichés, false sinon
+ */
+int PluginConfigurationProxy::setAxesMeterVisibility(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_BOOLEAN)) {
+		bool axesMeterVisibility = lua_toboolean(L, 1);
+		Config.Joueur.axesMeterVisibility = axesMeterVisibility;
+	}
+
+	return 0;
+}
+
 } /* namespace JktPlugin */

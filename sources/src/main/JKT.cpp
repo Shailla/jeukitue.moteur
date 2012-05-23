@@ -157,8 +157,7 @@ Uint32 tempsTimer = 0;		// Temps pris par la fonction 'timer'
 Uint32 tempsDisplay = 0;	// Temps pris par la fonction 'display'
 
 
-class CMachin
-{
+class CMachin {
 public:
 	CMachin();
 
@@ -167,8 +166,7 @@ public:
 	CReqSon *req_son;
 };
 
-CMachin::CMachin()
-{
+CMachin::CMachin() {
 	position.X = 2.0f;
 	position.Y = 0.2f;
 	position.Z = 0.0f;
@@ -465,8 +463,7 @@ void afficheInfo( Uint32 tempsDisplay )
 	}
 }
 
-void display()	// Fonction principale d'affichage
-{
+void display() {		// Fonction principale d'affichage
 	Uint32 temps = SDL_GetTicks();	// Temps au début du réaffichage
 
 		// AFFICHAGE DES ELEMENTS 3D
@@ -544,21 +541,28 @@ void display()	// Fonction principale d'affichage
 		Game.AfficheProjectils();
 
 		// Dessine les axes dans la map	(sert au repérage pour la conception du jeu)
-		glLineWidth( 3 );
-		glBegin( GL_LINES );	// Déssine les axes X Y Z
-			glColor3f( 1.0f, 0.0f, 0.0f);	// Axe des X
-			glVertex3f( 1.0f, 0.0f, 0.0f);
-			glVertex3f( 0.0f, 0.0f, 0.0f);
-			glColor3f( 0.0f, 1.0f, 0.0f);	// Axe des Y
-			glVertex3f( 0.0f, 0.0f, 0.0f);
-			glVertex3f( 0.0f, 1.0f, 0.0f);
-			glColor3f( 0.0f, 0.0f, 1.0f);	// Axe des Z
-			glVertex3f( 0.0f, 0.0f, 0.0f);
-			glVertex3f( 0.0f, 0.0f, 1.0f);
-		glEnd();
+		if(Config.Joueur.axesMeterVisibility) {
+			glLineWidth( 3 );
+			glBegin(GL_LINES);	// Déssine les axes X Y Z
+				glColor3f( 1.0f, 0.0f, 0.0f);	// Axe des X
+				glVertex3f( 1.0f, 0.0f, 0.0f);
+				glVertex3f( 0.0f, 0.0f, 0.0f);
+				glColor3f( 0.0f, 1.0f, 0.0f);	// Axe des Y
+				glVertex3f( 0.0f, 0.0f, 0.0f);
+				glVertex3f( 0.0f, 1.0f, 0.0f);
+				glColor3f( 0.0f, 0.0f, 1.0f);	// Axe des Z
+				glVertex3f( 0.0f, 0.0f, 0.0f);
+				glVertex3f( 0.0f, 0.0f, 1.0f);
+			glEnd();
+		}
 
-		glColor3f( 1.0f, 0.2f, 0.2f );
-		gluSphere( gluNewQuadric(), 0.05, 16, 16 );
+		// Dessine les axes dans la map	(sert au repérage pour la conception du jeu)
+		if(Config.Joueur.cubicMeterVisibility) {
+			TODO
+		}
+
+		glColor3f(1.0f, 0.2f, 0.2f);
+		gluSphere(gluNewQuadric(), 0.05, 16, 16);
 
 		if( Game.Erwin() )
 			updateSon3D();	// Positionne le joueur et les objets bruyants dans l'espace sonore

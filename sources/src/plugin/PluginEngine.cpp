@@ -116,6 +116,12 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	lua_register(L, "isPlayerOutlineVisible", &PluginConfigurationProxy::isPlayerOutlineVisible);
 	lua_register(L, "setPlayerOutlineVisibility", &PluginConfigurationProxy::setPlayerOutlineVisibility);
 
+	lua_register(L, "isCubicMeterVisible", &PluginConfigurationProxy::isCubicMeterVisible);
+	lua_register(L, "setCubicMeterVisibility", &PluginConfigurationProxy::setCubicMeterVisibility);
+
+	lua_register(L, "isAxesMeterVisible", &PluginConfigurationProxy::isAxesMeterVisible);
+	lua_register(L, "setAxesMeterVisibility", &PluginConfigurationProxy::setAxesMeterVisibility);
+
 	lua_register(L, "log", &LuaGlobalMethods::log);
 
 	// Initialisation des classes dans Lua

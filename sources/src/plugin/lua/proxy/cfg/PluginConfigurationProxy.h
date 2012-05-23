@@ -28,6 +28,12 @@ public:
 
 	static int isPlayerOutlineVisible(lua_State* L);
 	static int setPlayerOutlineVisibility(lua_State* L);
+
+	static int isCubicMeterVisible(lua_State* L);
+	static int setCubicMeterVisibility(lua_State* L);
+
+	static int isAxesMeterVisible(lua_State* L);
+	static int setAxesMeterVisibility(lua_State* L);
 };
 
 } /* namespace JktPlugin */

@@ -105,16 +105,15 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() begin%T", this );
 TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() end%T", this );
 }
 
-void CMap::Affiche()	// Affiche tous les objets géo de du Map
-{
+void CMap::Affiche() {	// Affiche tous les objets géo de du Map
 	glEnableClientState( GL_VERTEX_ARRAY );
 
 	vector<CGeo*>::iterator iterGeo;
-	if(m_bSelection)
-	{
+
+	if(m_bSelection) {
 		int i=0;
-		for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
-		{
+
+		for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++) {
 			if(i != m_Selection)
 				(*iterGeo)->Affiche();			// Affichage de l'objet géo
 			else
@@ -123,8 +122,7 @@ void CMap::Affiche()	// Affiche tous les objets géo de du Map
 			i++;
 		}
 	}
-	else
-	{
+	else {
 		for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ ) {
 			(*iterGeo)->Affiche();			// Affichage de l'objet géo
 		}
@@ -147,17 +145,16 @@ void CMap::Add( CLight *light )
 	m_TabLight.push_back( light );	// Ajoute light à la liste des objets affichables
 }
 
-void CMap::incrementeSelection()
-{
+void CMap::incrementeSelection() {
 	m_Selection++;
-	if(m_Selection >= (int)m_TabGeo.size())
-	{
+	if(m_Selection >= (int)m_TabGeo.size()) {
 		m_Selection = 0;
 	}
 }
 
 void CMap::decrementeSelection() {
 	m_Selection--;
+
 	if(m_Selection < 0) {
 		m_Selection = (int)m_TabGeo.size()-1;
 
@@ -194,20 +191,19 @@ void CMap::Add( CPorte *porte ) {
 	m_TabMouve.push_back( porte );		// Ajoute porte à la liste des objets à rafraichir
 }
 
-void CMap::Add( CNavette *navette )
-{		// Une navette est avant tout un objet géo
+void CMap::Add( CNavette *navette ) {		// Une navette est avant tout un objet géo
 	m_TabGeo.push_back( navette );		// Ajoute porte à la liste des objets affichables
 	m_TabMouve.push_back( navette );	// Ajoute porte à la liste des objets à rafraichir
 }
 
-void CMap::GereContactPlayer( CPlayer *player )
-{
+void CMap::GereContactPlayer( CPlayer *player ) {
 	float pos[3];
-	player->getPosition( pos );
+	player->getPosition(pos);
 
 	vector<CGeo*>::iterator iterGeo;
+
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
-		(*iterGeo)->GereContactPlayer( pos, player );	// Gère les contacts entre l'objet géo et le joueur
+		(*iterGeo)->GereContactPlayer(pos, player);	// Gère les contacts entre l'objet géo et le joueur
 }
 
 float CMap::GereLaserPlayer( float *pos, CV3D &Dir, float dist )
@@ -884,29 +880,27 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::SaveFichierMap() Sauvegarde du fichier MAP Ok%
 	return true;
 }
 
-bool CMap::Contact( const float pos[3], float dist )
-{
+bool CMap::Contact(const float pos[3], const float dist) {
 	bool var = false;	// Pas de contact par défaut
 	vector<CGeo*>::iterator iterGeo;
-	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
-	{
+
+	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++) {
 		var = (*iterGeo)->Contact( pos, dist );
-		if( var )	// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
+
+		if(var)	// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
 			break;
 	}
 
 	return var;
 }
 
-void CMap::Refresh( CGame *game )
-{
+void CMap::Refresh(CGame *game) {
 	vector<CMouve*>::iterator iterMouve;
 	for( iterMouve=m_TabMouve.begin() ; iterMouve!=m_TabMouve.end() ; iterMouve++ )
 		(*iterMouve)->Refresh( game );
 }
 
-void CMap::afficheToutesTextures( int x, int y )
-{
+void CMap::afficheToutesTextures(const int x, const int y) {
 	glEnable( GL_TEXTURE_2D );
 	int nbrX = 0;
 	int nbrY = 0;

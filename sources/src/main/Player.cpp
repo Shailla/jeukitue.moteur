@@ -321,6 +321,8 @@ void CPlayer::Affiche() {
 	if(Config.Joueur.outlineVisibility)
 		gluSphere(gluNewQuadric(), 0.1f, 16, 16);
 
+	if(Config.Joueur.outlineVisibility)
+
 	// Affiche le skin du joueur s'il existe et si le jeu est configuré pour
 	if(Config.Joueur.skinVisibility)
 		if(m_pSkin)
@@ -368,13 +370,11 @@ void CPlayer::tuer() {
 		DemonSons->Play( ID_ReqCri );	// (Re)Joue le cri
 }
 
-void CPlayer::AfficheProjectils()	// Affiche tous les projectils
-{
+void CPlayer::AfficheProjectils() {		// Affiche tous les projectils
 	CProjectil *pro;
 
 	Tableau<CProjectil>::Adr *adr = TabProjectil.BeginAdr();
-	while( adr ) //tant que ce n'est pas le dernier objet géométrique de la liste
-	{
+	while( adr ) {		//tant que ce n'est pas le dernier objet géométrique de la liste
 		pro = adr->m_adrX;
 		pro->Affiche();			// Affichage de l'objet géo
 		adr = TabProjectil.Suivant( adr );	//Passe à l'objet géométrique suivant

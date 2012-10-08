@@ -23,10 +23,12 @@
 #include "menu/ConsoleView.h"
 #include "menu/ProgressBarView.h"
 #include "menu/PluginsManagementView.h"
+#include "menu/DebugMenuView.h"
+#include "menu/MapTreeView.h"
 
 Viewer::Viewer(AG_EventFn controllerCallback) {
 	// Initialisation des fenêtres
-	_views[MAIN_MENU_VIEW] = new MainMenuView(controllerCallback, this);
+	_views[MAIN_MENU_VIEW] = new MainMenuView(controllerCallback);
 	_views[ABOUT_VIEW] = new AboutView(controllerCallback, this);
 	_views[MULTIJOUEURS_VIEW] = new MultijoueursView(controllerCallback);
 	_views[CENTRALISATEUR_VIEW] = new CentralisateurView(controllerCallback);
@@ -43,6 +45,9 @@ Viewer::Viewer(AG_EventFn controllerCallback) {
 	_views[CONFIGURATION_JOUEUR_VIEW] = new ConfigurationJoueurView(controllerCallback);
 	_views[CONSOLE_VIEW] = new ConsoleView(controllerCallback);
 	_views[PROGRESS_BAR_VIEW] = new ProgressBarView(controllerCallback);
+	_views[DEBUG_MENU_VIEW] = new DebugMenuView(controllerCallback);
+	_views[MAP_TREE_VIEW] = new MapTreeView(controllerCallback);
+
 }
 
 Viewer::~Viewer(void) {
@@ -89,7 +94,8 @@ void Viewer::draw(void) {
     	AG_ObjectLock(win);
 
         if(win->visible) {
-        	AG_WidgetDraw(win);
+        	//AG_WidgetDraw(win);
+            AG_WindowDraw(win);
         }
 
         AG_ObjectUnlock(win);

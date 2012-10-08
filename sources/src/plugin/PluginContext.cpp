@@ -13,12 +13,14 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char* PluginContext::LOG_USER_PREFIX = 		"USER       : ";
-const char* PluginContext::LOG_INFO_PREFIX = 		"INFO       : ";
-const char* PluginContext::LOG_ERROR_PREFIX = 		"ERREUR     : ";
+const char* PluginContext::LOG_USER_PREFIX = 		"USER   : ";
+const char* PluginContext::LOG_INFO_PREFIX = 		"INFO   : ";
+const char* PluginContext::LOG_ERROR_PREFIX = 		"ERREUR : ";
 const char* PluginContext::LOG_ERROR_LUA_PREFIX = 	"ERREUR LUA : ";
 
-PluginContext::PluginContext(const string& pluginName, const string& pluginDirectory) : _pluginName(pluginName) {
+PluginContext::PluginContext(lua_State* luaState, const string& pluginName, const string& pluginDirectory) : _pluginName(pluginName) {
+	_luaState = luaState;
+
 	// TODO Gérer l'erreur d'ouverture du fichier de log
 	string pluginLogFile = string(pluginDirectory).append(pluginName).append(".log");
 	_logFile.open(pluginLogFile.c_str());
@@ -32,10 +34,6 @@ PluginContext::~PluginContext() {
 
 lua_State* PluginContext::getLuaState() {
 	return _luaState;
-}
-
-void PluginContext::setLuaState(lua_State* luaState) {
-	_luaState = luaState;
 }
 
 /**
@@ -56,7 +54,12 @@ void PluginContext::logInfo(const string& trace) {
  * Emet une trace d'erreur dans le fichier de log du plugin.
  */
 void PluginContext::logError(const string& trace) {
-	_logFile << endl << LOG_ERROR_PREFIX << trace.c_str() << flush;
+	// Récupère le numéro de la ligne en cours d'exécution dans le code LUA du plugin
+	lua_Debug ar;
+	lua_getstack(_luaState, 1, &ar);
+	lua_getinfo(_luaState, "l", &ar);
+
+	_logFile << endl << LOG_ERROR_PREFIX << "(ligne " << ar.currentline << ") " << trace.c_str() << flush;
 }
 
 /**

@@ -19,6 +19,7 @@ public:
 	static vector<string> getMaps(void);
 	static vector<string> getPlayerMaps(void);
 };
+
 }
 
 #endif

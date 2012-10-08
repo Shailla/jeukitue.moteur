@@ -67,20 +67,10 @@ void PluginEngine::activatePlugin(string& pluginName) {
 
 
 	/* ******************************************************************************
-	 * Création du logger du plugin
-	 * *****************************************************************************/
-
-	pluginContext = new PluginContext(pluginName, pluginDirectory);
-
-
-	/* ******************************************************************************
 	 * Initialisation Lua
 	 * *****************************************************************************/
 
-	pluginContext->logInfo("Démarrage de l'activation du plugin...");
-
 	lua_State* L = lua_open();
-
 	luaopen_io(L); 		// provides io.*
 	luaopen_base(L);
 	luaopen_table(L);
@@ -88,7 +78,12 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	luaopen_math(L);
 	luaopen_loadlib(L);
 
-	pluginContext->setLuaState(L);
+
+	/* ******************************************************************************
+	 * Création du contexte et logger du plugin
+	 * *****************************************************************************/
+
+	pluginContext = new PluginContext(L, pluginName, pluginDirectory);
 
 
 	/* ******************************************************************************
@@ -110,17 +105,8 @@ void PluginEngine::activatePlugin(string& pluginName) {
 
 	lua_register(L, "getScreenSize", &PluginConfigurationProxy::getScreenSize);
 
-	lua_register(L, "isPlayerSkinVisible", &PluginConfigurationProxy::isPlayerSkinVisible);
-	lua_register(L, "setPlayerSkinVisibility", &PluginConfigurationProxy::setPlayerSkinVisibility);
-
-	lua_register(L, "isPlayerOutlineVisible", &PluginConfigurationProxy::isPlayerOutlineVisible);
-	lua_register(L, "setPlayerOutlineVisibility", &PluginConfigurationProxy::setPlayerOutlineVisibility);
-
-	lua_register(L, "isCubicMeterVisible", &PluginConfigurationProxy::isCubicMeterVisible);
-	lua_register(L, "setCubicMeterVisibility", &PluginConfigurationProxy::setCubicMeterVisibility);
-
-	lua_register(L, "isAxesMeterVisible", &PluginConfigurationProxy::isAxesMeterVisible);
-	lua_register(L, "setAxesMeterVisibility", &PluginConfigurationProxy::setAxesMeterVisibility);
+	lua_register(L, "getConfigurationParameter", &PluginConfigurationProxy::getConfigurationParameter);
+	lua_register(L, "setConfigurationParameter", &PluginConfigurationProxy::setConfigurationParameter);
 
 	lua_register(L, "log", &LuaGlobalMethods::log);
 

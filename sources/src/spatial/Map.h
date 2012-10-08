@@ -25,18 +25,18 @@ class EntryPoint;
 
 class CMap
 {
-	vector<CGeo*> m_TabGeo;				// Liste des objets géométriques
-	vector<CMouve*> m_TabMouve;			// Liste des objets nécessitant une actualisation (portes,...)
+	vector<CGeo*> m_TabGeo;					// Liste des objets géométriques
+	vector<CMouve*> m_TabMouve;				// Liste des objets nécessitant une actualisation (portes,...)
 
-	bool Init() throw(JktUtils::CErreur);		// Initialisation de la CMap
+	bool Init() throw(JktUtils::CErreur);	// Initialisation de la CMap
 	bool Lit(const string &nomFichier);
 
-	int m_Selection;				// Object géo sélectionné
-	bool m_bSelection;				// Indique si le mode sélection est actif ou non
+	int m_Selection;						// Object géo sélectionné
+	bool m_bSelection;						// Indique si le mode sélection est actif ou non
 	vector<EntryPoint> _entryPoints;		// Liste des points d'entrée des joueurs sur la Map
 public:
-	vector<CLight*> m_TabLight;			// Liste des lumières
-	vector<CMaterial*> m_TabMaterial;	// Liste des matériaux A VOIR : devrait être membre privé
+	vector<CLight*> m_TabLight;				// Liste des lumières
+	vector<CMaterial*> m_TabMaterial;		// Liste des matériaux A VOIR : devrait être membre privé
 
 		// Constructeurs / destructeur
 	CMap();

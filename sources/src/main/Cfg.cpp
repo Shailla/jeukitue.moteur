@@ -571,9 +571,16 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
         exit( 1 );
     }
 
+	// Icone et titre
+	SDL_WM_SetCaption( "JKT 2010", "C'est un jeu qui tue !!!" );	// Titre et icon de la fenêtre
+
+	string iconeFichier = "@Icone/Icone.bmp";
+	JktUtils::RessourcesLoader::getFileRessource(iconeFichier);
+	SDL_WM_SetIcon( IMG_Load( iconeFichier.c_str() ), 0 );
+
+
     const SDL_VideoInfo* info = SDL_GetVideoInfo( );	// Let's get some video information
-    if( !info )
-	{
+    if( !info ) {
 		cerr << endl << "Error : Video query failed: " << SDL_GetError( ) << endl;
         exit( 1 );
     }
@@ -621,13 +628,6 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 	cout << endl << "blit_fill : " << info->blit_fill;
 	cout << endl << "video_mem : " << info->video_mem << endl;
 
-	// Icone et titre
-	SDL_WM_SetCaption( "JKT 2010", "C'est un jeu qui tue !!!" );	// Titre et icon de la fenêtre
-	
-	string iconeFichier = "@Icone/Icone.bmp";
-	JktUtils::RessourcesLoader::getFileRessource(iconeFichier);
-	SDL_WM_SetIcon( IMG_Load( iconeFichier.c_str() ), 0 );
-
     flags = SDL_OPENGL | SDL_RESIZABLE;
 
 	if( Fullscreen() )
@@ -648,10 +648,13 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 	}
 	else {
 	/* Print valid modes */
-		cout << endl << "Modes video disponibles : " << endl;
+		cout << endl << "Modes video disponibles : ";
+		bool isFirst = true;
 
-		for( int i=0 ; modes[i] ; ++i )
-			cout << "\t" << modes[i]->w << " x " << modes[i]->h << endl;
+		for( int i=0 ; modes[i] ; ++i ) {
+			isFirst?isFirst = false:cout << " ; ";
+			cout << "[" << modes[i]->w << "*" << modes[i]->h << "]";
+		}
 	}
 
 	if( !SDL_VideoModeOK(X, Y, bpp, flags) ) {

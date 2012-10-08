@@ -182,7 +182,6 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 
 	string introJKT = "@Fond\\intro_JKT2.jpg";
 	JktUtils::RessourcesLoader::getFileRessource(introJKT);
-	cout << "\nImage intro JKT : " << introJKT;
 	SDL_Surface *image1 = IMG_Load(introJKT.c_str());		// Lit le fichier image
 
 	if(image1 == 0) {

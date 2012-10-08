@@ -10,7 +10,7 @@ class Viewer;
 
 class AboutView : public View
 {
-    AG_Button* m_buttonRetour;
+    AG_Button* _buttonRetour;
 public:
     AboutView(const AG_EventFn controllerCallback, Viewer* agarView);
     ~AboutView(void);

@@ -20,20 +20,17 @@ namespace JktPlugin {
 
 class PluginConfigurationProxy {
 	PluginConfigurationProxy() {}		// Singleton
+
+	static const char* CFG_PARAM_SKIN_VISIBILITY;			// Paramètre de type booléen
+	static const char* CFG_PARAM_PLAYER_OUTLINE_VISIBILITY;	// Paramètre de type booléen
+	static const char* CFG_PARAM_CUBIC_METER_VISIBILITY;	// Paramètre de type booléen
+	static const char* CFG_PARAM_AXES_METER_VISIBILITY;		// Paramètre de type booléen
+
 public:
 	static int getScreenSize(lua_State *L);
 
-	static int isPlayerSkinVisible(lua_State* L);
-	static int setPlayerSkinVisibility(lua_State* L);
-
-	static int isPlayerOutlineVisible(lua_State* L);
-	static int setPlayerOutlineVisibility(lua_State* L);
-
-	static int isCubicMeterVisible(lua_State* L);
-	static int setCubicMeterVisibility(lua_State* L);
-
-	static int isAxesMeterVisible(lua_State* L);
-	static int setAxesMeterVisibility(lua_State* L);
+	static int getConfigurationParameter(lua_State* L);
+	static int setConfigurationParameter(lua_State* L);
 };
 
 } /* namespace JktPlugin */

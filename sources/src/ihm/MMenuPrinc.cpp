@@ -8,14 +8,6 @@
 #include "ihm/Menu.h"
 #include "util/Trace.h"
 
-class CMaterial;
-class CLight;
-class CMouve;
-class CGame;
-class CGeoObject;
-class CPorte;
-class CReseau;
-
 #include "main/Game.h"
 #include "main/Focus.h"
 
@@ -23,9 +15,9 @@ class CReseau;
 
 using namespace JktMenu;
 
-extern CGame Game;
 extern CFocus *pFocus;
 extern bool Aide;
+extern CGame Game;
 
 namespace JktMenu
 {
@@ -80,7 +72,7 @@ void lanceMenuPrinc(void *var)
 {
 TRACE().p( TRACE_MENU, "lanceMenuPrinc(var=%x)", var );
 
-	if( Game.isModeNull() )
+	if(Game.isModeNull())
 		CDlg::SetMenuActif( &MenuPrinc );
 	else
 		CDlg::SetMenuActif( &MenuPrinc2 );

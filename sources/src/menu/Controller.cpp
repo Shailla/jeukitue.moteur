@@ -218,7 +218,22 @@ void Controller::executeAction(AG_Event *event) {
 		}
 		break;
 
+	// Affiche le menu de debug
 	case DebugAction:
+		{
+			m_agarView->showView(Viewer::DEBUG_MENU_VIEW);
+		}
+		break;
+
+	// Affiche les données de la MAP courante sous forme d'un arbre
+	case MapTreeAction:
+		{
+			m_agarView->showView(Viewer::MAP_TREE_VIEW);
+		}
+		break;
+
+	// Affiche la denière erreur OpenGL dans une popup
+	case LastOpenGlErrorAction:
 		{
 			stringstream openGlError;
 			openGlError << "Deniere erreur OpenGL : '" << gluErrorString(glGetError()) << "'";

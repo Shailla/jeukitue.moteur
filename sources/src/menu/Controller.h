@@ -39,8 +39,10 @@ public:
 		PluginsManagementAction,
 		PluginActivateAction,
 		PluginDeactivateAction,
-		DebugAction,
-		AgarConfigurationAction
+		AgarConfigurationAction,
+		DebugAction,						// Affiche le menu de degbug
+		LastOpenGlErrorAction,				// Affiche la derniere erreur OpenGL dans une popup
+		MapTreeAction						// Affiche les données de la MAP courante sous forme d'un arbre
 	};
 
     static Viewer* m_agarView;

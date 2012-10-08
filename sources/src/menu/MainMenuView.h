@@ -17,7 +17,7 @@ class MainMenuView : public View
     AG_Button* _debug;
     AG_Button* _buttonQuitter;
 public:
-    MainMenuView(const AG_EventFn controllerCallback, Viewer* agarView);
+    MainMenuView(const AG_EventFn controllerCallback);
     ~MainMenuView(void);
 };
 

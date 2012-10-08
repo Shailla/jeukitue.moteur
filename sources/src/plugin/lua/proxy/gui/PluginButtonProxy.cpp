@@ -23,10 +23,13 @@ Lunar<PluginButtonProxy>::RegType PluginButtonProxy::methods[] = {
 };
 
 PluginButtonProxy::PluginButtonProxy(lua_State* L) {
+	_pluginContext = NULL;
+	_pluginButton = NULL;
 }
 
 PluginButtonProxy::PluginButtonProxy(PluginContext* pluginContext) {
 	_pluginContext = pluginContext;
+	_pluginButton = NULL;
 }
 
 PluginButtonProxy::~PluginButtonProxy() {

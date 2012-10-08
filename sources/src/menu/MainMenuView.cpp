@@ -10,7 +10,7 @@
 
 #include <sstream>
 
-MainMenuView::MainMenuView(const AG_EventFn controllerCallback, Viewer* agarView)
+MainMenuView::MainMenuView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);

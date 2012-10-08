@@ -59,6 +59,7 @@ CMap::CMap()
 {
 TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() begin%T", this );
 	m_bSelection = false;
+	m_Selection = 0;
 }
 
 CMap::CMap(const string &nomFichier) throw(JktUtils::CErreur)
@@ -69,6 +70,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str
 	}
 
 	m_bSelection = false;
+	m_Selection = 0;
 
 	Init();
 TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() end%T", this );

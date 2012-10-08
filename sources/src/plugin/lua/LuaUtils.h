@@ -19,9 +19,10 @@ extern "C" {
 namespace JktPlugin {
 
 enum LUA_PARAMETER_TYPES {
-	LUA_PARAM_BOOLEAN,
-	LUA_PARAM_NUMBER,
-	LUA_PARAM_STRING
+	LUA_PARAM_BOOLEAN,	// Paramètre de type booléen
+	LUA_PARAM_NUMBER,	// Paramètre de type nombre entier
+	LUA_PARAM_STRING,	// Paramètre de type chaîne de caractères
+	LUA_PARAM_ANY		// Paramètre de type indifférent, n'importe quel type de paramètre
 };
 
 class LuaUtils {
@@ -32,7 +33,6 @@ public:
 	void static report_lua_errors(lua_State *L, int status);
 
 	bool static isCheckLuaParametersTypes(lua_State* L, const char* FILE, const char* FUNCTION, int typesNbr, ...);
-	void static checkLuaParametersTypes(lua_State* L, const char* FILE, const char* FUNCTION, int typesNbr, ...);
 };
 
 } /* namespace JktPlugin */

@@ -31,11 +31,10 @@ class PluginContext {
 	lua_State* _luaState;
 	const std::string _pluginName;
 public:
-	PluginContext(const std::string& pluginName, const std::string& pluginDirectory);
+	PluginContext(lua_State* luaState, const std::string& pluginName, const std::string& pluginDirectory);
 	virtual ~PluginContext();
 
 	lua_State* getLuaState();
-	void setLuaState(lua_State* luaState);
 
 	// Gestion des traces du plugin
 	void logUser(const std::string& trace);

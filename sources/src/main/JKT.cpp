@@ -173,6 +173,7 @@ CMachin::CMachin() {
 	vitesse.X = 0.0f;
 	vitesse.Y = 0.0f;
 	vitesse.Z = 0.05f;
+	req_son = NULL;
 }
 
 float delta = 0.0;
@@ -463,6 +464,35 @@ void afficheInfo( Uint32 tempsDisplay )
 	}
 }
 
+void drawSmallQuad(const int x, const int y) {
+	glBegin(GL_QUADS);
+
+	if(((abs(x%2)==0) && (abs(y%2)==0)) || ((abs(x%2)==1) && (abs(y%2)==1))) {
+		glColor3f(1.0f, 1.0f, 1.0f);
+	}
+	else {
+		glColor3f(0.0f, 0.0f, 0.0f);
+	}
+
+	glVertex3f(-0.0f,  -0.0f, 0.0f);
+	glVertex3f(-0.0f,  +0.25f, 0.0f);
+	glVertex3f(+0.25f, +0.25f, 0.0f);
+	glVertex3f(+0.25f, -0.0f, 0.0f);
+
+	glEnd();
+}
+
+void drawQuad() {
+	for(int x=-2 ; x<2 ; x++) {
+		for(int y=-2 ; y<2 ; y++) {
+			glPushMatrix();
+			glTranslatef(float(x) * 0.25f, float(y) * 0.25f, 0.0f);
+			drawSmallQuad(x, y);
+			glPopMatrix();
+		}
+	}
+}
+
 void display() {		// Fonction principale d'affichage
 	Uint32 temps = SDL_GetTicks();	// Temps au début du réaffichage
 
@@ -558,7 +588,39 @@ void display() {		// Fonction principale d'affichage
 
 		// Dessine les axes dans la map	(sert au repérage pour la conception du jeu)
 		if(Config.Joueur.cubicMeterVisibility) {
-			TODO
+			glPushMatrix();
+			glTranslatef(0.0f, 0.0f, -0.5f);
+			drawQuad();
+			glPopMatrix();
+
+			glPushMatrix();
+			glTranslatef(0.0f, 0.0f, +0.5f);
+			drawQuad();
+			glPopMatrix();
+
+			glPushMatrix();
+			glRotated(90.0f, 1.0, 0.0, 0.0);
+			glTranslatef(0.0f, 0.0f, -0.5f);
+			drawQuad();
+			glPopMatrix();
+
+			glPushMatrix();
+			glRotated(90.0f, 1.0, 0.0, 0.0);
+			glTranslatef(0.0f, 0.0f, +0.5f);
+			drawQuad();
+			glPopMatrix();
+
+			glPushMatrix();
+			glRotated(90.0f, 0.0, 1.0, 0.0);
+			glTranslatef(0.0f, 0.0f, -0.5f);
+			drawQuad();
+			glPopMatrix();
+
+			glPushMatrix();
+			glRotated(90.0f, 0.0, 1.0, 0.0);
+			glTranslatef(0.0f, 0.0f, +0.5f);
+			drawQuad();
+			glPopMatrix();
 		}
 
 		glColor3f(1.0f, 0.2f, 0.2f);

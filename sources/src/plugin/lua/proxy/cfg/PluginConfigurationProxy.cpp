@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -19,13 +20,18 @@ extern CCfg Config;		// Contient la configuration du jeu
 
 namespace JktPlugin {
 
+const char* PluginConfigurationProxy::CFG_PARAM_SKIN_VISIBILITY = "SKIN_VISIBILITY";						// Paramètre de type booléen
+const char* PluginConfigurationProxy::CFG_PARAM_PLAYER_OUTLINE_VISIBILITY = "PLAYER_OUTLINE_VISIBILITY";	// Paramètre de type booléen
+const char* PluginConfigurationProxy::CFG_PARAM_CUBIC_METER_VISIBILITY = "CUBIC_METER_VISIBILITY";			// Paramètre de type booléen
+const char* PluginConfigurationProxy::CFG_PARAM_AXES_METER_VISIBILITY = "AXES_METER_VISIBILITY";			// Paramètre de type booléen
+
 /**
  * Obtenir les dimensions de l'écran.
  *    - Return 1 : Dimension horizontale en pixels
  *    - Return 2 : Dimension verticale en pixels
  */
 int PluginConfigurationProxy::getScreenSize(lua_State *L) {
-	LuaUtils::checkLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
+	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
 
 	lua_pushnumber(L, 123);
 	lua_pushnumber(L, 123);
@@ -33,101 +39,68 @@ int PluginConfigurationProxy::getScreenSize(lua_State *L) {
 	return 2;
 }
 
-/**
- * Indique si le skin du joueur est visible ou au contraire non affiché.
- *    - Return 1 : boolean, true si skin joueur affiché, false sinon
- */
-int PluginConfigurationProxy::isPlayerSkinVisible(lua_State* L) {
-	LuaUtils::checkLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
-
-	lua_pushboolean(L, Config.Joueur.skinVisibility);
-
-	return 1;
-}
 
 /**
- * Rendre le skin du joueur visible ou au contraire non affiché.
- *    - Param 1 : boolean, true si skin joueur affiché, false sinon
+ * Retourne la valeur d'un paramètre global de configuration du moteur.
+ *    - Param 1 : nom du paramètre demandé
+ *    - Return 1 : valeur du paramètre
  */
-int PluginConfigurationProxy::setPlayerSkinVisibility(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_BOOLEAN)) {
-		bool isPlayerSkinVisible = lua_toboolean(L, 1);
-		Config.Joueur.skinVisibility = isPlayerSkinVisible;
+int PluginConfigurationProxy::getConfigurationParameter(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
+		const string paramName = lua_tostring(L, 1);
+
+		if(paramName.compare(CFG_PARAM_SKIN_VISIBILITY) == 0) {
+			lua_pushboolean(L, Config.Joueur.skinVisibility);
+		}
+		else if(paramName.compare(CFG_PARAM_PLAYER_OUTLINE_VISIBILITY) == 0) {
+			lua_pushboolean(L, Config.Joueur.outlineVisibility);
+		}
+		else if(paramName.compare(CFG_PARAM_CUBIC_METER_VISIBILITY) == 0) {
+			lua_pushboolean(L, Config.Joueur.cubicMeterVisibility);
+		}
+		else if(paramName.compare(CFG_PARAM_AXES_METER_VISIBILITY) == 0) {
+			lua_pushboolean(L, Config.Joueur.axesMeterVisibility);
+		}
+		else {
+			ostringstream message;
+			message << "Nom du parametre de configuration inconnu (recu='" << paramName << "')";
+			PluginEngine::getPluginContext(L)->logError(message.str());
+		}
 	}
 
-	return 0;
-}
-
-/**
- * Indique si le contour solide du joueur est visible ou au contraire non affiché.
- *    - Return 1 : boolean, true si le contour est affiché, false sinon
- */
-int PluginConfigurationProxy::isPlayerOutlineVisible(lua_State* L) {
-	LuaUtils::checkLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
-
-	lua_pushboolean(L, Config.Joueur.outlineVisibility);
-
 	return 1;
 }
 
 /**
- * Rendre le contour physique du joueur visible ou au contraire non affiché.
- *    - Param 1 : boolean, true si le contour du joueur est affiché, false sinon
+ * Change la valeur d'un paramètre global de configuration du moteur.
+ *    - Param 1 : nom du paramètre demandé
+ *    - Param 2 : nouvelle valeur du paramètre
  */
-int PluginConfigurationProxy::setPlayerOutlineVisibility(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_BOOLEAN)) {
-		bool isPlayerOutlineVisible = lua_toboolean(L, 1);
-		Config.Joueur.outlineVisibility = isPlayerOutlineVisible;
-	}
+int PluginConfigurationProxy::setConfigurationParameter(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_STRING, LUA_PARAM_ANY)) {
+		const string paramName = lua_tostring(L, 1);
 
-	return 0;
-}
-
-/**
- * Indique si un cube d'1 mètre de côté est affiché, il sert à calibrer les dimensions dans la scène.
- *    - Return 1 : boolean, true le cube d'un mètre est affiché, false sinon
- */
-int PluginConfigurationProxy::isCubicMeterVisible(lua_State* L) {
-	LuaUtils::checkLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
-
-	lua_pushboolean(L, Config.Joueur.cubicMeterVisibility);
-
-	return 1;
-}
-
-/**
- * Afficher ou non un cube d'1 mètre de côté est affiché, il sert à calibrer les dimensions dans la scène.
- *    - Param 1 : boolean, true si un cube d'1 mètre de côté est affiché, false sinon
- */
-int PluginConfigurationProxy::setCubicMeterVisibility(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_BOOLEAN)) {
-		bool cubicMeterVisibility = lua_toboolean(L, 1);
-		Config.Joueur.cubicMeterVisibility = cubicMeterVisibility;
-	}
-
-	return 0;
-}
-
-/**
- * Indique si les axes d'1 mètre de côté sont affichés, ils servent à calibrer les dimensions dans la scène.
- *    - Return 1 : boolean, true si les axes d'1 mètre de côté sont affichés, false sinon
- */
-int PluginConfigurationProxy::isAxesMeterVisible(lua_State* L) {
-	LuaUtils::checkLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
-
-	lua_pushboolean(L, Config.Joueur.axesMeterVisibility);
-
-	return 1;
-}
-
-/**
- * Afficher ou non les axes d'1 mètre de côté sont affichés, ils servent à calibrer les dimensions dans la scène.
- *    - Param 1 : boolean, true si les axes d'1 mètre de côté sont affichés, false sinon
- */
-int PluginConfigurationProxy::setAxesMeterVisibility(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_BOOLEAN)) {
-		bool axesMeterVisibility = lua_toboolean(L, 1);
-		Config.Joueur.axesMeterVisibility = axesMeterVisibility;
+		if(paramName.compare(CFG_PARAM_SKIN_VISIBILITY) == 0) {
+			bool value = lua_toboolean(L, 2);
+			Config.Joueur.skinVisibility = value;
+		}
+		else if(paramName.compare(CFG_PARAM_PLAYER_OUTLINE_VISIBILITY) == 0) {
+			bool value = lua_toboolean(L, 2);
+			Config.Joueur.outlineVisibility = value;
+		}
+		else if(paramName.compare(CFG_PARAM_CUBIC_METER_VISIBILITY) == 0) {
+			bool value = lua_toboolean(L, 2);
+			Config.Joueur.cubicMeterVisibility = value;
+		}
+		else if(paramName.compare(CFG_PARAM_AXES_METER_VISIBILITY) == 0) {
+			bool value = lua_toboolean(L, 2);
+			Config.Joueur.axesMeterVisibility = value;
+		}
+		else {
+			ostringstream message;
+			message << "Nom du parametre de configuration inconnu (recu='" << paramName << "')";
+			PluginEngine::getPluginContext(L)->logError(message.str());
+		}
 	}
 
 	return 0;

@@ -70,9 +70,10 @@ bool RessourcesLoader::getFileRessource(const string& rep, string& file)
 
 bool RessourcesLoader::getFileRessource(string& file)
 {
-		// Récupération du premier élément du nom du fichier
-		// par exemple, dans --Ressource\Textures\... on récupère --Ressource
+	// Récupération du premier élément du nom du fichier
+	// par exemple, dans --Ressource\Textures\... on récupère --Ressource
 	bool bTrouve = false;
+	string before = file;
 
 	if((int)file.find_first_of('@') == 0) {
 		int nbr1 = (int)file.find_first_of('\\');
@@ -86,30 +87,30 @@ bool RessourcesLoader::getFileRessource(string& file)
 			nbr = nbr2;
 		}
 
-		if(nbr != string::npos)
-		{
-			string element = file.substr(0,nbr);
+		if(nbr != string::npos) {
+			string resourceType = file.substr(0, nbr);
 
 			for(int i=0; i<nbrElements; i++) {
-				if(!element.compare(elementsNamesAndFolders[i*2]))
-				{
-					cout << endl << "Ressource trouvee pour le fichier : " << file << endl;
-					file.replace(0,nbr,elementsNamesAndFolders[i*2+1]);
-					cout << "Qui devient : " << file << endl;
+				if(!resourceType.compare(elementsNamesAndFolders[i*2 + 0])) {
+					file.replace(0, nbr, elementsNamesAndFolders[i*2 + 1]);
+
+					cout << endl << "La ressource '" << before << "' est '" << file << "'";
 					bTrouve = true;
 					break;
 				}
 			}
-		}
 
-		if(!bTrouve)
-		{
-			std::cerr << endl << "Ressource de type inconnu : " << file << endl;
-			exit(EXIT_FAILURE);
+			if(!bTrouve) {
+				std::cerr << endl << "Ressource de type inconnu : '" << before << "' (type identifie '" << resourceType << "'";
+			}
+		}
+		else {
+			std::cerr << endl << "Format de ressource non pris en compte : '" << before << "'";
 		}
 	}
 
-	return bTrouve;	// Indique si une ressource a été trouvée
+	// Indique si une ressource a été trouvée
+	return bTrouve;
 }
 
 vector<string> RessourcesLoader::getMaps() {

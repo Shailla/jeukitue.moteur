@@ -114,6 +114,8 @@ CLight::CLight()
 	m_ColorSpecular[0] = 0.0f;		m_ColorSpecular[1] = 0.0f;		m_ColorSpecular[2] = 0.0f;		m_ColorSpecular[3] = 1.0f;
 
 	m_Position[0] = 0.0f;	m_Position[1] = 0.0f;	m_Position[2] = 0.0f;	m_Position[3] = 1.0f;
+
+	m_refLight = 0;
 }
 
 CLight::~CLight()
@@ -201,6 +203,34 @@ void CLight::Desactive() {
 		glDisable( GL_LIGHTING );
 
 	freeLight( m_refLight );		// Libère la lumière
+}
+
+int CLight::getRefLight() const {
+	return m_refLight;
+}
+
+void CLight::getPosition(float position[4]) const {
+	position[0] = m_Position[0];
+	position[1] = m_Position[1];
+	position[2] = m_Position[2];
+}
+
+void CLight::getCouleurAmbiante(float couleurAmbient[4]) const {
+	couleurAmbient[0] = m_ColorAmbient[0];
+	couleurAmbient[1] = m_ColorAmbient[1];
+	couleurAmbient[2] = m_ColorAmbient[2];
+}
+
+void CLight::getCouleurDiffuse(float couleurDiffuse[4]) const {
+	couleurDiffuse[0] = m_ColorDiffuse[0];
+	couleurDiffuse[1] = m_ColorDiffuse[1];
+	couleurDiffuse[2] = m_ColorDiffuse[2];
+}
+
+void CLight::getCouleurSpeculaire(float couleurSpeculaire[4]) const {
+	couleurSpeculaire[0] = m_ColorSpecular[0];
+	couleurSpeculaire[1] = m_ColorSpecular[1];
+	couleurSpeculaire[2] = m_ColorSpecular[2];
 }
 
 }	// JktMoteur

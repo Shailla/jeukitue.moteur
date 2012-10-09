@@ -82,6 +82,8 @@ unsigned int LitFichierTexture(const string &nomFichier) throw(CErreur)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, largeur, hauteur, 0, GL_RGBA, GL_UNSIGNED_BYTE, tab );
 
+	cout << endl << "Reference de la texture '" << nomFichier << "' : " << texName;
+
 	return texName;
 }
 
@@ -114,6 +116,7 @@ unsigned int LitFichierTextureAlpha( const string &nomFichier, float alpha )
 	Uint32 pixel;
 	Uint8 red, green, blue;
 	int x,y;
+
 	for(float i=0 ; i<largeur ; i++)		// Mets les dimensions de l'image à un format compatible
 		for(float j=0 ; j<hauteur ; j++)	// avec openGL (puissance de 2)
 		{
@@ -142,8 +145,9 @@ unsigned int LitFichierTextureAlpha( const string &nomFichier, float alpha )
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, largeur, hauteur,
-			0, GL_RGBA, GL_UNSIGNED_BYTE, tab );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, largeur, hauteur, 0, GL_RGBA, GL_UNSIGNED_BYTE, tab );
+
+	cout << endl << "Reference de la texture alpha '" << nomFichier << "' : " << texName;
 
 	return texName;
 }

@@ -70,11 +70,17 @@ public :
 	virtual void Active();		// Active la lumière
 	virtual void Desactive();	// Désactive la lumière
 
-	void SetPosition( const float position[4] );
-	void SetColorAmbient( const float color[4] );
-	void SetColorDiffuse( const float color[4] );
-	void SetColorSpecular( const float color[4] );
-	void SetColor( const float color[4] );
+	void SetPosition(const float position[4]);
+	void SetColorAmbient(const float color[4]);
+	void SetColorDiffuse(const float color[4]);
+	void SetColorSpecular(const float color[4]);
+	void SetColor(const float color[4]);
+
+	int getRefLight() const;
+	void getPosition(float position[4]) const;
+	void getCouleurAmbiante(float couleurAmbient[4]) const;
+	void getCouleurDiffuse(float couleurDiffuse[4]) const;
+	void getCouleurSpeculaire(float couleurSpeculaire[4]) const;
 };
 
 }	// JktMoteur

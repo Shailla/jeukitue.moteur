@@ -47,6 +47,8 @@ function loadJoueurConfiguration()
 	checkboxAxesMeterVisibility:setValue(getConfigurationParameter("CUBIC_METER_VISIBILITY"));
 	checkboxCubicMeterVisibility:setValue(getConfigurationParameter("AXES_METER_VISIBILITY"));
 	checkboxSkinJoueurVisibility:setValue(getConfigurationParameter("Coucou"));
+	checkboxAxesMeterVisibility:setValue(isAxesMeterVisible());
+	checkboxCubicMeterVisibility:setValue(isCubicMeterVisible());
 end
 
 -- Enregistre la configuration joueur
@@ -55,6 +57,8 @@ function saveJoueurConfiguration()
 	setConfigurationParameter("PLAYER_OUTLINE_VISIBILITY", checkboxOutlineJoueurVisibility:getValue());
 	setConfigurationParameter("CUBIC_METER_VISIBILITY", checkboxAxesMeterVisibility:getValue());
 	setConfigurationParameter("AXES_METER_VISIBILITY", checkboxCubicMeterVisibility:getValue());
+	setAxesMeterVisibility(checkboxAxesMeterVisibility:getValue());
+	setCubicMeterVisibility(checkboxCubicMeterVisibility:getValue());
 end
 
 function eventManager(event)

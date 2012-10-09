@@ -167,19 +167,25 @@ void MapTreeView::showOneLight(AG_TreetblRow* parentRow, const CLight* light, co
 
 	AG_TreetblRow* lightRow = AG_TreetblAddRow(_tree, parentRow, rowId++, "%d%s", depth, lightStr.str().c_str());
 
-	AG_TreetblAddRow(_tree, lightRow, rowId++, "%d%s%d%s", depth+1, "Ref. OpenGL : ", light->m_refLight);
+	AG_TreetblAddRow(_tree, lightRow, rowId++, "%d%s%d%s", depth+1, "Ref. OpenGL : ", light->getRefLight());
 
 	// Position
-	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Ref. OpenGL : ", light->m_Position);
+	float position[4], ambiante[4], diffuse[4], speculaire[4];
+	light->getPosition(position);
+	light->getCouleurAmbiante(ambiante);
+	light->getCouleurDiffuse(diffuse);
+	light->getCouleurSpeculaire(speculaire);
+
+	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Ref. OpenGL : ", position);
 
 	// Lumière ambiante
-	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Ref. OpenGL : ", light->m_ColorAmbient);
+	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Ref. OpenGL : ", ambiante);
 
 	// Lumière diffuse
-	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Diffuse : ", light->m_ColorDiffuse);
+	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Diffuse : ", diffuse);
 
 	// Lumière spéculaire
-	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Speculaire : ", light->m_ColorSpecular);
+	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Speculaire : ", speculaire);
 }
 
 AG_TreetblRow* MapTreeView::addFloat4TabToTree(AG_Treetbl* tree, AG_TreetblRow* parentRow, const int id, const int depth, const char* name, const float value[4]) {

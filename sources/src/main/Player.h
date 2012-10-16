@@ -13,10 +13,13 @@ using namespace std;
 class CRequete;
 class CProjectil;
 class CClavier;
+
 namespace JktMoteur
 {
 	class CMap;
+	class Icone;
 }
+
 namespace JktSon
 {
 	class CSon;
@@ -25,7 +28,7 @@ namespace JktSon
 
 class CPlayer {
 	static bool _contourVisibility; 		// Affiche ou non un ellipsoïde dessinant les contours physiques du joueur
-	static int m_TexArmes;	// Textures de l'icone des armes
+	static JktMoteur::Icone* _weaponsChoice;	// Textures de l'icone des armes
 
 	CClavier *m_pClavier;	//pointeur sur la class des requêtes clavier
 

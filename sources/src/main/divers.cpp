@@ -76,10 +76,17 @@ TRACE().p( TRACE_OTHER, "quit_JKT()" );
 	trace3 += SDLNet_GetError();
 
 	string trace4 = "Derniere erreur openGL : ";
-	trace4 += (char*)gluErrorString( glGetError() );
+	trace4 += (char*)gluErrorString(glGetError());
 
 	string trace5 = "Derniere erreur Agar : ";
-	trace5 += AG_GetError();
+	const char* agarError = AG_GetError();
+
+	if(agarError != NULL) {
+		trace5 += agarError;
+	}
+	else {
+		trace5 += "Aucune";
+	}
 
 TRACE().p( TRACE_OTHER, trace1.c_str() );
 TRACE().p( TRACE_OTHER, trace2.c_str() );
@@ -224,9 +231,9 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 
 
 	/* ***********************************************
-	/* AFFICHAGE D'UN TEXTE D'INTRO
-	/* lettre par lettre (genre machine à écrire)
-	/* ***********************************************/
+	 * AFFICHAGE D'UN TEXTE D'INTRO
+	 * lettre par lettre (genre machine à écrire)
+	 * ***********************************************/
 
 	glColor3f( 1.0, 1.0, 1.0 );
 	for( unsigned int i=0 ; i<str1.length() ; i++ ) {
@@ -275,8 +282,8 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 
 
 	/* ***********************************************
-	/* AFFICHAGE DE L'IMAGE DU SAUVEUR DE LA PLANETE
-	/* ***********************************************/
+	 * AFFICHAGE DE L'IMAGE DU SAUVEUR DE LA PLANETE
+	 * ***********************************************/
 
 	glDisable(GL_TEXTURE_2D);
 	glDisable( GL_DEPTH_TEST );
@@ -307,9 +314,9 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 
 
 	/* ***********************************************
-	/* AFFICHAGE DE LA FIN DU TEXTE D'INTRO
-	/* lettre par lettre (genre machine à écrire)
-	/* ***********************************************/
+	 * AFFICHAGE DE LA FIN DU TEXTE D'INTRO
+	 * lettre par lettre (genre machine à écrire)
+	 * ***********************************************/
 		
 	fonteIntro.Begin();
 	glColor3f( 1.0, 1.0, 1.0 );
@@ -358,8 +365,8 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 
 
 	/* *******************************
-	/* Destruction des ressources
-	/* *******************************/
+	 * Destruction des ressources
+	 * *******************************/
 
 	glDeleteTextures( 1, &texFonteIntro );	// Destruction de la texture de fonte
 }

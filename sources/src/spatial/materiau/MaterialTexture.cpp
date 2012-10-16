@@ -29,10 +29,10 @@ CMaterialTexture::CMaterialTexture()
 	:CMaterial()
 {
 	m_Type = MAT_TYPE_TEXTURE;
+	texName = 0;
 }
 
-CMaterialTexture::CMaterialTexture( const CMaterial &mat )
-{
+CMaterialTexture::CMaterialTexture( const CMaterial &mat ) {
 		// Copie des attributs de 'mat'
 	m_Type = MAT_TYPE_TEXTURE;
 
@@ -44,6 +44,7 @@ CMaterialTexture::CMaterialTexture( const CMaterial &mat )
 
 		// Construction des attributs de l'instance
 	m_Type = MAT_TYPE_TEXTURE;
+	texName = 0;
 }
 
 CMaterialTexture::~CMaterialTexture()
@@ -54,7 +55,7 @@ void CMaterialTexture::initGL() throw(JktUtils::CErreur) {
 TRACE().p( TRACE_MOTEUR3D,"CMaterialTexture::LitTexture() fichier=%s begin%T",m_FichierTexture.c_str(), this );
 
 	bool changed = RessourcesLoader::getFileRessource(m_FichierTexture);
-	texName = LitFichierTexture(m_FichierTexture);
+	texName = litFichierTexture(m_FichierTexture);
 
 TRACE().p( TRACE_MOTEUR3D, "CMaterialTexture::LitTexture() -> %d end%T", texName, this );
 }

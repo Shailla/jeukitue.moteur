@@ -38,6 +38,9 @@ TRACE().p( TRACE_RESEAU, "CClient::CClient() begin%T", this );
 
 	m_uNbrPlayers = 0;
 	m_Statut = JKT_STATUT_CLIENT_INIT;
+	m_pingClientServer = 0;
+	m_timePingClientServer = 0;
+	IDpersonnel = 0;
 TRACE().p( TRACE_RESEAU, "CClient::CClient() end%T", this );
 }
 
@@ -293,7 +296,7 @@ int CClient::getPingClientServeur()
 	int ping = m_pingClientServer;
 	if( ping==-1 )		// Pas de valeur de ping à fournir
 	{
-		if( m_timePingClientServer!=-1 )	// Si un ping a été envoyé
+		if(m_timePingClientServer > 0)	// Si un ping a été envoyé
 		{
 			if( SDL_GetTicks()-m_timePingClientServer>9999 )	// S'il a été envoyé il y a trop longtemps
 			{

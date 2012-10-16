@@ -24,6 +24,7 @@ class CGame;
 #include "util/Trace.h"
 #include "util/V3D.h"
 #include "util/Tableau.cpp"
+#include "spatial/widget/Icone.h"
 #include "main/Laser.h"
 #include "main/Rocket.h"
 #include "main/Projectil.h"
@@ -53,7 +54,7 @@ const float Pi = 3.14159265f;
 
 
 bool CPlayer::_contourVisibility = false;
-int CPlayer::m_TexArmes = -1;
+Icone* CPlayer::_weaponsChoice = NULL;
 
 CPlayer::CPlayer() {
 	m_ArmeActif = 0;		// Pas d'arme active
@@ -88,46 +89,25 @@ CPlayer::CPlayer() {
 
 	createClavier();		// Crée la classe qui gère les requêtes de mouvement, tir ...
 
-	if( m_TexArmes==-1 ) {
+	if(_weaponsChoice == NULL) {
 		try {
-			m_TexArmes = JktMoteur::LitFichierTextureAlpha( "@Icone/Armes.bmp", 0.75f );
-			TRACE().p( TRACE_OTHER, "CPlayer::CPlayer() Texture d'icone des armes : %d%T", m_TexArmes, this );
+			_weaponsChoice = JktMoteur::litFichierIconeAlpha( "@Icone/Armes.bmp", 0.75f );
 		}
 		catch(CErreur& erreur) {
 			TRACE().p( TRACE_ERROR, "CPlayer::CPlayer() Echec de lecture de texture d'icone des armes%T", this );
-			m_TexArmes = -1;
+			_weaponsChoice = NULL;
 		}
 	}
 }
 
 void CPlayer::AfficheIconesArmes() {
-	if( m_TexArmes!=-1 ) {
+	if(_weaponsChoice != NULL) {
 		float X = (float)Config.Display.X;
 		float Y = (float)Config.Display.Y/2;
 
-			// Affichage des icones des armes
-		glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
-		glBindTexture( GL_TEXTURE_2D, m_TexArmes );
-		glDepthMask( GL_FALSE );
-		glEnable( GL_BLEND );
-		glEnable( GL_TEXTURE_2D );
-		glDisable( GL_DEPTH_TEST );
+		_weaponsChoice->affiche(X-50.0f, X, Y-(m_NbrArmes*50/2), Y+(m_NbrArmes*50/2));
 
-		glBegin( GL_QUADS );
-			glTexCoord2f( 1.0f, 0.0f );
-			glVertex2f( X-50.0f,	Y+(m_NbrArmes*50/2)	);
-
-			glTexCoord2f( 1.0f, 1.0f );
-			glVertex2f( X,			Y+(m_NbrArmes*50/2)	);
-
-			glTexCoord2f( 0.0f, 1.0f );
-			glVertex2f( X,			Y-(m_NbrArmes*50/2)	);
-
-			glTexCoord2f( 0.0f, 0.0f );
-			glVertex2f( X-50.0f,	Y-(m_NbrArmes*50/2)	);
-		glEnd();
-
-			// Affichage du focus sur l'arme active
+		// Affichage du focus sur l'arme active
 		glDisable( GL_TEXTURE_2D );
 		glDepthMask( GL_TRUE );
 		glDisable( GL_BLEND );
@@ -136,10 +116,10 @@ void CPlayer::AfficheIconesArmes() {
 		glColor3f( 1.0f, 0.0f, 0.0f );
 
 		glBegin( GL_LINE_LOOP );
-			glVertex2f( X-50.0f,	Y/2 - (m_NbrArmes*50/2) + 50	+ m_ArmeActif*50.0f	);
-			glVertex2f( X,			Y/2 - (m_NbrArmes*50/2) + 50	+ m_ArmeActif*50.0f	);
-			glVertex2f( X,			Y/2 - (m_NbrArmes*50/2)	+ m_ArmeActif*50.0f	);
-			glVertex2f( X-50.0f,	Y/2 - (m_NbrArmes*50/2)	+ m_ArmeActif*50.0f	);
+			glVertex2f( X-50.0f,	Y - (m_NbrArmes*50/2) + 50	+ m_ArmeActif*50.0f	);
+			glVertex2f( X,			Y - (m_NbrArmes*50/2) + 50	+ m_ArmeActif*50.0f	);
+			glVertex2f( X,			Y - (m_NbrArmes*50/2) + 0	+ m_ArmeActif*50.0f	);
+			glVertex2f( X-50.0f,	Y - (m_NbrArmes*50/2) + 0	+ m_ArmeActif*50.0f	);
 		glEnd();
 	}
 }

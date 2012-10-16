@@ -3,6 +3,8 @@
 #ifndef __JKT__TABLEAUINDEX_CPP
 #define __JKT__TABLEAUINDEX_CPP
 
+#include <iostream>
+
 #include "TableauIndex.h"
 
 namespace JktUtils
@@ -81,7 +83,7 @@ X *CTableauIndex<X>::operator[]( int pos )		// Retourne le pointeur sur l'élémen
 {
 #ifdef _DEBUG
 	if( pos > m_Max )
-		cerr << endl << "Erreur : acces 'CTableauIndex' dors limite";
+		std::cerr << std::endl << "Erreur : acces 'CTableauIndex' dors limite";
 #endif
 	return m_XTableau[pos];
 }

@@ -8,10 +8,14 @@
 
 namespace JktMoteur
 {
-unsigned int LitFichierTexture( const std::string &nomFichier ) throw(JktUtils::CErreur);
-unsigned int LitFichierTextureAlpha( const std::string &nomFichier, float alpha );
+class Icone;
 
-Uint32 getPixel(SDL_Surface *surface, int x, int y);
+unsigned int litFichierTexture(const std::string &nomFichier ) throw(JktUtils::CErreur);
+unsigned int litFichierTextureAlpha(const std::string &nomFichier, float alpha) throw(JktUtils::CErreur);
+
+Icone* litFichierIconeAlpha(const std::string &nomFichier, float alpha) throw(JktUtils::CErreur);
+
+Uint32 getPixel(SDL_Surface *surface, int x, int y) throw(JktUtils::CErreur);
 
 }	// JktMoteur
 

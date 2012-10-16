@@ -5,11 +5,11 @@
  *      Author: Erwin
  */
 
-using namespace std;
-
 #include <agar/core.h>
 
 #include "plugin/PluginContext.h"
+
+using namespace std;
 
 namespace JktPlugin {
 

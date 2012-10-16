@@ -44,7 +44,9 @@ CMenu::CMenu(const char *newTitle, const char **newItems, int nbrItems, PF *fct_
 		:CDlg()
 {
 TRACE().p( TRACE_MENU, "CMenu::CMenu(newTitle=%s,nbrItems=%d,...)%T", newTitle, nbrItems, this );
-		// Titre du menu
+	ajust = 0;
+
+	// Titre du menu
 	titre = new char[ strlen( newTitle )+1 ];
 	strcpy( titre, newTitle );
 

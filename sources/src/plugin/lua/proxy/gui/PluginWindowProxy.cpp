@@ -36,6 +36,8 @@ Lunar<PluginWindowProxy>::RegType PluginWindowProxy::methods[] = {
 PluginWindowProxy::PluginWindowProxy(lua_State* L) : AbstractPluginPanelProxy(L) {
 	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
 
+	_pluginContext = NULL;
+
 	_pluginWindow = new PluginWindow(PluginEngine::getPluginContext(L));
 	AbstractPluginPanelProxy::setPluginContext(PluginEngine::getPluginContext(L));
 	AbstractPluginPanelProxy::setPanel((PluginPanel*)_pluginWindow);
@@ -82,7 +84,7 @@ int PluginWindowProxy::setSize(lua_State* L) {
  *    - Param 1 : Titre de la fenêtre
  */
 int PluginWindowProxy::setTitle(lua_State* L) {
-	int argCount = lua_gettop(L);
+	lua_gettop(L);
 
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
 		const char* title = lua_tostring(L, 1);

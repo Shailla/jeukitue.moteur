@@ -465,7 +465,7 @@ bool CCfg::CAudio::Init() {
 		strcpy( remarquesDriver[i], rem.c_str() );
 	}
 
-	if(FSOUND_GetNumDrivers != 0)	// Vérifie s'il y a un driver pour le son
+	if(FSOUND_GetNumDrivers > 0)	// Vérifie s'il y a un driver pour le son
 	{
 		if(m_Driver<FSOUND_GetNumDrivers() ) {
 			FSOUND_SetDriver(m_Driver);	// Sélection du driver configuré

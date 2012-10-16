@@ -21,6 +21,7 @@ namespace JktMoteur
 CMaterial::CMaterial()
 {
 	m_Type = MAT_TYPE_SIMPLE;
+	m_Ref = 0;
 
 	m_Diffuse[0] = 0.0f;	m_Diffuse[1] = 0.0f;	m_Diffuse[2] = 0.0f;	m_Diffuse[3] = 1.0f;
 	m_Ambient[0] = 0.0f;	m_Ambient[1] = 0.0f;	m_Ambient[2] = 0.0f;	m_Ambient[3] = 1.0f;

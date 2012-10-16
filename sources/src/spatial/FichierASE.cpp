@@ -282,9 +282,6 @@ EntryPoint* CFichierASE::litEntryPoint() {
 	bool bPosition = false;		// Indique si la position a été trouvée
 	float position[ 3 ];
 
-	bool bColor = false;
-	float color[3];
-
 	findAccoladeDebut(__LINE__);
 	find("*TM_POS", __LINE__);
 

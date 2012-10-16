@@ -5,6 +5,7 @@
 
 CRequeteProcess::CRequeteProcess()
 {
+	_bTakePicture = false;
 	_mutex = SDL_CreateMutex();
 
 	SDL_mutexP(_mutex);

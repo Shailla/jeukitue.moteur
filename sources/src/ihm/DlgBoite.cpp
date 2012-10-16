@@ -51,6 +51,8 @@ CBouton::CBouton()
 	m_bFocus = false;
 	m_bActif = false;
 	txt = 0;
+	m_FctGo = NULL;
+	m_Arg = NULL;
 }
 
 CBouton::CBouton(const char *txt, PF fct_go, void *arg)
@@ -168,16 +170,16 @@ TRACE().p( TRACE_MENU, "CDlgBoite::INIT_CLASSE()" );
 			// Lecture des sons et images des styles de boites de dialogue
 		try
 		{
-			texErreur = JktMoteur::LitFichierTexture("@Icone/Erreur.bmp");
+			texErreur = JktMoteur::litFichierTexture("@Icone/Erreur.bmp");
 			TRACE().p( TRACE_INFO, "CDlgBoite::INIT_CLASSE() Texture d'icone d'erreur : %d", texErreur );
 
-			texConfirm = JktMoteur::LitFichierTexture("@Icone/Confirm.bmp");
+			texConfirm = JktMoteur::litFichierTexture("@Icone/Confirm.bmp");
 			TRACE().p( TRACE_INFO, "CDlgBoite::INIT_CLASSE() Texture de confirmation : %d", texConfirm );
 
-			texInfo = JktMoteur::LitFichierTexture("@Icone/Info.bmp");
+			texInfo = JktMoteur::litFichierTexture("@Icone/Info.bmp");
 			TRACE().p( TRACE_INFO, "CDlgBoite::INIT_CLASSE() Texture d'information : %d", texInfo );
 
-			texEnCours = JktMoteur::LitFichierTexture("@Icone/EnCours.bmp");
+			texEnCours = JktMoteur::litFichierTexture("@Icone/EnCours.bmp");
 			TRACE().p( TRACE_INFO, "CDlgBoite::INIT_CLASSE() Texture de tache en cours : %d", texEnCours );
 		}
 		catch(CErreur& erreur)
@@ -389,12 +391,10 @@ void CDlgBoite::afficheBouton()
 
 void CDlgBoite::afficheIcone()
 {
-	if( m_Type!=JKT_DLG_NULL )
-	{
+	if( m_Type!=JKT_DLG_NULL ) {
 		int tex;
 
-		switch( m_Type )
-		{
+		switch(m_Type) {
 		case JKT_DLG_CONFIRM:
 			if( texConfirm>=0 )		// Si la texture est valide
 				tex = texConfirm;
@@ -418,6 +418,8 @@ void CDlgBoite::afficheIcone()
 				tex = texErreur;
 			else
 				return;
+			break;
+		default:
 			break;
 		}
 
@@ -443,8 +445,7 @@ void CDlgBoite::afficheIcone()
 	}
 }
 
-void CDlgBoite::go()
-{
+void CDlgBoite::go() {
 	afficheCadre();		// Affiche le cadre de la boîte de dialogue
 	afficheTitre();		// Affiche le titre dans le cadre de la boîte de dialogue
 	afficheIcone();		// Affiche l'icone associé à la boite de dialogue
@@ -452,13 +453,11 @@ void CDlgBoite::go()
 	afficheBouton();	// Affiche les bouton dans la boîte de dialogue
 }
 
-void CDlgBoite::right()
-{
+void CDlgBoite::right() {
 	bool cbon = false;	// Indique que le focus a été déplacé avec succès
-	for( int i=1 ; ( (i<4) && (!cbon) ) ; i++ )
-	{
-		switch( m_Focus )
-		{
+
+	for(int i=1 ; ( (i<4) && (!cbon) ) ; i++) {
+		switch(m_Focus) {
 		case 1:
 			m_Focus = 2;
 			if( m_Bouton2.m_bActif )
@@ -480,13 +479,11 @@ void CDlgBoite::right()
 	}
 }
 
-void CDlgBoite::left()
-{
+void CDlgBoite::left() {
 	bool cbon = false;	// Indique que le focus a été déplacé avec succès
-	for( int i=1 ; ( (i<4) && (!cbon) ) ; i++ )
-	{
-		switch( m_Focus )
-		{
+
+	for(int i=1 ; ( (i<4) && (!cbon) ) ; i++) {
+		switch( m_Focus ) {
 		case 1:
 			m_Focus = 3;
 			if( m_Bouton3.m_bActif )
@@ -508,8 +505,7 @@ void CDlgBoite::left()
 	}
 }
 
-void CDlgBoite::KeyDown( SDL_Event *event )
-{
+void CDlgBoite::KeyDown(SDL_Event *event) {
 	switch( event->key.keysym.sym )
 	{
 	case SDLK_RETURN:

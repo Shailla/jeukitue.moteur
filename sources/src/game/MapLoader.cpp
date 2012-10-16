@@ -31,7 +31,7 @@ MapLoader::~MapLoader() {
 }
 
 void MapLoader::launcheGameLoading(GameDto* gameDto) {
-	SDL_Thread* thread = SDL_CreateThread(loadGameThread, (void*)gameDto); 	// Lance l'ouverture de la MAP dans un thread
+	SDL_CreateThread(loadGameThread, (void*)gameDto); 	// Lance l'ouverture de la MAP dans un thread
 }
 
 int MapLoader::loadGameThread(void* gameDtoVar) {

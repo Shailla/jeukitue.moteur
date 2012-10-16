@@ -87,6 +87,9 @@ CMultiMaterialGeo::CMultiMaterialGeo(CMap* map)
 	m_Material = NULL;
 	m_OffsetMateriaux = -1;		// Inicateur non-initialisé (-1)
 	m_pNormalTriangle = 0;		// Sera initialisé par Init()
+
+	m_Rayon = 0.0;
+	maxX = maxY = maxZ = minX = minY = minZ = 0.0f;
 }
 
 void CMultiMaterialGeo::setVertex(int num, float *tab)

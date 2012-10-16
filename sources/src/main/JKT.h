@@ -3,6 +3,9 @@
 #define __JKT__JKT_H
 
 class CPlayer;
+namespace JktMoteur {
+	class GraphicObject;
+}
 
 int main(int argc, char** argv);
 void quit_tutorial();								// Quitte sans code d'erreur
@@ -14,8 +17,10 @@ void display(void);									// Affiche l'écran
 unsigned int timer(unsigned int nbr, void *fct);	//focntion qui s'exécute périodiquement et qui provoque l'affichage
 void play_handle_key_down( SDL_Event* event );
 void menu_agar_handle_key_down( SDL_Event* event );
-static void process_events( void );
 Uint32 getPixel(SDL_Surface *surface, int x, int y);
+
+void addGraphicObjectToInitialize(JktMoteur::GraphicObject* graphicObject);
+void addGraphicObjectToDestruct(JktMoteur::GraphicObject* graphicObject);
 
 #endif
 

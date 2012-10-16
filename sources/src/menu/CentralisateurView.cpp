@@ -31,7 +31,7 @@ CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
 	******************************/
 	AG_NotebookTab* tabChat = AG_NotebookAddTab(book, "Chat", AG_BOX_VERT);
 	AG_Pane* paneHoriz = AG_PaneNewHoriz(tabChat, AG_PANE_EXPAND);
-	AG_Button* button1 = AG_ButtonNew(paneHoriz->div[0], 0, "Coucou");
+	AG_ButtonNew(paneHoriz->div[0], 0, "Coucou");
 	AG_PaneMoveDividerPct(paneHoriz, 20);
 
 	AG_Pane* paneVert = AG_PaneNewVert(paneHoriz->div[1], AG_PANE_EXPAND);
@@ -51,20 +51,20 @@ CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
 						NULL);
 	memset(_textToSend, '\0', sizeof(_textToSend));
 	AG_TextboxBindUTF8(_textboxToSend, _textToSend, sizeof(_textToSend));
-	AG_Button* buttonSend = AG_ButtonNewFn(paneVert->div[1], 0, "Envoyer", controllerCallback, "%i", Controller::SendGlobalChatTextAction);
+	AG_ButtonNewFn(paneVert->div[1], 0, "Envoyer", controllerCallback, "%i", Controller::SendGlobalChatTextAction);
 	
 
 	/******************************
 		Onglet des scores
 	******************************/
-	AG_NotebookTab* tabScores = AG_NotebookAddTab(book, "Scores", AG_BOX_VERT);
+	AG_NotebookAddTab(book, "Scores", AG_BOX_VERT);
 
 
 	/******************************
 		Onglet des téléchargements
 	******************************/
 	AG_NotebookTab* tabDownload = AG_NotebookAddTab(book, "Telechargements", AG_BOX_VERT);
-	AG_Button* buttonMAJDownloads = AG_ButtonNewFn(tabDownload, 0, "Recharger", controllerCallback, "%i", Controller::ReloadDownloadFilesAction);
+	AG_ButtonNewFn(tabDownload, 0, "Recharger", controllerCallback, "%i", Controller::ReloadDownloadFilesAction);
 	_downloadFileTable = AG_TableNew(tabDownload, 0);
 	AG_TableAddCol(_downloadFileTable, "Nom", "<8888888888888888>", NULL);
 	AG_TableAddCol(_downloadFileTable, "Categorie", "<888888888888888>", NULL);
@@ -76,7 +76,7 @@ CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
 
 	// Bouton retour
 	AG_SeparatorNewHoriz(m_window);
-    AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::MultijoueursAction);
+    AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::MultijoueursAction);
 
 	// Disposition de la fenêtre
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 70, 70);

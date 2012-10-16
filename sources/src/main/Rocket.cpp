@@ -31,7 +31,7 @@ using namespace JktUtils;
 
 extern CGame Game;
 
-int CRocket::m_TexExplosion = -1;		// Texture pour l'explosion de la rocket
+unsigned int CRocket::m_TexExplosion = 0;		// Texture pour l'explosion de la rocket
 bool CRocket::m_B_INIT_CLASSE = false;	// Par défaut la classe n'a pas encore été initialisée
 JktMoteur::CMap* CRocket::pMapRocket = 0;			// Image 3D de la rocket
 
@@ -44,17 +44,14 @@ bool CRocket::INIT_CLASSE()
 {
 TRACE().p( TRACE_OTHER, "CRocket::INIT_CLASSE()" );
 		// Initialise la classe si elle ne l'a pas encore été
-	if( !m_B_INIT_CLASSE )
-	{
-		try
-		{
-			m_TexExplosion = JktMoteur::LitFichierTextureAlpha( "@Texture/Explosion.jpg", 0.75f );
+	if( !m_B_INIT_CLASSE ) {
+		try {
+			m_TexExplosion = JktMoteur::litFichierTextureAlpha("@Texture/Explosion.jpg", 0.75f);
 			TRACE().p( TRACE_OTHER, "loadSubIntro() Texture de fonte : %d", m_TexExplosion );
 		}
-		catch(CErreur &erreur)
-		{
+		catch(CErreur &erreur) {
 			cerr << "\nEchec lecture icone d'explosion du rocket";
-			m_TexExplosion = -1;
+			m_TexExplosion = 0;
 			return false;	// L'initialisation a échoué
 		}
 
@@ -102,52 +99,13 @@ void CRocket::Affiche_S1()
 
 	pMapRocket->Affiche();
 
-/*	glBegin(GL_QUADS);
-		glColor3f( 1.0, 0.0, 0.0);
-		glVertex3f( -m_Taille, -m_Taille, -m_Taille );
-		glVertex3f( m_Taille, -m_Taille, -m_Taille );
-		glVertex3f( m_Taille, m_Taille, -m_Taille );
-		glVertex3f( -m_Taille, m_Taille, -m_Taille );
-
-		glColor3f( 1.0, 0.0, 0.0);
-		glVertex3f( -m_Taille, -m_Taille, m_Taille );
-		glVertex3f( m_Taille, -m_Taille, m_Taille );
-		glVertex3f( m_Taille, m_Taille, m_Taille );
-		glVertex3f( -m_Taille, m_Taille, m_Taille );
-
-		glColor3f( 0.0, 0.0, 1.0);
-		glVertex3f( -m_Taille, -m_Taille, -m_Taille );
-		glVertex3f( -m_Taille, m_Taille, -m_Taille );
-		glVertex3f( -m_Taille, m_Taille, m_Taille );
-		glVertex3f( -m_Taille, -m_Taille, m_Taille );
-
-		glColor3f( 0.0, 0.0, 1.0);
-		glVertex3f( m_Taille, -m_Taille, -m_Taille );
-		glVertex3f( m_Taille, m_Taille, -m_Taille );
-		glVertex3f( m_Taille, m_Taille, m_Taille );
-		glVertex3f( m_Taille, -m_Taille, m_Taille );
-
-
-		glColor3f( 0.0, 0.5, 0.5);
-		glVertex3f( -m_Taille, -m_Taille, -m_Taille );
-		glVertex3f( m_Taille, -m_Taille, -m_Taille );
-		glVertex3f( m_Taille, -m_Taille, m_Taille );
-		glVertex3f( -m_Taille, -m_Taille, m_Taille );
-
-		glColor3f( 0.0, 0.5f, 0.5f);
-		glVertex3f( -m_Taille, m_Taille, -m_Taille );
-		glVertex3f( m_Taille, m_Taille, -m_Taille );
-		glVertex3f( m_Taille, m_Taille, m_Taille );
-		glVertex3f( -m_Taille, m_Taille, m_Taille );
-	glEnd();
-*/
 	glPopMatrix();
 
 }
 
 void CRocket::Affiche_S2()
 {
-		// Calcul du plan orthogonal à l'axe de la vue
+	// Calcul du plan orthogonal à l'axe de la vue
 	GLfloat mat[16];
 	glGetFloatv( GL_MODELVIEW_MATRIX, mat );
 	CV3D v_droit( mat[0], mat[4], mat[8] );
@@ -160,7 +118,7 @@ void CRocket::Affiche_S2()
 	glEnable( GL_BLEND );
 	glDepthMask( GL_FALSE );
 
-		// Affichage de l'explosion
+	// Affichage de l'explosion
 	a = - ( (v_haut+v_droit)*TAILLE_TEX_EXPLOSION );
 	b = +( (v_droit-v_haut)*TAILLE_TEX_EXPLOSION );
 	c = +( (v_haut+v_droit)*TAILLE_TEX_EXPLOSION );
@@ -190,77 +148,6 @@ void CRocket::Affiche_S2()
 	glDisable( GL_BLEND );
 	glPopMatrix();
 }
-/*void CRocket::Affiche_S2()
-{
-	glEnable( GL_TEXTURE_2D );
-	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
-	glBindTexture( GL_TEXTURE_2D, m_TexExplosion );
-
-	glPushMatrix();
-	glTranslatef( m_Pos.X, m_Pos.Y, -m_Pos.Z );
-
-	glColor4f( 1.0f, 1.0f, 1.0f, 0.5f );
-	glBegin(GL_QUADS);
-		glTexCoord2f( 0.0f + m_Taille*15.0f, 0.0f + m_Taille*15.0f );
-		glVertex3f( -m_Taille, -m_Taille, -m_Taille );
-		glTexCoord2f( 1.0f + m_Taille*15.0f, 0.0f + m_Taille*15.0f );
-		glVertex3f( m_Taille, -m_Taille, -m_Taille );
-		glTexCoord2f( 1.0f + m_Taille*15.0f, 1.0f + m_Taille*15.0f );
-		glVertex3f( m_Taille, m_Taille, -m_Taille );
-		glTexCoord2f( 0.0f + m_Taille*15.0f, 1.0f + m_Taille*15.0f );
-		glVertex3f( -m_Taille, m_Taille, -m_Taille );
-
-		glTexCoord2f( 0.0f + m_Taille*15.0f, 0.0f + m_Taille*15.0f );
-		glVertex3f( -m_Taille, -m_Taille, m_Taille );
-		glTexCoord2f( 1.0f + m_Taille*15.0f, 0.0f + m_Taille*15.0f );
-		glVertex3f( m_Taille, -m_Taille, m_Taille );
-		glTexCoord2f( 1.0f + m_Taille*15.0f, 1.0f + m_Taille*15.0f );
-		glVertex3f( m_Taille, m_Taille, m_Taille );
-		glTexCoord2f( 0.0f + m_Taille*15.0f, 1.0f + m_Taille*15.0f );
-		glVertex3f( -m_Taille, m_Taille, m_Taille );
-
-		glTexCoord2f( 0.0f + m_Taille*15.0f, 0.0f + m_Taille*15.0f );
-		glVertex3f( -m_Taille, -m_Taille, -m_Taille );
-		glTexCoord2f( 1.0f + m_Taille*15.0f, 0.0f + m_Taille*15.0f );
-		glVertex3f( -m_Taille, m_Taille, -m_Taille );
-		glTexCoord2f( 1.0f + m_Taille*15.0f, 1.0f + m_Taille*15.0f );
-		glVertex3f( -m_Taille, m_Taille, m_Taille );
-		glTexCoord2f( 0.0f + m_Taille*15.0f, 1.0f + m_Taille*15.0f );
-		glVertex3f( -m_Taille, -m_Taille, m_Taille );
-
-		glTexCoord2f( 0.0f + m_Taille*15.0f, 0.0f + m_Taille*15.0f );
-		glVertex3f( m_Taille, -m_Taille, -m_Taille );
-		glTexCoord2f( 1.0f + m_Taille*15.0f, 0.0f + m_Taille*15.0f );
-		glVertex3f( m_Taille, m_Taille, -m_Taille );
-		glTexCoord2f( 1.0f + m_Taille*15.0f, 1.0f + m_Taille*15.0f );
-		glVertex3f( m_Taille, m_Taille, m_Taille );
-		glTexCoord2f( 0.0f + m_Taille*15.0f, 1.0f + m_Taille*15.0f );
-		glVertex3f( m_Taille, -m_Taille, m_Taille );
-
-		glTexCoord2f( 0.0f + m_Taille*15.0f, 0.0f + m_Taille*15.0f );
-		glVertex3f( -m_Taille, -m_Taille, -m_Taille );
-		glTexCoord2f( 1.0f + m_Taille*15.0f, 0.0f + m_Taille*15.0f );
-		glVertex3f( m_Taille, -m_Taille, -m_Taille );
-		glTexCoord2f( 1.0f + m_Taille*15.0f, 1.0f + m_Taille*15.0f );
-		glVertex3f( m_Taille, -m_Taille, m_Taille );
-		glTexCoord2f( 0.0f + m_Taille*15.0f, 1.0f + m_Taille*15.0f );
-		glVertex3f( -m_Taille, -m_Taille, m_Taille );
-
-		glTexCoord2f( 0.0f + m_Taille*15.0f, 0.0f + m_Taille*15.0f );
-		glVertex3f( -m_Taille, m_Taille, -m_Taille );
-		glTexCoord2f( 1.0f + m_Taille*15.0f, 0.0f + m_Taille*15.0f );
-		glVertex3f( m_Taille, m_Taille, -m_Taille );
-		glTexCoord2f( 1.0f + m_Taille*15.0f, 1.0f + m_Taille*15.0f );
-		glVertex3f( m_Taille, m_Taille, m_Taille );
-		glTexCoord2f( 0.0f + m_Taille*15.0f, 1.0f + m_Taille*15.0f );
-		glVertex3f( -m_Taille, m_Taille, m_Taille );
-	glEnd();
-
-	glDisable( GL_BLEND );
-
-	glPopMatrix();
-}
-*/
 
 void CRocket::Affiche()
 {

@@ -80,6 +80,8 @@ CTextureMaterialGeo::CTextureMaterialGeo(CMap* map)
 	m_OffsetMateriaux = -1;
 	m_TabTexVertex = NULL;
 	m_pNormalTriangle = NULL;		// Sera initialisé par Init()
+	maxX = maxY = maxZ = minX = minY = minZ = 0.0f;
+	m_Rayon = 0.0f;
 }
 
 void CTextureMaterialGeo::setVertex(int numVertex, float *tab)

@@ -86,15 +86,15 @@ TRACE().p( TRACE_MENU, "lanceMenuPartiemulti(var=%x)", var );
 	CFindFolder folder( "./Map/", 0, ".map.xml" );
 	nbrFichier = folder.nbr();
 
-/*	hFile = _findfirst( "./MAP/*.MAP", &fileinfo );
-	if( hFile!=-1L )
-	{
-		nbrFichier = 1;
-		while( _findnext( hFile, &fileinfo )!=-1L )
-			nbrFichier++;
-	}
-
-	_findclose( hFile );*/
+//	hFile = _findfirst( "./MAP/*.MAP", &fileinfo );
+//	if( hFile!=-1L )
+//	{
+//		nbrFichier = 1;
+//		while( _findnext( hFile, &fileinfo )!=-1L )
+//			nbrFichier++;
+//	}
+//
+//	_findclose( hFile );
 
 	liste_suivant_partiemulti = new PF[ nbrFichier ];
 	liste_argument_partiemulti = new void*[ nbrFichier ];
@@ -115,32 +115,32 @@ TRACE().p( TRACE_MENU, "lanceMenuPartiemulti(var=%x)", var );
 		nbrFichier++;
 	}
 
-/*	hFile = _findfirst( "./MAP/*.MAP", &fileinfo );
-	if( hFile!=-1L )
-	{
-		name = fileinfo.name;
-		name.erase( name.find_last_of( "." ) );
-		liste_suivant_partiemulti[nbrFichier] = suivantPartiemulti;
-
-		item_menu_partiemulti[nbrFichier] = new char[name.size()+1];
-		liste_argument_partiemulti[nbrFichier] = new char[name.size()+1];
-		strcpy( item_menu_partiemulti[nbrFichier], name.c_str() );
-		strcpy( (char*)(liste_argument_partiemulti[nbrFichier]), name.c_str() );
-		nbrFichier++;
-		while( _findnext( hFile, &fileinfo )!=-1L )
-		{
-			name = fileinfo.name;
-			name.erase( name.find_last_of( "." ) );
-
-			liste_suivant_partiemulti[nbrFichier] = suivantPartiemulti;
-
-			item_menu_partiemulti[nbrFichier] = new char[name.size()+1];
-			liste_argument_partiemulti[nbrFichier] = new char[name.size()+1];
-			strcpy( item_menu_partiemulti[nbrFichier], name.c_str() );
-			strcpy( (char*)liste_argument_partiemulti[nbrFichier], name.c_str() );
-			nbrFichier++;
-		}
-	}*/
+//	hFile = _findfirst( "./MAP/*.MAP", &fileinfo );
+//	if( hFile!=-1L )
+//	{
+//		name = fileinfo.name;
+//		name.erase( name.find_last_of( "." ) );
+//		liste_suivant_partiemulti[nbrFichier] = suivantPartiemulti;
+//
+//		item_menu_partiemulti[nbrFichier] = new char[name.size()+1];
+//		liste_argument_partiemulti[nbrFichier] = new char[name.size()+1];
+//		strcpy( item_menu_partiemulti[nbrFichier], name.c_str() );
+//		strcpy( (char*)(liste_argument_partiemulti[nbrFichier]), name.c_str() );
+//		nbrFichier++;
+//		while( _findnext( hFile, &fileinfo )!=-1L )
+//		{
+//			name = fileinfo.name;
+//			name.erase( name.find_last_of( "." ) );
+//
+//			liste_suivant_partiemulti[nbrFichier] = suivantPartiemulti;
+//
+//			item_menu_partiemulti[nbrFichier] = new char[name.size()+1];
+//			liste_argument_partiemulti[nbrFichier] = new char[name.size()+1];
+//			strcpy( item_menu_partiemulti[nbrFichier], name.c_str() );
+//			strcpy( (char*)liste_argument_partiemulti[nbrFichier], name.c_str() );
+//			nbrFichier++;
+//		}
+//	}
 
 	MenuPartiemulti = new CMenu( "LANCER UNE PARTIE SERVEUR", (const char**)item_menu_partiemulti, nbrFichier,
 						liste_suivant_partiemulti, retourPartiemulti, liste_argument_partiemulti );

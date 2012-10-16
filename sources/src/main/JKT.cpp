@@ -19,6 +19,7 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 #include <fstream>
 #include <cmath>
 #include <sstream>
+#include <vector>
 
 #ifdef WIN32
 	#include <windows.h>
@@ -65,6 +66,7 @@ using namespace glfont;
 
 class CGame;
 
+#include "spatial/widget/GraphicObject.h"
 #include "main/Cfg.h"
 #include "spatial/materiau/Material.h"
 #include "spatial/IfstreamMap.h"
@@ -156,6 +158,11 @@ extern JktSon::CDemonSons *DemonSons;	// Requêtes des son à jouer
 Uint32 tempsTimer = 0;		// Temps pris par la fonction 'timer'
 Uint32 tempsDisplay = 0;	// Temps pris par la fonction 'display'
 
+SDL_mutex* _grahicObjectsToInitializeMutex;
+vector<GraphicObject*> _grahicObjectsToInitialize;
+
+SDL_mutex* _grahicObjectsToDestructMutex;
+vector<GraphicObject*> _grahicObjectsToDestruct;
 
 class CMachin {
 public:
@@ -194,7 +201,7 @@ void setTemps(const string& note) {
 	tempsFile << endl << ecartDisplay << "\t" << note;
 }
 
-JktMoteur::CMoteurParticules* moteurParticulesNeige;
+CMoteurParticules* moteurParticulesNeige;
 float tempsMoteur;	// Pour le moteur de particules
 unsigned int frpsTimer = 0, frpTimer = 0;
 
@@ -437,13 +444,18 @@ void afficheInfo( Uint32 tempsDisplay )
 		float droite = gauche + largeur;
 
 		glBegin( GL_QUADS );
-			glColor4f( 1.0f, 1.0f, 0.0f, 0.35f );
-			glVertex2f( gauche, bas );
-			glVertex2f( gauche, haut );
-			glVertex2f( droite, haut );
-			glVertex2f( droite, bas );
+
+		glColor4f( 1.0f, 1.0f, 0.0f, 0.35f );
+		glVertex2f( gauche, bas );
+		glVertex2f( gauche, haut );
+		glVertex2f( droite, haut );
+		glVertex2f( droite, bas );
+
+		glEnd();
 
 		glDisable( GL_BLEND );
+
+		glBegin( GL_QUADS );
 
 		for( int i=0 ; i < NBR_RAIES_SPECTRE ; i++ )
 		{
@@ -493,11 +505,31 @@ void drawQuad() {
 	}
 }
 
+void addGraphicObjectToInitialize(GraphicObject* graphicObject) {
+	SDL_LockMutex(_grahicObjectsToInitializeMutex);
+
+	_grahicObjectsToInitialize.push_back(graphicObject);
+
+	SDL_UnlockMutex(_grahicObjectsToInitializeMutex);
+}
+
+void addGraphicObjectToDestruct(GraphicObject* graphicObject) {
+	SDL_LockMutex(_grahicObjectsToDestructMutex);
+
+	_grahicObjectsToInitialize.push_back(graphicObject);
+
+	SDL_UnlockMutex(_grahicObjectsToDestructMutex);
+}
+
 void display() {		// Fonction principale d'affichage
 	Uint32 temps = SDL_GetTicks();	// Temps au début du réaffichage
 
-		// AFFICHAGE DES ELEMENTS 3D
-	glMatrixMode( GL_PROJECTION );	// Mise en place de la perspective joueur, de la profondeur, ...
+
+	/* **********************************************************
+	 * Mise en place de la perspective
+	 * *********************************************************/
+
+	glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
 	gluPerspective( 60.0, Config.Display.X/Config.Display.Y, 0.01f, 100.0f );
 	glEnable( GL_DEPTH_TEST );
@@ -526,46 +558,7 @@ void display() {		// Fonction principale d'affichage
 
 		Game.AffichePlayers();		// Affiche tous les joueurs
 
-			// Essai lumière
-//		float light_position[] = { 0.6f, -0.1f, 0.0f, 1.0f };
-
-//		float colorBlanc[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-//		float colorRouge[] = { 1.0f, 0.0f, 0.0f, 1.0f };
-//		float colorVert[] = { 0.0f, 1.0f, 0.0f, 1.0f };
-//		float colorBleu[] = { 0.0f, 0.0f, 1.0f, 1.0f };
-//		float colorNoir[] = { 0.0f, 0.0f, 0.0f, 1.0f };
-
-/*		glPushMatrix();
-		merde += 0.01f;
-		if( merde > 1.0f )
-			merde = 0.0f;
-		glTranslatef( light_position[0], light_position[1]- merde, light_position[2] );
-		glColor3f( 1.0f, 0.0f, 1.0f );
-		gluSphere( gluNewQuadric(), 0.05, 64, 64 );
-		glEnable( GL_LIGHTING );
-		glEnable( GL_LIGHT0 );
-		glLightfv( GL_LIGHT0, GL_POSITION, colorNoir );
-		glLightfv( GL_LIGHT0, GL_AMBIENT, colorNoir );
-		glLightfv( GL_LIGHT0, GL_DIFFUSE, colorNoir );
-		glLightfv( GL_LIGHT0, GL_SPECULAR, colorBleu );
-		glPopMatrix();
-
-
-		glPushMatrix();
-		glTranslatef( 0.0f, -0.4f, 0.0f );
-
-		glMaterialfv( GL_FRONT_AND_BACK, GL_AMBIENT, colorNoir );
-		glMaterialfv( GL_FRONT_AND_BACK, GL_DIFFUSE, colorNoir );
-		glMaterialfv( GL_FRONT_AND_BACK, GL_SPECULAR, colorBlanc );
-		glMaterialf( GL_FRONT_AND_BACK, GL_SHININESS, 50.0f );
-
-		gluSphere( gluNewQuadric(), 0.15, 16, 16 );
-		glPopMatrix();
-
-		glDisable( GL_LIGHT0 );
-		glDisable( GL_LIGHTING );
-*/
-		glEnable( GL_DEPTH_TEST );
+		glEnable(GL_DEPTH_TEST);
 
 		Game.getMap()->Affiche();	// Affichage de la map
 		Game.AfficheProjectils();
@@ -641,9 +634,10 @@ void display() {		// Fonction principale d'affichage
 	}
 
 
-	/* ******************************************************
-	/* AFFICHAGE DES ELEMENTS AVANTS (TEXTE, SCORE, ...)
-	 * *****************************************************/
+	/* *******************************************************
+	 * Affichage des elements avants (menu, score, ...)
+	 * ******************************************************/
+
 	glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
 	gluOrtho2D(0.0, Config.Display.X, 0.0, Config.Display.Y);
@@ -683,9 +677,9 @@ void display() {		// Fonction principale d'affichage
     glLoadIdentity();
 
 
-	/*****************************************
-	/* Dessin des menus Agar
-	/****************************************/
+	/******************************************
+	   Dessin des menus Agar
+	 *****************************************/
 
     glEnable( GL_TEXTURE_2D );
     glDisable( GL_BLEND );
@@ -699,11 +693,40 @@ void display() {		// Fonction principale d'affichage
     glDisable( GL_BLEND );
 
 
-	/*****************************************
-	/* Echange des buffers graphique -> affiche à l'écran.
-	/****************************************/
+	/*******************************************************
+	  Echange des buffers graphique -> affiche à l'écran.
+	 ******************************************************/
 
 	SDL_GL_SwapBuffers();
+
+
+	/* *****************************************************
+	 * Initialisation et destruction des objets graphiques
+	 * ****************************************************/
+
+	GraphicObject* object;
+
+	// Initialisation des objets graphiques à initialiser
+	SDL_LockMutex(_grahicObjectsToInitializeMutex);
+	while (!_grahicObjectsToInitialize.empty())
+	{
+		object = _grahicObjectsToInitialize.back();
+		object->initializeGraphicObject();
+
+		_grahicObjectsToInitialize.pop_back();
+	}
+	SDL_UnlockMutex(_grahicObjectsToInitializeMutex);
+
+	// Descruction des objets graphiques à détruire
+	SDL_LockMutex(_grahicObjectsToDestructMutex);
+	while (!_grahicObjectsToDestruct.empty())
+	{
+		object = _grahicObjectsToDestruct.back();
+		object->destructGraphicObject();
+
+		_grahicObjectsToDestruct.pop_back();
+	}
+	SDL_UnlockMutex(_grahicObjectsToDestructMutex);
 }
 
 void chopeLesEvenements()
@@ -830,7 +853,7 @@ void chopeLesEvenements()
 
 		if( keystate[Config.Commandes.Tir1.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir1.mouse)) )	// Tire au laser
 		{
-			//erwin->Tir();		// Valide un tir
+			erwin->Tir();		// Valide un tir
 		}
 
 		if( keystate[Config.Commandes.Monter.key]||(mouse&SDL_BUTTON(Config.Commandes.Monter.mouse)) )	//si bouton droit souris
@@ -1417,6 +1440,9 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 	srand(SDL_GetTicks());		// Initialisation de la fonction rand() pour les nombres aléatoires
 
+	_grahicObjectsToInitializeMutex = SDL_CreateMutex();
+	_grahicObjectsToDestructMutex = SDL_CreateMutex();
+
 	string fichier;
 
 	Config.AfficheDateCompilation();		// Affiche le n° de version du programme
@@ -1438,7 +1464,7 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 	if(!SDLNet_ResolveHost( &ipaddress, "localhost", 0 )) {
 		const char *host = SDLNet_ResolveIP( &ipaddress );
 
-		if( host )
+		if(host)
 			cout << "\nNom de la machine locale : " << host;
 		else
 			cout << "\nNom de la machine locale : Inconnu";

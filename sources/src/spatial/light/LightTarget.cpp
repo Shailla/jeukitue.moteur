@@ -26,6 +26,7 @@ namespace JktMoteur
 
 CLightTarget::CLightTarget(void)
 {
+	m_fFallOff = 0.0f;
 }
 
 CLightTarget::~CLightTarget(void)

@@ -394,16 +394,16 @@ TRACE().p( TRACE_MENU, "lanceMenuConvertASE(var=%x)", var );
 	CFindFolder folder( "./ASE/", 0, ".ASE" );
 	nbrFichier = folder.nbr();
 
-/*	hFile = _findfirst( "./ASE/*.ASE", &fileinfo );
-	if( hFile!=-1L )
-	{
-		nbrFichier = 1;
-		while( _findnext( hFile, &fileinfo )!=-1L )
-			nbrFichier++;
-	}
+//	hFile = _findfirst( "./ASE/*.ASE", &fileinfo );
+//	if( hFile!=-1L )
+//	{
+//		nbrFichier = 1;
+//		while( _findnext( hFile, &fileinfo )!=-1L )
+//			nbrFichier++;
+//	}
+//
+//	_findclose( hFile );
 
-	_findclose( hFile );
-*/
 	liste_suivant_open_ASE = new PF[ nbrFichier ];
 	liste_argument_open_ASE = new void*[ nbrFichier ];
 	item_menu_open_ASE = new char*[ nbrFichier ];
@@ -422,32 +422,32 @@ TRACE().p( TRACE_MENU, "lanceMenuConvertASE(var=%x)", var );
 		strcpy( (char*)(liste_argument_open_ASE[nbrFichier]), name.c_str() );
 		nbrFichier++;
 	}
-/*	hFile = _findfirst( "./ASE/*.ASE", &fileinfo );
-	if( hFile!=-1L )
-	{
-		name = fileinfo.name;
-		name.erase( name.find_last_of( "." ) );
-		liste_suivant_open_ASE[nbrFichier] = suivantASE;
-
-		item_menu_open_ASE[nbrFichier] = new char[name.size()+1];
-		liste_argument_open_ASE[nbrFichier] = new char[name.size()+1];
-		strcpy( item_menu_open_ASE[nbrFichier], name.c_str() );
-		strcpy( (char*)(liste_argument_open_ASE[nbrFichier]), name.c_str() );
-		nbrFichier++;
-		while( _findnext( hFile, &fileinfo )!=-1L )
-		{
-			name = fileinfo.name;
-			name.erase( name.find_last_of( "." ) );
-
-			liste_suivant_open_ASE[nbrFichier] = suivantASE;
-
-			item_menu_open_ASE[nbrFichier] = new char[name.size()+1];
-			liste_argument_open_ASE[nbrFichier] = new char[name.size()+1];
-			strcpy( item_menu_open_ASE[nbrFichier], name.c_str() );
-			strcpy( (char*)liste_argument_open_ASE[nbrFichier], name.c_str() );
-			nbrFichier++;
-		}
-	}*/
+//	hFile = _findfirst( "./ASE/*.ASE", &fileinfo );
+//	if( hFile!=-1L )
+//	{
+//		name = fileinfo.name;
+//		name.erase( name.find_last_of( "." ) );
+//		liste_suivant_open_ASE[nbrFichier] = suivantASE;
+//
+//		item_menu_open_ASE[nbrFichier] = new char[name.size()+1];
+//		liste_argument_open_ASE[nbrFichier] = new char[name.size()+1];
+//		strcpy( item_menu_open_ASE[nbrFichier], name.c_str() );
+//		strcpy( (char*)(liste_argument_open_ASE[nbrFichier]), name.c_str() );
+//		nbrFichier++;
+//		while( _findnext( hFile, &fileinfo )!=-1L )
+//		{
+//			name = fileinfo.name;
+//			name.erase( name.find_last_of( "." ) );
+//
+//			liste_suivant_open_ASE[nbrFichier] = suivantASE;
+//
+//			item_menu_open_ASE[nbrFichier] = new char[name.size()+1];
+//			liste_argument_open_ASE[nbrFichier] = new char[name.size()+1];
+//			strcpy( item_menu_open_ASE[nbrFichier], name.c_str() );
+//			strcpy( (char*)liste_argument_open_ASE[nbrFichier], name.c_str() );
+//			nbrFichier++;
+//		}
+//	}
 
 	MenuOpenASE = new CMenu( "Convertir une Scene ASE", (const char**)item_menu_open_ASE, nbrFichier,
 						liste_suivant_open_ASE, retourASE, liste_argument_open_ASE );

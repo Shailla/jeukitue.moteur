@@ -79,6 +79,8 @@ CGeoObject::CGeoObject( CMap *map, unsigned int nbrVertex, unsigned int nbrFaces
 	m_pNormalTriangle = 0;
 	m_TabSubMat = 0;
 	m_bSolid = true;		// Objet solide par défaut
+	m_Rayon = 0.0f;
+	maxX = maxY = maxZ = minX = minY = minZ = 0.0f;
 }
 
 CGeoObject::CGeoObject( CMap *map )
@@ -106,6 +108,8 @@ CGeoObject::CGeoObject( CMap *map )
 	m_MaterialTexture = 0;
 
 	m_bSolid = true;		// Objet solide par défaut
+	m_Rayon = 0.0f;
+	maxX = maxY = maxZ = minX = minY = minZ = 0.0f;
 }
 
 void CGeoObject::setVertex( float *tab, int num )

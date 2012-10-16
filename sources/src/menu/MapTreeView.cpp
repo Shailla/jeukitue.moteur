@@ -49,11 +49,11 @@ void MapTreeView::show(void) {
 	AG_TreetblClearRows(_tree);
 
 	if(currentMap) {
-		AG_TreetblCol* col1 = AG_TreetblAddCol(_tree, 0, "<XXXXXX>", "");
-		AG_TreetblCol* col2 = AG_TreetblAddCol(_tree, 1, "<XXXXXX>", "");
-		AG_TreetblCol* col3 = AG_TreetblAddCol(_tree, 2, "<XXXXXXXXXXXXXXXXXXXXX>", "");
-		AG_TreetblCol* col4 = AG_TreetblAddCol(_tree, 3, "<XXXXXXXXXXXXXXXXXXXXX>", "");
-		AG_TreetblCol* col5 = AG_TreetblAddCol(_tree, 4, "<XXXXXXXXXXXXXXXXXXXXX>", "");
+		AG_TreetblAddCol(_tree, 0, "<XXXXXX>", "");
+		AG_TreetblAddCol(_tree, 1, "<XXXXXX>", "");
+		AG_TreetblAddCol(_tree, 2, "<XXXXXXXXXXXXXXXXXXXXX>", "");
+		AG_TreetblAddCol(_tree, 3, "<XXXXXXXXXXXXXXXXXXXXX>", "");
+		AG_TreetblAddCol(_tree, 4, "<XXXXXXXXXXXXXXXXXXXXX>", "");
 
 		int rowId = 0;
 

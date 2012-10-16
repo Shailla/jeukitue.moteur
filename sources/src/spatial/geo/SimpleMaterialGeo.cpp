@@ -78,6 +78,8 @@ CSimpleMaterialGeo::CSimpleMaterialGeo(CMap* map)
 	m_OffsetMateriaux = -1;
 
 	m_pNormalTriangle = 0;		// Sera initialisé par Init()
+	maxX = maxY = maxZ = minX = minY = minZ = 0.0f;
+	m_Rayon = 0.0f;
 }
 
 void CSimpleMaterialGeo::setVertex(int num, float *tab)

@@ -78,8 +78,7 @@ void refreshPingserver()
 	if( bAttenteMenuPing )
 	{
 		Uint32 ping = Reseau.getPingClientServer();
-		if( ping!=-1 )
-		{
+		if(ping> 0) {
 			if( ping >=9999 )	// Délai trop long !
 			{
 				MenuPingserver.add_ItemsDroits( 0, "----" );

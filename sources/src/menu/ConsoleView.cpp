@@ -19,8 +19,8 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	AG_Expand(book);
 
 	/******************************
-	/*	Onglet principal
-	/******************************/
+	 *	Onglet principal
+	 ******************************/
 
 	AG_NotebookTab* tabMain = AG_NotebookAddTab(book, "Principal", AG_BOX_VERT);
 	AG_Pane* vPane = AG_PaneNewVert(tabMain, AG_PANE_DIV1FILL);

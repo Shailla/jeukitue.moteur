@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>GLIntercept-Debug@EclipseCDT4-MinGW-Makefiles</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.cdt.make.core.makeBuilder</name>
+			<triggers>clean,full,incremental,</triggers>
+			<arguments>
+				<dictionary>
+					<key>org.eclipse.cdt.core.errorOutputParser</key>
+					<value>org.eclipse.cdt.core.MakeErrorParser;org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GLDErrorParser;</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.append_environment</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.autoBuildTarget</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.arguments</key>
+					<value></value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.command</key>
+					<value>c:/MinGW/bin/mingw32-make.exe</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.location</key>
+					<value>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/WorkSpaces/EclipseCDT4-MinGW-Makefiles</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.target.auto</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.target.clean</key>
+					<value>clean</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.build.target.inc</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.buildArguments</key>
+					<value></value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.buildLocation</key>
+					<value>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/WorkSpaces/EclipseCDT4-MinGW-Makefiles</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.cleanBuildTarget</key>
+					<value>clean</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.contents</key>
+					<value>org.eclipse.cdt.make.core.activeConfigSettings</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enableAutoBuild</key>
+					<value>false</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enableCleanBuild</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enableFullBuild</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.enabledIncrementalBuild</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.environment</key>
+					<value>VERBOSE=1|CMAKE_NO_VERBOSE=1|</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.fullBuildTarget</key>
+					<value>all</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.stopOnError</key>
+					<value>true</value>
+				</dictionary>
+				<dictionary>
+					<key>org.eclipse.cdt.make.core.useDefaultBuildCmd</key>
+					<value>false</value>
+				</dictionary>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.cdt.make.core.ScannerConfigBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.cdt.core.ccnature</nature>
+		<nature>org.eclipse.cdt.make.core.makeNature</nature>
+		<nature>org.eclipse.cdt.make.core.ScannerConfigNature</nature>
+		<nature>org.eclipse.cdt.core.cnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[Subprojects]</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/CMake Rules</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Header Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Object Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Resources</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/BuiltInFunction.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/BuiltInFunction.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/ConfigData.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/ConfigData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/ConfigParser.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/Common/ConfigParser.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/DLLLoader.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/DLLLoader.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/DisplayListManager.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/DisplayListManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/DisplayListSaveManager.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/DisplayListSaveManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/EnumData.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/EnumData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/ErrorLog.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/Common/ErrorLog.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/ExtensionFunction.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/ExtensionFunction.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/FileUtils.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/Common/FileUtils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/FunctionData.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/FunctionData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/FunctionParser.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/FunctionParser.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/FunctionTable.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/FunctionTable.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/GLContext.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/GLContext.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/GLCore1_1.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/GLCore1_1.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/GLCore1_2.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/GLCore1_2.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/GLDriver.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/GLDriver.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/GLIntercept.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/GLIntercept.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/GLStubs.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/GLStubs.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/GLStubsWGL.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/GLStubsWGL.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/GLWindows.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/GLWindows.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/ImageManager.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/ImageManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/ImageSaveManager.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/ImageSaveManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/InputUtils.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/Common/InputUtils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/InterceptData.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/InterceptData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/InterceptDisplayList.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/InterceptDisplayList.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/InterceptFrame.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/InterceptFrame.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/InterceptImage.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/InterceptImage.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/InterceptLog.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/InterceptLog.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/InterceptLogText.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/InterceptLogText.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/InterceptLogXML.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/InterceptLogXML.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/InterceptPluginDLLInstance.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/InterceptPluginDLLInstance.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/InterceptPluginInstance.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/InterceptPluginInstance.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/InterceptPluginManager.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/InterceptPluginManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/InterceptShader.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/InterceptShader.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/InterceptShaderGLSL.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/InterceptShaderGLSL.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/MiscUtils.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/Common/MiscUtils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/MovieMaker.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/MovieMaker.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/NetworkUtils.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/Common/NetworkUtils.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/ParameterData.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/ParameterData.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/ShaderGLSLManager.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/ShaderGLSLManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/ShaderGLSLSaveManager.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/ShaderGLSLSaveManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/ShaderManager.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/ShaderManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/ShaderSaveManager.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/MainLib/ShaderSaveManager.cpp</location>
+		</link>
+		<link>
+			<name>[Targets]/[lib] GLIntercept/Source Files/prefix.cpp</name>
+			<type>1</type>
+			<location>H:/jkt/svn/trunk/moteur/libs/GLIntercept/Src/Common/prefix.cpp</location>
+		</link>
+	</linkedResources>
+</projectDescription>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="CoronaStatic">
+</Property><Property Name="Solution File" Value="H:\jkt\svn\trunk\moteur\libs\GLIntercept\3rdParty\Corona-1.0.2-Static\vc8\corona\CoronaStatic.sln">
+</Property><Property Name="Date" Value="jeudi 11 octobre 2012">
+</Property><Property Name="Time" Value="13:25:08">
+</Property></Properties><Event ErrorLevel="2" Project="CoronaStatic" Source="CoronaStatic.vcproj" Description="The following error has occurred during XML parsing:&#xA;&#xA;File: H:\jkt\svn\trunk\moteur\libs\GLIntercept\3rdParty\Corona-1.0.2-Static\vc8\corona\CoronaStatic.vcproj&#xA;Line: 9&#xA;Column: 2&#xA;Error Message:&#xA;« 9.00 » viole la contrainte enumeration de « 7.00 7,00 7.10 7,10 8.00 8,00 ».&#xA;Échec de l'analyse de l'attribut « Version » avec la valeur « 9.00 ».&#xA;&#xA;The file 'H:\jkt\svn\trunk\moteur\libs\GLIntercept\3rdParty\Corona-1.0.2-Static\vc8\corona\CoronaStatic.vcproj' has failed to load.">
+</Event><Event ErrorLevel="2" Project="CoronaStatic" Source="CoronaStatic.vcproj" Description="Project upgrade failed.">
+</Event><Event ErrorLevel="3" Project="CoronaStatic" Source="CoronaStatic.vcproj" Description="Not Converted">
+</Event></UpgradeLog>

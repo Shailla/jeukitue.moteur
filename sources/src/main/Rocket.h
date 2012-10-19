@@ -2,13 +2,15 @@
 #ifndef __JKT__ROCKET_H
 #define __JKT__ROCKET_H
 
+#include "spatial/widget/Texture.h"
 #include "util/V3D.h"
 #include "spatial/Map.h"
 
 #include "main/Projectil.h"
 
-class CRocket:public CProjectil
-{
+using namespace JktMoteur;
+
+class CRocket:public CProjectil {
 	enum ROCKET_STATE {
 		ROCKET_STATE_DEPL,
 		ROCKET_STATE_CONTACT,
@@ -16,7 +18,7 @@ class CRocket:public CProjectil
 	};
 
 	static bool m_B_INIT_CLASSE;		// Indique si la classe a été initialisée
-	static unsigned int m_TexExplosion;			// Texture de l'explosion de la rocket
+	static Texture* _textureExplosion;			// Texture de l'explosion de la rocket
 	static JktMoteur::CMap *pMapRocket;	// Map associée à l'image de la rocket
 
 	CV3D m_Pos;		// Position de la rocket

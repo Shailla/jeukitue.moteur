@@ -9,7 +9,7 @@ IF(MSVC)
 	set(EXECUTABLE_OUTPUT_PATH ../../deploy)
 ELSEIF(CMAKE_COMPILER_IS_GNUCXX)
 	set(EXECUTABLE_OUTPUT_PATH ../../deploy/${CMAKE_BUILD_TYPE}-g++)
-	set(CMAKE_CXX_FLAGS "-ggdb -Wall")
+	set(CMAKE_CXX_FLAGS "-fpermissive -ggdb -Wall")
 ENDIF(MSVC)
 
 IF(MSVC)

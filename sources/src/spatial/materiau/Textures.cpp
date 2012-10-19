@@ -15,6 +15,7 @@ using namespace std;
 #include "ressource/RessourcesLoader.h"
 #include "util/utils_SDL.h"
 #include "spatial/widget/Icone.h"
+#include "spatial/widget/Texture.h"
 #include "main/jkt.h"
 
 #include "spatial/materiau/Textures.h"
@@ -24,153 +25,24 @@ using namespace JktUtils;
 namespace JktMoteur
 {
 
-unsigned int litFichierTexture(const string &nomFichier) throw(CErreur)
-{
+void* litFichierImage(const string &nomFichier, float alpha) throw(CErreur) {
 	#define largeur 128
 	#define hauteur 128
 
-	unsigned int texName = 0;
+	Uint8 Alpha = (Uint8)(alpha*256.0f);
+	SDL_Surface *image;
 
 	string fichier = nomFichier;
 	JktUtils::RessourcesLoader::getFileRessource(fichier);
 
-	SDL_Surface *image;
-
 	image = IMG_Load(fichier.c_str());		// Lit le fichier image de la texture
-	if( image==0 )
-	{
+	if(image == 0) {
 		string erreur;
 		erreur = "\nErreur : Echec d'ouverture d'image de texture : " + fichier;
-		cerr << endl << erreur << endl;
-		throw CErreur( 0, erreur );
+		throw CErreur(0, erreur);
 	}
 
 	SDL_LockSurface(image);
-
-		// Convertit la texture aux dimensions largeur*hauteur
-	Uint8 tab[largeur][hauteur][4];
-
-	SDL_PixelFormat *fmt = image->format;
-	Uint32 pixel;
-	Uint8 red, green, blue;
-	int x,y;
-	for(float i=0 ; i<largeur ; i++)		// Mets les dimensions de l'image à un format compatible
-		for(float j=0 ; j<hauteur ; j++)	// avec openGL (puissance de 2)
-		{
-			x = (unsigned int)(i*(float)image->w/largeur );
-			y = (unsigned int)((hauteur-j-1)*(float)image->h/hauteur );
-			if(x>image->w)
-				x = image->w;
-			if(y>image->h)
-				y = image->h;
-			pixel = util_SDL_getPixel( image, x, y );
-			SDL_GetRGB( pixel, fmt, &red, &green, &blue );
-			tab[(unsigned int)i][(unsigned int)j][0] = red;
-			tab[(unsigned int)i][(unsigned int)j][1] = green;
-			tab[(unsigned int)i][(unsigned int)j][2] = blue;
-			tab[(unsigned int)i][(unsigned int)j][3] = (Uint8)0;
-		}
-
-	SDL_UnlockSurface( image );
-	SDL_FreeSurface( image );
-
-	// Crée la texture
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &texName);
-	glBindTexture(GL_TEXTURE_2D, texName);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, largeur, hauteur, 0, GL_RGBA, GL_UNSIGNED_BYTE, tab );
-
-	cout << endl << "Reference de la texture '" << nomFichier << "' : " << texName;
-
-	return texName;
-}
-
-unsigned int litFichierTextureAlpha(const string &nomFichier, float alpha) throw(CErreur)
-{
-	#define largeur 128
-	#define hauteur 128
-
-	unsigned int texName = 0;
-	Uint8 Alpha = (Uint8)(alpha*256.0f);
-	SDL_Surface *image;
-
-	string fichier = nomFichier;
-	JktUtils::RessourcesLoader::getFileRessource(fichier);
-
-	image = IMG_Load(fichier.c_str());		// Lit le fichier image de la texture
-	if(image == 0)
-	{
-		string erreur;
-		erreur = "\nErreur : Echec d'ouverture d'image de texture : " + fichier;
-		throw CErreur(0, erreur);
-	}
-
-	SDL_LockSurface( image );
-
-		// Convertit la texture aux dimensions largeur*hauteur
-	Uint8 pixels[largeur][hauteur][4];
-
-	SDL_PixelFormat *fmt = image->format;
-	Uint32 pixel;
-	Uint8 red, green, blue;
-	int x,y;
-
-	for(float i=0 ; i<largeur ; i++)		// Mets les dimensions de l'image à un format compatible
-		for(float j=0 ; j<hauteur ; j++)	// avec openGL (puissance de 2)
-		{
-			x = (unsigned int)(i*(float)image->w/largeur );
-			y = (unsigned int)((hauteur-j-1)*(float)image->h/hauteur );
-			if(x>image->w)
-				x = image->w;
-			if(y>image->h)
-				y = image->h;
-			pixel = util_SDL_getPixel( image, x, y );
-			SDL_GetRGB( pixel, fmt, &red, &green, &blue );
-			pixels[(unsigned int)i][(unsigned int)j][0] = red;
-			pixels[(unsigned int)i][(unsigned int)j][1] = green;
-			pixels[(unsigned int)i][(unsigned int)j][2] = blue;
-			pixels[(unsigned int)i][(unsigned int)j][3] = Alpha;
-		}
-
-	SDL_UnlockSurface( image );
-	SDL_FreeSurface( image );
-
-	glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
-	glGenTextures( 1, &texName );
-	glBindTexture( GL_TEXTURE_2D, texName );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, largeur, hauteur, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels );
-
-	return texName;
-}
-
-Icone* litFichierIconeAlpha(const string &nomFichier, float alpha) throw(CErreur)
-{
-	#define largeur 128
-	#define hauteur 128
-
-	Uint8 Alpha = (Uint8)(alpha*256.0f);
-	SDL_Surface *image;
-
-	string fichier = nomFichier;
-	JktUtils::RessourcesLoader::getFileRessource(fichier);
-
-	image = IMG_Load(fichier.c_str());		// Lit le fichier image de la texture
-	if(image == 0)
-	{
-		string erreur;
-		erreur = "\nErreur : Echec d'ouverture d'image de texture : " + fichier;
-		throw CErreur(0, erreur);
-	}
-
-	SDL_LockSurface( image );
 
 	// Convertit la texture aux dimensions largeur*hauteur
 	Uint8 (*pixels)[hauteur][4] = new Uint8[largeur][hauteur][4];
@@ -185,12 +57,16 @@ Icone* litFichierIconeAlpha(const string &nomFichier, float alpha) throw(CErreur
 		{
 			x = (unsigned int)(i*(float)image->w/largeur );
 			y = (unsigned int)((hauteur-j-1)*(float)image->h/hauteur );
+
 			if(x>image->w)
 				x = image->w;
+
 			if(y>image->h)
 				y = image->h;
+
 			pixel = util_SDL_getPixel( image, x, y );
 			SDL_GetRGB( pixel, fmt, &red, &green, &blue );
+
 			pixels[(unsigned int)i][(unsigned int)j][0] = red;
 			pixels[(unsigned int)i][(unsigned int)j][1] = green;
 			pixels[(unsigned int)i][(unsigned int)j][2] = blue;
@@ -200,7 +76,38 @@ Icone* litFichierIconeAlpha(const string &nomFichier, float alpha) throw(CErreur
 	SDL_UnlockSurface(image);
 	SDL_FreeSurface(image);
 
-	Icone* icone = new Icone((GLsizei) hauteur, (GLsizei)largeur, pixels);
+	return pixels;
+}
+
+Texture* litFichierTexture(const string &nomFichier, float alpha, void* pixels) {
+	bool isAlphaActive;
+
+	if(alpha >= 0) {
+		isAlphaActive = true;
+	}
+	else {
+		isAlphaActive = false;
+	}
+
+	Texture* texture = new Texture(nomFichier, isAlphaActive, (GLsizei) hauteur, (GLsizei)largeur, pixels);
+
+	addGraphicObjectToInitialize(texture);
+
+	return texture;
+}
+
+
+Icone* litFichierIcone(const string &nomFichier, float alpha, void* pixels) {
+	bool isAlphaActive;
+
+	if(alpha >= 0) {
+		isAlphaActive = true;
+	}
+	else {
+		isAlphaActive = false;
+	}
+
+	Icone* icone = new Icone(nomFichier, isAlphaActive, (GLsizei) hauteur, (GLsizei)largeur, pixels);
 
 	addGraphicObjectToInitialize(icone);
 

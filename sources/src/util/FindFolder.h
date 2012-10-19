@@ -10,6 +10,8 @@
 	#include <dirent.h>
 #endif
 
+using namespace std;
+
 class CFindFolder
 {
 	char *m_Filter;			// Filtre de répertoire du style "c:/jeuquitue/"
@@ -24,16 +26,16 @@ class CFindFolder
 
 public:
 		// Construteurs / destructeur
-	CFindFolder(const char *filter, const char *optfilter1=0, const char *optfilter2=0);
+	CFindFolder(const char *filter, const char *optfilter1=NULL, const char *optfilter2=NULL);
 	~CFindFolder();
 
-	bool findNext(std::string &fichier);	// Trouve le prochain fichier du rép. correspondant aux filtres
+	bool findNext(string &fichier);	// Trouve le prochain fichier du rép. correspondant aux filtres
 	int nbr();				// Compte le nombre de fichier correspondant aux filtres dans le répertoire
 	void reset();			// Redémarre la recherche à zéro
 
 		// Interfaces inter-plateformes
 	static int rmdir(const char *dir);		// Destruction d'un répertoire
-	static bool isFolder(const std::string& directory);	// Vérifie si un élément est un répertoire
+	static bool isFolder(const string& directory);	// Vérifie si un élément est un répertoire
 	static bool chmod(char const *path, bool read, bool write);	// Change le mode d'un fichier
 	static int mkdir(const char*);
 };

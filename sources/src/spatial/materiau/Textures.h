@@ -9,11 +9,33 @@
 namespace JktMoteur
 {
 class Icone;
+class Texture;
 
-unsigned int litFichierTexture(const std::string &nomFichier ) throw(JktUtils::CErreur);
-unsigned int litFichierTextureAlpha(const std::string &nomFichier, float alpha) throw(JktUtils::CErreur);
+/**
+ * Lit un fichier image pour créer une texture affichable dans OpenGL.
+ *
+ * nomFichier : Chemin complet du fichier de l'image.
+ * alpha : Valeur de la transparence comprise entre 0.0 et 1.0. L'alpha est désactivé si alpha < 0.
+ */
+void* litFichierImage(const std::string &nomFichier, float alpha) throw(JktUtils::CErreur);
 
-Icone* litFichierIconeAlpha(const std::string &nomFichier, float alpha) throw(JktUtils::CErreur);
+/**
+ * Crée une texture affichable dans OpenGL à partir des données d'une image.
+ *
+ * nomFichier : Ressource ou identificateur quelquonque de l'image (utilisé pour les logs applicatifs).
+ * alpha : Valeur de la transparence comprise entre 0.0 et 1.0. L'alpha est désactivé si alpha < 0.
+ * pixels : Données de l'image.
+ */
+Texture* litFichierTexture(const std::string &nomFichier, float alpha, void* pixels);
+
+/**
+ * Lit un fichier image pour créer une icone affichable dans OpenGL.
+ *
+ * nomFichier : Ressource ou identificateur quelquonque de l'image (utilisé pour les logs applicatifs).
+ * alpha : Valeur de la transparence comprise entre 0.0 et 1.0. L'alpha est désactivé si alpha < 0.
+ * pixels : Données de l'image.
+ */
+Icone* litFichierIcone(const std::string &nomFichier, float alpha, void* pixels);
 
 Uint32 getPixel(SDL_Surface *surface, int x, int y) throw(JktUtils::CErreur);
 

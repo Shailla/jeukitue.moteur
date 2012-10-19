@@ -15,6 +15,7 @@ using namespace std;
 #include "spatial/IfstreamMap.h"
 #include "spatial/geo/GeoMaker.h"
 #include "spatial/materiau/Textures.h"
+#include "spatial/widget/Texture.h"
 #include "util/Trace.h"
 #include "spatial/materiau/Material.h"
 #include "spatial/materiau/MaterialMaker.h"
@@ -29,7 +30,7 @@ CMaterialTexture::CMaterialTexture()
 	:CMaterial()
 {
 	m_Type = MAT_TYPE_TEXTURE;
-	texName = 0;
+	_texture = NULL;
 }
 
 CMaterialTexture::CMaterialTexture( const CMaterial &mat ) {
@@ -44,7 +45,7 @@ CMaterialTexture::CMaterialTexture( const CMaterial &mat ) {
 
 		// Construction des attributs de l'instance
 	m_Type = MAT_TYPE_TEXTURE;
-	texName = 0;
+	_texture = NULL;
 }
 
 CMaterialTexture::~CMaterialTexture()
@@ -52,12 +53,9 @@ CMaterialTexture::~CMaterialTexture()
 }
 
 void CMaterialTexture::initGL() throw(JktUtils::CErreur) {
-TRACE().p( TRACE_MOTEUR3D,"CMaterialTexture::LitTexture() fichier=%s begin%T",m_FichierTexture.c_str(), this );
-
-	bool changed = RessourcesLoader::getFileRessource(m_FichierTexture);
-	texName = litFichierTexture(m_FichierTexture);
-
-TRACE().p( TRACE_MOTEUR3D, "CMaterialTexture::LitTexture() -> %d end%T", texName, this );
+	RessourcesLoader::getFileRessource(m_FichierTexture);
+	void* pixels = litFichierImage(m_FichierTexture, 1.0f);
+	_texture = litFichierTexture(m_FichierTexture, 1.0f, pixels);
 }
 
 bool CMaterialTexture::Lit(TiXmlElement* element, string &repertoire)
@@ -164,7 +162,7 @@ bool CMaterialTexture::Save(TiXmlElement* element)
 void CMaterialTexture::Active() {
 	glEnable(GL_TEXTURE_2D);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	glBindTexture( GL_TEXTURE_2D, texName );
+	glBindTexture(GL_TEXTURE_2D, _texture->getGlTexName());
 }
 
 void CMaterialTexture::Desactive() {

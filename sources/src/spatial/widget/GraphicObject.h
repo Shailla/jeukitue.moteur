@@ -15,7 +15,10 @@ public:
 	GraphicObject();
 	virtual ~GraphicObject();
 
+	/** Alloue les ressources OpenGL de l'objet graphique. */
 	virtual void initializeGraphicObject(void) = 0;
+
+	/** Libère les ressources OpenGL de l'objet graphique. */
 	virtual void destructGraphicObject(void) = 0;
 };
 

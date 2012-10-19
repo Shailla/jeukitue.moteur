@@ -13,7 +13,7 @@
 
 /********************************************************************************
 *  If you don't want to compile with the trace system activated,
-*  undefine TRACE_ACTIVE
+*  so undefine TRACE_ACTIVE
 ********************************************************************************/
 
 //#undef TRACE_ACTIVE
@@ -49,8 +49,8 @@ enum TraceType {
 
 class Donnees
 {
-	int m_Line;
-	const char *m_NomFichier;
+	int _line;
+	const char *_sourceFile;
 public:
 	Donnees(int line, const char *nomFichier);
 	void p(int indic, const char *txt, ... );

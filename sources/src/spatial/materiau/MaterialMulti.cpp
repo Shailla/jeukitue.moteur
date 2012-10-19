@@ -63,8 +63,7 @@ void CMaterialMulti::initGL() {
 		m_TabMat[i]->initGL();
 }
 
-bool CMaterialMulti::LitFichier( CIfstreamMap &fichier )
-{
+bool CMaterialMulti::LitFichier(CIfstreamMap &fichier) {
 	string mot;
 	int nbrSM;		// Nombre de sous-matériaux
 
@@ -106,33 +105,30 @@ bool CMaterialMulti::LitFichier( CIfstreamMap &fichier )
 	if( mot!="debut" )
 		return false;
 
-	for( int i=0 ; i<NbrTex() ; i++ )
-	{
+	for(int i=0 ; i<NbrTex() ; i++) {
 		fichier >> mot;
-		if( mot=="MateriauSimple" )
-		{
+
+		if(mot=="MateriauSimple") {
 			CMaterial *pMatSimple = new CMaterial();
-			if( !pMatSimple->LitFichier( fichier ) )
-			{
+			if(!pMatSimple->LitFichier(fichier)) {
 				cerr << endl << "Erreur : Materiau simple corrompu dans un multi-materiau" << endl;
 				delete pMatSimple;
 				return false;
 			}
+
 			m_TabMat[ i ] = pMatSimple;
 		}
-		else if( mot=="MateriauTexture" )
-		{
+		else if( mot=="MateriauTexture" ) {
 			CMaterialTexture *pMatTex = new CMaterialTexture();
-			if( !pMatTex->LitFichier( fichier ) )
-			{
+			if(!pMatTex->LitFichier(fichier)) {
 				cerr << endl << "Erreur : Materiau de texture corrompu dans un multi-materiau" << endl;
 				delete pMatTex;
 				return false;
 			}
+
 			m_TabMat[ i ] = pMatTex;
 		}
-		else
-		{
+		else {
 			return false;
 		}
 	}
@@ -148,8 +144,7 @@ bool CMaterialMulti::LitFichier( CIfstreamMap &fichier )
 	return true;
 }
 
-bool CMaterialMulti::SaveFichierMap( ofstream &fichier )
-{
+bool CMaterialMulti::SaveFichierMap(ofstream &fichier) {
 	fichier << "\n\tNbrSousMateriaux\t" << NbrTex();
 
 	fichier << "\n\tAmbient\t\t" << m_Ambient[0] << "\t" << m_Ambient[1] << "\t" << m_Ambient[2];
@@ -157,8 +152,8 @@ bool CMaterialMulti::SaveFichierMap( ofstream &fichier )
 	fichier << "\n\tSpecular\t" << m_Specular[0] << "\t" << m_Specular[1] << "\t" << m_Specular[2];
 
 	fichier << "\nSous-materiaux debut";
-	for( int i=0 ; i<NbrTex() ; i++ )
-	{
+
+	for(int i=0 ; i<NbrTex() ; i++) {
 		m_TabMat[ i ]->SaveFichierMap( fichier );
 	}
 
@@ -167,8 +162,7 @@ bool CMaterialMulti::SaveFichierMap( ofstream &fichier )
 	return true;
 }
 
-bool CMaterialMulti::Lit(TiXmlElement* element, string &repertoire)
-{
+bool CMaterialMulti::Lit(TiXmlElement* element, string& repertoire) {
 	// Référence
 	double ref;
 	if(!element->Attribute(Xml::REF, &ref))
@@ -197,10 +191,9 @@ bool CMaterialMulti::Lit(TiXmlElement* element, string &repertoire)
 	int i=0;
 	m_TabMat = new CMaterial*[m_NbrTex];
 
-	for(TiXmlElement* el=elSma->FirstChildElement(Xml::MATERIAU); el!=0; el=el->NextSiblingElement())
-	{
-		const char* txt1 = el->Value();
-		const char* txt2 = el->Attribute(Xml::REF);
+	for(TiXmlElement* el=elSma->FirstChildElement(Xml::MATERIAU); el!=0; el=el->NextSiblingElement()) {
+		el->Value();
+		el->Attribute(Xml::REF);
 
 		if(i >= NbrTex())
 			throw CErreur(0, "Fichier map corrompu : Reference sous-materiau");
@@ -212,8 +205,7 @@ bool CMaterialMulti::Lit(TiXmlElement* element, string &repertoire)
 	return true;
 }
 
-bool CMaterialMulti::Save(TiXmlElement* element)
-{
+bool CMaterialMulti::Save(TiXmlElement* element) {
 	// Nom, référence...
 	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAU);
 	elMat->SetAttribute(Xml::TYPE, Xml::MULTI);
@@ -236,8 +228,7 @@ bool CMaterialMulti::Save(TiXmlElement* element)
 	return true;
 }
 
-const char* CMaterialMulti::toString()
-{
+const char* CMaterialMulti::toString() {
 	return CMaterial::toString();
 }
 

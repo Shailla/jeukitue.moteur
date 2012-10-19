@@ -41,10 +41,10 @@ namespace JktMenu
 #define TAILLE_BOUTON_Y		20.0f
 
 bool CDlgBoite::m_B_INIT_CLASSE = false;
-int CDlgBoite::texErreur = -1;
-int CDlgBoite::texConfirm = -1;
-int CDlgBoite::texInfo = -1;
-int CDlgBoite::texEnCours = -1;
+Icone* CDlgBoite::_iconeErreur = NULL;
+Icone* CDlgBoite::_iconeConfirm = NULL;
+Icone* CDlgBoite::_iconeInfo = NULL;
+Icone* CDlgBoite::_iconeEnCours = NULL;
 
 CBouton::CBouton()
 {
@@ -165,22 +165,18 @@ bool CDlgBoite::INIT_CLASSE()
 {
 TRACE().p( TRACE_MENU, "CDlgBoite::INIT_CLASSE()" );
 
-	if( !m_B_INIT_CLASSE )
-	{
-			// Lecture des sons et images des styles de boites de dialogue
-		try
-		{
-			texErreur = JktMoteur::litFichierTexture("@Icone/Erreur.bmp");
-			TRACE().p( TRACE_INFO, "CDlgBoite::INIT_CLASSE() Texture d'icone d'erreur : %d", texErreur );
+	if( !m_B_INIT_CLASSE ) {
+		// Lecture des sons et images des styles de boites de dialogue
+		try {
+			void* pixelsErreur = JktMoteur::litFichierImage("@Icone/Erreur.bmp", -1.0f);
+			void* pixelsConfirm = JktMoteur::litFichierImage("@Icone/Confirm.bmp", -1.0f);
+			void* pixelsInfo = JktMoteur::litFichierImage("@Icone/Info.bmp", -1.0f);
+			void* pixelsEnCours = JktMoteur::litFichierImage("@Icone/EnCours.bmp", -1.0f);
 
-			texConfirm = JktMoteur::litFichierTexture("@Icone/Confirm.bmp");
-			TRACE().p( TRACE_INFO, "CDlgBoite::INIT_CLASSE() Texture de confirmation : %d", texConfirm );
-
-			texInfo = JktMoteur::litFichierTexture("@Icone/Info.bmp");
-			TRACE().p( TRACE_INFO, "CDlgBoite::INIT_CLASSE() Texture d'information : %d", texInfo );
-
-			texEnCours = JktMoteur::litFichierTexture("@Icone/EnCours.bmp");
-			TRACE().p( TRACE_INFO, "CDlgBoite::INIT_CLASSE() Texture de tache en cours : %d", texEnCours );
+			_iconeErreur = JktMoteur::litFichierIcone("@Icone/Erreur.bmp", -1.0f, pixelsErreur);
+			_iconeConfirm = JktMoteur::litFichierIcone("@Icone/Confirm.bmp", -1.0f, pixelsConfirm);
+			_iconeInfo = JktMoteur::litFichierIcone("@Icone/Info.bmp", -1.0f, pixelsInfo);
+			_iconeEnCours = JktMoteur::litFichierIcone("@Icone/EnCours.bmp", -1.0f, pixelsEnCours);
 		}
 		catch(CErreur& erreur)
 		{
@@ -189,6 +185,7 @@ TRACE().p( TRACE_MENU, "CDlgBoite::INIT_CLASSE()" );
 
 		m_B_INIT_CLASSE = true;	// Indique que l'initialisation de classe a eu lieu
 	}
+
 	return true;
 }
 
@@ -389,59 +386,24 @@ void CDlgBoite::afficheBouton()
 	}
 }
 
-void CDlgBoite::afficheIcone()
-{
+void CDlgBoite::afficheIcone() {
 	if( m_Type!=JKT_DLG_NULL ) {
-		int tex;
-
 		switch(m_Type) {
 		case JKT_DLG_CONFIRM:
-			if( texConfirm>=0 )		// Si la texture est valide
-				tex = texConfirm;
-			else
-				return;
+			_iconeConfirm->affiche(CORX + 10, CORX + 40, CORY + TAILLEBY - 80, CORY + TAILLEBY - 50);
 			break;
 		case JKT_DLG_INFO:
-			if( texInfo>=0 )		// Si la texture est valide
-				tex = texInfo;
-			else
-				return;
+			_iconeInfo->affiche(CORX + 10, CORX + 40, CORY + TAILLEBY - 80, CORY + TAILLEBY - 50);
 			break;
 		case JKT_DLG_ENCOURS:
-			if( texEnCours>=0 )		// Si la texture est valide
-				tex = texEnCours;
-			else
-				return;
+			_iconeEnCours->affiche(CORX + 10, CORX + 40, CORY + TAILLEBY - 80, CORY + TAILLEBY - 50);
 			break;
 		case JKT_DLG_ERREUR:
-			if( texErreur>=0 )		// Si la texture est valide
-				tex = texErreur;
-			else
-				return;
+			_iconeErreur->affiche(CORX + 10, CORX + 40, CORY + TAILLEBY - 80, CORY + TAILLEBY - 50);
 			break;
 		default:
 			break;
 		}
-
-		glEnable( GL_TEXTURE_2D );
-		glDepthMask( GL_FALSE );
-		glDisable( GL_BLEND );
-		glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
-		glBindTexture( GL_TEXTURE_2D, tex );
-
-		glBegin( GL_QUADS );
-			glTexCoord2f( 0.0f, 0.0f );
-			glVertex2f( CORX + 10,	CORY + TAILLEBY - 80	);
-
-			glTexCoord2f( 0.0f, 1.0f );
-			glVertex2f( CORX + 40,	CORY + TAILLEBY - 80	);
-
-			glTexCoord2f( 1.0f, 1.0f );
-			glVertex2f( CORX + 40,	CORY + TAILLEBY - 50	);
-
-			glTexCoord2f( 1.0f, 0.0f );
-			glVertex2f( CORX + 10,	CORY + TAILLEBY - 50	);
-		glEnd();
 	}
 }
 

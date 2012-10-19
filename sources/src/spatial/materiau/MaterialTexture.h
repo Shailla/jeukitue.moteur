@@ -9,11 +9,12 @@
 
 namespace JktMoteur
 {
+class Texture;
 
 class CMaterialTexture:public CMaterial
 {
 public:
-	unsigned int texName;	// ID de la texture fourni par openGL
+	Texture* _texture;	// ID de la texture fourni par openGL
 
 	std::string m_FichierTexture;		// Nom du fichier de la texture associée
 

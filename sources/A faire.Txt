@@ -4,8 +4,6 @@
 
 Idées ou choses à faire :
 
--	Le joueur doit pouvoir s'arrêter net grâce à une touche. C'est par exemple des aérofreins
-
 -	Ecrire un destructeur pour les classes CMenu parce que les retour de menu sont gérés
 	un peu à l'arrache, chacun des menu efface un peu n'importe quel item ou machin à sa sortie
 

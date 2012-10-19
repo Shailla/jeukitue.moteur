@@ -18,8 +18,7 @@ using namespace std;
 namespace JktMoteur
 {
 
-CMaterial::CMaterial()
-{
+CMaterial::CMaterial() {
 	m_Type = MAT_TYPE_SIMPLE;
 	m_Ref = 0;
 
@@ -35,8 +34,7 @@ CMaterial::~CMaterial()
 CMaterial::MAT_TYPE CMaterial::Type() const
 {	return m_Type;	}
 
-const char* CMaterial::toString()
-{
+const char* CMaterial::toString() {
 	switch(m_Type)
 	{
 	case CMaterial::MAT_TYPE_MULTI:
@@ -52,11 +50,11 @@ const char* CMaterial::toString()
 		tostring = "???";
 		break;
 	}
+
 	return tostring.c_str();
 }
 
-bool CMaterial::LitFichier(CIfstreamMap &fichier)
-{
+bool CMaterial::LitFichier(CIfstreamMap &fichier) {
 	string mot;
 
 	fichier >> mot;
@@ -86,8 +84,7 @@ bool CMaterial::LitFichier(CIfstreamMap &fichier)
 	return true;
 }
 
-bool CMaterial::Lit(TiXmlElement* el, string &repertoire)
-{
+bool CMaterial::Lit(TiXmlElement* el, string &repertoire) {
 	double ref;
 
 	// Référence
@@ -102,8 +99,7 @@ bool CMaterial::Lit(TiXmlElement* el, string &repertoire)
 	return true;
 }
 
-bool CMaterial::SaveFichierMap( ofstream &fichier )
-{
+bool CMaterial::SaveFichierMap( ofstream &fichier ) {
 	fichier << "\n\nMateriauSimple";
 	fichier << "\n\tReference\t" << m_Ref;
 	fichier << "\n\tAmbient\t\t" << m_Ambient[0] << "\t" << m_Ambient[1] << "\t" << m_Ambient[2];
@@ -113,8 +109,7 @@ bool CMaterial::SaveFichierMap( ofstream &fichier )
 	return true;
 }
 
-bool CMaterial::Save(TiXmlElement* element)
-{
+bool CMaterial::Save(TiXmlElement* element) {
 	// Nom, référence...
 	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAU);
 	elMat->SetAttribute(Xml::TYPE,Xml::SIMPLE);
@@ -129,8 +124,7 @@ bool CMaterial::Save(TiXmlElement* element)
 	return true;
 }
 
-void CMaterial::Active()
-{
+void CMaterial::Active() {
 	glMaterialfv( GL_FRONT_AND_BACK, GL_AMBIENT, m_Ambient );
 	glMaterialfv( GL_FRONT_AND_BACK, GL_DIFFUSE, m_Diffuse );
 	glMaterialfv( GL_FRONT_AND_BACK, GL_SPECULAR, m_Specular );
@@ -146,8 +140,7 @@ unsigned int CMaterial::getRef() const	// Renvoie la référence du matériau
 	return m_Ref;
 }
 
-void CMaterial::setRef(unsigned int ref)
-{
+void CMaterial::setRef(unsigned int ref) {
 	m_Ref = ref;
 }
 

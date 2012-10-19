@@ -26,6 +26,8 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 	#include <io.h>
 	#include <direct.h>
 #endif
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include <agar/config/have_opengl.h>
 #include <agar/config/have_sdl.h>
 #include <agar/core.h>
@@ -33,8 +35,6 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 #include <agar/gui/cursors.h>
 #include <agar/gui/sdl.h>
 #include <agar/gui/opengl.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
 
 using namespace std;
 
@@ -128,9 +128,6 @@ using namespace JktSon;
 float GLIGHTX, GLIGHTY, GLIGHTZ;
 GLFont myfont;
 
-bool indicSpace = true;		//gère si la théière animée part ou revient
-float positionSpace = 0.0;	 //position de la théière animée
-
 CCfg Config;		// Contient la configuration du jeu
 CGame Game;			// Contient toutes les données vivantes du jeu
 
@@ -143,17 +140,16 @@ string nomFichierConfig = "config";
 
 CFocus *pFocus;
 
-int nbrMainPlayer = 0;	//nbre de joueurs sur la map
+int numMainPlayer = 0;	// Numéro du joueur principal dans la MAP (identifie le joueur principal dans la liste des joueurs de la MAP)
 
 SDL_Event event;	//évênement SDL pour la gestion des input (clavier/souris/joystick...)
 
 SDL_TimerID timer_ID = 0;
-void *param = 0;
 SDL_Event event_SDL;
 
 bool Aide = false;
 
-extern JktSon::CDemonSons *DemonSons;	// Requêtes des son à jouer
+extern JktSon::CDemonSons *DemonSons;	// Requêtes des sons à jouer
 
 Uint32 tempsTimer = 0;		// Temps pris par la fonction 'timer'
 Uint32 tempsDisplay = 0;	// Temps pris par la fonction 'display'
@@ -355,9 +351,8 @@ void afficheInfo( Uint32 tempsDisplay )
 	myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 
 
-		// Affiche le mode du jeu
-	if( Game.getMap() && Game.getMap()->IsSelectionMode() )
-	{
+	// Affiche le mode du jeu
+	if(Game.getMap() && Game.getMap()->IsSelectionMode()) {
 		sprintf( cou, "Selection : %s", Game.getMap()->getSelectedName());
 		str = cou;
 		myfont.DrawString( cou, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
@@ -367,8 +362,7 @@ void afficheInfo( Uint32 tempsDisplay )
 	str = cou;
 	myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 
-	if( Game.Erwin() )
-	{
+	if(Game.Erwin()) {
 		CPlayer *erwin = Game.Erwin();
 
 			// Affiche le Teta du joueur principal
@@ -390,8 +384,7 @@ void afficheInfo( Uint32 tempsDisplay )
 		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 	}
 
-	if( Config.Debug.bSonPerformances )
-	{
+	if(Config.Debug.bSonPerformances) {
 		unsigned int currentalloced, maxalloced;
 		sprintf( cou, "Son, usage CPU : %.4f %%", FSOUND_GetCPUUsage() );
 		str = cou;
@@ -408,8 +401,7 @@ void afficheInfo( Uint32 tempsDisplay )
 		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 	}
 
-	if( Config.Debug.bReseauDebit )
-	{
+	if(Config.Debug.bReseauDebit) {
 		float debit, taille;
 
 		CSPA::getDebitRec( debit, taille );
@@ -426,8 +418,7 @@ void afficheInfo( Uint32 tempsDisplay )
 		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 	}
 
-	if( Config.Debug.bSonSpectre )
-	{
+	if(Config.Debug.bSonSpectre) {
 		int NBR_RAIES_SPECTRE = 512;
 		float *spectre = FSOUND_DSP_GetSpectrum();
 
@@ -457,8 +448,7 @@ void afficheInfo( Uint32 tempsDisplay )
 
 		glBegin( GL_QUADS );
 
-		for( int i=0 ; i < NBR_RAIES_SPECTRE ; i++ )
-		{
+		for(int i=0 ; i < NBR_RAIES_SPECTRE ; i++) {
 			glColor3f( 0.0f, 1.0f, 0.0f );
 			glVertex2f( gauche + i*(largeur/(float)NBR_RAIES_SPECTRE), bas );
 			glVertex2f( gauche + (i+1)*(largeur/(float)NBR_RAIES_SPECTRE), bas );
@@ -1120,14 +1110,16 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 
 		case SDLK_c :	// Change le joueur principal (=> change le point de vue et l'interraction clavier)
 			cout << endl << "Nombre de joeurs dans la partie : " << Game.pTabIndexPlayer->getNbr();
+
 			if(Game.getMap()) {
-				nbrMainPlayer = Game.pTabIndexPlayer->Suivant( nbrMainPlayer ); //prends le nbrMainPlayer°ième joueur
-				if( nbrMainPlayer>=Game.pTabIndexPlayer->getMax() )	// si on a atteint la fin de la liste
-				{
-					nbrMainPlayer = -1;		// Redonne la main au premier joueur de la liste
-					nbrMainPlayer = Game.pTabIndexPlayer->Suivant( nbrMainPlayer );
+				numMainPlayer = Game.pTabIndexPlayer->Suivant(numMainPlayer); 	//prends le nbrMainPlayer°ième joueur
+
+				if(numMainPlayer>=Game.pTabIndexPlayer->getMax()) {				// si on a atteint la fin de la liste
+					numMainPlayer = -1;		// Redonne la main au premier joueur de la liste
+					numMainPlayer = Game.pTabIndexPlayer->Suivant(numMainPlayer);
 				}
-				Game.Erwin( Game.pTabIndexPlayer->operator [](nbrMainPlayer) );
+
+				Game.Erwin(Game.pTabIndexPlayer->operator [](numMainPlayer));
 			}
 			break;
 

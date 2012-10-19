@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -14,25 +12,22 @@
 
 using namespace std;
 
-Donnees::Donnees( int line, const char *nomFichier )
-{
-	m_Line = line;
-	m_NomFichier = nomFichier;
+Trace* Trace::m_Instance = NULL;
+
+Donnees::Donnees(int line, const char *sourceFile) {
+	_line = line;
+	_sourceFile = sourceFile;
 }
 
-void Donnees::p( int indic, const char *txt, ... )
-{
+void Donnees::p(int indic, const char *txt, ... ) {
 	va_list vl;
-	va_start( vl, txt );
-	Trace::instance().print( TRACE_NORMAL, m_Line, m_NomFichier, indic, txt, vl );
+	va_start(vl, txt);
+	Trace::instance().print( TRACE_NORMAL, _line, _sourceFile, indic, txt, vl );
 }
 
-Trace* Trace::m_Instance = 0;
-
-Trace::Trace()
-{
+Trace::Trace() {
 	m_Mutex = SDL_CreateMutex();
-	SDL_mutexP( m_Mutex );
+	SDL_LockMutex( m_Mutex );
 
 	string name;
 	stringstream nomFichier, nomFichierXML;
@@ -42,19 +37,15 @@ Trace::Trace()
 
 	CFindFolder folder( chemin, NOM_FICHIER_TRACE, EXT_FICHIER_TRACE );
 
-	while( folder.findNext( name ) )
-	{
-		if( name.size() >= strlen(EXT_FICHIER_TRACE) )
-		{
+	while(folder.findNext(name)) {
+		if(name.size() >= strlen(EXT_FICHIER_TRACE)) {
 			name = string( name.begin()+strlen(NOM_FICHIER_TRACE), name.end()-strlen(EXT_FICHIER_TRACE) );	// Extraction du numéro du fichier trace
 
-			if( name == "0" )
-			{
+			if( name == "0" ) {
 				if( numeroFichier < 0 )
 					numeroFichier = 0;
 			}
-			else
-			{
+			else {
 				num = atoi( name.c_str() );
 				if( num > numeroFichier )
 					numeroFichier = num;
@@ -64,20 +55,18 @@ Trace::Trace()
 
 	CFindFolder folderXml( chemin, NOM_FICHIER_TRACE, EXT_XML_FICHIER_TRACE );
 
-	while( folderXml.findNext(name) )
-	{
+	while(folderXml.findNext(name)) {
 		cout << endl << name << " ";
 		name = string( name.begin()+strlen(NOM_FICHIER_TRACE), name.end()-strlen(EXT_XML_FICHIER_TRACE) );	// Extraction du numéro du fichier trace
 		cout << name;
 
-		if( name == "0" )
-		{
+		if(name == "0") {
 			if( numeroFichier < 0 )
 				numeroFichier = 0;
 		}
-		else
-		{
+		else {
 			num = atoi( name.c_str() );
+
 			if( num > numeroFichier )
 				numeroFichier = num;
 		}
@@ -96,12 +85,11 @@ Trace::Trace()
 
 	m_Instance = this;
 
-	SDL_mutexV( m_Mutex );
+	SDL_UnlockMutex(m_Mutex);
 }
 
-Trace::~Trace()
-{
-	SDL_mutexP( m_Mutex );
+Trace::~Trace() {
+	SDL_LockMutex( m_Mutex );
 
 	cout << endl << "FIN DES TRACES" << endl;
 
@@ -116,25 +104,22 @@ Trace::~Trace()
 	SDL_DestroyMutex( m_Mutex );
 }
 
-Trace &Trace::instance()
-{
+Trace &Trace::instance() {
 	if( !m_Instance )
 		m_Instance = new Trace();
 
 	return *m_Instance;
 }
 
-void Trace::print_old( int type, int line, const char *nomFichier, int indic, const char *txt, ... )
-{
+void Trace::print_old( int type, int line, const char *nomFichier, int indic, const char *txt, ... ) {
 	va_list vl;
 	va_start( vl, txt );
 
 	print( type, line, nomFichier, indic, txt, vl );
 }
 
-void Trace::print( int type, int line, const char *nomFichier, int indic, const char *txt, va_list &vl )
-{
-	SDL_mutexP( m_Mutex );
+void Trace::print(int type, int line, const char *nomFichier, int indic, const char *txt, va_list &vl) {
+	SDL_LockMutex( m_Mutex );
 
 	if( (indic & LEVEL_TRACE) || (LEVEL_TRACE ==-1) )	// Si on ne veut pas cette trace-là alors sors
 	{
@@ -199,8 +184,8 @@ void Trace::print( int type, int line, const char *nomFichier, int indic, const 
 		ligne << ligne3.str() << flush;
 
 		ligneXML << " package=" << '"' << flush;
-		switch( indic )
-		{
+
+		switch( indic ) {
 		case TRACE_ERROR:
 			ligne4 << "TRACE_ERROR";
 			ligneXML << "TRACE_ERROR" << '"';
@@ -239,17 +224,14 @@ void Trace::print( int type, int line, const char *nomFichier, int indic, const 
 		ligne.setf( ios_base::left, ios_base::adjustfield );
 		ligne << ligne4.str() << flush;
 
-		for( int i=0 ; txt[i]!='\0' ; i++ )
-		{
-			if( !prec )
-			{
+		for( int i=0 ; txt[i]!='\0' ; i++ ) {
+			if( !prec ) {
 				if( txt[i]=='%' )
 					prec = true;
 				else
 					ligne5 << txt[i];
 			}
-			else
-			{
+			else {
 				switch( txt[i] )
 				{
 					case 'd':
@@ -262,31 +244,24 @@ void Trace::print( int type, int line, const char *nomFichier, int indic, const 
 					{
 #ifdef VS
 						bool a = va_arg( vl, bool );
-						if( a )
-							ligne5 << "true";
-						else
-							ligne5 << "false";
-						break;
 #else
 						int a = va_arg( vl, int );
+#endif
 						if( a )
 							ligne5 << "true";
 						else
 							ligne5 << "false";
 						break;
-#endif
 					}
 					case 'f':
 					{
 #ifdef VS
 						float a = va_arg( vl, float );
-						ligne5 <<  a;
-						break;
 #else
 						double a = va_arg( vl, double );
+#endif
 						ligne5 <<  a;
 						break;
-#endif
 					}
 					case 'x':
 					{
@@ -335,8 +310,7 @@ void Trace::print( int type, int line, const char *nomFichier, int indic, const 
 		m_Fichier << ligne.str();
 		m_FichierXML << ligneXML.str() << ">" << flush;
 
-		switch( type )
-		{
+		switch( type ) {
 		case TRACE_NORMAL:
 			m_FichierXML << "</normal>" << endl;
 			break;
@@ -351,5 +325,5 @@ void Trace::print( int type, int line, const char *nomFichier, int indic, const 
 		va_end( vl );
 	}
 
-	SDL_mutexV( m_Mutex );
+	SDL_UnlockMutex(m_Mutex);
 }

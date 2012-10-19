@@ -918,7 +918,7 @@ void CMap::afficheToutesTextures(const int x, const int y) {
 			CMaterialTexture *matRef = (CMaterialTexture*)m;
 
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-			glBindTexture( GL_TEXTURE_2D, matRef->texName );
+			glBindTexture(GL_TEXTURE_2D, matRef->getRef());
 
 			glBegin( GL_QUADS );		//AVOIR : mettre les coord de tex dans glArrayElement
 				glTexCoord2f( 0.0f, 0.0f );

@@ -75,10 +75,10 @@ bool RessourcesLoader::getFileRessource(string& file)
 	bool bTrouve = false;
 	string before = file;
 
-	if((int)file.find_first_of('@') == 0) {
-		int nbr1 = (int)file.find_first_of('\\');
-		int nbr2 = (int)file.find_first_of('/');
-		int nbr;
+	if(file.find_first_of('@') == 0) {
+		unsigned int nbr1 = file.find_first_of('\\');
+		unsigned int nbr2 = file.find_first_of('/');
+		unsigned int nbr;
 
 		if(nbr1 > nbr2) {
 			nbr = nbr1;
@@ -120,7 +120,6 @@ vector<string> RessourcesLoader::getMaps() {
 	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
 	folder.reset();
 
-	int mapNumber = 0;
 	while(folder.findNext(mapName)) {
 		mapName.erase( mapName.find_last_of( "." ) );
 		mapName.erase( mapName.find_last_of( "." ) );
@@ -138,7 +137,6 @@ vector<string> RessourcesLoader::getPlayerMaps() {
 	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
 	folder.reset();
 
-	int mapNumber = 0;
 	while( folder.findNext( mapName ) )
 	{
 		mapName.erase( mapName.find_last_of( "." ) );

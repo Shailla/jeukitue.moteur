@@ -42,8 +42,7 @@ namespace JktMoteur
 {
 
 		//Constructeurs / Destructeur
-CGeoMaker::CGeoMaker(CMap *map)
-{
+CGeoMaker::CGeoMaker(CMap *map) {
 	m_Map = map;
 	m_Color = NULL;
 
@@ -52,16 +51,19 @@ CGeoMaker::CGeoMaker(CMap *map)
 	m_MaterialRef = 0;		// Référence du matériau associé
 
 	m_NumVertex = 0;			// Nbre de sommets
-	m_TabVertex = 0;			// Pointeur sur le tableau de sommets
+	m_TabVertex = NULL;			// Pointeur sur le tableau de sommets
 
 	m_NumFaces = 0;				// Nbre d'index de sommets
-	m_TabFaces = 0;				// Pointeur sur le tableau d'index des sommets
+	m_TabFaces = NULL;				// Pointeur sur le tableau d'index des sommets
 
-	m_TabVectNormaux = 0;		// Tableau des vecteurs normaux
+	m_TabVectNormaux = NULL;		// Tableau des vecteurs normaux
 
-	m_TabSubMat = 0;			// Index des éventuels sous-matériau
+	m_TabSubMat = NULL;			// Index des éventuels sous-matériau
 
 	m_bSolid = true;
+
+	m_TexVertexListe = NULL;
+	m_NumColor = 0;
 }
 
 CGeoMaker::~CGeoMaker()
@@ -513,7 +515,7 @@ void CGeoMaker::SaveVertex(TiXmlElement *element, unsigned int nbr, float* verte
 	TiXmlElement* elSom = new TiXmlElement("Sommets");
 	elSom->SetAttribute(Xml::NBR, nbr);
 
-	for(int i=0 ; i<nbr ; i++)
+	for(unsigned int i=0 ; i<nbr ; i++)
 	{
 		stringstream ss0, ss1, ss2;
 

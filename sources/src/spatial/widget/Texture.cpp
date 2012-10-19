@@ -1,5 +1,5 @@
 /*
- * Icone.cpp
+ * Texture.cpp
  *
  *  Created on: 15 oct. 2012
  *      Author: Erwin
@@ -12,14 +12,15 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "SDL.h"
+#include "util/V3D.h"
 
 using namespace std;
 
-#include "spatial/widget/Icone.h"
+#include "spatial/widget/Texture.h"
 
 namespace JktMoteur {
 
-Icone::Icone(const string& nomFichier, bool alpha, int hauteur, int largeur, void* pixels) {
+Texture::Texture(const string& nomFichier, bool alpha, int hauteur, int largeur, void* pixels) {
 	_nomFichier = nomFichier;
 	_alpha = alpha;
 	_pixels = pixels;
@@ -28,11 +29,11 @@ Icone::Icone(const string& nomFichier, bool alpha, int hauteur, int largeur, voi
 	_glTexName = 0;
 }
 
-Icone::~Icone() {
+Texture::~Texture() {
 	delete[] _pixels;
 }
 
-void Icone::initializeGraphicObject(void) {
+void Texture::initializeGraphicObject(void) {
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1 );
 	glGenTextures(1, &_glTexName );
 	glBindTexture(GL_TEXTURE_2D, _glTexName );
@@ -45,34 +46,33 @@ void Icone::initializeGraphicObject(void) {
 	cout << "Icone initialisee avec l'image '" << _nomFichier << "' sous la reference OpenGL " << _glTexName;
 }
 
-void Icone::destructGraphicObject(void) {
+void Texture::destructGraphicObject(void) {
 	// TODO Détruire la texture OpenGL
 }
 
-void Icone::affiche(float left, float right, float down, float up) {
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
-	glBindTexture(GL_TEXTURE_2D, _glTexName);
+void Texture::afficheQuad(const CV3D& a, const CV3D& b, const CV3D& c, const CV3D& d) {
 	glEnable(GL_TEXTURE_2D);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+	glBindTexture(GL_TEXTURE_2D, _glTexName);
+	glEnable(GL_BLEND);
 	glDepthMask(GL_FALSE);
-	glDisable(GL_DEPTH_TEST);
 
-	if(_alpha) {
-		glEnable(GL_BLEND);
-	}
+	glBegin(GL_QUADS);
+		glTexCoord2f(0.0f, 0.0f);
+		glVertex3f(a.X, a.Y, a.Z);
 
-	glBegin( GL_QUADS );
-		glTexCoord2f( 1.0f, 0.0f );
-		glVertex2f(left, up);
+		glTexCoord2f(0.0f, 1.0f);
+		glVertex3f(b.X, b.Y, b.Z);
 
-		glTexCoord2f( 1.0f, 1.0f );
-		glVertex2f(right, up);
+		glTexCoord2f(1.0f, 1.0f);
+		glVertex3f(c.X, c.Y, c.Z);
 
-		glTexCoord2f( 0.0f, 1.0f );
-		glVertex2f(right, down);
-
-		glTexCoord2f( 0.0f, 0.0f );
-		glVertex2f(left, down);
+		glTexCoord2f(1.0f, 0.0f);
+		glVertex3f(d.X, d.Y, d.Z);
 	glEnd();
+
+	glDepthMask(GL_TRUE);
+	glDisable(GL_BLEND);
 }
 
 } /* namespace JktMoteur */

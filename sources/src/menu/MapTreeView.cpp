@@ -13,6 +13,7 @@
 #include "spatial/materiau/MaterialTexture.h"
 #include "spatial/materiau/MaterialMulti.h"
 #include "spatial/light/Light.h"
+#include "spatial/widget/Texture.h"
 
 #include "menu/MapTreeView.h"
 
@@ -140,7 +141,7 @@ void MapTreeView::showOneMaterial(AG_TreetblRow* parentRow, const CMaterial* mat
 		{
 			CMaterialTexture* texture = (CMaterialTexture*)mat;
 			ostringstream textureId;
-			textureId << texture->texName;
+			textureId << texture->_texture->getGlTexName();
 			AG_TreetblAddRow(_tree, materiauRow, rowId++, "%d%s%d%s", depth+1, "Fichier de texture : ", depth+2, texture->m_FichierTexture.c_str());
 			AG_TreetblAddRow(_tree, materiauRow, rowId++, "%d%s%d%s", depth+1, "Identifiant de texture : ", depth+2, textureId.str().c_str());
 		}

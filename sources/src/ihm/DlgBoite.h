@@ -6,7 +6,11 @@
 #include <string>
 using namespace std;
 
+#include "spatial/widget/Icone.h"
+
 #include "Dlg.h"
+
+using namespace JktMoteur;
 
 namespace JktMenu
 {
@@ -47,10 +51,10 @@ public:
 private:
 	static bool m_B_INIT_CLASSE;	// Indique si la classe a déjà été initialisée
 
-	static int texErreur;		// Texture de l'icone associée à un message d'erreur
-	static int texInfo;			// Texture de l'icone associée à un message d'information
-	static int texEnCours;		// Texture de l'icone associée à un message d'information
-	static int texConfirm;		// Texture de l'icone associée à un message de confitmation
+	static Icone* _iconeErreur;		// Texture de l'icone associée à un message d'erreur
+	static Icone* _iconeInfo;			// Texture de l'icone associée à un message d'information
+	static Icone* _iconeEnCours;		// Texture de l'icone associée à un message d'information
+	static Icone* _iconeConfirm;		// Texture de l'icone associée à un message de confitmation
 
 	char *m_Titre;			// Titre de la boîte de dialogue
 	vector<string> m_Texte;	// Texte apparaissant dans la boite de dialogue

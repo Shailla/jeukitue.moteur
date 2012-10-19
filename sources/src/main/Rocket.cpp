@@ -24,6 +24,7 @@ using namespace std;
 #include "main/Player.h"
 #include "spatial/materiau/Textures.h"
 #include "spatial/Map.h"
+#include "spatial/widget/Texture.h"
 
 #include "Rocket.h"
 
@@ -31,7 +32,7 @@ using namespace JktUtils;
 
 extern CGame Game;
 
-unsigned int CRocket::m_TexExplosion = 0;		// Texture pour l'explosion de la rocket
+Texture* CRocket::_textureExplosion = NULL;		// Texture pour l'explosion de la rocket
 bool CRocket::m_B_INIT_CLASSE = false;	// Par défaut la classe n'a pas encore été initialisée
 JktMoteur::CMap* CRocket::pMapRocket = 0;			// Image 3D de la rocket
 
@@ -46,12 +47,12 @@ TRACE().p( TRACE_OTHER, "CRocket::INIT_CLASSE()" );
 		// Initialise la classe si elle ne l'a pas encore été
 	if( !m_B_INIT_CLASSE ) {
 		try {
-			m_TexExplosion = JktMoteur::litFichierTextureAlpha("@Texture/Explosion.jpg", 0.75f);
-			TRACE().p( TRACE_OTHER, "loadSubIntro() Texture de fonte : %d", m_TexExplosion );
+			void* pixels = JktMoteur::litFichierImage("@Texture/Explosion.jpg", 0.75f);
+			_textureExplosion = JktMoteur::litFichierTexture("@Texture/Explosion.jpg", 0.75f , pixels);
 		}
 		catch(CErreur &erreur) {
 			cerr << "\nEchec lecture icone d'explosion du rocket";
-			m_TexExplosion = 0;
+			_textureExplosion = NULL;
 			return false;	// L'initialisation a échoué
 		}
 
@@ -103,49 +104,27 @@ void CRocket::Affiche_S1()
 
 }
 
-void CRocket::Affiche_S2()
-{
+void CRocket::Affiche_S2() {
 	// Calcul du plan orthogonal à l'axe de la vue
 	GLfloat mat[16];
 	glGetFloatv( GL_MODELVIEW_MATRIX, mat );
 	CV3D v_droit( mat[0], mat[4], mat[8] );
 	CV3D v_haut( mat[1], mat[5], mat[9] );
-	CV3D a, b, c, d;
-
-	glEnable( GL_TEXTURE_2D );
-	glTexEnvf( GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE );
-	glBindTexture( GL_TEXTURE_2D, m_TexExplosion );
-	glEnable( GL_BLEND );
-	glDepthMask( GL_FALSE );
 
 	// Affichage de l'explosion
-	a = - ( (v_haut+v_droit)*TAILLE_TEX_EXPLOSION );
-	b = +( (v_droit-v_haut)*TAILLE_TEX_EXPLOSION );
-	c = +( (v_haut+v_droit)*TAILLE_TEX_EXPLOSION );
-	d = +( (v_haut-v_droit)*TAILLE_TEX_EXPLOSION );
+	CV3D a = - ( (v_haut+v_droit)*TAILLE_TEX_EXPLOSION );
+	CV3D b = +( (v_droit-v_haut)*TAILLE_TEX_EXPLOSION );
+	CV3D c = +( (v_haut+v_droit)*TAILLE_TEX_EXPLOSION );
+	CV3D d = +( (v_haut-v_droit)*TAILLE_TEX_EXPLOSION );
 
 	glPushMatrix();
 
 	CV3D pos_explosion;
 	pos_explosion = m_Pos - m_Dir*0.04f;	// Recule un peu l'explosion par rapport à la position où elle se passe
-	glTranslatef( pos_explosion.X, pos_explosion.Y, -pos_explosion.Z );
+	glTranslatef(pos_explosion.X, pos_explosion.Y, -pos_explosion.Z);
 
-	glBegin( GL_QUADS );
-		glTexCoord2f( 0.0f, 0.0f );
-		glVertex3f( a.X, a.Y, a.Z );
+	_textureExplosion->afficheQuad(a, b, c, d);
 
-		glTexCoord2f( 0.0f, 1.0f );
-		glVertex3f( b.X, b.Y, b.Z );
-
-		glTexCoord2f( 1.0f, 1.0f );
-		glVertex3f( c.X, c.Y, c.Z );
-
-		glTexCoord2f( 1.0f, 0.0f );
-		glVertex3f( d.X, d.Y, d.Z );
-	glEnd();
-
-	glDepthMask( GL_TRUE );
-	glDisable( GL_BLEND );
 	glPopMatrix();
 }
 

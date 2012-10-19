@@ -15,12 +15,15 @@ using namespace std;
     Constructeur
     portLocal : numéro du port d'écoute de la facade
 */
-UdpConnector::UdpConnector(UdpController* udpController,
-                           const int portLocal)
-{
+UdpConnector::UdpConnector(UdpController* udpController, const int portLocal) : m_socketSet() {
     m_channel = -1;   // Uninitialized channel value
     m_udpController = udpController;
 	m_portLocal = portLocal;
+	m_isAlive = false;
+	m_portDistant = 0;
+	m_thread = NULL;
+	m_ipDistant = NULL;
+	m_socket = NULL;
 }
 
 /**

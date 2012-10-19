@@ -1,12 +1,12 @@
 /*
- * Icone.h
+ * Texture.h
  *
  *  Created on: 15 oct. 2012
  *      Author: Erwin
  */
 
-#ifndef ICONE_H_
-#define ICONE_H_
+#ifndef TEXTURE_H_
+#define TEXTURE_H_
 
 #include "string"
 
@@ -16,12 +16,18 @@ using namespace std;
 
 #include "spatial/widget/GraphicObject.h"
 
+namespace JktUtils {
+class CV3D;
+}
+
+using namespace JktUtils;
+
 namespace JktMoteur {
 
 /**
  * Icone affichage avec OpenGL.
  */
-class Icone : public GraphicObject {
+class Texture : public GraphicObject {
 	/** Nom du fichier de l'image qui a servi à créer l'icone. */
 	string _nomFichier;
 
@@ -50,26 +56,25 @@ public:
 	 * largeur : Largeur de l'icone en pixels.
 	 * pixels : Pixels de l'icone.
 	 */
-	Icone(const string& nomFichier, bool alpha, int hauteur, int largeur, void* pixels);
+	Texture(const string& nomFichier, bool alpha, int hauteur, int largeur, void* pixels);
 
 	/** Destructeur. */
-	virtual ~Icone();
+	virtual ~Texture();
 
-	/** Alloue les ressources OpenGL de l'icone. */
+	/** Alloue les ressources OpenGL de la texture. */
 	void initializeGraphicObject(void);
 
 	/** Libère les ressources OpenGL. */
 	void destructGraphicObject(void);
 
+	unsigned int getGlTexName(void) {	return _glTexName;	};
+
 	/**
-	 * Affiche l'icone aux coordonnées indiquées.
+	 * Affiche la texture dans un rectangle aux coordonnées indiquées.
 	 *
-	 * left : Position gauche du cadre de l'icone.
-	 * right : Position droite du cadre de l'icone.
-	 * down : Position basse du cadre de l'icone.
-	 * up : Position haute du cadre de l'icone.
+	 *
 	 */
-	void affiche(float left, float right, float down, float up);
+	void afficheQuad(const CV3D& a, const CV3D& b, const CV3D& c, const CV3D& d);
 };
 
 } /* namespace JktMoteur */

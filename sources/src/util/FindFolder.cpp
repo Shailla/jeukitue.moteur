@@ -27,10 +27,8 @@ using namespace std;
 //	CFindFolder( "c:/rep", "fich", ".map" );
 //	ou
 //	CFindFolder( "c:/rep", "fich, ".map" );
-CFindFolder::CFindFolder( const char *filter, const char *optfilter1, const char *optfilter2 )
-{
-	if( !filter )
-	{
+CFindFolder::CFindFolder(const char *filter, const char *optfilter1, const char *optfilter2) {
+	if( !filter ) {
 		cerr << endl << "CFindFolder::CFindFolder() filtre null" << endl;
 		m_Filter = new char[strlen("") + 1];
 		strcpy( m_Filter, "" );
@@ -45,24 +43,20 @@ CFindFolder::CFindFolder( const char *filter, const char *optfilter1, const char
 	m_Filter = new char[ strlen(filter) +1 ];
 	strcpy( m_Filter, filter );
 
-	if( optfilter1 )
-	{
+	if( optfilter1 ) {
 		m_FilterOpt1 = new char[ strlen(optfilter1) +1 ];
 		strcpy( m_FilterOpt1, optfilter1 );
 	}
-	else
-	{
-		m_FilterOpt1 = 0;
+	else {
+		m_FilterOpt1 = NULL;
 	}
 
-	if( optfilter2 )
-	{
+	if( optfilter2 ) {
 		m_FilterOpt2 = new char[ strlen(optfilter2) +1 ];
 		strcpy( m_FilterOpt2, optfilter2 );
 	}
-	else
-	{
-		m_FilterOpt2 = 0;
+	else {
+		m_FilterOpt2 = NULL;
 	}
 }
 
@@ -78,12 +72,11 @@ void CFindFolder::reset()
 #endif
 }
 
-int CFindFolder::nbr()	// Nombre de fichiers du répertoire correspondant aux filtres
-{
+int CFindFolder::nbr() {	// Nombre de fichiers du répertoire correspondant aux filtres
 	string name;
 	int num = 0;
 
-	while( findNext( name ) )
+	while(findNext(name))
 		num++;
 
 	return num;
@@ -99,15 +92,13 @@ bool CFindFolder::findNext(string &fichier)
 	bool bTrouve;		// Indique si un fichier correspondant à tous les filtres a été trouvé
 	bool bResult;
 
-	do
-	{
+	do {
 		bTrouve = false;
 		bTrouve1 = false;
 		bTrouve2 = false;
 		bResult = false;
 
-		if( m_hFile == -2 )
-		{
+		if( m_hFile == -2 ) {
 			string filter = m_Filter;
 			if( string( filter.end()-1, filter.end() ) != "/" )
 				filter += "/";
@@ -118,8 +109,7 @@ bool CFindFolder::findNext(string &fichier)
 			if( m_hFile != -1L )
 				bResult = true;		// Un fichier a été trouvé
 		}
-		else
-		{
+		else {
 			if( _findnext( m_hFile, &fileinfo ) != -1L )
 				bResult = true;		// Un fichier a été trouvé
 		}
@@ -188,15 +178,13 @@ bool CFindFolder::findNext(string &fichier)
 	bool bTrouve;		// Indique si un fichier correspondant à tous les filtres a été trouvé
 	bool bResult;
 
-	do
-	{
+	do {
 		bTrouve = false;
 		bTrouve1 = false;
 		bTrouve2 = false;
 		bResult = false;
 
-		if( m_Dir == 0 )
-		{
+		if( m_Dir == 0 ) {
 			string filter = m_Filter;
 			if( string( filter.end()-1, filter.end() ) != "/" )
 				filter += "/";
@@ -204,8 +192,7 @@ bool CFindFolder::findNext(string &fichier)
 			m_Dir = opendir( filter.c_str() );
 		}
 
-		if( m_Dir )
-		{
+		if( m_Dir ) {
 			dp = readdir( m_Dir );
 			if( dp )
 				bResult = true;		// Un fichier a été trouvé
@@ -234,35 +221,29 @@ bool CFindFolder::findNext(string &fichier)
 				}
 			}
 
-			if( m_FilterOpt1 && m_FilterOpt2 )
-			{
+			if( m_FilterOpt1 && m_FilterOpt2 ) {
 				if( bTrouve1 && bTrouve2 )
 					bTrouve = true;
 			}
-			else if( m_FilterOpt1 )
-			{
+			else if( m_FilterOpt1 ) {
 				if( bTrouve1 )
 					bTrouve = true;
 			}
-			else if( m_FilterOpt2 )
-			{
+			else if( m_FilterOpt2 ) {
 				if( bTrouve2 )
 					bTrouve = true;
 			}
-			else
-			{
+			else {
 				if( bResult )
 					bTrouve = true;
 			}
 		}
 	} while( bResult && !bTrouve );
 
-	if( bTrouve )
-	{
+	if( bTrouve ) {
 		return true;
 	}
-	else
-	{
+	else {
 		fichier = "";
 		return false;
 	}
@@ -287,9 +268,8 @@ CFindFolder::~CFindFolder()
 #endif
 }
 
-	// Interface pour la suppression d'un répertoire
-int CFindFolder::rmdir( const char *dir )
-{
+// Interface pour la suppression d'un répertoire
+int CFindFolder::rmdir(const char *dir) {
 #ifdef WIN32
 	return _rmdir( dir );
 #elif defined(__linux__)
@@ -298,8 +278,7 @@ int CFindFolder::rmdir( const char *dir )
 }
 
 	// Permet de savoir si un élément est un répertoire ou non
-bool CFindFolder::isFolder(const string& directory)
-{
+bool CFindFolder::isFolder(const string& directory) {
 	const char* dir = directory.c_str();
 
 #ifdef VS
@@ -337,13 +316,11 @@ bool CFindFolder::chmod( char const *path, bool read, bool write )
 	if( write )
 		opt |= _S_IWRITE;
 
-	if( _chmod( path, opt  ) == -1 )
-	{
+	if( _chmod( path, opt  ) == -1 ) {
 		cerr << endl << "CFindFolder::chmod(" << path << ") Erreur _chmod" << endl;
 		return false;
 	}
-	else
-	{
+	else {
 		return true;
 	}
 #elif defined(__linux__)

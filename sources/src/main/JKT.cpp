@@ -1497,6 +1497,8 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 	if( !CRocket::INIT_CLASSE() )
 		return 1;	// Erreur fatale si CRocket ne peut être initialisée
 
+
+
 	// Mise en place du moteur de particules pour la neige, réfléchir où mettre ça
 	CV3D posMoteurParticulesNeige( -2.35f, 1.5f, 0.0f );
 	moteurParticulesNeige = new CMoteurParticulesNeige( posMoteurParticulesNeige, 1000, 0.05f );

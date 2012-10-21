@@ -42,25 +42,22 @@ public:
 	unsigned int getReference();	// Renvoie la référence de l'objet
 
 		// Interface
-	virtual void initGL()=0;							// Initialisation de l'objet géométrique
-	virtual void freeGL()=0;							// Libération des ressources de l'objet dans le contexte OpenGL
-	virtual void Init()=0;								// Initialisation de l'objet géométrique
-	virtual void Affiche()=0;							// Affiche l'objet géométrique
-	virtual void AfficheSelection(float r,float v,float b)=0;	// Affiche l'objet géométrique en couleur unique
-	virtual bool Lit(TiXmlElement* el)=0;
-//	virtual bool LitFichier( CIfstreamMap &fichier );	// Lit un objet géo dans un fichier Map
-//	virtual bool SaveNameType( ofstream &fichier )=0;	// Sauvegarde du nom du type d'objet géométrique
-//	virtual bool SaveFichierMap( ofstream &fichier );	// Sauve l'objet géo dans un fichier Map
+	virtual void initGL() = 0;							// Initialisation de l'objet géométrique
+	virtual void freeGL() = 0;							// Libération des ressources de l'objet dans le contexte OpenGL
+	virtual void Init() = 0;								// Initialisation de l'objet géométrique
+	virtual void Affiche() = 0;							// Affiche l'objet géométrique
+	virtual void AfficheSelection(float r,float v,float b) = 0;	// Affiche l'objet géométrique en couleur unique
+	virtual bool Lit(TiXmlElement* el) = 0;
 	virtual bool Save(TiXmlElement* element) = 0;		// Sauve l'objet géo dans un fichier Map
-	virtual void EchangeXY()=0;							// Echange les coordonnées X et Y de l'objet
-	virtual void EchangeXZ()=0;							// Echange les coordonnées X et Z de l'objet
-	virtual void EchangeYZ()=0;							// Echange les coordonnées Y et Z de l'objet
-	virtual void Scale( float scaleX, float scaleY, float scaleZ )=0;	// Homothétie pondérée selon X, Y et Z de l'objet
-	virtual void GereContactPlayer( const float pos[3], CPlayer *player )=0;	// Gère les contact entre 'player' et l'objet géo
-	virtual float GereLaser( float pos[3], CV3D &Dir, float dist)=0;	// Voir la définition de la fonction
+	virtual void EchangeXY() = 0;							// Echange les coordonnées X et Y de l'objet
+	virtual void EchangeXZ() = 0;							// Echange les coordonnées X et Z de l'objet
+	virtual void EchangeYZ() = 0;							// Echange les coordonnées Y et Z de l'objet
+	virtual void Scale( float scaleX, float scaleY, float scaleZ ) = 0;	// Homothétie pondérée selon X, Y et Z de l'objet
+	virtual void GereContactPlayer( const float pos[3], CPlayer *player ) = 0;	// Gère les contact entre 'player' et l'objet géo
+	virtual float GereLaser( float pos[3], CV3D &Dir, float dist) = 0;	// Voir la définition de la fonction
 
 	virtual bool Contact( const float pos[3], float dist );
-	virtual const char* toString()=0;	// Description résumée de l'objet
+	virtual const char* toString() = 0;	// Description résumée de l'objet
 };
 
 }	// JktMoteur

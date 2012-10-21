@@ -132,20 +132,24 @@ void CPlayer::ActiveArmeUp()	// Rends l'arme suivante active
 		m_ArmeActif = 0;
 }
 
-void CPlayer::ActiveArmeDown()	// Rends l'arme précédente active
-{
+/**
+ * Active l'arme précédente de la liste des armes.
+ */
+void CPlayer::ActiveArmeDown() {
 	m_ArmeActif--;
+
 	if( m_ArmeActif < 0 )
 		m_ArmeActif = m_NbrArmes-1;
 }
 
-int CPlayer::ArmeActif()
-{
+/**
+ * Renvoi le numéro de l'arme active
+ */
+int CPlayer::ArmeActif() {
 	return m_ArmeActif;
 }
 
-CPlayer::~CPlayer()
-{
+CPlayer::~CPlayer() {
 	if( m_pClavier )
 	{
 		delete m_pClavier;
@@ -166,8 +170,10 @@ CPlayer::~CPlayer()
 	}
 }
 
-void CPlayer::setCri( const char *nomFichier )
-{
+/**
+ * Définit le cri du joueur à l'instant où est blessé.
+ */
+void CPlayer::setCri(const char *nomFichier) {
 	ID_Cri = DemonSons->CreateSon( nomFichier );
 	ID_ReqCri = DemonSons->PlayID( ID_Cri, true );
 }
@@ -175,13 +181,18 @@ void CPlayer::setCri( const char *nomFichier )
 CClavier *CPlayer::getClavier()
 {	return m_pClavier;	}
 
-void CPlayer::setPosition( float x, float y, float z ) //change la position du joueur
-{
+/**
+ * Change la position du joueur.
+ */
+void CPlayer::setPosition(float x, float y, float z) {
 	m_Position[0] = x;
 	m_Position[1] = y;
 	m_Position[2] = z;
 }
 
+/**
+ * Choisit un point d'entrée pour le joueur dans la MAP parmi les points d'entrée de la MAP courante.
+ */
 void CPlayer::choiceOneEntryPoint() {
 	if(Game.getMap()->getEntryPointsList().size() >= 1) {
 		CPlayer *player;
@@ -242,7 +253,10 @@ void CPlayer::choiceOneEntryPoint() {
 	}
 }
 
-void CPlayer::setPosition(const CV3D& pos) {	//change la position du joueur
+/**
+ * Change la position du joueur.
+ */
+void CPlayer::setPosition(const CV3D& pos) {
 	m_Position[0] = pos.X;
 	m_Position[1] = pos.Y;
 	m_Position[2] = pos.Z;
@@ -250,34 +264,45 @@ void CPlayer::setPosition(const CV3D& pos) {	//change la position du joueur
 	cout << " POSITION " << pos.X << " " << pos.Y << " " << pos.Z;
 }
 
-void CPlayer::setPosition(const float pos[3]) //change la position du joueur
-{
+/**
+ * Change la position du joueur.
+ */
+void CPlayer::setPosition(const float pos[3]) {
 	m_Position[0] = pos[0];
 	m_Position[1] = pos[1];
 	m_Position[2] = pos[2];
 }
 
-void CPlayer::getPosition( float pos[3] ) const	//retourne le pointeur sur la position du joueur
-{
+/**
+ * Retourne la position du joueur.
+ */
+void CPlayer::getPosition(float pos[3]) const {
 	pos[0] = m_Position[0];
 	pos[1] = m_Position[1];
 	pos[2] = m_Position[2];
 }
 
-void CPlayer::changeVitesse(float vx, float vy, float vz) //change la vitesse du joueur
-{
+/**
+ * Change la vitesse du joueur.
+ */
+void CPlayer::changeVitesse(float vx, float vy, float vz) {
 	m_Vitesse[0] = vx;
 	m_Vitesse[1] = vy;
 	m_Vitesse[2] = vz;
 }
 
-void CPlayer::getVitesse(float vit[3]) const	//retourne le pointeur sur la vitesse du joueur
-{
+/**
+ * Retourne la vitesse du joueur.
+ */
+void CPlayer::getVitesse(float vit[3]) const {
 	vit[0] = m_Vitesse[0];
 	vit[1] = m_Vitesse[1];
 	vit[2] = m_Vitesse[2];
 }
 
+/**
+ * Change la vitesse du joueur.
+ */
 void CPlayer::setVitesse(const float vit[3]) {
 	m_Vitesse[0] = vit[0];
 	m_Vitesse[1] = vit[1];
@@ -294,6 +319,7 @@ void CPlayer::changeContact(void (*contact)(CPlayer *player, float *normal, floa
 
 void CPlayer::Affiche() {
 	glPushMatrix();
+
 	glTranslatef(m_Position[0], m_Position[1], -m_Position[2]);
 	glRotated(90.0f, 0.0f, 1.0f, 0.0f);
 	glRotated(-m_Teta, 0.0f, 1.0f, 0.0f); //Rotation par rapport à l'axe verticale
@@ -312,27 +338,33 @@ void CPlayer::Affiche() {
 
 void CPlayer::tuer() {
 	if( !ID_ReqCri->IsPlaying() )
-		DemonSons->Play( ID_ReqCri );	// (Re)Joue le cri
+		DemonSons->Play( ID_ReqCri );	// Joue le cri du joueur
 }
 
-void CPlayer::AfficheProjectils() {		// Affiche tous les projectils
+void CPlayer::AfficheProjectils() {		// Affiche tous les projectils du joueur
 	CProjectil *pro;
 
 	Tableau<CProjectil>::Adr *adr = TabProjectil.BeginAdr();
-	while( adr ) {		//tant que ce n'est pas le dernier objet géométrique de la liste
+
+	while(adr) {
 		pro = adr->m_adrX;
+
 		pro->Affiche();			// Affichage de l'objet géo
+
 		adr = TabProjectil.Suivant( adr );	//Passe à l'objet géométrique suivant
 	}
 }
 
+/**
+ * Fait un tir avec l'arme active du joueur.
+ */
 void CPlayer::Tir() {
 	CV3D Dir;
 
-	if(ArmeActif() == 1) {			// Si l'arme active de erwin est le rocket
+	if(ArmeActif() == 1) {			// Si l'arme active est le laser, alors tire un laser
 		TabProjectil.Ajoute(new CLaser(this));
 	}
-	else if(ArmeActif() == 2) {		// Si l'arme active de erwin est le rocket
+	else if(ArmeActif() == 2) {		// Si l'arme active est le lance-rocket, alors tire un rocket
 		TabProjectil.Ajoute(new CRocket(this));
 	}
 }
@@ -366,10 +398,16 @@ void CPlayer::RefreshProjectils() {
 void CPlayer::init() {
 }
 
+/**
+ * Initialise les éléments OpenGL du joueur.
+ */
 void CPlayer::initGL() {
 	m_pSkin->initGL();
 }
 
+/**
+ * Libère les éléments OpenGL du joueur.
+ */
 void CPlayer::freeGL() {
 	m_pSkin->freeGL();
 }

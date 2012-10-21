@@ -10,7 +10,7 @@
 
 using namespace JktMoteur;
 
-class CRocket:public CProjectil {
+class CRocket : public CProjectil {
 	enum ROCKET_STATE {
 		ROCKET_STATE_DEPL,
 		ROCKET_STATE_CONTACT,
@@ -19,7 +19,7 @@ class CRocket:public CProjectil {
 
 	static bool m_B_INIT_CLASSE;		// Indique si la classe a été initialisée
 	static Texture* _textureExplosion;			// Texture de l'explosion de la rocket
-	static JktMoteur::CMap *pMapRocket;	// Map associée à l'image de la rocket
+	static JktMoteur::CMap *_mapRocket;	// Map associée à l'image de la rocket
 
 	CV3D m_Pos;		// Position de la rocket
 	CV3D m_Dir;		// Direction de la rocket
@@ -29,9 +29,14 @@ class CRocket:public CProjectil {
 	ROCKET_STATE m_State;
 	float m_Taille;
 
-	void Affiche_S1();
-	void Affiche_S2();
-	void Deplace();		// Déplace la rocket, lorsqu'elle est à m_State=1
+	/** Affiche la rocket. */
+	void afficheRocket();
+
+	/** Affiche l'explosion de la rocket. */
+	void afficheExplosion();
+
+	// Déplace la rocket si elle n'a pas encore explosé ou fait la exploser
+	void Deplace();
 
 public:
 	static bool INIT_CLASSE();	// Initialisation de la classe

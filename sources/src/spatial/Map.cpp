@@ -60,6 +60,7 @@ CMap::CMap()
 TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() begin%T", this );
 	m_bSelection = false;
 	m_Selection = 0;
+	_isGlActivated = false;
 }
 
 CMap::CMap(const string &nomFichier) throw(JktUtils::CErreur)
@@ -110,7 +111,12 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() begin%T", this );
 TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() end%T", this );
 }
 
-void CMap::Affiche() {	// Affiche tous les objets géo de du Map
+void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
+	// Si nécessaire, initialise les éléments OpenGL de la MAP
+	if(_isGlActivated) {
+		initGL();
+	}
+
 	glEnableClientState( GL_VERTEX_ARRAY );
 
 	vector<CGeo*>::iterator iterGeo;
@@ -122,7 +128,7 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du Map
 			if(i != m_Selection)
 				(*iterGeo)->Affiche();			// Affichage de l'objet géo
 			else
-				(*iterGeo)->AfficheSelection(1.0,0.0,0.0);
+				(*iterGeo)->AfficheSelection(1.0f, 0.0f, 0.0f);
 
 			i++;
 		}
@@ -136,22 +142,21 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du Map
 	glDisable( GL_VERTEX_ARRAY );
 }
 
-void CMap::Add(CGeo* geo)
-{
-	m_TabGeo.push_back( geo );	// Ajoute geo à la liste des objets affichables
+void CMap::Add(CGeo* geo) {
+	m_TabGeo.push_back(geo);	// Ajoute geo à la liste des objets affichables
 }
 
-void CMap::Add( CMaterial *mat ) {
-	m_TabMaterial.push_back( mat );	// Ajoute mat à la liste des objets affichables
+void CMap::Add(CMaterial *mat) {
+	m_TabMaterial.push_back(mat);	// Ajoute mat à la liste des objets affichables
 }
 
-void CMap::Add( CLight *light )
-{
-	m_TabLight.push_back( light );	// Ajoute light à la liste des objets affichables
+void CMap::Add(CLight *light) {
+	m_TabLight.push_back(light);	// Ajoute light à la liste des objets affichables
 }
 
 void CMap::incrementeSelection() {
 	m_Selection++;
+
 	if(m_Selection >= (int)m_TabGeo.size()) {
 		m_Selection = 0;
 	}
@@ -211,8 +216,8 @@ void CMap::GereContactPlayer( CPlayer *player ) {
 		(*iterGeo)->GereContactPlayer(pos, player);	// Gère les contacts entre l'objet géo et le joueur
 }
 
-float CMap::GereLaserPlayer( float *pos, CV3D &Dir, float dist )
-{	// Renvoie la distance du premier point de contact entre un rayon laser parti du point 'pos'
+float CMap::GereLaserPlayer( float *pos, CV3D &Dir, float dist ) {
+	// Renvoie la distance du premier point de contact entre un rayon laser parti du point 'pos'
 	// dans la direction 'Dir' si cette distance est inférieure à 'dist', renvoie 'dist' sinon
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
@@ -416,331 +421,6 @@ bool CMap::Lit(const string &nomFichier)
 	return result;
 }
 
-/*bool CMap::LitFichier(const string &nomFichier)
-{
-TRACEMETHOD TRACE_MOTEUR3D, this, "CMap::LitFichier(nomFichier=%s)%T", nomFichier.c_str(),this );
-	string nomFichierMap = nomFichier + ".map";
-	string mot;
-
-	cout << endl;
-
-	try
-	{
-			// Ouverture du fichier
-		CIfstreamMap::m_OffsetMateriaux = 0;
-		CIfstreamMap fichier( &m_TabMaterial );
-		if( !fichier.open( nomFichierMap ) )
-		{
-			string erreur( "Ouverture de fichier impossible (" );
-			erreur += nomFichierMap;
-			erreur += ")";
-			throw CErreur( 0, erreur );
-		}
-
-		cout << "\nOuverture d'un fichier Map (" << nomFichierMap << ")";
-
-		while( !!fichier )	// Si la fin du fichier n'est pas atteinte
-		{
-			if( !(fichier>>mot) )
-				break;
-
-			if( mot=="EntreeJoueurs" )		// Lecture d'un point d'entrée
-			{
-				float pos[3];
-				fichier >> pos[0] >> pos[1] >> pos[2];
-				m_EntreeJoueurs.push_back( CV3D( pos ) );
-				cout << "\nPoint d'entree joueur : " << pos[0] << "\t" << pos[1] << "\t" << pos[2];
-				cout << "--->";
-				for( int i=0 ; i<3 ; i++ )
-					cout << "\nPoint d'entree joueur : " << m_EntreeJoueurs[i].X << "\t" << m_EntreeJoueurs[i].Y << "\t" << m_EntreeJoueurs[i].Z;
-				cout << "<---";
-			}
-			else if( mot==CGeoObject::identifier )		// Lecture d'un objet géométrique
-			{
-				CGeoObject *geo = new CGeoObject(this);	// Nouvel objet géométrique
-
-				geo->setOffsetMateriau( fichier.OffsetMateriaux() );	// Décale les réf matériau de l'offset
-
-				if( !geo->LitFichier( fichier ) )		// Lit cet objet dans le fichier
-				{
-					cerr << "\nObjet géométrique (" << geo->getName() << ") corrompu (1) dans : " << nomFichierMap;
-					delete geo;
-					return false;		// Echec de la lecture du fichier Map
-				}
-
-				geo->Init();
-				Add( geo );			// Ajoute-le à la map
-			}
-			else if( mot==CTextureMaterialGeo::identifier )		// Lecture d'un objet géométrique
-			{
-				CTextureMaterialGeo *geo = new CTextureMaterialGeo(this);	// Nouvel objet géométrique
-
-				geo->setOffsetMateriau( fichier.OffsetMateriaux() );	// Décale les réf matériau de l'offset
-
-				if( !geo->LitFichier( fichier ) )		// Lit cet objet dans le fichier
-				{
-					cerr << "\nObjet géométrique (" << geo->getName() << ") corrompu (1) dans : " << nomFichierMap;
-					delete geo;
-					return false;		// Echec de la lecture du fichier Map
-				}
-
-				geo->Init();
-				Add( geo );			// Ajoute-le à la map
-			}
-			else if( mot==CSimpleMaterialGeo::identifier )		// Lecture d'un objet géométrique
-			{
-				CSimpleMaterialGeo *geo = new CSimpleMaterialGeo(this);	// Nouvel objet géométrique
-
-				geo->setOffsetMateriau(fichier.OffsetMateriaux());	// Décale les réf matériau de l'offset
-
-				if( !geo->LitFichier( fichier ) )		// Lit cet objet dans le fichier
-				{
-					cerr << "\nObjet géométrique (" << geo->getName() << ") (2) corrompu dans : " << nomFichierMap;
-					delete geo;
-					return false;		// Echec de la lecture du fichier Map
-				}
-
-				geo->Init();
-				Add( geo );			// Ajoute-le à la map
-			}
-			else if( mot==CSimpleGeo::identifier )	// Lecture d'un objet géométrique
-			{
-				cout << endl << "Lecture d'un SimpleGeo";
-				CSimpleGeo *geo = new CSimpleGeo(this);	// Nouvel objet géométrique
-
-				if( !geo->LitFichier( fichier ) )		// Lit cet objet dans le fichier
-				{
-					cerr << "\nObjet géométrique (" << geo->getName() << ") (3) corrompu dans : " << nomFichierMap;
-					delete geo;
-					return false;		// Echec de la lecture du fichier Map
-				}
-
-				geo->Init();
-				Add( geo );			// Ajoute-le à la map
-			}
-			else if( mot==CPorte::identifier)			// Lecture d'une porte
-			{
-				CPorte *porte = new CPorte( this );			// Nouvel objet géométrique
-
-				porte->setOffsetMateriau( fichier.OffsetMateriaux() );	// Décale les réf matériau de l'offset
-
-				if( !porte->LitFichier( fichier ) )		// Lit cet objet dans le fichier
-				{
-					cerr << "\nPorte corrompue dans : " << nomFichierMap;
-					delete porte;
-					return false;		// Echec de la lecture du fichier Map
-				}
-
-				porte->Init();
-				Add( porte );			// Ajoute-la à la map
-			}
-			else if( mot==CNavette::identifier )		// Lecture d'une navette
-			{
-				CNavette *navette = new CNavette( this );			// Nouvel objet géométrique
-
-				navette->setOffsetMateriau( fichier.OffsetMateriaux() );	// Décale les réf matériau de l'offset
-
-				if( !navette->LitFichier( fichier ) )		// Lit cet objet dans le fichier
-				{
-					cerr << "\nPorte corrompue dans : " << nomFichierMap;
-					delete navette;
-					return false;		// Echec de la lecture du fichier Map
-				}
-
-				navette->Init();
-				Add( navette );			// Ajoute-la à la map
-			}
-			else if( mot=="MateriauSimple" )	// Lecture d'un matériau simple
-			{
-				CMaterial *mat = new CMaterial();
-				if( !mat->LitFichier( fichier ) )
-				{
-					cerr << "\nMatériau corrompu dans : " << nomFichierMap;
-					delete mat;
-					return false;		// Echec de la lecture du fichier Map
-				}
-				Add( mat );
-			}
-			else if( mot=="MateriauMulti" )		// Lecture d'un matériau multiple
-			{
-				CMaterialMulti *matMulti = new CMaterialMulti();
-				if( !matMulti->LitFichier( fichier ) )
-				{
-					cerr << "\nMatériauMulti corrompu dans : " << nomFichierMap;
-					delete matMulti;
-					return false;		// Echec de la lecture du fichier Map
-				}
-				Add( matMulti );
-			}
-			else if( mot=="MateriauTexture" )	// Lecture d'un matériau texture
-			{
-				CMaterialTexture *matTex = new CMaterialTexture();
-				if( !matTex->LitFichier( fichier ) )
-				{
-					cerr << "\nMateriau corrompu dans : " << nomFichierMap;
-					delete matTex;
-					return false;		// Echec de la lecture du fichier Map
-				}
-				Add( matTex );
-			}
-			else if( mot=="LumiereOmni" )		// Lecture d'une lumière omnidirectionnelle
-			{
-				cout << endl << "Lecture d'une lumiere omni dans le fichier MAP";
-				CLightOmni *lightOmni = new CLightOmni();
-				if( !lightOmni->LitFichier( fichier ) )
-				{
-					cerr << "\nLumière omni corrompue dans : " << nomFichierMap;
-					delete lightOmni;
-					return false;			// Echec de la lecture du fichier Map
-				}
-				Add( lightOmni );
-			}
-			else if( mot=="LumiereTarget" )		// Lecture d'une lumière directive
-			{
-				cout << endl << "Lecture d'une lumiere target dans le fichier MAP";
-				CLightTarget *lightTarget = new CLightTarget();
-				if( !lightTarget->LitFichier( fichier ) )
-				{
-					cerr << "\nLumière target corrompue dans : " << nomFichierMap;
-					delete lightTarget;
-					return false;			// Echec de la lecture du fichier Map
-				}
-				Add( lightTarget );
-			}
-			else if( mot=="make" )				// Lecture d'une construction
-			{
-				fichier >> mot;
-				if( mot==CPorte::identifier )
-				{
-					fichier >> mot;
-					if( mot=="with" )
-					{
-						fichier >> mot;
-						if( mot==CGeoObject::identifier )
-						{
-							fichier >> mot;
-
-							while( mot=="MateriauTexture" )			// Un matériau a été trouvé ?
-							{
-								CMaterialTexture *matTex = new CMaterialTexture();
-								if( !matTex->LitFichier( fichier ) )
-								{
-									cerr << "\nMatériau corrompu dans : " << nomFichierMap;
-									delete matTex;
-									return false;		// Echec de la lecture du fichier Map
-								}
-								Add( matTex );
-
-								fichier >> mot;
-							}
-
-							if( mot==CGeoObject::identifier )
-							{
-								CPorte *porte = new CPorte( this );			// Nouvel objet géométrique
-								porte->setOffsetMateriau( fichier.OffsetMateriaux() );	// Si un matériau est référencé décale sa réf de l'offset
-								if( !porte->LitFichierGeoObject( fichier ) )
-								{
-									cerr << "\nGeoObject de la Porte corrompue (" << nomFichierMap << ")";
-									delete porte;
-									return false;
-								}
-
-                                fichier >> mot;
-								if( mot=="DATA_Porte" )
-								{
-									porte->LitFichierPorte( fichier );	// Lit les données porte
-
-									porte->Init();
-									Add( porte );			// Ajoute-la à la map
-								}
-								else
-								{
-									cerr << "\nPorte corrompue 2 (" << nomFichierMap << ")";
-									delete porte;
-									return false;
-								}
-							}
-							else
-							{
-								cerr << "\nPorte corrompue 3 (" << nomFichierMap << ")";
-								return false;
-							}
-						}
-					}
-				}
-				else if( mot=="Navette" )
-				{
-					fichier >> mot;
-					if( mot=="with" )
-					{
-						fichier >> mot;
-						if( mot==CGeoObject::identifier )
-						{
-							fichier >> mot;
-
-							while( mot=="MateriauTexture" )			// Un matériau a été trouvé ?
-							{
-								CMaterialTexture *matTex = new CMaterialTexture();
-								if( !matTex->LitFichier( fichier ) )
-								{
-									cerr << "\nMatériau corrompu dans : " << nomFichierMap;
-									delete matTex;
-									return false;		// Echec de la lecture du fichier Map
-								}
-								Add( matTex );
-
-								fichier >> mot;
-							}
-
-							if( mot==CGeoObject::identifier )
-							{
-								CNavette *navette = new CNavette( this );			// Nouvel objet géométrique
-								navette->setOffsetMateriau( fichier.OffsetMateriaux() );	// Si un matériau est référencé décale sa réf de l'offset
-								if( !navette->LitFichierGeoObject( fichier ) )
-								{
-									cerr << "\nGeoObject de la Navette corrompu (" << nomFichierMap << ")";
-									delete navette;
-									return false;
-								}
-
-                                fichier >> mot;
-								if( mot=="DATA_Navette" )
-								{
-									navette->LitFichierNavette( fichier );	// Lit les données porte
-
-									navette->Init();
-									Add( navette );			// Ajoute-la à la map
-								}
-								else
-								{
-									cerr << "\nNavette corrompue 2 (" << nomFichierMap << ")";
-									delete navette;
-									return false;
-								}
-							}
-							else
-							{
-								cerr << "\nNavette corrompue 3 (" << nomFichierMap << ")";
-								return false;
-							}
-						}
-					}
-				}
-			}
-		}
-
-		cout << "\nLecture du fichier MAP (" << nomFichier << ") Ok !!!\n";
-		return true;
-	}
-
-	catch( CErreur erreur )
-	{
-		cerr << "\nErreur (exeption) : " << erreur.toString();
-	}
-
-	return false;
-}*/
-
 bool CMap::Init() throw(JktUtils::CErreur) {	// Initialisation de la CMap
 	// Initialisation des object géométriques
 	vector<CGeo*>::iterator iterGeo;
@@ -769,6 +449,8 @@ bool CMap::initGL() {
 		CGeo* geo = (*iterGeo);
 		geo->initGL();
 	}
+
+	_isGlActivated = true;	// Indique que les éléments OpenGL de la MAP ont bien été initialisés
 
 	return true;
 }

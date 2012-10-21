@@ -37,63 +37,6 @@ void CGeo::initGL() {}
 
 void CGeo::freeGL() {}
 
-/*bool CGeo::SaveFichierMap(ofstream &fichier)
-{
-	fichier << "\tReference\t\t" << getReference();
-	fichier << "\tNom\t\t\t\t\"" << getName() << '\"';	// Sauvegarde du nom de l'objet
-
-	return true;
-}*/
-
-/*bool CGeo::LitFichier(CIfstreamMap &fichier)
-{
-	string mot, nom;
-	char ch;
-
-		// Lecture de la référence de l'object
-	fichier >> mot;
-	if( mot!="Reference" )
-	{
-		cerr << __LINE__;
-		return false;
-	}
-	unsigned int reference;
-	fichier >> reference;		// A FAIRE : comment utiliser la référence (gestion des doublons...)
-
-
-		// Lecture du nom de l'objet géo entre guillemets
-	fichier >> mot;
-	if( mot!="Nom" )
-	{
-		cerr << __LINE__;
-		return false;
-	}
-
-	fichier >> ch;		// Recherche du guillemet ouvrant
-	if( ch!='\"' )
-	{
-		cerr << __LINE__;
-		return false;
-	}
-
-	do
-	{
-		fichier.get( ch );
-		if( ch=='\n' )
-		{
-			cerr << __LINE__;
-			return false;
-		}
-
-		if( ch!='\"' )
-			nom += ch;
-	}while( ch!='\"' );
-
-	setName( nom );
-
-	return true;
-}*/
-
 void CGeo::setName( const string &nom )
 {
 	m_Nom.clear();

@@ -97,8 +97,6 @@ class CCfg {
 		string mapName;				// Nom de la map réprésentant le skin du joueur
 		bool skinVisibility;		// Indique si le joueur (son skin) est affiché ou non
 		bool outlineVisibility;		// Indique si les contours physiques du joueur (ellipsoïde qui l'entoure) est visible
-		bool cubicMeterVisibility;	// Indique si le cube d'un mètre de côté servant à calibrer les dimensions de la scène est visible ou non
-		bool axesMeterVisibility;	// Indique si les axes d'un mètre de côté servant à calibrer les dimensions de la scène sont visibles ou non
 	};
 
 	class CDebug {
@@ -108,6 +106,8 @@ class CCfg {
 		bool bAfficheFichier;		// Indique si l'ouverture des fichiers ASE doit se faire en mode debug (=>affichage dans la console durant la lecture)
 		bool bReseauDebit;
 		bool bAfficheNormaux;
+		bool cubicMeterVisibility;	// Indique si le cube d'un mètre de côté servant à calibrer les dimensions de la scène est visible ou non
+		bool axesMeterVisibility;	// Indique si les axes d'un mètre de côté servant à calibrer les dimensions de la scène sont visibles ou non
 	};
 
 	string nomFichierConfig;

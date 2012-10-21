@@ -56,10 +56,10 @@ int PluginConfigurationProxy::getConfigurationParameter(lua_State* L) {
 			lua_pushboolean(L, Config.Joueur.outlineVisibility);
 		}
 		else if(paramName.compare(CFG_PARAM_CUBIC_METER_VISIBILITY) == 0) {
-			lua_pushboolean(L, Config.Joueur.cubicMeterVisibility);
+			lua_pushboolean(L, Config.Debug.cubicMeterVisibility);
 		}
 		else if(paramName.compare(CFG_PARAM_AXES_METER_VISIBILITY) == 0) {
-			lua_pushboolean(L, Config.Joueur.axesMeterVisibility);
+			lua_pushboolean(L, Config.Debug.axesMeterVisibility);
 		}
 		else {
 			ostringstream message;
@@ -90,11 +90,11 @@ int PluginConfigurationProxy::setConfigurationParameter(lua_State* L) {
 		}
 		else if(paramName.compare(CFG_PARAM_CUBIC_METER_VISIBILITY) == 0) {
 			bool value = lua_toboolean(L, 2);
-			Config.Joueur.cubicMeterVisibility = value;
+			Config.Debug.cubicMeterVisibility = value;
 		}
 		else if(paramName.compare(CFG_PARAM_AXES_METER_VISIBILITY) == 0) {
 			bool value = lua_toboolean(L, 2);
-			Config.Joueur.axesMeterVisibility = value;
+			Config.Debug.axesMeterVisibility = value;
 		}
 		else {
 			ostringstream message;

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
+#include <algorithm>
 
 #include "ressource/RessourceConstantes.h"
 #include "util/FindFolder.h"
@@ -22,23 +23,22 @@ namespace JktUtils
 int RessourcesLoader::nbrElements = 9;
 const char* RessourcesLoader::elementsNamesAndFolders[] =
 {
-	"@Fond",	".\\Ressources\\Images\\Fonds",		// Images de fond
-	"@Fonte",	".\\Ressources\\Images\\Fontes",	// Polices / fontes
-	"@Icone",	".\\Ressources\\Images\\Icones",	// Icones des menus
-	"@Texture",	".\\Ressources\\Images\\Textures",	// Images de textures par défaut
+	"@Fond",	"./Ressources/Images/Fonds",		// Images de fond
+	"@Fonte",	"./Ressources/Images/Fontes",	// Polices / fontes
+	"@Icone",	"./Ressources/Images/Icones",	// Icones des menus
+	"@Texture",	"./Ressources/Images/Textures",	// Images de textures par défaut
 
-	"@Joueur",	".\\Ressources\\Maps\\Joueurs",		// Maps des joueurs par défaut
-	"@Arme",	".\\Ressources\\Maps\\Armes",		// Map des armes par défaut
+	"@Joueur",	"./Ressources/Maps/Joueurs",		// Maps des joueurs par défaut
+	"@Arme",	"./Ressources/Maps/Armes",		// Map des armes par défaut
 
-	"@Bruit",	".\\Ressources\\Sons\\Bruits",		// Bruits par défaut des Map
-	"@Jingle",	".\\Ressources\\Sons\\Jingles",		// Jingles des menus
-	"@Musique",	".\\Ressources\\Sons\\Musiques",	// Musiques par défaut
+	"@Bruit",	"./Ressources/Sons/Bruits",		// Bruits par défaut des Map
+	"@Jingle",	"./Ressources/Sons/Jingles",		// Jingles des menus
+	"@Musique",	"./Ressources/Sons/Musiques",	// Musiques par défaut
 };
 
-bool RessourcesLoader::getFileRessource(const string& rep, string& file)
-{
-	if(!getFileRessource(file)) {	// Chercher s'il correspond à une ressource par défaut, sinon
-			// Cherche s'il correspond à une ressource du répertoire
+bool RessourcesLoader::getFileRessource(const string& rep, string& file) {
+	if(!getFileRessource(file)) {	// Cherche s'il correspond à une ressource par défaut
+									// Sinon, cherche s'il correspond à une ressource du répertoire
 		if((int)file.find_first_of('$') == 0) {
 			int nbr1 = (int)file.find_first_of('\\');
 			int nbr2 = (int)file.find_first_of('/');
@@ -52,7 +52,7 @@ bool RessourcesLoader::getFileRessource(const string& rep, string& file)
 			}
 
 			if(nbr == 1) {
-				file.replace(0,nbr,rep);
+				file.replace(0, nbr, rep);
 				return true;
 			}
 			else {
@@ -68,24 +68,16 @@ bool RessourcesLoader::getFileRessource(const string& rep, string& file)
 	}
 }
 
-bool RessourcesLoader::getFileRessource(string& file)
-{
+bool RessourcesLoader::getFileRessource(string& file) {
 	// Récupération du premier élément du nom du fichier
 	// par exemple, dans --Ressource\Textures\... on récupère --Ressource
 	bool bTrouve = false;
 	string before = file;
 
-	if(file.find_first_of('@') == 0) {
-		unsigned int nbr1 = file.find_first_of('\\');
-		unsigned int nbr2 = file.find_first_of('/');
-		unsigned int nbr;
+	replace(file.begin(), file.end(), '\\', '/');
 
-		if(nbr1 > nbr2) {
-			nbr = nbr1;
-		}
-		else {
-			nbr = nbr2;
-		}
+	if(file.find_first_of('@') == 0) {
+		unsigned int nbr = file.find_first_of('/');
 
 		if(nbr != string::npos) {
 			string resourceType = file.substr(0, nbr);

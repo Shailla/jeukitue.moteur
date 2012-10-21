@@ -67,7 +67,7 @@ public:
 	/** Libère les ressources OpenGL. */
 	void destructGraphicObject(void);
 
-	unsigned int getGlTexName(void) {	return _glTexName;	};
+	unsigned int getGlTexName(void);
 
 	/**
 	 * Affiche la texture dans un rectangle aux coordonnées indiquées.

@@ -151,12 +151,10 @@ void Controller::executeAction(AG_Event *event) {
 			string mapName = view->getMapName(mapNumber);
 
 			// Connexion du serveur
-			if( !Reseau.ouvreServer( Config.Reseau.getPort() ) )
-			{
+			if(!Reseau.ouvreServer(Config.Reseau.getPort())) {
 				AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du serveur");
 			}
-			else
-			{
+			else {
 				// Ouverture de la Map sur le serveur
 				JktNet::CServer *server = Game.getServer();
 				pFocus->SetPlayFocus();
@@ -178,7 +176,8 @@ void Controller::executeAction(AG_Event *event) {
 			OpenSceneMapView* view = (OpenSceneMapView*)m_agarView->getView(Viewer::OPEN_SCENE_MAP_VIEW);
 			string mapName = view->getMapName(mapNumber);
 
-			cout << "Ouverture de la Map '" << mapName << "'";
+			cout << endl << "Ouverture de la Map '" << mapName << "'";
+
 			// Ouverture de la Map
             Game.RequeteProcess.setOuvreMapLocal(mapName);
         }
@@ -299,8 +298,7 @@ void Controller::executeAction(AG_Event *event) {
 				string aseName = view->getAseName();
 				AseImporter::lanceImportAse(aseName, console);
 			}
-			catch(CErreur &erreur)
-			{
+			catch(CErreur &erreur) {
 				stringstream texte;
 				texte << "Echec d'import ASE : " << erreur.toString();
 				AG_TextMsg(AG_MSG_ERROR, texte.str().c_str());

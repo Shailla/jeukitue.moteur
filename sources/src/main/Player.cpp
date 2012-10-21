@@ -302,46 +302,10 @@ void CPlayer::Affiche() {
 	if(Config.Joueur.outlineVisibility)
 		gluSphere(gluNewQuadric(), 0.1f, 16, 16);
 
-	if(Config.Joueur.outlineVisibility)
-
 	// Affiche le skin du joueur s'il existe et si le jeu est configuré pour
 	if(Config.Joueur.skinVisibility)
 		if(m_pSkin)
 			m_pSkin->Affiche();
-
-//		const float taille = 0.01f;
-//
-//		glBegin(GL_QUADS);
-//			glColor3f( 1.0, 0.0, 0.0);
-//			glVertex3f( -taille, -taille, -taille );
-//			glVertex3f( taille, -taille, -taille );
-//			glVertex3f( taille, taille, -taille );
-//			glVertex3f( -taille, taille, -taille );
-//
-//			glColor3f( 0.0, 1.0, 0.0);
-//			glVertex3f( -taille, -taille, taille );
-//			glVertex3f( taille, -taille, taille );
-//			glVertex3f( taille, taille, taille );
-//			glVertex3f( -taille, taille, taille );
-//
-//			glColor3f( 0.0, 0.0, 1.0);
-//			glVertex3f( -taille, -taille, -taille );
-//			glVertex3f( -taille, taille, -taille );
-//			glVertex3f( -taille, taille, taille );
-//			glVertex3f( -taille, -taille, taille );
-//
-//			glColor3f( 0.0, 0.5, 0.5);
-//			glVertex3f( -taille, -taille, -taille );
-//			glVertex3f( taille, -taille, -taille );
-//			glVertex3f( taille, -taille, taille );
-//			glVertex3f( -taille, -taille, taille );
-//
-//			glColor3f( 0.4f, 0.9f, 0.6f);
-//			glVertex3f( -taille, taille, -taille );
-//			glVertex3f( taille, taille, -taille );
-//			glVertex3f( taille, taille, taille );
-//			glVertex3f( -taille, taille, taille );
-//		glEnd();
 
 	glPopMatrix();
 }

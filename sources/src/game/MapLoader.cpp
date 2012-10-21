@@ -46,7 +46,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 	string mapName(gameDto->getMapName());
 
 	console->println(string("Lecture de la MAP '").append(mapName).append("'...").c_str());
-	cout << "\nLecture de la MAP '" << mapName << "'...";
+	cout << endl << "Lecture de la MAP '" << mapName << "'...";
 	cout.flush();
 
 	CMap* map = new CMap(mapName);
@@ -65,12 +65,12 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 	mapJoueurPrincipal.append("@Joueur\\").append(Config.Joueur.mapName);
 
 	console->println(string("Lecture du skin '").append(mapJoueurPrincipal).append("'...").c_str());
-	cout << string("Lecture du skin '").append(mapJoueurPrincipal).append("'...").c_str();
+	cout << endl << "Lecture du skin '" << mapJoueurPrincipal << "'...";
 
 	CMap *pMapJoueur = new CMap(mapJoueurPrincipal);
 	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 	console->println("Scaling du skin");
-	cout << "Scaling du skin";
+	cout << endl << "Scaling du skin";
 	pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
 
 	// Chargement second skin joueur
@@ -80,7 +80,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 	CMap *pMapJoueur2 = new CMap("GrosBonhomme");
 	pMapJoueur2->EchangeXZ();					// Ajuste les coordonnées
 	console->println("Scaling du skin");
-	cout << "Scaling du skin";
+	cout << endl << "Scaling du skin";
 	pMapJoueur2->Scale( -0.10f, 0.10f, 0.10f );
 
 
@@ -90,13 +90,13 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 
 	// Récupération des ressources de cris des personnages
 	console->println("Lecture du premier cri...");
-	cout << "\nLecture du premier cri...";
+	cout << endl << "Lecture du premier cri...";
 
 	string cri1 = "@Bruit\\cri_1.wav";
 	JktUtils::RessourcesLoader::getFileRessource(cri1);
 
 	console->println("Lecture du second cri...");
-	cout << "\nLecture du second cri...";
+	cout << endl << "Lecture du second cri...";
 
 	string cri2 = "@Bruit\\cri_1.wav";
 	JktUtils::RessourcesLoader::getFileRessource(cri2);
@@ -108,7 +108,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 
 	// Création du joueur principal
 	console->println("Creation du joueur principal...");
-	cout << "\nCreation du joueur principal...";
+	cout << endl << "Creation du joueur principal...";
 	cout.flush();
 
 	CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
@@ -122,7 +122,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 
 	// Création d'un second joueur
 	console->println("Creation du second joueur...");
-	cout << "\nCreation du second joueur...";
+	cout << endl << "Creation du second joueur...";
 	cout.flush();
 
 	CPlayer *julien;
@@ -137,7 +137,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 
 	// Création d'un troisième joueur
 	console->println("Creation du troisieme joueur...");
-	cout << "\nCreation du troisieme joueur...";
+	cout << endl << "Creation du troisieme joueur...";
 	cout.flush();
 
 	CPlayer *sprite;
@@ -153,7 +153,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 	Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_OUVERTURE);
 
 	console->println("Map lue");
-	cout << "\nMap lue";
+	cout << endl << "Map lue";
 	cout.flush();
 
 	return 0;

@@ -107,7 +107,7 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 	SDLNet_Quit();		// Fermeture d'SDL_Net
 	SDL_Quit();			// Fermeture de SDL
 
-	cout << "Erreur OpenGL : " << gluErrorString(glGetError());
+	cout << endl << "Erreur OpenGL : " << gluErrorString(glGetError());
 }
 
 bool checkEventsForIntro(void)		// Vérifie si 'escape' ou le bouton souris ont été frappés

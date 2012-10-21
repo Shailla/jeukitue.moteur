@@ -68,6 +68,9 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str
 	if( !Lit(nomFichier) ) {
 		cerr << endl << "Erreur à la lecture du fichier MAP : " << nomFichier;
 	}
+	else {
+		cout << endl << "Fichier MAP lu : " << nomFichier;
+	}
 
 	m_bSelection = false;
 	m_Selection = 0;

@@ -554,7 +554,7 @@ void display() {		// Fonction principale d'affichage
 		Game.AfficheProjectils();
 
 		// Dessine les axes dans la map	(sert au repérage pour la conception du jeu)
-		if(Config.Joueur.axesMeterVisibility) {
+		if(Config.Debug.axesMeterVisibility) {
 			glLineWidth( 3 );
 			glBegin(GL_LINES);	// Déssine les axes X Y Z
 				glColor3f( 1.0f, 0.0f, 0.0f);	// Axe des X
@@ -570,7 +570,7 @@ void display() {		// Fonction principale d'affichage
 		}
 
 		// Dessine les axes dans la map	(sert au repérage pour la conception du jeu)
-		if(Config.Joueur.cubicMeterVisibility) {
+		if(Config.Debug.cubicMeterVisibility) {
 			glPushMatrix();
 			glTranslatef(0.0f, 0.0f, -0.5f);
 			drawQuad();
@@ -1193,7 +1193,7 @@ bool openMAP3(const void *nomFichier)
 	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 	pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
 
-	CMap *pMapJoueur2 = new CMap( "GrosBonhomme" );
+	CMap *pMapJoueur2 = new CMap(nomFichierJoueur);
 	pMapJoueur2->EchangeXZ();					// Ajuste les coordonnées
 	pMapJoueur2->Scale( -0.10f, 0.10f, 0.10f );
 

@@ -43,12 +43,16 @@ void Texture::initializeGraphicObject(void) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _largeur, _hauteur, 0, GL_RGBA, GL_UNSIGNED_BYTE, _pixels);
 
-	cout << "Icone initialisee avec l'image '" << _nomFichier << "' sous la reference OpenGL " << _glTexName;
+	cout << endl << "Texture initialisee avec l'image '" << _nomFichier << "' sous la reference OpenGL " << _glTexName;
 }
 
 void Texture::destructGraphicObject(void) {
 	// TODO Détruire la texture OpenGL
 }
+
+unsigned int Texture::getGlTexName(void) {
+	return _glTexName;
+};
 
 void Texture::afficheQuad(const CV3D& a, const CV3D& b, const CV3D& c, const CV3D& d) {
 	glEnable(GL_TEXTURE_2D);

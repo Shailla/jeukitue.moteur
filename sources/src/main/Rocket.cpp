@@ -34,15 +34,14 @@ extern CGame Game;
 
 Texture* CRocket::_textureExplosion = NULL;		// Texture pour l'explosion de la rocket
 bool CRocket::m_B_INIT_CLASSE = false;	// Par défaut la classe n'a pas encore été initialisée
-JktMoteur::CMap* CRocket::pMapRocket = NULL;			// Image 3D de la rocket
+JktMoteur::CMap* CRocket::_mapRocket = NULL;			// Image 3D de la rocket
 
 #define Pi 3.14159265f
 #define ROCKET_RAYON			0.01f
 #define DISTANCE_TOUCHE			0.1f
 #define TAILLE_TEX_EXPLOSION	0.1f
 
-bool CRocket::INIT_CLASSE()
-{
+bool CRocket::INIT_CLASSE() {
 TRACE().p( TRACE_OTHER, "CRocket::INIT_CLASSE()" );
 		// Initialise la classe si elle ne l'a pas encore été
 	if( !m_B_INIT_CLASSE ) {
@@ -56,7 +55,7 @@ TRACE().p( TRACE_OTHER, "CRocket::INIT_CLASSE()" );
 			return false;	// L'initialisation a échoué
 		}
 
-		pMapRocket = new JktMoteur::CMap("@Arme/Missile");
+		_mapRocket = new JktMoteur::CMap("@Arme\\Missile");
 
 		m_B_INIT_CLASSE = true;	// Indique que l'initialisation a été faite
 	}
@@ -64,9 +63,7 @@ TRACE().p( TRACE_OTHER, "CRocket::INIT_CLASSE()" );
 	return true;	// L'initialisation a réussi
 }
 
-CRocket::CRocket(CPlayer *player)
-	:CProjectil( player )
-{
+CRocket::CRocket(CPlayer *player) : CProjectil(player) {
 	float pos[3];
 	INIT_CLASSE();	// Initialise la classe (normalement ça a déjà été fait !!!)
 
@@ -89,20 +86,20 @@ CRocket::CRocket(CPlayer *player)
 CRocket::~CRocket() {
 }
 
-void CRocket::Affiche_S1() {
+void CRocket::afficheRocket() {
 	glPushMatrix();
 	glTranslatef(m_Pos.X, m_Pos.Y, -m_Pos.Z);
 	//glRotated(90.0f, 0.0f, 1.0f, 0.0f);
 	glRotated(-m_Teta, 0.0f, 1.0f, 0.0f);	//Rotation par rapport à l'axe verticale
 	glRotated(-m_Phi, 1.0, 0.0, 0.0);
 
-	pMapRocket->Affiche();
+	_mapRocket->Affiche();
 
 	glPopMatrix();
 
 }
 
-void CRocket::Affiche_S2() {
+void CRocket::afficheExplosion() {
 	// Calcul du plan orthogonal à l'axe de la vue
 	GLfloat mat[16];
 	glGetFloatv( GL_MODELVIEW_MATRIX, mat );
@@ -129,11 +126,11 @@ void CRocket::Affiche_S2() {
 void CRocket::Affiche() {
 	switch(m_State) {
 	case ROCKET_STATE_DEPL:
-		Affiche_S1();
+		afficheRocket();
 		break;
 
 	case ROCKET_STATE_EXPLOSION:
-		Affiche_S2();
+		afficheExplosion();
 		break;
 
 	default:
@@ -148,7 +145,7 @@ void CRocket::Deplace() {
 	pos[1] = m_Pos.Y;
 	pos[2] = m_Pos.Z;
 
-	if(Game.getMap()->Contact( pos, ROCKET_RAYON*1.02f))	// Si la rocket touche un objet
+	if(Game.getMap()->Contact(pos, ROCKET_RAYON*1.02f))	// Si la rocket touche un objet
 		m_State = ROCKET_STATE_CONTACT;	// La rocket doit exploser
 	else
 		m_Pos += m_Dir * 0.02f;	// Le mouvement de la rocket continue
@@ -166,12 +163,12 @@ void CRocket::Deplace() {
 			EH.Y = pos2[1] - pos[1];
 			EH.Z = pos2[2] - pos[2];
 
-			if( EH.norme() < DISTANCE_TOUCHE )
+			if(EH.norme() < DISTANCE_TOUCHE)
 				playerTouche = player;	// Se souvient quel joeur est touché
 		}
 	}
 
-	if( playerTouche ) {
+	if(playerTouche) {
 		m_State = ROCKET_STATE_EXPLOSION;	// Passe la rocket en mode explosion
 		playerTouche->tuer();	// Tue le joueur touché par la rocket
 	}
@@ -191,6 +188,7 @@ bool CRocket::Refresh() {
 
 	case ROCKET_STATE_EXPLOSION:		// La rocket est en train d'exploser
 		m_Taille += 0.002f;	// La taille de la rocket augmente pour simuler l'explosion
+
 		if( m_Taille > 0.1f )
 			vie = false;	// Destruction de CRocket (fin de vie de la rocket)
 		break;

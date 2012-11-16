@@ -10,6 +10,7 @@
 Centralisateur::Centralisateur(UdpController* udpController)
 {
     _udpController = udpController;
+    _portLocal = 0;
 }
 
 Centralisateur::~Centralisateur(void)

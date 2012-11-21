@@ -1,4 +1,3 @@
-
 #pragma warning( disable : 4290 )	// Evite les warnings sur les déclaration de throw
 
 #ifndef __JKT__TEXTURES_H
@@ -17,7 +16,7 @@ class Texture;
  * nomFichier : Chemin complet du fichier de l'image.
  * alpha : Valeur de la transparence comprise entre 0.0 et 1.0. L'alpha est désactivé si alpha < 0.
  */
-void* litFichierImage(const std::string &nomFichier, float alpha) throw(JktUtils::CErreur);
+Uint8* litFichierImage(const std::string &nomFichier, float alpha) throw(JktUtils::CErreur);
 
 /**
  * Crée une texture affichable dans OpenGL à partir des données d'une image.

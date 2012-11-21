@@ -4,6 +4,8 @@
 
 #include <vector>
 
+using namespace std;
+
 #include "util/Tableau.h"
 #include "util/Erreur.h"
 #include "util/V3D.h"
@@ -23,8 +25,7 @@ class CNavette;
 class CGeoObject;
 class EntryPoint;
 
-class CMap
-{
+class CMap {
 	vector<CGeo*> m_TabGeo;					// Liste des objets géométriques
 	vector<CMouve*> m_TabMouve;				// Liste des objets nécessitant une actualisation (portes,...)
 
@@ -37,6 +38,7 @@ class CMap
 
 	/** Indique si les éléments OpenGL de la MAP ont été initialisés. */
 	bool _isGlActivated;
+	void afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
 public:
 	vector<CLight*> m_TabLight;				// Liste des lumières
 	vector<CMaterial*> m_TabMaterial;		// Liste des matériaux A VOIR : devrait être membre privé
@@ -73,7 +75,18 @@ public:
 	void GereContactPlayer(CPlayer *player);								// Gère tous les contacts entre la map et les joueurs
 	float GereLaserPlayer(float *pos, JktUtils::CV3D &Dir, float dist );	// Envoie d'un laser sur la map
 
-	void afficheToutesTextures(const int x, const int y);
+	/**
+	 * Affiche toutes les textures de la MAP dans un rectangle dont le coin bas gauche est en (x,y) et les dimensions sont (tailleX, tailleY).
+	 *
+	 * @param x position horizontale du coin bas gauche du rectangle dans lequel les texture vont être affichées
+	 * @param y position verticale du coin bas gauche du rectangle dans lequel les texture vont être affichées
+	 * @param tailleX taille horizontale du rectangle dans lequel les texture vont être affichées
+	 * @param tailleY taille verticale du rectangle dans lequel les texture vont être affichées
+	 * @param nbrX nombre de textures sur une ligne
+	 * @param nbrY nombre de textures sur une colonne
+	 * @param firstIndex numéro de la première texture à afficher
+	 */
+	void afficheToutesTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex);
 
 		// Mode sélection
 	void incrementeSelection();	// Sélectionne l'objet géo suivant

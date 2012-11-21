@@ -13,6 +13,7 @@ ifstreamWork::ifstreamWork()
 {
 	bFin = false;	// Fin de fichier non atteinte
 	next = 0;		// Pas de sous-fichier par défaut
+	txt = NULL;
 }
 
 bool ifstreamWork::open( const string &nomFichier )

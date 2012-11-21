@@ -3,6 +3,8 @@
 
 #include <string>
 
+using namespace std;
+
 #include "tinyxml.h"
 
 #include "spatial/materiau/Material.h"

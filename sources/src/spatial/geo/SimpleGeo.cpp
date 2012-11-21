@@ -66,11 +66,12 @@ CSimpleGeo::CSimpleGeo(CMap* map, const string& name, unsigned int nbrVertex, fl
 	m_bSolid = solid;				// Objet solide ou éthéreux
 
 	m_pNormalTriangle = 0;		// Sera initialisé par Init()
+
+	_minX = _maxX = _minY = _maxY = _minZ = _maxZ = 0.0f;
+	m_Rayon = 0.0f;
 }
 
-CSimpleGeo::CSimpleGeo(CMap* map)
-	:CGeo( map )
-{
+CSimpleGeo::CSimpleGeo(CMap* map) : CGeo(map) {
 	m_Color[0] = 1.0f;	// Couleur de l'objet
 	m_Color[1] = 1.0f;
 	m_Color[2] = 1.0f;
@@ -84,10 +85,12 @@ CSimpleGeo::CSimpleGeo(CMap* map)
 	m_bSolid = true;			// Objet solide par défaut
 
 	m_pNormalTriangle = 0;		// Sera initialisé par Init()
+
+	_minX = _maxX = _minY = _maxY = _minZ = _maxZ = 0.0f;
+	m_Rayon = 0.0f;
 }
 
-void CSimpleGeo::setVertex(int num, float *tab)
-{
+void CSimpleGeo::setVertex(int num, float *tab) {
 	if( m_TabVertex )	// Destruction de l'ancien tableau de sommets s'il existe
 		delete[] m_TabVertex;
 
@@ -100,33 +103,28 @@ void CSimpleGeo::setVertex(int num, float *tab)
 			m_TabVertex[ (i*3)+j ] = tab[ (i*3)+j ];
 }
 
-void CSimpleGeo::Init()
-{
+void CSimpleGeo::Init() {
 	MinMax();			// Mesure les minimums et maximums de l'objet géo
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
 	ConstruitBase();	// Construit la table des vecteurs normaux
 }
 
-void CSimpleGeo::setFaces(int num, int *tab)
-{
+void CSimpleGeo::setFaces(int num, int *tab) {
 	if( m_TabFaces )	// Destruction de l'ancien tableau d'indices de sommets s'il existe
 		delete[] m_TabFaces;
 
 	m_NumFaces = num;	// Nombre d'indices de sommets
 
-	m_TabFaces = new int[ 3*num ];	// Création du tableau d'indices de sommets
+	m_TabFaces = new int[3*num];	// Création du tableau d'indices de sommets
 
-	for( int i=0 ; i< num ; i++ )	// Copie des données du tableau
-	{
-		for( int j=0 ; j<3 ; j++ )	// Copie des faces
-		{
+	for( int i=0 ; i< num ; i++ ) {		// Copie des données du tableau
+		for( int j=0 ; j<3 ; j++ ) {	// Copie des faces
 			m_TabFaces[ (i*3)+j ] = tab[ (i*3)+j ];
 		}
 	}
 }
 
-void CSimpleGeo::initGL()
-{
+void CSimpleGeo::initGL() {
 	glGenBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_VERTEX]);
@@ -136,13 +134,11 @@ void CSimpleGeo::initGL()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_NumFaces*3*sizeof(unsigned int), m_TabFaces, GL_STATIC_DRAW);
 }
 
-void CSimpleGeo::freeGL()
-{
+void CSimpleGeo::freeGL() {
 	glDeleteBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 }
 
-void CSimpleGeo::Affiche()
-{
+void CSimpleGeo::Affiche() {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 
@@ -162,8 +158,7 @@ void CSimpleGeo::Affiche()
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-const char* CSimpleGeo::toString()
-{
+const char* CSimpleGeo::toString() {
 	ostringstream ttt;
 	ttt << identifier << " Nom=" << getName() << " Coul={" << m_Color[0];
 	ttt << "," << m_Color[1] << "," << m_Color[2] << "}";
@@ -173,8 +168,7 @@ const char* CSimpleGeo::toString()
 	return tostring.c_str();
 }
 
-void CSimpleGeo::AfficheSelection(float r, float v, float b)
-{
+void CSimpleGeo::AfficheSelection(float r, float v, float b) {
 	glVertexPointer(3, GL_FLOAT, 0, m_TabVertex);	//Initialisation du tableau de sommets
 
 	glColor3f(r, v, b); // Définit la couleur de l'objet géo.
@@ -187,27 +181,25 @@ void CSimpleGeo::AfficheSelection(float r, float v, float b)
 	glDrawElements(JKT_RenderMode, 3*m_NumFaces, GL_UNSIGNED_INT, m_TabFaces);
 }
 
-void CSimpleGeo::MinMax()
-{
-	minX = maxX = m_TabVertex[0];
-	minY = maxY = m_TabVertex[1];
-	minZ = maxZ = m_TabVertex[2];
+void CSimpleGeo::MinMax() {
+	_minX = _maxX = m_TabVertex[0];
+	_minY = _maxY = m_TabVertex[1];
+	_minZ = _maxZ = m_TabVertex[2];
 
-	for( int i=1 ; i<m_NumVertex ; i++ )
-	{
-		if( m_TabVertex[3*i] < minX )		//récupération des coordonnées du pavé englobant
-			minX = m_TabVertex[3*i];		//l'objet géo
-		if( m_TabVertex[(3*i)+1] < minY )
-			minY = m_TabVertex[(3*i)+1];
-		if( m_TabVertex[(3*i)+2] < minZ )
-			minZ = m_TabVertex[(3*i)+2];
+	for(int i=1 ; i<m_NumVertex ; i++) {
+		if( m_TabVertex[3*i] < _minX )		//récupération des coordonnées du pavé englobant
+			_minX = m_TabVertex[3*i];		//l'objet géo
+		if( m_TabVertex[(3*i)+1] < _minY )
+			_minY = m_TabVertex[(3*i)+1];
+		if( m_TabVertex[(3*i)+2] < _minZ )
+			_minZ = m_TabVertex[(3*i)+2];
 
-		if( m_TabVertex[3*i] > maxX )
-			maxX = m_TabVertex[3*i];
-		if( m_TabVertex[(3*i)+1] > maxY )
-			maxY = m_TabVertex[(3*i)+1];
-		if( m_TabVertex[(3*i)+2] > maxZ )
-			maxZ = m_TabVertex[(3*i)+2];
+		if( m_TabVertex[3*i] > _maxX )
+			_maxX = m_TabVertex[3*i];
+		if( m_TabVertex[(3*i)+1] > _maxY )
+			_maxY = m_TabVertex[(3*i)+1];
+		if( m_TabVertex[(3*i)+2] > _maxZ )
+			_maxZ = m_TabVertex[(3*i)+2];
 	}
 }
 
@@ -215,14 +207,14 @@ void CSimpleGeo::Bulle()
 {
 	float r0, r1, r2;
 		// Calcul du centre de la sphère à partir des valeurs min/max
-	m_Centre[0] = (minX+maxX)/2.0f;
-	m_Centre[1] = (minY+maxY)/2.0f;
-	m_Centre[2] = (minZ+maxZ)/2.0f;
+	m_Centre[0] = (_minX + _maxX)/2.0f;
+	m_Centre[1] = (_minY + _maxY)/2.0f;
+	m_Centre[2] = (_minZ + _maxZ)/2.0f;
 
 		// Recherche du rayon de la sphère
-	r0 = fabsf( minX-maxX );
-	r1 = fabsf( minY-maxY );
-	r2 = fabsf( minZ-maxZ );
+	r0 = fabsf(_minX - _maxX);
+	r1 = fabsf(_minY - _maxY);
+	r2 = fabsf(_minZ - _maxZ);
 
 	m_Rayon = sqrtf( (r0*r0) + (r1*r1) + (r2*r2) );
 }
@@ -634,17 +626,16 @@ void CSimpleGeo::GereContactPlayer( const float pos[3], CPlayer *player )
 			}
 }
 
-bool CSimpleGeo::TestContactPave( const float pos[3], float dist )
-{
+bool CSimpleGeo::TestContactPave(const float pos[3], float dist) {
 	// Teste si le point qui a pour position 'pos' se trouve ou non à une distance inférieure à 'dist'
 	// du pavé englobant l'objet
 
-	if( pos[0] < maxX+dist )
-		if( pos[1] < maxY+dist )
-			if( -pos[2] < maxZ+dist )
-				if( pos[0] > minX-dist )
-					if( pos[1] > minY-dist )
-						if( -pos[2] > minZ-dist )
+	if( pos[0] < _maxX + dist )
+		if( pos[1] < _maxY + dist )
+			if( -pos[2] < _maxZ + dist )
+				if( pos[0] > _minX - dist )
+					if( pos[1] > _minY - dist )
+						if( -pos[2] > _minZ - dist )
 							return true;	// Le point 'pos' est à une distance inférieure
 
 	return false;	// Le point 'pos' se trouve à une distance supérieure

@@ -40,7 +40,7 @@ public:
 	bool Save(TiXmlElement* element);
 
 	void GereContactPlayer( const float pos[3], CPlayer *player );
-	float GereLaser( float pos[3], CV3D &Dir, float dist );
+	float GereLaser( float pos[3], JktUtils::CV3D &Dir, float dist );
 };
 
 }	// JktMoteur

@@ -2,6 +2,10 @@
 #ifndef __JKT__DIVERS_H
 #define __JKT__DIVERS_H
 
+#include <string>
+
+using namespace std;
+
 void quit_game();
 void quit_game(int code);
 void quit_game(const char* txt,int code);

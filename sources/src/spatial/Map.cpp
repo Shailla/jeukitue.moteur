@@ -55,16 +55,14 @@ using namespace JktUtils;
 namespace JktMoteur
 {
 
-CMap::CMap()
-{
+CMap::CMap() {
 TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() begin%T", this );
 	m_bSelection = false;
 	m_Selection = 0;
 	_isGlActivated = false;
 }
 
-CMap::CMap(const string &nomFichier) throw(JktUtils::CErreur)
-{
+CMap::CMap(const string &nomFichier) throw(JktUtils::CErreur) {
 TRACE().p( TRACE_MOTEUR3D, "CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str(), this );
 	if( !Lit(nomFichier) ) {
 		cerr << endl << "Erreur à la lecture du fichier MAP : " << nomFichier;
@@ -75,13 +73,13 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str
 
 	m_bSelection = false;
 	m_Selection = 0;
+	_isGlActivated = false;
 
 	Init();
 TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() end%T", this );
 }
 
-CMap::~CMap()
-{
+CMap::~CMap() {
 TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() begin%T", this );
 
 	// Destruction des objets géo
@@ -113,7 +111,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() end%T", this );
 
 void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 	// Si nécessaire, initialise les éléments OpenGL de la MAP
-	if(_isGlActivated) {
+	if(!_isGlActivated) {
 		initGL();
 	}
 
@@ -302,8 +300,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scale
 		(*iterLight)->Scale( scaleX, scaleY, scaleZ );
 }
 
-bool CMap::Lit(const string &nomFichier)
-{
+bool CMap::Lit(const string &nomFichier) {
 	string nomFichierComplet = string(nomFichier);
 	bool isResource = JktUtils::RessourcesLoader::getFileRessource(nomFichierComplet);
 
@@ -455,8 +452,7 @@ bool CMap::initGL() {
 	return true;
 }
 
-bool CMap::freeGL()
-{
+bool CMap::freeGL() {
 	// Initialisation des object géométriques dans le contexte OpenGL
 	vector<CGeo*>::iterator iterGeo;
 
@@ -504,8 +500,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::SaveFichierMap() Sauvegarde du fichier MAP Ok%
 	return true;
 }*/
 
-bool CMap::Save(const string nomFichier)
-{
+bool CMap::Save(const string nomFichier) {
 TRACE().p( TRACE_MOTEUR3D, "CMap::Save() %T", this );
 
 		// CREATION DES FICHIERS
@@ -583,100 +578,83 @@ bool CMap::Contact(const float pos[3], const float dist) {
 
 void CMap::Refresh(CGame *game) {
 	vector<CMouve*>::iterator iterMouve;
-	for( iterMouve=m_TabMouve.begin() ; iterMouve!=m_TabMouve.end() ; iterMouve++ )
-		(*iterMouve)->Refresh( game );
+
+	for(iterMouve=m_TabMouve.begin() ; iterMouve!=m_TabMouve.end() ; iterMouve++)
+		(*iterMouve)->Refresh(game);
 }
 
-void CMap::afficheToutesTextures(const int x, const int y) {
-	glEnable( GL_TEXTURE_2D );
-	int nbrX = 0;
-	int nbrY = 0;
+void CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index) {
+	if(index < firstIndex + (nbrX * nbrY)) {
+		if(material->Type() == CMaterial::MAT_TYPE_TEXTURE) {
+			if(index > firstIndex) {
+				CMaterialTexture *matTexture = (CMaterialTexture*)material;
+				matTexture->Active();
 
-	vector<CMaterial*>::iterator iter;
-	for( iter=m_TabMaterial.begin() ; iter!=m_TabMaterial.end() ; iter++ )
-	{
-		CMaterial *m = *iter;
+				int x1 = x + posX*tailleX/nbrX;
+				int x2 = x1 + tailleX/nbrX;
+				int y1 = y + posY*tailleY/nbrY;
+				int y2 = y1 + tailleY/nbrY;
 
-		if( m->Type() == CMaterial::MAT_TYPE_TEXTURE )
-		{
-				// Initialisation pour la texture
-			CMaterialTexture *matRef = (CMaterialTexture*)m;
 
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-			glBindTexture(GL_TEXTURE_2D, matRef->getRef());
+				glBegin(GL_QUADS);
+					glTexCoord2f(0.0f, 0.0f);
+					glVertex2i(x1, 	y1);
 
-			glBegin( GL_QUADS );		//AVOIR : mettre les coord de tex dans glArrayElement
-				glTexCoord2f( 0.0f, 0.0f );
-				glVertex2i( (x/8)*nbrX,		(y/8)*nbrY		);
+					glTexCoord2f(1.0f, 0.0f);
+					glVertex2i(x2, 	y1);
 
-				glTexCoord2f( 1.0f, 0.0f );
-				glVertex2i( (x/8)*(nbrX+1), (y/8)*nbrY		);
+					glTexCoord2f(1.0f, 1.0f);
+					glVertex2i(x2, 	y2);
 
-				glTexCoord2f( 1.0f, 1.0f );
-				glVertex2i( (x/8)*(nbrX+1), (y/8)*(nbrY+1)	);
-
-				glTexCoord2f( 0.0f, 1.0f );
-				glVertex2i( (x/8)*nbrX,		(y/8)*(nbrY+1)	);
-			glEnd();
-
-			glDisable( GL_TEXTURE_2D );
-			glColor3f( 1.0f, 0.0f, 0.0f );
-			glLineWidth( 2 );
-
-			glBegin( GL_LINE_LOOP );		//AVOIR : mettre les coord de tex dans glArrayElement
-				glVertex2i( (x/8)*nbrX,		(y/8)*nbrY		);
-				glVertex2i( (x/8)*(nbrX+1), (y/8)*nbrY		);
-				glVertex2i( (x/8)*(nbrX+1), (y/8)*(nbrY+1)	);
-				glVertex2i( (x/8)*nbrX,		(y/8)*(nbrY+1)	);
-			glEnd();
-
-			glEnable( GL_TEXTURE_2D );
-
-			if( nbrX >= 8 )
-			{
-				nbrX = 0;
-				nbrY++;
-			}
-			else
-			{
-				nbrX++;
-			}
-
-		}
-		else if( m->Type() == CMaterial::MAT_TYPE_SIMPLE )
-		{
-		}
-		else if( m->Type() == CMaterial::MAT_TYPE_MULTI )
-		{
-/*					// Initialisation pour la texture
-			CMaterialMulti *matMulti = (CMaterialMulti*)m;
-			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-
-			for( int i=0; i < m_NumTexFaces ; i++ )	//dessine toutes les faces de la map
-			{
-				float *texVertex = TabTex[ matMulti->m_TabMat[ m_TabSubMat[i] ]->m_CanalTex ]->TexVertex;
-				int *texFaces = TabTex[ matMulti->m_TabMat[ m_TabSubMat[i] ]->m_CanalTex ]->TexFaces;
-
-				glBindTexture( GL_TEXTURE_2D, matMulti->m_TabMat[ m_TabSubMat[i] ]->texName );
-
-				glLineWidth( 1 );
-
-				glBegin( JKT_RenderMode );	//AVOIR : mettre les coord de tex dans glArrayElement
-					glTexCoord2fv( &texVertex[3*texFaces[3*i]] );
-					glArrayElement( m_TabFaces[3*i] );
-
-					glTexCoord2fv( &texVertex[3*texFaces[(3*i)+1]] );
-					glArrayElement( m_TabFaces[(3*i)+1] );
-
-					glTexCoord2fv( &texVertex[3*texFaces[(3*i)+2]] );
-					glArrayElement( m_TabFaces[(3*i)+2] );
+					glTexCoord2f(0.0f, 1.0f);
+					glVertex2i(x1, 	y2);
 				glEnd();
+
+				glDisable(GL_TEXTURE_2D);
+				glColor3f(1.0f, 1.0f, 1.0f);
+				glLineWidth(2);
+
+				glBegin(GL_LINE_LOOP);
+					glVertex2i(x1, 	y1);
+					glVertex2i(x2, 	y1);
+					glVertex2i(x2, 	y2);
+					glVertex2i(x1, 	y2);
+				glEnd();
+
+				if(++posX >= nbrX) {
+					posX = 0;
+					posY++;
+				}
 			}
-*/			}
-		else
-		{
+
+			index++;
+		}
+		else if( material->Type() == CMaterial::MAT_TYPE_SIMPLE ) {
+		}
+		else if( material->Type() == CMaterial::MAT_TYPE_MULTI ) {
+			// Initialisation pour la texture
+			CMaterialMulti *matMulti = (CMaterialMulti*)material;
+
+			for(int i=0 ; i<matMulti->NbrTex() ; i++) {
+				CMaterial* sousMat = matMulti->getMat(i);
+				afficheMaterial(sousMat, x, y, tailleX, tailleY, nbrX, nbrY, firstIndex, posX, posY, index);
+			}
+		}
+		else {
 			cerr << "\nCMap::afficheToutesTextures : Materiau de type inconnu";
 		}
+	}
+}
+
+void CMap::afficheToutesTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex) {
+	int posX = 0;
+	int posY = 0;
+	int index = firstIndex;
+	vector<CMaterial*>::iterator iter;
+
+	for(iter=m_TabMaterial.begin() ; iter!=m_TabMaterial.end() ; iter++) {
+		CMaterial* material = *iter;
+		afficheMaterial(material, x, y, tailleX, tailleY, nbrX, nbrY, firstIndex, posX, posY, index);
 	}
 }
 

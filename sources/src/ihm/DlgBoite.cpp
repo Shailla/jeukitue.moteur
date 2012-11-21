@@ -168,10 +168,10 @@ TRACE().p( TRACE_MENU, "CDlgBoite::INIT_CLASSE()" );
 	if( !m_B_INIT_CLASSE ) {
 		// Lecture des sons et images des styles de boites de dialogue
 		try {
-			void* pixelsErreur = JktMoteur::litFichierImage("@Icone/Erreur.bmp", -1.0f);
-			void* pixelsConfirm = JktMoteur::litFichierImage("@Icone/Confirm.bmp", -1.0f);
-			void* pixelsInfo = JktMoteur::litFichierImage("@Icone/Info.bmp", -1.0f);
-			void* pixelsEnCours = JktMoteur::litFichierImage("@Icone/EnCours.bmp", -1.0f);
+			Uint8* pixelsErreur = JktMoteur::litFichierImage("@Icone/Erreur.bmp", -1.0f);
+			Uint8* pixelsConfirm = JktMoteur::litFichierImage("@Icone/Confirm.bmp", -1.0f);
+			Uint8* pixelsInfo = JktMoteur::litFichierImage("@Icone/Info.bmp", -1.0f);
+			Uint8* pixelsEnCours = JktMoteur::litFichierImage("@Icone/EnCours.bmp", -1.0f);
 
 			_iconeErreur = JktMoteur::litFichierIcone("@Icone/Erreur.bmp", -1.0f, pixelsErreur);
 			_iconeConfirm = JktMoteur::litFichierIcone("@Icone/Confirm.bmp", -1.0f, pixelsConfirm);

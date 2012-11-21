@@ -24,7 +24,7 @@ private:
 
 public:
 		// Constructeurs
-	CMoteurParticulesNeige( CV3D pos_centre, unsigned int nbr, float m );
+	CMoteurParticulesNeige(JktUtils::CV3D pos_centre, unsigned int nbr, float m);
 		// Fonctions membres
 	void Affiche();		// Affiche l'ensemble des particules
 };

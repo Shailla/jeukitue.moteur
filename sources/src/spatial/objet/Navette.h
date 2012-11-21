@@ -1,6 +1,10 @@
 #ifndef __JKT__NAVETTE_H
 #define __JKT__NAVETTE_H
 
+#include <vector>
+
+using namespace std;
+
 #include "spatial/Mouve.h"
 
 #include "util/V3D.h"
@@ -60,7 +64,7 @@ public:
 	//bool SaveFichierMap( ofstream &fichier );			// Sauve l'objet géo dans un fichier Map
 	bool Save(TiXmlElement* element);
 
-	float GereLaser( float pos[3], CV3D &Dir, float dist );
+	float GereLaser( float pos[3], JktUtils::CV3D &Dir, float dist );
 	void GereContactPlayer( const float pos[3], CPlayer *player );
 };
 

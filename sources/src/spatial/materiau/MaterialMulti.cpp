@@ -22,9 +22,7 @@ using namespace std;
 namespace JktMoteur
 {
 
-CMaterialMulti::CMaterialMulti()
-	:CMaterial()
-{
+CMaterialMulti::CMaterialMulti() : CMaterial() {
 	m_Type = MAT_TYPE_MULTI;
 	m_TabMat = 0;			// Pas de sous-matériaux
 	m_NbrTex = 0;			// Pas de sous-matériaux
@@ -33,16 +31,15 @@ CMaterialMulti::CMaterialMulti()
 int CMaterialMulti::NbrTex()
 {	return m_NbrTex;	}
 
-void CMaterialMulti::NbrTex( int nbr )
-{
+void CMaterialMulti::NbrTex( int nbr ) {
 	m_NbrTex = nbr;
-	m_TabMat = new CMaterial*[ nbr ];	// Création du tableau des sous-matériaux
+	m_TabMat = new CMaterial*[nbr];	// Création du tableau des sous-matériaux
+
 	for( int i=0 ; i<nbr ; i++ )
-		m_TabMat[ i ] = 0;
+		m_TabMat[i] = NULL;
 }
 
-CMaterial* CMaterialMulti::getMat(int i)
-{
+CMaterial* CMaterialMulti::getMat(int i) {
 	return m_TabMat[i];
 }
 

@@ -2,6 +2,10 @@
 #ifndef __JKT__SERVER_H
 #define __JKT__SERVER_H
 
+#include <string>
+
+using namespace std;
+
 class CPlayer;
 
 namespace JktNet

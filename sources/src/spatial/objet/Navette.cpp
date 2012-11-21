@@ -259,8 +259,7 @@ int CNavette::prochainPoint( int i )
 {
 	CV3D ecart;
 	i++;
-	if( i<(int)m_ListePoints.size()-1 )
-	{
+	if( i<(int)m_ListePoints.size()-1 ) {
 			// Calcul du veteur vitesse da la navette entre les deux points
 		ecart = m_ListePoints[ i+1 ].m_Position - m_ListePoints[ i ].m_Position;
 		m_distPoints = ecart.norme();
@@ -274,8 +273,7 @@ int CNavette::prochainPoint( int i )
 		else
 			m_Direction.setNull();
 	}
-	else if( i==m_ListePoints.size()-1 )
-	{
+	else if( i==(int)m_ListePoints.size()-1 ) {
 			// Calcul du veteur vitesse da la navette entre les deux points
 		ecart = m_ListePoints[ 0 ].m_Position - m_ListePoints[ i ].m_Position;
 		m_distPoints = ecart.norme();
@@ -289,8 +287,7 @@ int CNavette::prochainPoint( int i )
 		else
 			m_Direction.setNull();
 	}
-	else
-	{
+	else {
 		i = 0;
 			// Calcul du veteur vitesse da la navette entre les deux points
 		ecart = m_ListePoints[ i+1 ].m_Position - m_ListePoints[ i ].m_Position;

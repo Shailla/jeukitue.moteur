@@ -21,11 +21,11 @@ namespace JktMoteur
 {
 #define fScale (300.0f)
 
-CFichierASE::FACES::FACES(int num)
-{
+CFichierASE::FACES::FACES(int num) {
 	faces = new int[3*num];
 	texRef = new int[num];
 }
+
 CFichierASE::FACES::~FACES() {
 	if(faces)
 		delete[] faces;
@@ -34,21 +34,17 @@ CFichierASE::FACES::~FACES() {
 		delete[] texRef;
 }
 
-CFichierASE::CFichierASE(const string &nomFichier, CMap *pMap, bool bAffiche)
-: ifstream(nomFichier.c_str(), ios::in)
-{
+CFichierASE::CFichierASE(const string &nomFichier, CMap *pMap, bool bAffiche) : ifstream(nomFichier.c_str(), ios::in) {
 	try {
 		m_bAffiche = bAffiche;
 		m_Trace.open( "traceConvertASE.log", ios_base::out );
 
 		LitFichier(nomFichier, pMap);
 	}
-	catch( int val )	// Gestion des erreurs arrivées pendant la lecture du fichier ASE
-	{
+	catch(int val) {	// Gestion des erreurs arrivées pendant la lecture du fichier ASE
 		trace() << "\nErreur : La lecture du fichier n'a pas abouti :\n\t";
 
-		switch( val )
-		{
+		switch(val) {
 		case JKT_ERREUR_FICHIER_EOF:
 			trace() << "Erreur : Fin du fichier rencontree prematurement";
 			break;
@@ -72,8 +68,7 @@ CFichierASE::CFichierASE(const string &nomFichier, CMap *pMap, bool bAffiche)
 	}
 }
 
-CFichierASE::~CFichierASE(void)
-{
+CFichierASE::~CFichierASE(void) {
 	if( m_Trace )
 		m_Trace.close();
 }
@@ -144,8 +139,7 @@ void CFichierASE::findAccoladeDebut(int line)	// Trouve le prochain guillemet ou
 void CFichierASE::findAccoladeFin(int line)	// Trouve le prochain guillemet ouvrant du fichier
 {
 	string mot;
-	do
-	{
+	do {
 		if( !(*static_cast<ifstream *> (this) >>( mot)) )	// Recherche du nom de l'objet
 		{
 			m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
@@ -163,21 +157,20 @@ CFichierASE& CFichierASE::isNext(const char *txt, int line)
 {
 	string mot;
 
-	if( !(*static_cast<ifstream *> (this) >>( mot)) )	// Recherche du nom de l'objet
-	{
+	if( !(*static_cast<ifstream *> (this) >>( mot)) ) {		// Recherche du nom de l'objet
 		m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
 		throw (int)JKT_ERREUR_FICHIER_EOF;	// Fin de fichier prématurée
 	}
-	if( mot != txt )
-	{
+
+	if( mot != txt ) {
 		m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Parametre introuvable";
 		throw (int)JKT_ERREUR_FICHIER_MISSPARAM;	// Fin de fichier prématurée
 	}
+
 	return *this;
 }
 
-void CFichierASE::get(string &mot, int line)
-{
+void CFichierASE::get(string &mot, int line) {
 	if( !(*static_cast<ifstream *> (this) >>( mot )) )	// Recherche du nom de l'objet
 	{
 		m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
@@ -194,8 +187,7 @@ void CFichierASE::get(char &ch, int line)
 	}
 }
 
-bool CFichierASE::isGet(string &mot, int line)
-{
+bool CFichierASE::isGet(string &mot, int line) {
 	if( !(*static_cast<ifstream *> (this) >>( mot )) )	// Recherche du nom de l'objet
 	{
 		m_Trace << "\nEnd of file";
@@ -205,8 +197,7 @@ bool CFichierASE::isGet(string &mot, int line)
 	return true;
 }
 
-void CFichierASE::get(int &num, int line)
-{
+void CFichierASE::get(int &num, int line) {
 	if( !(*static_cast<ifstream *> (this) >>( num )) )	// Recherche du nom de l'objet
 	{
 		m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
@@ -214,8 +205,7 @@ void CFichierASE::get(int &num, int line)
 	}
 }
 
-void CFichierASE::get(unsigned int &num, int line)
-{
+void CFichierASE::get(unsigned int &num, int line) {
 	if( !(*static_cast<ifstream *> (this) >>( num )) )	// Recherche du nom de l'objet
 	{
 		m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
@@ -223,8 +213,7 @@ void CFichierASE::get(unsigned int &num, int line)
 	}
 }
 
-void CFichierASE::get(float &num, int line)
-{
+void CFichierASE::get(float &num, int line) {
 	if( !(*static_cast<ifstream *> (this) >>( num )) )	// Recherche du nom de l'objet
 	{
 		m_Trace << "\nErreur (FichierASE.cpp::" << line << ") : Fin de fichier prematuree";
@@ -232,8 +221,7 @@ void CFichierASE::get(float &num, int line)
 	}
 }
 
-CFichierASE::FACES *CFichierASE::LitFaces( unsigned int num )
-{
+CFichierASE::FACES *CFichierASE::LitFaces(unsigned int num) {
 	unsigned int index1, index2, index3, refTex;
 	FACES *faces = new FACES(num);
 
@@ -245,8 +233,7 @@ CFichierASE::FACES *CFichierASE::LitFaces( unsigned int num )
 	findAccoladeFin(__LINE__);
 	findAccoladeDebut(__LINE__);
 
-	for( unsigned int i=0 ; i<num ; i++)
-	{
+	for( unsigned int i=0 ; i<num ; i++) {
 		find("*MESH_FACE", __LINE__);
 
 		get(mot, __LINE__);
@@ -1403,12 +1390,10 @@ void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap) {
 }
 
 
-bool CFichierASE::LitFichierASE( const string nomFichier, CMap *pMap, bool bAffiche )
-{
+bool CFichierASE::LitFichierASE(const string nomFichier, CMap *pMap, bool bAffiche) {
 	string nomFichierASE = "./ase/" + nomFichier + ".ase";	// Ajout de l'extension et du chemin
 
-	try
-	{		// Ouverture du fichier ASE
+	try {		// Ouverture du fichier ASE
 		CFichierASE from( nomFichierASE, pMap, bAffiche );
 	}
 	catch(bool) {

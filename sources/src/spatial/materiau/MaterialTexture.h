@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 
+using namespace std;
+
 #include "spatial/materiau/Material.h"
 #include "util/Erreur.h"
 

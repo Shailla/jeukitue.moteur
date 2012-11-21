@@ -506,7 +506,7 @@ void addGraphicObjectToInitialize(GraphicObject* graphicObject) {
 void addGraphicObjectToDestruct(GraphicObject* graphicObject) {
 	SDL_LockMutex(_grahicObjectsToDestructMutex);
 
-	_grahicObjectsToInitialize.push_back(graphicObject);
+	_grahicObjectsToDestruct.push_back(graphicObject);
 
 	SDL_UnlockMutex(_grahicObjectsToDestructMutex);
 }
@@ -638,8 +638,8 @@ void display() {		// Fonction principale d'affichage
 	glDisable( GL_BLEND );
 	glDisable( GL_DEPTH_TEST );
 
-	if( JKT_AfficheToutesTextures )
-		Game.afficheToutesTextures( Config.Display.X, Config.Display.Y );
+	if(JKT_AfficheToutesTextures)
+		Game.afficheToutesTextures(0, 0, Config.Display.X, Config.Display.Y);
 
 	if(Game.Erwin()) {
 		Game.Erwin()->AfficheIconesArmes();
@@ -1383,7 +1383,7 @@ void boucle() {
 				Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_AUCUNE);
 
 				cout << "\nFINI";
-				cout.flush();
+				cout << flush;
 			}
 			break;
 		}
@@ -1430,11 +1430,6 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 	atexit( quit_JKT );
 
-	srand(SDL_GetTicks());		// Initialisation de la fonction rand() pour les nombres aléatoires
-
-	_grahicObjectsToInitializeMutex = SDL_CreateMutex();
-	_grahicObjectsToDestructMutex = SDL_CreateMutex();
-
 	string fichier;
 
 	Config.AfficheDateCompilation();		// Affiche le n° de version du programme
@@ -1448,6 +1443,11 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 	Config.Audio.Init();	// Initialisation audio
 	Config.Ecrit();			// Enregistre les éventuelles modifications de la configuration
+
+	srand(SDL_GetTicks());		// Initialisation de la fonction rand() pour les nombres aléatoires
+
+	_grahicObjectsToInitializeMutex = SDL_CreateMutex();
+	_grahicObjectsToDestructMutex = SDL_CreateMutex();
 
 	cout << "\n\tINFO DIVERSES";
 

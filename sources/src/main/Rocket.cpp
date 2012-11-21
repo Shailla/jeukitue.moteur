@@ -46,7 +46,7 @@ TRACE().p( TRACE_OTHER, "CRocket::INIT_CLASSE()" );
 		// Initialise la classe si elle ne l'a pas encore été
 	if( !m_B_INIT_CLASSE ) {
 		try {
-			void* pixels = JktMoteur::litFichierImage("@Texture/Explosion.jpg", 0.75f);
+			Uint8* pixels = JktMoteur::litFichierImage("@Texture/Explosion.jpg", 0.75f);
 			_textureExplosion = JktMoteur::litFichierTexture("@Texture/Explosion.jpg", 0.75f , pixels);
 		}
 		catch(CErreur &erreur) {

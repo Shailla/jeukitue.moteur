@@ -1,6 +1,9 @@
 #ifndef __JKT__IFSTREAMWORK_H
 #define __JKT__IFSTREAMWORK_H
 
+#include <string>
+
+using namespace std;
 
 class ifstreamWork
 {

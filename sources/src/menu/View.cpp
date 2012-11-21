@@ -2,9 +2,9 @@
 
 #include <iostream>
 
-View::View(const AG_EventFn controllerCallback)
-{
+View::View(const AG_EventFn controllerCallback) {
     m_controllerCallback = controllerCallback;
+    m_window = NULL;
 }
 
 View::~View(void)

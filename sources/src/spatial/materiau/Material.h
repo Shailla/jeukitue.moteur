@@ -4,6 +4,9 @@
 
 #include <iostream>
 #include <string>
+
+using namespace std;
+
 #include "tinyxml.h"
 
 namespace JktMoteur

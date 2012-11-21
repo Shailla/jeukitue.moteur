@@ -25,7 +25,7 @@ using namespace JktUtils;
 namespace JktMoteur
 {
 
-void* litFichierImage(const string &nomFichier, float alpha) throw(CErreur) {
+Uint8* litFichierImage(const string &nomFichier, float alpha) throw(CErreur) {
 	#define largeur 128
 	#define hauteur 128
 
@@ -45,16 +45,21 @@ void* litFichierImage(const string &nomFichier, float alpha) throw(CErreur) {
 	SDL_LockSurface(image);
 
 	// Convertit la texture aux dimensions largeur*hauteur
-	Uint8 (*pixels)[hauteur][4] = new Uint8[largeur][hauteur][4];
+	Uint8 *pixels = new Uint8[largeur * hauteur * 4];
 
 	SDL_PixelFormat *fmt = image->format;
 	Uint32 pixel;
 	Uint8 red, green, blue;
 	int x,y;
 
-	for(float i=0 ; i<largeur ; i++)		// Mets les dimensions de l'image à un format compatible
-		for(float j=0 ; j<hauteur ; j++)	// avec openGL (puissance de 2)
-		{
+	unsigned int HAUTEUR = hauteur * 4;
+
+	for(float i=0 ; i<largeur ; i++) {		// Mets les dimensions de l'image à un format compatible
+		unsigned int pX = ((unsigned int)i) * HAUTEUR;
+
+		for(float j=0 ; j<hauteur ; j++) {	// avec openGL (puissance de 2)
+			unsigned int pY = ((unsigned int)j) * 4;
+
 			x = (unsigned int)(i*(float)image->w/largeur );
 			y = (unsigned int)((hauteur-j-1)*(float)image->h/hauteur );
 
@@ -67,11 +72,12 @@ void* litFichierImage(const string &nomFichier, float alpha) throw(CErreur) {
 			pixel = util_SDL_getPixel( image, x, y );
 			SDL_GetRGB( pixel, fmt, &red, &green, &blue );
 
-			pixels[(unsigned int)i][(unsigned int)j][0] = red;
-			pixels[(unsigned int)i][(unsigned int)j][1] = green;
-			pixels[(unsigned int)i][(unsigned int)j][2] = blue;
-			pixels[(unsigned int)i][(unsigned int)j][3] = Alpha;
+			pixels[pX + pY + 0] = red;
+			pixels[pX + pY + 1] = green;
+			pixels[pX + pY + 2] = blue;
+			pixels[pX + pY + 3] = Alpha;
 		}
+	}
 
 	SDL_UnlockSurface(image);
 	SDL_FreeSurface(image);
@@ -91,6 +97,8 @@ Texture* litFichierTexture(const string &nomFichier, float alpha, void* pixels) 
 
 	Texture* texture = new Texture(nomFichier, isAlphaActive, (GLsizei) hauteur, (GLsizei)largeur, pixels);
 
+	cout << endl << "INIT A " << nomFichier;
+
 	addGraphicObjectToInitialize(texture);
 
 	return texture;
@@ -106,6 +114,8 @@ Icone* litFichierIcone(const string &nomFichier, float alpha, void* pixels) {
 	else {
 		isAlphaActive = false;
 	}
+
+	cout << endl << "INIT B " << nomFichier;
 
 	Icone* icone = new Icone(nomFichier, isAlphaActive, (GLsizei) hauteur, (GLsizei)largeur, pixels);
 

@@ -47,7 +47,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 
 	console->println(string("Lecture de la MAP '").append(mapName).append("'...").c_str());
 	cout << endl << "Lecture de la MAP '" << mapName << "'...";
-	cout.flush();
+	cout << flush;
 
 	CMap* map = new CMap(mapName);
 	gameDto->setMap(map);
@@ -109,7 +109,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 	// Création du joueur principal
 	console->println("Creation du joueur principal...");
 	cout << endl << "Creation du joueur principal...";
-	cout.flush();
+	cout << flush;
 
 	CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
 	erwin->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
@@ -123,7 +123,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 	// Création d'un second joueur
 	console->println("Creation du second joueur...");
 	cout << endl << "Creation du second joueur...";
-	cout.flush();
+	cout << flush;
 
 	CPlayer *julien;
 	julien = new CPlayer();						// Crée un autre joueur
@@ -138,7 +138,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 	// Création d'un troisième joueur
 	console->println("Creation du troisieme joueur...");
 	cout << endl << "Creation du troisieme joueur...";
-	cout.flush();
+	cout << flush;
 
 	CPlayer *sprite;
 	sprite = new CPlayer();						// Crée un autre joueur
@@ -154,7 +154,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 
 	console->println("Map lue");
 	cout << endl << "Map lue";
-	cout.flush();
+	cout << flush;
 
 	return 0;
 }

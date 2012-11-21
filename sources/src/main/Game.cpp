@@ -150,8 +150,7 @@ void CGame::Quit() {
 	cout << "\nDestruction des joueurs begin";
 	int curseur = -1;
 
-	if(pTabIndexPlayer)
-	{
+	if(pTabIndexPlayer) {
 		while( pTabIndexPlayer->bSuivant(curseur) ) {
 			cout << "\nDestruction d'un joueur";
 			//delete pTabIndexPlayer->operator []( curseur );
@@ -195,19 +194,17 @@ void CGame::Refresh() {
 		// Rafraichissement des projectils des joueurs
 	CPlayer *player;
 	int curseur = -1;
-	while( pTabIndexPlayer->bSuivant( curseur ) )	// Pour chaque joueur
-	{
+
+	while(pTabIndexPlayer->bSuivant(curseur)) {		// Pour chaque joueur
 		player = pTabIndexPlayer->operator [](curseur);
 		player->RefreshProjectils();
 	}
 }
 
-void CGame::GereContactPlayers()	// Gère les contacts de tous les joueurs avec la map
-{
+void CGame::GereContactPlayers() {	// Gère les contacts de tous les joueurs avec la map
 	CPlayer *player;
 	int curseur = -1;
-	while( pTabIndexPlayer->bSuivant( curseur ) )	// Pour chaque joueur
-	{
+	while(pTabIndexPlayer->bSuivant(curseur)) {		// Pour chaque joueur
 		player = pTabIndexPlayer->operator [](curseur);
 		player->Pente( 0.0f );
 
@@ -219,7 +216,7 @@ void CGame::AffichePlayers() {
 	CPlayer *player;
 	int curseur = -1;
 
-	while( pTabIndexPlayer->bSuivant(curseur) ) {
+	while(pTabIndexPlayer->bSuivant(curseur)) {
 		player = pTabIndexPlayer->operator [](curseur);
 
 		player->Affiche(); 				//affiche un seul joueur pour le moment
@@ -227,16 +224,13 @@ void CGame::AffichePlayers() {
 	}
 }
 
-void CGame::AfficheProjectils()	// Affiche tous les projectils
-{
+void CGame::AfficheProjectils() {	// Affiche tous les projectils
 	// Rafraichissement des projectils des joueurs
 	CPlayer *player;
 	int curseur = -1;
 
-	while( pTabIndexPlayer->bSuivant( curseur ) )	// Pour chaque joueur
-	{
+	while(pTabIndexPlayer->bSuivant(curseur )) {	// Pour chaque joueur
 		player = pTabIndexPlayer->operator [](curseur);
-
 		player->AfficheProjectils();
 	}
 }
@@ -250,19 +244,18 @@ void CGame::Erwin(CPlayer *erwin) {
 }
 
 void CGame::deleteErwin() {
-	if( m_Erwin )
+	if(m_Erwin)
 		delete m_Erwin;
-	m_Erwin = 0;
+	m_Erwin = NULL;
 }
 
 JktMoteur::CMap *CGame::getMap() {
 	return m_pMap;
 }
 
-void CGame::afficheToutesTextures( int x, int y ) const		// Affiche à l'écran toutes les textures de la Map
-{
-	if( m_pMap )
-		m_pMap->afficheToutesTextures( x, y );
+void CGame::afficheToutesTextures(int x, int y, int tailleX, int tailleY) const {	// Affiche à l'écran toutes les textures de la Map
+	if(m_pMap)
+		m_pMap->afficheToutesTextures(x, y, tailleX, tailleY, 6, 6, 0);
 }
 
 void CGame::afficheViseur(int x, int y) const {

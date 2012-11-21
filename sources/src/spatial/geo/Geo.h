@@ -2,6 +2,10 @@
 #ifndef __JKT__GEO_H
 #define __JKT__GEO_H
 
+#include <string>
+
+using namespace std;
+
 #include "tinyxml.h"
 
 #include "util/V3D.h"

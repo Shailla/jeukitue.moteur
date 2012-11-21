@@ -198,7 +198,7 @@ int downloadOneFileThread(void* threadData)
 			CZipFileHeader* fileHeader = zip.GetFileInfo(i);
 			CZipString currentFileName = fileHeader->GetFileName();
 			string destFileName(destDirectory);
-			destFileName.append(currentFileName);
+			destFileName.append((stdbs&)currentFileName);
 
 			zip.ExtractFile(i, (LPCTSTR)destFileName.c_str());
 		}

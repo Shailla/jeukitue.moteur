@@ -91,7 +91,7 @@ CPlayer::CPlayer() {
 
 	if(_weaponsChoice == NULL) {
 		try {
-			void* pixelsWeaponsChoice = JktMoteur::litFichierImage("@Icone/Armes.bmp", 0.75f);
+			Uint8* pixelsWeaponsChoice = JktMoteur::litFichierImage("@Icone/Armes.bmp", 0.75f);
 			_weaponsChoice = JktMoteur::litFichierIcone("@Icone/Armes.bmp", 0.75f, pixelsWeaponsChoice);
 		}
 		catch(CErreur& erreur) {

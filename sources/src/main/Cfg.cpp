@@ -561,7 +561,7 @@ void CCfg::CDisplay::InitSDL() {
 TRACE().p( TRACE_OTHER, "init_SDL(config) begin" );
 
 #ifdef WIN32
-	_putenv("SDL_VIDEODRIVER=directx");	// A FAIRE A FAIRE A FAIRE : code compatible Linux
+//	_putenv("SDL_VIDEODRIVER=directx");	// A FAIRE A FAIRE A FAIRE : code compatible Linux
 #endif
 
 	if( SDL_Init( SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_NOPARACHUTE ) < 0 )	// First, initialize SDL's video subsystem
@@ -617,16 +617,16 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 		exit( 1 );
 	}
 
-	cout << endl << "hw_available : " << info->hw_available;
-	cout << endl << "wm_available : " << info->wm_available;
-	cout << endl << "blit_hw:1 : " << info->blit_hw;
-	cout << endl << "blit_hw_CC:1 : " << info->blit_hw_CC;
-	cout << endl << "blit_hw_A:1 : " << info->blit_hw_A;
-	cout << endl << "blit_sw:1 : " << info->blit_sw;
-	cout << endl << "blit_sw_CC:1 : " << info->blit_sw_CC;
-	cout << endl << "blit_sw_A:1 : " << info->blit_sw_A;
-	cout << endl << "blit_fill : " << info->blit_fill;
-	cout << endl << "video_mem : " << info->video_mem << endl;
+	cout << endl << "hw_available=" << info->hw_available;
+	cout << " ; wm_available=" << info->wm_available;
+	cout << " ; blit_hw:1=" << info->blit_hw;
+	cout << " ; blit_hw_CC:1=" << info->blit_hw_CC;
+	cout << " ; blit_hw_A:1=" << info->blit_hw_A;
+	cout << " ; blit_sw:1=" << info->blit_sw;
+	cout << " ; blit_sw_CC:1=" << info->blit_sw_CC;
+	cout << " ; blit_sw_A:1=" << info->blit_sw_A;
+	cout << " ; blit_fill=" << info->blit_fill;
+	cout << " ; video_mem=" << info->video_mem << endl;
 
     flags = SDL_OPENGL | SDL_RESIZABLE;
 
@@ -709,28 +709,28 @@ TRACE().p( TRACE_OTHER, "setup_opengl(width=%d,height=%d) begin", X, Y );
 	if(!chargeGLExtension("GL_ARB_vertex_buffer_object",extensions))
 		exit(1);
 
-	glGenBuffers = (PFNGLGENBUFFERSARBPROC)wglGetProcAddress("glGenBuffersARB");
-	glBindBuffer = (PFNGLBINDBUFFERARBPROC)wglGetProcAddress("glBindBufferARB");
-	glBufferData = (PFNGLBUFFERDATAARBPROC)wglGetProcAddress("glBufferDataARB");
-	glDeleteBuffers = (PFNGLDELETEBUFFERSARBPROC)wglGetProcAddress("glDeleteBuffersARB");
+	glGenBuffers = (PFNGLGENBUFFERSARBPROC)SDL_GL_GetProcAddress("glGenBuffersARB");
+	glBindBuffer = (PFNGLBINDBUFFERARBPROC)SDL_GL_GetProcAddress("glBindBufferARB");
+	glBufferData = (PFNGLBUFFERDATAARBPROC)SDL_GL_GetProcAddress("glBufferDataARB");
+	glDeleteBuffers = (PFNGLDELETEBUFFERSARBPROC)SDL_GL_GetProcAddress("glDeleteBuffersARB");
 
 	if(!glGenBuffers) {
-		cerr << "\nError : glGenBuffersARB not found\n";
+		cerr << "\nError : OpenGL extension 'glGenBuffersARB' not available\n";
 		exit(1);
 	}
 
 	if(!glBindBuffer) {
-		cerr << "\nError : glBindBufferARB not found\n";
+		cerr << "\nError : OpenGL extension 'glBindBufferARB' not available\n";
 		exit(1);
 	}
 
 	if(!glBufferData) {
-		cerr << "\nError : glBufferDataARB not found\n";
+		cerr << "\nError : OpenGL extension 'glBufferDataARB' not available\n";
 		exit(1);
 	}
 
 	if(!glDeleteBuffers) {
-		cerr << "\nError : glDeleteBuffersARB not found\n";
+		cerr << "\nError : OpenGL extension 'glDeleteBuffersARB' not available\n";
 		exit(1);
 	}
 
@@ -745,12 +745,9 @@ TRACE().p( TRACE_OTHER, "setup Agar" );
     AG_AgarVersion agarVersion;
     AG_GetVersion(&agarVersion);
 
-    cout << endl << "Version Agar : " << agarVersion.major;
-    cout << "." << agarVersion.minor;
-    cout << "." << agarVersion.patch;
-    cout << " [" << agarVersion.release << "]";
+    cout << endl << "Version Agar : " << agarVersion.major << "." << agarVersion.minor << "." << agarVersion.patch << " [" << agarVersion.release << "]";
 
-	// Configuration Agar (librairie de gestion du menu)
+	// Initialisation Agar (librairie de gestion du menu)
 	if(AG_InitCore("agar", 0) == -1 || AG_InitVideoSDL(screen, flags) == -1) {
 		cerr << "\nERREUR d'initialisation Agar : '" << AG_GetError() << "'";
 	}
@@ -758,17 +755,18 @@ TRACE().p( TRACE_OTHER, "setup Agar" );
 	// Noms des drivers disponibles pour Agar
 	char drvNames[256];
 	AG_ListDriverNames(drvNames, sizeof(drvNames));
+
 	cout << endl << "Available drivers : " << drvNames;
 }
 
 bool CCfg::CDisplay::chargeGLExtension(const char* ext, string& extensions) {
 		// Recherche de l'extension qui nous intéresse : GL_ARB_texture_compression
 	if (extensions.find(ext) != std::string::npos) {
-		cout << endl << "Extension supportée : " << ext ;
+		cout << endl << "Extension OpenGL supportée : " << ext ;
 		return true;
 	}
 	else {
-		cerr << endl << "Extension non-supportée : " << ext ;
+		cerr << endl << "Extension OpenGL non-supportée : " << ext ;
 		return false;
 	}
 }

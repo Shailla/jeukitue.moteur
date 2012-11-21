@@ -54,7 +54,7 @@ CMaterialTexture::~CMaterialTexture()
 
 void CMaterialTexture::initGL() throw(JktUtils::CErreur) {
 	RessourcesLoader::getFileRessource(m_FichierTexture);
-	void* pixels = litFichierImage(m_FichierTexture, 1.0f);
+	Uint8* pixels = litFichierImage(m_FichierTexture, 1.0f);
 	_texture = litFichierTexture(m_FichierTexture, 1.0f, pixels);
 }
 

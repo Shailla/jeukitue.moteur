@@ -1,4 +1,3 @@
-
 #pragma warning( disable : 4290 )	// Evite les warnings sur les déclaration de throw
 
 #ifndef __JKT__GEOMAKER_H
@@ -12,6 +11,8 @@
 
 #include <map>
 #include <fstream>
+
+using namespace std;
 
 #include "tinyxml.h"
 

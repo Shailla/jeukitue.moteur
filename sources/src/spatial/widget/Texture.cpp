@@ -20,7 +20,7 @@ using namespace std;
 
 namespace JktMoteur {
 
-Texture::Texture(const string& nomFichier, bool alpha, int hauteur, int largeur, void* pixels) {
+Texture::Texture(const string& nomFichier, bool alpha, int hauteur, int largeur, Uint8* pixels) {
 	_nomFichier = nomFichier;
 	_alpha = alpha;
 	_pixels = pixels;

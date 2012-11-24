@@ -82,6 +82,10 @@ void Controller::executeAction(AG_Event *event) {
         m_agarView->showView(Viewer::CONFIGURATION_VIEW);
         break;
 
+    case QuitGameAction:
+    	Game.Quit();
+        break;
+
 	case ConfigurationVideoAction:
 		m_agarView->showView(Viewer::CONFIGURATION_VIDEO_VIEW);
 		break;

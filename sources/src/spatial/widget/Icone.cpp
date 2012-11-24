@@ -19,7 +19,7 @@ using namespace std;
 
 namespace JktMoteur {
 
-Icone::Icone(const string& nomFichier, bool alpha, int hauteur, int largeur, void* pixels) {
+Icone::Icone(const string& nomFichier, bool alpha, int hauteur, int largeur, Uint8* pixels) {
 	_nomFichier = nomFichier;
 	_alpha = alpha;
 	_pixels = pixels;

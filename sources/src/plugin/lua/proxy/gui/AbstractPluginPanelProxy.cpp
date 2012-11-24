@@ -19,10 +19,12 @@ namespace JktPlugin {
 
 AbstractPluginPanelProxy::AbstractPluginPanelProxy(lua_State* luaState) {
 	_pluginContext = NULL;
+	_pluginPanel = NULL;
 }
 
 AbstractPluginPanelProxy::AbstractPluginPanelProxy(PluginContext* pluginContext) {
 	_pluginContext = pluginContext;
+	_pluginPanel = NULL;
 }
 
 void AbstractPluginPanelProxy::setPluginContext(PluginContext* pluginContext) {

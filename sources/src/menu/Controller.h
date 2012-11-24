@@ -19,6 +19,7 @@ public:
 		LanceServeurMapAction,
 		CentralisateurAction,
 		ConfigurationAction,
+		QuitGameAction,
 		ConfigurationVideoAction,
 		ConfigurationJoueurAction,
 		ConfigCentralisateurAction,

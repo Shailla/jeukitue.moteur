@@ -41,7 +41,7 @@ class Texture : public GraphicObject {
 	int _largeur;
 
 	/** Pixels de l'icone. */
-	void* _pixels;
+	Uint8* _pixels;
 
 	/** Référence OpenGL attribuée à la texture, 0 si la référence n'a pas encore été attribuée. */
 	unsigned int _glTexName;
@@ -56,7 +56,7 @@ public:
 	 * largeur : Largeur de l'icone en pixels.
 	 * pixels : Pixels de l'icone.
 	 */
-	Texture(const string& nomFichier, bool alpha, int hauteur, int largeur, void* pixels);
+	Texture(const string& nomFichier, bool alpha, int hauteur, int largeur, Uint8* pixels);
 
 	/** Destructeur. */
 	virtual ~Texture();

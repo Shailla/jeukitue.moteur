@@ -11,23 +11,21 @@ namespace JktUtils
 {
 
 template<class X>
-CTableauIndex<X>::CTableauIndex( int nbr, bool bParent )
-{
+CTableauIndex<X>::CTableauIndex(int nbr, bool bParent) {
 	m_Max = nbr;					// Nombre d'objets dans le tableau
 	m_Nbr = 0;						// Aucun élément dans les cases du tableau
 	m_bParent = bParent;			// Indique si tableau et éléments doivent être détruits en même temps
 	m_XTableau = new X*[ nbr ];		// Création du tableau
 
 	for( int i=0 ; i<nbr ; i++ )	// Mise à zéro des éléments du tableau
-		m_XTableau[i] = 0;
+		m_XTableau[i] = NULL;
 }
 
 template<class X>
-CTableauIndex<X>::~CTableauIndex()
-{
-	if( m_bParent )		// Si le tableau et ses éléments doivent être détruits en même temps
+CTableauIndex<X>::~CTableauIndex() {
+	if(m_bParent)		// Si le tableau et ses éléments doivent être détruits en même temps
 		for( int i=0 ; i<m_Max ; i++ )		// Destruction des éléments du tableau
-			if( m_XTableau[i]!=0 )		// Si cet élément est non vide
+			if(m_XTableau[i] != 0)		// Si cet élément est non vide
 				delete m_XTableau[i];	// alors détruits le 
 	
 	delete m_XTableau;		// Destruction du tableau

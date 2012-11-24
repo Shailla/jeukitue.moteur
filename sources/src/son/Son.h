@@ -17,7 +17,6 @@ class CSon
 {
 public:
 	FSOUND_SAMPLE *m_Sample;	// Echantillons du son à proprement dit
-	CSon* m_IdSon;				// Identifiant de cette classe CSon dans le démon
 	set<CReqSon*> m_TabReq;		// Liste des requêtes sur ce son
 	CDemonSons* pDemon;			// Pointeur sur le démon des sons
 	string nom;					// Nom du son (POUR LE DEBUG)

@@ -10,15 +10,14 @@
 
 #include <sstream>
 
-MainMenuView::MainMenuView(const AG_EventFn controllerCallback)
-:View(controllerCallback)
-{
+MainMenuView::MainMenuView(const AG_EventFn controllerCallback) : View(controllerCallback) {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
 	AG_WindowSetCaption(m_window, "Menu principal");
 
     _buttonOuvrirScene = AG_ButtonNewFn(m_window, 0, "Ouvrir une scene", controllerCallback, "%i", Controller::OpenSceneAction);
 	_buttonMultijoueurs = AG_ButtonNewFn(m_window, 0, "Multi-joueurs", controllerCallback, "%i", Controller::MultijoueursAction);
 	_buttonConfiguration = AG_ButtonNewFn(m_window, 0, "Configuration", controllerCallback, "%i", Controller::ConfigurationAction);
+	_buttonQuitGame = AG_ButtonNewFn(m_window, 0, "Quitter la partie", controllerCallback, "%i", Controller::QuitGameAction);
 	_About = AG_ButtonNewFn(m_window, 0, "A propos", controllerCallback, "%i", Controller::AboutAction);
 	_debug = AG_ButtonNewFn(m_window, 0, "Debug", controllerCallback, "%i", Controller::DebugAction);
 
@@ -28,6 +27,7 @@ MainMenuView::MainMenuView(const AG_EventFn controllerCallback)
     AG_ExpandHoriz(_buttonOuvrirScene);
 	AG_ExpandHoriz(_buttonMultijoueurs);
     AG_ExpandHoriz(_buttonConfiguration);
+    AG_ExpandHoriz(_buttonQuitGame);
     AG_ExpandHoriz(_About);
     AG_ExpandHoriz(_debug);
     AG_ExpandHoriz(_buttonQuitter);
@@ -38,6 +38,5 @@ MainMenuView::MainMenuView(const AG_EventFn controllerCallback)
 
 
 
-MainMenuView::~MainMenuView(void)
-{
+MainMenuView::~MainMenuView(void) {
 }

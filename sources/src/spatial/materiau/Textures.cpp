@@ -85,7 +85,7 @@ Uint8* litFichierImage(const string &nomFichier, float alpha) throw(CErreur) {
 	return pixels;
 }
 
-Texture* litFichierTexture(const string &nomFichier, float alpha, void* pixels) {
+Texture* litFichierTexture(const string &nomFichier, float alpha, Uint8* pixels) {
 	bool isAlphaActive;
 
 	if(alpha >= 0) {
@@ -105,7 +105,7 @@ Texture* litFichierTexture(const string &nomFichier, float alpha, void* pixels) 
 }
 
 
-Icone* litFichierIcone(const string &nomFichier, float alpha, void* pixels) {
+Icone* litFichierIcone(const string &nomFichier, float alpha, Uint8* pixels) {
 	bool isAlphaActive;
 
 	if(alpha >= 0) {

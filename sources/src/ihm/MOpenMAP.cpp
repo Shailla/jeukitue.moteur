@@ -32,7 +32,7 @@ class CGame;
 class CGeoObject;
 class CPorte;
 
-bool openMAP3(const void *arg);
+bool deprecatedOpenMAP(const void *arg);
 
 extern CGame Game;
 extern CFocus *pFocus;
@@ -52,7 +52,7 @@ CMenu *MenuOpenMAP;
 
 void suivantMAP(void *arg)
 {
-	if(openMAP3( arg )) {
+	if(deprecatedOpenMAP( arg )) {
 		Aide = false;
 		pFocus->SetPlayFocus();
 		Game.setModeLocal();

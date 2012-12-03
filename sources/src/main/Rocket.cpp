@@ -154,7 +154,8 @@ void CRocket::Deplace() {
 	CPlayer *playerTouche = 0;	// Eventuel touché par la rocket
 	CPlayer *player;
 	int curseur = -1;
-	while(Game.pTabIndexPlayer->bSuivant(curseur)) {
+
+	while(Game.pTabIndexPlayer->Suivant(curseur)) {
 		player = Game.pTabIndexPlayer->operator [](curseur);
 
 		if(player != m_Player) {

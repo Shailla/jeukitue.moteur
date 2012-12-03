@@ -216,7 +216,7 @@ void CPorte::Refresh( CGame *game )
 	int curseur = -1;
 	float pos[3];
 
-	while( game->pTabIndexPlayer->bSuivant( curseur ) )
+	while( game->pTabIndexPlayer->Suivant(curseur) )
 	{
 		player = game->pTabIndexPlayer->operator []( curseur );
 		dist = m_Position;

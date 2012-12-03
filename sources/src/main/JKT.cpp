@@ -1164,7 +1164,7 @@ static void process_events( void )
     }
 }
 
-bool openMAP3(const void *nomFichier)
+bool deprecatedOpenMAP(const void *nomFichier)
 {
 	/**************************************
 	* Ouverture de la Map proprement dite
@@ -1318,7 +1318,7 @@ void boucle() {
 				if(Game.pTabIndexPlayer) {
 					CPlayer *player;
 					int playerIndex = -1;
-					while( Game.pTabIndexPlayer->bSuivant(playerIndex)) {
+					while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
 						player = Game.pTabIndexPlayer->operator [](playerIndex);
 						player->freeGL();
 					}
@@ -1368,8 +1368,9 @@ void boucle() {
 
 				CPlayer *player;
 				int playerIndex = -1;
-				while(Game.pTabIndexPlayer->bSuivant(playerIndex)) {
-					player = Game.pTabIndexPlayer->operator [](playerIndex);
+
+				while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
+					player = (*Game.pTabIndexPlayer)[playerIndex];
 					player->initGL();
 					player->choiceOneEntryPoint();
 				}
@@ -1519,6 +1520,7 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 	initMenu();
 
 	// Entrée dans la boucle principale du jeu
+	Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
 	boucle();
 
 	return 1;	// On ne devrait normalement jamais exécuter cette ligne

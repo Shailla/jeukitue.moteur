@@ -56,34 +56,6 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 
 
 	/**************************************
-	* Chargement de Map pour les joueurs
-	**************************************/
-
-	// Chargement premier skin joueur
-	string mapJoueurPrincipal;
-	mapJoueurPrincipal.append("@Joueur\\").append(Config.Joueur.mapName);
-
-	console->println(string("Lecture du skin '").append(mapJoueurPrincipal).append("'...").c_str());
-	cout << endl << "Lecture du skin '" << mapJoueurPrincipal << "'...";
-
-	CMap *pMapJoueur = new CMap(mapJoueurPrincipal);
-	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
-	console->println("Scaling du skin");
-	cout << endl << "Scaling du skin";
-	pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
-
-	// Chargement second skin joueur
-	console->println("Lecture du skin 'GrosBonhomme'...");
-	cout << "\nLecture du skin 'GrosBonhomme'...";
-
-	CMap *pMapJoueur2 = new CMap("GrosBonhomme");
-	pMapJoueur2->EchangeXZ();					// Ajuste les coordonnées
-	console->println("Scaling du skin");
-	cout << endl << "Scaling du skin";
-	pMapJoueur2->Scale( -0.10f, 0.10f, 0.10f );
-
-
-	/**************************************
 	* Chargement de sons pour les joueurs
 	**************************************/
 
@@ -101,50 +73,99 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 	JktUtils::RessourcesLoader::getFileRessource(cri2);
 
 
-	/***********************************
-	* Création des joueurs dans la Map
-	***********************************/
+	/***************************************
+	 * Création du joueur principal (Erwin)
+	 ***************************************/
+	{
+		// Chargement du skin
+		string mapJoueur;
+		mapJoueur.append("@Joueur\\").append(Config.Joueur.mapName);
 
-	// Création du joueur principal
-	console->println("Creation du joueur principal...");
-	cout << endl << "Creation du joueur principal..." << flush;
+		console->println(string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
+		cout << endl << "Lecture du skin '" << mapJoueur << "'...";
 
-	CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
-	erwin->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
-	erwin->changeContact(contactPlayer);		// Associe une fonction de gestion des contacts avec la map
-	erwin->Skin( pMapJoueur );
-	erwin->setCri( cri1.c_str() );				// Cri du joueur
-	erwin->nom( "ERWIN" );
-	erwin->init();								// Initialise certaines données
-	gameDto->setErwin(erwin);
+		CMap *pMapJoueur = new CMap(mapJoueur);
+		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
+		console->println("Scaling du skin");
+		cout << endl << "Scaling du skin";
+		pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
 
-	// Création d'un second joueur
-	console->println("Creation du second joueur...");
-	cout << endl << "Creation du second joueur..." << flush;
+		// Création du joueur
+		console->println("Creation du joueur principal...");
+		cout << endl << "Creation du joueur principal..." << flush;
 
-	CPlayer *julien;
-	julien = new CPlayer();						// Crée un autre joueur
-	julien->changeAction(gravitePlayer);		// Associe au joueur une fonction de gravité
-	julien->changeContact(contactPlayer);		// Associe une fonction pour les contacts avec la map
-	julien->Skin( pMapJoueur2 );
-	julien->setCri( cri1.c_str() );
-	julien->nom( "JULIEN" );
-	julien->init();
-	gameDto->getPlayers().push_back(julien);				// Ajoute le joueur à la liste des joueurs
+		CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
+		erwin->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
+		erwin->changeContact(contactPlayer);		// Associe une fonction de gestion des contacts avec la map
+		erwin->Skin(pMapJoueur);
+		erwin->setCri( cri1.c_str() );				// Cri du joueur
+		erwin->nom("ERWIN");
+		erwin->init();								// Initialise certaines données
+		gameDto->setErwin(erwin);
+	}
 
-	// Création d'un troisième joueur
-	console->println("Creation du troisieme joueur...");
-	cout << endl << "Creation du troisieme joueur..." << flush;
 
-	CPlayer *sprite;
-	sprite = new CPlayer();						// Crée un autre joueur
-	sprite->changeAction(gravitePlayer);		// Associe au joueur une fonction de gravité
-	sprite->changeContact(contactSprite);		// Associe une fonction pour les contacts avec la map
-	sprite->Skin( pMapJoueur );
-	sprite->setCri( cri2.c_str() );
-	sprite->nom( "SPRITE" );
-	sprite->init();
-	gameDto->getPlayers().push_back(sprite);				// Ajoute le joueur à la liste des joueurs
+	/***************************************
+	 * Création du second joueur (Julien)
+	 ***************************************/
+	{
+		// Chargement du skin
+		console->println("Lecture du skin 'GrosBonhomme'...");
+		cout << "\nLecture du skin 'GrosBonhomme'...";
+
+		CMap *pMapJoueurJulien = new CMap("GrosBonhomme");
+		pMapJoueurJulien->EchangeXZ();					// Ajuste les coordonnées
+		console->println("Scaling du skin");
+		cout << endl << "Scaling du skin";
+		pMapJoueurJulien->Scale( -0.10f, 0.10f, 0.10f );
+
+		// Création d'un second joueur
+		console->println("Creation du second joueur...");
+		cout << endl << "Creation du second joueur..." << flush;
+
+		CPlayer *julien;
+		julien = new CPlayer();						// Crée un autre joueur
+		julien->changeAction(gravitePlayer);		// Associe au joueur une fonction de gravité
+		julien->changeContact(contactPlayer);		// Associe une fonction pour les contacts avec la map
+		julien->Skin( pMapJoueurJulien );
+		julien->setCri( cri1.c_str() );
+		julien->nom( "JULIEN" );
+		julien->init();
+		gameDto->getPlayers().push_back(julien);				// Ajoute le joueur à la liste des joueurs
+	}
+
+
+	/***************************************
+	 * Création du troisième joueur (Sprite)
+	 ***************************************/
+	{
+		// Chargement du skin
+		string mapJoueur;
+		mapJoueur.append("@Joueur\\").append(Config.Joueur.mapName);
+
+		console->println(string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
+		cout << endl << "Lecture du skin '" << mapJoueur << "'...";
+
+		CMap *pMapJoueur = new CMap(mapJoueur);
+		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
+		console->println("Scaling du skin");
+		cout << endl << "Scaling du skin";
+		pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
+
+		// Création d'un troisième joueur
+		console->println("Creation du troisieme joueur...");
+		cout << endl << "Creation du troisieme joueur..." << flush;
+
+		CPlayer *sprite;
+		sprite = new CPlayer();						// Crée un autre joueur
+		sprite->changeAction(gravitePlayer);		// Associe au joueur une fonction de gravité
+		sprite->changeContact(contactSprite);		// Associe une fonction pour les contacts avec la map
+		sprite->Skin( pMapJoueur );
+		sprite->setCri( cri2.c_str() );
+		sprite->nom( "SPRITE" );
+		sprite->init();
+		gameDto->getPlayers().push_back(sprite);				// Ajoute le joueur à la liste des joueurs
+	}
 
 	Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_OUVERTURE);
 

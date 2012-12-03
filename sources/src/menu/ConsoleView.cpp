@@ -32,10 +32,7 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	
 	AG_WidgetDisable(_consoleTextbox);
 	
-	// Panel de commande utilisateur à exécuter
-	//AG_Pane* paneHoriz = AG_PaneNewVert(paneVert->div[1], AG_PANE_EXPAND);
-	//AG_PaneMoveDividerPct(paneHoriz, 50);
-
+	// Ligne de saisie de commande utilisateur
 	_textboxToExecute = AG_TextboxNew(vPane->div[1], AG_TEXTBOX_HFILL, NULL);
 
 	memset(_commandToExecute, '\0', sizeof(_commandToExecute));
@@ -57,7 +54,8 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 		Onglet des info
 	******************************/
 	AG_NotebookTab* tabInfo = AG_NotebookAddTab(book, "Info", AG_BOX_VERT);
-	_mapOuverteLabel = AG_LabelNew(tabInfo, 0, "Map ouverte : ");
+	AG_Scrollview* scrollInfo = AG_ScrollviewNew(tabInfo, AG_SCROLLVIEW_EXPAND | AG_SCROLLVIEW_NOPAN_X);
+	_mapOuverteLabel = AG_LabelNew(scrollInfo, 0, "Map ouverte : ");
 
 
 	// Disposition de la fenêtre	

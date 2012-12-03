@@ -108,14 +108,15 @@ bool CLaser::Refresh()
 
 		// Vérifie si un joueur a été touché
 	playerTouche = 0;	// Pas de joueur touché par le laser trouvé
-	int curseur2 = -1;
-	CPlayer *player2;
-	while( Game.pTabIndexPlayer->bSuivant( curseur2 ) )
-	{
-		player2 = Game.pTabIndexPlayer->operator [](curseur2);
-		if( player2!=m_Player )
+	int curseur = -1;
+	CPlayer *player;
+
+	while(Game.pTabIndexPlayer->Suivant(curseur)) {
+		player = Game.pTabIndexPlayer->operator [](curseur);
+
+		if(player != m_Player)
 		{
-			player2->getPosition( pos2 );
+			player->getPosition( pos2 );
 			EH.X = pos2[0] - pos[0];
 			EH.Y = pos2[1] - pos[1];
 			EH.Z = -pos2[2] + pos[2];
@@ -130,7 +131,7 @@ bool CLaser::Refresh()
 					if( hcarre<0.007f )	// Si la distance entre le laser et l'autre joueur < 0.007
 					{
 						distance = var;
-						playerTouche = player2;	// Se souvient quel joeur est touché
+						playerTouche = player;	// Se souvient quel joeur est touché
 					}
 				}
 			}

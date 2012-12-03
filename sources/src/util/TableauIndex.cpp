@@ -11,10 +11,9 @@ namespace JktUtils
 {
 
 template<class X>
-CTableauIndex<X>::CTableauIndex(int nbr, bool bParent) {
+CTableauIndex<X>::CTableauIndex(int nbr) {
 	m_Max = nbr;					// Nombre d'objets dans le tableau
 	m_Nbr = 0;						// Aucun élément dans les cases du tableau
-	m_bParent = bParent;			// Indique si tableau et éléments doivent être détruits en même temps
 	m_XTableau = new X*[ nbr ];		// Création du tableau
 
 	for( int i=0 ; i<nbr ; i++ )	// Mise à zéro des éléments du tableau
@@ -23,22 +22,15 @@ CTableauIndex<X>::CTableauIndex(int nbr, bool bParent) {
 
 template<class X>
 CTableauIndex<X>::~CTableauIndex() {
-	if(m_bParent)		// Si le tableau et ses éléments doivent être détruits en même temps
-		for( int i=0 ; i<m_Max ; i++ )		// Destruction des éléments du tableau
-			if(m_XTableau[i] != 0)		// Si cet élément est non vide
-				delete m_XTableau[i];	// alors détruits le 
-	
 	delete m_XTableau;		// Destruction du tableau
 }
 
 
 template<class X>
-bool CTableauIndex<X>::Ajoute( int pos, X *objet)	// Ajoute le pos° élément du tableau
+bool CTableauIndex<X>::Ajoute(int pos, X *objet)	// Ajoute le pos° élément du tableau
 {													// s'il n'existe pas encore
-	if( pos<m_Max )		// Vérifie qu'il n'y a pas dépassement du tableau
-	{
-		if( !(m_XTableau[pos]) )	// Vérifie que la case indexée par 'pos' est vide
-		{
+	if(pos<m_Max) {		// Vérifie qu'il n'y a pas dépassement du tableau
+		if( !(m_XTableau[pos]) ) {		// Vérifie que la case indexée par 'pos' est vide
 			m_XTableau[pos] = objet;
 			m_Nbr++;			// Compte le nouvel élément
 			return true;		// L'élément a été ajouté
@@ -49,11 +41,12 @@ bool CTableauIndex<X>::Ajoute( int pos, X *objet)	// Ajoute le pos° élément du t
 }
 
 template<class X>
-int CTableauIndex<X>::Ajoute( X *objet )	// Ajoute l'élément à la première place de libre
-{
+int CTableauIndex<X>::Ajoute(X *objet) {	// Ajoute l'élément à la première place de libre
 	int i = 0;
+
 	while( m_XTableau[i] && (i<m_Max) )
 		i++;
+
 	if( i>=m_Max )			// Si aucune place n'a été trouvée dans le tableau
 		return -1;			// Retour sans avoir placé le nouvel élément dans le tableau
 	
@@ -97,19 +90,33 @@ int CTableauIndex<X>::getNbr()
 {	return m_Nbr;		}
 
 template<class X>
-int CTableauIndex<X>::Suivant( int pos )
-{
-	pos++;
-	while( (m_XTableau[pos]==0) && (pos<=m_Max) )		// Cherche l'élément après la position 'pos'
+int CTableauIndex<X>::IndexSuivant(int pos) {
+	if(pos < 0) {			// Initialisation d'un index
+		pos = 0;
+	}
+	else if(pos < m_Max - 1) {	// Incrément d'un index
 		pos++;
+
+		while((pos<m_Max) && (m_XTableau[pos]==NULL))		// Cherche l'élément après la position 'pos'
+			pos++;
+	}
+	else {					// Fin d'un index
+		pos = -1;
+	}
 	
+	if(pos >= m_Max) {
+		pos = -1;
+	}
+
 	return pos;		// Envoie la position de l'élément trouvé ou de m_Nbr pour indiquer la fin de liste
 }
 
 template<class X>
-inline
-bool CTableauIndex<X>::bSuivant( int &pos )
-{	return ( ( pos = Suivant(pos) )< getMax() );	}
+bool CTableauIndex<X>::Suivant(int &pos) {
+	pos = IndexSuivant(pos);
+
+	return pos >= 0;
+}
 
 }	// JktUtils
 

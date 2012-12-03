@@ -67,25 +67,21 @@ string CGenRef::toString()
 
 void CGenRef::delRef(unsigned ref)
 {
-	if(ref == 0)
-	{
+	if(ref == 0) {
 		cout << endl << "Tentative de suppresion de la référence nulle";
 		return;
 	}
 
-	vector<CBloc>::iterator iter = sequence.begin();
+	vector<CBloc>::iterator iter;
 
 		// Recherche du bloc contenant 'ref'
-	for( ; iter!=sequence.end(); iter++)
-	{
-		if(ref >= (*iter).m_Debut && ref <= (*iter).m_Fin)
-		{
+	for(iter = sequence.begin() ; iter!=sequence.end(); iter++){
+		if(ref >= (*iter).m_Debut && ref <= (*iter).m_Fin) {
 			break;
 		}
 	}
 
-	if(iter == sequence.end() || ref<(*iter).m_Debut)
-	{
+	if(iter == sequence.end() || ref<(*iter).m_Debut) {
 		TRACE().p( TRACE_ERROR, "Tentative de suppression d'une référence inconnue 'ref=%d'", ref);
 		cout << endl << "Tentative de suppression d'une référence inconnue 'ref=" << ref << "'";
 		return;

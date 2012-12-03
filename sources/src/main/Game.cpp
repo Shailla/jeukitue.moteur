@@ -88,7 +88,7 @@ void CGame::setPlayerList(int nbr) {
 	if( pTabIndexPlayer )
 		delete pTabIndexPlayer;
 
-	pTabIndexPlayer = new CTableauIndex<CPlayer>( nbr, true );
+	pTabIndexPlayer = new CTableauIndex<CPlayer>(nbr);
 }
 
 void CGame::quit() {
@@ -151,9 +151,13 @@ void CGame::Quit() {
 	int curseur = -1;
 
 	if(pTabIndexPlayer) {
-		while( pTabIndexPlayer->bSuivant(curseur) ) {
-			cout << "\nDestruction d'un joueur";
-			//delete pTabIndexPlayer->operator []( curseur );
+		while(pTabIndexPlayer->Suivant(curseur)) {
+			CPlayer* player = (*pTabIndexPlayer)[curseur];
+
+			if(player) {
+				cout << endl << "Destruction du joueur '" << player->nom() << "'" << flush;
+				delete player;
+			}
 		}
 
 		cout << "\nDestruction de la liste des joueurs";
@@ -195,7 +199,7 @@ void CGame::Refresh() {
 	CPlayer *player;
 	int curseur = -1;
 
-	while(pTabIndexPlayer->bSuivant(curseur)) {		// Pour chaque joueur
+	while(pTabIndexPlayer->Suivant(curseur)) {		// Pour chaque joueur
 		player = pTabIndexPlayer->operator [](curseur);
 		player->RefreshProjectils();
 	}
@@ -204,7 +208,7 @@ void CGame::Refresh() {
 void CGame::GereContactPlayers() {	// Gère les contacts de tous les joueurs avec la map
 	CPlayer *player;
 	int curseur = -1;
-	while(pTabIndexPlayer->bSuivant(curseur)) {		// Pour chaque joueur
+	while(pTabIndexPlayer->Suivant(curseur)) {		// Pour chaque joueur
 		player = pTabIndexPlayer->operator [](curseur);
 		player->Pente( 0.0f );
 
@@ -216,7 +220,7 @@ void CGame::AffichePlayers() {
 	CPlayer *player;
 	int curseur = -1;
 
-	while(pTabIndexPlayer->bSuivant(curseur)) {
+	while(pTabIndexPlayer->Suivant(curseur)) {
 		player = pTabIndexPlayer->operator [](curseur);
 
 		player->Affiche(); 				//affiche un seul joueur pour le moment
@@ -229,7 +233,7 @@ void CGame::AfficheProjectils() {	// Affiche tous les projectils
 	CPlayer *player;
 	int curseur = -1;
 
-	while(pTabIndexPlayer->bSuivant(curseur )) {	// Pour chaque joueur
+	while(pTabIndexPlayer->Suivant(curseur)) {	// Pour chaque joueur
 		player = pTabIndexPlayer->operator [](curseur);
 		player->AfficheProjectils();
 	}
@@ -290,7 +294,7 @@ void CGame::deplaceTousPlayer() {
 	CPlayer *player;
 	int curseur = -1;
 
-	while( pTabIndexPlayer->bSuivant(curseur) ) {
+	while(pTabIndexPlayer->Suivant(curseur)) {
 		player = pTabIndexPlayer->operator [](curseur);
 		player->deplace();
 	}
@@ -300,8 +304,7 @@ void CGame::faitTousRequetesClavier() {
 	CPlayer *player;
 	int curseur = -1;
 
-	while( pTabIndexPlayer->bSuivant( curseur ) )	//exécute les requêtes clavier sur les joueurs
-	{
+	while(pTabIndexPlayer->Suivant(curseur)) {	//exécute les requêtes clavier sur les joueurs
 		player = pTabIndexPlayer->operator[](curseur);
 		player->faitRequeteClavier();
 	}
@@ -311,8 +314,7 @@ void CGame::faitTousPlayerGravite() {
 	int curseur = -1;
 	CPlayer *player;			//Prends le premier player
 
-	while( pTabIndexPlayer->bSuivant( curseur ) )
-	{
+	while(pTabIndexPlayer->Suivant(curseur)) {
 		player = pTabIndexPlayer->operator [](curseur);
 		player->exeActionFunc();	//exécute l'action périodique (gravité,...) du joueur
 	}

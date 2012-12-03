@@ -177,16 +177,16 @@ void MapTreeView::showOneLight(AG_TreetblRow* parentRow, const CLight* light, co
 	light->getCouleurDiffuse(diffuse);
 	light->getCouleurSpeculaire(speculaire);
 
-	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Ref. OpenGL : ", position);
+	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Position : ", position);
 
 	// Lumière ambiante
-	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Ref. OpenGL : ", ambiante);
+	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Lumiere ambiante : ", ambiante);
 
 	// Lumière diffuse
-	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Diffuse : ", diffuse);
+	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Lumiere diffuse : ", diffuse);
 
 	// Lumière spéculaire
-	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Speculaire : ", speculaire);
+	addFloat4TabToTree(_tree, lightRow, rowId++, depth+1, "Lumiere speculaire : ", speculaire);
 }
 
 AG_TreetblRow* MapTreeView::addFloat4TabToTree(AG_Treetbl* tree, AG_TreetblRow* parentRow, const int id, const int depth, const char* name, const float value[4]) {

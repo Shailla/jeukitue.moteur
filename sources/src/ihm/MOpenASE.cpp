@@ -36,7 +36,7 @@ using namespace std;
 using namespace JktMenu;
 using namespace JktMoteur;
 
-bool openMAP3( const void *arg );
+bool deprecatedOpenMAP( const void *arg );
 
 extern CGame Game;
 extern CFocus *pFocus;
@@ -143,7 +143,7 @@ void retourConfirmOui( void *arg )
 TRACE().p( TRACE_MENU, "retourConfirmOui(var=%x)", arg );
 	delete BoiteConfirmOk;
 
-	if(openMAP3(arg)) {
+	if(deprecatedOpenMAP(arg)) {
 		Aide = false;
 		pFocus->SetPlayFocus();
 		Game.setModeLocal();

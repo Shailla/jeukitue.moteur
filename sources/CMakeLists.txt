@@ -24,6 +24,7 @@ IF(MSVC)
 	include_directories("../libs/glext")
 	include_directories("../libs/tinyxml_2_6_1")
 	include_directories("../libs/lua5_0_3_Win32_vc8_lib/include")
+	#include_directories("../libs/nvwa-0.9/nvwa/")
 ELSEIF(CMAKE_COMPILER_IS_GNUCXX)
 	include_directories("src")
 	include_directories("../libs/SDL-1.2.14-MinGW/include/SDL")
@@ -36,6 +37,7 @@ ELSEIF(CMAKE_COMPILER_IS_GNUCXX)
 	include_directories("../libs/glext")
 	include_directories("../libs/tinyxml_2_6_1")
 	include_directories("../libs/lua-5.0.3/include")
+	#include_directories("../libs/nvwa-0.9/nvwa/")
 ENDIF(MSVC)
 
 IF(MSVC)
@@ -69,6 +71,7 @@ ENDIF(MSVC)
 		../libs/tinyxml_2_6_1/tinystr.cpp
 		../libs/tinyxml_2_6_1/tinyxmlerror.cpp
 		../libs/tinyxml_2_6_1/tinyxmlparser.cpp
+		#../libs/nvwa-0.9/nvwa/debug_new.cpp
 	)
 
 	# Configuration de l'exécutable

@@ -18,6 +18,7 @@ public:
 	virtual ~StringUtils();
 
 	static char* toChars(const std::string& str);
+	static bool isBlank(const char* str);
 };
 
 } /* namespace JktUtils */

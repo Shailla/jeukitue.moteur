@@ -5,6 +5,12 @@
  *      Author: Erwin
  */
 
+#include <iostream>
+
+using namespace std;
+
+#include "ctype.h"
+
 #include "util/StringUtils.h"
 
 namespace JktUtils {
@@ -26,6 +32,22 @@ char* StringUtils::toChars(const std::string& str) {
 	chars[str.length()] = '\0';
 
 	return chars;
+}
+
+/**
+ * Attention, cette méthode n'est pas finie, pour l'instant elle vérifie uniquement si la chaîne n'est pas vide !
+ * TODO Finir l'implémentation de la présente méthode
+ * ""		: true
+ * "     "	: true
+ * "-"		: false
+ * "  - "	: false
+ */
+bool StringUtils::isBlank(const char* str) {
+	if(strlen(str) == 0) {
+		return true;
+	}
+
+	return false;
 }
 
 } /* namespace JktUtils */

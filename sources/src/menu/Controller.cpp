@@ -13,6 +13,7 @@ using namespace std;
 #include <agar/gui.h>
 #include <agar/dev.h>
 
+#include "menu/ConsoleView.h"
 #include "menu/CentralisateurView.h"
 #include "menu/ConfigCentralisateurView.h"
 #include "menu/OpenSceneMapView.h"
@@ -376,6 +377,13 @@ void Controller::executeAction(AG_Event *event) {
     case QuitAction:
 		quit_game(0);
 		break;
+
+    case ConsoleUserExecuteAction:
+    {
+    	ConsoleView* view = (ConsoleView*)m_agarView->getView(Viewer::CONSOLE_VIEW);
+    	view->executeCommande();
+    	break;
+    }
 
     default:
 		TRACE().p( TRACE_ERROR, "Unknown action : %d!", action );

@@ -14,9 +14,8 @@ using namespace std;
 
 class ConsoleView : public View
 {
-	AG_Textbox* _consoleTextbox;
-	AG_Textbox* _textboxToExecute;
-	std::string _consoleText;
+	AG_Console* _console;
+	AG_Textbox* _commande;
 	char _commandToExecute[200];
 	AG_Label* _mapOuverteLabel;
 
@@ -24,9 +23,8 @@ public:
 	ConsoleView(const AG_EventFn controllerCallback);
 	~ConsoleView(void);
 
-	const char* getCommandToExecute() const;
-	void println(const char* event);
-
+	void println(const char* texte);
+	void executeCommande(void);
 	void setMapOuverte(const std::string& mapName);
 };
 

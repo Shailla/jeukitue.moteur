@@ -5,6 +5,7 @@
 #include <agar/core.h>
 #include <agar/gui.h>
 
+#include "util/StringUtils.h"
 #include "menu/View.h"
 #include "menu/Controller.h"
 
@@ -23,23 +24,12 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	 ******************************/
 
 	AG_NotebookTab* tabMain = AG_NotebookAddTab(book, "Principal", AG_BOX_VERT);
-	AG_Pane* vPane = AG_PaneNewVert(tabMain, AG_PANE_DIV1FILL);
-	AG_PaneMoveDividerPct(vPane, 50);
+	_console = AG_ConsoleNew(tabMain, AG_CONSOLE_EXPAND);
 
-	// Panel des messages reçus
-	_consoleTextbox = AG_TextboxNew(vPane->div[0], AG_TEXTBOX_MULTILINE|AG_TEXTBOX_EXPAND, NULL);
-	
-	
-	AG_WidgetDisable(_consoleTextbox);
-	
-	// Ligne de saisie de commande utilisateur
-	_textboxToExecute = AG_TextboxNew(vPane->div[1], AG_TEXTBOX_HFILL, NULL);
+	AG_Box* box = AG_BoxNewHoriz(m_window, AG_BOX_HFILL);
+	_commande = AG_TextboxNew(box, AG_TEXTBOX_STATIC|AG_TEXTBOX_HFILL, "Commande : ");
+	AG_ButtonNewFn(box, 0, "Ok", controllerCallback, "%i", Controller::ConsoleUserExecuteAction);
 
-	memset(_commandToExecute, '\0', sizeof(_commandToExecute));
-	memcpy(_commandToExecute, "Execution", sizeof("Execution"));
-	AG_TextboxBindUTF8(_textboxToExecute, _commandToExecute, sizeof(_commandToExecute));
-
-	//AG_Button* buttonSend = AG_ButtonNewFn(paneHoriz->div[1], 0, "Executer", controllerCallback, "%i", Controller::ConsoleUserExecuteAction);
 
 	/******************************
 		Onglet des scores
@@ -70,13 +60,17 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 ConsoleView::~ConsoleView(void) {
 }
 
-const char* ConsoleView::getCommandToExecute(void) const {
-	return _commandToExecute;
+void ConsoleView::executeCommande() {
+	char* commande = AG_TextboxDupString(_commande);
+	if(!JktUtils::StringUtils::isBlank(commande)) {
+		println(commande);
+		AG_TextboxSetString(_commande, "");
+	}
+	free(commande);
 }
 
-void ConsoleView::println(const char* event) {
-	_consoleText.append("\n").append(event);
-	AG_LabelText(_mapOuverteLabel, _consoleText.c_str());
+void ConsoleView::println(const char* texte) {
+	AG_ConsoleMsgS(_console, texte);
 }
 
 void ConsoleView::setMapOuverte(const std::string& mapName) {

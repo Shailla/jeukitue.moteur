@@ -82,8 +82,7 @@ CSimpleMaterialGeo::CSimpleMaterialGeo(CMap* map)
 	m_Rayon = 0.0f;
 }
 
-void CSimpleMaterialGeo::setVertex(int num, float *tab)
-{
+void CSimpleMaterialGeo::setVertex(int num, float *tab) {
 	if( m_TabVertex )	// Destruction de l'ancien tableau de sommets s'il existe
 		delete[] m_TabVertex;
 
@@ -91,15 +90,13 @@ void CSimpleMaterialGeo::setVertex(int num, float *tab)
 	m_TabVertex = tab;
 }
 
-void CSimpleMaterialGeo::Init()
-{
+void CSimpleMaterialGeo::Init() {
 	MinMax();			// Mesure les minimums et maximums de l'objet géo
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
 	ConstruitBase();	// Construit la table des vecteurs normaux
 }
 
-void CSimpleMaterialGeo::setNormalVertex(float *tab)
-{
+void CSimpleMaterialGeo::setNormalVertex(float *tab) {
 	if(m_TabVectNormaux) {
 		delete[] m_TabVectNormaux;
 	}
@@ -107,8 +104,7 @@ void CSimpleMaterialGeo::setNormalVertex(float *tab)
 	m_TabVectNormaux = tab;
 }
 
-void CSimpleMaterialGeo::initGL()
-{
+void CSimpleMaterialGeo::initGL() {
 	glGenBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_VERTEX]);
@@ -118,26 +114,25 @@ void CSimpleMaterialGeo::initGL()
 	glBufferData(GL_ARRAY_BUFFER, m_NumVertex*3*sizeof(float), m_TabVectNormaux, GL_STATIC_DRAW);
 }
 
-void CSimpleMaterialGeo::freeGL()
-{
+void CSimpleMaterialGeo::freeGL() {
 	glDeleteBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 }
 
-void CSimpleMaterialGeo::Affiche()
-{
+void CSimpleMaterialGeo::Affiche() {
 	glDisable(GL_TEXTURE_2D);
 
 	vector<CLight*> &tabLight = getMap()->m_TabLight;
 	vector<CLight*>::iterator iterLight;
 
-	glLineWidth( 1 );
+	glLineWidth(1);
 
-	if(tabLight.size())
-	{
+	if(tabLight.size()) {
 		glEnable( GL_LIGHTING );
 
-		for( iterLight=tabLight.begin() ; iterLight!=tabLight.end() ; iterLight++ )
-			(*iterLight)->Active();
+		for(iterLight=tabLight.begin() ; iterLight!=tabLight.end() ; iterLight++) {
+			CLight* light = (*iterLight);
+			light->Active();
+		}
 
 		m_Material->Active();
 
@@ -145,8 +140,7 @@ void CSimpleMaterialGeo::Affiche()
 		glNormalPointer(GL_FLOAT, 0, 0);
 		glEnableClientState(GL_NORMAL_ARRAY);
 	}
-	else
-	{
+	else {
 		glDisable(GL_LIGHTING);
 		glColor3fv(m_Material->m_Diffuse);
 	}
@@ -160,8 +154,7 @@ void CSimpleMaterialGeo::Affiche()
 
 	m_Material->Desactive();
 
-	if(tabLight.size())
-	{
+	if(tabLight.size()) {
 		glDisableClientState(GL_NORMAL_ARRAY);
 		glDisable( GL_LIGHTING );
 
@@ -169,15 +162,13 @@ void CSimpleMaterialGeo::Affiche()
 			(*iterLight)->Desactive();
 	}
 
-		//AFFICHAGE DES VECTEURS NORMAUX
-	if( Config.Debug.bAfficheNormaux )
-	{
+	//AFFICHAGE DES VECTEURS NORMAUX
+	if(Config.Debug.bAfficheNormaux) {
 		AfficheNormals();
 	}
 }
 
-const char* CSimpleMaterialGeo::toString()
-{
+const char* CSimpleMaterialGeo::toString() {
 	ostringstream ttt;
 	ttt << identifier << " Nom=" << getName() << " Mat=";
 
@@ -189,8 +180,7 @@ const char* CSimpleMaterialGeo::toString()
 	return tostring.c_str();
 }
 
-void CSimpleMaterialGeo::AfficheSelection(float r,float v,float b)
-{
+void CSimpleMaterialGeo::AfficheSelection(float r,float v,float b) {
 	cout << "Start" << getName();
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
@@ -213,13 +203,12 @@ void CSimpleMaterialGeo::AfficheSelection(float r,float v,float b)
 void CSimpleMaterialGeo::AfficheNormals() {
 	float pos[3], bout[ 3 ];
 	const float facteur = 0.05f;
-	if( m_TabVectNormaux )
-	{
+
+	if(m_TabVectNormaux) {
 		glBegin( GL_LINES );
 
-
-		for( int i=0; i < m_NumVertex ; i++ ) //dessine toutes les faces de la map
-		{
+		// Dessine toutes les faces de la map
+		for( int i=0; i < m_NumVertex ; i++ ) {
 			glColor3f( 1.0f, 0.0f, 0.0f );
 			pos[ 0 ] = m_TabVertex[ i*3 + 0 ];
 			pos[ 1 ] = m_TabVertex[ i*3 + 1 ];
@@ -240,17 +229,16 @@ void CSimpleMaterialGeo::AfficheNormals() {
 			glVertex3fv( pos );
 			glVertex3fv( bout );
 		}
+
 		glEnd();
 	}
 }
 
-void CSimpleMaterialGeo::setOffsetMateriau(int offset)
-{
+void CSimpleMaterialGeo::setOffsetMateriau(int offset) {
 	m_OffsetMateriaux = offset;
 }
 
-int CSimpleMaterialGeo::getOffsetMateriau() throw(CErreur)
-{
+int CSimpleMaterialGeo::getOffsetMateriau() throw(CErreur) {
 	if(m_OffsetMateriaux < 0) {
 		throw CErreur(0,"Tentative d'accès à m_OffsetMateriau sans initialisation");
 	}
@@ -258,13 +246,11 @@ int CSimpleMaterialGeo::getOffsetMateriau() throw(CErreur)
 	return m_OffsetMateriaux;
 }
 
-void CSimpleMaterialGeo::setMaterial(int ref)
-{
+void CSimpleMaterialGeo::setMaterial(int ref) {
 	int nbrMat = ref + getOffsetMateriau();	// Décalage de la référence matériau de l'offset demandé
 
 		// Vérification du type de matériau
-	if( nbrMat >= (int)getMap()->m_TabMaterial.size() )
-	{
+	if(nbrMat >= (int)getMap()->m_TabMaterial.size()) {
 		stringstream txt;
 		txt << "Erreur (CSimpleMaterialGeo::setMaterial) : Materiau introuvable 1, réf=";
 		txt << nbrMat;
@@ -273,8 +259,7 @@ void CSimpleMaterialGeo::setMaterial(int ref)
 
 	CMaterial *mat = getMap()->m_TabMaterial[ nbrMat ];
 
-	if( mat == 0 )
-	{
+	if(mat == 0) {
 		stringstream txt;
 		txt << "Erreur (CSimpleMaterialGeo::setMaterial) : Materiau introuvable 2, réf=";
 		txt << nbrMat;
@@ -284,32 +269,33 @@ void CSimpleMaterialGeo::setMaterial(int ref)
 	m_Material = mat;
 }
 
-void CSimpleMaterialGeo::MinMax()
-{
+void CSimpleMaterialGeo::MinMax() {
 	minX = maxX = m_TabVertex[ 0 ];
 	minY = maxY = m_TabVertex[ 1 ];
 	minZ = maxZ = m_TabVertex[ 2 ];
 
-	for( int i=1 ; i<m_NumVertex ; i++ )
-	{
+	for( int i=1 ; i<m_NumVertex ; i++ ) {
 		if( m_TabVertex[3*i] < minX )		//récupération des coordonnées du pavé englobant
 			minX = m_TabVertex[3*i];		//l'objet géo
+
 		if( m_TabVertex[(3*i)+1] < minY )
 			minY = m_TabVertex[(3*i)+1];
+
 		if( m_TabVertex[(3*i)+2] < minZ )
 			minZ = m_TabVertex[(3*i)+2];
 
 		if( m_TabVertex[3*i] > maxX )
 			maxX = m_TabVertex[3*i];
+
 		if( m_TabVertex[(3*i)+1] > maxY )
 			maxY = m_TabVertex[(3*i)+1];
+
 		if( m_TabVertex[(3*i)+2] > maxZ )
 			maxZ = m_TabVertex[(3*i)+2];
 	}
 }
 
-void CSimpleMaterialGeo::Bulle()
-{
+void CSimpleMaterialGeo::Bulle() {
 	float r0, r1, r2;
 		// Calcul du centre de la sphère à partir des valeurs min/max
 	m_Centre[0] = (minX+maxX)/2.0f;
@@ -324,8 +310,7 @@ void CSimpleMaterialGeo::Bulle()
 	m_Rayon = sqrtf( (r0*r0) + (r1*r1) + (r2*r2) );
 }
 
-void CSimpleMaterialGeo::ConstruitBase()
-{
+void CSimpleMaterialGeo::ConstruitBase() {
 	float X[3], Y[3];
 
 	if( m_pNormalTriangle )
@@ -352,8 +337,7 @@ void CSimpleMaterialGeo::ConstruitBase()
 }
 
 		//DESTRUCTEUR
-CSimpleMaterialGeo::~CSimpleMaterialGeo()
-{
+CSimpleMaterialGeo::~CSimpleMaterialGeo() {
 	if(m_TabVertex) {
 		delete[] m_TabVertex;
 		m_TabVertex = 0;
@@ -370,8 +354,7 @@ void CSimpleMaterialGeo::EchangeXY()	// Echange les axes X et Y de l'objet
 	float varX, varY;
 	float vnX, vnY;
 
-	for(int i=0 ; i<m_NumVertex ; i++)
-	{
+	for(int i=0 ; i<m_NumVertex ; i++) {
 		// Sommets
 		varX = m_TabVertex[ 3*i + 0 ];
 		varY = m_TabVertex[ 3*i + 1 ];

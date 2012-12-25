@@ -11,10 +11,14 @@ using namespace JktUtils;
 
 // Map
 const char* Xml::MAP = "Map";
+const char* Xml::IMPORTS = "Imports";
 const char* Xml::ENTRYPOINTS = "EntryPoints";
 const char* Xml::MATERIAUX = "Materiaux";
 const char* Xml::LUMIERES = "Lumieres";
 const char* Xml::GEOS = "Geos";
+
+// Imports
+const char* Xml::IMPORT = "Import";
 
 // Points d'entrée joeurs
 const char* Xml::ENTRYPOINT = "EntryPoint";

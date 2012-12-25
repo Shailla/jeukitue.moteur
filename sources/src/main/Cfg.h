@@ -45,9 +45,7 @@ class CCfg {
 		CComID Tir1;		// Tir primaire
 		CComID Tir2;		// Tir secondaire
 		CComID Monter;		// Monter
-		const char* resolve(CComID com);			// Retourne la touche ou le bouton en texte
-		const char* resolve(Uint8 mouse);			// Retourne le bouton souris en texte
-		const char* resolve(const SDLKey sym);		// Retourne la touche en texte
+		const char* resolve(CComID com);					// Retourne la touche ou le bouton en texte
 	};
 
 	class CDisplay {
@@ -128,7 +126,21 @@ public:
 
 	void Lit();			// Lit le fichier de configuration
 	void Ecrit();		// Sauvegarde la configuration
+
+	/**
+	 * Retourne sous forme de texte descriptif le bouton souris en texte.
+	 */
+	static const char* resolve(Uint8 mouse);
+
+	/**
+	 * Retourne sous forme de texte descriptif la touche identifiée dans SDL.
+	 */
+	static const char* resolve(const SDLKey sym);
+
+	/**
+	 * Retourne sous forme de texte descriptif l'événement SDL.
+	 */
+	static void resolve(const SDL_Event* sdlEvent, string& description);
 };
 
 #endif
-

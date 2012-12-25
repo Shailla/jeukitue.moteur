@@ -31,6 +31,7 @@ class CMap {
 
 	bool Init() throw(JktUtils::CErreur);	// Initialisation de la CMap
 	bool Lit(const string &nomFichier);
+	static bool Lit(CMap& map, const string &nomFichier);
 
 	int m_Selection;						// Object géo sélectionné
 	bool m_bSelection;						// Indique si le mode sélection est actif ou non
@@ -58,12 +59,12 @@ public:
 	void Affiche();						// Affiche l'ensemble des éléments 3D de cette Map
 	void Refresh( CGame *game );		// Rafraichissement des classes listées dans m_TabMouve
 
-	void Add(CGeo *geo);			// Ajoute un GeoObject à la map
-	void Add(CMaterial *mat);		// Ajoute un matériau à la map
-	void Add(CLight *light);		// Ajoute une lumière à la map
+	void add(CGeo *geo);			// Ajoute un GeoObject à la map
+	void add(CMaterial *mat);		// Ajoute un matériau à la map
+	void add(CLight *light);		// Ajoute une lumière à la map
 
-	void Add(CPorte *porte);		// Ajoute une porte à la map
-	void Add(CNavette *navette);	// Ajoute une navette à la map
+	void add(CPorte *porte);		// Ajoute une porte à la map
+	void add(CNavette *navette);	// Ajoute une navette à la map
 
 	bool Contact(const float pos[3], const float dist);	// Indique s'il y a un triangle à une distance inférieure à 'dist' de la position 'pos'
 
@@ -71,6 +72,8 @@ public:
 	void EchangeXZ();							// Echange les coordonnées X et Z des objets géo du map
 	void EchangeYZ();							// Echange les coordonnées Y et Z des objets géo du map
 	void Scale(float scaleX, float sclaeY, float scaleZ);	// Homothétie sur les objets géo (ils sont multipliés par scale)
+	/** Intègre tous les éléments d'une autre Map dans celle-ci. */
+	void merge(CMap& map);
 		// A VOIR Fonctions qui n'ont rien à faire ici
 	void GereContactPlayer(CPlayer *player);								// Gère tous les contacts entre la map et les joueurs
 	float GereLaserPlayer(float *pos, JktUtils::CV3D &Dir, float dist );	// Envoie d'un laser sur la map

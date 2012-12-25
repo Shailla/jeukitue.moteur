@@ -198,7 +198,6 @@ void setTemps(const string& note) {
 }
 
 CMoteurParticules* moteurParticulesNeige;
-float tempsMoteur;	// Pour le moteur de particules
 unsigned int frpsTimer = 0, frpTimer = 0;
 
 CMachin *machin;	// Pour tester le son 3D
@@ -926,30 +925,39 @@ void timer(Uint32 ecart)	//focntion qui s'exécute périodiquement et qui provoque
 	tempsTimer = SDL_GetTicks() - temps; // Temps pris par la fonction 'timer' => affichage
 }
 
-void menu_agar_handle_key_down(SDL_Event *event) {
-    switch(event->type) {
-        case SDL_KEYDOWN:
-		    switch(event->key.keysym.sym) {
-    	        case SDLK_ESCAPE:
-                    {
-                        Viewer* agarView = Fabrique::getAgarView();
-                        pFocus->SetPlayFocus();
-			            agarView->hideAllViews();
-                    }
-                    break;
-                default:
-                	AG_DriverEvent ag_event;
-                	AG_SDL_TranslateEvent(agDriverSw, event, &ag_event);
-                	AG_ProcessEvent(NULL, &ag_event);
-                    break;
-            }
-            break;
-        default:
-        	AG_DriverEvent ag_event;
-        	AG_SDL_TranslateEvent(agDriverSw, event, &ag_event);
-            AG_ProcessEvent(NULL, &ag_event);
-            break;
-    }
+void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
+	cout << " -> AGAR";
+
+	if(sdlEvent->type == SDL_KEYDOWN && sdlEvent->key.keysym.sym == SDLK_ESCAPE) {
+		Viewer* agarView = Fabrique::getAgarView();
+		pFocus->SetPlayFocus();
+		agarView->hideAllViews();
+	}
+	else {
+		switch (sdlEvent->type) {
+			case SDL_MOUSEMOTION:
+			case SDL_MOUSEBUTTONUP:
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_KEYDOWN:
+			case SDL_KEYUP:
+			case SDL_VIDEORESIZE:
+			case SDL_VIDEOEXPOSE:
+			case SDL_QUIT:
+			{
+				string evDesc;
+				CCfg::resolve(sdlEvent, evDesc);
+				cout << " -> {" << evDesc << "}";
+
+				AG_DriverEvent ag_event;
+				AG_SDL_TranslateEvent(agDriverSw, sdlEvent, &ag_event);
+				AG_ProcessEvent(NULL, &ag_event);
+				break;
+			}
+			default:
+				// Event ignored by Agar
+				break;
+		}
+	}
 }
 
 void play_handle_key_down( SDL_Event *event )
@@ -989,16 +997,15 @@ void play_handle_key_down( SDL_Event *event )
 		{
 			if( event->button.button==SDL_BUTTON_LEFT )
 				Game.Erwin()->Tir();	// Tir avec l'arme active
-			else if( event->button.button==4 )
+			else if( event->button.button==SDL_BUTTON_WHEELUP )
 				Game.Erwin()->ActiveArmeUp();
-			else if( event->button.button==5 )
+			else if( event->button.button==SDL_BUTTON_WHEELDOWN )
 				Game.Erwin()->ActiveArmeDown();
 		}
 		break;
 
 	case SDL_KEYDOWN:
-		switch( event->key.keysym.sym )
-		{
+		switch(event->key.keysym.sym) {
 		case SDLK_F1 :
 			pFocus->SetMenuFocus();		// Place le focus sur le menu
 			lanceMenuAide( 0 );
@@ -1147,8 +1154,7 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 	}
 }
 
-static void process_events( void )
-{
+static void process_events(void) {
     SDL_Event event;
 
     while( SDL_PollEvent( &event ) ) {
@@ -1502,7 +1508,8 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 	// Mise en place du moteur de particules pour la neige, réfléchir où mettre ça
 	CV3D posMoteurParticulesNeige( -2.35f, 1.5f, 0.0f );
-	moteurParticulesNeige = new CMoteurParticulesNeige( posMoteurParticulesNeige, 1000, 0.05f );
+	CV3D tailleMoteurParticulesNeige(3.0f, 3.0f, 3.0f);
+	moteurParticulesNeige = new CMoteurParticulesNeige(10000, posMoteurParticulesNeige, tailleMoteurParticulesNeige);
 
 	// Délai d'attente après l'intro du jeu, je sais plus à quoi il sert
 	SDL_Delay( 1000 );

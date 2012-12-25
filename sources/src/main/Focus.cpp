@@ -1,4 +1,7 @@
 
+#include <iostream>
+
+using namespace std;
 
 #include "SDL.h"
 
@@ -21,8 +24,10 @@ TRACE().p( TRACE_MENU, "CFocus::CFocus(play=%x,menu=%x)%T", play, menu, this );
 	focus_actif_handle_key_down = menu;	// Choix du focus actif par défaut
 }
 
-void CFocus::SetPlayFocus()	// Choisi la fonction focus dédiée à une partie en cours
-{
+/**
+ * Choisi la fonction focus dédiée à une partie en cours
+ */
+void CFocus::SetPlayFocus() {
 TRACE().p( TRACE_MENU, "CFocus::SetPlayFocus()%T", this );
 	if( focus_actif_handle_key_down != play_handle_key_down )
 	{
@@ -36,8 +41,10 @@ TRACE().p( TRACE_MENU, "CFocus::SetPlayFocus()%T", this );
 	}
 }
 
-void CFocus::SetMenuFocus()	// Choisi la fonction focus dédiée au menu
-{
+/**
+ * Choisi la fonction focus dédiée au menu
+ */
+void CFocus::SetMenuFocus() {
 TRACE().p( TRACE_MENU, "CFocus::SetMenuFocus()%T", this );
 	if( focus_actif_handle_key_down != menu_handle_key_down )
 	{
@@ -51,8 +58,10 @@ TRACE().p( TRACE_MENU, "CFocus::SetMenuFocus()%T", this );
 	}
 }
 
-void CFocus::SetMenuAgarFocus()	// Choisi la fonction focus dédiée au menu
-{
+/*
+ * Choisi la fonction focus dédiée au menu
+ */
+void CFocus::SetMenuAgarFocus() {
 TRACE().p( TRACE_MENU, "CFocus::SetMenuFocus()%T", this );
 	if( focus_actif_handle_key_down != menu_handle_key_down )
 	{
@@ -66,8 +75,7 @@ TRACE().p( TRACE_MENU, "CFocus::SetMenuFocus()%T", this );
 	}
 }
 
-void CFocus::SwitchPlayOrConsoleFocus()
-{
+void CFocus::SwitchPlayOrConsoleFocus() {
 TRACE().p( TRACE_MENU, "CFocus::ChangePlayOrConsoleFocus()%T", this );
 	if( focus_actif_handle_key_down == play_handle_key_down ) {
 		SetMenuAgarFocus();	
@@ -77,9 +85,12 @@ TRACE().p( TRACE_MENU, "CFocus::ChangePlayOrConsoleFocus()%T", this );
 	}
 }
 
-void CFocus::ExecFocus( SDL_Event *event )	// Exécute la fonction de focus pour l'évênement 'event'
-{
-	focus_actif_handle_key_down( event );
+/*
+ * Exécute la fonction de focus pour l'évênement 'event'
+ */
+void CFocus::ExecFocus(SDL_Event *event) {
+	cout << endl << "EVENT";
+	focus_actif_handle_key_down(event);
 }
 
 }	// JktMenu

@@ -4,8 +4,7 @@
 namespace JktMoteur
 {
 
-class CMoteurParticules
-{
+class CMoteurParticules {
 public:
 		// Fonctions membres
 private:

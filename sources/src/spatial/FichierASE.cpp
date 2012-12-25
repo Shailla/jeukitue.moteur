@@ -1307,7 +1307,7 @@ void CFichierASE::LitGroupe(const string &nomFichier, CMap *pMap, unsigned int &
 			CGeo *pGeo = litGeomobject(pMap, nbr_GeoObject + 1);
 
 			if(pGeo) {	// Si pas d'erreur mets le dans le tableau d'objets géo
-				pMap->Add( pGeo );
+				pMap->add( pGeo );
 				nbr_GeoObject++;
 			}
 			else {
@@ -1334,7 +1334,7 @@ void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap) {
 			pGeo = litGeomobject(pMap, nbr_GeoObject + 1);
 
 			if(pGeo) {	// Si pas d'erreur mets le dans le tableau d'objets géo
-				pMap->Add( pGeo );
+				pMap->add( pGeo );
 				nbr_GeoObject++;
 			}
 			else {
@@ -1347,7 +1347,7 @@ void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap) {
 			pLight = lightList();
 
 			if(pLight) {	//Si pas d'erreur mets le dans le tableau d'objets géo
-				pMap->Add( pLight );
+				pMap->add( pLight );
 			}
 			else {			//Sinon libère sa mémoire
 				trace() << "\nErreur : Une lumiere est corrompue => ignore";
@@ -1368,7 +1368,7 @@ void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap) {
 				pMaterial = materiallist();
 
 				if(pMaterial)
-					pMap->Add(pMaterial) ;
+					pMap->add(pMaterial) ;
 				else {
 					trace() << "\nErreur (fichier::" << __LINE__ << ") : Fichier ASE corrompu";
 					throw (int)CFichierASE::JKT_ERREUR_FICHIER_MARTERIAUMANQUE;

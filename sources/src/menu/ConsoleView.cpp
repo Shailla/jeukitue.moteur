@@ -28,6 +28,9 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 
 	AG_Box* box = AG_BoxNewHoriz(m_window, AG_BOX_HFILL);
 	_commande = AG_TextboxNew(box, AG_TEXTBOX_STATIC|AG_TEXTBOX_HFILL, "Commande : ");
+	AG_WidgetFocus(_commande);
+	AG_SetEvent(_commande, "textbox-return", controllerCallback, "%i", Controller::ConsoleUserExecuteAction); // L'appui sur ENTER est interprêté
+
 	AG_ButtonNewFn(box, 0, "Ok", controllerCallback, "%i", Controller::ConsoleUserExecuteAction);
 
 
@@ -62,10 +65,12 @@ ConsoleView::~ConsoleView(void) {
 
 void ConsoleView::executeCommande() {
 	char* commande = AG_TextboxDupString(_commande);
+
 	if(!JktUtils::StringUtils::isBlank(commande)) {
 		println(commande);
 		AG_TextboxSetString(_commande, "");
 	}
+
 	free(commande);
 }
 

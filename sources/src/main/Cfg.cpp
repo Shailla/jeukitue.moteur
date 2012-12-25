@@ -266,14 +266,57 @@ void CCfg::Ecrit() {
 	fichier.close();
 }
 
-const char* CCfg::CCommandes::resolve(const CComID com) {
-	if(com.key != 0)
-		return resolve( com.key );
-	else
-		return resolve( com.mouse );
+void CCfg::resolve(const SDL_Event *event, string& description) {
+	switch(event->type) {
+	case SDL_NOEVENT: 			description.append("SDL_NOEVENT");			break;
+	case SDL_ACTIVEEVENT:		description.append("SDL_ACTIVEEVENT");		break;
+	case SDL_KEYDOWN: 			description.append("SDL_KEYDOWN");			break;
+	case SDL_KEYUP: 			description.append("SDL_KEYUP");			break;
+	case SDL_MOUSEMOTION: 		description.append("SDL_MOUSEMOTION");		break;
+	case SDL_MOUSEBUTTONDOWN: 	description.append("SDL_MOUSEBUTTONDOWN");	break;
+	case SDL_MOUSEBUTTONUP: 	description.append("SDL_MOUSEBUTTONUP");	break;
+	case SDL_JOYAXISMOTION: 	description.append("SDL_JOYAXISMOTION");	break;
+	case SDL_JOYBALLMOTION: 	description.append("SDL_JOYBALLMOTION");	break;
+	case SDL_JOYHATMOTION: 		description.append("SDL_JOYHATMOTION");		break;
+	case SDL_JOYBUTTONDOWN: 	description.append("SDL_JOYBUTTONDOWN");	break;
+	case SDL_JOYBUTTONUP: 		description.append("SDL_JOYBUTTONUP");		break;
+	case SDL_QUIT: 				description.append("SDL_QUIT");				break;
+	case SDL_SYSWMEVENT: 		description.append("SDL_SYSWMEVENT");		break;
+	case SDL_EVENT_RESERVEDA: 	description.append("SDL_EVENT_RESERVEDA");	break;
+	case SDL_EVENT_RESERVEDB: 	description.append("SDL_EVENT_RESERVEDB");	break;
+	case SDL_VIDEORESIZE: 		description.append("SDL_VIDEORESIZE");		break;
+	case SDL_VIDEOEXPOSE: 		description.append("SDL_VIDEOEXPOSE");		break;
+	case SDL_EVENT_RESERVED2: 	description.append("SDL_EVENT_RESERVED2");	break;
+	case SDL_EVENT_RESERVED3: 	description.append("SDL_EVENT_RESERVED3");	break;
+	case SDL_EVENT_RESERVED4: 	description.append("SDL_EVENT_RESERVED4");	break;
+	case SDL_EVENT_RESERVED5: 	description.append("SDL_EVENT_RESERVED5");	break;
+	case SDL_EVENT_RESERVED6: 	description.append("SDL_EVENT_RESERVED6");	break;
+	case SDL_EVENT_RESERVED7: 	description.append("SDL_EVENT_RESERVED7");	break;
+	case SDL_USEREVENT: 		description.append("SDL_USEREVENT");		break;
+	case SDL_NUMEVENTS: 		description.append("SDL_NUMEVENTS");		break;
+	default: 					description.append("Unknown event type");	break;
+	}
+
+	switch(event->type) {
+	case SDL_KEYUP:
+	case SDL_KEYDOWN:
+		description.append(" (").append(resolve(event->key.keysym.sym)).append(")");
+		break;
+	case SDL_MOUSEBUTTONDOWN:
+	case SDL_MOUSEBUTTONUP:
+		description.append(" (").append(resolve(event->button.button)).append(")");
+		break;
+	}
 }
 
-const char* CCfg::CCommandes::resolve(const Uint8 mouse) {
+const char* CCfg::CCommandes::resolve(const CComID com) {
+	if(com.key != 0)
+		return CCfg::resolve( com.key );
+	else
+		return CCfg::resolve( com.mouse );
+}
+
+const char* CCfg::resolve(const Uint8 mouse) {
 	switch(mouse)
 	{
 	case 1:		return "Souris_gauche";
@@ -285,7 +328,7 @@ const char* CCfg::CCommandes::resolve(const Uint8 mouse) {
 	}
 }
 
-const char* CCfg::CCommandes::resolve(const SDLKey sym) {
+const char* CCfg::resolve(const SDLKey sym) {
 	const char* result;
 
 	switch(sym) {
@@ -748,7 +791,7 @@ TRACE().p( TRACE_OTHER, "setup Agar" );
     cout << endl << "Version Agar : " << agarVersion.major << "." << agarVersion.minor << "." << agarVersion.patch << " [" << agarVersion.release << "]";
 
 	// Initialisation Agar (librairie de gestion du menu)
-	if(AG_InitCore("agar", 0) == -1 || AG_InitVideoSDL(screen, flags) == -1) {
+	if(AG_InitCore("JKT", 0) == -1 || AG_InitVideoSDL(screen, flags) == -1) {
 		cerr << "\nERREUR d'initialisation Agar : '" << AG_GetError() << "'";
 	}
 

@@ -140,15 +140,15 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 	glDisable( GL_VERTEX_ARRAY );
 }
 
-void CMap::Add(CGeo* geo) {
+void CMap::add(CGeo* geo) {
 	m_TabGeo.push_back(geo);	// Ajoute geo à la liste des objets affichables
 }
 
-void CMap::Add(CMaterial *mat) {
+void CMap::add(CMaterial *mat) {
 	m_TabMaterial.push_back(mat);	// Ajoute mat à la liste des objets affichables
 }
 
-void CMap::Add(CLight *light) {
+void CMap::add(CLight *light) {
 	m_TabLight.push_back(light);	// Ajoute light à la liste des objets affichables
 }
 
@@ -185,6 +185,29 @@ const char* CMap::getSelectedName() {
 	return geo->toString();
 }
 
+void CMap::merge(CMap& map) {
+	vector<EntryPoint>::iterator iterEntryPoint;
+	vector<CGeo*>::iterator iterGeo;
+	vector<CMouve*>::iterator iterMouve;
+	vector<CLight*>::iterator iterLight;
+	vector<CMaterial*>::iterator iterMaterial;
+
+	for(iterEntryPoint=map._entryPoints.begin() ; iterEntryPoint!=map._entryPoints.end() ; iterEntryPoint++)
+		_entryPoints.push_back(*iterEntryPoint);
+
+	for(iterGeo=map.m_TabGeo.begin() ; iterGeo!=map.m_TabGeo.end() ; iterGeo++)
+		m_TabGeo.push_back(*iterGeo);
+
+	for(iterMouve=map.m_TabMouve.begin() ; iterMouve!=map.m_TabMouve.end() ; iterMouve++)
+		m_TabMouve.push_back(*iterMouve);
+
+	for(iterLight=map.m_TabLight.begin() ; iterLight!=map.m_TabLight.end() ; iterLight++)
+		m_TabLight.push_back(*iterLight);
+
+	for(iterMaterial=map.m_TabMaterial.begin() ; iterMaterial!=map.m_TabMaterial.end() ; iterMaterial++)
+		m_TabMaterial.push_back(*iterMaterial);
+}
+
 void CMap::add(EntryPoint entryPoint) {
 	_entryPoints.push_back(entryPoint);
 }
@@ -193,13 +216,13 @@ vector<EntryPoint>& CMap::getEntryPointsList() {
 	return _entryPoints;
 }
 
-void CMap::Add( CPorte *porte ) {
+void CMap::add( CPorte *porte ) {
 	// Une porte est avant tout un objet géo
 	m_TabGeo.push_back( porte );		// Ajoute porte à la liste des objets affichables
 	m_TabMouve.push_back( porte );		// Ajoute porte à la liste des objets à rafraichir
 }
 
-void CMap::Add( CNavette *navette ) {		// Une navette est avant tout un objet géo
+void CMap::add( CNavette *navette ) {		// Une navette est avant tout un objet géo
 	m_TabGeo.push_back( navette );		// Ajoute porte à la liste des objets affichables
 	m_TabMouve.push_back( navette );	// Ajoute porte à la liste des objets à rafraichir
 }
@@ -210,7 +233,7 @@ void CMap::GereContactPlayer( CPlayer *player ) {
 
 	vector<CGeo*>::iterator iterGeo;
 
-	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
+	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++)
 		(*iterGeo)->GereContactPlayer(pos, player);	// Gère les contacts entre l'objet géo et le joueur
 }
 
@@ -301,6 +324,10 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scale
 }
 
 bool CMap::Lit(const string &nomFichier) {
+	return Lit(*this, nomFichier);
+}
+
+bool CMap::Lit(CMap& map, const string &nomFichier) {
 	string nomFichierComplet = string(nomFichier);
 	bool isResource = JktUtils::RessourcesLoader::getFileRessource(nomFichierComplet);
 
@@ -321,6 +348,37 @@ bool CMap::Lit(const string &nomFichier) {
 		if(!elMap)
 			throw CErreur(0,"Fichier map corrompu");
 
+		// Lecture des imports de sous-Map
+		{
+			TiXmlElement* elImport = elMap->FirstChildElement(Xml::IMPORTS);
+
+			if(elImport) {
+				for(TiXmlElement* el=elImport->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
+					if(strcmp(Xml::IMPORT, el->Value())) {
+						string erreur = "Fichier MAP corrompu : '";
+						erreur += Xml::IMPORT;
+						erreur += "' attendu, '";
+						erreur += el->Value();
+						erreur += "' recu";
+						throw CErreur(0, erreur);
+					}
+
+					const char* subMapName = el->Attribute(Xml::NOM);
+
+					if(!subMapName)
+						throw CErreur(0, "Fichier Map corrompu : Nom de la sous-Map a importer manquant");
+
+					CMap subMap;
+					Lit(subMap, string(subMapName));
+					map.merge(subMap);
+					subMap.m_TabGeo.clear();
+					subMap.m_TabMouve.clear();
+					subMap.m_TabLight.clear();
+					subMap.m_TabMaterial.clear();
+				}
+			}
+		}
+
 		// Lecture des point d'entrée des joueurs
 		{
 			TiXmlElement* elEntry = elMap->FirstChildElement(Xml::ENTRYPOINTS);
@@ -329,7 +387,7 @@ bool CMap::Lit(const string &nomFichier) {
 				for(TiXmlElement* el=elEntry->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 					if(strcmp(Xml::ENTRYPOINT, el->Value())) {
 						string erreur = "Fichier MAP corrompu : '";
-						erreur += Xml::MATERIAU;
+						erreur += Xml::ENTRYPOINT;
 						erreur += "' attendu, '";
 						erreur += el->Value();
 						erreur += "' recu";
@@ -339,7 +397,7 @@ bool CMap::Lit(const string &nomFichier) {
 					EntryPoint* entry = EntryPointMaker::Lit(el);
 
 					if(entry)
-						add(*entry);
+						map.add(*entry);
 				}
 			}
 		}
@@ -361,7 +419,7 @@ bool CMap::Lit(const string &nomFichier) {
 				CMaterial* mat = CMaterialMaker::Lit(el, repertoireBinaires);
 
 				if(mat)
-					Add(mat);
+					map.add(mat);
 			}
 		}
 
@@ -384,7 +442,7 @@ bool CMap::Lit(const string &nomFichier) {
 				CLight* lum = CLightMaker::Lit(el);
 
 				if(lum)
-					Add(lum);
+					map.add(lum);
 			}
 		}
 
@@ -402,10 +460,10 @@ bool CMap::Lit(const string &nomFichier) {
 					throw CErreur(0, erreur);
 				}
 
-				CGeo* geo = CGeoMaker::Lit(el, this);
+				CGeo* geo = CGeoMaker::Lit(el, &map);
 
 				if(geo)
-					Add(geo);
+					map.add(geo);
 			}
 		}
 

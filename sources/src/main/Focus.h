@@ -9,7 +9,7 @@ class CFocus
 {
 	void (*play_handle_key_down)( SDL_Event *event );			// Handle en cours de jeu
 	void (*menu_handle_key_down)( SDL_Event *event );			// Handle pour le menu
-	void (*menu_agar_handle_key_down)( SDL_Event *event );		// Handle pour le menu Agar
+	void (*menu_agar_handle_key_down)(SDL_Event *event);		// Handle pour le menu Agar
 
 	void (*focus_actif_handle_key_down)( SDL_Event *event );	// Handle pour le focus actif
 

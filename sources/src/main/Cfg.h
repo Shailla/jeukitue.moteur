@@ -102,7 +102,6 @@ class CCfg {
 		bool bSonPerformances;		// Indique si l'usage CPU du son doit être affiché
 		bool bSonSpectre;			// Affiche le spectre sonore
 		bool bAfficheFichier;		// Indique si l'ouverture des fichiers ASE doit se faire en mode debug (=>affichage dans la console durant la lecture)
-		bool bReseauDebit;
 		bool bAfficheNormaux;
 		bool cubicMeterVisibility;	// Indique si le cube d'un mètre de côté servant à calibrer les dimensions de la scène est visible ou non
 		bool axesMeterVisibility;	// Indique si les axes d'un mètre de côté servant à calibrer les dimensions de la scène sont visibles ou non

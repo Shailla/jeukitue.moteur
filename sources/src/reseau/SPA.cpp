@@ -372,45 +372,33 @@ void CSPA::addRecapFromServer( const CPlayer &player )
 	add3fv( vect );
 }
 
-void CSPA::getDebitRec( float &debit, float &taille )
-{
-	Uint32 time = SDL_GetTicks();
-	if( time - m_TimeBytesRec > 1000 )
-	{
-		m_fDebitRec = (float)m_BytesRec / ( time - m_TimeBytesRec );
+void CSPA::computeDebits(Uint32 currentTime) {
+	// Calcule du débit en réception
+	if( currentTime - m_TimeBytesRec > 1000 ) {
+		m_fDebitRec = (float)m_BytesRec / ( currentTime - m_TimeBytesRec );
 
-		if( m_NombreRec )
+		if(m_NombreRec)
 			m_fTailleRec = (float)m_BytesRec / m_NombreRec;
 		else
 			m_fTailleRec = 0;
-		m_TimeBytesRec = time;
+		m_TimeBytesRec = currentTime;
 		m_BytesRec = 0;
 		m_NombreRec = 0;
 	}
 
-	debit = m_fDebitRec;
-	taille = m_fTailleRec;
-}
+	// Calcule du débit en émission
+	if(currentTime - m_TimeBytesEm > 1000) {
+		m_fDebitEm = (float)m_BytesEm / ( currentTime - m_TimeBytesEm );
 
-void CSPA::getDebitEm( float &debit, float &taille )
-{
-	Uint32 time = SDL_GetTicks();
-	if( time - m_TimeBytesEm > 1000 )
-	{
-		m_fDebitEm = (float)m_BytesEm / ( time - m_TimeBytesEm );
-
-		if( m_NombreEm )
+		if(m_NombreEm)
 			m_fTailleEm = (float)m_BytesEm / m_NombreEm;
 		else
 			m_fTailleEm = 0;
 
-		m_TimeBytesEm = time;
+		m_TimeBytesEm = currentTime;
 		m_BytesEm = 0;
 		m_NombreEm = 0;
 	}
-
-	debit =  m_fDebitEm;
-	taille = m_fTailleEm;
 }
 
 }	// JktNet

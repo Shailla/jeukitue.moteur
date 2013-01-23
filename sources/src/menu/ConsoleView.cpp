@@ -8,8 +8,12 @@
 #include "util/StringUtils.h"
 #include "menu/View.h"
 #include "menu/Controller.h"
+#include "reseau/SPA.h"
 
 #include "menu/ConsoleView.h"
+
+extern float delta;
+extern Uint32 ecart,ecartTimer,ecartDisplay;
 
 ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
@@ -20,7 +24,7 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	AG_Expand(book);
 
 	/******************************
-	 *	Onglet principal
+	 *	ONGLET PRINCIPAL
 	 ******************************/
 
 	AG_NotebookTab* tabMain = AG_NotebookAddTab(book, "Principal", AG_BOX_VERT);
@@ -29,13 +33,14 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	AG_Box* box = AG_BoxNewHoriz(m_window, AG_BOX_HFILL);
 	_commande = AG_TextboxNew(box, AG_TEXTBOX_STATIC|AG_TEXTBOX_HFILL, "Commande : ");
 	AG_WidgetFocus(_commande);
+	AG_WidgetEnable(_commande);
 	AG_SetEvent(_commande, "textbox-return", controllerCallback, "%i", Controller::ConsoleUserExecuteAction); // L'appui sur ENTER est interprêté
 
 	AG_ButtonNewFn(box, 0, "Ok", controllerCallback, "%i", Controller::ConsoleUserExecuteAction);
 
 
 	/******************************
-		Onglet des scores
+		ONGLET DES SCORES
 	******************************/
 	AG_NotebookTab* tabScores = AG_NotebookAddTab(book, "Scores", AG_BOX_VERT);
 	AG_LabelNew(tabScores, 0, "Scores 1");
@@ -44,17 +49,46 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 
 
 	/******************************
-		Onglet des info
+		ONGLET DES INFO
 	******************************/
 	AG_NotebookTab* tabInfo = AG_NotebookAddTab(book, "Info", AG_BOX_VERT);
-	AG_Scrollview* scrollInfo = AG_ScrollviewNew(tabInfo, AG_SCROLLVIEW_EXPAND | AG_SCROLLVIEW_NOPAN_X);
+	AG_Notebook* subbookInfo = AG_NotebookNew(tabInfo, 0);
+
+	/******************************
+		Sous-onglet Info / Partie
+	******************************/
+	AG_NotebookTab* subtabPartie = AG_NotebookAddTab(subbookInfo, "Partie", AG_BOX_VERT);
+	AG_Scrollview* scrollInfo = AG_ScrollviewNew(subtabPartie, AG_SCROLLVIEW_EXPAND | AG_SCROLLVIEW_NOPAN_X);
+
+	// Nom de la MAP ouverte dans la partie en cours
 	_mapOuverteLabel = AG_LabelNew(scrollInfo, 0, "Map ouverte : ");
 
+	// Distance parcourue par le tir laser
+	AG_LabelNew(scrollInfo, 0, "Distance laser : %f", &delta);
+	AG_LabelNew(scrollInfo, 0, "Ecarts : total=%i ms, timer=%i ms, display=%i ms", &ecart, &ecartTimer, &ecartDisplay);
+
+
+	/******************************
+		Sous-onglet Info / Son
+	******************************/
+	/*AG_NotebookTab* subtabSon = */AG_NotebookAddTab(subbookInfo, "Son", AG_BOX_VERT);
+
+	/******************************
+		Sous-onglet Info / Réseau
+	******************************/
+	AG_NotebookTab* subtabReseau = AG_NotebookAddTab(subbookInfo, "Réseau", AG_BOX_VERT);
+	AG_Scrollview* scrollReseau = AG_ScrollviewNew(subtabReseau, AG_SCROLLVIEW_EXPAND | AG_SCROLLVIEW_NOPAN_X);
+
+	// Débit réseau en émission
+	AG_LabelNew(scrollReseau, 0, "Debit en emission : %f ko/s (%f octets)", &JktNet::CSPA::m_fDebitEm, &JktNet::CSPA::m_fTailleEm);
+
+	// Débit réseau en réception
+	AG_LabelNew(scrollReseau, 0, "Debit en reception : %f ko/s (%f octets)", &JktNet::CSPA::m_fDebitRec, &JktNet::CSPA::m_fTailleRec);
 
 	// Disposition de la fenêtre	
 	AG_WidgetUpdate(book);
 	AG_NotebookSelectTab (book, tabMain);
-	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_BL, 40, 60);
+	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_BL, 40, 30);
 	AG_WindowShow(m_window);
 
     hide();

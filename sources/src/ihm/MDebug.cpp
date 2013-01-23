@@ -29,7 +29,6 @@ namespace JktMenu
 void actu_menu_config_debug_SonPerformances( void *arg );
 void actu_menu_config_debug_SonSpectre( void *arg );
 void actu_menu_config_debug_AfficheFichier( void *arg );
-void actu_menu_config_debug_ReseauDebit( void *arg );
 void actu_menu_config_debug_AfficheNormaux( void *arg );
 
 	/************************************/
@@ -43,7 +42,6 @@ PF liste_suivant_config_debug[] =
 	actu_menu_config_debug_SonPerformances,
 	actu_menu_config_debug_SonSpectre,
 	actu_menu_config_debug_AfficheFichier,
-	actu_menu_config_debug_ReseauDebit,
 	actu_menu_config_debug_AfficheNormaux,
 };
 
@@ -83,15 +81,10 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigDebug(var=%x)", arg );
 	else
 		MenuConfigDebug.add_ItemsDroits( 2, "Non" );
 
-	if( Config.Debug.bReseauDebit )
+	if( Config.Debug.bAfficheNormaux )
 		MenuConfigDebug.add_ItemsDroits( 3, "Oui" );
 	else
 		MenuConfigDebug.add_ItemsDroits( 3, "Non" );
-
-	if( Config.Debug.bAfficheNormaux )
-		MenuConfigDebug.add_ItemsDroits( 4, "Oui" );
-	else
-		MenuConfigDebug.add_ItemsDroits( 4, "Non" );
 
 	CDlg::SetMenuActif( &MenuConfigDebug );
 }
@@ -99,14 +92,6 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigDebug(var=%x)", arg );
 void actu_menu_config_debug_SonPerformances(void *arg)
 {
 	Config.Debug.bSonPerformances = !Config.Debug.bSonPerformances;
-	Config.Ecrit();
-
-	lanceMenuConfigDebug( 0 );
-}
-
-void actu_menu_config_debug_ReseauDebit(void *arg)
-{
-	Config.Debug.bReseauDebit = !Config.Debug.bReseauDebit;
 	Config.Ecrit();
 
 	lanceMenuConfigDebug( 0 );

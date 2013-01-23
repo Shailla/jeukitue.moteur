@@ -91,13 +91,13 @@ void Viewer::draw(void) {
     AG_LockVFS(&agDrivers);
 
     AG_FOREACH_WINDOW(win, agDriverSw) {
-    	AG_ObjectLock(win);
-
-        if(win->visible) {
-        	//AG_WidgetDraw(win);
-            AG_WindowDraw(win);
+        if(!win->visible) {
+        	continue;
         }
 
+        AG_ObjectLock(win);
+    	//AG_WidgetDraw(win);
+        AG_WindowDraw(win);
         AG_ObjectUnlock(win);
     }
 

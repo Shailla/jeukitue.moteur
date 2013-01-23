@@ -202,9 +202,6 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 		do fichier >> mot;	while( mot!="AfficheFichier" );
 		fichier >> Debug.bAfficheFichier;
 
-		do fichier >> mot;	while( mot!="DebitReseau" );
-		fichier >> Debug.bReseauDebit;
-
 		do fichier >> mot;	while( mot!="AfficheNormaux" );
 		fichier >> Debug.bAfficheNormaux;
 	}
@@ -260,7 +257,6 @@ void CCfg::Ecrit() {
 	fichier << "\nSonPerformances\t\t" << Debug.bSonPerformances;
 	fichier << "\nSonSpectre\t\t" << Debug.bSonSpectre;
 	fichier << "\nAfficheFichier\t\t" << Debug.bAfficheFichier;
-	fichier << "\nDebitReseau\t\t" << Debug.bReseauDebit;
 	fichier << "\nAfficheNormaux\t\t" << Debug.bAfficheNormaux;
 
 	fichier.close();
@@ -724,6 +720,8 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 	cout << "\nDriver video :\t\t";
 	if( SDL_VideoDriverName( txt1, 50 ) )
 		cout << txt1;
+
+	SDL_EnableUNICODE(SDL_ENABLE);
 
 	cout << "\nVideo memory :\t\t" << info->video_mem/1024 << " Mo" << endl;
 

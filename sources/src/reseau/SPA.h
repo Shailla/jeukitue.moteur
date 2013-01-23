@@ -19,14 +19,10 @@ class CSPA
 private: 
 	static int m_BytesRec;	// Nombre d'octets pour le comptage du débit en réception
 	static Uint32 m_TimeBytesRec;
-	static float m_fDebitRec;
-	static float m_fTailleRec;
 	static int m_NombreRec;
 
 	static int m_BytesEm;	// Nombre d'octets pour le comptage du débit en émmission
 	static Uint32 m_TimeBytesEm;
-	static float m_fDebitEm;
-	static float m_fTailleEm;
 	static int m_NombreEm;
 
 	unsigned int m_uPosition;		// Position en octets dans le paquet
@@ -36,6 +32,12 @@ private:
 	UDPsocket m_Socket;				// Ben ça c'est la socket :)
 
 public:
+	static float m_fDebitRec;
+	static float m_fTailleRec;
+
+	static float m_fDebitEm;
+	static float m_fTailleEm;
+
 	CSPA();
 	~CSPA();
 
@@ -78,8 +80,7 @@ public:
 	string debugToString();							// Renvoie un résumé du paquet sous forme de string
 	int send();										// Envoie le CSPA depuis packetOut
 	int recoit();									// Recoit les paquets du CSPA->packetIn
-	static void getDebitRec( float &debit, float &taille );	// Calcul le débit en réception depuis le dernier calcul de celui-ci
-	static void getDebitEm( float &debit, float &taille );	// Calcul le débit en émmission depuis le dernier calcul de celui-ci
+	static void computeDebits(Uint32 currentTime);	// Calcule les débit en émission et en réception
 };
 
 }	// JktNet

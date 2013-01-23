@@ -356,10 +356,6 @@ void afficheInfo( Uint32 tempsDisplay )
 		str = cou;
 		myfont.DrawString( cou, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 	}
-		// Affichage pour le debbugage du tir laser
-	sprintf( cou, "Distance : %0.6f", delta );
-	str = cou;
-	myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 
 	if(Game.Erwin()) {
 		CPlayer *erwin = Game.Erwin();
@@ -396,23 +392,6 @@ void afficheInfo( Uint32 tempsDisplay )
 		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 
 		sprintf( cou, "Son, max memory allocated : %.5u ko", maxalloced/1024 );
-		str = cou;
-		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
-	}
-
-	if(Config.Debug.bReseauDebit) {
-		float debit, taille;
-
-		CSPA::getDebitRec( debit, taille );
-
-		sprintf( cou, "Debit en reception : %.5f ko/s (%.5f octets)", debit, taille );
-		str = cou;
-		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
-
-		CSPA::getDebitEm( debit, taille );
-
-		sprintf( cou, "Debit en emmission : %.5f ko/s (%f octets)",
-		debit, taille );
 		str = cou;
 		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 	}
@@ -513,6 +492,7 @@ void addGraphicObjectToDestruct(GraphicObject* graphicObject) {
 void display() {		// Fonction principale d'affichage
 	Uint32 temps = SDL_GetTicks();	// Temps au début du réaffichage
 
+	CSPA::computeDebits(temps);
 
 	/* **********************************************************
 	 * Mise en place de la perspective
@@ -927,6 +907,9 @@ void timer(Uint32 ecart)	//focntion qui s'exécute périodiquement et qui provoque
 
 void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
 	cout << " -> AGAR";
+	string evDesc;
+	CCfg::resolve(sdlEvent, evDesc);
+	cout << " -> {" << evDesc << "}";
 
 	if(sdlEvent->type == SDL_KEYDOWN && sdlEvent->key.keysym.sym == SDLK_ESCAPE) {
 		Viewer* agarView = Fabrique::getAgarView();
@@ -944,10 +927,6 @@ void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
 			case SDL_VIDEOEXPOSE:
 			case SDL_QUIT:
 			{
-				string evDesc;
-				CCfg::resolve(sdlEvent, evDesc);
-				cout << " -> {" << evDesc << "}";
-
 				AG_DriverEvent ag_event;
 				AG_SDL_TranslateEvent(agDriverSw, sdlEvent, &ag_event);
 				AG_ProcessEvent(NULL, &ag_event);
@@ -955,6 +934,7 @@ void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
 			}
 			default:
 				// Event ignored by Agar
+				cout << " Ignored by agar";
 				break;
 		}
 	}

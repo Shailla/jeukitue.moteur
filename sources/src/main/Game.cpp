@@ -85,10 +85,21 @@ TRACE().p( TRACE_ERROR, "CGame::getStatutClient() -> %d end%T", statut, this );
 }
 
 void CGame::setPlayerList(int nbr) {
-	if( pTabIndexPlayer )
+	if(pTabIndexPlayer) {
 		delete pTabIndexPlayer;
+	}
 
 	pTabIndexPlayer = new CTableauIndex<CPlayer>(nbr);
+
+	cout << endl << "setPlayerList";
+
+	int curseur = -1;
+
+	while(pTabIndexPlayer->Suivant(curseur)) {
+		CPlayer* player = pTabIndexPlayer->operator [](curseur);
+
+		cout << endl << "\t" << curseur << ":" << player;
+	}
 }
 
 void CGame::quit() {

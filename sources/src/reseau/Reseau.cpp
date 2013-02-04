@@ -239,26 +239,24 @@ void CReseau::recoitServer()
 {
 	int numReady;
 	numReady = SDLNet_CheckSockets( m_Server->socketSet, 0 );	// Nombre de sockets ayant une activité détectée
-	if( numReady==-1 )
-	{
+
+	if( numReady==-1 ) {
 		cout << "SDLNet_CheckSockets: " << SDLNet_GetError();
 	}
-	else if( numReady )
-	{
+	else if( numReady ) {
 		CPlayer *player;
-		if( SDLNet_SocketReady( m_Server->spaMaitre.getSocket() ) )
-		{
+
+		if( SDLNet_SocketReady( m_Server->spaMaitre.getSocket() ) ) {
 			m_Server->decodeServerUDP( &m_Server->spaMaitre );
 			numReady--;
 		}
 
 		int curseur = -1;
-		while( ((curseur=m_Server->SuivantPlayer(curseur))<m_Server->maxPlayers)
-			&& numReady )	// S'il reste de l'activité sur un socket et des proxy joueurs à voir
-		{
+
+		while( Game.pTabIndexPlayer->Suivant(curseur) && numReady ) {	// S'il reste de l'activité sur un socket et des proxy joueurs à voir
 			player = m_Server->GetPlayer( curseur );
-			if( SDLNet_SocketReady( player->spa.getSocket() ) )	// S'il y a de l'activité sur ce socket
-			{
+
+			if( SDLNet_SocketReady( player->spa.getSocket() ) ) {	// S'il y a de l'activité sur ce socket
 				m_Server->decodeProxyPlayer( player );
 				numReady--;
 			}

@@ -92,9 +92,10 @@ int CTableauIndex<X>::getNbr()
 template<class X>
 int CTableauIndex<X>::IndexSuivant(int pos) {
 	if(pos < 0) {			// Initialisation d'un index
-		pos = 0;
+		pos = -1;
 	}
-	else if(pos < m_Max - 1) {	// Incrément d'un index
+
+	if(pos < m_Max - 1) {	// Incrément d'un index
 		pos++;
 
 		while((pos<m_Max) && (m_XTableau[pos]==NULL))		// Cherche l'élément après la position 'pos'

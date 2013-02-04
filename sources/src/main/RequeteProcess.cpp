@@ -19,24 +19,21 @@ CRequeteProcess::~CRequeteProcess()
 	SDL_DestroyMutex(_mutex);
 }
 
-void CRequeteProcess::setOuvreMapLocal( string nomMAP )
-{
+void CRequeteProcess::setOuvreMapLocal( string nomMAP ) {
 	SDL_mutexP(_mutex);
 	_openMapLocalEtape = OMLE_DEMANDE;		// Indique la présence d'une demande d'ouverture d'une MAP
 	_MapAOuvrir = nomMAP;	// Nom de la MAP en question
 	SDL_mutexV(_mutex);
 }
 
-void CRequeteProcess::setOuvreMap( string nomMAP )
-{
+void CRequeteProcess::setOuvreMap( string nomMAP ) {
 	SDL_mutexP(_mutex);
 	_bOpenMap = true;		// Indique la présence d'une demande d'ouverture d'une MAP
 	_MapAOuvrir = nomMAP;	// Nom de la MAP en question
 	SDL_mutexV(_mutex);
 }
 
-string CRequeteProcess::getOuvreMap()
-{
+string CRequeteProcess::getOuvreMap() {
 	SDL_mutexP(_mutex);
 	string map = string(_MapAOuvrir);
 

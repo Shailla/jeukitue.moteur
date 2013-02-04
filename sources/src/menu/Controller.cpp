@@ -55,7 +55,7 @@ extern CCfg Config;
 extern CFocus *pFocus;
 extern bool Aide;
 void quit_game( int code );
-void openMAP2( const string &nomFichierMap );
+void openMap( const string &nomFichierMap );
 extern JktNet::CReseau Reseau;
 
 Viewer* Controller::m_agarView;
@@ -165,7 +165,7 @@ void Controller::executeAction(AG_Event *event) {
 				pFocus->SetPlayFocus();
 				Aide = false;
 				server->nomMAP = mapName;		// Informe le serveur sur le nom de la MAP lancée
-				openMAP2( mapName );		// Ouvre cette MAP
+				openMap( mapName );		// Ouvre cette MAP
 				Game.setPlayerList( server->maxPlayers );
 				server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
 				server->bGame = true;				// Indique qu'une partie est en cours

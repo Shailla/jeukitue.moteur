@@ -61,12 +61,6 @@ TRACE().p( TRACE_RESEAU, "CServer::~CServer() begin%T", this );
 TRACE().p( TRACE_RESEAU, "CServer::~CServer() end%T", this );
 }
 
-int CServer::SuivantPlayer(int pos) {
-	int position = pos;
-	Game.pTabIndexPlayer->Suivant(position);
-	return position;
-}
-
 CPlayer *CServer::GetPlayer( int pos )
 {	return Game.pTabIndexPlayer->operator []( pos );	}
 
@@ -157,7 +151,6 @@ TRACE().p( TRACE_RESEAU, "CServer::acceptPlayer(spa=%x) begin%T", spa, this );
 
 	bool result = true;
 	char nomNewPlayer[50];
-	int curseur;
 	CPlayer *player, *player2;
 
 	player = new CPlayer();							// Crée le réceptacle du nouveau joueur
@@ -197,10 +190,10 @@ TRACE().p( TRACE_ERROR, "CServer::acceptPlayer() : %s%T", SDLNet_GetError(), thi
 	player->spa.add16( (Uint16)maxPlayers );			// Envoie le nombre max de joueurs sur la MAP
 	player->spa.add16( (Uint16)this->m_uNbrPlayers );	// Envoie le nombre de joueurs en cours
 
-		// Envoie les infos concernant chaque joueur
-	curseur = -1;
-	while( (curseur=SuivantPlayer( curseur))<maxPlayers )
-	{
+	// Envoie les infos concernant chaque joueur
+	int curseur = -1;
+
+	while(Game.pTabIndexPlayer->Suivant(curseur)) {
 		player2 = GetPlayer( curseur );
 
 		player->spa.add16( (Uint16)curseur );			// Envoie l'identifiant de ce proxy-joueur
@@ -452,8 +445,7 @@ void CServer::emet()
 	CPlayer *player, *player2;
 	int curseur = -1, curseur2;
 
-	while( (curseur=SuivantPlayer(curseur))<maxPlayers )	// Envoie à chaque client-joueur
-	{
+	while(Game.pTabIndexPlayer->Suivant(curseur)) {	// Envoie à chaque client-joueur
 		player = GetPlayer( curseur );
 
 		if(player) {
@@ -463,8 +455,8 @@ void CServer::emet()
 
 				// Envoie les infos concernant chaque joueur
 			curseur2 = -1;
-			while( (curseur2=SuivantPlayer(curseur2))<maxPlayers )
-			{
+
+			while(Game.pTabIndexPlayer->Suivant(curseur2)) {
 				player2 = GetPlayer( curseur2 );
 
 				if(player2) {

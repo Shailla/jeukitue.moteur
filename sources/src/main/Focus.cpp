@@ -89,7 +89,6 @@ TRACE().p( TRACE_MENU, "CFocus::ChangePlayOrConsoleFocus()%T", this );
  * Exécute la fonction de focus pour l'évênement 'event'
  */
 void CFocus::ExecFocus(SDL_Event *event) {
-	cout << endl << "EVENT";
 	focus_actif_handle_key_down(event);
 }
 

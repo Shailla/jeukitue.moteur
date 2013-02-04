@@ -35,7 +35,7 @@ extern bool Aide;
 #include "ihm/MMenuPrinc.h"
 #include "ihm/MMultijoueurServeur.h"
 
-void openMAP2( const string &nomFichierMap );
+void openMap( const string &nomFichierMap );
 
 namespace JktMenu
 {
@@ -66,7 +66,7 @@ void suivantPartiemulti(void *arg)
 	pFocus->SetPlayFocus();
 	Aide = false;
 	server->nomMAP = (char*)arg;		// Informe le serveur sur le nom de la MAP lancée
-	openMAP2( server->nomMAP );			// Ouvre cette MAP
+	openMap( server->nomMAP );			// Ouvre cette MAP
 	Game.setPlayerList( server->maxPlayers );
 	server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
 	server->bGame = true;				// Indique qu'une partie est en cours

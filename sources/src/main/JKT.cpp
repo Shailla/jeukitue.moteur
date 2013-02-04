@@ -858,8 +858,10 @@ void chopeLesEvenements()
 	}
 }
 
-void timer(Uint32 ecart)	//focntion qui s'exécute périodiquement et qui provoque l'affichage
-{
+/**
+ * Fonction qui s'exécute périodiquement et qui provoque l'affichage.
+ */
+void timer(Uint32 ecart) {
 	Uint32 temps = SDL_GetTicks();	// Temps au début du timer (->mesure du temps de calcul)
 
 	frpTimer++;
@@ -874,31 +876,34 @@ void timer(Uint32 ecart)	//focntion qui s'exécute périodiquement et qui provoque
 	}
 
 		// Si une partie est en cours (partie locale, client ou serveur)
-	if( Game.getMap() && (
-		(Game.isModeLocal()) ||
-		((Game.isModeClient())&&(Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY)) ||
-		((Game.isModeServer())&&(Game.getStatutServer()==JKT_STATUT_SERVER_PLAY)) ))
-	{
-		if( Reseau.getOn() && (Game.getStatutServer()==JKT_STATUT_SERVER_PLAY) )	// Si c'est un serveur
-			Reseau.recoitServer();	// Recoit les données des clients
-		else
-			chopeLesEvenements();	// Sinon prends les requêtes du joueur les données du joueur
+	if( Game.getMap() && ( (Game.isModeLocal()) || ((Game.isModeClient())&&(Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY)) || ((Game.isModeServer())&&(Game.getStatutServer()==JKT_STATUT_SERVER_PLAY)) )) {
 
-		if( Game.Erwin() )
-		{
-			if( Reseau.getOn() && (Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) )
-			{
-				CClient *client = Game.getClient();
-				client->emet( *Game.Erwin() );		// Emet les requetes et données du joueur actif
+		if(Reseau.getOn() && (Game.getStatutServer()==JKT_STATUT_SERVER_PLAY)) {	// Si c'est un serveur
+			Reseau.recoitServer();	// Recoit les données des clients
+		}
+		else {
+			chopeLesEvenements();	// Sinon prends les requêtes du joueur les données du joueur
+		}
+
+		// Transmission réseau des données du client.
+		if(Reseau.getOn()) {
+			if( Game.Erwin() ) {
+				if(Game.getStatutClient() == JKT_STATUT_CLIENT_PLAY) {
+					CClient *client = Game.getClient();
+					client->emet( *Game.Erwin() );		// Emet les requetes et données du joueur actif
+				}
 			}
 		}
-			Game.timer();
 
-			// Transmission données par le réseau
-		if( Reseau.getOn() && (Game.getStatutServer()==JKT_STATUT_SERVER_PLAY) ) // Si partie serveur en cours
-		{
-			CServer *server = Game.getServer();
-			server->emet();	// Emet toutes les données
+		// Effectue les calculs physiques (gravité, gestion des contacts, déplacements, ...)
+		Game.timer();
+
+		// Transmission réseau des données du serveur.
+		if(Reseau.getOn()) {
+			if(Game.getStatutServer() == JKT_STATUT_SERVER_PLAY) {
+				CServer *server = Game.getServer();
+				server->emet();						// Emet toutes les données
+			}
 		}
 	}
 
@@ -906,10 +911,10 @@ void timer(Uint32 ecart)	//focntion qui s'exécute périodiquement et qui provoque
 }
 
 void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
-	cout << " -> AGAR";
-	string evDesc;
-	CCfg::resolve(sdlEvent, evDesc);
-	cout << " -> {" << evDesc << "}";
+//	cout << " -> AGAR";
+//	string evDesc;
+//	CCfg::resolve(sdlEvent, evDesc);
+//	cout << " -> {" << evDesc << "}";
 
 	if(sdlEvent->type == SDL_KEYDOWN && sdlEvent->key.keysym.sym == SDLK_ESCAPE) {
 		Viewer* agarView = Fabrique::getAgarView();
@@ -934,14 +939,13 @@ void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
 			}
 			default:
 				// Event ignored by Agar
-				cout << " Ignored by agar";
+//				cout << " Ignored by agar";
 				break;
 		}
 	}
 }
 
-void play_handle_key_down( SDL_Event *event )
-{
+void play_handle_key_down( SDL_Event *event ) {
 //	if( pMap && erwin )
 //	{
 //		float cosTeta =	/*FastCos0(erwin->Teta/180.0f*Pi);		//*/cosf(erwin->Teta/180.0f*Pi);
@@ -1099,13 +1103,13 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 			cout << endl << "Nombre de joeurs dans la partie : " << Game.pTabIndexPlayer->getNbr();
 
 			if(Game.getMap()) {
-				numMainPlayer = Game.pTabIndexPlayer->Suivant(numMainPlayer); 	//prends le nbrMainPlayer°ième joueur
+				Game.pTabIndexPlayer->Suivant(numMainPlayer);	// Lit le numéro du joueur suivant
 
-				if(numMainPlayer>=Game.pTabIndexPlayer->getMax()) {				// si on a atteint la fin de la liste
-					numMainPlayer = -1;		// Redonne la main au premier joueur de la liste
-					numMainPlayer = Game.pTabIndexPlayer->Suivant(numMainPlayer);
+				if(numMainPlayer < 0) {				// Si on a atteint la fin de la liste alors prend à nouveau le premier de liste
+					Game.pTabIndexPlayer->Suivant(numMainPlayer);
 				}
 
+				// Sélectionne le joueur en tant que joueur principal
 				Game.Erwin(Game.pTabIndexPlayer->operator [](numMainPlayer));
 			}
 			break;
@@ -1241,19 +1245,11 @@ bool deprecatedOpenMAP(const void *nomFichier)
 	return true;
 }
 
-void openMAP2(const string& nomFichierMap) {
+void openMap(const string& nomFichierMap) {
 	((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setMapOuverte(nomFichierMap);
 
 	if( !Game.openMap(nomFichierMap) ) {
 		cerr << endl << "Erreur a l'ouverture du fichier Map : " << nomFichierMap;
-	}
-	else {
-		// Lecture du map du joueur
-		CMap *pMapJoueur = new CMap(nomFichierJoueur);
-
-		// Ajuste les coordonnées
-		pMapJoueur->EchangeXZ();
-		pMapJoueur->Scale( -0.15f, 0.15f, 0.15f );
 	}
 }
 
@@ -1270,7 +1266,7 @@ void boucle() {
 			Aide = false;
 			const string mapName = Game.RequeteProcess.getOuvreMap();
 
-			openMAP2( mapName );	// Ouvre la MAP voulue
+			openMap( mapName );	// Ouvre la MAP voulue
 
 			Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );		// Indique que la partie est lancée en mode client
 			pFocus->SetPlayFocus();								// Met l'interception des commandes sur le mode jeu
@@ -1278,9 +1274,11 @@ void boucle() {
 			Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
 		}
 
-		/*
+
+		/* *******************************************************
 		 * Exécution de l'ouverture d'une MAP locale si besoin
-		 */
+		 * ******************************************************/
+
 		int etape = Game.RequeteProcess.getOuvreMapLocaleEtape();
 
 		switch(etape) {

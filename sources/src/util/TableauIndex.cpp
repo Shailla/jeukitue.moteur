@@ -29,7 +29,7 @@ CTableauIndex<X>::~CTableauIndex() {
 template<class X>
 bool CTableauIndex<X>::Ajoute(int pos, X *objet)	// Ajoute le pos° élément du tableau
 {													// s'il n'existe pas encore
-	if(pos<m_Max) {		// Vérifie qu'il n'y a pas dépassement du tableau
+	if(objet && pos<m_Max) {		// Vérifie qu'il n'y a pas dépassement du tableau
 		if( !(m_XTableau[pos]) ) {		// Vérifie que la case indexée par 'pos' est vide
 			m_XTableau[pos] = objet;
 			m_Nbr++;			// Compte le nouvel élément

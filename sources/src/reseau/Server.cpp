@@ -61,8 +61,11 @@ TRACE().p( TRACE_RESEAU, "CServer::~CServer() begin%T", this );
 TRACE().p( TRACE_RESEAU, "CServer::~CServer() end%T", this );
 }
 
-int CServer::SuivantPlayer( int pos )
-{	return Game.pTabIndexPlayer->Suivant( pos );	}
+int CServer::SuivantPlayer(int pos) {
+	int position = pos;
+	Game.pTabIndexPlayer->Suivant(position);
+	return position;
+}
 
 CPlayer *CServer::GetPlayer( int pos )
 {	return Game.pTabIndexPlayer->operator []( pos );	}
@@ -453,21 +456,25 @@ void CServer::emet()
 	{
 		player = GetPlayer( curseur );
 
-		player->spa.init();
-		player->spa.addCode( SERVER_RECAP, SERVER_NULL );		// Code de récapitulation
-		player->spa.add16( (Uint16)nbrPlayers() );				// Envoie le nombre de joueur
+		if(player) {
+			player->spa.init();
+			player->spa.addCode( SERVER_RECAP, SERVER_NULL );		// Code de récapitulation
+			player->spa.add16( (Uint16)nbrPlayers() );				// Envoie le nombre de joueur
 
-			// Envoie les infos concernant chaque joueur
-		curseur2 = -1;
-		while( (curseur2=SuivantPlayer(curseur2))<maxPlayers )
-		{
-			player2 = GetPlayer( curseur2 );
+				// Envoie les infos concernant chaque joueur
+			curseur2 = -1;
+			while( (curseur2=SuivantPlayer(curseur2))<maxPlayers )
+			{
+				player2 = GetPlayer( curseur2 );
 
-			player->spa.add16( (Uint16)curseur2 );			// Envoie l'identifiant de ce proxy-joueur
-			player->spa.addRecapFromServer( *player2 );
+				if(player2) {
+					player->spa.add16( (Uint16)curseur2 );			// Envoie l'identifiant de ce proxy-joueur
+					player->spa.addRecapFromServer( *player2 );
+				}
+			}
+
+			player->spa.send();
 		}
-
-		player->spa.send();
 	}
 }
 

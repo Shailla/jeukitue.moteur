@@ -165,7 +165,7 @@ void Controller::executeAction(AG_Event *event) {
 				pFocus->SetPlayFocus();
 				Aide = false;
 				server->nomMAP = mapName;		// Informe le serveur sur le nom de la MAP lancée
-				openMAP2( server->nomMAP );		// Ouvre cette MAP
+				openMAP2( mapName );		// Ouvre cette MAP
 				Game.setPlayerList( server->maxPlayers );
 				server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
 				server->bGame = true;				// Indique qu'une partie est en cours

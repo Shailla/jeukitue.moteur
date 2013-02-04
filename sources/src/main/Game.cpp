@@ -201,7 +201,10 @@ void CGame::Refresh() {
 
 	while(pTabIndexPlayer->Suivant(curseur)) {		// Pour chaque joueur
 		player = pTabIndexPlayer->operator [](curseur);
-		player->RefreshProjectils();
+
+		if(player) {
+			player->RefreshProjectils();
+		}
 	}
 }
 
@@ -210,9 +213,11 @@ void CGame::GereContactPlayers() {	// Gère les contacts de tous les joueurs avec
 	int curseur = -1;
 	while(pTabIndexPlayer->Suivant(curseur)) {		// Pour chaque joueur
 		player = pTabIndexPlayer->operator [](curseur);
-		player->Pente( 0.0f );
 
-		m_pMap->GereContactPlayer( player );	// Gère les contact avec la map de player
+		if(player) {
+			player->Pente(0.0f);
+			m_pMap->GereContactPlayer(player);		// Gère les contact avec la map de player
+		}
 	}
 }
 
@@ -223,8 +228,10 @@ void CGame::AffichePlayers() {
 	while(pTabIndexPlayer->Suivant(curseur)) {
 		player = pTabIndexPlayer->operator [](curseur);
 
-		player->Affiche(); 				//affiche un seul joueur pour le moment
-		player->AfficheProjectils(); 	// Affiche les projectils lancés par 'player'
+		if(player) {
+			player->Affiche(); 				//affiche un seul joueur pour le moment
+			player->AfficheProjectils(); 	// Affiche les projectils lancés par 'player'
+		}
 	}
 }
 
@@ -235,7 +242,10 @@ void CGame::AfficheProjectils() {	// Affiche tous les projectils
 
 	while(pTabIndexPlayer->Suivant(curseur)) {	// Pour chaque joueur
 		player = pTabIndexPlayer->operator [](curseur);
-		player->AfficheProjectils();
+
+		if(player) {
+			player->AfficheProjectils();
+		}
 	}
 }
 
@@ -296,7 +306,10 @@ void CGame::deplaceTousPlayer() {
 
 	while(pTabIndexPlayer->Suivant(curseur)) {
 		player = pTabIndexPlayer->operator [](curseur);
-		player->deplace();
+
+		if(player) {
+			player->deplace();
+		}
 	}
 }
 
@@ -306,7 +319,10 @@ void CGame::faitTousRequetesClavier() {
 
 	while(pTabIndexPlayer->Suivant(curseur)) {	//exécute les requêtes clavier sur les joueurs
 		player = pTabIndexPlayer->operator[](curseur);
-		player->faitRequeteClavier();
+
+		if(player) {
+			player->faitRequeteClavier();
+		}
 	}
 }
 
@@ -316,7 +332,10 @@ void CGame::faitTousPlayerGravite() {
 
 	while(pTabIndexPlayer->Suivant(curseur)) {
 		player = pTabIndexPlayer->operator [](curseur);
-		player->exeActionFunc();	//exécute l'action périodique (gravité,...) du joueur
+
+		if(player) {
+			player->exeActionFunc();	//exécute l'action périodique (gravité,...) du joueur
+		}
 	}
 }
 

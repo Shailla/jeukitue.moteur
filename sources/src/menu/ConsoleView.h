@@ -17,7 +17,9 @@ class ConsoleView : public View
 	AG_Console* _console;
 	AG_Textbox* _commande;
 	char _commandToExecute[200];
-	AG_Label* _mapOuverteLabel;
+	char _mapOuverteName[30];
+
+	AG_Mutex _agMutex;
 
 public:
 	ConsoleView(const AG_EventFn controllerCallback);
@@ -25,7 +27,7 @@ public:
 
 	void println(const char* texte);
 	void executeCommande(void);
-	void setMapOuverte(const std::string& mapName);
+	void setMapOuverteName(const std::string& mapName);
 };
 
 #endif

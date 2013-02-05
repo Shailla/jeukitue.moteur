@@ -1246,7 +1246,7 @@ bool deprecatedOpenMAP(const void *nomFichier)
 }
 
 void openMap(const string& nomFichierMap) {
-	((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setMapOuverte(nomFichierMap);
+	((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setMapOuverteName(nomFichierMap);
 
 	if( !Game.openMap(nomFichierMap) ) {
 		cerr << endl << "Erreur a l'ouverture du fichier Map : " << nomFichierMap;

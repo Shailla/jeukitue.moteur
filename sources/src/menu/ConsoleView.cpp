@@ -20,6 +20,8 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_PLAIN|AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
 
+	AG_MutexInit(&_agMutex);
+
 	AG_Notebook* book = AG_NotebookNew(m_window, 0);
 	AG_Expand(book);
 
@@ -61,12 +63,16 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	AG_Scrollview* scrollInfo = AG_ScrollviewNew(subtabPartie, AG_SCROLLVIEW_EXPAND | AG_SCROLLVIEW_NOPAN_X);
 
 	// Nom de la MAP ouverte dans la partie en cours
-	_mapOuverteLabel = AG_LabelNew(scrollInfo, 0, "Map ouverte : ");
+	memset(_mapOuverteName, '\0', sizeof(_mapOuverteName));
+	AG_Label* label = AG_LabelNewPolledMT(scrollInfo, 0, &_agMutex, "Map ouverte : %s", _mapOuverteName);
+	AG_LabelSizeHint(label, 1, "Map ouverte : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
 	// Distance parcourue par le tir laser
-	AG_LabelNew(scrollInfo, 0, "Distance laser : %f", &delta);
-	AG_LabelNew(scrollInfo, 0, "Ecarts : total=%i ms, timer=%i ms, display=%i ms", &ecart, &ecartTimer, &ecartDisplay);
+	label = AG_LabelNewPolledMT(scrollInfo, 0, &_agMutex, "Distance laser : %f", &delta);
+	AG_LabelSizeHint(label, 1, "Distance laser : xxxxxx");
 
+	label = AG_LabelNewPolledMT(scrollInfo, 0,&_agMutex, "Ecarts : total=%i ms, timer=%i ms, display=%i ms", &ecart, &ecartTimer, &ecartDisplay);
+	AG_LabelSizeHint(label, 1, "Ecarts : total=xxxx ms, timer=xxxx ms, display=xxxx ms");
 
 	/******************************
 		Sous-onglet Info / Son
@@ -112,8 +118,8 @@ void ConsoleView::println(const char* texte) {
 	AG_ConsoleMsgS(_console, texte);
 }
 
-void ConsoleView::setMapOuverte(const std::string& mapName) {
-	std::string label;
-	label.append("Map ouverte : '").append(mapName).append("'");
-	AG_LabelText(_mapOuverteLabel, label.c_str() );
+void ConsoleView::setMapOuverteName(const std::string& mapName) {
+	AG_MutexLock(_agMutex);
+	mapName.copy(_mapOuverteName, sizeof(_mapOuverteName));
+	AG_MutexUnlock(_agMutex);
 }

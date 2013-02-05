@@ -167,10 +167,88 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 		gameDto->getPlayers().push_back(sprite);				// Ajoute le joueur à la liste des joueurs
 	}
 
+	console->println("Map lue");
+	cout << endl << "Map lue" << flush;
+
 	Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_OUVERTURE);
+
+	return 0;
+}
+
+
+
+void MapLoader::launcheGameServerLoading(GameDto* gameDto) {
+	SDL_CreateThread(loadGameServerThread, (void*)gameDto); 	// Lance l'ouverture de la MAP dans un thread
+}
+
+int MapLoader::loadGameServerThread(void* gameDtoVar) {
+	GameDto* gameDto = (GameDto*)gameDtoVar;
+
+	ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
+
+	/**************************************
+	* Lecture du fichier MAP
+	**************************************/
+
+	string mapName(gameDto->getMapName());
+
+	console->println(string("Lecture de la MAP '").append(mapName).append("'...").c_str());
+	cout << endl << "Lecture de la MAP '" << mapName << "'..." << flush;
+
+	CMap* map = new CMap(mapName);
+	gameDto->setMap(map);
+
+	// Création joueurs
+	gameDto->setPlayersMaxNumber(10);	// Indique que la partie peut contenir jusqu'à 10 joueurs
+
+
+	/**************************************
+	* Chargement de sons pour les joueurs
+	**************************************/
+
+	// Récupération des ressources de cris des personnages
+	console->println("Lecture du cri...");
+	cout << endl << "Lecture du cri...";
+
+	string cri1 = "@Bruit\\cri_1.wav";
+	JktUtils::RessourcesLoader::getFileRessource(cri1);
+
+
+	/***************************************
+	 * Création du joueur principal (Erwin)
+	 ***************************************/
+	{
+		// Chargement du skin
+		string mapJoueur;
+		mapJoueur.append("@Joueur\\").append(Config.Joueur.mapName);
+
+		console->println(string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
+		cout << endl << "Lecture du skin '" << mapJoueur << "'...";
+
+		CMap *pMapJoueur = new CMap(mapJoueur);
+		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
+		console->println("Scaling du skin");
+		cout << endl << "Scaling du skin";
+		pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
+
+		// Création du joueur
+		console->println("Creation du joueur principal...");
+		cout << endl << "Creation du joueur principal..." << flush;
+
+		CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
+		erwin->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
+		erwin->changeContact(contactPlayer);		// Associe une fonction de gestion des contacts avec la map
+		erwin->Skin(pMapJoueur);
+		erwin->setCri( cri1.c_str() );				// Cri du joueur
+		erwin->nom("ERWIN");
+		erwin->init();								// Initialise certaines données
+		gameDto->setErwin(erwin);
+	}
 
 	console->println("Map lue");
 	cout << endl << "Map lue" << flush;
+
+	Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_OUVERTURE);
 
 	return 0;
 }

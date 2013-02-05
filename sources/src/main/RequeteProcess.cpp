@@ -11,6 +11,7 @@ CRequeteProcess::CRequeteProcess()
 	SDL_mutexP(_mutex);
 	_bOpenMap = false;		// Aucune demande d'ouverture de MAP
 	_openMapLocalEtape = OMLE_AUCUNE;		// Indique la présence d'une demande d'ouverture d'une MAP
+	_openMapServerEtape = OMSE_AUCUNE;		// Indique la présence d'une demande d'ouverture d'une MAP
 	SDL_mutexV(_mutex);
 }
 
@@ -22,6 +23,13 @@ CRequeteProcess::~CRequeteProcess()
 void CRequeteProcess::setOuvreMapLocal( string nomMAP ) {
 	SDL_mutexP(_mutex);
 	_openMapLocalEtape = OMLE_DEMANDE;		// Indique la présence d'une demande d'ouverture d'une MAP
+	_MapAOuvrir = nomMAP;	// Nom de la MAP en question
+	SDL_mutexV(_mutex);
+}
+
+void CRequeteProcess::setOuvreMapServer( string nomMAP ) {
+	SDL_mutexP(_mutex);
+	_openMapServerEtape = OMSE_DEMANDE;		// Indique la présence d'une demande d'ouverture d'une MAP
 	_MapAOuvrir = nomMAP;	// Nom de la MAP en question
 	SDL_mutexV(_mutex);
 }
@@ -53,10 +61,25 @@ void CRequeteProcess::setOuvreMapLocaleEtape(OUVRE_MAP_LOCALE_ETAPES etape) {
 	SDL_mutexV(_mutex);
 }
 
+void CRequeteProcess::setOuvreMapServerEtape(OUVRE_MAP_SERVER_ETAPES etape) {
+	SDL_mutexP(_mutex);
+	_openMapServerEtape = etape;
+	SDL_mutexV(_mutex);
+}
+
 int CRequeteProcess::getOuvreMapLocaleEtape()
 {
 	SDL_mutexP(_mutex);
 	OUVRE_MAP_LOCALE_ETAPES etape = _openMapLocalEtape;
+	SDL_mutexV(_mutex);
+
+	return etape;
+}
+
+int CRequeteProcess::getOuvreMapServerEtape()
+{
+	SDL_mutexP(_mutex);
+	OUVRE_MAP_SERVER_ETAPES etape = _openMapServerEtape;
 	SDL_mutexV(_mutex);
 
 	return etape;

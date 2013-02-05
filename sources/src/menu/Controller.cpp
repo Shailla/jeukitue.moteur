@@ -155,21 +155,10 @@ void Controller::executeAction(AG_Event *event) {
 			LanceServeurView* view = (LanceServeurView*)m_agarView->getView(Viewer::LANCE_SERVEUR_VIEW);
 			string mapName = view->getMapName(mapNumber);
 
-			// Connexion du serveur
-			if(!Reseau.ouvreServer(Config.Reseau.getPort())) {
-				AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du serveur");
-			}
-			else {
-				// Ouverture de la Map sur le serveur
-				JktNet::CServer *server = Game.getServer();
-				pFocus->SetPlayFocus();
-				Aide = false;
-				server->nomMAP = mapName;		// Informe le serveur sur le nom de la MAP lancée
-				openMap( mapName );		// Ouvre cette MAP
-				Game.setPlayerList( server->maxPlayers );
-				server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
-				server->bGame = true;				// Indique qu'une partie est en cours
-			}
+			cout << endl << "Ouverture de la Map '" << mapName << "'";
+
+			// Ouverture de la Map
+            Game.RequeteProcess.setOuvreMapServer(mapName);
         }
 		break;
 

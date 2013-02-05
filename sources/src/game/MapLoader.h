@@ -19,8 +19,10 @@ class MapLoader {
 	virtual ~MapLoader();
 
 	static int loadGameThread(void* gameDtoVar);
+	static int loadGameServerThread(void* gameDtoVar);
 public:
 	static void launcheGameLoading(GameDto* gameDto);
+	static void launcheGameServerLoading(GameDto* gameDto);
 };
 
 #endif /* MAPLOADER_H_ */

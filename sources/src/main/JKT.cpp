@@ -183,19 +183,6 @@ float delta = 0.0;
 
 extern CFocus *pFocus;				// Gestion du focus
 extern bool Aide;					// Indique que le menu d'aide est actif
-Uint32 ecart,ecartTimer,ecartDisplay;
-
-Uint32 ceTemps;
-ofstream tempsFile("Temps.txt");
-
-void initTemps() {
-	ceTemps = SDL_GetTicks();
-}
-
-void setTemps(const string& note) {
-	ecartDisplay = SDL_GetTicks() - ceTemps;
-	tempsFile << endl << ecartDisplay << "\t" << note;
-}
 
 CMoteurParticules* moteurParticulesNeige;
 unsigned int frpsTimer = 0, frpTimer = 0;
@@ -227,7 +214,7 @@ void initMenu(void) {
 	// Lancement de l'IHM, on entre dans le menu principal du jeu
     Viewer* agarView = Fabrique::getAgarView();
     pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
-    agarView->showView(Viewer::MAIN_MENU_VIEW);
+    agarView->showMenuView(Viewer::MAIN_MENU_VIEW);
 }
 
 void updateSon3D()
@@ -343,12 +330,7 @@ void afficheInfo( Uint32 tempsDisplay )
 	myfont.DrawString( str2, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 35.0f );
 
 	int pos = 0;
-		// Affiche les temps total, de calcul et d'affichage
 	char cou[70];
-	sprintf( cou, "Ecarts : total=%.6u ms, timer=%.6u ms, display=%.6u ms", ecart, ecartTimer, ecartDisplay );
-	str = cou;
-	myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
-
 
 	// Affiche le mode du jeu
 	if(Game.getMap() && Game.getMap()->IsSelectionMode()) {
@@ -696,6 +678,8 @@ void display() {		// Fonction principale d'affichage
 		_grahicObjectsToDestruct.pop_back();
 	}
 	SDL_UnlockMutex(_grahicObjectsToDestructMutex);
+
+	((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setDureeDisplay(SDL_GetTicks() - temps);
 }
 
 void chopeLesEvenements()
@@ -907,7 +891,7 @@ void timer(Uint32 ecart) {
 		}
 	}
 
-	tempsTimer = SDL_GetTicks() - temps; // Temps pris par la fonction 'timer' => affichage
+	((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setDureeCalcules(SDL_GetTicks() - temps);
 }
 
 void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
@@ -919,7 +903,7 @@ void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
 	if(sdlEvent->type == SDL_KEYDOWN && sdlEvent->key.keysym.sym == SDLK_ESCAPE) {
 		Viewer* agarView = Fabrique::getAgarView();
 		pFocus->SetPlayFocus();
-		agarView->hideAllViews();
+		agarView->hideAllMenuViews();
 	}
 	else {
 		switch (sdlEvent->type) {
@@ -1118,7 +1102,7 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
             {
                 Viewer* agarView = Fabrique::getAgarView();
                 pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
-			    agarView->showView(Viewer::MAIN_MENU_VIEW);
+			    agarView->showMenuView(Viewer::MAIN_MENU_VIEW);
             }
 		    break;
 
@@ -1259,7 +1243,6 @@ GameDto* serverGameDto;
 void boucle() {
 	Uint32 temps=0;
 	Uint32 oldTemps=0;
-	ecart=0;
 
 	for( ;; ) {		// Boucle principale du jeu
 		// Y a-t-il demande d'ouverture d'une map en mode jeu multijoueurs ?
@@ -1289,7 +1272,7 @@ void boucle() {
 
 		case CRequeteProcess::OMLE_DEMANDE:
 			{
-				Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);	// Affichage de la console
+				Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
 
 				// Fermeture de la MAP courante et destruction des joueurs
 				CMap* currentMap = Game.getMap();
@@ -1329,6 +1312,9 @@ void boucle() {
 
 		case CRequeteProcess::OMLE_OUVERTURE:
 			{
+				ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
+				console->setMapOuverteName(localeGameDto->getMapName());
+
 				// Activation de la MAP ouverte
 				CMap* map = localeGameDto->getMap();
 				map->initGL();
@@ -1388,7 +1374,7 @@ void boucle() {
 
 		case CRequeteProcess::OMSE_DEMANDE:
 			{
-				Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);	// Affichage de la console
+				Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
 
 				// Fermeture de la MAP courante et destruction des joueurs
 				CMap* currentMap = Game.getMap();
@@ -1501,7 +1487,7 @@ void boucle() {
 				cerr << "\nEchec a la prise de la photo";
 		}
 
-		// Mesure du temps écoulé depuis les derniers calculs
+		// Mesure du temps écoulé depuis les derniers calculs du jeu
 		if(temps == 0) {
 			temps = SDL_GetTicks();
 			oldTemps = temps;
@@ -1511,17 +1497,11 @@ void boucle() {
 			temps = SDL_GetTicks();
 		}
 
-		ecart = temps - oldTemps;
-
 		// Effectue tous les calculs du jeu
-		timer(ecart);
-
-		ecartTimer = SDL_GetTicks() - temps;
+		timer(temps - oldTemps);
 
 		// Dessine la scène 3D et les menus
 		display();
-
-		//ecartDisplay = SDL_GetTicks() - temps - ecartTimer;
 
 		process_events();	// vérifie les évênements
 	}

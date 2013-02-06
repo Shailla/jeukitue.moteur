@@ -72,15 +72,15 @@ void Controller::executeAction(AG_Event *event) {
 
     switch(action) {
 	case MainMenuAction:
-		m_agarView->showView(Viewer::MAIN_MENU_VIEW);
+		m_agarView->showMenuView(Viewer::MAIN_MENU_VIEW);
 		break;
 
 	case MultijoueursAction:
-		m_agarView->showView(Viewer::MULTIJOUEURS_VIEW);
+		m_agarView->showMenuView(Viewer::MULTIJOUEURS_VIEW);
 		break;
 
     case ConfigurationAction:
-        m_agarView->showView(Viewer::CONFIGURATION_VIEW);
+        m_agarView->showMenuView(Viewer::CONFIGURATION_VIEW);
         break;
 
     case QuitGameAction:
@@ -88,11 +88,11 @@ void Controller::executeAction(AG_Event *event) {
         break;
 
 	case ConfigurationVideoAction:
-		m_agarView->showView(Viewer::CONFIGURATION_VIDEO_VIEW);
+		m_agarView->showMenuView(Viewer::CONFIGURATION_VIDEO_VIEW);
 		break;
 
 	case ConfigurationJoueurAction:
-		m_agarView->showView(Viewer::CONFIGURATION_JOUEUR_VIEW);
+		m_agarView->showMenuView(Viewer::CONFIGURATION_JOUEUR_VIEW);
 		break;
 
     case CentralisateurAction:
@@ -103,12 +103,12 @@ void Controller::executeAction(AG_Event *event) {
 				                      Config.Centralisateur.getPort());
 	        centralisateur->sendSignalement();
 
-			m_agarView->showView(Viewer::CENTRALISATEUR_VIEW);
+			m_agarView->showMenuView(Viewer::CENTRALISATEUR_VIEW);
 		}
         break;
 
     case ConfigCentralisateurAction:
-        m_agarView->showView(Viewer::CONFIG_CENTRALISATEUR_VIEW);
+        m_agarView->showMenuView(Viewer::CONFIG_CENTRALISATEUR_VIEW);
         break;
 
 	// Envoi d'un message de chat sur le serveur centralisateur
@@ -123,29 +123,29 @@ void Controller::executeAction(AG_Event *event) {
 		break;
 
     case OpenSceneAction:
-        m_agarView->showView(Viewer::OPEN_SCENE_VIEW);
+        m_agarView->showMenuView(Viewer::OPEN_SCENE_VIEW);
         break;
 
     case PluginsManagementAction:
-        m_agarView->showView(Viewer::PLUGINS_MANAGEMENT_VIEW);
+        m_agarView->showMenuView(Viewer::PLUGINS_MANAGEMENT_VIEW);
         break;
 
     case AboutAction:
-        m_agarView->showView(Viewer::ABOUT_VIEW);
+        m_agarView->showMenuView(Viewer::ABOUT_VIEW);
         break;
 
     case OpenSceneASEAction:
-        m_agarView->showView(Viewer::OPEN_SCENE_ASE_VIEW);
+        m_agarView->showMenuView(Viewer::OPEN_SCENE_ASE_VIEW);
         break;
 
 	// Ouverture de l'écran de choix d'une Map en mode de jeu local
 	case OpenSceneMapAction:
-        m_agarView->showView(Viewer::OPEN_SCENE_MAP_VIEW);
+        m_agarView->showMenuView(Viewer::OPEN_SCENE_MAP_VIEW);
         break;
 
 	// Ecran de choix d'une Map à lancer en mode serveur
 	case LanceServeurAction:
-		m_agarView->showView(Viewer::LANCE_SERVEUR_VIEW);
+		m_agarView->showMenuView(Viewer::LANCE_SERVEUR_VIEW);
 		break;
 
 	case LanceServeurMapAction:
@@ -217,14 +217,14 @@ void Controller::executeAction(AG_Event *event) {
 	// Affiche le menu de debug
 	case DebugAction:
 		{
-			m_agarView->showView(Viewer::DEBUG_MENU_VIEW);
+			m_agarView->showMenuView(Viewer::DEBUG_MENU_VIEW);
 		}
 		break;
 
 	// Affiche les données de la MAP courante sous forme d'un arbre
 	case MapTreeAction:
 		{
-			m_agarView->showView(Viewer::MAP_TREE_VIEW);
+			m_agarView->showMenuView(Viewer::MAP_TREE_VIEW);
 		}
 		break;
 
@@ -255,13 +255,13 @@ void Controller::executeAction(AG_Event *event) {
 				view->setRepName(nomRep);	// Nom du répertoire du fichier Ase
 				view->setAseName(aseName);	// Nom du fichier Ase
 
-				m_agarView->showView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
+				m_agarView->showMenuView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
 			}
 			else {
 				try {
 					ConsoleAvancementView* console = (ConsoleAvancementView*)m_agarView->getView(Viewer::CONSOLE_AVANCEMENT_VIEW);
 					console->init("Import fichier ASE");
-					m_agarView->showView(Viewer::CONSOLE_AVANCEMENT_VIEW);
+					m_agarView->showMenuView(Viewer::CONSOLE_AVANCEMENT_VIEW);
 
 					// Import du fichier ASE
 					AseImporter::lanceImportAse(aseName, console);
@@ -287,7 +287,7 @@ void Controller::executeAction(AG_Event *event) {
 				// Import du fichier ASE
 				ConsoleAvancementView* console = (ConsoleAvancementView*)m_agarView->getView(Viewer::CONSOLE_AVANCEMENT_VIEW);
 				console->init("Import fichier ASE");
-				m_agarView->showView(Viewer::CONSOLE_AVANCEMENT_VIEW);
+				m_agarView->showMenuView(Viewer::CONSOLE_AVANCEMENT_VIEW);
 
 				string aseName = view->getAseName();
 				AseImporter::lanceImportAse(aseName, console);
@@ -301,7 +301,7 @@ void Controller::executeAction(AG_Event *event) {
 		break;
 
 	case OpenSceneASEEcraseRepNonAction:
-		m_agarView->showView(Viewer::MAIN_MENU_VIEW);
+		m_agarView->showMenuView(Viewer::MAIN_MENU_VIEW);
 		AG_TextMsg(AG_MSG_INFO, "Import annule");
 		break;
 

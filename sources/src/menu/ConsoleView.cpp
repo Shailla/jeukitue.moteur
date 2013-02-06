@@ -13,7 +13,7 @@
 #include "menu/ConsoleView.h"
 
 extern float delta;
-extern Uint32 ecart,ecartTimer,ecartDisplay;
+Uint32 aaa;
 
 ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
@@ -71,7 +71,7 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	label = AG_LabelNewPolledMT(scrollInfo, 0, &_agMutex, "Distance laser : %f", &delta);
 	AG_LabelSizeHint(label, 1, "Distance laser : xxxxxx");
 
-	label = AG_LabelNewPolledMT(scrollInfo, 0,&_agMutex, "Ecarts : total=%i ms, timer=%i ms, display=%i ms", &ecart, &ecartTimer, &ecartDisplay);
+	label = AG_LabelNewPolledMT(scrollInfo, 0,&_agMutex, "Durees : calcules=%i ms, display=%i ms", &_dureeCalcules, &_dureeDisplay);
 	AG_LabelSizeHint(label, 1, "Ecarts : total=xxxx ms, timer=xxxx ms, display=xxxx ms");
 
 	/******************************
@@ -119,7 +119,20 @@ void ConsoleView::println(const char* texte) {
 }
 
 void ConsoleView::setMapOuverteName(const std::string& mapName) {
-	AG_MutexLock(_agMutex);
+	AG_MutexLock(&_agMutex);
 	mapName.copy(_mapOuverteName, sizeof(_mapOuverteName));
-	AG_MutexUnlock(_agMutex);
+	AG_MutexUnlock(&_agMutex);
 }
+
+void ConsoleView::setDureeCalcules(Uint32 ecart) {
+	AG_MutexLock(&_agMutex);
+	_dureeCalcules = ecart;
+	AG_MutexUnlock(&_agMutex);
+}
+
+void ConsoleView::setDureeDisplay(Uint32 ecart) {
+	AG_MutexLock(&_agMutex);
+	_dureeDisplay = ecart;
+	AG_MutexUnlock(&_agMutex);
+}
+

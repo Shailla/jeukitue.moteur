@@ -28,26 +28,35 @@
 
 Viewer::Viewer(AG_EventFn controllerCallback) {
 	// Initialisation des fenêtres
-	_views[MAIN_MENU_VIEW] = new MainMenuView(controllerCallback);
-	_views[ABOUT_VIEW] = new AboutView(controllerCallback, this);
-	_views[MULTIJOUEURS_VIEW] = new MultijoueursView(controllerCallback);
-	_views[CENTRALISATEUR_VIEW] = new CentralisateurView(controllerCallback);
-	_views[CONFIGURATION_VIEW] = new ConfigurationView(controllerCallback);
-	_views[CONFIG_CENTRALISATEUR_VIEW] = new ConfigCentralisateurView(controllerCallback);
-	_views[OPEN_SCENE_VIEW] = new OpenSceneView(controllerCallback);
-	_views[PLUGINS_MANAGEMENT_VIEW] = new PluginsManagementView(controllerCallback);
-	_views[OPEN_SCENE_ASE_VIEW] = new OpenSceneASEView(controllerCallback);
-	_views[OPEN_SCENE_MAP_VIEW] = new OpenSceneMapView(controllerCallback);
-	_views[OPEN_SCENE_ASE_ECRASE_REP_VIEW] = new OpenSceneASEEcraseRepView(controllerCallback);
-	_views[CONSOLE_AVANCEMENT_VIEW] = new ConsoleAvancementView(controllerCallback);
-	_views[LANCE_SERVEUR_VIEW] = new LanceServeurView(controllerCallback);
-	_views[CONFIGURATION_VIDEO_VIEW] = new ConfigurationVideoView(controllerCallback);
-	_views[CONFIGURATION_JOUEUR_VIEW] = new ConfigurationJoueurView(controllerCallback);
-	_views[CONSOLE_VIEW] = new ConsoleView(controllerCallback);
-	_views[PROGRESS_BAR_VIEW] = new ProgressBarView(controllerCallback);
-	_views[DEBUG_MENU_VIEW] = new DebugMenuView(controllerCallback);
-	_views[MAP_TREE_VIEW] = new MapTreeView(controllerCallback);
+	addMenuView(MAIN_MENU_VIEW, new MainMenuView(controllerCallback));
+	addMenuView(ABOUT_VIEW, new AboutView(controllerCallback, this));
+	addMenuView(MULTIJOUEURS_VIEW, new MultijoueursView(controllerCallback));
+	addMenuView(CENTRALISATEUR_VIEW, new CentralisateurView(controllerCallback));
+	addMenuView(CONFIGURATION_VIEW, new ConfigurationView(controllerCallback));
+	addMenuView(CONFIG_CENTRALISATEUR_VIEW, new ConfigCentralisateurView(controllerCallback));
+	addMenuView(OPEN_SCENE_VIEW, new OpenSceneView(controllerCallback));
+	addMenuView(PLUGINS_MANAGEMENT_VIEW, new PluginsManagementView(controllerCallback));
+	addMenuView(OPEN_SCENE_ASE_VIEW, new OpenSceneASEView(controllerCallback));
+	addMenuView(OPEN_SCENE_MAP_VIEW, new OpenSceneMapView(controllerCallback));
+	addMenuView(OPEN_SCENE_ASE_ECRASE_REP_VIEW, new OpenSceneASEEcraseRepView(controllerCallback));
+	addMenuView(CONSOLE_AVANCEMENT_VIEW, new ConsoleAvancementView(controllerCallback));
+	addMenuView(LANCE_SERVEUR_VIEW, new LanceServeurView(controllerCallback));
+	addMenuView(CONFIGURATION_VIDEO_VIEW, new ConfigurationVideoView(controllerCallback));
+	addMenuView(CONFIGURATION_JOUEUR_VIEW, new ConfigurationJoueurView(controllerCallback));
+	addMenuView(PROGRESS_BAR_VIEW, new ProgressBarView(controllerCallback));
+	addMenuView(DEBUG_MENU_VIEW, new DebugMenuView(controllerCallback));
+	addMenuView(MAP_TREE_VIEW, new MapTreeView(controllerCallback));
 
+	addSimpleView(CONSOLE_VIEW, new ConsoleView(controllerCallback));
+}
+
+void Viewer::addMenuView(VIEWS viewId, View* view) {
+	_views[viewId] = view;
+	_menuViews[viewId] = view;
+}
+
+void Viewer::addSimpleView(VIEWS viewId, View* view) {
+	_views[viewId] = view;
 }
 
 Viewer::~Viewer(void) {
@@ -58,12 +67,28 @@ Viewer::~Viewer(void) {
 	}
 }
 
-void Viewer::showView(VIEWS view) {
+void Viewer::showView(VIEWS viewId) {
+	View* view = _views[viewId];
+
+	if(view) {
+		view->show();
+	}
+}
+
+void Viewer::hideView(VIEWS viewId) {
+	View* view = _views[viewId];
+
+	if(view) {
+		view->hide();
+	}
+}
+
+void Viewer::showMenuView(VIEWS viewId) {
 	// Hide all views but show the requested view
 	map<VIEWS, View*>::iterator iter;
 
-	for(iter = _views.begin() ; iter != _views.end() ; iter++) {
-		if((*iter).first == view) {
+	for(iter = _menuViews.begin() ; iter != _menuViews.end() ; iter++) {
+		if((*iter).first == viewId) {
 			(*iter).second->show();
 		}
 		else {
@@ -72,17 +97,17 @@ void Viewer::showView(VIEWS view) {
 	}
 }
 
-void Viewer::hideAllViews(void) {
+void Viewer::hideAllMenuViews(void) {
 	// Hide all views but show the requested view
 	map<VIEWS, View*>::iterator iter;
 
-	for(iter = _views.begin() ; iter != _views.end() ; iter++) {
+	for(iter = _menuViews.begin() ; iter != _menuViews.end() ; iter++) {
 		(*iter).second->hide();
 	}
 }
 
-View* Viewer::getView(VIEWS view) {
-	return _views[view];
+View* Viewer::getView(VIEWS viewId) {
+	return _views[viewId];
 }
 
 void Viewer::draw(void) {

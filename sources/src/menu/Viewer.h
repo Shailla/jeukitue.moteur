@@ -48,14 +48,26 @@ public:
 		MAP_TREE_VIEW
 	};
 
+private:
 	map<VIEWS, View*> _views;
+	map<VIEWS, View*> _menuViews;
+	void addMenuView(VIEWS viewId, View* view);
+	void addSimpleView(VIEWS viewId, View* view);
 public:
     Viewer(AG_EventFn controllerCallback);
     ~Viewer(void);
-    void showView(VIEWS view);
-    View* getView(VIEWS view);
-    void hideAllViews(void);
+
     void draw(void);
+
+    // General view methods
+    View* getView(VIEWS viewId);
+    void showView(VIEWS viewId);
+    void hideView(VIEWS viewId);
+
+    // Menu view methods
+    void showMenuView(VIEWS viewId);
+    void hideAllMenuViews(void);
+
 };
 
 #endif

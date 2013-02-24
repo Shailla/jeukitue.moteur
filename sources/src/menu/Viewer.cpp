@@ -1,7 +1,5 @@
 #include "Viewer.h"
 
-#include <iostream>
-
 #include <agar/gui/style.h>
 #include <agar/core.h>
 #include <agar/gui.h>
@@ -20,6 +18,7 @@
 #include "menu/LanceServeurView.h"
 #include "menu/ConfigurationVideoView.h"
 #include "menu/ConfigurationJoueurView.h"
+#include "menu/ConfigurationReseauView.h"
 #include "menu/ConsoleView.h"
 #include "menu/ProgressBarView.h"
 #include "menu/PluginsManagementView.h"
@@ -43,10 +42,10 @@ Viewer::Viewer(AG_EventFn controllerCallback) {
 	addMenuView(LANCE_SERVEUR_VIEW, new LanceServeurView(controllerCallback));
 	addMenuView(CONFIGURATION_VIDEO_VIEW, new ConfigurationVideoView(controllerCallback));
 	addMenuView(CONFIGURATION_JOUEUR_VIEW, new ConfigurationJoueurView(controllerCallback));
+	addMenuView(CONFIGURATION_RESEAU_VIEW, new ConfigurationReseauView(controllerCallback));
 	addMenuView(PROGRESS_BAR_VIEW, new ProgressBarView(controllerCallback));
 	addMenuView(DEBUG_MENU_VIEW, new DebugMenuView(controllerCallback));
 	addMenuView(MAP_TREE_VIEW, new MapTreeView(controllerCallback));
-
 	addSimpleView(CONSOLE_VIEW, new ConsoleView(controllerCallback));
 }
 

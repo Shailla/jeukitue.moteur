@@ -12,38 +12,40 @@ class Controller
 {
 public:
 	enum {
-		MainMenuAction = 0,
-		AboutAction,
-		MultijoueursAction,
-		LanceServeurAction,
+		ShowMainMenuAction = 0,
+		ShowAboutViewAction,
+		ShowMultijoueursMenuAction,
+		ShowLanceServeurViewAction,
 		LanceServeurMapAction,
-		CentralisateurAction,
-		ConfigurationAction,
+		ShowCentralisateurViewAction,
+		ShowConfigurationMenuAction,
 		QuitGameAction,
-		ConfigurationVideoAction,
-		ConfigurationJoueurAction,
-		ConfigCentralisateurAction,
-		OpenSceneAction,
-		OpenSceneASEAction,
-		OpenSceneMapAction,
+		ShowConfigurationVideoViewAction,
+		ShowConfigurationReseauViewAction,
+		ShowConfigurationJoueurViewAction,
+		ShowMenuConfigCentralisateurAction,
+		ShowMenuOpenSceneAction,
+		ShowOpenAseViewAction,
+		ShowOpenMapViewAction,
 		OpenSceneASEEcraseRepOuiAction,
 		OpenSceneASEEcraseRepNonAction,
 		OpenMapAction,
-		OpenASEAction,
+		ImportAseAction,
 		SendGlobalChatTextAction,
-		ConsoleUserExecuteAction,
+		ExecuteUserCommandeAction,
 		QuitAction,
 		SaveConfigCentralisateurAction,
 		SaveConfigJoueurAction,
+		SaveConfigReseauAction,
 		ReloadDownloadFilesAction,
 		DownloadOneFileAction,
-		PluginsManagementAction,
+		ShowPluginsManagementViewAction,
 		PluginActivateAction,
 		PluginDeactivateAction,
-		AgarConfigurationAction,
-		DebugAction,						// Affiche le menu de degbug
-		LastOpenGlErrorAction,				// Affiche la derniere erreur OpenGL dans une popup
-		MapTreeAction						// Affiche les données de la MAP courante sous forme d'un arbre
+		ShowAgarConfigurationViewAction,
+		ShowDebugViewAction,						// Affiche le menu de degbug
+		ShowLastOpenGlErrorViewAction,				// Affiche la derniere erreur OpenGL dans une popup
+		ShowMapTreeViewAction						// Affiche les données de la MAP courante sous forme d'un arbre
 	};
 
     static Viewer* m_agarView;

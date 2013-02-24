@@ -20,6 +20,7 @@ class ConsoleAvancementView;
 class LanceServeurView;
 class ConfigurationVideoView;
 class ConfigurationJoueurView;
+class ConfigurationReseauView;
 class ConsoleView;
 class ProgressBarView;
 
@@ -41,6 +42,7 @@ public:
 		LANCE_SERVEUR_VIEW,
 		CONFIGURATION_VIDEO_VIEW,
 		CONFIGURATION_JOUEUR_VIEW,
+		CONFIGURATION_RESEAU_VIEW,
 		CONSOLE_VIEW,
 		PROGRESS_BAR_VIEW,
 		PLUGINS_MANAGEMENT_VIEW,

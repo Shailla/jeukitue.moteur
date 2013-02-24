@@ -163,13 +163,13 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 
 	{
 		do fichier >> mot;	while( mot!="Serveur" );
-			fichier >> Reseau.serveur;
+			fichier >> Reseau._serveur;
 
 		do fichier >> mot;	while( mot!="ip" );
-		fichier >> Reseau.m_IpServer;
+		fichier >> Reseau._IpServer;
 
 		do fichier >> mot;	while( mot!="port" );
-		fichier >> Reseau.m_Port;
+		fichier >> Reseau._Port;
 	}
 
 	do fichier >> mot;
@@ -243,9 +243,9 @@ void CCfg::Ecrit() {
 	fichier << "\nport\t\t" << Centralisateur.m_Port;
 
 	fichier << "\n\n\n------------------------RESEAU-------------------------\n";
-	fichier << "\nServeur\t\t" << Reseau.serveur;
-	fichier << "\nip\t\t" << Reseau.m_IpServer;
-	fichier << "\nport\t\t" << Reseau.m_Port;
+	fichier << "\nServeur\t\t" << Reseau._serveur;
+	fichier << "\nip\t\t" << Reseau._IpServer;
+	fichier << "\nport\t\t" << Reseau._Port;
 
 	fichier << "\n\n\n------------------------JOUEUR-------------------------\n";
 	fichier << "\nNom\t\t" << Joueur.nom;

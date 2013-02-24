@@ -22,6 +22,7 @@ using namespace std;
 #include "menu/OpenSceneASEEcraseRepView.h"
 #include "menu/ConsoleAvancementView.h"
 #include "menu/ConfigurationJoueurView.h"
+#include "menu/ConfigurationReseauView.h"
 #include "menu/LanceServeurView.h"
 #include "menu/ProgressBarView.h"
 #include "main/Fabrique.h"
@@ -52,11 +53,7 @@ using namespace JktPlugin;
 
 extern CGame Game;
 extern CCfg Config;
-extern CFocus *pFocus;
-extern bool Aide;
 void quit_game( int code );
-void openMap( const string &nomFichierMap );
-extern JktNet::CReseau Reseau;
 
 Viewer* Controller::m_agarView;
 
@@ -71,15 +68,15 @@ void Controller::executeAction(AG_Event *event) {
     int action = AG_INT(1);
 
     switch(action) {
-	case MainMenuAction:
+	case ShowMainMenuAction:
 		m_agarView->showMenuView(Viewer::MAIN_MENU_VIEW);
 		break;
 
-	case MultijoueursAction:
+	case ShowMultijoueursMenuAction:
 		m_agarView->showMenuView(Viewer::MULTIJOUEURS_VIEW);
 		break;
 
-    case ConfigurationAction:
+    case ShowConfigurationMenuAction:
         m_agarView->showMenuView(Viewer::CONFIGURATION_VIEW);
         break;
 
@@ -87,15 +84,19 @@ void Controller::executeAction(AG_Event *event) {
     	Game.Quit();
         break;
 
-	case ConfigurationVideoAction:
+	case ShowConfigurationVideoViewAction:
 		m_agarView->showMenuView(Viewer::CONFIGURATION_VIDEO_VIEW);
 		break;
 
-	case ConfigurationJoueurAction:
+	case ShowConfigurationReseauViewAction:
+		m_agarView->showMenuView(Viewer::CONFIGURATION_RESEAU_VIEW);
+		break;
+
+	case ShowConfigurationJoueurViewAction:
 		m_agarView->showMenuView(Viewer::CONFIGURATION_JOUEUR_VIEW);
 		break;
 
-    case CentralisateurAction:
+    case ShowCentralisateurViewAction:
 		{
 			Centralisateur* centralisateur = Fabrique::getCentralisateur();
 			centralisateur->connecter((char*)Config.Joueur.nom.c_str(),
@@ -107,7 +108,7 @@ void Controller::executeAction(AG_Event *event) {
 		}
         break;
 
-    case ConfigCentralisateurAction:
+    case ShowMenuConfigCentralisateurAction:
         m_agarView->showMenuView(Viewer::CONFIG_CENTRALISATEUR_VIEW);
         break;
 
@@ -122,32 +123,33 @@ void Controller::executeAction(AG_Event *event) {
 		}
 		break;
 
-    case OpenSceneAction:
+    case ShowMenuOpenSceneAction:
         m_agarView->showMenuView(Viewer::OPEN_SCENE_VIEW);
         break;
 
-    case PluginsManagementAction:
+    case ShowPluginsManagementViewAction:
         m_agarView->showMenuView(Viewer::PLUGINS_MANAGEMENT_VIEW);
         break;
 
-    case AboutAction:
+    case ShowAboutViewAction:
         m_agarView->showMenuView(Viewer::ABOUT_VIEW);
         break;
 
-    case OpenSceneASEAction:
+    case ShowOpenAseViewAction:
         m_agarView->showMenuView(Viewer::OPEN_SCENE_ASE_VIEW);
         break;
 
-	// Ouverture de l'écran de choix d'une Map en mode de jeu local
-	case OpenSceneMapAction:
+	// Ouvre l'écran de choix d'une Map en mode de jeu local
+	case ShowOpenMapViewAction:
         m_agarView->showMenuView(Viewer::OPEN_SCENE_MAP_VIEW);
         break;
 
 	// Ecran de choix d'une Map à lancer en mode serveur
-	case LanceServeurAction:
+	case ShowLanceServeurViewAction:
 		m_agarView->showMenuView(Viewer::LANCE_SERVEUR_VIEW);
 		break;
 
+	// Ouvere une MAP en mode serveur
 	case LanceServeurMapAction:
         {
             // Récupération du nom de la Map à ouvrir
@@ -208,28 +210,28 @@ void Controller::executeAction(AG_Event *event) {
 		break;
 
 	// Menu de configuration d'Agar
-	case AgarConfigurationAction:
+	case ShowAgarConfigurationViewAction:
 		{
 			DEV_ConfigShow();
 		}
 		break;
 
 	// Affiche le menu de debug
-	case DebugAction:
+	case ShowDebugViewAction:
 		{
 			m_agarView->showMenuView(Viewer::DEBUG_MENU_VIEW);
 		}
 		break;
 
 	// Affiche les données de la MAP courante sous forme d'un arbre
-	case MapTreeAction:
+	case ShowMapTreeViewAction:
 		{
 			m_agarView->showMenuView(Viewer::MAP_TREE_VIEW);
 		}
 		break;
 
 	// Affiche la denière erreur OpenGL dans une popup
-	case LastOpenGlErrorAction:
+	case ShowLastOpenGlErrorViewAction:
 		{
 			stringstream openGlError;
 			openGlError << "Deniere erreur OpenGL : '" << gluErrorString(glGetError()) << "'";
@@ -239,7 +241,7 @@ void Controller::executeAction(AG_Event *event) {
 		break;
 
 	// Import d'un fichier ASE
-	case OpenASEAction:
+	case ImportAseAction:
         {
             // Récupération du nom de la Map à ouvrir
 			int aseNumber = AG_INT(2);
@@ -314,6 +316,18 @@ void Controller::executeAction(AG_Event *event) {
 		}
 		break;
 
+	case SaveConfigReseauAction:
+		{
+			ConfigurationReseauView* view = (ConfigurationReseauView*)m_agarView->getView(Viewer::CONFIGURATION_RESEAU_VIEW);
+			Config.Reseau.setIpServer(view->getIpServeur());
+			Config.Reseau.setPort(view->getPortServeur());
+			Config.Reseau.setServeur(view->isServeur());
+			Config.Ecrit();
+
+			AG_TextMsg(AG_MSG_WARNING, "Configuration mise a jour");
+		}
+		break;
+
 
 	// Mise à jour de la configuration du centralisateur
 	case SaveConfigCentralisateurAction:
@@ -367,7 +381,7 @@ void Controller::executeAction(AG_Event *event) {
 		quit_game(0);
 		break;
 
-    case ConsoleUserExecuteAction:
+    case ExecuteUserCommandeAction:
     {
     	ConsoleView* view = (ConsoleView*)m_agarView->getView(Viewer::CONSOLE_VIEW);
     	view->executeCommande();

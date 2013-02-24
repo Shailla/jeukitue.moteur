@@ -32,12 +32,6 @@ private:
 	UDPsocket m_Socket;				// Ben ça c'est la socket :)
 
 public:
-	static float m_fDebitRec;
-	static float m_fTailleRec;
-
-	static float m_fDebitEm;
-	static float m_fTailleEm;
-
 	CSPA();
 	~CSPA();
 

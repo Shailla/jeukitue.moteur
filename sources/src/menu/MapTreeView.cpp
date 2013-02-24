@@ -33,7 +33,7 @@ MapTreeView::MapTreeView(const AG_EventFn controllerCallback)
 	// Bouton retour
     AG_SeparatorNewHoriz(m_window);
 
-	_buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::DebugAction);
+	_buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowDebugViewAction);
     AG_ExpandHoriz(_buttonRetour);
 
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 100, 100);

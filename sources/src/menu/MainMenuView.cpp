@@ -14,12 +14,12 @@ MainMenuView::MainMenuView(const AG_EventFn controllerCallback) : View(controlle
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
 	AG_WindowSetCaption(m_window, "Menu principal");
 
-    _buttonOuvrirScene = AG_ButtonNewFn(m_window, 0, "Ouvrir une scene", controllerCallback, "%i", Controller::OpenSceneAction);
-	_buttonMultijoueurs = AG_ButtonNewFn(m_window, 0, "Multi-joueurs", controllerCallback, "%i", Controller::MultijoueursAction);
-	_buttonConfiguration = AG_ButtonNewFn(m_window, 0, "Configuration", controllerCallback, "%i", Controller::ConfigurationAction);
+    _buttonOuvrirScene = AG_ButtonNewFn(m_window, 0, "Ouvrir une scene", controllerCallback, "%i", Controller::ShowMenuOpenSceneAction);
+	_buttonMultijoueurs = AG_ButtonNewFn(m_window, 0, "Multi-joueurs", controllerCallback, "%i", Controller::ShowMultijoueursMenuAction);
+	_buttonConfiguration = AG_ButtonNewFn(m_window, 0, "Configuration", controllerCallback, "%i", Controller::ShowConfigurationMenuAction);
 	_buttonQuitGame = AG_ButtonNewFn(m_window, 0, "Quitter la partie", controllerCallback, "%i", Controller::QuitGameAction);
-	_About = AG_ButtonNewFn(m_window, 0, "A propos", controllerCallback, "%i", Controller::AboutAction);
-	_debug = AG_ButtonNewFn(m_window, 0, "Debug", controllerCallback, "%i", Controller::DebugAction);
+	_About = AG_ButtonNewFn(m_window, 0, "A propos", controllerCallback, "%i", Controller::ShowAboutViewAction);
+	_debug = AG_ButtonNewFn(m_window, 0, "Debug", controllerCallback, "%i", Controller::ShowDebugViewAction);
 
     AG_SeparatorNewHoriz(m_window);
     _buttonQuitter = AG_ButtonNewFn(m_window, 0, "Quitter", controllerCallback, "%i", Controller::QuitAction);

@@ -8,15 +8,13 @@
 
 class ConfigCentralisateurView : public View
 {
-    AG_Textbox* m_adresse;
-    char m_adresseStr[40];
-    AG_Textbox* m_port;
-    AG_Button* m_connection;
-	AG_Button* m_retour;
+    char _adresse[40];
+    int _port;
 public:
     ConfigCentralisateurView(const AG_EventFn controllerCallback);
     ~ConfigCentralisateurView(void);
 
+    void show(void);
     char* getUserName(void);
     char* getAdresse(void);
     int getPort(void);

@@ -76,7 +76,7 @@ CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
 
 	// Bouton retour
 	AG_SeparatorNewHoriz(m_window);
-    AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::MultijoueursAction);
+    AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowMultijoueursMenuAction);
 
 	// Disposition de la fenêtre
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 70, 70);

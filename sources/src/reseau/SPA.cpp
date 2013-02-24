@@ -11,20 +11,17 @@ using namespace std;
 
 #include "reseau/SPA.h"
 #include "main/Player.h"
+#include "main/Statistics.h"
 
 namespace JktNet
 {
 
 int CSPA::m_BytesRec = 0;	// Nombre d'octets pour le comptage du débit en réception
 Uint32 CSPA::m_TimeBytesRec = 0;
-float CSPA::m_fDebitRec = 0;
-float CSPA::m_fTailleRec = 0;
 int CSPA::m_NombreRec = 0;
 
 int CSPA::m_BytesEm = 0;	// Nombre d'octets pour le comptage du débit en émmission
 Uint32 CSPA::m_TimeBytesEm = 0;
-float CSPA::m_fDebitEm = 0;
-float CSPA::m_fTailleEm = 0;
 int CSPA::m_NombreEm = 0;
 
 CSPA::CSPA()
@@ -373,14 +370,17 @@ void CSPA::addRecapFromServer( const CPlayer &player )
 }
 
 void CSPA::computeDebits(Uint32 currentTime) {
+	float fDebitRec = 0, fTailleRec = 0, fDebitEm = 0, fTailleEm = 0;
+
 	// Calcule du débit en réception
 	if( currentTime - m_TimeBytesRec > 1000 ) {
-		m_fDebitRec = (float)m_BytesRec / ( currentTime - m_TimeBytesRec );
+		fDebitRec = (float)m_BytesRec / ( currentTime - m_TimeBytesRec );
 
 		if(m_NombreRec)
-			m_fTailleRec = (float)m_BytesRec / m_NombreRec;
+			fTailleRec = (float)m_BytesRec / m_NombreRec;
 		else
-			m_fTailleRec = 0;
+			fTailleRec = 0;
+
 		m_TimeBytesRec = currentTime;
 		m_BytesRec = 0;
 		m_NombreRec = 0;
@@ -388,17 +388,24 @@ void CSPA::computeDebits(Uint32 currentTime) {
 
 	// Calcule du débit en émission
 	if(currentTime - m_TimeBytesEm > 1000) {
-		m_fDebitEm = (float)m_BytesEm / ( currentTime - m_TimeBytesEm );
+		fDebitEm = (float)m_BytesEm / ( currentTime - m_TimeBytesEm );
 
 		if(m_NombreEm)
-			m_fTailleEm = (float)m_BytesEm / m_NombreEm;
+			fTailleEm = (float)m_BytesEm / m_NombreEm;
 		else
-			m_fTailleEm = 0;
+			fTailleEm = 0;
 
 		m_TimeBytesEm = currentTime;
 		m_BytesEm = 0;
 		m_NombreEm = 0;
 	}
+
+	Statistics::getInstance()->lock();
+	Statistics::getInstance()->_fDebitRec = fDebitRec;
+	Statistics::getInstance()->_fTailleRec = fTailleRec;
+	Statistics::getInstance()->_fDebitEm = fDebitEm;
+	Statistics::getInstance()->_fTailleEm = fTailleEm;
+	Statistics::getInstance()->unlock();
 }
 
 }	// JktNet

@@ -30,7 +30,7 @@ AboutView::AboutView(const AG_EventFn controllerCallback, Viewer* agarView)
 	// Bouton retour
     AG_SeparatorNewHoriz(m_window);
 
-	_buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::MainMenuAction);
+	_buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowMainMenuAction);
     AG_ExpandHoriz(_buttonRetour);
 
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);

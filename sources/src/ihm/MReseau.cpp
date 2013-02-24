@@ -64,7 +64,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigReseau(var=%x)", var );
 
 	int nbr = 2;	// Nombre de lignes dans ce menu (minimum = 1)
 
-	if( !Config.Reseau.serveur )	// S'il s'agit d'un client (à l'opposé d'un serveur)
+	if( !Config.Reseau.isServeur() )	// S'il s'agit d'un client (à l'opposé d'un serveur)
 		nbr ++;	// Ajoute une ligne pour l'adresse ip du serveur
 
 	liste_suivant_config_reseau = new PF[ nbr ];
@@ -76,7 +76,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigReseau(var=%x)", var );
 	strcpy( item_menu_config_reseau[i], "Serveur/Client" );
 	liste_suivant_config_reseau[i++] = lanceMenuConfigReseauSwitch;
 
-	if( !Config.Reseau.serveur )	// Si c'est un client, on affiche l'adresse IP du serveur
+	if( !Config.Reseau.isServeur() )	// Si c'est un client, on affiche l'adresse IP du serveur
 	{
 		char txt[] = "IP du serveur";
 		item_menu_config_reseau[i] = new char[ strlen(txt) + 1 ];
@@ -105,7 +105,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigReseau(var=%x)", var );
 	CDlg::SetMenuActif( MenuConfigReseau );
 
 	i = 0;
-	if( Config.Reseau.serveur )
+	if( Config.Reseau.isServeur() )
 	{
 		MenuConfigReseau->add_ItemsDroits( i++, "Serveur" );
 	}
@@ -124,7 +124,7 @@ void lanceMenuConfigReseauSwitch(void *arg)
 {
 TRACE().p( TRACE_MENU, "lanceMenuConfigReseauSwitch(var=%x)", arg );
 	retourReseau( 0 );
-	Config.Reseau.serveur = !Config.Reseau.serveur;
+	Config.Reseau.setServeur( !Config.Reseau.isServeur() );
 	Config.Ecrit();
 	lanceMenuConfigReseau( 0 );
 }

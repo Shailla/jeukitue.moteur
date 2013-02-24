@@ -9,6 +9,7 @@
 #include "menu/View.h"
 #include "menu/Controller.h"
 #include "reseau/SPA.h"
+#include "main/Statistics.h"
 
 #include "menu/ConsoleView.h"
 
@@ -36,9 +37,9 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	_commande = AG_TextboxNew(box, AG_TEXTBOX_STATIC|AG_TEXTBOX_HFILL, "Commande : ");
 	AG_WidgetFocus(_commande);
 	AG_WidgetEnable(_commande);
-	AG_SetEvent(_commande, "textbox-return", controllerCallback, "%i", Controller::ConsoleUserExecuteAction); // L'appui sur ENTER est interprêté
+	AG_SetEvent(_commande, "textbox-return", controllerCallback, "%i", Controller::ExecuteUserCommandeAction); // L'appui sur ENTER est interprêté
 
-	AG_ButtonNewFn(box, 0, "Ok", controllerCallback, "%i", Controller::ConsoleUserExecuteAction);
+	AG_ButtonNewFn(box, 0, "Ok", controllerCallback, "%i", Controller::ExecuteUserCommandeAction);
 
 
 	/******************************
@@ -86,10 +87,12 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	AG_Scrollview* scrollReseau = AG_ScrollviewNew(subtabReseau, AG_SCROLLVIEW_EXPAND | AG_SCROLLVIEW_NOPAN_X);
 
 	// Débit réseau en émission
-	AG_LabelNew(scrollReseau, 0, "Debit en emission : %f ko/s (%f octets)", &JktNet::CSPA::m_fDebitEm, &JktNet::CSPA::m_fTailleEm);
+	label = AG_LabelNewPolledMT(scrollReseau, 0, Statistics::getInstance()->getMutex(), "Debit en emission : %f ko/s (%f o)", &Statistics::getInstance()->_fDebitEm, &Statistics::getInstance()->_fTailleEm);
+	AG_LabelSizeHint(label, 1, "Debit en emission : xxxx ko/s (xxxx o)");
 
 	// Débit réseau en réception
-	AG_LabelNew(scrollReseau, 0, "Debit en reception : %f ko/s (%f octets)", &JktNet::CSPA::m_fDebitRec, &JktNet::CSPA::m_fTailleRec);
+	label = AG_LabelNewPolledMT(scrollReseau, 0, Statistics::getInstance()->getMutex(), "Debit en reception : %f ko/s (%f o)", &Statistics::getInstance()->_fDebitRec, &Statistics::getInstance()->_fTailleRec);
+	AG_LabelSizeHint(label, 1, "Map ouverte : Debit en reception : xxxx ko/s (xxxx o)");
 
 	// Disposition de la fenêtre	
 	AG_WidgetUpdate(book);

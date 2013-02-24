@@ -106,7 +106,7 @@ void lanceMenuMultijoueur(void *var)
 {
 TRACE().p( TRACE_MENU, "lanceMenuMultijoueur(var=%x)", var );
 
-	if( Config.Reseau.serveur )
+	if(Config.Reseau.isServeur())
 		lanceMenuMultijoueurserveur( (void*)true );	// Avec demande de connection réseau
 	else
 		lanceMenuMultijoueurclientconnect( 0 );

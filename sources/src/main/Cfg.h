@@ -79,13 +79,18 @@ class CCfg {
 	class CReseau {		// Informations sur la config réseau
 		friend class CCfg;
 	protected:
-		Uint16 m_Port;			// Port à utiliser
-		string m_IpServer;		// Adresse IP du serveur (s'il s'agit d'un client)
+		Uint16 _Port;			// Port à utiliser
+		string _IpServer;		// Adresse IP du serveur (s'il s'agit d'un client)
+		bool _serveur;	// true s'il s'agit d'un serveur, false si c'est un client
 	public:
-		bool serveur;	// true s'il s'agit d'un serveur, false si c'est un client
-		Uint16 getPort() const			{ return m_Port;	}
-		string getIpServer() const		{ return m_IpServer;		}
-		void setPort( Uint16 port )		{ m_Port = port;	}
+		Uint16 getPort() const							{ return _Port;				}
+		string getIpServer() const						{ return _IpServer;			}
+		bool isServeur() const							{ return _serveur;			}
+
+		void setIpServer(const string& ipServeur)		{ _IpServer = ipServeur;	}
+		void setPort(Uint16 port)						{ _Port = port;				}
+		void setServeur(bool serveur)					{ _serveur = serveur;		}
+
 		void Init();
 	};
 

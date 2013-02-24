@@ -17,7 +17,7 @@ ConsoleAvancementView::ConsoleAvancementView(const AG_EventFn controllerCallback
 	AG_Expand(_console);
 
 	AG_SeparatorNewHoriz(m_window);
-    _buttonOk = AG_ButtonNewFn(m_window, 0, "Ok", controllerCallback, "%i", Controller::MainMenuAction);
+    _buttonOk = AG_ButtonNewFn(m_window, 0, "Ok", controllerCallback, "%i", Controller::ShowMainMenuAction);
 
     AG_ExpandHoriz(_buttonOk);
 

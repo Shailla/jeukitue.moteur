@@ -33,7 +33,7 @@ OpenSceneMapView::OpenSceneMapView(const AG_EventFn controllerCallback)
 
     // Bouton retour
     AG_SeparatorNewHoriz(m_window);
-	AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", m_controllerCallback, "%i", Controller::OpenSceneAction);
+	AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", m_controllerCallback, "%i", Controller::ShowMenuOpenSceneAction);
 	AG_ExpandHoriz(buttonRetour);
 
 	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 25, 50);

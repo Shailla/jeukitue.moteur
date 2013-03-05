@@ -8,10 +8,13 @@
 #ifndef MARQUEURBRANCHECLIENT_H_
 #define MARQUEURBRANCHECLIENT_H_
 
-class MarqueurBrancheClient : MarqueurClient {
-	Branche& _branche;
+#include "data/MarqueurClient.h"
+#include "data/Branche.h"
+
+class MarqueurBrancheClient : public MarqueurClient {
+	Branche* _branche;
 public:
-	MarqueurBrancheClient(const Branche& branche);
+	MarqueurBrancheClient(Branche* branche);
 	virtual ~MarqueurBrancheClient();
 };
 

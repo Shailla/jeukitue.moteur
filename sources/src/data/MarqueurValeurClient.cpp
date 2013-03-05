@@ -7,7 +7,7 @@
 
 #include "data/MarqueurValeurClient.h"
 
-MarqueurValeurClient::MarqueurValeurClient(const Valeur& valeur) {
+MarqueurValeurClient::MarqueurValeurClient(Valeur* valeur) {
 	_valeur = valeur;
 }
 

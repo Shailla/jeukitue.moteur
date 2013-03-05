@@ -230,6 +230,13 @@ void Controller::executeAction(AG_Event *event) {
 		}
 		break;
 
+	// Affiche les données de la MAP courante sous forme d'un arbre
+	case ShowDataTreeViewAction:
+		{
+			m_agarView->showMenuView(Viewer::DATA_TREE_VIEW);
+		}
+		break;
+
 	// Affiche la denière erreur OpenGL dans une popup
 	case ShowLastOpenGlErrorViewAction:
 		{

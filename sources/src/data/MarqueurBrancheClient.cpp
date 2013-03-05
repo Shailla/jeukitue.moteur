@@ -7,7 +7,7 @@
 
 #include "data/MarqueurBrancheClient.h"
 
-MarqueurBrancheClient::MarqueurBrancheClient(const Branche& branche) {
+MarqueurBrancheClient::MarqueurBrancheClient(Branche* branche) {
 	_branche = branche;
 }
 

@@ -5,11 +5,12 @@
  *      Author: vgdj7997
  */
 
-#include "data/DataTree.h"
-
 #include <vector>
 
 using namespace std;
+
+#include "data/DataTree.h"
+#include "data/MarqueurBrancheClient.h"
 
 DataTree::DataTree() : _root(0) {
 }
@@ -29,6 +30,10 @@ Branche* DataTree::getBranche(vector<int> brancheId) {
 	return branche;
 }
 
+Branche& DataTree::getRoot() {
+	return _root;
+}
+
 Branche* DataTree::addBranche(vector<int> parentBrancheId) {
 	return addBrancheForClient(parentBrancheId, 0, NULL);
 }
@@ -41,7 +46,7 @@ Branche* DataTree::addBrancheForClient(vector<int> parentBrancheId, int brancheC
 	for(clIter = _clients.begin() ; clIter != _clients.end() ; clIter++) {
 		Client& cl = *clIter;
 
-		MarqueurBrancheClient* marqueur = new MarqueurBrancheClient(*branche);
+		MarqueurBrancheClient* marqueur = new MarqueurBrancheClient(branche);
 
 		if(&cl == client) {
 			marqueur->setTemporaryId(brancheClientTmpId);
@@ -66,7 +71,7 @@ void DataTree::diffuseChangements(void) {
 			MarqueurClient& marqueur = *marqIter;
 
 			if(!marqueur.isUpToDate()) {
-				collecte(marqueur);
+				//collecte(marqueur);
 			}
 		}
 	}

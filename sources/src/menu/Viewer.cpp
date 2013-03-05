@@ -24,6 +24,7 @@
 #include "menu/PluginsManagementView.h"
 #include "menu/DebugMenuView.h"
 #include "menu/MapTreeView.h"
+#include "menu/DataTreeView.h"
 
 Viewer::Viewer(AG_EventFn controllerCallback) {
 	// Initialisation des fenêtres
@@ -46,6 +47,7 @@ Viewer::Viewer(AG_EventFn controllerCallback) {
 	addMenuView(PROGRESS_BAR_VIEW, new ProgressBarView(controllerCallback));
 	addMenuView(DEBUG_MENU_VIEW, new DebugMenuView(controllerCallback));
 	addMenuView(MAP_TREE_VIEW, new MapTreeView(controllerCallback));
+	addMenuView(DATA_TREE_VIEW, new DataTreeView(controllerCallback));
 	addSimpleView(CONSOLE_VIEW, new ConsoleView(controllerCallback));
 }
 

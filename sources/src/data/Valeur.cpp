@@ -8,11 +8,13 @@
 #include "data/Valeur.h"
 
 Valeur::Valeur() {
-	// TODO Auto-generated constructor stub
-
+	_valeurId = 0;
 }
 
 Valeur::~Valeur() {
-	// TODO Auto-generated destructor stub
+}
+
+int Valeur::getValeurId() const {
+	return _valeurId;
 }
 

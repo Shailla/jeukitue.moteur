@@ -33,3 +33,14 @@ Branche* Branche::createSubBranche() {
 	return newBranche;
 }
 
+map<int, Branche*>& Branche::getSubBranches() {
+	return _subBranches;
+}
+
+map<int, Valeur*>& Branche::getValeurs() {
+	return _valeurs;
+}
+
+int Branche::getBrancheId() const {
+	return _brancheId;
+}

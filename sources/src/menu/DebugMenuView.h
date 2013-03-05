@@ -8,11 +8,7 @@
 
 class Viewer;
 
-class DebugMenuView : public View
-{
-    AG_Button* _buttonMapTree;
-	AG_Button* _buttonErreurOpenGl;
-    AG_Button* _buttonRetour;
+class DebugMenuView : public View {
 public:
     DebugMenuView(const AG_EventFn controllerCallback);
     ~DebugMenuView(void);

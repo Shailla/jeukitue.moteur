@@ -45,7 +45,8 @@ public:
 		ShowAgarConfigurationViewAction,
 		ShowDebugViewAction,						// Affiche le menu de degbug
 		ShowLastOpenGlErrorViewAction,				// Affiche la derniere erreur OpenGL dans une popup
-		ShowMapTreeViewAction						// Affiche les données de la MAP courante sous forme d'un arbre
+		ShowMapTreeViewAction,						// Affiche les données de la MAP courante sous forme d'un arbre
+		ShowDataTreeViewAction
 	};
 
     static Viewer* m_agarView;

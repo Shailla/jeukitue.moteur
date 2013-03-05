@@ -32,6 +32,7 @@ public:
 	 * @param brancheId coordonnées de la branche dans l'arbre
 	 */
 	Branche* getBranche(vector<int> brancheId);
+	Branche& getRoot();
 
 	Branche* addBranche(vector<int> parentBrancheId);
 	Branche* addBrancheForClient(vector<int> parentBrancheId, int brancheTmpId, Client* client);

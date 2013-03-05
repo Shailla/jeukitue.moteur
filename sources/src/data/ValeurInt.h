@@ -5,24 +5,23 @@
  *      Author: vgdj7997
  */
 
-#ifndef VALEUR_H_
-#define VALEUR_H_
+#ifndef VALEURINT_H_
+#define VALEURINT_H_
 
 #include <string>
 
 using namespace std;
 
 #include "util/GenRef.h"
+#include "data/ValeurInt.h"
 
-class Valeur {
-	int _valeurId;
-
-	JktUtils::CGenRef _referenceGenerator;
+class ValeurInt : public Valeur {
+	int _valeur;
 public:
-	Valeur();
-	virtual ~Valeur();
+	ValeurInt();
+	virtual ~ValeurInt();
 
-	int getValeurId() const;
+	int getInt() const;
 };
 
 #endif /* VALEUR_H_ */

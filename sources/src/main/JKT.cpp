@@ -114,6 +114,7 @@ class CGame;
 #include "game/GameDto.h"
 #include "game/MapLoader.h"
 #include "spatial/contact.h"
+#include "data/DataTree.h"
 
 using namespace JktMenu;
 using namespace JktNet;
@@ -124,6 +125,9 @@ using namespace JktSon;
 #include "util/GenRef.h"
 
 #include "jkt.h"
+
+DataTree dataTreeServeur;
+DataTree dataTreeClient1;
 
 float GLIGHTX, GLIGHTY, GLIGHTZ;
 GLFont myfont;

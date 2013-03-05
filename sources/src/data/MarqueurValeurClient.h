@@ -8,10 +8,13 @@
 #ifndef MARQUEURVALEURCLIENT_H_
 #define MARQUEURVALEURCLIENT_H_
 
-class MarqueurValeurClient : MarqueurClient {
-	Valeur& _valeur;
+#include "data/MarqueurClient.h"
+#include "data/Branche.h"
+
+class MarqueurValeurClient : public MarqueurClient {
+	Valeur* _valeur;
 public:
-	MarqueurValeurClient(const Valeur& valeur);
+	MarqueurValeurClient(Valeur* valeur);
 	virtual ~MarqueurValeurClient();
 };
 

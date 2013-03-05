@@ -27,6 +27,10 @@ public:
 	virtual ~Branche();
 
 	Branche* getSubBranche(int brancheId) const;
+	map<int, Branche*>& getSubBranches();
+	map<int, Valeur*>& getValeurs();
+	int getBrancheId() const;
+
 	Branche* createSubBranche();
 };
 

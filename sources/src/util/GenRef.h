@@ -4,7 +4,7 @@
 /*
 Générateur de références recyclées, une référence est un 'unsigned int' unique.
 Les références sont fournies incrémentalement. Lorsqu'une référence est supprimée
-alors la séquence est rompue et des blocs de façon transparenteafin de pouvoir réallouer
+alors la séquence est rompue et des blocs de façon transparente afin de pouvoir réallouer
 la référence supprimée.
 
 Exemple :

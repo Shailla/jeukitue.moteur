@@ -106,24 +106,19 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 ConsoleView::~ConsoleView(void) {
 }
 
-extern DataTree dataTreeServeur;
+string ConsoleView::getCommandAndClearCommandLine() {
+	char* cmd = AG_TextboxDupString(_commande);
+	string commande = cmd;
 
-void ConsoleView::executeCommande() {
-	char* commande = AG_TextboxDupString(_commande);
-
-	if(!JktUtils::StringUtils::isBlank(commande)) {
-		println(commande);
-
-		if(string("add branche") == commande) {
-			vector<int> brancheParentId;
-			brancheParentId.push_back(0);
-			dataTreeServeur.addBranche(brancheParentId);
-		}
-
-		AG_TextboxSetString(_commande, "");
+	if(!JktUtils::StringUtils::isBlank(cmd)) {
+		println(cmd);
 	}
 
-	free(commande);
+	// Vide la ligne de saisie
+	AG_TextboxSetString(_commande, "");
+	free(cmd);
+
+	return commande;
 }
 
 void ConsoleView::println(const char* texte) {

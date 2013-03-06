@@ -34,12 +34,13 @@ Branche& DataTree::getRoot() {
 	return _root;
 }
 
-Branche* DataTree::addBranche(vector<int> parentBrancheId) {
+Branche* DataTree::addBranche(vector<int>& parentBrancheId) {
 	return addBrancheForClient(parentBrancheId, 0, NULL);
 }
 
-Branche* DataTree::addBrancheForClient(vector<int> parentBrancheId, int brancheClientTmpId, Client* client) {
-	Branche* branche = addBranche(parentBrancheId);
+Branche* DataTree::addBrancheForClient(vector<int>& parentBrancheId, int brancheClientTmpId, Client* client) {
+	Branche* parentBranche = getBranche(parentBrancheId);
+	Branche* branche = parentBranche->createSubBranche();
 
 	vector<Client>::iterator clIter;
 

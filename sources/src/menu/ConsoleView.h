@@ -28,7 +28,7 @@ public:
 	~ConsoleView(void);
 
 	void println(const char* texte);
-	void executeCommande(void);
+	string getCommandAndClearCommandLine(void);
 	void setMapOuverteName(const std::string& mapName);
 	void setDureeCalcules(Uint32 ecart);
 	void setDureeDisplay(Uint32 ecart);

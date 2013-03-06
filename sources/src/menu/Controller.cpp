@@ -44,6 +44,7 @@ using namespace std;
 #include "spatial/AseImporter.h"
 #include "util/FindFolder.h"
 #include "plugin/PluginEngine.h"
+#include "data/DataTree.h"
 
 #include "menu/Controller.h"
 
@@ -53,7 +54,8 @@ using namespace JktPlugin;
 
 extern CGame Game;
 extern CCfg Config;
-void quit_game( int code );
+void quit_game(int code);
+extern DataTree dataTreeServeur;
 
 Viewer* Controller::m_agarView;
 
@@ -391,7 +393,14 @@ void Controller::executeAction(AG_Event *event) {
     case ExecuteUserCommandeAction:
     {
     	ConsoleView* view = (ConsoleView*)m_agarView->getView(Viewer::CONSOLE_VIEW);
-    	view->executeCommande();
+    	string commande = view->getCommandAndClearCommandLine();
+
+		if(commande == "add branche") {
+			vector<int> brancheParentId;
+			brancheParentId.push_back(0);
+			dataTreeServeur.addBranche(brancheParentId);
+		}
+
     	break;
     }
 

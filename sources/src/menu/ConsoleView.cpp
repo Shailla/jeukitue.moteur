@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 #include <agar/core.h>
@@ -97,7 +98,7 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	// Disposition de la fenêtre	
 	AG_WidgetUpdate(book);
 	AG_NotebookSelectTab (book, tabMain);
-	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_BL, 40, 30);
+	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_BL, 70, 30);
 	AG_WindowShow(m_window);
 
     hide();
@@ -107,22 +108,45 @@ ConsoleView::~ConsoleView(void) {
 }
 
 string ConsoleView::getCommandAndClearCommandLine() {
+	// Récupération de la saisie de l'utilisateur
 	char* cmd = AG_TextboxDupString(_commande);
+	cout << endl << "1 --> " << cmd;
 	string commande = cmd;
-
-	if(!JktUtils::StringUtils::isBlank(cmd)) {
-		println(cmd);
-	}
+	cout << endl << "2 --> " << cmd;
 
 	// Vide la ligne de saisie
 	AG_TextboxSetString(_commande, "");
 	free(cmd);
 
+	cout << endl << "3 --> " << commande;
+
 	return commande;
 }
 
-void ConsoleView::println(const char* texte) {
-	AG_ConsoleMsgS(_console, texte);
+void ConsoleView::println(ConsoleOutputType type, const string& texte) {
+	ostringstream str;
+
+	switch(type) {
+	case COT_ECHO:
+		str << "> ";
+		break;
+	case COT_CHAT:
+		str << "msg> ";
+		break;
+	case COT_COMMAND_ERROR:
+		str << "err> ";
+		break;
+	case COT_COMMAND_RESULT:
+		str << "std> ";
+		break;
+	default:
+		str << "?> ";
+		break;
+	}
+
+	str << texte;
+
+	AG_ConsoleMsgS(_console, str.str().c_str());
 }
 
 void ConsoleView::setMapOuverteName(const std::string& mapName) {

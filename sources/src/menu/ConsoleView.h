@@ -24,10 +24,19 @@ class ConsoleView : public View
 	AG_Mutex _agMutex;
 
 public:
+	/** Types of output in the user console. */
+	enum ConsoleOutputType {
+		COT_ECHO,				// To echo the user commande line
+		COT_CHAT,				// Chat message
+		COT_COMMAND_ERROR,		// Command execution error message
+		COT_COMMAND_RESULT,		// Command execution result message
+		COT_INFO				// Info message
+	};
+
 	ConsoleView(const AG_EventFn controllerCallback);
 	~ConsoleView(void);
 
-	void println(const char* texte);
+	void println(ConsoleOutputType type, const string& texte);
 	string getCommandAndClearCommandLine(void);
 	void setMapOuverteName(const std::string& mapName);
 	void setDureeCalcules(Uint32 ecart);

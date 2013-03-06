@@ -6,6 +6,7 @@ Centralisateur* Fabrique::_centralisateur = 0;
 Viewer* Fabrique::_agarView = 0;
 Controller* Fabrique::_agarController = 0;
 PluginEngine* Fabrique::_pluginEngine = 0;
+CommandeInterpreter* Fabrique::_commandeInterpreter = 0;
 
 void Fabrique::construct(void) {
     UdpController* udpController = new UdpController();
@@ -15,6 +16,7 @@ void Fabrique::construct(void) {
     _agarView = new Viewer(Controller::executeAction);
     _agarController = new Controller(_agarView);
     _pluginEngine = new PluginEngine();
+    _commandeInterpreter = new CommandeInterpreter(_agarView);
 }
 
 Centralisateur* Fabrique::getCentralisateur() {
@@ -31,4 +33,8 @@ Controller* Fabrique::getAgarController() {
 
 PluginEngine* Fabrique::getPluginEngine() {
     return _pluginEngine;
+}
+
+CommandeInterpreter* Fabrique::getCommandeInterpreter() {
+    return _commandeInterpreter;
 }

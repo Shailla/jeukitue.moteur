@@ -7,8 +7,7 @@
 #include "menu/View.h"
 #include "data/DataTree.h"
 
-extern DataTree dataTreeServeur;
-extern DataTree dataTreeClient1;
+extern DataTree dataTree;
 
 class Viewer;
 namespace JktMoteur {
@@ -18,8 +17,7 @@ namespace JktMoteur {
 
 class DataTreeView : public View
 {
-	AG_Treetbl* _treeServeur;
-	AG_Treetbl* _treeClient1;
+	AG_Treetbl* _tree;
 
 	void drawBranche(Branche* branche, AG_Treetbl* tree, int colId);
 

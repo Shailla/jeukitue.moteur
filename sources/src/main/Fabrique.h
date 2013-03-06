@@ -5,6 +5,7 @@
 #include "menu/Viewer.h"
 #include "centralisateur/Centralisateur.h"
 #include "plugin/PluginEngine.h"
+#include "script/CommandeInterpreter.h"
 
 class Fabrique
 {
@@ -12,6 +13,7 @@ class Fabrique
     static Viewer* _agarView;
     static Controller* _agarController;
     static JktPlugin::PluginEngine* _pluginEngine;
+    static CommandeInterpreter* _commandeInterpreter;
 public:
     static void construct(void);
 
@@ -19,6 +21,7 @@ public:
     static Controller* getAgarController();
     static Centralisateur* getCentralisateur();
     static JktPlugin::PluginEngine* getPluginEngine();
+    static CommandeInterpreter* getCommandeInterpreter();
 };
 
 #endif

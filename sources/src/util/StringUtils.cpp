@@ -39,18 +39,31 @@ char* StringUtils::toChars(const std::string& str) {
 
 /**
  * Attention, cette méthode n'est pas finie, pour l'instant elle vérifie uniquement si la chaîne n'est pas vide !
- * TODO Finir l'implémentation de la présente méthode
  * ""		: true
  * "     "	: true
  * "-"		: false
  * "  - "	: false
  */
-bool StringUtils::isBlank(const char* str) {
-	if(strlen(str) == 0) {
-		return true;
+bool StringUtils::isBlank(const string& s) {
+	return find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))) == s.end();
+}
+
+string StringUtils::findAndEraseFirstWord(string& s) {
+	string result;
+
+	string::iterator debutMot = s.begin();
+
+	debutMot = find_if(debutMot, s.end(), not1(ptr_fun<int, int>(isspace)));
+
+	if(debutMot != s.end()) {
+		string::iterator finMot = find_if(debutMot, s.end(), ptr_fun<int, int>(isspace));
+		result = string(debutMot, finMot);
+
+		// Erase the first word
+		s.erase(debutMot, finMot);
 	}
 
-	return false;
+	return result;
 }
 
 string StringUtils::findFirstWord(string& s) {
@@ -61,23 +74,24 @@ string StringUtils::findFirstWord(string& s) {
 	debutMot = find_if(debutMot, s.end(), not1(ptr_fun<int, int>(isspace)));
 
 	if(debutMot != s.end()) {
-		string::iterator finMot = find_if(debutMot, s.end(), not1(ptr_fun<int, int>(isspace)));
+		string::iterator finMot = find_if(debutMot, s.end(), ptr_fun<int, int>(isspace));
 		result = string(debutMot, finMot);
 	}
 
 	return result;
 }
 
-vector<string> StringUtils::splitBySpaces(string& s) {
+vector<string> StringUtils::splitBySpaces(string s) {
 	vector<string> result;
 
-	string::iterator debutMot = s.begin();
+	string::iterator finMot = s.begin();
+	string::iterator debutMot;
 
 	do {
-		debutMot = find_if(debutMot, s.end(), not1(ptr_fun<int, int>(isspace)));
+		debutMot = find_if(finMot, s.end(), not1(ptr_fun<int, int>(isspace)));
 
 		if(debutMot != s.end()) {
-			string::iterator finMot = find_if(debutMot, s.end(), not1(ptr_fun<int, int>(isspace)));
+			finMot = find_if(debutMot, s.end(), ptr_fun<int, int>(isspace));
 			result.push_back(string(debutMot, finMot));
 		}
 	} while(debutMot != s.end());

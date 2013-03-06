@@ -19,11 +19,12 @@ public:
 	virtual ~StringUtils();
 
 	static char* toChars(const std::string& str);
-	static bool isBlank(const char* str);
+	static bool isBlank(const std::string& str);
 
+	static std::string findAndEraseFirstWord(std::string& s);
 	static std::string findFirstWord(std::string& s);
 
-	static std::vector<std::string> splitBySpaces(std::string& s);
+	static std::vector<std::string> splitBySpaces(std::string s);
 
 	// trim from start
 	static void ltrim(std::string& s);

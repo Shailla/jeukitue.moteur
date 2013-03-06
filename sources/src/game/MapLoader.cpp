@@ -45,7 +45,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 
 	string mapName(gameDto->getMapName());
 
-	console->println(string("Lecture de la MAP '").append(mapName).append("'...").c_str());
+	console->println(ConsoleView::COT_INFO, string("Lecture de la MAP '").append(mapName).append("'..."));
 	cout << endl << "Lecture de la MAP '" << mapName << "'..." << flush;
 
 	CMap* map = new CMap(mapName);
@@ -60,13 +60,13 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 	**************************************/
 
 	// Récupération des ressources de cris des personnages
-	console->println("Lecture du premier cri...");
+	console->println(ConsoleView::COT_INFO, "Lecture du premier cri...");
 	cout << endl << "Lecture du premier cri...";
 
 	string cri1 = "@Bruit\\cri_1.wav";
 	JktUtils::RessourcesLoader::getFileRessource(cri1);
 
-	console->println("Lecture du second cri...");
+	console->println(ConsoleView::COT_INFO, "Lecture du second cri...");
 	cout << endl << "Lecture du second cri...";
 
 	string cri2 = "@Bruit\\cri_1.wav";
@@ -81,17 +81,17 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 		string mapJoueur;
 		mapJoueur.append("@Joueur\\").append(Config.Joueur.mapName);
 
-		console->println(string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
+		console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'..."));
 		cout << endl << "Lecture du skin '" << mapJoueur << "'...";
 
 		CMap *pMapJoueur = new CMap(mapJoueur);
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
-		console->println("Scaling du skin");
+		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		cout << endl << "Scaling du skin";
 		pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
 
 		// Création du joueur
-		console->println("Creation du joueur principal...");
+		console->println(ConsoleView::COT_INFO, "Creation du joueur principal...");
 		cout << endl << "Creation du joueur principal..." << flush;
 
 		CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
@@ -110,17 +110,17 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 	 ***************************************/
 	{
 		// Chargement du skin
-		console->println("Lecture du skin 'GrosBonhomme'...");
+		console->println(ConsoleView::COT_INFO, "Lecture du skin 'GrosBonhomme'...");
 		cout << "\nLecture du skin 'GrosBonhomme'...";
 
 		CMap *pMapJoueurJulien = new CMap("GrosBonhomme");
 		pMapJoueurJulien->EchangeXZ();					// Ajuste les coordonnées
-		console->println("Scaling du skin");
+		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		cout << endl << "Scaling du skin";
 		pMapJoueurJulien->Scale( -0.10f, 0.10f, 0.10f );
 
 		// Création d'un second joueur
-		console->println("Creation du second joueur...");
+		console->println(ConsoleView::COT_INFO, "Creation du second joueur...");
 		cout << endl << "Creation du second joueur..." << flush;
 
 		CPlayer *julien;
@@ -143,17 +143,17 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 		string mapJoueur;
 		mapJoueur.append("@Joueur\\").append(Config.Joueur.mapName);
 
-		console->println(string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
+		console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'..."));
 		cout << endl << "Lecture du skin '" << mapJoueur << "'...";
 
 		CMap *pMapJoueur = new CMap(mapJoueur);
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
-		console->println("Scaling du skin");
+		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		cout << endl << "Scaling du skin";
 		pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
 
 		// Création d'un troisième joueur
-		console->println("Creation du troisieme joueur...");
+		console->println(ConsoleView::COT_INFO, "Creation du troisieme joueur...");
 		cout << endl << "Creation du troisieme joueur..." << flush;
 
 		CPlayer *sprite;
@@ -167,7 +167,7 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 		gameDto->getPlayers().push_back(sprite);				// Ajoute le joueur à la liste des joueurs
 	}
 
-	console->println("Map lue");
+	console->println(ConsoleView::COT_INFO, "Map lue");
 	cout << endl << "Map lue" << flush;
 
 	Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_OUVERTURE);
@@ -192,7 +192,7 @@ int MapLoader::loadGameServerThread(void* gameDtoVar) {
 
 	string mapName(gameDto->getMapName());
 
-	console->println(string("Lecture de la MAP '").append(mapName).append("'...").c_str());
+	console->println(ConsoleView::COT_INFO, string("Lecture de la MAP '").append(mapName).append("'..."));
 	cout << endl << "Lecture de la MAP '" << mapName << "'..." << flush;
 
 	CMap* map = new CMap(mapName);
@@ -207,7 +207,7 @@ int MapLoader::loadGameServerThread(void* gameDtoVar) {
 	**************************************/
 
 	// Récupération des ressources de cris des personnages
-	console->println("Lecture du cri...");
+	console->println(ConsoleView::COT_INFO, "Lecture du cri...");
 	cout << endl << "Lecture du cri...";
 
 	string cri1 = "@Bruit\\cri_1.wav";
@@ -222,17 +222,17 @@ int MapLoader::loadGameServerThread(void* gameDtoVar) {
 		string mapJoueur;
 		mapJoueur.append("@Joueur\\").append(Config.Joueur.mapName);
 
-		console->println(string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
+		console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
 		cout << endl << "Lecture du skin '" << mapJoueur << "'...";
 
 		CMap *pMapJoueur = new CMap(mapJoueur);
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
-		console->println("Scaling du skin");
+		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		cout << endl << "Scaling du skin";
 		pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
 
 		// Création du joueur
-		console->println("Creation du joueur principal...");
+		console->println(ConsoleView::COT_INFO, "Creation du joueur principal...");
 		cout << endl << "Creation du joueur principal..." << flush;
 
 		CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
@@ -245,7 +245,7 @@ int MapLoader::loadGameServerThread(void* gameDtoVar) {
 		gameDto->setErwin(erwin);
 	}
 
-	console->println("Map lue");
+	console->println(ConsoleView::COT_INFO, "Map lue");
 	cout << endl << "Map lue" << flush;
 
 	Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_OUVERTURE);

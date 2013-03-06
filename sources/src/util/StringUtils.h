@@ -8,6 +8,7 @@
 #ifndef STRINGUTILS_H_
 #define STRINGUTILS_H_
 
+#include <vector>
 #include <string>
 
 namespace JktUtils {
@@ -19,6 +20,19 @@ public:
 
 	static char* toChars(const std::string& str);
 	static bool isBlank(const char* str);
+
+	static std::string findFirstWord(std::string& s);
+
+	static std::vector<std::string> splitBySpaces(std::string& s);
+
+	// trim from start
+	static void ltrim(std::string& s);
+
+	// trim from end
+	static void rtrim(std::string& s);
+
+	// trim from both ends
+	static void trim(std::string& s);
 };
 
 } /* namespace JktUtils */

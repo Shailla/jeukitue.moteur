@@ -5,8 +5,10 @@
  *      Author: Erwin
  */
 
+#include <vector>
 #include <iostream>
 #include <string.h>
+#include <algorithm>
 
 using namespace std;
 
@@ -49,6 +51,54 @@ bool StringUtils::isBlank(const char* str) {
 	}
 
 	return false;
+}
+
+string StringUtils::findFirstWord(string& s) {
+	string result;
+
+	string::iterator debutMot = s.begin();
+
+	debutMot = find_if(debutMot, s.end(), not1(ptr_fun<int, int>(isspace)));
+
+	if(debutMot != s.end()) {
+		string::iterator finMot = find_if(debutMot, s.end(), not1(ptr_fun<int, int>(isspace)));
+		result = string(debutMot, finMot);
+	}
+
+	return result;
+}
+
+vector<string> StringUtils::splitBySpaces(string& s) {
+	vector<string> result;
+
+	string::iterator debutMot = s.begin();
+
+	do {
+		debutMot = find_if(debutMot, s.end(), not1(ptr_fun<int, int>(isspace)));
+
+		if(debutMot != s.end()) {
+			string::iterator finMot = find_if(debutMot, s.end(), not1(ptr_fun<int, int>(isspace)));
+			result.push_back(string(debutMot, finMot));
+		}
+	} while(debutMot != s.end());
+
+	return result;
+}
+
+// trim from start
+void StringUtils::ltrim(string &s) {
+	s.erase(s.begin(), find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))));
+}
+
+// trim from end
+void StringUtils::rtrim(string &s) {
+	s.erase(find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(), s.end());
+}
+
+// trim from both ends
+void StringUtils::trim(string &s) {
+	rtrim(s);
+	ltrim(s);
 }
 
 } /* namespace JktUtils */

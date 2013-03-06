@@ -10,7 +10,7 @@
 #include "menu/Controller.h"
 #include "reseau/SPA.h"
 #include "main/Statistics.h"
-
+#include "data/DataTree.h"
 #include "menu/ConsoleView.h"
 
 extern float delta;
@@ -106,11 +106,20 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 ConsoleView::~ConsoleView(void) {
 }
 
+extern DataTree dataTreeServeur;
+
 void ConsoleView::executeCommande() {
 	char* commande = AG_TextboxDupString(_commande);
 
 	if(!JktUtils::StringUtils::isBlank(commande)) {
 		println(commande);
+
+		if(string("add branche") == commande) {
+			vector<int> brancheParentId;
+			brancheParentId.push_back(0);
+			dataTreeServeur.addBranche(brancheParentId);
+		}
+
 		AG_TextboxSetString(_commande, "");
 	}
 

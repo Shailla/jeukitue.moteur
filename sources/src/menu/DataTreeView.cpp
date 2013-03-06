@@ -55,9 +55,14 @@ void DataTreeView::show(void) {
 	View::show();
 }
 
-string getValueString(ValeurInt* valeur) {
+string getValueString(Valeur* valeur) {
 	ostringstream txt;
-	txt << "Valeur " << valeur->getValeurId() << "= '" << valeur->getInt();
+
+	if(dynamic_cast<ValeurInt*>(valeur) != 0) {
+		ValeurInt* vl = (ValeurInt*)valeur;
+		txt << "Valeur " << vl->getValeurId() << "= '" << vl->getInt();
+	}
+
 	return txt.str();
 }
 

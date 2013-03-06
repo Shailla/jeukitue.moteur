@@ -13,7 +13,7 @@
 using namespace std;
 
 #include "util/GenRef.h"
-#include "data/ValeurInt.h"
+#include "data/Valeur.h"
 
 class ValeurInt : public Valeur {
 	int _valeur;

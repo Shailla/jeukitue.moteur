@@ -10,9 +10,11 @@
 
 using namespace std;
 
-#include "data/DataTree.h"
 #include "data/MarqueurBrancheClient.h"
+#include "data/MarqueurValeurClient.h"
 #include "data/exception/NotExistingBrancheException.h"
+
+#include "data/DataTree.h"
 
 DataTree::DataTree() : _root(0) {
 }
@@ -25,7 +27,10 @@ Branche* DataTree::getBranche(vector<int> brancheId) throw(NotExistingBrancheExc
 
 	Branche* branche = &_root;
 
+	cout << "getBranche() : " << endl;
+
 	for(iter = brancheId.begin() ; (iter != brancheId.end() && branche != NULL) ; iter++) {
+		cout << *iter << " => ";
 		branche = branche->getSubBranche(*iter);
 
 		if(branche == NULL) {
@@ -65,6 +70,37 @@ Branche* DataTree::addBrancheForClient(vector<int>& parentBrancheId, int branche
 
 	return branche;
 }
+
+
+
+Valeur* DataTree::addValeurInt(vector<int>& parentBrancheId, int valeur) {
+	return addValeurIntForClient(parentBrancheId, valeur, 0, NULL);
+}
+
+Valeur* DataTree::addValeurIntForClient(vector<int>& parentBrancheId, int valeur, int brancheClientTmpId, Client* client) {
+	Branche* parentBranche = getBranche(parentBrancheId);
+
+	Valeur* val = parentBranche->createValeurInt(valeur);
+
+	vector<Client>::iterator clIter;
+
+	for(clIter = _clients.begin() ; clIter != _clients.end() ; clIter++) {
+		Client& cl = *clIter;
+
+		MarqueurValeurClient* marqueur = new MarqueurValeurClient(val);
+
+		if(&cl == client) {
+			marqueur->setTemporaryId(brancheClientTmpId);
+		}
+
+		client->addMarqueur(*marqueur);
+	}
+
+	return val;
+}
+
+
+
 
 void DataTree::diffuseChangements(void) {
 	vector<Client>::iterator clientIter;

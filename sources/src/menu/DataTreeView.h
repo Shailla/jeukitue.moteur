@@ -19,7 +19,7 @@ class DataTreeView : public View
 {
 	AG_Treetbl* _tree;
 
-	void drawBranche(Branche* branche, AG_Treetbl* tree, int colId);
+	void drawBranche(Branche* branche, AG_Treetbl* tree, AG_TreetblRow* parentRow, int& rowId);
 
 public:
     DataTreeView(const AG_EventFn controllerCallback);

@@ -37,6 +37,10 @@ public:
 
 	Branche* addBranche(vector<int>& parentBrancheId);
 	Branche* addBrancheForClient(vector<int>& parentBrancheId, int brancheTmpId, Client* client);
+
+	Valeur* addValeurInt(vector<int>& parentBrancheId, int valeur);
+	Valeur* addValeurIntForClient(vector<int>& parentBrancheId, int valeur, int brancheTmpId, Client* client);
+
 	void diffuseChangements();
 };
 

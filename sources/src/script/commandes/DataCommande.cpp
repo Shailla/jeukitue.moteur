@@ -38,6 +38,21 @@ void DataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalPa
 				printErrLn("La branche parent specifiee n'existe pas", userOutput);
 			}
 		}
+		else if(subCommande2 == "valeur") {
+			string subCommande3 = StringUtils::findAndEraseFirstWord(ligne);
+
+			if(subCommande3 == "int") {
+				vector<int> params = getIntParameters(ligne);
+
+				int valeur = *params.begin();
+				params.erase(params.begin());
+
+				dataTree.addValeurInt(params, valeur);
+			}
+			else {
+				printErrLn("Syntaxe incorrecte", userOutput);
+			}
+		}
 		else {
 			printErrLn("Syntaxe incorrecte", userOutput);
 		}

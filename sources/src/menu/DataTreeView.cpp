@@ -1,5 +1,8 @@
 
 #include <sstream>
+#include <iostream>
+
+using namespace std;
 
 #include <agar/core.h>
 #include <agar/gui.h>
@@ -39,14 +42,19 @@ void DataTreeView::show(void) {
 	AG_TreetblClearRows(_tree);
 
 	// Arbre des données du serveur
-	AG_TreetblAddCol(_tree, 0, "<XXXXXXXXXXXXXXXXXXXXX>", "");
-	AG_TreetblAddCol(_tree, 1, "<XXXXXXXXXXXXXXXXXXXXX>", "");
-	AG_TreetblAddCol(_tree, 2, "<XXXXXXXXXXXXXXXXXXXXX>", "");
-	AG_TreetblAddCol(_tree, 3, "<XXXXXXXXXXXXXXXXXXXXX>", "");
-	AG_TreetblAddCol(_tree, 4, "<XXXXXXXXXXXXXXXXXXXXX>", "");
+	AG_TreetblAddCol(_tree, 0, NULL, "");
 
+	int rowId = 0;
+
+	// Root
 	Branche& root = dataTree.getRoot();
-	drawBranche(&root, _tree, 0);
+
+	ostringstream tete;
+	tete << "ROOT " << root.getBrancheId();
+	AG_TreetblRow* rootRow = AG_TreetblAddRow(_tree, NULL, rowId++, "%d%s", 0, tete.str().c_str());
+	AG_TreetblExpandRow (_tree, rootRow);
+
+	drawBranche(&root, _tree, rootRow, rowId);
 
 	// Rafraichissement de la page
 	AG_WindowUpdate(m_window);
@@ -65,21 +73,17 @@ string getValueString(Valeur* valeur) {
 	return txt.str();
 }
 
-void DataTreeView::drawBranche(Branche* branche, AG_Treetbl* tree, int colId) {
-	// Tête de la branche
-	ostringstream tete;
-	tete << "Branche " << branche->getBrancheId();
-	AG_TreetblAddRow(tree, NULL, colId, "%s", tete.str().c_str());
+void DataTreeView::drawBranche(Branche* branche, AG_Treetbl* tree, AG_TreetblRow* parentRow, int& rowId) {
 
 	// Valeurs filles
 	{
-		map<int, Valeur*> subBranches = branche->getValeurs();
+		map<int, Valeur*>& subBranches = branche->getValeurs();
 		map<int, Valeur*>::iterator itVa;
 
 		for(itVa = subBranches.begin() ; itVa != subBranches.end() ; itVa++) {
 			Valeur* valeur = itVa->second;
 			string txt = getValueString(valeur);
-			AG_TreetblAddRow(tree, NULL, colId, "%s", txt.c_str());
+			AG_TreetblAddRow(tree, parentRow, rowId++, "%d%s", 0, txt.c_str());
 		}
 	}
 
@@ -89,8 +93,14 @@ void DataTreeView::drawBranche(Branche* branche, AG_Treetbl* tree, int colId) {
 		map<int, Branche*>::iterator itBr;
 
 		for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
-			drawBranche(itBr->second, _tree, colId + 1);
+			// Tête de la branche
+			ostringstream tete;
+			tete << "Branche " << branche->getBrancheId();
+			AG_TreetblRow* subRow = AG_TreetblAddRow(tree, parentRow, rowId++, "%d%s", 0, tete.str().c_str());
+			drawBranche(itBr->second, _tree, subRow, rowId);
 		}
 	}
+
+	AG_TreetblExpandRow (tree, parentRow);
 }
 

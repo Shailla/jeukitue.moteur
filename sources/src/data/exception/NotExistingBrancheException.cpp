@@ -5,7 +5,7 @@
  *      Author: vgdj7997
  */
 
-#include "script/exception/NotExistingBrancheException.h"
+#include "data/exception/NotExistingBrancheException.h"
 
 NotExistingBrancheException::NotExistingBrancheException() {
 }

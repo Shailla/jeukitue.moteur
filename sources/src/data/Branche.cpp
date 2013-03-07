@@ -5,13 +5,15 @@
  *      Author: vgdj7997
  */
 
-#include "data/Branche.h"
-
 #include <string>
 #include <iostream>
 #include <stdexcept>
 
 using namespace std;
+
+#include "data/ValeurInt.h"
+
+#include "data/Branche.h"
 
 Branche::Branche(int brancheId) {
 	_brancheId = brancheId;
@@ -21,8 +23,6 @@ Branche::~Branche() {
 }
 
 Branche* Branche::getSubBranche(int brancheId) const {
-	cout << endl << "JJJ : " << brancheId << flush;
-
 	Branche* branche = NULL;
 
 	try {
@@ -38,13 +38,26 @@ Branche* Branche::getSubBranche(int brancheId) const {
 
 Branche* Branche::createSubBranche() {
 	// Alloue une référence pour la nouvelle branche
-	int ref = _referenceGenerator.genRef();
+	int ref = _brancheRefGenerator.genRef() - 1;		// On soustrait 1 pour que les identifiants démarrent à 0
+
+	cout << endl << "REF:" << ref << flush;
 
 	// Crée la nouvelle branche
 	Branche* newBranche = new Branche(ref);
 	_subBranches[ref] = newBranche;
 
 	return newBranche;
+}
+
+Valeur* Branche::createValeurInt(int valeur) {
+	// Alloue une référence pour la nouvelle branche
+	int ref = _valeurRefGenerator.genRef() - 1;		// On soustrait 1 pour que les identifiants démarrent à 0
+
+	// Crée la nouvelle branche
+	Valeur* newValeur = new ValeurInt(ref);
+	_valeurs[ref] = newValeur;
+
+	return newValeur;
 }
 
 map<int, Branche*>& Branche::getSubBranches() {

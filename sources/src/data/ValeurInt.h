@@ -18,7 +18,7 @@ using namespace std;
 class ValeurInt : public Valeur {
 	int _valeur;
 public:
-	ValeurInt();
+	ValeurInt(int valeur);
 	virtual ~ValeurInt();
 
 	int getInt() const;

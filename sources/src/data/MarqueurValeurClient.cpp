@@ -12,6 +12,5 @@ MarqueurValeurClient::MarqueurValeurClient(Valeur* valeur) {
 }
 
 MarqueurValeurClient::~MarqueurValeurClient() {
-	// TODO Auto-generated destructor stub
 }
 

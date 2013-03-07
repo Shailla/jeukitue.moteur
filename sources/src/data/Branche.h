@@ -21,7 +21,8 @@ class Branche {
 	map<int, Branche*> _subBranches;
 	map<int, Valeur*> _valeurs;
 
-	JktUtils::CGenRef _referenceGenerator;
+	JktUtils::CGenRef _brancheRefGenerator;
+	JktUtils::CGenRef _valeurRefGenerator;
 public:
 	Branche(int brancheId);
 	virtual ~Branche();
@@ -32,6 +33,7 @@ public:
 	int getBrancheId() const;
 
 	Branche* createSubBranche();
+	Valeur* createValeurInt(int valeur);
 };
 
 #endif /* BRANCHE_H_ */

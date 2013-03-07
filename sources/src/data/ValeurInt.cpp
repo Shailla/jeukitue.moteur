@@ -7,8 +7,8 @@
 
 #include "data/ValeurInt.h"
 
-ValeurInt::ValeurInt() {
-	_valeur = 0;
+ValeurInt::ValeurInt(int valeur) {
+	_valeur = valeur;
 }
 
 ValeurInt::~ValeurInt() {

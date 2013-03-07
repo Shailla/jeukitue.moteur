@@ -5,6 +5,8 @@
  *      Author: Erwin
  */
 
+#include <iostream>
+
 using namespace std;
 
 #include "util/StringUtils.h"
@@ -28,7 +30,13 @@ void DataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalPa
 
 		if(subCommande2 == "branche") {
 			vector<int> parentBrancheId = getIntParameters(ligne);
-			dataTree.addBranche(parentBrancheId);
+
+			try {
+				dataTree.addBranche(parentBrancheId);
+			}
+			catch(NotExistingBrancheException& exception) {
+				printErrLn("La branche parent specifiee n'existe pas", userOutput);
+			}
 		}
 		else {
 			printErrLn("Syntaxe incorrecte", userOutput);
@@ -40,5 +48,5 @@ void DataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalPa
 }
 
 string DataCommande::getHelp() {
-	return "TODO";
+	return "data add branche <brancheId> : Ajouter une branche dans l'arbre de donnees sous la branche <brancheId>.\nExemple : data add branche 0 3 2";
 }

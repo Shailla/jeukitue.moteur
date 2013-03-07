@@ -5,12 +5,14 @@
  *      Author: vgdj7997
  */
 
+#include <iostream>
 #include <vector>
 
 using namespace std;
 
 #include "data/DataTree.h"
 #include "data/MarqueurBrancheClient.h"
+#include "data/exception/NotExistingBrancheException.h"
 
 DataTree::DataTree() : _root(0) {
 }
@@ -18,13 +20,17 @@ DataTree::DataTree() : _root(0) {
 DataTree::~DataTree() {
 }
 
-Branche* DataTree::getBranche(vector<int> brancheId) {
+Branche* DataTree::getBranche(vector<int> brancheId) throw(NotExistingBrancheException) {
 	vector<int>::iterator iter;
 
 	Branche* branche = &_root;
 
-	for(iter = brancheId.begin() ; (iter != brancheId.end() && branche != 0) ; iter++) {
+	for(iter = brancheId.begin() ; (iter != brancheId.end() && branche != NULL) ; iter++) {
 		branche = branche->getSubBranche(*iter);
+
+		if(branche == NULL) {
+			throw NotExistingBrancheException();
+		}
 	}
 
 	return branche;
@@ -40,6 +46,7 @@ Branche* DataTree::addBranche(vector<int>& parentBrancheId) {
 
 Branche* DataTree::addBrancheForClient(vector<int>& parentBrancheId, int brancheClientTmpId, Client* client) {
 	Branche* parentBranche = getBranche(parentBrancheId);
+
 	Branche* branche = parentBranche->createSubBranche();
 
 	vector<Client>::iterator clIter;

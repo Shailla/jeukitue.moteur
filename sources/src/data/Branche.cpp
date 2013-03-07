@@ -8,6 +8,8 @@
 #include "data/Branche.h"
 
 #include <string>
+#include <iostream>
+#include <stdexcept>
 
 using namespace std;
 
@@ -19,7 +21,19 @@ Branche::~Branche() {
 }
 
 Branche* Branche::getSubBranche(int brancheId) const {
-	return _subBranches.at(brancheId);
+	cout << endl << "JJJ : " << brancheId << flush;
+
+	Branche* branche = NULL;
+
+	try {
+		branche = _subBranches.at(brancheId);
+	}
+	catch(out_of_range& exception) {
+		cout << endl << "OUT_OF_RANGE_EXCEPTION" << flush;
+		branche = NULL;
+	}
+
+	return branche;
 }
 
 Branche* Branche::createSubBranche() {

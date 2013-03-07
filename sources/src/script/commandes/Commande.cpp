@@ -53,20 +53,26 @@ std::vector<int> Commande::getIntParameters(const string& ligne) throw(IllegalPa
 
 	int var;
 
+	cout << endl << "NOMBRE : " << parameters.size();
+
 	for(iter = parameters.begin() ; iter != parameters.end() ; iter++) {
 		string p = *iter;
 
-		cout << endl << "bbb:'" << p << "'";
+		cout << endl << "bbb:'" << p << "'" << flush;
 
 		if(!(istringstream(p) >> var)) {
+			cout << endl << "EXCEPTION" << flush;
 			throw IllegalParameterException();
 		}
 
-		cout << endl << "aaaa:'" << p << "' = " << var;
+		cout << endl << "aaaa:'" << p << "' = " << var << flush;
 
 		result.push_back(var);
+
+		cout << endl << "ccc" << flush;
 	}
 
+	cout << endl << "ddd" << flush;
 
 	return result;
 }

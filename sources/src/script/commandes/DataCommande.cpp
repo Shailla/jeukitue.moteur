@@ -29,10 +29,11 @@ void DataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalPa
 		string subCommande2 = StringUtils::findAndEraseFirstWord(ligne);
 
 		if(subCommande2 == "branche") {
+			string brancheName = StringUtils::findAndEraseFirstWord(ligne);
 			vector<int> parentBrancheId = getIntParameters(ligne);
 
 			try {
-				dataTree.addBranche(parentBrancheId);
+				dataTree.addBranche(parentBrancheId, brancheName);
 			}
 			catch(NotExistingBrancheException& exception) {
 				printErrLn("La branche parent specifiee n'existe pas", userOutput);
@@ -42,12 +43,13 @@ void DataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalPa
 			string subCommande3 = StringUtils::findAndEraseFirstWord(ligne);
 
 			if(subCommande3 == "int") {
+				string valeurName = StringUtils::findAndEraseFirstWord(ligne);
 				vector<int> params = getIntParameters(ligne);
 
 				int valeur = *params.begin();
 				params.erase(params.begin());
 
-				dataTree.addValeurInt(params, valeur);
+				dataTree.addValeurInt(params, valeurName, valeur);
 			}
 			else {
 				printErrLn("Syntaxe incorrecte", userOutput);

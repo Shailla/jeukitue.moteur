@@ -50,7 +50,7 @@ void DataTreeView::show(void) {
 	Branche& root = dataTree.getRoot();
 
 	ostringstream tete;
-	tete << "ROOT " << root.getBrancheId();
+	tete << "ROOT";
 	AG_TreetblRow* rootRow = AG_TreetblAddRow(_tree, NULL, rowId++, "%d%s", 0, tete.str().c_str());
 	AG_TreetblExpandRow (_tree, rootRow);
 
@@ -67,8 +67,11 @@ string getValueString(Valeur* valeur) {
 
 	if(dynamic_cast<ValeurInt*>(valeur) != 0) {
 		ValeurInt* vl = (ValeurInt*)valeur;
-		txt << "Valeur " << vl->getValeurId() << "= '" << vl->getInt();
+		txt << "Valeur[" << vl->getValeurId() << ":" << vl->getValeurName() << "] : '" << vl->getInt() << "'";
 	}
+	else {
+			txt << "Valeur[" << valeur->getValeurId() << ":" << valeur->getValeurName() << "] : type inconnu";
+		}
 
 	return txt.str();
 }
@@ -95,7 +98,7 @@ void DataTreeView::drawBranche(Branche* branche, AG_Treetbl* tree, AG_TreetblRow
 		for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
 			// Tête de la branche
 			ostringstream tete;
-			tete << "Branche " << branche->getBrancheId();
+			tete << "Branche[" << branche->getBrancheId() << ":" << branche->getBrancheName()  << "]";
 			AG_TreetblRow* subRow = AG_TreetblAddRow(tree, parentRow, rowId++, "%d%s", 0, tete.str().c_str());
 			drawBranche(itBr->second, _tree, subRow, rowId);
 		}

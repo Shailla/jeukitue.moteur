@@ -7,7 +7,7 @@
 
 #include "data/ValeurInt.h"
 
-ValeurInt::ValeurInt(int valeur) {
+ValeurInt::ValeurInt(int valeurId, const string& valeurName, int valeur) : Valeur(valeurId, valeurName) {
 	_valeur = valeur;
 }
 

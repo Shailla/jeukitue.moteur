@@ -18,22 +18,25 @@ using namespace std;
 
 class Branche {
 	int _brancheId;
+	string _brancheName;
+
 	map<int, Branche*> _subBranches;
 	map<int, Valeur*> _valeurs;
 
 	JktUtils::CGenRef _brancheRefGenerator;
 	JktUtils::CGenRef _valeurRefGenerator;
 public:
-	Branche(int brancheId);
+	Branche(int brancheId, const string& brancheName);
 	virtual ~Branche();
 
 	Branche* getSubBranche(int brancheId) const;
 	map<int, Branche*>& getSubBranches();
 	map<int, Valeur*>& getValeurs();
+	string getBrancheName() const;
 	int getBrancheId() const;
 
-	Branche* createSubBranche();
-	Valeur* createValeurInt(int valeur);
+	Branche* createSubBranche(const string& brancheName);
+	Valeur* createValeurInt(const string& valeurName, int valeur);
 };
 
 #endif /* BRANCHE_H_ */

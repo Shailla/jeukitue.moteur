@@ -7,11 +7,16 @@
 
 #include "data/Valeur.h"
 
-Valeur::Valeur() {
-	_valeurId = 0;
+Valeur::Valeur(int valeurId, const string& valeurName) {
+	_valeurId = valeurId;
+	_valeurName = valeurName;
 }
 
 Valeur::~Valeur() {
+}
+
+string Valeur::getValeurName() const {
+	return _valeurName;
 }
 
 int Valeur::getValeurId() const {

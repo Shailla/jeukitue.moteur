@@ -15,8 +15,9 @@ using namespace std;
 
 #include "data/Branche.h"
 
-Branche::Branche(int brancheId) {
+Branche::Branche(int brancheId, const string& brancheName) {
 	_brancheId = brancheId;
+	_brancheName = brancheName;
 }
 
 Branche::~Branche() {
@@ -36,25 +37,23 @@ Branche* Branche::getSubBranche(int brancheId) const {
 	return branche;
 }
 
-Branche* Branche::createSubBranche() {
+Branche* Branche::createSubBranche(const string& brancheName) {
 	// Alloue une référence pour la nouvelle branche
 	int ref = _brancheRefGenerator.genRef() - 1;		// On soustrait 1 pour que les identifiants démarrent à 0
 
-	cout << endl << "REF:" << ref << flush;
-
 	// Crée la nouvelle branche
-	Branche* newBranche = new Branche(ref);
+	Branche* newBranche = new Branche(ref, brancheName);
 	_subBranches[ref] = newBranche;
 
 	return newBranche;
 }
 
-Valeur* Branche::createValeurInt(int valeur) {
+Valeur* Branche::createValeurInt(const string& valeurName, int valeur) {
 	// Alloue une référence pour la nouvelle branche
 	int ref = _valeurRefGenerator.genRef() - 1;		// On soustrait 1 pour que les identifiants démarrent à 0
 
 	// Crée la nouvelle branche
-	Valeur* newValeur = new ValeurInt(ref);
+	Valeur* newValeur = new ValeurInt(ref, valeurName, valeur);
 	_valeurs[ref] = newValeur;
 
 	return newValeur;
@@ -66,6 +65,10 @@ map<int, Branche*>& Branche::getSubBranches() {
 
 map<int, Valeur*>& Branche::getValeurs() {
 	return _valeurs;
+}
+
+string Branche::getBrancheName() const {
+	return _brancheName;
 }
 
 int Branche::getBrancheId() const {

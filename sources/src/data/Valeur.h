@@ -16,12 +16,14 @@ using namespace std;
 
 class Valeur {
 	int _valeurId;
+	string _valeurName;
 
 	JktUtils::CGenRef _referenceGenerator;
 public:
-	Valeur();
+	Valeur(int valeurId, const string& valeurName);
 	virtual ~Valeur();
 
+	string getValeurName() const;
 	int getValeurId() const;
 };
 

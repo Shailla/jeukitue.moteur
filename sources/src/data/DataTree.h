@@ -35,11 +35,11 @@ public:
 	Branche* getBranche(vector<int> brancheId) throw(NotExistingBrancheException);
 	Branche& getRoot();
 
-	Branche* addBranche(vector<int>& parentBrancheId);
-	Branche* addBrancheForClient(vector<int>& parentBrancheId, int brancheTmpId, Client* client);
+	Branche* addBranche(vector<int>& parentBrancheId, const string& brancheName);
+	Branche* addBrancheForClient(vector<int>& parentBrancheId, const string& brancheName, int brancheTmpId, Client* client);
 
-	Valeur* addValeurInt(vector<int>& parentBrancheId, int valeur);
-	Valeur* addValeurIntForClient(vector<int>& parentBrancheId, int valeur, int brancheTmpId, Client* client);
+	Valeur* addValeurInt(vector<int>& parentBrancheId, const string& valeurName, int valeur);
+	Valeur* addValeurIntForClient(vector<int>& parentBrancheId, const string& valeurName, int valeurTmpId, int valeur, Client* client);
 
 	void diffuseChangements();
 };

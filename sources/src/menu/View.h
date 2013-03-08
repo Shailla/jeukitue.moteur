@@ -13,6 +13,8 @@ public:
 	View(const AG_EventFn controllerCallback);
 	virtual ~View(void);
 
+	virtual void refresh(void);
+
 	virtual void show(void);
     virtual void hide(void);
 };

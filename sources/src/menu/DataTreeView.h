@@ -26,6 +26,7 @@ public:
     ~DataTreeView(void);
 
     void show(void);
+    void refresh();
 };
 
 #endif

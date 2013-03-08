@@ -11,6 +11,9 @@ View::~View(void)
 {
 }
 
+void View::refresh() {
+}
+
 void View::show(void)
 {
 	AG_WindowShow(m_window);

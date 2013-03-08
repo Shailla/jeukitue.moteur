@@ -24,9 +24,13 @@ DataTreeView::DataTreeView(const AG_EventFn controllerCallback)
 
 	_tree = AG_TreetblNew(m_window, AG_TREETBL_EXPAND, NULL, NULL);
 
-	// Bouton retour
+
     AG_SeparatorNewHoriz(m_window);
 
+    // Bouton rafraîchir
+    AG_ButtonNewFn(m_window, 0, "Rafraichir", controllerCallback, "%i%p", Controller::Refresh, this);
+
+    // Bouton retour
 	AG_Button* _buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowDebugViewAction);
     AG_ExpandHoriz(_buttonRetour);
 
@@ -38,7 +42,7 @@ DataTreeView::~DataTreeView(void)
 {
 }
 
-void DataTreeView::show(void) {
+void DataTreeView::refresh(void) {
 	AG_TreetblClearRows(_tree);
 
 	// Arbre des données du serveur
@@ -58,7 +62,10 @@ void DataTreeView::show(void) {
 
 	// Rafraichissement de la page
 	AG_WindowUpdate(m_window);
+}
 
+void DataTreeView::show(void) {
+	refresh();
 	View::show();
 }
 

@@ -385,6 +385,14 @@ void Controller::executeAction(AG_Event *event) {
 		}
 		break;
 
+	// Demande de rafraichissement de la vue passée en paramètre
+	case Refresh:
+		{
+			View* view = (View*)AG_PTR(2);
+			view->refresh();
+		}
+		break;
+
     case QuitAction:
 		quit_game(0);
 		break;

@@ -30,7 +30,6 @@ Branche* Branche::getSubBranche(int brancheId) const {
 		branche = _subBranches.at(brancheId);
 	}
 	catch(out_of_range& exception) {
-		cout << endl << "OUT_OF_RANGE_EXCEPTION" << flush;
 		branche = NULL;
 	}
 

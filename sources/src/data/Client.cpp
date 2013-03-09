@@ -7,6 +7,7 @@
 
 #include <map>
 #include <string>
+#include <stdexcept>
 
 using namespace std;
 
@@ -19,12 +20,21 @@ Client::Client(const string& debugName) {
 Client::~Client() {
 }
 
-string Client::getDebugName() {
+const string& Client::getDebugName() const {
 	return _debugName;
 }
 
 MarqueurClient* Client::getMarqueur(Donnee* donnee) {
-	return _marqueurs.at(donnee);
+	MarqueurClient* marqueur;
+
+	try {
+		marqueur = _marqueurs.at(donnee);
+	}
+	catch(out_of_range& exception) {
+		marqueur = NULL;
+	}
+
+	return marqueur;
 }
 
 map<Donnee*, MarqueurClient*>& Client::getMarqueurs() {
@@ -33,6 +43,5 @@ map<Donnee*, MarqueurClient*>& Client::getMarqueurs() {
 
 void Client::addMarqueur(Donnee* donnee, int donneeTmpId, bool isUpToDate) {
 	MarqueurClient* marqueur = new MarqueurClient(donnee, donneeTmpId, isUpToDate);
-
 	_marqueurs[donnee] = marqueur;
 }

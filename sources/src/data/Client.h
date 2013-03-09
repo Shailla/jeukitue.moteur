@@ -22,7 +22,7 @@ public:
 
 	MarqueurClient* getMarqueur(Donnee* donnee);
 	std::map<Donnee*, MarqueurClient*>& getMarqueurs();
-	std::string getDebugName();
+	const std::string& getDebugName() const;
 	void addMarqueur(Donnee* donnee, int donneeTmpId, bool isUpToDate);
 };
 

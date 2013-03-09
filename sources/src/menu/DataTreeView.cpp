@@ -112,7 +112,13 @@ void DataTreeView::refresh(void) {
 
 		if(selectedDonnee) {
 			MarqueurClient* marqueur = client->getMarqueur(selectedDonnee);
-			AG_TableAddRow(_clientsTable, "%s:%d:%b", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->isUpToDate());
+
+			if(marqueur) {
+				AG_TableAddRow(_clientsTable, "%s:%d:%b", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->isUpToDate());
+			}
+			else {
+				AG_TableAddRow(_clientsTable, "%s:%s", client->getDebugName().c_str(), "Pas de marqueur");
+			}
 		}
 		else {
 			AG_TableAddRow(_clientsTable, "%s", client->getDebugName().c_str());

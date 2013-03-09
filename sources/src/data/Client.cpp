@@ -23,28 +23,16 @@ string Client::getDebugName() {
 	return _debugName;
 }
 
-MarqueurBrancheClient* Client::getMarqueurBranche(Branche* branche) {
-	_marqueursBranche.at(branche);
+MarqueurClient* Client::getMarqueur(Donnee* donnee) {
+	return _marqueurs.at(donnee);
 }
 
-MarqueurValeurClient* Client::getMarqueurValeur(Valeur* valeur) {
-	_marqueursValeur.at(valeur);
+map<Donnee*, MarqueurClient*>& Client::getMarqueurs() {
+	return _marqueurs;
 }
 
-map<Branche*, MarqueurBrancheClient*>& Client::getMarqueursBranche() {
-	return _marqueursBranche;
-}
+void Client::addMarqueur(Donnee* donnee, int donneeTmpId, bool isUpToDate) {
+	MarqueurClient* marqueur = new MarqueurClient(donnee, donneeTmpId, isUpToDate);
 
-map<Valeur*, MarqueurValeurClient*>& Client::getMarqueursValeur() {
-	return _marqueursValeur;
-}
-
-void Client::addMarqueur(MarqueurBrancheClient* marqueur) {
-	Branche* branche = marqueur->getBranche();
-	_marqueursBranche[branche] = marqueur;
-}
-
-void Client::addMarqueur(MarqueurValeurClient* marqueur) {
-	Valeur* valeur = marqueur->getValeur();
-	_marqueursValeur[valeur] = marqueur;
+	_marqueurs[donnee] = marqueur;
 }

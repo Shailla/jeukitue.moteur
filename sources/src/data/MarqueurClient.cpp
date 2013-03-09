@@ -7,12 +7,17 @@
 
 #include "data/MarqueurClient.h"
 
-MarqueurClient::MarqueurClient() {
-	_isUpToDate = false;
-	_temporaryId = 0;
+MarqueurClient::MarqueurClient(Donnee* donnee, int donneeTmpId, bool isUpToDate) {
+	_donnee = donnee;
+	_isUpToDate = isUpToDate;
+	_temporaryId = donneeTmpId;
 }
 
 MarqueurClient::~MarqueurClient() {
+}
+
+Donnee* MarqueurClient::getDonnee() const {
+	return _donnee;
 }
 
 bool MarqueurClient::isUpToDate(void) const {

@@ -10,8 +10,7 @@
 
 using namespace std;
 
-#include "data/MarqueurBrancheClient.h"
-#include "data/MarqueurValeurClient.h"
+#include "data/MarqueurClient.h"
 #include "data/exception/NotExistingBrancheException.h"
 
 #include "data/DataTree.h"
@@ -59,13 +58,12 @@ Branche* DataTree::addBrancheForClient(vector<int>& parentBrancheId, const strin
 	for(clIter = _clients.begin() ; clIter != _clients.end() ; clIter++) {
 		Client* cl = *clIter;
 
-		MarqueurBrancheClient* marqueur = new MarqueurBrancheClient(branche);
-
 		if(cl == client) {
-			marqueur->setTemporaryId(brancheClientTmpId);
+			client->addMarqueur(branche, brancheClientTmpId, false);
 		}
-
-		client->addMarqueur(marqueur);
+		else {
+			client->addMarqueur(branche, 0, false);
+		}
 	}
 
 	return branche;
@@ -85,13 +83,12 @@ Valeur* DataTree::addValeurIntForClient(vector<int>& parentBrancheId, const stri
 	for(clIter = _clients.begin() ; clIter != _clients.end() ; clIter++) {
 		Client* cl = *clIter;
 
-		MarqueurValeurClient* marqueur = new MarqueurValeurClient(val);
-
 		if(cl == client) {
-			marqueur->setTemporaryId(valeurClientTmpId);
+			client->addMarqueur(val, valeurClientTmpId, false);
 		}
-
-		client->addMarqueur(marqueur);
+		else {
+			client->addMarqueur(val, 0, false);
+		}
 	}
 
 	return val;
@@ -112,9 +109,9 @@ void DataTree::diffuseChangements(void) {
 
 	for(clientIter = _clients.begin() ; clientIter != _clients.end() ; clientIter++) {
 		Client* client = *clientIter;
-		map<Branche*, MarqueurBrancheClient*>& marqueurs = client->getMarqueursBranche();
+		map<Donnee*, MarqueurClient*>& marqueurs = client->getMarqueurs();
 
-		map<Branche*, MarqueurBrancheClient*>::iterator marqIter;
+		map<Donnee*, MarqueurClient*>::iterator marqIter;
 
 		for(marqIter = marqueurs.begin() ; marqIter != marqueurs.end() ; marqIter++) {
 			MarqueurClient* marqueur = marqIter->second;

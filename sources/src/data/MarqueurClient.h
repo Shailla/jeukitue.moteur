@@ -8,14 +8,19 @@
 #ifndef MARQUEURCLIENT_H_
 #define MARQUEURCLIENT_H_
 
+#include "data/Donnee.h"
+
 #include "data/Branche.h"
 
 class MarqueurClient {
+	Donnee* _donnee;
 	bool _isUpToDate;
 	int _temporaryId;
 public:
-	MarqueurClient();
+	MarqueurClient(Donnee* donnee, int donneeTmpId, bool isUpToDate);
 	virtual ~MarqueurClient();
+
+	Donnee* getDonnee() const;
 
 	bool isUpToDate(void) const;
 

@@ -10,24 +10,20 @@
 
 #include <map>
 
-#include "data/MarqueurBrancheClient.h"
-#include "data/MarqueurValeurClient.h"
+#include "data/Donnee.h"
+#include "data/MarqueurClient.h"
 
 class Client {
 	std::string _debugName;
-	std::map<Branche*, MarqueurBrancheClient*> _marqueursBranche;
-	std::map<Valeur*, MarqueurValeurClient*> _marqueursValeur;
+	std::map<Donnee*, MarqueurClient*> _marqueurs;
 public:
 	Client(const string& debugName);
 	virtual ~Client();
 
-	MarqueurBrancheClient* getMarqueurBranche(Branche* branche);
-	MarqueurValeurClient* getMarqueurValeur(Valeur* valeur);
-	std::map<Branche*, MarqueurBrancheClient*>& getMarqueursBranche();
-	std::map<Valeur*, MarqueurValeurClient*>& getMarqueursValeur();
+	MarqueurClient* getMarqueur(Donnee* donnee);
+	std::map<Donnee*, MarqueurClient*>& getMarqueurs();
 	std::string getDebugName();
-	void addMarqueur(MarqueurBrancheClient* marqueur);
-	void addMarqueur(MarqueurValeurClient* marqueur);
+	void addMarqueur(Donnee* donnee, int donneeTmpId, bool isUpToDate);
 };
 
 #endif /* CLIENT_H_ */

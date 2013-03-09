@@ -12,9 +12,11 @@
 
 using namespace std;
 
+#include "data/Donnee.h"
+
 #include "util/GenRef.h"
 
-class Valeur {
+class Valeur : public Donnee {
 	int _valeurId;
 	string _valeurName;
 

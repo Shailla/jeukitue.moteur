@@ -13,10 +13,11 @@
 
 using namespace std;
 
+#include "data/Donnee.h"
 #include "data/Valeur.h"
 #include "util/GenRef.h"
 
-class Branche {
+class Branche : public Donnee {
 	int _brancheId;
 	string _brancheName;
 

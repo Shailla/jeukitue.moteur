@@ -64,10 +64,10 @@ DataTreeView::~DataTreeView(void)
 void DataTreeView::refresh(void) {
 
 	AG_TreetblRow* selectedTreeRow = AG_TreetblSelectedRow(_dataTree);
-	Branche* selectedBranche = NULL;
+	Branche* selectedDonnee = NULL;
 
 	if(selectedTreeRow) {
-		selectedBranche = _treeRows.at(selectedTreeRow);
+		selectedDonnee = _treeRows.at(selectedTreeRow);
 	}
 
 
@@ -110,9 +110,9 @@ void DataTreeView::refresh(void) {
 	for(iter = clients.begin() ; iter != clients.end() ; iter++) {
 		Client* client = *iter;
 
-		if(selectedBranche) {
-			MarqueurBrancheClient* marqueurBranche = client->getMarqueurBranche(selectedBranche);
-			AG_TableAddRow(_clientsTable, "%s:%d:%b", client->getDebugName().c_str(), marqueurBranche->getTemporaryId(), marqueurBranche->isUpToDate());
+		if(selectedDonnee) {
+			MarqueurClient* marqueur = client->getMarqueur(selectedDonnee);
+			AG_TableAddRow(_clientsTable, "%s:%d:%b", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->isUpToDate());
 		}
 		else {
 			AG_TableAddRow(_clientsTable, "%s", client->getDebugName().c_str());

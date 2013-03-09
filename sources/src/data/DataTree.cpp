@@ -54,25 +54,25 @@ Branche* DataTree::addBrancheForClient(vector<int>& parentBrancheId, const strin
 
 	Branche* branche = parentBranche->createSubBranche(brancheName);
 
-	vector<Client>::iterator clIter;
+	vector<Client*>::iterator clIter;
 
 	for(clIter = _clients.begin() ; clIter != _clients.end() ; clIter++) {
-		Client& cl = *clIter;
+		Client* cl = *clIter;
 
 		MarqueurBrancheClient* marqueur = new MarqueurBrancheClient(branche);
 
-		if(&cl == client) {
+		if(cl == client) {
 			marqueur->setTemporaryId(brancheClientTmpId);
 		}
 
-		client->addMarqueur(*marqueur);
+		client->addMarqueur(marqueur);
 	}
 
 	return branche;
 }
 
 Valeur* DataTree::addValeurInt(vector<int>& parentBrancheId, const string& valeurName, int valeur) {
-	return addValeurIntForClient(parentBrancheId, valeurName, valeur, 0, NULL);
+	return addValeurIntForClient(parentBrancheId, valeurName, 0, valeur, NULL);
 }
 
 Valeur* DataTree::addValeurIntForClient(vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int valeur, Client* client) {
@@ -80,39 +80,46 @@ Valeur* DataTree::addValeurIntForClient(vector<int>& parentBrancheId, const stri
 
 	Valeur* val = parentBranche->createValeurInt(valeurName, valeur);
 
-	vector<Client>::iterator clIter;
+	vector<Client*>::iterator clIter;
 
 	for(clIter = _clients.begin() ; clIter != _clients.end() ; clIter++) {
-		Client& cl = *clIter;
+		Client* cl = *clIter;
 
 		MarqueurValeurClient* marqueur = new MarqueurValeurClient(val);
 
-		if(&cl == client) {
+		if(cl == client) {
 			marqueur->setTemporaryId(valeurClientTmpId);
 		}
 
-		client->addMarqueur(*marqueur);
+		client->addMarqueur(marqueur);
 	}
 
 	return val;
 }
 
+void DataTree::addClient(const string& clientName) {
+	Client* client = new Client(clientName);
+	_clients.push_back(client);
+}
 
+vector<Client*>& DataTree::getClients() {
+	return _clients;
+}
 
 
 void DataTree::diffuseChangements(void) {
-	vector<Client>::iterator clientIter;
+	vector<Client*>::iterator clientIter;
 
 	for(clientIter = _clients.begin() ; clientIter != _clients.end() ; clientIter++) {
-		Client& client = *clientIter;
-		vector<MarqueurClient>& marqueurs = client.getMarqueurs();
+		Client* client = *clientIter;
+		map<Branche*, MarqueurBrancheClient*>& marqueurs = client->getMarqueursBranche();
 
-		vector<MarqueurClient>::iterator marqIter;
+		map<Branche*, MarqueurBrancheClient*>::iterator marqIter;
 
 		for(marqIter = marqueurs.begin() ; marqIter != marqueurs.end() ; marqIter++) {
-			MarqueurClient& marqueur = *marqIter;
+			MarqueurClient* marqueur = marqIter->second;
 
-			if(!marqueur.isUpToDate()) {
+			if(!marqueur->isUpToDate()) {
 				//collecte(marqueur);
 			}
 		}

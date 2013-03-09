@@ -8,6 +8,8 @@
 #ifndef MARQUEURCLIENT_H_
 #define MARQUEURCLIENT_H_
 
+#include "data/Branche.h"
+
 class MarqueurClient {
 	bool _isUpToDate;
 	int _temporaryId;
@@ -16,6 +18,8 @@ public:
 	virtual ~MarqueurClient();
 
 	bool isUpToDate(void) const;
+
+	int getTemporaryId() const;
 	void setTemporaryId(int temporaryId);
 };
 

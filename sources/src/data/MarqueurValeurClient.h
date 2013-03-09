@@ -16,6 +16,8 @@ class MarqueurValeurClient : public MarqueurClient {
 public:
 	MarqueurValeurClient(Valeur* valeur);
 	virtual ~MarqueurValeurClient();
+
+	Valeur* getValeur();
 };
 
 #endif /* MARQUEURVALEURCLIENT_H_ */

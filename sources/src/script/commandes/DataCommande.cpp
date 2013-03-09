@@ -28,7 +28,12 @@ void DataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalPa
 	if(subCommande1 == "add") {
 		string subCommande2 = StringUtils::findAndEraseFirstWord(ligne);
 
-		if(subCommande2 == "branche") {
+		if(subCommande2 == "client") {
+			string clientName = StringUtils::findAndEraseFirstWord(ligne);
+
+			dataTree.addClient(clientName);
+		}
+		else if(subCommande2 == "branche") {
 			string brancheName = StringUtils::findAndEraseFirstWord(ligne);
 			vector<int> parentBrancheId = getIntParameters(ligne);
 
@@ -43,11 +48,15 @@ void DataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalPa
 			string subCommande3 = StringUtils::findAndEraseFirstWord(ligne);
 
 			if(subCommande3 == "int") {
+				// Nom de la valeur
 				string valeurName = StringUtils::findAndEraseFirstWord(ligne);
-				vector<int> params = getIntParameters(ligne);
 
-				int valeur = *params.begin();
-				params.erase(params.begin());
+				// Valeur de la valeur
+				string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
+				int valeur = getIntParameter(valeurStr);
+
+				// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
+				vector<int> params = getIntParameters(ligne);
 
 				dataTree.addValeurInt(params, valeurName, valeur);
 			}
@@ -65,5 +74,11 @@ void DataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalPa
 }
 
 string DataCommande::getHelp() {
-	return "data add branche <brancheId> : Ajouter une branche dans l'arbre de donnees sous la branche <brancheId>.\nExemple : data add branche 0 3 2";
+	return
+"data add branche <brancheName> <brancheId> : Ajouter une branche nommee <brancheName> dans l'arbre de donnees sous la branche <brancheId>.\
+\nExemple : data add branche ggg 0 3 2\
+\n---\
+\ndata add valeur <type> <valeurName> <valeur> <brancheId> : Ajouter une valeur nommee <valeurName> de type <type> de valeur <valeur> a la branche <brancheId>\
+\n<type> = {int}\
+\nExemple : data add valeur int 22 0 3 2";
 }

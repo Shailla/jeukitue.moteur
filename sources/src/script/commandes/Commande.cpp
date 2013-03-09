@@ -44,6 +44,17 @@ void Commande::printErrLn(const std::string& msg, bool userOutput) {
 	_interpreter->printErrLn(msg, userOutput);
 }
 
+int Commande::getIntParameter(const string& word) throw(IllegalParameterException) {
+	int result;
+
+	if(!(istringstream(word) >> result)) {
+		cout << endl << "EXCEPTION" << flush;
+		throw IllegalParameterException();
+	}
+
+	return result;
+}
+
 std::vector<int> Commande::getIntParameters(const string& ligne) throw(IllegalParameterException) {
 	vector<int> result;
 	vector<string> parameters = StringUtils::splitBySpaces(ligne);

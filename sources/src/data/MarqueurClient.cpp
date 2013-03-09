@@ -19,6 +19,10 @@ bool MarqueurClient::isUpToDate(void) const {
 	return _isUpToDate;
 }
 
+int MarqueurClient::getTemporaryId() const {
+	return _temporaryId;
+}
+
 void MarqueurClient::setTemporaryId(int temporaryId) {
 	_temporaryId = temporaryId;
 }

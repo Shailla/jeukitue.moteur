@@ -16,6 +16,8 @@ class MarqueurBrancheClient : public MarqueurClient {
 public:
 	MarqueurBrancheClient(Branche* branche);
 	virtual ~MarqueurBrancheClient();
+
+	Branche* getBranche();
 };
 
 #endif /* MARQUEURBRANCHECLIENT_H_ */

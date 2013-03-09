@@ -22,17 +22,36 @@ DataTreeView::DataTreeView(const AG_EventFn controllerCallback)
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
 	AG_WindowSetCaption(m_window, "Arbre de la MAP courante");
 
-	_tree = AG_TreetblNew(m_window, AG_TREETBL_EXPAND, NULL, NULL);
 
+	AG_Box* box = AG_BoxNewHoriz(m_window, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
+	AG_Expand(box);
+
+	AG_Box* boxes[2];
+	boxes[0] = AG_BoxNewVert(box, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
+	boxes[1] = AG_BoxNewVert(box, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
+
+	// Arbre des données
+	_dataTree = AG_TreetblNew(boxes[0], AG_TREETBL_EXPAND  | AG_TREETBL_POLLED, NULL, NULL);
+
+	// Tableau des clients
+	_clientsTable = AG_TableNew(boxes[1], AG_TABLE_EXPAND);
+	AG_TableAddCol(_clientsTable, "Nom", "<xxxxxxxxxxxxxxx>", NULL);
+	AG_TableAddCol(_clientsTable, "Tmp ID", "<xxxxxxxxxxxxxxx>", NULL);
+	AG_TableAddCol(_clientsTable, "Uptodate", "<xxxxxxxxxxxxxxx>", NULL);
+	AG_Expand(_clientsTable);
 
     AG_SeparatorNewHoriz(m_window);
 
-    // Bouton rafraîchir
-    AG_ButtonNewFn(m_window, 0, "Rafraichir", controllerCallback, "%i%p", Controller::Refresh, this);
+
+	// Boutons
+	AG_Box* boxButtons = AG_BoxNewHoriz(m_window, 0);
+	AG_ExpandHoriz(boxButtons);
 
     // Bouton retour
-	AG_Button* _buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowDebugViewAction);
-    AG_ExpandHoriz(_buttonRetour);
+	AG_ButtonNewFn(boxButtons, 0, "Retour", controllerCallback, "%i", Controller::ShowDebugViewAction);
+
+    // Bouton rafraîchir
+    AG_ButtonNewFn(boxButtons, 0, "Rafraichir", controllerCallback, "%i%p", Controller::Refresh, this);
 
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_TC, 100, 50);
     hide();
@@ -43,10 +62,24 @@ DataTreeView::~DataTreeView(void)
 }
 
 void DataTreeView::refresh(void) {
-	AG_TreetblClearRows(_tree);
+
+	AG_TreetblRow* selectedTreeRow = AG_TreetblSelectedRow(_dataTree);
+	Branche* selectedBranche = NULL;
+
+	if(selectedTreeRow) {
+		selectedBranche = _treeRows.at(selectedTreeRow);
+	}
+
+
+	/* ************************************
+	 * Mise à jour de l'abre des données
+	 * ***********************************/
+
+	AG_TreetblBegin(_dataTree);
+	_treeRows.clear();
 
 	// Arbre des données du serveur
-	AG_TreetblAddCol(_tree, 0, NULL, "");
+	AG_TreetblAddCol(_dataTree, 0, NULL, "");
 
 	int rowId = 0;
 
@@ -55,10 +88,39 @@ void DataTreeView::refresh(void) {
 
 	ostringstream tete;
 	tete << "ROOT";
-	AG_TreetblRow* rootRow = AG_TreetblAddRow(_tree, NULL, rowId++, "%d%s", 0, tete.str().c_str());
-	AG_TreetblExpandRow (_tree, rootRow);
+	AG_TreetblRow* rootRow = AG_TreetblAddRow(_dataTree, NULL, rowId++, "%d%s", 0, tete.str().c_str());
+	_treeRows[rootRow] = &root;
+	AG_TreetblExpandRow (_dataTree, rootRow);
 
-	drawBranche(&root, _tree, rootRow, rowId);
+	drawBranche(&root, _dataTree, rootRow, rowId);
+
+	AG_TreetblEnd(_dataTree);
+
+
+	/* **************************************
+	 * Mise à jour du tableau des clients
+	 * *************************************/
+
+	AG_TableBegin(_clientsTable);
+
+	vector<Client*> clients = dataTree.getClients();
+
+	vector<Client*>::iterator iter;
+
+	for(iter = clients.begin() ; iter != clients.end() ; iter++) {
+		Client* client = *iter;
+
+		if(selectedBranche) {
+			MarqueurBrancheClient* marqueurBranche = client->getMarqueurBranche(selectedBranche);
+			AG_TableAddRow(_clientsTable, "%s:%d:%b", client->getDebugName().c_str(), marqueurBranche->getTemporaryId(), marqueurBranche->isUpToDate());
+		}
+		else {
+			AG_TableAddRow(_clientsTable, "%s", client->getDebugName().c_str());
+		}
+	}
+
+	AG_TableEnd(_clientsTable);
+
 
 	// Rafraichissement de la page
 	AG_WindowUpdate(m_window);
@@ -87,10 +149,10 @@ void DataTreeView::drawBranche(Branche* branche, AG_Treetbl* tree, AG_TreetblRow
 
 	// Valeurs filles
 	{
-		map<int, Valeur*>& subBranches = branche->getValeurs();
+		map<int, Valeur*>& valeurs = branche->getValeurs();
 		map<int, Valeur*>::iterator itVa;
 
-		for(itVa = subBranches.begin() ; itVa != subBranches.end() ; itVa++) {
+		for(itVa = valeurs.begin() ; itVa != valeurs.end() ; itVa++) {
 			Valeur* valeur = itVa->second;
 			string txt = getValueString(valeur);
 			AG_TreetblAddRow(tree, parentRow, rowId++, "%d%s", 0, txt.c_str());
@@ -103,11 +165,13 @@ void DataTreeView::drawBranche(Branche* branche, AG_Treetbl* tree, AG_TreetblRow
 		map<int, Branche*>::iterator itBr;
 
 		for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
-			// Tête de la branche
+			Branche* subBranche = itBr->second;
+
 			ostringstream tete;
-			tete << "Branche[" << branche->getBrancheId() << ":" << branche->getBrancheName()  << "]";
+			tete << "Branche[" << subBranche->getBrancheId() << ":" << subBranche->getBrancheName()  << "]";
 			AG_TreetblRow* subRow = AG_TreetblAddRow(tree, parentRow, rowId++, "%d%s", 0, tete.str().c_str());
-			drawBranche(itBr->second, _tree, subRow, rowId);
+			_treeRows[subRow] = subBranche;
+			drawBranche(subBranche, tree, subRow, rowId);
 		}
 	}
 

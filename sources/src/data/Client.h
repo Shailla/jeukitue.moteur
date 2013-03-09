@@ -8,21 +8,26 @@
 #ifndef CLIENT_H_
 #define CLIENT_H_
 
-#include <vector>
+#include <map>
 
-using namespace std;
-
-#include "data/MarqueurClient.h"
+#include "data/MarqueurBrancheClient.h"
+#include "data/MarqueurValeurClient.h"
 
 class Client {
-	vector<MarqueurClient> _marqueurs;
+	std::string _debugName;
+	std::map<Branche*, MarqueurBrancheClient*> _marqueursBranche;
+	std::map<Valeur*, MarqueurValeurClient*> _marqueursValeur;
 public:
-	Client();
+	Client(const string& debugName);
 	virtual ~Client();
 
-	vector<MarqueurClient>& getMarqueurs();
-
-	void addMarqueur(MarqueurClient& marqueur);
+	MarqueurBrancheClient* getMarqueurBranche(Branche* branche);
+	MarqueurValeurClient* getMarqueurValeur(Valeur* valeur);
+	std::map<Branche*, MarqueurBrancheClient*>& getMarqueursBranche();
+	std::map<Valeur*, MarqueurValeurClient*>& getMarqueursValeur();
+	std::string getDebugName();
+	void addMarqueur(MarqueurBrancheClient* marqueur);
+	void addMarqueur(MarqueurValeurClient* marqueur);
 };
 
 #endif /* CLIENT_H_ */

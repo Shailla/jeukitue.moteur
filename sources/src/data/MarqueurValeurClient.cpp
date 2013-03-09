@@ -14,3 +14,7 @@ MarqueurValeurClient::MarqueurValeurClient(Valeur* valeur) {
 MarqueurValeurClient::~MarqueurValeurClient() {
 }
 
+Valeur* MarqueurValeurClient::getValeur() {
+	return _valeur;
+}
+

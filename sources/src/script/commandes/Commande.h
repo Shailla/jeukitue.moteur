@@ -29,6 +29,7 @@ public:
 	virtual std::string getHelp() = 0;
 	void execute(const std::string& ligne, bool userOutput);
 
+	static int getIntParameter(const string& word) throw(IllegalParameterException);
 	static std::vector<int> getIntParameters(const std::string& ligne) throw(IllegalParameterException);
 };
 

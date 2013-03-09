@@ -1,6 +1,8 @@
 #ifndef __JKT__DATATREEVIEW_H
 #define __JKT__DATATREEVIEW_H
 
+#include <map>
+
 #include <agar/core.h>
 #include <agar/gui.h>
 
@@ -17,7 +19,9 @@ namespace JktMoteur {
 
 class DataTreeView : public View
 {
-	AG_Treetbl* _tree;
+	AG_Treetbl* _dataTree;
+	AG_Table* _clientsTable;
+	std::map<AG_TreetblRow*, Branche*> _treeRows;
 
 	void drawBranche(Branche* branche, AG_Treetbl* tree, AG_TreetblRow* parentRow, int& rowId);
 
@@ -27,6 +31,8 @@ public:
 
     void show(void);
     void refresh();
+
+    static void updateTable(AG_Event* event);
 };
 
 #endif

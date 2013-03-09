@@ -14,3 +14,6 @@ MarqueurBrancheClient::MarqueurBrancheClient(Branche* branche) {
 MarqueurBrancheClient::~MarqueurBrancheClient() {
 }
 
+Branche* MarqueurBrancheClient::getBranche() {
+	return _branche;
+}

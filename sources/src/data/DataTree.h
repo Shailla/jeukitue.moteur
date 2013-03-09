@@ -20,7 +20,7 @@ using namespace std;
 
 class DataTree {
 	Branche _root;
-	vector<Client> _clients;
+	vector<Client*> _clients;
 public:
 	DataTree();
 	virtual ~DataTree();
@@ -40,6 +40,9 @@ public:
 
 	Valeur* addValeurInt(vector<int>& parentBrancheId, const string& valeurName, int valeur);
 	Valeur* addValeurIntForClient(vector<int>& parentBrancheId, const string& valeurName, int valeurTmpId, int valeur, Client* client);
+
+	void addClient(const string& clientName);
+	vector<Client*>& getClients();
 
 	void diffuseChangements();
 };

@@ -21,7 +21,8 @@ public:
 	ValeurInt(int valeurId, const string& valeurName, int valeur);
 	virtual ~ValeurInt();
 
-	int getInt() const;
+	int getValeur() const;
+	void updateValeur(int valeur);
 };
 
 #endif /* VALEUR_H_ */

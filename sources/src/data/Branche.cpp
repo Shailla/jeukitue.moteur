@@ -66,6 +66,10 @@ map<int, Valeur*>& Branche::getValeurs() {
 	return _valeurs;
 }
 
+Valeur* Branche::getValeur(int valeurId) {
+	return _valeurs.at(valeurId);
+}
+
 string Branche::getBrancheName() const {
 	return _brancheName;
 }

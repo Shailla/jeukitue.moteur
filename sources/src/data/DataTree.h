@@ -17,6 +17,7 @@ using namespace std;
 #include "data/Branche.h"
 #include "data/Client.h"
 #include "data/exception/NotExistingBrancheException.h"
+#include "data/exception/NotExistingValeurException.h"
 
 class DataTree {
 	Branche _root;
@@ -36,6 +37,7 @@ public:
 	 * @param brancheId coordonnées de la branche dans l'arbre
 	 */
 	Branche* getBranche(vector<int> brancheId) throw(NotExistingBrancheException);
+	Valeur* getValeur(vector<int> valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
 	Branche& getRoot();
 
 	Branche* addBranche(vector<int>& parentBrancheId, const string& brancheName);

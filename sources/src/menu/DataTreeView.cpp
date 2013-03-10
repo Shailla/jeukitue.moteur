@@ -132,7 +132,7 @@ string getValueString(Valeur* valeur) {
 
 	if(dynamic_cast<ValeurInt*>(valeur) != 0) {
 		ValeurInt* vl = (ValeurInt*)valeur;
-		txt << "Valeur[" << vl->getValeurId() << ":" << vl->getValeurName() << "] : '" << vl->getInt() << "'";
+		txt << "Valeur[" << vl->getValeurId() << ":" << vl->getValeurName() << "] : '" << vl->getValeur() << "'";
 	}
 	else {
 		txt << "Valeur[" << valeur->getValeurId() << ":" << valeur->getValeurName() << "] : type inconnu";

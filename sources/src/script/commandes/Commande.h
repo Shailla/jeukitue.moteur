@@ -9,14 +9,18 @@
 #define COMMANDE_H_
 
 #include <string>
+#include <map>
 
 #include "script/exception/IllegalParameterException.h"
 
 class CommandeInterpreter;
 
 class Commande {
+	friend class DataCommande;
+
 protected:
 	CommandeInterpreter* _interpreter;
+	std::map<std::string, Commande*> _subCommandes;
 
 	void printStdLn(const std::string& msg, bool userOutput);
 	void printErrLn(const std::string& msg, bool userOutput);

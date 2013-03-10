@@ -33,6 +33,7 @@ public:
 	Branche* getSubBranche(int brancheId) const;
 	map<int, Branche*>& getSubBranches();
 	map<int, Valeur*>& getValeurs();
+	Valeur* getValeur(int valeurId);
 	string getBrancheName() const;
 	int getBrancheId() const;
 

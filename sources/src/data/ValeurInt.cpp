@@ -14,7 +14,11 @@ ValeurInt::ValeurInt(int valeurId, const string& valeurName, int valeur) : Valeu
 ValeurInt::~ValeurInt() {
 }
 
-int ValeurInt::getInt() const {
+int ValeurInt::getValeur() const {
 	return _valeur;
 }
 
+void ValeurInt::updateValeur(int valeur) {
+	_valeur = valeur;
+	update();
+}

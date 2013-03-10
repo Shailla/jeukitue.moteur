@@ -106,19 +106,11 @@ vector<Client*>& DataTree::getClients() {
 
 void DataTree::diffuseChangements(void) {
 	vector<Client*>::iterator clientIter;
+	vector<MarqueurClient*> changements;
 
 	for(clientIter = _clients.begin() ; clientIter != _clients.end() ; clientIter++) {
-		Client* client = *clientIter;
-		map<Donnee*, MarqueurClient*>& marqueurs = client->getMarqueurs();
-
-		map<Donnee*, MarqueurClient*>::iterator marqIter;
-
-		for(marqIter = marqueurs.begin() ; marqIter != marqueurs.end() ; marqIter++) {
-			MarqueurClient* marqueur = marqIter->second;
-
-			if(!marqueur->isUpToDate()) {
-				//collecte(marqueur);
-			}
-		}
+		(*clientIter)->collecteChangements(changements);
 	}
+
+	// TODO
 }

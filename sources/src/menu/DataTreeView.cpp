@@ -62,13 +62,42 @@ DataTreeView::~DataTreeView(void)
 }
 
 void DataTreeView::refresh(void) {
-
 	AG_TreetblRow* selectedTreeRow = AG_TreetblSelectedRow(_dataTree);
 	Branche* selectedDonnee = NULL;
 
 	if(selectedTreeRow) {
 		selectedDonnee = _treeRows.at(selectedTreeRow);
 	}
+
+
+	/* **************************************
+	 * Mise à jour du tableau des clients
+	 * *************************************/
+
+	AG_TableBegin(_clientsTable);
+
+	vector<Client*> clients = dataTree.getClients();
+	vector<Client*>::iterator iter;
+
+	for(iter = clients.begin() ; iter != clients.end() ; iter++) {
+		Client* client = *iter;
+
+		if(selectedDonnee) {
+			MarqueurClient* marqueur = client->getMarqueur(selectedDonnee);
+
+			if(marqueur) {
+				AG_TableAddRow(_clientsTable, "%s:%d:%b", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->isUpToDate());
+			}
+			else {
+				AG_TableAddRow(_clientsTable, "%s:%s:%s", client->getDebugName().c_str(), "<Pas de marqueur>", "<Bug>");
+			}
+		}
+		else {
+			AG_TableAddRow(_clientsTable, "%s:%s:%s", client->getDebugName().c_str(), "-", "-");
+		}
+	}
+
+	AG_TableEnd(_clientsTable);
 
 
 	/* ************************************
@@ -95,37 +124,6 @@ void DataTreeView::refresh(void) {
 	drawBranche(&root, _dataTree, rootRow, rowId);
 
 	AG_TreetblEnd(_dataTree);
-
-
-	/* **************************************
-	 * Mise à jour du tableau des clients
-	 * *************************************/
-
-	AG_TableBegin(_clientsTable);
-
-	vector<Client*> clients = dataTree.getClients();
-
-	vector<Client*>::iterator iter;
-
-	for(iter = clients.begin() ; iter != clients.end() ; iter++) {
-		Client* client = *iter;
-
-		if(selectedDonnee) {
-			MarqueurClient* marqueur = client->getMarqueur(selectedDonnee);
-
-			if(marqueur) {
-				AG_TableAddRow(_clientsTable, "%s:%d:%b", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->isUpToDate());
-			}
-			else {
-				AG_TableAddRow(_clientsTable, "%s:%s", client->getDebugName().c_str(), "Pas de marqueur");
-			}
-		}
-		else {
-			AG_TableAddRow(_clientsTable, "%s", client->getDebugName().c_str());
-		}
-	}
-
-	AG_TableEnd(_clientsTable);
 
 
 	// Rafraichissement de la page

@@ -8,7 +8,9 @@
 #ifndef CLIENT_H_
 #define CLIENT_H_
 
+#include <string>
 #include <map>
+#include <vector>
 
 #include "data/Donnee.h"
 #include "data/MarqueurClient.h"
@@ -22,8 +24,9 @@ public:
 
 	MarqueurClient* getMarqueur(Donnee* donnee);
 	std::map<Donnee*, MarqueurClient*>& getMarqueurs();
-	const std::string& getDebugName() const;
+	std::string& getDebugName();
 	void addMarqueur(Donnee* donnee, int donneeTmpId, bool isUpToDate);
+	void collecteChangements(vector<MarqueurClient*>& changements);
 };
 
 #endif /* CLIENT_H_ */

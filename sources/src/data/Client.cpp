@@ -20,7 +20,7 @@ Client::Client(const string& debugName) {
 Client::~Client() {
 }
 
-const string& Client::getDebugName() const {
+string& Client::getDebugName() {
 	return _debugName;
 }
 
@@ -44,4 +44,17 @@ map<Donnee*, MarqueurClient*>& Client::getMarqueurs() {
 void Client::addMarqueur(Donnee* donnee, int donneeTmpId, bool isUpToDate) {
 	MarqueurClient* marqueur = new MarqueurClient(donnee, donneeTmpId, isUpToDate);
 	_marqueurs[donnee] = marqueur;
+}
+
+void Client::collecteChangements(vector<MarqueurClient*>& changements) {
+	map<MarqueurClient*, MarqueurClient*>::iterator marqIter;
+
+	for(marqIter = _marqueurs.begin() ; _marqIter != marqueurs.end() ; marqIter++) {
+		MarqueurClient* marqueur = marqIter->second;
+
+		if(!marqueur->isUpToDate()) {
+			changements.push_back(marqueur);
+		}
+	}
+
 }

@@ -28,7 +28,6 @@ MapTreeView::MapTreeView(const AG_EventFn controllerCallback)
 	AG_WindowSetCaption(m_window, "Arbre de la MAP courante");
 
 	_tree = AG_TreetblNew(m_window, AG_TREETBL_EXPAND, NULL, NULL);
-//	_tree = AG_TlistNew(m_window, AG_TLIST_EXPAND | AG_TLIST_TREE);
 
 	// Bouton retour
     AG_SeparatorNewHoriz(m_window);

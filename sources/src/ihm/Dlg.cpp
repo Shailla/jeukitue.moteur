@@ -25,7 +25,7 @@ void CDlg::SetMenuActif(CDlg *pMenu)
 	pMenuActif = pMenu;
 }
 
-void CDlg::menu_handle_key_down( SDL_Event *event )
+void CDlg::menu_handle_key_down(SDL_Event *event)
 {
 	if( pMenuActif )
 		pMenuActif->handle_key_down( event );

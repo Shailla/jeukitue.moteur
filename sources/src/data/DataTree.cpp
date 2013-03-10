@@ -26,8 +26,6 @@ Branche* DataTree::getBranche(vector<int> brancheId) throw(NotExistingBrancheExc
 
 	Branche* branche = &_root;
 
-	cout << "getBranche() : " << endl;
-
 	for(iter = brancheId.begin() ; (iter != brancheId.end() && branche != NULL) ; iter++) {
 		cout << *iter << " => ";
 		branche = branche->getSubBranche(*iter);
@@ -53,20 +51,7 @@ Branche* DataTree::addBrancheForClient(vector<int>& parentBrancheId, const strin
 
 	Branche* branche = parentBranche->createSubBranche(brancheName);
 
-	vector<Client*>::iterator clIter;
-
-	for(clIter = _clients.begin() ; clIter != _clients.end() ; clIter++) {
-		Client* cl = *clIter;
-
-		if(cl == client) {
-			cl->addMarqueur(branche, brancheClientTmpId, false);
-		}
-		else {
-			cl->addMarqueur(branche, 0, false);
-		}
-	}
-
-	return branche;
+	return (Branche*)addMarqueurForClient(client, branche, brancheClientTmpId);
 }
 
 Valeur* DataTree::addValeurInt(vector<int>& parentBrancheId, const string& valeurName, int valeur) {
@@ -78,29 +63,57 @@ Valeur* DataTree::addValeurIntForClient(vector<int>& parentBrancheId, const stri
 
 	Valeur* val = parentBranche->createValeurInt(valeurName, valeur);
 
-	return addValeurForClient(client, val);
+	return (Valeur*)addMarqueurForClient(client, val, valeurClientTmpId);
 }
 
-Valeur* DataTree::addValeurForClient(Client* client, Valeur* valeur, int valeurClientTmpId) {
+Donnee* DataTree::addMarqueurForClient(Client* client, Donnee* donnee, int donneeClientTmpId) {
 	vector<Client*>::iterator clIter;
 
 	for(clIter = _clients.begin() ; clIter != _clients.end() ; clIter++) {
 		Client* cl = *clIter;
 
 		if(cl == client) {
-			client->addMarqueur(valeur, valeurClientTmpId, false);
+			cl->addMarqueur(donnee, donneeClientTmpId, false);
 		}
 		else {
-			client->addMarqueur(valeur, 0, false);
+			cl->addMarqueur(donnee, 0, false);
 		}
 	}
 
-	return valeur;
+	return donnee;
 }
 
 void DataTree::addClient(const string& clientName) {
 	Client* client = new Client(clientName);
+
+	// Init the marqueurs
+	initBrancheClient(client, &_root);
+
 	_clients.push_back(client);
+}
+
+void DataTree::initBrancheClient(Client* client, Branche* branche) {
+	client->addMarqueur(branche, 0, false);
+
+	// Init sub-branches
+	{
+		map<int, Branche*>& subBranches = branche->getSubBranches();
+		map<int, Branche*>::iterator iterBr;
+
+		for(iterBr = subBranches.begin() ; iterBr != subBranches.end() ; iterBr++) {
+			initBrancheClient(client, iterBr->second);
+		}
+	}
+
+	// Init values
+	{
+		map<int, Valeur*>& valeurs = branche->getValeurs();
+		map<int, Valeur*>::iterator iterVl;
+
+		for(iterVl = valeurs.begin() ; iterVl != valeurs.end() ; iterVl++) {
+			client->addMarqueur(iterVl->second, 0, false);
+		}
+	}
 }
 
 vector<Client*>& DataTree::getClients() {

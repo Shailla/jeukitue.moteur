@@ -19,11 +19,10 @@ namespace JktMoteur {
 
 class DataTreeView : public View
 {
-	AG_Treetbl* _dataTree;
+	AG_Tlist* _dataTree;
 	AG_Table* _clientsTable;
-	std::map<AG_TreetblRow*, Branche*> _treeRows;
 
-	void drawBranche(Branche* branche, AG_Treetbl* tree, AG_TreetblRow* parentRow, int& rowId);
+	void drawBranche(Branche* branche, int depth);
 
 public:
     DataTreeView(const AG_EventFn controllerCallback);
@@ -32,7 +31,7 @@ public:
     void show(void);
     void refresh();
 
-    static void updateTable(AG_Event* event);
+    static void selectionChanged(AG_Event* event);
 };
 
 #endif

@@ -22,7 +22,8 @@ class DataTree {
 	Branche _root;
 	vector<Client*> _clients;
 
-	Valeur* addValeurForClient(Client* client, Valeur* valeur, int valeurClientTmpId);
+	Donnee* addMarqueurForClient(Client* client, Donnee* valeur, int donneeClientTmpId);
+	void initBrancheClient(Client* client, Branche* branche);
 public:
 	DataTree();
 	virtual ~DataTree();

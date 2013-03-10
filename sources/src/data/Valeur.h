@@ -19,8 +19,6 @@ using namespace std;
 class Valeur : public Donnee {
 	int _valeurId;
 	string _valeurName;
-
-	JktUtils::CGenRef _referenceGenerator;
 public:
 	Valeur(int valeurId, const string& valeurName);
 	virtual ~Valeur();

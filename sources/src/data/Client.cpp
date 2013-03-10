@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 #include <stdexcept>
+#include <iostream>
 
 using namespace std;
 
@@ -29,6 +30,7 @@ MarqueurClient* Client::getMarqueur(Donnee* donnee) {
 
 	try {
 		marqueur = _marqueurs.at(donnee);
+		cout << endl << "TAILLE : " << _marqueurs.size();
 	}
 	catch(out_of_range& exception) {
 		marqueur = NULL;

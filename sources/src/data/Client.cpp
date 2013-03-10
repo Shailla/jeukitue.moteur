@@ -47,9 +47,9 @@ void Client::addMarqueur(Donnee* donnee, int donneeTmpId, bool isUpToDate) {
 }
 
 void Client::collecteChangements(vector<MarqueurClient*>& changements) {
-	map<MarqueurClient*, MarqueurClient*>::iterator marqIter;
+	map<Donnee*, MarqueurClient*>::iterator marqIter;
 
-	for(marqIter = _marqueurs.begin() ; _marqIter != marqueurs.end() ; marqIter++) {
+	for(marqIter = _marqueurs.begin() ; marqIter != _marqueurs.end() ; marqIter++) {
 		MarqueurClient* marqueur = marqIter->second;
 
 		if(!marqueur->isUpToDate()) {

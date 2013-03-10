@@ -59,10 +59,10 @@ Branche* DataTree::addBrancheForClient(vector<int>& parentBrancheId, const strin
 		Client* cl = *clIter;
 
 		if(cl == client) {
-			client->addMarqueur(branche, brancheClientTmpId, false);
+			cl->addMarqueur(branche, brancheClientTmpId, false);
 		}
 		else {
-			client->addMarqueur(branche, 0, false);
+			cl->addMarqueur(branche, 0, false);
 		}
 	}
 
@@ -78,20 +78,24 @@ Valeur* DataTree::addValeurIntForClient(vector<int>& parentBrancheId, const stri
 
 	Valeur* val = parentBranche->createValeurInt(valeurName, valeur);
 
+	return addValeurForClient(client, val);
+}
+
+Valeur* DataTree::addValeurForClient(Client* client, Valeur* valeur, int valeurClientTmpId) {
 	vector<Client*>::iterator clIter;
 
 	for(clIter = _clients.begin() ; clIter != _clients.end() ; clIter++) {
 		Client* cl = *clIter;
 
 		if(cl == client) {
-			client->addMarqueur(val, valeurClientTmpId, false);
+			client->addMarqueur(valeur, valeurClientTmpId, false);
 		}
 		else {
-			client->addMarqueur(val, 0, false);
+			client->addMarqueur(valeur, 0, false);
 		}
 	}
 
-	return val;
+	return valeur;
 }
 
 void DataTree::addClient(const string& clientName) {

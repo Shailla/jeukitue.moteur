@@ -21,6 +21,8 @@ using namespace std;
 class DataTree {
 	Branche _root;
 	vector<Client*> _clients;
+
+	Valeur* addValeurForClient(Client* client, Valeur* valeur, int valeurClientTmpId);
 public:
 	DataTree();
 	virtual ~DataTree();

@@ -31,6 +31,7 @@ public:
     void show(void);
     void refresh();
 
+    static void refreshClientTable(DataTreeView* This);
     static void selectionChanged(AG_Event* event);
 };
 

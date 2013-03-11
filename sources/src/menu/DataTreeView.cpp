@@ -62,7 +62,10 @@ DataTreeView::~DataTreeView(void) {
 
 void DataTreeView::selectionChanged(AG_Event* event) {
 	DataTreeView* This = (DataTreeView*)AG_PTR(1);
+	refreshClientTable(This);
+}
 
+void DataTreeView::refreshClientTable(DataTreeView* This) {
 	Donnee* selectedDonnee = (Donnee*)AG_TlistSelectedItemPtr(This->_dataTree);
 
 
@@ -102,6 +105,8 @@ void DataTreeView::selectionChanged(AG_Event* event) {
 }
 
 void DataTreeView::refresh(void) {
+	refreshClientTable(this);
+
 	/* ************************************
 	 * Mise à jour de l'abre des données
 	 * ***********************************/

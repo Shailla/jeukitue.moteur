@@ -14,6 +14,7 @@
 
 #include "data/Donnee.h"
 #include "data/MarqueurClient.h"
+#include "data/Changement.h"
 
 class Client {
 	std::string _debugName;
@@ -26,7 +27,10 @@ public:
 	std::map<Donnee*, MarqueurClient*>& getMarqueurs();
 	std::string& getDebugName();
 	void addMarqueur(Donnee* donnee, int donneeTmpId, bool isUpToDate);
-	void collecteChangements(vector<MarqueurClient*>& changements);
+	void collecteChangements(std::vector<Changement*>& changements);
+
+	void sendData(char* data);
+	void receiveData(char* data);
 };
 
 #endif /* CLIENT_H_ */

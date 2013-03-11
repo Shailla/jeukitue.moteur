@@ -12,6 +12,7 @@ using namespace std;
 
 #include "data/MarqueurClient.h"
 #include "data/exception/NotExistingBrancheException.h"
+#include "data/communication/DataSerializer.h"
 
 #include "data/DataTree.h"
 
@@ -147,11 +148,12 @@ vector<Client*>& DataTree::getClients() {
 
 void DataTree::diffuseChangements(void) {
 	vector<Client*>::iterator clientIter;
-	vector<MarqueurClient*> changements;
+	vector<Changement*> changements;
 
 	for(clientIter = _clients.begin() ; clientIter != _clients.end() ; clientIter++) {
-		(*clientIter)->collecteChangements(changements);
+		Client* client = *clientIter;
+		client->collecteChangements(changements);
+		char* data = DataSerializer::toBytes(changements);
+		client->sendData(data);
 	}
-
-	// TODO
 }

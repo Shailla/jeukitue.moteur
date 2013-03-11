@@ -58,5 +58,12 @@ void Client::collecteChangements(vector<MarqueurClient*>& changements) {
 			changements.push_back(marqueur);
 		}
 	}
+}
+
+void Client::sendData(char* data) {
+
+}
+
+void Client::receiveData(char* data) {
 
 }

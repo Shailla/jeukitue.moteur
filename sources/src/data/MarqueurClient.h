@@ -16,6 +16,7 @@ class MarqueurClient {
 	Donnee* _donnee;
 	bool _isUpToDate;
 	int _temporaryId;
+
 public:
 	MarqueurClient(Donnee* donnee, int donneeTmpId, bool isUpToDate);
 	virtual ~MarqueurClient();

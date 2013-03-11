@@ -27,6 +27,6 @@ void HelpCommande::executeIt(std::string ligne, bool userOutput) {
 	}
 }
 
-string HelpCommande::getHelp() {
+std::string HelpCommande::getHelp() const {
 	return "help <commande>\nAffiche l'aide concernant la commande <commande>";
 }

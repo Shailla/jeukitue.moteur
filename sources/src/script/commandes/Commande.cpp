@@ -9,6 +9,7 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include <stdexcept>
 
 using namespace std;
 
@@ -26,6 +27,22 @@ Commande::Commande(CommandeInterpreter* interpreter) {
 Commande::~Commande() {
 }
 
+Commande* Commande::getSubCommande(const string& subCommandeName)  throw(IllegalParameterException) {
+	Commande* commande;
+
+	try {
+		commande = _subCommandes.at(subCommandeName);
+	}
+	catch(out_of_range& exception) {
+		throw IllegalParameterException();
+	}
+
+	return commande;
+}
+
+void Commande::registerSubCommande(const std::string& subCommandeName, Commande* subCommande) {
+	_subCommandes[subCommandeName] = subCommande;
+}
 
 void Commande::execute(const std::string& ligne, bool userOutput) {
 	try {

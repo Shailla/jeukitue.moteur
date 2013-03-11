@@ -7,9 +7,9 @@
 
 #include "data/MarqueurClient.h"
 
-MarqueurClient::MarqueurClient(Donnee* donnee, int donneeTmpId, bool isUpToDate) {
+MarqueurClient::MarqueurClient(Donnee* donnee, int donneeTmpId) {
 	_donnee = donnee;
-	_isUpToDate = isUpToDate;
+	_sentRevision = MARQUEUR_REVISION_INIT;
 	_temporaryId = donneeTmpId;
 }
 
@@ -20,8 +20,12 @@ Donnee* MarqueurClient::getDonnee() const {
 	return _donnee;
 }
 
-bool MarqueurClient::isUpToDate(void) const {
-	return _isUpToDate;
+int MarqueurClient::getSentRevision(void) const {
+	return _sentRevision;
+}
+
+void MarqueurClient::setSentRevision(int sentRevision) {
+	_sentRevision = sentRevision;
 }
 
 int MarqueurClient::getTemporaryId() const {

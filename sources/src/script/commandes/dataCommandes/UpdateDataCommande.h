@@ -5,8 +5,8 @@
  *      Author: Erwin
  */
 
-#ifndef ADDDATACOMMAND_H_
-#define ADDDATACOMMAND_H_
+#ifndef UPDATEDATACOMMAND_H_
+#define UPDATEDATACOMMAND_H_
 
 #include <string>
 
@@ -20,7 +20,7 @@ class UpdateDataCommande : public Commande {
 public:
 	UpdateDataCommande(CommandeInterpreter* interpreter);
 
-	std::string getHelp();
+	std::string getHelp() const;
 };
 
-#endif /* ECHOCOMMAND_H_ */
+#endif /* UPDATEDATACOMMAND_H_ */

@@ -18,7 +18,7 @@ class DataCommande : public Commande {
 public:
 	DataCommande (CommandeInterpreter* interpreter);
 
-	std::string getHelp();
+	std::string getHelp() const;
 };
 
 #endif /* ECHOCOMMAND_H_ */

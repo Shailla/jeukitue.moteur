@@ -15,27 +15,32 @@ using namespace std;
 
 #include "script/commandes/DataCommande.h"
 #include "script/commandes/dataCommandes/AddDataCommande.h"
+#include "script/commandes/dataCommandes/UpdateDataCommande.h"
 
 using namespace JktUtils;
 
 DataCommande::DataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
-	_subCommandes["add"] = new AddDataCommande(interpreter);
+	registerSubCommande("add", new AddDataCommande(interpreter));
+	registerSubCommande("update", new UpdateDataCommande(interpreter));
 }
 
 void DataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalParameterException) {
 	string subCommande1 = StringUtils::findAndEraseFirstWord(ligne);
 
-	Commande* subCommande = _subCommandes.at(subCommande1);
+	Commande* subCommande = getSubCommande(subCommande1);	// Throws IllegalParameterException if the sub command is not found
 
-	if(subCommande) {
+	try {
 		subCommande->executeIt(ligne, userOutput);
 	}
-	else {
-		printErrLn("Syntaxe incorrecte", userOutput);
+	catch(NotExistingValeurException& exception) {
+		printErrLn("La branche n'existe pas", userOutput);
+	}
+	catch(NotExistingBrancheException& exception) {
+		printErrLn("La valeur n'existe pas", userOutput);
 	}
 }
 
-string DataCommande::getHelp() {
+string DataCommande::getHelp() const {
 	return
 "data add branche <brancheName> <brancheId> : Ajouter une branche nommee <brancheName> dans l'arbre de donnees sous la branche <brancheId>.\
 \nExemple : data add branche ggg 0 3 2\

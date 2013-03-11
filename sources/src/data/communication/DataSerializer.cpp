@@ -11,6 +11,7 @@
 using namespace std;
 
 #include "data/communication/DataSerializer.h"
+#include "data/communication/message/AddBrancheChangement.h"
 
 DataSerializer::DataSerializer() {
 }
@@ -18,14 +19,38 @@ DataSerializer::DataSerializer() {
 DataSerializer::~DataSerializer() {
 }
 
-char* DataSerializer::toBytes(vector<Changement*>& changements) {
-	ostringstream out;
-
+void DataSerializer::toStream(vector<Changement*>& changements, OMessageStream& out) {
 	vector<Changement*>::iterator it;
 
 	for(it = changements.begin() ; it != changements.end() ; it++) {
-		Changement* chgt = *it;
+		(*it)->serialize(out);
 	}
+}
 
-	return NULL;
+void DataSerializer::fromStream(vector<Changement*>& changements, IMessageStream& in) {
+	in.exceptions(istringstream::eofbit);
+
+	char messageType;
+	Changement* changement;
+
+	try {
+		in >> messageType;
+
+		switch(messageType) {
+		case Changement::ADD_DATA_MESSAGE:
+			changement = new AddBrancheChangement(in);
+			break;
+
+		default:
+			changement = NULL;
+			break;
+		}
+
+		if(changement) {
+			changements.push_back(changement);
+		}
+	}
+	catch(istringstream::failure finDuFlux) {
+		// Fin du flux, on peut ressortir
+	}
 }

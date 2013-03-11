@@ -36,8 +36,8 @@ public:
 	 *
 	 * @param brancheId coordonnées de la branche dans l'arbre
 	 */
-	Branche* getBranche(vector<int> brancheId) throw(NotExistingBrancheException);
-	Valeur* getValeur(vector<int> valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
+	Branche* getBranche(vector<int>& brancheId) throw(NotExistingBrancheException);
+	Valeur* getValeur(vector<int>& valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
 	Branche& getRoot();
 
 	Branche* addBranche(vector<int>& parentBrancheId, const string& brancheName);
@@ -50,6 +50,7 @@ public:
 	vector<Client*>& getClients();
 
 	void diffuseChangements();
+	void receiveChangements();
 };
 
 #endif /* DATATREE_H_ */

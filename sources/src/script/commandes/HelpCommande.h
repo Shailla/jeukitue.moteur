@@ -18,7 +18,7 @@ class HelpCommande : public Commande {
 public:
 	HelpCommande (CommandeInterpreter* interpreter);
 
-	std::string getHelp();
+	std::string getHelp() const;
 };
 
 #endif /* ECHOCOMMAND_H_ */

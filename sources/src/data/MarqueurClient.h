@@ -14,16 +14,19 @@
 
 class MarqueurClient {
 	Donnee* _donnee;
-	bool _isUpToDate;
+	int _sentRevision;
 	int _temporaryId;
 
 public:
-	MarqueurClient(Donnee* donnee, int donneeTmpId, bool isUpToDate);
+	static const int MARQUEUR_REVISION_INIT = -1;
+
+	MarqueurClient(Donnee* donnee, int donneeTmpId);
 	virtual ~MarqueurClient();
 
 	Donnee* getDonnee() const;
 
-	bool isUpToDate(void) const;
+	int getSentRevision(void) const;
+	void setSentRevision(int sentRevision);
 
 	int getTemporaryId() const;
 	void setTemporaryId(int temporaryId);

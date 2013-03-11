@@ -18,6 +18,7 @@ using namespace std;
 #include "util/GenRef.h"
 
 class Branche : public Donnee {
+	Branche* _parent;
 	int _brancheId;
 	string _brancheName;
 
@@ -27,7 +28,7 @@ class Branche : public Donnee {
 	JktUtils::CGenRef _brancheRefGenerator;
 	JktUtils::CGenRef _valeurRefGenerator;
 public:
-	Branche(int brancheId, const string& brancheName);
+	Branche(Branche* parent, int brancheId, const string& brancheName);
 	virtual ~Branche();
 
 	Branche* getSubBranche(int brancheId) const;
@@ -36,6 +37,8 @@ public:
 	Valeur* getValeur(int valeurId);
 	string getBrancheName() const;
 	int getBrancheId() const;
+	void getBrancheFullId(vector<int>& id) const;
+	vector<int> getBrancheFullId() const;
 
 	Branche* createSubBranche(const string& brancheName);
 	Valeur* createValeurInt(const string& valeurName, int valeur);

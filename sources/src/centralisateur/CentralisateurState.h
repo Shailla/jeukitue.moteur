@@ -1,8 +1,7 @@
 #ifndef __JKT__CENTRALISATEURSTATE_H
 #define __JKT__CENTRALISATEURSTATE_H
 
-class CentralisateurState
-{
+class CentralisateurState {
     enum State {
         STATE_Disconnected = 0,
         STATE_ConnectionInProgress,

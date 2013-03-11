@@ -20,7 +20,7 @@ class AddDataCommande : public Commande {
 public:
 	AddDataCommande (CommandeInterpreter* interpreter);
 
-	std::string getHelp();
+	std::string getHelp() const;
 };
 
 #endif /* ECHOCOMMAND_H_ */

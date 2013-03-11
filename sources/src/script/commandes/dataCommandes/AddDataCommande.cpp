@@ -66,7 +66,7 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 	}
 }
 
-string AddDataCommande::getHelp() {
+string AddDataCommande::getHelp() const {
 	return
 "data add branche <brancheName> <brancheId> : Ajouter une branche nommee <brancheName> dans l'arbre de donnees sous la branche <brancheId>.\
 \nExemple : data add branche ggg 0 3 2\

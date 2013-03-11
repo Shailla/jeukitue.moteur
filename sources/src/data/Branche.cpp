@@ -15,7 +15,8 @@ using namespace std;
 
 #include "data/Branche.h"
 
-Branche::Branche(int brancheId, const string& brancheName) {
+Branche::Branche(Branche* parent, int brancheId, const string& brancheName) {
+	_parent = parent;
 	_brancheId = brancheId;
 	_brancheName = brancheName;
 }
@@ -41,7 +42,7 @@ Branche* Branche::createSubBranche(const string& brancheName) {
 	int ref = _brancheRefGenerator.genRef() - 1;		// On soustrait 1 pour que les identifiants démarrent à 0
 
 	// Crée la nouvelle branche
-	Branche* newBranche = new Branche(ref, brancheName);
+	Branche* newBranche = new Branche(this, ref, brancheName);
 	_subBranches[ref] = newBranche;
 
 	return newBranche;
@@ -76,4 +77,19 @@ string Branche::getBrancheName() const {
 
 int Branche::getBrancheId() const {
 	return _brancheId;
+}
+
+void Branche::getBrancheFullId(vector<int>& id) const {
+	if(_parent) {
+		getBrancheFullId(id);
+	}
+
+	id.push_back(_brancheId);
+}
+
+vector<int> Branche::getBrancheFullId() const {
+	vector<int> id;
+	getBrancheFullId(id);
+
+	return id;
 }

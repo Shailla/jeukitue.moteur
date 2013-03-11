@@ -9,7 +9,11 @@
 #define DONNEE_H_
 
 class Donnee {
-	int revision;
+	/**
+	 * Revision number of the data, incremented each time the data changes.
+	 */
+	int _revision;
+
 public:
 	Donnee();
 	virtual ~Donnee();
@@ -18,6 +22,11 @@ public:
 	 * Indicates that the Donnee has changed by incrementing it's revision.
 	 */
 	void update();
+
+	/**
+	 * Get the revision number of the data.
+	 */
+	int getRevision() const;
 };
 
 #endif /* DONNEE_H_ */

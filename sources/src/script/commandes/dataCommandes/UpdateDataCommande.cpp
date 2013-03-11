@@ -49,12 +49,8 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 	}
 }
 
-string UpdateDataCommande::getHelp() {
-	return
-"data add branche <brancheName> <brancheId> : Ajouter une branche nommee <brancheName> dans l'arbre de donnees sous la branche <brancheId>.\
-\nExemple : data add branche ggg 0 3 2\
-\n---\
-\ndata add valeur <type> <valeurName> <valeur> <brancheId> : Ajouter une valeur nommee <valeurName> de type <type> de valeur <valeur> a la branche <brancheId>\
-\n<type> = {int}\
-\nExemple : data add valeur int 22 0 3 2";
+string UpdateDataCommande::getHelp() const {
+	return "data update valeur <newValeur> <valeurId> : Valorise la donnée de type valeur identifiée par <valeurId> avec la valeur <newValeur>.\
+\n<newValeur> depend du type de valeur qui est detecte automatiquement (entier, chaine de caracteres, ...)"\
+"\nExemple : data update valeur 88 0 3 2";
 }

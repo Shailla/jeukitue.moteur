@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <vector>
 
 using namespace std;
@@ -13,16 +14,18 @@ using namespace std;
 #include "data/MarqueurClient.h"
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/communication/DataSerializer.h"
+#include "data/communication/OMessageStream.h"
+#include "data/communication/IMessageStream.h"
 
 #include "data/DataTree.h"
 
-DataTree::DataTree() : _root(0, "root") {
+DataTree::DataTree() : _root(NULL, 0, "root") {
 }
 
 DataTree::~DataTree() {
 }
 
-Branche* DataTree::getBranche(vector<int> brancheId) throw(NotExistingBrancheException) {
+Branche* DataTree::getBranche(vector<int>& brancheId) throw(NotExistingBrancheException) {
 	vector<int>::iterator iter;
 
 	Branche* branche = &_root;
@@ -38,7 +41,7 @@ Branche* DataTree::getBranche(vector<int> brancheId) throw(NotExistingBrancheExc
 	return branche;
 }
 
-Valeur* DataTree::getValeur(vector<int> valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
+Valeur* DataTree::getValeur(vector<int>& valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
 	vector<int>::iterator iter;
 
 	Branche* branche = &_root;
@@ -98,10 +101,10 @@ Donnee* DataTree::addMarqueurForClient(Client* client, Donnee* donnee, int donne
 		Client* cl = *clIter;
 
 		if(cl == client) {
-			cl->addMarqueur(donnee, donneeClientTmpId, false);
+			cl->addMarqueur(donnee, donneeClientTmpId);
 		}
 		else {
-			cl->addMarqueur(donnee, 0, false);
+			cl->addMarqueur(donnee, 0);
 		}
 	}
 
@@ -118,7 +121,7 @@ void DataTree::addClient(const string& clientName) {
 }
 
 void DataTree::initBrancheClient(Client* client, Branche* branche) {
-	client->addMarqueur(branche, 0, false);
+	client->addMarqueur(branche, 0);
 
 	// Init sub-branches
 	{
@@ -136,7 +139,7 @@ void DataTree::initBrancheClient(Client* client, Branche* branche) {
 		map<int, Valeur*>::iterator iterVl;
 
 		for(iterVl = valeurs.begin() ; iterVl != valeurs.end() ; iterVl++) {
-			client->addMarqueur(iterVl->second, 0, false);
+			client->addMarqueur(iterVl->second, 0);
 		}
 	}
 }
@@ -153,7 +156,29 @@ void DataTree::diffuseChangements(void) {
 	for(clientIter = _clients.begin() ; clientIter != _clients.end() ; clientIter++) {
 		Client* client = *clientIter;
 		client->collecteChangements(changements);
-		char* data = DataSerializer::toBytes(changements);
-		client->sendData(data);
+
+		if(changements.size()) {
+			OMessageStream out;
+			DataSerializer::toStream(changements, out);
+			client->sendData(out);
+		}
+	}
+}
+
+void DataTree::receiveChangements(void) {
+	vector<Client*>::iterator clientIter;
+	vector<Changement*> changements;
+
+	for(clientIter = _clients.begin() ; clientIter != _clients.end() ; clientIter++) {
+		Client* client = *clientIter;
+		string data = client->receiveData();
+		IMessageStream in(data);
+		DataSerializer::fromStream(changements, in);
+
+		vector<Changement*>::iterator itCh;
+
+		for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
+			(*itCh)->change(this);
+		}
 	}
 }

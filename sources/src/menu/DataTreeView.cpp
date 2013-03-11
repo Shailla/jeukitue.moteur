@@ -37,7 +37,7 @@ DataTreeView::DataTreeView(const AG_EventFn controllerCallback)
 	_clientsTable = AG_TableNew(boxes[1], AG_TABLE_EXPAND);
 	AG_TableAddCol(_clientsTable, "Nom", "<XXXXXXXXXXXXXXX>", NULL);
 	AG_TableAddCol(_clientsTable, "Tmp ID", "<XXXXXXXXXXXXXXX>", NULL);
-	AG_TableAddCol(_clientsTable, "UpToDate", "<XXXXXXXXXXXXXXX>", NULL);
+	AG_TableAddCol(_clientsTable, "Sent revision", "<XXXXXXXXXXXXXXX>", NULL);
 	AG_Expand(_clientsTable);
 
     AG_SeparatorNewHoriz(m_window);
@@ -85,12 +85,7 @@ void DataTreeView::refreshClientTable(DataTreeView* This) {
 			MarqueurClient* marqueur = client->getMarqueur(selectedDonnee);
 
 			if(marqueur) {
-				if(marqueur->isUpToDate()) {
-					AG_TableAddRow(This->_clientsTable, "%s:%d:%s", client->getDebugName().c_str(), marqueur->getTemporaryId(), "oui");
-				}
-				else {
-					AG_TableAddRow(This->_clientsTable, "%s:%d:%s", client->getDebugName().c_str(), marqueur->getTemporaryId(), "non");
-				}
+				AG_TableAddRow(This->_clientsTable, "%s:%d:%d", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->getSentRevision());
 			}
 			else {
 				AG_TableAddRow(This->_clientsTable, "%s:%s:%s", client->getDebugName().c_str(), "<Pas de marqueur>", "<Bug>");

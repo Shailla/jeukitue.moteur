@@ -19,6 +19,6 @@ void EchoCommande::executeIt(std::string ligne, bool userOutput) {
 	printStdLn(ligne, userOutput);
 }
 
-string EchoCommande::getHelp() {
+string EchoCommande::getHelp() const {
 	return "echo <texte>\nAffiche le texte <texte> dans la console. Les espaces de debut et fin sont ignores";
 }

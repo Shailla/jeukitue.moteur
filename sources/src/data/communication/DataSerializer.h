@@ -9,15 +9,17 @@
 #define DATASERIALIZER_H_
 
 #include <vector>
+#include <sstream>
 
-#include "data/Changement.h"
+#include "data/communication/message/Changement.h"
 
 class DataSerializer {
 public:
 	DataSerializer();
 	virtual ~DataSerializer();
 
-	static char* toBytes(std::vector<Changement*>& changements);
+	static void toStream(std::vector<Changement*>& changements, OMessageStream& out);
+	static void fromStream(std::vector<Changement*>& changements, IMessageStream& out);
 };
 
 #endif /* DATASERIALIZER_H_ */

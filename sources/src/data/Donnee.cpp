@@ -8,13 +8,17 @@
 #include "data/Donnee.h"
 
 Donnee::Donnee() {
-	revision = 0;
+	_revision = 0;
 }
 
 Donnee::~Donnee() {
 }
 
 void Donnee::update() {
-	revision++;
+	_revision++;
 
+}
+
+int Donnee::getRevision(void) const {
+	return _revision;
 }

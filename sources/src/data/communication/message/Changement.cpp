@@ -5,7 +5,7 @@
  *      Author: vgdj7997
  */
 
-#include "data/Changement.h"
+#include "data/communication/message/Changement.h"
 
 Changement::Changement() {
 }

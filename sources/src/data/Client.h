@@ -11,14 +11,17 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <sstream>
 
 #include "data/Donnee.h"
 #include "data/MarqueurClient.h"
-#include "data/Changement.h"
+#include "data/communication/message/Changement.h"
 
 class Client {
 	std::string _debugName;
 	std::map<Donnee*, MarqueurClient*> _marqueurs;
+
+	string* _dataTest;
 public:
 	Client(const string& debugName);
 	virtual ~Client();
@@ -26,11 +29,11 @@ public:
 	MarqueurClient* getMarqueur(Donnee* donnee);
 	std::map<Donnee*, MarqueurClient*>& getMarqueurs();
 	std::string& getDebugName();
-	void addMarqueur(Donnee* donnee, int donneeTmpId, bool isUpToDate);
+	void addMarqueur(Donnee* donnee, int donneeTmpId);
 	void collecteChangements(std::vector<Changement*>& changements);
 
-	void sendData(char* data);
-	void receiveData(char* data);
+	void sendData(std::ostringstream& out);
+	std::string receiveData(void);
 };
 
 #endif /* CLIENT_H_ */

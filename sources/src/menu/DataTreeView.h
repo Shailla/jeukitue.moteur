@@ -10,8 +10,14 @@
 #include "menu/View.h"
 #include "data/DataTree.h"
 
+class DataTreeDetails {
+public:
+	AG_Tlist* _dataList;
+	AG_Table* _clientsTable;
+};
+
 extern DataTree serveurDataTree;
-extern std::vector<DataTree*> clientDataTrees;
+extern std::map<DataTree*, DataTreeDetails> clientDataTrees;
 
 class Viewer;
 namespace JktMoteur {
@@ -19,22 +25,23 @@ namespace JktMoteur {
 	class CLight;
 }
 
-class DataTreeView : public View
-{
-	AG_Tlist* _serveurDataTree;
-	AG_Table* _serveurClientsTable;
+class DataTreeView : public View {
+	DataTreeDetails _serveurDetails;
 
-	void drawBranche(Branche* branche, int depth);
+	static void drawBranche(DataTreeDetails* details, Branche* branche, int depth);
+	static void refreshServeur(AG_Window* window, DataTreeDetails* details);
+	static void drawWidgets(DataTreeDetails* details, AG_Box* box);
 
 public:
     DataTreeView(const AG_EventFn controllerCallback);
     ~DataTreeView(void);
 
     void show(void);
-    void refresh();
+    static void refresh(AG_Event* event);
 
-    static void refreshClientTable(DataTreeView* This);
+    static void refreshClientTable(DataTreeDetails* details);
     static void selectionChanged(AG_Event* event);
+    static void openClientsWindows(AG_Event* event);
 };
 
 #endif

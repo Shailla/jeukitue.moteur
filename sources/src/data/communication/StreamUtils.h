@@ -13,5 +13,6 @@
 #include <string>
 
 std::istringstream& operator>>(std::istringstream& in, std::vector<int>& data);
+std::ostringstream& operator<<(std::ostringstream& out, std::vector<int>& data);
 
 #endif /* IMESSAGESTREAM_H_ */

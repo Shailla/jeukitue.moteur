@@ -28,7 +28,7 @@ public:
 	void update(MarqueurClient* marqueur);
 	void change(DataTree* tree);
 
-	void serialize(const std::ostringstream& out);
+	void serialize(std::ostringstream& out);
 };
 
 #endif /* ADDBRANCHECHANGEMENT_H_ */

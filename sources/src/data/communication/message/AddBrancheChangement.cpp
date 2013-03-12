@@ -10,6 +10,8 @@
 
 using namespace std;
 
+#include "data/communication/StreamUtils.h"
+
 #include "data/communication/message/AddBrancheChangement.h"
 
 AddBrancheChangement::AddBrancheChangement(istringstream& in) {
@@ -26,8 +28,8 @@ void AddBrancheChangement::update(MarqueurClient* marqueur) {
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }
 
-void AddBrancheChangement::serialize(const ostringstream& out) {
-	// Sérialise
+void AddBrancheChangement::serialize(ostringstream& out) {
+	// Serialize
 	out << ADD_DATA_MESSAGE;
 	out << _brancheId;
 	out << _revision;

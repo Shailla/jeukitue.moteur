@@ -18,8 +18,8 @@ public:
 	DataSerializer();
 	virtual ~DataSerializer();
 
-	static void toStream(std::vector<Changement*>& changements, OMessageStream& out);
-	static void fromStream(std::vector<Changement*>& changements, IMessageStream& out);
+	static void toStream(std::vector<Changement*>& changements, std::ostringstream& out);
+	static void fromStream(std::vector<Changement*>& changements, std::istringstream& out);
 };
 
 #endif /* DATASERIALIZER_H_ */

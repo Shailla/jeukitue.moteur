@@ -10,9 +10,6 @@
 
 #include <sstream>
 
-#include "data/communication/IMessageStream.h"
-#include "data/communication/OMessageStream.h"
-
 class DataTree;
 class DataSerializer;
 class MarqueurClient;
@@ -24,6 +21,8 @@ protected:
 		ADD_DATA_MESSAGE = 1
 	};
 
+	virtual void unserialize(std::istringstream& in) = 0;
+
 public:
 	Changement();
 	virtual ~Changement();
@@ -32,7 +31,6 @@ public:
 	virtual void change(DataTree* tree) = 0;
 
 	virtual void serialize(std::ostringstream& out) = 0;
-	virtual void unserialize(std::istringstream& in) = 0;
 };
 
 #endif /* _CHANGEMENT_H_ */

@@ -19,7 +19,7 @@ DataSerializer::DataSerializer() {
 DataSerializer::~DataSerializer() {
 }
 
-void DataSerializer::toStream(vector<Changement*>& changements, OMessageStream& out) {
+void DataSerializer::toStream(vector<Changement*>& changements, ostringstream& out) {
 	vector<Changement*>::iterator it;
 
 	for(it = changements.begin() ; it != changements.end() ; it++) {
@@ -27,7 +27,7 @@ void DataSerializer::toStream(vector<Changement*>& changements, OMessageStream& 
 	}
 }
 
-void DataSerializer::fromStream(vector<Changement*>& changements, IMessageStream& in) {
+void DataSerializer::fromStream(vector<Changement*>& changements, istringstream& in) {
 	in.exceptions(istringstream::eofbit);
 
 	char messageType;

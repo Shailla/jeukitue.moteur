@@ -14,8 +14,6 @@ using namespace std;
 #include "data/MarqueurClient.h"
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/communication/DataSerializer.h"
-#include "data/communication/OMessageStream.h"
-#include "data/communication/IMessageStream.h"
 
 #include "data/DataTree.h"
 
@@ -158,7 +156,7 @@ void DataTree::diffuseChangements(void) {
 		client->collecteChangements(changements);
 
 		if(changements.size()) {
-			OMessageStream out;
+			ostringstream out;
 			DataSerializer::toStream(changements, out);
 			client->sendData(out);
 		}
@@ -172,7 +170,7 @@ void DataTree::receiveChangements(void) {
 	for(clientIter = _clients.begin() ; clientIter != _clients.end() ; clientIter++) {
 		Client* client = *clientIter;
 		string data = client->receiveData();
-		IMessageStream in(data);
+		istringstream in(data);
 		DataSerializer::fromStream(changements, in);
 
 		vector<Changement*>::iterator itCh;

@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#include "data/communication/IMessageStream.h"
+#include "data/communication/StreamUtils.h"
 
 istringstream& operator>>(istringstream& in, vector<int>& data) {
 	char size, var;
@@ -24,4 +24,16 @@ istringstream& operator>>(istringstream& in, vector<int>& data) {
 	}
 
 	return in;
+}
+
+ostringstream& operator<<(ostringstream& out, std::vector<int>& data) {
+	out << data.size();
+
+	vector<int>::iterator it;
+
+	for(it = data.begin() ; it != data.end() ; it++) {
+		out << *it;
+	}
+
+	return out;
 }

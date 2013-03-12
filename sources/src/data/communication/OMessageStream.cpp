@@ -11,14 +11,14 @@ using namespace std;
 
 #include "data/communication/OMessageStream.h"
 
-OMessageStream& OMessageStream::operator<<(std::vector<int>& data) {
-	*this << data.size();
+ostringstream& operator<<(ostringstream& out, const std::vector<int>& data) {
+	out << data.size();
 
 	vector<int>::iterator it;
 
 	for(it = data.begin() ; it != data.end() ; it++) {
-		*this << *it;
+		out << *it;
 	}
 
-	return *this;
+	return out;
 }

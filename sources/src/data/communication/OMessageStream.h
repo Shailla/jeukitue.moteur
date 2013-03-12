@@ -11,9 +11,6 @@
 #include <sstream>
 #include <vector>
 
-class OMessageStream : public std::ostringstream {
-public:
-	OMessageStream& operator<<(std::vector<int>& data);
-};
+std::ostringstream& operator<<(std::ostringstream& out, const std::vector<int>& data);
 
 #endif /* OMESSAGESTREAM_H_ */

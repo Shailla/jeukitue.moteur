@@ -19,16 +19,16 @@ class AddBrancheChangement: public Changement {
 	std::vector<int> _brancheId;
 	int _revision;
 
-	void unserialize(IMessageStream& in);
+	void unserialize(std::istringstream& in);
 
 public:
-	AddBrancheChangement(IMessageStream& in);
-	AddBrancheChangement(std::vector<int>& brancheId, int revision);
+	AddBrancheChangement(std::istringstream& in);
+	AddBrancheChangement(const std::vector<int>& brancheId, int revision);
 
 	void update(MarqueurClient* marqueur);
 	void change(DataTree* tree);
 
-	void serialize(OMessageStream& out);
+	void serialize(const std::ostringstream& out);
 };
 
 #endif /* ADDBRANCHECHANGEMENT_H_ */

@@ -7,24 +7,21 @@
 
 #include <vector>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
 #include "data/communication/IMessageStream.h"
 
-IMessageStream::IMessageStream(const string& str) : istringstream(str) {
-
-}
-
-IMessageStream& IMessageStream::operator>>(vector<int>& data) {
+istringstream& operator>>(istringstream& in, vector<int>& data) {
 	char size, var;
 
-	*this >> size;
+	in >> size;
 
 	for(int i=0 ; i<size ; i++) {
-		*this >> var;
+		in >> var;
 		data.push_back(var);
 	}
 
-	return *this;
+	return in;
 }

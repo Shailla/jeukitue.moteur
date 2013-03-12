@@ -12,11 +12,11 @@ using namespace std;
 
 #include "data/communication/message/AddBrancheChangement.h"
 
-AddBrancheChangement::AddBrancheChangement(IMessageStream& in) {
+AddBrancheChangement::AddBrancheChangement(istringstream& in) {
 	unserialize(in);
 }
 
-AddBrancheChangement::AddBrancheChangement(vector<int>& brancheId, int revision) {
+AddBrancheChangement::AddBrancheChangement(const vector<int>& brancheId, int revision) {
 	_brancheId = brancheId;
 	_revision = revision;
 }
@@ -26,14 +26,14 @@ void AddBrancheChangement::update(MarqueurClient* marqueur) {
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }
 
-void AddBrancheChangement::serialize(OMessageStream& out) {
+void AddBrancheChangement::serialize(const ostringstream& out) {
 	// Sérialise
 	out << ADD_DATA_MESSAGE;
 	out << _brancheId;
 	out << _revision;
 }
 
-void AddBrancheChangement::unserialize(IMessageStream& in) {
+void AddBrancheChangement::unserialize(istringstream& in) {
 	in >> _brancheId;
 	in >> _revision;
 }

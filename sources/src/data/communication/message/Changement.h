@@ -31,8 +31,8 @@ public:
 	virtual void update(MarqueurClient* marqueur) = 0;
 	virtual void change(DataTree* tree) = 0;
 
-	virtual void serialize(OMessageStream& out) = 0;
-	virtual void unserialize(IMessageStream& in) = 0;
+	virtual void serialize(std::ostringstream& out) = 0;
+	virtual void unserialize(std::istringstream& in) = 0;
 };
 
 #endif /* _CHANGEMENT_H_ */

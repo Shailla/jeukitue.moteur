@@ -10,7 +10,7 @@
 
 using namespace std;
 
-#include "data/communication/StreamUtils.h"
+#include "util/StreamUtils.h"
 
 #include "data/communication/message/AddBrancheChangement.h"
 

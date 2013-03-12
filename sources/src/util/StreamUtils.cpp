@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#include "data/communication/StreamUtils.h"
+#include "util/StreamUtils.h"
 
 istringstream& operator>>(istringstream& in, vector<int>& data) {
 	char size, var;

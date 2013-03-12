@@ -17,7 +17,7 @@ using namespace std;
 
 using namespace JktUtils;
 
-extern DataTree dataTree;
+extern DataTree serveurDataTree;
 
 AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
@@ -28,14 +28,14 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 	if(subCommande1 == "client") {
 		string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
-		dataTree.addClient(clientName);
+		serveurDataTree.addClient(clientName);
 	}
 	else if(subCommande1 == "branche") {
 		string brancheName = StringUtils::findAndEraseFirstWord(ligne);
 		vector<int> parentBrancheId = getIntParameters(ligne);
 
 		try {
-			dataTree.addBranche(parentBrancheId, brancheName);
+			serveurDataTree.addBranche(parentBrancheId, brancheName);
 		}
 		catch(NotExistingBrancheException& exception) {
 			printErrLn("La branche parent specifiee n'existe pas", userOutput);
@@ -55,7 +55,7 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 			// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
 			vector<int> params = getIntParameters(ligne);
 
-			dataTree.addValeurInt(params, valeurName, valeur);
+			serveurDataTree.addValeurInt(params, valeurName, valeur);
 		}
 		else {
 			printErrLn("Syntaxe incorrecte", userOutput);

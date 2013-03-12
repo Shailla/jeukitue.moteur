@@ -18,7 +18,7 @@ using namespace std;
 
 using namespace JktUtils;
 
-extern DataTree dataTree;
+extern DataTree serveurDataTree;
 
 UpdateDataCommande::UpdateDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
@@ -33,7 +33,7 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 		// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
 		vector<int> valeurId = getIntParameters(ligne);
 
-		Valeur* vl = dataTree.getValeur(valeurId);
+		Valeur* vl = serveurDataTree.getValeur(valeurId);
 		ValeurInt* vlInt = dynamic_cast<ValeurInt*>(vl);
 
 		if(vlInt != 0) {

@@ -2,6 +2,7 @@
 #define __JKT__DATATREEVIEW_H
 
 #include <map>
+#include <vector>
 
 #include <agar/core.h>
 #include <agar/gui.h>
@@ -9,7 +10,8 @@
 #include "menu/View.h"
 #include "data/DataTree.h"
 
-extern DataTree dataTree;
+extern DataTree serveurDataTree;
+extern std::vector<DataTree*> clientDataTrees;
 
 class Viewer;
 namespace JktMoteur {
@@ -19,8 +21,8 @@ namespace JktMoteur {
 
 class DataTreeView : public View
 {
-	AG_Tlist* _dataTree;
-	AG_Table* _clientsTable;
+	AG_Tlist* _serveurDataTree;
+	AG_Table* _serveurClientsTable;
 
 	void drawBranche(Branche* branche, int depth);
 

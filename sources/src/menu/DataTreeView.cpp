@@ -30,15 +30,15 @@ DataTreeView::DataTreeView(const AG_EventFn controllerCallback)
 	boxes[1] = AG_BoxNewVert(box, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
 
 	// Arbre des données
-	_dataTree = AG_TlistNew(boxes[0], AG_TLIST_EXPAND | AG_TLIST_TREE);
-	AG_TlistSetChangedFn(_dataTree, selectionChanged, "%p", this);
+	_serveurDataTree = AG_TlistNew(boxes[0], AG_TLIST_EXPAND | AG_TLIST_TREE);
+	AG_TlistSetChangedFn(_serveurDataTree, selectionChanged, "%p", this);
 
 	// Tableau des clients
-	_clientsTable = AG_TableNew(boxes[1], AG_TABLE_EXPAND);
-	AG_TableAddCol(_clientsTable, "Nom", "<XXXXXXXXXXXXXXX>", NULL);
-	AG_TableAddCol(_clientsTable, "Tmp ID", "<XXXXXXXXXXXXXXX>", NULL);
-	AG_TableAddCol(_clientsTable, "Sent revision", "<XXXXXXXXXXXXXXX>", NULL);
-	AG_Expand(_clientsTable);
+	_serveurClientsTable = AG_TableNew(boxes[1], AG_TABLE_EXPAND);
+	AG_TableAddCol(_serveurClientsTable, "Nom", "<XXXXXXXXXXXXXXX>", NULL);
+	AG_TableAddCol(_serveurClientsTable, "Tmp ID", "<XXXXXXXXXXXXXXX>", NULL);
+	AG_TableAddCol(_serveurClientsTable, "Sent revision", "<XXXXXXXXXXXXXXX>", NULL);
+	AG_Expand(_serveurClientsTable);
 
     AG_SeparatorNewHoriz(m_window);
 
@@ -66,16 +66,16 @@ void DataTreeView::selectionChanged(AG_Event* event) {
 }
 
 void DataTreeView::refreshClientTable(DataTreeView* This) {
-	Donnee* selectedDonnee = (Donnee*)AG_TlistSelectedItemPtr(This->_dataTree);
+	Donnee* selectedDonnee = (Donnee*)AG_TlistSelectedItemPtr(This->_serveurDataTree);
 
 
 	/* **************************************
 	 * Mise à jour du tableau des clients
 	 * *************************************/
 
-	AG_TableBegin(This->_clientsTable);
+	AG_TableBegin(This->_serveurClientsTable);
 
-	vector<Client*> clients = dataTree.getClients();
+	vector<Client*> clients = serveurDataTree.getClients();
 	vector<Client*>::iterator iter;
 
 	for(iter = clients.begin() ; iter != clients.end() ; iter++) {
@@ -85,18 +85,18 @@ void DataTreeView::refreshClientTable(DataTreeView* This) {
 			MarqueurClient* marqueur = client->getMarqueur(selectedDonnee);
 
 			if(marqueur) {
-				AG_TableAddRow(This->_clientsTable, "%s:%d:%d", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->getSentRevision());
+				AG_TableAddRow(This->_serveurClientsTable, "%s:%d:%d", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->getSentRevision());
 			}
 			else {
-				AG_TableAddRow(This->_clientsTable, "%s:%s:%s", client->getDebugName().c_str(), "<Pas de marqueur>", "<Bug>");
+				AG_TableAddRow(This->_serveurClientsTable, "%s:%s:%s", client->getDebugName().c_str(), "<Pas de marqueur>", "<Bug>");
 			}
 		}
 		else {
-			AG_TableAddRow(This->_clientsTable, "%s:%s:%s", client->getDebugName().c_str(), "-", "-");
+			AG_TableAddRow(This->_serveurClientsTable, "%s:%s:%s", client->getDebugName().c_str(), "-", "-");
 		}
 	}
 
-	AG_TableEnd(This->_clientsTable);
+	AG_TableEnd(This->_serveurClientsTable);
 }
 
 void DataTreeView::refresh(void) {
@@ -106,16 +106,16 @@ void DataTreeView::refresh(void) {
 	 * Mise à jour de l'abre des données
 	 * ***********************************/
 
-	AG_TlistBegin(_dataTree);
+	AG_TlistBegin(_serveurDataTree);
 
 	// Root
-	Branche* root = &dataTree.getRoot();
-	AG_TlistItem* item = AG_TlistAddPtr(_dataTree, NULL, "Root", root);
+	Branche* root = &serveurDataTree.getRoot();
+	AG_TlistItem* item = AG_TlistAddPtr(_serveurDataTree, NULL, "Root", root);
 	int depth = 0;
 	item->depth = depth;
 	drawBranche(root, depth+1);
 
-	AG_TlistEnd(_dataTree);
+	AG_TlistEnd(_serveurDataTree);
 
 
 	// Rafraichissement de la page
@@ -151,7 +151,7 @@ void DataTreeView::drawBranche(Branche* branche, int depth) {
 			Valeur* valeur = itVa->second;
 			string txt = getValueString(valeur);
 
-			AG_TlistItem* item = AG_TlistAddPtr(_dataTree, NULL, txt.c_str(), valeur);
+			AG_TlistItem* item = AG_TlistAddPtr(_serveurDataTree, NULL, txt.c_str(), valeur);
 			item->depth = depth+1;
 		}
 	}
@@ -167,7 +167,7 @@ void DataTreeView::drawBranche(Branche* branche, int depth) {
 			ostringstream tete;
 			tete << "Branche[" << subBranche->getBrancheId() << ":" << subBranche->getBrancheName()  << "]";
 
-			AG_TlistItem* item = AG_TlistAddPtr(_dataTree, NULL, tete.str().c_str(), subBranche);
+			AG_TlistItem* item = AG_TlistAddPtr(_serveurDataTree, NULL, tete.str().c_str(), subBranche);
 			item->depth = depth;
 
 			drawBranche(subBranche, depth+1);

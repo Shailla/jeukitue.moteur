@@ -126,7 +126,8 @@ using namespace JktSon;
 
 #include "jkt.h"
 
-DataTree dataTree;
+DataTree serveurDataTree;
+vector<DataTree*> clientDataTrees;
 
 float GLIGHTX, GLIGHTY, GLIGHTZ;
 GLFont myfont;

@@ -663,8 +663,8 @@ void display() {		// Fonction principale d'affichage
 
 	// Initialisation des objets graphiques à initialiser
 	SDL_LockMutex(_grahicObjectsToInitializeMutex);
-	while (!_grahicObjectsToInitialize.empty())
-	{
+
+	while (!_grahicObjectsToInitialize.empty()) {
 		object = _grahicObjectsToInitialize.back();
 		object->initializeGraphicObject();
 
@@ -674,8 +674,8 @@ void display() {		// Fonction principale d'affichage
 
 	// Descruction des objets graphiques à détruire
 	SDL_LockMutex(_grahicObjectsToDestructMutex);
-	while (!_grahicObjectsToDestruct.empty())
-	{
+
+	while (!_grahicObjectsToDestruct.empty()) {
 		object = _grahicObjectsToDestruct.back();
 		object->destructGraphicObject();
 
@@ -1244,262 +1244,286 @@ void openMap(const string& nomFichierMap) {
 GameDto* localeGameDto;
 GameDto* serverGameDto;
 
-void boucle() {
-	Uint32 temps=0;
-	Uint32 oldTemps=0;
 
-	for( ;; ) {		// Boucle principale du jeu
-		// Y a-t-il demande d'ouverture d'une map en mode jeu multijoueurs ?
-		if( Game.RequeteProcess.isOuvreMap() ) {		// S'il y a une demande d'ouvertue de MAP
-			Aide = false;
+void executeRequests() {
+
+	/* *******************************************************
+	 * Exécution de l'ouverture d'une MAP en mode multijoueurs
+	 * ******************************************************/
+
+	if( Game.RequeteProcess.isOuvreMap() ) {		// S'il y a une demande d'ouvertue de MAP
+		Aide = false;
+		const string mapName = Game.RequeteProcess.getOuvreMap();
+
+		openMap( mapName );	// Ouvre la MAP voulue
+
+		Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );		// Indique que la partie est lancée en mode client
+		pFocus->SetPlayFocus();								// Met l'interception des commandes sur le mode jeu
+
+		Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
+	}
+
+
+	/* *******************************************************
+	 * Exécution du workflow d'ouverture d'une MAP locale
+	 * ******************************************************/
+
+	int etape = Game.RequeteProcess.getOuvreMapLocaleEtape();
+
+	switch(etape) {
+	case CRequeteProcess::OMLE_AUCUNE:				// Aucune ouverture de MAP locale en cours
+		// Nothing to do
+		break;
+
+	case CRequeteProcess::OMLE_DEMANDE:
+		{
+			Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
+
+			// Fermeture de la MAP courante et destruction des joueurs
+			CMap* currentMap = Game.getMap();
+			if(currentMap) {
+				currentMap->freeGL();
+				Game.changeActiveMap(NULL);
+			}
+
+			Game.Erwin(NULL);
+
+			if(Game.pTabIndexPlayer) {
+				CPlayer *player;
+				int playerIndex = -1;
+				while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
+					player = Game.pTabIndexPlayer->operator [](playerIndex);
+					player->freeGL();
+				}
+
+				delete Game.pTabIndexPlayer;
+				Game.pTabIndexPlayer = NULL;
+			}
+
+			// Lancement ouverture MAP demandée
 			const string mapName = Game.RequeteProcess.getOuvreMap();
 
-			openMap( mapName );	// Ouvre la MAP voulue
+			localeGameDto = new GameDto(mapName);
 
-			Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );		// Indique que la partie est lancée en mode client
-			pFocus->SetPlayFocus();								// Met l'interception des commandes sur le mode jeu
+			Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_OUVERTURE_EN_COURS);
 
-			Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
+			MapLoader::launcheGameLoading(localeGameDto);		// Lance l'ouverture de la MAP
 		}
+		break;
+
+	case CRequeteProcess::OMLE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la méthode "openMap"
+		// Nothing to do
+		break;
+
+	case CRequeteProcess::OMLE_OUVERTURE:
+		{
+			ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
+			console->setMapOuverteName(localeGameDto->getMapName());
+
+			// Activation de la MAP ouverte
+			CMap* map = localeGameDto->getMap();
+			map->initGL();
+			Game.changeActiveMap(map);
+
+			// Définition des joueurs
+			Game.setPlayerList(localeGameDto->getPlayersMaxNumber());
+
+			CPlayer* erwin = localeGameDto->getErwin();
 
 
-		/* *******************************************************
-		 * Exécution de l'ouverture d'une MAP locale si besoin
-		 * ******************************************************/
+			int i = 0;
 
-		int etape = Game.RequeteProcess.getOuvreMapLocaleEtape();
+			if(erwin != NULL) {
+				Game.Erwin(erwin);								// Indique que 'erwin' est le joueur principal
+				Game.pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
+			}
 
-		switch(etape) {
-		case CRequeteProcess::OMLE_AUCUNE:				// Aucune ouverture de MAP locale en cours
-			// Nothing to do
-			break;
+			for(vector<CPlayer*>::iterator iter = localeGameDto->getPlayers().begin() ; iter != localeGameDto->getPlayers().end() ; ++iter) {
+				Game.pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
+			}
 
-		case CRequeteProcess::OMLE_DEMANDE:
-			{
-				Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
+			CPlayer *player;
+			int playerIndex = -1;
 
-				// Fermeture de la MAP courante et destruction des joueurs
-				CMap* currentMap = Game.getMap();
-				if(currentMap) {
-					currentMap->freeGL();
-					Game.changeActiveMap(NULL);
+			while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
+				player = (*Game.pTabIndexPlayer)[playerIndex];
+				player->initGL();
+				player->choiceOneEntryPoint();
+			}
+
+			delete localeGameDto;
+
+			// Lancement du jeu en mode local
+			Aide = false;
+			pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
+			Game.setModeLocal();						// Jeu en mode jeu local
+			Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_AUCUNE);
+
+			cout << "\nFINI";
+			cout << flush;
+		}
+		break;
+	}
+
+
+	/* **************************************************************
+	 * Exécution du workflow d'ouverture d'une MAP en mode serveur
+	 * *************************************************************/
+
+	etape = Game.RequeteProcess.getOuvreMapServerEtape();
+
+	switch(etape) {
+	case CRequeteProcess::OMSE_AUCUNE:				// Aucune ouverture de MAP locale en cours
+		// Nothing to do
+		break;
+
+	case CRequeteProcess::OMSE_DEMANDE:
+		{
+			Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
+
+			// Fermeture de la MAP courante et destruction des joueurs
+			CMap* currentMap = Game.getMap();
+			if(currentMap) {
+				currentMap->freeGL();
+				Game.changeActiveMap(NULL);
+			}
+
+			Game.Erwin(NULL);
+
+			if(Game.pTabIndexPlayer) {
+				CPlayer *player;
+				int playerIndex = -1;
+				while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
+					player = Game.pTabIndexPlayer->operator [](playerIndex);
+					player->freeGL();
 				}
 
-				Game.Erwin(NULL);
+				delete Game.pTabIndexPlayer;
+				Game.pTabIndexPlayer = NULL;
+			}
 
-				if(Game.pTabIndexPlayer) {
-					CPlayer *player;
-					int playerIndex = -1;
-					while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
-						player = Game.pTabIndexPlayer->operator [](playerIndex);
-						player->freeGL();
-					}
 
-					delete Game.pTabIndexPlayer;
-					Game.pTabIndexPlayer = NULL;
-				}
-
+			// Connexion du serveur
+			if(!Reseau.ouvreServer(Config.Reseau.getPort())) {
+				Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
+				AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du serveur");
+			}
+			else {
 				// Lancement ouverture MAP demandée
 				const string mapName = Game.RequeteProcess.getOuvreMap();
 
-				localeGameDto = new GameDto(mapName);
+				serverGameDto = new GameDto(mapName);
 
-				Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_OUVERTURE_EN_COURS);
+				Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_OUVERTURE_EN_COURS);
 
-				MapLoader::launcheGameLoading(localeGameDto);		// Lance l'ouverture de la MAP
+				MapLoader::launcheGameServerLoading(serverGameDto);		// Lance l'ouverture de la MAP
 			}
-			break;
-
-		case CRequeteProcess::OMLE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la méthode "openMap"
-			// Nothing to do
-			break;
-
-		case CRequeteProcess::OMLE_OUVERTURE:
-			{
-				ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
-				console->setMapOuverteName(localeGameDto->getMapName());
-
-				// Activation de la MAP ouverte
-				CMap* map = localeGameDto->getMap();
-				map->initGL();
-				Game.changeActiveMap(map);
-
-				// Définition des joueurs
-				Game.setPlayerList(localeGameDto->getPlayersMaxNumber());
-
-				CPlayer* erwin = localeGameDto->getErwin();
-
-
-				int i = 0;
-
-				if(erwin != NULL) {
-					Game.Erwin(erwin);								// Indique que 'erwin' est le joueur principal
-					Game.pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
-				}
-
-				for(vector<CPlayer*>::iterator iter = localeGameDto->getPlayers().begin() ; iter != localeGameDto->getPlayers().end() ; ++iter) {
-					Game.pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
-				}
-
-				CPlayer *player;
-				int playerIndex = -1;
-
-				while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
-					player = (*Game.pTabIndexPlayer)[playerIndex];
-					player->initGL();
-					player->choiceOneEntryPoint();
-				}
-
-				delete localeGameDto;
-
-				// Lancement du jeu en mode local
-				Aide = false;
-				pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
-				Game.setModeLocal();						// Jeu en mode jeu local
-				Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_AUCUNE);
-
-				cout << "\nFINI";
-				cout << flush;
-			}
-			break;
 		}
+		break;
+
+	case CRequeteProcess::OMSE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la méthode "openMap"
+		// Nothing to do
+		break;
+
+	case CRequeteProcess::OMSE_OUVERTURE:
+		{
+			// Activation de la MAP ouverte
+			CMap* map = serverGameDto->getMap();
+			map->initGL();
+			Game.changeActiveMap(map);
+
+			// Définition des joueurs
+			Game.setPlayerList(serverGameDto->getPlayersMaxNumber());
+
+			CPlayer* erwin = serverGameDto->getErwin();
 
 
-		/* **************************************************************
-		 * Exécution de l'ouverture d'une MAP en mode serveur si besoin
-		 * *************************************************************/
+			int i = 0;
 
-		etape = Game.RequeteProcess.getOuvreMapServerEtape();
-
-		switch(etape) {
-		case CRequeteProcess::OMSE_AUCUNE:				// Aucune ouverture de MAP locale en cours
-			// Nothing to do
-			break;
-
-		case CRequeteProcess::OMSE_DEMANDE:
-			{
-				Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
-
-				// Fermeture de la MAP courante et destruction des joueurs
-				CMap* currentMap = Game.getMap();
-				if(currentMap) {
-					currentMap->freeGL();
-					Game.changeActiveMap(NULL);
-				}
-
-				Game.Erwin(NULL);
-
-				if(Game.pTabIndexPlayer) {
-					CPlayer *player;
-					int playerIndex = -1;
-					while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
-						player = Game.pTabIndexPlayer->operator [](playerIndex);
-						player->freeGL();
-					}
-
-					delete Game.pTabIndexPlayer;
-					Game.pTabIndexPlayer = NULL;
-				}
-
-
-				// Connexion du serveur
-				if(!Reseau.ouvreServer(Config.Reseau.getPort())) {
-					Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
-					AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du serveur");
-				}
-				else {
-					// Lancement ouverture MAP demandée
-					const string mapName = Game.RequeteProcess.getOuvreMap();
-
-					serverGameDto = new GameDto(mapName);
-
-					Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_OUVERTURE_EN_COURS);
-
-					MapLoader::launcheGameServerLoading(serverGameDto);		// Lance l'ouverture de la MAP
-				}
+			if(erwin != NULL) {
+				Game.Erwin(erwin);								// Indique que 'erwin' est le joueur principal
+				Game.pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
 			}
-			break;
 
-		case CRequeteProcess::OMSE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la méthode "openMap"
-			// Nothing to do
-			break;
-
-		case CRequeteProcess::OMSE_OUVERTURE:
-			{
-				// Activation de la MAP ouverte
-				CMap* map = serverGameDto->getMap();
-				map->initGL();
-				Game.changeActiveMap(map);
-
-				// Définition des joueurs
-				Game.setPlayerList(serverGameDto->getPlayersMaxNumber());
-
-				CPlayer* erwin = serverGameDto->getErwin();
-
-
-				int i = 0;
-
-				if(erwin != NULL) {
-					Game.Erwin(erwin);								// Indique que 'erwin' est le joueur principal
-					Game.pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
-				}
-
-				for(vector<CPlayer*>::iterator iter = serverGameDto->getPlayers().begin() ; iter != serverGameDto->getPlayers().end() ; ++iter) {
-					Game.pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
-				}
-
-				CPlayer *player;
-				int playerIndex = -1;
-
-				while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
-					player = (*Game.pTabIndexPlayer)[playerIndex];
-					player->initGL();
-					player->choiceOneEntryPoint();
-				}
-
-
-				// Lancement du jeu en mode local
-				Aide = false;
-				pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
-
-				JktNet::CServer *server = Game.getServer();
-				server->nomMAP = serverGameDto->getMapName();					// Informe le serveur sur le nom de la MAP lancée
-				Game.setPlayerList( server->maxPlayers );
-				server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
-				Game.setModeServer();						// Jeu en mode jeu local
-				server->bGame = true;						// Indique qu'une partie est en cours
-
-				delete serverGameDto;
-
-				cout << "\nFINI";
-				cout << flush;
-
-				Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
+			for(vector<CPlayer*>::iterator iter = serverGameDto->getPlayers().begin() ; iter != serverGameDto->getPlayers().end() ; ++iter) {
+				Game.pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
 			}
-			break;
+
+			CPlayer *player;
+			int playerIndex = -1;
+
+			while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
+				player = (*Game.pTabIndexPlayer)[playerIndex];
+				player->initGL();
+				player->choiceOneEntryPoint();
+			}
+
+
+			// Lancement du jeu en mode local
+			Aide = false;
+			pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
+
+			JktNet::CServer *server = Game.getServer();
+			server->nomMAP = serverGameDto->getMapName();					// Informe le serveur sur le nom de la MAP lancée
+			Game.setPlayerList( server->maxPlayers );
+			server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
+			Game.setModeServer();						// Jeu en mode jeu local
+			server->bGame = true;						// Indique qu'une partie est en cours
+
+			delete serverGameDto;
+
+			cout << "\nFINI";
+			cout << flush;
+
+			Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
 		}
+		break;
+	}
 
 
-		// Y a-t-il une demande de prise de screenshot ?
-		if( Game.RequeteProcess.isTakePicture() ) {	// S'il y a une demande de prise de photo de la scène
-			CPhoto photo( Config.Display.X, Config.Display.Y );
+	/* *******************************************
+	 * Exécution d'une capture d'écran
+	 * ******************************************/
 
-			string fichier_photo("./Images/photo.bmp");
-			if( photo.Save( fichier_photo ) )
-				cout << "\nPhoto prise.";
-			else
-				cerr << "\nEchec a la prise de la photo";
-		}
+	if( Game.RequeteProcess.isTakePicture() ) {	// S'il y a une demande de prise de photo de la scène
+		CPhoto photo( Config.Display.X, Config.Display.Y );
+
+		string fichier_photo("./Images/photo.bmp");
+
+		if( photo.Save( fichier_photo ) )
+			cout << "\nPhoto prise.";
+		else
+			cerr << "\nEchec a la prise de la photo";
+	}
+}
+
+void boucle() {
+	// Initialisation du temps
+	Uint32 oldTemps = SDL_GetTicks();
+	Uint32 temps = oldTemps;
+
+
+	/* ***************************************
+	 * Boucle du jeu prinipale
+	 * **************************************/
+
+	for( ;; ) {
+		executeRequests();
 
 		// Mesure du temps écoulé depuis les derniers calculs du jeu
-		if(temps == 0) {
-			temps = SDL_GetTicks();
-			oldTemps = temps;
+		oldTemps = temps;
+		temps = SDL_GetTicks();
+
+
+		serveurDataTree.diffuseChangements();
+
+		vector<DataTree*>::iterator itDataClient;
+
+		for(itDataClient = clientDataTrees.begin() ; itDataClient != clientDataTrees.end() ; itDataClient) {
+			DataTree* dataClient = itDataClient;
+			dataClient->receiveChangements();
 		}
-		else {
-			oldTemps = temps;
-			temps = SDL_GetTicks();
-		}
+
 
 		// Effectue tous les calculs du jeu
 		timer(temps - oldTemps);

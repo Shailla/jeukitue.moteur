@@ -92,6 +92,7 @@ void DataTreeView::openClientsWindows(AG_Event* event) {
 
 		if(!details) {
 			details = new DataTreeDetails();
+			This->_clientDataTrees[tree] = details;
 
 			AG_Window* window = AG_WindowNew(0);
 			AG_WindowSetCaption(window, "Client");

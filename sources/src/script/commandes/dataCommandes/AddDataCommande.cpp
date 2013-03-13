@@ -18,6 +18,7 @@ using namespace std;
 using namespace JktUtils;
 
 extern DataTree serveurDataTree;
+extern vector<DataTree*> clientDataTrees;
 
 AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
@@ -29,6 +30,9 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 		string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
 		serveurDataTree.addClient(clientName);
+	}
+	else if(subCommande1 == "distant") {
+		clientDataTrees.push_back(new DataTree());
 	}
 	else if(subCommande1 == "branche") {
 		string brancheName = StringUtils::findAndEraseFirstWord(ligne);

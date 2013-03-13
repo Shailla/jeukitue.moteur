@@ -1,5 +1,6 @@
 #include <sstream>
 #include <iostream>
+#include <stdexcept>
 
 using namespace std;
 
@@ -19,7 +20,7 @@ DataTreeView::DataTreeView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
-	AG_WindowSetCaption(m_window, "Arbre de la MAP courante");
+	AG_WindowSetCaption(m_window, "Serveur");
 
 	AG_Box* box = AG_BoxNewHoriz(m_window, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
 	AG_Expand(box);
@@ -39,10 +40,10 @@ DataTreeView::DataTreeView(const AG_EventFn controllerCallback)
 	AG_ButtonNewFn(boxButtons, 0, "Retour", controllerCallback, "%i", Controller::ShowDebugViewAction);
 
     // Bouton rafraîchir
-    AG_ButtonNewFn(boxButtons, 0, "Rafraichir", DataTreeView::refresh, "%p%p", m_window, details);
+    AG_ButtonNewFn(boxButtons, 0, "Rafraichir", DataTreeView::refresh, "%p%p%p", m_window, &serveurDataTree, details);
 
     // Bouton rafraîchir
-    AG_ButtonNewFn(boxButtons, 0, "Ouvrir les fenetres clients", openClientsWindows, "%p", details);
+    AG_ButtonNewFn(boxButtons, 0, "Ouvrir les fenetres clients", openClientsWindows, "%p", this);
 
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_TC, 100, 50);
     hide();
@@ -74,28 +75,49 @@ void DataTreeView::selectionChanged(AG_Event* event) {
 }
 
 void DataTreeView::openClientsWindows(AG_Event* event) {
-	DataTreeDetails* details = (DataTreeDetails*)AG_PTR(1);
+	DataTreeView* This = (DataTreeView*)AG_PTR(1);
 
-	AG_Window* window = AG_WindowNew(0);
-	AG_WindowSetCaption(window, "Arbre de la MAP courante");
+	vector<DataTree*>::iterator it;
 
-	AG_Box* box = AG_BoxNewHoriz(window, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
-	AG_Expand(box);
+	for(it = clientDataTrees.begin() ; it != clientDataTrees.end() ; it++) {
+		DataTree* tree = *it;
+		DataTreeDetails* details = NULL;
 
-	drawWidgets(details, box);
+		try {
+			details = This->_clientDataTrees.at(tree);
+		}
+		catch(out_of_range& exception) {
+			details = NULL;
+		}
 
-    AG_SeparatorNewHoriz(window);
+		if(!details) {
+			details = new DataTreeDetails();
+
+			AG_Window* window = AG_WindowNew(0);
+			AG_WindowSetCaption(window, "Client");
+
+			AG_Box* box = AG_BoxNewHoriz(window, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
+			AG_Expand(box);
+
+			drawWidgets(details, box);
+
+			AG_SeparatorNewHoriz(window);
 
 
-	// Boutons
-	AG_Box* boxButtons = AG_BoxNewHoriz(window, 0);
-	AG_ExpandHoriz(boxButtons);
+			// Boutons
+			AG_Box* boxButtons = AG_BoxNewHoriz(window, 0);
+			AG_ExpandHoriz(boxButtons);
 
-    // Bouton rafraîchir
-    AG_ButtonNewFn(boxButtons, 0, "Rafraichir", DataTreeView::refresh, "%p%p", window, details);
+			// Bouton rafraîchir
+			AG_ButtonNewFn(boxButtons, 0, "Rafraichir", DataTreeView::refresh, "%p%p%p", window, tree, details);
 
-    AG_WindowSetGeometryAlignedPct(window, AG_WINDOW_TC, 100, 50);
-	AG_WindowShow(window);
+			refreshClientTable(details);
+			refreshServeur(window, tree, details);
+
+			AG_WindowSetGeometryAlignedPct(window, AG_WINDOW_TC, 100, 50);
+			AG_WindowShow(window);
+		}
+	}
 }
 
 void DataTreeView::refreshClientTable(DataTreeDetails* details) {
@@ -134,13 +156,14 @@ void DataTreeView::refreshClientTable(DataTreeDetails* details) {
 
 void DataTreeView::refresh(AG_Event* event) {
 	AG_Window* window = (AG_Window*)AG_PTR(1);
-	DataTreeDetails* details = (DataTreeDetails*)AG_PTR(2);
+	DataTree* tree = (DataTree*)AG_PTR(2);
+	DataTreeDetails* details = (DataTreeDetails*)AG_PTR(3);
 
 	refreshClientTable(details);
-	refreshServeur(window, details);
+	refreshServeur(window, tree, details);
 }
 
-void DataTreeView::refreshServeur(AG_Window* window, DataTreeDetails* details) {
+void DataTreeView::refreshServeur(AG_Window* window, DataTree* tree, DataTreeDetails* details) {
 	/* ************************************
 	 * Mise à jour de l'abre des données
 	 * ***********************************/
@@ -148,7 +171,7 @@ void DataTreeView::refreshServeur(AG_Window* window, DataTreeDetails* details) {
 	AG_TlistBegin(details->_dataList);
 
 	// Root
-	Branche* root = &serveurDataTree.getRoot();
+	Branche* root = &tree->getRoot();
 	AG_TlistItem* item = AG_TlistAddPtr(details->_dataList, NULL, "Root", root);
 	int depth = 0;
 	item->depth = depth;
@@ -163,7 +186,7 @@ void DataTreeView::refreshServeur(AG_Window* window, DataTreeDetails* details) {
 
 void DataTreeView::show(void) {
 	refreshClientTable(&_serveurDetails);
-	refreshServeur(m_window, &_serveurDetails);
+	refreshServeur(m_window, &serveurDataTree, &_serveurDetails);
 
 	View::show();
 }

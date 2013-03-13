@@ -17,7 +17,7 @@ public:
 };
 
 extern DataTree serveurDataTree;
-extern std::map<DataTree*, DataTreeDetails> clientDataTrees;
+extern std::vector<DataTree*> clientDataTrees;
 
 class Viewer;
 namespace JktMoteur {
@@ -27,9 +27,10 @@ namespace JktMoteur {
 
 class DataTreeView : public View {
 	DataTreeDetails _serveurDetails;
+	std::map<DataTree*, DataTreeDetails*> _clientDataTrees;
 
 	static void drawBranche(DataTreeDetails* details, Branche* branche, int depth);
-	static void refreshServeur(AG_Window* window, DataTreeDetails* details);
+	static void refreshServeur(AG_Window* window, DataTree* tree, DataTreeDetails* details);
 	static void drawWidgets(DataTreeDetails* details, AG_Box* box);
 
 public:

@@ -30,9 +30,9 @@ void AddBrancheChangement::update(MarqueurClient* marqueur) {
 
 void AddBrancheChangement::serialize(ostringstream& out) {
 	// Serialize
-	out << ADD_DATA_MESSAGE;
+	out << (int)ADD_DATA_MESSAGE;
 	out << _brancheId;
-	out << _revision;
+	out << (int)_revision;
 }
 
 void AddBrancheChangement::unserialize(istringstream& in) {

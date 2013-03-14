@@ -33,7 +33,7 @@ public:
 	void collecteChangements(std::vector<Changement*>& changements);
 
 	void sendData(std::ostringstream& out);
-	std::string receiveData(void);
+	std::string* getDataToSend();
 };
 
 #endif /* CLIENT_H_ */

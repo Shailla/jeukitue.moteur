@@ -14,7 +14,7 @@ using namespace std;
 #include "util/StreamUtils.h"
 
 istringstream& operator>>(istringstream& in, vector<int>& data) {
-	char size, var;
+	int size, var;
 
 	in >> size;
 

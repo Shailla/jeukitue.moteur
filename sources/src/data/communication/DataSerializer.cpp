@@ -7,6 +7,7 @@
 
 #include <sstream>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -24,14 +25,17 @@ void DataSerializer::toStream(vector<Changement*>& changements, ostringstream& o
 
 	for(it = changements.begin() ; it != changements.end() ; it++) {
 		(*it)->serialize(out);
+		cout << endl << "Construction message : '" << out.str();
 	}
 }
 
 void DataSerializer::fromStream(vector<Changement*>& changements, istringstream& in) {
 	in.exceptions(istringstream::eofbit);
 
-	char messageType;
+	int messageType;
 	Changement* changement;
+
+	cout << endl << "Message vraiment reçu : '" << in.str() << "'";
 
 	try {
 		in >> messageType;
@@ -50,7 +54,7 @@ void DataSerializer::fromStream(vector<Changement*>& changements, istringstream&
 			changements.push_back(changement);
 		}
 	}
-	catch(istringstream::failure finDuFlux) {
+	catch(istringstream::failure& finDuFlux) {
 		// Fin du flux, on peut ressortir
 	}
 }

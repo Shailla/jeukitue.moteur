@@ -46,11 +46,11 @@ public:
 	Valeur* addValeurInt(vector<int>& parentBrancheId, const string& valeurName, int valeur);
 	Valeur* addValeurIntForClient(vector<int>& parentBrancheId, const string& valeurName, int valeurTmpId, int valeur, Client* client);
 
-	void addClient(const string& clientName);
+	Client* addClient(const string& clientName);
 	vector<Client*>& getClients();
 
 	void diffuseChangements();
-	void receiveChangements();
+	void receiveChangements(const std::string& data);
 };
 
 #endif /* DATATREE_H_ */

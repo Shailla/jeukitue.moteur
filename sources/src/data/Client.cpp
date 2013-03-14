@@ -85,12 +85,15 @@ void Client::collecteChangements(vector<Changement*>& changements) {
 }
 
 void Client::sendData(ostringstream& out) {
-	_dataTest = new string(out.str());
+	if(out.str().size()) {
+		_dataTest = new string(out.str());
+	}
 }
 
-string Client::receiveData() {
-	string result = *_dataTest;
+string* Client::getDataToSend(void) {
+	string* var = _dataTest;
+
 	_dataTest = NULL;
 
-	return result;
+	return var;
 }

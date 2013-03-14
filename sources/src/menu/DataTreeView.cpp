@@ -77,10 +77,10 @@ void DataTreeView::selectionChanged(AG_Event* event) {
 void DataTreeView::openClientsWindows(AG_Event* event) {
 	DataTreeView* This = (DataTreeView*)AG_PTR(1);
 
-	vector<DataTree*>::iterator it;
+	map<Client*, DataTree*>::iterator it;
 
-	for(it = clientDataTrees.begin() ; it != clientDataTrees.end() ; it++) {
-		DataTree* tree = *it;
+	for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
+		DataTree* tree = it->second;
 		DataTreeDetails* details = NULL;
 
 		try {

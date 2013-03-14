@@ -127,7 +127,7 @@ using namespace JktSon;
 #include "jkt.h"
 
 DataTree serveurDataTree;
-vector<DataTree*> clientDataTrees;
+map<Client*, DataTree*> dataRouter;
 
 float GLIGHTX, GLIGHTY, GLIGHTZ;
 GLFont myfont;
@@ -1517,11 +1517,18 @@ void boucle() {
 
 		serveurDataTree.diffuseChangements();
 
-		vector<DataTree*>::iterator itDataClient;
+		map<Client*, DataTree*>::iterator it;
 
-		for(itDataClient = clientDataTrees.begin() ; itDataClient != clientDataTrees.end() ; itDataClient) {
-			DataTree* dataClient = itDataClient;
-			dataClient->receiveChangements();
+		for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
+			Client* client = it->first;
+			DataTree* dataClient = it->second;
+
+			string* data = client->getDataToSend();
+
+			if(data) {
+				cout << endl << "Message reçu par '" << client->getDebugName() << "' : '" << *data << "'";
+				dataClient->receiveChangements(*data);
+			}
 		}
 
 

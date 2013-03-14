@@ -109,13 +109,15 @@ Donnee* DataTree::addMarqueurForClient(Client* client, Donnee* donnee, int donne
 	return donnee;
 }
 
-void DataTree::addClient(const string& clientName) {
+Client* DataTree::addClient(const string& clientName) {
 	Client* client = new Client(clientName);
 
 	// Init the marqueurs
 	initBrancheClient(client, &_root);
 
 	_clients.push_back(client);
+
+	return client;
 }
 
 void DataTree::initBrancheClient(Client* client, Branche* branche) {
@@ -163,20 +165,15 @@ void DataTree::diffuseChangements(void) {
 	}
 }
 
-void DataTree::receiveChangements(void) {
-	vector<Client*>::iterator clientIter;
+void DataTree::receiveChangements(const string& data) {
 	vector<Changement*> changements;
 
-	for(clientIter = _clients.begin() ; clientIter != _clients.end() ; clientIter++) {
-		Client* client = *clientIter;
-		string data = client->receiveData();
-		istringstream in(data);
-		DataSerializer::fromStream(changements, in);
+	istringstream in(data);
+	DataSerializer::fromStream(changements, in);
 
-		vector<Changement*>::iterator itCh;
+	vector<Changement*>::iterator itCh;
 
-		for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
-			(*itCh)->change(this);
-		}
+	for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
+		(*itCh)->change(this);
 	}
 }

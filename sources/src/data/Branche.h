@@ -47,6 +47,11 @@ public:
 	 */
 	Branche* createSubBranche(const string& brancheName);
 
+	/**
+	 * Ajoute une branche qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée
+	 */
+	Branche* addSubBranche(int brancheId, const std::string& brancheName, const int brancheRevision);
+
 	Valeur* createValeurInt(const string& valeurName, int valeur);
 };
 

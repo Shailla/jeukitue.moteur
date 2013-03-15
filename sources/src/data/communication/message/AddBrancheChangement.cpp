@@ -48,6 +48,18 @@ void AddBrancheChangement::unserialize(istringstream& in) {
 	in.read((char*)&_revision, sizeof(int));
 }
 
-void AddBrancheChangement::change(ServeurDataTree* tree) {
-//	tree->addBranche()
+int AddBrancheChangement::getBrancheId() const {
+	return _brancheId;
+}
+
+const string& AddBrancheChangement::getBrancheName() const {
+	return _brancheName;
+}
+
+const std::vector<int>& AddBrancheChangement::getParentBrancheId() const {
+	return _parentBrancheId;
+}
+
+int AddBrancheChangement::getRevision() const {
+	return _revision;
 }

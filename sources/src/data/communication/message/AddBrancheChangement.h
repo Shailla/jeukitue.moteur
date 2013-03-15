@@ -28,9 +28,17 @@ public:
 	AddBrancheChangement(const std::vector<int>& parentBrancheId, int brancheId, int revision, const string& brancheName);
 
 	void update(MarqueurClient* marqueur);
-	void change(ServeurDataTree* tree);
-
 	void serialize(std::ostringstream& out);
+
+
+	/* *******************************************
+	 * Accessors
+	 * ******************************************/
+
+	int getBrancheId() const;
+	const string& getBrancheName() const;
+	const std::vector<int>& getParentBrancheId() const;
+	int getRevision() const;
 };
 
 #endif /* ADDBRANCHECHANGEMENT_H_ */

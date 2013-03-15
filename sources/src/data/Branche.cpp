@@ -54,6 +54,20 @@ Branche* Branche::createSubBranche(const string& brancheName) {
 	return newBranche;
 }
 
+
+Branche* Branche::addSubBranche(int brancheId, const std::string& brancheName, int brancheRevision) {
+	if(_subBranches.find(brancheId) != _subBranches.end()) {
+		cerr << endl << "La branche existe deja";
+	}
+
+	// Crée la nouvelle branche
+	Branche* newBranche = new Branche(this, brancheId, brancheName, brancheRevision);
+	_subBranches[brancheId] = newBranche;
+
+	return newBranche;
+}
+
+
 Valeur* Branche::createValeurInt(const string& valeurName, int valeur) {
 	// Alloue une référence pour la nouvelle branche
 	int ref = _valeurRefGenerator.genRef() - 1;		// On soustrait 1 pour que les identifiants démarrent à 0

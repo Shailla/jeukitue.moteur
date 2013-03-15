@@ -11,7 +11,7 @@
 using namespace std;
 
 #include "util/StreamUtils.h"
-#include "data/DataTree.h"
+#include "data/ServeurDataTree.h"
 
 #include "data/communication/message/AddBrancheChangement.h"
 
@@ -48,6 +48,6 @@ void AddBrancheChangement::unserialize(istringstream& in) {
 	in.read((char*)&_revision, sizeof(int));
 }
 
-void AddBrancheChangement::change(DataTree* tree) {
-	tree->addBranche()
+void AddBrancheChangement::change(ServeurDataTree* tree) {
+//	tree->addBranche()
 }

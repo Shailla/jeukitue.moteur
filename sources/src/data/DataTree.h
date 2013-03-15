@@ -1,35 +1,29 @@
 /*
  * DataTree.h
  *
- *  Created on: 5 mars 2013
- *      Author: vgdj7997
+ *  Created on: 15 mars 2013
+ *      Author: Erwin
  */
 
 #ifndef DATATREE_H_
 #define DATATREE_H_
 
-#include <string>
-#include <map>
-#include <vector>
-
-using namespace std;
-
-#include "data/Branche.h"
-#include "data/Client.h"
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/exception/NotExistingValeurException.h"
+#include "data/Branche.h"
+#include "data/Client.h"
 
 class DataTree {
 	Branche _root;
-	vector<Client*> _clients;
 
-	Donnee* addMarqueurForClient(Client* client, Donnee* valeur, int donneeClientTmpId);
-	void initBrancheClient(Client* client, Branche* branche);
 public:
 	DataTree();
 	virtual ~DataTree();
 
-	// Accessors
+
+	/* *********************************
+	 * Accessors
+	 * ********************************/
 
 	/**
 	 * Retourne la branche idéntifiée.
@@ -39,18 +33,6 @@ public:
 	Branche* getBranche(vector<int>& brancheId) throw(NotExistingBrancheException);
 	Valeur* getValeur(vector<int>& valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
 	Branche& getRoot();
-
-	Branche* addBranche(vector<int>& parentBrancheId, const string& brancheName);
-	Branche* addBrancheFromDistant(vector<int>& parentBrancheId, const string& brancheName, int brancheTmpId, Client* client);
-
-	Valeur* addValeurInt(vector<int>& parentBrancheId, const string& valeurName, int valeur);
-	Valeur* addValeurIntForClient(vector<int>& parentBrancheId, const string& valeurName, int valeurTmpId, int valeur, Client* client);
-
-	Client* addClient(const string& clientName);
-	vector<Client*>& getClients();
-
-	void diffuseChangements();
-	void receiveChangements(const std::string& data);
 };
 
 #endif /* DATATREE_H_ */

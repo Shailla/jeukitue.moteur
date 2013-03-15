@@ -10,16 +10,17 @@
 using namespace std;
 
 #include "util/StringUtils.h"
-#include "data/DataTree.h"
+#include "data/ServeurDataTree.h"
 #include "data/Client.h"
+#include "data/ClientDataTree.h"
 #include "script/exception/IllegalParameterException.h"
 
 #include "script/commandes/dataCommandes/AddDataCommande.h"
 
 using namespace JktUtils;
 
-extern DataTree serveurDataTree;
-extern map<Client*, DataTree*> dataRouter;
+extern ServeurDataTree serveurDataTree;
+extern map<Client*, ClientDataTree*> dataRouter;
 
 AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
@@ -30,8 +31,8 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 	if(subCommande1 == "client") {
 		string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
-		Client* client = serveurDataTree.addClient(clientName);
-		dataRouter[client] = new DataTree();
+		Client* client = serveurDataTree.addDistant(clientName);
+		dataRouter[client] = new ClientDataTree();
 	}
 	else if(subCommande1 == "branche") {
 		string brancheName = StringUtils::findAndEraseFirstWord(ligne);

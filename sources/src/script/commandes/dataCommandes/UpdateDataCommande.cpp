@@ -11,14 +11,14 @@ using namespace std;
 
 #include "util/StringUtils.h"
 #include "data/ValeurInt.h"
-#include "data/DataTree.h"
+#include "data/ServeurDataTree.h"
 #include "script/exception/IllegalParameterException.h"
 
 #include "script/commandes/dataCommandes/UpdateDataCommande.h"
 
 using namespace JktUtils;
 
-extern DataTree serveurDataTree;
+extern ServeurDataTree serveurDataTree;
 
 UpdateDataCommande::UpdateDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }

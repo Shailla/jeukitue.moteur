@@ -114,7 +114,8 @@ class CGame;
 #include "game/GameDto.h"
 #include "game/MapLoader.h"
 #include "spatial/contact.h"
-#include "data/DataTree.h"
+#include "data/ServeurDataTree.h"
+#include "data/ClientDataTree.h"
 
 using namespace JktMenu;
 using namespace JktNet;
@@ -126,8 +127,8 @@ using namespace JktSon;
 
 #include "jkt.h"
 
-DataTree serveurDataTree;
-map<Client*, DataTree*> dataRouter;
+ServeurDataTree serveurDataTree;
+map<Client*, ClientDataTree*> dataRouter;
 
 float GLIGHTX, GLIGHTY, GLIGHTZ;
 GLFont myfont;
@@ -1517,11 +1518,11 @@ void boucle() {
 
 		serveurDataTree.diffuseChangements();
 
-		map<Client*, DataTree*>::iterator it;
+		map<Client*, ClientDataTree*>::iterator it;
 
 		for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
 			Client* client = it->first;
-			DataTree* dataClient = it->second;
+			ClientDataTree* dataClient = it->second;
 
 			string* data = client->getDataToSend();
 

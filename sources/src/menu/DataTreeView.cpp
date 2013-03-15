@@ -77,10 +77,10 @@ void DataTreeView::selectionChanged(AG_Event* event) {
 void DataTreeView::openClientsWindows(AG_Event* event) {
 	DataTreeView* This = (DataTreeView*)AG_PTR(1);
 
-	map<Client*, DataTree*>::iterator it;
+	map<Client*, ServeurDataTree*>::iterator it;
 
 	for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
-		DataTree* tree = it->second;
+		ServeurDataTree* tree = it->second;
 		DataTreeDetails* details = NULL;
 
 		try {
@@ -131,7 +131,7 @@ void DataTreeView::refreshClientTable(DataTreeDetails* details) {
 
 	AG_TableBegin(details->_clientsTable);
 
-	vector<Client*> clients = serveurDataTree.getClients();
+	vector<Client*> clients = serveurDataTree.getDistants();
 	vector<Client*>::iterator iter;
 
 	for(iter = clients.begin() ; iter != clients.end() ; iter++) {
@@ -157,14 +157,14 @@ void DataTreeView::refreshClientTable(DataTreeDetails* details) {
 
 void DataTreeView::refresh(AG_Event* event) {
 	AG_Window* window = (AG_Window*)AG_PTR(1);
-	DataTree* tree = (DataTree*)AG_PTR(2);
+	ServeurDataTree* tree = (ServeurDataTree*)AG_PTR(2);
 	DataTreeDetails* details = (DataTreeDetails*)AG_PTR(3);
 
 	refreshClientTable(details);
 	refreshServeur(window, tree, details);
 }
 
-void DataTreeView::refreshServeur(AG_Window* window, DataTree* tree, DataTreeDetails* details) {
+void DataTreeView::refreshServeur(AG_Window* window, ServeurDataTree* tree, DataTreeDetails* details) {
 	/* ************************************
 	 * Mise à jour de l'abre des données
 	 * ***********************************/

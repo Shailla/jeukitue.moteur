@@ -8,7 +8,7 @@
 #include <agar/gui.h>
 
 #include "menu/View.h"
-#include "data/DataTree.h"
+#include "data/ServeurDataTree.h"
 
 class DataTreeDetails {
 public:
@@ -16,8 +16,8 @@ public:
 	AG_Table* _clientsTable;
 };
 
-extern DataTree serveurDataTree;
-extern std::map<Client*, DataTree*> dataRouter;
+extern ServeurDataTree serveurDataTree;
+extern std::map<Client*, ServeurDataTree*> dataRouter;
 
 class Viewer;
 namespace JktMoteur {
@@ -27,10 +27,10 @@ namespace JktMoteur {
 
 class DataTreeView : public View {
 	DataTreeDetails _serveurDetails;
-	std::map<DataTree*, DataTreeDetails*> _clientDataTrees;
+	std::map<ServeurDataTree*, DataTreeDetails*> _clientDataTrees;
 
 	static void drawBranche(DataTreeDetails* details, Branche* branche, int depth);
-	static void refreshServeur(AG_Window* window, DataTree* tree, DataTreeDetails* details);
+	static void refreshServeur(AG_Window* window, ServeurDataTree* tree, DataTreeDetails* details);
 	static void drawWidgets(DataTreeDetails* details, AG_Box* box);
 
 public:

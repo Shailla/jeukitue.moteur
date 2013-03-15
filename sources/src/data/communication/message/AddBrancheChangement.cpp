@@ -49,5 +49,5 @@ void AddBrancheChangement::unserialize(istringstream& in) {
 }
 
 void AddBrancheChangement::change(DataTree* tree) {
-//	TODO tree->addBranche()
+	tree->addBranche()
 }

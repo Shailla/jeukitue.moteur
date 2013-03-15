@@ -29,6 +29,7 @@ class Branche : public Donnee {
 	JktUtils::CGenRef _valeurRefGenerator;
 public:
 	Branche(Branche* parent, int brancheId, const string& brancheName);
+	Branche(Branche* parent, int brancheId, const string& brancheName, int revision);
 	virtual ~Branche();
 
 	Branche* getSubBranche(int brancheId) const;
@@ -37,10 +38,15 @@ public:
 	Valeur* getValeur(int valeurId);
 	string getBrancheName() const;
 	int getBrancheId() const;
+	vector<int> getParentBrancheId(void) const;
 	void getBrancheFullId(vector<int>& id) const;
 	vector<int> getBrancheFullId() const;
 
+	/**
+	 * Crée une nouvelle branche et lui attribue un identifiant
+	 */
 	Branche* createSubBranche(const string& brancheName);
+
 	Valeur* createValeurInt(const string& valeurName, int valeur);
 };
 

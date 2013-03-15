@@ -16,14 +16,16 @@
 #include "data/communication/message/Changement.h"
 
 class AddBrancheChangement: public Changement {
-	std::vector<int> _brancheId;
+	std::vector<int> _parentBrancheId;
+	int _brancheId;
 	int _revision;
+	string _brancheName;
 
 	void unserialize(std::istringstream& in);
 
 public:
 	AddBrancheChangement(std::istringstream& in);
-	AddBrancheChangement(const std::vector<int>& brancheId, int revision);
+	AddBrancheChangement(const std::vector<int>& parentBrancheId, int brancheId, int revision, const string& brancheName);
 
 	void update(MarqueurClient* marqueur);
 	void change(DataTree* tree);

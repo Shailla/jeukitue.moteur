@@ -12,7 +12,16 @@
 #include <vector>
 #include <string>
 
-std::istringstream& operator>>(std::istringstream& in, std::vector<int>& data);
-std::ostringstream& operator<<(std::ostringstream& out, std::vector<int>& data);
+class StreamUtils {
+public:
+	static void read(std::istringstream& in, int& data);
+	static void write(std::ostringstream& out, int data);
+
+	static void read(std::istringstream& in, std::vector<int>& data);
+	static void write(std::ostringstream& out, const std::vector<int>& data);
+
+	static void read(std::istringstream& in, std::string& data);
+	static void write(std::ostringstream& out, const std::string& data);
+};
 
 #endif /* IMESSAGESTREAM_H_ */

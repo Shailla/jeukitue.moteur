@@ -25,7 +25,6 @@ void DataSerializer::toStream(vector<Changement*>& changements, ostringstream& o
 
 	for(it = changements.begin() ; it != changements.end() ; it++) {
 		(*it)->serialize(out);
-		cout << endl << "Construction message : '" << out.str();
 	}
 }
 
@@ -35,10 +34,8 @@ void DataSerializer::fromStream(vector<Changement*>& changements, istringstream&
 	int messageType;
 	Changement* changement;
 
-	cout << endl << "Message vraiment reçu : '" << in.str() << "'";
-
 	try {
-		in >> messageType;
+		in.read((char*)&messageType, sizeof(int));
 
 		switch(messageType) {
 		case Changement::ADD_DATA_MESSAGE:

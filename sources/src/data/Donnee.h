@@ -16,6 +16,7 @@ class Donnee {
 
 public:
 	Donnee();
+	Donnee(int revision);
 	virtual ~Donnee();
 
 	/**

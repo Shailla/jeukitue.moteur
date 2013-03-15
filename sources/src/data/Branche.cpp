@@ -21,6 +21,12 @@ Branche::Branche(Branche* parent, int brancheId, const string& brancheName) {
 	_brancheName = brancheName;
 }
 
+Branche::Branche(Branche* parent, int brancheId, const string& brancheName, int revision): Donnee(revision) {
+	_parent = parent;
+	_brancheId = brancheId;
+	_brancheName = brancheName;
+}
+
 Branche::~Branche() {
 }
 
@@ -77,6 +83,20 @@ string Branche::getBrancheName() const {
 
 int Branche::getBrancheId() const {
 	return _brancheId;
+}
+
+
+vector<int> Branche::getParentBrancheId(void) const {
+	vector<int> parentBrancheId;
+
+	if(_parent) {
+		parentBrancheId = _parent->getBrancheFullId();
+	}
+	else {
+		// Do nothing, return empty id
+	}
+
+	return parentBrancheId;
 }
 
 void Branche::getBrancheFullId(vector<int>& id) const {

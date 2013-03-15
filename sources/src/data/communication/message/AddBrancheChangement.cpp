@@ -11,6 +11,7 @@
 using namespace std;
 
 #include "util/StreamUtils.h"
+#include "data/DataTree.h"
 
 #include "data/communication/message/AddBrancheChangement.h"
 
@@ -18,9 +19,11 @@ AddBrancheChangement::AddBrancheChangement(istringstream& in) {
 	unserialize(in);
 }
 
-AddBrancheChangement::AddBrancheChangement(const vector<int>& brancheId, int revision) {
+AddBrancheChangement::AddBrancheChangement(const vector<int>& parentBrancheId, int brancheId, int revision, const string& brancheName) {
+	_parentBrancheId = parentBrancheId;
 	_brancheId = brancheId;
 	_revision = revision;
+	_brancheName = brancheName;
 }
 
 void AddBrancheChangement::update(MarqueurClient* marqueur) {
@@ -30,16 +33,21 @@ void AddBrancheChangement::update(MarqueurClient* marqueur) {
 
 void AddBrancheChangement::serialize(ostringstream& out) {
 	// Serialize
-	out << (int)ADD_DATA_MESSAGE;
-	out << _brancheId;
-	out << (int)_revision;
+	int var = ADD_DATA_MESSAGE;
+	out.write((char*)&var, sizeof(int));
+	StreamUtils::write(out, _parentBrancheId);
+	StreamUtils::write(out, _brancheId);
+	StreamUtils::write(out, _brancheName);
+	out.write((char*)&_revision, sizeof(int));
 }
 
 void AddBrancheChangement::unserialize(istringstream& in) {
-	in >> _brancheId;
-	in >> _revision;
+	StreamUtils::read(in, _parentBrancheId);
+	StreamUtils::read(in, _brancheId);
+	StreamUtils::read(in, _brancheName);
+	in.read((char*)&_revision, sizeof(int));
 }
 
 void AddBrancheChangement::change(DataTree* tree) {
-
+//	TODO tree->addBranche()
 }

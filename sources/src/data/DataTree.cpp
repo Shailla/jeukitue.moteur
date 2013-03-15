@@ -69,10 +69,10 @@ Branche& DataTree::getRoot() {
 }
 
 Branche* DataTree::addBranche(vector<int>& parentBrancheId, const string& brancheName) {
-	return addBrancheForClient(parentBrancheId, brancheName, 0, NULL);
+	return addBrancheFromDistant(parentBrancheId, brancheName, 0, NULL);
 }
 
-Branche* DataTree::addBrancheForClient(vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, Client* client) {
+Branche* DataTree::addBrancheFromDistant(vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, Client* client) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 
 	Branche* branche = parentBranche->createSubBranche(brancheName);

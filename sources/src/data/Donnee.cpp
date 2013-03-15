@@ -11,6 +11,10 @@ Donnee::Donnee() {
 	_revision = 0;
 }
 
+Donnee::Donnee(int revision) {
+	_revision = revision;
+}
+
 Donnee::~Donnee() {
 }
 

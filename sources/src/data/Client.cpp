@@ -64,8 +64,7 @@ void Client::collecteChangements(vector<Changement*>& changements) {
 
 		if(branche) {
 			if(marqueur->getSentRevision() == MarqueurClient::MARQUEUR_REVISION_INIT) {
-				vector<int> brancheId = branche->getBrancheFullId();
-				changement = new AddBrancheChangement(brancheId, branche->getRevision());
+				changement = new AddBrancheChangement(branche->getParentBrancheId(), branche->getBrancheId(), branche->getRevision(), branche->getBrancheName());
 			}
 
 			if(changement) {

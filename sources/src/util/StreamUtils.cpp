@@ -48,8 +48,9 @@ void StreamUtils::read(istringstream& in, string& data) {
 
 	in.read((char*)&size, sizeof(int));
 
-	char* var = new char[size];
-	in.read(var, data.size());
+	char* var = new char[size + 1];
+	in.read(var, size);
+	var[size] = '\0';
 	data = var;
 	delete[] var;
 }

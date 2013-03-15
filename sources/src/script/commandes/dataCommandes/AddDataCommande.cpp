@@ -28,7 +28,7 @@ AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(in
 void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalParameterException) {
 	string subCommande1 = StringUtils::findAndEraseFirstWord(ligne);
 
-	if(subCommande1 == "client") {
+	if(subCommande1 == "distant") {
 		string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
 		Client* client = serveurDataTree.addDistant(clientName);

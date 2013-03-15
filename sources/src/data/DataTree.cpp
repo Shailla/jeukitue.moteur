@@ -14,8 +14,8 @@ DataTree::DataTree() : _root(NULL, 0, "root") {
 DataTree::~DataTree() {
 }
 
-Branche* DataTree::getBranche(vector<int>& brancheId) throw(NotExistingBrancheException) {
-	vector<int>::iterator iter;
+Branche* DataTree::getBranche(const vector<int>& brancheId) throw(NotExistingBrancheException) {
+	vector<int>::const_iterator iter;
 
 	Branche* branche = &_root;
 

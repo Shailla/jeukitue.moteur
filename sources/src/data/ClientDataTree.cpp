@@ -34,11 +34,11 @@ void ClientDataTree::receiveChangements(const string& data) {
 
 	for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
 		if(AddBrancheChangement* addChgt = dynamic_cast<AddBrancheChangement*>(*itCh)) {
-			vector<int>& parentBrancheId = addChgt->getParentBrancheId();
+			const vector<int>& parentBrancheId = addChgt->getParentBrancheId();
 
 			Branche* parentBranche = getBranche(parentBrancheId);
 
-			if() {
+			if(parentBranche) {
 				parentBranche->addSubBranche(addChgt->getBrancheId(), addChgt->getBrancheName(), addChgt->getRevision());
 			}
 			else {

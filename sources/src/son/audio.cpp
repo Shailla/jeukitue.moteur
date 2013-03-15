@@ -13,7 +13,6 @@ using namespace std;
 
 #include "SDL.h"
 #include "fmod.h"
-#include "fmod_errors.h"	/* optional */
 
 #include "util/Trace.h"
 #include "util/V3D.h"

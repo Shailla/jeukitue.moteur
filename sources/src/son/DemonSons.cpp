@@ -12,7 +12,6 @@ using namespace std;
 
 #include "util/Trace.h"
 #include "fmod.h"
-#include "fmod_errors.h"	/* optional */
 
 #include "Son.h"
 #include "ReqSon.h"

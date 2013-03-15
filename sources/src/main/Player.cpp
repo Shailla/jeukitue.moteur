@@ -14,7 +14,6 @@ using namespace std;
 #include <GL/glu.h>
 
 #include "fmod.h"
-#include "fmod_errors.h"	/* optional */
 #include "SDL.h"
 #include "glfont2.h"
 

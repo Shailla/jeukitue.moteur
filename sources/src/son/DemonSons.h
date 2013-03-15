@@ -28,7 +28,6 @@ Il existe 2 façons de jouer un son :
 #define __JKT__DEMONSONS_H
 
 #include "fmod.h"
-#include "fmod_errors.h"	/* optional */
 
 #include <set>
 #include <map>

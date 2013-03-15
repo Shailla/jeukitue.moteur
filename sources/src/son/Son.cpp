@@ -13,6 +13,7 @@
 using namespace std;
 
 #include "fmod.h"
+#include "fmod_errors.h"
 #include "util/Trace.h"
 
 #include "Son.h"

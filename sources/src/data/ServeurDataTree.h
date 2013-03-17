@@ -17,7 +17,6 @@ using namespace std;
 #include "data/DataTree.h"
 
 class ServeurDataTree : public DataTree {
-	Branche _root;
 	vector<Client*> _clients;
 
 	Donnee* addMarqueurFromDistant(Client* client, Donnee* valeur, int donneeClientTmpId);

@@ -218,8 +218,8 @@ void DataTreeView::drawBranche(DataTreeDetails* details, Branche* branche, int d
 
 	// Branches filles
 	{
-		map<int, Branche*> subBranches = branche->getSubBranches();
-		map<int, Branche*>::iterator itBr;
+		map<int, Branche*>& subBranches = branche->getSubBranches();
+		map<int, Branche*>::const_iterator itBr;
 
 		for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
 			Branche* subBranche = itBr->second;

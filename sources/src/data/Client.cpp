@@ -14,6 +14,7 @@ using namespace std;
 
 #include "data/communication/message/Changement.h"
 #include "data/communication/message/AddBrancheChangement.h"
+#include "util/CollectionsUtils.h"
 
 #include "data/Client.h"
 
@@ -66,6 +67,7 @@ void Client::collecteChangements(vector<Changement*>& changements) {
 
 		if(branche) {
 			if(marqueur->getSentRevision() == MarqueurClient::MARQUEUR_REVISION_INIT) {
+				cout << endl << "PARENT ENVOYE : " << JktUtils::CollectionsUtils::toString(branche->getParentBrancheId());
 				changement = new AddBrancheChangement(branche->getParentBrancheId(), branche->getBrancheId(), branche->getRevision(), branche->getBrancheName());
 			}
 

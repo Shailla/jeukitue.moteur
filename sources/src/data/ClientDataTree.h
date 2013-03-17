@@ -17,7 +17,6 @@ using namespace std;
 #include "data/DataTree.h"
 
 class ClientDataTree : public DataTree {
-	Branche _root;
 
 public:
 	ClientDataTree();

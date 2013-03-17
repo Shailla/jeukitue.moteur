@@ -20,7 +20,7 @@ using namespace std;
 
 #include "data/ClientDataTree.h"
 
-ClientDataTree::ClientDataTree() : _root(NULL, 0, "root") {
+ClientDataTree::ClientDataTree() {
 }
 
 ClientDataTree::~ClientDataTree() {
@@ -37,6 +37,7 @@ void ClientDataTree::receiveChangements(const string& data) {
 	for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
 		try {
 			if(AddBrancheChangement* addChgt = dynamic_cast<AddBrancheChangement*>(*itCh)) {
+				cout << endl << "PARENT RECU : " << JktUtils::CollectionsUtils::toString(addChgt->getParentBrancheId());
 				Branche* parentBranche = getBranche(addChgt->getParentBrancheId());
 
 				if(parentBranche) {

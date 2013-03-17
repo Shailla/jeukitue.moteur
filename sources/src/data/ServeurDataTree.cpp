@@ -17,7 +17,7 @@ using namespace std;
 
 #include "data/ServeurDataTree.h"
 
-ServeurDataTree::ServeurDataTree() : _root(NULL, 0, "root") {
+ServeurDataTree::ServeurDataTree() {
 }
 
 ServeurDataTree::~ServeurDataTree() {
@@ -68,27 +68,29 @@ Client* ServeurDataTree::addDistant(const string& clientName) {
 	Client* client = new Client(clientName);
 
 	// Init the marqueurs
-	initDistantBranche(client, &_root);
+	initDistantBranche(client, &getRoot());
 
 	_clients.push_back(client);
 
 	return client;
 }
 
-void ServeurDataTree::initDistantBranche(Client* client, Branche* branche) {
-	MarqueurClient* marqueur = client->addMarqueur(branche, 0);
+int i = 0;
 
-	if(branche == &_root) {	// Do not add the root branche to the distants, because it's a default existing element
+void ServeurDataTree::initDistantBranche(Client* client, Branche* branche) {
+	MarqueurClient* marqueur = client->addMarqueur(branche, i++);
+
+	if(branche == &getRoot()) {	// Do not add the root branche to the distants, because it's a default existing element
 		marqueur->setSentRevision(0);
 	}
 
 	// Init sub-branches
 	{
 		map<int, Branche*>& subBranches = branche->getSubBranches();
-		map<int, Branche*>::iterator iterBr;
+		map<int, Branche*>::iterator itBr;
 
-		for(iterBr = subBranches.begin() ; iterBr != subBranches.end() ; iterBr++) {
-			initDistantBranche(client, iterBr->second);
+		for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
+			initDistantBranche(client, itBr->second);
 		}
 	}
 

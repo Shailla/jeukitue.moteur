@@ -5,8 +5,8 @@
  *      Author: Erwin
  */
 
-#ifndef STRINGUTILS_H_
-#define STRINGUTILS_H_
+#ifndef COLLECTIONSUTILS_H_
+#define COLLECTIONSUTILS_H_
 
 #include <vector>
 #include <string>

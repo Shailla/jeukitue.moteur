@@ -19,8 +19,9 @@ AddValeurChangement::AddValeurChangement(istringstream& in) {
 	unserialize(in);
 }
 
-AddValeurChangement::AddValeurChangement(const vector<int>& brancheId, int revision, const string& valeurName, int valeur) {
+AddValeurChangement::AddValeurChangement(const vector<int>& brancheId, int valeurId, int revision, const string& valeurName, int valeur) {
 	_brancheId = brancheId;
+	_valeurId = valeurId;
 	_revision = revision;
 	_valeurName = valeurName;
 	_valeur = valeur;

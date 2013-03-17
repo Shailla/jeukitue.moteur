@@ -26,7 +26,7 @@ class AddValeurChangement: public Changement {
 
 public:
 	AddValeurChangement(std::istringstream& in);
-	AddValeurChangement(const std::vector<int>& brancheId, int revision, const string& valeurName);
+	AddValeurChangement(const std::vector<int>& brancheId, int valeurId, int revision, const string& valeurName, int valeur);
 
 	void update(MarqueurClient* marqueur);
 	void serialize(std::ostringstream& out);

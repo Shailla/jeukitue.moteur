@@ -12,10 +12,13 @@
 
 using namespace std;
 
+#include "util/CollectionsUtils.h"
 #include "data/communication/message/Changement.h"
 #include "data/communication/message/AddBrancheChangement.h"
 #include "data/communication/message/AddValeurChangement.h"
-#include "util/CollectionsUtils.h"
+#include "data/Valeur.h"
+#include "data/ValeurInt.h"
+#include "data/Branche.h"
 
 #include "data/Client.h"
 
@@ -82,7 +85,10 @@ void Client::collecteChangements(vector<Changement*>& changements) {
 			Valeur* valeur = (Valeur*)(donnee);
 
 			if(marqueur->getSentRevision() == MarqueurClient::MARQUEUR_REVISION_INIT) {
-				changement = new AddValeurChangement(valeur->getBrancheId(), valeur->getRevision(), valeur->getValeurName());
+
+				if(ValeurInt* valeurInt = dynamic_cast<ValeurInt*>(valeur)) {
+					changement = new AddValeurChangement(valeurInt->getBrancheId(), valeurInt->getValeurId(), valeurInt->getRevision(), valeurInt->getValeurName(), valeurInt->getValeur());
+				}
 			}
 
 			if(changement) {

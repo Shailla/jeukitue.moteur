@@ -36,6 +36,7 @@ void AddValeurChangement::serialize(ostringstream& out) {
 	StreamUtils::write(out, (int)ADD_VALEUR_MESSAGE);
 
 	StreamUtils::write(out, _brancheId);
+	StreamUtils::write(out, _valeurId);
 	StreamUtils::write(out, _valeurName);
 	StreamUtils::write(out, _revision);
 	StreamUtils::write(out, _valeur);
@@ -43,17 +44,22 @@ void AddValeurChangement::serialize(ostringstream& out) {
 
 void AddValeurChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _brancheId);
+	StreamUtils::read(in, _valeurId);
 	StreamUtils::read(in, _valeurName);
 	StreamUtils::read(in, _revision);
 	StreamUtils::read(in, _valeur);
 }
 
-const string& AddValeurChangement::getValeurName() const {
-	return _valeurName;
-}
-
 const std::vector<int>& AddValeurChangement::getBrancheId() const {
 	return _brancheId;
+}
+
+int AddValeurChangement::getValeurId() const {
+	return _valeurId;
+}
+
+const string& AddValeurChangement::getValeurName() const {
+	return _valeurName;
 }
 
 int AddValeurChangement::getRevision() const {

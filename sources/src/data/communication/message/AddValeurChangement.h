@@ -17,8 +17,9 @@
 
 class AddValeurChangement: public Changement {
 	std::vector<int> _brancheId;
-	int _revision;
+	int _valeurId;
 	string _valeurName;
+	int _revision;
 	int _valeur;
 
 	void unserialize(std::istringstream& in);
@@ -36,6 +37,7 @@ public:
 	 * ******************************************/
 
 	const std::vector<int>& getBrancheId() const;
+	int getValeurId() const;
 	const string& getValeurName() const;
 	int getRevision() const;
 	int getValeur() const;

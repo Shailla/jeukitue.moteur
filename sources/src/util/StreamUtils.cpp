@@ -14,11 +14,11 @@ using namespace std;
 #include "util/StreamUtils.h"
 
 void StreamUtils::read(istringstream& in, JktUtils::Data& data) {
-	in.read((char*)&data, sizeof(int));
+	data.unserialize(in);
 }
 
 void StreamUtils::write(ostringstream& out, JktUtils::Data& data) {
-	out.write((char*)&data, sizeof(int));
+	data.serialize(out);
 }
 
 void StreamUtils::read(istringstream& in, int& data) {

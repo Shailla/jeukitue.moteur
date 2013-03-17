@@ -66,8 +66,8 @@ void Client::collecteChangements(vector<Changement*>& changements) {
 		Changement* changement = NULL;
 
 		if(branche) {
+			// NOUVELLE BRANCHE : branche présente sur le serveur mais dont le client n'a pas connaissance
 			if(marqueur->getSentRevision() == MarqueurClient::MARQUEUR_REVISION_INIT) {
-				cout << endl << "PARENT ENVOYE : " << JktUtils::CollectionsUtils::toString(branche->getParentBrancheId());
 				changement = new AddBrancheChangement(branche->getParentBrancheId(), branche->getBrancheId(), branche->getRevision(), branche->getBrancheName());
 			}
 

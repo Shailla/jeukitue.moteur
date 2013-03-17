@@ -14,6 +14,14 @@
 
 class StreamUtils {
 public:
+	/** Normal exception to use to signal the normal end of a stream */
+	class EndOfStreamException {
+	};
+
+	/** Abnormal exception to use to signal an error reading while a stream */
+	class ReadStreamError {
+	};
+
 	static void read(std::istringstream& in, int& data);
 	static void write(std::ostringstream& out, int data);
 

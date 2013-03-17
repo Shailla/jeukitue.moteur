@@ -36,23 +36,38 @@ void DataSerializer::fromStream(vector<Changement*>& changements, istringstream&
 	Changement* changement;
 
 	try {
-		StreamUtils::read(in, messageType);
+		for(;;) {
+			try {
+				StreamUtils::read(in, messageType);
+			}
+			catch(istringstream::failure& finDuFlux) {
+				throw StreamUtils::EndOfStreamException();
+			}
 
-		switch(messageType) {
-		case Changement::ADD_DATA_MESSAGE:
-			changement = new AddBrancheChangement(in);
-			break;
+			try {
+				switch(messageType) {
+				case Changement::ADD_DATA_MESSAGE:
+					changement = new AddBrancheChangement(in);
+					break;
 
-		default:
-			changement = NULL;
-			break;
-		}
+				default:
+					changement = NULL;
+					break;
+				}
 
-		if(changement) {
-			changements.push_back(changement);
+				if(changement) {
+					changements.push_back(changement);
+				}
+			}
+			catch(istringstream::failure& finDuFlux) {
+				throw StreamUtils::ReadStreamError();
+			}
 		}
 	}
-	catch(istringstream::failure& finDuFlux) {
-		// Fin du flux, on peut ressortir
+	catch(StreamUtils::EndOfStreamException& exception) {
+		// La fin du flux a été atteinte, on peut ressortir
+	}
+	catch(StreamUtils::ReadStreamError& error) {
+		cerr << endl << "Une erreur s'est produite pendant la lecture du flux ou sa fin a été atteinte de manière prématurée";
 	}
 }

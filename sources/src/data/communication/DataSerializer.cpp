@@ -14,6 +14,7 @@ using namespace std;
 #include "data/communication/DataSerializer.h"
 #include "data/communication/message/AddBrancheChangement.h"
 #include "data/communication/message/AddValeurChangement.h"
+#include "data/communication/message/UpdateValeurChangement.h"
 #include "util/StreamUtils.h"
 
 DataSerializer::DataSerializer() {
@@ -53,6 +54,10 @@ void DataSerializer::fromStream(vector<Changement*>& changements, istringstream&
 
 				case Changement::ADD_VALEUR_MESSAGE:
 					changement = new AddValeurChangement(in);
+					break;
+
+				case Changement::UPDATE_VALEUR_MESSAGE:
+					changement = new UpdateValeurChangement(in);
 					break;
 
 				default:

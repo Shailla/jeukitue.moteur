@@ -19,13 +19,19 @@ AddValeurChangement::AddValeurChangement(istringstream& in) {
 	unserialize(in);
 }
 
-AddValeurChangement::AddValeurChangement(const vector<int>& brancheId, int valeurId, int revision, const string& valeurName, int valeur) {
+AddValeurChangement::AddValeurChangement(const vector<int>& brancheId, int valeurId, int revision, const string& valeurName, JktUtils::Data* valeur) {
 	_brancheId = brancheId;
 	_valeurId = valeurId;
 	_revision = revision;
 	_valeurName = valeurName;
 	_valeur = valeur;
 }
+
+AddValeurChangement::~AddValeurChangement() {
+	if(_valeur) {
+		delete _valeur;
+	}
+};
 
 void AddValeurChangement::update(MarqueurClient* marqueur) {
 	// Met à jour l'état des données
@@ -40,7 +46,7 @@ void AddValeurChangement::serialize(ostringstream& out) {
 	StreamUtils::write(out, _valeurId);
 	StreamUtils::write(out, _valeurName);
 	StreamUtils::write(out, _revision);
-	StreamUtils::write(out, _valeur);
+	StreamUtils::write(out, *_valeur);
 }
 
 void AddValeurChangement::unserialize(istringstream& in) {
@@ -48,7 +54,7 @@ void AddValeurChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _valeurId);
 	StreamUtils::read(in, _valeurName);
 	StreamUtils::read(in, _revision);
-	StreamUtils::read(in, _valeur);
+	StreamUtils::read(in, *_valeur);
 }
 
 const std::vector<int>& AddValeurChangement::getBrancheId() const {
@@ -67,6 +73,6 @@ int AddValeurChangement::getRevision() const {
 	return _revision;
 }
 
-int AddValeurChangement::getValeur() const {
+JktUtils::Data* AddValeurChangement::getValeur() const {
 	return _valeur;
 }

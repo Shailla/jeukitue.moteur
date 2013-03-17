@@ -13,8 +13,16 @@ using namespace std;
 
 #include "util/StreamUtils.h"
 
+void StreamUtils::read(istringstream& in, JktUtils::Data& data) {
+	in.read((char*)&data, sizeof(int));
+}
+
+void StreamUtils::write(ostringstream& out, JktUtils::Data& data) {
+	out.write((char*)&data, sizeof(int));
+}
+
 void StreamUtils::read(istringstream& in, int& data) {
-	in.read((char*)&data, sizeof(int));;
+	in.read((char*)&data, sizeof(int));
 }
 
 void StreamUtils::write(ostringstream& out, int data) {

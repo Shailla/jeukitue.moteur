@@ -28,6 +28,7 @@ public:
 	 * Get the revision number of the data.
 	 */
 	int getRevision() const;
+	void setRevision(int revision);
 };
 
 #endif /* DONNEE_H_ */

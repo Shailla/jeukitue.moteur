@@ -31,7 +31,7 @@ public:
 	 * @param brancheId coordonnées de la branche dans l'arbre
 	 */
 	Branche* getBranche(const vector<int>& brancheId) throw(NotExistingBrancheException);
-	Valeur* getValeur(vector<int>& valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
+	Valeur* getValeur(const vector<int>& valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
 	Branche& getRoot();
 };
 

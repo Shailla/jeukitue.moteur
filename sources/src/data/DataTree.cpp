@@ -30,8 +30,8 @@ Branche* DataTree::getBranche(const vector<int>& brancheId) throw(NotExistingBra
 	return branche;
 }
 
-Valeur* DataTree::getValeur(vector<int>& valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
-	vector<int>::iterator iter;
+Valeur* DataTree::getValeur(const vector<int>& valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
+	vector<int>::const_iterator iter;
 
 	Branche* branche = &_root;
 

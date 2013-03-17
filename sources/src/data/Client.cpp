@@ -12,10 +12,13 @@
 
 using namespace std;
 
+#include "util/types/Data.h"
+#include "util/types/IntData.h"
 #include "util/CollectionsUtils.h"
 #include "data/communication/message/Changement.h"
 #include "data/communication/message/AddBrancheChangement.h"
 #include "data/communication/message/AddValeurChangement.h"
+#include "data/communication/message/UpdateValeurChangement.h"
 #include "data/Valeur.h"
 #include "data/ValeurInt.h"
 #include "data/Branche.h"
@@ -84,11 +87,16 @@ void Client::collecteChangements(vector<Changement*>& changements) {
 		else {
 			Valeur* valeur = (Valeur*)(donnee);
 
+			// NOUVELLE VALEUR : branche présente sur le serveur mais dont le client n'a pas connaissance
 			if(marqueur->getSentRevision() == MarqueurClient::MARQUEUR_REVISION_INIT) {
-
 				if(ValeurInt* valeurInt = dynamic_cast<ValeurInt*>(valeur)) {
-					changement = new AddValeurChangement(valeurInt->getBrancheId(), valeurInt->getValeurId(), valeurInt->getRevision(), valeurInt->getValeurName(), valeurInt->getValeur());
+					JktUtils::Data* data = new JktUtils::IntData(valeurInt->getValeur());
+					changement = new AddValeurChangement(valeurInt->getBrancheId(), valeurInt->getValeurId(), valeurInt->getRevision(), valeurInt->getValeurName(), data);
 				}
+			}
+			// VALEUR MODIFIEE : branche présente sur le serveur mais dont le client n'a pas connaissance
+			else if(marqueur->getSentRevision() != valeur->getRevision()) {
+				changement = new UpdateValeurChangement(valeur);
 			}
 
 			if(changement) {

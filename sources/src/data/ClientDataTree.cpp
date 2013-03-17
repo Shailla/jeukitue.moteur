@@ -17,6 +17,7 @@ using namespace std;
 #include "data/communication/DataSerializer.h"
 #include "data/communication/message/AddBrancheChangement.h"
 #include "data/communication/message/AddValeurChangement.h"
+#include "data/communication/message/UpdateValeurChangement.h"
 #include "util/CollectionsUtils.h"
 
 #include "data/ClientDataTree.h"
@@ -55,6 +56,16 @@ void ClientDataTree::receiveChangements(const string& data) {
 				}
 				else {
 					cerr << endl << "Branche parent inexistante";
+				}
+			}
+			else if(UpdateValeurChangement* chgt = dynamic_cast<UpdateValeurChangement*>(*itCh)) {
+				Valeur* valeur = getValeur(chgt->getBrancheId());
+
+				if(valeur) {
+					valeur->setValeur(chgt->getRevision(), chgt->getValeur());
+				}
+				else {
+					cerr << endl << "Valeur inexistante";
 				}
 			}
 		}

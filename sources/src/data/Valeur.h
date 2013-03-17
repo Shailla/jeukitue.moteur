@@ -12,6 +12,7 @@
 
 using namespace std;
 
+#include "util/types/Data.h"
 #include "data/Donnee.h"
 
 #include "util/GenRef.h"
@@ -29,6 +30,7 @@ public:
 	vector<int> getBrancheId() const;
 	string getValeurName() const;
 	int getValeurId() const;
+	virtual void setValeur(int revision, JktUtils::Data* valeur) = 0;
 };
 
 #endif /* VALEUR_H_ */

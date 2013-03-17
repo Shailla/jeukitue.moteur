@@ -11,6 +11,7 @@
 
 using namespace std;
 
+#include "util/types/IntData.h"
 #include "data/ValeurInt.h"
 
 #include "data/Branche.h"
@@ -79,16 +80,29 @@ Valeur* Branche::createValeurInt(const string& valeurName, int valeur) {
 	return newValeur;
 }
 
-Valeur* Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRevision, int valeur) {
+void Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRevision, int valeur) {
 	if(_valeurs.find(valeurId) != _valeurs.end()) {
 		cerr << endl << "La valeur existe deja";
 	}
 
-	// Crée la nouvelle branche
+	// Crée la nouvelle valeur
 	Valeur* newValeur = new ValeurInt(this, valeurId, valeurName, valeur);
 	_valeurs[valeurId] = newValeur;
+}
 
-	return newValeur;
+void Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRevision, JktUtils::Data* valeur) {
+	if(_valeurs.find(valeurId) != _valeurs.end()) {
+		cerr << endl << "La valeur existe deja";
+	}
+
+	// Crée la nouvelle valeur
+	if(JktUtils::IntData* intData = dynamic_cast<JktUtils::IntData*>(valeur)) {
+		Valeur* newValeur = new ValeurInt(this, valeurId, valeurName, intData->getValue());
+		_valeurs[valeurId] = newValeur;
+	}
+	else {
+		cerr << endl << "Type de valeur inconnu";
+	}
 }
 
 map<int, Branche*>& Branche::getSubBranches() {

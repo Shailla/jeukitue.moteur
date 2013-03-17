@@ -12,6 +12,8 @@
 #include <vector>
 #include <string>
 
+#include "util/types/Data.h"
+
 class StreamUtils {
 public:
 	/** Normal exception to use to signal the normal end of a stream */
@@ -21,6 +23,9 @@ public:
 	/** Abnormal exception to use to signal an error reading while a stream */
 	class ReadStreamError {
 	};
+
+	static void read(std::istringstream& in, JktUtils::Data& data);
+	static void write(std::ostringstream& out, JktUtils::Data& data);
 
 	static void read(std::istringstream& in, int& data);
 	static void write(std::ostringstream& out, int data);

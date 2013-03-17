@@ -19,7 +19,16 @@ class Changement {
 protected:
 	enum MessageType {
 		ADD_BRANCHE_MESSAGE = 1,
-		ADD_VALEUR_MESSAGE
+		ADD_VALEUR_MESSAGE,
+		UPDATE_VALEUR_MESSAGE
+	};
+
+	enum ValeurType {
+		INT_VALEUR_TYPE = 1,
+		FLOAT_VALEUR_TYPE,
+		FLOAT3_VALEUR_TYPE,
+		FLOAT4_VALEUR_TYPE,
+		STRING_VALEUR_TYPE
 	};
 
 	virtual void unserialize(std::istringstream& in) = 0;

@@ -23,6 +23,10 @@ void Donnee::update() {
 
 }
 
+void Donnee::setRevision(int revision) {
+	_revision = revision;
+}
+
 int Donnee::getRevision(void) const {
 	return _revision;
 }

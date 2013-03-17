@@ -22,7 +22,9 @@ public:
 	virtual ~ValeurInt();
 
 	int getValeur() const;
+	void setValeur(int revision, int valeur);
 	void updateValeur(int valeur);
+	void setValeur(int revision, JktUtils::Data* data);
 };
 
 #endif /* VALEUR_H_ */

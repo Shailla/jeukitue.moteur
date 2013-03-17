@@ -29,4 +29,3 @@ string Valeur::getValeurName() const {
 int Valeur::getValeurId() const {
 	return _valeurId;
 }
-

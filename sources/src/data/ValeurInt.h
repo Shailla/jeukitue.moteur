@@ -18,7 +18,7 @@ using namespace std;
 class ValeurInt : public Valeur {
 	int _valeur;
 public:
-	ValeurInt(int valeurId, const string& valeurName, int valeur);
+	ValeurInt(Branche* parent, int valeurId, const string& valeurName, int valeur);
 	virtual ~ValeurInt();
 
 	int getValeur() const;

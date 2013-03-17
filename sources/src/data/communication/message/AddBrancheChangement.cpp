@@ -33,7 +33,7 @@ void AddBrancheChangement::update(MarqueurClient* marqueur) {
 
 void AddBrancheChangement::serialize(ostringstream& out) {
 	// Serialize
-	StreamUtils::write(out, (int)ADD_DATA_MESSAGE);
+	StreamUtils::write(out, (int)ADD_BRANCHE_MESSAGE);
 
 	StreamUtils::write(out, _parentBrancheId);
 	StreamUtils::write(out, _brancheId);

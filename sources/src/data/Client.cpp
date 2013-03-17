@@ -14,6 +14,7 @@ using namespace std;
 
 #include "data/communication/message/Changement.h"
 #include "data/communication/message/AddBrancheChangement.h"
+#include "data/communication/message/AddValeurChangement.h"
 #include "util/CollectionsUtils.h"
 
 #include "data/Client.h"
@@ -35,7 +36,6 @@ MarqueurClient* Client::getMarqueur(Donnee* donnee) {
 
 	try {
 		marqueur = _marqueurs.at(donnee);
-		cout << endl << "TAILLE : " << _marqueurs.size();
 	}
 	catch(out_of_range& exception) {
 		marqueur = NULL;
@@ -78,11 +78,17 @@ void Client::collecteChangements(vector<Changement*>& changements) {
 
 			continue;
 		}
+		else {
+			Valeur* valeur = (Valeur*)(donnee);
 
-		Valeur* valeur = dynamic_cast<Valeur*>(donnee);
+			if(marqueur->getSentRevision() == MarqueurClient::MARQUEUR_REVISION_INIT) {
+				changement = new AddValeurChangement(valeur->getBrancheId(), valeur->getRevision(), valeur->getValeurName());
+			}
 
-		if(valeur) {
-			continue;
+			if(changement) {
+				changement->update(marqueur);
+				changements.push_back(changement);
+			}
 		}
 	}
 }

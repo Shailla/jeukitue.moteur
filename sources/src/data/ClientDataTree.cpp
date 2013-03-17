@@ -16,6 +16,7 @@ using namespace std;
 #include "data/exception/DataCommunicationException.h"
 #include "data/communication/DataSerializer.h"
 #include "data/communication/message/AddBrancheChangement.h"
+#include "data/communication/message/AddValeurChangement.h"
 #include "util/CollectionsUtils.h"
 
 #include "data/ClientDataTree.h"
@@ -36,12 +37,21 @@ void ClientDataTree::receiveChangements(const string& data) {
 
 	for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
 		try {
-			if(AddBrancheChangement* addChgt = dynamic_cast<AddBrancheChangement*>(*itCh)) {
-				cout << endl << "PARENT RECU : " << JktUtils::CollectionsUtils::toString(addChgt->getParentBrancheId());
-				Branche* parentBranche = getBranche(addChgt->getParentBrancheId());
+			if(AddBrancheChangement* chgt = dynamic_cast<AddBrancheChangement*>(*itCh)) {
+				Branche* parentBranche = getBranche(chgt->getParentBrancheId());
 
 				if(parentBranche) {
-					parentBranche->addSubBranche(addChgt->getBrancheId(), addChgt->getBrancheName(), addChgt->getRevision());
+					parentBranche->addSubBranche(chgt->getBrancheId(), chgt->getBrancheName(), chgt->getRevision());
+				}
+				else {
+					cerr << endl << "Branche parent inexistante";
+				}
+			}
+			else if(AddValeurChangement* chgt = dynamic_cast<AddValeurChangement*>(*itCh)) {
+				Branche* parent = getBranche(chgt->getBrancheId());
+
+				if(parent) {
+					parent->addValeurInt(chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
 				}
 				else {
 					cerr << endl << "Branche parent inexistante";

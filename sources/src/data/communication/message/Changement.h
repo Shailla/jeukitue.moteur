@@ -18,7 +18,8 @@ class Changement {
 	friend DataSerializer;
 protected:
 	enum MessageType {
-		ADD_DATA_MESSAGE = 1
+		ADD_BRANCHE_MESSAGE = 1,
+		ADD_VALEUR_MESSAGE
 	};
 
 	virtual void unserialize(std::istringstream& in) = 0;

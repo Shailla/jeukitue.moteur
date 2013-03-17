@@ -7,7 +7,7 @@
 
 #include "data/ValeurInt.h"
 
-ValeurInt::ValeurInt(int valeurId, const string& valeurName, int valeur) : Valeur(valeurId, valeurName) {
+ValeurInt::ValeurInt(Branche* parent, int valeurId, const string& valeurName, int valeur) : Valeur(parent, valeurId, valeurName) {
 	_valeur = valeur;
 }
 

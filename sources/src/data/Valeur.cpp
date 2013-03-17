@@ -5,14 +5,21 @@
  *      Author: vgdj7997
  */
 
+#include "data/Branche.h"
+
 #include "data/Valeur.h"
 
-Valeur::Valeur(int valeurId, const string& valeurName) {
+Valeur::Valeur(Branche* parent, int valeurId, const string& valeurName) {
+	_parent = parent;
 	_valeurId = valeurId;
 	_valeurName = valeurName;
 }
 
 Valeur::~Valeur() {
+}
+
+vector<int> Valeur::getBrancheId() const {
+	return _parent->getBrancheFullId();
 }
 
 string Valeur::getValeurName() const {

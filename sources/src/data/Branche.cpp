@@ -73,8 +73,20 @@ Valeur* Branche::createValeurInt(const string& valeurName, int valeur) {
 	int ref = _valeurRefGenerator.genRef() - 1;		// On soustrait 1 pour que les identifiants démarrent à 0
 
 	// Crée la nouvelle branche
-	Valeur* newValeur = new ValeurInt(ref, valeurName, valeur);
+	Valeur* newValeur = new ValeurInt(this, ref, valeurName, valeur);
 	_valeurs[ref] = newValeur;
+
+	return newValeur;
+}
+
+Valeur* Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRevision, int valeur) {
+	if(_valeurs.find(valeurId) != _valeurs.end()) {
+		cerr << endl << "La valeur existe deja";
+	}
+
+	// Crée la nouvelle branche
+	Valeur* newValeur = new ValeurInt(this, valeurId, valeurName, valeur);
+	_valeurs[valeurId] = newValeur;
 
 	return newValeur;
 }

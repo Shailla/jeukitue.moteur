@@ -42,17 +42,17 @@ public:
 	void getBrancheFullId(vector<int>& id) const;
 	vector<int> getBrancheFullId() const;
 
-	/**
-	 * Crée une nouvelle branche et lui attribue un identifiant
-	 */
+	/** Crée une nouvelle branche et lui attribue un identifiant */
 	Branche* createSubBranche(const string& brancheName);
 
-	/**
-	 * Ajoute une branche qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée
-	 */
-	Branche* addSubBranche(int brancheId, const std::string& brancheName, const int brancheRevision);
+	/** Ajoute une branche qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
+	Branche* addSubBranche(int brancheId, const std::string& brancheName, int brancheRevision);
 
+	/** Crée une nouvelle valeur entière et lui attribue un identifiant */
 	Valeur* createValeurInt(const string& valeurName, int valeur);
+
+	/** Ajoute une valeur entière qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
+	Valeur* addValeurInt(int valeurId, const string& valeurName, int valeurRevision, int valeur);
 };
 
 #endif /* BRANCHE_H_ */

@@ -76,7 +76,11 @@ Client* ServeurDataTree::addDistant(const string& clientName) {
 }
 
 void ServeurDataTree::initDistantBranche(Client* client, Branche* branche) {
-	client->addMarqueur(branche, 0);
+	MarqueurClient* marqueur = client->addMarqueur(branche, 0);
+
+	if(branche == &_root) {	// Do not add the root branche to the distants, because it's a default existing element
+		marqueur->setSentRevision(0);
+	}
 
 	// Init sub-branches
 	{

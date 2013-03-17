@@ -29,7 +29,7 @@ public:
 	MarqueurClient* getMarqueur(Donnee* donnee);
 	std::map<Donnee*, MarqueurClient*>& getMarqueurs();
 	std::string& getDebugName();
-	void addMarqueur(Donnee* donnee, int donneeTmpId);
+	MarqueurClient* addMarqueur(Donnee* donnee, int donneeTmpId);
 	void collecteChangements(std::vector<Changement*>& changements);
 
 	void sendData(std::ostringstream& out);

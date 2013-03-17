@@ -47,9 +47,11 @@ map<Donnee*, MarqueurClient*>& Client::getMarqueurs() {
 	return _marqueurs;
 }
 
-void Client::addMarqueur(Donnee* donnee, int donneeTmpId) {
+MarqueurClient* Client::addMarqueur(Donnee* donnee, int donneeTmpId) {
 	MarqueurClient* marqueur = new MarqueurClient(donnee, donneeTmpId);
 	_marqueurs[donnee] = marqueur;
+
+	return marqueur;
 }
 
 void Client::collecteChangements(vector<Changement*>& changements) {

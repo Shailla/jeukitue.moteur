@@ -13,8 +13,10 @@ using namespace std;
 
 #include "data/MarqueurClient.h"
 #include "data/exception/NotExistingBrancheException.h"
+#include "data/exception/DataCommunicationException.h"
 #include "data/communication/DataSerializer.h"
 #include "data/communication/message/AddBrancheChangement.h"
+#include "util/CollectionsUtils.h"
 
 #include "data/ClientDataTree.h"
 
@@ -33,17 +35,23 @@ void ClientDataTree::receiveChangements(const string& data) {
 	vector<Changement*>::iterator itCh;
 
 	for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
-		if(AddBrancheChangement* addChgt = dynamic_cast<AddBrancheChangement*>(*itCh)) {
-			const vector<int>& parentBrancheId = addChgt->getParentBrancheId();
+		try {
+			if(AddBrancheChangement* addChgt = dynamic_cast<AddBrancheChangement*>(*itCh)) {
+				Branche* parentBranche = getBranche(addChgt->getParentBrancheId());
 
-			Branche* parentBranche = getBranche(parentBrancheId);
-
-			if(parentBranche) {
-				parentBranche->addSubBranche(addChgt->getBrancheId(), addChgt->getBrancheName(), addChgt->getRevision());
+				if(parentBranche) {
+					parentBranche->addSubBranche(addChgt->getBrancheId(), addChgt->getBrancheName(), addChgt->getRevision());
+				}
+				else {
+					cerr << endl << "Branche parent inexistante";
+				}
 			}
-			else {
-				cerr << endl << "Branche parent inexistante";
-			}
+		}
+		catch(const NotExistingBrancheException& exception) {
+			cerr << endl << "Exception : NotExistingBrancheException";
+		}
+		catch(const DataCommunicationException& exception) {
+			cerr << endl << "Exception : " << exception.getMessage();
 		}
 	}
 }

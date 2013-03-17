@@ -36,8 +36,8 @@ public:
 	 * ******************************************/
 
 	int getBrancheId() const;
-	const string& getBrancheName() const;
 	const std::vector<int>& getParentBrancheId() const;
+	const string& getBrancheName() const;
 	int getRevision() const;
 };
 

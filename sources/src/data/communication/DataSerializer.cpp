@@ -13,6 +13,7 @@ using namespace std;
 
 #include "data/communication/DataSerializer.h"
 #include "data/communication/message/AddBrancheChangement.h"
+#include "util/StreamUtils.h"
 
 DataSerializer::DataSerializer() {
 }
@@ -35,7 +36,7 @@ void DataSerializer::fromStream(vector<Changement*>& changements, istringstream&
 	Changement* changement;
 
 	try {
-		in.read((char*)&messageType, sizeof(int));
+		StreamUtils::read(in, messageType);
 
 		switch(messageType) {
 		case Changement::ADD_DATA_MESSAGE:

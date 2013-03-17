@@ -33,19 +33,19 @@ void AddBrancheChangement::update(MarqueurClient* marqueur) {
 
 void AddBrancheChangement::serialize(ostringstream& out) {
 	// Serialize
-	int var = ADD_DATA_MESSAGE;
-	out.write((char*)&var, sizeof(int));
+	StreamUtils::write(out, (int)ADD_DATA_MESSAGE);
+
 	StreamUtils::write(out, _parentBrancheId);
 	StreamUtils::write(out, _brancheId);
 	StreamUtils::write(out, _brancheName);
-	out.write((char*)&_revision, sizeof(int));
+	StreamUtils::write(out, _revision);
 }
 
 void AddBrancheChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _parentBrancheId);
 	StreamUtils::read(in, _brancheId);
 	StreamUtils::read(in, _brancheName);
-	in.read((char*)&_revision, sizeof(int));
+	StreamUtils::read(in, _revision);
 }
 
 int AddBrancheChangement::getBrancheId() const {

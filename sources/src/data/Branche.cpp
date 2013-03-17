@@ -116,9 +116,8 @@ vector<int> Branche::getParentBrancheId(void) const {
 void Branche::getBrancheFullId(vector<int>& id) const {
 	if(_parent) {
 		_parent->getBrancheFullId(id);
+		id.push_back(_brancheId);
 	}
-
-	id.push_back(_brancheId);
 }
 
 vector<int> Branche::getBrancheFullId() const {

@@ -10,15 +10,25 @@
 
 #include <sstream>
 
+#include "util/exception/UnserializeException.h"
+
 namespace JktUtils {
 
 class Data {
+
+protected:
+	enum DataType {
+		INT_DATA_TYPE = 1,
+		FLOAT_DATA_TYPE,
+		STRING_DATA_TYPE
+	};
+
 public:
 	Data();
 	virtual ~Data();
 
+	static Data* unserialize(std::istringstream& in) throw(UnserializeException);
 	virtual void serialize(std::ostringstream& out) = 0;
-	virtual void unserialize(std::istringstream& in) = 0;
 };
 
 };

@@ -61,7 +61,7 @@ void UpdateValeurChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _brancheId);
 	StreamUtils::read(in, _valeurId);
 	StreamUtils::read(in, _revision);
-	StreamUtils::read(in, *_valeur);
+	_valeur = StreamUtils::readData(in);
 }
 
 const std::vector<int>& UpdateValeurChangement::getBrancheId() const {

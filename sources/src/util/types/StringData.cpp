@@ -19,15 +19,16 @@ StringData::StringData(const string& value) {
 	_value = value;
 }
 
+StringData::StringData(std::istringstream& in) {
+	StreamUtils::read(in, _value);
+}
+
 StringData::~StringData() {
 }
 
 void StringData::serialize(std::ostringstream& out) {
+	StreamUtils::write(out, STRING_DATA_TYPE);
 	StreamUtils::write(out, _value);
-}
-
-void StringData::unserialize(std::istringstream& in) {
-	StreamUtils::read(in, _value);
 }
 
 }

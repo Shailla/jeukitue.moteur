@@ -1,5 +1,5 @@
 /*
- * IntData.h
+ * StringData.h
  *
  *  Created on: 17 mars 2013
  *      Author: Erwin
@@ -18,12 +18,12 @@ class StringData : public Data {
 	std::string _value;
 public:
 	StringData(const std::string& value);
+	StringData(std::istringstream& in);
 	virtual ~StringData();
 
 	void serialize(std::ostringstream& out);
-	void unserialize(std::istringstream& in);
 };
 
 }
 
-#endif /* INTDATA_H_ */
+#endif /* STRINGDATA_H_ */

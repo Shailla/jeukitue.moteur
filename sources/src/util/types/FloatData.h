@@ -1,12 +1,12 @@
 /*
- * IntData.h
+ * FloatData.h
  *
  *  Created on: 17 mars 2013
  *      Author: Erwin
  */
 
-#ifndef INTDATA_H_
-#define INTDATA_H_
+#ifndef FLOATDATA_H_
+#define FLOATDATA_H_
 
 #include "util/types/Data.h"
 
@@ -16,14 +16,14 @@ class FloatData : public Data {
 	int _value;
 public:
 	FloatData(float value);
+	FloatData(std::istringstream& in);
 	virtual ~FloatData();
 
 	void serialize(std::ostringstream& out);
-	void unserialize(std::istringstream& in);
 
 	int getValue() const;
 };
 
 }
 
-#endif /* INTDATA_H_ */
+#endif /* FLOATDATA_H_ */

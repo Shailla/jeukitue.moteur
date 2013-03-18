@@ -16,10 +16,10 @@ class IntData : public Data {
 	int _value;
 public:
 	IntData(int value);
+	IntData(std::istringstream& in);
 	virtual ~IntData();
 
 	void serialize(std::ostringstream& out);
-	void unserialize(std::istringstream& in);
 
 	int getValue() const;
 };

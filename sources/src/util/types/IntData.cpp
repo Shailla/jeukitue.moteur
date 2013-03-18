@@ -14,15 +14,16 @@ IntData::IntData(int value) {
 	_value = value;
 }
 
+IntData::IntData(std::istringstream& in) {
+	StreamUtils::read(in, _value);
+}
+
 IntData::~IntData() {
 }
 
 void IntData::serialize(std::ostringstream& out) {
+	StreamUtils::write(out, INT_DATA_TYPE);
 	StreamUtils::write(out, _value);
-}
-
-void IntData::unserialize(std::istringstream& in) {
-	StreamUtils::read(in, _value);
 }
 
 int IntData::getValue() const {

@@ -11,18 +11,18 @@
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/exception/NotExistingValeurException.h"
 #include "data/Branche.h"
-#include "data/Client.h"
+#include "data/Distant.h"
 
 class DataTree {
 	Branche _root;
-	vector<Client*> _clients;
+	vector<Distant*> _clients;
 
 public:
 	DataTree();
 	virtual ~DataTree();
 
+	virtual void initDistantBranche(Distant* distant, Branche* branche) = 0;
 
-	virtual void initDistantBranche(Client* client, Branche* branche) = 0;
 
 	/* *********************************
 	 * Accessors
@@ -42,8 +42,8 @@ public:
 	 * Distant management
 	 * ***************************************************/
 
-	Client* addDistant(const string& clientName);
-	vector<Client*>& getDistants();
+	Distant* addDistant(const string& distantName);
+	vector<Distant*>& getDistants();
 };
 
 #endif /* DATATREE_H_ */

@@ -11,7 +11,7 @@
 #include <sstream>
 #include <vector>
 
-#include "data/MarqueurClient.h"
+#include "data/MarqueurDistant.h"
 #include "data/Branche.h"
 #include "data/communication/message/Changement.h"
 
@@ -27,7 +27,7 @@ public:
 	AddBrancheChangement(std::istringstream& in);
 	AddBrancheChangement(const std::vector<int>& parentBrancheId, int brancheId, int revision, const string& brancheName);
 
-	void update(MarqueurClient* marqueur);
+	void update(MarqueurDistant* marqueur);
 	void serialize(std::ostringstream& out);
 
 

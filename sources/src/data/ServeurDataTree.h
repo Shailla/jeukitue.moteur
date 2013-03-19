@@ -17,8 +17,8 @@ using namespace std;
 #include "data/DataTree.h"
 
 class ServeurDataTree : public DataTree {
-	Donnee* addMarqueurFromDistant(Client* client, Donnee* valeur, int donneeClientTmpId);
-	void initDistantBranche(Client* client, Branche* branche);
+	Donnee* addMarqueurFromDistant(Distant* distant, Donnee* valeur, int donneeClientTmpId);
+	void initDistantBranche(Distant* distant, Branche* branche);
 
 public:
 	ServeurDataTree();
@@ -37,8 +37,8 @@ public:
 	 * Distant actions
 	 * ***************************************************/
 
-	Branche* addBrancheFromDistant(vector<int>& parentBrancheId, const string& brancheName, int brancheTmpId, Client* client);
-	Valeur* addValeurIntFromDistant(vector<int>& parentBrancheId, const string& valeurName, int valeurTmpId, int valeur, Client* client);
+	Branche* addBrancheFromDistant(vector<int>& parentBrancheId, const string& brancheName, int brancheTmpId, Distant* client);
+	Valeur* addValeurIntFromDistant(vector<int>& parentBrancheId, const string& valeurName, int valeurTmpId, int valeur, Distant* client);
 
 
 	/* ****************************************************

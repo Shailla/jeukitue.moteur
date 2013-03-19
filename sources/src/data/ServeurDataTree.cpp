@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#include "data/MarqueurClient.h"
+#include "data/MarqueurDistant.h"
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/communication/DataSerializer.h"
 
@@ -27,7 +27,7 @@ Branche* ServeurDataTree::addBranche(vector<int>& parentBrancheId, const string&
 	return addBrancheFromDistant(parentBrancheId, brancheName, 0, NULL);
 }
 
-Branche* ServeurDataTree::addBrancheFromDistant(vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, Client* client) {
+Branche* ServeurDataTree::addBrancheFromDistant(vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, Distant* client) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 
 	Branche* branche = parentBranche->createSubBranche(brancheName);
@@ -39,7 +39,7 @@ Valeur* ServeurDataTree::addValeurInt(vector<int>& parentBrancheId, const string
 	return addValeurIntFromDistant(parentBrancheId, valeurName, 0, valeur, NULL);
 }
 
-Valeur* ServeurDataTree::addValeurIntFromDistant(vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int valeur, Client* client) {
+Valeur* ServeurDataTree::addValeurIntFromDistant(vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int valeur, Distant* client) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 
 	Valeur* val = parentBranche->createValeurInt(valeurName, valeur);
@@ -47,11 +47,11 @@ Valeur* ServeurDataTree::addValeurIntFromDistant(vector<int>& parentBrancheId, c
 	return (Valeur*)addMarqueurFromDistant(client, val, valeurClientTmpId);
 }
 
-Donnee* ServeurDataTree::addMarqueurFromDistant(Client* client, Donnee* donnee, int donneeClientTmpId) {
-	vector<Client*>::iterator clIter;
+Donnee* ServeurDataTree::addMarqueurFromDistant(Distant* client, Donnee* donnee, int donneeClientTmpId) {
+	vector<Distant*>::iterator clIter;
 
 	for(clIter = getDistants().begin() ; clIter != getDistants().end() ; clIter++) {
-		Client* cl = *clIter;
+		Distant* cl = *clIter;
 
 		if(cl == client) {
 			cl->addMarqueur(donnee, donneeClientTmpId);
@@ -66,8 +66,8 @@ Donnee* ServeurDataTree::addMarqueurFromDistant(Client* client, Donnee* donnee, 
 
 int i = 0;
 
-void ServeurDataTree::initDistantBranche(Client* client, Branche* branche) {
-	MarqueurClient* marqueur = client->addMarqueur(branche, i++);
+void ServeurDataTree::initDistantBranche(Distant* distant, Branche* branche) {
+	MarqueurDistant* marqueur = distant->addMarqueur(branche, i++);
 
 	if(branche == &getRoot()) {	// Do not add the root branche to the distants, because it's a default existing element
 		marqueur->setSentRevision(0);
@@ -79,7 +79,7 @@ void ServeurDataTree::initDistantBranche(Client* client, Branche* branche) {
 		map<int, Branche*>::iterator itBr;
 
 		for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
-			initDistantBranche(client, itBr->second);
+			initDistantBranche(distant, itBr->second);
 		}
 	}
 
@@ -89,17 +89,17 @@ void ServeurDataTree::initDistantBranche(Client* client, Branche* branche) {
 		map<int, Valeur*>::iterator iterVl;
 
 		for(iterVl = valeurs.begin() ; iterVl != valeurs.end() ; iterVl++) {
-			client->addMarqueur(iterVl->second, 0);
+			distant->addMarqueur(iterVl->second, 0);
 		}
 	}
 }
 
 void ServeurDataTree::diffuseChangements(void) {
-	vector<Client*>::iterator clientIter;
+	vector<Distant*>::iterator clientIter;
 	vector<Changement*> changements;
 
 	for(clientIter = getDistants().begin() ; clientIter != getDistants().end() ; clientIter++) {
-		Client* client = *clientIter;
+		Distant* client = *clientIter;
 		client->collecteChangements(changements);
 
 		if(changements.size()) {

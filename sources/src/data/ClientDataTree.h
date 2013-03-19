@@ -18,7 +18,7 @@ using namespace std;
 
 class ClientDataTree : public DataTree {
 
-	void initDistantBranche(Client* client, Branche* branche);
+	void initDistantBranche(Distant* distant, Branche* branche);
 
 public:
 	ClientDataTree();

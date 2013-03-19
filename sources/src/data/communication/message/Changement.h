@@ -12,7 +12,7 @@
 
 class ServeurDataTree;
 class DataSerializer;
-class MarqueurClient;
+class MarqueurDistant;
 
 class Changement {
 	friend DataSerializer;
@@ -37,7 +37,7 @@ public:
 	Changement();
 	virtual ~Changement();
 
-	virtual void update(MarqueurClient* marqueur) = 0;
+	virtual void update(MarqueurDistant* marqueur) = 0;
 	virtual void serialize(std::ostringstream& out) = 0;
 };
 

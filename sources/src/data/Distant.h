@@ -14,22 +14,22 @@
 #include <sstream>
 
 #include "data/Donnee.h"
-#include "data/MarqueurClient.h"
+#include "data/MarqueurDistant.h"
 #include "data/communication/message/Changement.h"
 
-class Client {
+class Distant {
 	std::string _debugName;
-	std::map<Donnee*, MarqueurClient*> _marqueurs;
+	std::map<Donnee*, MarqueurDistant*> _marqueurs;
 
 	string* _dataTest;
 public:
-	Client(const string& debugName);
-	virtual ~Client();
+	Distant(const string& debugName);
+	virtual ~Distant();
 
-	MarqueurClient* getMarqueur(Donnee* donnee);
-	std::map<Donnee*, MarqueurClient*>& getMarqueurs();
+	MarqueurDistant* getMarqueur(Donnee* donnee);
+	std::map<Donnee*, MarqueurDistant*>& getMarqueurs();
 	std::string& getDebugName();
-	MarqueurClient* addMarqueur(Donnee* donnee, int donneeTmpId);
+	MarqueurDistant* addMarqueur(Donnee* donnee, int donneeTmpId);
 	void collecteChangements(std::vector<Changement*>& changements);
 
 	void sendData(std::ostringstream& out);

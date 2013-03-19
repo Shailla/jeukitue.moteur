@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "util/types/Data.h"
-#include "data/MarqueurClient.h"
+#include "data/MarqueurDistant.h"
 #include "data/Branche.h"
 #include "data/communication/message/Changement.h"
 
@@ -29,7 +29,7 @@ public:
 	UpdateValeurChangement(Valeur* valeur);
 	~UpdateValeurChangement();
 
-	void update(MarqueurClient* marqueur);
+	void update(MarqueurDistant* marqueur);
 	void serialize(std::ostringstream& out);
 
 

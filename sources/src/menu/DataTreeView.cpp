@@ -82,7 +82,7 @@ void DataTreeView::selectionChanged(AG_Event* event) {
 void DataTreeView::openClientsWindows(AG_Event* event) {
 	DataTreeView* This = (DataTreeView*)AG_PTR(1);
 
-	map<Client*, ClientDataTree*>::iterator it;
+	map<Distant*, ClientDataTree*>::iterator it;
 
 	for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
 		DataTree* tree = it->second;
@@ -133,14 +133,14 @@ void DataTreeView::refreshClientTable(DataTreeDetails* details) {
 
 	AG_TableBegin(details->getClientsTable());
 
-	vector<Client*>& clients = details->getDataTree()->getDistants();
-	vector<Client*>::iterator iter;
+	vector<Distant*>& clients = details->getDataTree()->getDistants();
+	vector<Distant*>::iterator iter;
 
 	for(iter = clients.begin() ; iter != clients.end() ; iter++) {
-		Client* client = *iter;
+		Distant* client = *iter;
 
 		if(selectedDonnee) {
-			MarqueurClient* marqueur = client->getMarqueur(selectedDonnee);
+			MarqueurDistant* marqueur = client->getMarqueur(selectedDonnee);
 
 			if(marqueur) {
 				AG_TableAddRow(details->getClientsTable(), "%s:%d:%d", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->getSentRevision());

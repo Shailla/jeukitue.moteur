@@ -37,7 +37,7 @@ public:
 };
 
 extern ServeurDataTree serveurDataTree;
-extern std::map<Client*, ClientDataTree*> dataRouter;
+extern std::map<Distant*, ClientDataTree*> dataRouter;
 
 class Viewer;
 namespace JktMoteur {

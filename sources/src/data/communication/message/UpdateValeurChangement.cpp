@@ -42,7 +42,7 @@ UpdateValeurChangement::~UpdateValeurChangement() {
 	}
 };
 
-void UpdateValeurChangement::update(MarqueurClient* marqueur) {
+void UpdateValeurChangement::update(MarqueurDistant* marqueur) {
 	// Met à jour l'état des données
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }

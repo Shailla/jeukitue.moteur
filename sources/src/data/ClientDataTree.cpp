@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#include "data/MarqueurClient.h"
+#include "data/MarqueurDistant.h"
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/exception/DataCommunicationException.h"
 #include "data/communication/DataSerializer.h"
@@ -28,7 +28,7 @@ ClientDataTree::ClientDataTree() {
 ClientDataTree::~ClientDataTree() {
 }
 
-void ClientDataTree::initDistantBranche(Client* client, Branche* branche) {
+void ClientDataTree::initDistantBranche(Distant* distant, Branche* branche) {
 
 }
 

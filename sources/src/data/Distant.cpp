@@ -23,22 +23,22 @@ using namespace std;
 #include "data/ValeurInt.h"
 #include "data/Branche.h"
 
-#include "data/Client.h"
+#include "data/Distant.h"
 
-Client::Client(const string& debugName) {
+Distant::Distant(const string& debugName) {
 	_debugName = debugName;
 	_dataTest = NULL;
 }
 
-Client::~Client() {
+Distant::~Distant() {
 }
 
-string& Client::getDebugName() {
+string& Distant::getDebugName() {
 	return _debugName;
 }
 
-MarqueurClient* Client::getMarqueur(Donnee* donnee) {
-	MarqueurClient* marqueur;
+MarqueurDistant* Distant::getMarqueur(Donnee* donnee) {
+	MarqueurDistant* marqueur;
 
 	try {
 		marqueur = _marqueurs.at(donnee);
@@ -50,22 +50,22 @@ MarqueurClient* Client::getMarqueur(Donnee* donnee) {
 	return marqueur;
 }
 
-map<Donnee*, MarqueurClient*>& Client::getMarqueurs() {
+map<Donnee*, MarqueurDistant*>& Distant::getMarqueurs() {
 	return _marqueurs;
 }
 
-MarqueurClient* Client::addMarqueur(Donnee* donnee, int donneeTmpId) {
-	MarqueurClient* marqueur = new MarqueurClient(donnee, donneeTmpId);
+MarqueurDistant* Distant::addMarqueur(Donnee* donnee, int donneeTmpId) {
+	MarqueurDistant* marqueur = new MarqueurDistant(donnee, donneeTmpId);
 	_marqueurs[donnee] = marqueur;
 
 	return marqueur;
 }
 
-void Client::collecteChangements(vector<Changement*>& changements) {
-	map<Donnee*, MarqueurClient*>::iterator itMa;
+void Distant::collecteChangements(vector<Changement*>& changements) {
+	map<Donnee*, MarqueurDistant*>::iterator itMa;
 
 	for(itMa = _marqueurs.begin() ; itMa != _marqueurs.end() ; itMa++) {
-		MarqueurClient* marqueur = itMa->second;
+		MarqueurDistant* marqueur = itMa->second;
 		Donnee* donnee = marqueur->getDonnee();
 
 		Branche* branche = dynamic_cast<Branche*>(donnee);
@@ -73,7 +73,7 @@ void Client::collecteChangements(vector<Changement*>& changements) {
 
 		if(branche) {
 			// NOUVELLE BRANCHE : branche présente sur le serveur mais dont le client n'a pas connaissance
-			if(marqueur->getSentRevision() == MarqueurClient::MARQUEUR_REVISION_INIT) {
+			if(marqueur->getSentRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
 				changement = new AddBrancheChangement(branche->getParentBrancheId(), branche->getBrancheId(), branche->getRevision(), branche->getBrancheName());
 			}
 
@@ -88,7 +88,7 @@ void Client::collecteChangements(vector<Changement*>& changements) {
 			Valeur* valeur = (Valeur*)(donnee);
 
 			// NOUVELLE VALEUR : branche présente sur le serveur mais dont le client n'a pas connaissance
-			if(marqueur->getSentRevision() == MarqueurClient::MARQUEUR_REVISION_INIT) {
+			if(marqueur->getSentRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
 				if(ValeurInt* valeurInt = dynamic_cast<ValeurInt*>(valeur)) {
 					JktUtils::Data* data = new JktUtils::IntData(valeurInt->getValeur());
 					changement = new AddValeurChangement(valeurInt->getBrancheId(), valeurInt->getValeurId(), valeurInt->getRevision(), valeurInt->getValeurName(), data);
@@ -107,13 +107,13 @@ void Client::collecteChangements(vector<Changement*>& changements) {
 	}
 }
 
-void Client::sendData(ostringstream& out) {
+void Distant::sendData(ostringstream& out) {
 	if(out.str().size()) {
 		_dataTest = new string(out.str());
 	}
 }
 
-string* Client::getDataToSend(void) {
+string* Distant::getDataToSend(void) {
 	string* var = _dataTest;
 
 	_dataTest = NULL;

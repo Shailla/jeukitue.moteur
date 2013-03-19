@@ -26,7 +26,7 @@ AddBrancheChangement::AddBrancheChangement(const vector<int>& parentBrancheId, i
 	_brancheName = brancheName;
 }
 
-void AddBrancheChangement::update(MarqueurClient* marqueur) {
+void AddBrancheChangement::update(MarqueurDistant* marqueur) {
 	// Met à jour l'état des données
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }

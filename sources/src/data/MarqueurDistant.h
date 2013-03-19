@@ -12,7 +12,7 @@
 
 #include "data/Branche.h"
 
-class MarqueurClient {
+class MarqueurDistant {
 	Donnee* _donnee;
 	int _sentRevision;
 	int _temporaryId;
@@ -20,8 +20,8 @@ class MarqueurClient {
 public:
 	static const int MARQUEUR_REVISION_INIT = -1;
 
-	MarqueurClient(Donnee* donnee, int donneeTmpId);
-	virtual ~MarqueurClient();
+	MarqueurDistant(Donnee* donnee, int donneeTmpId);
+	virtual ~MarqueurDistant();
 
 	Donnee* getDonnee() const;
 

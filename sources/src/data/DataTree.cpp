@@ -58,17 +58,17 @@ Branche& DataTree::getRoot() {
 	return _root;
 }
 
-Client* DataTree::addDistant(const string& clientName) {
-	Client* client = new Client(clientName);
+Distant* DataTree::addDistant(const string& distantName) {
+	Distant* distant = new Distant(distantName);
 
 	// Init the marqueurs
-	initDistantBranche(client, &getRoot());
+	initDistantBranche(distant, &getRoot());
 
-	_clients.push_back(client);
+	_clients.push_back(distant);
 
-	return client;
+	return distant;
 }
 
-vector<Client*>& DataTree::getDistants() {
+vector<Distant*>& DataTree::getDistants() {
 	return _clients;
 }

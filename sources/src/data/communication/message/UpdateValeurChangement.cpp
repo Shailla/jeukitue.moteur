@@ -49,7 +49,7 @@ void UpdateValeurChangement::update(MarqueurClient* marqueur) {
 
 void UpdateValeurChangement::serialize(ostringstream& out) {
 	// Serialize
-	StreamUtils::write(out, (int)ADD_VALEUR_MESSAGE);
+	StreamUtils::write(out, (int)UPDATE_VALEUR_MESSAGE);
 
 	StreamUtils::write(out, _brancheId);
 	StreamUtils::write(out, _valeurId);

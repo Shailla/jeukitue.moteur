@@ -28,6 +28,10 @@ ClientDataTree::ClientDataTree() {
 ClientDataTree::~ClientDataTree() {
 }
 
+void ClientDataTree::initDistantBranche(Client* client, Branche* branche) {
+
+}
+
 void ClientDataTree::receiveChangements(const string& data) {
 	vector<Changement*> changements;
 
@@ -59,7 +63,7 @@ void ClientDataTree::receiveChangements(const string& data) {
 				}
 			}
 			else if(UpdateValeurChangement* chgt = dynamic_cast<UpdateValeurChangement*>(*itCh)) {
-				Valeur* valeur = getValeur(chgt->getBrancheId());
+				Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
 
 				if(valeur) {
 					valeur->setValeur(chgt->getRevision(), chgt->getValeur());

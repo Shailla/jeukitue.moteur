@@ -31,17 +31,25 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 		string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
 
 		// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
-		vector<int> valeurId = getIntParameters(ligne);
+		vector<int> brancheId = getIntParameters(ligne);
 
-		Valeur* vl = serveurDataTree.getValeur(valeurId);
-		ValeurInt* vlInt = dynamic_cast<ValeurInt*>(vl);
+		if(brancheId.size() > 0) {
+			int valeurId = brancheId[brancheId.size() - 1];
+			brancheId.erase(brancheId.end() - 1);
 
-		if(vlInt != 0) {
-			int valeur = getIntParameter(valeurStr);
-			vlInt->updateValeur(valeur);
+			Valeur* vl = serveurDataTree.getValeur(brancheId, valeurId);
+			ValeurInt* vlInt = dynamic_cast<ValeurInt*>(vl);
+
+			if(vlInt != 0) {
+				int valeur = getIntParameter(valeurStr);
+				vlInt->updateValeur(valeur);
+			}
+			else {
+				printErrLn("Type de valeur non-pris en compte", userOutput);
+			}
 		}
 		else {
-			printErrLn("Type de valeur non-pris en compte", userOutput);
+			printErrLn("Identifiant de valeur manquant", userOutput);
 		}
 	}
 	else {

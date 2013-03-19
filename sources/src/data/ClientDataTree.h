@@ -18,6 +18,8 @@ using namespace std;
 
 class ClientDataTree : public DataTree {
 
+	void initDistantBranche(Client* client, Branche* branche);
+
 public:
 	ClientDataTree();
 	virtual ~ClientDataTree();

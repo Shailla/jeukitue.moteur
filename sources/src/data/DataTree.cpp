@@ -30,25 +30,24 @@ Branche* DataTree::getBranche(const vector<int>& brancheId) throw(NotExistingBra
 	return branche;
 }
 
-Valeur* DataTree::getValeur(const vector<int>& valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
+Valeur* DataTree::getValeur(const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
 	vector<int>::const_iterator iter;
 
 	Branche* branche = &_root;
 
-	for(iter = valeurId.begin() ; (iter != valeurId.end() && branche != NULL) ; iter++) {
-		branche = branche->getSubBranche(*iter);
+	if(brancheId.size() > 0) {
+		for(iter = brancheId.begin() ; (iter != brancheId.end() && branche != NULL) ; iter++) {
+			branche = branche->getSubBranche(*iter);
+		}
+
+		if(branche == NULL) {
+			throw NotExistingBrancheException();
+		}
 	}
 
-	if(branche == NULL) {
-		throw NotExistingBrancheException();
-	}
+	Valeur* valeur = branche->getValeur(valeurId);
 
-	Valeur* valeur;
-
-	if(iter != valeurId.end())  {
-		valeur = branche->getValeur(*iter);
-	}
-	else {
+	if(!valeur) {
 		throw NotExistingValeurException();
 	}
 
@@ -57,4 +56,19 @@ Valeur* DataTree::getValeur(const vector<int>& valeurId) throw(NotExistingValeur
 
 Branche& DataTree::getRoot() {
 	return _root;
+}
+
+Client* DataTree::addDistant(const string& clientName) {
+	Client* client = new Client(clientName);
+
+	// Init the marqueurs
+	initDistantBranche(client, &getRoot());
+
+	_clients.push_back(client);
+
+	return client;
+}
+
+vector<Client*>& DataTree::getDistants() {
+	return _clients;
 }

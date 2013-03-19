@@ -50,7 +50,7 @@ Valeur* ServeurDataTree::addValeurIntFromDistant(vector<int>& parentBrancheId, c
 Donnee* ServeurDataTree::addMarqueurFromDistant(Client* client, Donnee* donnee, int donneeClientTmpId) {
 	vector<Client*>::iterator clIter;
 
-	for(clIter = _clients.begin() ; clIter != _clients.end() ; clIter++) {
+	for(clIter = getDistants().begin() ; clIter != getDistants().end() ; clIter++) {
 		Client* cl = *clIter;
 
 		if(cl == client) {
@@ -62,17 +62,6 @@ Donnee* ServeurDataTree::addMarqueurFromDistant(Client* client, Donnee* donnee, 
 	}
 
 	return donnee;
-}
-
-Client* ServeurDataTree::addDistant(const string& clientName) {
-	Client* client = new Client(clientName);
-
-	// Init the marqueurs
-	initDistantBranche(client, &getRoot());
-
-	_clients.push_back(client);
-
-	return client;
 }
 
 int i = 0;
@@ -105,16 +94,11 @@ void ServeurDataTree::initDistantBranche(Client* client, Branche* branche) {
 	}
 }
 
-vector<Client*>& ServeurDataTree::getDistants() {
-	return _clients;
-}
-
-
 void ServeurDataTree::diffuseChangements(void) {
 	vector<Client*>::iterator clientIter;
 	vector<Changement*> changements;
 
-	for(clientIter = _clients.begin() ; clientIter != _clients.end() ; clientIter++) {
+	for(clientIter = getDistants().begin() ; clientIter != getDistants().end() ; clientIter++) {
 		Client* client = *clientIter;
 		client->collecteChangements(changements);
 

@@ -12,11 +12,11 @@
 #include <map>
 #include <vector>
 
-using namespace std;
-
 #include "data/DataTree.h"
 
 class ServeurDataTree : public DataTree {
+	std::vector<Distant*> _clients;
+
 	Donnee* addMarqueurFromDistant(Distant* distant, Donnee* valeur, int donneeClientTmpId);
 	void initDistantBranche(Distant* distant, Branche* branche);
 
@@ -29,23 +29,32 @@ public:
 	 * Serveur local actions
 	 * ****************************************************/
 
-	Branche* addBranche(vector<int>& parentBrancheId, const string& brancheName);
-	Valeur* addValeurInt(vector<int>& parentBrancheId, const string& valeurName, int valeur);
+	Branche* addBranche(std::vector<int>& parentBrancheId, const std::string& brancheName);
+	Valeur* addValeurInt(std::vector<int>& parentBrancheId, const std::string& valeurName, int valeur);
 
 
 	/* ****************************************************
 	 * Distant actions
 	 * ***************************************************/
 
-	Branche* addBrancheFromDistant(vector<int>& parentBrancheId, const string& brancheName, int brancheTmpId, Distant* client);
-	Valeur* addValeurIntFromDistant(vector<int>& parentBrancheId, const string& valeurName, int valeurTmpId, int valeur, Distant* client);
+	Branche* addBrancheFromDistant(vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, Distant* client);
+	Valeur* addValeurIntFromDistant(vector<int>& parentBrancheId, const std::string& valeurName, int valeurTmpId, int valeur, Distant* client);
+
+
+	/* ****************************************************
+	 * Distants management
+	 * ***************************************************/
+
+	Distant* addDistant(const std::string& distantName);
+	std::vector<Distant*>& getDistants();
 
 
 	/* ****************************************************
 	 * Communication
 	 * ***************************************************/
 
-	void diffuseChangements(void);
+	void diffuseChangementsToClients(void);
+	void receiveChangementsFromClient(Distant* distant, const std::string& data);
 };
 
 #endif /* DATATREE_H_ */

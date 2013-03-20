@@ -53,8 +53,8 @@ public:
 	Valeur* createValeurInt(const string& valeurName, int valeur);
 
 	/** Ajoute une valeur entière qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
-	void addValeurInt(int valeurId, const string& valeurName, int valeurRevision, int valeur);
-	void addValeurInt(int valeurId, const string& valeurName, int valeurRevision, JktUtils::Data* valeur);
+//	Valeur* addValeurInt(int valeurId, const string& valeurName, int valeurRevision, int valeur);
+	Valeur* addValeurInt(int valeurId, const string& valeurName, int valeurRevision, JktUtils::Data* valeur);
 };
 
 #endif /* BRANCHE_H_ */

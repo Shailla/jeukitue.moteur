@@ -15,7 +15,6 @@
 
 class DataTree {
 	Branche _root;
-	vector<Distant*> _clients;
 
 public:
 	DataTree();
@@ -36,14 +35,6 @@ public:
 	Branche* getBranche(const vector<int>& brancheId) throw(NotExistingBrancheException);
 	Valeur* getValeur(const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
 	Branche& getRoot();
-
-
-	/* ****************************************************
-	 * Distant management
-	 * ***************************************************/
-
-	Distant* addDistant(const string& distantName);
-	vector<Distant*>& getDistants();
 };
 
 #endif /* DATATREE_H_ */

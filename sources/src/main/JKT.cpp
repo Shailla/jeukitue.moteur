@@ -1498,15 +1498,15 @@ void executeRequests() {
 	}
 }
 
+
+/* ***************************************
+ * Boucle du jeu prinipale
+ * **************************************/
 void boucle() {
 	// Initialisation du temps
 	Uint32 oldTemps = SDL_GetTicks();
 	Uint32 temps = oldTemps;
 
-
-	/* ***************************************
-	 * Boucle du jeu prinipale
-	 * **************************************/
 
 	for( ;; ) {
 		executeRequests();
@@ -1516,22 +1516,47 @@ void boucle() {
 		temps = SDL_GetTicks();
 
 
-		serveurDataTree.diffuseChangements();
+		/* ***********************************************************
+		 * Traites les changements des données du jeu côté serveur
+		 * **********************************************************/
 
+		// Reçoit les changements des données du jeu des clients
 		map<Distant*, ClientDataTree*>::iterator it;
 
 		for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
 			Distant* client = it->first;
-			ClientDataTree* dataClient = it->second;
-
-			string* data = client->getDataToSend();
+			string* data = client->getDataToServer();
 
 			if(data) {
-				cout << endl << "Message reçu par '" << client->getDebugName() << "' : '" << *data << "'";
-				dataClient->receiveChangements(*data);
+				serveurDataTree.receiveChangementsFromClient(client, *data);
+				delete data;
 			}
 		}
 
+		// Diffuse les changements des données du jeu aux clients
+		serveurDataTree.diffuseChangementsToClients();
+
+
+		/* ***********************************************************
+		 * Traite les changements des données du jeu côté clients
+		 * **********************************************************/
+
+		for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
+			Distant* client = it->first;
+			ClientDataTree* clientDataTree = it->second;
+
+			string* data = client->getDataFromServer();
+
+			if(data) {
+				// Reçoit et applique les changements émis par le serveur
+				vector<Changement*> confirmations;
+				clientDataTree->receiveChangementsFromServer(*data, confirmations);
+				delete data;
+
+				// Envoi les changements présents sur le client au serveur
+				clientDataTree->sendChangementsToServer(confirmations);
+			}
+		}
 
 		// Effectue tous les calculs du jeu
 		timer(temps - oldTemps);

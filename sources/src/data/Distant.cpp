@@ -27,7 +27,8 @@ using namespace std;
 
 Distant::Distant(const string& debugName) {
 	_debugName = debugName;
-	_dataTest = NULL;
+	_dataFromServerTest = NULL;
+	_dataToServerTest = NULL;
 }
 
 Distant::~Distant() {
@@ -73,7 +74,7 @@ void Distant::collecteChangements(vector<Changement*>& changements) {
 
 		if(branche) {
 			// NOUVELLE BRANCHE : branche présente sur le serveur mais dont le client n'a pas connaissance
-			if(marqueur->getSentRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
+			if(marqueur->getConfirmedRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
 				changement = new AddBrancheChangement(branche->getParentBrancheId(), branche->getBrancheId(), branche->getRevision(), branche->getBrancheName());
 			}
 
@@ -88,14 +89,14 @@ void Distant::collecteChangements(vector<Changement*>& changements) {
 			Valeur* valeur = (Valeur*)(donnee);
 
 			// NOUVELLE VALEUR : branche présente sur le serveur mais dont le client n'a pas connaissance
-			if(marqueur->getSentRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
+			if(marqueur->getConfirmedRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
 				if(ValeurInt* valeurInt = dynamic_cast<ValeurInt*>(valeur)) {
 					JktUtils::Data* data = new JktUtils::IntData(valeurInt->getValeur());
 					changement = new AddValeurChangement(valeurInt->getBrancheId(), valeurInt->getValeurId(), valeurInt->getRevision(), valeurInt->getValeurName(), data);
 				}
 			}
 			// VALEUR MODIFIEE : branche présente sur le serveur mais dont le client n'a pas connaissance
-			else if(marqueur->getSentRevision() != valeur->getRevision()) {
+			else if(marqueur->getConfirmedRevision() != valeur->getRevision()) {
 				changement = new UpdateValeurChangement(valeur);
 			}
 
@@ -107,16 +108,28 @@ void Distant::collecteChangements(vector<Changement*>& changements) {
 	}
 }
 
-void Distant::sendData(ostringstream& out) {
+void Distant::setDataFromServer(ostringstream& out) {
 	if(out.str().size()) {
-		_dataTest = new string(out.str());
+		_dataFromServerTest = new string(out.str());
 	}
 }
 
-string* Distant::getDataToSend(void) {
-	string* var = _dataTest;
+string* Distant::getDataFromServer(void) {
+	string* var = _dataFromServerTest;
+	_dataFromServerTest = NULL;
 
-	_dataTest = NULL;
+	return var;
+}
+
+void Distant::setDataToServer(ostringstream& out) {
+	if(out.str().size()) {
+		_dataToServerTest = new string(out.str());
+	}
+}
+
+string* Distant::getDataToServer(void) {
+	string* var = _dataToServerTest;
+	_dataToServerTest = NULL;
 
 	return var;
 }

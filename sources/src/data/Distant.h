@@ -21,7 +21,9 @@ class Distant {
 	std::string _debugName;
 	std::map<Donnee*, MarqueurDistant*> _marqueurs;
 
-	string* _dataTest;
+	string* _dataFromServerTest;
+	string* _dataToServerTest;
+
 public:
 	Distant(const string& debugName);
 	virtual ~Distant();
@@ -32,8 +34,11 @@ public:
 	MarqueurDistant* addMarqueur(Donnee* donnee, int donneeTmpId);
 	void collecteChangements(std::vector<Changement*>& changements);
 
-	void sendData(std::ostringstream& out);
-	std::string* getDataToSend();
+	void setDataFromServer(std::ostringstream& out);
+	std::string* getDataFromServer();
+
+	void setDataToServer(std::ostringstream& out);
+	std::string* getDataToServer();
 };
 
 #endif /* CLIENT_H_ */

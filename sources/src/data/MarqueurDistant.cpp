@@ -10,6 +10,7 @@
 MarqueurDistant::MarqueurDistant(Donnee* donnee, int donneeTmpId) {
 	_donnee = donnee;
 	_sentRevision = MARQUEUR_REVISION_INIT;
+	_confirmedRevision = MARQUEUR_REVISION_INIT;
 	_temporaryId = donneeTmpId;
 }
 
@@ -24,8 +25,16 @@ int MarqueurDistant::getSentRevision(void) const {
 	return _sentRevision;
 }
 
+int MarqueurDistant::getConfirmedRevision(void) const {
+	return _confirmedRevision;
+}
+
 void MarqueurDistant::setSentRevision(int sentRevision) {
 	_sentRevision = sentRevision;
+}
+
+void MarqueurDistant::setConfirmedRevision(int confirmedRevision) {
+	_confirmedRevision = confirmedRevision;
 }
 
 int MarqueurDistant::getTemporaryId() const {

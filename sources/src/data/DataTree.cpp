@@ -57,18 +57,3 @@ Valeur* DataTree::getValeur(const vector<int>& brancheId, int valeurId) throw(No
 Branche& DataTree::getRoot() {
 	return _root;
 }
-
-Distant* DataTree::addDistant(const string& distantName) {
-	Distant* distant = new Distant(distantName);
-
-	// Init the marqueurs
-	initDistantBranche(distant, &getRoot());
-
-	_clients.push_back(distant);
-
-	return distant;
-}
-
-vector<Distant*>& DataTree::getDistants() {
-	return _clients;
-}

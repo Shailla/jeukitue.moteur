@@ -80,17 +80,19 @@ Valeur* Branche::createValeurInt(const string& valeurName, int valeur) {
 	return newValeur;
 }
 
-void Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRevision, int valeur) {
-	if(_valeurs.find(valeurId) != _valeurs.end()) {
-		cerr << endl << "La valeur existe deja";
-	}
+//Valeur* Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRevision, int valeur) {
+//	if(_valeurs.find(valeurId) != _valeurs.end()) {
+//		cerr << endl << "La valeur existe deja";
+//	}
+//
+//	// Crée la nouvelle valeur
+//	Valeur* newValeur = new ValeurInt(this, valeurId, valeurName, valeur);
+//	_valeurs[valeurId] = newValeur;
+//}
 
-	// Crée la nouvelle valeur
-	Valeur* newValeur = new ValeurInt(this, valeurId, valeurName, valeur);
-	_valeurs[valeurId] = newValeur;
-}
+Valeur* Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRevision, JktUtils::Data* valeur) {
+	Valeur* newValeur = NULL;
 
-void Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRevision, JktUtils::Data* valeur) {
 	if(_valeurs.find(valeurId) != _valeurs.end()) {
 		cerr << endl << "La valeur existe deja";
 	}
@@ -103,6 +105,8 @@ void Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRev
 	else {
 		cerr << endl << "Type de valeur inconnu";
 	}
+
+	return newValeur;
 }
 
 map<int, Branche*>& Branche::getSubBranches() {

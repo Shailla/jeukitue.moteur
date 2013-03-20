@@ -1,5 +1,5 @@
 /*
- * DataTree.cpp
+ * ClientDataTree.cpp
  *
  *  Created on: 5 mars 2013
  *      Author: vgdj7997
@@ -18,11 +18,14 @@ using namespace std;
 #include "data/communication/message/AddBrancheChangement.h"
 #include "data/communication/message/AddValeurChangement.h"
 #include "data/communication/message/UpdateValeurChangement.h"
+#include "data/communication/message/ConfirmBrancheChangement.h"
+#include "data/communication/message/ConfirmValeurChangement.h"
 #include "util/CollectionsUtils.h"
 
 #include "data/ClientDataTree.h"
 
-ClientDataTree::ClientDataTree() {
+ClientDataTree::ClientDataTree(Distant* server) {
+	_serveur = server;
 }
 
 ClientDataTree::~ClientDataTree() {
@@ -32,7 +35,11 @@ void ClientDataTree::initDistantBranche(Distant* distant, Branche* branche) {
 
 }
 
-void ClientDataTree::receiveChangements(const string& data) {
+Distant* ClientDataTree::getDistantServer() const {
+	return _serveur;
+}
+
+void ClientDataTree::receiveChangementsFromServer(const string& data, vector<Changement*>& confirmations) {
 	vector<Changement*> changements;
 
 	istringstream in(data);
@@ -46,7 +53,8 @@ void ClientDataTree::receiveChangements(const string& data) {
 				Branche* parentBranche = getBranche(chgt->getParentBrancheId());
 
 				if(parentBranche) {
-					parentBranche->addSubBranche(chgt->getBrancheId(), chgt->getBrancheName(), chgt->getRevision());
+					Branche* branche = parentBranche->addSubBranche(chgt->getBrancheId(), chgt->getBrancheName(), chgt->getRevision());
+					confirmations.push_back(new ConfirmBrancheChangement(branche->getBrancheFullId(), branche->getRevision()));
 				}
 				else {
 					cerr << endl << "Branche parent inexistante";
@@ -56,7 +64,8 @@ void ClientDataTree::receiveChangements(const string& data) {
 				Branche* parent = getBranche(chgt->getBrancheId());
 
 				if(parent) {
-					parent->addValeurInt(chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
+					Valeur* valeur = parent->addValeurInt(chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
+					confirmations.push_back(new ConfirmValeurChangement(valeur));
 				}
 				else {
 					cerr << endl << "Branche parent inexistante";
@@ -67,6 +76,7 @@ void ClientDataTree::receiveChangements(const string& data) {
 
 				if(valeur) {
 					valeur->setValeur(chgt->getRevision(), chgt->getValeur());
+					confirmations.push_back(new ConfirmValeurChangement(valeur));
 				}
 				else {
 					cerr << endl << "Valeur inexistante";
@@ -79,5 +89,13 @@ void ClientDataTree::receiveChangements(const string& data) {
 		catch(const DataCommunicationException& exception) {
 			cerr << endl << "Exception : " << exception.getMessage();
 		}
+	}
+}
+
+void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
+	if(changements.size()) {
+		ostringstream out;
+		DataSerializer::toStream(changements, out);
+		_serveur->setDataToServer(out);
 	}
 }

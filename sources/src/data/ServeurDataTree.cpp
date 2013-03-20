@@ -1,5 +1,5 @@
 /*
- * DataTree.cpp
+ * ServeurDataTree.cpp
  *
  *  Created on: 5 mars 2013
  *      Author: vgdj7997
@@ -13,7 +13,10 @@ using namespace std;
 
 #include "data/MarqueurDistant.h"
 #include "data/exception/NotExistingBrancheException.h"
+#include "data/exception/DataCommunicationException.h"
 #include "data/communication/DataSerializer.h"
+#include "data/communication/message/ConfirmBrancheChangement.h"
+#include "data/communication/message/ConfirmValeurChangement.h"
 
 #include "data/ServeurDataTree.h"
 
@@ -64,13 +67,27 @@ Donnee* ServeurDataTree::addMarqueurFromDistant(Distant* client, Donnee* donnee,
 	return donnee;
 }
 
-int i = 0;
+Distant* ServeurDataTree::addDistant(const string& distantName) {
+	Distant* distant = new Distant(distantName);
+
+	// Init the marqueurs
+	initDistantBranche(distant, &getRoot());
+
+	_clients.push_back(distant);
+
+	return distant;
+}
+
+vector<Distant*>& ServeurDataTree::getDistants() {
+	return _clients;
+}
 
 void ServeurDataTree::initDistantBranche(Distant* distant, Branche* branche) {
-	MarqueurDistant* marqueur = distant->addMarqueur(branche, i++);
+	MarqueurDistant* marqueur = distant->addMarqueur(branche, 0);
 
 	if(branche == &getRoot()) {	// Do not add the root branche to the distants, because it's a default existing element
 		marqueur->setSentRevision(0);
+		marqueur->setConfirmedRevision(0);
 	}
 
 	// Init sub-branches
@@ -94,7 +111,7 @@ void ServeurDataTree::initDistantBranche(Distant* distant, Branche* branche) {
 	}
 }
 
-void ServeurDataTree::diffuseChangements(void) {
+void ServeurDataTree::diffuseChangementsToClients(void) {
 	vector<Distant*>::iterator clientIter;
 	vector<Changement*> changements;
 
@@ -105,7 +122,49 @@ void ServeurDataTree::diffuseChangements(void) {
 		if(changements.size()) {
 			ostringstream out;
 			DataSerializer::toStream(changements, out);
-			client->sendData(out);
+			client->setDataFromServer(out);
+		}
+	}
+}
+
+void ServeurDataTree::receiveChangementsFromClient(Distant* distant, const string& data) {
+	vector<Changement*> changements;
+
+	istringstream in(data);
+	DataSerializer::fromStream(changements, in);
+
+	vector<Changement*>::iterator itCh;
+
+	for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
+		try {
+			if(ConfirmBrancheChangement* chgt = dynamic_cast<ConfirmBrancheChangement*>(*itCh)) {
+				Branche* branche = getBranche(chgt->getBrancheId());
+
+				if(branche) {
+					MarqueurDistant* marqueur = distant->getMarqueur(branche);
+					marqueur->setConfirmedRevision(chgt->getRevision());
+				}
+				else {
+					cerr << endl << "Branche inexistante";
+				}
+			}
+			else if(ConfirmValeurChangement* chgt = dynamic_cast<ConfirmValeurChangement*>(*itCh)) {
+				Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
+
+				if(valeur) {
+					MarqueurDistant* marqueur = distant->getMarqueur(valeur);
+					marqueur->setConfirmedRevision(chgt->getRevision());
+				}
+				else {
+					cerr << endl << "Valeur inexistante";
+				}
+			}
+		}
+		catch(const NotExistingBrancheException& exception) {
+			cerr << endl << "Exception : NotExistingBrancheException";
+		}
+		catch(const DataCommunicationException& exception) {
+			cerr << endl << "Exception : " << exception.getMessage();
 		}
 	}
 }

@@ -17,19 +17,27 @@ using namespace std;
 #include "data/DataTree.h"
 
 class ClientDataTree : public DataTree {
+	Distant* _serveur;
 
 	void initDistantBranche(Distant* distant, Branche* branche);
 
 public:
-	ClientDataTree();
+	ClientDataTree(Distant* server);
 	virtual ~ClientDataTree();
 
+
+	/* ****************************************************
+	 * Distants management
+	 * ***************************************************/
+
+	Distant* getDistantServer() const;
 
 	/* ****************************************************
 	 * Communication
 	 * ***************************************************/
 
-	void receiveChangements(const std::string& data);
+	void receiveChangementsFromServer(const std::string& data, std::vector<Changement*>& confirmations);
+	void sendChangementsToServer(vector<Changement*>& changements);
 };
 
 #endif /* DATATREE_H_ */

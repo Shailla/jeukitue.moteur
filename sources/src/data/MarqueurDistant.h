@@ -15,6 +15,7 @@
 class MarqueurDistant {
 	Donnee* _donnee;
 	int _sentRevision;
+	int _confirmedRevision;
 	int _temporaryId;
 
 public:
@@ -27,6 +28,9 @@ public:
 
 	int getSentRevision(void) const;
 	void setSentRevision(int sentRevision);
+
+	int getConfirmedRevision(void) const;
+	void setConfirmedRevision(int sentRevision);
 
 	int getTemporaryId() const;
 	void setTemporaryId(int temporaryId);

@@ -65,7 +65,8 @@ DataTreeDetails* DataTreeView::drawWidgets(AG_Box* box, DataTree* tree) {
 	AG_Table* clientsTable = AG_TableNew(boxes[1], AG_TABLE_EXPAND);
 	AG_TableAddCol(clientsTable, "Nom", "<XXXXXXXXXXXXXXX>", NULL);
 	AG_TableAddCol(clientsTable, "Tmp ID", "<XXXXXXXXXXXXXXX>", NULL);
-	AG_TableAddCol(clientsTable, "Sent revision", "<XXXXXXXXXXXXXXX>", NULL);
+	AG_TableAddCol(clientsTable, "Sent rev.", "<XXXXXXXXXXXXXXX>", NULL);
+	AG_TableAddCol(clientsTable, "Confirmed rev.", "<XXXXXXXXXXXXXXX>", NULL);
 	AG_Expand(clientsTable);
 
 	DataTreeDetails* details = new DataTreeDetails(dataList, clientsTable, tree);
@@ -133,17 +134,25 @@ void DataTreeView::refreshClientTable(DataTreeDetails* details) {
 
 	AG_TableBegin(details->getClientsTable());
 
-	vector<Distant*>& clients = details->getDataTree()->getDistants();
+	vector<Distant*> distantsToShow;
+
+	if(ServeurDataTree* serveur = dynamic_cast<ServeurDataTree*>(details->getDataTree())) {
+		distantsToShow = serveur->getDistants();
+	}
+	else if(ClientDataTree* client = dynamic_cast<ClientDataTree*>(details->getDataTree())) {
+		distantsToShow.push_back(client->getDistantServer());
+	}
+
 	vector<Distant*>::iterator iter;
 
-	for(iter = clients.begin() ; iter != clients.end() ; iter++) {
+	for(iter = distantsToShow.begin() ; iter != distantsToShow.end() ; iter++) {
 		Distant* client = *iter;
 
 		if(selectedDonnee) {
 			MarqueurDistant* marqueur = client->getMarqueur(selectedDonnee);
 
 			if(marqueur) {
-				AG_TableAddRow(details->getClientsTable(), "%s:%d:%d", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->getSentRevision());
+				AG_TableAddRow(details->getClientsTable(), "%s:%d:%d", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->getSentRevision(), marqueur->getConfirmedRevision());
 			}
 			else {
 				AG_TableAddRow(details->getClientsTable(), "%s:%s:%s", client->getDebugName().c_str(), "<Pas de marqueur>", "<Bug>");

@@ -29,14 +29,14 @@ bool ifstreamWork::open( const string &nomFichier )
 		current.open( nomComplet.c_str() );		// Ouverture du fichier associé
 		if( !current )
 		{
-			cerr << "\nErreur ouverture fichier (" << nomComplet << ")";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur ouverture fichier (" << nomComplet << ")";
 			return false;
 		}
 		else
 			return true;
 	}
 
-	cerr << "\nInclusion d'un fichier de format iconnu dans le fichier map (" + nomFichier + ")";
+	cerr << endl << __FILE__ << ":" << __LINE__ << " Inclusion d'un fichier de format iconnu dans le fichier map (" + nomFichier + ")";
 	return false;
 }
 

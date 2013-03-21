@@ -80,7 +80,7 @@ void lanceMenuMultijoueurclientconnect(void *var)
 TRACE().p( TRACE_MENU, "lanceMenuMultijoueurclientconnect(var=%x)", var );
 	if( !Reseau.ouvreClient() )
 	{
-		cerr << endl << "Echec de connexion au serveur";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Echec de connexion au serveur";
 		Reseau.setOn( false );		// Signale que le réseau ne peut pas être utilisé
 		lanceMenuPrinc( 0 );		// Retour au menu principal
 	}

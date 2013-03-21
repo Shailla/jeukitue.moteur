@@ -59,7 +59,7 @@ bool CIfstreamMap::open(const string &nomFichier)
 	ifstream::open( m_NomFichierWithExtension.c_str() );	// Ouverture du fichier associé
 	if( ifstream::operator!() )		// L'ouverture de fichier s'est-elle bien passée
 	{
-		cerr << "\nErreur ouverture fichier 2 (" << m_NomFichierWithExtension << ")";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur ouverture fichier 2 (" << m_NomFichierWithExtension << ")";
 		return false;
 	}
 	else

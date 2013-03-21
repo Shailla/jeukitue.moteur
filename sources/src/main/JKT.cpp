@@ -1008,7 +1008,7 @@ TRACE().p( TRACE_OTHER, trace3.c_str() );
 TRACE().p( TRACE_OTHER, trace4.c_str() );
 TRACE().p( TRACE_OTHER, trace5.c_str() );
 
-				cerr << endl;
+				cerr << endl << __FILE__ << ":" << __LINE__;
 				cerr << trace1 << endl;
 				cerr << trace2 << endl;
 				cerr << trace3 << endl;
@@ -1152,7 +1152,7 @@ bool deprecatedOpenMAP(const void *nomFichier)
 	string nomFichierMap = (char*)nomFichier;
 
 	if( !Game.openMap( nomFichierMap ) ) {
-		cerr << endl << "Erreur à l'ouvertur du fichier Map : " << nomFichierMap;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur à l'ouvertur du fichier Map : " << nomFichierMap;
 		return false;
 	}
 
@@ -1238,7 +1238,7 @@ void openMap(const string& nomFichierMap) {
 	((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setMapOuverteName(nomFichierMap);
 
 	if( !Game.openMap(nomFichierMap) ) {
-		cerr << endl << "Erreur a l'ouverture du fichier Map : " << nomFichierMap;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur a l'ouverture du fichier Map : " << nomFichierMap;
 	}
 }
 
@@ -1494,7 +1494,7 @@ void executeRequests() {
 		if( photo.Save( fichier_photo ) )
 			cout << "\nPhoto prise.";
 		else
-			cerr << "\nEchec a la prise de la photo";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Echec a la prise de la photo";
 	}
 }
 
@@ -1545,16 +1545,17 @@ void boucle() {
 			Distant* client = it->first;
 			ClientDataTree* clientDataTree = it->second;
 
-			string* data = client->getDataFromServer();
+			string* received = client->getDataFromServer();
 
-			if(data) {
+			if(received) {
 				// Reçoit et applique les changements émis par le serveur
 				vector<Changement*> confirmations;
-				clientDataTree->receiveChangementsFromServer(*data, confirmations);
-				delete data;
+				clientDataTree->receiveChangementsFromServer(*received, confirmations);
+				delete received;
 
 				// Envoi les changements présents sur le client au serveur
-				clientDataTree->sendChangementsToServer(confirmations);
+				string* emitted = clientDataTree->sendChangementsToServer(confirmations);
+				client->setDataToServer(emitted);
 			}
 		}
 
@@ -1625,7 +1626,7 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 		if( !myfont.Create(fonte.c_str(), texFonte) ) {
 			TRACE().p( TRACE_ERROR, "main() Echec ouverture texture de fonte (%s) : %d", fonte.c_str(), texFonte );
-			cerr << "\nErreur : Echec d'ouverture de la fonte : " << fonte << endl;
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec d'ouverture de la fonte : " << fonte << endl;
 		}
 		else {
 			TRACE().p( TRACE_INFO, "main() Texture de fonte (%s) : %d", fonte.c_str(), texFonte );

@@ -145,7 +145,7 @@ void ServeurDataTree::receiveChangementsFromClient(Distant* distant, const strin
 					marqueur->setConfirmedRevision(chgt->getRevision());
 				}
 				else {
-					cerr << endl << "Branche inexistante";
+					cerr << endl << __FILE__ << ":" << __LINE__ << " Branche inexistante";
 				}
 			}
 			else if(ConfirmValeurChangement* chgt = dynamic_cast<ConfirmValeurChangement*>(*itCh)) {
@@ -156,15 +156,15 @@ void ServeurDataTree::receiveChangementsFromClient(Distant* distant, const strin
 					marqueur->setConfirmedRevision(chgt->getRevision());
 				}
 				else {
-					cerr << endl << "Valeur inexistante";
+					cerr << endl << __FILE__ << ":" << __LINE__ << " Valeur inexistante";
 				}
 			}
 		}
 		catch(const NotExistingBrancheException& exception) {
-			cerr << endl << "Exception : NotExistingBrancheException";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingBrancheException";
 		}
 		catch(const DataCommunicationException& exception) {
-			cerr << endl << "Exception : " << exception.getMessage();
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
 		}
 	}
 }

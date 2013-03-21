@@ -26,7 +26,7 @@ LuaUtils::~LuaUtils() {
  */
 void LuaUtils::report_lua_errors(lua_State *L, int status) {
 	if (status != 0) {
-		cerr << endl << "Detail erreur Lua : " << lua_tostring(L, -1);
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Detail erreur Lua : " << lua_tostring(L, -1);
 		lua_pop(L, 1); // remove error message
 	}
 }
@@ -83,7 +83,7 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 			// Nothing to do
 			break;
 		default:
-			cerr << endl << "Erreur Lua : Type de parametre Lua non-reconnu";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur Lua : Type de parametre Lua non-reconnu";
 			return false;
 		}
 	}

@@ -49,8 +49,8 @@ TRACE().p( TRACE_OTHER, "CRocket::INIT_CLASSE()" );
 			Uint8* pixels = JktMoteur::litFichierImage("@Texture/Explosion.jpg", 0.75f);
 			_textureExplosion = JktMoteur::litFichierTexture("@Texture/Explosion.jpg", 0.75f , pixels);
 		}
-		catch(CErreur &erreur) {
-			cerr << "\nEchec lecture icone d'explosion du rocket";
+		catch(CErreur& erreur) {
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Echec lecture icone d'explosion du rocket";
 			_textureExplosion = NULL;
 			return false;	// L'initialisation a échoué
 		}

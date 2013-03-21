@@ -156,7 +156,7 @@ int downloadOneFileThread(void* threadData)
 		ofstream tmpFile(tmpFilename.c_str(), ios_base::trunc | ios_base::binary);	// Toute ancienne donnée dans le fichier est écrasée
 
 		if(!tmpFile) {
-			cerr << "Erreur ouverture du fichier";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur ouverture du fichier";
 		}
 
 		int accompli = 0;
@@ -185,7 +185,7 @@ int downloadOneFileThread(void* threadData)
 		destDirectory.append(item._nom).append("/");
 
 		if(CFindFolder::mkdir(destDirectory.c_str()) != 0) {
-			cerr << endl << "Le repertoire '" << destDirectory << "' existe deja";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Le repertoire '" << destDirectory << "' existe deja";
 		}
 
 		// Décompression de l'archive

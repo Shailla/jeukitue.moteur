@@ -91,7 +91,7 @@ CTraceMethod::CTraceMethod( int ligne, const char *nomFichier, int category, voi
 				}
 				case 'S':
 				{
-					cerr << endl << "Erreur TraMethod.cpp : NE PAS PASSER DE STRING PAR '...'" << endl;
+					cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur TraMethod.cpp : NE PAS PASSER DE STRING PAR '...'" << endl;
 					//string a = va_arg( vl, string );
 					//texte <<  a;
 					break;

@@ -15,6 +15,8 @@ using namespace std;
 #include "data/communication/message/AddBrancheChangement.h"
 #include "data/communication/message/AddValeurChangement.h"
 #include "data/communication/message/UpdateValeurChangement.h"
+#include "data/communication/message/ConfirmBrancheChangement.h"
+#include "data/communication/message/ConfirmValeurChangement.h"
 #include "util/StreamUtils.h"
 
 DataSerializer::DataSerializer() {
@@ -60,6 +62,14 @@ void DataSerializer::fromStream(vector<Changement*>& changements, istringstream&
 					changement = new UpdateValeurChangement(in);
 					break;
 
+				case Changement::CONFIRM_BRANCHE_MESSAGE:
+					changement = new ConfirmBrancheChangement(in);
+					break;
+
+				case Changement::CONFIRM_VALEUR_MESSAGE:
+					changement = new ConfirmValeurChangement(in);
+					break;
+
 				default:
 					changement = NULL;
 					break;
@@ -78,6 +88,6 @@ void DataSerializer::fromStream(vector<Changement*>& changements, istringstream&
 		// La fin du flux a été atteinte, on peut ressortir
 	}
 	catch(StreamUtils::ReadStreamError& error) {
-		cerr << endl << "Une erreur s'est produite pendant la lecture du flux ou sa fin a été atteinte de manière prématurée";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Une erreur s'est produite pendant la lecture du flux ou sa fin a été atteinte de manière prématurée";
 	}
 }

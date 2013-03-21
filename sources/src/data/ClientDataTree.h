@@ -37,7 +37,7 @@ public:
 	 * ***************************************************/
 
 	void receiveChangementsFromServer(const std::string& data, std::vector<Changement*>& confirmations);
-	void sendChangementsToServer(vector<Changement*>& changements);
+	std::string* sendChangementsToServer(vector<Changement*>& changements);
 };
 
 #endif /* DATATREE_H_ */

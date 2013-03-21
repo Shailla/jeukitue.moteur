@@ -511,22 +511,21 @@ bool CCfg::CAudio::Init() {
 		}
 		else	// Le driver configuré ne peut pas fonctionner
 		{
-			cerr << endl << "Driver son mal configuré, choix par défaut.";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Driver son mal configuré, choix par défaut.";
 			m_Driver = 0;	// Modification du fichier de configuration
 			FSOUND_SetDriver(0);						// Choix du driver par défaut
 		}
 	}
 	else {
 		// Pas de driver son
-		cerr << endl << "Aucun driver son détecté.";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Aucun driver son détecté.";
 	}
 
 	FSOUND_SetMixer( m_Mixer );			// Sélection du mixer
 
 		// Initialisation
-	if(!FSOUND_Init(44100, 32, FSOUND_INIT_GLOBALFOCUS))
-	{
-		cerr << endl << "Erreur FSOUND_Init : "<< FMOD_ErrorString(FSOUND_GetError()) << endl;
+	if(!FSOUND_Init(44100, 32, FSOUND_INIT_GLOBALFOCUS)) {
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FSOUND_Init : "<< FMOD_ErrorString(FSOUND_GetError()) << endl;
 		FSOUND_Close();
 //		return -1;
 	}
@@ -537,19 +536,20 @@ bool CCfg::CAudio::Init() {
 		if( m_DriverRecord<FSOUND_Record_GetNumDrivers() ) {
 			if( !FSOUND_Record_SetDriver(m_DriverRecord))	// Sélection du driver
 			{															// d'entrée pour le micro
-				cerr << "Erreur FSOUND_Record_SetDriver : " << FMOD_ErrorString(FSOUND_GetError()) << endl;
-				cerr << "\tAVIS AU PROGRAMMEUR" << endl
+				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FSOUND_Record_SetDriver : " << FMOD_ErrorString(FSOUND_GetError()) << endl;
+				cerr << endl << __FILE__ << ":" << __LINE__ << "\tAVIS AU PROGRAMMEUR" << endl
 					<< "Le programme va planter s'il y a une tentative d'utilisation du micro !!!" << endl;
 		/*		FSOUND_Close();
 				return -1;*/
 			}
 		}
 		else {		// Le driver de record ne peut pas fonctionner
-			cerr << endl << "Driver de record son mal configuré, choix par défaut.";
+			cerr << endl << __FILE__ << ":" << __LINE__ << "Driver de record son mal configuré, choix par défaut.";
 			m_DriverRecord = 0;	// Modification de la config => choix par défaut
+
 			if( !FSOUND_Record_SetDriver(0) ) {		// Sélection du driver de record par défaut
-				cerr << "Erreur FSOUND_Record_SetDriver : " << FMOD_ErrorString(FSOUND_GetError()) << endl;
-				cerr << "\tAVIS AU PROGRAMMEUR" << endl
+				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FSOUND_Record_SetDriver : " << FMOD_ErrorString(FSOUND_GetError()) << endl;
+				cerr << endl << __FILE__ << ":" << __LINE__ << "\tAVIS AU PROGRAMMEUR" << endl
 					<< "Le programme va planter s'il y a une tentative d'utilisation du micro !!!" << endl;
 		/*		FSOUND_Close();
 				return -1;*/
@@ -558,7 +558,7 @@ bool CCfg::CAudio::Init() {
 	}
 	else {		// Aucun driver d'acquisition du son détecté
 		m_DriverRecord = -1;
-		cerr << endl << "Aucun driver d'acquisition du son détecté.";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Aucun driver d'acquisition du son détecté.";
 	}
 
 		// RESUME DE L'INITIALISATION
@@ -606,7 +606,7 @@ TRACE().p( TRACE_OTHER, "init_SDL(config) begin" );
 	if( SDL_Init( SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_NOPARACHUTE ) < 0 )	// First, initialize SDL's video subsystem
 	{
 TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
-		cerr << endl << "Error : Video initialization failed: " << SDL_GetError( ) << endl;
+cerr << endl << __FILE__ << ":" << __LINE__ << " Error : Video initialization failed: " << SDL_GetError( ) << endl;
         exit( 1 );
     }
 
@@ -620,7 +620,7 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 
     const SDL_VideoInfo* info = SDL_GetVideoInfo( );	// Let's get some video information
     if( !info ) {
-		cerr << endl << "Error : Video query failed: " << SDL_GetError( ) << endl;
+    	cerr << endl << __FILE__ << ":" << __LINE__ << " Error : Video query failed: " << SDL_GetError( ) << endl;
         exit( 1 );
     }
 
@@ -756,22 +756,22 @@ TRACE().p( TRACE_OTHER, "setup_opengl(width=%d,height=%d) begin", X, Y );
 	glDeleteBuffers = (PFNGLDELETEBUFFERSARBPROC)SDL_GL_GetProcAddress("glDeleteBuffersARB");
 
 	if(!glGenBuffers) {
-		cerr << "\nError : OpenGL extension 'glGenBuffersARB' not available\n";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Error : OpenGL extension 'glGenBuffersARB' not available\n";
 		exit(1);
 	}
 
 	if(!glBindBuffer) {
-		cerr << "\nError : OpenGL extension 'glBindBufferARB' not available\n";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Error : OpenGL extension 'glBindBufferARB' not available\n";
 		exit(1);
 	}
 
 	if(!glBufferData) {
-		cerr << "\nError : OpenGL extension 'glBufferDataARB' not available\n";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Error : OpenGL extension 'glBufferDataARB' not available\n";
 		exit(1);
 	}
 
 	if(!glDeleteBuffers) {
-		cerr << "\nError : OpenGL extension 'glDeleteBuffersARB' not available\n";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Error : OpenGL extension 'glDeleteBuffersARB' not available\n";
 		exit(1);
 	}
 
@@ -815,7 +815,7 @@ bool CCfg::CDisplay::chargeGLExtension(const char* ext, string& extensions) {
 void CCfg::CDisplay::ChangeVideoSize(int x, int y) {
 TRACE().p( TRACE_OTHER, "changeVideoSize(config) begin" );
 	if( !SDL_VideoModeOK(x, y, bpp, flags) ) {
-		cerr << "\nMode video invalide :\t\t" << endl;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Mode video invalide :\t\t" << endl;
 		return;
 	}
 
@@ -825,7 +825,7 @@ TRACE().p( TRACE_OTHER, "changeVideoSize(config) begin" );
 	screen = SDL_SetVideoMode( x, y, bpp, flags );	// Set the video mode
 	if(screen == 0)
 	{
-        cerr << "Video mode set failed: " << SDL_GetError() << endl;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Video mode set failed: " << SDL_GetError() << endl;
 		exit( 1 );
     }
 
@@ -840,7 +840,7 @@ TRACE().p( TRACE_OTHER, "changeVideoSize() end" );
 void CCfg::CReseau::Init() {
 	if(SDLNet_Init() == -1) {
 TRACE().p( TRACE_ERROR, "SDLNet_Init() failed : %s", SDLNet_GetError() );
-		cerr << endl << "Error : SDLNet_Init : %¨s\n" << SDLNet_GetError();
+cerr << endl << __FILE__ << ":" << __LINE__ << " Error : SDLNet_Init : %¨s\n" << SDLNet_GetError();
 		exit( 1 );
 	}
 }

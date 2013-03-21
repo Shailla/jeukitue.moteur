@@ -90,7 +90,7 @@ void CClient::decodeConnecte( Uint16 code1, Uint16 code2 )
 		break;
 
 	default:
-		cerr << endl << "Reception d'un paquet clientUDP inconnu 7";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet clientUDP inconnu 7";
 		break;
 	}
 }
@@ -111,7 +111,7 @@ TRACE().p( TRACE_INFO, "CClient::decodeError() Serveur sature%T", this );
 
 	default:
 TRACE().p( TRACE_ERROR, "CClient::decodeError() Reception d'un paquet ERROR inconnu%T", this );
-		cerr << endl << "Reception d'un paquet ERROR inconnu";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet ERROR inconnu";
 		break;
 	}
 }
@@ -128,7 +128,7 @@ void CClient::decodeRecap( Uint16 code2 )
 			if( m_uNbrPlayers!=var1 )
 			{
 TRACE().p( TRACE_ERROR, "CClient::switchRecepClient() Le nombre de joueurs a change%T", this );
-				cerr << endl << "LE JEU N'EST PLUS PERTINENT, le nombre de joueurs a change !";
+				cerr << endl << __FILE__ << ":" << __LINE__ << " LE JEU N'EST PLUS PERTINENT, le nombre de joueurs a change !";
 				nbrPlayers( var1 );
 			}
 			else
@@ -156,7 +156,7 @@ TRACE().p( TRACE_ERROR, "CClient::switchRecepClient() Le nombre de joueurs a cha
 	default:
 		TRACE().p( TRACE_ERROR, "CClient::switchRecepClient() Reception d'un paquet RECAP inconnu : %s%T",
 		spaMaitre.debugToString().c_str(), this );
-		cerr << endl << "Reception d'un paquet RECAP inconnu";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet RECAP inconnu";
 		break;
 	}
 }
@@ -182,7 +182,7 @@ address.c_str(), port, this );
 		if( !socketSet )
 		{
 TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
-			cerr << endl << "SDLNet_AllocSocketSet: " << SDLNet_GetError();
+			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AllocSocketSet: " << SDLNet_GetError();
 
 			spaMaitre.close();
 
@@ -195,7 +195,7 @@ TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
 		if( SDLNet_UDP_AddSocket( socketSet, spaMaitre.getSocket() )==-1 )
 		{
 TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
-cerr << endl << "SDLNet_AddSocket : " << SDLNet_GetError();
+			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AddSocket : " << SDLNet_GetError();
 
 			SDLNet_FreeSocketSet( socketSet );		// Libère le socket set du serveur
 			socketSet = 0;
@@ -385,7 +385,7 @@ TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Serveur sature%T", this )
 
 			default:
 TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu 3%s%T", spaMaitre.debugToString().c_str(), this );
-				cerr << endl << "Reception d'un paquet ERROR inconnu";
+				cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet ERROR inconnu";
 				break;
 			}
 			result = true;
@@ -404,7 +404,7 @@ TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse JTG%T", this );
 				spaMaitre.getPacketOut()->channel=SDLNet_UDP_Bind( spaMaitre.getSocket(),-1,&spaMaitre.getPacketIn()->address);
 				spaMaitre.getPacketIn()->channel = spaMaitre.getPacketOut()->channel;
 				if( spaMaitre.getPacketOut()->channel==-1 )
-					cerr << endl << "SDLNet_UDP_Bind : " << SDLNet_GetError();
+					cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
 
 				Game.setStatutClient( JKT_STATUT_CLIENT_OUV );	// Indique l'ouverture en cours
 
@@ -460,14 +460,14 @@ TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse JTG%T", this );
 			else
 			{
 TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse JKT sans demande%T", this );
-				cerr << endl << "Acceptation JTG recue sans demande envoyée";
+				cerr << endl << __FILE__ << ":" << __LINE__ << " Acceptation JTG recue sans demande envoyée";
 			}
 			result = true;	// Le paquet a été utilisé
 			break;
 
 		default:
 TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu %s%T", spaMaitre.debugToString().c_str(), this );
-			cerr << endl << "Reception d'un paquet inconnu 7";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet inconnu 7";
 			result = false;
 			break;
 		}

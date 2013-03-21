@@ -52,7 +52,7 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	PluginContext* pluginContext = getPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
-		cerr << endl << "Le plugin est déjà actif '" << pluginName << "'";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Le plugin est déjà actif '" << pluginName << "'";
 		pluginContext->logError("Tentative d'activation du plugin alors qu'il est déjà actif");
 		return;
 	}
@@ -63,7 +63,7 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	 * *****************************************************************************/
 
 	string pluginDirectory = string(PLUGINS_DIRECTORY).append(pluginName).append("/");
-	cout << endl << "Activation of plugin : '" << pluginName << "' in '" << pluginDirectory << "'";
+	cerr << endl << __FILE__ << ":" << __LINE__ << " Activation of plugin : '" << pluginName << "' in '" << pluginDirectory << "'";
 
 
 	/* ******************************************************************************
@@ -211,7 +211,7 @@ void PluginEngine::deactivatePlugin(string& pluginName) {
 		delete pluginContext;
 	}
 	else {
-		cerr << endl << "Le plugin ne peut pas être désactivé, il n'est pas actif '" << pluginName << "'";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Le plugin ne peut pas être désactivé, il n'est pas actif '" << pluginName << "'";
 	}
 }
 

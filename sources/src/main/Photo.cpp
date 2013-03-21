@@ -65,12 +65,12 @@ bool CPhoto::Save( string &nomFichier ) {
 	
 	SDL_Surface *surface = SDL_CreateRGBSurfaceFrom( m_Ptr, m_X, m_Y, 24, m_X*3, rmask, gmask, bmask, amask );	
 	if( !surface ) {
-		cerr << "\nErreur (CPhoto::SDL_CreateRGBSurfaceFrom) : " << SDL_GetError();
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur (CPhoto::SDL_CreateRGBSurfaceFrom) : " << SDL_GetError();
 		return false;
 	}
 	
 	if( SDL_SaveBMP( surface, nomFichier.c_str() ) == -1 ) {
-		cerr << "\nErreur (CPhoto::SDL_SaveBMP) : " << SDL_GetError() << nomFichier;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur (CPhoto::SDL_SaveBMP) : " << SDL_GetError() << nomFichier;
 		return false;
 	}
 

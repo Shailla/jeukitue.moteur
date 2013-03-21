@@ -35,7 +35,7 @@ void ValeurInt::setValeur(int revision, JktUtils::Data* data) {
 		_valeur = intData->getValue();
 	}
 	else {
-		cerr << endl << "Type de valeur inconnu";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Type de valeur inconnu";
 	}
 }
 

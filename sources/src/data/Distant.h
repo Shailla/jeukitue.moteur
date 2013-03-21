@@ -37,7 +37,7 @@ public:
 	void setDataFromServer(std::ostringstream& out);
 	std::string* getDataFromServer();
 
-	void setDataToServer(std::ostringstream& out);
+	void setDataToServer(std::string* data);
 	std::string* getDataToServer();
 };
 

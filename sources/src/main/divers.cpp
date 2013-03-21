@@ -36,14 +36,14 @@ extern JktSon::CDemonSons *DemonSons;
 
 void quit_game() {
 TRACE().p( TRACE_OTHER, "quit_game()" );
-	cerr << endl << "quit_game()";
+	cerr << endl << __FILE__ << ":" << __LINE__ << " quit_game()";
 	exit(0);
 }
 
 void quit_game(int code)	// Quitte proprement le jeu
 {
 TRACE().p( TRACE_OTHER, "quit_game(code=%d)", code );
-	cerr << endl << endl << "quit_tutorial( " << code << " )";
+	cerr << endl << __FILE__ << ":" << __LINE__ << " quit_tutorial( " << code << " )";
 	cerr.flush();
 	exit( code );
 }
@@ -51,7 +51,7 @@ TRACE().p( TRACE_OTHER, "quit_game(code=%d)", code );
 void quit_game(const char* txt, int code)	// Quitte proprement le jeu
 {
 TRACE().p( TRACE_OTHER, "quit_game(code=%d,txt=%s)", code, txt );
-	cerr << endl << endl << "quit_game( " << code << "," << txt << ")";
+	cerr << endl << __FILE__ << ":" << __LINE__ << " quit_game( " << code << "," << txt << ")";
 	cerr.flush();
 	exit( code );
 }
@@ -59,7 +59,7 @@ TRACE().p( TRACE_OTHER, "quit_game(code=%d,txt=%s)", code, txt );
 void quit_game(const string& txt, int code)	// Quitte proprement le jeu
 {
 TRACE().p( TRACE_OTHER, "quit_game(code=%d,txt=%s)", code, txt.c_str() );
-	cerr << endl << endl << "quit_game( " << code << "," << txt << ")";
+	cerr << endl << __FILE__ << ":" << __LINE__ << " quit_game( " << code << "," << txt << ")";
 	cerr.flush();
 	exit( code );
 }
@@ -94,7 +94,7 @@ TRACE().p( TRACE_OTHER, trace3.c_str() );
 TRACE().p( TRACE_OTHER, trace4.c_str() );
 TRACE().p( TRACE_OTHER, trace5.c_str() );
 
-	cerr << endl;
+	cerr << endl << __FILE__ << ":" << __LINE__;
 	cerr << trace1 << endl;
 	cerr << trace2 << endl;
 	cerr << trace3 << endl;
@@ -192,7 +192,7 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	SDL_Surface *image1 = IMG_Load(introJKT.c_str());		// Lit le fichier image
 
 	if(image1 == 0) {
-		cerr << "\nErreur : Ouverture d'image (" << introJKT << ")" << endl;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Ouverture d'image (" << introJKT << ")" << endl;
 		return;
 	}
 
@@ -208,7 +208,7 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 
 	if( !fonteIntro.Create( fileFonteIntro, texFonteIntro ) ) {
 		TRACE().p( TRACE_ERROR, "loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro );
-		cerr << "Erreur : Echec d'ouverture de la fonte : " << fileFonteIntro << endl;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec d'ouverture de la fonte : " << fileFonteIntro << endl;
 	}
 	else {
 		TRACE().p( TRACE_INFO, "loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro );

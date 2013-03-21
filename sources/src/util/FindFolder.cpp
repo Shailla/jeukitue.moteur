@@ -29,7 +29,7 @@ using namespace std;
 //	CFindFolder( "c:/rep", "fich, ".map" );
 CFindFolder::CFindFolder(const char *filter, const char *optfilter1, const char *optfilter2) {
 	if( !filter ) {
-		cerr << endl << "CFindFolder::CFindFolder() filtre null" << endl;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " CFindFolder::CFindFolder() filtre null" << endl;
 		m_Filter = new char[strlen("") + 1];
 		strcpy( m_Filter, "" );
 	}
@@ -289,7 +289,7 @@ bool CFindFolder::isFolder(const string& directory) {
 
 	/* Check if statistics are valid: */
 	if( result != 0 )
-		cerr << endl << "CFindFolder::isFolder(" << dir << ") Problem getting information";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " CFindFolder::isFolder(" << dir << ") Problem getting information";
 
 	return (buf.st_mode & _S_IFDIR)!=0;
 #else
@@ -299,7 +299,7 @@ bool CFindFolder::isFolder(const string& directory) {
 	result = stat( dir, &buf );
 
 	if( result == -1 )
-		cerr << endl << "CFindFolder::isFolder(" << dir << ") Problem getting information";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " CFindFolder::isFolder(" << dir << ") Problem getting information";
 
 	return (buf.st_mode & S_IFDIR)!=0;
 #endif
@@ -317,7 +317,7 @@ bool CFindFolder::chmod( char const *path, bool read, bool write )
 		opt |= _S_IWRITE;
 
 	if( _chmod( path, opt  ) == -1 ) {
-		cerr << endl << "CFindFolder::chmod(" << path << ") Erreur _chmod" << endl;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " CFindFolder::chmod(" << path << ") Erreur _chmod" << endl;
 		return false;
 	}
 	else {
@@ -334,7 +334,7 @@ bool CFindFolder::chmod( char const *path, bool read, bool write )
 
 	if( ::chmod( path, opt  ) == -1 )
 	{
-		cerr << endl << "CFindFolder::chmod(" << path << ") Erreur _chmod" << endl;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " CFindFolder::chmod(" << path << ") Erreur _chmod" << endl;
 		return false;
 	}
 	else

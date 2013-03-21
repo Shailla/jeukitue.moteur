@@ -32,7 +32,7 @@ UpdateValeurChangement::UpdateValeurChangement(Valeur* valeur) {
 		_valeur = new JktUtils::IntData(valeurInt->getValeur());
 	}
 	else {
-		cerr << endl << "Valeur de type inconnu";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Valeur de type inconnu";
 	}
 }
 

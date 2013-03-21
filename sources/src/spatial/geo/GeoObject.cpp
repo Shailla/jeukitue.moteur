@@ -378,7 +378,7 @@ void CGeoObject::Affiche()
 		else if( m->Type() == CMaterial::MAT_TYPE_MULTI )		// Matériau associé == texture multiple
 			AfficheWithMaterialMultiTexture( (CMaterialMulti*)m );
 		else
-			cerr << "\nCGeoObject::Affiche (name=" << this->getName() << "): Materiau de type inconnu";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " CGeoObject::Affiche (name=" << this->getName() << "): Materiau de type inconnu";
 	}
 	else	// Pas de texture associée
 	{
@@ -608,23 +608,19 @@ void CGeoObject::setMaterial(int matRef)
 		// Vérification du type de matériau
 	CMap *map = getMap();
 
-	if( nbrMat >= (int)map->m_TabMaterial.size() )
-	{
-		cerr << endl << "Erreur (CGeoObject::setMaterial) : Materiau introuvable 1 " << nbrMat << endl;
+	if( nbrMat >= (int)map->m_TabMaterial.size() ) {
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur (CGeoObject::setMaterial) : Materiau introuvable 1 " << nbrMat << endl;
 	}
-	else
-	{
+	else {
 		CMaterial *mat = map->m_TabMaterial[ nbrMat ];
-		if( mat != 0 )
-		{
+		if( mat != 0 ) {
 			m_bMaterialTexture = true;		// Indique la présence d'un matériau associé à l'objet
 			m_Material = mat;
 			m_MaterialTexture = nbrMat;
 			m_TypeMateriau = m_Material->Type();
 		}
-		else
-		{
-			cerr << endl << "Erreur (CGeoObject::setMaterial) : Materiau introuvable2 " << nbrMat << endl;
+		else {
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur (CGeoObject::setMaterial) : Materiau introuvable2 " << nbrMat << endl;
 		}
 	}
 }

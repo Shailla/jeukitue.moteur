@@ -32,7 +32,7 @@ PluginTabProxy::PluginTabProxy(lua_State* L) : AbstractPluginPanelProxy(L) {
 	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
 	AbstractPluginPanelProxy::setPluginContext(PluginEngine::getPluginContext(L));
 
-	cerr << endl << "Erreur Lua : Cannot create new PluginWindowProxy in Lua";
+	cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur Lua : Cannot create new PluginWindowProxy in Lua";
 }
 
 PluginTabProxy::PluginTabProxy(PluginContext* pluginContext, PluginTab* pluginTab) : AbstractPluginPanelProxy(pluginContext) {

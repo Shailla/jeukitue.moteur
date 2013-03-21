@@ -54,7 +54,7 @@ TRACE().p( TRACE_SON, "CSonMono::CSonMono(nomFichierSon=%s)%T", nomFichierSon, t
 	if( m_Sample==0 )
 	{
 TRACE().p( TRACE_ERROR, "CSonMono::CSonMono() %s%T", nomFichierSon, this );
-		cerr << endl << "Erreur FMOD (" << nomFichierSon << ") :" << FMOD_ErrorString(FSOUND_GetError());
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FMOD (" << nomFichierSon << ") :" << FMOD_ErrorString(FSOUND_GetError());
 		throw (int)1;	// Envoie d'une erreur de lecture de fichier
 	}
 }
@@ -73,7 +73,7 @@ TRACE().p( TRACE_SON, "CSonStereo::CSonStereo(nomFichierSon=%s,...)%T", nomFichi
 	if( m_Sample==0 )
 	{
 TRACE().p( TRACE_ERROR, "CSonStereo::CSonStereo() %s%T", nomFichierSon, this );
-		cerr << endl << "Erreur FMOD (" << nomFichierSon << ") :" << FMOD_ErrorString(FSOUND_GetError());
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FMOD (" << nomFichierSon << ") :" << FMOD_ErrorString(FSOUND_GetError());
 		throw (int)1;	// Envoie d'une erreur de lecture de fichier
 	}
 }
@@ -92,7 +92,7 @@ TRACE().p( TRACE_SON, "CSon3D::CSon3D(nomFichierSon=%s,...)%T", nomFichierSon, t
 	if( m_Sample==0 )
 	{
 TRACE().p( TRACE_ERROR, "CSon3D::CSon3D() %s%T", nomFichierSon, this );
-		cerr << endl << "Erreur FMOD (" << nomFichierSon << ") :" << FMOD_ErrorString(FSOUND_GetError());
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FMOD (" << nomFichierSon << ") :" << FMOD_ErrorString(FSOUND_GetError());
 		throw (int)1;	// Envoie d'une erreur de lecture de fichier
 	}
 }

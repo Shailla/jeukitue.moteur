@@ -77,7 +77,7 @@ int UdpConnector::receive()
 	m_socket = SDLNet_UDP_Open(m_portLocal);
     if(!m_socket) {
         const char* message = SDLNet_GetError();
-        cerr << "\nSDLNet_UDP_Open: " << message;
+        cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Open: " << message;
 		TRACE().p( TRACE_ERROR, "SDLNet_UDP_Open: '%s'", message );
         throw OpenUdpSocketException(m_portLocal, message);
     }
@@ -86,7 +86,7 @@ int UdpConnector::receive()
 	m_socketSet = SDLNet_AllocSocketSet(16);
     if(!m_socketSet) {
         const char* message = SDLNet_GetError();
-        cerr << "\nSDLNet_AllocSocketSet: " << message;
+        cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AllocSocketSet: " << message;
 		TRACE().p( TRACE_ERROR, "SDLNet_AllocSocketSet: '%s'", message );
         throw OpenUdpSocketException(m_portLocal, message);
     }
@@ -95,7 +95,7 @@ int UdpConnector::receive()
     if(numused==-1)
     {
         const char* message = SDLNet_GetError();
-        cerr << "\nSDLNet_UDP_AddSocket: " << message;
+        cerr << endl << __FILE__ << ":" << __LINE__ << "S DLNet_UDP_AddSocket: " << message;
 		TRACE().p( TRACE_ERROR, "SDLNet_UDP_AddSocket: '%s'", message );
         throw OpenUdpSocketException(m_portLocal, message);
     }
@@ -105,7 +105,7 @@ int UdpConnector::receive()
     m_channel = SDLNet_UDP_Bind(m_socket, -1, &m_adresse);
     if(m_channel == -1) {
         const char* message = SDLNet_GetError();
-        cerr << "\nSDLNet_UDP_Bind: " << message;
+        cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind: " << message;
 		TRACE().p( TRACE_ERROR, "SDLNet_UDP_Bind: '%s'", message );
         throw BindingUdpException(message);
     }
@@ -118,7 +118,7 @@ int UdpConnector::receive()
         if( numReady==-1 )
         {
 			const char* message = SDLNet_GetError();
-			cerr << "\nSDLNet_CheckSockets: " << message;
+			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_CheckSockets: " << message;
 			TRACE().p( TRACE_ERROR, "SDLNet_CheckSockets: '%s'", message );
 			perror("SDLNet_CheckSockets");
         }

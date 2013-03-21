@@ -64,7 +64,7 @@ TRACE().p( TRACE_SON, "CDemonSons::CreateSon(nomFichierSon=%s,type=%d)%T",nomFic
 			break;
 
 		default:
-			cerr << "\nErreur : On cree un type de son qui n'existe pas !!!";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : On cree un type de son qui n'existe pas !!!";
 			break;
 		}
 	}
@@ -84,7 +84,7 @@ void CDemonSons::Play( CSon* id )	// Joue un son volatil donc sans retour d'iden
 	set<CSon*>::iterator p = m_TabSon.find( id );	// Vérifie que le son existe
 	if( p==m_TabSon.end() )
 	{
-		cerr << "\nErreur (CDemonSons) : Tentative de jouer un son qui n'existe pas.";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur (CDemonSons) : Tentative de jouer un son qui n'existe pas.";
 		return;
 	}
 
@@ -105,13 +105,13 @@ TRACE().p( TRACE_SON, "CDemonSons::Delete(req=%x)%T", req, this);
 		if( rson!=r->second->m_TabReq.end() )
 			r->second->m_TabReq.erase( rson );
 		else
-			cerr << "\nErreur (CDemonSons) : Delete impossible 1.";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur (CDemonSons) : Delete impossible 1.";
 			// Supprime la requête dans la liste du démon
 		m_TabReq.erase( r );
 	}
 	else
 	{
-		cerr << "\nErreur (CDemonSons::Delete) : Delete impossible 2.";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur (CDemonSons::Delete) : Delete impossible 2.";
 	}
 }
 
@@ -121,7 +121,7 @@ TRACE().p( TRACE_SON, "CDemonSons::Delete(son=%x)%T", son, this);
 	set<CSon*>::iterator s = m_TabSon.find( son );	// Vérifie que le son existe
 	if( s==m_TabSon.end() )
 	{
-		cerr << "\nTentative de detruire un son inexistant";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Tentative de detruire un son inexistant";
 		return;
 	}
 
@@ -136,7 +136,7 @@ void CDemonSons::Play( CReqSon *id )	// Relance la requête au début du son
 	if( p!=m_TabReq.end() )
 		id->Play();
 	else
-		cerr << "\nErreur : Requete son introuvable !!!";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Requete son introuvable !!!";
 }
 
 void CDemonSons::Erase( CReqSon *req )
@@ -146,7 +146,7 @@ TRACE().p( TRACE_SON, "CDemonSons::Erase(req=%x)%T", req, this);
 	if( R!=m_TabReq.end() )
 		m_TabReq.erase( R );	// Supprime la requête de la liste redondante du démon
 	else
-		cerr << "\nErreur (CDemonSons::Delete) : Chose bizarre";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur (CDemonSons::Delete) : Chose bizarre";
 }
 
 CReqSon* CDemonSons::PlayID( CSon* id, bool pause )	// Joue un son avec retour d'identifiant de requête
@@ -154,7 +154,7 @@ CReqSon* CDemonSons::PlayID( CSon* id, bool pause )	// Joue un son avec retour d
 	set<CSon*>::iterator p = m_TabSon.find( id );	// Vérifie que le son existe
 	if( p==m_TabSon.end() )
 	{
-		cerr << "\nERREUR : CSon introuvable !!!";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " ERREUR : CSon introuvable !!!";
 		return 0;
 	}
 

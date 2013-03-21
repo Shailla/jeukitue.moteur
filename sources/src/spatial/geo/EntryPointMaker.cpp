@@ -23,7 +23,7 @@ EntryPoint* EntryPointMaker::Lit(TiXmlElement* el)
 		erreur += "' attendu, '";
 		erreur += el->Value();
 		erreur += "' recu";
-		throw CErreur(0, erreur.c_str());
+		throw CErreur(0, erreur);
 	}
 
 	EntryPoint* entry = new EntryPoint();

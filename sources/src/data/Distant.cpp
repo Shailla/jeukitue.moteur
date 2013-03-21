@@ -121,9 +121,9 @@ string* Distant::getDataFromServer(void) {
 	return var;
 }
 
-void Distant::setDataToServer(ostringstream& out) {
-	if(out.str().size()) {
-		_dataToServerTest = new string(out.str());
+void Distant::setDataToServer(string* data) {
+	if(data) {
+		_dataToServerTest = data;
 	}
 }
 

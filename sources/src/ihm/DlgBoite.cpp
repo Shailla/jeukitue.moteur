@@ -178,8 +178,7 @@ TRACE().p( TRACE_MENU, "CDlgBoite::INIT_CLASSE()" );
 			_iconeInfo = JktMoteur::litFichierIcone("@Icone/Info.bmp", -1.0f, pixelsInfo);
 			_iconeEnCours = JktMoteur::litFichierIcone("@Icone/EnCours.bmp", -1.0f, pixelsEnCours);
 		}
-		catch(CErreur& erreur)
-		{
+		catch(CErreur& erreur) {
 			return false;
 		}
 

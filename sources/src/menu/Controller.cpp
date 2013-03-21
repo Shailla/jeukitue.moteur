@@ -243,7 +243,7 @@ void Controller::executeAction(AG_Event *event) {
 		{
 			stringstream openGlError;
 			openGlError << "Deniere erreur OpenGL : '" << gluErrorString(glGetError()) << "'";
-			cerr << openGlError.str();
+			cerr << endl << __FILE__ << ":" << __LINE__ << " " << openGlError.str();
 			AG_TextMsg(AG_MSG_ERROR, openGlError.str().c_str());
 		}
 		break;

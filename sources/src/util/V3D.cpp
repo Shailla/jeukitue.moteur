@@ -138,7 +138,7 @@ CV3D CV3D::directeur()
 {
 	float n = norme();
 	if( n==0.0f )
-		cerr << "ATTENTION, DIVISION PAR 0 (math3D.cpp)\n";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " ATTENTION, DIVISION PAR 0 (math3D.cpp)\n";
 	
 	return CV3D( X/n, Y/n, Z/n );
 }

@@ -65,7 +65,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() begin%T", this );
 CMap::CMap(const string &nomFichier) throw(JktUtils::CErreur) {
 TRACE().p( TRACE_MOTEUR3D, "CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str(), this );
 	if( !Lit(nomFichier) ) {
-		cerr << endl << "Erreur à la lecture du fichier MAP : " << nomFichier;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur à la lecture du fichier MAP : " << nomFichier;
 	}
 	else {
 		cout << endl << "Fichier MAP lu : " << nomFichier;
@@ -470,7 +470,7 @@ bool CMap::Lit(CMap& map, const string &nomFichier) {
 		result = true;
 	}
 	else {
-		cerr << endl << "Ouverture impossible : " << nomFichierXml;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Ouverture impossible : " << nomFichierXml;
 	}
 
 	return result;
@@ -699,7 +699,7 @@ void CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int t
 			}
 		}
 		else {
-			cerr << "\nCMap::afficheToutesTextures : Materiau de type inconnu";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " CMap::afficheToutesTextures : Materiau de type inconnu";
 		}
 	}
 }

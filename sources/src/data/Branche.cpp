@@ -58,7 +58,7 @@ Branche* Branche::createSubBranche(const string& brancheName) {
 
 Branche* Branche::addSubBranche(int brancheId, const std::string& brancheName, int brancheRevision) {
 	if(_subBranches.find(brancheId) != _subBranches.end()) {
-		cerr << endl << "La branche existe deja";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " La branche existe deja";
 	}
 
 	// Crée la nouvelle branche
@@ -80,30 +80,20 @@ Valeur* Branche::createValeurInt(const string& valeurName, int valeur) {
 	return newValeur;
 }
 
-//Valeur* Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRevision, int valeur) {
-//	if(_valeurs.find(valeurId) != _valeurs.end()) {
-//		cerr << endl << "La valeur existe deja";
-//	}
-//
-//	// Crée la nouvelle valeur
-//	Valeur* newValeur = new ValeurInt(this, valeurId, valeurName, valeur);
-//	_valeurs[valeurId] = newValeur;
-//}
-
 Valeur* Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRevision, JktUtils::Data* valeur) {
 	Valeur* newValeur = NULL;
 
 	if(_valeurs.find(valeurId) != _valeurs.end()) {
-		cerr << endl << "La valeur existe deja";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " La valeur existe deja";
 	}
 
 	// Crée la nouvelle valeur
 	if(JktUtils::IntData* intData = dynamic_cast<JktUtils::IntData*>(valeur)) {
-		Valeur* newValeur = new ValeurInt(this, valeurId, valeurName, intData->getValue());
+		newValeur = new ValeurInt(this, valeurId, valeurName, intData->getValue());
 		_valeurs[valeurId] = newValeur;
 	}
 	else {
-		cerr << endl << "Type de valeur inconnu";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Type de valeur inconnu";
 	}
 
 	return newValeur;

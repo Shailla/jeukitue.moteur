@@ -28,7 +28,7 @@ Lunar<PluginNotebookProxy>::RegType PluginNotebookProxy::methods[] = {
 PluginNotebookProxy::PluginNotebookProxy(lua_State* L) {
 	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
 
-	cerr << endl << "Erreur Lua : Cannot create new PluginWindowProxy in Lua";
+	cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur Lua : Cannot create new PluginWindowProxy in Lua";
 }
 
 PluginNotebookProxy::PluginNotebookProxy(PluginContext* pluginContext, PluginNotebook* pluginNotebook) {

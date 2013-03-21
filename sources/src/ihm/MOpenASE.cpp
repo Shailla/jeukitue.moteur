@@ -90,7 +90,7 @@ bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep )
 	if( from.fail() )
 	{
 		TRACE().p( TRACE_ERROR, "copieTexture() Echec d'ouverture du fichier de texture" );
-		cerr << "\nErreur : Echec d'ouverture du fichier de texture (" << nom << ")";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec d'ouverture du fichier de texture (" << nom << ")";
 		return false;	// Les choses se sont mal passées pour la conversion du fichier
 	}
 		// Récupération du nom du fichier sans son chemin
@@ -110,7 +110,7 @@ bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep )
 	if( to.fail() )
 	{
 		TRACE().p( TRACE_ERROR, "copieTexture() Echec de creation du fichier de texture" );
-		cerr << endl << "Erreur : Echec de creation du fichier de texture ( " << nom << " )";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec de creation du fichier de texture ( " << nom << " )";
 		return false;	// Les choses se sont mal passées pour la conversion du fichier
 	}
 
@@ -122,7 +122,7 @@ bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep )
 	if( !from.eof() )
 	{
 		TRACE().p( TRACE_ERROR, "copieTexture() Echec de copie du fichier de texture" );
-		cerr << endl << "Erreur : Echec de copie du fichier de texture (" << nom << ")";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec de copie du fichier de texture (" << nom << ")";
 		return false;	// La conversion n'a pas abouti
 	}
 
@@ -149,7 +149,7 @@ TRACE().p( TRACE_MENU, "retourConfirmOui(var=%x)", arg );
 		Game.setModeLocal();
 	}
 	else {
-		CDlgBoite* BoiteEchec = new CDlgBoite("Echec lecture fichier Map", "La lecture du fichier Map a echoue", lanceMenuPrinc, CDlgBoite::JKT_DLG_ERREUR);
+		CDlgBoite* BoiteEchec = new CDlgBoite(" Echec lecture fichier Map", "La lecture du fichier Map a echoue", lanceMenuPrinc, CDlgBoite::JKT_DLG_ERREUR);
 		BoiteEchec->addBouton( 2, "Ok", lanceMenuPrinc );
 
 		CDlg::SetMenuActif( BoiteEchec );
@@ -244,11 +244,10 @@ bool delDirectory(const string &path) {
 				return false;
 
 			if( !CFindFolder::chmod( var.c_str(), true, true ) )
-				cerr << endl << "MOpenASE::delDirectory(" << path << ")" << endl;
+				cerr << endl << __FILE__ << ":" << __LINE__ << " MOpenASE::delDirectory(" << path << ")" << endl;
 
-			if( CFindFolder::rmdir( var.c_str() ) )
-			{
-				cerr << "\nErreur _rmdir : " << var;
+			if( CFindFolder::rmdir( var.c_str() ) ) {
+				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur _rmdir : " << var;
 				return false;
 			}
 		}
@@ -265,7 +264,7 @@ void yesEcraseRep(void *arg) {
 	CDlg::SetMenuActif( BoiteConvertASE );
 
 	if(!delDirectory(path)) {	// Efface récursivement tout ce qui se trouve dans le répertoire path
-		cerr << "\nErreur : Au moins une entree ne peut etre supprimee";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Au moins une entree ne peut etre supprimee";
 		erreur( "Au moins une entree ne peut etre supprime" );
 	}
 	else {
@@ -300,7 +299,7 @@ int threadConvertASE_1(void *arg)
 	// Conversion fichier ASE -> fichier Map
 	if(	!CFichierASE::LitFichierASE(nomFichierASE.c_str(), pMapASE, Config.Debug.bAfficheFichier ) )	// Lit le fichier ASE de la map
 	{
-		cerr << endl << "Erreur : Lecture du fichier ASE impossible ou fichier corrompu 2";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Lecture du fichier ASE impossible ou fichier corrompu 2";
 		delete pMapASE;
 
 		erreur( "Lecture du fichier ASE impossible ou fichier corrompu 2" );

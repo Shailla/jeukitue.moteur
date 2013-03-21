@@ -108,7 +108,7 @@ bool CMaterialMulti::LitFichier(CIfstreamMap &fichier) {
 		if(mot=="MateriauSimple") {
 			CMaterial *pMatSimple = new CMaterial();
 			if(!pMatSimple->LitFichier(fichier)) {
-				cerr << endl << "Erreur : Materiau simple corrompu dans un multi-materiau" << endl;
+				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Materiau simple corrompu dans un multi-materiau" << endl;
 				delete pMatSimple;
 				return false;
 			}
@@ -118,7 +118,7 @@ bool CMaterialMulti::LitFichier(CIfstreamMap &fichier) {
 		else if( mot=="MateriauTexture" ) {
 			CMaterialTexture *pMatTex = new CMaterialTexture();
 			if(!pMatTex->LitFichier(fichier)) {
-				cerr << endl << "Erreur : Materiau de texture corrompu dans un multi-materiau" << endl;
+				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Materiau de texture corrompu dans un multi-materiau" << endl;
 				delete pMatTex;
 				return false;
 			}

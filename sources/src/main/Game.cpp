@@ -121,7 +121,7 @@ TRACE().p( TRACE_INFO, "CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap
 		m_pMap = new JktMoteur::CMap( nomFichierMap );
 	}
 	catch(JktUtils::CErreur& erreur) {
-		cerr << endl << erreur.toString() << endl;
+		cerr << endl << __FILE__ << ":" << __LINE__ <<  " " << erreur.toString() << endl;
 		result = false;
 	}
 

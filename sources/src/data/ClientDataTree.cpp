@@ -57,7 +57,7 @@ void ClientDataTree::receiveChangementsFromServer(const string& data, vector<Cha
 					confirmations.push_back(new ConfirmBrancheChangement(branche->getBrancheFullId(), branche->getRevision()));
 				}
 				else {
-					cerr << endl << "Branche parent inexistante";
+					cerr << endl << __FILE__ << ":" << __LINE__ << " Branche parent inexistante";
 				}
 			}
 			else if(AddValeurChangement* chgt = dynamic_cast<AddValeurChangement*>(*itCh)) {
@@ -68,7 +68,7 @@ void ClientDataTree::receiveChangementsFromServer(const string& data, vector<Cha
 					confirmations.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
 				}
 				else {
-					cerr << endl << "Branche parent inexistante";
+					cerr << endl << __FILE__ << ":" << __LINE__ << " Branche parent inexistante";
 				}
 			}
 			else if(UpdateValeurChangement* chgt = dynamic_cast<UpdateValeurChangement*>(*itCh)) {
@@ -79,23 +79,27 @@ void ClientDataTree::receiveChangementsFromServer(const string& data, vector<Cha
 					confirmations.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
 				}
 				else {
-					cerr << endl << "Valeur inexistante";
+					cerr << endl << __FILE__ << ":" << __LINE__ << " Valeur inexistante";
 				}
 			}
 		}
 		catch(const NotExistingBrancheException& exception) {
-			cerr << endl << "Exception : NotExistingBrancheException";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingBrancheException";
 		}
 		catch(const DataCommunicationException& exception) {
-			cerr << endl << "Exception : " << exception.getMessage();
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
 		}
 	}
 }
 
-void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
+string* ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
 	if(changements.size()) {
 		ostringstream out;
 		DataSerializer::toStream(changements, out);
-		_serveur->setDataToServer(out);
+
+		return new string(out.str());
+	}
+	else {
+		return NULL;
 	}
 }

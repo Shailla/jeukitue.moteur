@@ -93,11 +93,11 @@ bool RessourcesLoader::getFileRessource(string& file) {
 			}
 
 			if(!bTrouve) {
-				std::cerr << endl << "Ressource de type inconnu : '" << before << "' (type identifie '" << resourceType << "'";
+				std::cerr << endl << __FILE__ << ":" << __LINE__ << " Ressource de type inconnu : '" << before << "' (type identifie '" << resourceType << "'";
 			}
 		}
 		else {
-			std::cerr << endl << "Format de ressource non pris en compte : '" << before << "'";
+			std::cerr << endl << __FILE__ << ":" << __LINE__ << " Format de ressource non pris en compte : '" << before << "'";
 		}
 	}
 

@@ -103,10 +103,10 @@ void Tableau<X>::Enleve()	// Enlève l'élément actif du tableau
 			delete( oldAdr );	// Efface le bloc Adr qui a été enlevé
 		}
 		else
-			cerr << "Erreur tableau : à définir 2\n";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur tableau : à définir 2\n";
 	}
 	else
-		cerr << "Erreur tableau.enlève : tableau vide 1\n";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur tableau.enlève : tableau vide 1\n";
 }
 
 template<class X>
@@ -146,10 +146,10 @@ void Tableau<X>::Enleve(Adr *adr)	// Enlève l'élément actif du tableau
 			delete( oldAdr );	// Efface le bloc Adr qui a été enlevé
 		}
 		else
-			cerr << "Erreur tableau : à définir 2\n";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur tableau : à définir 2\n";
 	}
 	else
-		cerr << "Erreur tableau.enlève : tableau vide 1\n";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur tableau.enlève : tableau vide 1\n";
 }
 
 template<class X>

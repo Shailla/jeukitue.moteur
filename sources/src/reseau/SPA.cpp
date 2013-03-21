@@ -79,7 +79,7 @@ TRACE().p( TRACE_RESEAU, "CSPA::open(address=[%s,%d]) begin%T", SDLNet_ResolveIP
 
 		if(!m_Socket) {
 TRACE().p( TRACE_ERROR, "CSPA::open() : %s%T", SDLNet_GetError(), this );
-			cerr << "SDLnet_UDP_Open(0) : " << SDLNet_GetError();
+			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLnet_UDP_Open(0) : " << SDLNet_GetError();
 
 			result = false;
 		}
@@ -91,7 +91,7 @@ TRACE().p( TRACE_ERROR, "CSPA::open() : %s%T", SDLNet_GetError(), this );
 		m_PacketIn->channel = m_PacketOut->channel;
 		if(m_PacketOut->channel == -1) {
 TRACE().p( TRACE_ERROR, "CSPA::open() : %s%T", SDLNet_GetError(), this );
-			cerr << endl << "SDLNet_UDP_Bind : " << SDLNet_GetError();
+			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
 
 			SDLNet_UDP_Close( m_Socket );		// Libération du socket
 			m_Socket = 0;
@@ -113,7 +113,7 @@ TRACE().p( TRACE_RESEAU, "CSPA::open(locPort=%d) begin%T", locPort, this );
 	m_Socket = SDLNet_UDP_Open( locPort );		// Ouverture d'un socket UDP serveur
 	if(!m_Socket) {		// Socket principale non-ouverte
 TRACE().p( TRACE_ERROR, "CSPA::open() : %s%T", SDLNet_GetError(), this );
-cerr << endl << "SDLnet_UDP_Open(" << locPort << ") : " << SDLNet_GetError() << endl;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " SDLnet_UDP_Open(" << locPort << ") : " << SDLNet_GetError() << endl;
 		result = false;	// Echec de l'ouverture du serveur
 	}
 

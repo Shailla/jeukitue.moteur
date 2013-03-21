@@ -22,10 +22,10 @@ ConfirmValeurChangement::ConfirmValeurChangement(istringstream& in) {
 	unserialize(in);
 }
 
-ConfirmValeurChangement::ConfirmValeurChangement(Valeur* valeur) {
-	_brancheId = valeur->getBrancheId();
-	_valeurId = valeur->getValeurId();
-	_revision = valeur->getRevision();
+ConfirmValeurChangement::ConfirmValeurChangement(const vector<int>& brancheId, int valeurId, int revision) {
+	_brancheId = brancheId;
+	_valeurId = valeurId;
+	_revision = revision;
 }
 
 ConfirmValeurChangement::~ConfirmValeurChangement() {

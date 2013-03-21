@@ -25,7 +25,7 @@ class ConfirmValeurChangement: public Changement {
 
 public:
 	ConfirmValeurChangement(std::istringstream& in);
-	ConfirmValeurChangement(Valeur* valeur);
+	ConfirmValeurChangement(const vector<int>& brancheId, int valeurId, int revision);
 	~ConfirmValeurChangement();
 
 	void update(MarqueurDistant* marqueur);

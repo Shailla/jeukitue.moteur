@@ -51,8 +51,6 @@ DataTreeView::~DataTreeView(void) {
 }
 
 DataTreeDetails* DataTreeView::drawWidgets(AG_Box* box, DataTree* tree) {
-
-
 	AG_Box* boxes[2];
 	boxes[0] = AG_BoxNewVert(box, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
 	boxes[1] = AG_BoxNewVert(box, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
@@ -63,10 +61,10 @@ DataTreeDetails* DataTreeView::drawWidgets(AG_Box* box, DataTree* tree) {
 
 	// Tableau des clients
 	AG_Table* clientsTable = AG_TableNew(boxes[1], AG_TABLE_EXPAND);
-	AG_TableAddCol(clientsTable, "Nom", "<XXXXXXXXXXXXXXX>", NULL);
-	AG_TableAddCol(clientsTable, "Tmp ID", "<XXXXXXXXXXXXXXX>", NULL);
-	AG_TableAddCol(clientsTable, "Sent rev.", "<XXXXXXXXXXXXXXX>", NULL);
-	AG_TableAddCol(clientsTable, "Confirmed rev.", "<XXXXXXXXXXXXXXX>", NULL);
+	AG_TableAddCol(clientsTable, "Nom", "<XXXXXXXXXXXX>", NULL);
+	AG_TableAddCol(clientsTable, "TmpId", "<XXXXXXXXXXXX>", NULL);
+	AG_TableAddCol(clientsTable, "Sent rev.", "<XXXXXXXXXXXX>", NULL);
+	AG_TableAddCol(clientsTable, "Conf. rev.", "<XXXXXXXXXXXX>", NULL);
 	AG_Expand(clientsTable);
 
 	DataTreeDetails* details = new DataTreeDetails(dataList, clientsTable, tree);
@@ -152,14 +150,17 @@ void DataTreeView::refreshClientTable(DataTreeDetails* details) {
 			MarqueurDistant* marqueur = client->getMarqueur(selectedDonnee);
 
 			if(marqueur) {
-				AG_TableAddRow(details->getClientsTable(), "%s:%d:%d", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->getSentRevision(), marqueur->getConfirmedRevision());
+				AG_TableAddRow(details->getClientsTable(), "%s:%d:%d:%d", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->getSentRevision(), marqueur->getConfirmedRevision());
 			}
 			else {
-				AG_TableAddRow(details->getClientsTable(), "%s:%s:%s", client->getDebugName().c_str(), "<Pas de marqueur>", "<Bug>");
+				AG_TableAddRow(details->getClientsTable(), "%s:%s:%s:%s", client->getDebugName().c_str(), "<Pas de marqueur>", "<Bug>", "<Bug>");
 			}
 		}
 		else {
-			AG_TableAddRow(details->getClientsTable(), "%s:%s:%s", client->getDebugName().c_str(), "-", "-");
+			cout << endl << "1:" << details->getClientsTable();
+			cout << endl << "2:" << client->getDebugName().c_str();
+			cout << flush;
+			AG_TableAddRow(details->getClientsTable(), "%s:%s:%s:%s", client->getDebugName().c_str(), "-", "-", "-");
 		}
 	}
 

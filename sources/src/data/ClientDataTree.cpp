@@ -65,7 +65,7 @@ void ClientDataTree::receiveChangementsFromServer(const string& data, vector<Cha
 
 				if(parent) {
 					Valeur* valeur = parent->addValeurInt(chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
-					confirmations.push_back(new ConfirmValeurChangement(valeur));
+					confirmations.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
 				}
 				else {
 					cerr << endl << "Branche parent inexistante";
@@ -76,7 +76,7 @@ void ClientDataTree::receiveChangementsFromServer(const string& data, vector<Cha
 
 				if(valeur) {
 					valeur->setValeur(chgt->getRevision(), chgt->getValeur());
-					confirmations.push_back(new ConfirmValeurChangement(valeur));
+					confirmations.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
 				}
 				else {
 					cerr << endl << "Valeur inexistante";

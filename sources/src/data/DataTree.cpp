@@ -7,7 +7,7 @@
 
 #include "data/DataTree.h"
 
-DataTree::DataTree() : _root(NULL, 0, "root") {
+DataTree::DataTree() : _root(NULL, 0, "root", 0, -1) {
 
 }
 

@@ -23,8 +23,9 @@ class Valeur : public Donnee {
 	Branche* _parent;
 	int _valeurId;
 	string _valeurName;
+	int _tmpId;
 public:
-	Valeur(Branche* parent, int valeurId, const string& valeurName);
+	Valeur(Branche* parent, int valeurId, const string& valeurName, int tmpId);
 	virtual ~Valeur();
 
 	vector<int> getBrancheId() const;

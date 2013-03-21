@@ -12,7 +12,7 @@ using namespace std;
 #include "util/types/IntData.h"
 #include "data/ValeurInt.h"
 
-ValeurInt::ValeurInt(Branche* parent, int valeurId, const string& valeurName, int valeur) : Valeur(parent, valeurId, valeurName) {
+ValeurInt::ValeurInt(Branche* parent, int valeurId, const string& valeurName, int valeur, int tmpId) : Valeur(parent, valeurId, valeurName, tmpId) {
 	_valeur = valeur;
 }
 

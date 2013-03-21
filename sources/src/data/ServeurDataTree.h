@@ -29,8 +29,8 @@ public:
 	 * Serveur local actions
 	 * ****************************************************/
 
-	Branche* addBranche(std::vector<int>& parentBrancheId, const std::string& brancheName);
-	Valeur* addValeurInt(std::vector<int>& parentBrancheId, const std::string& valeurName, int valeur);
+	Branche* createBranche(std::vector<int>& parentBrancheId, const std::string& brancheName);
+	Valeur* createValeurInt(std::vector<int>& parentBrancheId, const std::string& valeurName, int valeur);
 
 
 	/* ****************************************************

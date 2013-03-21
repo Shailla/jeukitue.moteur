@@ -35,14 +35,52 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 		dataRouter[client] = new ClientDataTree(new Distant(string("serveur")));
 	}
 	else if(subCommande1 == "branche") {
-		string brancheName = StringUtils::findAndEraseFirstWord(ligne);
-		vector<int> parentBrancheId = getIntParameters(ligne);
+		string serverOrClientMode = StringUtils::findAndEraseFirstWord(ligne);
 
-		try {
-			serveurDataTree.addBranche(parentBrancheId, brancheName);
+		if(serverOrClientMode == "server") {
+			string brancheName = StringUtils::findAndEraseFirstWord(ligne);
+			vector<int> parentBrancheId = getIntParameters(ligne);
+
+			try {
+				serveurDataTree.createBranche(parentBrancheId, brancheName);
+			}
+			catch(NotExistingBrancheException& exception) {
+				printErrLn("La branche parent specifiee n'existe pas", userOutput);
+			}
 		}
-		catch(NotExistingBrancheException& exception) {
-			printErrLn("La branche parent specifiee n'existe pas", userOutput);
+		else if(serverOrClientMode == "client") {
+			string clientName = StringUtils::findAndEraseFirstWord(ligne);
+
+			// Recherche du client
+			map<Distant*, ClientDataTree*>::iterator it;
+
+			Distant* client;
+			ClientDataTree* tree = NULL;
+			for(it = dataRouter.begin() ; (it != dataRouter.end() && !tree) ; it++) {
+				client = it->first;
+
+				if(client->getDebugName() == clientName) {
+					tree = it->second;
+				}
+			}
+
+			if(tree) {
+				string brancheName = StringUtils::findAndEraseFirstWord(ligne);
+				vector<int> parentBrancheId = getIntParameters(ligne);
+
+				try {
+					tree->createBranche(parentBrancheId, brancheName);
+				}
+				catch(NotExistingBrancheException& exception) {
+					printErrLn("La branche parent specifiee n'existe pas", userOutput);
+				}
+			}
+			else {
+				printErrLn("Client inconnu", userOutput);
+			}
+		}
+		else {
+			printErrLn("Syntaxe incorrecte", userOutput);
 		}
 	}
 	else if(subCommande1 == "valeur") {
@@ -59,7 +97,7 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 			// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
 			vector<int> params = getIntParameters(ligne);
 
-			serveurDataTree.addValeurInt(params, valeurName, valeur);
+			serveurDataTree.createValeurInt(params, valeurName, valeur);
 		}
 		else {
 			printErrLn("Syntaxe incorrecte", userOutput);

@@ -20,10 +20,18 @@ class ClientDataTree : public DataTree {
 	Distant* _serveur;
 
 	void initDistantBranche(Distant* distant, Branche* branche);
-
+	void addServeurMarqueur(Donnee* donnee);
 public:
 	ClientDataTree(Distant* server);
 	virtual ~ClientDataTree();
+
+
+	/* *****************************************************
+	 * Serveur local actions
+	 * ****************************************************/
+
+	Branche* createBranche(std::vector<int>& parentBrancheId, const std::string& brancheName);
+	Valeur* createValeurInt(std::vector<int>& parentBrancheId, const std::string& valeurName, int valeur);
 
 
 	/* ****************************************************

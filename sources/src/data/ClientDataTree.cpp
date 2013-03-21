@@ -35,6 +35,26 @@ void ClientDataTree::initDistantBranche(Distant* distant, Branche* branche) {
 
 }
 
+Branche* ClientDataTree::createBranche(std::vector<int>& parentBrancheId, const std::string& brancheName) {
+	Branche* parentBranche = getBranche(parentBrancheId);
+	Branche* branche = parentBranche->createSubBrancheForClient(brancheName);
+	addServeurMarqueur(branche);
+
+	return branche;
+}
+
+Valeur* ClientDataTree::createValeurInt(std::vector<int>& parentBrancheId, const std::string& valeurName, int value) {
+	Branche* parentBranche = getBranche(parentBrancheId);
+	Valeur* valeur = parentBranche->createValeurIntForClient(valeurName, value);
+	addServeurMarqueur(valeur);
+
+	return valeur;
+}
+
+void ClientDataTree::addServeurMarqueur(Donnee* donnee) {
+	_serveur->addMarqueur(donnee, 0);
+}
+
 Distant* ClientDataTree::getDistantServer() const {
 	return _serveur;
 }

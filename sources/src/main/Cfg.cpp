@@ -606,7 +606,7 @@ TRACE().p( TRACE_OTHER, "init_SDL(config) begin" );
 	if( SDL_Init( SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_NOPARACHUTE ) < 0 )	// First, initialize SDL's video subsystem
 	{
 TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
-cerr << endl << __FILE__ << ":" << __LINE__ << " Error : Video initialization failed: " << SDL_GetError( ) << endl;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Error : Video initialization failed: " << SDL_GetError( ) << endl;
         exit( 1 );
     }
 
@@ -702,6 +702,8 @@ cerr << endl << __FILE__ << ":" << __LINE__ << " Error : Video initialization fa
 		X = modes[0]->w;
 		Y = modes[0]->h;
 	}
+
+	putenv("SDL_VIDEO_WINDOW_POS=center"); 	//pour centrer la fenêtre
 
 	screen = SDL_SetVideoMode(X, Y, bpp, flags);		// Set the video mode
 

@@ -21,16 +21,18 @@ using namespace std;
 class Branche : public Donnee {
 	Branche* _parent;
 	int _brancheId;
+	int _tmpId;
 	string _brancheName;
 
 	map<int, Branche*> _subBranches;
 	map<int, Valeur*> _valeurs;
 
+	JktUtils::CGenRef _brancheTmpRefGenerator;
 	JktUtils::CGenRef _brancheRefGenerator;
 	JktUtils::CGenRef _valeurRefGenerator;
+	JktUtils::CGenRef _valeurTmpRefGenerator;
 public:
-	Branche(Branche* parent, int brancheId, const string& brancheName);
-	Branche(Branche* parent, int brancheId, const string& brancheName, int revision);
+	Branche(Branche* parent, int brancheId, const string& brancheName, int revision, int tmpId);
 	virtual ~Branche();
 
 	Branche* getSubBranche(int brancheId) const;
@@ -43,14 +45,20 @@ public:
 	void getBrancheFullId(vector<int>& id) const;
 	vector<int> getBrancheFullId() const;
 
+	/** Crée une nouvelle branche et lui attribue un identifiant temporaire */
+	Branche* createSubBrancheForClient(const string& brancheName);
+
 	/** Crée une nouvelle branche et lui attribue un identifiant */
-	Branche* createSubBranche(const string& brancheName);
+	Branche* createSubBrancheForServer(const string& brancheName);
 
 	/** Ajoute une branche qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
 	Branche* addSubBranche(int brancheId, const std::string& brancheName, int brancheRevision);
 
+	/** Crée une nouvelle valeur entière et lui attribue un identifiant temporaire */
+	Valeur* createValeurIntForClient(const string& valeurName, int valeur);
+
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant */
-	Valeur* createValeurInt(const string& valeurName, int valeur);
+	Valeur* createValeurIntForServeur(const string& valeurName, int valeur);
 
 	/** Ajoute une valeur entière qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
 	Valeur* addValeurInt(int valeurId, const string& valeurName, int valeurRevision, JktUtils::Data* valeur);

@@ -15,8 +15,8 @@ using namespace std;
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/exception/DataCommunicationException.h"
 #include "data/communication/DataSerializer.h"
-#include "data/communication/message/AddBrancheChangement.h"
-#include "data/communication/message/AddValeurChangement.h"
+#include "data/communication/message/AddBrancheFromServerChangement.h"
+#include "data/communication/message/AddValeurFromServerChangement.h"
 #include "data/communication/message/UpdateValeurChangement.h"
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
@@ -59,6 +59,19 @@ Distant* ClientDataTree::getDistantServer() const {
 	return _serveur;
 }
 
+void ClientDataTree::diffuseChangementsToServer(void) {
+	vector<Distant*>::iterator clientIter;
+	vector<Changement*> changements;
+
+	_serveur->collecteChangementsInClientTree(changements);
+
+	if(changements.size()) {
+		ostringstream out;
+		DataSerializer::toStream(changements, out);
+		_serveur->setDataToServer(out);
+	}
+}
+
 void ClientDataTree::receiveChangementsFromServer(const string& data, vector<Changement*>& confirmations) {
 	vector<Changement*> changements;
 
@@ -69,7 +82,7 @@ void ClientDataTree::receiveChangementsFromServer(const string& data, vector<Cha
 
 	for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
 		try {
-			if(AddBrancheChangement* chgt = dynamic_cast<AddBrancheChangement*>(*itCh)) {
+			if(AddBrancheFromServerChangement* chgt = dynamic_cast<AddBrancheFromServerChangement*>(*itCh)) {
 				Branche* parentBranche = getBranche(chgt->getParentBrancheId());
 
 				if(parentBranche) {
@@ -80,7 +93,7 @@ void ClientDataTree::receiveChangementsFromServer(const string& data, vector<Cha
 					cerr << endl << __FILE__ << ":" << __LINE__ << " Branche parent inexistante";
 				}
 			}
-			else if(AddValeurChangement* chgt = dynamic_cast<AddValeurChangement*>(*itCh)) {
+			else if(AddValeurFromServerChangement* chgt = dynamic_cast<AddValeurFromServerChangement*>(*itCh)) {
 				Branche* parent = getBranche(chgt->getBrancheId());
 
 				if(parent) {

@@ -16,7 +16,7 @@
 #include "data/Branche.h"
 #include "data/communication/message/Changement.h"
 
-class AddValeurChangement: public Changement {
+class AddValeurFromServerChangement: public Changement {
 	std::vector<int> _brancheId;
 	int _valeurId;
 	string _valeurName;
@@ -26,9 +26,9 @@ class AddValeurChangement: public Changement {
 	void unserialize(std::istringstream& in);
 
 public:
-	AddValeurChangement(std::istringstream& in);
-	AddValeurChangement(const std::vector<int>& brancheId, int valeurId, int revision, const string& valeurName, JktUtils::Data* valeur);
-	~AddValeurChangement();
+	AddValeurFromServerChangement(std::istringstream& in);
+	AddValeurFromServerChangement(const std::vector<int>& brancheId, int valeurId, int revision, const string& valeurName, JktUtils::Data* valeur);
+	~AddValeurFromServerChangement();
 
 	void update(MarqueurDistant* marqueur);
 	void serialize(std::ostringstream& out);

@@ -117,7 +117,7 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 
 	for(clientIter = getDistants().begin() ; clientIter != getDistants().end() ; clientIter++) {
 		Distant* client = *clientIter;
-		client->collecteChangements(changements);
+		client->collecteChangementsInServerTree(changements);
 
 		if(changements.size()) {
 			ostringstream out;

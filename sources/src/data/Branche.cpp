@@ -16,11 +16,11 @@ using namespace std;
 
 #include "data/Branche.h"
 
-Branche::Branche(Branche* parent, int brancheId, const string& brancheName, int revision, int tmpId) : Donnee(revision) {
+Branche::Branche(Branche* parent, int brancheId, const string& brancheName, int revision, int brancheTmpId) : Donnee(revision) {
 	_parent = parent;
 	_brancheId = brancheId;
 	_brancheName = brancheName;
-	_tmpId = tmpId;
+	_brancheTmpId = brancheTmpId;
 }
 
 Branche::~Branche() {
@@ -133,6 +133,10 @@ string Branche::getBrancheName() const {
 
 int Branche::getBrancheId() const {
 	return _brancheId;
+}
+
+int Branche::getBrancheTmpId() const {
+	return _brancheTmpId;
 }
 
 

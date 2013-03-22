@@ -32,7 +32,8 @@ public:
 	std::map<Donnee*, MarqueurDistant*>& getMarqueurs();
 	std::string& getDebugName();
 	MarqueurDistant* addMarqueur(Donnee* donnee, int donneeTmpId);
-	void collecteChangements(std::vector<Changement*>& changements);
+	void collecteChangementsInClientTree(std::vector<Changement*>& changements);
+	void collecteChangementsInServerTree(std::vector<Changement*>& changements);
 
 	void setDataFromServer(std::ostringstream& out);
 	std::string* getDataFromServer();

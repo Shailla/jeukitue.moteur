@@ -16,8 +16,9 @@ using namespace std;
 #include "util/types/IntData.h"
 #include "util/CollectionsUtils.h"
 #include "data/communication/message/Changement.h"
-#include "data/communication/message/AddBrancheChangement.h"
-#include "data/communication/message/AddValeurChangement.h"
+#include "data/communication/message/AddBrancheFromClientChangement.h"
+#include "data/communication/message/AddBrancheFromServerChangement.h"
+#include "data/communication/message/AddValeurFromServerChangement.h"
 #include "data/communication/message/UpdateValeurChangement.h"
 #include "data/Valeur.h"
 #include "data/ValeurInt.h"
@@ -62,7 +63,41 @@ MarqueurDistant* Distant::addMarqueur(Donnee* donnee, int donneeTmpId) {
 	return marqueur;
 }
 
-void Distant::collecteChangements(vector<Changement*>& changements) {
+void Distant::collecteChangementsInClientTree(vector<Changement*>& changements) {
+	map<Donnee*, MarqueurDistant*>::iterator itMa;
+
+	for(itMa = _marqueurs.begin() ; itMa != _marqueurs.end() ; itMa++) {
+		MarqueurDistant* marqueur = itMa->second;
+		Donnee* donnee = marqueur->getDonnee();
+
+		Branche* branche = dynamic_cast<Branche*>(donnee);
+		Changement* changement = NULL;
+
+		if(branche) {
+			// NOUVELLE BRANCHE : branche présente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
+			if(branche->getBrancheId() < 0) {
+				changement = new AddBrancheFromClientChangement(branche->getParentBrancheId(), branche->getBrancheTmpId(), branche->getRevision(), branche->getBrancheName());
+			}
+
+			if(changement) {
+				changement->update(marqueur);
+				changements.push_back(changement);
+			}
+
+			continue;
+		}
+		else {
+//			Valeur* valeur = (Valeur*)(donnee);
+
+//			// NOUVELLE VALEUR : valeur présente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
+//			if(valeur->getBrancheId() < 0) {
+//				changement = new AddValeurFromClientChangement(valeur->getBrancheId(), valeur->getValeurTmpId(), valeur->getRevision(), valeur->getBrancheName());
+//			}
+		}
+	}
+}
+
+void Distant::collecteChangementsInServerTree(vector<Changement*>& changements) {
 	map<Donnee*, MarqueurDistant*>::iterator itMa;
 
 	for(itMa = _marqueurs.begin() ; itMa != _marqueurs.end() ; itMa++) {
@@ -75,7 +110,7 @@ void Distant::collecteChangements(vector<Changement*>& changements) {
 		if(branche) {
 			// NOUVELLE BRANCHE : branche présente sur le serveur mais dont le client n'a pas connaissance
 			if(marqueur->getConfirmedRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
-				changement = new AddBrancheChangement(branche->getParentBrancheId(), branche->getBrancheId(), branche->getRevision(), branche->getBrancheName());
+				changement = new AddBrancheFromServerChangement(branche->getParentBrancheId(), branche->getBrancheId(), branche->getRevision(), branche->getBrancheName());
 			}
 
 			if(changement) {
@@ -92,7 +127,7 @@ void Distant::collecteChangements(vector<Changement*>& changements) {
 			if(marqueur->getConfirmedRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
 				if(ValeurInt* valeurInt = dynamic_cast<ValeurInt*>(valeur)) {
 					JktUtils::Data* data = new JktUtils::IntData(valeurInt->getValeur());
-					changement = new AddValeurChangement(valeurInt->getBrancheId(), valeurInt->getValeurId(), valeurInt->getRevision(), valeurInt->getValeurName(), data);
+					changement = new AddValeurFromServerChangement(valeurInt->getBrancheId(), valeurInt->getValeurId(), valeurInt->getRevision(), valeurInt->getValeurName(), data);
 				}
 			}
 			// VALEUR MODIFIEE : branche présente sur le serveur mais dont le client n'a pas connaissance

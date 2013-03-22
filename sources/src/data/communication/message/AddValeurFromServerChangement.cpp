@@ -13,13 +13,13 @@ using namespace std;
 #include "util/StreamUtils.h"
 #include "data/ServeurDataTree.h"
 
-#include "data/communication/message/AddValeurChangement.h"
+#include "data/communication/message/AddValeurFromServerChangement.h"
 
-AddValeurChangement::AddValeurChangement(istringstream& in) {
+AddValeurFromServerChangement::AddValeurFromServerChangement(istringstream& in) {
 	unserialize(in);
 }
 
-AddValeurChangement::AddValeurChangement(const vector<int>& brancheId, int valeurId, int revision, const string& valeurName, JktUtils::Data* valeur) {
+AddValeurFromServerChangement::AddValeurFromServerChangement(const vector<int>& brancheId, int valeurId, int revision, const string& valeurName, JktUtils::Data* valeur) {
 	_brancheId = brancheId;
 	_valeurId = valeurId;
 	_revision = revision;
@@ -27,18 +27,18 @@ AddValeurChangement::AddValeurChangement(const vector<int>& brancheId, int valeu
 	_valeur = valeur;
 }
 
-AddValeurChangement::~AddValeurChangement() {
+AddValeurFromServerChangement::~AddValeurFromServerChangement() {
 	if(_valeur) {
 		delete _valeur;
 	}
 };
 
-void AddValeurChangement::update(MarqueurDistant* marqueur) {
+void AddValeurFromServerChangement::update(MarqueurDistant* marqueur) {
 	// Met à jour l'état des données
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }
 
-void AddValeurChangement::serialize(ostringstream& out) {
+void AddValeurFromServerChangement::serialize(ostringstream& out) {
 	// Serialize
 	StreamUtils::write(out, (int)ADD_VALEUR_MESSAGE);
 
@@ -49,7 +49,7 @@ void AddValeurChangement::serialize(ostringstream& out) {
 	StreamUtils::write(out, *_valeur);
 }
 
-void AddValeurChangement::unserialize(istringstream& in) {
+void AddValeurFromServerChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _brancheId);
 	StreamUtils::read(in, _valeurId);
 	StreamUtils::read(in, _valeurName);
@@ -57,22 +57,22 @@ void AddValeurChangement::unserialize(istringstream& in) {
 	_valeur = StreamUtils::readData(in);
 }
 
-const std::vector<int>& AddValeurChangement::getBrancheId() const {
+const std::vector<int>& AddValeurFromServerChangement::getBrancheId() const {
 	return _brancheId;
 }
 
-int AddValeurChangement::getValeurId() const {
+int AddValeurFromServerChangement::getValeurId() const {
 	return _valeurId;
 }
 
-const string& AddValeurChangement::getValeurName() const {
+const string& AddValeurFromServerChangement::getValeurName() const {
 	return _valeurName;
 }
 
-int AddValeurChangement::getRevision() const {
+int AddValeurFromServerChangement::getRevision() const {
 	return _revision;
 }
 
-JktUtils::Data* AddValeurChangement::getValeur() const {
+JktUtils::Data* AddValeurFromServerChangement::getValeur() const {
 	return _valeur;
 }

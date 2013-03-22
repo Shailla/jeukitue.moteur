@@ -21,7 +21,7 @@ using namespace std;
 class Branche : public Donnee {
 	Branche* _parent;
 	int _brancheId;
-	int _tmpId;
+	int _brancheTmpId;
 	string _brancheName;
 
 	map<int, Branche*> _subBranches;
@@ -41,6 +41,7 @@ public:
 	Valeur* getValeur(int valeurId);
 	string getBrancheName() const;
 	int getBrancheId() const;
+	int getBrancheTmpId() const;
 	vector<int> getParentBrancheId(void) const;
 	void getBrancheFullId(vector<int>& id) const;
 	vector<int> getBrancheFullId() const;

@@ -13,25 +13,25 @@ using namespace std;
 #include "util/StreamUtils.h"
 #include "data/ServeurDataTree.h"
 
-#include "data/communication/message/AddBrancheChangement.h"
+#include "data/communication/message/AddBrancheFromServerChangement.h"
 
-AddBrancheChangement::AddBrancheChangement(istringstream& in) {
+AddBrancheFromServerChangement::AddBrancheFromServerChangement(istringstream& in) {
 	unserialize(in);
 }
 
-AddBrancheChangement::AddBrancheChangement(const vector<int>& parentBrancheId, int brancheId, int revision, const string& brancheName) {
+AddBrancheFromServerChangement::AddBrancheFromServerChangement(const vector<int>& parentBrancheId, int brancheId, int revision, const string& brancheName) {
 	_parentBrancheId = parentBrancheId;
 	_brancheId = brancheId;
 	_revision = revision;
 	_brancheName = brancheName;
 }
 
-void AddBrancheChangement::update(MarqueurDistant* marqueur) {
+void AddBrancheFromServerChangement::update(MarqueurDistant* marqueur) {
 	// Met à jour l'état des données
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }
 
-void AddBrancheChangement::serialize(ostringstream& out) {
+void AddBrancheFromServerChangement::serialize(ostringstream& out) {
 	// Serialize
 	StreamUtils::write(out, (int)ADD_BRANCHE_MESSAGE);
 
@@ -41,25 +41,25 @@ void AddBrancheChangement::serialize(ostringstream& out) {
 	StreamUtils::write(out, _revision);
 }
 
-void AddBrancheChangement::unserialize(istringstream& in) {
+void AddBrancheFromServerChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _parentBrancheId);
 	StreamUtils::read(in, _brancheId);
 	StreamUtils::read(in, _brancheName);
 	StreamUtils::read(in, _revision);
 }
 
-int AddBrancheChangement::getBrancheId() const {
+int AddBrancheFromServerChangement::getBrancheId() const {
 	return _brancheId;
 }
 
-const string& AddBrancheChangement::getBrancheName() const {
+const string& AddBrancheFromServerChangement::getBrancheName() const {
 	return _brancheName;
 }
 
-const std::vector<int>& AddBrancheChangement::getParentBrancheId() const {
+const std::vector<int>& AddBrancheFromServerChangement::getParentBrancheId() const {
 	return _parentBrancheId;
 }
 
-int AddBrancheChangement::getRevision() const {
+int AddBrancheFromServerChangement::getRevision() const {
 	return _revision;
 }

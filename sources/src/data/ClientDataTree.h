@@ -44,6 +44,7 @@ public:
 	 * Communication
 	 * ***************************************************/
 
+	void diffuseChangementsToServer(void);
 	void receiveChangementsFromServer(const std::string& data, std::vector<Changement*>& confirmations);
 	std::string* sendChangementsToServer(vector<Changement*>& changements);
 };

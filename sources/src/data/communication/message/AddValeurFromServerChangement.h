@@ -32,6 +32,7 @@ public:
 
 	void update(MarqueurDistant* marqueur);
 	void serialize(std::ostringstream& out);
+	std::string toString();
 
 
 	/* *******************************************

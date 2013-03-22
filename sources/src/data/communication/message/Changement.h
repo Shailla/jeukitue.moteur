@@ -16,6 +16,7 @@ class MarqueurDistant;
 
 class Changement {
 	friend DataSerializer;
+
 protected:
 	enum MessageType {
 		ADD_BRANCHE_MESSAGE = 1,
@@ -33,14 +34,18 @@ protected:
 		STRING_VALEUR_TYPE
 	};
 
+	string _dataType;
+
 	virtual void unserialize(std::istringstream& in) = 0;
 
 public:
-	Changement();
+	Changement(const string& dataType);
 	virtual ~Changement();
 
 	virtual void update(MarqueurDistant* marqueur) = 0;
 	virtual void serialize(std::ostringstream& out) = 0;
+
+	std::string toString();
 };
 
 #endif /* _CHANGEMENT_H_ */

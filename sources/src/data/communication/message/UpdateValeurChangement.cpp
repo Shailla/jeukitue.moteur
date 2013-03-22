@@ -18,11 +18,11 @@ using namespace std;
 
 #include "data/communication/message/UpdateValeurChangement.h"
 
-UpdateValeurChangement::UpdateValeurChangement(istringstream& in) {
+UpdateValeurChangement::UpdateValeurChangement(istringstream& in) : Changement("UpdateValeurChangement") {
 	unserialize(in);
 }
 
-UpdateValeurChangement::UpdateValeurChangement(Valeur* valeur) {
+UpdateValeurChangement::UpdateValeurChangement(Valeur* valeur) : Changement("UpdateValeurChangement") {
 	_brancheId = valeur->getBrancheId();
 	_valeurId = valeur->getValeurId();
 

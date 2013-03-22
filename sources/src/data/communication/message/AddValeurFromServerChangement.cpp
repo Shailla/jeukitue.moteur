@@ -15,11 +15,11 @@ using namespace std;
 
 #include "data/communication/message/AddValeurFromServerChangement.h"
 
-AddValeurFromServerChangement::AddValeurFromServerChangement(istringstream& in) {
+AddValeurFromServerChangement::AddValeurFromServerChangement(istringstream& in) : Changement("AddValeurFromServerChangement") {
 	unserialize(in);
 }
 
-AddValeurFromServerChangement::AddValeurFromServerChangement(const vector<int>& brancheId, int valeurId, int revision, const string& valeurName, JktUtils::Data* valeur) {
+AddValeurFromServerChangement::AddValeurFromServerChangement(const vector<int>& brancheId, int valeurId, int revision, const string& valeurName, JktUtils::Data* valeur) : Changement("AddValeurFromServerChangement") {
 	_brancheId = brancheId;
 	_valeurId = valeurId;
 	_revision = revision;

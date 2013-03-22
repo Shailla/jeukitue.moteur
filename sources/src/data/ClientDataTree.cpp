@@ -68,7 +68,7 @@ void ClientDataTree::diffuseChangementsToServer(void) {
 	if(changements.size()) {
 		ostringstream out;
 		DataSerializer::toStream(changements, out);
-		_serveur->setDataToServer(out);
+		_serveur->setDataToServer(new string(out.str()));
 	}
 }
 
@@ -126,6 +126,12 @@ void ClientDataTree::receiveChangementsFromServer(const string& data, vector<Cha
 }
 
 string* ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
+	vector<Changement*>::iterator iter;
+
+	for(iter = changements.begin() ; iter != changements.end() ; iter++) {
+		cout << (*iter)->toString();
+	}
+
 	if(changements.size()) {
 		ostringstream out;
 		DataSerializer::toStream(changements, out);

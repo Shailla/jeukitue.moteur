@@ -110,15 +110,11 @@ ConsoleView::~ConsoleView(void) {
 string ConsoleView::getCommandAndClearCommandLine() {
 	// Récupération de la saisie de l'utilisateur
 	char* cmd = AG_TextboxDupString(_commande);
-	cout << endl << "1 --> " << cmd;
 	string commande = cmd;
-	cout << endl << "2 --> " << cmd;
 
 	// Vide la ligne de saisie
 	AG_TextboxSetString(_commande, "");
 	free(cmd);
-
-	cout << endl << "3 --> " << commande;
 
 	return commande;
 }

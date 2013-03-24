@@ -38,16 +38,10 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 	else if(subCommande1 == "branche") {
 		string serverOrClientMode = StringUtils::findAndEraseFirstWord(ligne);
 
-		if(serverOrClientMode == "server") {
-			string brancheName = StringUtils::findAndEraseFirstWord(ligne);
-			vector<int> parentBrancheId = getIntParameters(ligne);
+		DataTree* tree = NULL;
 
-			try {
-				serveurDataTree.createBranche(parentBrancheId, brancheName);
-			}
-			catch(NotExistingBrancheException& exception) {
-				printErrLn("La branche parent specifiee n'existe pas", userOutput);
-			}
+		if(serverOrClientMode == "server") {
+			tree = &serveurDataTree;
 		}
 		else if(serverOrClientMode == "client") {
 			string clientName = StringUtils::findAndEraseFirstWord(ligne);
@@ -64,44 +58,73 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 					tree = it->first;
 				}
 			}
-
-			if(tree) {
-				string brancheName = StringUtils::findAndEraseFirstWord(ligne);
-				vector<int> parentBrancheId = getIntParameters(ligne);
-
-				try {
-					tree->createBranche(parentBrancheId, brancheName);
-				}
-				catch(NotExistingBrancheException& exception) {
-					printErrLn("La branche parent specifiee n'existe pas", userOutput);
-				}
-			}
-			else {
-				printErrLn("Client inconnu", userOutput);
-			}
 		}
 		else {
 			printErrLn("Syntaxe incorrecte", userOutput);
+		}
+
+		if(tree) {
+			string brancheName = StringUtils::findAndEraseFirstWord(ligne);
+			vector<int> parentBrancheId = getIntParameters(ligne);
+
+			try {
+				tree->createBranche(parentBrancheId, brancheName);
+			}
+			catch(NotExistingBrancheException& exception) {
+				printErrLn("La branche parent specifiee n'existe pas", userOutput);
+			}
+		}
+		else {
+			printErrLn("Syntaxe incorrecte (arbre inconnu)", userOutput);
 		}
 	}
 	else if(subCommande1 == "valeur") {
-		string valeurType = StringUtils::findAndEraseFirstWord(ligne);
+		string serverOrClientMode = StringUtils::findAndEraseFirstWord(ligne);
 
-		if(valeurType == "int") {
-			// Nom de la valeur
-			string valeurName = StringUtils::findAndEraseFirstWord(ligne);
+		DataTree* tree = NULL;
 
-			// Valeur de la valeur
-			string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
-			int valeur = getIntParameter(valeurStr);
+		if(serverOrClientMode == "server") {
+			tree = &serveurDataTree;
+		}
+		else if(serverOrClientMode == "client") {
+			string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
-			// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
-			vector<int> params = getIntParameters(ligne);
+			// Recherche du client
+			map<ClientDataTree*, Distant*>::iterator it;
 
-			serveurDataTree.createValeurInt(params, valeurName, valeur);
+			Distant* client;
+
+			for(it = dataRouter.begin() ; (it != dataRouter.end() && !tree) ; it++) {
+				client = it->second;
+
+				if(client->getDebugName() != clientName) {
+					tree = it->first;
+				}
+			}
+		}
+
+		if(tree) {
+			string valeurType = StringUtils::findAndEraseFirstWord(ligne);
+
+			if(valeurType == "int") {
+				// Nom de la valeur
+				string valeurName = StringUtils::findAndEraseFirstWord(ligne);
+
+				// Valeur de la valeur
+				string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
+				int valeur = getIntParameter(valeurStr);
+
+				// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
+				vector<int> params = getIntParameters(ligne);
+
+				tree->createValeurInt(params, valeurName, valeur);
+			}
+			else {
+				printErrLn("Syntaxe incorrecte (type de donnee inconnu)", userOutput);
+			}
 		}
 		else {
-			printErrLn("Syntaxe incorrecte", userOutput);
+			printErrLn("Syntaxe incorrecte (arbre inconnu)", userOutput);
 		}
 	}
 	else {

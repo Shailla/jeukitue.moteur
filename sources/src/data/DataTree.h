@@ -23,6 +23,14 @@ public:
 	virtual void initDistantBranche(Distant* distant, Branche* branche) = 0;
 
 
+	/* *****************************************************
+	 * Serveur local actions
+	 * ****************************************************/
+
+	virtual Branche* createBranche(std::vector<int>& parentBrancheId, const std::string& brancheName) = 0;
+	virtual Valeur* createValeurInt(std::vector<int>& parentBrancheId, const std::string& valeurName, int valeur) = 0;
+
+
 	/* *********************************
 	 * Accessors
 	 * ********************************/

@@ -410,9 +410,8 @@ bool CTextureMaterialGeo::Lit(TiXmlElement* element)
 	const char* type = element->Attribute(Xml::TYPE);
 	if(!type)
 		throw CErreur(0, "Fichier Map corrompu CTextureMaterialGeo 2");
-	if(strcmp(type, Xml::TEXTURE))
-	{
-		cout << "--> " << nom;
+
+	if(strcmp(type, Xml::TEXTURE)) {
 		throw CErreur(0, "Fichier Map corrompu CTextureMaterialGeo 3");
 	}
 

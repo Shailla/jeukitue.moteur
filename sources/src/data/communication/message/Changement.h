@@ -45,7 +45,7 @@ public:
 	virtual void update(MarqueurDistant* marqueur) = 0;
 	virtual void serialize(std::ostringstream& out) = 0;
 
-	std::string toString();
+	virtual std::string toString();
 };
 
 #endif /* _CHANGEMENT_H_ */

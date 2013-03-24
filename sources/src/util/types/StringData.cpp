@@ -31,4 +31,8 @@ void StringData::serialize(std::ostringstream& out) {
 	StreamUtils::write(out, _value);
 }
 
+void StringData::serializeHumanReadable(std::ostringstream& out) {
+	out << "string-'" << _value << "'";
+}
+
 }

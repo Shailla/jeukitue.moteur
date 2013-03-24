@@ -1510,13 +1510,16 @@ void echangeServerAndClientData() {
 		Distant* serverSide = it->second;
 
 		// Exchange data from client to server
-		string* down = clientSide->getDataToSend();
-		serverSide->setDataReceived(down);
+		{
+			string* down = clientSide->getDataToSend();
+			serverSide->setDataReceived(down);
+		}
 
 		// Exchange data from server to client
-		string* up = serverSide->getDataToSend();
-		clientSide->setDataReceived(up);
-
+		{
+			string* up = serverSide->getDataToSend();
+			clientSide->setDataReceived(up);
+		}
 	}
 }
 
@@ -1544,6 +1547,9 @@ void boucle() {
 		// Traite les changements de données côté serveur
 		serveurDataTree.receiveChangementsFromClient();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
 		serveurDataTree.diffuseChangementsToClients();		// Diffuse les changements des données du jeu aux clients
+
+		// Simule le réseau et effectue les échanges de données entre le serveur et les clients
+		echangeServerAndClientData();
 
 		// Traite les changements de données côté client (pour chaque client)
 		map<ClientDataTree*, Distant*>::iterator it;

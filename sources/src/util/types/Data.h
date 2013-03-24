@@ -29,6 +29,7 @@ public:
 
 	static Data* unserialize(std::istringstream& in) throw(UnserializeException);
 	virtual void serialize(std::ostringstream& out) = 0;
+	virtual void serializeHumanReadable(std::ostringstream& out) = 0;
 };
 
 };

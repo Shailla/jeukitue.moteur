@@ -26,6 +26,10 @@ void IntData::serialize(std::ostringstream& out) {
 	StreamUtils::write(out, _value);
 }
 
+void IntData::serializeHumanReadable(std::ostringstream& out) {
+	out << "int-'" << _value << "'";
+}
+
 int IntData::getValue() const {
 	return _value;
 }

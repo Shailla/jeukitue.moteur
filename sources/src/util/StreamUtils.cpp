@@ -21,6 +21,10 @@ void StreamUtils::write(ostringstream& out, JktUtils::Data& data) {
 	data.serialize(out);
 }
 
+void StreamUtils::writeHumanReadable(ostringstream& out, JktUtils::Data& data) {
+	data.serializeHumanReadable(out);
+}
+
 void StreamUtils::read(istringstream& in, int& data) {
 	in.read((char*)&data, sizeof(int));
 }
@@ -38,6 +42,24 @@ void StreamUtils::read(istringstream& in, vector<int>& data) {
 		in.read((char*)&var, sizeof(int));
 		data.push_back(var);
 	}
+}
+
+void StreamUtils::writeHumanReadable(ostringstream& out, const vector<int>& data) {
+	vector<int>::const_iterator it;
+	bool first = true;
+
+	out << "[";
+
+	for(it = data.begin() ; it != data.end() ; it++) {
+		if(!first) {
+			out << ",";
+		}
+
+		first = false;
+		out << *it;
+	}
+
+	out << "]";
 }
 
 void StreamUtils::write(ostringstream& out, const vector<int>& data) {

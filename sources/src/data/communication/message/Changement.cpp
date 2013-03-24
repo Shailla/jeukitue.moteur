@@ -23,12 +23,14 @@ string Changement::toString() {
 	serialize(str);
 
 	ostringstream message;
-	message << "{" << _dataType << "} : ";
+	message << "{" << _dataType << " - ";
 	string::iterator iter;
 
 	for(iter = str.str().begin() ; iter != str.str().end() ; iter++) {
 		message << (int)*iter << " ";
 	}
+
+	message << "}";
 
 	return message.str();
 }

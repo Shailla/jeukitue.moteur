@@ -20,6 +20,7 @@ public:
 	virtual ~FloatData();
 
 	void serialize(std::ostringstream& out);
+	void serializeHumanReadable(std::ostringstream& out);
 
 	int getValue() const;
 };

@@ -25,11 +25,15 @@ using namespace std;
 #include "data/ClientDataTree.h"
 
 ClientDataTree::ClientDataTree(Distant* server, const string& clientName) {
-	_clientName = clientName;;
+	_clientName = string("C-") + clientName;;
 	_serveur = server;
 }
 
 ClientDataTree::~ClientDataTree() {
+}
+
+const string& ClientDataTree::getClientName() const {
+	return _clientName;
 }
 
 void ClientDataTree::initDistantBranche(Distant* distant, Branche* branche) {
@@ -86,7 +90,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 		vector<Changement*>::iterator itCh;
 
 		for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
-			cout << _clientName << " from " << _serveur->getDebugName() << " : " << (*itCh)->toString();
+			cout << endl << _clientName << " from " << _serveur->getDebugName() << "\t : " << (*itCh)->toString() << flush;
 
 			try {
 				if(AddBrancheFromServerChangement* chgt = dynamic_cast<AddBrancheFromServerChangement*>(*itCh)) {
@@ -148,7 +152,7 @@ void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
 
 	if(changements.size()) {
 		for(iter = changements.begin() ; iter != changements.end() ; iter++) {
-			cout << _clientName << " to " << _serveur->getDebugName() << " : " << (*iter)->toString();
+			cout << endl << _clientName << " to " << _serveur->getDebugName() << "\t : " << (*iter)->toString() << flush;
 		}
 
 		ostringstream out;

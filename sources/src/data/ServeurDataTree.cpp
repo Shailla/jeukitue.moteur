@@ -68,7 +68,7 @@ Donnee* ServeurDataTree::addMarqueurFromDistant(Distant* client, Donnee* donnee,
 }
 
 Distant* ServeurDataTree::addDistant(const string& distantName) {
-	Distant* distant = new Distant(distantName);
+	Distant* distant = new Distant(string("S-") + distantName);
 
 	// Init the marqueurs
 	initDistantBranche(distant, &getRoot());
@@ -123,12 +123,12 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 			vector<Changement*>::iterator itCh;
 
 			for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
-				cout << "serveur" << " from " << client->getDebugName() << " : " << (*itCh)->toString();
+				cout << endl << "serveur" << " to " << client->getDebugName() << "\t : " << (*itCh)->toString() << flush;
 			}
 
 			ostringstream out;
 			DataSerializer::toStream(changements, out);
-			client->setDataReceived(new string(out.str()));
+			client->setDataToSend(new string(out.str()));
 		}
 	}
 }
@@ -149,7 +149,7 @@ void ServeurDataTree::receiveChangementsFromClient() {
 			vector<Changement*>::iterator itCh;
 
 			for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
-				cout << endl << "serveur" << " from " << distant->getDebugName() << " : " << (*itCh)->toString();
+				cout << endl << "serveur" << " from " << distant->getDebugName() << "\t : " << (*itCh)->toString() << flush;
 
 				try {
 					if(ConfirmBrancheChangement* chgt = dynamic_cast<ConfirmBrancheChangement*>(*itCh)) {

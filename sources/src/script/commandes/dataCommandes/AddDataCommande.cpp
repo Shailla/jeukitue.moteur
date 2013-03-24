@@ -32,7 +32,8 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 		string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
 		Distant* client = serveurDataTree.addDistant(clientName);
-		dataRouter[new ClientDataTree(new Distant("serveur"), clientName)] = client;
+		ClientDataTree* clientDataTree = new ClientDataTree(new Distant("serveur"), clientName);
+		dataRouter[clientDataTree] = client;
 	}
 	else if(subCommande1 == "branche") {
 		string serverOrClientMode = StringUtils::findAndEraseFirstWord(ligne);

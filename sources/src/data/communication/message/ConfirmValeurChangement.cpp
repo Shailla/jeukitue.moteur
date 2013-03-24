@@ -51,6 +51,23 @@ void ConfirmValeurChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _revision);
 }
 
+string ConfirmValeurChangement::toString() {
+	ostringstream str;
+
+	str << "[" << _dataType;
+
+	str << "; brancheId:";
+	StreamUtils::writeHumanReadable(str, _brancheId);
+
+	str << "; valeurId:" << _valeurId;
+
+	str << "; revision:" << _revision;
+
+	str << "]\t" << Changement::toString();
+
+	return str.str();
+}
+
 const std::vector<int>& ConfirmValeurChangement::getBrancheId() const {
 	return _brancheId;
 }

@@ -48,6 +48,25 @@ void AddBrancheFromServerChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _revision);
 }
 
+string AddBrancheFromServerChangement::toString() {
+	ostringstream str;
+
+	str << "[" << _dataType;
+
+	str << " parentBrancheId:";
+	StreamUtils::writeHumanReadable(str, _parentBrancheId);
+
+	str << "; brancheId:" << _brancheId;
+
+	str << "; brancheName:" << _brancheName;
+
+	str << "; revision:" << _revision;
+
+	str << "]\t" << Changement::toString();
+
+	return str.str();
+}
+
 int AddBrancheFromServerChangement::getBrancheId() const {
 	return _brancheId;
 }

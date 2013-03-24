@@ -22,6 +22,7 @@ public:
 	virtual ~StringData();
 
 	void serialize(std::ostringstream& out);
+	void serializeHumanReadable(std::ostringstream& out);
 };
 
 }

@@ -26,6 +26,7 @@ public:
 	ClientDataTree(Distant* server, const std::string& clientName);
 	virtual ~ClientDataTree();
 
+	const string& getClientName() const;
 
 	/* *****************************************************
 	 * Serveur local actions

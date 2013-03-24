@@ -81,10 +81,10 @@ void DataTreeView::selectionChanged(AG_Event* event) {
 void DataTreeView::openClientsWindows(AG_Event* event) {
 	DataTreeView* This = (DataTreeView*)AG_PTR(1);
 
-	map<Distant*, ClientDataTree*>::iterator it;
+	map<ClientDataTree*, Distant*>::iterator it;
 
 	for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
-		DataTree* tree = it->second;
+		ClientDataTree* tree = it->first;
 		DataTreeDetails* details = NULL;
 
 		try {
@@ -96,14 +96,14 @@ void DataTreeView::openClientsWindows(AG_Event* event) {
 
 		if(!details) {
 			AG_Window* window = AG_WindowNew(0);
-			AG_WindowSetCaption(window, "Client");
+			AG_WindowSetCaption(window, tree->getClientName().c_str());
 
 			AG_Box* box = AG_BoxNewHoriz(window, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
 			AG_Expand(box);
 
 			AG_SeparatorNewHoriz(window);
 
-			DataTreeDetails* details = drawWidgets(box, tree);
+			details = drawWidgets(box, tree);
 			This->_clientDataTrees[tree] = details;
 
 			// Boutons

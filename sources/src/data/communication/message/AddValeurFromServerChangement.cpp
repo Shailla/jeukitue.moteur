@@ -57,6 +57,28 @@ void AddValeurFromServerChangement::unserialize(istringstream& in) {
 	_valeur = StreamUtils::readData(in);
 }
 
+string AddValeurFromServerChangement::toString() {
+	ostringstream str;
+
+	str << "[" << _dataType;
+
+	str << " brancheId:";
+	StreamUtils::writeHumanReadable(str, _brancheId);
+
+	str << "; valeurId:" << _valeurId;
+
+	str << "; valeurName:" << _valeurName;
+
+	str << "; revision:" << _revision;
+
+	str << "; data:";
+	StreamUtils::writeHumanReadable(str, *_valeur);
+
+	str << "]\t" << Changement::toString();
+
+	return str.str();
+}
+
 const std::vector<int>& AddValeurFromServerChangement::getBrancheId() const {
 	return _brancheId;
 }

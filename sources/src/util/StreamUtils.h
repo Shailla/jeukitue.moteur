@@ -26,12 +26,14 @@ public:
 
 	static JktUtils::Data* readData(std::istringstream& in);
 	static void write(std::ostringstream& out, JktUtils::Data& data);
+	static void writeHumanReadable(std::ostringstream& out, JktUtils::Data& data);
 
 	static void read(std::istringstream& in, int& data);
 	static void write(std::ostringstream& out, int data);
 
 	static void read(std::istringstream& in, std::vector<int>& data);
 	static void write(std::ostringstream& out, const std::vector<int>& data);
+	static void writeHumanReadable(std::ostringstream& out, const std::vector<int>& data);
 
 	static void read(std::istringstream& in, std::string& data);
 	static void write(std::ostringstream& out, const std::string& data);

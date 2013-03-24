@@ -122,49 +122,59 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 		if(changements.size()) {
 			ostringstream out;
 			DataSerializer::toStream(changements, out);
-			client->setDataFromServer(out);
+			client->setDataReceived(out);
 		}
 	}
 }
 
-void ServeurDataTree::receiveChangementsFromClient(Distant* distant, const string& data) {
-	vector<Changement*> changements;
+void ServeurDataTree::receiveChangementsFromClient() {
+	vector<ClientDataTree*>::iterator it;
 
-	istringstream in(data);
-	DataSerializer::fromStream(changements, in);
+	for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
+		string* data = *it->getDataToServer();
 
-	vector<Changement*>::iterator itCh;
+		if(data) {
+			vector<Changement*> changements;
 
-	for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
-		try {
-			if(ConfirmBrancheChangement* chgt = dynamic_cast<ConfirmBrancheChangement*>(*itCh)) {
-				Branche* branche = getBranche(chgt->getBrancheId());
+			istringstream in(data);
+			DataSerializer::fromStream(changements, in);
 
-				if(branche) {
-					MarqueurDistant* marqueur = distant->getMarqueur(branche);
-					marqueur->setConfirmedRevision(chgt->getRevision());
+			vector<Changement*>::iterator itCh;
+
+			for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
+				try {
+					if(ConfirmBrancheChangement* chgt = dynamic_cast<ConfirmBrancheChangement*>(*itCh)) {
+						Branche* branche = getBranche(chgt->getBrancheId());
+
+						if(branche) {
+							MarqueurDistant* marqueur = distant->getMarqueur(branche);
+							marqueur->setConfirmedRevision(chgt->getRevision());
+						}
+						else {
+							cerr << endl << __FILE__ << ":" << __LINE__ << " Branche inexistante";
+						}
+					}
+					else if(ConfirmValeurChangement* chgt = dynamic_cast<ConfirmValeurChangement*>(*itCh)) {
+						Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
+
+						if(valeur) {
+							MarqueurDistant* marqueur = distant->getMarqueur(valeur);
+							marqueur->setConfirmedRevision(chgt->getRevision());
+						}
+						else {
+							cerr << endl << __FILE__ << ":" << __LINE__ << " Valeur inexistante";
+						}
+					}
 				}
-				else {
-					cerr << endl << __FILE__ << ":" << __LINE__ << " Branche inexistante";
+				catch(const NotExistingBrancheException& exception) {
+					cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingBrancheException";
+				}
+				catch(const DataCommunicationException& exception) {
+					cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
 				}
 			}
-			else if(ConfirmValeurChangement* chgt = dynamic_cast<ConfirmValeurChangement*>(*itCh)) {
-				Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
 
-				if(valeur) {
-					MarqueurDistant* marqueur = distant->getMarqueur(valeur);
-					marqueur->setConfirmedRevision(chgt->getRevision());
-				}
-				else {
-					cerr << endl << __FILE__ << ":" << __LINE__ << " Valeur inexistante";
-				}
-			}
-		}
-		catch(const NotExistingBrancheException& exception) {
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingBrancheException";
-		}
-		catch(const DataCommunicationException& exception) {
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
+			delete data;
 		}
 	}
 }

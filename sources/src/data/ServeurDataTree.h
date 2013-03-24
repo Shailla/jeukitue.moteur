@@ -54,7 +54,7 @@ public:
 	 * ***************************************************/
 
 	void diffuseChangementsToClients(void);
-	void receiveChangementsFromClient(Distant* distant, const std::string& data);
+	void receiveChangementsFromClient();
 };
 
 #endif /* DATATREE_H_ */

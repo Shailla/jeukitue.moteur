@@ -28,8 +28,8 @@ using namespace std;
 
 Distant::Distant(const string& debugName) {
 	_debugName = debugName;
-	_dataFromServerTest = NULL;
-	_dataToServerTest = NULL;
+	_dataReceived = NULL;
+	_dataToSend = NULL;
 }
 
 Distant::~Distant() {
@@ -143,28 +143,28 @@ void Distant::collecteChangementsInServerTree(vector<Changement*>& changements) 
 	}
 }
 
-void Distant::setDataFromServer(ostringstream& out) {
+void Distant::setDataReceived(ostringstream& out) {
 	if(out.str().size()) {
-		_dataFromServerTest = new string(out.str());
+		_dataReceived = new string(out.str());
 	}
 }
 
-string* Distant::getDataFromServer(void) {
-	string* var = _dataFromServerTest;
-	_dataFromServerTest = NULL;
+string* Distant::getDataReceived(void) {
+	string* var = _dataReceived;
+	_dataReceived = NULL;
 
 	return var;
 }
 
-void Distant::setDataToServer(string* data) {
+void Distant::setDataToSend(string* data) {
 	if(data) {
-		_dataToServerTest = data;
+		_dataToSend = data;
 	}
 }
 
-string* Distant::getDataToServer(void) {
-	string* var = _dataToServerTest;
-	_dataToServerTest = NULL;
+string* Distant::getDataToSend(void) {
+	string* var = _dataToSend;
+	_dataToSend = NULL;
 
 	return var;
 }

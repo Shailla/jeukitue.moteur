@@ -24,7 +24,8 @@ using namespace std;
 
 #include "data/ClientDataTree.h"
 
-ClientDataTree::ClientDataTree(Distant* server) {
+ClientDataTree::ClientDataTree(Distant* server, const string& clientName) {
+	_clientName = clientName;;
 	_serveur = server;
 }
 
@@ -60,22 +61,24 @@ Distant* ClientDataTree::getDistantServer() const {
 }
 
 void ClientDataTree::diffuseChangementsToServer(void) {
-	vector<Distant*>::iterator clientIter;
 	vector<Changement*> changements;
 
 	_serveur->collecteChangementsInClientTree(changements);
 
-	if(changements.size()) {
-		ostringstream out;
-		DataSerializer::toStream(changements, out);
-		_serveur->setDataToServer(new string(out.str()));
-	}
+	sendChangementsToServer(changements);
 }
 
-void ClientDataTree::receiveChangementsFromServer(const string& data, vector<Changement*>& confirmations) {
+void ClientDataTree::receiveChangementsFromServer() {
 	vector<Changement*> changements;
+	vector<Changement*> confirmations;
 
-	istringstream in(data);
+	/* ********************************************
+	 * Traitement des données venant du serveur
+	 * *******************************************/
+
+	// Récupération des données du serveur
+	string* fromServer = _serveur->getDataReceived();
+	istringstream in(*fromServer);
 	DataSerializer::fromStream(changements, in);
 
 	vector<Changement*>::iterator itCh;
@@ -123,22 +126,35 @@ void ClientDataTree::receiveChangementsFromServer(const string& data, vector<Cha
 			cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
 		}
 	}
+
+	delete fromServer;
+
+
+	/* ********************************************
+	 * Envoi des confirmations au serveur
+	 * *******************************************/
+
+	// Envoi les changements présents sur le client au serveur
+	sendChangementsToServer(confirmations);
 }
 
-string* ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
+void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
 	vector<Changement*>::iterator iter;
 
-	for(iter = changements.begin() ; iter != changements.end() ; iter++) {
-		cout << (*iter)->toString();
-	}
-
 	if(changements.size()) {
+		for(iter = changements.begin() ; iter != changements.end() ; iter++) {
+			cout << endl << toString(*iter);
+		}
+
 		ostringstream out;
 		DataSerializer::toStream(changements, out);
+		_serveur->setDataToSend(new string(out.str()));
+	}
+}
 
-		return new string(out.str());
-	}
-	else {
-		return NULL;
-	}
+string ClientDataTree::toString(Changement* changement) const {
+	ostringstream str;
+	cout << _clientName << " to " << _serveur->getDebugName() << " : " << changement->toString();
+
+	return str.str();
 }

@@ -2,10 +2,15 @@
 #ifndef __JKT__JKT_H
 #define __JKT__JKT_H
 
+#include <vector>
+
 class CPlayer;
 namespace JktMoteur {
 	class GraphicObject;
 }
+
+ServeurDataTree serveurDataTree;
+std::vector<ClientDataTree*> dataRouter;
 
 int main(int argc, char** argv);
 void quit_tutorial();								// Quitte sans code d'erreur

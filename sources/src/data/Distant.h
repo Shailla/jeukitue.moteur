@@ -21,8 +21,8 @@ class Distant {
 	std::string _debugName;
 	std::map<Donnee*, MarqueurDistant*> _marqueurs;
 
-	string* _dataFromServerTest;
-	string* _dataToServerTest;
+	string* _dataReceived;
+	string* _dataToSend;
 
 public:
 	Distant(const string& debugName);
@@ -35,11 +35,11 @@ public:
 	void collecteChangementsInClientTree(std::vector<Changement*>& changements);
 	void collecteChangementsInServerTree(std::vector<Changement*>& changements);
 
-	void setDataFromServer(std::ostringstream& out);
-	std::string* getDataFromServer();
+	void setDataReceived(std::ostringstream& out);
+	std::string* getDataReceived();
 
-	void setDataToServer(std::string* data);
-	std::string* getDataToServer();
+	void setDataToSend(std::string* data);
+	std::string* getDataToSend();
 };
 
 #endif /* CLIENT_H_ */

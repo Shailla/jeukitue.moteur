@@ -127,9 +127,6 @@ using namespace JktSon;
 
 #include "jkt.h"
 
-ServeurDataTree serveurDataTree;
-map<Distant*, ClientDataTree*> dataRouter;
-
 float GLIGHTX, GLIGHTY, GLIGHTZ;
 GLFont myfont;
 
@@ -1517,50 +1514,34 @@ void boucle() {
 
 
 		/* ***********************************************************
-		 * Traites les changements des données du jeu côté serveur
+		 * Traites les changements des données du jeu
 		 * **********************************************************/
 
-		// Reçoit les changements des données du jeu des clients
+		// Traite les changements de données côté serveur
+		serveurDataTree.receiveChangementsFromClient();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
+		serveurDataTree.diffuseChangementsToClients();		// Diffuse les changements des données du jeu aux clients
+
+		// Traite les changements de données côté client (pour chaque client)
 		map<Distant*, ClientDataTree*>::iterator it;
 
 		for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
-			Distant* client = it->first;
-			string* data = client->getDataToServer();
-
-			if(data) {
-				serveurDataTree.receiveChangementsFromClient(client, *data);
-				delete data;
-			}
+			ClientDataTree* clientDataTree = it->second;
+			clientDataTree->receiveChangementsFromServer();		// Le client reçoit les changements des données du jeu de la part du serveur
+			clientDataTree->diffuseChangementsToServer();		// Le client reçoit diffuse les changements des données du jeu vers le serveur
 		}
-
-		// Diffuse les changements des données du jeu aux clients
-		serveurDataTree.diffuseChangementsToClients();
 
 
 		/* ***********************************************************
-		 * Traite les changements des données du jeu côté clients
+		 * Effectue les calculs du jeu
 		 * **********************************************************/
-
-		for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
-			Distant* client = it->first;
-			ClientDataTree* clientDataTree = it->second;
-
-			string* received = client->getDataFromServer();
-
-			if(received) {
-				// Reçoit et applique les changements émis par le serveur
-				vector<Changement*> confirmations;
-				clientDataTree->receiveChangementsFromServer(*received, confirmations);
-				delete received;
-
-				// Envoi les changements présents sur le client au serveur
-				string* emitted = clientDataTree->sendChangementsToServer(confirmations);
-				client->setDataToServer(emitted);
-			}
-		}
 
 		// Effectue tous les calculs du jeu
 		timer(temps - oldTemps);
+
+
+		/* ***********************************************************
+		 * Affiche la scène
+		 * **********************************************************/
 
 		// Dessine la scène 3D et les menus
 		display();

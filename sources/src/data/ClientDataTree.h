@@ -17,12 +17,13 @@ using namespace std;
 #include "data/DataTree.h"
 
 class ClientDataTree : public DataTree {
+	std::string _clientName;
 	Distant* _serveur;
 
 	void initDistantBranche(Distant* distant, Branche* branche);
 	void addServeurMarqueur(Donnee* donnee);
 public:
-	ClientDataTree(Distant* server);
+	ClientDataTree(Distant* server, const std::string& clientName);
 	virtual ~ClientDataTree();
 
 
@@ -45,8 +46,9 @@ public:
 	 * ***************************************************/
 
 	void diffuseChangementsToServer(void);
-	void receiveChangementsFromServer(const std::string& data, std::vector<Changement*>& confirmations);
-	std::string* sendChangementsToServer(vector<Changement*>& changements);
+	void receiveChangementsFromServer();
+	void sendChangementsToServer(vector<Changement*>& changements);
+	string toString(Changement* changement) const;
 };
 
 #endif /* DATATREE_H_ */

@@ -20,7 +20,7 @@ using namespace std;
 using namespace JktUtils;
 
 extern ServeurDataTree serveurDataTree;
-extern map<Distant*, ClientDataTree*> dataRouter;
+extern vector<ClientDataTree*> dataRouter;
 
 AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
@@ -32,7 +32,7 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 		string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
 		Distant* client = serveurDataTree.addDistant(clientName);
-		dataRouter[client] = new ClientDataTree(new Distant(string("serveur")));
+		dataRouter.push_back(new ClientDataTree(new Distant(string("serveur"))));
 	}
 	else if(subCommande1 == "branche") {
 		string serverOrClientMode = StringUtils::findAndEraseFirstWord(ligne);

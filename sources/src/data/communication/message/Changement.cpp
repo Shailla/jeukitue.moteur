@@ -23,7 +23,7 @@ string Changement::toString() {
 	serialize(str);
 
 	ostringstream message;
-	message << endl << "{" << _dataType << "} : ";
+	message << "{" << _dataType << "} : ";
 	string::iterator iter;
 
 	for(iter = str.str().begin() ; iter != str.str().end() ; iter++) {

@@ -1,5 +1,5 @@
 /*
- * DataTree.h
+ * ClientDataTree.h
  *
  *  Created on: 5 mars 2013
  *      Author: vgdj7997
@@ -48,7 +48,6 @@ public:
 	void diffuseChangementsToServer(void);
 	void receiveChangementsFromServer();
 	void sendChangementsToServer(vector<Changement*>& changements);
-	string toString(Changement* changement) const;
 };
 
-#endif /* DATATREE_H_ */
+#endif /* CLIENTDATATREE_H_ */

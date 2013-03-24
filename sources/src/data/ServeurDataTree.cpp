@@ -120,28 +120,37 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 		client->collecteChangementsInServerTree(changements);
 
 		if(changements.size()) {
+			vector<Changement*>::iterator itCh;
+
+			for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
+				cout << "serveur" << " from " << client->getDebugName() << " : " << (*itCh)->toString();
+			}
+
 			ostringstream out;
 			DataSerializer::toStream(changements, out);
-			client->setDataReceived(out);
+			client->setDataReceived(new string(out.str()));
 		}
 	}
 }
 
 void ServeurDataTree::receiveChangementsFromClient() {
-	vector<ClientDataTree*>::iterator it;
+	vector<Distant*>::iterator it;
 
-	for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
-		string* data = *it->getDataToServer();
+	for(it = _clients.begin() ; it != _clients.end() ; it++) {
+		Distant* distant = *it;
+		string* data = distant->getDataReceived();
 
 		if(data) {
 			vector<Changement*> changements;
 
-			istringstream in(data);
+			istringstream in(*data);
 			DataSerializer::fromStream(changements, in);
 
 			vector<Changement*>::iterator itCh;
 
 			for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
+				cout << endl << "serveur" << " from " << distant->getDebugName() << " : " << (*itCh)->toString();
+
 				try {
 					if(ConfirmBrancheChangement* chgt = dynamic_cast<ConfirmBrancheChangement*>(*itCh)) {
 						Branche* branche = getBranche(chgt->getBrancheId());
@@ -178,3 +187,4 @@ void ServeurDataTree::receiveChangementsFromClient() {
 		}
 	}
 }
+

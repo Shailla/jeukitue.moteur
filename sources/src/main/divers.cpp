@@ -43,7 +43,7 @@ TRACE().p( TRACE_OTHER, "quit_game()" );
 void quit_game(int code)	// Quitte proprement le jeu
 {
 TRACE().p( TRACE_OTHER, "quit_game(code=%d)", code );
-	cerr << endl << __FILE__ << ":" << __LINE__ << " quit_tutorial( " << code << " )";
+	cerr << endl << __FILE__ << ":" << __LINE__ << " Quit game with code : " << code;
 	cerr.flush();
 	exit( code );
 }
@@ -51,7 +51,7 @@ TRACE().p( TRACE_OTHER, "quit_game(code=%d)", code );
 void quit_game(const char* txt, int code)	// Quitte proprement le jeu
 {
 TRACE().p( TRACE_OTHER, "quit_game(code=%d,txt=%s)", code, txt );
-	cerr << endl << __FILE__ << ":" << __LINE__ << " quit_game( " << code << "," << txt << ")";
+	cerr << endl << __FILE__ << ":" << __LINE__ << " Quit game with code and message : " << code << " - '" << txt << "'";
 	cerr.flush();
 	exit( code );
 }
@@ -59,7 +59,7 @@ TRACE().p( TRACE_OTHER, "quit_game(code=%d,txt=%s)", code, txt );
 void quit_game(const string& txt, int code)	// Quitte proprement le jeu
 {
 TRACE().p( TRACE_OTHER, "quit_game(code=%d,txt=%s)", code, txt.c_str() );
-	cerr << endl << __FILE__ << ":" << __LINE__ << " quit_game( " << code << "," << txt << ")";
+cerr << endl << __FILE__ << ":" << __LINE__ << " Quit game with code and message : " << code << " - '" << txt << "'";
 	cerr.flush();
 	exit( code );
 }

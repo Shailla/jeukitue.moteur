@@ -127,6 +127,9 @@ using namespace JktSon;
 
 #include "jkt.h"
 
+ServeurDataTree serveurDataTree;
+std::map<ClientDataTree*, Distant*> dataRouter;
+
 float GLIGHTX, GLIGHTY, GLIGHTZ;
 GLFont myfont;
 
@@ -1496,6 +1499,27 @@ void executeRequests() {
 }
 
 
+void echangeServerAndClientData() {
+	// Traite les changements de données côté client (pour chaque client)
+	map<ClientDataTree*, Distant*>::iterator it;
+
+	for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
+		ClientDataTree* clientDataTree = it->first;
+		Distant* clientSide = clientDataTree->getDistantServer();
+
+		Distant* serverSide = it->second;
+
+		// Exchange data from client to server
+		string* down = clientSide->getDataToSend();
+		serverSide->setDataReceived(down);
+
+		// Exchange data from server to client
+		string* up = serverSide->getDataToSend();
+		clientSide->setDataReceived(up);
+
+	}
+}
+
 /* ***************************************
  * Boucle du jeu prinipale
  * **************************************/
@@ -1522,13 +1546,16 @@ void boucle() {
 		serveurDataTree.diffuseChangementsToClients();		// Diffuse les changements des données du jeu aux clients
 
 		// Traite les changements de données côté client (pour chaque client)
-		map<Distant*, ClientDataTree*>::iterator it;
+		map<ClientDataTree*, Distant*>::iterator it;
 
 		for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
-			ClientDataTree* clientDataTree = it->second;
+			ClientDataTree* clientDataTree = it->first;
 			clientDataTree->receiveChangementsFromServer();		// Le client reçoit les changements des données du jeu de la part du serveur
 			clientDataTree->diffuseChangementsToServer();		// Le client reçoit diffuse les changements des données du jeu vers le serveur
 		}
+
+		// Simule le réseau et effectue les échanges de données entre le serveur et les clients
+		echangeServerAndClientData();
 
 
 		/* ***********************************************************

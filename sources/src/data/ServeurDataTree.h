@@ -1,5 +1,5 @@
 /*
- * DataTree.h
+ * ServeurDataTree.h
  *
  *  Created on: 5 mars 2013
  *      Author: vgdj7997
@@ -57,4 +57,4 @@ public:
 	void receiveChangementsFromClient();
 };
 
-#endif /* DATATREE_H_ */
+#endif /* SERVEURDATATREE_H_ */

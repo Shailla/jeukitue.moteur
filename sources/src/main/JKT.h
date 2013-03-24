@@ -2,18 +2,14 @@
 #ifndef __JKT__JKT_H
 #define __JKT__JKT_H
 
-#include <vector>
+#include <map>
 
 class CPlayer;
 namespace JktMoteur {
 	class GraphicObject;
 }
 
-ServeurDataTree serveurDataTree;
-std::vector<ClientDataTree*> dataRouter;
-
 int main(int argc, char** argv);
-void quit_tutorial();								// Quitte sans code d'erreur
 void quit_game( int code );							// Quitte avec code d'erreur
 void gravitePlayer(CPlayer *player);				//fonction implémentant la gravité
 void initMenu(void);
@@ -27,5 +23,5 @@ Uint32 getPixel(SDL_Surface *surface, int x, int y);
 void addGraphicObjectToInitialize(JktMoteur::GraphicObject* graphicObject);
 void addGraphicObjectToDestruct(JktMoteur::GraphicObject* graphicObject);
 
-#endif
+#endif /* __JKT__JKT_H */
 

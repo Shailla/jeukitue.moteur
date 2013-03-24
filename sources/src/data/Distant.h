@@ -35,7 +35,7 @@ public:
 	void collecteChangementsInClientTree(std::vector<Changement*>& changements);
 	void collecteChangementsInServerTree(std::vector<Changement*>& changements);
 
-	void setDataReceived(std::ostringstream& out);
+	void setDataReceived(std::string* data);
 	std::string* getDataReceived();
 
 	void setDataToSend(std::string* data);

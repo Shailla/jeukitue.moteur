@@ -1,5 +1,5 @@
 /*
- * EchoCommand.cpp
+ * AddDataCommande.cpp
  *
  *  Created on: 6 mars 2013
  *      Author: Erwin
@@ -20,7 +20,7 @@ using namespace std;
 using namespace JktUtils;
 
 extern ServeurDataTree serveurDataTree;
-extern vector<ClientDataTree*> dataRouter;
+extern std::map<ClientDataTree*, Distant*> dataRouter;
 
 AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
@@ -32,7 +32,7 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 		string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
 		Distant* client = serveurDataTree.addDistant(clientName);
-		dataRouter.push_back(new ClientDataTree(new Distant(string("serveur"))));
+		dataRouter[new ClientDataTree(new Distant("serveur"), clientName)] = client;
 	}
 	else if(subCommande1 == "branche") {
 		string serverOrClientMode = StringUtils::findAndEraseFirstWord(ligne);
@@ -52,15 +52,15 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 			string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
 			// Recherche du client
-			map<Distant*, ClientDataTree*>::iterator it;
+			map<ClientDataTree*, Distant*>::iterator it;
 
 			Distant* client;
 			ClientDataTree* tree = NULL;
 			for(it = dataRouter.begin() ; (it != dataRouter.end() && !tree) ; it++) {
-				client = it->first;
+				client = it->second;
 
-				if(client->getDebugName() == clientName) {
-					tree = it->second;
+				if(client->getDebugName() != clientName) {
+					tree = it->first;
 				}
 			}
 

@@ -214,8 +214,7 @@ void DataTreeView::drawBranche(DataTreeDetails* details, Branche* branche, int d
 
 			ostringstream txt;
 
-			if(dynamic_cast<ValeurInt*>(valeur) != 0) {
-				ValeurInt* vl = (ValeurInt*)valeur;
+			if(ValeurInt* vl = dynamic_cast<ValeurInt*>(valeur)) {
 				txt << "Valeur[" << vl->getValeurId() << ":" << vl->getValeurName() << "] : '" << vl->getValeur() << "'";
 			}
 			else {

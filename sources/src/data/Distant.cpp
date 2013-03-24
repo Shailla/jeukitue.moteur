@@ -143,9 +143,9 @@ void Distant::collecteChangementsInServerTree(vector<Changement*>& changements) 
 	}
 }
 
-void Distant::setDataReceived(ostringstream& out) {
-	if(out.str().size()) {
-		_dataReceived = new string(out.str());
+void Distant::setDataReceived(string* data) {
+	if(data) {
+		_dataReceived = data;
 	}
 }
 

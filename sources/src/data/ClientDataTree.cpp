@@ -78,56 +78,61 @@ void ClientDataTree::receiveChangementsFromServer() {
 
 	// Récupération des données du serveur
 	string* fromServer = _serveur->getDataReceived();
-	istringstream in(*fromServer);
-	DataSerializer::fromStream(changements, in);
 
-	vector<Changement*>::iterator itCh;
+	if(fromServer) {
+		istringstream in(*fromServer);
+		DataSerializer::fromStream(changements, in);
 
-	for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
-		try {
-			if(AddBrancheFromServerChangement* chgt = dynamic_cast<AddBrancheFromServerChangement*>(*itCh)) {
-				Branche* parentBranche = getBranche(chgt->getParentBrancheId());
+		vector<Changement*>::iterator itCh;
 
-				if(parentBranche) {
-					Branche* branche = parentBranche->addSubBranche(chgt->getBrancheId(), chgt->getBrancheName(), chgt->getRevision());
-					confirmations.push_back(new ConfirmBrancheChangement(branche->getBrancheFullId(), branche->getRevision()));
+		for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
+			cout << _clientName << " from " << _serveur->getDebugName() << " : " << (*itCh)->toString();
+
+			try {
+				if(AddBrancheFromServerChangement* chgt = dynamic_cast<AddBrancheFromServerChangement*>(*itCh)) {
+					Branche* parentBranche = getBranche(chgt->getParentBrancheId());
+
+					if(parentBranche) {
+						Branche* branche = parentBranche->addSubBranche(chgt->getBrancheId(), chgt->getBrancheName(), chgt->getRevision());
+						confirmations.push_back(new ConfirmBrancheChangement(branche->getBrancheFullId(), branche->getRevision()));
+					}
+					else {
+						cerr << endl << __FILE__ << ":" << __LINE__ << " Branche parent inexistante";
+					}
 				}
-				else {
-					cerr << endl << __FILE__ << ":" << __LINE__ << " Branche parent inexistante";
+				else if(AddValeurFromServerChangement* chgt = dynamic_cast<AddValeurFromServerChangement*>(*itCh)) {
+					Branche* parent = getBranche(chgt->getBrancheId());
+
+					if(parent) {
+						Valeur* valeur = parent->addValeurInt(chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
+						confirmations.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
+					}
+					else {
+						cerr << endl << __FILE__ << ":" << __LINE__ << " Branche parent inexistante";
+					}
+				}
+				else if(UpdateValeurChangement* chgt = dynamic_cast<UpdateValeurChangement*>(*itCh)) {
+					Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
+
+					if(valeur) {
+						valeur->setValeur(chgt->getRevision(), chgt->getValeur());
+						confirmations.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
+					}
+					else {
+						cerr << endl << __FILE__ << ":" << __LINE__ << " Valeur inexistante";
+					}
 				}
 			}
-			else if(AddValeurFromServerChangement* chgt = dynamic_cast<AddValeurFromServerChangement*>(*itCh)) {
-				Branche* parent = getBranche(chgt->getBrancheId());
-
-				if(parent) {
-					Valeur* valeur = parent->addValeurInt(chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
-					confirmations.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
-				}
-				else {
-					cerr << endl << __FILE__ << ":" << __LINE__ << " Branche parent inexistante";
-				}
+			catch(const NotExistingBrancheException& exception) {
+				cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingBrancheException";
 			}
-			else if(UpdateValeurChangement* chgt = dynamic_cast<UpdateValeurChangement*>(*itCh)) {
-				Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
-
-				if(valeur) {
-					valeur->setValeur(chgt->getRevision(), chgt->getValeur());
-					confirmations.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
-				}
-				else {
-					cerr << endl << __FILE__ << ":" << __LINE__ << " Valeur inexistante";
-				}
+			catch(const DataCommunicationException& exception) {
+				cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
 			}
 		}
-		catch(const NotExistingBrancheException& exception) {
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingBrancheException";
-		}
-		catch(const DataCommunicationException& exception) {
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
-		}
+
+		delete fromServer;
 	}
-
-	delete fromServer;
 
 
 	/* ********************************************
@@ -143,18 +148,11 @@ void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
 
 	if(changements.size()) {
 		for(iter = changements.begin() ; iter != changements.end() ; iter++) {
-			cout << endl << toString(*iter);
+			cout << _clientName << " to " << _serveur->getDebugName() << " : " << (*iter)->toString();
 		}
 
 		ostringstream out;
 		DataSerializer::toStream(changements, out);
 		_serveur->setDataToSend(new string(out.str()));
 	}
-}
-
-string ClientDataTree::toString(Changement* changement) const {
-	ostringstream str;
-	cout << _clientName << " to " << _serveur->getDebugName() << " : " << changement->toString();
-
-	return str.str();
 }

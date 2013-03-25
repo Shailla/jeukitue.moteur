@@ -12,9 +12,9 @@
 #include <vector>
 
 #include "util/types/Data.h"
-#include "data/MarqueurDistant.h"
-#include "data/Branche.h"
 #include "data/communication/message/Changement.h"
+
+class MarqueurDistant;
 
 class ConfirmValeurChangement: public Changement {
 	std::vector<int> _brancheId;
@@ -25,7 +25,7 @@ class ConfirmValeurChangement: public Changement {
 
 public:
 	ConfirmValeurChangement(std::istringstream& in);
-	ConfirmValeurChangement(const vector<int>& brancheId, int valeurId, int revision);
+	ConfirmValeurChangement(const std::vector<int>& brancheId, int valeurId, int revision);
 	~ConfirmValeurChangement();
 
 	void update(MarqueurDistant* marqueur);

@@ -8,16 +8,25 @@
 #ifndef DONNEE_H_
 #define DONNEE_H_
 
+#include <map>
+
+class Distant;
+class MarqueurDistant;
+
 class Donnee {
 	/**
 	 * Revision number of the data, incremented each time the data changes.
 	 */
 	int _revision;
+	std::map<Distant*, MarqueurDistant*> _marqueurs;
 
 public:
 	Donnee();
 	Donnee(int revision);
 	virtual ~Donnee();
+
+	MarqueurDistant* getMarqueur(Distant* distant);
+	MarqueurDistant* addMarqueur(Distant* distant, int donneeTmpId);
 
 	/**
 	 * Indicates that the Donnee has changed by incrementing it's revision.

@@ -16,10 +16,11 @@ using namespace std;
 #include "util/types/IntData.h"
 #include "util/CollectionsUtils.h"
 #include "data/communication/message/Changement.h"
-#include "data/communication/message/AddBrancheFromClientChangement.h"
-#include "data/communication/message/AddBrancheFromServerChangement.h"
-#include "data/communication/message/AddValeurFromServerChangement.h"
-#include "data/communication/message/UpdateValeurChangement.h"
+#include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
+#include "data/communication/message/ServerToClient/AddBrancheFromServerChangement.h"
+#include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"
+#include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"
+#include "data/communication/message/ServerToClient/UpdateValeurChangement.h"
 #include "data/Valeur.h"
 #include "data/ValeurInt.h"
 #include "data/Branche.h"
@@ -40,16 +41,7 @@ string& Distant::getDebugName() {
 }
 
 MarqueurDistant* Distant::getMarqueur(Donnee* donnee) {
-	MarqueurDistant* marqueur;
-
-	try {
-		marqueur = _marqueurs.at(donnee);
-	}
-	catch(out_of_range& exception) {
-		marqueur = NULL;
-	}
-
-	return marqueur;
+	return donnee->getMarqueur(this);
 }
 
 map<Donnee*, MarqueurDistant*>& Distant::getMarqueurs() {
@@ -57,9 +49,8 @@ map<Donnee*, MarqueurDistant*>& Distant::getMarqueurs() {
 }
 
 MarqueurDistant* Distant::addMarqueur(Donnee* donnee, int donneeTmpId) {
-	MarqueurDistant* marqueur = new MarqueurDistant(donnee, donneeTmpId);
+	MarqueurDistant* marqueur = donnee->addMarqueur(this, donneeTmpId);
 	_marqueurs[donnee] = marqueur;
-
 	return marqueur;
 }
 
@@ -87,12 +78,17 @@ void Distant::collecteChangementsInClientTree(vector<Changement*>& changements) 
 			continue;
 		}
 		else {
-//			Valeur* valeur = (Valeur*)(donnee);
+			Valeur* valeur = (Valeur*)(donnee);
 
-//			// NOUVELLE VALEUR : valeur présente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
-//			if(valeur->getBrancheId() < 0) {
-//				changement = new AddValeurFromClientChangement(valeur->getBrancheId(), valeur->getValeurTmpId(), valeur->getRevision(), valeur->getBrancheName());
-//			}
+			// NOUVELLE VALEUR : valeur présente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
+			if(valeur->getValeurId() < 0) {
+				changement = new AddValeurFromClientChangement(valeur->getBrancheId(), valeur->getValeurTmpId(), valeur->getRevision(), valeur->getValeurName(), valeur->getValeurData());
+			}
+
+			if(changement) {
+				changement->update(marqueur);
+				changements.push_back(changement);
+			}
 		}
 	}
 }

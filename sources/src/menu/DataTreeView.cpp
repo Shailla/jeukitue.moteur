@@ -14,6 +14,8 @@ using namespace std;
 #include "data/Valeur.h"
 #include "data/ValeurInt.h"
 #include "data/ClientDataTree.h"
+#include "data/MarqueurDistant.h"
+
 #include "menu/DataTreeView.h"
 
 DataTreeView::DataTreeView(const AG_EventFn controllerCallback)

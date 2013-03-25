@@ -5,33 +5,35 @@
  *      Author: Erwin
  */
 
-#ifndef UPDATEVALEURCHANGEMENT_H_
-#define UPDATEVALEURCHANGEMENT_H_
+#ifndef ADDVALEURCHANGEMENT_H_
+#define ADDVALEURCHANGEMENT_H_
 
 #include <sstream>
 #include <vector>
 
 #include "util/types/Data.h"
-#include "data/MarqueurDistant.h"
-#include "data/Branche.h"
 #include "data/communication/message/Changement.h"
 
-class UpdateValeurChangement: public Changement {
+class MarqueurDistant;
+
+class AddValeurFromServerChangement: public Changement {
 	std::vector<int> _brancheId;
 	int _valeurId;
+	std::string _valeurName;
 	int _revision;
 	JktUtils::Data* _valeur;
 
 	void unserialize(std::istringstream& in);
 
 public:
-	UpdateValeurChangement(std::istringstream& in);
-	UpdateValeurChangement(Valeur* valeur);
-	~UpdateValeurChangement();
+	AddValeurFromServerChangement(std::istringstream& in);
+	AddValeurFromServerChangement(const std::vector<int>& brancheId, int valeurId, int revision, const std::string& valeurName, JktUtils::Data* valeur);
+	~AddValeurFromServerChangement();
 
 	void update(MarqueurDistant* marqueur);
 	void serialize(std::ostringstream& out);
 	std::string toString();
+
 
 	/* *******************************************
 	 * Accessors
@@ -39,8 +41,9 @@ public:
 
 	const std::vector<int>& getBrancheId() const;
 	int getValeurId() const;
+	const std::string& getValeurName() const;
 	int getRevision() const;
 	JktUtils::Data* getValeur() const;
 };
 
-#endif /* UPDATEVALEURCHANGEMENT_H_ */
+#endif /* ADDBRANCHECHANGEMENT_H_ */

@@ -48,14 +48,13 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 
 			// Recherche du client
 			map<ClientDataTree*, Distant*>::iterator it;
+			ClientDataTree* clientTree;
 
-			Distant* client;
-			ClientDataTree* tree = NULL;
 			for(it = dataRouter.begin() ; (it != dataRouter.end() && !tree) ; it++) {
-				client = it->second;
+				clientTree = it->first;
 
-				if(client->getDebugName() != clientName) {
-					tree = it->first;
+				if(clientTree->getClientName() == clientName) {
+					tree = clientTree;
 				}
 			}
 		}
@@ -91,14 +90,13 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 
 			// Recherche du client
 			map<ClientDataTree*, Distant*>::iterator it;
-
-			Distant* client;
+			ClientDataTree* clientTree;
 
 			for(it = dataRouter.begin() ; (it != dataRouter.end() && !tree) ; it++) {
-				client = it->second;
+				clientTree = it->first;
 
-				if(client->getDebugName() != clientName) {
-					tree = it->first;
+				if(clientTree->getClientName() == clientName) {
+					tree = clientTree;
 				}
 			}
 		}

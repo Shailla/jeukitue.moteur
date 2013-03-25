@@ -15,9 +15,10 @@ using namespace std;
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/exception/DataCommunicationException.h"
 #include "data/communication/DataSerializer.h"
-#include "data/communication/message/AddBrancheFromServerChangement.h"
-#include "data/communication/message/AddValeurFromServerChangement.h"
-#include "data/communication/message/UpdateValeurChangement.h"
+#include "data/communication/message/ServerToClient/AddBrancheFromServerChangement.h"
+#include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"
+#include "data/communication/message/ServerToClient/AcceptAddBrancheFromClientChangement.h"
+#include "data/communication/message/ServerToClient/UpdateValeurChangement.h"
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
 #include "util/CollectionsUtils.h"
@@ -25,7 +26,7 @@ using namespace std;
 #include "data/ClientDataTree.h"
 
 ClientDataTree::ClientDataTree(Distant* server, const string& clientName) {
-	_clientName = string("C-") + clientName;;
+	_clientName = clientName;;
 	_serveur = server;
 }
 
@@ -40,7 +41,7 @@ void ClientDataTree::initDistantBranche(Distant* distant, Branche* branche) {
 
 }
 
-Branche* ClientDataTree::createBranche(std::vector<int>& parentBrancheId, const std::string& brancheName) {
+Branche* ClientDataTree::createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 	Branche* branche = parentBranche->createSubBrancheForClient(brancheName);
 	addServeurMarqueur(branche);
@@ -48,7 +49,7 @@ Branche* ClientDataTree::createBranche(std::vector<int>& parentBrancheId, const 
 	return branche;
 }
 
-Valeur* ClientDataTree::createValeurInt(std::vector<int>& parentBrancheId, const std::string& valeurName, int value) {
+Valeur* ClientDataTree::createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int value) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 	Valeur* valeur = parentBranche->createValeurIntForClient(valeurName, value);
 	addServeurMarqueur(valeur);
@@ -72,79 +73,108 @@ void ClientDataTree::diffuseChangementsToServer(void) {
 	sendChangementsToServer(changements);
 }
 
-void ClientDataTree::receiveChangementsFromServer() {
-	vector<Changement*> changements;
-	vector<Changement*> confirmations;
+Branche* ClientDataTree::getBrancheByTmpId(const vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException) {
+	vector<int>::const_iterator iter;
 
-	/* ********************************************
-	 * Traitement des données venant du serveur
-	 * *******************************************/
+	Branche* parentBranche = &getRoot();
 
-	// Récupération des données du serveur
-	string* fromServer = _serveur->getDataReceived();
-
-	if(fromServer) {
-		istringstream in(*fromServer);
-		DataSerializer::fromStream(changements, in);
-
-		vector<Changement*>::iterator itCh;
-
-		for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
-			cout << endl << _clientName << " from " << _serveur->getDebugName() << "\t : " << (*itCh)->toString() << flush;
-
-			try {
-				if(AddBrancheFromServerChangement* chgt = dynamic_cast<AddBrancheFromServerChangement*>(*itCh)) {
-					Branche* parentBranche = getBranche(chgt->getParentBrancheId());
-
-					if(parentBranche) {
-						Branche* branche = parentBranche->addSubBranche(chgt->getBrancheId(), chgt->getBrancheName(), chgt->getRevision());
-						confirmations.push_back(new ConfirmBrancheChangement(branche->getBrancheFullId(), branche->getRevision()));
-					}
-					else {
-						cerr << endl << __FILE__ << ":" << __LINE__ << " Branche parent inexistante";
-					}
-				}
-				else if(AddValeurFromServerChangement* chgt = dynamic_cast<AddValeurFromServerChangement*>(*itCh)) {
-					Branche* parent = getBranche(chgt->getBrancheId());
-
-					if(parent) {
-						Valeur* valeur = parent->addValeurInt(chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
-						confirmations.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
-					}
-					else {
-						cerr << endl << __FILE__ << ":" << __LINE__ << " Branche parent inexistante";
-					}
-				}
-				else if(UpdateValeurChangement* chgt = dynamic_cast<UpdateValeurChangement*>(*itCh)) {
-					Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
-
-					if(valeur) {
-						valeur->setValeur(chgt->getRevision(), chgt->getValeur());
-						confirmations.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
-					}
-					else {
-						cerr << endl << __FILE__ << ":" << __LINE__ << " Valeur inexistante";
-					}
-				}
-			}
-			catch(const NotExistingBrancheException& exception) {
-				cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingBrancheException";
-			}
-			catch(const DataCommunicationException& exception) {
-				cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
-			}
-		}
-
-		delete fromServer;
+	for(iter = parentBrancheId.begin() ; (iter != parentBrancheId.end() && parentBranche != NULL) ; iter++) {
+		parentBranche = parentBranche->getSubBranche(*iter);
 	}
 
+	if(!parentBranche) {
+		throw NotExistingBrancheException();
+	}
 
-	/* ********************************************
-	 * Envoi des confirmations au serveur
-	 * *******************************************/
+	Branche* branche = parentBranche->getSubBrancheByTmpId(brancheTmpId);
 
-	// Envoi les changements présents sur le client au serveur
-	sendChangementsToServer(confirmations);
+	if(!branche) {
+		throw NotExistingBrancheException();
+	}
+
+	return branche;
+}
+
+void ClientDataTree::receiveChangementsFromServer() {
+	try {
+		vector<Changement*> changements;
+		vector<Changement*> answers;
+
+		/* ********************************************
+		 * Traitement des données venant du serveur
+		 * *******************************************/
+
+		// Récupération des données du serveur
+		string* fromServer = _serveur->getDataReceived();
+
+		if(fromServer) {
+			istringstream in(*fromServer);
+			DataSerializer::fromStream(changements, in);
+
+			vector<Changement*>::iterator itCh;
+
+			for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
+				cout << endl << _clientName << " from " << _serveur->getDebugName() << "\t : " << (*itCh)->toString() << flush;
+
+				try {
+					// Le serveur a confirmé la création d'une branche
+					if(AcceptAddBrancheFromClientChangement* chgt = dynamic_cast<AcceptAddBrancheFromClientChangement*>(*itCh)) {
+						Branche* parentBranche = getBranche(chgt->getParentBrancheId());
+						Branche* branche = parentBranche->acceptTmpSubBranche(chgt->getBrancheTmpId(), chgt->getBrancheId(), chgt->getRevision());
+
+						answers.push_back(new ConfirmBrancheChangement(branche->getBrancheFullId(), branche->getRevision()));
+					}
+
+					// Le serveur informe de la création d'une nouvelle branche
+					else if(AddBrancheFromServerChangement* chgt = dynamic_cast<AddBrancheFromServerChangement*>(*itCh)) {
+						Branche* parentBranche = getBranche(chgt->getParentBrancheId());
+						Branche* branche = parentBranche->addSubBranche(chgt->getBrancheId(), chgt->getBrancheName(), chgt->getRevision());
+
+						answers.push_back(new ConfirmBrancheChangement(branche->getBrancheFullId(), branche->getRevision()));
+					}
+
+					// Le serveur informe de la création d'une nouvelle valeur
+					else if(AddValeurFromServerChangement* chgt = dynamic_cast<AddValeurFromServerChangement*>(*itCh)) {
+						Branche* parent = getBranche(chgt->getBrancheId());
+						Valeur* valeur = parent->addValeurInt(chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
+
+						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
+					}
+
+					// Le serveur informe de la modification d'une valeur
+					else if(UpdateValeurChangement* chgt = dynamic_cast<UpdateValeurChangement*>(*itCh)) {
+						Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
+						valeur->setValeur(chgt->getRevision(), chgt->getValeur());
+
+						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
+					}
+
+					else {
+						throw DataCommunicationException();
+					}
+				}
+				catch(const NotExistingBrancheException& exception) {
+					cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingBrancheException";
+				}
+				catch(const DataCommunicationException& exception) {
+					cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
+				}
+			}
+
+			delete fromServer;
+		}
+
+
+		/* ********************************************
+		 * Envoi des confirmations au serveur
+		 * *******************************************/
+
+		// Envoi les changements présents sur le client au serveur
+		sendChangementsToServer(answers);
+	}
+	catch(DataCommunicationException& exception) {
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
+	}
 }
 
 void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {

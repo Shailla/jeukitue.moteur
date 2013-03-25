@@ -12,8 +12,9 @@ using namespace std;
 
 #include "util/StreamUtils.h"
 #include "data/ServeurDataTree.h"
+#include "data/MarqueurDistant.h"
 
-#include "data/communication/message/AddBrancheFromServerChangement.h"
+#include "data/communication/message/ServerToClient/AddBrancheFromServerChangement.h"
 
 AddBrancheFromServerChangement::AddBrancheFromServerChangement(istringstream& in) : Changement("AddBrancheFromServerChangement") {
 	unserialize(in);
@@ -33,7 +34,7 @@ void AddBrancheFromServerChangement::update(MarqueurDistant* marqueur) {
 
 void AddBrancheFromServerChangement::serialize(ostringstream& out) {
 	// Serialize
-	StreamUtils::write(out, (int)ADD_BRANCHE_MESSAGE);
+	StreamUtils::write(out, (int)ADD_BRANCHE_FROM_SERVER_MESSAGE);
 
 	StreamUtils::write(out, _parentBrancheId);
 	StreamUtils::write(out, _brancheId);

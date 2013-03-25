@@ -12,6 +12,7 @@
 #include <sstream>
 
 #include "data/communication/message/Changement.h"
+#include "data/exception/DataCommunicationException.h"
 
 class DataSerializer {
 public:
@@ -19,7 +20,7 @@ public:
 	virtual ~DataSerializer();
 
 	static void toStream(std::vector<Changement*>& changements, std::ostringstream& out);
-	static void fromStream(std::vector<Changement*>& changements, std::istringstream& out);
+	static void fromStream(std::vector<Changement*>& changements, std::istringstream& out) throw(DataCommunicationException);
 };
 
 #endif /* DATASERIALIZER_H_ */

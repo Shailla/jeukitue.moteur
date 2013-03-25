@@ -15,8 +15,9 @@ using namespace std;
 #include "util/types/IntData.h"
 #include "data/ValeurInt.h"
 #include "data/ServeurDataTree.h"
+#include "data/MarqueurDistant.h"
 
-#include "data/communication/message/UpdateValeurChangement.h"
+#include "data/communication/message/ServerToClient/UpdateValeurChangement.h"
 
 UpdateValeurChangement::UpdateValeurChangement(istringstream& in) : Changement("UpdateValeurChangement") {
 	unserialize(in);
@@ -49,7 +50,7 @@ void UpdateValeurChangement::update(MarqueurDistant* marqueur) {
 
 void UpdateValeurChangement::serialize(ostringstream& out) {
 	// Serialize
-	StreamUtils::write(out, (int)UPDATE_VALEUR_MESSAGE);
+	StreamUtils::write(out, (int)UPDATE_VALEUR_FROM_SERVER_MESSAGE);
 
 	StreamUtils::write(out, _brancheId);
 	StreamUtils::write(out, _valeurId);

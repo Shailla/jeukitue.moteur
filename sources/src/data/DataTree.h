@@ -27,13 +27,15 @@ public:
 	 * Serveur local actions
 	 * ****************************************************/
 
-	virtual Branche* createBranche(std::vector<int>& parentBrancheId, const std::string& brancheName) = 0;
-	virtual Valeur* createValeurInt(std::vector<int>& parentBrancheId, const std::string& valeurName, int valeur) = 0;
+	virtual Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) = 0;
+	virtual Valeur* createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int valeur) = 0;
 
 
 	/* *********************************
 	 * Accessors
 	 * ********************************/
+
+	Branche& getRoot();
 
 	/**
 	 * Retourne la branche idéntifiée.
@@ -41,8 +43,8 @@ public:
 	 * @param brancheId coordonnées de la branche dans l'arbre
 	 */
 	Branche* getBranche(const vector<int>& brancheId) throw(NotExistingBrancheException);
+
 	Valeur* getValeur(const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
-	Branche& getRoot();
 };
 
 #endif /* DATATREE_H_ */

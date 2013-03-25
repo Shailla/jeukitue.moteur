@@ -12,9 +12,14 @@
 using namespace std;
 
 #include "data/communication/DataSerializer.h"
-#include "data/communication/message/AddBrancheFromServerChangement.h"
-#include "data/communication/message/AddValeurFromServerChangement.h"
-#include "data/communication/message/UpdateValeurChangement.h"
+#include "data/communication/message/ServerToClient/AddBrancheFromServerChangement.h"
+#include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
+#include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"
+#include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"
+#include "data/communication/message/ServerToClient/UpdateValeurChangement.h"
+#include "data/communication/message/ServerToClient/AcceptAddBrancheFromClientChangement.h"
+#include "data/communication/message/ServerToClient/AcceptAddValeurFromClientChangement.h"
+
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
 #include "util/StreamUtils.h"
@@ -33,7 +38,7 @@ void DataSerializer::toStream(vector<Changement*>& changements, ostringstream& o
 	}
 }
 
-void DataSerializer::fromStream(vector<Changement*>& changements, istringstream& in) {
+void DataSerializer::fromStream(vector<Changement*>& changements, istringstream& in) throw(DataCommunicationException) {
 	in.exceptions(istringstream::eofbit);
 
 	int messageType;
@@ -50,16 +55,32 @@ void DataSerializer::fromStream(vector<Changement*>& changements, istringstream&
 
 			try {
 				switch(messageType) {
-				case Changement::ADD_BRANCHE_MESSAGE:
+				case Changement::ADD_BRANCHE_FROM_CLIENT_MESSAGE:
+					changement = new AddBrancheFromClientChangement(in);
+					break;
+
+				case Changement::ADD_BRANCHE_FROM_SERVER_MESSAGE:
 					changement = new AddBrancheFromServerChangement(in);
 					break;
 
-				case Changement::ADD_VALEUR_MESSAGE:
+				case Changement::ADD_VALEUR_FROM_CLIENT_MESSAGE:
+					changement = new AddValeurFromClientChangement(in);
+					break;
+
+				case Changement::ADD_VALEUR_FROM_SERVER_MESSAGE:
 					changement = new AddValeurFromServerChangement(in);
 					break;
 
-				case Changement::UPDATE_VALEUR_MESSAGE:
+				case Changement::UPDATE_VALEUR_FROM_SERVER_MESSAGE:
 					changement = new UpdateValeurChangement(in);
+					break;
+
+				case Changement::ACCEPT_ADD_BRANCHE_FROM_CLIENT:
+					changement = new AcceptAddBrancheFromClientChangement(in);
+					break;
+
+				case Changement::ACCEPT_ADD_VALEUR_FROM_CLIENT:
+					changement = new AcceptAddValeurFromClientChangement(in);
 					break;
 
 				case Changement::CONFIRM_BRANCHE_MESSAGE:
@@ -71,7 +92,9 @@ void DataSerializer::fromStream(vector<Changement*>& changements, istringstream&
 					break;
 
 				default:
-					changement = NULL;
+					ostringstream msg;
+					msg << " Flux indechiffrable [messageType=" << messageType << "]";
+					throw DataCommunicationException(msg.str());
 					break;
 				}
 

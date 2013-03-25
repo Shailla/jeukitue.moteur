@@ -1,16 +1,14 @@
 /*
- * MarqueurClient.h
+ * MarqueurDistant.h
  *
  *  Created on: 5 mars 2013
  *      Author: vgdj7997
  */
 
-#ifndef MARQUEURCLIENT_H_
-#define MARQUEURCLIENT_H_
+#ifndef MARQUEURDISTANT_H_
+#define MARQUEURDISTANT_H_
 
-#include "data/Donnee.h"
-
-#include "data/Branche.h"
+class Donnee;
 
 class MarqueurDistant {
 	Donnee* _donnee;
@@ -36,4 +34,4 @@ public:
 	void setTemporaryId(int temporaryId);
 };
 
-#endif /* MARQUEURCLIENT_H_ */
+#endif /* MARQUEURDISTANT_H_ */

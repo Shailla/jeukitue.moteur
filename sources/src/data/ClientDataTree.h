@@ -27,13 +27,14 @@ public:
 	virtual ~ClientDataTree();
 
 	const string& getClientName() const;
+	Branche* getBrancheByTmpId(const vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
 
 	/* *****************************************************
 	 * Serveur local actions
 	 * ****************************************************/
 
-	Branche* createBranche(std::vector<int>& parentBrancheId, const std::string& brancheName);
-	Valeur* createValeurInt(std::vector<int>& parentBrancheId, const std::string& valeurName, int valeur);
+	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
+	Valeur* createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int valeur);
 
 
 	/* ****************************************************

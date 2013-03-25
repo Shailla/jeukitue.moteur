@@ -13,6 +13,7 @@ using namespace std;
 
 #include "util/types/IntData.h"
 #include "data/ValeurInt.h"
+#include "data/MarqueurDistant.h"
 
 #include "data/Branche.h"
 
@@ -31,6 +32,40 @@ Branche* Branche::getSubBranche(int brancheId) const {
 
 	try {
 		branche = _subBranches.at(brancheId);
+	}
+	catch(out_of_range& exception) {
+		branche = NULL;
+	}
+
+	return branche;
+}
+
+Branche* Branche::getSubBrancheByDistantTmpId(Distant* distant, int brancheTmpId) throw(NotExistingBrancheException) {
+	map<int, Branche*>::iterator it;
+	MarqueurDistant* marqueur;
+	Branche* subBranche;
+
+	for(it = _subBranches.begin() ; (it!=_subBranches.end() && subBranche==NULL) ; it++) {
+		subBranche = it->second;
+		marqueur = subBranche->getMarqueur(distant);
+
+		if(marqueur->getTemporaryId() != brancheTmpId) {
+			subBranche = NULL;
+		}
+	}
+
+	if(!subBranche) {
+		throw NotExistingBrancheException();
+	}
+
+	return subBranche;
+}
+
+Branche* Branche::getSubBrancheByTmpId(int brancheTmpId) const {
+	Branche* branche = NULL;
+
+	try {
+		branche = _subBranches.at( -brancheTmpId );
 	}
 	catch(out_of_range& exception) {
 		branche = NULL;
@@ -72,6 +107,20 @@ Branche* Branche::addSubBranche(int brancheId, const std::string& brancheName, i
 	_subBranches[brancheId] = newBranche;
 
 	return newBranche;
+}
+
+Branche* Branche::acceptTmpSubBranche(int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException) {
+	Branche* branche = getSubBrancheByTmpId(brancheTmpId);
+
+	if(!branche) {
+		throw NotExistingBrancheException();
+	}
+
+	_subBranches.erase( -brancheTmpId );
+	_subBranches[brancheId] = branche;
+	branche->setRevision(brancheRevision);
+
+	return branche;
 }
 
 Valeur* Branche::createValeurIntForClient(const string& valeurName, int valeur) {

@@ -1,5 +1,5 @@
 /*
- * AddValeurFromClientChangement.cpp
+ * AddBrancheChangement.cpp
  *
  *  Created on: 11 mars 2013
  *      Author: Erwin
@@ -12,14 +12,15 @@ using namespace std;
 
 #include "util/StreamUtils.h"
 #include "data/ServeurDataTree.h"
+#include "data/MarqueurDistant.h"
 
-#include "data/communication/message/AddValeurFromClientChangement.h"
+#include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"
 
-AddValeurFromClientChangement::AddValeurFromClientChangement(istringstream& in) : Changement("AddValeurFromClientChangement") {
+AddValeurFromServerChangement::AddValeurFromServerChangement(istringstream& in) : Changement("AddValeurFromServerChangement") {
 	unserialize(in);
 }
 
-AddValeurFromClientChangement::AddValeurFromClientChangement(const vector<int>& brancheId, int valeurId, int revision, const string& valeurName, JktUtils::Data* valeur) : Changement("AddValeurFromClientChangement") {
+AddValeurFromServerChangement::AddValeurFromServerChangement(const vector<int>& brancheId, int valeurId, int revision, const string& valeurName, JktUtils::Data* valeur) : Changement("AddValeurFromServerChangement") {
 	_brancheId = brancheId;
 	_valeurId = valeurId;
 	_revision = revision;
@@ -27,20 +28,20 @@ AddValeurFromClientChangement::AddValeurFromClientChangement(const vector<int>& 
 	_valeur = valeur;
 }
 
-AddValeurFromClientChangement::~AddValeurFromClientChangement() {
+AddValeurFromServerChangement::~AddValeurFromServerChangement() {
 	if(_valeur) {
 		delete _valeur;
 	}
 };
 
-void AddValeurFromClientChangement::update(MarqueurDistant* marqueur) {
+void AddValeurFromServerChangement::update(MarqueurDistant* marqueur) {
 	// Met à jour l'état des données
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }
 
-void AddValeurFromClientChangement::serialize(ostringstream& out) {
+void AddValeurFromServerChangement::serialize(ostringstream& out) {
 	// Serialize
-	StreamUtils::write(out, (int)ADD_VALEUR_MESSAGE);
+	StreamUtils::write(out, (int)ADD_VALEUR_FROM_SERVER_MESSAGE);
 
 	StreamUtils::write(out, _brancheId);
 	StreamUtils::write(out, _valeurId);
@@ -49,7 +50,7 @@ void AddValeurFromClientChangement::serialize(ostringstream& out) {
 	StreamUtils::write(out, *_valeur);
 }
 
-void AddValeurFromClientChangement::unserialize(istringstream& in) {
+void AddValeurFromServerChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _brancheId);
 	StreamUtils::read(in, _valeurId);
 	StreamUtils::read(in, _valeurName);
@@ -57,7 +58,7 @@ void AddValeurFromClientChangement::unserialize(istringstream& in) {
 	_valeur = StreamUtils::readData(in);
 }
 
-string AddValeurFromClientChangement::toString() {
+string AddValeurFromServerChangement::toString() {
 	ostringstream str;
 
 	str << "[" << _dataType;
@@ -79,22 +80,22 @@ string AddValeurFromClientChangement::toString() {
 	return str.str();
 }
 
-const std::vector<int>& AddValeurFromClientChangement::getBrancheId() const {
+const std::vector<int>& AddValeurFromServerChangement::getBrancheId() const {
 	return _brancheId;
 }
 
-int AddValeurFromClientChangement::getValeurId() const {
+int AddValeurFromServerChangement::getValeurId() const {
 	return _valeurId;
 }
 
-const string& AddValeurFromClientChangement::getValeurName() const {
+const string& AddValeurFromServerChangement::getValeurName() const {
 	return _valeurName;
 }
 
-int AddValeurFromClientChangement::getRevision() const {
+int AddValeurFromServerChangement::getRevision() const {
 	return _revision;
 }
 
-JktUtils::Data* AddValeurFromClientChangement::getValeur() const {
+JktUtils::Data* AddValeurFromServerChangement::getValeur() const {
 	return _valeur;
 }

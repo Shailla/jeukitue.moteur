@@ -1,5 +1,5 @@
 /*
- * Valeur.h
+ * ValeurInt.h
  *
  *  Created on: 5 mars 2013
  *      Author: vgdj7997
@@ -15,6 +15,8 @@ using namespace std;
 #include "util/GenRef.h"
 #include "data/Valeur.h"
 
+class Branche;
+
 class ValeurInt : public Valeur {
 	int _valeur;
 public:
@@ -22,9 +24,12 @@ public:
 	virtual ~ValeurInt();
 
 	int getValeur() const;
+	JktUtils::Data* getValeurData() const;
+
 	void setValeur(int revision, int valeur);
-	void updateValeur(int valeur);
 	void setValeur(int revision, JktUtils::Data* data);
+
+	void updateValeur(int valeur);
 };
 
-#endif /* VALEUR_H_ */
+#endif /* VALEURINT_H_ */

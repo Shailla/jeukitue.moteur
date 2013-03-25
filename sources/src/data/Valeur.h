@@ -23,15 +23,17 @@ class Valeur : public Donnee {
 	Branche* _parent;
 	int _valeurId;
 	string _valeurName;
-	int _tmpId;
+	int _valeurTmpId;
 public:
-	Valeur(Branche* parent, int valeurId, const string& valeurName, int tmpId);
+	Valeur(Branche* parent, int valeurId, const string& valeurName, int valeurTmpId);
 	virtual ~Valeur();
 
 	vector<int> getBrancheId() const;
 	string getValeurName() const;
+	int getValeurTmpId() const;
 	int getValeurId() const;
-	virtual void setValeur(int revision, JktUtils::Data* valeur) = 0;
+	virtual void setValeur(int revision, JktUtils::Data* data) = 0;
+	virtual JktUtils::Data* getValeurData() const = 0;
 };
 
 #endif /* VALEUR_H_ */

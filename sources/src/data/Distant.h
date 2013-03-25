@@ -1,31 +1,31 @@
 /*
- * Client.h
+ * Distant.h
  *
  *  Created on: 5 mars 2013
  *      Author: vgdj7997
  */
 
-#ifndef CLIENT_H_
-#define CLIENT_H_
+#ifndef DISTANT_H_
+#define DISTANT_H_
 
 #include <string>
 #include <map>
 #include <vector>
 #include <sstream>
 
-#include "data/Donnee.h"
-#include "data/MarqueurDistant.h"
-#include "data/communication/message/Changement.h"
+class MarqueurDistant;
+class Donnee;
+class Changement;
 
 class Distant {
 	std::string _debugName;
 	std::map<Donnee*, MarqueurDistant*> _marqueurs;
 
-	string* _dataReceived;
-	string* _dataToSend;
+	std::string* _dataReceived;
+	std::string* _dataToSend;
 
 public:
-	Distant(const string& debugName);
+	Distant(const std::string& debugName);
 	virtual ~Distant();
 
 	MarqueurDistant* getMarqueur(Donnee* donnee);
@@ -42,4 +42,4 @@ public:
 	std::string* getDataToSend();
 };
 
-#endif /* CLIENT_H_ */
+#endif /* DISTANT_H_ */

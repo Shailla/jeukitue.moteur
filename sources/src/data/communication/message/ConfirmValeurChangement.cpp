@@ -15,6 +15,7 @@ using namespace std;
 #include "util/types/IntData.h"
 #include "data/ValeurInt.h"
 #include "data/ServeurDataTree.h"
+#include "data/MarqueurDistant.h"
 
 #include "data/communication/message/ConfirmValeurChangement.h"
 

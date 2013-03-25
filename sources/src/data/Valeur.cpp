@@ -9,11 +9,11 @@
 
 #include "data/Valeur.h"
 
-Valeur::Valeur(Branche* parent, int valeurId, const string& valeurName, int tmpId) {
+Valeur::Valeur(Branche* parent, int valeurId, const string& valeurName, int valeurTmpId) {
 	_parent = parent;
 	_valeurId = valeurId;
 	_valeurName = valeurName;
-	_tmpId = tmpId;
+	_valeurTmpId = valeurTmpId;
 }
 
 Valeur::~Valeur() {
@@ -25,6 +25,10 @@ vector<int> Valeur::getBrancheId() const {
 
 string Valeur::getValeurName() const {
 	return _valeurName;
+}
+
+int Valeur::getValeurTmpId() const {
+	return _valeurTmpId;
 }
 
 int Valeur::getValeurId() const {

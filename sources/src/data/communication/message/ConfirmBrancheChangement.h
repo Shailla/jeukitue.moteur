@@ -12,9 +12,9 @@
 #include <vector>
 
 #include "util/types/Data.h"
-#include "data/MarqueurDistant.h"
-#include "data/Branche.h"
 #include "data/communication/message/Changement.h"
+
+class MarqueurDistant;
 
 class ConfirmBrancheChangement: public Changement {
 	std::vector<int> _brancheId;

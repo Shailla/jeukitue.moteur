@@ -12,6 +12,8 @@ using namespace std;
 #include "util/types/IntData.h"
 #include "data/ValeurInt.h"
 
+using namespace JktUtils;
+
 ValeurInt::ValeurInt(Branche* parent, int valeurId, const string& valeurName, int valeur, int tmpId) : Valeur(parent, valeurId, valeurName, tmpId) {
 	_valeur = valeur;
 }
@@ -23,9 +25,18 @@ int ValeurInt::getValeur() const {
 	return _valeur;
 }
 
+Data* ValeurInt::getValeurData() const {
+	return new JktUtils::IntData(_valeur);
+}
+
 void ValeurInt::setValeur(int revision, int valeur) {
 	setRevision(revision);
 	_valeur = valeur;
+}
+
+void ValeurInt::updateValeur(int valeur) {
+	_valeur = valeur;
+	update();
 }
 
 void ValeurInt::setValeur(int revision, JktUtils::Data* data) {
@@ -39,7 +50,3 @@ void ValeurInt::setValeur(int revision, JktUtils::Data* data) {
 	}
 }
 
-void ValeurInt::updateValeur(int valeur) {
-	_valeur = valeur;
-	update();
-}

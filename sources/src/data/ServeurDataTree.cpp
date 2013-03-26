@@ -36,29 +36,30 @@ Branche* ServeurDataTree::createBranche(const vector<int>& parentBrancheId, cons
 	return addBrancheFromDistant(parentBrancheId, brancheName, 0, NULL);
 }
 
-Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, Distant* client) {
+Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, Distant* distant) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 
 	Branche* branche = parentBranche->createSubBrancheForServer(brancheName);
 
-	return (Branche*)addMarqueurFromDistant(client, branche, brancheClientTmpId);
+	return (Branche*)addMarqueurFromDistant(distant, branche, brancheClientTmpId);
 }
 
 Valeur* ServeurDataTree::createValeurInt(const vector<int>& parentBrancheId, const string& valeurName, int valeur) {
 	return addValeurIntFromDistant(parentBrancheId, valeurName, 0, valeur, NULL);
 }
 
-Valeur* ServeurDataTree::addValeurIntFromDistant(const vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int valeur, Distant* client) {
+Valeur* ServeurDataTree::addValeurIntFromDistant(const vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int valeur, Distant* distant) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 
 	Valeur* val = parentBranche->createValeurIntForServeur(valeurName, valeur);
 
-	return (Valeur*)addMarqueurFromDistant(client, val, valeurClientTmpId);
+	return (Valeur*)addMarqueurFromDistant(distant, val, valeurClientTmpId);
 }
 
 Donnee* ServeurDataTree::addMarqueurFromDistant(Distant* client, Donnee* donnee, int donneeClientTmpId) {
 	vector<Distant*>::iterator clIter;
 
+	// Ajoute un marqueur pour chaque distant et met l'identifiant temporaire dans le distant du client qui a créé la donnée
 	for(clIter = getDistants().begin() ; clIter != getDistants().end() ; clIter++) {
 		Distant* cl = *clIter;
 

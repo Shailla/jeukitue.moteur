@@ -39,8 +39,8 @@ public:
 
 	Branche* getBrancheByDistantTmpId(Distant* distant, const vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
 
-	Branche* addBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, Distant* client);
-	Valeur* addValeurIntFromDistant(const vector<int>& parentBrancheId, const std::string& valeurName, int valeurTmpId, int valeur, Distant* client);
+	Branche* addBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, Distant* distant);
+	Valeur* addValeurIntFromDistant(const vector<int>& parentBrancheId, const std::string& valeurName, int valeurTmpId, int valeur, Distant* distant);
 
 
 	/* ****************************************************

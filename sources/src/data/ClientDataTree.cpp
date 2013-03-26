@@ -117,7 +117,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 				cout << endl << _clientName << " from " << _serveur->getDebugName() << "\t : " << (*itCh)->toString() << flush;
 
 				try {
-					// Le serveur a confirmé la création d'une branche
+					// Le serveur accepte la création de la nouvelle branche demandée par ce client et lui attribue son identifiant définitif
 					if(AcceptAddBrancheFromClientChangement* chgt = dynamic_cast<AcceptAddBrancheFromClientChangement*>(*itCh)) {
 						Branche* parentBranche = getBranche(chgt->getParentBrancheId());
 						Branche* branche = parentBranche->acceptTmpSubBranche(chgt->getBrancheTmpId(), chgt->getBrancheId(), chgt->getRevision());

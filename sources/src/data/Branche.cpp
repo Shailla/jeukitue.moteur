@@ -27,6 +27,10 @@ Branche::Branche(Branche* parent, int brancheId, const string& brancheName, int 
 Branche::~Branche() {
 }
 
+void Branche::setBrancheId(int brancheId) {
+	_brancheId = brancheId;
+}
+
 Branche* Branche::getSubBranche(int brancheId) const {
 	Branche* branche = NULL;
 
@@ -43,7 +47,7 @@ Branche* Branche::getSubBranche(int brancheId) const {
 Branche* Branche::getSubBrancheByDistantTmpId(Distant* distant, int brancheTmpId) throw(NotExistingBrancheException) {
 	map<int, Branche*>::iterator it;
 	MarqueurDistant* marqueur;
-	Branche* subBranche;
+	Branche* subBranche = NULL;
 
 	for(it = _subBranches.begin() ; (it!=_subBranches.end() && subBranche==NULL) ; it++) {
 		subBranche = it->second;
@@ -118,7 +122,8 @@ Branche* Branche::acceptTmpSubBranche(int brancheTmpId, int brancheId, int branc
 
 	_subBranches.erase( -brancheTmpId );
 	_subBranches[brancheId] = branche;
-	branche->setRevision(brancheRevision);
+	branche->setBrancheId(brancheId);
+	setRevision(brancheRevision);
 
 	return branche;
 }

@@ -39,6 +39,7 @@ public:
 	Branche* getSubBrancheByTmpId(int brancheTmpId) const;
 	Branche* getSubBranche(int brancheId) const;
 	std::map<int, Branche*>& getSubBranches();
+	void setBrancheId(int brancheId);
 
 	std::map<int, Valeur*>& getValeurs();
 	Valeur* getValeur(int valeurId);

@@ -25,13 +25,14 @@ class Valeur : public Donnee {
 	string _valeurName;
 	int _valeurTmpId;
 public:
-	Valeur(Branche* parent, int valeurId, const string& valeurName, int valeurTmpId);
+	Valeur(Branche* parent, int valeurId, const string& valeurName, int valeurTmpId, int revision);
 	virtual ~Valeur();
 
 	vector<int> getBrancheId() const;
 	string getValeurName() const;
 	int getValeurTmpId() const;
 	int getValeurId() const;
+	void setValeurId(int valeurId);
 	virtual void setValeur(int revision, JktUtils::Data* data) = 0;
 	virtual JktUtils::Data* getValeurData() const = 0;
 };

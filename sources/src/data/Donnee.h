@@ -21,7 +21,6 @@ class Donnee {
 	std::map<Distant*, MarqueurDistant*> _marqueurs;
 
 public:
-	Donnee();
 	Donnee(int revision);
 	virtual ~Donnee();
 

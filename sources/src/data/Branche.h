@@ -14,6 +14,7 @@
 #include "util/GenRef.h"
 #include "util/types/Data.h"
 #include "data/exception/NotExistingBrancheException.h"
+#include "data/exception/NotExistingValeurException.h"
 #include "data/Donnee.h"
 #include "data/Valeur.h"
 #include "data/Distant.h"
@@ -43,6 +44,8 @@ public:
 
 	std::map<int, Valeur*>& getValeurs();
 	Valeur* getValeur(int valeurId);
+	Valeur* getValeurByDistantTmpId(Distant* distant, int valeurTmpId) throw(NotExistingValeurException);
+	Valeur* getValeurByTmpId(int valeurTmpId) const;
 
 	std::string getBrancheName() const;
 	int getBrancheId() const;
@@ -54,20 +57,22 @@ public:
 	/** Attribue son identifiant définitf à une branche temporaire */
 	Branche* acceptTmpSubBranche(int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException);
 
+	Valeur* acceptTmpValeur(int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException);
+
 	/** Crée une nouvelle branche et lui attribue un identifiant temporaire */
-	Branche* createSubBrancheForClient(const std::string& brancheName);
+	Branche* createSubBrancheForClient(const std::string& brancheName, int revision);
 
 	/** Crée une nouvelle branche et lui attribue un identifiant */
-	Branche* createSubBrancheForServer(const std::string& brancheName);
+	Branche* createSubBrancheForServer(const std::string& brancheName, int revision);
 
 	/** Ajoute une branche qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
 	Branche* addSubBranche(int brancheId, const std::string& brancheName, int brancheRevision);
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant temporaire */
-	Valeur* createValeurIntForClient(const std::string& valeurName, int valeur);
+	Valeur* createValeurIntForClient(const std::string& valeurName, int revision, int valeur);
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant */
-	Valeur* createValeurIntForServeur(const std::string& valeurName, int valeur);
+	Valeur* createValeurIntForServeur(const std::string& valeurName, int revision, int valeur);
 
 	/** Ajoute une valeur entière qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
 	Valeur* addValeurInt(int valeurId, const std::string& valeurName, int valeurRevision, JktUtils::Data* valeur);

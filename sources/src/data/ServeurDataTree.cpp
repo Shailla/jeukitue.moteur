@@ -19,6 +19,7 @@ using namespace std;
 #include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
 #include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"
 #include "data/communication/message/ServerToClient/AcceptAddBrancheFromClientChangement.h"
+#include "data/communication/message/ServerToClient/AcceptAddValeurFromClientChangement.h"
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
 
@@ -32,26 +33,26 @@ ServeurDataTree::ServeurDataTree() {
 ServeurDataTree::~ServeurDataTree() {
 }
 
-Branche* ServeurDataTree::createBranche(const vector<int>& parentBrancheId, const string& brancheName) {
-	return addBrancheFromDistant(parentBrancheId, brancheName, 0, NULL);
+Branche* ServeurDataTree::createBranche(const vector<int>& parentBrancheId, const string& brancheName, int revision) {
+	return addBrancheFromDistant(parentBrancheId, brancheName, 0, revision, NULL);
 }
 
-Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, Distant* distant) {
+Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, int revision, Distant* distant) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 
-	Branche* branche = parentBranche->createSubBrancheForServer(brancheName);
+	Branche* branche = parentBranche->createSubBrancheForServer(brancheName, revision);
 
 	return (Branche*)addMarqueurFromDistant(distant, branche, brancheClientTmpId);
 }
 
-Valeur* ServeurDataTree::createValeurInt(const vector<int>& parentBrancheId, const string& valeurName, int valeur) {
-	return addValeurIntFromDistant(parentBrancheId, valeurName, 0, valeur, NULL);
+Valeur* ServeurDataTree::createValeurInt(const vector<int>& parentBrancheId, const string& valeurName, int revision, int valeur) {
+	return addValeurIntFromDistant(parentBrancheId, valeurName, 0, revision, valeur, NULL);
 }
 
-Valeur* ServeurDataTree::addValeurIntFromDistant(const vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int valeur, Distant* distant) {
+Valeur* ServeurDataTree::addValeurIntFromDistant(const vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int revision, int valeur, Distant* distant) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 
-	Valeur* val = parentBranche->createValeurIntForServeur(valeurName, valeur);
+	Valeur* val = parentBranche->createValeurIntForServeur(valeurName, revision, valeur);
 
 	return (Valeur*)addMarqueurFromDistant(distant, val, valeurClientTmpId);
 }
@@ -163,6 +164,28 @@ Branche* ServeurDataTree::getBrancheByDistantTmpId(Distant* distant, const vecto
 	return branche;
 }
 
+Valeur* ServeurDataTree::getValeurByDistantTmpId(Distant* distant, const vector<int>& brancheId, int valeurTmpId) throw(NotExistingBrancheException, NotExistingValeurException) {
+	vector<int>::const_iterator iter;
+
+	Branche* branche = &getRoot();
+
+	for(iter = brancheId.begin() ; (iter != brancheId.end() && branche != NULL) ; iter++) {
+		branche = branche->getSubBranche(*iter);
+	}
+
+	if(!branche) {
+		throw NotExistingBrancheException();
+	}
+
+	Valeur* valeur = branche->getValeurByDistantTmpId(distant, valeurTmpId);
+
+	if(!valeur) {
+		throw NotExistingValeurException();
+	}
+
+	return valeur;
+}
+
 void ServeurDataTree::receiveChangementsFromClient() {
 	try {
 		vector<Distant*>::iterator it;
@@ -208,7 +231,7 @@ void ServeurDataTree::receiveChangementsFromClient() {
 							}
 							catch(NotExistingBrancheException& exception) {
 								// Si la branche n'existe pas encore on la crée
-								branche = addBrancheFromDistant(chgt->getParentBrancheId(), chgt->getBrancheName(), chgt->getBrancheTmpId(), distant);
+								branche = addBrancheFromDistant(chgt->getParentBrancheId(), chgt->getBrancheName(), chgt->getBrancheTmpId(), chgt->getRevision(), distant);
 							}
 
 							MarqueurDistant* marqueur = distant->getMarqueur(branche);
@@ -219,7 +242,19 @@ void ServeurDataTree::receiveChangementsFromClient() {
 						// Le client demande la création d'une nouvelle valeur
 						else if(AddValeurFromClientChangement* chgt = dynamic_cast<AddValeurFromClientChangement*>(*itCh)) {
 							if(IntData* value = dynamic_cast<IntData*>(chgt->getValeur())) {
-								addValeurIntFromDistant(chgt->getBrancheId(), chgt->getValeurName(), chgt->getValeurTmpId(), value->getValue(), distant);
+								Valeur* valeur;
+
+								try {
+									// Si la valeur existe déjà on renvoie juste la réponse au client
+									valeur = getValeurByDistantTmpId(distant, chgt->getBrancheId(), chgt->getValeurTmpId());
+								}
+								catch(NotExistingValeurException& exception) {
+									valeur = addValeurIntFromDistant(chgt->getBrancheId(), chgt->getValeurName(), chgt->getValeurTmpId(), chgt->getRevision(), value->getValue(), distant);
+								}
+
+								MarqueurDistant* marqueur = distant->getMarqueur(valeur);
+								marqueur->setConfirmedRevision(valeur->getRevision());
+								answers.push_back(new AcceptAddValeurFromClientChangement(valeur->getBrancheId(), chgt->getValeurTmpId(), valeur->getValeurId(), valeur->getRevision()));
 							}
 							else {
 								throw DataCommunicationException("Valeur de type inconnu");

@@ -18,6 +18,7 @@ using namespace std;
 #include "data/communication/message/ServerToClient/AddBrancheFromServerChangement.h"
 #include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"
 #include "data/communication/message/ServerToClient/AcceptAddBrancheFromClientChangement.h"
+#include "data/communication/message/ServerToClient/AcceptAddValeurFromClientChangement.h"
 #include "data/communication/message/ServerToClient/UpdateValeurChangement.h"
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
@@ -41,17 +42,17 @@ void ClientDataTree::initDistantBranche(Distant* distant, Branche* branche) {
 
 }
 
-Branche* ClientDataTree::createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) {
+Branche* ClientDataTree::createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName, int revision) {
 	Branche* parentBranche = getBranche(parentBrancheId);
-	Branche* branche = parentBranche->createSubBrancheForClient(brancheName);
+	Branche* branche = parentBranche->createSubBrancheForClient(brancheName, revision);
 	addServeurMarqueur(branche);
 
 	return branche;
 }
 
-Valeur* ClientDataTree::createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int value) {
+Valeur* ClientDataTree::createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, int value) {
 	Branche* parentBranche = getBranche(parentBrancheId);
-	Valeur* valeur = parentBranche->createValeurIntForClient(valeurName, value);
+	Valeur* valeur = parentBranche->createValeurIntForClient(valeurName, revision, value);
 	addServeurMarqueur(valeur);
 
 	return valeur;
@@ -123,6 +124,14 @@ void ClientDataTree::receiveChangementsFromServer() {
 						Branche* branche = parentBranche->acceptTmpSubBranche(chgt->getBrancheTmpId(), chgt->getBrancheId(), chgt->getRevision());
 
 						answers.push_back(new ConfirmBrancheChangement(branche->getBrancheFullId(), branche->getRevision()));
+					}
+
+					// Le serveur accepte la création de la nouvelle branche demandée par ce client et lui attribue son identifiant définitif
+					if(AcceptAddValeurFromClientChangement* chgt = dynamic_cast<AcceptAddValeurFromClientChangement*>(*itCh)) {
+						Branche* branche = getBranche(chgt->getBrancheId());
+						Valeur* valeur = branche->acceptTmpValeur(chgt->getValeurTmpId(), chgt->getValeurId(), chgt->getRevision());
+
+						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), branche->getRevision()));
 					}
 
 					// Le serveur informe de la création d'une nouvelle branche

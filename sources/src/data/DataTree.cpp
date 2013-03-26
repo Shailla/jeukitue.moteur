@@ -8,7 +8,6 @@
 #include "data/DataTree.h"
 
 DataTree::DataTree() : _root(NULL, 0, "root", 0, -1) {
-
 }
 
 DataTree::~DataTree() {

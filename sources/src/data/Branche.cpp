@@ -65,6 +65,27 @@ Branche* Branche::getSubBrancheByDistantTmpId(Distant* distant, int brancheTmpId
 	return subBranche;
 }
 
+Valeur* Branche::getValeurByDistantTmpId(Distant* distant, int valeurTmpId) throw(NotExistingValeurException) {
+	map<int, Valeur*>::iterator it;
+	MarqueurDistant* marqueur;
+	Valeur* valeur = NULL;
+
+	for(it = _valeurs.begin() ; (it!=_valeurs.end() && valeur==NULL) ; it++) {
+		valeur = it->second;
+		marqueur = valeur->getMarqueur(distant);
+
+		if(marqueur->getTemporaryId() != valeurTmpId) {
+			valeur = NULL;
+		}
+	}
+
+	if(!valeur) {
+		throw NotExistingBrancheException();
+	}
+
+	return valeur;
+}
+
 Branche* Branche::getSubBrancheByTmpId(int brancheTmpId) const {
 	Branche* branche = NULL;
 
@@ -78,24 +99,37 @@ Branche* Branche::getSubBrancheByTmpId(int brancheTmpId) const {
 	return branche;
 }
 
-Branche* Branche::createSubBrancheForClient(const string& brancheName) {
+Valeur* Branche::getValeurByTmpId(int valeurTmpId) const {
+	Valeur* valeur = NULL;
+
+	try {
+		valeur = _valeurs.at( -valeurTmpId );
+	}
+	catch(out_of_range& exception) {
+		valeur = NULL;
+	}
+
+	return valeur;
+}
+
+Branche* Branche::createSubBrancheForClient(const string& brancheName, int revision) {
 	// Alloue une référence pour la nouvelle branche
 	int tmpRef = _brancheTmpRefGenerator.genRef();		// On démarre à 1
 
 	// Crée la nouvelle branche
-	Branche* newBranche = new Branche(this, -1, brancheName, 0, tmpRef);
+	Branche* newBranche = new Branche(this, -1, brancheName, revision, tmpRef);
 	_subBranches[-tmpRef] = newBranche;		// Moins 1 pour éviter les collisions avec les ID non temporaires
 
 	return newBranche;
 }
 
 
-Branche* Branche::createSubBrancheForServer(const string& brancheName) {
+Branche* Branche::createSubBrancheForServer(const string& brancheName, int revision) {
 	// Alloue une référence pour la nouvelle branche
 	int ref = _brancheRefGenerator.genRef() - 1;		// On soustrait 1 pour que les identifiants démarrent à 0
 
 	// Crée la nouvelle branche
-	Branche* newBranche = new Branche(this, ref, brancheName, 0, -1);
+	Branche* newBranche = new Branche(this, ref, brancheName, revision, -1);
 	_subBranches[ref] = newBranche;
 
 	return newBranche;
@@ -123,28 +157,43 @@ Branche* Branche::acceptTmpSubBranche(int brancheTmpId, int brancheId, int branc
 	_subBranches.erase( -brancheTmpId );
 	_subBranches[brancheId] = branche;
 	branche->setBrancheId(brancheId);
-	setRevision(brancheRevision);
+	branche->setRevision(brancheRevision);
 
 	return branche;
 }
 
-Valeur* Branche::createValeurIntForClient(const string& valeurName, int valeur) {
+Valeur* Branche::acceptTmpValeur(int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException) {
+	Valeur* valeur = getValeurByTmpId(valeurTmpId);
+
+	if(!valeur) {
+		throw NotExistingBrancheException();
+	}
+
+	_valeurs.erase( -valeurTmpId );
+	_valeurs[valeurId] = valeur;
+	valeur->setValeurId(valeurId);
+	valeur->setRevision(valeurRevision);
+
+	return valeur;
+}
+
+Valeur* Branche::createValeurIntForClient(const string& valeurName, int revision, int valeur) {
 	// Alloue une référence pour la nouvelle branche
-	int tmpRef = _valeurTmpRefGenerator.genRef() - 1;		// On soustrait 1 pour que les identifiants démarrent à 0
+	int tmpRef = _valeurTmpRefGenerator.genRef();		// On démarre à 1
 
 	// Crée la nouvelle branche
-	Valeur* newValeur = new ValeurInt(this, -1, valeurName, valeur, tmpRef);
+	Valeur* newValeur = new ValeurInt(this, -1, valeurName, valeur, tmpRef, revision);
 	_valeurs[-tmpRef] = newValeur;
 
 	return newValeur;
 }
 
-Valeur* Branche::createValeurIntForServeur(const string& valeurName, int valeur) {
+Valeur* Branche::createValeurIntForServeur(const string& valeurName, int revision, int valeur) {
 	// Alloue une référence pour la nouvelle branche
 	int ref = _valeurRefGenerator.genRef() - 1;		// On soustrait 1 pour que les identifiants démarrent à 0
 
 	// Crée la nouvelle branche
-	Valeur* newValeur = new ValeurInt(this, ref, valeurName, valeur, -1);
+	Valeur* newValeur = new ValeurInt(this, ref, valeurName, -1, revision, valeur);
 	_valeurs[ref] = newValeur;
 
 	return newValeur;
@@ -159,7 +208,7 @@ Valeur* Branche::addValeurInt(int valeurId, const string& valeurName, int valeur
 
 	// Crée la nouvelle valeur
 	if(JktUtils::IntData* intData = dynamic_cast<JktUtils::IntData*>(valeur)) {
-		newValeur = new ValeurInt(this, valeurId, valeurName, intData->getValue(), -1);
+		newValeur = new ValeurInt(this, valeurId, valeurName, -1, valeurRevision, intData->getValue());
 		_valeurs[valeurId] = newValeur;
 	}
 	else {

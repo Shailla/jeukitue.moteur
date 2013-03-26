@@ -27,8 +27,8 @@ public:
 	 * Serveur local actions
 	 * ****************************************************/
 
-	virtual Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) = 0;
-	virtual Valeur* createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int valeur) = 0;
+	virtual Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName, int revision) = 0;
+	virtual Valeur* createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, int valeur) = 0;
 
 
 	/* *********************************

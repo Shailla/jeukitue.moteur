@@ -29,8 +29,8 @@ public:
 	 * Serveur local actions
 	 * ****************************************************/
 
-	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
-	Valeur* createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int valeur);
+	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName, int revision);
+	Valeur* createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, int valeur);
 
 
 	/* ****************************************************
@@ -38,9 +38,10 @@ public:
 	 * ***************************************************/
 
 	Branche* getBrancheByDistantTmpId(Distant* distant, const vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
+	Valeur* getValeurByDistantTmpId(Distant* distant, const vector<int>& brancheId, int valeurTmpId) throw(NotExistingBrancheException, NotExistingValeurException);
 
-	Branche* addBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, Distant* distant);
-	Valeur* addValeurIntFromDistant(const vector<int>& parentBrancheId, const std::string& valeurName, int valeurTmpId, int valeur, Distant* distant);
+	Branche* addBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, Distant* distant);
+	Valeur* addValeurIntFromDistant(const vector<int>& parentBrancheId, const std::string& valeurName, int valeurTmpId, int revision, int valeur, Distant* distant);
 
 
 	/* ****************************************************

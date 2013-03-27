@@ -158,6 +158,13 @@ void ClientDataTree::receiveChangementsFromServer() {
 						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
 					}
 
+					// Le server confirme la révision de valeur qu'il a reçu
+					else if(ConfirmValeurChangement* chgt = dynamic_cast<ConfirmValeurChangement*>(*itCh)) {
+						Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
+						MarqueurDistant* marqueur = _serveur->getMarqueur(valeur);
+						marqueur->setConfirmedRevision(chgt->getRevision());
+					}
+
 					else {
 						throw DataCommunicationException();
 					}

@@ -20,6 +20,7 @@ using namespace std;
 #include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"
 #include "data/communication/message/ServerToClient/AcceptAddBrancheFromClientChangement.h"
 #include "data/communication/message/ServerToClient/AcceptAddValeurFromClientChangement.h"
+#include "data/communication/message/ClientToServer/UpdateValeurFromClientChangement.h"
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
 
@@ -236,6 +237,7 @@ void ServeurDataTree::receiveChangementsFromClient() {
 
 							MarqueurDistant* marqueur = distant->getMarqueur(branche);
 							marqueur->setConfirmedRevision(branche->getRevision());
+
 							answers.push_back(new AcceptAddBrancheFromClientChangement(branche->getParentBrancheId(), chgt->getBrancheTmpId(), branche->getBrancheId(), branche->getRevision()));
 						}
 
@@ -254,10 +256,30 @@ void ServeurDataTree::receiveChangementsFromClient() {
 
 								MarqueurDistant* marqueur = distant->getMarqueur(valeur);
 								marqueur->setConfirmedRevision(valeur->getRevision());
+
 								answers.push_back(new AcceptAddValeurFromClientChangement(valeur->getBrancheId(), chgt->getValeurTmpId(), valeur->getValeurId(), valeur->getRevision()));
 							}
 							else {
 								throw DataCommunicationException("Valeur de type inconnu");
+							}
+						}
+
+						// Le client demande la modification d'une valeur
+						else if(UpdateValeurFromClientChangement* chgt = dynamic_cast<UpdateValeurFromClientChangement*>(*itCh)) {
+							Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
+
+							if(valeur->getRevision() < chgt->getRevision()) {
+								// Si la valeur existe déjà on renvoie juste la réponse au client
+								valeur->setValeur(chgt->getRevision(), chgt->getValeur());
+
+								MarqueurDistant* marqueur = distant->getMarqueur(valeur);
+								marqueur->setConfirmedRevision(chgt->getRevision());
+
+								answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), chgt->getValeurId(), valeur->getRevision()));
+							}
+							else {
+								// TODO Envoyer un message au client pour qu'il réinitialise les données de cette valeur en prenant celle du serveur comme référence
+								cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : La révision client est plus ancienne que celle du serveur";
 							}
 						}
 

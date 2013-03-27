@@ -20,6 +20,7 @@ using namespace std;
 #include "data/communication/message/ServerToClient/AddBrancheFromServerChangement.h"
 #include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"
 #include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"
+#include "data/communication/message/ClientToServer/UpdateValeurFromClientChangement.h"
 #include "data/communication/message/ServerToClient/UpdateValeurFromServerChangement.h"
 #include "data/Valeur.h"
 #include "data/ValeurInt.h"
@@ -69,13 +70,6 @@ void Distant::collecteChangementsInClientTree(vector<Changement*>& changements) 
 			if(branche->getBrancheId() < 0) {
 				changement = new AddBrancheFromClientChangement(branche->getParentBrancheId(), branche->getBrancheTmpId(), branche->getRevision(), branche->getBrancheName());
 			}
-
-			if(changement) {
-				changement->update(marqueur);
-				changements.push_back(changement);
-			}
-
-			continue;
 		}
 		else {
 			Valeur* valeur = (Valeur*)(donnee);
@@ -85,10 +79,15 @@ void Distant::collecteChangementsInClientTree(vector<Changement*>& changements) 
 				changement = new AddValeurFromClientChangement(valeur->getBrancheId(), valeur->getValeurTmpId(), valeur->getRevision(), valeur->getValeurName(), valeur->getValeurData());
 			}
 
-			if(changement) {
-				changement->update(marqueur);
-				changements.push_back(changement);
+			// UPDATE VALEUR : Une valeur a changé et le client n'en a pas encore connaissance
+			else if(valeur->getRevision() > marqueur->getConfirmedRevision()) {
+				changement = new UpdateValeurFromClientChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision(), valeur->getValeurData());
 			}
+		}
+
+		if(changement) {
+			changement->update(marqueur);
+			changements.push_back(changement);
 		}
 	}
 }

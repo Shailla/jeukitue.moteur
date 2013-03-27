@@ -28,12 +28,13 @@ AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(in
 void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalParameterException) {
 	string subCommande1 = StringUtils::findAndEraseFirstWord(ligne);
 
-	if(subCommande1 == "distant") {
+	if(subCommande1 == "client") {
 		string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
 		Distant* client = serveurDataTree.addDistant(clientName);
 		ClientDataTree* clientDataTree = new ClientDataTree(new Distant("serveur"), clientName);
 		dataRouter[clientDataTree] = client;
+		printStdLn("Client cree.", userOutput);
 	}
 	else if(subCommande1 == "branche") {
 		string serverOrClientMode = StringUtils::findAndEraseFirstWord(ligne);
@@ -68,6 +69,7 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 
 			try {
 				tree->createBranche(parentBrancheId, brancheName, 0);
+				printStdLn("Branche creee.", userOutput);
 			}
 			catch(NotExistingBrancheException& exception) {
 				printErrLn("La branche parent specifiee n'existe pas", userOutput);
@@ -116,6 +118,8 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 				vector<int> brancheId = getIntParameters(ligne);
 
 				tree->createValeurInt(brancheId, valeurName, 0, valeur);
+
+				printStdLn("Valeur creee.", userOutput);
 			}
 			else {
 				printErrLn("Syntaxe incorrecte (type de donnee inconnu)", userOutput);
@@ -132,10 +136,16 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 
 string AddDataCommande::getHelp() const {
 	return
-"data add branche <brancheName> <brancheId> : Ajouter une branche nommee <brancheName> dans l'arbre de donnees sous la branche <brancheId>.\
-\nExemple : data add branche ggg 0 3 2\
+"data add branche server <brancheName> : Ajoute aux donnees du serveur une branche nommee <brancheName> dans l'arbre de donnees sous la branche <brancheId>.\
+\nExemple : data add branche server ggg 0 3 2\
 \n---\
-\ndata add valeur <type> <valeurName> <valeur> <brancheId> : Ajouter une valeur nommee <valeurName> de type <type> de valeur <valeur> a la branche <brancheId>\
+\ndata add branche client <clientName> <brancheName> : Ajoute aux donnees du client <clientName> une branche nommee <brancheName> sous la branche <brancheId>.\
+\nExemple : data add branche client Erwin ggg 0 3 2\
+\n---\
+\ndata add valeur server <type> <valeurName> <valeur> <brancheId> : Ajoute aux donnees du serveur une valeur nommee <valeurName> de type <type> et de valeur <valeur> a la branche <brancheId>\
 \n<type> = {int}\
-\nExemple : data add valeur int 22 0 3 2";
+\nExemple : data add valeur server int 22 0 3 2\
+\ndata add valeur client <clientName> <type> <valeurName> <valeur> <brancheId> : Ajoute aux donnees du client <clientName> une valeur nommee <valeurName> de type <type> et de valeur <valeur> a la branche <brancheId>\
+\n<type> = {int}\
+\nExemple : data add valeur client Erwin int 22 0 3 2";
 }

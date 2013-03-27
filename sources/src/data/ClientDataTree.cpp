@@ -11,6 +11,8 @@
 
 using namespace std;
 
+#include "util/types/IntData.h"
+#include "data/ValeurInt.h"
 #include "data/MarqueurDistant.h"
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/exception/DataCommunicationException.h"
@@ -54,6 +56,13 @@ Valeur* ClientDataTree::createValeurInt(const std::vector<int>& parentBrancheId,
 	Branche* parentBranche = getBranche(parentBrancheId);
 	Valeur* valeur = parentBranche->createValeurIntForClient(valeurName, revision, value);
 	addServeurMarqueur(valeur);
+
+	return valeur;
+}
+
+Valeur* ClientDataTree::updateValeurInt(const std::vector<int>& brancheId, int valeurId, int value) {
+	ValeurInt* valeur = (ValeurInt*)getValeur(brancheId, valeurId);
+	valeur->updateValeur(value);
 
 	return valeur;
 }

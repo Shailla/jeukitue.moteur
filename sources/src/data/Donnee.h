@@ -20,17 +20,19 @@ class Donnee {
 	int _revision;
 	std::map<Distant*, MarqueurDistant*> _marqueurs;
 
+protected:
+
+	/**
+	 * Indicates that the Donnee has changed by incrementing it's revision.
+	 */
+	void update();
+
 public:
 	Donnee(int revision);
 	virtual ~Donnee();
 
 	MarqueurDistant* getMarqueur(Distant* distant);
 	MarqueurDistant* addMarqueur(Distant* distant, int donneeTmpId);
-
-	/**
-	 * Indicates that the Donnee has changed by incrementing it's revision.
-	 */
-	void update();
 
 	/**
 	 * Get the revision number of the data.

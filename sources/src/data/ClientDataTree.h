@@ -35,6 +35,7 @@ public:
 
 	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName, int revision);
 	Valeur* createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, int valeur);
+	Valeur* updateValeurInt(const std::vector<int>& brancheId, int valeurId, int valeur);
 
 
 	/* ****************************************************

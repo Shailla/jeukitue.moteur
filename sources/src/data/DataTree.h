@@ -28,7 +28,8 @@ public:
 	 * ****************************************************/
 
 	virtual Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName, int revision) = 0;
-	virtual Valeur* createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, int valeur) = 0;
+	virtual Valeur* createValeurInt(const std::vector<int>& brancheId, const std::string& valeurName, int revision, int valeur) = 0;
+	virtual Valeur* updateValeurInt(const std::vector<int>& brancheId, int valeurId, int valeur) = 0;
 
 
 	/* *********************************

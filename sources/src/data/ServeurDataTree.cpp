@@ -50,6 +50,10 @@ Valeur* ServeurDataTree::createValeurInt(const vector<int>& parentBrancheId, con
 	return addValeurIntFromDistant(parentBrancheId, valeurName, 0, revision, valeur, NULL);
 }
 
+Valeur* ServeurDataTree::updateValeurInt(const std::vector<int>& brancheId, int valeurId, int valeur) {
+	return NULL;
+};
+
 Valeur* ServeurDataTree::addValeurIntFromDistant(const vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int revision, int valeur, Distant* distant) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 

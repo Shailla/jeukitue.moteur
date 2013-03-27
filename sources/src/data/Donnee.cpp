@@ -42,7 +42,6 @@ MarqueurDistant* Donnee::addMarqueur(Distant* distant, int donneeTmpId) {
 
 void Donnee::update() {
 	_revision++;
-
 }
 
 void Donnee::setRevision(int revision) {

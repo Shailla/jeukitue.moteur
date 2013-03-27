@@ -17,13 +17,13 @@ using namespace std;
 #include "data/ServeurDataTree.h"
 #include "data/MarqueurDistant.h"
 
-#include "data/communication/message/ServerToClient/UpdateValeurChangement.h"
+#include "data/communication/message/ServerToClient/UpdateValeurFromServerChangement.h"
 
-UpdateValeurChangement::UpdateValeurChangement(istringstream& in) : Changement("UpdateValeurChangement") {
+UpdateValeurFromServerChangement::UpdateValeurFromServerChangement(istringstream& in) : Changement("UpdateValeurChangement") {
 	unserialize(in);
 }
 
-UpdateValeurChangement::UpdateValeurChangement(Valeur* valeur) : Changement("UpdateValeurChangement") {
+UpdateValeurFromServerChangement::UpdateValeurFromServerChangement(Valeur* valeur) : Changement("UpdateValeurChangement") {
 	_brancheId = valeur->getBrancheId();
 	_valeurId = valeur->getValeurId();
 
@@ -37,18 +37,18 @@ UpdateValeurChangement::UpdateValeurChangement(Valeur* valeur) : Changement("Upd
 	}
 }
 
-UpdateValeurChangement::~UpdateValeurChangement() {
+UpdateValeurFromServerChangement::~UpdateValeurFromServerChangement() {
 	if(_valeur) {
 		delete _valeur;
 	}
 };
 
-void UpdateValeurChangement::update(MarqueurDistant* marqueur) {
+void UpdateValeurFromServerChangement::update(MarqueurDistant* marqueur) {
 	// Met à jour l'état des données
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }
 
-void UpdateValeurChangement::serialize(ostringstream& out) {
+void UpdateValeurFromServerChangement::serialize(ostringstream& out) {
 	// Serialize
 	StreamUtils::write(out, (int)UPDATE_VALEUR_FROM_SERVER_MESSAGE);
 
@@ -58,14 +58,14 @@ void UpdateValeurChangement::serialize(ostringstream& out) {
 	StreamUtils::write(out, *_valeur);
 }
 
-void UpdateValeurChangement::unserialize(istringstream& in) {
+void UpdateValeurFromServerChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _brancheId);
 	StreamUtils::read(in, _valeurId);
 	StreamUtils::read(in, _revision);
 	_valeur = StreamUtils::readData(in);
 }
 
-string UpdateValeurChangement::toString() {
+string UpdateValeurFromServerChangement::toString() {
 	ostringstream str;
 
 	str << "[" << _dataType;
@@ -85,18 +85,18 @@ string UpdateValeurChangement::toString() {
 	return str.str();
 }
 
-const std::vector<int>& UpdateValeurChangement::getBrancheId() const {
+const std::vector<int>& UpdateValeurFromServerChangement::getBrancheId() const {
 	return _brancheId;
 }
 
-int UpdateValeurChangement::getValeurId() const {
+int UpdateValeurFromServerChangement::getValeurId() const {
 	return _valeurId;
 }
 
-int UpdateValeurChangement::getRevision() const {
+int UpdateValeurFromServerChangement::getRevision() const {
 	return _revision;
 }
 
-JktUtils::Data* UpdateValeurChangement::getValeur() const {
+JktUtils::Data* UpdateValeurFromServerChangement::getValeur() const {
 	return _valeur;
 }

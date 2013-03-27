@@ -20,7 +20,7 @@ using namespace std;
 #include "data/communication/message/ServerToClient/AddBrancheFromServerChangement.h"
 #include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"
 #include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"
-#include "data/communication/message/ServerToClient/UpdateValeurChangement.h"
+#include "data/communication/message/ServerToClient/UpdateValeurFromServerChangement.h"
 #include "data/Valeur.h"
 #include "data/ValeurInt.h"
 #include "data/Branche.h"
@@ -128,7 +128,7 @@ void Distant::collecteChangementsInServerTree(vector<Changement*>& changements) 
 			}
 			// VALEUR MODIFIEE : branche présente sur le serveur mais dont le client n'a pas connaissance
 			else if(marqueur->getConfirmedRevision() != valeur->getRevision()) {
-				changement = new UpdateValeurChangement(valeur);
+				changement = new UpdateValeurFromServerChangement(valeur);
 			}
 
 			if(changement) {

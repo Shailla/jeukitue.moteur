@@ -16,7 +16,7 @@ using namespace std;
 #include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
 #include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"
 #include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"
-#include "data/communication/message/ServerToClient/UpdateValeurChangement.h"
+#include "data/communication/message/ServerToClient/UpdateValeurFromServerChangement.h"
 #include "data/communication/message/ServerToClient/AcceptAddBrancheFromClientChangement.h"
 #include "data/communication/message/ServerToClient/AcceptAddValeurFromClientChangement.h"
 
@@ -72,7 +72,7 @@ void DataSerializer::fromStream(vector<Changement*>& changements, istringstream&
 					break;
 
 				case Changement::UPDATE_VALEUR_FROM_SERVER_MESSAGE:
-					changement = new UpdateValeurChangement(in);
+					changement = new UpdateValeurFromServerChangement(in);
 					break;
 
 				case Changement::ACCEPT_ADD_BRANCHE_FROM_CLIENT:

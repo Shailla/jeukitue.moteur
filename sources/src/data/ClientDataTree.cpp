@@ -19,7 +19,7 @@ using namespace std;
 #include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"
 #include "data/communication/message/ServerToClient/AcceptAddBrancheFromClientChangement.h"
 #include "data/communication/message/ServerToClient/AcceptAddValeurFromClientChangement.h"
-#include "data/communication/message/ServerToClient/UpdateValeurChangement.h"
+#include "data/communication/message/ServerToClient/UpdateValeurFromServerChangement.h"
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
 #include "util/CollectionsUtils.h"
@@ -151,7 +151,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 					}
 
 					// Le serveur informe de la modification d'une valeur
-					else if(UpdateValeurChangement* chgt = dynamic_cast<UpdateValeurChangement*>(*itCh)) {
+					else if(UpdateValeurFromServerChangement* chgt = dynamic_cast<UpdateValeurFromServerChangement*>(*itCh)) {
 						Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
 						valeur->setValeur(chgt->getRevision(), chgt->getValeur());
 

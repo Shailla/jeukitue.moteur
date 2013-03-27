@@ -159,9 +159,6 @@ void DataTreeView::refreshClientTable(DataTreeDetails* details) {
 			}
 		}
 		else {
-			cout << endl << "1:" << details->getClientsTable();
-			cout << endl << "2:" << client->getDebugName().c_str();
-			cout << flush;
 			AG_TableAddRow(details->getClientsTable(), "%s:%s:%s:%s", client->getDebugName().c_str(), "-", "-", "-");
 		}
 	}

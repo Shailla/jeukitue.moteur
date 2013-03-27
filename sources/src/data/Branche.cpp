@@ -80,7 +80,7 @@ Valeur* Branche::getValeurByDistantTmpId(Distant* distant, int valeurTmpId) thro
 	}
 
 	if(!valeur) {
-		throw NotExistingBrancheException();
+		throw NotExistingValeurException();
 	}
 
 	return valeur;
@@ -182,7 +182,7 @@ Valeur* Branche::createValeurIntForClient(const string& valeurName, int revision
 	int tmpRef = _valeurTmpRefGenerator.genRef();		// On démarre à 1
 
 	// Crée la nouvelle branche
-	Valeur* newValeur = new ValeurInt(this, -1, valeurName, valeur, tmpRef, revision);
+	Valeur* newValeur = new ValeurInt(this, -1, valeurName, tmpRef, revision, valeur);
 	_valeurs[-tmpRef] = newValeur;
 
 	return newValeur;

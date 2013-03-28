@@ -45,7 +45,7 @@ protected:
 	virtual void unserialize(std::istringstream& in) = 0;
 
 public:
-	Changement(const string& dataType);
+	Changement(const std::string& dataType);
 	virtual ~Changement();
 
 	virtual void update(MarqueurDistant* marqueur) = 0;

@@ -39,6 +39,7 @@ public:
 	void registerSubCommande(const std::string& subCommandeName, Commande* subCommande);
 
 	static int getIntParameter(const string& word) throw(IllegalParameterException);
+	static float getFloatParameter(const string& word) throw(IllegalParameterException);
 	static std::vector<int> getIntParameters(const std::string& ligne) throw(IllegalParameterException);
 };
 

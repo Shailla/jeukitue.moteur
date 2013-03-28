@@ -35,4 +35,8 @@ void StringData::serializeHumanReadable(std::ostringstream& out) {
 	out << "string-'" << _value << "'";
 }
 
+const std::string& StringData::getValue() const {
+	return _value;
+}
+
 }

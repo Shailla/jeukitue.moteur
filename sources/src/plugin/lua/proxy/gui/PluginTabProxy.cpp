@@ -29,6 +29,9 @@ Lunar<PluginTabProxy>::RegType PluginTabProxy::methods[] = {
 };
 
 PluginTabProxy::PluginTabProxy(lua_State* L) : AbstractPluginPanelProxy(L) {
+	_pluginContext = NULL;
+	_pluginTab = NULL;
+
 	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
 	AbstractPluginPanelProxy::setPluginContext(PluginEngine::getPluginContext(L));
 
@@ -36,7 +39,9 @@ PluginTabProxy::PluginTabProxy(lua_State* L) : AbstractPluginPanelProxy(L) {
 }
 
 PluginTabProxy::PluginTabProxy(PluginContext* pluginContext, PluginTab* pluginTab) : AbstractPluginPanelProxy(pluginContext) {
+	_pluginContext = NULL;
 	_pluginTab = pluginTab;
+
 	AbstractPluginPanelProxy::setPanel(_pluginTab);
 }
 

@@ -51,9 +51,23 @@ bool StringUtils::isBlank(const string& s) {
 string StringUtils::findAndEraseFirstWord(string& s) {
 	string result;
 
-	string::iterator debutMot = s.begin();
+	string::iterator debutMot = find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)));
 
-	debutMot = find_if(debutMot, s.end(), not1(ptr_fun<int, int>(isspace)));
+	if(debutMot != s.end()) {
+		string::iterator finMot = find_if(debutMot, s.end(), ptr_fun<int, int>(isspace));
+		result = string(debutMot, finMot);
+
+		// Erase the first word
+		s.erase(debutMot, finMot);
+	}
+
+	return result;
+}
+
+string StringUtils::findAndEraseFirstString(string& s) {
+	string result;
+
+	string::iterator debutMot = find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)));
 
 	if(debutMot != s.end()) {
 		string::iterator finMot = find_if(debutMot, s.end(), ptr_fun<int, int>(isspace));
@@ -69,9 +83,7 @@ string StringUtils::findAndEraseFirstWord(string& s) {
 string StringUtils::findFirstWord(string& s) {
 	string result;
 
-	string::iterator debutMot = s.begin();
-
-	debutMot = find_if(debutMot, s.end(), not1(ptr_fun<int, int>(isspace)));
+	string::iterator debutMot = find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)));
 
 	if(debutMot != s.end()) {
 		string::iterator finMot = find_if(debutMot, s.end(), ptr_fun<int, int>(isspace));

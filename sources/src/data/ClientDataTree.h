@@ -14,6 +14,8 @@
 
 using namespace std;
 
+#include "util/types/Data.h"
+
 #include "data/DataTree.h"
 
 class ClientDataTree : public DataTree {
@@ -34,7 +36,7 @@ public:
 	 * ****************************************************/
 
 	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName, int revision);
-	Valeur* createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, int valeur);
+	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, const JktUtils::Data* valeur);
 	Valeur* updateValeurInt(const std::vector<int>& brancheId, int valeurId, int valeur);
 
 

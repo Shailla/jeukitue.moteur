@@ -22,7 +22,7 @@ public:
 	void serialize(std::ostringstream& out);
 	void serializeHumanReadable(std::ostringstream& out);
 
-	int getValue() const;
+	float getValue() const;
 };
 
 }

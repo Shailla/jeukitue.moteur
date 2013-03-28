@@ -27,7 +27,7 @@ class UpdateValeurFromServerChangement: public Changement {
 
 public:
 	UpdateValeurFromServerChangement(std::istringstream& in);
-	UpdateValeurFromServerChangement(Valeur* valeur);
+	UpdateValeurFromServerChangement(const Valeur* valeur);
 	~UpdateValeurFromServerChangement();
 
 	void update(MarqueurDistant* marqueur);
@@ -41,7 +41,7 @@ public:
 	const std::vector<int>& getBrancheId() const;
 	int getValeurId() const;
 	int getRevision() const;
-	JktUtils::Data* getValeur() const;
+	const JktUtils::Data* getValeur() const;
 };
 
 #endif /* UPDATEVALEURFROMSERVERCHANGEMENT_H_ */

@@ -30,7 +30,7 @@ void FloatData::serializeHumanReadable(std::ostringstream& out) {
 	out << "float-'" << _value << "'";
 }
 
-int FloatData::getValue() const {
+float FloatData::getValue() const {
 	return _value;
 }
 

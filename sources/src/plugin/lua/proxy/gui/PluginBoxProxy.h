@@ -26,7 +26,6 @@ class PluginBoxProxy : public AbstractPluginPanelProxy {
 	static const char className[];
 	static Lunar<PluginBoxProxy>::RegType methods[];
 
-	PluginContext* _pluginContext;
 	PluginBox* _pluginBox;
 public:
 	PluginBoxProxy(lua_State* L);

@@ -12,6 +12,8 @@
 #include <map>
 #include <vector>
 
+#include "util/types/Data.h"
+
 #include "data/DataTree.h"
 
 class ServeurDataTree : public DataTree {
@@ -30,7 +32,7 @@ public:
 	 * ****************************************************/
 
 	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName, int revision);
-	Valeur* createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, int valeur);
+	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, const JktUtils::Data* valeur);
 	Valeur* updateValeurInt(const std::vector<int>& brancheId, int valeurId, int valeur);
 
 
@@ -42,7 +44,7 @@ public:
 	Valeur* getValeurByDistantTmpId(Distant* distant, const vector<int>& brancheId, int valeurTmpId) throw(NotExistingBrancheException, NotExistingValeurException);
 
 	Branche* addBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, Distant* distant);
-	Valeur* addValeurIntFromDistant(const vector<int>& parentBrancheId, const std::string& valeurName, int valeurTmpId, int revision, int valeur, Distant* distant);
+	Valeur* addValeurFromDistant(const vector<int>& parentBrancheId, const std::string& valeurName, int valeurTmpId, int revision, const JktUtils::Data* valeur, Distant* distant);
 
 
 	/* ****************************************************

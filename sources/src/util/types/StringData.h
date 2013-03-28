@@ -23,6 +23,8 @@ public:
 
 	void serialize(std::ostringstream& out);
 	void serializeHumanReadable(std::ostringstream& out);
+
+	const std::string& getValue() const;
 };
 
 }

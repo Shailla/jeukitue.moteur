@@ -42,9 +42,7 @@ LanceServeurView::LanceServeurView(const AG_EventFn controllerCallback)
     hide();
 }
 
-LanceServeurView::~LanceServeurView(void)
-{
-	// TODO détruire les éléments de mapNames si ce n'est pas fait par la list
+LanceServeurView::~LanceServeurView(void) {
 }
 
 void LanceServeurView::show(void)

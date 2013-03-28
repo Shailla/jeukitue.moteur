@@ -10,6 +10,7 @@
 
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/exception/NotExistingValeurException.h"
+#include "util/types/Data.h"
 #include "data/Branche.h"
 #include "data/Distant.h"
 
@@ -28,8 +29,8 @@ public:
 	 * ****************************************************/
 
 	virtual Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName, int revision) = 0;
-	virtual Valeur* createValeurInt(const std::vector<int>& brancheId, const std::string& valeurName, int revision, int valeur) = 0;
-	virtual Valeur* updateValeurInt(const std::vector<int>& brancheId, int valeurId, int valeur) = 0;
+	virtual Valeur* createValeur(const std::vector<int>& brancheId, const std::string& valeurName, int revision, const JktUtils::Data& valeur) = 0;
+	virtual Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data& valeur) = 0;
 
 
 	/* *********************************

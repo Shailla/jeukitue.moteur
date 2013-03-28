@@ -25,6 +25,8 @@ Lunar<PluginCheckboxProxy>::RegType PluginCheckboxProxy::methods[] = {
 };
 
 PluginCheckboxProxy::PluginCheckboxProxy(lua_State* L) {
+	_pluginCheckbox = NULL;
+
 	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
 
 	cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur Lua : Cannot create new PluginCheckboxProxy in Lua";

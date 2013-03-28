@@ -33,7 +33,7 @@ public:
 	int getValeurTmpId() const;
 	int getValeurId() const;
 	void setValeurId(int valeurId);
-	virtual void setValeur(int revision, JktUtils::Data* data) = 0;
+	virtual void setValeur(int revision, const JktUtils::Data& data) = 0;
 	virtual JktUtils::Data* getValeurData() const = 0;
 };
 

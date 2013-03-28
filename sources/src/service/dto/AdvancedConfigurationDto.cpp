@@ -10,6 +10,9 @@
 namespace JktService {
 
 AdvancedConfigurationDto::AdvancedConfigurationDto() {
+	_playerCameraHeight = 0.0f;
+	_isPlayeurOutlineVisible = false;
+	_isPlayerSkinVisible = false;
 }
 
 AdvancedConfigurationDto::~AdvancedConfigurationDto() {

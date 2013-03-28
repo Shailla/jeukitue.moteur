@@ -8,6 +8,7 @@ View::View(const AG_EventFn controllerCallback) {
 }
 
 View::~View(void) {
+	AG_ObjectDelete(m_window);	// Frees all window resources and window's children resources
 }
 
 void View::refresh() {

@@ -29,6 +29,8 @@ Lunar<PluginBoxProxy>::RegType PluginBoxProxy::methods[] = {
 };
 
 PluginBoxProxy::PluginBoxProxy(lua_State* L) : AbstractPluginPanelProxy(L) {
+	_pluginBox = NULL;
+
 	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
 	AbstractPluginPanelProxy::setPluginContext(PluginEngine::getPluginContext(L));
 
@@ -36,7 +38,6 @@ PluginBoxProxy::PluginBoxProxy(lua_State* L) : AbstractPluginPanelProxy(L) {
 }
 
 PluginBoxProxy::PluginBoxProxy(PluginContext* pluginContext, PluginBox* pluginBox) : AbstractPluginPanelProxy(pluginContext) {
-	_pluginContext = pluginContext;
 	_pluginBox = pluginBox;
 	AbstractPluginPanelProxy::setPanel(_pluginBox);
 }

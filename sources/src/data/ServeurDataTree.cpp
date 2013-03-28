@@ -46,18 +46,18 @@ Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBranche
 	return (Branche*)addMarqueurFromDistant(distant, branche, brancheClientTmpId);
 }
 
-Valeur* ServeurDataTree::createValeurInt(const vector<int>& parentBrancheId, const string& valeurName, int revision, int valeur) {
-	return addValeurIntFromDistant(parentBrancheId, valeurName, 0, revision, valeur, NULL);
+Valeur* ServeurDataTree::createValeur(const vector<int>& parentBrancheId, const string& valeurName, int revision, const Data* valeur) {
+	return addValeurFromDistant(parentBrancheId, valeurName, 0, revision, valeur, NULL);
 }
 
 Valeur* ServeurDataTree::updateValeurInt(const std::vector<int>& brancheId, int valeurId, int valeur) {
 	return NULL;
 };
 
-Valeur* ServeurDataTree::addValeurIntFromDistant(const vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int revision, int valeur, Distant* distant) {
+Valeur* ServeurDataTree::addValeurFromDistant(const vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int revision, const Data* valeur, Distant* distant) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 
-	Valeur* val = parentBranche->createValeurIntForServeur(valeurName, revision, valeur);
+	Valeur* val = parentBranche->createValeurForServeur(valeurName, revision, valeur);
 
 	return (Valeur*)addMarqueurFromDistant(distant, val, valeurClientTmpId);
 }
@@ -142,6 +142,11 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 
 			ostringstream out;
 			DataSerializer::toStream(changements, out);
+
+			for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
+				delete *itCh;
+			}
+
 			client->setDataToSend(new string(out.str()));
 		}
 	}
@@ -205,6 +210,7 @@ void ServeurDataTree::receiveChangementsFromClient() {
 
 				istringstream in(*data);
 				DataSerializer::fromStream(changements, in);
+				delete data;
 
 				vector<Changement*>::iterator itCh;
 
@@ -255,7 +261,7 @@ void ServeurDataTree::receiveChangementsFromClient() {
 									valeur = getValeurByDistantTmpId(distant, chgt->getBrancheId(), chgt->getValeurTmpId());
 								}
 								catch(NotExistingValeurException& exception) {
-									valeur = addValeurIntFromDistant(chgt->getBrancheId(), chgt->getValeurName(), chgt->getValeurTmpId(), chgt->getRevision(), value->getValue(), distant);
+									valeur = addValeurFromDistant(chgt->getBrancheId(), chgt->getValeurName(), chgt->getValeurTmpId(), chgt->getRevision(), value, distant);
 								}
 
 								MarqueurDistant* marqueur = distant->getMarqueur(valeur);
@@ -273,7 +279,7 @@ void ServeurDataTree::receiveChangementsFromClient() {
 							Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
 
 							if(valeur->getRevision() < chgt->getRevision()) {
-								valeur->setValeur(chgt->getRevision(), chgt->getValeur());
+								valeur->setValeur(chgt->getRevision(), *chgt->getValeur());
 
 								MarqueurDistant* marqueur = distant->getMarqueur(valeur);
 								marqueur->setConfirmedRevision(chgt->getRevision());
@@ -289,6 +295,8 @@ void ServeurDataTree::receiveChangementsFromClient() {
 						else {
 							throw DataCommunicationException("Changement de type inconnu");
 						}
+
+						delete *itCh;
 					}
 				}
 				catch(const NotExistingValeurException& exception) {
@@ -301,8 +309,6 @@ void ServeurDataTree::receiveChangementsFromClient() {
 					cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
 				}
 
-				delete data;
-
 				// Emission des changements au client
 				if(answers.size()) {
 					vector<Changement*>::iterator itCh;
@@ -313,6 +319,11 @@ void ServeurDataTree::receiveChangementsFromClient() {
 
 					ostringstream out;
 					DataSerializer::toStream(answers, out);
+
+					for(itCh = answers.begin() ; itCh != answers.end() ; itCh++) {
+						delete *itCh;
+					}
+
 					distant->setDataToSend(new string(out.str()));
 				}
 			}

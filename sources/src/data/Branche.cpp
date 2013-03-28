@@ -12,10 +12,16 @@
 using namespace std;
 
 #include "util/types/IntData.h"
+#include "util/types/FloatData.h"
+#include "util/types/StringData.h"
 #include "data/ValeurInt.h"
+#include "data/ValeurFloat.h"
+#include "data/ValeurString.h"
 #include "data/MarqueurDistant.h"
 
 #include "data/Branche.h"
+
+using namespace JktUtils;
 
 Branche::Branche(Branche* parent, int brancheId, const string& brancheName, int revision, int brancheTmpId) : Donnee(revision) {
 	_parent = parent;
@@ -177,29 +183,55 @@ Valeur* Branche::acceptTmpValeur(int valeurTmpId, int valeurId, int valeurRevisi
 	return valeur;
 }
 
-Valeur* Branche::createValeurIntForClient(const string& valeurName, int revision, int valeur) {
+Valeur* Branche::createValeurForClient(const string& valeurName, int revision, const Data* valeur) {
 	// Alloue une référence pour la nouvelle branche
 	int tmpRef = _valeurTmpRefGenerator.genRef();		// On démarre à 1
 
 	// Crée la nouvelle branche
-	Valeur* newValeur = new ValeurInt(this, -1, valeurName, tmpRef, revision, valeur);
-	_valeurs[-tmpRef] = newValeur;
+	Valeur* newValeur = NULL;
+
+	if(const IntData* value = dynamic_cast<const IntData*>(valeur)) {
+		newValeur = new ValeurInt(this, -1, valeurName, tmpRef, revision, value->getValue());
+	}
+	else if(const FloatData* value = dynamic_cast<const FloatData*>(valeur)) {
+		newValeur = new ValeurFloat(this, -1, valeurName, tmpRef, revision, value->getValue());
+	}
+	else if(const StringData* value = dynamic_cast<const StringData*>(valeur)) {
+		newValeur = new ValeurString(this, -1, valeurName, tmpRef, revision, value->getValue());
+	}
+
+	if(newValeur) {
+		_valeurs[-tmpRef] = newValeur;
+	}
 
 	return newValeur;
 }
 
-Valeur* Branche::createValeurIntForServeur(const string& valeurName, int revision, int valeur) {
+Valeur* Branche::createValeurForServeur(const string& valeurName, int revision, const Data* valeur) {
 	// Alloue une référence pour la nouvelle branche
 	int ref = _valeurRefGenerator.genRef() - 1;		// On soustrait 1 pour que les identifiants démarrent à 0
 
 	// Crée la nouvelle branche
-	Valeur* newValeur = new ValeurInt(this, ref, valeurName, -1, revision, valeur);
-	_valeurs[ref] = newValeur;
+	Valeur* newValeur = NULL;
+
+	if(const IntData* value = dynamic_cast<const IntData*>(valeur)) {
+		newValeur = new ValeurInt(this, ref, valeurName, -1, revision, value->getValue());
+	}
+	else if(const FloatData* value = dynamic_cast<const FloatData*>(valeur)) {
+		newValeur = new ValeurFloat(this, ref, valeurName, -1, revision, value->getValue());
+	}
+	else if(const StringData* value = dynamic_cast<const StringData*>(valeur)) {
+		newValeur = new ValeurString(this, ref, valeurName, -1, revision, value->getValue());
+	}
+
+	if(newValeur) {
+		_valeurs[ref] = newValeur;
+	}
 
 	return newValeur;
 }
 
-Valeur* Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRevision, JktUtils::Data* valeur) {
+const Valeur* Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRevision, const JktUtils::Data* valeur) {
 	Valeur* newValeur = NULL;
 
 	if(_valeurs.find(valeurId) != _valeurs.end()) {
@@ -207,7 +239,7 @@ Valeur* Branche::addValeurInt(int valeurId, const string& valeurName, int valeur
 	}
 
 	// Crée la nouvelle valeur
-	if(JktUtils::IntData* intData = dynamic_cast<JktUtils::IntData*>(valeur)) {
+	if(const JktUtils::IntData* intData = dynamic_cast<const JktUtils::IntData*>(valeur)) {
 		newValeur = new ValeurInt(this, valeurId, valeurName, -1, valeurRevision, intData->getValue());
 		_valeurs[valeurId] = newValeur;
 	}

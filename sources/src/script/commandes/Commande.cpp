@@ -65,7 +65,16 @@ int Commande::getIntParameter(const string& word) throw(IllegalParameterExceptio
 	int result;
 
 	if(!(istringstream(word) >> result)) {
-		cout << endl << "EXCEPTION" << flush;
+		throw IllegalParameterException();
+	}
+
+	return result;
+}
+
+float Commande::getFloatParameter(const string& word) throw(IllegalParameterException) {
+	float result;
+
+	if(!(istringstream(word) >> result)) {
 		throw IllegalParameterException();
 	}
 

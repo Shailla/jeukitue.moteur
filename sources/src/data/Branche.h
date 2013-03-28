@@ -69,13 +69,13 @@ public:
 	Branche* addSubBranche(int brancheId, const std::string& brancheName, int brancheRevision);
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant temporaire */
-	Valeur* createValeurIntForClient(const std::string& valeurName, int revision, int valeur);
+	Valeur* createValeurForClient(const std::string& valeurName, int revision, const JktUtils::Data* valeur);
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant */
-	Valeur* createValeurIntForServeur(const std::string& valeurName, int revision, int valeur);
+	Valeur* createValeurForServeur(const std::string& valeurName, int revision, const JktUtils::Data* valeur);
 
 	/** Ajoute une valeur entière qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
-	Valeur* addValeurInt(int valeurId, const std::string& valeurName, int valeurRevision, JktUtils::Data* valeur);
+	const Valeur* addValeurInt(int valeurId, const std::string& valeurName, int valeurRevision, const JktUtils::Data* valeur);
 };
 
 #endif /* BRANCHE_H_ */

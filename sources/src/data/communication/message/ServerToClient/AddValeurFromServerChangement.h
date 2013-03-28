@@ -43,7 +43,7 @@ public:
 	int getValeurId() const;
 	const std::string& getValeurName() const;
 	int getRevision() const;
-	JktUtils::Data* getValeur() const;
+	const JktUtils::Data* getValeur() const;
 };
 
 #endif /* ADDBRANCHECHANGEMENT_H_ */

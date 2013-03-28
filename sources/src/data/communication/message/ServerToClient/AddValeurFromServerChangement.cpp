@@ -96,6 +96,6 @@ int AddValeurFromServerChangement::getRevision() const {
 	return _revision;
 }
 
-JktUtils::Data* AddValeurFromServerChangement::getValeur() const {
+const JktUtils::Data* AddValeurFromServerChangement::getValeur() const {
 	return _valeur;
 }

@@ -106,18 +106,33 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 		if(tree) {
 			string valeurType = StringUtils::findAndEraseFirstWord(ligne);
 
-			if(valeurType == "int") {
-				// Nom de la valeur
-				string valeurName = StringUtils::findAndEraseFirstWord(ligne);
 
+			// Nom de la valeur
+			string valeurName = StringUtils::findAndEraseFirstWord(ligne);
+
+			Data* valeur = NULL;
+			if(valeurType == "int") {
 				// Valeur de la valeur
 				string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
-				int valeur = getIntParameter(valeurStr);
+				valeur = new IntData(getIntParameter(valeurStr));
+			}
+			else if(valeurType == "float") {
+				// Valeur de la valeur
+				string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
+				valeur = new FloatData(getFloatParameter(valeurStr));
+			}
+			else if(valeurType == "string") {
+				// Valeur de la valeur
+				string valeurStr = StringUtils::findAndEraseFirstString(ligne);
+				valeur = new StringData(StringUtils::findAndEraseFirstWord(ligne));
+			}
 
+			if(valeur) {
 				// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
 				vector<int> brancheId = getIntParameters(ligne);
 
-				tree->createValeurInt(brancheId, valeurName, 0, valeur);
+				tree->createValeur(brancheId, valeurName, 0, *valeur);
+				delete valeur;
 
 				printStdLn("Valeur creee.", userOutput);
 			}

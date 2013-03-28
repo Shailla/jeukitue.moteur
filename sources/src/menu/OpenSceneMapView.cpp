@@ -42,13 +42,10 @@ OpenSceneMapView::OpenSceneMapView(const AG_EventFn controllerCallback)
     hide();
 }
 
-OpenSceneMapView::~OpenSceneMapView(void)
-{
-	// TODO détruire les éléments de mapNames si ce n'est pas fait par la list
+OpenSceneMapView::~OpenSceneMapView(void) {
 }
 
-void OpenSceneMapView::show(void)
-{
+void OpenSceneMapView::show(void) {
 	// Supprime les map trouvées précédemment
 	vector<AG_Button*>::iterator iterDel = _mapButtons.begin();
 	

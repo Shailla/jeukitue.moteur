@@ -24,6 +24,8 @@ Lunar<PluginNumericProxy>::RegType PluginNumericProxy::methods[] = {
 };
 
 PluginNumericProxy::PluginNumericProxy(lua_State* L) {
+	_pluginNumeric = NULL;
+
 	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
 
 	cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur Lua : Cannot create new PluginNumericProxy in Lua";

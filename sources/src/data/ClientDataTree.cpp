@@ -28,6 +28,8 @@ using namespace std;
 
 #include "data/ClientDataTree.h"
 
+using namespace JktUtils;
+
 ClientDataTree::ClientDataTree(Distant* server, const string& clientName) {
 	_clientName = clientName;;
 	_serveur = server;
@@ -52,9 +54,9 @@ Branche* ClientDataTree::createBranche(const std::vector<int>& parentBrancheId, 
 	return branche;
 }
 
-Valeur* ClientDataTree::createValeurInt(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, int value) {
+Valeur* ClientDataTree::createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, const Data* value) {
 	Branche* parentBranche = getBranche(parentBrancheId);
-	Valeur* valeur = parentBranche->createValeurIntForClient(valeurName, revision, value);
+	Valeur* valeur = parentBranche->createValeurForClient(valeurName, revision, value);
 	addServeurMarqueur(valeur);
 
 	return valeur;
@@ -120,6 +122,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 		if(fromServer) {
 			istringstream in(*fromServer);
 			DataSerializer::fromStream(changements, in);
+			delete fromServer;
 
 			vector<Changement*>::iterator itCh;
 
@@ -157,7 +160,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 					// Le serveur informe de la création d'une nouvelle valeur
 					else if(AddValeurFromServerChangement* chgt = dynamic_cast<AddValeurFromServerChangement*>(*itCh)) {
 						Branche* parent = getBranche(chgt->getBrancheId());
-						Valeur* valeur = parent->addValeurInt(chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
+						const Valeur* valeur = parent->addValeurInt(chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
 
 						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
 					}
@@ -165,7 +168,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 					// Le serveur informe de la modification d'une valeur
 					else if(UpdateValeurFromServerChangement* chgt = dynamic_cast<UpdateValeurFromServerChangement*>(*itCh)) {
 						Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
-						valeur->setValeur(chgt->getRevision(), chgt->getValeur());
+						valeur->setValeur(chgt->getRevision(), *chgt->getValeur());
 
 						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
 					}
@@ -187,9 +190,9 @@ void ClientDataTree::receiveChangementsFromServer() {
 				catch(const DataCommunicationException& exception) {
 					cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
 				}
-			}
 
-			delete fromServer;
+				delete *itCh;
+			}
 		}
 
 
@@ -215,6 +218,11 @@ void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
 
 		ostringstream out;
 		DataSerializer::toStream(changements, out);
+
+		for(iter = changements.begin() ; iter != changements.end() ; iter++) {
+			delete *iter;
+		}
+
 		_serveur->setDataToSend(new string(out.str()));
 	}
 }

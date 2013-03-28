@@ -27,7 +27,7 @@ public:
 	JktUtils::Data* getValeurData() const;
 
 	void setValeur(int revision, int valeur);
-	void setValeur(int revision, JktUtils::Data* data);
+	void setValeur(int revision, const JktUtils::Data& data);
 
 	void updateValeur(int valeur);
 };

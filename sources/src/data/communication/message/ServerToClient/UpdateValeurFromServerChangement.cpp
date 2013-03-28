@@ -23,13 +23,13 @@ UpdateValeurFromServerChangement::UpdateValeurFromServerChangement(istringstream
 	unserialize(in);
 }
 
-UpdateValeurFromServerChangement::UpdateValeurFromServerChangement(Valeur* valeur) : Changement("UpdateValeurChangement") {
+UpdateValeurFromServerChangement::UpdateValeurFromServerChangement(const Valeur* valeur) : Changement("UpdateValeurChangement") {
 	_brancheId = valeur->getBrancheId();
 	_valeurId = valeur->getValeurId();
 
 	_revision = valeur->getRevision();
 
-	if(ValeurInt* valeurInt = dynamic_cast<ValeurInt*>(valeur)) {
+	if(const ValeurInt* valeurInt = dynamic_cast<const ValeurInt*>(valeur)) {
 		_valeur = new JktUtils::IntData(valeurInt->getValeur());
 	}
 	else {
@@ -97,6 +97,6 @@ int UpdateValeurFromServerChangement::getRevision() const {
 	return _revision;
 }
 
-JktUtils::Data* UpdateValeurFromServerChangement::getValeur() const {
+const JktUtils::Data* UpdateValeurFromServerChangement::getValeur() const {
 	return _valeur;
 }

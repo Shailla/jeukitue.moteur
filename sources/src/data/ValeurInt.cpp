@@ -6,6 +6,7 @@
  */
 
 #include <iostream>
+#include <typeinfo>
 
 using namespace std;
 
@@ -39,14 +40,14 @@ void ValeurInt::updateValeur(int valeur) {
 	update();
 }
 
-void ValeurInt::setValeur(int revision, JktUtils::Data* data) {
-	setRevision(revision);
-
-	if(JktUtils::IntData* intData = dynamic_cast<JktUtils::IntData*>(data)) {
-		_valeur = intData->getValue();
+void ValeurInt::setValeur(int revision, const JktUtils::Data& data) {
+	try {
+		const JktUtils::IntData& intData = dynamic_cast<const JktUtils::IntData&>(data);
+		setRevision(revision);
+		_valeur = intData.getValue();
 	}
-	else {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Type de valeur inconnu";
+	catch(bad_cast& exception) {
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Type 'int' attendu";
 	}
 }
 

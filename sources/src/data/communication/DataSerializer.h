@@ -15,8 +15,9 @@
 #include "data/exception/DataCommunicationException.h"
 
 class DataSerializer {
+	DataSerializer();	// Singleton
+
 public:
-	DataSerializer();
 	virtual ~DataSerializer();
 
 	static void toStream(std::vector<Changement*>& changements, std::ostringstream& out);

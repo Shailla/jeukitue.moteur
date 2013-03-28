@@ -27,7 +27,7 @@ float ValeurFloat::getValeur() const {
 }
 
 Data* ValeurFloat::getValeurData() const {
-	return new JktUtils::IntData(_valeur);
+	return new JktUtils::FloatData(_valeur);
 }
 
 void ValeurFloat::setValeur(int revision, float valeur) {
@@ -38,6 +38,18 @@ void ValeurFloat::setValeur(int revision, float valeur) {
 void ValeurFloat::updateValeur(float valeur) {
 	_valeur = valeur;
 	update();
+}
+
+void ValeurFloat::updateValeur(const JktUtils::Data* data) {
+	try {
+		const JktUtils::FloatData* stringData = dynamic_cast<const JktUtils::FloatData*>(data);
+		_valeur = stringData->getValue();
+
+		update();
+	}
+	catch(bad_cast& exception) {
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Type 'float' attendu";
+	}
 }
 
 void ValeurFloat::setValeur(int revision, const JktUtils::Data& data) {
@@ -51,3 +63,8 @@ void ValeurFloat::setValeur(int revision, const JktUtils::Data& data) {
 	}
 }
 
+std::string ValeurFloat::toString() const {
+	ostringstream str;
+	str << _valeur;
+	return str.str();
+}

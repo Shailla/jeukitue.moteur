@@ -62,8 +62,8 @@ Valeur* ClientDataTree::createValeur(const std::vector<int>& parentBrancheId, co
 	return valeur;
 }
 
-Valeur* ClientDataTree::updateValeurInt(const std::vector<int>& brancheId, int valeurId, int value) {
-	ValeurInt* valeur = (ValeurInt*)getValeur(brancheId, valeurId);
+Valeur* ClientDataTree::updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data* value) {
+	Valeur* valeur = getValeur(brancheId, valeurId);
 	valeur->updateValeur(value);
 
 	return valeur;

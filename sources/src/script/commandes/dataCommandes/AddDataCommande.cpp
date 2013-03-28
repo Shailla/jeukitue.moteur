@@ -9,6 +9,9 @@
 
 using namespace std;
 
+#include "util/types/IntData.h"
+#include "util/types/FloatData.h"
+#include "util/types/StringData.h"
 #include "util/StringUtils.h"
 #include "data/ServeurDataTree.h"
 #include "data/Distant.h"
@@ -106,11 +109,11 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 		if(tree) {
 			string valeurType = StringUtils::findAndEraseFirstWord(ligne);
 
-
 			// Nom de la valeur
 			string valeurName = StringUtils::findAndEraseFirstWord(ligne);
 
 			Data* valeur = NULL;
+
 			if(valeurType == "int") {
 				// Valeur de la valeur
 				string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
@@ -123,15 +126,14 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 			}
 			else if(valeurType == "string") {
 				// Valeur de la valeur
-				string valeurStr = StringUtils::findAndEraseFirstString(ligne);
-				valeur = new StringData(StringUtils::findAndEraseFirstWord(ligne));
+				valeur = new StringData(StringUtils::findAndEraseFirstString(ligne));
 			}
 
 			if(valeur) {
 				// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
 				vector<int> brancheId = getIntParameters(ligne);
 
-				tree->createValeur(brancheId, valeurName, 0, *valeur);
+				tree->createValeur(brancheId, valeurName, 0, valeur);
 				delete valeur;
 
 				printStdLn("Valeur creee.", userOutput);

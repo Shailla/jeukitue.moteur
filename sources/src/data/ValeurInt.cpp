@@ -1,5 +1,5 @@
 /*
- * Valeur.cpp
+ * ValeurInt.cpp
  *
  *  Created on: 5 mars 2013
  *      Author: vgdj7997
@@ -40,6 +40,18 @@ void ValeurInt::updateValeur(int valeur) {
 	update();
 }
 
+void ValeurInt::updateValeur(const JktUtils::Data* data) {
+	try {
+		const JktUtils::IntData* intData = dynamic_cast<const JktUtils::IntData*>(data);
+		_valeur = intData->getValue();
+
+		update();
+	}
+	catch(bad_cast& exception) {
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Type 'int' attendu";
+	}
+}
+
 void ValeurInt::setValeur(int revision, const JktUtils::Data& data) {
 	try {
 		const JktUtils::IntData& intData = dynamic_cast<const JktUtils::IntData&>(data);
@@ -51,3 +63,8 @@ void ValeurInt::setValeur(int revision, const JktUtils::Data& data) {
 	}
 }
 
+std::string ValeurInt::toString() const {
+	ostringstream str;
+	str << _valeur;
+	return str.str();
+}

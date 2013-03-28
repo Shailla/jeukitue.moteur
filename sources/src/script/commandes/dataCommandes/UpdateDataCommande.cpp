@@ -9,8 +9,13 @@
 
 using namespace std;
 
+#include "util/types/IntData.h"
+#include "util/types/FloatData.h"
+#include "util/types/StringData.h"
 #include "util/StringUtils.h"
 #include "data/ValeurInt.h"
+#include "data/ValeurFloat.h"
+#include "data/ValeurString.h"
 #include "data/ServeurDataTree.h"
 #include "data/ClientDataTree.h"
 #include "script/exception/IllegalParameterException.h"
@@ -64,22 +69,39 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 				brancheId.erase(brancheId.end() - 1);
 				int valeurId = *(valeurFullId.end() - 1);
 
-				Valeur* vl = tree->getValeur(brancheId, valeurId);
-				ValeurInt* vlInt = dynamic_cast<ValeurInt*>(vl);
-				Valeur* valeur = NULL;
-
-				if(vlInt != 0) {
-					int value = getIntParameter(valueStr);
-					valeur = tree->updateValeurInt(brancheId, valeurId, value);
-				}
+				Valeur* valeur = tree->getValeur(brancheId, valeurId);
 
 				if(valeur) {
-					ostringstream result;
-					result << "Valeur mise à jour. Nouvelle revision " << valeur->getRevision() << ".";
-					printStdLn(result.str().c_str(), userOutput);
+					Data* value = NULL;
+
+					if(dynamic_cast<ValeurInt*>(valeur)) {
+						// Valeur de la valeur
+						string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
+						value = new IntData(getIntParameter(valeurStr));
+					}
+					else if(dynamic_cast<ValeurFloat*>(valeur)) {
+						// Valeur de la valeur
+						string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
+						value = new FloatData(getFloatParameter(valeurStr));
+					}
+					else if(dynamic_cast<ValeurString*>(valeur)) {
+						// Valeur de la valeur
+						value = new StringData(StringUtils::findAndEraseFirstString(ligne));
+					}
+
+					if(value) {
+						valeur = tree->updateValeur(brancheId, valeurId, value);
+
+						ostringstream result;
+						result << "Valeur mise à jour. Nouvelle revision " << valeur->getRevision() << ".";
+						printStdLn(result.str().c_str(), userOutput);
+					}
+					else {
+						printErrLn("Type de valeur inconnu", userOutput);
+					}
 				}
 				else {
-					printErrLn("Syntaxe incorrecte ou valeur inconnue ou de type non-pris en charge", userOutput);
+					printErrLn("Valeur introuvable", userOutput);
 				}
 			}
 			else {

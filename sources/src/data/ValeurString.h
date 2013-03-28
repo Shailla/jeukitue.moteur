@@ -16,7 +16,7 @@
 class Branche;
 
 class ValeurString : public Valeur {
-	std::string& _valeur;
+	std::string _valeur;
 public:
 	ValeurString(Branche* parent, int valeurId, const string& valeurName, int tmpRef, int revision, const std::string& valeur);
 	virtual ~ValeurString();
@@ -27,7 +27,10 @@ public:
 	void setValeur(int revision, const std::string& valeur);
 	void setValeur(int revision, const JktUtils::Data& data);
 
+	void updateValeur(const JktUtils::Data* data);
 	void updateValeur(const std::string& valeur);
+
+	std::string toString() const;
 };
 
 #endif /* VALEURINT_H_ */

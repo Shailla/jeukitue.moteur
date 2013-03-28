@@ -40,6 +40,18 @@ void ValeurString::updateValeur(const std::string& valeur) {
 	update();
 }
 
+void ValeurString::updateValeur(const JktUtils::Data* data) {
+	try {
+		const JktUtils::StringData* stringData = dynamic_cast<const JktUtils::StringData*>(data);
+		_valeur = stringData->getValue();
+
+		update();
+	}
+	catch(bad_cast& exception) {
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Type 'string' attendu";
+	}
+}
+
 void ValeurString::setValeur(int revision, const JktUtils::Data& data) {
 	try {
 		const JktUtils::StringData& stringData = dynamic_cast<const JktUtils::StringData&>(data);
@@ -49,5 +61,11 @@ void ValeurString::setValeur(int revision, const JktUtils::Data& data) {
 	catch(bad_cast& exception) {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Type 'int' attendu";
 	}
+}
+
+std::string ValeurString::toString() const {
+	ostringstream str;
+	str << _valeur;
+	return str.str();
 }
 

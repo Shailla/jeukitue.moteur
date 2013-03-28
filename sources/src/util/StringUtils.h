@@ -35,6 +35,8 @@ public:
 
 	// trim from both ends
 	static void trim(std::string& s);
+
+	static int isGuillemet(int c);
 };
 
 } /* namespace JktUtils */

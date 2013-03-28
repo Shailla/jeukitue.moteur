@@ -29,7 +29,10 @@ public:
 	void setValeur(int revision, float valeur);
 	void setValeur(int revision, const JktUtils::Data& data);
 
+	void updateValeur(const JktUtils::Data* data);
 	void updateValeur(float valeur);
+
+	std::string toString() const;
 };
 
 #endif /* VALEURINT_H_ */

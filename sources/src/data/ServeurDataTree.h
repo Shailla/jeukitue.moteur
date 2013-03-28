@@ -33,7 +33,7 @@ public:
 
 	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName, int revision);
 	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, const JktUtils::Data* valeur);
-	Valeur* updateValeurInt(const std::vector<int>& brancheId, int valeurId, int valeur);
+	Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data* valeur);
 
 
 	/* ****************************************************

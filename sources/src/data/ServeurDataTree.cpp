@@ -50,7 +50,7 @@ Valeur* ServeurDataTree::createValeur(const vector<int>& parentBrancheId, const 
 	return addValeurFromDistant(parentBrancheId, valeurName, 0, revision, valeur, NULL);
 }
 
-Valeur* ServeurDataTree::updateValeurInt(const std::vector<int>& brancheId, int valeurId, int valeur) {
+Valeur* ServeurDataTree::updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data* valeur) {
 	return NULL;
 };
 

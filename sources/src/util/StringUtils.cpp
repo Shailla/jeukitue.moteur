@@ -58,23 +58,27 @@ string StringUtils::findAndEraseFirstWord(string& s) {
 		result = string(debutMot, finMot);
 
 		// Erase the first word
-		s.erase(debutMot, finMot);
+		s.erase(s.begin(), finMot);
 	}
 
 	return result;
 }
 
+int StringUtils::isGuillemet(int c) {
+	return c == '"';
+}
+
 string StringUtils::findAndEraseFirstString(string& s) {
 	string result;
 
-	string::iterator debutMot = find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)));
+	string::iterator debutString = find_if(s.begin(), s.end(), ptr_fun<int, int>(isGuillemet));
+	string::iterator finString = find_if(debutString, s.end(), ptr_fun<int, int>(isGuillemet));
 
-	if(debutMot != s.end()) {
-		string::iterator finMot = find_if(debutMot, s.end(), ptr_fun<int, int>(isspace));
-		result = string(debutMot, finMot);
+	if(debutString < finString && debutString != s.end()) {
+		result = string(debutString, finString);
 
 		// Erase the first word
-		s.erase(debutMot, finMot);
+		s.erase(s.begin(), finString);
 	}
 
 	return result;

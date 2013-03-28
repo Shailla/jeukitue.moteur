@@ -29,8 +29,8 @@ public:
 	 * ****************************************************/
 
 	virtual Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName, int revision) = 0;
-	virtual Valeur* createValeur(const std::vector<int>& brancheId, const std::string& valeurName, int revision, const JktUtils::Data& valeur) = 0;
-	virtual Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data& valeur) = 0;
+	virtual Valeur* createValeur(const std::vector<int>& brancheId, const std::string& valeurName, int revision, const JktUtils::Data* valeur) = 0;
+	virtual Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data* valeur) = 0;
 
 
 	/* *********************************

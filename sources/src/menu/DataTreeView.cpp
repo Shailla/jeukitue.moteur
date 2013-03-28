@@ -40,7 +40,7 @@ DataTreeView::DataTreeView(const AG_EventFn controllerCallback)
 	AG_ButtonNewFn(boxButtons, 0, "Retour", controllerCallback, "%i", Controller::ShowDebugViewAction);
 
     // Bouton rafraîchir
-    AG_ButtonNewFn(boxButtons, 0, "Rafraichir", DataTreeView::refresh, "%p%p", m_window, _serveurDetails);
+    AG_ButtonNewFn(boxButtons, 0, "Rafraichir", DataTreeView::refresh, "%p", _serveurDetails);
 
     // Bouton rafraîchir
     AG_ButtonNewFn(boxButtons, 0, "Ouvrir les fenetres clients", openClientsWindows, "%p", this);
@@ -219,12 +219,7 @@ void DataTreeView::drawBranche(DataTreeDetails* details, Branche* branche, int d
 
 			ostringstream txt;
 
-			if(ValeurInt* vl = dynamic_cast<ValeurInt*>(valeur)) {
-				txt << "Valeur[" << vl->getValeurId() << " r" << vl->getRevision() << " '" << vl->getValeurName() << "'] : '" << vl->getValeur() << "'";
-			}
-			else {
-				txt << "Valeur[" << valeur->getValeurId() << " r" << vl->getRevision() << "'" << valeur->getValeurName() << "'] : type inconnu";
-			}
+			txt << "Valeur[" << valeur->getValeurId() << " r" << valeur->getRevision() << " '" << valeur->getValeurName() << "'] : '" << valeur->toString() << "'";
 
 			AG_TlistItem* item = AG_TlistAddPtr(details->getDataList(), NULL, txt.str().c_str(), valeur);
 			item->depth = depth+1;

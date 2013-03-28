@@ -34,7 +34,9 @@ public:
 	int getValeurId() const;
 	void setValeurId(int valeurId);
 	virtual void setValeur(int revision, const JktUtils::Data& data) = 0;
+	virtual void updateValeur(const JktUtils::Data* data) = 0;
 	virtual JktUtils::Data* getValeurData() const = 0;
+	virtual std::string toString() const = 0;
 };
 
 #endif /* VALEUR_H_ */

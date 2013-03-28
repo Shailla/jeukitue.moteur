@@ -273,7 +273,6 @@ void ServeurDataTree::receiveChangementsFromClient() {
 							Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
 
 							if(valeur->getRevision() < chgt->getRevision()) {
-								// Si la valeur existe déjà on renvoie juste la réponse au client
 								valeur->setValeur(chgt->getRevision(), chgt->getValeur());
 
 								MarqueurDistant* marqueur = distant->getMarqueur(valeur);
@@ -282,7 +281,6 @@ void ServeurDataTree::receiveChangementsFromClient() {
 								answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), chgt->getValeurId(), valeur->getRevision()));
 							}
 							else {
-								// TODO Envoyer un message au client pour qu'il réinitialise les données de cette valeur en prenant celle du serveur comme référence
 								cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : La révision client est plus ancienne que celle du serveur";
 							}
 						}

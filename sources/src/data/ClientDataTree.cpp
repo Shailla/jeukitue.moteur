@@ -140,6 +140,9 @@ void ClientDataTree::receiveChangementsFromServer() {
 						Branche* branche = getBranche(chgt->getBrancheId());
 						Valeur* valeur = branche->acceptTmpValeur(chgt->getValeurTmpId(), chgt->getValeurId(), chgt->getRevision());
 
+						MarqueurDistant* marqueur = _serveur->getMarqueur(valeur);
+						marqueur->setConfirmedRevision(chgt->getRevision());
+
 						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), branche->getRevision()));
 					}
 

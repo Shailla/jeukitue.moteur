@@ -27,7 +27,7 @@ DataTreeView::DataTreeView(const AG_EventFn controllerCallback)
 	AG_Box* box = AG_BoxNewHoriz(m_window, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
 	AG_Expand(box);
 
-	_serveurDetails = drawWidgets(box, &serveurDataTree);
+	_serveurDetails = drawWidgets(m_window, box, &serveurDataTree);
 
     AG_SeparatorNewHoriz(m_window);
 
@@ -52,7 +52,7 @@ DataTreeView::DataTreeView(const AG_EventFn controllerCallback)
 DataTreeView::~DataTreeView(void) {
 }
 
-DataTreeDetails* DataTreeView::drawWidgets(AG_Box* box, DataTree* tree) {
+DataTreeDetails* DataTreeView::drawWidgets(AG_Window* window, AG_Box* box, DataTree* tree) {
 	AG_Box* boxes[2];
 	boxes[0] = AG_BoxNewVert(box, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
 	boxes[1] = AG_BoxNewVert(box, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
@@ -69,7 +69,7 @@ DataTreeDetails* DataTreeView::drawWidgets(AG_Box* box, DataTree* tree) {
 	AG_TableAddCol(clientsTable, "Conf. rev.", "<XXXXXXXXXXXX>", NULL);
 	AG_Expand(clientsTable);
 
-	DataTreeDetails* details = new DataTreeDetails(dataList, clientsTable, tree);
+	DataTreeDetails* details = new DataTreeDetails(window, dataList, clientsTable, tree);
 	AG_TlistSetChangedFn(dataList, selectionChanged, "%p", details);
 
 	return details;
@@ -97,6 +97,7 @@ void DataTreeView::openClientsWindows(AG_Event* event) {
 		}
 
 		if(!details) {
+			// Crée la fenêtre du client si elle n'existe pas encore
 			AG_Window* window = AG_WindowNew(0);
 			AG_WindowSetCaption(window, tree->getClientName().c_str());
 
@@ -105,7 +106,7 @@ void DataTreeView::openClientsWindows(AG_Event* event) {
 
 			AG_SeparatorNewHoriz(window);
 
-			details = drawWidgets(box, tree);
+			details = drawWidgets(window, box, tree);
 			This->_clientDataTrees[tree] = details;
 
 			// Boutons
@@ -113,13 +114,19 @@ void DataTreeView::openClientsWindows(AG_Event* event) {
 			AG_ExpandHoriz(boxButtons);
 
 			// Bouton rafraîchir
-			AG_ButtonNewFn(boxButtons, 0, "Rafraichir", DataTreeView::refresh, "%p%p", window, details);
+			AG_ButtonNewFn(boxButtons, 0, "Rafraichir", DataTreeView::refresh, "%p", details);
 
 			refreshClientTable(details);
-			refreshServeur(window, details);
+			refreshServeur(details);
 
 			AG_WindowSetGeometryAlignedPct(window, AG_WINDOW_TC, 100, 50);
 			AG_WindowShow(window);
+		}
+		else {
+			// Rafraichit et affiche la fenêtre si elle existe déjà
+			refreshClientTable(details);
+			refreshServeur(details);
+			AG_WindowShow(details->getWindow());
 		}
 	}
 }
@@ -167,14 +174,13 @@ void DataTreeView::refreshClientTable(DataTreeDetails* details) {
 }
 
 void DataTreeView::refresh(AG_Event* event) {
-	AG_Window* window = (AG_Window*)AG_PTR(1);
-	DataTreeDetails* details = (DataTreeDetails*)AG_PTR(2);
+	DataTreeDetails* details = (DataTreeDetails*)AG_PTR(1);
 
 	refreshClientTable(details);
-	refreshServeur(window, details);
+	refreshServeur(details);
 }
 
-void DataTreeView::refreshServeur(AG_Window* window, DataTreeDetails* details) {
+void DataTreeView::refreshServeur(DataTreeDetails* details) {
 	/* ************************************
 	 * Mise à jour de l'abre des données
 	 * ***********************************/
@@ -192,12 +198,12 @@ void DataTreeView::refreshServeur(AG_Window* window, DataTreeDetails* details) {
 
 
 	// Rafraichissement de la page
-	AG_WindowUpdate(window);
+	AG_WindowUpdate(details->getWindow());
 }
 
 void DataTreeView::show(void) {
 	refreshClientTable(_serveurDetails);
-	refreshServeur(m_window, _serveurDetails);
+	refreshServeur(_serveurDetails);
 
 	View::show();
 }
@@ -214,10 +220,10 @@ void DataTreeView::drawBranche(DataTreeDetails* details, Branche* branche, int d
 			ostringstream txt;
 
 			if(ValeurInt* vl = dynamic_cast<ValeurInt*>(valeur)) {
-				txt << "Valeur[" << vl->getValeurId() << ":" << vl->getValeurName() << "] : '" << vl->getValeur() << "'";
+				txt << "Valeur[" << vl->getValeurId() << " r" << vl->getRevision() << " '" << vl->getValeurName() << "'] : '" << vl->getValeur() << "'";
 			}
 			else {
-				txt << "Valeur[" << valeur->getValeurId() << ":" << valeur->getValeurName() << "] : type inconnu";
+				txt << "Valeur[" << valeur->getValeurId() << " r" << vl->getRevision() << "'" << valeur->getValeurName() << "'] : type inconnu";
 			}
 
 			AG_TlistItem* item = AG_TlistAddPtr(details->getDataList(), NULL, txt.str().c_str(), valeur);
@@ -234,7 +240,7 @@ void DataTreeView::drawBranche(DataTreeDetails* details, Branche* branche, int d
 			Branche* subBranche = itBr->second;
 
 			ostringstream tete;
-			tete << "Branche[" << subBranche->getBrancheId() << ":" << subBranche->getBrancheName()  << "]";
+			tete << "Branche[" << subBranche->getBrancheId() << " r" << subBranche->getRevision() << " '" << subBranche->getBrancheName()  << "']";
 
 			AG_TlistItem* item = AG_TlistAddPtr(details->getDataList(), NULL, tete.str().c_str(), subBranche);
 			item->depth = depth;

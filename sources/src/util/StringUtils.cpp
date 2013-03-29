@@ -72,13 +72,13 @@ string StringUtils::findAndEraseFirstString(string& s) {
 	string result;
 
 	string::iterator debutString = find_if(s.begin(), s.end(), ptr_fun<int, int>(isGuillemet));
-	string::iterator finString = find_if(debutString, s.end(), ptr_fun<int, int>(isGuillemet));
+	string::iterator finString = find_if(debutString + 2, s.end(), ptr_fun<int, int>(isGuillemet));
 
-	if(debutString < finString && debutString != s.end()) {
-		result = string(debutString, finString);
+	if(finString < s.end() && debutString + 1 < finString) {
+		result = string(debutString + 1, finString);
 
 		// Erase the first word
-		s.erase(s.begin(), finString);
+		s.erase(s.begin(), finString + 1);
 	}
 
 	return result;

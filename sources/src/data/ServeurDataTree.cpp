@@ -253,25 +253,20 @@ void ServeurDataTree::receiveChangementsFromClient() {
 
 						// Le client demande la création d'une nouvelle valeur
 						else if(AddValeurFromClientChangement* chgt = dynamic_cast<AddValeurFromClientChangement*>(*itCh)) {
-							if(IntData* value = dynamic_cast<IntData*>(chgt->getValeur())) {
-								Valeur* valeur;
+							Valeur* valeur;
 
-								try {
-									// Si la valeur existe déjà on renvoie juste la réponse au client
-									valeur = getValeurByDistantTmpId(distant, chgt->getBrancheId(), chgt->getValeurTmpId());
-								}
-								catch(NotExistingValeurException& exception) {
-									valeur = addValeurFromDistant(chgt->getBrancheId(), chgt->getValeurName(), chgt->getValeurTmpId(), chgt->getRevision(), value, distant);
-								}
-
-								MarqueurDistant* marqueur = distant->getMarqueur(valeur);
-								marqueur->setConfirmedRevision(valeur->getRevision());
-
-								answers.push_back(new AcceptAddValeurFromClientChangement(valeur->getBrancheId(), chgt->getValeurTmpId(), valeur->getValeurId(), valeur->getRevision()));
+							try {
+								// Si la valeur existe déjà on renvoie juste la réponse au client
+								valeur = getValeurByDistantTmpId(distant, chgt->getBrancheId(), chgt->getValeurTmpId());
 							}
-							else {
-								throw DataCommunicationException("Valeur de type inconnu");
+							catch(NotExistingValeurException& exception) {
+								valeur = addValeurFromDistant(chgt->getBrancheId(), chgt->getValeurName(), chgt->getValeurTmpId(), chgt->getRevision(), chgt->getValeur(), distant);
 							}
+
+							MarqueurDistant* marqueur = distant->getMarqueur(valeur);
+							marqueur->setConfirmedRevision(valeur->getRevision());
+
+							answers.push_back(new AcceptAddValeurFromClientChangement(valeur->getBrancheId(), chgt->getValeurTmpId(), valeur->getValeurId(), valeur->getRevision()));
 						}
 
 						// Le client demande la modification d'une valeur

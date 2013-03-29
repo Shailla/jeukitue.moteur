@@ -126,7 +126,11 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 			}
 			else if(valeurType == "string") {
 				// Valeur de la valeur
-				valeur = new StringData(StringUtils::findAndEraseFirstString(ligne));
+				cout << endl << "LIGNE'" << ligne << "'";
+				const string& valeurStr = StringUtils::findAndEraseFirstString(ligne);
+				valeur = new StringData(valeurStr);
+				cout << endl << "LIGNE'" << ligne << "'";
+				cout << endl << "RES'" << valeurStr << "'";
 			}
 
 			if(valeur) {

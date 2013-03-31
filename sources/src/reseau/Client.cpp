@@ -213,8 +213,7 @@ TRACE().p( TRACE_RESEAU, "CClient::ouvre() -> %b end%T", result, this );
 	return result;
 }
 
-void CClient::sendRequestInfoToServer()
-{
+void CClient::sendRequestInfoToServer() {
 	m_InfoServer.Ready( false );	// Indique l'attente d'actualisation de ces infos
 
 	spaMaitre.init();
@@ -229,8 +228,7 @@ void CClient::sendRequestInfoToServer()
 	}
 }
 
-void CClient::sendPingToServer()
-{
+void CClient::sendPingToServer() {
 	m_pingClientServer = -1;	// Initialisation de la durée du ping
 	m_timePingClientServer = SDL_GetTicks();	// Temps à l'envoie du ping
 
@@ -243,8 +241,7 @@ void CClient::sendPingToServer()
 		cout << endl << "Ping envoye au serveur";
 }
 
-void CClient::sendJoinTheGame( string &nomPlayer )
-{
+void CClient::sendJoinTheGame( string &nomPlayer ) {
 TRACE().p( TRACE_RESEAU, "CClient::sendJoinTheGame(nomPlayer=%s) begin%T", nomPlayer.c_str(), this );
 
 	setStatut( JKT_STATUT_CLIENT_DEMJTG );	// Statut, demande de "Join The Game" envoyée
@@ -264,26 +261,22 @@ TRACE().p( TRACE_RESEAU, "CClient::sendJoinTheGame(nomPlayer=%s) begin%T", nomPl
 TRACE().p( TRACE_RESEAU, "CClient::sendJoinTheGame() end%T", this );
 }
 
-void CClient::recoit()
-{
+void CClient::recoit() {
 	int numReady;
 	Uint16 code1, code2;
 
 	numReady = SDLNet_CheckSockets( socketSet, 0 );	// Nombre de sockets ayant une activité détectée
-	if( numReady==-1 )
-	{
+
+	if( numReady==-1 ) {
 		cout << "SDLNet_CheckSockets: " << SDLNet_GetError();
 	}
-	else if( numReady )
-	{
-		if( SDLNet_SocketReady( spaMaitre.getSocket() ) )
-		{
-			if( spaMaitre.recoit() )
-			{
+	else if( numReady ) {
+		if( SDLNet_SocketReady( spaMaitre.getSocket() ) ) {
+			if( spaMaitre.recoit() ) {
 				spaMaitre.init();
 				spaMaitre.readCode( code1, code2 );
 
-				if( !decodeNonConnecte( code1, code2 ) )	// Décode les paquets en mode non connécté
+				if( !decodeNonConnecte( code1, code2 ) )	// Décode les paquets en mode non connecté
 					if( getStatut()==JKT_STATUT_CLIENT_PLAY )	// Si une partie est en cours
 						decodeConnecte( code1, code2 );	// Décode les paquest en mode connecté
 			}
@@ -291,24 +284,21 @@ void CClient::recoit()
 	}
 }
 
-int CClient::getPingClientServeur()
-{
+int CClient::getPingClientServeur() {
 	int ping = m_pingClientServer;
-	if( ping==-1 )		// Pas de valeur de ping à fournir
-	{
-		if(m_timePingClientServer > 0)	// Si un ping a été envoyé
-		{
-			if( SDL_GetTicks()-m_timePingClientServer>9999 )	// S'il a été envoyé il y a trop longtemps
-			{
+
+	if( ping==-1 ) {		// Pas de valeur de ping à fournir
+		if(m_timePingClientServer > 0) {	// Si un ping a été envoyé
+			if( SDL_GetTicks()-m_timePingClientServer>9999 ) {	// S'il a été envoyé il y a trop longtemps
 				m_pingClientServer = -1;	// Oublie ce ping
 				ping = 9999;			// Signale un temps de ping long
 			}
 		}
 	}
-	else
-	{
+	else {
 		m_pingClientServer = -1;
 	}
+
 	return ping;
 }
 
@@ -317,14 +307,11 @@ bool CClient::decodeNonConnecte( Uint16 code1, Uint16 code2 )
 	bool result = false;
 	Uint16 code3;
 
-	switch( code1 )
-	{
+	switch( code1 ) {
 	case SERVER_INFO:
-		switch( code2 )
-		{
+		switch( code2 ) {
 		case SERVER_ACK:
-			if( spaMaitre.getPacketIn()->len>5 )
-			{
+			if( spaMaitre.getPacketIn()->len>5 ) {
 				char txt[50];
 TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Info serveur%T", this );
 				cout << endl << "Reponse a la demande d'info serveur recue";
@@ -336,6 +323,7 @@ TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Info serveur%T", this );
 			}
 			result = true;
 			break;
+
 		default:
 TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu 5%s%T",
 spaMaitre.debugToString().c_str(), this );
@@ -344,6 +332,7 @@ spaMaitre.debugToString().c_str(), this );
 		}
 		result = false;
 		break;
+
 	case SERVER_PING:
 		switch( code2 )
 		{

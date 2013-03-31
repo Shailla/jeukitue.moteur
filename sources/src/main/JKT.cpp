@@ -859,8 +859,8 @@ void timer(Uint32 ecart) {
 	if( Reseau.getOn() && (Game.isModeClient()) &&(
 		(Game.getStatutClient()==JKT_STATUT_CLIENT_READY)	||
 		(Game.getStatutClient()==JKT_STATUT_CLIENT_DEMJTG)	||
-		(Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) ) )	// Si c'est un client
-	{
+		(Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) ) ) {	// Si c'est un client
+
 		Reseau.recoitClient();
 	}
 

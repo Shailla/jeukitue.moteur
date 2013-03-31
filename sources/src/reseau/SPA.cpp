@@ -24,10 +24,8 @@ int CSPA::m_BytesEm = 0;	// Nombre d'octets pour le comptage du débit en émmissi
 Uint32 CSPA::m_TimeBytesEm = 0;
 int CSPA::m_NombreEm = 0;
 
-CSPA::CSPA()
-{
-	if( m_TimeBytesRec == 0 )	// Si l'initialisation de classe n'a pas encore eu lieu
-	{
+CSPA::CSPA() {
+	if( m_TimeBytesRec == 0 ) {	// Si l'initialisation de classe n'a pas encore eu lieu
 		m_TimeBytesRec = SDL_GetTicks();
 		m_TimeBytesEm = m_TimeBytesRec;
 	}
@@ -40,19 +38,16 @@ CSPA::CSPA()
 	m_uPosition = 0;
 }
 
-bool CSPA::open( const string &remIp, Uint16 remPort )
-{
+bool CSPA::open( const string &remIp, Uint16 remPort ) {
 TRACE().p( TRACE_RESEAU, "CSPA::open(lremIp=%s,remPort=%d) begin%T", remIp.c_str(), remPort, this );
 	bool result = true;
 
-	if( SDLNet_ResolveHost( &m_Ip, remIp.c_str(), remPort ) )
-	{
+	if( SDLNet_ResolveHost( &m_Ip, remIp.c_str(), remPort ) ) {
 TRACE().p( TRACE_ERROR, "CSPA::open() SDLNet_ResolveHost : %s%T", SDLNet_GetError(), this );
 		result = false;
 	}
 
-	if( result )
-	{
+	if( result ) {
 		result = open( m_Ip );
 		if( !result )
 			TRACE().p( TRACE_ERROR, "CSPA::open() open( m_Ip )%T", this );
@@ -75,7 +70,7 @@ TRACE().p( TRACE_RESEAU, "CSPA::open(address=[%s,%d]) begin%T", SDLNet_ResolveIP
 	m_Ip = address;
 
 	if(result) {
-		m_Socket = SDLNet_UDP_Open( 0 );		// Ouverture d'un socket client
+		m_Socket = SDLNet_UDP_Open( 0 );		// Ouverture d'un socket client sur un port quelconque
 
 		if(!m_Socket) {
 TRACE().p( TRACE_ERROR, "CSPA::open() : %s%T", SDLNet_GetError(), this );
@@ -88,7 +83,7 @@ TRACE().p( TRACE_ERROR, "CSPA::open() : %s%T", SDLNet_GetError(), this );
 	// Attachement du socket à l'IP de l'autre
 	if(result) {
 		m_PacketOut->channel = SDLNet_UDP_Bind( m_Socket, -1, &m_Ip );
-		m_PacketIn->channel = m_PacketOut->channel;
+
 		if(m_PacketOut->channel == -1) {
 TRACE().p( TRACE_ERROR, "CSPA::open() : %s%T", SDLNet_GetError(), this );
 			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
@@ -98,6 +93,8 @@ TRACE().p( TRACE_ERROR, "CSPA::open() : %s%T", SDLNet_GetError(), this );
 
 			result = false;
 		}
+
+		m_PacketIn->channel = m_PacketOut->channel;
 	}
 
 TRACE().p( TRACE_RESEAU, "CSPA::open() -> %b end%T", result, this );
@@ -129,8 +126,7 @@ TRACE().p( TRACE_RESEAU, "CSPA::close() begin%T", this );
 TRACE().p( TRACE_RESEAU, "CSPA::close()end%T", this );
 }
 
-void CSPA::init()	// Initialise la position dans le paquet
-{
+void CSPA::init() {	// Initialise la position dans le paquet
 	m_uPosition = 0;
 }
 
@@ -217,8 +213,7 @@ void CSPA::add3fv( float *var )	// Ajoute un tableau de 3 flottants
 	m_uPosition += 12;
 }
 
-void CSPA::read3fv( float *var )	// Lit un tableau de 3 flottants
-{
+void CSPA::read3fv( float *var ) {	// Lit un tableau de 3 flottants
 	((char*)var)[0] = *((char*)m_PacketIn->data+m_uPosition);
 	((char*)var)[1] = *((char*)m_PacketIn->data+m_uPosition+1);
 	((char*)var)[2] = *((char*)m_PacketIn->data+m_uPosition+2);
@@ -237,50 +232,43 @@ void CSPA::read3fv( float *var )	// Lit un tableau de 3 flottants
 	m_uPosition += 12;
 }
 
-void CSPA::addChar( const char *txt )
-{
+void CSPA::addChar( const char *txt ) {
 	unsigned int len = (unsigned int)strlen( txt );
 	strcpy( (char*)m_PacketOut->data+m_uPosition, txt );		// Copie le texte -> paquet
 	m_uPosition += len + 1;								// Taille du txt + 2 octets pour len
 }
 
-void CSPA::add( const string &txt )
-{
+void CSPA::add( const string &txt ) {
 	unsigned int len = (unsigned int)txt.size();
 	strcpy( (char*)m_PacketOut->data+m_uPosition, txt.c_str() );		// Copie le texte -> paquet
 	m_uPosition += len + 1;								// Taille du txt + 2 octets pour len
 }
 
-void CSPA::readChar( char *txt )
-{
+void CSPA::readChar( char *txt ) {
 	strcpy( txt, (char*)m_PacketIn->data+m_uPosition );
 	m_uPosition += (unsigned int)strlen( txt ) + 1;
 }
 
-void CSPA::readString( string &mot )
-{
+void CSPA::readString( string &mot ) {
 	mot = (char*)m_PacketIn->data+m_uPosition;
 	m_uPosition += (unsigned int)mot.length() + 1;
 }
 
-int CSPA::send()
-{
+int CSPA::send() {
 	m_BytesEm += m_uPosition;
 	m_PacketOut->len = m_uPosition;
 	m_NombreEm++;
 	return SDLNet_UDP_Send( m_Socket, m_PacketOut->channel, m_PacketOut );
 }
 
-int CSPA::recoit()
-{
+int CSPA::recoit() {
 	int result = SDLNet_UDP_Recv( m_Socket, m_PacketIn );
 	m_BytesRec += m_PacketIn->len;
 	m_NombreRec++;
 	return result;
 }
 
-string CSPA::iPInToString() const
-{
+string CSPA::iPInToString() const {
 	stringstream str;
 	Uint32 ip =  SDL_SwapBE32( m_PacketIn->address.host );
 	Uint16 port = SDL_SwapBE16(  m_PacketIn->address.port );
@@ -289,8 +277,7 @@ string CSPA::iPInToString() const
 	return str.str();
 }
 
-string CSPA::iPOutToString() const
-{
+string CSPA::iPOutToString() const {
 	stringstream str;
 	Uint32 ip =  SDL_SwapBE32( m_PacketOut->address.host );
 	Uint16 port = SDL_SwapBE16(  m_PacketOut->address.port );
@@ -299,8 +286,7 @@ string CSPA::iPOutToString() const
 	return str.str();
 }
 
-CSPA::~CSPA()
-{
+CSPA::~CSPA() {
 	SDLNet_FreePacket( m_PacketIn );
 	SDLNet_FreePacket( m_PacketOut );
 
@@ -311,18 +297,15 @@ CSPA::~CSPA()
 	}
 }
 
-UDPpacket *CSPA::getPacketIn() const
-{
+UDPpacket *CSPA::getPacketIn() const {
 	return m_PacketIn;
 }
 
-UDPpacket *CSPA::getPacketOut() const
-{
+UDPpacket *CSPA::getPacketOut() const {
 	return m_PacketOut;
 }
 
-string CSPA::debugToString()
-{
+string CSPA::debugToString() {
 	stringstream str;
 
 	str << "\nPaquet recu :\n";
@@ -334,8 +317,7 @@ string CSPA::debugToString()
 	str << "\tChannel :\t" << m_PacketIn->channel << endl;
 	str << "\tStatus :\t" << m_PacketIn->status << "\n\t";
 
-	for( int i=0 ; i<m_PacketIn->len ; i=i+2 )
-	{
+	for( int i=0 ; i<m_PacketIn->len ; i=i+2 ) {
 		if( (i%10) == 0 )
 			str << "\n\t\t";
 		else if( (i%5) == 0 )
@@ -347,8 +329,7 @@ string CSPA::debugToString()
 	return str.str();
 }
 
-void CSPA::readRecapFromServer( const CPlayer &player )
-{
+void CSPA::readRecapFromServer( const CPlayer &player ) {
 	float vect[3];
 
 	player.getPosition( vect );				// Position du joueur
@@ -358,8 +339,7 @@ void CSPA::readRecapFromServer( const CPlayer &player )
 	read3fv( vect );
 }
 
-void CSPA::addRecapFromServer( const CPlayer &player )
-{
+void CSPA::addRecapFromServer( const CPlayer &player ) {
 	float vect[3];
 
 	player.getPosition( vect );		// Sa position

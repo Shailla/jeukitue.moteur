@@ -25,7 +25,7 @@ using namespace std;
 using namespace JktUtils;
 
 extern ServeurDataTree serveurDataTree;
-extern std::map<ClientDataTree*, Distant*> dataRouter;
+extern std::map<ClientDataTree*, Interlocutor*> dataRouter;
 
 UpdateDataCommande::UpdateDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
@@ -45,7 +45,7 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 			string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
 			// Recherche du client
-			map<ClientDataTree*, Distant*>::iterator it;
+			map<ClientDataTree*, Interlocutor*>::iterator it;
 			ClientDataTree* clientTree;
 
 			for(it = dataRouter.begin() ; (it != dataRouter.end() && !tree) ; it++) {

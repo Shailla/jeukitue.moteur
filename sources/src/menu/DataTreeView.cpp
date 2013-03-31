@@ -15,6 +15,7 @@ using namespace std;
 #include "data/ValeurInt.h"
 #include "data/ClientDataTree.h"
 #include "data/MarqueurDistant.h"
+#include "data/Interlocutor.h"
 
 #include "menu/DataTreeView.h"
 
@@ -83,7 +84,7 @@ void DataTreeView::selectionChanged(AG_Event* event) {
 void DataTreeView::openClientsWindows(AG_Event* event) {
 	DataTreeView* This = (DataTreeView*)AG_PTR(1);
 
-	map<ClientDataTree*, Distant*>::iterator it;
+	map<ClientDataTree*, Interlocutor*>::iterator it;
 
 	for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
 		ClientDataTree* tree = it->first;
@@ -141,7 +142,7 @@ void DataTreeView::refreshClientTable(DataTreeDetails* details) {
 
 	AG_TableBegin(details->getClientsTable());
 
-	vector<Distant*> distantsToShow;
+	vector<DistantTreeProxy*> distantsToShow;
 
 	if(ServeurDataTree* serveur = dynamic_cast<ServeurDataTree*>(details->getDataTree())) {
 		distantsToShow = serveur->getDistants();
@@ -150,23 +151,24 @@ void DataTreeView::refreshClientTable(DataTreeDetails* details) {
 		distantsToShow.push_back(client->getDistantServer());
 	}
 
-	vector<Distant*>::iterator iter;
+	vector<DistantTreeProxy*>::iterator iter;
 
 	for(iter = distantsToShow.begin() ; iter != distantsToShow.end() ; iter++) {
-		Distant* client = *iter;
+		DistantTreeProxy* client = *iter;
+		Interlocutor* interlocutor = client->getInterlocutor();
 
 		if(selectedDonnee) {
 			MarqueurDistant* marqueur = client->getMarqueur(selectedDonnee);
 
 			if(marqueur) {
-				AG_TableAddRow(details->getClientsTable(), "%s:%d:%d:%d", client->getDebugName().c_str(), marqueur->getTemporaryId(), marqueur->getSentRevision(), marqueur->getConfirmedRevision());
+				AG_TableAddRow(details->getClientsTable(), "%s:%d:%d:%d", interlocutor->getName().c_str(), marqueur->getTemporaryId(), marqueur->getSentRevision(), marqueur->getConfirmedRevision());
 			}
 			else {
-				AG_TableAddRow(details->getClientsTable(), "%s:%s:%s:%s", client->getDebugName().c_str(), "<Pas de marqueur>", "<Bug>", "<Bug>");
+				AG_TableAddRow(details->getClientsTable(), "%s:%s:%s:%s", interlocutor->getName().c_str(), "<Pas de marqueur>", "<Bug>", "<Bug>");
 			}
 		}
 		else {
-			AG_TableAddRow(details->getClientsTable(), "%s:%s:%s:%s", client->getDebugName().c_str(), "-", "-", "-");
+			AG_TableAddRow(details->getClientsTable(), "%s:%s:%s:%s", interlocutor->getName().c_str(), "-", "-", "-");
 		}
 	}
 

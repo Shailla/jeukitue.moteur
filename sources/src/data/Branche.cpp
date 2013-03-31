@@ -50,7 +50,7 @@ Branche* Branche::getSubBranche(int brancheId) const {
 	return branche;
 }
 
-Branche* Branche::getSubBrancheByDistantTmpId(Distant* distant, int brancheTmpId) throw(NotExistingBrancheException) {
+Branche* Branche::getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheTmpId) throw(NotExistingBrancheException) {
 	map<int, Branche*>::iterator it;
 	MarqueurDistant* marqueur;
 	Branche* subBranche = NULL;
@@ -71,7 +71,7 @@ Branche* Branche::getSubBrancheByDistantTmpId(Distant* distant, int brancheTmpId
 	return subBranche;
 }
 
-Valeur* Branche::getValeurByDistantTmpId(Distant* distant, int valeurTmpId) throw(NotExistingValeurException) {
+Valeur* Branche::getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) throw(NotExistingValeurException) {
 	map<int, Valeur*>::iterator it;
 	MarqueurDistant* marqueur;
 	Valeur* valeur = NULL;

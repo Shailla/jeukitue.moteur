@@ -25,14 +25,16 @@ using namespace std;
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
 #include "util/CollectionsUtils.h"
+#include "data/Interlocutor.h"
+#include "data/DistantTreeProxy.h"
 
 #include "data/ClientDataTree.h"
 
 using namespace JktUtils;
 
-ClientDataTree::ClientDataTree(Distant* server, const string& clientName) {
-	_clientName = clientName;;
-	_serveur = server;
+ClientDataTree::ClientDataTree(const std::string& clientName, Interlocutor* serverInterlocutor) {
+	_clientName = clientName;
+	_serverTreeProxy = new DistantTreeProxy(serverInterlocutor);
 }
 
 ClientDataTree::~ClientDataTree() {
@@ -42,7 +44,7 @@ const string& ClientDataTree::getClientName() const {
 	return _clientName;
 }
 
-void ClientDataTree::initDistantBranche(Distant* distant, Branche* branche) {
+void ClientDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* branche) {
 
 }
 
@@ -70,17 +72,17 @@ Valeur* ClientDataTree::updateValeur(const std::vector<int>& brancheId, int vale
 }
 
 void ClientDataTree::addServeurMarqueur(Donnee* donnee) {
-	_serveur->addMarqueur(donnee, 0);
+	_serverTreeProxy->addMarqueur(donnee, 0);
 }
 
-Distant* ClientDataTree::getDistantServer() const {
-	return _serveur;
+DistantTreeProxy* ClientDataTree::getDistantServer() const {
+	return _serverTreeProxy;
 }
 
 void ClientDataTree::diffuseChangementsToServer(void) {
 	vector<Changement*> changements;
 
-	_serveur->collecteChangementsInClientTree(changements);
+	_serverTreeProxy->collecteChangementsInClientTree(changements);
 
 	sendChangementsToServer(changements);
 }
@@ -116,8 +118,10 @@ void ClientDataTree::receiveChangementsFromServer() {
 		 * Traitement des données venant du serveur
 		 * *******************************************/
 
+		Interlocutor* interlocutor = _serverTreeProxy->getInterlocutor();
+
 		// Récupération des données du serveur
-		string* fromServer = _serveur->getDataReceived();
+		string* fromServer = interlocutor->getDataReceived();
 
 		if(fromServer) {
 			istringstream in(*fromServer);
@@ -127,7 +131,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 			vector<Changement*>::iterator itCh;
 
 			for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
-				cout << endl << _clientName << " from " << _serveur->getDebugName() << "\t : " << (*itCh)->toString() << flush;
+				cout << endl << _clientName << " from " << interlocutor->getName() << "\t : " << (*itCh)->toString() << flush;
 
 				try {
 					// Le serveur accepte la création de la nouvelle branche demandée par ce client et lui attribue son identifiant définitif
@@ -143,7 +147,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 						Branche* branche = getBranche(chgt->getBrancheId());
 						Valeur* valeur = branche->acceptTmpValeur(chgt->getValeurTmpId(), chgt->getValeurId(), chgt->getRevision());
 
-						MarqueurDistant* marqueur = _serveur->getMarqueur(valeur);
+						MarqueurDistant* marqueur = _serverTreeProxy->getMarqueur(valeur);
 						marqueur->setConfirmedRevision(chgt->getRevision());
 
 						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), branche->getRevision()));
@@ -176,7 +180,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 					// Le server confirme la révision de valeur qu'il a reçu
 					else if(ConfirmValeurChangement* chgt = dynamic_cast<ConfirmValeurChangement*>(*itCh)) {
 						Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
-						MarqueurDistant* marqueur = _serveur->getMarqueur(valeur);
+						MarqueurDistant* marqueur = _serverTreeProxy->getMarqueur(valeur);
 						marqueur->setConfirmedRevision(chgt->getRevision());
 					}
 
@@ -211,9 +215,11 @@ void ClientDataTree::receiveChangementsFromServer() {
 void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
 	vector<Changement*>::iterator iter;
 
+	Interlocutor* interlocutor = _serverTreeProxy->getInterlocutor();
+
 	if(changements.size()) {
 		for(iter = changements.begin() ; iter != changements.end() ; iter++) {
-			cout << endl << _clientName << " to " << _serveur->getDebugName() << "\t : " << (*iter)->toString() << flush;
+			cout << endl << _clientName << " to " << interlocutor->getName() << "\t : " << (*iter)->toString() << flush;
 		}
 
 		ostringstream out;
@@ -223,6 +229,6 @@ void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
 			delete *iter;
 		}
 
-		_serveur->setDataToSend(new string(out.str()));
+		interlocutor->addDataToSend(new string(out.str()));
 	}
 }

@@ -14,7 +14,8 @@ using namespace std;
 #include "util/types/StringData.h"
 #include "util/StringUtils.h"
 #include "data/ServeurDataTree.h"
-#include "data/Distant.h"
+#include "data/DistantTreeProxy.h"
+#include "data/Interlocutor.h"
 #include "data/ClientDataTree.h"
 #include "script/exception/IllegalParameterException.h"
 
@@ -23,7 +24,7 @@ using namespace std;
 using namespace JktUtils;
 
 extern ServeurDataTree serveurDataTree;
-extern std::map<ClientDataTree*, Distant*> dataRouter;
+extern std::map<ClientDataTree*, Interlocutor*> dataRouter;
 
 AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
@@ -34,9 +35,16 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 	if(subCommande1 == "client") {
 		string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
-		Distant* client = serveurDataTree.addDistant(clientName);
-		ClientDataTree* clientDataTree = new ClientDataTree(new Distant("serveur"), clientName);
-		dataRouter[clientDataTree] = client;
+		// Server side update
+		Interlocutor* serveurInterlocutor = new Interlocutor(clientName);
+		serveurDataTree.addDistant(serveurInterlocutor);
+
+		// client side update
+		Interlocutor* clientInterlocutor = new Interlocutor("server");
+		ClientDataTree* clientDataTree = new ClientDataTree(clientName, clientInterlocutor);
+
+		dataRouter[clientDataTree] = serveurInterlocutor;
+
 		printStdLn("Client cree.", userOutput);
 	}
 	else if(subCommande1 == "branche") {
@@ -51,7 +59,7 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 			string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
 			// Recherche du client
-			map<ClientDataTree*, Distant*>::iterator it;
+			map<ClientDataTree*, Interlocutor*>::iterator it;
 			ClientDataTree* clientTree;
 
 			for(it = dataRouter.begin() ; (it != dataRouter.end() && !tree) ; it++) {
@@ -94,7 +102,7 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 			string clientName = StringUtils::findAndEraseFirstWord(ligne);
 
 			// Recherche du client
-			map<ClientDataTree*, Distant*>::iterator it;
+			map<ClientDataTree*, Interlocutor*>::iterator it;
 			ClientDataTree* clientTree;
 
 			for(it = dataRouter.begin() ; (it != dataRouter.end() && !tree) ; it++) {

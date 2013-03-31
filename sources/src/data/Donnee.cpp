@@ -20,7 +20,7 @@ Donnee::Donnee(int revision) {
 Donnee::~Donnee() {
 }
 
-MarqueurDistant* Donnee::getMarqueur(Distant* distant) {
+MarqueurDistant* Donnee::getMarqueur(DistantTreeProxy* distant) {
 	MarqueurDistant* marqueur;
 
 	try {
@@ -33,7 +33,7 @@ MarqueurDistant* Donnee::getMarqueur(Distant* distant) {
 	return marqueur;
 }
 
-MarqueurDistant* Donnee::addMarqueur(Distant* distant, int donneeTmpId) {
+MarqueurDistant* Donnee::addMarqueur(DistantTreeProxy* distant, int donneeTmpId) {
 	MarqueurDistant* marqueur = new MarqueurDistant(this, donneeTmpId);
 	_marqueurs[distant] = marqueur;
 

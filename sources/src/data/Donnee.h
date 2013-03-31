@@ -10,7 +10,7 @@
 
 #include <map>
 
-class Distant;
+class DistantTreeProxy;
 class MarqueurDistant;
 
 class Donnee {
@@ -18,7 +18,7 @@ class Donnee {
 	 * Revision number of the data, incremented each time the data changes.
 	 */
 	int _revision;
-	std::map<Distant*, MarqueurDistant*> _marqueurs;
+	std::map<DistantTreeProxy*, MarqueurDistant*> _marqueurs;
 
 protected:
 
@@ -31,8 +31,8 @@ public:
 	Donnee(int revision);
 	virtual ~Donnee();
 
-	MarqueurDistant* getMarqueur(Distant* distant);
-	MarqueurDistant* addMarqueur(Distant* distant, int donneeTmpId);
+	MarqueurDistant* getMarqueur(DistantTreeProxy* distant);
+	MarqueurDistant* addMarqueur(DistantTreeProxy* distant, int donneeTmpId);
 
 	/**
 	 * Get the revision number of the data.

@@ -1,5 +1,5 @@
 /*
- * Client.cpp
+ * DistantTreeProxy.cpp
  *
  *  Created on: 5 mars 2013
  *      Author: vgdj7997
@@ -26,36 +26,34 @@ using namespace std;
 #include "data/ValeurInt.h"
 #include "data/Branche.h"
 
-#include "data/Distant.h"
+#include "data/DistantTreeProxy.h"
 
-Distant::Distant(const string& debugName) {
-	_debugName = debugName;
-	_dataReceived = NULL;
-	_dataToSend = NULL;
+DistantTreeProxy::DistantTreeProxy(Interlocutor* interlocutor) {
+	_interlocutor = interlocutor;
 }
 
-Distant::~Distant() {
+DistantTreeProxy::~DistantTreeProxy() {
 }
 
-string& Distant::getDebugName() {
-	return _debugName;
+Interlocutor* DistantTreeProxy::getInterlocutor() const {
+	return _interlocutor;
 }
 
-MarqueurDistant* Distant::getMarqueur(Donnee* donnee) {
+MarqueurDistant* DistantTreeProxy::getMarqueur(Donnee* donnee) {
 	return donnee->getMarqueur(this);
 }
 
-map<Donnee*, MarqueurDistant*>& Distant::getMarqueurs() {
+map<Donnee*, MarqueurDistant*>& DistantTreeProxy::getMarqueurs() {
 	return _marqueurs;
 }
 
-MarqueurDistant* Distant::addMarqueur(Donnee* donnee, int donneeTmpId) {
+MarqueurDistant* DistantTreeProxy::addMarqueur(Donnee* donnee, int donneeTmpId) {
 	MarqueurDistant* marqueur = donnee->addMarqueur(this, donneeTmpId);
 	_marqueurs[donnee] = marqueur;
 	return marqueur;
 }
 
-void Distant::collecteChangementsInClientTree(vector<Changement*>& changements) {
+void DistantTreeProxy::collecteChangementsInClientTree(vector<Changement*>& changements) {
 	map<Donnee*, MarqueurDistant*>::iterator itMa;
 
 	for(itMa = _marqueurs.begin() ; itMa != _marqueurs.end() ; itMa++) {
@@ -92,7 +90,7 @@ void Distant::collecteChangementsInClientTree(vector<Changement*>& changements) 
 	}
 }
 
-void Distant::collecteChangementsInServerTree(vector<Changement*>& changements) {
+void DistantTreeProxy::collecteChangementsInServerTree(vector<Changement*>& changements) {
 	map<Donnee*, MarqueurDistant*>::iterator itMa;
 
 	for(itMa = _marqueurs.begin() ; itMa != _marqueurs.end() ; itMa++) {
@@ -136,30 +134,4 @@ void Distant::collecteChangementsInServerTree(vector<Changement*>& changements) 
 			}
 		}
 	}
-}
-
-void Distant::setDataReceived(string* data) {
-	if(data) {
-		_dataReceived = data;
-	}
-}
-
-string* Distant::getDataReceived(void) {
-	string* var = _dataReceived;
-	_dataReceived = NULL;
-
-	return var;
-}
-
-void Distant::setDataToSend(string* data) {
-	if(data) {
-		_dataToSend = data;
-	}
-}
-
-string* Distant::getDataToSend(void) {
-	string* var = _dataToSend;
-	_dataToSend = NULL;
-
-	return var;
 }

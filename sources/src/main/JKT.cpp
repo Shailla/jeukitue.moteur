@@ -116,6 +116,8 @@ class CGame;
 #include "spatial/contact.h"
 #include "data/ServeurDataTree.h"
 #include "data/ClientDataTree.h"
+#include "data/DistantTreeProxy.h"
+#include "data/Interlocutor.h"
 
 using namespace JktMenu;
 using namespace JktNet;
@@ -128,7 +130,7 @@ using namespace JktSon;
 #include "jkt.h"
 
 ServeurDataTree serveurDataTree;
-std::map<ClientDataTree*, Distant*> dataRouter;
+std::map<ClientDataTree*, Interlocutor*> dataRouter;
 
 float GLIGHTX, GLIGHTY, GLIGHTZ;
 GLFont myfont;
@@ -1501,24 +1503,24 @@ void executeRequests() {
 
 void echangeServerAndClientData() {
 	// Traite les changements de données côté client (pour chaque client)
-	map<ClientDataTree*, Distant*>::iterator it;
+	map<ClientDataTree*, Interlocutor*>::iterator it;
 
 	for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
 		ClientDataTree* clientDataTree = it->first;
-		Distant* clientSide = clientDataTree->getDistantServer();
+		Interlocutor* clientSide = clientDataTree->getDistantServer()->getInterlocutor();
 
-		Distant* serverSide = it->second;
+		Interlocutor* serverSide = it->second;
 
 		// Exchange data from client to server
 		{
 			string* down = clientSide->getDataToSend();
-			serverSide->setDataReceived(down);
+			serverSide->addDataReceived(down);
 		}
 
 		// Exchange data from server to client
 		{
 			string* up = serverSide->getDataToSend();
-			clientSide->setDataReceived(up);
+			clientSide->addDataReceived(up);
 		}
 	}
 }
@@ -1545,14 +1547,14 @@ void boucle() {
 		 * **********************************************************/
 
 		// Traite les changements de données côté serveur
-		serveurDataTree.receiveChangementsFromClient();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
+		serveurDataTree.receiveChangementsFromClients();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
 		serveurDataTree.diffuseChangementsToClients();		// Diffuse les changements des données du jeu aux clients
 
 		// Simule le réseau et effectue les échanges de données entre le serveur et les clients
 		echangeServerAndClientData();
 
 		// Traite les changements de données côté client (pour chaque client)
-		map<ClientDataTree*, Distant*>::iterator it;
+		map<ClientDataTree*, Interlocutor*>::iterator it;
 
 		for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
 			ClientDataTree* clientDataTree = it->first;

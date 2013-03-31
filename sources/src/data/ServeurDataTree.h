@@ -17,10 +17,20 @@
 #include "data/DataTree.h"
 
 class ServeurDataTree : public DataTree {
-	std::vector<Distant*> _clients;
+	std::vector<DistantTreeProxy*> _clients;
 
-	Donnee* addMarqueurFromDistant(Distant* distant, Donnee* valeur, int donneeClientTmpId);
-	void initDistantBranche(Distant* distant, Branche* branche);
+	Donnee* addMarqueurFromDistant(DistantTreeProxy* distant, Donnee* valeur, int donneeClientTmpId);
+	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
+
+	/* ****************************************************
+	 * Distant actions
+	 * ***************************************************/
+
+	Branche* getBrancheByDistantTmpId(DistantTreeProxy* distant, const vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
+	Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurTmpId) throw(NotExistingBrancheException, NotExistingValeurException);
+
+	Branche* addBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, DistantTreeProxy* distant);
+	Valeur* addValeurFromDistant(const vector<int>& parentBrancheId, const std::string& valeurName, int valeurTmpId, int revision, const JktUtils::Data* valeur, DistantTreeProxy* distant);
 
 public:
 	ServeurDataTree();
@@ -32,27 +42,17 @@ public:
 	 * ****************************************************/
 
 	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName, int revision);
+
 	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, const JktUtils::Data* valeur);
 	Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data* valeur);
-
-
-	/* ****************************************************
-	 * Distant actions
-	 * ***************************************************/
-
-	Branche* getBrancheByDistantTmpId(Distant* distant, const vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
-	Valeur* getValeurByDistantTmpId(Distant* distant, const vector<int>& brancheId, int valeurTmpId) throw(NotExistingBrancheException, NotExistingValeurException);
-
-	Branche* addBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, Distant* distant);
-	Valeur* addValeurFromDistant(const vector<int>& parentBrancheId, const std::string& valeurName, int valeurTmpId, int revision, const JktUtils::Data* valeur, Distant* distant);
 
 
 	/* ****************************************************
 	 * Distants management
 	 * ***************************************************/
 
-	Distant* addDistant(const std::string& distantName);
-	std::vector<Distant*>& getDistants();
+	void addDistant(Interlocutor* interlocutor);
+	const std::vector<DistantTreeProxy*>& getDistants();
 
 
 	/* ****************************************************
@@ -60,7 +60,7 @@ public:
 	 * ***************************************************/
 
 	void diffuseChangementsToClients(void);
-	void receiveChangementsFromClient();
+	void receiveChangementsFromClients();
 };
 
 #endif /* SERVEURDATATREE_H_ */

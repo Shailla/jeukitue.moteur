@@ -17,7 +17,7 @@
 #include "data/exception/NotExistingValeurException.h"
 #include "data/Donnee.h"
 #include "data/Valeur.h"
-#include "data/Distant.h"
+#include "data/DistantTreeProxy.h"
 
 class Branche : public Donnee {
 	Branche* _parent;
@@ -36,7 +36,7 @@ public:
 	Branche(Branche* parent, int brancheId, const std::string& brancheName, int revision, int tmpId);
 	virtual ~Branche();
 
-	Branche* getSubBrancheByDistantTmpId(Distant* distant, int brancheTmpId) throw(NotExistingBrancheException);
+	Branche* getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheTmpId) throw(NotExistingBrancheException);
 	Branche* getSubBrancheByTmpId(int brancheTmpId) const;
 	Branche* getSubBranche(int brancheId) const;
 	std::map<int, Branche*>& getSubBranches();
@@ -44,7 +44,7 @@ public:
 
 	std::map<int, Valeur*>& getValeurs();
 	Valeur* getValeur(int valeurId);
-	Valeur* getValeurByDistantTmpId(Distant* distant, int valeurTmpId) throw(NotExistingValeurException);
+	Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) throw(NotExistingValeurException);
 	Valeur* getValeurByTmpId(int valeurTmpId) const;
 
 	std::string getBrancheName() const;

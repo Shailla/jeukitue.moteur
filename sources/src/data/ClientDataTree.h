@@ -20,12 +20,12 @@ using namespace std;
 
 class ClientDataTree : public DataTree {
 	std::string _clientName;
-	Distant* _serveur;
+	DistantTreeProxy* _serverTreeProxy;
 
-	void initDistantBranche(Distant* distant, Branche* branche);
+	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
 	void addServeurMarqueur(Donnee* donnee);
 public:
-	ClientDataTree(Distant* server, const std::string& clientName);
+	ClientDataTree(const std::string& clientName, Interlocutor* serverInterlocutor);
 	virtual ~ClientDataTree();
 
 	const string& getClientName() const;
@@ -44,7 +44,7 @@ public:
 	 * Distants management
 	 * ***************************************************/
 
-	Distant* getDistantServer() const;
+	DistantTreeProxy* getDistantServer() const;
 
 	/* ****************************************************
 	 * Communication

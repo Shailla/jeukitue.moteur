@@ -12,7 +12,7 @@
 #include "data/exception/NotExistingValeurException.h"
 #include "util/types/Data.h"
 #include "data/Branche.h"
-#include "data/Distant.h"
+#include "data/DistantTreeProxy.h"
 
 class DataTree {
 	Branche _root;
@@ -21,7 +21,7 @@ public:
 	DataTree();
 	virtual ~DataTree();
 
-	virtual void initDistantBranche(Distant* distant, Branche* branche) = 0;
+	virtual void initDistantBranche(DistantTreeProxy* distant, Branche* branche) = 0;
 
 
 	/* *****************************************************

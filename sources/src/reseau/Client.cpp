@@ -27,8 +27,7 @@ extern CGame Game;
 namespace JktNet
 {
 
-CClient::CClient()
-{
+CClient::CClient() {
 TRACE().p( TRACE_RESEAU, "CClient::CClient() begin%T", this );
 	m_MaxPlayers = 0;
 
@@ -44,21 +43,21 @@ TRACE().p( TRACE_RESEAU, "CClient::CClient() begin%T", this );
 TRACE().p( TRACE_RESEAU, "CClient::CClient() end%T", this );
 }
 
-CClient::~CClient()
-{
+CClient::~CClient() {
 TRACE().p( TRACE_RESEAU, "CClient::~CClient() begin%T", this );
 	Game.quit();
 TRACE().p( TRACE_RESEAU, "CClient::~CClient() end%T", this );
 }
 
-void CClient::setStatut( StatutClient statut )
-{	m_Statut = statut;		}
+void CClient::setStatut( StatutClient statut ) {
+	m_Statut = statut;
+}
 
-StatutClient CClient::getStatut()
-{	return m_Statut;		}
+StatutClient CClient::getStatut() {
+	return m_Statut;
+}
 
-void CClient::setMaxPlayers( int nbr )
-{
+void CClient::setMaxPlayers( int nbr ) {
 	Game.setPlayerList( nbr );
 }
 
@@ -77,10 +76,8 @@ unsigned int CClient::nbrPlayers()
 void CClient::nbrPlayers( unsigned int nbr )
 {	m_uNbrPlayers = nbr;	}
 
-void CClient::decodeConnecte( Uint16 code1, Uint16 code2 )
-{
-	switch( code1 )
-	{
+void CClient::decodeConnecte( Uint16 code1, Uint16 code2 ) {
+	switch( code1 ) {
 	case SERVER_RECAP:		// Réception d'une récapitulation de partie du serveur
 		decodeRecap( code2 );
 		break;
@@ -95,10 +92,8 @@ void CClient::decodeConnecte( Uint16 code1, Uint16 code2 )
 	}
 }
 
-void CClient::decodeError( Uint16 code2 )
-{
-	switch( code2 )
-	{
+void CClient::decodeError( Uint16 code2 ) {
+	switch( code2 ) {
 	case UDP_ERROR_NOGAME:
 TRACE().p( TRACE_INFO, "CClient::decodeError() Pas de partie en cours sur le serveur%T", this );
 		cout << endl << "Pas de partie en cours sur le serveur";
@@ -116,32 +111,26 @@ TRACE().p( TRACE_ERROR, "CClient::decodeError() Reception d'un paquet ERROR inco
 	}
 }
 
-void CClient::decodeRecap( Uint16 code2 )
-{
-	switch( code2 )
-	{
+void CClient::decodeRecap( Uint16 code2 ) {
+	switch( code2 ) {
 	case SERVER_NULL:
-		if( m_Statut==JKT_STATUT_CLIENT_PLAY )
-		{
+		if( m_Statut==JKT_STATUT_CLIENT_PLAY ) {
 			Uint16 var1;
 			var1 = spaMaitre.read16();	// Réception du nombre de joueurs
-			if( m_uNbrPlayers!=var1 )
-			{
+
+			if( m_uNbrPlayers!=var1 ) {
 TRACE().p( TRACE_ERROR, "CClient::switchRecepClient() Le nombre de joueurs a change%T", this );
 				cerr << endl << __FILE__ << ":" << __LINE__ << " LE JEU N'EST PLUS PERTINENT, le nombre de joueurs a change !";
 				nbrPlayers( var1 );
 			}
-			else
-			{
+			else {
 					// Lit les données des joueurs
 				CPlayer *player;
 				int curseur = -1;
-				while( (curseur=SuivantPlayer(curseur))<getMaxPlayers() )
-				{
+				while( (curseur=SuivantPlayer(curseur))<getMaxPlayers() ) {
 					var1 = spaMaitre.read16();		// Identifiant du joueur
 
-					if( var1!=curseur )
-					{
+					if( var1!=curseur ) {
 						TRACE().p( TRACE_ERROR, "CClient::switchRecepClient() Les joueurs ont change%T", this );
 						cout << endl << "LE JEU N'EST PLUS PERTINENT, les joueurs ont change !";
 					}
@@ -161,8 +150,7 @@ TRACE().p( TRACE_ERROR, "CClient::switchRecepClient() Le nombre de joueurs a cha
 	}
 }
 
-int CClient::getMaxPlayers()
-{
+int CClient::getMaxPlayers() {
 	return m_MaxPlayers;
 }
 
@@ -176,11 +164,9 @@ address.c_str(), port, this );
 	if( !spaMaitre.open( address, port ) )
 		result = false;
 
-	if( result )
-	{
+	if( result ) {
 		socketSet = SDLNet_AllocSocketSet( 20 );	// Nombre maxi de sockets à écouter
-		if( !socketSet )
-		{
+		if( !socketSet ) {
 TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
 			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AllocSocketSet: " << SDLNet_GetError();
 
@@ -190,10 +176,8 @@ TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
 		}
 	}
 
-	if( result )
-	{
-		if( SDLNet_UDP_AddSocket( socketSet, spaMaitre.getSocket() )==-1 )
-		{
+	if( result ) {
+		if( SDLNet_UDP_AddSocket( socketSet, spaMaitre.getSocket() )==-1 ) {
 TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
 			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AddSocket : " << SDLNet_GetError();
 
@@ -218,12 +202,11 @@ void CClient::sendRequestInfoToServer() {
 
 	spaMaitre.init();
 	spaMaitre.addCode( CLIENT_INFO, CLIENT_NULL );
-	if( !spaMaitre.send() )	// Acquittement de la réception du packet
-	{
+
+	if( !spaMaitre.send() )	{	// Acquittement de la réception du packet
 		cout << endl << "SDL_UDP_Send : ",SDLNet_GetError();
 	}
-	else
-	{
+	else {
 		cout << endl << "Demande d'info envoyee au serveur";
 	}
 }
@@ -253,8 +236,7 @@ TRACE().p( TRACE_RESEAU, "CClient::sendJoinTheGame(nomPlayer=%s) begin%T", nomPl
 	setStatut( JKT_STATUT_CLIENT_DEMJTG );	// Statut, demande de "Join The Game" envoyée,
 											// en attente de réponse du serveur
 
-	if( !spaMaitre.send() )
-	{
+	if( !spaMaitre.send() ) {
 		TRACE().p( TRACE_ERROR, "CClient::sendJoinTheGame() SDL_UDP_Send : %s%T", SDLNet_GetError(), this );
 	}
 
@@ -302,8 +284,7 @@ int CClient::getPingClientServeur() {
 	return ping;
 }
 
-bool CClient::decodeNonConnecte( Uint16 code1, Uint16 code2 )
-{
+bool CClient::decodeNonConnecte( Uint16 code1, Uint16 code2 ) {
 	bool result = false;
 	Uint16 code3;
 
@@ -334,15 +315,12 @@ spaMaitre.debugToString().c_str(), this );
 		break;
 
 	case SERVER_PING:
-		switch( code2 )
-		{
+		switch( code2 ) {
 		case SERVER_ACK:
-			if( spaMaitre.getPacketIn()->len==8 )
-			{
+			if( spaMaitre.getPacketIn()->len==8 ) {
 TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse ping%T", this );
 				cout << endl << "Reponse a un ping recue";
-				if( m_timePingClientServer==spaMaitre.read32() )
-				{
+				if( m_timePingClientServer==spaMaitre.read32() ) {
 					m_pingClientServer = SDL_GetTicks() - m_timePingClientServer;
 				}
 			}
@@ -356,12 +334,10 @@ TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu 4%s%T", s
 		break;
 
 	case SERVER_JTG:		// Ca concerne 'joindre la partie active du serveur'
-		switch( code2 )
-		{
+		switch( code2 ) {
 		case SERVER_ERROR:
 			code3 = spaMaitre.read16();
-			switch( code3 )
-			{
+			switch( code3 ) {
 			case UDP_ERROR_NOGAME:
 TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Pas de partie en cours%T", this );
 				cout << endl << "Pas de partie en cours sur le serveur";
@@ -379,6 +355,7 @@ TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu 3%s%T", s
 			}
 			result = true;
 			break;
+
 		case SERVER_ACK:	// Acceptation recue du serveur pour joindre la partie
 			if( getStatut()==JKT_STATUT_CLIENT_DEMJTG )
 			{
@@ -469,18 +446,15 @@ TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu %s%T", sp
 	return result;
 }
 
-CClient::CInfoServer CClient::getInfoServer()
-{
+CClient::CInfoServer CClient::getInfoServer() {
 	return m_InfoServer;
 }
 
-CClient::CInfoServer::CInfoServer()
-{
+CClient::CInfoServer::CInfoServer() {
 	m_bReady = false;
 }
 
-CClient::CInfoServer &CClient::CInfoServer::operator=( CInfoServer &infoServer )
-{
+CClient::CInfoServer &CClient::CInfoServer::operator=( CInfoServer &infoServer ) {
 	m_bReady = infoServer.Ready();	// Informe si ces infos ont été actualisées depuis la dernière requête d'infos
 	nom = infoServer.nom;		// Nom du serveur
 	map = infoServer.map;
@@ -488,18 +462,15 @@ CClient::CInfoServer &CClient::CInfoServer::operator=( CInfoServer &infoServer )
 	return *this;
 }
 
-void CClient::CInfoServer::Ready( bool ready )
-{
+void CClient::CInfoServer::Ready( bool ready ) {
 	m_bReady = ready;
 }
 
-bool CClient::CInfoServer::Ready()
-{
+bool CClient::CInfoServer::Ready() {
 	return m_bReady;
 }
 
-void CClient::emet( CPlayer &player )
-{
+void CClient::emet( CPlayer &player ) {
 	unsigned int position;
 	Uint16 flags = 0;
 
@@ -512,24 +483,20 @@ void CClient::emet( CPlayer &player )
 	spaMaitre.add16( 0 );	// Ca sert juste à avancer de 16 bits dans le paquet pour laisser
 							// une place libre pour la variable flags (voir fin de emetClient)
 
-	if( clavier->m_bIndic )
-	{
+	if( clavier->m_bIndic ) {
 		flags |= 0x0001;	// Indique qu'il y a des requetes clavier à prendre en compte
 
-		if( clavier->m_fAvance!=0.0f )
-		{
+		if( clavier->m_fAvance!=0.0f ) {
 			flags |= 0x0010;	// Indique la présence d'une requête de mouvement vers l'avant
 			spaMaitre.add( clavier->m_fAvance );
 		}
 
-		if( clavier->m_fDroite!=0.0f )
-		{
+		if( clavier->m_fDroite!=0.0f ) {
 			flags |= 0x0100;	// Indique la présence d'une requête de mouvement vers la droite
 			spaMaitre.add( clavier->m_fDroite );
 		}
 
-		if( clavier->m_fMonte!=0.0 )
-		{
+		if( clavier->m_fMonte!=0.0 ) {
 			flags |= 0x1000;	// Indique la présence d'une requête de mouvement vers le haut
 			spaMaitre.add( clavier->m_fMonte );
 		}

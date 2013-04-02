@@ -7,13 +7,14 @@ namespace JktNet
 
 enum enteteServer {
 	SERVER_NULL = 0,
-	SERVER_ACK,			// Acquisition
-	SERVER_INFO,		// Demande les informations du serveur
-	SERVER_ERROR,		// Erreur
-	SERVER_PING,		// Ping
-	SERVER_VERSION,		// Version du programme
-	SERVER_JTG,			// Demande à joindre la partie acive sur le serveur
-	SERVER_RECAP,		// Récapitulation de partie
+	SERVER_ACK,					// Acquisition
+	SERVER_INFO,				// Demande les informations du serveur
+	SERVER_ERROR,				// Erreur
+	SERVER_PING,				// Ping
+	SERVER_VERSION,				// Version du programme
+	SERVER_JTG,					// Demande à joindre la partie acive sur le serveur
+	SERVER_RECAP,				// Récapitulation de partie
+	SERVER_TREE_DATA_UPDATE		// Mise à jour des données de l'arbre de données
 };
 
 enum errorUDP {

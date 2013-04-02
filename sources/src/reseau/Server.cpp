@@ -70,18 +70,15 @@ void CServer::setStatut( StatutServer statut )
 StatutServer CServer::getStatut()
 {	return m_Statut;		}
 
-int CServer::AjoutePlayer( CPlayer *player )
-{
+int CServer::AjoutePlayer( CPlayer *player ) {
 TRACE().p( TRACE_RESEAU, "CServer::AjoutePlayer(player=%x)%T", player, this );
 
 	int nbr;
-	if( m_uNbrPlayers<this->maxPlayers )
-	{
+	if( m_uNbrPlayers<this->maxPlayers ) {
 		m_uNbrPlayers++;		// Incrémente le nbr de joueurs sur le serveur
 		nbr = Game.pTabIndexPlayer->Ajoute( player );	// Ajoute le joueur à la liste
 	}
-	else
-	{
+	else {
 		nbr = -1;
 	}
 
@@ -93,8 +90,7 @@ int CServer::nbrPlayers()
 {	return m_uNbrPlayers;	}
 
 
-void CServer::decodeServerUDP( CSPA *spa )
-{
+void CServer::decodeServerUDP( CSPA *spa ) {
 	Uint16 code1, code2;
 	if( spa->recoit() )			// Si des paquets ont été reçus
 	{
@@ -124,16 +120,13 @@ void CServer::decodeServerUDP( CSPA *spa )
 	}
 }
 
-void CServer::decodeProxyPlayer( CPlayer *player )
-{
+void CServer::decodeProxyPlayer( CPlayer *player ) {
 	Uint16 code1, code2;
 
-	if( player->spa.recoit() )	// Si des paquets ont été reçus
-	{
+	if( player->spa.recoit() ) {	// Si des paquets ont été reçus
 		player->spa.init();
 		player->spa.readCode( code1, code2 );
-		switch( code1 )
-		{
+		switch( code1 ) {
 		case CLIENT_RECAP:		// Réception d'une récapitulation de partie
 			switchRecapServer( player, code2 );
 			break;
@@ -145,8 +138,7 @@ void CServer::decodeProxyPlayer( CPlayer *player )
 	}
 }
 
-bool CServer::acceptPlayer( CSPA *spa )
-{
+bool CServer::acceptPlayer( CSPA *spa ) {
 TRACE().p( TRACE_RESEAU, "CServer::acceptPlayer(spa=%x) begin%T", spa, this );
 
 	bool result = true;
@@ -163,10 +155,8 @@ TRACE().p( TRACE_RESEAU, "CServer::acceptPlayer(spa=%x) begin%T", spa, this );
 			// Ouverture d'un lien SPA et création du joueur
 	result = player->spa.open( spa->getPacketIn()->address );
 
-	if( result )
-	{
-		if( SDLNet_UDP_AddSocket( socketSet, player->spa.getSocket() )==-1 )
-		{
+	if( result ) {
+		if( SDLNet_UDP_AddSocket( socketSet, player->spa.getSocket() )==-1 ) {
 TRACE().p( TRACE_ERROR, "CServer::acceptPlayer() : %s%T", SDLNet_GetError(), this );
 			cout << endl << "SDLNet_AddSocket : " << SDLNet_GetError();
 
@@ -208,12 +198,10 @@ TRACE().p( TRACE_RESEAU, "CServer::acceptPlayer() -> %b end%T", result, this );
 	return result;	// OK
 }
 
-void CServer::switchRecapServer( CPlayer *player, Uint16 code2 )
-{
+void CServer::switchRecapServer( CPlayer *player, Uint16 code2 ) {
 	Uint16 flags;
 
-	switch( code2 )
-	{
+	switch( code2 ) {
 	case CLIENT_NULL:
 		flags = player->spa.read16();
 
@@ -221,57 +209,48 @@ void CServer::switchRecapServer( CPlayer *player, Uint16 code2 )
 		player->getClavier()->m_fDroite = 0.0f;
 		player->getClavier()->m_fMonte = 0.0f;
 
-		if( flags&0x0001 )	// S'il y a des requêtes
-		{
+		if( flags&0x0001 ) {	// S'il y a des requêtes
 			player->getClavier()->m_bIndic = true;	// Indique la présence d'une requête
 
-			if( flags&0x0010 )	// Y a-t-il une requête de mouvement en avant
-			{
+			if( flags&0x0010 ) {	// Y a-t-il une requête de mouvement en avant
 				player->getClavier()->m_fAvance = player->spa.readf();
 			}
 
-			if( flags&0x0100 )	// Y a-t-il une requête de mouvement à droite
-			{
+			if( flags&0x0100 ) {	// Y a-t-il une requête de mouvement à droite
 				player->getClavier()->m_fDroite = player->spa.readf();
 			}
 
-			if( flags&0x1000 )	// Y a-t-il une requête de mouvement vers le haut
-			{
+			if( flags&0x1000 ) {	// Y a-t-il une requête de mouvement vers le haut
 				player->getClavier()->m_fMonte = player->spa.readf();
 			}
 		}
-		else
-		{
+		else {
 			player->getClavier()->m_bIndic = false;
 		}
 
 		player->Phi( player->spa.readf() );
 		player->Teta( player->spa.readf() );
 
-
 		break;
+
 	default:
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet RECAP inconnu";
 		break;
 	}
 }
 
-void CServer::switchInfo( CSPA *spa, Uint16 code2 )	// Réception d'une demande d'info serveur
-{
+void CServer::switchInfo( CSPA *spa, Uint16 code2 ) {	// Réception d'une demande d'info serveur
 TRACE().p( TRACE_RESEAU, "CServer::switchInfo(spa=%x,code2=%d) begin%T", spa, code2, this );
-	switch( code2 )
-	{
+	switch( code2 ) {
 	case CLIENT_NULL:
 		cerr << endl << __FILE__ << ":" << __LINE__ << "Reception d'une demande d'info serveur";
 		spa->getPacketOut()->channel = SDLNet_UDP_Bind( spa->getSocket(), -1, &spa->getPacketIn()->address );
-		if( spa->getPacketOut()->channel==-1 )
-		{
+		if( spa->getPacketOut()->channel==-1 ) {
 TRACE().p( TRACE_ERROR, "CServer::switchInfo() %s%T", SDLNet_GetError(), this );
 			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
 			cerr << endl << __FILE__ << ":" << __LINE__ << " Reponse info serveur impossible";
 		}
-		else
-		{
+		else {
 TRACE().p( TRACE_INFO, "CServer::switchInfo() : Reponse info%T", this );
 				// Envoie des infos serveur au client
 			spa->init();
@@ -293,21 +272,18 @@ TRACE().p( TRACE_RESEAU, "CServer::switchInfo() end%T", this );
 void CServer::switchPing( CSPA *spa, Uint16 code2 )	// Réception d'une demande de ping
 {
 TRACE().p( TRACE_RESEAU, "CServer::switchPing(spa=%x,code2=%d) begin%T", spa, code2, this );
-	switch( code2 )
-	{
+	switch( code2 ) {
 	case CLIENT_NULL:
-		if( spa->getPacketIn()->len==8 )
-		{
+		if( spa->getPacketIn()->len==8 ) {
 			cout << endl << "Reception d'une demande de ping";
 			spa->getPacketOut()->channel = SDLNet_UDP_Bind( spa->getSocket(), -1, &spa->getPacketIn()->address );
-			if( spa->getPacketOut()->channel==-1 )
-			{
+
+			if( spa->getPacketOut()->channel==-1 ) {
 TRACE().p( TRACE_ERROR, "CServer::switchPing() : %s%T", SDLNet_GetError(), this );
 				cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
 				cerr << endl << __FILE__ << ":" << __LINE__ << " Reponse ping impossible";
 			}
-			else
-			{
+			else {
 TRACE().p( TRACE_INFO, "CServer::switchPing() : Envoi reponse ping%T", this );
 					// Envoie de la réponse au ping
 				Uint32 time;

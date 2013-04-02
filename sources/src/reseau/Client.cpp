@@ -82,6 +82,10 @@ void CClient::decodeConnecte( Uint16 code1, Uint16 code2 ) {
 		decodeRecap( code2 );
 		break;
 
+	case SERVER_TREE_DATA_UPDATE:
+		updateTreeData();
+		break;
+
 	case SERVER_ERROR:		// Réception d'un code d'erreur
 		decodeError( code2 );
 		break;

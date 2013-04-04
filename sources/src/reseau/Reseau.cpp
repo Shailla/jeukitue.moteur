@@ -38,37 +38,34 @@ void JktMoteur::contactPlayer(CPlayer *player, float *normal, float distanceW);
 namespace JktNet
 {
 
-CReseau::CReseau()
-{
+CReseau::CReseau() {
 	m_On = false;	// Réseau inactivé par défaut
 	m_Client = 0;
 	m_Server = 0;
 }
 
-CReseau::~CReseau()
-{
+CReseau::~CReseau() {
 	m_On = false;	// Réseau inactivé par défaut
-	if( m_Client )
-	{
+
+	if( m_Client ) {
 		delete m_Client;
 		m_Client = 0;
 	}
 
-	if( m_Server )
-	{
+	if( m_Server ) {
 		delete m_Server;
 		m_Server = 0;
 	}
 }
 
-void CReseau::setOn( bool on )
-{
+void CReseau::setOn( bool on ) {
 TRACE().p( TRACE_RESEAU, "CReseau::setOn(on=%b)%T", on, this );
 	m_On = on;
 }
 
-bool CReseau::getOn()
-{	return m_On;	}
+bool CReseau::getOn() {
+	return m_On;
+}
 
 bool CReseau::ouvreServer(Uint16 port) {
 TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer(port=%d) begin%T", port, this );
@@ -100,27 +97,23 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() -> %b end%T", result, this );
 	return result;
 }
 
-void CReseau::sendPingClientServer()	// Envoie un ping du client au serveur
-{
+void CReseau::sendPingClientServer() {	// Envoie un ping du client au serveur
 TRACE().p( TRACE_RESEAU, "CReseau::sendPingClientServer()%T", this );
 
 	m_Client->sendPingToServer();
 }
 
-void CReseau::sendRequestInfoServer()	// Envoie un ping du client au serveur
-{
+void CReseau::sendRequestInfoServer() {	// Envoie un ping du client au serveur
 TRACE().p( TRACE_RESEAU, "CReseau::sendRequestInfoServer()%T", this );
 
 	m_Client->sendRequestInfoToServer();
 }
 
-CClient::CInfoServer CReseau::getInfoServer()
-{
+CClient::CInfoServer CReseau::getInfoServer() {
 	return m_Client->getInfoServer();
 }
 
-int CReseau::getPingClientServer()
-{
+int CReseau::getPingClientServer() {
 	int ping = m_Client->getPingClientServeur();
 
 	if( ping != -1 )
@@ -163,8 +156,7 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() begin%T", this );
 		m_On = true;		// Signale que le réseau est prêt
 		result = true;
 	}
-	else
-	{
+	else {
 		Game.setModeNull();
 		m_On = true;		// Signale que le réseau n'est pas prêt
 		result = false;
@@ -210,7 +202,7 @@ TRACE().p( TRACE_RESEAU, "CReseau::fermeClient()%T", this );
 	Game.Quit();
 }
 
-void CReseau::sendJoinTheGame() {		// Envoie une demande à se joindre à la partie du serveur
+void CReseau::sendJoinTheGameFromClient() {		// Envoie une demande à se joindre à la partie du serveur
 TRACE().p( TRACE_RESEAU, "CReseau::sendJoinTheGame()%T", this );
 
 	m_Client->sendJoinTheGame( Config.Joueur.nom );

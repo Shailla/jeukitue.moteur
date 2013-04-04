@@ -689,14 +689,12 @@ void display() {		// Fonction principale d'affichage
 	((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setDureeDisplay(SDL_GetTicks() - temps);
 }
 
-void chopeLesEvenements()
-{
+void chopeLesEvenements() {
 	SDL_PumpEvents();							// Collecte les évênements
 	Uint8 *keystate = SDL_GetKeyState(0);		// Récupère les touches clavier appuyées
 	Uint8 mouse = SDL_GetMouseState(0, 0);
 
-	if( Game.Erwin() && (!Game.isModeServer()) )
-	{
+	if(Game.Erwin()) {
 		CPlayer *erwin = Game.Erwin();
 
 		if( keystate[SDLK_a] ) {
@@ -730,8 +728,7 @@ void chopeLesEvenements()
 				erwin->TetaVue( erwin->TetaVue() + 360.0f );
 		}
 
-		if( keystate[SDLK_w] )
-		{
+		if( keystate[SDLK_w] ) {
 			erwin->PhiVue( erwin->PhiVue() + 0.2f );
 
 			if( erwin->PhiVue() > 180.0f )
@@ -787,8 +784,7 @@ void chopeLesEvenements()
 			erwin->setPosVue(posVue);
 		}
 
-		if ( keystate[Config.Commandes.Gauche.key]||(mouse&SDL_BUTTON(Config.Commandes.Gauche.mouse)) )	//gauche
-		{
+		if ( keystate[Config.Commandes.Gauche.key]||(mouse&SDL_BUTTON(Config.Commandes.Gauche.mouse)) )	{	//gauche
 			erwin->getClavier()->m_fDroite = -1.0;
 			erwin->getClavier()->m_bIndic = true;
 		}
@@ -867,14 +863,13 @@ void timer(Uint32 ecart) {
 	}
 
 		// Si une partie est en cours (partie locale, client ou serveur)
-	if( Game.getMap() && ( (Game.isModeLocal()) || ((Game.isModeClient())&&(Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY)) || ((Game.isModeServer())&&(Game.getStatutServer()==JKT_STATUT_SERVER_PLAY)) )) {
+	if( Game.getMap() && ( Game.isModeLocal() || (Game.isModeClient() && Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) || (Game.isModeServer() && Game.getStatutServer()==JKT_STATUT_SERVER_PLAY) )) {
 
 		if(Reseau.getOn() && (Game.getStatutServer()==JKT_STATUT_SERVER_PLAY)) {	// Si c'est un serveur
 			Reseau.recoitServer();	// Recoit les données des clients
 		}
-		else {
-			chopeLesEvenements();	// Sinon prends les requêtes du joueur les données du joueur
-		}
+
+		chopeLesEvenements();	// Prends les requêtes du joueur pour permettre même au serveur de jouer
 
 		// Transmission réseau des données du client.
 		if(Reseau.getOn()) {
@@ -945,11 +940,9 @@ void play_handle_key_down( SDL_Event *event ) {
 //		float sinPhi =	/*FastSin0(erwin->Phi/180.0f*Pi);		//*/sinf(erwin->Phi/180.0f*Pi);
 //	}
 
-	switch( event->type )
-	{
+	switch( event->type ) {
     case SDL_MOUSEMOTION:		// Si c'est un évênement 'souris'
-		if( Game.Erwin() )
-		{
+		if( Game.Erwin() ) {
 			CPlayer *erwin = Game.Erwin();
 				//rotation /rapport au plan horizontal (regarder en l'air)
 			erwin->Phi( erwin->Phi() + event->motion.yrel );
@@ -962,14 +955,14 @@ void play_handle_key_down( SDL_Event *event ) {
 			erwin->Teta( erwin->Teta() + event->motion.xrel );
 			if(erwin->Teta()>180.0f)
 				erwin->Teta( erwin->Teta() - 360.0f );
+
 			if(erwin->Teta()<-180.0f)
 				erwin->Teta( erwin->Teta() + 360.0f );
 		}
 		break;
 
 	case SDL_MOUSEBUTTONDOWN:
-		if( Game.Erwin() )
-		{
+		if( Game.Erwin() ) {
 			if( event->button.button==SDL_BUTTON_LEFT )
 				Game.Erwin()->Tir();	// Tir avec l'arme active
 			else if( event->button.button==SDL_BUTTON_WHEELUP )
@@ -1039,19 +1032,19 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 			break;
 
 		case SDLK_KP_PLUS :
-			if( Game.getMap() && Game.getMap()->IsSelectionMode() )
-			{
+			if( Game.getMap() && Game.getMap()->IsSelectionMode() ) {
 				cout << endl << "Selection du suivant";
 				Game.getMap()->incrementeSelection();
 			}
 			break;
+
 		case SDLK_KP_MINUS :
-			if( Game.getMap() && Game.getMap()->IsSelectionMode() )
-			{
+			if( Game.getMap() && Game.getMap()->IsSelectionMode() ) {
 				cout << endl << "Selection du precedent";
 				Game.getMap()->decrementeSelection();
 			}
 			break;
+
 		case SDLK_s :
 			Game.getMap()->ChangeSelectionMode();
 			break;
@@ -1066,9 +1059,11 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 			else
 				JKT_RenderMode = GL_TRIANGLES;
 			break;
+
 		case SDLK_t:
 			JKT_AfficheToutesTextures = !JKT_AfficheToutesTextures;
 			break;
+
 		case SDLK_o :		// Retour du joueur à la position d'origine avec vitesse nulle
 			if(Game.Erwin()) {
 				Game.Erwin()->choiceOneEntryPoint();
@@ -1145,8 +1140,7 @@ static void process_events(void) {
     }
 }
 
-bool deprecatedOpenMAP(const void *nomFichier)
-{
+bool deprecatedOpenMAP(const void *nomFichier) {
 	/**************************************
 	* Ouverture de la Map proprement dite
 	**************************************/

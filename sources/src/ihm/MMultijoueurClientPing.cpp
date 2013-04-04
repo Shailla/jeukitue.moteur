@@ -63,29 +63,24 @@ const char *item_menu_pingserver[] =
 	"Actualiser",
 };
 
-void retourPingserver( void *arg)
-{
+void retourPingserver( void *arg) {
 TRACE().p( TRACE_MENU, "retourPingserver(var=%x)", arg );
 	CDlg::SetMenuActif( 0 );
 	lanceMenuMultijoueurclient( 0 );
 }
 
-CMenu MenuPingserver(title_menu_pingserver, item_menu_pingserver, 1,
-						liste_suivant_pingserver, retourPingserver, 0, refreshPingserver );
+CMenu MenuPingserver(title_menu_pingserver, item_menu_pingserver, 1, liste_suivant_pingserver, retourPingserver, 0, refreshPingserver );
 
-void refreshPingserver()
-{
-	if( bAttenteMenuPing )
-	{
+void refreshPingserver() {
+	if( bAttenteMenuPing ) {
 		Uint32 ping = Reseau.getPingClientServer();
+
 		if(ping> 0) {
-			if( ping >=9999 )	// Délai trop long !
-			{
+			if( ping >=9999 ) {		// Délai trop long !
 				MenuPingserver.add_ItemsDroits( 0, "----" );
 				bAttenteMenuPing = false;
 			}
-			else
-			{
+			else {
 				stringstream str;
 				str << ping << " ms";;
 
@@ -96,8 +91,7 @@ void refreshPingserver()
 	}
 }
 
-void lancePingserver(void *arg)
-{
+void lancePingserver(void *arg) {
 TRACE().p( TRACE_MENU, "lancePingServer(var=%x)", arg );
 
 	actuPing( 0 );								// Demande l'actualisation du ping
@@ -105,8 +99,7 @@ TRACE().p( TRACE_MENU, "lancePingServer(var=%x)", arg );
 	CDlg::SetMenuActif( &MenuPingserver );
 }
 
-void actuPing( void *arg )	// Réactualise la valeur du ping
-{
+void actuPing( void *arg ) {	// Réactualise la valeur du ping
 	bAttenteMenuPing = true;			// On passe en état d'attente d'un ping
 	Reseau.sendPingClientServer();		// Envoie un ping au serveur
 	MenuPingserver.add_ItemsDroits( 0, "????" );

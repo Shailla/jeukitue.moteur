@@ -15,8 +15,7 @@
 namespace JktNet
 {
 
-class CReseau
-{
+class CReseau {
 		// Variables membres 
 	CServer *m_Server;
 	CClient *m_Client;
@@ -32,26 +31,40 @@ public:
 	void setOn( bool on );					// Indique si le réseau peut être utilisé ou non
 	bool getOn();							// Est-ce que le réseau peut être utilisé ou non ?
 
+
+	/* ********************************************************
+	 * Gestion réseau pour le serveur
+	 * *******************************************************/
+
 	CServer *getServer();
+
+	bool ouvreServer( Uint16 port );		// Connecte le serveur
+	void fermeServer();						// Déconnecte le serveur
+
+	void recoitServer();					// Recoit tous les paquets
+
+
+	/* ********************************************************
+	 * Gestion réseau pour le client
+	 * *******************************************************/
+
 	CClient *getClient();
 
-	bool ouvreServer( Uint16 port );		// Ouvre le serveur
-	void fermeServer();						// Ferme le serveur
-	
 	bool ouvreClient();						// Connecte le client au serveur
 	void fermeClient();						// Déconnecte le client du serveur
+
 	void setStatutClient( StatutClient statut );
 	StatutClient getStatutClient() const;
 
 	void recoitClient();					// Recoit tous les paquets
-	void recoitServer();					// Recoit tous les paquets
 
-	void sendJoinTheGame();					// Joins la partie en cours sur le serveur
-	void sendPingClientServer();			// Envoie d'un ping du client vers le serveur
-	int getPingClientServer();				// Récupère la valeur du dernier ping puis efface celle-ci
-	void sendRequestInfoServer();			// Demande ses infos au serveur
 
-	CClient::CInfoServer getInfoServer();	// Récupère les dervières info obtenues du serveur
+	void sendJoinTheGameFromClient();					// Joins la partie en cours sur le serveur
+	void sendPingClientServer();						// Envoie d'un ping du client vers le serveur
+	int getPingClientServer();							// Récupère la valeur du dernier ping puis efface celle-ci
+	void sendRequestInfoServer();						// Demande ses infos au serveur
+
+	CClient::CInfoServer getInfoServer();				// Récupère les dervières info obtenues du serveur
 };
 
 }	// JktNet

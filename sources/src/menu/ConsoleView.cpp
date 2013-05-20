@@ -6,6 +6,7 @@
 #include <agar/core.h>
 #include <agar/gui.h>
 
+#include "util/Couleurs.h"
 #include "util/StringUtils.h"
 #include "menu/View.h"
 #include "menu/Controller.h"
@@ -121,28 +122,35 @@ string ConsoleView::getCommandAndClearCommandLine() {
 
 void ConsoleView::println(ConsoleOutputType type, const string& texte) {
 	ostringstream str;
+	AG_Color* lineColor;
 
 	switch(type) {
 	case COT_ECHO:
-		str << "> ";
+		str << "you> ";
+		lineColor = &couleur_gris_clair;
 		break;
 	case COT_CHAT:
 		str << "msg> ";
+		lineColor = &couleur_violet;
 		break;
 	case COT_COMMAND_ERROR:
 		str << "err> ";
+		lineColor = &couleur_rouge;
 		break;
 	case COT_COMMAND_RESULT:
-		str << "std> ";
+		str << "res> ";
+		lineColor = &couleur_vert;
 		break;
 	default:
 		str << "?> ";
+		lineColor = &couleur_blanc;
 		break;
 	}
 
 	str << texte;
 
-	AG_ConsoleMsgS(_console, str.str().c_str());
+	AG_ConsoleLine* line = AG_ConsoleAppendLine(_console, str.str().c_str());
+	line->cFg = *lineColor;
 }
 
 void ConsoleView::setMapOuverteName(const std::string& mapName) {

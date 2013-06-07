@@ -22,6 +22,22 @@ TRACE().p( TRACE_MENU, "CFocus::CFocus(play=%x,menu=%x)%T", play, menu, this );
 	menu_agar_handle_key_down = menuAgar;	// Implémente le focus dédié au menu
 
 	focus_actif_handle_key_down = menu;	// Choix du focus actif par défaut
+
+	_event_interceptor = NULL;
+}
+
+/**
+ * Met en place un intercepteur d'événements.
+ */
+void CFocus::setEventInterceptor(bool (*eventInterceptor)(SDL_Event*)) {
+	_event_interceptor = eventInterceptor;
+}
+
+/**
+ * Supprime l'intercepteur d'événements.
+ */
+void CFocus::removeEventInterceptor() {
+	_event_interceptor = NULL;
 }
 
 /**
@@ -89,7 +105,14 @@ TRACE().p( TRACE_MENU, "CFocus::ChangePlayOrConsoleFocus()%T", this );
  * Exécute la fonction de focus pour l'évênement 'event'
  */
 void CFocus::ExecFocus(SDL_Event *event) {
-	focus_actif_handle_key_down(event);
+	if(_event_interceptor) {
+		if(!_event_interceptor(event)) {
+			focus_actif_handle_key_down(event);
+		}
+	}
+	else {
+		focus_actif_handle_key_down(event);
+	}
 }
 
 }	// JktMenu

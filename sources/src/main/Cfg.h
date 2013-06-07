@@ -19,13 +19,6 @@
 using namespace std;
 
 class CCfg {
-
-	class CComID {
-	public:
-		SDLKey key;		// Touche du clavier correspondant
-		int mouse;		// Touche de la souris correspondant
-	};
-
 	class CAudio {
 	public :
 		int m_Output;
@@ -35,6 +28,13 @@ class CCfg {
 
 		bool Init();
 	};
+public:
+	class CComID {
+	public:
+		SDLKey key;		// Touche du clavier correspondant
+		int mouse;		// Touche de la souris correspondant
+	};
+private:
 
 	class CCommandes {
 	public:

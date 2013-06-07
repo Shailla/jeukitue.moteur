@@ -16,6 +16,8 @@
 #include "menu/OpenSceneASEEcraseRepView.h"
 #include "menu/ConsoleAvancementView.h"
 #include "menu/LanceServeurView.h"
+#include "menu/ConfigurationAudioView.h"
+#include "menu/ConfigurationCommandesView.h"
 #include "menu/ConfigurationVideoView.h"
 #include "menu/ConfigurationJoueurView.h"
 #include "menu/ConfigurationReseauView.h"
@@ -41,6 +43,8 @@ Viewer::Viewer(AG_EventFn controllerCallback) {
 	addMenuView(OPEN_SCENE_ASE_ECRASE_REP_VIEW, new OpenSceneASEEcraseRepView(controllerCallback));
 	addMenuView(CONSOLE_AVANCEMENT_VIEW, new ConsoleAvancementView(controllerCallback));
 	addMenuView(LANCE_SERVEUR_VIEW, new LanceServeurView(controllerCallback));
+	addMenuView(CONFIGURATION_AUDIO_VIEW, new ConfigurationAudioView(controllerCallback));
+	addMenuView(CONFIGURATION_COMMANDES_VIEW, new ConfigurationCommandesView(controllerCallback));
 	addMenuView(CONFIGURATION_VIDEO_VIEW, new ConfigurationVideoView(controllerCallback));
 	addMenuView(CONFIGURATION_JOUEUR_VIEW, new ConfigurationJoueurView(controllerCallback));
 	addMenuView(CONFIGURATION_RESEAU_VIEW, new ConfigurationReseauView(controllerCallback));

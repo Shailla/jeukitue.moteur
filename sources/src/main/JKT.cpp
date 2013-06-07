@@ -789,31 +789,26 @@ void chopeLesEvenements() {
 			erwin->getClavier()->m_bIndic = true;
 		}
 
-		if( keystate[Config.Commandes.Reculer.key]||(mouse&SDL_BUTTON(Config.Commandes.Reculer.mouse)) )	//reculer
-		{
+		if( keystate[Config.Commandes.Reculer.key]||(mouse&SDL_BUTTON(Config.Commandes.Reculer.mouse)) ) {	// Reculer
 			erwin->getClavier()->m_fAvance = -1.0;
 			erwin->getClavier()->m_bIndic = true;
 		}
 
-		if( keystate[Config.Commandes.Avancer.key]||(mouse&SDL_BUTTON(Config.Commandes.Avancer.mouse)) )	//avant
-		{
+		if( keystate[Config.Commandes.Avancer.key]||(mouse&SDL_BUTTON(Config.Commandes.Avancer.mouse)) ) {	// Avant
 			erwin->getClavier()->m_fAvance = 1.0;
 			erwin->getClavier()->m_bIndic = true;
 		}
 
-		if( keystate[Config.Commandes.Droite.key]||(mouse&SDL_BUTTON(Config.Commandes.Droite.mouse)) )	//droite
-		{
+		if( keystate[Config.Commandes.Droite.key]||(mouse&SDL_BUTTON(Config.Commandes.Droite.mouse)) ) {	// Droite
 			erwin->getClavier()->m_fDroite = 1.0;
 			erwin->getClavier()->m_bIndic = true;
 		}
 
-		if( keystate[Config.Commandes.Tir1.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir1.mouse)) )	// Tire au laser
-		{
+		if( keystate[Config.Commandes.Tir1.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir1.mouse)) ) {	// Tire au laser
 			erwin->Tir();		// Valide un tir
 		}
 
-		if( keystate[Config.Commandes.Monter.key]||(mouse&SDL_BUTTON(Config.Commandes.Monter.mouse)) )	//si bouton droit souris
-		{													//alors monte
+		if( keystate[Config.Commandes.Monter.key]||(mouse&SDL_BUTTON(Config.Commandes.Monter.mouse)) ) {	// Monter
 			erwin->getClavier()->m_fMonte = 1.0;
 			erwin->getClavier()->m_bIndic = true;
 		}

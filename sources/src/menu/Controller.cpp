@@ -97,6 +97,14 @@ void Controller::executeAction(AG_Event *event) {
 		m_agarView->showMenuView(Viewer::CONFIGURATION_JOUEUR_VIEW);
 		break;
 
+	case ShowConfigurationCommandes:
+		m_agarView->showMenuView(Viewer::CONFIGURATION_COMMANDES_VIEW);
+		break;
+
+	case ShowConfigurationAudio:
+		m_agarView->showMenuView(Viewer::CONFIGURATION_AUDIO_VIEW);
+		break;
+
     case ShowCentralisateurViewAction:
 		{
 			Centralisateur* centralisateur = Fabrique::getCentralisateur();

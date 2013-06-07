@@ -88,28 +88,23 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigCommandes(var=%x)", var );
 void lanceMenuConfigCommandesAvancer(void *arg)
 {
 TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesAvancer(var=%x)", arg );
-	if( arg==0 )
-	{
+	if( arg==0 ) {
 		MenuConfigCommandes.mode = 1;		// Mode saisie de touche
 		MenuConfigCommandes.bItemsDroits = true;
 	}
-	else
-	{
+	else {
 		SDL_Event *event = (SDL_Event*)arg;
 
-		switch( event->type )
-		{
+		switch(event->type) {
 		case SDL_KEYDOWN:
-			if( event->key.keysym.sym!=SDLK_ESCAPE )
-			{
+			if( event->key.keysym.sym!=SDLK_ESCAPE ) {
 				Config.Commandes.Avancer.key = event->key.keysym.sym;
 				Config.Commandes.Avancer.mouse = 0;
 				Config.Ecrit();	// Sauvegarde la configuration
 
 				lanceMenuConfigCommandes( 0 );
 			}
-			else
-			{
+			else {
 				lanceMenuConfigCommandes( 0 );
 			}
 			break;

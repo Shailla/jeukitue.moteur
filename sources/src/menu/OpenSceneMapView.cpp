@@ -66,13 +66,7 @@ void OpenSceneMapView::show(void) {
 	while(iterMap < _mapNames.end()) {
 		string mapName = *iterMap;
 
-		AG_Button* button = AG_ButtonNewFn(_scrollview,
-									   0,
-									   mapName.c_str(),
-									   m_controllerCallback,
-									   "%i,%i",
-									   Controller::OpenMapAction,
-									   mapNumber++);		
+		AG_Button* button = AG_ButtonNewFn(_scrollview, 0, mapName.c_str(), m_controllerCallback, "%i,%i", Controller::OpenMapAction, mapNumber++);
 		_mapButtons.push_back(button);
 
 		iterMap++;

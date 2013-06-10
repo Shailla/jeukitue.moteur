@@ -20,6 +20,7 @@ using namespace std;
 extern CCfg Config;
 extern JktMenu::CFocus* pFocus;
 
+bool ConfigurationCommandesView::_waitingCommandUserChoice = false;
 int ConfigurationCommandesView::_commandToWait = 0;
 
 ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controllerCallback)
@@ -28,40 +29,9 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
     AG_WindowSetCaption(m_window, "Commandes");
 
-    // Avancer
-    AG_Box* boxAvancer = AG_BoxNewHoriz(m_window, 0);
-    AG_ButtonNewFn(boxAvancer, 0, "Avancer", beginWaitUserCommandChoice, "%i", ConfigurationCommandesView::AVANCER);
-	_labelAvancer = AG_LabelNew(boxAvancer, 0, "   ");
-
-    // Reculer
-	AG_Box* boxReculer = AG_BoxNewHoriz(m_window, 0);
-    AG_ButtonNewFn(boxReculer, 0, "Reculer", beginWaitUserCommandChoice, "%i", ConfigurationCommandesView::RECULER);
-    _labelReculer = AG_LabelNew(boxReculer, 0, "   ");
-
-    // Gauche
-    AG_Box* boxGauche = AG_BoxNewHoriz(m_window, 0);
-    AG_ButtonNewFn(boxGauche, 0, "Gauche", beginWaitUserCommandChoice, "%i", ConfigurationCommandesView::GAUCHE);
-    _labelGauche = AG_LabelNew(boxGauche, 0, "   ");
-
-    // Droite
-    AG_Box* boxDroite = AG_BoxNewHoriz(m_window, 0);
-    AG_ButtonNewFn(boxDroite, 0, "Droite", beginWaitUserCommandChoice, "%i", ConfigurationCommandesView::DROITE);
-    _labelDroite = AG_LabelNew(boxDroite, 0, "   ");
-
-    // Tir1
-    AG_Box* boxTir1 = AG_BoxNewHoriz(m_window, 0);
-    AG_ButtonNewFn(boxTir1, 0, "Tir1", beginWaitUserCommandChoice, "%i", ConfigurationCommandesView::TIR1);
-    _labelTir1 = AG_LabelNew(boxTir1, 0, "   ");
-
-    // Tir2
-    AG_Box* boxTir2 = AG_BoxNewHoriz(m_window, 0);
-    AG_ButtonNewFn(boxTir2, 0, "Tir2", beginWaitUserCommandChoice, "%i", ConfigurationCommandesView::TIR2);
-    _labelTir2 = AG_LabelNew(boxTir2, 0, "   ");
-
-    // Monter
-    AG_Box* boxMonter = AG_BoxNewHoriz(m_window, 0);
-    AG_ButtonNewFn(boxMonter, 0, "Monter", beginWaitUserCommandChoice, "%i", ConfigurationCommandesView::MONTER);
-    _labelMonter = AG_LabelNew(boxMonter, 0, "   ");
+    // Box Des commandes
+	_boxCommandes = AG_BoxNewVert(m_window, 0);
+	AG_Expand(_boxCommandes);
 
     AG_SeparatorNewHoriz(m_window);
 	
@@ -75,20 +45,51 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);
 	AG_WindowShow(m_window);
+
     hide();
 }
 
 ConfigurationCommandesView::~ConfigurationCommandesView(void) {
 }
 
+void ConfigurationCommandesView::addCommande(const COMMANDE_ID commandId, const char* commandeLabel, const char* commandName) {
+    AG_Box* boxHoriz = AG_BoxNewHoriz(_boxCommandes, 0);
+    AG_BoxSetHomogenous(boxHoriz, 1);
+    AG_ExpandHoriz(boxHoriz);
+
+    // Description de la commande
+    AG_Box* boxLabel = AG_BoxNewVert(boxHoriz, 0);
+    AG_LabelNew(boxLabel, 0, commandeLabel);
+
+    // Action
+    AG_Box* boxAction = AG_BoxNewVert(boxHoriz, 0);
+
+    if(_waitingCommandUserChoice && _commandToWait == commandId) {
+    	AG_ButtonNew(boxAction, 0, "Choix");
+    }
+    else {
+    	AG_ButtonNewFn(boxAction, 0, "Changer", beginWaitUserCommandChoice, "%i", commandId);
+    }
+
+    // Nom technique de la commande (touche du clavier par exemple)
+    AG_Box* boxCommande = AG_BoxNewVert(boxHoriz, 0);
+	AG_LabelNew(boxCommande, 0, commandName);
+}
+
 void ConfigurationCommandesView::show(void) {
-	 AG_LabelText(_labelAvancer, Config.Commandes.resolve(Config.Commandes.Avancer));
-	 AG_LabelText(_labelReculer, Config.Commandes.resolve(Config.Commandes.Reculer));
-	 AG_LabelText(_labelGauche, Config.Commandes.resolve(Config.Commandes.Gauche));
-	 AG_LabelText(_labelDroite, Config.Commandes.resolve(Config.Commandes.Droite));
-	 AG_LabelText(_labelTir1, Config.Commandes.resolve(Config.Commandes.Tir1));
-	 AG_LabelText(_labelTir2, Config.Commandes.resolve(Config.Commandes.Tir2));
-	 AG_LabelText(_labelMonter, Config.Commandes.resolve(Config.Commandes.Monter));
+	// Réinitialise et affiche la liste des commandes
+	AG_ObjectFreeChildren(_boxCommandes);
+
+	addCommande(AVANCER, 	"Avancer",	"rrr"); //Config.Commandes.resolve(Config.Commandes.Avancer));
+	addCommande(RECULER, 	"Reculer", 	"rrr"); //Config.Commandes.resolve(Config.Commandes.Reculer));
+	addCommande(GAUCHE,  	"Gauche", 	"rrr"); //Config.Commandes.resolve(Config.Commandes.Gauche));
+	addCommande(DROITE,  	"Droite", 	"rrr"); //Config.Commandes.resolve(Config.Commandes.Droite));
+	addCommande(TIR1,    	"Tir 1", 	"rrr"); //Config.Commandes.resolve(Config.Commandes.Tir1));
+	addCommande(TIR2,    	"Tir 2", 	"rrr"); //Config.Commandes.resolve(Config.Commandes.Tir2));
+	addCommande(MONTER,		"Monter", 	"rrr"); //Config.Commandes.resolve(Config.Commandes.Monter));
+
+	// Rafraichissement de la page
+	AG_WindowUpdate(m_window);
 
 	View::show();
 }
@@ -101,7 +102,7 @@ bool ConfigurationCommandesView::eventInterceptor(SDL_Event* event) {
 
 	switch(event->type) {
 	case SDL_KEYDOWN:
-		if(event->key.keysym.sym!=SDLK_ESCAPE) {
+		if(event->key.keysym.sym != SDLK_ESCAPE) {
 			key = event->key.keysym.sym;
 			mouse = 0;
 			commandAcquired = true;
@@ -146,9 +147,12 @@ bool ConfigurationCommandesView::eventInterceptor(SDL_Event* event) {
 
 	if(commandAcquired || escapeAcquired) {
 		pFocus->removeEventInterceptor();
-		Viewer* viewer = Fabrique::getAgarView();
-		viewer->showMenuView(Viewer::CONFIGURATION_COMMANDES_VIEW);
+		_waitingCommandUserChoice = false;
 	}
+
+	// Réactualise la fenêtre
+	Viewer* viewer = Fabrique::getAgarView();
+	viewer->showMenuView(Viewer::CONFIGURATION_COMMANDES_VIEW);
 
 	return commandAcquired || escapeAcquired;	// Indique si l'événement a été consommé ou non
 }
@@ -163,6 +167,11 @@ void ConfigurationCommandesView::beginWaitUserCommandChoice(AG_Event* event) {
 	int commandeId = AG_INT(1);
 
 	_commandToWait = commandeId;
+	_waitingCommandUserChoice = true;
 
 	pFocus->setEventInterceptor(eventInterceptor);
+
+	// Réactualise la fenêtre
+	Viewer* viewer = Fabrique::getAgarView();
+	viewer->showView(Viewer::CONFIGURATION_COMMANDES_VIEW);
 }

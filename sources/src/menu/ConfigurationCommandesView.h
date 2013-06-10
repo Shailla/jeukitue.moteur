@@ -21,15 +21,10 @@ class ConfigurationCommandesView : public View {
 		MONTER
 	};
 
+	static bool _waitingCommandUserChoice;
 	static int _commandToWait;
 
-	AG_Label* _labelAvancer;
-	AG_Label* _labelReculer;
-	AG_Label* _labelGauche;
-	AG_Label* _labelDroite;
-	AG_Label* _labelTir1;
-	AG_Label* _labelTir2;
-	AG_Label* _labelMonter;
+	AG_Box* _boxCommandes;
 
 	static void updateCommande(CCfg::CComID& commandeToUpdate, const SDLKey& key, const int& mouse);
 
@@ -40,6 +35,7 @@ public:
 	void show(void);
 	static bool eventInterceptor(SDL_Event* event);
 	static void beginWaitUserCommandChoice(AG_Event* event);
+	void addCommande(const COMMANDE_ID commandId, const char* commandeLabel, const char* commandName);
 };
 
 #endif

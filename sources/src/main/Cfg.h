@@ -38,13 +38,15 @@ private:
 
 	class CCommandes {
 	public:
-		CComID Avancer;		// Avancer
-		CComID Reculer;		// Reculer
-		CComID Gauche;		// Aller à gauche
-		CComID Droite;		// Aller à droite
-		CComID Tir1;		// Tir primaire
-		CComID Tir2;		// Tir secondaire
-		CComID Monter;		// Monter
+		CComID Avancer;				// Avancer
+		CComID Reculer;				// Reculer
+		CComID Gauche;				// Aller à gauche
+		CComID Droite;				// Aller à droite
+		CComID Tir1;				// Tir primaire
+		CComID Tir2;				// Tir secondaire
+		CComID Monter;				// Monter
+		CComID SelectWeaponUp;		// Sélectionner arme suivante
+		CComID SelectWeaponDown;	// Sélectionner arme précédente
 		const char* resolve(CComID com);					// Retourne la touche ou le bouton en texte
 	};
 

@@ -22,9 +22,9 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 #include <vector>
 
 #ifdef WIN32
-	#include <windows.h>
-	#include <io.h>
-	#include <direct.h>
+#include <windows.h>
+#include <io.h>
+#include <direct.h>
 #endif
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -213,21 +213,21 @@ void gravitePlayer(CPlayer *player)	// Fonction implémentant la gravité
  */
 void initMenu(void) {
 	pFocus = new CFocus(play_handle_key_down,
-						CDlg::menu_handle_key_down,
-						menu_agar_handle_key_down);
+			CDlg::menu_handle_key_down,
+			menu_agar_handle_key_down);
 	pFocus->SetPlayFocus();
 	Aide = false;
 
 	// Lancement de l'IHM, on entre dans le menu principal du jeu
-    Viewer* agarView = Fabrique::getAgarView();
-    pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
-    agarView->showMenuView(Viewer::MAIN_MENU_VIEW);
+	Viewer* agarView = Fabrique::getAgarView();
+	pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
+	agarView->showMenuView(Viewer::MAIN_MENU_VIEW);
 }
 
 void updateSon3D()
 {
 	// TEST DU SON 3D
-//	machin->vitesse.Z = 0.0f;
+	//	machin->vitesse.Z = 0.0f;
 	if( machin->position.Z>1.5f )
 		machin->vitesse.Z = -0.05f;
 	else if( machin->position.Z<-1.5f )
@@ -258,10 +258,10 @@ void updateSon3D()
 	pos_machin[1] = machin->position.Y;
 	pos_machin[2] = machin->position.Z;
 
-		// Position du point d'écoute (le joueur)
+	// Position du point d'écoute (le joueur)
 	FSOUND_3D_Listener_SetAttributes(pos_erwin, 0, fx,fy,fz,tx,ty,tz);
 
-		// Position de l'émetteur du son
+	// Position de l'émetteur du son
 	((CReqSon3D*)machin->req_son)->SetPosition( pos_machin );
 	FSOUND_Update();
 
@@ -276,7 +276,7 @@ void afficheInfo( Uint32 tempsDisplay )
 {
 	myfont.Begin();
 
-		// Affiche le mode de jeu (rien, local, client ou serveur)
+	// Affiche le mode de jeu (rien, local, client ou serveur)
 	string str;
 	string str2;
 
@@ -288,7 +288,7 @@ void afficheInfo( Uint32 tempsDisplay )
 	}
 	else if( Game.isModeLocal() )
 	{	str += "LOCAL";
-		str2 = "";
+	str2 = "";
 	}
 	else if( Game.isModeClient() )
 	{
@@ -349,17 +349,17 @@ void afficheInfo( Uint32 tempsDisplay )
 	if(Game.Erwin()) {
 		CPlayer *erwin = Game.Erwin();
 
-			// Affiche le Teta du joueur principal
+		// Affiche le Teta du joueur principal
 		sprintf( cou, "Tete : %.5d", (int)erwin->Teta() );
 		str = cou;
 		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 
-			// Affiche le Phi du joueur principal
+		// Affiche le Phi du joueur principal
 		sprintf( cou, "Phi : %.5d", (int)erwin->Phi() );
 		str = cou;
 		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
 
-				// Affiche la position du joueur principal
+		// Affiche la position du joueur principal
 		float position[3];
 		erwin->getPosition( position );
 
@@ -488,7 +488,7 @@ void display() {		// Fonction principale d'affichage
 	 * *********************************************************/
 
 	glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
+	glLoadIdentity();
 	gluPerspective( 60.0, Config.Display.X/Config.Display.Y, 0.01f, 100.0f );
 	glEnable( GL_DEPTH_TEST );
 	glMatrixMode( GL_MODELVIEW );
@@ -525,15 +525,15 @@ void display() {		// Fonction principale d'affichage
 		if(Config.Debug.axesMeterVisibility) {
 			glLineWidth( 3 );
 			glBegin(GL_LINES);	// Déssine les axes X Y Z
-				glColor3f( 1.0f, 0.0f, 0.0f);	// Axe des X
-				glVertex3f( 1.0f, 0.0f, 0.0f);
-				glVertex3f( 0.0f, 0.0f, 0.0f);
-				glColor3f( 0.0f, 1.0f, 0.0f);	// Axe des Y
-				glVertex3f( 0.0f, 0.0f, 0.0f);
-				glVertex3f( 0.0f, 1.0f, 0.0f);
-				glColor3f( 0.0f, 0.0f, 1.0f);	// Axe des Z
-				glVertex3f( 0.0f, 0.0f, 0.0f);
-				glVertex3f( 0.0f, 0.0f, 1.0f);
+			glColor3f( 1.0f, 0.0f, 0.0f);	// Axe des X
+			glVertex3f( 1.0f, 0.0f, 0.0f);
+			glVertex3f( 0.0f, 0.0f, 0.0f);
+			glColor3f( 0.0f, 1.0f, 0.0f);	// Axe des Y
+			glVertex3f( 0.0f, 0.0f, 0.0f);
+			glVertex3f( 0.0f, 1.0f, 0.0f);
+			glColor3f( 0.0f, 0.0f, 1.0f);	// Axe des Z
+			glVertex3f( 0.0f, 0.0f, 0.0f);
+			glVertex3f( 0.0f, 0.0f, 1.0f);
 			glEnd();
 		}
 
@@ -597,7 +597,7 @@ void display() {		// Fonction principale d'affichage
 	 * ******************************************************/
 
 	glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
+	glLoadIdentity();
 	gluOrtho2D(0.0, Config.Display.X, 0.0, Config.Display.Y);
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
@@ -629,26 +629,26 @@ void display() {		// Fonction principale d'affichage
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
 
-    glMatrixMode( GL_PROJECTION );
-    glLoadIdentity();
-    glMatrixMode( GL_MODELVIEW );
-    glLoadIdentity();
+	glMatrixMode( GL_PROJECTION );
+	glLoadIdentity();
+	glMatrixMode( GL_MODELVIEW );
+	glLoadIdentity();
 
 
 	/******************************************
 	   Dessin des menus Agar
 	 *****************************************/
 
-    glEnable( GL_TEXTURE_2D );
-    glDisable( GL_BLEND );
-    glDisable( GL_DEPTH_TEST );
+	glEnable( GL_TEXTURE_2D );
+	glDisable( GL_BLEND );
+	glDisable( GL_DEPTH_TEST );
 
-    glOrtho(0, (double)agDriverSw->w, (double)agDriverSw->h, 0.0, -1.0, 1.0);
+	glOrtho(0, (double)agDriverSw->w, (double)agDriverSw->h, 0.0, -1.0, 1.0);
 
-    Fabrique::getAgarView()->draw();
+	Fabrique::getAgarView()->draw();
 
 	glDisable( GL_TEXTURE_2D );
-    glDisable( GL_BLEND );
+	glDisable( GL_BLEND );
 
 
 	/*******************************************************
@@ -829,8 +829,8 @@ void chopeLesEvenements() {
 
 			erwin->getVitesse( vect );
 			balle->changeVitesse( sinTeta*cosPhi*10*quantumVitesse + vect[0],
-				sinPhi*10*quantumVitesse + vect[1],
-				cosTeta*cosPhi*10*quantumVitesse + vect[2]);
+					sinPhi*10*quantumVitesse + vect[1],
+					cosTeta*cosPhi*10*quantumVitesse + vect[2]);
 
 			balle->changeAction( gravitePlayer );	//associe au projectile une fonction de gravité
 			balle->changeContact( contactSprite );	//associe une fonction pour les contacts avec la map
@@ -848,16 +848,16 @@ void timer(Uint32 ecart) {
 
 	frpTimer++;
 
-		// Réception des packets réseau
+	// Réception des packets réseau
 	if( Reseau.getOn() && (Game.isModeClient()) &&(
-		(Game.getStatutClient()==JKT_STATUT_CLIENT_READY)	||
-		(Game.getStatutClient()==JKT_STATUT_CLIENT_DEMJTG)	||
-		(Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) ) ) {	// Si c'est un client
+			(Game.getStatutClient()==JKT_STATUT_CLIENT_READY)	||
+			(Game.getStatutClient()==JKT_STATUT_CLIENT_DEMJTG)	||
+			(Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) ) ) {	// Si c'est un client
 
 		Reseau.recoitClient();
 	}
 
-		// Si une partie est en cours (partie locale, client ou serveur)
+	// Si une partie est en cours (partie locale, client ou serveur)
 	if( Game.getMap() && ( Game.isModeLocal() || (Game.isModeClient() && Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) || (Game.isModeServer() && Game.getStatutServer()==JKT_STATUT_SERVER_PLAY) )) {
 
 		if(Reseau.getOn() && (Game.getStatutServer()==JKT_STATUT_SERVER_PLAY)) {	// Si c'est un serveur
@@ -892,10 +892,10 @@ void timer(Uint32 ecart) {
 }
 
 void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
-//	cout << " -> AGAR";
-//	string evDesc;
-//	CCfg::resolve(sdlEvent, evDesc);
-//	cout << " -> {" << evDesc << "}";
+	cout << endl << " -> AGAR";
+	string evDesc;
+	CCfg::resolve(sdlEvent, evDesc);
+	cout << " -> {" << evDesc << "}";
 
 	if(sdlEvent->type == SDL_KEYDOWN && sdlEvent->key.keysym.sym == SDLK_ESCAPE) {
 		Viewer* agarView = Fabrique::getAgarView();
@@ -903,50 +903,55 @@ void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
 		agarView->hideAllMenuViews();
 	}
 	else {
+		AG_Driver *driver = (AG_Driver *)agDriverSw;
+
 		switch (sdlEvent->type) {
-			case SDL_MOUSEMOTION:
-			case SDL_MOUSEBUTTONUP:
-			case SDL_MOUSEBUTTONDOWN:
-			case SDL_KEYDOWN:
-			case SDL_KEYUP:
-			case SDL_VIDEORESIZE:
-			case SDL_VIDEOEXPOSE:
-			case SDL_QUIT:
-			{
-				AG_DriverEvent ag_event;
-				AG_SDL_TranslateEvent(agDriverSw, sdlEvent, &ag_event);
-				AG_ProcessEvent(NULL, &ag_event);
-				break;
-			}
-			default:
-				// Event ignored by Agar
-//				cout << " Ignored by agar";
-				break;
+		case SDL_MOUSEMOTION:
+		case SDL_MOUSEBUTTONUP:
+		case SDL_MOUSEBUTTONDOWN:
+		case SDL_KEYDOWN:
+		case SDL_KEYUP:
+		case SDL_VIDEORESIZE:
+		case SDL_VIDEOEXPOSE:
+		case SDL_QUIT:
+		{
+			AG_DriverEvent driverEvent;
+			AG_SDL_TranslateEvent(driver, sdlEvent, &driverEvent);
+			AG_ProcessEvent(driver, &driverEvent);
+			break;
+		}
+		default:
+			// Event ignored by Agar
+			cout << endl << " Ignored by agar";
+			break;
 		}
 	}
 }
 
 void play_handle_key_down( SDL_Event *event ) {
-//	if( pMap && erwin )
-//	{
-//		float cosTeta =	/*FastCos0(erwin->Teta/180.0f*Pi);		//*/cosf(erwin->Teta/180.0f*Pi);
-//		float sinTeta = /*FastSin0(erwin->Teta/180.0f*Pi);		//*/sinf(erwin->Teta/180.0f*Pi);
-//		float cosPhi =	/*FastCos0(erwin->Phi/180.0f*Pi);		//*/cosf(erwin->Phi/180.0f*Pi);
-//		float sinPhi =	/*FastSin0(erwin->Phi/180.0f*Pi);		//*/sinf(erwin->Phi/180.0f*Pi);
-//	}
+	//	if( pMap && erwin )
+	//	{
+	//		float cosTeta =	/*FastCos0(erwin->Teta/180.0f*Pi);		//*/cosf(erwin->Teta/180.0f*Pi);
+	//		float sinTeta = /*FastSin0(erwin->Teta/180.0f*Pi);		//*/sinf(erwin->Teta/180.0f*Pi);
+	//		float cosPhi =	/*FastCos0(erwin->Phi/180.0f*Pi);		//*/cosf(erwin->Phi/180.0f*Pi);
+	//		float sinPhi =	/*FastSin0(erwin->Phi/180.0f*Pi);		//*/sinf(erwin->Phi/180.0f*Pi);
+	//	}
+
+	CPlayer *erwin = Game.Erwin();
 
 	switch( event->type ) {
-    case SDL_MOUSEMOTION:		// Si c'est un évênement 'souris'
-		if( Game.Erwin() ) {
-			CPlayer *erwin = Game.Erwin();
-				//rotation /rapport au plan horizontal (regarder en l'air)
+	case SDL_MOUSEMOTION:		// Si c'est un évênement 'souris'
+		if( erwin ) {
+			// Rotation par rapport au plan horizontal (regarder en l'air ou vers le bas)
 			erwin->Phi( erwin->Phi() + event->motion.yrel );
+
 			if(erwin->Phi()>90.0)
 				erwin->Phi( 90.0f );
+
 			if(erwin->Phi()<-90.0)
 				erwin->Phi( -90.0f );
 
-				//rotation /rapport à l'axe verticale
+			// Rotation par rapport à l'axe verticale (regarder à droite ou à gauche)
 			erwin->Teta( erwin->Teta() + event->motion.xrel );
 			if(erwin->Teta()>180.0f)
 				erwin->Teta( erwin->Teta() - 360.0f );
@@ -957,18 +962,44 @@ void play_handle_key_down( SDL_Event *event ) {
 		break;
 
 	case SDL_MOUSEBUTTONDOWN:
-		if( Game.Erwin() ) {
-			if( event->button.button==SDL_BUTTON_LEFT )
-				Game.Erwin()->Tir();	// Tir avec l'arme active
-			else if( event->button.button==SDL_BUTTON_WHEELUP )
-				Game.Erwin()->ActiveArmeUp();
-			else if( event->button.button==SDL_BUTTON_WHEELDOWN )
-				Game.Erwin()->ActiveArmeDown();
+		if( erwin ) {
+			unsigned char mouseButtonDown = event->button.button;
+
+			// Tir de l'arme active
+			if(mouseButtonDown == Config.Commandes.Tir1.mouse) {
+				erwin->Tir();	// Tir avec l'arme active
+			}
+			// Sélection arme suivante
+			else if(mouseButtonDown == Config.Commandes.SelectWeaponUp.mouse) {
+				erwin->ActiveArmeUp();
+			}
+			// Sélection arme précédente
+			else if(mouseButtonDown == Config.Commandes.SelectWeaponDown.mouse) {
+				erwin->ActiveArmeDown();
+			}
 		}
 		break;
 
 	case SDL_KEYDOWN:
-		switch(event->key.keysym.sym) {
+	{
+		SDLKey keyDown = event->key.keysym.sym;
+
+		if( erwin ) {
+			// Tir de l'arme active
+			if(keyDown == Config.Commandes.Tir1.key) {
+				erwin->Tir();
+			}
+			// Sélection arme suivante
+			else if(keyDown == Config.Commandes.SelectWeaponUp.key) {
+				erwin->ActiveArmeUp();
+			}
+			// Sélection arme précédente
+			else if(keyDown == Config.Commandes.SelectWeaponDown.key) {
+				erwin->ActiveArmeDown();
+			}
+		}
+
+		switch(keyDown) {
 		case SDLK_F1 :
 			pFocus->SetMenuFocus();		// Place le focus sur le menu
 			lanceMenuAide( 0 );
@@ -976,36 +1007,36 @@ void play_handle_key_down( SDL_Event *event ) {
 			break;
 
 		case SDLK_F3 :
-			{
-				string trace1 = "Derniere erreur FMOD : ";
-				trace1 += FMOD_ErrorString(FSOUND_GetError());
+		{
+			string trace1 = "Derniere erreur FMOD : ";
+			trace1 += FMOD_ErrorString(FSOUND_GetError());
 
-				string trace2 = "Derniere erreur SDL : ";
-				trace2 += SDL_GetError();
+			string trace2 = "Derniere erreur SDL : ";
+			trace2 += SDL_GetError();
 
-				string trace3 = "Derniere erreur SDL_Net : ";
-				trace3 += SDLNet_GetError();
+			string trace3 = "Derniere erreur SDL_Net : ";
+			trace3 += SDLNet_GetError();
 
-				string trace4 = "Derniere erreur openGL : ";
-				trace4 += (char*)gluErrorString( glGetError() );
+			string trace4 = "Derniere erreur openGL : ";
+			trace4 += (char*)gluErrorString( glGetError() );
 
-				string trace5 = "Derniere erreur Agar : ";
-				trace5 += AG_GetError();
+			string trace5 = "Derniere erreur Agar : ";
+			trace5 += AG_GetError();
 
-TRACE().p( TRACE_OTHER, trace1.c_str() );
-TRACE().p( TRACE_OTHER, trace2.c_str() );
-TRACE().p( TRACE_OTHER, trace3.c_str() );
-TRACE().p( TRACE_OTHER, trace4.c_str() );
-TRACE().p( TRACE_OTHER, trace5.c_str() );
+			TRACE().p( TRACE_OTHER, trace1.c_str() );
+			TRACE().p( TRACE_OTHER, trace2.c_str() );
+			TRACE().p( TRACE_OTHER, trace3.c_str() );
+			TRACE().p( TRACE_OTHER, trace4.c_str() );
+			TRACE().p( TRACE_OTHER, trace5.c_str() );
 
-				cerr << endl << __FILE__ << ":" << __LINE__;
-				cerr << trace1 << endl;
-				cerr << trace2 << endl;
-				cerr << trace3 << endl;
-				cerr << trace4 << endl;
-				cerr << trace5 << endl;
-			}
-			break;
+			cerr << endl << __FILE__ << ":" << __LINE__;
+			cerr << trace1 << endl;
+			cerr << trace2 << endl;
+			cerr << trace3 << endl;
+			cerr << trace4 << endl;
+			cerr << trace5 << endl;
+		}
+		break;
 
 		case SDLK_F4 :
 			lanceMenuMode( 0 );
@@ -1069,16 +1100,16 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 			break;
 
 		case SDLK_n:
-			{
-				set<CSon*>::iterator p;
-				cout << endl << "Bilan des sons :";
-				cout << endl << "----------------";
-				int i=1;
-				for( p=DemonSons->m_TabSon.begin() ; p!=DemonSons->m_TabSon.end() ; p++ )
-					cout << endl << i++ << "\t" << (*p)->nom << "\t" << (unsigned int)(*p)->m_TabReq.size();
-				cout << endl;
-			}
-			break;
+		{
+			set<CSon*>::iterator p;
+			cout << endl << "Bilan des sons :";
+			cout << endl << "----------------";
+			int i=1;
+			for( p=DemonSons->m_TabSon.begin() ; p!=DemonSons->m_TabSon.end() ; p++ )
+				cout << endl << i++ << "\t" << (*p)->nom << "\t" << (unsigned int)(*p)->m_TabReq.size();
+			cout << endl;
+		}
+		break;
 
 		case SDLK_c :	// Change le joueur principal (=> change le point de vue et l'interraction clavier)
 			cout << endl << "Nombre de joeurs dans la partie : " << Game.pTabIndexPlayer->getNbr();
@@ -1096,20 +1127,20 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 			break;
 
 		case SDLK_ESCAPE:
-            {
-                Viewer* agarView = Fabrique::getAgarView();
-                pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
-			    agarView->showMenuView(Viewer::MAIN_MENU_VIEW);
-            }
-		    break;
+		{
+			Viewer* agarView = Fabrique::getAgarView();
+			pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
+			agarView->showMenuView(Viewer::MAIN_MENU_VIEW);
+		}
+		break;
 
 		case SDLK_F2:
 			lanceMenuPrinc( 0 );
 			break;
 
 		case SDLK_F5:
-            pFocus->SwitchPlayOrConsoleFocus();		// Place le focus sur le menu
-		    break;
+			pFocus->SwitchPlayOrConsoleFocus();		// Place le focus sur le menu
+			break;
 
 		default:
 			break;
@@ -1117,28 +1148,29 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 
 		break;
 	}
+	}
 }
 
 static void process_events(void) {
-    SDL_Event event;
+	SDL_Event event;
 
-    while( SDL_PollEvent( &event ) ) {
-        switch( event.type ) {
-        case SDL_QUIT:
+	while( SDL_PollEvent( &event ) ) {
+		switch( event.type ) {
+		case SDL_QUIT:
 			quit_game( 0 );
-            break;
+			break;
 
 		default:
 			pFocus->ExecFocus( &event );
 			break;
-        }
-    }
+		}
+	}
 }
 
 bool deprecatedOpenMAP(const void *nomFichier) {
 	/**************************************
-	* Ouverture de la Map proprement dite
-	**************************************/
+	 * Ouverture de la Map proprement dite
+	 **************************************/
 
 	string nomFichierMap = (char*)nomFichier;
 
@@ -1152,10 +1184,10 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 
 
 	/**************************************
-	* Chargement de Map pour les joueurs
-	**************************************/
+	 * Chargement de Map pour les joueurs
+	 **************************************/
 
-		// Lecture de map de joueurs
+	// Lecture de map de joueurs
 	string mapJoueurPrincipal;
 	mapJoueurPrincipal.append("@Joueur\\").append(Config.Joueur.mapName);
 
@@ -1171,8 +1203,8 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 
 
 	/**************************************
-	* Chargement de sons pour les joueurs
-	**************************************/
+	 * Chargement de sons pour les joueurs
+	 **************************************/
 
 	// Récupération des ressources de cris des personnages
 	string cri1 = "@Bruit\\cri_1.wav";
@@ -1183,8 +1215,8 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 
 
 	/***********************************
-	* Création des joueurs dans la Map
-	***********************************/
+	 * Création des joueurs dans la Map
+	 ***********************************/
 
 	// Création du joueur principal
 	CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
@@ -1268,93 +1300,93 @@ void executeRequests() {
 		break;
 
 	case CRequeteProcess::OMLE_DEMANDE:
-		{
-			Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
+	{
+		Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
 
-			// Fermeture de la MAP courante et destruction des joueurs
-			CMap* currentMap = Game.getMap();
-			if(currentMap) {
-				currentMap->freeGL();
-				Game.changeActiveMap(NULL);
-			}
-
-			Game.Erwin(NULL);
-
-			if(Game.pTabIndexPlayer) {
-				CPlayer *player;
-				int playerIndex = -1;
-				while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
-					player = Game.pTabIndexPlayer->operator [](playerIndex);
-					player->freeGL();
-				}
-
-				delete Game.pTabIndexPlayer;
-				Game.pTabIndexPlayer = NULL;
-			}
-
-			// Lancement ouverture MAP demandée
-			const string mapName = Game.RequeteProcess.getOuvreMap();
-
-			localeGameDto = new GameDto(mapName);
-
-			Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_OUVERTURE_EN_COURS);
-
-			MapLoader::launcheGameLoading(localeGameDto);		// Lance l'ouverture de la MAP
+		// Fermeture de la MAP courante et destruction des joueurs
+		CMap* currentMap = Game.getMap();
+		if(currentMap) {
+			currentMap->freeGL();
+			Game.changeActiveMap(NULL);
 		}
-		break;
+
+		Game.Erwin(NULL);
+
+		if(Game.pTabIndexPlayer) {
+			CPlayer *player;
+			int playerIndex = -1;
+			while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
+				player = Game.pTabIndexPlayer->operator [](playerIndex);
+				player->freeGL();
+			}
+
+			delete Game.pTabIndexPlayer;
+			Game.pTabIndexPlayer = NULL;
+		}
+
+		// Lancement ouverture MAP demandée
+		const string mapName = Game.RequeteProcess.getOuvreMap();
+
+		localeGameDto = new GameDto(mapName);
+
+		Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_OUVERTURE_EN_COURS);
+
+		MapLoader::launcheGameLoading(localeGameDto);		// Lance l'ouverture de la MAP
+	}
+	break;
 
 	case CRequeteProcess::OMLE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la méthode "openMap"
 		// Nothing to do
 		break;
 
 	case CRequeteProcess::OMLE_OUVERTURE:
-		{
-			ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
-			console->setMapOuverteName(localeGameDto->getMapName());
+	{
+		ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
+		console->setMapOuverteName(localeGameDto->getMapName());
 
-			// Activation de la MAP ouverte
-			CMap* map = localeGameDto->getMap();
-			map->initGL();
-			Game.changeActiveMap(map);
+		// Activation de la MAP ouverte
+		CMap* map = localeGameDto->getMap();
+		map->initGL();
+		Game.changeActiveMap(map);
 
-			// Définition des joueurs
-			Game.setPlayerList(localeGameDto->getPlayersMaxNumber());
+		// Définition des joueurs
+		Game.setPlayerList(localeGameDto->getPlayersMaxNumber());
 
-			CPlayer* erwin = localeGameDto->getErwin();
+		CPlayer* erwin = localeGameDto->getErwin();
 
 
-			int i = 0;
+		int i = 0;
 
-			if(erwin != NULL) {
-				Game.Erwin(erwin);								// Indique que 'erwin' est le joueur principal
-				Game.pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
-			}
-
-			for(vector<CPlayer*>::iterator iter = localeGameDto->getPlayers().begin() ; iter != localeGameDto->getPlayers().end() ; ++iter) {
-				Game.pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
-			}
-
-			CPlayer *player;
-			int playerIndex = -1;
-
-			while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
-				player = (*Game.pTabIndexPlayer)[playerIndex];
-				player->initGL();
-				player->choiceOneEntryPoint();
-			}
-
-			delete localeGameDto;
-
-			// Lancement du jeu en mode local
-			Aide = false;
-			pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
-			Game.setModeLocal();						// Jeu en mode jeu local
-			Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_AUCUNE);
-
-			cout << "\nFINI";
-			cout << flush;
+		if(erwin != NULL) {
+			Game.Erwin(erwin);								// Indique que 'erwin' est le joueur principal
+			Game.pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
 		}
-		break;
+
+		for(vector<CPlayer*>::iterator iter = localeGameDto->getPlayers().begin() ; iter != localeGameDto->getPlayers().end() ; ++iter) {
+			Game.pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
+		}
+
+		CPlayer *player;
+		int playerIndex = -1;
+
+		while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
+			player = (*Game.pTabIndexPlayer)[playerIndex];
+			player->initGL();
+			player->choiceOneEntryPoint();
+		}
+
+		delete localeGameDto;
+
+		// Lancement du jeu en mode local
+		Aide = false;
+		pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
+		Game.setModeLocal();						// Jeu en mode jeu local
+		Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_AUCUNE);
+
+		cout << "\nFINI";
+		cout << flush;
+	}
+	break;
 	}
 
 
@@ -1370,106 +1402,106 @@ void executeRequests() {
 		break;
 
 	case CRequeteProcess::OMSE_DEMANDE:
-		{
-			Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
+	{
+		Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
 
-			// Fermeture de la MAP courante et destruction des joueurs
-			CMap* currentMap = Game.getMap();
-			if(currentMap) {
-				currentMap->freeGL();
-				Game.changeActiveMap(NULL);
-			}
-
-			Game.Erwin(NULL);
-
-			if(Game.pTabIndexPlayer) {
-				CPlayer *player;
-				int playerIndex = -1;
-				while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
-					player = Game.pTabIndexPlayer->operator [](playerIndex);
-					player->freeGL();
-				}
-
-				delete Game.pTabIndexPlayer;
-				Game.pTabIndexPlayer = NULL;
-			}
-
-
-			// Connexion du serveur
-			if(!Reseau.ouvreServer(Config.Reseau.getPort())) {
-				Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
-				AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du serveur");
-			}
-			else {
-				// Lancement ouverture MAP demandée
-				const string mapName = Game.RequeteProcess.getOuvreMap();
-
-				serverGameDto = new GameDto(mapName);
-
-				Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_OUVERTURE_EN_COURS);
-
-				MapLoader::launcheGameServerLoading(serverGameDto);		// Lance l'ouverture de la MAP
-			}
+		// Fermeture de la MAP courante et destruction des joueurs
+		CMap* currentMap = Game.getMap();
+		if(currentMap) {
+			currentMap->freeGL();
+			Game.changeActiveMap(NULL);
 		}
-		break;
+
+		Game.Erwin(NULL);
+
+		if(Game.pTabIndexPlayer) {
+			CPlayer *player;
+			int playerIndex = -1;
+			while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
+				player = Game.pTabIndexPlayer->operator [](playerIndex);
+				player->freeGL();
+			}
+
+			delete Game.pTabIndexPlayer;
+			Game.pTabIndexPlayer = NULL;
+		}
+
+
+		// Connexion du serveur
+		if(!Reseau.ouvreServer(Config.Reseau.getPort())) {
+			Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
+			AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du serveur");
+		}
+		else {
+			// Lancement ouverture MAP demandée
+			const string mapName = Game.RequeteProcess.getOuvreMap();
+
+			serverGameDto = new GameDto(mapName);
+
+			Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_OUVERTURE_EN_COURS);
+
+			MapLoader::launcheGameServerLoading(serverGameDto);		// Lance l'ouverture de la MAP
+		}
+	}
+	break;
 
 	case CRequeteProcess::OMSE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la méthode "openMap"
 		// Nothing to do
 		break;
 
 	case CRequeteProcess::OMSE_OUVERTURE:
-		{
-			// Activation de la MAP ouverte
-			CMap* map = serverGameDto->getMap();
-			map->initGL();
-			Game.changeActiveMap(map);
+	{
+		// Activation de la MAP ouverte
+		CMap* map = serverGameDto->getMap();
+		map->initGL();
+		Game.changeActiveMap(map);
 
-			// Définition des joueurs
-			Game.setPlayerList(serverGameDto->getPlayersMaxNumber());
+		// Définition des joueurs
+		Game.setPlayerList(serverGameDto->getPlayersMaxNumber());
 
-			CPlayer* erwin = serverGameDto->getErwin();
-
-
-			int i = 0;
-
-			if(erwin != NULL) {
-				Game.Erwin(erwin);								// Indique que 'erwin' est le joueur principal
-				Game.pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
-			}
-
-			for(vector<CPlayer*>::iterator iter = serverGameDto->getPlayers().begin() ; iter != serverGameDto->getPlayers().end() ; ++iter) {
-				Game.pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
-			}
-
-			CPlayer *player;
-			int playerIndex = -1;
-
-			while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
-				player = (*Game.pTabIndexPlayer)[playerIndex];
-				player->initGL();
-				player->choiceOneEntryPoint();
-			}
+		CPlayer* erwin = serverGameDto->getErwin();
 
 
-			// Lancement du jeu en mode local
-			Aide = false;
-			pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
+		int i = 0;
 
-			JktNet::CServer *server = Game.getServer();
-			server->nomMAP = serverGameDto->getMapName();					// Informe le serveur sur le nom de la MAP lancée
-			Game.setPlayerList( server->maxPlayers );
-			server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
-			Game.setModeServer();						// Jeu en mode jeu local
-			server->bGame = true;						// Indique qu'une partie est en cours
-
-			delete serverGameDto;
-
-			cout << "\nFINI";
-			cout << flush;
-
-			Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
+		if(erwin != NULL) {
+			Game.Erwin(erwin);								// Indique que 'erwin' est le joueur principal
+			Game.pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
 		}
-		break;
+
+		for(vector<CPlayer*>::iterator iter = serverGameDto->getPlayers().begin() ; iter != serverGameDto->getPlayers().end() ; ++iter) {
+			Game.pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
+		}
+
+		CPlayer *player;
+		int playerIndex = -1;
+
+		while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
+			player = (*Game.pTabIndexPlayer)[playerIndex];
+			player->initGL();
+			player->choiceOneEntryPoint();
+		}
+
+
+		// Lancement du jeu en mode local
+		Aide = false;
+		pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
+
+		JktNet::CServer *server = Game.getServer();
+		server->nomMAP = serverGameDto->getMapName();					// Informe le serveur sur le nom de la MAP lancée
+		Game.setPlayerList( server->maxPlayers );
+		server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
+		Game.setModeServer();						// Jeu en mode jeu local
+		server->bGame = true;						// Indique qu'une partie est en cours
+
+		delete serverGameDto;
+
+		cout << "\nFINI";
+		cout << flush;
+
+		Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
+	}
+	break;
 	}
 
 
@@ -1575,7 +1607,7 @@ void boucle() {
 }
 
 int main(int argc, char** argv) {
-TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
+	TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 	atexit( quit_JKT );
 
@@ -1600,7 +1632,7 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 	cout << "\n\tINFO DIVERSES";
 
-		// Info réseau
+	// Info réseau
 	IPaddress ipaddress;
 	if(!SDLNet_ResolveHost( &ipaddress, "localhost", 0 )) {
 		const char *host = SDLNet_ResolveIP( &ipaddress );
@@ -1612,9 +1644,9 @@ TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 	}
 	else {
 		cout << "\nNom de la machine locale : Inconnu";
-    }
+	}
 
-    Fabrique::construct();
+	Fabrique::construct();
 
 	// Création du démon de gestion des sons
 	DemonSons = new CDemonSons();

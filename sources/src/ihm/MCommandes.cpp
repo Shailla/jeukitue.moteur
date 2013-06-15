@@ -81,6 +81,8 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigCommandes(var=%x)", var );
 	MenuConfigCommandes.add_ItemsDroits( 4, Config.Commandes.resolve(Config.Commandes.Tir1) );
 	MenuConfigCommandes.add_ItemsDroits( 5, Config.Commandes.resolve(Config.Commandes.Tir2) );
 	MenuConfigCommandes.add_ItemsDroits( 6, Config.Commandes.resolve(Config.Commandes.Monter) );
+	MenuConfigCommandes.add_ItemsDroits( 6, Config.Commandes.resolve(Config.Commandes.SelectWeaponUp) );
+	MenuConfigCommandes.add_ItemsDroits( 6, Config.Commandes.resolve(Config.Commandes.SelectWeaponDown) );
 
 	CDlg::SetMenuActif( &MenuConfigCommandes );
 }

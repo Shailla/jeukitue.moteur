@@ -23,6 +23,7 @@ public:
 		ShowConfigurationAudio,
 		ChangeCommande,
 		ShowConfigurationCommandes,
+		WaitUserCommandChoice,
 		ShowConfigurationReseauViewAction,
 		ShowConfigurationJoueurViewAction,
 		ShowConfigurationVideoViewAction,

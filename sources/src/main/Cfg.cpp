@@ -145,6 +145,18 @@ TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 		Commandes.Monter.key = (SDLKey)crotte;
 		fichier >> crotte >> mot;
 		Commandes.Monter.mouse = crotte;
+
+		do fichier >> mot;	while( mot!="SelectWeaponUp" );
+		fichier >> crotte;
+		Commandes.SelectWeaponUp.key = (SDLKey)crotte;
+		fichier >> crotte >> mot;
+		Commandes.SelectWeaponUp.mouse = crotte;
+
+		do fichier >> mot;	while( mot!="SelectWeaponDown" );
+		fichier >> crotte;
+		Commandes.SelectWeaponDown.key = (SDLKey)crotte;
+		fichier >> crotte >> mot;
+		Commandes.SelectWeaponDown.mouse = crotte;
 	}
 
 	do fichier >> mot;
@@ -237,6 +249,8 @@ void CCfg::Ecrit() {
 	fichier << "\nTir1\t\t" << Commandes.Tir1.key << "\t" << Commandes.Tir1.mouse << "\t(" << Commandes.resolve(Commandes.Tir1) << ")";
 	fichier << "\nTir2\t\t" << Commandes.Tir2.key << "\t" << Commandes.Tir2.mouse << "\t(" << Commandes.resolve(Commandes.Tir2) << ")";
 	fichier << "\nMonter\t\t" << Commandes.Monter.key << "\t" << Commandes.Monter.mouse << "\t(" << Commandes.resolve(Commandes.Monter) << ")";
+	fichier << "\nSelectWeaponUp\t\t" << Commandes.SelectWeaponUp.key << "\t" << Commandes.SelectWeaponUp.mouse << "\t(" << Commandes.resolve(Commandes.SelectWeaponUp) << ")";
+	fichier << "\nSelectWeaponDown\t\t" << Commandes.SelectWeaponDown.key << "\t" << Commandes.SelectWeaponDown.mouse << "\t(" << Commandes.resolve(Commandes.SelectWeaponDown) << ")";
 
 	fichier << "\n\n\n--------------------CENTRALISATEUR---------------------\n";
 	fichier << "\nip\t\t" << Centralisateur.m_IpServer;
@@ -263,7 +277,9 @@ void CCfg::Ecrit() {
 }
 
 void CCfg::resolve(const SDL_Event *event, string& description) {
-	switch(event->type) {
+	Uint8 type = event->type;
+
+	switch(type) {
 	case SDL_NOEVENT: 			description.append("SDL_NOEVENT");			break;
 	case SDL_ACTIVEEVENT:		description.append("SDL_ACTIVEEVENT");		break;
 	case SDL_KEYDOWN: 			description.append("SDL_KEYDOWN");			break;
@@ -290,10 +306,14 @@ void CCfg::resolve(const SDL_Event *event, string& description) {
 	case SDL_EVENT_RESERVED7: 	description.append("SDL_EVENT_RESERVED7");	break;
 	case SDL_USEREVENT: 		description.append("SDL_USEREVENT");		break;
 	case SDL_NUMEVENTS: 		description.append("SDL_NUMEVENTS");		break;
-	default: 					description.append("Unknown event type");	break;
+	default:
+		stringstream str;
+		str << "Event_type_inconnu(" << type << ")";
+		description.append(str.str());
+		break;
 	}
 
-	switch(event->type) {
+	switch(type) {
 	case SDL_KEYUP:
 	case SDL_KEYDOWN:
 		description.append(" (").append(resolve(event->key.keysym.sym)).append(")");
@@ -318,9 +338,12 @@ const char* CCfg::resolve(const Uint8 mouse) {
 	case 1:		return "Souris_gauche";
 	case 2:		return "Souris_centre";
 	case 3:		return "Souris_droit";
-	case 4:		return "Souris_centre_DOWN";
-	case 5:		return "Souris_centre_UP";
-	default:	return "Souris_?";
+	case 4:		return "Souris_centre_down";
+	case 5:		return "Souris_centre_up";
+	default:
+		stringstream str;
+		str << "Souris_inconnu(" << mouse << ")";
+		return str.str().c_str();
 	}
 }
 
@@ -462,7 +485,11 @@ const char* CCfg::resolve(const SDLKey sym) {
 	case SDLK_POWER:		result = "power";			break;
 	case SDLK_EURO:			result = "euro";			break;
 
-	default:				result = "INCONNU";			break;
+	default:
+		stringstream str;
+		str << "Key_inconnu(" << sym << ")";
+		result = str.str().c_str();
+		break;
 	}
 
 	return result;

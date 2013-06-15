@@ -25,6 +25,7 @@ using namespace std;
 #include "menu/ConfigurationReseauView.h"
 #include "menu/LanceServeurView.h"
 #include "menu/ProgressBarView.h"
+#include "menu/ConfigurationCommandesView.h"
 #include "main/Fabrique.h"
 #include "centralisateur/Centralisateur.h"
 #include "centralisateur/TcpConnector.h"
@@ -99,6 +100,17 @@ void Controller::executeAction(AG_Event *event) {
 
 	case ShowConfigurationCommandes:
 		m_agarView->showMenuView(Viewer::CONFIGURATION_COMMANDES_VIEW);
+		break;
+
+	case WaitUserCommandChoice:
+		{
+			int commandId = AG_INT(2);
+
+			ConfigurationCommandesView::beginWaitUserCommandChoice(commandId);
+
+			// Réactualise la fenêtre
+			m_agarView->showMenuView(Viewer::CONFIGURATION_COMMANDES_VIEW);
+		}
 		break;
 
 	case ShowConfigurationAudio:

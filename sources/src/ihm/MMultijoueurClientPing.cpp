@@ -73,7 +73,7 @@ CMenu MenuPingserver(title_menu_pingserver, item_menu_pingserver, 1, liste_suiva
 
 void refreshPingserver() {
 	if( bAttenteMenuPing ) {
-		Uint32 ping = Reseau.getPingClientServer();
+		Uint32 ping = Reseau.getClient()->getPingClientServeur();
 
 		if(ping> 0) {
 			if( ping >=9999 ) {		// Délai trop long !
@@ -101,7 +101,7 @@ TRACE().p( TRACE_MENU, "lancePingServer(var=%x)", arg );
 
 void actuPing( void *arg ) {	// Réactualise la valeur du ping
 	bAttenteMenuPing = true;			// On passe en état d'attente d'un ping
-	Reseau.sendPingClientServer();		// Envoie un ping au serveur
+	Reseau.getClient()->sendPingToServer();		// Envoie un ping au serveur
 	MenuPingserver.add_ItemsDroits( 0, "????" );
 }
 

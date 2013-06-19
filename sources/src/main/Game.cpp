@@ -66,7 +66,7 @@ bool CGame::isModeNull() {
 void CGame::setStatutClient( JktNet::StatutClient statut ) {
 TRACE().p( TRACE_ERROR, "CGame::setStatusClient(status=%d) begin%T", statut, this );
 
-	Reseau.setStatutClient( statut );
+	Reseau.getClient()->setStatut( statut );
 
 TRACE().p( TRACE_ERROR, "CGame::setStatusClient() end%T", this );
 }
@@ -76,7 +76,7 @@ TRACE().p( TRACE_ERROR, "CGame::getStatutClient() begin%T", this );
 
 	JktNet::StatutClient statut;
 	if( m_Mode==JKT_MODE_PARTIE_CLIENT )
-		statut = Reseau.getStatutClient();
+		statut = Reseau.getClient()->getStatut();
 	else
 		statut = JKT_STATUT_CLIENT_NULL;
 

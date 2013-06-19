@@ -149,10 +149,7 @@ CFocus *pFocus;
 
 int numMainPlayer = 0;	// Numéro du joueur principal dans la MAP (identifie le joueur principal dans la liste des joueurs de la MAP)
 
-SDL_Event event;	//évênement SDL pour la gestion des input (clavier/souris/joystick...)
-
 SDL_TimerID timer_ID = 0;
-SDL_Event event_SDL;
 
 bool Aide = false;
 
@@ -854,7 +851,7 @@ void timer(Uint32 ecart) {
 			(Game.getStatutClient()==JKT_STATUT_CLIENT_DEMJTG)	||
 			(Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) ) ) {	// Si c'est un client
 
-		Reseau.recoitClient();
+		Reseau.getClient()->recoit();
 	}
 
 	// Si une partie est en cours (partie locale, client ou serveur)

@@ -74,7 +74,6 @@ void OpenSceneMapView::show(void) {
 
 	// Rafraichissement de la page
 	AG_WindowUpdate(m_window);
-
 	View::show();
 }
 

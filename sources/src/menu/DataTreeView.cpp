@@ -198,7 +198,6 @@ void DataTreeView::refreshServeur(DataTreeDetails* details) {
 
 	AG_TlistEnd(details->getDataList());
 
-
 	// Rafraichissement de la page
 	AG_WindowUpdate(details->getWindow());
 }

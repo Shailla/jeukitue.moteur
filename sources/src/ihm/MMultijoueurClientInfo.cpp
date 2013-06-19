@@ -60,8 +60,7 @@ const char *item_menu_infoserver[] =
 	"Map active",
 };
 
-void retourInfoserver( void *arg )
-{
+void retourInfoserver( void *arg ) {
 TRACE().p( TRACE_MENU, "retourInfoserver(var=%x)", arg );
 	lanceMenuMultijoueurclient( 0 );
 }
@@ -69,14 +68,15 @@ TRACE().p( TRACE_MENU, "retourInfoserver(var=%x)", arg );
 CMenu MenuInfoserver( "INFOS SERVEUR", item_menu_infoserver, 2,
 						liste_suivant_infoserver, retourInfoserver, 0, refreshInfoserver );
 
-void refreshInfoserver()
-{
-	if( Reseau.getInfoServer().Ready() == true )
-	{
-		MenuInfoserver.add_ItemsDroits( 0, Reseau.getInfoServer().nom.c_str() );
-		MenuInfoserver.add_ItemsDroits( 1, Reseau.getInfoServer().map.c_str() );
+void refreshInfoserver() {
+	JktNet::CClient::CInfoServer infoServer = Reseau.getClient()->getInfoServer();
 
-		Reseau.getInfoServer().Ready( false );
+	if( infoServer.Ready() == true )
+	{
+		MenuInfoserver.add_ItemsDroits( 0, infoServer.nom.c_str() );
+		MenuInfoserver.add_ItemsDroits( 1, infoServer.map.c_str() );
+
+		infoServer.Ready( false );
 	}
 }
 
@@ -86,7 +86,7 @@ TRACE().p( TRACE_MENU, "lanceInfoServer(var=%x)", arg );
 
 	MenuInfoserver.add_ItemsDroits( 0, "????" );
 	MenuInfoserver.add_ItemsDroits( 1, "????" );
-	Reseau.sendRequestInfoServer();		// Envoie ses infos au serveur
+	Reseau.getClient()->sendRequestInfoToServer();		// Envoie ses infos au serveur
 
 	CDlg::SetMenuActif( &MenuInfoserver );
 }

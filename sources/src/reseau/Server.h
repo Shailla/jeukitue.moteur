@@ -21,26 +21,26 @@ public:
 	CSPA spaMaitre;
 	SDLNet_SocketSet socketSet;		// Les sockets à écouter
 
-	string nom;			// Nom du serveur
-	string nameMap;		// Nom de la MAP ouverte en mode multi-joueurs
+	string nom;				// Nom du serveur
+	string nameMap;			// Nom de la MAP ouverte en mode multi-joueurs
 	
-	bool bGame;		// true si une partie est en cours
-	string nomMAP;	// Nom du fichier MAP de la partie en cours
+	bool bGame;				// true si une partie est en cours
+	string nomMAP;			// Nom du fichier MAP de la partie en cours
 
 		// Constructeurs / Destructeur
 	CServer();	
 	~CServer();
 
-	int AjoutePlayer(CPlayer *player);	// Ajoute un proxy-joueur à la partie en cours
-	CPlayer *GetPlayer(int pos);		// Renvoie le joueur pointé par le curseur
-	void partieEnCours(bool indic);		// Donne une valeur à bPartieEnCours
-	int nbrPlayers();					// Donne le nombre de joueurs sur le serveur
+	int AjoutePlayer(CPlayer *player);			// Ajoute un proxy-joueur à la partie en cours
+	CPlayer *GetPlayer(int pos);				// Renvoie le joueur pointé par le curseur
+	void partieEnCours(bool indic);				// Donne une valeur à bPartieEnCours
+	int nbrPlayers();							// Donne le nombre de joueurs sur le serveur
 	void setStatut( StatutServer statut);
 	StatutServer getStatut();
 
-	void decodeServerUDP( CSPA *spa );	// Décode les paquets ne provenant pas des joeurs actuels
-	void decodeProxyPlayer( CPlayer *player ); // Décode les paquets provenant des différents joueurs
-	bool acceptPlayer( CSPA *spa );	// Accepte un nouveau joueur dans la partie
+	void decodeServerUDP( CSPA *spa );			// Décode les paquets ne provenant pas des joeurs actuels
+	void decodeProxyPlayer( CPlayer *player ); 	// Décode les paquets provenant des différents joueurs
+	bool acceptPlayer( CSPA *spa );				// Accepte un nouveau joueur dans la partie
 
 	bool ouvre( Uint16 port );
 	void emet();

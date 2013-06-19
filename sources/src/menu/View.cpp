@@ -1,7 +1,5 @@
 #include "menu/View.h"
 
-#include <iostream>
-
 View::View(const AG_EventFn controllerCallback) {
     m_controllerCallback = controllerCallback;
     m_window = NULL;

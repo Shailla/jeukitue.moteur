@@ -97,31 +97,6 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() -> %b end%T", result, this );
 	return result;
 }
 
-void CReseau::sendPingClientServer() {	// Envoie un ping du client au serveur
-TRACE().p( TRACE_RESEAU, "CReseau::sendPingClientServer()%T", this );
-
-	m_Client->sendPingToServer();
-}
-
-void CReseau::sendRequestInfoServer() {	// Envoie un ping du client au serveur
-TRACE().p( TRACE_RESEAU, "CReseau::sendRequestInfoServer()%T", this );
-
-	m_Client->sendRequestInfoToServer();
-}
-
-CClient::CInfoServer CReseau::getInfoServer() {
-	return m_Client->getInfoServer();
-}
-
-int CReseau::getPingClientServer() {
-	int ping = m_Client->getPingClientServeur();
-
-	if( ping != -1 )
-TRACE().p( TRACE_RESEAU, "CReseau::getPingClientServer() -> %d %T", ping, this );
-
-	return ping;
-}
-
 void CReseau::fermeServer() {
 TRACE().p( TRACE_RESEAU, "CReseau::fermeServer()%T", this );
 	cout << endl << "Fermeture du serveur UDP";
@@ -166,30 +141,6 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() -> %b end%T", result, this );
 	return result;
 }
 
-void CReseau::setStatutClient( StatutClient statut ) {
-TRACE().p( TRACE_RESEAU, "CReseau::setStatutClient(statut=%d) begin%T", statut, this );
-
-	if( m_Client )
-		m_Client->setStatut( statut );
-	else
-		TRACE().p( TRACE_ERROR, "CReseau::setStatutClient() Pas de client%T", this );
-
-TRACE().p( TRACE_RESEAU, "CReseau::setStatutClient() end%T", this );
-}
-
-StatutClient CReseau::getStatutClient() const {
-TRACE().p( TRACE_RESEAU, "CReseau::getStatutClient() begin%T", this );
-	StatutClient statut;
-
-	if( m_Client )
-		statut = m_Client->getStatut();
-	else
-		TRACE().p( TRACE_ERROR, "CReseau::setStatutClient() Pas de client%T", this );
-
-TRACE().p( TRACE_RESEAU, "CReseau::getStatutClient() -> %d end%T", statut, this );
-	return statut;
-}
-
 void CReseau::fermeClient() {
 TRACE().p( TRACE_RESEAU, "CReseau::fermeClient()%T", this );
 	cout << endl << "Deconnexion du serveur";
@@ -200,16 +151,6 @@ TRACE().p( TRACE_RESEAU, "CReseau::fermeClient()%T", this );
 
 	m_On = false;		// Signale que le réseau n'est plus prêt
 	Game.Quit();
-}
-
-void CReseau::sendJoinTheGameFromClient() {		// Envoie une demande à se joindre à la partie du serveur
-TRACE().p( TRACE_RESEAU, "CReseau::sendJoinTheGame()%T", this );
-
-	m_Client->sendJoinTheGame( Config.Joueur.nom );
-}
-
-void CReseau::recoitClient() {
-	m_Client->recoit();
 }
 
 void CReseau::recoitServer() {

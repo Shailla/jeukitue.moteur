@@ -52,19 +52,6 @@ public:
 
 	bool ouvreClient();						// Connecte le client au serveur
 	void fermeClient();						// Déconnecte le client du serveur
-
-	void setStatutClient( StatutClient statut );
-	StatutClient getStatutClient() const;
-
-	void recoitClient();					// Recoit tous les paquets
-
-
-	void sendJoinTheGameFromClient();					// Joins la partie en cours sur le serveur
-	void sendPingClientServer();						// Envoie d'un ping du client vers le serveur
-	int getPingClientServer();							// Récupère la valeur du dernier ping puis efface celle-ci
-	void sendRequestInfoServer();						// Demande ses infos au serveur
-
-	CClient::CInfoServer getInfoServer();				// Récupère les dervières info obtenues du serveur
 };
 
 }	// JktNet

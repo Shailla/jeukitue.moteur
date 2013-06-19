@@ -55,18 +55,18 @@ public:
 	void recoit();
 
 	void setStatut(StatutClient statut);		// Renseigne l'état du client (déconnecté,connecté, partie en cours...)
-	StatutClient getStatut();				// Retourne l'état du client
+	StatutClient getStatut();					// Retourne l'état du client
 
-	void setMaxPlayers(int nbr);	// Crée le tableau des joueurs et enregistre le nombre de joueurs maxi
-	int getMaxPlayers();			// Retourne le nombre maximum de joueurs
+	void setMaxPlayers(int nbr);				// Crée le tableau des joueurs et enregistre le nombre de joueurs maxi
+	int getMaxPlayers();						// Retourne le nombre maximum de joueurs
 
-	unsigned int nbrPlayers();		// Donne le nombre de joueurs sur la MAP en cours
-	void nbrPlayers(unsigned int nbr);	// Implémente le nombre de joueurs sur la MAP en cours
+	unsigned int nbrPlayers();					// Donne le nombre de joueurs sur la MAP en cours
+	void nbrPlayers(unsigned int nbr);			// Implémente le nombre de joueurs sur la MAP en cours
 	bool AjoutePlayer(int pos,CPlayer *player);	// Ajoute un joueur dans la liste des joueurs
-	CPlayer* GetPlayer(int pos);	// Retourne un pointeur sur l'élément indexé 'pos'
-	int SuivantPlayer( int pos );	// Renvoie l'index de l'élément après l'élément indexé par 'pos'
+	CPlayer* GetPlayer(int pos);				// Retourne un pointeur sur l'élément indexé 'pos'
+	int SuivantPlayer( int pos );				// Renvoie l'index de l'élément après l'élément indexé par 'pos'
 
-	void decodeConnecte( Uint16, Uint16 ); //Décode les paquets recus du réseau
+	void decodeConnecte( Uint16, Uint16 ); 		//Décode les paquets recus du réseau
 	bool decodeNonConnecte( Uint16 code1, Uint16 code2 );
 	bool ouvre( const string &address, Uint16 port );
 	CInfoServer getInfoServer();
@@ -74,7 +74,7 @@ public:
 	void emet( CPlayer &player );
 
 private:
-	void decodeRecap( Uint16 code2 );	// Gestion des msg de récapitulation de partie
+	void decodeRecap( Uint16 code2 );		// Gestion des msg de récapitulation de partie
 	void decodeError( Uint16 code2 );		// Gestion des msg d'erreur
 };
 

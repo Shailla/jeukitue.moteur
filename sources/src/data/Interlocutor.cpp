@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#include "reseau/new/Interlocutor.h"
+#include "data/Interlocutor.h"
 
 Interlocutor::Interlocutor(const string& name) {
 	_name = name;

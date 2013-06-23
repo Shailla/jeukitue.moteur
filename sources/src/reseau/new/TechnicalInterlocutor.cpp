@@ -5,38 +5,62 @@
  *      Author: vgdj7997
  */
 
-#include "sdl.h"
+#include "SDL.h"
+
+#include "reseau/new/message/TechnicalMessage.h"
 
 #include "reseau/new/TechnicalInterlocutor.h"
 
-TechnicalInterlocutor::TechnicalInterlocutor(const string& ip, Uint16 port, Interlocutor& interlocutor) {
-	_ip = ip;
-	_port = port;
-	_interlocutor = interlocutor;
-	_status = CONNEXION_STATUS::STOPPED;
+TechnicalInterlocutor::TechnicalInterlocutor(Uint16 portLocal) {
+	_localPort = portLocal;
+	setConnexionStatus(STOPPED);
 
-	SDL_CreateThread(startBoucle, (void*)this);
+	_threadReceiving  = SDL_CreateThread(startReceivingProcess, (void*)this);
+	_threadSending  = SDL_CreateThread(startSendingProcess, (void*)this);
+	_threadIntelligence  = SDL_CreateThread(startIntelligenceProcess, (void*)this);
+	_mutexIntelligence = SDL_CreateMutex();
+	_condIntelligence = SDL_CreateCond();
 }
 
 TechnicalInterlocutor::~TechnicalInterlocutor() {
 }
 
-int TechnicalInterlocutor::startBoucle(void* thiz) {
-	return ((TechnicalInterlocutor*)thiz)->boucle();
+void TechnicalInterlocutor::close() {
+
 }
 
-const string& TechnicalInterlocutor::getIp() const {
-	return _ip;
+int TechnicalInterlocutor::startReceivingProcess(void* thiz) {
+	((TechnicalInterlocutor*)thiz)->receivingProcess();
+	return 0;
 }
 
-Uint16 TechnicalInterlocutor::getPort() const {
-	return _port;
+int TechnicalInterlocutor::startSendingProcess(void* thiz) {
+	((TechnicalInterlocutor*)thiz)->sendingProcess();
+	return 0;
+}
+
+int TechnicalInterlocutor::startIntelligenceProcess(void* thiz) {
+	((TechnicalInterlocutor*)thiz)->intelligenceProcess();
+	return 0;
 }
 
 void TechnicalInterlocutor::setConnexionStatus(CONNEXION_STATUS status) {
 	_status = status;
+	SDL_CondSignal(_condIntelligence);
 }
 
 TechnicalInterlocutor::CONNEXION_STATUS TechnicalInterlocutor::getConnexionStatus() const {
 	return _status;
+}
+
+Uint16 TechnicalInterlocutor::getLocalPort() const {
+	return _localPort;
+}
+
+SDL_mutex* TechnicalInterlocutor::getMutexIntelligence() {
+	return _mutexIntelligence;
+}
+
+SDL_cond* TechnicalInterlocutor::getCondIntelligence() {
+	return _condIntelligence;
 }

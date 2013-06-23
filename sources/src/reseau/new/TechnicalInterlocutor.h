@@ -12,45 +12,53 @@
 
 using namespace std;
 
-#include "reseau/new/Interlocutor.h"
+#include "reseau/new/Interlocutor2.h"
 
 class TechnicalInterlocutor {
-
+protected:
 	enum CONNEXION_STATUS {
 		/** Initial status, can't connect, can't send or receive messages. */
 		STOPPED = 0,
 
-		/** Everything is ready to launch a connect() operation. */
-		READY_TO_CONNECT,
+		/** Being connected. */
+		CONNECTING,
 
 		/** Available to receive and send messages. */
 		CONNECTED,
 
-		/** Abnormal status, the interlocutor can't be restarted. */
-		DEAD
+		/** Being stopped. */
+		STOPPING,
 	};
 
-	string _ip;
-	Uint16 _port;
-	Interlocutor& _interlocutor;
+private:
+	Uint16 _localPort;
 	CONNEXION_STATUS _status;
+	SDL_Thread* _threadReceiving;
+	SDL_Thread* _threadSending;
+	SDL_Thread* _threadIntelligence;
+	SDL_mutex* _mutexIntelligence;
+	SDL_cond* _condIntelligence;
 
-	int startBoucle(void* thiz);
+	static int startReceivingProcess(void* thiz);
+	static int startSendingProcess(void* thiz);
+	static int startIntelligenceProcess(void* thiz);
 
 protected:
-	virtual int boucle();
-	const string& getIp() const;
-	Uint16 getPort() const;
-	Interlocutor& getInterlocutor();
+	virtual void receivingProcess() = 0;
+	virtual void sendingProcess() = 0;
+	virtual void intelligenceProcess() = 0;
+
 	void setConnexionStatus(CONNEXION_STATUS status);
 
+	SDL_mutex* getMutexIntelligence();
+	SDL_cond* getCondIntelligence();
+
 public:
-	TechnicalInterlocutor(const string& ip, Uint16 port, Interlocutor& interlocutor);
+	TechnicalInterlocutor(Uint16 localPort);
 	virtual ~TechnicalInterlocutor();
 
+	Uint16 getLocalPort() const;
 	CONNEXION_STATUS getConnexionStatus() const;
-
-	virtual bool connect();
 	virtual void close();
 };
 

@@ -8,6 +8,7 @@
 #include <sstream>
 #include <iostream>
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -121,18 +122,44 @@ void ServerUdpInterlocutor::close() {
 	setConnexionStatus(STOPPED);
 }
 
-void ServerUdpInterlocutor::manageConnection(IPaddress address, C2SHelloTechnicalMessage* msg) {
-	if(_clientsOfServer.find(address) == _clientsOfServer.end()) {
-		Interlocutor2 clientInterlocutor = new Interlocutor2();
+void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloTechnicalMessage* msg) {
+	map<IPaddress, ClientOfServer*>::iterator it = _clientsOfServer.find(address);
+
+
+	/* **************************************************
+	 * Enregistrement connexion client
+	 * *************************************************/
+
+	// Si le client n'est pas encore connecté alors enregistre sa connexion
+	if(it == _clientsOfServer.end()) {
+		Interlocutor2* clientInterlocutor = new Interlocutor2();
 		ClientOfServer* client = new ClientOfServer(address, clientInterlocutor);
 
-		client->setStatus(CONNEXION_STATUS::CONNECTED);
+		client->setStatus(TechnicalInterlocutor::CONNECTED);
 		_clientsOfServer[address] = client;
+
+		cout << endl << "Server says : Client connected : " << address.port << ":" << address.host;
+	}
+
+
+	/* **************************************************
+	 * Confirmation connexion client
+	 * *************************************************/
+
+	// S'il est maintenant connecté alors confirme au client qu'il est connecté (même s'il l'était déjà, peut-être n'a-t-il pas reçu la précédente confirmation)
+	it = _clientsOfServer.find(address);
+
+	if(it != _clientsOfServer.end()) {
+		ClientOfServer* client = it->second;
+
+		S2CConnectionAcceptedTechnicalMessage msg(getLocalPort());
+		client->getInterlocutor()->pushTechnicalMessageToSend(msg.toBytes());
 	}
 }
 
-void ServerUdpInterlocutor::manageDisconnection(IPaddress address, C2SByeTechnicalMessage* msg) {
+void ServerUdpInterlocutor::manageDisconnection(const IPaddress& address, C2SByeTechnicalMessage* msg) {
 	if(_clientsOfServer.find(address) == _clientsOfServer.end()) {
+		cout << endl << "Server says : Client disconnected : " << address.port << ":" << address.host;
 		_clientsOfServer.erase(address);
 	}
 }
@@ -142,8 +169,6 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 		SDL_CondWaitTimeout(getCondIntelligence(), getMutexIntelligence(), 1000);
 
 		Interlocutor2::DataAddress* msg;
-
-		TechnicalMessage* lastConnectionMsg = NULL;
 
 		// Gestion des événements liés aux clients non-connectés
 		while((msg = _interlocutor->popTechnicalMessageReceived())) {
@@ -164,22 +189,23 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 				// unkown message => ignore it
 			}
 
-			delete[] msg;
+			delete msg;
+			delete techMsg;
 		}
 	}
 
-	cout << endl << "Stop intelligence process";
+	cout << endl << "Server says : Stop intelligence process";
 }
 
 void ServerUdpInterlocutor::sendingProcess() {
 
-	while(STOPPED != getConnexionStatus()) {
+	while(CONNECTED != getConnexionStatus()) {
 		_interlocutor->waitDataToSend(1000);
 		char* data;
 
-		// Envoi les messages techniques tant qu'on est pas arrêté, sinon purge les
+		// Envoi les messages techniques tant que le serveur est connecté, sinon purge les
 		while((data = _interlocutor->popTechnicalMessageToSend()))  {
-			if(STOPPED != getConnexionStatus()) {
+			if(CONNECTED != getConnexionStatus()) {
 				_packetOut->len = sizeof(data);
 				SDLNet_UDP_Send(_socket, _packetOut->channel, _packetOut);
 			}
@@ -187,7 +213,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 			delete[] data;
 		}
 
-		// Envoi les messages de données tant qu'on est connecté, sinon purge les
+		// Envoi les messages de données tant que le serveur est connecté, sinon purge les
 		while((data = _interlocutor->popDataToSend())) {
 			if(CONNECTED == getConnexionStatus()) {
 				_packetOut->len = sizeof(data);
@@ -198,19 +224,17 @@ void ServerUdpInterlocutor::sendingProcess() {
 		}
 	}
 
-	cout << endl << "Stop sending process";
+	cout << endl << "Server says : Stop sending process";
 }
 
 void ServerUdpInterlocutor::receiveOnePacket() {
 	int packetReceived = SDLNet_UDP_Recv(_socket, _packetIn);
 
 	if(CONNECTED == getConnexionStatus() && packetReceived) {
-		IPaddress ipAddress = _packetIn->address;
+		IPaddress address = _packetIn->address;
 		int size = _packetIn->len;
 
-		ClientOfServer* client = _clientsOfServer[ipAddress];
-
-		if(!client) {
+		if(_clientsOfServer.find(address) == _clientsOfServer.end()) {
 			// Gestion des clients non-connectés
 			if(size >= 2) {
 				Uint16 code =  SDLNet_Read16(_packetIn->data);
@@ -220,7 +244,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 				case TechnicalMessage::C2S_BYE:
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
-					_interlocutor->pushTechnicalMessageReceived(ipAddress, data);
+					_interlocutor->pushTechnicalMessageReceived(address, data);
 					break;
 				}
 			}
@@ -230,22 +254,28 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 		}
 		else {
 			// Gestion des clients connectés
+			ClientOfServer* client = _clientsOfServer[address];
+
 			if(size >= 2) {
 				Uint16 code =  SDLNet_Read16(_packetIn->data);
 
 				switch(code) {
 				case TechnicalMessage::DATA:
+				{
 					int offset = 2;
 					char* data = new char[size - offset];
 					memcpy(data, _packetIn->data + offset, size - offset);
 					client->getInterlocutor()->pushDataReceived(data);
 					break;
+				}
 
 				default:
+				{
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
-					client->getInterlocutor()->pushTechnicalMessageReceived(ipAddress, data);
+					client->getInterlocutor()->pushTechnicalMessageReceived(address, data);
 					break;
+				}
 				}
 			}
 			else {
@@ -259,16 +289,13 @@ void ServerUdpInterlocutor::receivingProcess() {
 	while(CONNECTED == getConnexionStatus()) {
 		int socketReady = SDLNet_CheckSockets(_socketSet, 1000);
 
-		if(CONNECTED == getConnexionStatus()) {
-			if(socketReady == -1) {
-				stringstream msg;
-				msg << "SDLNet_CheckSockets - UDP receive : " << SDLNet_GetError();
-			}
-			else if(socketReady > 0) {
-				receiveOnePacket();
-			}
+		if(socketReady == -1) {
+			cerr << "SDLNet_CheckSockets - UDP receive : " << SDLNet_GetError();
+		}
+		else if(socketReady > 0) {
+			receiveOnePacket();
 		}
 	}
 
-	cout << endl << "Stop receiving process";
+	cout << endl << "Server says : Stop receiving process";
 }

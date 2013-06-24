@@ -10,7 +10,7 @@
 
 #include "reseau/new/message/S2CConnectionAcceptedTechnicalMessage.h"
 
-S2CConnectionAcceptedTechnicalMessage::S2CConnectionAcceptedTechnicalMessage(int port) : TechnicalMessage(S2C_CONNECTION_ACCEPTED) {
+S2CConnectionAcceptedTechnicalMessage::S2CConnectionAcceptedTechnicalMessage(Uint16 port) : TechnicalMessage(S2C_CONNECTION_ACCEPTED) {
 	_port = port;
 }
 

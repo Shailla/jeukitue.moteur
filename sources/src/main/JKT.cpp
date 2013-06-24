@@ -119,6 +119,8 @@ class CGame;
 #include "data/DistantTreeProxy.h"
 #include "data/Interlocutor.h"
 
+#include "reseau/new/ClientUdpInterlocutor.h"
+
 using namespace JktMenu;
 using namespace JktNet;
 using namespace JktMoteur;
@@ -889,10 +891,10 @@ void timer(Uint32 ecart) {
 }
 
 void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
-	cout << endl << " -> AGAR";
-	string evDesc;
-	CCfg::resolve(sdlEvent, evDesc);
-	cout << " -> {" << evDesc << "}";
+//	cout << endl << " -> AGAR";
+//	string evDesc;
+//	CCfg::resolve(sdlEvent, evDesc);
+//	cout << " -> {" << evDesc << "}";
 
 	if(sdlEvent->type == SDL_KEYDOWN && sdlEvent->key.keysym.sym == SDLK_ESCAPE) {
 		Viewer* agarView = Fabrique::getAgarView();
@@ -919,7 +921,7 @@ void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
 		}
 		default:
 			// Event ignored by Agar
-			cout << endl << " Ignored by agar";
+//			cout << endl << " Ignored by agar";
 			break;
 		}
 	}
@@ -1647,6 +1649,18 @@ int main(int argc, char** argv) {
 
 	// Création du démon de gestion des sons
 	DemonSons = new CDemonSons();
+
+	Interlocutor2 interlocutor;
+
+	try {
+		ClientUdpInterlocutor client(4968);
+		client.connect(&interlocutor, "172.0.0.1", 5968);
+
+		SDL_Delay(100000);
+	}
+	catch(JktException& exception) {
+		cerr << endl << "ERREUR CATCHEE : " << exception.getMessage() << flush;
+	}
 
 	// Lancement de l'introduction du jeu
 	load_Intro( Config.Display.X, Config.Display.Y );	// Affiche l'introduction du jeu

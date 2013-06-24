@@ -11,10 +11,10 @@
 #include "reseau/new/message/TechnicalMessage.h"
 
 class S2CConnectionAcceptedTechnicalMessage: public TechnicalMessage {
-	int _port;
+	Uint16 _port;
 
 public:
-	S2CConnectionAcceptedTechnicalMessage(int port);
+	S2CConnectionAcceptedTechnicalMessage(Uint16 port);
 	virtual ~S2CConnectionAcceptedTechnicalMessage();
 
 	int getPort() const;

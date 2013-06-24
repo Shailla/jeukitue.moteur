@@ -13,13 +13,11 @@
 
 TechnicalInterlocutor::TechnicalInterlocutor(Uint16 portLocal) {
 	_localPort = portLocal;
-	setConnexionStatus(STOPPED);
 
-	_threadReceiving  = SDL_CreateThread(startReceivingProcess, (void*)this);
-	_threadSending  = SDL_CreateThread(startSendingProcess, (void*)this);
-	_threadIntelligence  = SDL_CreateThread(startIntelligenceProcess, (void*)this);
 	_mutexIntelligence = SDL_CreateMutex();
 	_condIntelligence = SDL_CreateCond();
+
+	setConnexionStatus(STOPPED);
 }
 
 TechnicalInterlocutor::~TechnicalInterlocutor() {
@@ -27,6 +25,20 @@ TechnicalInterlocutor::~TechnicalInterlocutor() {
 
 void TechnicalInterlocutor::close() {
 
+}
+
+void TechnicalInterlocutor::startProcesses() {
+	_threadReceiving  = SDL_CreateThread(startReceivingProcess, (void*)this);
+	_threadSending  = SDL_CreateThread(startSendingProcess, (void*)this);
+	_threadIntelligence  = SDL_CreateThread(startIntelligenceProcess, (void*)this);
+}
+
+void TechnicalInterlocutor::waitProcessesFinished() {
+	int status;
+
+	SDL_WaitThread(_threadReceiving, &status);
+	SDL_WaitThread(_threadReceiving, &status);
+	SDL_WaitThread(_threadReceiving, &status);
 }
 
 int TechnicalInterlocutor::startReceivingProcess(void* thiz) {

@@ -99,6 +99,7 @@ char* Interlocutor2::popDataReceived(void) {
 void Interlocutor2::waitDataToSend(int timeout) {
 	SDL_LockMutex(_mutexDataToSend);
 	SDL_CondWaitTimeout(_condDataToSend, _mutexDataToSend, timeout);
+	SDL_UnlockMutex(_mutexDataToSend);
 }
 
 void Interlocutor2::pushTechnicalMessageToSend(char* data) {

@@ -44,6 +44,9 @@ private:
 	static int startIntelligenceProcess(void* thiz);
 
 protected:
+	void startProcesses();
+	void waitProcessesFinished();
+
 	virtual void receivingProcess() = 0;
 	virtual void sendingProcess() = 0;
 	virtual void intelligenceProcess() = 0;

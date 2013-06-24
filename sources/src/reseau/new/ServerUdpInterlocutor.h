@@ -9,6 +9,7 @@
 #define SERVERINTERLOCUTOR_H_
 
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -19,27 +20,37 @@ using namespace std;
 #include "reseau/new/exception/ConnectionFailedException.h"
 #include "reseau/new/TechnicalInterlocutor.h"
 
+bool operator < (const IPaddress& adr1, const IPaddress& adr2) {
+	if(adr1.host != adr2.host) {
+		return adr1.host < adr2.host;
+	}
+	else {
+		return adr1 < adr2;
+	}
+}
+
 class ServerUdpInterlocutor : TechnicalInterlocutor {
 	class ClientOfServer {
 		IPaddress _address;
 		Interlocutor2* _interlocutor;
 		CONNEXION_STATUS _status;
 
-		ClientOfServer(IPaddress address, Interlocutor2* interlocutor) {
+	public:
+		ClientOfServer(const IPaddress& address, Interlocutor2* interlocutor) {
 			_address = address;
 			_interlocutor = interlocutor;
-			_status = CONNEXION_STATUS::STOPPED;
+			_status = TechnicalInterlocutor::STOPPED;
 		}
 
 		Interlocutor2* getInterlocutor() {
 			return _interlocutor;
 		}
 
-		CONNEXION_STATUS getStatus() const {
+		TechnicalInterlocutor::CONNEXION_STATUS getStatus() const {
 			return _status;
 		}
 
-		void setStatus(CONNEXION_STATUS status) {
+		void setStatus(TechnicalInterlocutor::CONNEXION_STATUS status) {
 			_status = status;
 		}
 
@@ -66,8 +77,8 @@ private:
 	void intelligenceProcess();
 
 	void receiveOnePacket();
-	void manageConnection(IPaddress address, C2SHelloTechnicalMessage* msg);
-	void manageDisconnection(IPaddress address, C2SByeTechnicalMessage* msg);
+	void manageConnection(const IPaddress& address, C2SHelloTechnicalMessage* msg);
+	void manageDisconnection(const IPaddress& address, C2SByeTechnicalMessage* msg);
 
 public:
 	ServerUdpInterlocutor(Uint16 localPort);

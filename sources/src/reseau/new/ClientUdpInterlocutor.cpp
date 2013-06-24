@@ -98,6 +98,8 @@ void ClientUdpInterlocutor::connect(Interlocutor2* interlocutor, const string& d
 		_tryConnectionLastTime = 0;
 
 		setConnexionStatus(CONNECTING);
+
+		startProcesses();
 	}
 	catch(ConnectionFailedException& exception) {
 		cerr << endl << exception.getMessage();
@@ -110,6 +112,8 @@ void ClientUdpInterlocutor::connect(Interlocutor2* interlocutor, const string& d
 
 void ClientUdpInterlocutor::close() {
 	setConnexionStatus(STOPPING);
+
+	waitProcessesFinished();
 
 	// Libération du socket set
 	if(_socketSet) {
@@ -148,21 +152,33 @@ Uint16 ClientUdpInterlocutor::getDistantPort() const {
 void ClientUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg) {
 	Uint32 currentTime = SDL_GetTicks();
 
-	if(lastConnectionMsg && (TechnicalMessage::S2C_CONNECTION_ACCEPTED == lastConnectionMsg->getCode())) {
-//		S2CConnectionAcceptedTechnicalMessage* msg = (S2CConnectionAcceptedTechnicalMessage*)lastConnectionMsg;
-//		int port = msg->getPort();
+	if(lastConnectionMsg) {
+		switch(lastConnectionMsg->getCode()) {
+		case TechnicalMessage::S2C_CONNECTION_ACCEPTED:
+		{
+//			S2CConnectionAcceptedTechnicalMessage* msg = (S2CConnectionAcceptedTechnicalMessage*)lastConnectionMsg;
+//			int port = msg->getPort();
 
+			cout << endl << "Client says : Connection accepted" << flush;
+			setConnexionStatus(CONNECTED);
 
-
-		setConnexionStatus(CONNECTED);
+			break;
+		}
+		case TechnicalMessage::S2C_CONNECTION_REFUSED:
+		{
+			cout << endl << "Client says : Connection refused" << flush;
+			close();
+			break;
+		}
+		}
 	}
-	if(lastConnectionMsg && (TechnicalMessage::S2C_CONNECTION_REFUSED == lastConnectionMsg->getCode())) {
-		close();
-	}
-	else if(_tryConnectionNumber > 10) {
+
+	if(_tryConnectionNumber > 10) {
 		close();
 	}
 	else if(currentTime - _tryConnectionLastTime > 2000) {
+		cout << endl << "Client says : Asking connection" << flush;
+
 		C2SHelloTechnicalMessage msg;
 		_interlocutor->pushTechnicalMessageToSend(msg.toBytes());
 		_tryConnectionLastTime = currentTime;
@@ -171,7 +187,7 @@ void ClientUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg
 }
 
 void ClientUdpInterlocutor::intelligenceProcess() {
-	while(STOPPED != getConnexionStatus()) {
+	while(STOPPED != getConnexionStatus() && STOPPING != getConnexionStatus()) {
 		SDL_CondWaitTimeout(getCondIntelligence(), getMutexIntelligence(), 1000);
 
 		Interlocutor2::DataAddress* msg;
@@ -186,10 +202,15 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 				case TechnicalMessage::S2C_CONNECTION_ACCEPTED:
 				case TechnicalMessage::S2C_CONNECTION_REFUSED:
 					lastConnectionMsg = techMsg;
+					techMsg = NULL;
 					break;
 
 				case TechnicalMessage::S2C_DISCONNECTION:
 					break;
+				}
+
+				if(techMsg) {
+					delete techMsg;
 				}
 			}
 			else {
@@ -199,24 +220,30 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 
 		if(CONNECTING == getConnexionStatus()) {
 			manageConnection(lastConnectionMsg);
+
+			if(lastConnectionMsg) {
+				delete lastConnectionMsg;
+			}
 		}
 
 		if(STOPPING == getConnexionStatus()) {
+			// Send 3 disconnection messages to maximize the luck it arrive to destination (UDP !)
 			C2SByeTechnicalMessage msg;
+			_interlocutor->pushTechnicalMessageToSend(msg.toBytes());
+			_interlocutor->pushTechnicalMessageToSend(msg.toBytes());
 			_interlocutor->pushTechnicalMessageToSend(msg.toBytes());
 
 			setConnexionStatus(STOPPED);
 		}
 
-		delete[] msg;
+		delete msg;
 	}
 
-	cout << endl << "Stop intelligence process";
+	cout << endl << "Client says : Stop intelligence process" << flush;
 }
 
 void ClientUdpInterlocutor::sendingProcess() {
-
-	while(STOPPED != getConnexionStatus()) {
+	while(STOPPED != getConnexionStatus() && STOPPING != getConnexionStatus()) {
 		_interlocutor->waitDataToSend(1000);
 		char* data;
 
@@ -241,7 +268,7 @@ void ClientUdpInterlocutor::sendingProcess() {
 		}
 	}
 
-	cout << endl << "Stop sending process";
+	cout << endl << "Client says : Stop sending process" << flush;
 }
 
 void ClientUdpInterlocutor::receiveOnePacket() {
@@ -280,13 +307,12 @@ void ClientUdpInterlocutor::receiveOnePacket() {
 }
 
 void ClientUdpInterlocutor::receivingProcess() {
-	while(STOPPED != getConnexionStatus()) {
+	while(STOPPED != getConnexionStatus() && STOPPING != getConnexionStatus()) {
 		int socketReady = SDLNet_CheckSockets(_socketSet, 1000);
 
 		if(STOPPED != getConnexionStatus()) {
 			if(socketReady == -1) {
-				stringstream msg;
-				msg << "SDLNet_CheckSockets - UDP receive : " << SDLNet_GetError();
+				cerr << endl << "SDLNet_CheckSockets - UDP receive : " << SDLNet_GetError();
 			}
 			else if(socketReady > 0) {
 				receiveOnePacket();
@@ -294,5 +320,5 @@ void ClientUdpInterlocutor::receivingProcess() {
 		}
 	}
 
-	cout << endl << "Stop receiving process";
+	cout << endl << "Client says : Stop receiving process" << flush;
 }

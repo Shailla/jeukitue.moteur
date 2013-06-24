@@ -19,6 +19,8 @@ using namespace std;
 #include "reseau/new/exception/ConnectionFailedException.h"
 #include "reseau/new/TechnicalInterlocutor.h"
 
+class TechnicalMessage;
+
 class ClientUdpInterlocutor : TechnicalInterlocutor {
 	string _distantIp;
 	Uint16 _distantPort;
@@ -40,7 +42,6 @@ private:
 
 	void receiveOnePacket();
 	void manageConnection(TechnicalMessage* lastConnectionMsg);
-
 
 public:
 	ClientUdpInterlocutor(Uint16 localPort);

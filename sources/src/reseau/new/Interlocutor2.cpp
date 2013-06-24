@@ -15,8 +15,8 @@ using namespace std;
 
 #include "reseau/new/Interlocutor2.h"
 
-Interlocutor2::Interlocutor2(const string& name) {
-	_name = name;
+Interlocutor2::Interlocutor2() {
+	_name = "";
 	_mutexDataReceived = SDL_CreateMutex();
 	_mutexDataToSend = SDL_CreateMutex();
 	_condDataToSend = SDL_CreateCond();
@@ -30,22 +30,27 @@ void Interlocutor2::setCondIntelligence(SDL_cond* condIntelligence) {
 	_condIntelligence = condIntelligence;
 }
 
+void Interlocutor2::setName(const string& name) {
+	_name = name;
+}
+
 const string& Interlocutor2::getName() const {
 	return _name;
 }
 
-void Interlocutor2::addTechnicalMessageReceived(char* data) {
+void Interlocutor2::pushTechnicalMessageReceived(const IPaddress& address, char* data) {
 	SDL_LockMutex(_mutexDataReceived);
 
 	if(data) {
-		_technicalMessagesReceived.push(data);
+		DataAddress* msg = new DataAddress(address, data);
+		_technicalMessagesReceived.push(msg);
 	}
 
 	SDL_UnlockMutex(_mutexDataReceived);
 	SDL_CondSignal(_condIntelligence);
 }
 
-void Interlocutor2::addDataReceived(char* data) {
+void Interlocutor2::pushDataReceived(char* data) {
 	SDL_LockMutex(_mutexDataReceived);
 
 	if(data) {
@@ -55,8 +60,8 @@ void Interlocutor2::addDataReceived(char* data) {
 	SDL_UnlockMutex(_mutexDataReceived);
 }
 
-char* Interlocutor2::getTechnicalMessageReceived(void) {
-	char* result;
+Interlocutor2::DataAddress* Interlocutor2::popTechnicalMessageReceived(void) {
+	DataAddress* result;
 
 	SDL_LockMutex(_mutexDataReceived);
 
@@ -73,7 +78,7 @@ char* Interlocutor2::getTechnicalMessageReceived(void) {
 	return result;
 }
 
-char* Interlocutor2::getDataReceived(void) {
+char* Interlocutor2::popDataReceived(void) {
 	char* result;
 
 	SDL_LockMutex(_mutexDataReceived);
@@ -96,7 +101,7 @@ void Interlocutor2::waitDataToSend(int timeout) {
 	SDL_CondWaitTimeout(_condDataToSend, _mutexDataToSend, timeout);
 }
 
-void Interlocutor2::addTechnicalMessageToSend(char* data) {
+void Interlocutor2::pushTechnicalMessageToSend(char* data) {
 	SDL_LockMutex(_mutexDataToSend);
 
 	if(data) {
@@ -107,7 +112,7 @@ void Interlocutor2::addTechnicalMessageToSend(char* data) {
 	SDL_CondSignal(_condDataToSend);	// If we are waiting data to send, stop waiting
 }
 
-void Interlocutor2::addDataToSend(char* data) {
+void Interlocutor2::pushDataToSend(char* data) {
 	SDL_LockMutex(_mutexDataToSend);
 
 	if(data) {
@@ -118,7 +123,7 @@ void Interlocutor2::addDataToSend(char* data) {
 	SDL_CondSignal(_condDataToSend);	// If we are waiting data to send, stop waiting
 }
 
-char* Interlocutor2::getTechnicalMessageToSend(void) {
+char* Interlocutor2::popTechnicalMessageToSend(void) {
 	char* result;
 
 	SDL_LockMutex(_mutexDataToSend);
@@ -136,7 +141,7 @@ char* Interlocutor2::getTechnicalMessageToSend(void) {
 	return result;
 }
 
-char* Interlocutor2::getDataToSend(void) {
+char* Interlocutor2::popDataToSend(void) {
 	char* result;
 
 	SDL_LockMutex(_mutexDataToSend);

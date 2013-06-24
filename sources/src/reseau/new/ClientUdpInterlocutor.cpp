@@ -164,7 +164,7 @@ void ClientUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg
 	}
 	else if(currentTime - _tryConnectionLastTime > 2000) {
 		C2SHelloTechnicalMessage msg;
-		_interlocutor->addTechnicalMessageToSend(msg.toBytes());
+		_interlocutor->pushTechnicalMessageToSend(msg.toBytes());
 		_tryConnectionLastTime = currentTime;
 		_tryConnectionNumber++;
 	}
@@ -174,13 +174,12 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 	while(STOPPED != getConnexionStatus()) {
 		SDL_CondWaitTimeout(getCondIntelligence(), getMutexIntelligence(), 1000);
 
-		char* msg;
+		Interlocutor2::DataAddress* msg;
 
 		TechnicalMessage* lastConnectionMsg = NULL;
 
-		while((msg = _interlocutor->getTechnicalMessageReceived())) {
-			TechnicalMessage* techMsg = TechnicalMessage::traduct(msg);
-			delete[] msg;
+		while((msg = _interlocutor->popTechnicalMessageReceived())) {
+			TechnicalMessage* techMsg = TechnicalMessage::traduct(msg->getData());
 
 			if(techMsg) {
 				switch(techMsg->getCode()) {
@@ -204,10 +203,12 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 
 		if(STOPPING == getConnexionStatus()) {
 			C2SByeTechnicalMessage msg;
-			_interlocutor->addTechnicalMessageToSend(msg.toBytes());
+			_interlocutor->pushTechnicalMessageToSend(msg.toBytes());
 
 			setConnexionStatus(STOPPED);
 		}
+
+		delete[] msg;
 	}
 
 	cout << endl << "Stop intelligence process";
@@ -220,7 +221,7 @@ void ClientUdpInterlocutor::sendingProcess() {
 		char* data;
 
 		// Envoi les messages techniques tant qu'on est pas arrêté, sinon purge les
-		while((data = _interlocutor->getTechnicalMessageToSend()))  {
+		while((data = _interlocutor->popTechnicalMessageToSend()))  {
 			if(STOPPED != getConnexionStatus()) {
 				_packetOut->len = sizeof(data);
 				SDLNet_UDP_Send(_socket, _packetOut->channel, _packetOut);
@@ -230,7 +231,7 @@ void ClientUdpInterlocutor::sendingProcess() {
 		}
 
 		// Envoi les messages de données tant qu'on est connecté, sinon purge les
-		while((data = _interlocutor->getDataToSend())) {
+		while((data = _interlocutor->popDataToSend())) {
 			if(CONNECTED == getConnexionStatus()) {
 				_packetOut->len = sizeof(data);
 				SDLNet_UDP_Send(_socket, _packetOut->channel, _packetOut);
@@ -248,6 +249,7 @@ void ClientUdpInterlocutor::receiveOnePacket() {
 
 	if(packetReceived) {
 		int size = _packetIn->len;
+		IPaddress address = _packetIn->address;
 
 		if(size >= 2) {
 			Uint16 code =  SDLNet_Read16(_packetIn->data);
@@ -258,7 +260,7 @@ void ClientUdpInterlocutor::receiveOnePacket() {
 					int offset = 2;
 					char* data = new char[size - offset];
 					memcpy(data, _packetIn->data + offset, size - offset);
-					_interlocutor->addDataReceived(data);
+					_interlocutor->pushDataReceived(data);
 				}
 				break;
 
@@ -266,7 +268,7 @@ void ClientUdpInterlocutor::receiveOnePacket() {
 				if(STOPPED != getConnexionStatus()) {
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
-					_interlocutor->addTechnicalMessageReceived(data);
+					_interlocutor->pushTechnicalMessageReceived(address, data);
 				}
 				break;
 			}

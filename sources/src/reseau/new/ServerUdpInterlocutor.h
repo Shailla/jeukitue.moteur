@@ -20,6 +20,34 @@ using namespace std;
 #include "reseau/new/TechnicalInterlocutor.h"
 
 class ServerUdpInterlocutor : TechnicalInterlocutor {
+	class ClientOfServer {
+		IPaddress _address;
+		Interlocutor2* _interlocutor;
+		CONNEXION_STATUS _status;
+
+		ClientOfServer(IPaddress address, Interlocutor2* interlocutor) {
+			_address = address;
+			_interlocutor = interlocutor;
+			_status = CONNEXION_STATUS::STOPPED;
+		}
+
+		Interlocutor2* getInterlocutor() {
+			return _interlocutor;
+		}
+
+		CONNEXION_STATUS getStatus() const {
+			return _status;
+		}
+
+		void setStatus(CONNEXION_STATUS status) {
+			_status = status;
+		}
+
+		IPaddress getIpAddress() const {
+			return _address;
+		}
+	};
+
 	string _distantIp;
 	Uint16 _distantPort;
 	Interlocutor2* _interlocutor;
@@ -30,8 +58,7 @@ class ServerUdpInterlocutor : TechnicalInterlocutor {
 	UDPpacket* _packetIn;
 	UDPpacket* _packetOut;
 
-	Uint32 _tryConnectionLastTime;
-	int _tryConnectionNumber;
+	map<IPaddress, ClientOfServer*> _clientsOfServer;
 
 private:
 	void receivingProcess();
@@ -39,8 +66,8 @@ private:
 	void intelligenceProcess();
 
 	void receiveOnePacket();
-	void manageConnection(TechnicalMessage* lastConnectionMsg);
-
+	void manageConnection(IPaddress address, C2SHelloTechnicalMessage* msg);
+	void manageDisconnection(IPaddress address, C2SByeTechnicalMessage* msg);
 
 public:
 	ServerUdpInterlocutor(Uint16 localPort);

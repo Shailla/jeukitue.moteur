@@ -29,8 +29,6 @@ ServerUdpInterlocutor::ServerUdpInterlocutor(Uint16 localPort) : TechnicalInterl
 	_socketSet = 0;
 	_packetIn = 0;
 	_packetOut = 0;
-	_tryConnectionLastTime = 0;
-	_tryConnectionNumber = 0;
 
 	setConnexionStatus(STOPPED);
 }
@@ -83,10 +81,7 @@ void ServerUdpInterlocutor::connect() throw(ConnectionFailedException) {
 			throw ConnectionFailedException(msg.str());
 		}
 
-		_tryConnectionNumber = 0;
-		_tryConnectionLastTime = 0;
-
-		setConnexionStatus(CONNECTING);
+		setConnexionStatus(CONNECTED);
 	}
 	catch(ConnectionFailedException& exception) {
 		cerr << endl << exception.getMessage();
@@ -126,68 +121,50 @@ void ServerUdpInterlocutor::close() {
 	setConnexionStatus(STOPPED);
 }
 
-void ServerUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg) {
-	Uint32 currentTime = SDL_GetTicks();
+void ServerUdpInterlocutor::manageConnection(IPaddress address, C2SHelloTechnicalMessage* msg) {
+	if(_clientsOfServer.find(address) == _clientsOfServer.end()) {
+		Interlocutor2 clientInterlocutor = new Interlocutor2();
+		ClientOfServer* client = new ClientOfServer(address, clientInterlocutor);
 
-	if(lastConnectionMsg && (TechnicalMessage::S2C_CONNECTION_ACCEPTED == lastConnectionMsg->getCode())) {
-//		S2CConnectionAcceptedTechnicalMessage* msg = (S2CConnectionAcceptedTechnicalMessage*)lastConnectionMsg;
-//		int port = msg->getPort();
-
-
-
-		setConnexionStatus(CONNECTED);
+		client->setStatus(CONNEXION_STATUS::CONNECTED);
+		_clientsOfServer[address] = client;
 	}
-	if(lastConnectionMsg && (TechnicalMessage::S2C_CONNECTION_REFUSED == lastConnectionMsg->getCode())) {
-		close();
-	}
-	else if(_tryConnectionNumber > 10) {
-		close();
-	}
-	else if(currentTime - _tryConnectionLastTime > 2000) {
-		C2SHelloTechnicalMessage msg;
-		_interlocutor->addTechnicalMessageToSend(msg.toBytes());
-		_tryConnectionLastTime = currentTime;
-		_tryConnectionNumber++;
+}
+
+void ServerUdpInterlocutor::manageDisconnection(IPaddress address, C2SByeTechnicalMessage* msg) {
+	if(_clientsOfServer.find(address) == _clientsOfServer.end()) {
+		_clientsOfServer.erase(address);
 	}
 }
 
 void ServerUdpInterlocutor::intelligenceProcess() {
-	while(STOPPED != getConnexionStatus()) {
+	while(CONNECTED == getConnexionStatus()) {
 		SDL_CondWaitTimeout(getCondIntelligence(), getMutexIntelligence(), 1000);
 
-		char* msg;
+		Interlocutor2::DataAddress* msg;
 
 		TechnicalMessage* lastConnectionMsg = NULL;
 
-		while((msg = _interlocutor->getTechnicalMessageReceived())) {
-			TechnicalMessage* techMsg = TechnicalMessage::traduct(msg);
-			delete[] msg;
+		// Gestion des événements liés aux clients non-connectés
+		while((msg = _interlocutor->popTechnicalMessageReceived())) {
+			TechnicalMessage* techMsg = TechnicalMessage::traduct(msg->getData());
 
 			if(techMsg) {
 				switch(techMsg->getCode()) {
-				case TechnicalMessage::S2C_CONNECTION_ACCEPTED:
-				case TechnicalMessage::S2C_CONNECTION_REFUSED:
-					lastConnectionMsg = techMsg;
+				case TechnicalMessage::C2S_HELLO:
+					manageConnection(msg->getAddress(), (C2SHelloTechnicalMessage*)techMsg);
 					break;
 
-				case TechnicalMessage::S2C_DISCONNECTION:
+				case TechnicalMessage::C2S_BYE:
+					manageDisconnection(msg->getAddress(), (C2SByeTechnicalMessage*)techMsg);
 					break;
 				}
 			}
 			else {
 				// unkown message => ignore it
 			}
-		}
 
-		if(CONNECTING == getConnexionStatus()) {
-			manageConnection(lastConnectionMsg);
-		}
-
-		if(STOPPING == getConnexionStatus()) {
-			C2SByeTechnicalMessage msg;
-			_interlocutor->addTechnicalMessageToSend(msg.toBytes());
-
-			setConnexionStatus(STOPPED);
+			delete[] msg;
 		}
 	}
 
@@ -201,7 +178,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 		char* data;
 
 		// Envoi les messages techniques tant qu'on est pas arrêté, sinon purge les
-		while((data = _interlocutor->getTechnicalMessageToSend()))  {
+		while((data = _interlocutor->popTechnicalMessageToSend()))  {
 			if(STOPPED != getConnexionStatus()) {
 				_packetOut->len = sizeof(data);
 				SDLNet_UDP_Send(_socket, _packetOut->channel, _packetOut);
@@ -211,7 +188,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 		}
 
 		// Envoi les messages de données tant qu'on est connecté, sinon purge les
-		while((data = _interlocutor->getDataToSend())) {
+		while((data = _interlocutor->popDataToSend())) {
 			if(CONNECTED == getConnexionStatus()) {
 				_packetOut->len = sizeof(data);
 				SDLNet_UDP_Send(_socket, _packetOut->channel, _packetOut);
@@ -227,42 +204,62 @@ void ServerUdpInterlocutor::sendingProcess() {
 void ServerUdpInterlocutor::receiveOnePacket() {
 	int packetReceived = SDLNet_UDP_Recv(_socket, _packetIn);
 
-	if(packetReceived) {
+	if(CONNECTED == getConnexionStatus() && packetReceived) {
+		IPaddress ipAddress = _packetIn->address;
 		int size = _packetIn->len;
 
-		if(size >= 2) {
-			Uint16 code =  SDLNet_Read16(_packetIn->data);
+		ClientOfServer* client = _clientsOfServer[ipAddress];
 
-			switch(code) {
-			case TechnicalMessage::DATA:
-				if(CONNECTED == getConnexionStatus()) {
-					int offset = 2;
-					char* data = new char[size - offset];
-					memcpy(data, _packetIn->data + offset, size - offset);
-					_interlocutor->addDataReceived(data);
-				}
-				break;
+		if(!client) {
+			// Gestion des clients non-connectés
+			if(size >= 2) {
+				Uint16 code =  SDLNet_Read16(_packetIn->data);
 
-			default:
-				if(STOPPED != getConnexionStatus()) {
+				switch(code) {
+				case TechnicalMessage::C2S_HELLO:
+				case TechnicalMessage::C2S_BYE:
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
-					_interlocutor->addTechnicalMessageReceived(data);
+					_interlocutor->pushTechnicalMessageReceived(ipAddress, data);
+					break;
 				}
-				break;
+			}
+			else {
+				// Message inconsistant => ignoré
 			}
 		}
 		else {
-			// Message inconsistant => ignoré
+			// Gestion des clients connectés
+			if(size >= 2) {
+				Uint16 code =  SDLNet_Read16(_packetIn->data);
+
+				switch(code) {
+				case TechnicalMessage::DATA:
+					int offset = 2;
+					char* data = new char[size - offset];
+					memcpy(data, _packetIn->data + offset, size - offset);
+					client->getInterlocutor()->pushDataReceived(data);
+					break;
+
+				default:
+					char* data = new char[size];
+					memcpy(data, _packetIn->data, size);
+					client->getInterlocutor()->pushTechnicalMessageReceived(ipAddress, data);
+					break;
+				}
+			}
+			else {
+				// Message inconsistant => ignoré
+			}
 		}
 	}
 }
 
 void ServerUdpInterlocutor::receivingProcess() {
-	while(STOPPED != getConnexionStatus()) {
+	while(CONNECTED == getConnexionStatus()) {
 		int socketReady = SDLNet_CheckSockets(_socketSet, 1000);
 
-		if(STOPPED != getConnexionStatus()) {
+		if(CONNECTED == getConnexionStatus()) {
 			if(socketReady == -1) {
 				stringstream msg;
 				msg << "SDLNet_CheckSockets - UDP receive : " << SDLNet_GetError();

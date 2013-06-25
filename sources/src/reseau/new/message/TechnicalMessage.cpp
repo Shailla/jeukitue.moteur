@@ -31,7 +31,7 @@ int TechnicalMessage::getCode() const {
 	return _code;
 }
 
-TechnicalMessage* TechnicalMessage::traduct(Bytes* bytes) {
+TechnicalMessage* TechnicalMessage::traduct(JktUtils::Bytes* bytes) {
 	TechnicalMessage* msg = 0;
 
 	const char* data = bytes->getBytes();

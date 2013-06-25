@@ -18,9 +18,9 @@ S2CConnectionRefusedTechnicalMessage::S2CConnectionRefusedTechnicalMessage() : T
 S2CConnectionRefusedTechnicalMessage::~S2CConnectionRefusedTechnicalMessage() {
 }
 
-Bytes* S2CConnectionRefusedTechnicalMessage::toBytes() const {
+JktUtils::Bytes* S2CConnectionRefusedTechnicalMessage::toBytes() {
 	char* msg = new char[2];
 	SDLNet_Write16(getCode(), msg);
 
-	return new Bytes(msg, 2);
+	return new JktUtils::Bytes(msg, 2);
 }

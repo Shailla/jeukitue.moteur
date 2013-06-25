@@ -15,7 +15,7 @@ public:
 	S2DisconnectionTechnicalMessage();
 	virtual ~S2DisconnectionTechnicalMessage();
 
-	JktUtils::Bytes* toBytes() const;
+	JktUtils::Bytes* toBytes();
 };
 
 #endif /* S2DISCONNECTIONTECHNICALMESSAGE_H_ */

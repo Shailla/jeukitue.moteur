@@ -18,9 +18,9 @@ S2DisconnectionTechnicalMessage::S2DisconnectionTechnicalMessage() : TechnicalMe
 S2DisconnectionTechnicalMessage::~S2DisconnectionTechnicalMessage() {
 }
 
-Bytes* S2DisconnectionTechnicalMessage::toBytes() const {
+JktUtils::Bytes* S2DisconnectionTechnicalMessage::toBytes() {
 	char* msg = new char[2];
 	SDLNet_Write16(getCode(), msg);
 
-	return new Bytes(msg, 2);
+	return new JktUtils::Bytes(msg, 2);
 }

@@ -18,11 +18,11 @@ using namespace std;
 
 using namespace JktUtils;
 
-#include "reseau/new/Interlocutor2.h"
 #include "reseau/new/message/TechnicalMessage.h"
 #include "reseau/new/message/S2CConnectionAcceptedTechnicalMessage.h"
 #include "reseau/new/message/C2SHelloTechnicalMessage.h"
 #include "reseau/new/message/C2SByeTechnicalMessage.h"
+#include "reseau/new/Interlocutor2.h"
 
 #include "reseau/new/ClientUdpInterlocutor.h"
 
@@ -49,6 +49,8 @@ void ClientUdpInterlocutor::connect(Interlocutor2* interlocutor, const string& d
 	_distantIp = distantIp;
 	_distantPort = distantPort;
 
+	cout << endl << "Client says : Distant port " << _distantPort;
+
 	_interlocutor->setCondIntelligence(getCondIntelligence());
 
 	_packetIn = SDLNet_AllocPacket(65535);
@@ -62,22 +64,14 @@ void ClientUdpInterlocutor::connect(Interlocutor2* interlocutor, const string& d
 			throw ConnectionFailedException(msg.str());
 		}
 
+		cout << endl << "Client says : Connect to " << (int)(((char*)&_distantAddress.host)[0]) << "." << (int)(((char*)&_distantAddress.host)[1]) << "." << (int)(((char*)&_distantAddress.host)[2]) << "." << (int)(((char*)&_distantAddress.host)[3]) << ":" << _distantAddress.port;
+
 		// Ouverture socket
 		_socket = SDLNet_UDP_Open( getLocalPort() );
 
 		if(!_socket) {
 			stringstream msg;
 			msg << "SDLNet_UDP_Open - UDP connection, erreur d'ouverture du socket : " << SDLNet_GetError();
-			throw ConnectionFailedException(msg.str());
-		}
-
-		// Attachement socket / adresse
-		_packetIn->channel = SDLNet_UDP_Bind( _socket, -1, &_distantAddress );
-		_packetOut->channel = _packetIn->channel;
-
-		if(_packetIn->channel == -1) {
-			stringstream msg;
-			msg << "SDLNet_UDP_Bind - UDP connection, erreur d'ouverture du socket : " << SDLNet_GetError();
 			throw ConnectionFailedException(msg.str());
 		}
 
@@ -164,14 +158,14 @@ void ClientUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg
 //			S2CConnectionAcceptedTechnicalMessage* msg = (S2CConnectionAcceptedTechnicalMessage*)lastConnectionMsg;
 //			int port = msg->getPort();
 
-			cout << endl << "Client says : Connection accepted" << flush;
+			cout << endl << "Client says : Connection accepted received" << flush;
 			setConnexionStatus(CONNECTED);
 
 			break;
 		}
 		case TechnicalMessage::S2C_CONNECTION_REFUSED:
 		{
-			cout << endl << "Client says : Connection refused" << flush;
+			cout << endl << "Client says : Connection refused received" << flush;
 			close();
 			break;
 		}
@@ -195,7 +189,7 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 	while(STOPPED != getConnexionStatus() && STOPPING != getConnexionStatus()) {
 		SDL_CondWaitTimeout(getCondIntelligence(), getMutexIntelligence(), 1000);
 
-		Interlocutor2::DataAddress* msg;
+		DataAddress* msg;
 
 		TechnicalMessage* lastConnectionMsg = NULL;
 
@@ -250,16 +244,15 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 void ClientUdpInterlocutor::sendingProcess() {
 	while(STOPPED != getConnexionStatus() && STOPPING != getConnexionStatus()) {
 		_interlocutor->waitDataToSend(1000);
-		Interlocutor2::DataAddress* data;
+		DataAddress* data;
 
 		// Envoi les messages techniques tant qu'on est pas arrêté, sinon purge les
 		while((data = _interlocutor->popTechnicalMessageToSend()))  {
 			if(STOPPED != getConnexionStatus()) {
 				_packetOut->len = data->getBytes()->size();
 				memcpy(_packetOut->data, data->getBytes()->getBytes(), _packetOut->len);
-				int result = SDLNet_UDP_Send(_socket, _packetOut->channel, _packetOut);
-
-				cout << endl << "Client says : Sending some technical message of size and result " << data->getBytes()->size() << " - " << result;
+				_packetOut->address = _distantAddress;
+				SDLNet_UDP_Send(_socket, -1, _packetOut);
 			}
 
 			delete data;
@@ -268,11 +261,10 @@ void ClientUdpInterlocutor::sendingProcess() {
 		// Envoi les messages de données tant qu'on est connecté, sinon purge les
 		while((data = _interlocutor->popDataToSend())) {
 			if(CONNECTED == getConnexionStatus()) {
-				cout << endl << "Client says : Sending some data message";
-
 				_packetOut->len = data->getBytes()->size();
 				memcpy(_packetOut->data, data->getBytes()->getBytes(), _packetOut->len);
-				SDLNet_UDP_Send(_socket, _packetOut->channel, _packetOut);
+				_packetOut->address = _distantAddress;
+				SDLNet_UDP_Send(_socket, -1, _packetOut);
 			}
 
 			delete data;
@@ -298,7 +290,6 @@ void ClientUdpInterlocutor::receiveOnePacket() {
 					int offset = 2;
 					char* data = new char[size - offset];
 					memcpy(data, _packetIn->data + offset, size - offset);
-					cout << endl << "Client says : Received data packet";
 					_interlocutor->pushDataReceived(address, new Bytes(data, size - offset));
 				}
 				break;
@@ -307,7 +298,6 @@ void ClientUdpInterlocutor::receiveOnePacket() {
 				if(STOPPED != getConnexionStatus()) {
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
-					cout << endl << "Client says : Received packet supposed technical";
 					_interlocutor->pushTechnicalMessageReceived(address, new Bytes(data, size));
 				}
 				break;

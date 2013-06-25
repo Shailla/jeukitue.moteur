@@ -16,6 +16,7 @@ using namespace std;
 #include "SDL.h"
 #include "SDL_net.h"
 
+#include "reseau/new/Interlocutor2.h"
 #include "reseau/new/exception/NotConnectedException.h"
 #include "reseau/new/exception/ConnectionFailedException.h"
 #include "reseau/new/TechnicalInterlocutor.h"

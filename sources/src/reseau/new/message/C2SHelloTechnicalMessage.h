@@ -17,7 +17,7 @@ public:
 	C2SHelloTechnicalMessage();
 	virtual ~C2SHelloTechnicalMessage();
 
-	JktUtils::Bytes* toBytes() const;
+	JktUtils::Bytes* toBytes();
 };
 
 #endif /* C2SHELLOTECHNICALMESSAGE_H_ */

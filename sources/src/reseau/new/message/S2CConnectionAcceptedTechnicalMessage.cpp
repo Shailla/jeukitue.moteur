@@ -25,7 +25,7 @@ int S2CConnectionAcceptedTechnicalMessage::getPort() const {
 	return _port;
 }
 
-Bytes* S2CConnectionAcceptedTechnicalMessage::toBytes() const {
+Bytes* S2CConnectionAcceptedTechnicalMessage::toBytes() {
 	char* msg = new char[4];
 	SDLNet_Write16(getCode(), msg);
 	SDLNet_Write16(_port, msg);

@@ -1661,7 +1661,7 @@ int main(int argc, char** argv) {
 		ServerUdpInterlocutor server(5968);
 		server.connect(&serverInterlocutor);
 
-		SDL_Delay(6000);
+		SDL_Delay(3000);
 
 		exit(0);
 	}

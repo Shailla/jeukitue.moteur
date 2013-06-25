@@ -8,10 +8,6 @@
 #ifndef TECHNICALINTERLOCUTOR_H_
 #define TECHNICALINTERLOCUTOR_H_
 
-#include <string>
-
-using namespace std;
-
 #include "reseau/new/Interlocutor2.h"
 
 class TechnicalInterlocutor {

@@ -38,10 +38,10 @@ public:
 	TechnicalMessage(int code);
 	virtual ~TechnicalMessage();
 
-	int getCode() const;
-	virtual JktUtils::Bytes* toBytes() const = 0;
-
 	static TechnicalMessage* traduct(JktUtils::Bytes* data);
+
+	int getCode() const;
+	virtual JktUtils::Bytes* toBytes() = 0;
 };
 
 #endif /* TECHNICALMESSAGE_H_ */

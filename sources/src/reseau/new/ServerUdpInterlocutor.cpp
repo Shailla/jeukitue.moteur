@@ -16,13 +16,12 @@ using namespace std;
 #include "SDL_net.h"
 
 #include "reseau/new/message/TechnicalMessage.h"
-#include "reseau/new/message/S2CConnectionAcceptedTechnicalMessage.h"
-#include "reseau/new/message/C2SHelloTechnicalMessage.h"
 #include "reseau/new/message/C2SByeTechnicalMessage.h"
+#include "reseau/new/message/C2SHelloTechnicalMessage.h"
+#include "reseau/new/message/S2CConnectionAcceptedTechnicalMessage.h"
+#include "reseau/new/Interlocutor2.h"
 
 #include "reseau/new/ServerUdpInterlocutor.h"
-
-using namespace JktUtils;
 
 bool operator < (const IPaddress& adr1, const IPaddress& adr2) {
 	if(adr1.host != adr2.host) {
@@ -144,7 +143,7 @@ void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloT
 		client->setConnexionStatus(TechnicalInterlocutor::CONNECTED);
 		_clientsOfServer[address] = client;
 
-		cout << endl << "Server says : Client connected : " << address.host << ":" << address.port << flush;
+		cout << endl << "Server says : Client connected : " << (int)(((char*)&address.host)[0]) << "." << (int)(((char*)&address.host)[1]) << "." << (int)(((char*)&address.host)[2]) << "." << (int)(((char*)&address.host)[3]) << ":" << address.port << flush;
 	}
 
 
@@ -160,6 +159,8 @@ void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloT
 
 		S2CConnectionAcceptedTechnicalMessage msg(getLocalPort());
 		client->getInterlocutor()->pushTechnicalMessageToSend(msg.toBytes());
+
+		cout << endl << "Server says : Send connection accepted message";
 	}
 }
 
@@ -174,7 +175,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 	while(CONNECTED == getConnexionStatus()) {
 		SDL_CondWaitTimeout(getCondIntelligence(), getMutexIntelligence(), 1000);
 
-		Interlocutor2::DataAddress* msg;
+		DataAddress* msg;
 
 
 		/* ***********************************************************
@@ -183,12 +184,13 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 
 		while((msg = _interlocutor->popTechnicalMessageReceived())) {
 			TechnicalMessage* techMsg = TechnicalMessage::traduct(msg->getBytes());
+			IPaddress address = msg->getAddress();
 
 			if(techMsg) {
 				switch(techMsg->getCode()) {
 				case TechnicalMessage::C2S_HELLO:
-					cout << endl << "Server says : C2S_HELLO received";
-					manageConnection(msg->getAddress(), (C2SHelloTechnicalMessage*)techMsg);
+					cout << endl << "Server says : C2S_HELLO received from " << (int)(((char*)&address.host)[0]) << "." << (int)(((char*)&address.host)[1]) << "." << (int)(((char*)&address.host)[2]) << "." << (int)(((char*)&address.host)[3]) << ":" << address.port;
+					manageConnection(address, (C2SHelloTechnicalMessage*)techMsg);
 					break;
 				}
 			}
@@ -243,7 +245,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 
 	while(CONNECTED == getConnexionStatus()) {
 		_interlocutor->waitDataToSend(1000);
-		Interlocutor2::DataAddress* data;
+		DataAddress* data;
 
 
 		/* *********************************************
@@ -253,12 +255,10 @@ void ServerUdpInterlocutor::sendingProcess() {
 		// Envoi les messages techniques tant que le serveur est connecté, sinon purge les
 		while((data = _interlocutor->popTechnicalMessageToSend()))  {
 			if(CONNECTED == getConnexionStatus()) {
-				cout << endl << "Server says : Sending some technical message";
-
 				_packetOut->len = data->getBytes()->size();
 				memcpy(_packetOut->data, data->getBytes()->getBytes(), _packetOut->len);
 				_packetOut->address = data->getAddress();
-				SDLNet_UDP_Send(_socket, _packetOut->channel, _packetOut);
+				SDLNet_UDP_Send(_socket, -1, _packetOut);
 			}
 
 			delete data;
@@ -275,28 +275,26 @@ void ServerUdpInterlocutor::sendingProcess() {
 			ClientOfServer* client = iter->second;
 
 			// Envoi les messages techniques tant que le serveur est connecté, sinon purge les
-			while((data = _interlocutor->popTechnicalMessageToSend()))  {
+			while((data = client->getInterlocutor()->popTechnicalMessageToSend()))  {
 				if(CONNECTED == getConnexionStatus() && CONNECTED == client->getConnexionStatus()) {
-					cout << endl << "Server says : Sending some technical message";
-
 					_packetOut->len = data->getBytes()->size();
 					memcpy(_packetOut->data, data->getBytes()->getBytes(), _packetOut->len);
 					_packetOut->address = client->getIpAddress();
-					SDLNet_UDP_Send(_socket, _packetOut->channel, _packetOut);
+					SDLNet_UDP_Send(_socket, -1, _packetOut);
 				}
 
 				delete data;
 			}
 
 			// Envoi les messages de données tant que le serveur est connecté, sinon purge les
-			while((data = _interlocutor->popDataToSend())) {
+			while((data = client->getInterlocutor()->popDataToSend())) {
 				if(CONNECTED == getConnexionStatus() && CONNECTED == client->getConnexionStatus()) {
 					cout << endl << "Server says : Sending some data message";
 
 					_packetOut->len = data->getBytes()->size();
 					memcpy(_packetOut->data, data->getBytes()->getBytes(), _packetOut->len);
 					_packetOut->address = client->getIpAddress();
-					SDLNet_UDP_Send(_socket, _packetOut->channel, _packetOut);
+					SDLNet_UDP_Send(_socket, -1, _packetOut);
 				}
 
 				delete data;
@@ -315,8 +313,6 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 		int size = _packetIn->len;
 
 		if(_clientsOfServer.find(address) == _clientsOfServer.end()) {
-			cout << endl << "Server says : Something received in not-connected style of size " << size;
-
 			// Gestion des clients non-connectés
 			if(size >= 2) {
 				Uint16 code =  SDLNet_Read16(_packetIn->data);
@@ -326,7 +322,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 				case TechnicalMessage::C2S_BYE:
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
-					_interlocutor->pushTechnicalMessageReceived(address, new Bytes(data, size));
+					_interlocutor->pushTechnicalMessageReceived(address, new JktUtils::Bytes(data, size));
 					break;
 				}
 			}
@@ -335,8 +331,6 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 			}
 		}
 		else {
-			cout << endl << "Server says : Something received in connected style";
-
 			// Gestion des clients connectés
 			ClientOfServer* client = _clientsOfServer[address];
 
@@ -346,21 +340,18 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 				switch(code) {
 				case TechnicalMessage::DATA:
 				{
-					cout << endl << "Server says : Data received";
-
 					int offset = 2;
 					char* data = new char[size - offset];
 					memcpy(data, _packetIn->data + offset, size - offset);
-					client->getInterlocutor()->pushDataReceived(address, new Bytes(data, size - offset));
+					client->getInterlocutor()->pushDataReceived(address, new JktUtils::Bytes(data, size - offset));
 					break;
 				}
 
 				default:
 				{
-					cout << endl << "Server says : Technical supposed received";
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
-					client->getInterlocutor()->pushTechnicalMessageReceived(address, new Bytes(data, size));
+					client->getInterlocutor()->pushTechnicalMessageReceived(address, new JktUtils::Bytes(data, size));
 					break;
 				}
 				}

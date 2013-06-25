@@ -15,46 +15,9 @@
 #include "SDL_net.h"
 
 #include "util/types/Bytes.h"
+#include "reseau/new/DataAddress.h"
 
 class Interlocutor2 {
-public:
-	class DataAddress {
-		IPaddress _address;
-		JktUtils::Bytes* _bytes;
-
-	public:
-		DataAddress(char* data, int size) {
-			_bytes = new JktUtils::Bytes(data, size);
-		}
-
-		DataAddress(JktUtils::Bytes* bytes) {
-			_bytes = bytes;
-		}
-
-		DataAddress(const IPaddress& address, char* data, int size) {
-			_address = address;
-			_bytes = new JktUtils::Bytes(data, size);
-		}
-
-		DataAddress(const IPaddress& address, JktUtils::Bytes* bytes) {
-			_address = address;
-			_bytes = bytes;
-		}
-
-		~DataAddress() {
-			delete _bytes;
-		}
-
-		const IPaddress& getAddress() const {
-			return _address;
-		}
-
-		JktUtils::Bytes* getBytes() {
-			return _bytes;
-		}
-	};
-
-private:
 	std::string _name;
 	std::queue<DataAddress*> _dataReceived;
 	std::queue<DataAddress*> _technicalMessagesReceived;
@@ -74,12 +37,12 @@ public:
 
 	void setCondIntelligence(SDL_cond* condIntelligence);
 
+	void pushTechnicalMessageToSend(const IPaddress& address, JktUtils::Bytes* bytes);
+	void pushTechnicalMessageToSend(JktUtils::Bytes* bytes);
+	DataAddress* popTechnicalMessageToSend();
+
 	void pushTechnicalMessageReceived(const IPaddress& address, JktUtils::Bytes* bytes);
 	DataAddress* popTechnicalMessageReceived();
-
-	void pushTechnicalMessageToSend(JktUtils::Bytes* bytes);
-	void pushTechnicalMessageToSend(const IPaddress& address, JktUtils::Bytes* bytes);
-	DataAddress* popTechnicalMessageToSend();
 
 	void pushDataReceived(const IPaddress& address, JktUtils::Bytes* bytes);
 	DataAddress* popDataReceived();

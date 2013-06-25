@@ -10,17 +10,15 @@
 
 #include "reseau/new/message/C2SHelloTechnicalMessage.h"
 
-using namespace JktUtils;
-
 C2SHelloTechnicalMessage::C2SHelloTechnicalMessage() : TechnicalMessage(C2S_HELLO) {
 }
 
 C2SHelloTechnicalMessage::~C2SHelloTechnicalMessage() {
 }
 
-Bytes* C2SHelloTechnicalMessage::toBytes() const {
+JktUtils::Bytes* C2SHelloTechnicalMessage::toBytes() {
 	char* msg = new char[2];
 	SDLNet_Write16(getCode(), msg);
 
-	return new Bytes(msg, 2);
+	return new JktUtils::Bytes(msg, 2);
 }

@@ -15,7 +15,7 @@ public:
 	C2SByeTechnicalMessage();
 	virtual ~C2SByeTechnicalMessage();
 
-	JktUtils::Bytes* toBytes() const;
+	JktUtils::Bytes* toBytes();
 };
 
 #endif /* C2SBYETECHNICALMESSAGE_H_ */

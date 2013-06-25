@@ -8,6 +8,8 @@
 #ifndef S2CCONNECTIONREFUSEDTECHNICALMESSAGE_H_
 #define S2CCONNECTIONREFUSEDTECHNICALMESSAGE_H_
 
+#include "util/types/Bytes.h"
+
 #include "reseau/new/message/C2SByeTechnicalMessage.h"
 
 class S2CConnectionRefusedTechnicalMessage: public TechnicalMessage {
@@ -15,7 +17,7 @@ public:
 	S2CConnectionRefusedTechnicalMessage();
 	virtual ~S2CConnectionRefusedTechnicalMessage();
 
-	char* toBytes() const;
+	JktUtils::Bytes* toBytes() const;
 };
 
 #endif /* S2CCONNECTIONREFUSEDTECHNICALMESSAGE_H_ */

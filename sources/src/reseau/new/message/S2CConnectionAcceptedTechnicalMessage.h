@@ -18,7 +18,7 @@ public:
 	virtual ~S2CConnectionAcceptedTechnicalMessage();
 
 	int getPort() const;
-	char* toBytes() const;
+	JktUtils::Bytes* toBytes() const;
 };
 
 #endif /* S2CCONNECTIONACCEPTEDTECHNICALMESSAGE_H_ */

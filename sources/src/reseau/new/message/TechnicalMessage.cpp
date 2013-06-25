@@ -8,6 +8,10 @@
 #include "SDL.h"
 #include "SDL_net.h"
 
+#include "util/types/Bytes.h"
+
+using namespace JktUtils;
+
 #include "reseau/new/message/C2SHelloTechnicalMessage.h"
 #include "reseau/new/message/C2SByeTechnicalMessage.h"
 #include "reseau/new/message/S2CConnectionAcceptedTechnicalMessage.h"
@@ -27,10 +31,13 @@ int TechnicalMessage::getCode() const {
 	return _code;
 }
 
-TechnicalMessage* TechnicalMessage::traduct(char* data) {
+TechnicalMessage* TechnicalMessage::traduct(Bytes* bytes) {
 	TechnicalMessage* msg = 0;
 
-	if(sizeof(data) >= 2) {
+	const char* data = bytes->getBytes();
+	int size = bytes->size();
+
+	if(size >= 2) {
 		int code = SDLNet_Read16(data);
 
 		switch(code) {
@@ -39,7 +46,7 @@ TechnicalMessage* TechnicalMessage::traduct(char* data) {
 			break;
 
 		case TechnicalMessage::S2C_CONNECTION_ACCEPTED:
-			if(sizeof(data) >=4) {
+			if(size >=4) {
 				int port = SDLNet_Read16(data);
 				msg = new S2CConnectionAcceptedTechnicalMessage(port);
 			}

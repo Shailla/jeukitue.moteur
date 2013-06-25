@@ -20,38 +20,32 @@ using namespace std;
 #include "reseau/new/exception/ConnectionFailedException.h"
 #include "reseau/new/TechnicalInterlocutor.h"
 
-bool operator < (const IPaddress& adr1, const IPaddress& adr2) {
-	if(adr1.host != adr2.host) {
-		return adr1.host < adr2.host;
-	}
-	else {
-		return adr1 < adr2;
-	}
-}
+class C2SHelloTechnicalMessage;
+class C2SByeTechnicalMessage;
 
 class ServerUdpInterlocutor : TechnicalInterlocutor {
 	class ClientOfServer {
 		IPaddress _address;
 		Interlocutor2* _interlocutor;
-		CONNEXION_STATUS _status;
+		CONNEXION_STATUS _connexionStatus;
 
 	public:
 		ClientOfServer(const IPaddress& address, Interlocutor2* interlocutor) {
 			_address = address;
 			_interlocutor = interlocutor;
-			_status = TechnicalInterlocutor::STOPPED;
+			_connexionStatus = TechnicalInterlocutor::STOPPED;
 		}
 
 		Interlocutor2* getInterlocutor() {
 			return _interlocutor;
 		}
 
-		TechnicalInterlocutor::CONNEXION_STATUS getStatus() const {
-			return _status;
+		TechnicalInterlocutor::CONNEXION_STATUS getConnexionStatus() const {
+			return _connexionStatus;
 		}
 
-		void setStatus(TechnicalInterlocutor::CONNEXION_STATUS status) {
-			_status = status;
+		void setConnexionStatus(TechnicalInterlocutor::CONNEXION_STATUS connexionStatus) {
+			_connexionStatus = connexionStatus;
 		}
 
 		IPaddress getIpAddress() const {
@@ -63,7 +57,6 @@ class ServerUdpInterlocutor : TechnicalInterlocutor {
 	Uint16 _distantPort;
 	Interlocutor2* _interlocutor;
 
-	IPaddress _distantAddress;
 	UDPsocket _socket;
 	SDLNet_SocketSet _socketSet;
 	UDPpacket* _packetIn;
@@ -85,7 +78,7 @@ public:
 	virtual ~ServerUdpInterlocutor();
 
 	void close();
-	void connect() throw(ConnectionFailedException);
+	void connect(Interlocutor2* interlocutor) throw(ConnectionFailedException);
 };
 
 #endif /* SERVERINTERLOCUTOR_H_ */

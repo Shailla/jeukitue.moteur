@@ -14,6 +14,11 @@ using namespace std;
 #include "SDL.h"
 #include "SDL_net.h"
 
+#include "util/types/Bytes.h"
+
+using namespace JktUtils;
+
+#include "reseau/new/Interlocutor2.h"
 #include "reseau/new/message/TechnicalMessage.h"
 #include "reseau/new/message/S2CConnectionAcceptedTechnicalMessage.h"
 #include "reseau/new/message/C2SHelloTechnicalMessage.h"
@@ -44,10 +49,10 @@ void ClientUdpInterlocutor::connect(Interlocutor2* interlocutor, const string& d
 	_distantIp = distantIp;
 	_distantPort = distantPort;
 
+	_interlocutor->setCondIntelligence(getCondIntelligence());
+
 	_packetIn = SDLNet_AllocPacket(65535);
 	_packetOut = SDLNet_AllocPacket(65535);
-
-	_interlocutor->setCondIntelligence(getCondIntelligence());
 
 	try {
 		// Résolution adresse distant
@@ -195,7 +200,7 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 		TechnicalMessage* lastConnectionMsg = NULL;
 
 		while((msg = _interlocutor->popTechnicalMessageReceived())) {
-			TechnicalMessage* techMsg = TechnicalMessage::traduct(msg->getData());
+			TechnicalMessage* techMsg = TechnicalMessage::traduct(msg->getBytes());
 
 			if(techMsg) {
 				switch(techMsg->getCode()) {
@@ -245,26 +250,32 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 void ClientUdpInterlocutor::sendingProcess() {
 	while(STOPPED != getConnexionStatus() && STOPPING != getConnexionStatus()) {
 		_interlocutor->waitDataToSend(1000);
-		char* data;
+		Interlocutor2::DataAddress* data;
 
 		// Envoi les messages techniques tant qu'on est pas arrêté, sinon purge les
 		while((data = _interlocutor->popTechnicalMessageToSend()))  {
 			if(STOPPED != getConnexionStatus()) {
-				_packetOut->len = sizeof(data);
-				SDLNet_UDP_Send(_socket, _packetOut->channel, _packetOut);
+				_packetOut->len = data->getBytes()->size();
+				memcpy(_packetOut->data, data->getBytes()->getBytes(), _packetOut->len);
+				int result = SDLNet_UDP_Send(_socket, _packetOut->channel, _packetOut);
+
+				cout << endl << "Client says : Sending some technical message of size and result " << data->getBytes()->size() << " - " << result;
 			}
 
-			delete[] data;
+			delete data;
 		}
 
 		// Envoi les messages de données tant qu'on est connecté, sinon purge les
 		while((data = _interlocutor->popDataToSend())) {
 			if(CONNECTED == getConnexionStatus()) {
-				_packetOut->len = sizeof(data);
+				cout << endl << "Client says : Sending some data message";
+
+				_packetOut->len = data->getBytes()->size();
+				memcpy(_packetOut->data, data->getBytes()->getBytes(), _packetOut->len);
 				SDLNet_UDP_Send(_socket, _packetOut->channel, _packetOut);
 			}
 
-			delete[] data;
+			delete data;
 		}
 	}
 
@@ -287,7 +298,8 @@ void ClientUdpInterlocutor::receiveOnePacket() {
 					int offset = 2;
 					char* data = new char[size - offset];
 					memcpy(data, _packetIn->data + offset, size - offset);
-					_interlocutor->pushDataReceived(data);
+					cout << endl << "Client says : Received data packet";
+					_interlocutor->pushDataReceived(address, new Bytes(data, size - offset));
 				}
 				break;
 
@@ -295,7 +307,8 @@ void ClientUdpInterlocutor::receiveOnePacket() {
 				if(STOPPED != getConnexionStatus()) {
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
-					_interlocutor->pushTechnicalMessageReceived(address, data);
+					cout << endl << "Client says : Received packet supposed technical";
+					_interlocutor->pushTechnicalMessageReceived(address, new Bytes(data, size));
 				}
 				break;
 			}
@@ -312,7 +325,7 @@ void ClientUdpInterlocutor::receivingProcess() {
 
 		if(STOPPED != getConnexionStatus()) {
 			if(socketReady == -1) {
-				cerr << endl << "SDLNet_CheckSockets - UDP receive : " << SDLNet_GetError();
+				cerr << endl << "Client SDLNet_CheckSockets - UDP receive : " << SDLNet_GetError();
 			}
 			else if(socketReady > 0) {
 				receiveOnePacket();

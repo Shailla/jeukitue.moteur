@@ -10,15 +10,17 @@
 
 #include "reseau/new/message/S2CConnectionRefusedTechnicalMessage.h"
 
+using namespace JktUtils;
+
 S2CConnectionRefusedTechnicalMessage::S2CConnectionRefusedTechnicalMessage() : TechnicalMessage(S2C_CONNECTION_REFUSED) {
 }
 
 S2CConnectionRefusedTechnicalMessage::~S2CConnectionRefusedTechnicalMessage() {
 }
 
-char* S2CConnectionRefusedTechnicalMessage::toBytes() const {
+Bytes* S2CConnectionRefusedTechnicalMessage::toBytes() const {
 	char* msg = new char[2];
 	SDLNet_Write16(getCode(), msg);
 
-	return msg;
+	return new Bytes(msg, 2);
 }

@@ -120,6 +120,7 @@ class CGame;
 #include "data/Interlocutor.h"
 
 #include "reseau/new/ClientUdpInterlocutor.h"
+#include "reseau/new/ServerUdpInterlocutor.h"
 
 using namespace JktMenu;
 using namespace JktNet;
@@ -1637,12 +1638,12 @@ int main(int argc, char** argv) {
 		const char *host = SDLNet_ResolveIP( &ipaddress );
 
 		if(host)
-			cout << "\nNom de la machine locale : " << host;
+			cout << endl << "Nom de la machine locale : " << host;
 		else
-			cout << "\nNom de la machine locale : Inconnu";
+			cout << endl << "Nom de la machine locale : Inconnu";
 	}
 	else {
-		cout << "\nNom de la machine locale : Inconnu";
+		cout << endl << "Nom de la machine locale : Inconnu";
 	}
 
 	Fabrique::construct();
@@ -1650,13 +1651,19 @@ int main(int argc, char** argv) {
 	// Création du démon de gestion des sons
 	DemonSons = new CDemonSons();
 
-	Interlocutor2 interlocutor;
+	Interlocutor2 clientInterlocutor;
+	Interlocutor2 serverInterlocutor;
 
 	try {
 		ClientUdpInterlocutor client(4968);
-		client.connect(&interlocutor, "172.0.0.1", 5968);
+		client.connect(&clientInterlocutor, "localhost", 5968);
 
-		SDL_Delay(100000);
+		ServerUdpInterlocutor server(5968);
+		server.connect(&serverInterlocutor);
+
+		SDL_Delay(6000);
+
+		exit(0);
 	}
 	catch(JktException& exception) {
 		cerr << endl << "ERREUR CATCHEE : " << exception.getMessage() << flush;

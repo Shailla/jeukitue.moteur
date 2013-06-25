@@ -8,6 +8,8 @@
 #ifndef TECHNICALMESSAGE_H_
 #define TECHNICALMESSAGE_H_
 
+#include "util/types/Bytes.h"
+
 class TechnicalMessage {
 public:
 	enum TECHNICAL_MESSAGE {
@@ -37,9 +39,9 @@ public:
 	virtual ~TechnicalMessage();
 
 	int getCode() const;
-	virtual char* toBytes() const = 0;
+	virtual JktUtils::Bytes* toBytes() const = 0;
 
-	static TechnicalMessage* traduct(char* data);
+	static TechnicalMessage* traduct(JktUtils::Bytes* data);
 };
 
 #endif /* TECHNICALMESSAGE_H_ */

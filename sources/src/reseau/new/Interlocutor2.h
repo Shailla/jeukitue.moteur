@@ -14,37 +14,52 @@
 #include "SDL.h"
 #include "SDL_net.h"
 
+#include "util/types/Bytes.h"
+
 class Interlocutor2 {
 public:
 	class DataAddress {
 		IPaddress _address;
-		char* _data;
+		JktUtils::Bytes* _bytes;
 
 	public:
-		DataAddress(const IPaddress& address, char* data) {
+		DataAddress(char* data, int size) {
+			_bytes = new JktUtils::Bytes(data, size);
+		}
+
+		DataAddress(JktUtils::Bytes* bytes) {
+			_bytes = bytes;
+		}
+
+		DataAddress(const IPaddress& address, char* data, int size) {
 			_address = address;
-			_data = data;
+			_bytes = new JktUtils::Bytes(data, size);
+		}
+
+		DataAddress(const IPaddress& address, JktUtils::Bytes* bytes) {
+			_address = address;
+			_bytes = bytes;
 		}
 
 		~DataAddress() {
-			delete[] _data;
+			delete _bytes;
 		}
 
 		const IPaddress& getAddress() const {
 			return _address;
 		}
 
-		char* getData() {
-			return _data;
+		JktUtils::Bytes* getBytes() {
+			return _bytes;
 		}
 	};
 
 private:
 	std::string _name;
-	std::queue<char*> _dataReceived;
+	std::queue<DataAddress*> _dataReceived;
 	std::queue<DataAddress*> _technicalMessagesReceived;
-	std::queue<char*> _dataToSend;
-	std::queue<char*> _technicalMessagesToSend;
+	std::queue<DataAddress*> _dataToSend;
+	std::queue<DataAddress*> _technicalMessagesToSend;
 	SDL_mutex* _mutexDataReceived;
 	SDL_mutex* _mutexDataToSend;
 	SDL_cond* _condDataToSend;
@@ -59,18 +74,19 @@ public:
 
 	void setCondIntelligence(SDL_cond* condIntelligence);
 
-	void pushTechnicalMessageReceived(const IPaddress& address, char* msg);
+	void pushTechnicalMessageReceived(const IPaddress& address, JktUtils::Bytes* bytes);
 	DataAddress* popTechnicalMessageReceived();
 
-	void pushTechnicalMessageToSend(char* msg);
-	char* popTechnicalMessageToSend();
+	void pushTechnicalMessageToSend(JktUtils::Bytes* bytes);
+	void pushTechnicalMessageToSend(const IPaddress& address, JktUtils::Bytes* bytes);
+	DataAddress* popTechnicalMessageToSend();
 
-	void pushDataReceived(char* data);
-	char* popDataReceived();
+	void pushDataReceived(const IPaddress& address, JktUtils::Bytes* bytes);
+	DataAddress* popDataReceived();
 
 	void waitDataToSend(int timeout);
-	void pushDataToSend(char* data);
-	char* popDataToSend();
+	void pushDataToSend(const IPaddress& address, JktUtils::Bytes* bytes);
+	DataAddress* popDataToSend();
 };
 
 #endif /* INTERLOCUTOR_RESEAU_H_ */

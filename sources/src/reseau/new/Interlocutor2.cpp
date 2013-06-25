@@ -13,7 +13,11 @@ using namespace std;
 
 #include "sdl.h"
 
+#include "util/types/Bytes.h"
+
 #include "reseau/new/Interlocutor2.h"
+
+using namespace JktUtils;
 
 Interlocutor2::Interlocutor2() {
 	_name = "";
@@ -38,11 +42,11 @@ const string& Interlocutor2::getName() const {
 	return _name;
 }
 
-void Interlocutor2::pushTechnicalMessageReceived(const IPaddress& address, char* data) {
+void Interlocutor2::pushTechnicalMessageReceived(const IPaddress& address, Bytes* bytes) {
 	SDL_LockMutex(_mutexDataReceived);
 
-	if(data) {
-		DataAddress* msg = new DataAddress(address, data);
+	if(bytes) {
+		DataAddress* msg = new DataAddress(address, bytes);
 		_technicalMessagesReceived.push(msg);
 	}
 
@@ -50,11 +54,12 @@ void Interlocutor2::pushTechnicalMessageReceived(const IPaddress& address, char*
 	SDL_CondSignal(_condIntelligence);
 }
 
-void Interlocutor2::pushDataReceived(char* data) {
+void Interlocutor2::pushDataReceived(const IPaddress& address, Bytes* bytes) {
 	SDL_LockMutex(_mutexDataReceived);
 
-	if(data) {
-		_dataReceived.push(data);
+	if(bytes) {
+		DataAddress* msg = new DataAddress(address, bytes);
+		_dataReceived.push(msg);
 	}
 
 	SDL_UnlockMutex(_mutexDataReceived);
@@ -78,8 +83,8 @@ Interlocutor2::DataAddress* Interlocutor2::popTechnicalMessageReceived(void) {
 	return result;
 }
 
-char* Interlocutor2::popDataReceived(void) {
-	char* result;
+Interlocutor2::DataAddress* Interlocutor2::popDataReceived(void) {
+	DataAddress* result;
 
 	SDL_LockMutex(_mutexDataReceived);
 
@@ -102,30 +107,45 @@ void Interlocutor2::waitDataToSend(int timeout) {
 	SDL_UnlockMutex(_mutexDataToSend);
 }
 
-void Interlocutor2::pushTechnicalMessageToSend(char* data) {
+void Interlocutor2::pushTechnicalMessageToSend(Bytes* bytes) {
 	SDL_LockMutex(_mutexDataToSend);
 
-	if(data) {
-		_technicalMessagesToSend.push(data);
+	if(bytes) {
+		DataAddress* msg = new DataAddress(bytes);
+		_technicalMessagesToSend.push(msg);
 	}
 
 	SDL_UnlockMutex(_mutexDataToSend);
 	SDL_CondSignal(_condDataToSend);	// If we are waiting data to send, stop waiting
 }
 
-void Interlocutor2::pushDataToSend(char* data) {
+
+void Interlocutor2::pushTechnicalMessageToSend(const IPaddress& address, Bytes* bytes) {
 	SDL_LockMutex(_mutexDataToSend);
 
-	if(data) {
-		_dataToSend.push(data);
+	if(bytes) {
+		DataAddress* msg = new DataAddress(address, bytes);
+		_technicalMessagesToSend.push(msg);
 	}
 
 	SDL_UnlockMutex(_mutexDataToSend);
 	SDL_CondSignal(_condDataToSend);	// If we are waiting data to send, stop waiting
 }
 
-char* Interlocutor2::popTechnicalMessageToSend(void) {
-	char* result;
+void Interlocutor2::pushDataToSend(const IPaddress& address, JktUtils::Bytes* bytes) {
+	SDL_LockMutex(_mutexDataToSend);
+
+	if(bytes) {
+		DataAddress* msg = new DataAddress(address, bytes);
+		_dataToSend.push(msg);
+	}
+
+	SDL_UnlockMutex(_mutexDataToSend);
+	SDL_CondSignal(_condDataToSend);	// If we are waiting data to send, stop waiting
+}
+
+Interlocutor2::DataAddress* Interlocutor2::popTechnicalMessageToSend(void) {
+	DataAddress* result;
 
 	SDL_LockMutex(_mutexDataToSend);
 
@@ -142,8 +162,8 @@ char* Interlocutor2::popTechnicalMessageToSend(void) {
 	return result;
 }
 
-char* Interlocutor2::popDataToSend(void) {
-	char* result;
+Interlocutor2::DataAddress* Interlocutor2::popDataToSend(void) {
+	DataAddress* result;
 
 	SDL_LockMutex(_mutexDataToSend);
 

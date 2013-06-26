@@ -1655,19 +1655,35 @@ int main(int argc, char** argv) {
 	Interlocutor2 serverInterlocutor;
 
 	try {
-		ClientUdpInterlocutor client(4968);
-		client.connect(&clientInterlocutor, "localhost", 5968);
+		cout << endl << "TEST - Création du 1er client" << flush;
+		ClientUdpInterlocutor client1(4968);
 
+		cout << endl << "TEST - Le 1er client tente de se connecter au serveur pendant 5 secondes" << flush;
+		client1.connect(&clientInterlocutor, "localhost", 5968);
+		SDL_Delay(5000);
+
+		cout << endl << "TEST - Création du serveur" << flush;
 		ServerUdpInterlocutor server(5968);
+
+		cout << endl << "TEST - Connexion du serveur" << flush;
 		server.connect(&serverInterlocutor);
 
-		SDL_Delay(3000);
+		SDL_Delay(10000);
 
-		exit(0);
+
+		cout << endl << "TEST - Création 2° du client" << flush;
+		ClientUdpInterlocutor client2(4969);
+
+		cout << endl << "TEST - Le 2° client tente de se connecter au serveur pendant 10 secondes" << flush;
+		client2.connect(&clientInterlocutor, "localhost", 5968);
+		SDL_Delay(10000);
 	}
 	catch(JktException& exception) {
 		cerr << endl << "ERREUR CATCHEE : " << exception.getMessage() << flush;
 	}
+
+	exit(0);
+
 
 	// Lancement de l'introduction du jeu
 	load_Intro( Config.Display.X, Config.Display.Y );	// Affiche l'introduction du jeu

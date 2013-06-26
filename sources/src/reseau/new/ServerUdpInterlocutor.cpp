@@ -142,8 +142,6 @@ void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloT
 
 		client->setConnexionStatus(TechnicalInterlocutor::CONNECTED);
 		_clientsOfServer[address] = client;
-
-		cout << endl << "Server says : Client connected : " << (int)(((char*)&address.host)[0]) << "." << (int)(((char*)&address.host)[1]) << "." << (int)(((char*)&address.host)[2]) << "." << (int)(((char*)&address.host)[3]) << ":" << address.port << flush;
 	}
 
 
@@ -219,7 +217,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 				if(techMsg) {
 					switch(techMsg->getCode()) {
 					case TechnicalMessage::C2S_HELLO:
-						cout << endl << "Server says : C2S_HELLO in connected style => ignored";
+						manageConnection(msg->getAddress(), (C2SHelloTechnicalMessage*)techMsg);
 						break;
 
 					case TechnicalMessage::C2S_BYE:

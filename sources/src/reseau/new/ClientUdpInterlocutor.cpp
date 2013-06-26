@@ -49,8 +49,6 @@ void ClientUdpInterlocutor::connect(Interlocutor2* interlocutor, const string& d
 	_distantIp = distantIp;
 	_distantPort = distantPort;
 
-	cout << endl << "Client says : Distant port " << _distantPort;
-
 	_interlocutor->setCondIntelligence(getCondIntelligence());
 
 	_packetIn = SDLNet_AllocPacket(65535);
@@ -63,8 +61,6 @@ void ClientUdpInterlocutor::connect(Interlocutor2* interlocutor, const string& d
 			msg << "SDLNet_ResolveHost - UDP connection, erreur de resolution adresse distant : " << SDLNet_GetError();
 			throw ConnectionFailedException(msg.str());
 		}
-
-		cout << endl << "Client says : Connect to " << (int)(((char*)&_distantAddress.host)[0]) << "." << (int)(((char*)&_distantAddress.host)[1]) << "." << (int)(((char*)&_distantAddress.host)[2]) << "." << (int)(((char*)&_distantAddress.host)[3]) << ":" << _distantAddress.port;
 
 		// Ouverture socket
 		_socket = SDLNet_UDP_Open( getLocalPort() );
@@ -175,7 +171,7 @@ void ClientUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg
 	if(_tryConnectionNumber > 10) {
 		close();
 	}
-	else if(currentTime - _tryConnectionLastTime > 2000) {
+	else if(currentTime - _tryConnectionLastTime > 1000) {
 		cout << endl << "Client says : Asking connection" << flush;
 
 		C2SHelloTechnicalMessage msg;

@@ -51,7 +51,7 @@ public:
 	 * Distants management
 	 * ***************************************************/
 
-	void addDistant(Interlocutor* interlocutor);
+	void addDistant(Interlocutor2* interlocutor);
 	const std::vector<DistantTreeProxy*>& getDistants();
 
 

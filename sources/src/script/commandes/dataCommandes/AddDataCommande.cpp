@@ -23,8 +23,8 @@ using namespace std;
 
 using namespace JktUtils;
 
-extern ServeurDataTree serveurDataTree;
-extern std::map<ClientDataTree*, Interlocutor*> dataRouter;
+extern ServeurDataTree* serveurDataTree;
+extern ClientDataTree* clientDataTree;
 
 AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
@@ -32,46 +32,17 @@ AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(in
 void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalParameterException) {
 	string subCommande1 = StringUtils::findAndEraseFirstWord(ligne);
 
-	if(subCommande1 == "client") {
-		string clientName = StringUtils::findAndEraseFirstWord(ligne);
-
-		// Server side update
-		Interlocutor* serveurInterlocutor = new Interlocutor(clientName);
-		serveurDataTree.addDistant(serveurInterlocutor);
-
-		// client side update
-		Interlocutor* clientInterlocutor = new Interlocutor("server");
-		ClientDataTree* clientDataTree = new ClientDataTree(clientName, clientInterlocutor);
-
-		dataRouter[clientDataTree] = serveurInterlocutor;
-
-		printStdLn("Client cree.", userOutput);
-	}
-	else if(subCommande1 == "branche") {
-		string serverOrClientMode = StringUtils::findAndEraseFirstWord(ligne);
-
+	if(subCommande1 == "branche") {
 		DataTree* tree = NULL;
 
-		if(serverOrClientMode == "server") {
-			tree = &serveurDataTree;
+		if(serveurDataTree != 0) {
+			tree = serveurDataTree;
 		}
-		else if(serverOrClientMode == "client") {
-			string clientName = StringUtils::findAndEraseFirstWord(ligne);
-
-			// Recherche du client
-			map<ClientDataTree*, Interlocutor*>::iterator it;
-			ClientDataTree* clientTree;
-
-			for(it = dataRouter.begin() ; (it != dataRouter.end() && !tree) ; it++) {
-				clientTree = it->first;
-
-				if(clientTree->getClientName() == clientName) {
-					tree = clientTree;
-				}
-			}
+		else if(clientDataTree != 0) {
+			tree = clientDataTree;
 		}
 		else {
-			printErrLn("Syntaxe incorrecte", userOutput);
+			printErrLn("Client et serveur tous deux inactifs", userOutput);
 		}
 
 		if(tree) {
@@ -91,27 +62,16 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 		}
 	}
 	else if(subCommande1 == "valeur") {
-		string serverOrClientMode = StringUtils::findAndEraseFirstWord(ligne);
-
 		DataTree* tree = NULL;
 
-		if(serverOrClientMode == "server") {
-			tree = &serveurDataTree;
+		if(serveurDataTree != 0) {
+			tree = serveurDataTree;
 		}
-		else if(serverOrClientMode == "client") {
-			string clientName = StringUtils::findAndEraseFirstWord(ligne);
-
-			// Recherche du client
-			map<ClientDataTree*, Interlocutor*>::iterator it;
-			ClientDataTree* clientTree;
-
-			for(it = dataRouter.begin() ; (it != dataRouter.end() && !tree) ; it++) {
-				clientTree = it->first;
-
-				if(clientTree->getClientName() == clientName) {
-					tree = clientTree;
-				}
-			}
+		else if(clientDataTree != 0) {
+			tree = clientDataTree;
+		}
+		else {
+			printErrLn("Client et serveur tous deux inactifs", userOutput);
 		}
 
 		if(tree) {

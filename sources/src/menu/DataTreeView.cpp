@@ -15,7 +15,7 @@ using namespace std;
 #include "data/ValeurInt.h"
 #include "data/ClientDataTree.h"
 #include "data/MarqueurDistant.h"
-#include "data/Interlocutor.h"
+#include "reseau/new/Interlocutor2.h"
 
 #include "menu/DataTreeView.h"
 
@@ -82,54 +82,54 @@ void DataTreeView::selectionChanged(AG_Event* event) {
 }
 
 void DataTreeView::openClientsWindows(AG_Event* event) {
-	DataTreeView* This = (DataTreeView*)AG_PTR(1);
-
-	map<ClientDataTree*, Interlocutor*>::iterator it;
-
-	for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
-		ClientDataTree* tree = it->first;
-		DataTreeDetails* details = NULL;
-
-		try {
-			details = This->_clientDataTrees.at(tree);
-		}
-		catch(out_of_range& exception) {
-			details = NULL;
-		}
-
-		if(!details) {
-			// Crée la fenêtre du client si elle n'existe pas encore
-			AG_Window* window = AG_WindowNew(0);
-			AG_WindowSetCaption(window, tree->getClientName().c_str());
-
-			AG_Box* box = AG_BoxNewHoriz(window, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
-			AG_Expand(box);
-
-			AG_SeparatorNewHoriz(window);
-
-			details = drawWidgets(window, box, tree);
-			This->_clientDataTrees[tree] = details;
-
-			// Boutons
-			AG_Box* boxButtons = AG_BoxNewHoriz(window, 0);
-			AG_ExpandHoriz(boxButtons);
-
-			// Bouton rafraîchir
-			AG_ButtonNewFn(boxButtons, 0, "Rafraichir", DataTreeView::refresh, "%p", details);
-
-			refreshClientTable(details);
-			refreshServeur(details);
-
-			AG_WindowSetGeometryAlignedPct(window, AG_WINDOW_TC, 100, 50);
-			AG_WindowShow(window);
-		}
-		else {
-			// Rafraichit et affiche la fenêtre si elle existe déjà
-			refreshClientTable(details);
-			refreshServeur(details);
-			AG_WindowShow(details->getWindow());
-		}
-	}
+//	DataTreeView* This = (DataTreeView*)AG_PTR(1);
+//
+//	map<ClientDataTree*, Interlocutor*>::iterator it;
+//
+//	for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
+//		ClientDataTree* tree = it->first;
+//		DataTreeDetails* details = NULL;
+//
+//		try {
+//			details = This->_clientDataTrees.at(tree);
+//		}
+//		catch(out_of_range& exception) {
+//			details = NULL;
+//		}
+//
+//		if(!details) {
+//			// Crée la fenêtre du client si elle n'existe pas encore
+//			AG_Window* window = AG_WindowNew(0);
+//			AG_WindowSetCaption(window, tree->getClientName().c_str());
+//
+//			AG_Box* box = AG_BoxNewHoriz(window, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
+//			AG_Expand(box);
+//
+//			AG_SeparatorNewHoriz(window);
+//
+//			details = drawWidgets(window, box, tree);
+//			This->_clientDataTrees[tree] = details;
+//
+//			// Boutons
+//			AG_Box* boxButtons = AG_BoxNewHoriz(window, 0);
+//			AG_ExpandHoriz(boxButtons);
+//
+//			// Bouton rafraîchir
+//			AG_ButtonNewFn(boxButtons, 0, "Rafraichir", DataTreeView::refresh, "%p", details);
+//
+//			refreshClientTable(details);
+//			refreshServeur(details);
+//
+//			AG_WindowSetGeometryAlignedPct(window, AG_WINDOW_TC, 100, 50);
+//			AG_WindowShow(window);
+//		}
+//		else {
+//			// Rafraichit et affiche la fenêtre si elle existe déjà
+//			refreshClientTable(details);
+//			refreshServeur(details);
+//			AG_WindowShow(details->getWindow());
+//		}
+//	}
 }
 
 void DataTreeView::refreshClientTable(DataTreeDetails* details) {
@@ -155,7 +155,7 @@ void DataTreeView::refreshClientTable(DataTreeDetails* details) {
 
 	for(iter = distantsToShow.begin() ; iter != distantsToShow.end() ; iter++) {
 		DistantTreeProxy* client = *iter;
-		Interlocutor* interlocutor = client->getInterlocutor();
+		Interlocutor2* interlocutor = client->getInterlocutor();
 
 		if(selectedDonnee) {
 			MarqueurDistant* marqueur = client->getMarqueur(selectedDonnee);

@@ -40,6 +40,8 @@ TRACE().p( TRACE_RESEAU, "CClient::CClient() begin%T", this );
 	m_pingClientServer = 0;
 	m_timePingClientServer = 0;
 	IDpersonnel = 0;
+
+	_clientUdpInterlocutor = 0;
 TRACE().p( TRACE_RESEAU, "CClient::CClient() end%T", this );
 }
 
@@ -62,13 +64,13 @@ void CClient::setMaxPlayers( int nbr ) {
 }
 
 bool CClient::AjoutePlayer( int pos, CPlayer *player )
-{	return Game.pTabIndexPlayer->Ajoute( pos, player );	}
+{	return Game._pTabIndexPlayer->Ajoute( pos, player );	}
 
 CPlayer* CClient::GetPlayer(int pos)	// Retourne un pointeur sur l'élément indexé 'pos'
-{	return Game.pTabIndexPlayer->operator [](pos);	}
+{	return Game._pTabIndexPlayer->operator [](pos);	}
 
 int CClient::SuivantPlayer( int pos )	// Renvoie l'index de l'élément après l'élément indexé par 'pos'
-{	return Game.pTabIndexPlayer->Suivant( pos );		}
+{	return Game._pTabIndexPlayer->Suivant( pos );		}
 
 unsigned int CClient::nbrPlayers()
 {	return m_uNbrPlayers;	}
@@ -158,17 +160,16 @@ int CClient::getMaxPlayers() {
 	return m_MaxPlayers;
 }
 
-bool CClient::ouvre( const string &address, Uint16 port )
-{
-TRACE().p( TRACE_RESEAU, "CClient::ouvre(address=%s,port=%d) begin%T",
-address.c_str(), port, this );
+Interlocutor2* CClient::ouvre(const string &address, Uint16 port, Uint16 portTree) {
+TRACE().p( TRACE_RESEAU, "CClient::ouvre(address=%s,port=%d) begin%T", address.c_str(), port, this );
 
 	bool result = true;		// Indique si au fur de la fonction si tout s'est bien passé
+	Interlocutor2* interlocutor;
 
-	if( !spaMaitre.open( address, port ) )
+	if(!spaMaitre.open(address, port))
 		result = false;
 
-	if( result ) {
+	if(result) {
 		socketSet = SDLNet_AllocSocketSet( 20 );	// Nombre maxi de sockets à écouter
 		if( !socketSet ) {
 TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
@@ -180,7 +181,7 @@ TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
 		}
 	}
 
-	if( result ) {
+	if(result) {
 		if( SDLNet_UDP_AddSocket( socketSet, spaMaitre.getSocket() )==-1 ) {
 TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
 			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AddSocket : " << SDLNet_GetError();
@@ -194,11 +195,20 @@ TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
 		}
 	}
 
-	if( result )
+	/* ***********************************************************************
+	 * Ouverture d'un client moderne
+	 * **********************************************************************/
+
+	if(result) {
+		_clientUdpInterlocutor = new ClientUdpInterlocutor(0);
+		interlocutor = _clientUdpInterlocutor->connect(address, portTree);
+	}
+
+	if(interlocutor)
 		setStatut( JKT_STATUT_CLIENT_READY );	// Indique que le client est prêt
 
 TRACE().p( TRACE_RESEAU, "CClient::ouvre() -> %b end%T", result, this );
-	return result;
+	return interlocutor;
 }
 
 void CClient::sendRequestInfoToServer() {

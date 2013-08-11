@@ -11,9 +11,12 @@ using namespace std;
 
 class ConfigurationReseauView : public View
 {
-	char _ipServeur[40];	// Adresse IP du serveur de jeu
-	int _portServeur;		// Port du serveur
-	int _isServeur;			// Mode serveur si vrai
+	AG_Textbox* _ipServeurTexbox;
+
+	char _ipServeur[40];			// Adresse IP du serveur de jeu
+	int _port;						// Port du serveur
+	int _portTree;
+	int _isModeServeur;				// Mode serveur si vrai
 
 public:
 	ConfigurationReseauView(const AG_EventFn controllerCallback);
@@ -21,8 +24,9 @@ public:
 
 	void show(void);
 	const char* getIpServeur(void) const;
-	int getPortServeur() const;
-	bool isServeur() const;
+	int getPort() const;
+	int getPortTree() const;
+	bool isModeServeur() const;
 };
 
 #endif

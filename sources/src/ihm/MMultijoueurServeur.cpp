@@ -33,7 +33,6 @@ class CGeoObject;
 class CPorte;
 
 extern JktNet::CReseau Reseau;
-extern CCfg Config;
 
 #include "ihm/MMenuPrinc.h"
 #include "ihm/MMultijoueurServeurLancePartie.h"
@@ -83,7 +82,7 @@ TRACE().p( TRACE_MENU, "lanceMenuMultijoueurserveur(var=%x)", var );
 
 	if( var )		// S'il y a demande de connection réseau
 	{
-		if( !Reseau.ouvreServer( Config.Reseau.getPort() ) )
+		if( !Reseau.ouvreServer() )
 		{
 			cout << endl << "Echec ouverture server";
 			Reseau.setOn( false );		// Signale que le réseau ne peut pas être utilisé

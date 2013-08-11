@@ -7,17 +7,16 @@
 #include "SDL_net.h"
 #include "reseau/enumReseau.h"
 #include "reseau/SPA.h"
+#include "reseau/new/ClientUdpInterlocutor.h"
 
 class CPlayer;
 
 namespace JktNet
 {
 
-class CClient
-{
+class CClient {
 public:
-	class CInfoServer
-	{
+	class CInfoServer {
 		bool m_bReady;						// Informe si ces infos ont été actualisées depuis la dernière requête d'infos
 	public:
 		string nom;						// Nom du serveur
@@ -36,6 +35,9 @@ private:
 
 	int m_uNbrPlayers;				// Nombre de joueurs sur le serveur
 	int m_MaxPlayers;				// Nombre maximum de joueurs sur le serveur
+
+	// Serveur moderne
+	ClientUdpInterlocutor* _clientUdpInterlocutor;
 
 public:
 	SDLNet_SocketSet socketSet;		// Les sockets à écouter
@@ -68,7 +70,7 @@ public:
 
 	void decodeConnecte( Uint16, Uint16 ); 		//Décode les paquets recus du réseau
 	bool decodeNonConnecte( Uint16 code1, Uint16 code2 );
-	bool ouvre( const string &address, Uint16 port );
+	Interlocutor2* ouvre(const string &address, Uint16 port, Uint16 portTree);
 	CInfoServer getInfoServer();
 	int getPingClientServeur();
 	void emet( CPlayer &player );

@@ -98,16 +98,20 @@ string StringUtils::findFirstWord(string& s) {
 }
 
 vector<string> StringUtils::splitBySpaces(string s) {
+	return split(s, isspace);
+}
+
+vector<string> StringUtils::split(string s, int (isSeparator)(int)) {
 	vector<string> result;
 
 	string::iterator finMot = s.begin();
 	string::iterator debutMot;
 
 	do {
-		debutMot = find_if(finMot, s.end(), not1(ptr_fun<int, int>(isspace)));
+		debutMot = find_if(finMot, s.end(), not1(ptr_fun<int, int>(isSeparator)));
 
 		if(debutMot != s.end()) {
-			finMot = find_if(debutMot, s.end(), ptr_fun<int, int>(isspace));
+			finMot = find_if(debutMot, s.end(), ptr_fun<int, int>(isSeparator));
 			result.push_back(string(debutMot, finMot));
 		}
 	} while(debutMot != s.end());

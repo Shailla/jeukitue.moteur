@@ -48,6 +48,9 @@ TRACE().p( TRACE_RESEAU, "CServer::CServer() begin%T", this );
 	m_Statut = JKT_STATUT_SERVER_INIT;	// Indique que le serveur est en cours d'initialisation
 
 	socketSet = 0;
+
+	_serverUdpInterlocutor = 0;
+
 TRACE().p( TRACE_RESEAU, "CServer::CServer() end%T", this );
 }
 
@@ -57,12 +60,17 @@ TRACE().p( TRACE_RESEAU, "CServer::~CServer() begin%T", this );
 	SDLNet_FreeSocketSet( socketSet );		// Libère le socket set du serveur
 	socketSet = 0;
 
+	if(_serverUdpInterlocutor)
+		_serverUdpInterlocutor->close();
+
+	delete _serverUdpInterlocutor;
+
 	Game.quit();
 TRACE().p( TRACE_RESEAU, "CServer::~CServer() end%T", this );
 }
 
 CPlayer *CServer::GetPlayer( int pos )
-{	return Game.pTabIndexPlayer->operator []( pos );	}
+{	return Game._pTabIndexPlayer->operator []( pos );	}
 
 void CServer::setStatut( StatutServer statut )
 {	m_Statut = statut;		}
@@ -76,7 +84,7 @@ TRACE().p( TRACE_RESEAU, "CServer::AjoutePlayer(player=%x)%T", player, this );
 	int nbr;
 	if( m_uNbrPlayers<this->maxPlayers ) {
 		m_uNbrPlayers++;		// Incrémente le nbr de joueurs sur le serveur
-		nbr = Game.pTabIndexPlayer->Ajoute( player );	// Ajoute le joueur à la liste
+		nbr = Game._pTabIndexPlayer->Ajoute( player );	// Ajoute le joueur à la liste
 	}
 	else {
 		nbr = -1;
@@ -183,7 +191,7 @@ TRACE().p( TRACE_ERROR, "CServer::acceptPlayer() : %s%T", SDLNet_GetError(), thi
 	// Envoie les infos concernant chaque joueur
 	int curseur = -1;
 
-	while(Game.pTabIndexPlayer->Suivant(curseur)) {
+	while(Game._pTabIndexPlayer->Suivant(curseur)) {
 		player2 = GetPlayer( curseur );
 
 		player->spa.add16( (Uint16)curseur );			// Envoie l'identifiant de ce proxy-joueur
@@ -370,24 +378,27 @@ TRACE().p( TRACE_ERROR, "CServer::switchJTG() : Packet inconnu%T", this );
 TRACE().p( TRACE_RESEAU, "CServer::switchJTG() end%T", this );
 }
 
-bool CServer::ouvre( Uint16 port )
-{
+NotConnectedInterlocutor2* CServer::ouvre(Uint16 port, Uint16 portTree) {
 TRACE().p( TRACE_RESEAU, "CServer::ouvre(port=%d) begin%T", port, this );
 
+
+	/* ***********************************************************************
+	 * Ouverture d'un serveur primitif
+	 * **********************************************************************/
+
 	bool result = true;
+	NotConnectedInterlocutor2* notConnectedServerInterlocutor = 0;
 	cout << endl << "Ouverture d'un serveur sur port " << port;
 
-	if( !spaMaitre.open( port ) )
-	{
+	if( !spaMaitre.open( port ) ) {
 TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 		result = false;
 	}
 
-	if( result )
-	{
+	if(result) {
 		socketSet = SDLNet_AllocSocketSet( 20 );	// Nombre maxi de sockets à écouter
-		if( !socketSet )
-		{
+
+		if( !socketSet ) {
 TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AllocSocketSet: " << SDLNet_GetError();
 
@@ -397,10 +408,8 @@ TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 		}
 	}
 
-	if( result )
-	{
-		if( SDLNet_UDP_AddSocket( socketSet, spaMaitre.getSocket() )==-1 )
-		{
+	if(result) {
+		if( SDLNet_UDP_AddSocket( socketSet, spaMaitre.getSocket() )==-1 ) {
 TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AddSocket : " << SDLNet_GetError();
 			SDLNet_FreeSocketSet( socketSet );		// Libère le socket set du serveur
@@ -412,8 +421,18 @@ TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 		}
 	}
 
+
+	/* ***********************************************************************
+	 * Ouverture d'un serveur moderne
+	 * **********************************************************************/
+
+	if(result) {
+		_serverUdpInterlocutor = new ServerUdpInterlocutor(portTree);
+		notConnectedServerInterlocutor = _serverUdpInterlocutor->connect();
+	}
+
 TRACE().p( TRACE_RESEAU, "CServer::ouvre() -> %b end%T", result, this );
-	return result;	// Ouverture serveur réussie
+	return notConnectedServerInterlocutor;	// Ouverture serveur réussie
 }
 
 void CServer::emet()
@@ -421,7 +440,7 @@ void CServer::emet()
 	CPlayer *player, *player2;
 	int curseur = -1, curseur2;
 
-	while(Game.pTabIndexPlayer->Suivant(curseur)) {	// Envoie à chaque client-joueur
+	while(Game._pTabIndexPlayer->Suivant(curseur)) {	// Envoie à chaque client-joueur
 		player = GetPlayer( curseur );
 
 		if(player) {
@@ -432,7 +451,7 @@ void CServer::emet()
 				// Envoie les infos concernant chaque joueur
 			curseur2 = -1;
 
-			while(Game.pTabIndexPlayer->Suivant(curseur2)) {
+			while(Game._pTabIndexPlayer->Suivant(curseur2)) {
 				player2 = GetPlayer( curseur2 );
 
 				if(player2) {

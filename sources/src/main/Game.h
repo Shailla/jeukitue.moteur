@@ -39,7 +39,7 @@ public:
 		JKT_MODE_PARTIE_SERVER,		// Mode serveur de jeu
 	};
 
-	JktUtils::CTableauIndex<CPlayer> *pTabIndexPlayer;	// Liste indexée des joueurs
+	JktUtils::CTableauIndex<CPlayer> *_pTabIndexPlayer;	// Liste indexée des joueurs
 
 	CRequeteProcess RequeteProcess;		// Requetes inter-processus
 

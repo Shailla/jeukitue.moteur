@@ -24,8 +24,8 @@ using namespace std;
 
 using namespace JktUtils;
 
-extern ServeurDataTree serveurDataTree;
-extern std::map<ClientDataTree*, Interlocutor*> dataRouter;
+extern ServeurDataTree* serveurDataTree;
+extern ClientDataTree* clientDataTree;
 
 UpdateDataCommande::UpdateDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
@@ -34,27 +34,16 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 	string subCommande1 = StringUtils::findAndEraseFirstWord(ligne);
 
 	if(subCommande1 == "valeur") {
-		string serverOrClientMode = StringUtils::findAndEraseFirstWord(ligne);
-
 		DataTree* tree = NULL;
 
-		if(serverOrClientMode == "server") {
-			tree = &serveurDataTree;
+		if(serveurDataTree != 0) {
+			tree = serveurDataTree;
 		}
-		else if(serverOrClientMode == "client") {
-			string clientName = StringUtils::findAndEraseFirstWord(ligne);
-
-			// Recherche du client
-			map<ClientDataTree*, Interlocutor*>::iterator it;
-			ClientDataTree* clientTree;
-
-			for(it = dataRouter.begin() ; (it != dataRouter.end() && !tree) ; it++) {
-				clientTree = it->first;
-
-				if(clientTree->getClientName() == clientName) {
-					tree = clientTree;
-				}
-			}
+		else if(clientDataTree != 0) {
+			tree = clientDataTree;
+		}
+		else {
+			printErrLn("Client et serveur tous deux inactifs", userOutput);
 		}
 
 		if(tree) {

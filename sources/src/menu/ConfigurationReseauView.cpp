@@ -25,16 +25,17 @@ ConfigurationReseauView::ConfigurationReseauView(const AG_EventFn controllerCall
      * ********************************/
 
     // Mode serveur ou client
-    AG_CheckboxNewInt(m_window, 0, "Mode serveur :", &_isServeur);
+    AG_CheckboxNewInt(m_window, 0, "Mode serveur :", &_isModeServeur);
 
 	// IP du serveur
-	AG_Textbox* ipServeurTexbox = AG_TextboxNew(m_window, 0, _ipServeur);
-	AG_TextboxSetLabel(ipServeurTexbox, "Adresse IP :");
-	AG_TextboxBindUTF8(ipServeurTexbox, _ipServeur, sizeof(_ipServeur));
-	AG_TextboxSizeHint(ipServeurTexbox, "1234567890123456789012345678901234567890");
+	_ipServeurTexbox = AG_TextboxNew(m_window, 0, _ipServeur);
+	AG_TextboxSetLabel(_ipServeurTexbox, "Adresse IP (si serveur) :");
+	AG_TextboxBindUTF8(_ipServeurTexbox, _ipServeur, sizeof(_ipServeur));
+	AG_TextboxSizeHint(_ipServeurTexbox, "1234567890123456789012345678901234567890");
 
-    // Champ port du serveur
-	AG_NumericalNewIntR(m_window, 0, NULL, "Port :", &_portServeur, 0, 65000);
+    // Champs ports du serveur ou du client selon le mode
+	AG_NumericalNewIntR(m_window, 0, NULL, "Port :", &_port, 0, 65000);
+	AG_NumericalNewIntR(m_window, 0, NULL, "Port arbre :", &_portTree, 0, 65000);
 
 
 	/* *********************************
@@ -61,12 +62,16 @@ const char* ConfigurationReseauView::getIpServeur(void) const {
 	return _ipServeur;
 }
 
-int ConfigurationReseauView::getPortServeur(void) const {
-	return _portServeur;
+int ConfigurationReseauView::getPort(void) const {
+	return _port;
 }
 
-bool ConfigurationReseauView::isServeur(void) const {
-	if(_isServeur) {
+int ConfigurationReseauView::getPortTree(void) const {
+	return _portTree;
+}
+
+bool ConfigurationReseauView::isModeServeur(void) const {
+	if(_isModeServeur) {
 		return true;
 	}
 	else {
@@ -80,14 +85,15 @@ void ConfigurationReseauView::show(void) {
 	 * *******************************/
 
 	// Activation du mode serveur
-	_isServeur = Config.Reseau.isServeur();
+	_isModeServeur = Config.Reseau.isServeur();
 
 	// IP du serveur
 	memset(_ipServeur, '\0', sizeof(_ipServeur));
 	Config.Reseau.getIpServer().copy(_ipServeur, Config.Reseau.getIpServer().length(), 0);
 
-	// Port du serveur
-	_portServeur = Config.Reseau.getPort();
+	// Ports du serveur ou du client selon le mode
+	_port = Config.Reseau.getPort();
+	_portTree = Config.Reseau.getPortTree();
 
 
 	/* *********************************

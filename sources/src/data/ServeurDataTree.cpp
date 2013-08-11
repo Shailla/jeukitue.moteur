@@ -81,7 +81,7 @@ Donnee* ServeurDataTree::addMarqueurFromDistant(DistantTreeProxy* client, Donnee
 	return donnee;
 }
 
-void ServeurDataTree::addDistant(Interlocutor* interlocutor) {
+void ServeurDataTree::addDistant(Interlocutor2* interlocutor) {
 	// Init the marqueurs
 	DistantTreeProxy* distant = new DistantTreeProxy(interlocutor);
 	initDistantBranche(distant, &getRoot());
@@ -128,7 +128,7 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 
 	for(clientIter = getDistants().begin() ; clientIter != getDistants().end() ; clientIter++) {
 		DistantTreeProxy* client = *clientIter;
-		Interlocutor* interlocutor = client->getInterlocutor();
+		Interlocutor2* interlocutor = client->getInterlocutor();
 		client->collecteChangementsInServerTree(changements);
 
 		// Emission des changements
@@ -146,7 +146,7 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 				delete *itCh;
 			}
 
-			interlocutor->addDataToSend(new string(out.str()));
+			interlocutor->pushDataToSend(new JktUtils::Bytes(out.str()));
 		}
 	}
 }
@@ -201,22 +201,25 @@ void ServeurDataTree::receiveChangementsFromClients() {
 
 		for(it = _clients.begin() ; it != _clients.end() ; it++) {
 			DistantTreeProxy* distant = *it;
-			Interlocutor* Interlocutor = distant->getInterlocutor();
-			string* data = Interlocutor->getDataReceived();
+			Interlocutor2* interlocutor = distant->getInterlocutor();
+			JktUtils::Bytes* data = interlocutor->popDataReceived();
 
 			if(data) {
 				vector<Changement*> changements;
 				vector<Changement*> answers;
 
-				istringstream in(*data);
-				DataSerializer::fromStream(changements, in);
+				string str(data->getBytes(), data->size());
 				delete data;
+
+				istringstream in(str);
+				DataSerializer::fromStream(changements, in);
+
 
 				vector<Changement*>::iterator itCh;
 
 				try {
 					for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
-						cout << endl << "serveur" << " from " << Interlocutor->getName() << "\t : " << (*itCh)->toString() << flush;
+						cout << endl << "serveur" << " from " << interlocutor->getName() << "\t : " << (*itCh)->toString() << flush;
 
 						// Le client confirme la révision de branche qu'il a reçu
 						if(ConfirmBrancheChangement* chgt = dynamic_cast<ConfirmBrancheChangement*>(*itCh)) {
@@ -309,7 +312,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 					vector<Changement*>::iterator itCh;
 
 					for(itCh = answers.begin() ; itCh != answers.end() ; itCh++) {
-						cout << endl << "serveur" << " to " << Interlocutor->getName() << "\t : " << (*itCh)->toString() << flush;
+						cout << endl << "serveur" << " to " << interlocutor->getName() << "\t : " << (*itCh)->toString() << flush;
 					}
 
 					ostringstream out;
@@ -319,7 +322,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 						delete *itCh;
 					}
 
-					Interlocutor->addDataToSend(new string(out.str()));
+					interlocutor->pushDataToSend(new JktUtils::Bytes(out.str()));
 				}
 			}
 		}

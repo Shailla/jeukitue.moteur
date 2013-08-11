@@ -9,9 +9,18 @@
 
 namespace JktUtils {
 
+using namespace std;
+
 Bytes::Bytes(char* bytes, int size) {
 	_bytes = bytes;
 	_size = size;
+}
+
+Bytes::Bytes(const string& str) {
+	_bytes = new char[str.size()]();
+	str.copy(_bytes, str.size());
+
+	_size = str.size();
 }
 
 Bytes::~Bytes() {

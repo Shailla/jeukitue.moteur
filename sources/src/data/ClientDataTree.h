@@ -25,7 +25,7 @@ class ClientDataTree : public DataTree {
 	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
 	void addServeurMarqueur(Donnee* donnee);
 public:
-	ClientDataTree(const std::string& clientName, Interlocutor* serverInterlocutor);
+	ClientDataTree(const std::string& clientName, Interlocutor2* serverInterlocutor);
 	virtual ~ClientDataTree();
 
 	const string& getClientName() const;

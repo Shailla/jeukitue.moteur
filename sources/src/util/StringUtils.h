@@ -26,6 +26,7 @@ public:
 	static std::string findFirstWord(std::string& s);
 
 	static std::vector<std::string> splitBySpaces(std::string s);
+	static std::vector<std::string> split(std::string s, int (isSeparator)(int));
 
 	// trim from start
 	static void ltrim(std::string& s);

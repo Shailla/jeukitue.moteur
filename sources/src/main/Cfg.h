@@ -19,6 +19,43 @@
 using namespace std;
 
 class CCfg {
+	static const char* CST_VID_DISPLAY;
+	static const char* CST_VID_FULLSCREEN;
+
+	static const char* CST_AUD_OUTPUT;
+	static const char* CST_AUD_MIXER;
+	static const char* CST_AUD_DRIVER;
+	static const char* CST_AUD_DRIVERRECORD;
+
+	static const char* CST_COM_AVANCER;
+	static const char* CST_COM_RECULER;
+	static const char* CST_COM_GAUCHE;
+	static const char* CST_COM_DROITE;
+	static const char* CST_COM_TIR1;
+	static const char* CST_COM_TIR2;
+	static const char* CST_COM_MONTER;
+	static const char* CST_COM_SELECTWEAPONUP;
+	static const char* CST_COM_SELECTWEAPONDOWN;
+
+	static const char* CST_CEN_IP;
+	static const char* CST_CEN_PORT;
+
+	static const char* CST_NET_SERVEUR;
+	static const char* CST_NET_IP;
+	static const char* CST_NET_PORT;
+	static const char* CST_NET_PORTTREE;
+
+	static const char* CST_JOU_NOM;
+	static const char* CST_JOU_MAPNOM;
+	static const char* CST_JOU_OUTLINEVISIBILITY;
+	static const char* CST_JOU_SKINVISIBILITY;
+
+	static const char* CST_DEB_SONPERFORMANCES;
+	static const char* CST_DEB_SONSPECTRE;
+	static const char* CST_DEB_AFFICHEFICHIER;
+	static const char* CST_DEB_AFFICHENORMAUX;
+
+
 	class CAudio {
 	public :
 		int m_Output;
@@ -82,15 +119,18 @@ private:
 		friend class CCfg;
 	protected:
 		Uint16 _Port;			// Port à utiliser
+		Uint16 _portTree;		// Port à utiliser
 		string _IpServer;		// Adresse IP du serveur (s'il s'agit d'un client)
 		bool _serveur;	// true s'il s'agit d'un serveur, false si c'est un client
 	public:
 		Uint16 getPort() const							{ return _Port;				}
+		Uint16 getPortTree() const						{ return _portTree;			}
 		string getIpServer() const						{ return _IpServer;			}
 		bool isServeur() const							{ return _serveur;			}
 
 		void setIpServer(const string& ipServeur)		{ _IpServer = ipServeur;	}
 		void setPort(Uint16 port)						{ _Port = port;				}
+		void setPortTree(Uint16 portTree)				{ _portTree = portTree;		}
 		void setServeur(bool serveur)					{ _serveur = serveur;		}
 
 		void Init();

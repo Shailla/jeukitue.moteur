@@ -67,8 +67,8 @@ bool CReseau::getOn() {
 	return m_On;
 }
 
-bool CReseau::ouvreServer(Uint16 port) {
-TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer(port=%d) begin%T", port, this );
+bool CReseau::ouvreServer() {
+TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() begin%T", this );
 	bool result = false;
 
 	if(m_Client) {
@@ -83,7 +83,9 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer(port=%d) begin%T", port, this );
 
 	m_Server = new CServer();
 
-	if( m_Server->ouvre( port ) ) {
+	NotConnectedInterlocutor2* notConnectedServerInterlocutor = m_Server->ouvre(Config.Reseau.getPort(), Config.Reseau.getPortTree());
+
+	if(notConnectedServerInterlocutor) {
 		Game.setModeServer();
 		m_Server->setStatut( JKT_STATUT_SERVER_READY );
 		m_On = true;			// Indique que le réseau est actif
@@ -109,7 +111,7 @@ TRACE().p( TRACE_RESEAU, "CReseau::fermeServer()%T", this );
 	Game.Quit();
 }
 
-bool CReseau::ouvreClient() {
+Interlocutor2* CReseau::ouvreClient() {
 TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() begin%T", this );
 
 	bool result = false;
@@ -126,7 +128,9 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() begin%T", this );
 
 	m_Client = new CClient();
 
-	if( m_Client->ouvre( Config.Reseau.getIpServer(), Config.Reseau.getPort() ) ) {
+	Interlocutor2* interlocutor = m_Client->ouvre(Config.Reseau.getIpServer(), Config.Reseau.getPort(), Config.Reseau.getPortTree());
+
+	if(interlocutor) {
 		Game.setModeClient();
 		m_On = true;		// Signale que le réseau est prêt
 		result = true;
@@ -138,7 +142,7 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() begin%T", this );
 	}
 
 TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() -> %b end%T", result, this );
-	return result;
+	return interlocutor;
 }
 
 void CReseau::fermeClient() {
@@ -170,7 +174,7 @@ void CReseau::recoitServer() {
 
 		int curseur = -1;
 
-		while( Game.pTabIndexPlayer->Suivant(curseur) && numReady ) {	// S'il reste de l'activité sur un socket et des proxy joueurs à voir
+		while( Game._pTabIndexPlayer->Suivant(curseur) && numReady ) {	// S'il reste de l'activité sur un socket et des proxy joueurs à voir
 			player = m_Server->GetPlayer( curseur );
 
 			if( SDLNet_SocketReady( player->spa.getSocket() ) ) {	// S'il y a de l'activité sur ce socket

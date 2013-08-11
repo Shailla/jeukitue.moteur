@@ -8,6 +8,8 @@
 #ifndef BYTES_H_
 #define BYTES_H_
 
+#include <string>
+
 namespace JktUtils {
 
 class Bytes {
@@ -15,6 +17,7 @@ class Bytes {
 	int _size;
 public:
 	Bytes(char* bytes, int size);
+	Bytes(const std::string& str);
 	virtual ~Bytes();
 
 	const char* getBytes() const;

@@ -28,14 +28,14 @@ using namespace std;
 
 #include "data/DistantTreeProxy.h"
 
-DistantTreeProxy::DistantTreeProxy(Interlocutor* interlocutor) {
+DistantTreeProxy::DistantTreeProxy(Interlocutor2* interlocutor) {
 	_interlocutor = interlocutor;
 }
 
 DistantTreeProxy::~DistantTreeProxy() {
 }
 
-Interlocutor* DistantTreeProxy::getInterlocutor() const {
+Interlocutor2* DistantTreeProxy::getInterlocutor() const {
 	return _interlocutor;
 }
 

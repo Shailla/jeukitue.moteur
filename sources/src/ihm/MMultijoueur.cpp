@@ -75,8 +75,7 @@ const char *item_menu_multijoueurclient[] =
 CMenu MenuMultijoueurclient( "CLIENT MULTI-JOUEURS", item_menu_multijoueurclient, 3,
 						liste_suivant_multijoueurclient, retourMultijoueurclient );
 
-void lanceMenuMultijoueurclientconnect(void *var)
-{
+void lanceMenuMultijoueurclientconnect(void *var) {
 TRACE().p( TRACE_MENU, "lanceMenuMultijoueurclientconnect(var=%x)", var );
 	if( !Reseau.ouvreClient() )
 	{
@@ -90,20 +89,17 @@ TRACE().p( TRACE_MENU, "lanceMenuMultijoueurclientconnect(var=%x)", var );
 	}
 }
 
-void lanceMenuMultijoueurclient(void *arg)
-{
+void lanceMenuMultijoueurclient(void *arg) {
 TRACE().p( TRACE_MENU, "lanceMenuMultijoueurclient(var=%x)", arg );
 	CDlg::SetMenuActif( &MenuMultijoueurclient);
 }
 
-void lanceJoindrePartie( void *arg)
-{
+void lanceJoindrePartie( void *arg) {
 TRACE().p( TRACE_MENU, "lanceJoindrePartie(var=%x)", arg );
 	Reseau.getClient()->sendJoinTheGame(Config.Joueur.nom);
 }
 
-void lanceMenuMultijoueur(void *var)
-{
+void lanceMenuMultijoueur(void *var) {
 TRACE().p( TRACE_MENU, "lanceMenuMultijoueur(var=%x)", var );
 
 	if(Config.Reseau.isServeur())

@@ -13,8 +13,6 @@ using namespace std;
 
 #include "menu/ConfigurationAudioView.h"
 
-extern CCfg Config;
-
 ConfigurationAudioView::ConfigurationAudioView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {

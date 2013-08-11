@@ -132,8 +132,8 @@ using namespace JktSon;
 
 #include "jkt.h"
 
-ServeurDataTree serveurDataTree;
-std::map<ClientDataTree*, Interlocutor*> dataRouter;
+ServeurDataTree* serveurDataTree = 0;
+ClientDataTree* clientDataTree = 0;
 
 float GLIGHTX, GLIGHTY, GLIGHTZ;
 GLFont myfont;
@@ -835,67 +835,16 @@ void chopeLesEvenements() {
 			balle->changeAction( gravitePlayer );	//associe au projectile une fonction de gravité
 			balle->changeContact( contactSprite );	//associe une fonction pour les contacts avec la map
 
-			Game.pTabIndexPlayer->Ajoute(balle);			//ajoute le projectile à la liste des joueurs
+			Game._pTabIndexPlayer->Ajoute(balle);			//ajoute le projectile à la liste des joueurs
 		}
 	}
-}
-
-/**
- * Fonction qui s'exécute périodiquement et qui provoque l'affichage.
- */
-void timer(Uint32 ecart) {
-	Uint32 temps = SDL_GetTicks();	// Temps au début du timer (->mesure du temps de calcul)
-
-	frpTimer++;
-
-	// Réception des packets réseau
-	if( Reseau.getOn() && (Game.isModeClient()) &&(
-			(Game.getStatutClient()==JKT_STATUT_CLIENT_READY)	||
-			(Game.getStatutClient()==JKT_STATUT_CLIENT_DEMJTG)	||
-			(Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) ) ) {	// Si c'est un client
-
-		Reseau.getClient()->recoit();
-	}
-
-	// Si une partie est en cours (partie locale, client ou serveur)
-	if( Game.getMap() && ( Game.isModeLocal() || (Game.isModeClient() && Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) || (Game.isModeServer() && Game.getStatutServer()==JKT_STATUT_SERVER_PLAY) )) {
-
-		if(Reseau.getOn() && (Game.getStatutServer()==JKT_STATUT_SERVER_PLAY)) {	// Si c'est un serveur
-			Reseau.recoitServer();	// Recoit les données des clients
-		}
-
-		chopeLesEvenements();	// Prends les requêtes du joueur pour permettre même au serveur de jouer
-
-		// Transmission réseau des données du client.
-		if(Reseau.getOn()) {
-			if( Game.Erwin() ) {
-				if(Game.getStatutClient() == JKT_STATUT_CLIENT_PLAY) {
-					CClient *client = Game.getClient();
-					client->emet( *Game.Erwin() );		// Emet les requetes et données du joueur actif
-				}
-			}
-		}
-
-		// Effectue les calculs physiques (gravité, gestion des contacts, déplacements, ...)
-		Game.timer();
-
-		// Transmission réseau des données du serveur.
-		if(Reseau.getOn()) {
-			if(Game.getStatutServer() == JKT_STATUT_SERVER_PLAY) {
-				CServer *server = Game.getServer();
-				server->emet();						// Emet toutes les données
-			}
-		}
-	}
-
-	((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setDureeCalcules(SDL_GetTicks() - temps);
 }
 
 void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
-//	cout << endl << " -> AGAR";
-//	string evDesc;
-//	CCfg::resolve(sdlEvent, evDesc);
-//	cout << " -> {" << evDesc << "}";
+	//	cout << endl << " -> AGAR";
+	//	string evDesc;
+	//	CCfg::resolve(sdlEvent, evDesc);
+	//	cout << " -> {" << evDesc << "}";
 
 	if(sdlEvent->type == SDL_KEYDOWN && sdlEvent->key.keysym.sym == SDLK_ESCAPE) {
 		Viewer* agarView = Fabrique::getAgarView();
@@ -922,7 +871,7 @@ void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
 		}
 		default:
 			// Event ignored by Agar
-//			cout << endl << " Ignored by agar";
+			//			cout << endl << " Ignored by agar";
 			break;
 		}
 	}
@@ -1112,17 +1061,17 @@ void play_handle_key_down( SDL_Event *event ) {
 		break;
 
 		case SDLK_c :	// Change le joueur principal (=> change le point de vue et l'interraction clavier)
-			cout << endl << "Nombre de joeurs dans la partie : " << Game.pTabIndexPlayer->getNbr();
+			cout << endl << "Nombre de joeurs dans la partie : " << Game._pTabIndexPlayer->getNbr();
 
 			if(Game.getMap()) {
-				Game.pTabIndexPlayer->Suivant(numMainPlayer);	// Lit le numéro du joueur suivant
+				Game._pTabIndexPlayer->Suivant(numMainPlayer);	// Lit le numéro du joueur suivant
 
 				if(numMainPlayer < 0) {				// Si on a atteint la fin de la liste alors prend à nouveau le premier de liste
-					Game.pTabIndexPlayer->Suivant(numMainPlayer);
+					Game._pTabIndexPlayer->Suivant(numMainPlayer);
 				}
 
 				// Sélectionne le joueur en tant que joueur principal
-				Game.Erwin(Game.pTabIndexPlayer->operator [](numMainPlayer));
+				Game.Erwin(Game._pTabIndexPlayer->operator [](numMainPlayer));
 			}
 			break;
 
@@ -1228,7 +1177,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	erwin->init();								// Initialise certaines données
 	erwin->choiceOneEntryPoint();
 	Game.Erwin( erwin );						// Indique que 'erwin' est le joueur principal
-	Game.pTabIndexPlayer->Ajoute( 0, erwin );	// Ajoute le joueur principal à la liste des joueurs
+	Game._pTabIndexPlayer->Ajoute( 0, erwin );	// Ajoute le joueur principal à la liste des joueurs
 
 	// Création d'un second joueur
 	CPlayer *julien;
@@ -1240,7 +1189,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	julien->nom( "JULIEN" );
 	julien->init();
 	julien->choiceOneEntryPoint();
-	Game.pTabIndexPlayer->Ajoute( 1, julien );	// Ajoute le joueur à la liste des joueurs
+	Game._pTabIndexPlayer->Ajoute( 1, julien );	// Ajoute le joueur à la liste des joueurs
 
 	// Création d'un troisième joueur
 	CPlayer *sprite;
@@ -1252,7 +1201,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	sprite->nom( "SPRITE" );
 	sprite->init();
 	sprite->choiceOneEntryPoint();
-	Game.pTabIndexPlayer->Ajoute( 2, sprite );	// Ajoute le joueur à la liste des joueurs
+	Game._pTabIndexPlayer->Ajoute( 2, sprite );	// Ajoute le joueur à la liste des joueurs
 
 	return true;
 }
@@ -1269,7 +1218,7 @@ GameDto* localeGameDto;
 GameDto* serverGameDto;
 
 
-void executeRequests() {
+void executeJktRequests() {
 
 	/* *******************************************************
 	 * Exécution de l'ouverture d'une MAP en mode multijoueurs
@@ -1312,16 +1261,16 @@ void executeRequests() {
 
 		Game.Erwin(NULL);
 
-		if(Game.pTabIndexPlayer) {
+		if(Game._pTabIndexPlayer) {
 			CPlayer *player;
 			int playerIndex = -1;
-			while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
-				player = Game.pTabIndexPlayer->operator [](playerIndex);
+			while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
+				player = Game._pTabIndexPlayer->operator [](playerIndex);
 				player->freeGL();
 			}
 
-			delete Game.pTabIndexPlayer;
-			Game.pTabIndexPlayer = NULL;
+			delete Game._pTabIndexPlayer;
+			Game._pTabIndexPlayer = NULL;
 		}
 
 		// Lancement ouverture MAP demandée
@@ -1359,18 +1308,18 @@ void executeRequests() {
 
 		if(erwin != NULL) {
 			Game.Erwin(erwin);								// Indique que 'erwin' est le joueur principal
-			Game.pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
+			Game._pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
 		}
 
 		for(vector<CPlayer*>::iterator iter = localeGameDto->getPlayers().begin() ; iter != localeGameDto->getPlayers().end() ; ++iter) {
-			Game.pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
+			Game._pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
 		}
 
 		CPlayer *player;
 		int playerIndex = -1;
 
-		while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
-			player = (*Game.pTabIndexPlayer)[playerIndex];
+		while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
+			player = (*Game._pTabIndexPlayer)[playerIndex];
 			player->initGL();
 			player->choiceOneEntryPoint();
 		}
@@ -1389,6 +1338,66 @@ void executeRequests() {
 	break;
 	}
 
+
+	/* **************************************************************
+	 * Exécution du workflow d'ouverture d'une MAP en mode client
+	 * *************************************************************/
+
+	etape = Game.RequeteProcess.getOuvreMapClientEtape();
+
+	switch(etape) {
+	case CRequeteProcess::OMCE_AUCUNE:				// Aucune ouverture de MAP locale en cours
+		// Nothing to do
+		break;
+
+	case CRequeteProcess::OMCE_DEMANDE:
+	{
+		Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
+
+		// Fermeture de la MAP courante et destruction des joueurs
+		CMap* currentMap = Game.getMap();
+		if(currentMap) {
+			currentMap->freeGL();
+			Game.changeActiveMap(NULL);
+		}
+
+		Game.Erwin(NULL);
+
+		if(Game._pTabIndexPlayer) {
+			CPlayer *player;
+			int playerIndex = -1;
+			while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
+				player = Game._pTabIndexPlayer->operator [](playerIndex);
+				player->freeGL();
+			}
+
+			delete Game._pTabIndexPlayer;
+			Game._pTabIndexPlayer = NULL;
+		}
+
+
+		// Connexion du client
+		Interlocutor2* clientInterlocutor = Reseau.ouvreClient();
+
+		if(!clientInterlocutor) {
+			Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_AUCUNE);
+			AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du client au serveur");
+		}
+		else {
+			clientDataTree = new ClientDataTree(string("jkt"), clientInterlocutor);
+
+			// Lancement ouverture MAP demandée
+			const string mapName = Game.RequeteProcess.getOuvreMap();
+
+			serverGameDto = new GameDto(mapName);
+
+			Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_OUVERTURE_EN_COURS);
+
+			MapLoader::launcheGameServerLoading(serverGameDto);		// Lance l'ouverture de la MAP
+		}
+	}
+	break;
+	}
 
 	/* **************************************************************
 	 * Exécution du workflow d'ouverture d'une MAP en mode serveur
@@ -1414,21 +1423,23 @@ void executeRequests() {
 
 		Game.Erwin(NULL);
 
-		if(Game.pTabIndexPlayer) {
+		if(Game._pTabIndexPlayer) {
 			CPlayer *player;
 			int playerIndex = -1;
-			while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
-				player = Game.pTabIndexPlayer->operator [](playerIndex);
+			while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
+				player = Game._pTabIndexPlayer->operator [](playerIndex);
 				player->freeGL();
 			}
 
-			delete Game.pTabIndexPlayer;
-			Game.pTabIndexPlayer = NULL;
+			delete Game._pTabIndexPlayer;
+			Game._pTabIndexPlayer = NULL;
 		}
 
 
 		// Connexion du serveur
-		if(!Reseau.ouvreServer(Config.Reseau.getPort())) {
+		serveurDataTree = new ServeurDataTree();
+
+		if(!Reseau.ouvreServer()) {
 			Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
 			AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du serveur");
 		}
@@ -1466,18 +1477,18 @@ void executeRequests() {
 
 		if(erwin != NULL) {
 			Game.Erwin(erwin);								// Indique que 'erwin' est le joueur principal
-			Game.pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
+			Game._pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
 		}
 
 		for(vector<CPlayer*>::iterator iter = serverGameDto->getPlayers().begin() ; iter != serverGameDto->getPlayers().end() ; ++iter) {
-			Game.pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
+			Game._pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
 		}
 
 		CPlayer *player;
 		int playerIndex = -1;
 
-		while(Game.pTabIndexPlayer->Suivant(playerIndex)) {
-			player = (*Game.pTabIndexPlayer)[playerIndex];
+		while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
+			player = (*Game._pTabIndexPlayer)[playerIndex];
 			player->initGL();
 			player->choiceOneEntryPoint();
 		}
@@ -1521,27 +1532,49 @@ void executeRequests() {
 	}
 }
 
+void communique() {
+	frpTimer++;
 
-void echangeServerAndClientData() {
-	// Traite les changements de données côté client (pour chaque client)
-	map<ClientDataTree*, Interlocutor*>::iterator it;
+	if(Reseau.getOn()) {	// Si le réseau est actif
 
-	for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
-		ClientDataTree* clientDataTree = it->first;
-		Interlocutor* clientSide = clientDataTree->getDistantServer()->getInterlocutor();
+		/* *******************************************
+		 * Le serveur émet et réceptionne des données
+		 * ******************************************/
 
-		Interlocutor* serverSide = it->second;
+		// Envoie des données aux clients
+		if(Game.isModeServer()) {
+			if(Game.getStatutServer() == JKT_STATUT_SERVER_PLAY) {
 
-		// Exchange data from client to server
-		{
-			string* down = clientSide->getDataToSend();
-			serverSide->addDataReceived(down);
+				// Emet les données vers les clients
+				Game.getServer()->emet();
+
+				// Réception des données des clients
+				if(Game.getMap()) {			// Si une partie est en cours en mode de jeu client ou serveur
+					Reseau.recoitServer();	// Recoit les données des clients
+				}
+			}
 		}
 
-		// Exchange data from server to client
-		{
-			string* up = serverSide->getDataToSend();
-			clientSide->addDataReceived(up);
+
+		/* *******************************************
+		 * Le client émet et réceptionne des données
+		 * ******************************************/
+
+		// Le client réceptionne les données du serveur
+		if((Game.isModeClient()) &&(
+				(Game.getStatutClient()==JKT_STATUT_CLIENT_READY)	||
+				(Game.getStatutClient()==JKT_STATUT_CLIENT_DEMJTG)	||
+				(Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) ) ) {
+
+			// Recoit les données du serveur
+			Reseau.getClient()->recoit();
+
+			// Emet les données vers le serveur
+			if(Game.getMap() && Game.Erwin()) {
+				if(Game.getStatutClient() == JKT_STATUT_CLIENT_PLAY) {
+					Game.getClient()->emet( *Game.Erwin() );		// Emet les requetes et données du joueur actif;
+				}
+			}
 		}
 	}
 }
@@ -1550,17 +1583,9 @@ void echangeServerAndClientData() {
  * Boucle du jeu prinipale
  * **************************************/
 void boucle() {
-	// Initialisation du temps
-	Uint32 oldTemps = SDL_GetTicks();
-	Uint32 temps = oldTemps;
-
 
 	for( ;; ) {
-		executeRequests();
-
-		// Mesure du temps écoulé depuis les derniers calculs du jeu
-		oldTemps = temps;
-		temps = SDL_GetTicks();
+		executeJktRequests();
 
 
 		/* ***********************************************************
@@ -1568,31 +1593,48 @@ void boucle() {
 		 * **********************************************************/
 
 		// Traite les changements de données côté serveur
-		serveurDataTree.receiveChangementsFromClients();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
-		serveurDataTree.diffuseChangementsToClients();		// Diffuse les changements des données du jeu aux clients
+		if(serveurDataTree) {
+			serveurDataTree->receiveChangementsFromClients();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
+			serveurDataTree->diffuseChangementsToClients();			// Diffuse les changements des données du jeu aux clients
+		}
 
-		// Simule le réseau et effectue les échanges de données entre le serveur et les clients
-		echangeServerAndClientData();
-
-		// Traite les changements de données côté client (pour chaque client)
-		map<ClientDataTree*, Interlocutor*>::iterator it;
-
-		for(it = dataRouter.begin() ; it != dataRouter.end() ; it++) {
-			ClientDataTree* clientDataTree = it->first;
+		// Traite les changements de données côté client
+		if(clientDataTree) {
 			clientDataTree->receiveChangementsFromServer();		// Le client reçoit les changements des données du jeu de la part du serveur
 			clientDataTree->diffuseChangementsToServer();		// Le client reçoit diffuse les changements des données du jeu vers le serveur
 		}
 
-		// Simule le réseau et effectue les échanges de données entre le serveur et les clients
-		echangeServerAndClientData();
+
+		/* **********************************************
+		 * Lecture des événements claviers, souris, ...
+		 * *********************************************/
+
+		if( Game.getMap()) {	// Si une partie est en cours en mode de jeu local, client ou serveur
+			if( 	Game.isModeLocal()
+					|| 	(Game.isModeClient() && Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY)
+					|| 	(Game.isModeServer() && Game.getStatutServer()==JKT_STATUT_SERVER_PLAY) ) {
+				chopeLesEvenements();	// Prends les requêtes du joueur pour permettre même au serveur de jouer
+			}
+		}
 
 
-		/* ***********************************************************
-		 * Effectue les calculs du jeu
-		 * **********************************************************/
+		/* ****************************************************************
+		 * Communique
+		 * (échange des données client -> serveur ou serveur -> clients)
+		 * ****************************************************************/
 
-		// Effectue tous les calculs du jeu
-		timer(temps - oldTemps);
+		communique();
+
+
+		/* ****************************************************
+		 * Effectue les calculs physiques
+		 * (gravité, gestion des contacts, déplacements, ...)
+		 * ***************************************************/
+		Uint32 temps = SDL_GetTicks();	// Temps au début du timer (->mesure du temps de calcul)
+
+		Game.timer();
+
+		((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setDureeCalcules(SDL_GetTicks() - temps);
 
 
 		/* ***********************************************************
@@ -1651,38 +1693,38 @@ int main(int argc, char** argv) {
 	// Création du démon de gestion des sons
 	DemonSons = new CDemonSons();
 
-	Interlocutor2 clientInterlocutor;
-	Interlocutor2 serverInterlocutor;
-
-	try {
-		cout << endl << "TEST - Création du 1er client" << flush;
-		ClientUdpInterlocutor client1(4968);
-
-		cout << endl << "TEST - Le 1er client tente de se connecter au serveur pendant 5 secondes" << flush;
-		client1.connect(&clientInterlocutor, "localhost", 5968);
-		SDL_Delay(5000);
-
-		cout << endl << "TEST - Création du serveur" << flush;
-		ServerUdpInterlocutor server(5968);
-
-		cout << endl << "TEST - Connexion du serveur" << flush;
-		server.connect(&serverInterlocutor);
-
-		SDL_Delay(10000);
-
-
-		cout << endl << "TEST - Création 2° du client" << flush;
-		ClientUdpInterlocutor client2(4969);
-
-		cout << endl << "TEST - Le 2° client tente de se connecter au serveur pendant 10 secondes" << flush;
-		client2.connect(&clientInterlocutor, "localhost", 5968);
-		SDL_Delay(10000);
-	}
-	catch(JktException& exception) {
-		cerr << endl << "ERREUR CATCHEE : " << exception.getMessage() << flush;
-	}
-
-	exit(0);
+//	Interlocutor2 clientInterlocutor;
+//	Interlocutor2 serverInterlocutor;
+//
+//	try {
+//		cout << endl << "TEST - Création du 1er client" << flush;
+//		ClientUdpInterlocutor client1(4968);
+//
+//		cout << endl << "TEST - Le 1er client tente de se connecter au serveur pendant 5 secondes" << flush;
+//		client1.connect(&clientInterlocutor, "localhost", 5968);
+//		SDL_Delay(5000);
+//
+//		cout << endl << "TEST - Création du serveur" << flush;
+//		ServerUdpInterlocutor server(5968);
+//
+//		cout << endl << "TEST - Connexion du serveur" << flush;
+//		server.connect(&serverInterlocutor);
+//
+//		SDL_Delay(10000);
+//
+//
+//		cout << endl << "TEST - Création 2° du client" << flush;
+//		ClientUdpInterlocutor client2(4969);
+//
+//		cout << endl << "TEST - Le 2° client tente de se connecter au serveur pendant 10 secondes" << flush;
+//		client2.connect(&clientInterlocutor, "localhost", 5968);
+//		SDL_Delay(10000);
+//	}
+//	catch(JktException& exception) {
+//		cerr << endl << "ERREUR CATCHEE : " << exception.getMessage() << flush;
+//	}
+//
+//	exit(0);
 
 
 	// Lancement de l'introduction du jeu

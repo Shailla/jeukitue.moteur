@@ -33,7 +33,7 @@ bool operator < (const IPaddress& adr1, const IPaddress& adr2) {
 }
 
 ServerUdpInterlocutor::ServerUdpInterlocutor(Uint16 localPort) : TechnicalInterlocutor(localPort) {
-	_interlocutor = NULL;
+	_notConnectedInterlocutor = NULL;
 	_distantIp = "";
 	_distantPort = 0;
 	_socket = 0;
@@ -48,9 +48,9 @@ ServerUdpInterlocutor::~ServerUdpInterlocutor() {
 	close();
 }
 
-void ServerUdpInterlocutor::connect(Interlocutor2* interlocutor) throw(ConnectionFailedException) {
-	_interlocutor = interlocutor;
-	_interlocutor->setCondIntelligence(getCondIntelligence());
+NotConnectedInterlocutor2* ServerUdpInterlocutor::connect() throw(ConnectionFailedException) {
+	_notConnectedInterlocutor = new NotConnectedInterlocutor2();
+	_notConnectedInterlocutor->setCondIntelligence(getCondIntelligence());
 
 	_packetIn = SDLNet_AllocPacket(65535);
 	_packetOut = SDLNet_AllocPacket(65535);
@@ -94,6 +94,8 @@ void ServerUdpInterlocutor::connect(Interlocutor2* interlocutor) throw(Connectio
 
 		throw exception;
 	}
+
+	return _notConnectedInterlocutor;
 }
 
 void ServerUdpInterlocutor::close() {
@@ -173,56 +175,23 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 	while(CONNECTED == getConnexionStatus()) {
 		SDL_CondWaitTimeout(getCondIntelligence(), getMutexIntelligence(), 1000);
 
-		DataAddress* msg;
-
 
 		/* ***********************************************************
 		 * Gestion des clients non-connectés
 		 * ***********************************************************/
 
-		while((msg = _interlocutor->popTechnicalMessageReceived())) {
-			TechnicalMessage* techMsg = TechnicalMessage::traduct(msg->getBytes());
-			IPaddress address = msg->getAddress();
+		{
+			DataAddress* msg;
 
-			if(techMsg) {
-				switch(techMsg->getCode()) {
-				case TechnicalMessage::C2S_HELLO:
-					cout << endl << "Server says : C2S_HELLO received from " << (int)(((char*)&address.host)[0]) << "." << (int)(((char*)&address.host)[1]) << "." << (int)(((char*)&address.host)[2]) << "." << (int)(((char*)&address.host)[3]) << ":" << address.port;
-					manageConnection(address, (C2SHelloTechnicalMessage*)techMsg);
-					break;
-				}
-			}
-			else {
-				// unkown message => ignore it
-			}
-
-			delete msg;
-			delete techMsg;
-		}
-
-
-		/* ***********************************************************
-		 * Gestion des clients connectés
-		 * ***********************************************************/
-
-		map<IPaddress, ClientOfServer*>::iterator iter;
-
-		for(iter = _clientsOfServer.begin() ; iter != _clientsOfServer.end() ; iter++) {
-			ClientOfServer* client = iter->second;
-
-			// Gestion des événements liés aux clients non-connectés
-			while((msg = client->getInterlocutor()->popTechnicalMessageReceived())) {
+			while((msg = _notConnectedInterlocutor->popTechnicalMessageReceived())) {
 				TechnicalMessage* techMsg = TechnicalMessage::traduct(msg->getBytes());
+				IPaddress address = msg->getAddress();
 
 				if(techMsg) {
 					switch(techMsg->getCode()) {
 					case TechnicalMessage::C2S_HELLO:
-						manageConnection(msg->getAddress(), (C2SHelloTechnicalMessage*)techMsg);
-						break;
-
-					case TechnicalMessage::C2S_BYE:
-						cout << endl << "Server says : C2S_BYE received";
-						manageDisconnection(msg->getAddress(), (C2SByeTechnicalMessage*)techMsg);
+						cout << endl << "Server says : C2S_HELLO received from " << (int)(((char*)&address.host)[0]) << "." << (int)(((char*)&address.host)[1]) << "." << (int)(((char*)&address.host)[2]) << "." << (int)(((char*)&address.host)[3]) << ":" << address.port;
+						manageConnection(address, (C2SHelloTechnicalMessage*)techMsg);
 						break;
 					}
 				}
@@ -234,6 +203,46 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 				delete techMsg;
 			}
 		}
+
+
+		/* ***********************************************************
+		 * Gestion des clients connectés
+		 * ***********************************************************/
+
+		{
+			JktUtils::Bytes* msg;
+
+			map<IPaddress, ClientOfServer*>::iterator iter;
+
+			for(iter = _clientsOfServer.begin() ; iter != _clientsOfServer.end() ; iter++) {
+				IPaddress address = iter->first;
+				ClientOfServer* client = iter->second;
+
+				// Gestion des événements liés aux clients non-connectés
+				while((msg = client->getInterlocutor()->popTechnicalMessageReceived())) {
+					TechnicalMessage* techMsg = TechnicalMessage::traduct(msg);
+
+					if(techMsg) {
+						switch(techMsg->getCode()) {
+						case TechnicalMessage::C2S_HELLO:
+							manageConnection(address, (C2SHelloTechnicalMessage*)techMsg);
+							break;
+
+						case TechnicalMessage::C2S_BYE:
+							cout << endl << "Server says : C2S_BYE received";
+							manageDisconnection(address, (C2SByeTechnicalMessage*)techMsg);
+							break;
+						}
+					}
+					else {
+						// unkown message => ignore it
+					}
+
+					delete msg;
+					delete techMsg;
+				}
+			}
+		}
 	}
 
 	cout << endl << "Server says : Stop intelligence process";
@@ -242,24 +251,27 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 void ServerUdpInterlocutor::sendingProcess() {
 
 	while(CONNECTED == getConnexionStatus()) {
-		_interlocutor->waitDataToSend(1000);
-		DataAddress* data;
+		_notConnectedInterlocutor->waitDataToSend(1000);
 
 
 		/* *********************************************
 		 * Gestion des envois aux clients non-connectés
 		 * *********************************************/
 
-		// Envoi les messages techniques tant que le serveur est connecté, sinon purge les
-		while((data = _interlocutor->popTechnicalMessageToSend()))  {
-			if(CONNECTED == getConnexionStatus()) {
-				_packetOut->len = data->getBytes()->size();
-				memcpy(_packetOut->data, data->getBytes()->getBytes(), _packetOut->len);
-				_packetOut->address = data->getAddress();
-				SDLNet_UDP_Send(_socket, -1, _packetOut);
-			}
+		{
+			DataAddress* data;
 
-			delete data;
+			// Envoi les messages techniques tant que le serveur est connecté, sinon purge les
+			while((data = _notConnectedInterlocutor->popTechnicalMessageToSend()))  {
+				if(CONNECTED == getConnexionStatus()) {
+					_packetOut->len = data->getBytes()->size();
+					memcpy(_packetOut->data, data->getBytes()->getBytes(), _packetOut->len);
+					_packetOut->address = data->getAddress();
+					SDLNet_UDP_Send(_socket, -1, _packetOut);
+				}
+
+				delete data;
+			}
 		}
 
 
@@ -267,35 +279,39 @@ void ServerUdpInterlocutor::sendingProcess() {
 		 * Gestion des envois aux clients connectés
 		 * *********************************************/
 
-		map<IPaddress, ClientOfServer*>::iterator iter;
+		{
+			JktUtils::Bytes* data;
 
-		for(iter = _clientsOfServer.begin() ; iter != _clientsOfServer.end() ; iter++) {
-			ClientOfServer* client = iter->second;
+			map<IPaddress, ClientOfServer*>::iterator iter;
 
-			// Envoi les messages techniques tant que le serveur est connecté, sinon purge les
-			while((data = client->getInterlocutor()->popTechnicalMessageToSend()))  {
-				if(CONNECTED == getConnexionStatus() && CONNECTED == client->getConnexionStatus()) {
-					_packetOut->len = data->getBytes()->size();
-					memcpy(_packetOut->data, data->getBytes()->getBytes(), _packetOut->len);
-					_packetOut->address = client->getIpAddress();
-					SDLNet_UDP_Send(_socket, -1, _packetOut);
+			for(iter = _clientsOfServer.begin() ; iter != _clientsOfServer.end() ; iter++) {
+				ClientOfServer* client = iter->second;
+
+				// Envoi les messages techniques tant que le serveur est connecté, sinon purge les
+				while((data = client->getInterlocutor()->popTechnicalMessageToSend()))  {
+					if(CONNECTED == getConnexionStatus() && CONNECTED == client->getConnexionStatus()) {
+						_packetOut->len = data->size();
+						memcpy(_packetOut->data, data->getBytes(), _packetOut->len);
+						_packetOut->address = client->getIpAddress();
+						SDLNet_UDP_Send(_socket, -1, _packetOut);
+					}
+
+					delete data;
 				}
 
-				delete data;
-			}
+				// Envoi les messages de données tant que le serveur est connecté, sinon purge les
+				while((data = client->getInterlocutor()->popDataToSend())) {
+					if(CONNECTED == getConnexionStatus() && CONNECTED == client->getConnexionStatus()) {
+						cout << endl << "Server says : Sending some data message";
 
-			// Envoi les messages de données tant que le serveur est connecté, sinon purge les
-			while((data = client->getInterlocutor()->popDataToSend())) {
-				if(CONNECTED == getConnexionStatus() && CONNECTED == client->getConnexionStatus()) {
-					cout << endl << "Server says : Sending some data message";
+						_packetOut->len = data->size();
+						memcpy(_packetOut->data, data->getBytes(), _packetOut->len);
+						_packetOut->address = client->getIpAddress();
+						SDLNet_UDP_Send(_socket, -1, _packetOut);
+					}
 
-					_packetOut->len = data->getBytes()->size();
-					memcpy(_packetOut->data, data->getBytes()->getBytes(), _packetOut->len);
-					_packetOut->address = client->getIpAddress();
-					SDLNet_UDP_Send(_socket, -1, _packetOut);
+					delete data;
 				}
-
-				delete data;
 			}
 		}
 	}
@@ -320,7 +336,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 				case TechnicalMessage::C2S_BYE:
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
-					_interlocutor->pushTechnicalMessageReceived(address, new JktUtils::Bytes(data, size));
+					_notConnectedInterlocutor->pushTechnicalMessageReceived(address, new JktUtils::Bytes(data, size));
 					break;
 				}
 			}
@@ -341,7 +357,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 					int offset = 2;
 					char* data = new char[size - offset];
 					memcpy(data, _packetIn->data + offset, size - offset);
-					client->getInterlocutor()->pushDataReceived(address, new JktUtils::Bytes(data, size - offset));
+					client->getInterlocutor()->pushDataReceived(new JktUtils::Bytes(data, size - offset));
 					break;
 				}
 
@@ -349,7 +365,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 				{
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
-					client->getInterlocutor()->pushTechnicalMessageReceived(address, new JktUtils::Bytes(data, size));
+					client->getInterlocutor()->pushTechnicalMessageReceived(new JktUtils::Bytes(data, size));
 					break;
 				}
 				}

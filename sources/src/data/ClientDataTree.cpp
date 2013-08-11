@@ -11,6 +11,7 @@
 
 using namespace std;
 
+#include "util/StringUtils.h"
 #include "util/types/IntData.h"
 #include "data/ValeurInt.h"
 #include "data/MarqueurDistant.h"
@@ -32,7 +33,7 @@ using namespace std;
 
 using namespace JktUtils;
 
-ClientDataTree::ClientDataTree(const std::string& clientName, Interlocutor* serverInterlocutor) {
+ClientDataTree::ClientDataTree(const std::string& clientName, Interlocutor2* serverInterlocutor) {
 	_clientName = clientName;
 	_serverTreeProxy = new DistantTreeProxy(serverInterlocutor);
 }
@@ -118,13 +119,13 @@ void ClientDataTree::receiveChangementsFromServer() {
 		 * Traitement des données venant du serveur
 		 * *******************************************/
 
-		Interlocutor* interlocutor = _serverTreeProxy->getInterlocutor();
+		Interlocutor2* interlocutor = _serverTreeProxy->getInterlocutor();
 
 		// Récupération des données du serveur
-		string* fromServer = interlocutor->getDataReceived();
+		JktUtils::Bytes* fromServer = interlocutor->popDataReceived();
 
 		if(fromServer) {
-			istringstream in(*fromServer);
+			istringstream in(string(fromServer->getBytes(), fromServer->size()));
 			DataSerializer::fromStream(changements, in);
 			delete fromServer;
 
@@ -215,7 +216,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
 	vector<Changement*>::iterator iter;
 
-	Interlocutor* interlocutor = _serverTreeProxy->getInterlocutor();
+	Interlocutor2* interlocutor = _serverTreeProxy->getInterlocutor();
 
 	if(changements.size()) {
 		for(iter = changements.begin() ; iter != changements.end() ; iter++) {
@@ -229,6 +230,7 @@ void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
 			delete *iter;
 		}
 
-		interlocutor->addDataToSend(new string(out.str()));
+		Bytes* toSend = new Bytes(out.str());
+		interlocutor->pushDataToSend(toSend);
 	}
 }

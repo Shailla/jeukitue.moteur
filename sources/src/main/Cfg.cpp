@@ -12,9 +12,9 @@
 using namespace std;
 
 #ifdef WIN32
-	#include <windows.h>
-	#include <io.h>
-	#include <direct.h>
+#include <windows.h>
+#include <io.h>
+#include <direct.h>
 #endif
 #include <SDL.h>
 #include <SDL_net.h>
@@ -45,9 +45,47 @@ PFNGLGENBUFFERSARBPROC glGenBuffers;
 PFNGLBUFFERDATAARBPROC glBufferData;
 PFNGLDELETEBUFFERSARBPROC glDeleteBuffers;
 
+
+const char* CCfg::CST_VID_DISPLAY = 			"video.display";
+const char* CCfg::CST_VID_FULLSCREEN =			"video.fullscreen";
+
+const char* CCfg::CST_AUD_OUTPUT = 				"audio.output";
+const char* CCfg::CST_AUD_MIXER = 				"audio.mixer";
+const char* CCfg::CST_AUD_DRIVER = 				"audio.driver";
+const char* CCfg::CST_AUD_DRIVERRECORD = 		"audio.driverRecord";
+
+const char* CCfg::CST_COM_AVANCER =				"commande.avancer";
+const char* CCfg::CST_COM_RECULER =				"commande.reculer";
+const char* CCfg::CST_COM_GAUCHE =				"commande.gauche";
+const char* CCfg::CST_COM_DROITE =				"commande.droite";
+const char* CCfg::CST_COM_TIR1 =				"commande.tir1";
+const char* CCfg::CST_COM_TIR2 =				"commande.tir2";
+const char* CCfg::CST_COM_MONTER =				"commande.monter";
+const char* CCfg::CST_COM_SELECTWEAPONUP =		"commande.selectWeaponUp";
+const char* CCfg::CST_COM_SELECTWEAPONDOWN =	"commande.selectWeaponDown";
+
+const char* CCfg::CST_CEN_IP =					"centralisateur.ip";
+const char* CCfg::CST_CEN_PORT =				"centralisateur.port";
+
+const char* CCfg::CST_NET_SERVEUR =				"reseau.serveur";
+const char* CCfg::CST_NET_IP =					"reseau.ip";
+const char* CCfg::CST_NET_PORT =				"reseau.port";
+const char* CCfg::CST_NET_PORTTREE =			"reseau.portTree";
+
+const char* CCfg::CST_JOU_NOM =					"joueur.nom";
+const char* CCfg::CST_JOU_MAPNOM =				"joueur.mapNom";
+const char* CCfg::CST_JOU_OUTLINEVISIBILITY =	"joueur.outlineVisibility";
+const char* CCfg::CST_JOU_SKINVISIBILITY =		"joueur.skinVisibility";
+
+const char* CCfg::CST_DEB_SONPERFORMANCES =		"debug.sonPerformances";
+const char* CCfg::CST_DEB_SONSPECTRE =			"debug.sonSpectre";
+const char* CCfg::CST_DEB_AFFICHEFICHIER =		"debug.afficheFichier";
+const char* CCfg::CST_DEB_AFFICHENORMAUX =		"debug.afficheNormaux";
+
+
 CCfg::CCfg()
 {
-TRACE().p( TRACE_OTHER, "Cfg::Cfg()%T", this );
+	TRACE().p( TRACE_OTHER, "Cfg::Cfg()%T", this );
 }
 
 void CCfg::AfficheDateCompilation() {
@@ -55,170 +93,176 @@ void CCfg::AfficheDateCompilation() {
 }
 
 void CCfg::NommeConfig(const string &nomFichier) {
-TRACE().p( TRACE_OTHER, "Cfg::NommeConfig(nomFichier=%s)%T", nomFichier.c_str(), this );
+	TRACE().p( TRACE_OTHER, "Cfg::NommeConfig(nomFichier=%s)%T", nomFichier.c_str(), this );
 	nomFichierConfig = nomFichier;
 }
 
 void CCfg::Lit() {
-TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
+	TRACE().p( TRACE_OTHER, "Cfg::Lit()%T", this );
 	string mot;
 
 	string nomFichierEntier = "./" + nomFichierConfig + ".ini";
 	ifstream fichier(nomFichierEntier.c_str());
+	fichier.exceptions(ifstream::eofbit);
 
 	if(!fichier) {
-		quit_game("Erreur ouverture fichier de configuration '" + nomFichierEntier + "'", 1);
+		quit_game("Fichier de configuration introuvable '" + nomFichierEntier + "'", 1);
 	}
 
-	do fichier >> mot;
-	while( mot!="-------------------------VIDEO-------------------------");
+	try {
 
-	{
-		do fichier >> mot;	while( mot!="Display" );	// Propriétés d'affichage
+		/* ***************************************
+		 * Vidéo
+		 * **************************************/
+
+		do fichier >> mot;	while( mot!=CST_VID_DISPLAY );	// Propriétés d'affichage
 		fichier >> Display.X >> Display.Y;
 
-		do fichier >> mot;	while( mot!="Fullscreen" );	// Propriétés d'affichage
+		do fichier >> mot;	while( mot!=CST_VID_FULLSCREEN );	// Propriétés d'affichage
 		fichier >> Display.m_bFullscreen;
-	}
 
-	do fichier >> mot;
-	while( mot!="-------------------------AUDIO-------------------------" );
 
-	{
-		do fichier >> mot;	while( mot!="Output" );
+		// Audio
+		do fichier >> mot;	while( mot!=CST_AUD_OUTPUT );
 		fichier >> Audio.m_Output;
 
-		do fichier >> mot;	while( mot!="Mixer" );
+		do fichier >> mot;	while( mot!=CST_AUD_MIXER );
 		fichier >> Audio.m_Mixer;
 
-		do fichier >> mot;	while( mot!="Driver" );
+		do fichier >> mot;	while( mot!=CST_AUD_DRIVER );
 		fichier >> Audio.m_Driver;
 
-		do fichier >> mot; while( mot!="DriverRecord" );
+		do fichier >> mot; while( mot!=CST_AUD_DRIVERRECORD );
 		fichier >> Audio.m_DriverRecord;
-	}
 
-	do fichier >> mot;
-	while( mot!="-----------------------COMMANDES-----------------------" );
 
-	{
+		/* ***************************************
+		 * Commandes
+		 * **************************************/
+
 		int crotte;
 
-		do fichier >> mot;	while( mot!="Avancer" );
+		do fichier >> mot;	while( mot!=CST_COM_AVANCER );
 		fichier >> crotte;
 		Commandes.Avancer.key = (SDLKey)crotte;
 		fichier >> crotte >> mot;
 		Commandes.Avancer.mouse = crotte;
 
-		do fichier >> mot;	while( mot!="Reculer" );
+		do fichier >> mot;	while( mot!=CST_COM_RECULER );
 		fichier >> crotte;
 		Commandes.Reculer.key = (SDLKey)crotte;
 		fichier >> crotte >> mot;
 		Commandes.Reculer.mouse = crotte;
 
-		do fichier >> mot;	while( mot!="Gauche" );
+		do fichier >> mot;	while( mot!=CST_COM_GAUCHE );
 		fichier >> crotte;
 		Commandes.Gauche.key = (SDLKey)crotte;
 		fichier >> crotte >> mot;
 		Commandes.Gauche.mouse = crotte;
 
-		do fichier >> mot;	while( mot!="Droite" );
+		do fichier >> mot;	while( mot!=CST_COM_DROITE );
 		fichier >> crotte;
 		Commandes.Droite.key = (SDLKey)crotte;
 		fichier >> crotte >> mot;
 		Commandes.Droite.mouse = crotte;
 
-		do fichier >> mot;	while( mot!="Tir1" );
+		do fichier >> mot;	while( mot!=CST_COM_TIR1 );
 		fichier >> crotte;
 		Commandes.Tir1.key = (SDLKey)crotte;
 		fichier >> crotte >> mot;
 		Commandes.Tir1.mouse = crotte;
 
-		do fichier >> mot;	while( mot!="Tir2" );
+		do fichier >> mot;	while( mot!=CST_COM_TIR2 );
 		fichier >> crotte;
 		Commandes.Tir2.key = (SDLKey)crotte;
 		fichier >> crotte >> mot;
 		Commandes.Tir2.mouse = crotte;
 
-		do fichier >> mot;	while( mot!="Monter" );
+		do fichier >> mot;	while( mot!=CST_COM_MONTER );
 		fichier >> crotte;
 		Commandes.Monter.key = (SDLKey)crotte;
 		fichier >> crotte >> mot;
 		Commandes.Monter.mouse = crotte;
 
-		do fichier >> mot;	while( mot!="SelectWeaponUp" );
+		do fichier >> mot;	while( mot!=CST_COM_SELECTWEAPONUP );
 		fichier >> crotte;
 		Commandes.SelectWeaponUp.key = (SDLKey)crotte;
 		fichier >> crotte >> mot;
 		Commandes.SelectWeaponUp.mouse = crotte;
 
-		do fichier >> mot;	while( mot!="SelectWeaponDown" );
+		do fichier >> mot;	while( mot!=CST_COM_SELECTWEAPONDOWN );
 		fichier >> crotte;
 		Commandes.SelectWeaponDown.key = (SDLKey)crotte;
 		fichier >> crotte >> mot;
 		Commandes.SelectWeaponDown.mouse = crotte;
-	}
 
-	do fichier >> mot;
-	while( mot!="--------------------CENTRALISATEUR---------------------" );
 
-	{
-		do fichier >> mot;	while( mot!="ip" );
+		/* ***************************************
+		 * Centralisateur
+		 * **************************************/
+
+		do fichier >> mot;	while( mot!=CST_CEN_IP );
 		fichier >> Centralisateur.m_IpServer;
 
-		do fichier >> mot;	while( mot!="port" );
+		do fichier >> mot;	while( mot!=CST_CEN_PORT );
 		fichier >> Centralisateur.m_Port;
-	}
 
-	do fichier >> mot;
-	while( mot!="------------------------RESEAU-------------------------" );
 
-	{
-		do fichier >> mot;	while( mot!="Serveur" );
-			fichier >> Reseau._serveur;
+		/* ***************************************
+		 * Réseau
+		 * **************************************/
 
-		do fichier >> mot;	while( mot!="ip" );
+		do fichier >> mot;	while( mot!=CST_NET_SERVEUR );
+		fichier >> Reseau._serveur;
+
+		do fichier >> mot;	while( mot!=CST_NET_IP );
 		fichier >> Reseau._IpServer;
 
-		do fichier >> mot;	while( mot!="port" );
+		do fichier >> mot;	while( mot!=CST_NET_PORT );
 		fichier >> Reseau._Port;
-	}
 
-	do fichier >> mot;
-	while( mot!="------------------------JOUEUR-------------------------" );
+		do fichier >> mot;	while( mot!=CST_NET_PORTTREE );
+		fichier >> Reseau._portTree;
 
-	{
-		do fichier >> mot;	while( mot!="Nom" );
+
+		/* ***************************************
+		 * Joueur
+		 * **************************************/
+
+		do fichier >> mot;	while( mot!=CST_JOU_NOM );
 		fichier >> Joueur.nom;
 
-		do fichier >> mot;	while( mot!="MapNom" );
+		do fichier >> mot;	while( mot!=CST_JOU_MAPNOM );
 		fichier >> Joueur.mapName;
 
-		do fichier >> mot;	while( mot!="OutlineVisibility" );
+		do fichier >> mot;	while( mot!=CST_JOU_OUTLINEVISIBILITY );
 		fichier >> Joueur.outlineVisibility;
 
-		do fichier >> mot;	while( mot!="SkinVisibility" );
+		do fichier >> mot;	while( mot!=CST_JOU_SKINVISIBILITY );
 		fichier >> Joueur.skinVisibility;
-	}
 
-	do fichier >> mot;
-	while( mot!="------------------------DEBUG-------------------------" );
 
-	{
-		do fichier >> mot;	while( mot!="SonPerformances" );
+		/* ***************************************
+		 * Debug
+		 * **************************************/
+
+		do fichier >> mot;	while( mot!=CST_DEB_SONPERFORMANCES );
 		fichier >> Debug.bSonPerformances;
 
-		do fichier >> mot;	while( mot!="SonSpectre" );
+		do fichier >> mot;	while( mot!=CST_DEB_SONSPECTRE );
 		fichier >> Debug.bSonSpectre;
 
-		do fichier >> mot;	while( mot!="AfficheFichier" );
+		do fichier >> mot;	while( mot!=CST_DEB_AFFICHEFICHIER );
 		fichier >> Debug.bAfficheFichier;
 
-		do fichier >> mot;	while( mot!="AfficheNormaux" );
+		do fichier >> mot;	while( mot!=CST_DEB_AFFICHENORMAUX );
 		fichier >> Debug.bAfficheNormaux;
-	}
 
-	fichier.close();
+		fichier.close();
+	}
+	catch(istringstream::failure& finDuFlux) {
+		quit_game("Fichier de configuration corrompu '" + nomFichierEntier + "'", 1);
+	}
 }
 
 void CCfg::Ecrit() {
@@ -226,52 +270,55 @@ void CCfg::Ecrit() {
 	ofstream fichier( nomFichierEntier.c_str() );
 
 	fichier << "\n-------------------------VIDEO-------------------------\n";
-	fichier << "\nDisplay\t\t" << Display.X << "\t" << Display.Y;
-	fichier << "\nFullscreen\t\t" << Display.Fullscreen();
+	fichier << endl << CST_VID_DISPLAY << "\t\t" << Display.X << "\t" << Display.Y;
+	fichier << endl << CST_VID_FULLSCREEN << "\t" << Display.Fullscreen();
 
 	fichier << "\n\n\n-------------------------AUDIO-------------------------\n";
-	fichier << "\nOutput\t\t" << Audio.m_Output << "\t(" << resolveOutput(Audio.m_Output) << ")";
-	fichier << "\nMixer\t\t" << Audio.m_Mixer << "\t(" << resolveMixer(Audio.m_Mixer) << ")";
-	fichier << "\nDriver\t\t" << Audio.m_Driver << "\t(" << resolveDriver(Audio.m_Driver) << ")";
+	fichier << endl << CST_AUD_OUTPUT << "\t\t" << Audio.m_Output << "\t(" << resolveOutput(Audio.m_Output) << ")";
+	fichier << endl << CST_AUD_MIXER << "\t\t\t" << Audio.m_Mixer << "\t(" << resolveMixer(Audio.m_Mixer) << ")";
+	fichier << endl << CST_AUD_DRIVER << "\t\t" << Audio.m_Driver << "\t(" << resolveDriver(Audio.m_Driver) << ")";
 
 	if( Audio.m_DriverRecord!=-1 ) {
-		fichier << "\nDriverRecord\t" << Audio.m_DriverRecord << "\t(" << resolveDriverRecord(Audio.m_DriverRecord) << ")";
+		fichier << endl << CST_AUD_DRIVERRECORD << "\t" << Audio.m_DriverRecord << "\t(" << resolveDriverRecord(Audio.m_DriverRecord) << ")";
 	}
 	else {
-		fichier << "\nDriverRecord\t" << Audio.m_DriverRecord << "\t( Pas de driver d'acquisition )";
+		fichier << endl << CST_AUD_DRIVERRECORD << "\t" << Audio.m_DriverRecord << "\t(Pas de driver d'acquisition)";
 	}
 
 	fichier << "\n\n\n-----------------------COMMANDES-----------------------\n";
-	fichier << "\nAvancer\t\t" << Commandes.Avancer.key << "\t" << Commandes.Avancer.mouse << "\t(" << Commandes.resolve(Commandes.Avancer) << ")";
-	fichier << "\nReculer\t\t" << Commandes.Reculer.key << "\t" << Commandes.Reculer.mouse << "\t(" << Commandes.resolve(Commandes.Reculer) << ")";
-	fichier << "\nGauche\t\t" << Commandes.Gauche.key << "\t" << Commandes.Gauche.mouse << "\t(" << Commandes.resolve(Commandes.Gauche) << ")";
-	fichier << "\nDroite\t\t" << Commandes.Droite.key << "\t" << Commandes.Droite.mouse << "\t(" << Commandes.resolve(Commandes.Droite) << ")";
-	fichier << "\nTir1\t\t" << Commandes.Tir1.key << "\t" << Commandes.Tir1.mouse << "\t(" << Commandes.resolve(Commandes.Tir1) << ")";
-	fichier << "\nTir2\t\t" << Commandes.Tir2.key << "\t" << Commandes.Tir2.mouse << "\t(" << Commandes.resolve(Commandes.Tir2) << ")";
-	fichier << "\nMonter\t\t" << Commandes.Monter.key << "\t" << Commandes.Monter.mouse << "\t(" << Commandes.resolve(Commandes.Monter) << ")";
-	fichier << "\nSelectWeaponUp\t\t" << Commandes.SelectWeaponUp.key << "\t" << Commandes.SelectWeaponUp.mouse << "\t(" << Commandes.resolve(Commandes.SelectWeaponUp) << ")";
-	fichier << "\nSelectWeaponDown\t\t" << Commandes.SelectWeaponDown.key << "\t" << Commandes.SelectWeaponDown.mouse << "\t(" << Commandes.resolve(Commandes.SelectWeaponDown) << ")";
+	fichier << endl << CST_COM_AVANCER << "\t\t\t" << Commandes.Avancer.key << "\t" << Commandes.Avancer.mouse << "\t(" << Commandes.resolve(Commandes.Avancer) << ")";
+	fichier << endl << CST_COM_RECULER << "\t\t\t" << Commandes.Reculer.key << "\t" << Commandes.Reculer.mouse << "\t(" << Commandes.resolve(Commandes.Reculer) << ")";
+	fichier << endl << CST_COM_GAUCHE << "\t\t\t\t" << Commandes.Gauche.key << "\t" << Commandes.Gauche.mouse << "\t(" << Commandes.resolve(Commandes.Gauche) << ")";
+	fichier << endl << CST_COM_DROITE << "\t\t\t\t" << Commandes.Droite.key << "\t" << Commandes.Droite.mouse << "\t(" << Commandes.resolve(Commandes.Droite) << ")";
+	fichier << endl << CST_COM_TIR1 << "\t\t\t\t" << Commandes.Tir1.key << "\t" << Commandes.Tir1.mouse << "\t(" << Commandes.resolve(Commandes.Tir1) << ")";
+	fichier << endl << CST_COM_TIR2 << "\t\t\t\t" << Commandes.Tir2.key << "\t" << Commandes.Tir2.mouse << "\t(" << Commandes.resolve(Commandes.Tir2) << ")";
+	fichier << endl << CST_COM_MONTER << "\t\t\t\t" << Commandes.Monter.key << "\t" << Commandes.Monter.mouse << "\t(" << Commandes.resolve(Commandes.Monter) << ")";
+	fichier << endl << CST_COM_SELECTWEAPONUP << "\t\t" << Commandes.SelectWeaponUp.key << "\t" << Commandes.SelectWeaponUp.mouse << "\t(" << Commandes.resolve(Commandes.SelectWeaponUp) << ")";
+	fichier << endl << CST_COM_SELECTWEAPONDOWN << "\t" << Commandes.SelectWeaponDown.key << "\t" << Commandes.SelectWeaponDown.mouse << "\t(" << Commandes.resolve(Commandes.SelectWeaponDown) << ")";
 
 	fichier << "\n\n\n--------------------CENTRALISATEUR---------------------\n";
-	fichier << "\nip\t\t" << Centralisateur.m_IpServer;
-	fichier << "\nport\t\t" << Centralisateur.m_Port;
+	fichier << endl << CST_CEN_IP << "\t\t" << Centralisateur.m_IpServer;
+	fichier << endl << CST_CEN_PORT << "\t\t" << Centralisateur.m_Port;
 
 	fichier << "\n\n\n------------------------RESEAU-------------------------\n";
-	fichier << "\nServeur\t\t" << Reseau._serveur;
-	fichier << "\nip\t\t" << Reseau._IpServer;
-	fichier << "\nport\t\t" << Reseau._Port;
+	fichier << endl << CST_NET_SERVEUR << "\t\t" << Reseau._serveur;
+	fichier << endl << CST_NET_IP << "\t\t\t" << Reseau._IpServer;
+	fichier << endl << CST_NET_PORT << "\t\t\t" << Reseau._Port;
+	fichier << endl << CST_NET_PORTTREE << "\t\t" << Reseau._portTree;
 
 	fichier << "\n\n\n------------------------JOUEUR-------------------------\n";
-	fichier << "\nNom\t\t" << Joueur.nom;
-	fichier << "\nMapNom\t\t" << Joueur.mapName;
-	fichier << "\nOutlineVisibility\t\t" << Joueur.outlineVisibility;
-	fichier << "\nSkinVisibility\t\t" << Joueur.skinVisibility;
+	fichier << endl << CST_JOU_NOM << "\t\t\t\t\t" << Joueur.nom;
+	fichier << endl << CST_JOU_MAPNOM << "\t\t\t\t" << Joueur.mapName;
+	fichier << endl << CST_JOU_OUTLINEVISIBILITY << "\t" << Joueur.outlineVisibility;
+	fichier << endl << CST_JOU_SKINVISIBILITY << "\t\t" << Joueur.skinVisibility;
 
 	fichier << "\n\n\n------------------------DEBUG-------------------------\n";
-	fichier << "\nSonPerformances\t\t" << Debug.bSonPerformances;
-	fichier << "\nSonSpectre\t\t" << Debug.bSonSpectre;
-	fichier << "\nAfficheFichier\t\t" << Debug.bAfficheFichier;
-	fichier << "\nAfficheNormaux\t\t" << Debug.bAfficheNormaux;
+	fichier << endl << CST_DEB_SONPERFORMANCES << "\t\t" << Debug.bSonPerformances;
+	fichier << endl << CST_DEB_SONSPECTRE << "\t\t\t" << Debug.bSonSpectre;
+	fichier << endl << CST_DEB_AFFICHEFICHIER << "\t\t" << Debug.bAfficheFichier;
+	fichier << endl << CST_DEB_AFFICHENORMAUX << "\t\t" << Debug.bAfficheNormaux;
+
+	fichier << "\n\n\n------------------------FIN-------------------------\n";
 
 	fichier.close();
 }
@@ -499,12 +546,12 @@ bool CCfg::CAudio::Init() {
 	TRACE().p( TRACE_SON, "CCfg::CAudio::Init()" );
 	unsigned int caps = 0;
 
-		// Initialisation audio de FMOD
+	// Initialisation audio de FMOD
 	cout << "\nVersion de FMOD\t\t" << FSOUND_GetVersion() << endl;
 
 	if(FSOUND_GetVersion() < FMOD_VERSION) {
 		cout << "Error : You are using the wrong DLL version!  You should be using FMOD" <<
-			FMOD_VERSION << endl;
+				FMOD_VERSION << endl;
 		return false;
 	}
 
@@ -550,11 +597,11 @@ bool CCfg::CAudio::Init() {
 
 	FSOUND_SetMixer( m_Mixer );			// Sélection du mixer
 
-		// Initialisation
+	// Initialisation
 	if(!FSOUND_Init(44100, 32, FSOUND_INIT_GLOBALFOCUS)) {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FSOUND_Init : "<< FMOD_ErrorString(FSOUND_GetError()) << endl;
 		FSOUND_Close();
-//		return -1;
+		//		return -1;
 	}
 
 	FSOUND_DSP_SetActive( FSOUND_DSP_GetFFTUnit(), true );
@@ -565,8 +612,8 @@ bool CCfg::CAudio::Init() {
 			{															// d'entrée pour le micro
 				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FSOUND_Record_SetDriver : " << FMOD_ErrorString(FSOUND_GetError()) << endl;
 				cerr << endl << __FILE__ << ":" << __LINE__ << "\tAVIS AU PROGRAMMEUR" << endl
-					<< "Le programme va planter s'il y a une tentative d'utilisation du micro !!!" << endl;
-		/*		FSOUND_Close();
+						<< "Le programme va planter s'il y a une tentative d'utilisation du micro !!!" << endl;
+				/*		FSOUND_Close();
 				return -1;*/
 			}
 		}
@@ -577,8 +624,8 @@ bool CCfg::CAudio::Init() {
 			if( !FSOUND_Record_SetDriver(0) ) {		// Sélection du driver de record par défaut
 				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FSOUND_Record_SetDriver : " << FMOD_ErrorString(FSOUND_GetError()) << endl;
 				cerr << endl << __FILE__ << ":" << __LINE__ << "\tAVIS AU PROGRAMMEUR" << endl
-					<< "Le programme va planter s'il y a une tentative d'utilisation du micro !!!" << endl;
-		/*		FSOUND_Close();
+						<< "Le programme va planter s'il y a une tentative d'utilisation du micro !!!" << endl;
+				/*		FSOUND_Close();
 				return -1;*/
 			}
 		}
@@ -588,7 +635,7 @@ bool CCfg::CAudio::Init() {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Aucun driver d'acquisition du son détecté.";
 	}
 
-		// RESUME DE L'INITIALISATION
+	// RESUME DE L'INITIALISATION
 	cout << "\n\tRESUME DE L'INITIALISATION AUDIO\n";
 	cout << "FSOUND Output Method : " << resolveOutput(FSOUND_GetOutput()) << endl;
 	cout << "FSOUND Mixer         : " << resolveMixer(FSOUND_GetMixer()) << endl;
@@ -620,22 +667,22 @@ bool CCfg::CAudio::Init() {
 void CCfg::CDisplay::Init() {
 	InitSDL();
 	InitOpenGL();
-    InitAgar();
+	InitAgar();
 }
 
 void CCfg::CDisplay::InitSDL() {
-TRACE().p( TRACE_OTHER, "init_SDL(config) begin" );
+	TRACE().p( TRACE_OTHER, "init_SDL(config) begin" );
 
 #ifdef WIN32
-//	_putenv("SDL_VIDEODRIVER=directx");	// A FAIRE A FAIRE A FAIRE : code compatible Linux
+	//	_putenv("SDL_VIDEODRIVER=directx");	// A FAIRE A FAIRE A FAIRE : code compatible Linux
 #endif
 
 	if( SDL_Init( SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_NOPARACHUTE ) < 0 )	// First, initialize SDL's video subsystem
 	{
-TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
+		TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Error : Video initialization failed: " << SDL_GetError( ) << endl;
-        exit( 1 );
-    }
+		exit( 1 );
+	}
 
 	// Icone et titre
 	SDL_WM_SetCaption( "JKT 2010", "C'est un jeu qui tue !!!" );	// Titre et icon de la fenêtre
@@ -645,40 +692,40 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 	SDL_WM_SetIcon( IMG_Load( iconeFichier.c_str() ), 0 );
 
 
-    const SDL_VideoInfo* info = SDL_GetVideoInfo( );	// Let's get some video information
-    if( !info ) {
-    	cerr << endl << __FILE__ << ":" << __LINE__ << " Error : Video query failed: " << SDL_GetError( ) << endl;
-        exit( 1 );
-    }
+	const SDL_VideoInfo* info = SDL_GetVideoInfo( );	// Let's get some video information
+	if( !info ) {
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Error : Video query failed: " << SDL_GetError( ) << endl;
+		exit( 1 );
+	}
 
-    bpp = info->vfmt->BitsPerPixel;
+	bpp = info->vfmt->BitsPerPixel;
 
-    if( SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 8 )==-1 ) {
+	if( SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 8 )==-1 ) {
 		cerr << "Erreur init_SDL : SDL_GL_RED_SIZE\n";
 		exit( 1 );
 	}
 
-    if( SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 )==-1 ) {
+	if( SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 )==-1 ) {
 		cerr << "Erreur init_SDL : SDL_GL_GREEN_SIZE\n";
 		exit( 1 );
 	}
 
-    if( SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 )==-1 ) {
+	if( SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 )==-1 ) {
 		cerr << "Erreur init_SDL : SDL_GL_BLUE_SIZE\n";
 		exit( 1 );
 	}
 
-    if( SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 )==-1 ) {
+	if( SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 )==-1 ) {
 		cerr << "Erreur init_SDL : SDL_GL_ALPHE_SIZE\n";
 		exit( 1 );
 	}
 
 	if( SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 )==-1 ) {
 		cerr << "Erreur init_SDL : SDL_GL_DEPTH_SIZE\n";
-			exit( 1 );
+		exit( 1 );
 	}
 
-    if( SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 )==-1 ) {
+	if( SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 )==-1 ) {
 		cerr << "Erreur init_SDL : SDL_GL_DOUBLEBUFFER\n";
 		exit( 1 );
 	}
@@ -694,15 +741,15 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 	cout << " ; blit_fill=" << info->blit_fill;
 	cout << " ; video_mem=" << info->video_mem << endl;
 
-    flags = SDL_OPENGL | SDL_RESIZABLE;
+	flags = SDL_OPENGL | SDL_RESIZABLE;
 
 	if( Fullscreen() )
 		flags |= SDL_FULLSCREEN;
 
-		// Get available fullscreen/hardware modes
+	// Get available fullscreen/hardware modes
 	SDL_Rect **modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
 
-		// Check if there are any modes available
+	// Check if there are any modes available
 	if( modes == (SDL_Rect **)0 ) {
 		cout << endl << "Aucun mode video n'est disponible" << endl;
 		exit( 1 );
@@ -713,7 +760,7 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 		cout << endl << "Tous les modes video sont disponibles" << endl;
 	}
 	else {
-	/* Print valid modes */
+		/* Print valid modes */
 		cout << endl << "Modes video disponibles : ";
 		bool isFirst = true;
 
@@ -737,7 +784,7 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 	if( screen == 0) {
 		cerr << endl << "Error : Video mode set failed: " << SDL_GetError() << endl;
 		exit( 1 );
-    }
+	}
 
 	SDL_WarpMouse( 250, 250 );			//positionnement du curseur de la souris
 	SDL_ShowCursor( SDL_DISABLE );		//Cache le curseur de la souris
@@ -754,12 +801,12 @@ TRACE().p( TRACE_ERROR, "SDL_Init() failed : %s", SDLNet_GetError() );
 
 	cout << "\nVideo memory :\t\t" << info->video_mem/1024 << " Mo" << endl;
 
-TRACE().p( TRACE_OTHER, "init_SDL(config) end" );
+	TRACE().p( TRACE_OTHER, "init_SDL(config) end" );
 }
 
 void CCfg::CDisplay::InitOpenGL() {
-TRACE().p( TRACE_OTHER, "setup_opengl(width=%d,height=%d) begin", X, Y );
-		// Informations openGL
+	TRACE().p( TRACE_OTHER, "setup_opengl(width=%d,height=%d) begin", X, Y );
+	// Informations openGL
 	cout << "Version openGL :\t" << glGetString(GL_VERSION);
 	cout << "\nModele de la carte graphique :\t" << glGetString(GL_RENDERER );
 	cout << "\nFabricant de la carte graphique :\t" << glGetString(GL_VENDOR );
@@ -772,10 +819,10 @@ TRACE().p( TRACE_OTHER, "setup_opengl(width=%d,height=%d) begin", X, Y );
 	glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
 	glViewport( 0, 0, X, Y );
 
-		// Récupération de la liste des extensions
+	// Récupération de la liste des extensions
 	std::string extensions = reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS));
 
-		// Chargement des extensions
+	// Chargement des extensions
 	if(!chargeGLExtension("GL_ARB_vertex_buffer_object",extensions))
 		exit(1);
 
@@ -806,16 +853,16 @@ TRACE().p( TRACE_OTHER, "setup_opengl(width=%d,height=%d) begin", X, Y );
 
 	cout << "\nErreur OpenGL : " << gluErrorString(glGetError());
 
-TRACE().p( TRACE_OTHER, "setup_opengl() end" );
+	TRACE().p( TRACE_OTHER, "setup_opengl() end" );
 }
 
 void CCfg::CDisplay::InitAgar() {
-TRACE().p( TRACE_OTHER, "setup Agar" );
-		// Informations Agar
-    AG_AgarVersion agarVersion;
-    AG_GetVersion(&agarVersion);
+	TRACE().p( TRACE_OTHER, "setup Agar" );
+	// Informations Agar
+	AG_AgarVersion agarVersion;
+	AG_GetVersion(&agarVersion);
 
-    cout << endl << "Version Agar : " << agarVersion.major << "." << agarVersion.minor << "." << agarVersion.patch << " [" << agarVersion.release << "]";
+	cout << endl << "Version Agar : " << agarVersion.major << "." << agarVersion.minor << "." << agarVersion.patch << " [" << agarVersion.release << "]";
 
 	// Initialisation Agar (librairie de gestion du menu)
 	if(AG_InitCore("JKT", 0) == -1 || AG_InitVideoSDL(screen, flags) == -1) {
@@ -830,7 +877,7 @@ TRACE().p( TRACE_OTHER, "setup Agar" );
 }
 
 bool CCfg::CDisplay::chargeGLExtension(const char* ext, string& extensions) {
-		// Recherche de l'extension qui nous intéresse : GL_ARB_texture_compression
+	// Recherche de l'extension qui nous intéresse : GL_ARB_texture_compression
 	if (extensions.find(ext) != std::string::npos) {
 		cout << endl << "Extension OpenGL supportée : " << ext ;
 		return true;
@@ -842,7 +889,7 @@ bool CCfg::CDisplay::chargeGLExtension(const char* ext, string& extensions) {
 }
 
 void CCfg::CDisplay::ChangeVideoSize(int x, int y) {
-TRACE().p( TRACE_OTHER, "changeVideoSize(config) begin" );
+	TRACE().p( TRACE_OTHER, "changeVideoSize(config) begin" );
 	if( !SDL_VideoModeOK(x, y, bpp, flags) ) {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Mode video invalide :\t\t" << endl;
 		return;
@@ -856,20 +903,20 @@ TRACE().p( TRACE_OTHER, "changeVideoSize(config) begin" );
 	{
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Video mode set failed: " << SDL_GetError() << endl;
 		exit( 1 );
-    }
+	}
 
 	X = x;
 	Y = y;
 
 	InitOpenGL();
 
-TRACE().p( TRACE_OTHER, "changeVideoSize() end" );
+	TRACE().p( TRACE_OTHER, "changeVideoSize() end" );
 }
 
 void CCfg::CReseau::Init() {
 	if(SDLNet_Init() == -1) {
-TRACE().p( TRACE_ERROR, "SDLNet_Init() failed : %s", SDLNet_GetError() );
-cerr << endl << __FILE__ << ":" << __LINE__ << " Error : SDLNet_Init : %¨s\n" << SDLNet_GetError();
+		TRACE().p( TRACE_ERROR, "SDLNet_Init() failed : %s", SDLNet_GetError() );
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Error : SDLNet_Init : %¨s\n" << SDLNet_GetError();
 		exit( 1 );
 	}
 }

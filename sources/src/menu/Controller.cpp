@@ -348,8 +348,9 @@ void Controller::executeAction(AG_Event *event) {
 		{
 			ConfigurationReseauView* view = (ConfigurationReseauView*)m_agarView->getView(Viewer::CONFIGURATION_RESEAU_VIEW);
 			Config.Reseau.setIpServer(view->getIpServeur());
-			Config.Reseau.setPort(view->getPortServeur());
-			Config.Reseau.setServeur(view->isServeur());
+			Config.Reseau.setPort(view->getPort());
+			Config.Reseau.setPortTree(view->getPortTree());
+			Config.Reseau.setServeur(view->isModeServeur());
 			Config.Ecrit();
 
 			AG_TextMsg(AG_MSG_WARNING, "Configuration mise a jour");

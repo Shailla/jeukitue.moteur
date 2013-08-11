@@ -17,6 +17,7 @@ using namespace std;
 #include "SDL_net.h"
 
 #include "reseau/new/Interlocutor2.h"
+#include "reseau/new/NotConnectedInterlocutor2.h"
 #include "reseau/new/exception/NotConnectedException.h"
 #include "reseau/new/exception/ConnectionFailedException.h"
 #include "reseau/new/TechnicalInterlocutor.h"
@@ -56,7 +57,7 @@ class ServerUdpInterlocutor : TechnicalInterlocutor {
 
 	string _distantIp;
 	Uint16 _distantPort;
-	Interlocutor2* _interlocutor;
+	NotConnectedInterlocutor2* _notConnectedInterlocutor;
 
 	UDPsocket _socket;
 	SDLNet_SocketSet _socketSet;
@@ -79,7 +80,7 @@ public:
 	virtual ~ServerUdpInterlocutor();
 
 	void close();
-	void connect(Interlocutor2* interlocutor) throw(ConnectionFailedException);
+	NotConnectedInterlocutor2* connect() throw(ConnectionFailedException);
 };
 
 #endif /* SERVERINTERLOCUTOR_H_ */

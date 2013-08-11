@@ -4,6 +4,9 @@
 
 #include <string>
 
+#include "reseau/new/Interlocutor2.h"
+#include "reseau/new/ServerUdpInterlocutor.h"
+
 using namespace std;
 
 class CPlayer;
@@ -27,6 +30,9 @@ public:
 	bool bGame;				// true si une partie est en cours
 	string nomMAP;			// Nom du fichier MAP de la partie en cours
 
+	// Serveur moderne
+	ServerUdpInterlocutor* _serverUdpInterlocutor;
+
 		// Constructeurs / Destructeur
 	CServer();	
 	~CServer();
@@ -42,7 +48,7 @@ public:
 	void decodeProxyPlayer( CPlayer *player ); 	// Décode les paquets provenant des différents joueurs
 	bool acceptPlayer( CSPA *spa );				// Accepte un nouveau joueur dans la partie
 
-	bool ouvre( Uint16 port );
+	NotConnectedInterlocutor2* ouvre(Uint16 port, Uint16 portTree);
 	void emet();
 
 private:

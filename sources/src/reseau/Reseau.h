@@ -3,6 +3,7 @@
 #define __JKT__CRESEAU_H
 
 #include "enumReseau.h"
+#include "reseau/new/Interlocutor2.h"
 
 /* Remarque, le protocole est comme suit par exemple :
 	- UDP_INFO, NULL : demande les infos serveur
@@ -38,10 +39,10 @@ public:
 
 	CServer *getServer();
 
-	bool ouvreServer( Uint16 port );		// Connecte le serveur
-	void fermeServer();						// Déconnecte le serveur
+	bool ouvreServer();	// Connecte le serveur
+	void fermeServer();										// Déconnecte le serveur
 
-	void recoitServer();					// Recoit tous les paquets
+	void recoitServer();									// Recoit tous les paquets
 
 
 	/* ********************************************************
@@ -50,7 +51,7 @@ public:
 
 	CClient *getClient();
 
-	bool ouvreClient();						// Connecte le client au serveur
+	Interlocutor2* ouvreClient();						// Connecte le client au serveur
 	void fermeClient();						// Déconnecte le client du serveur
 };
 

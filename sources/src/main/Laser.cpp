@@ -111,8 +111,8 @@ bool CLaser::Refresh()
 	int curseur = -1;
 	CPlayer *player;
 
-	while(Game.pTabIndexPlayer->Suivant(curseur)) {
-		player = Game.pTabIndexPlayer->operator [](curseur);
+	while(Game._pTabIndexPlayer->Suivant(curseur)) {
+		player = Game._pTabIndexPlayer->operator [](curseur);
 
 		if(player != m_Player)
 		{

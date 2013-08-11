@@ -41,7 +41,7 @@ extern CReseau Reseau;
 CGame::CGame() {
 	m_Mode = JKT_MODE_PARTIE_NULL;
 
-	pTabIndexPlayer = NULL;	// Pas de liste de joueurs
+	_pTabIndexPlayer = NULL;	// Pas de liste de joueurs
 	m_pMap = NULL;			// Pas de map
 	m_Erwin = NULL;			// Pas de joueur actif
 	m_bGravite = true;		// Par défaut la gravité est active
@@ -85,28 +85,28 @@ TRACE().p( TRACE_ERROR, "CGame::getStatutClient() -> %d end%T", statut, this );
 }
 
 void CGame::setPlayerList(int nbr) {
-	if(pTabIndexPlayer) {
-		delete pTabIndexPlayer;
+	if(_pTabIndexPlayer) {
+		delete _pTabIndexPlayer;
 	}
 
-	pTabIndexPlayer = new CTableauIndex<CPlayer>(nbr);
+	_pTabIndexPlayer = new CTableauIndex<CPlayer>(nbr);
 
 	cout << endl << "setPlayerList";
 
 	int curseur = -1;
 
-	while(pTabIndexPlayer->Suivant(curseur)) {
-		CPlayer* player = pTabIndexPlayer->operator [](curseur);
+	while(_pTabIndexPlayer->Suivant(curseur)) {
+		CPlayer* player = _pTabIndexPlayer->operator [](curseur);
 
 		cout << endl << "\t" << curseur << ":" << player;
 	}
 }
 
 void CGame::quit() {
-	if(pTabIndexPlayer)
-		delete pTabIndexPlayer;
+	if(_pTabIndexPlayer)
+		delete _pTabIndexPlayer;
 
-	pTabIndexPlayer = 0;
+	_pTabIndexPlayer = 0;
 }
 
 bool CGame::openMap(const string &nomFichierMap) throw(JktUtils::CErreur) {
@@ -161,9 +161,9 @@ void CGame::Quit() {
 	cout << "\nDestruction des joueurs begin";
 	int curseur = -1;
 
-	if(pTabIndexPlayer) {
-		while(pTabIndexPlayer->Suivant(curseur)) {
-			CPlayer* player = (*pTabIndexPlayer)[curseur];
+	if(_pTabIndexPlayer) {
+		while(_pTabIndexPlayer->Suivant(curseur)) {
+			CPlayer* player = (*_pTabIndexPlayer)[curseur];
 
 			if(player) {
 				cout << endl << "Destruction du joueur '" << player->nom() << "'" << flush;
@@ -172,8 +172,8 @@ void CGame::Quit() {
 		}
 
 		cout << "\nDestruction de la liste des joueurs";
-		delete pTabIndexPlayer;	// Destruction du tableau des joueurs
-		pTabIndexPlayer = 0;
+		delete _pTabIndexPlayer;	// Destruction du tableau des joueurs
+		_pTabIndexPlayer = 0;
 	}
 	cout << "\nDestruction des joueurs end";
 
@@ -210,8 +210,8 @@ void CGame::Refresh() {
 	CPlayer *player;
 	int curseur = -1;
 
-	while(pTabIndexPlayer->Suivant(curseur)) {		// Pour chaque joueur
-		player = pTabIndexPlayer->operator [](curseur);
+	while(_pTabIndexPlayer->Suivant(curseur)) {		// Pour chaque joueur
+		player = _pTabIndexPlayer->operator [](curseur);
 
 		if(player) {
 			player->RefreshProjectils();
@@ -222,8 +222,8 @@ void CGame::Refresh() {
 void CGame::GereContactPlayers() {	// Gère les contacts de tous les joueurs avec la map
 	CPlayer *player;
 	int curseur = -1;
-	while(pTabIndexPlayer->Suivant(curseur)) {		// Pour chaque joueur
-		player = pTabIndexPlayer->operator [](curseur);
+	while(_pTabIndexPlayer->Suivant(curseur)) {		// Pour chaque joueur
+		player = _pTabIndexPlayer->operator [](curseur);
 
 		if(player) {
 			player->Pente(0.0f);
@@ -236,8 +236,8 @@ void CGame::AffichePlayers() {
 	CPlayer *player;
 	int curseur = -1;
 
-	while(pTabIndexPlayer->Suivant(curseur)) {
-		player = pTabIndexPlayer->operator [](curseur);
+	while(_pTabIndexPlayer->Suivant(curseur)) {
+		player = _pTabIndexPlayer->operator [](curseur);
 
 		if(player) {
 			player->Affiche(); 				//affiche un seul joueur pour le moment
@@ -251,8 +251,8 @@ void CGame::AfficheProjectils() {	// Affiche tous les projectils
 	CPlayer *player;
 	int curseur = -1;
 
-	while(pTabIndexPlayer->Suivant(curseur)) {	// Pour chaque joueur
-		player = pTabIndexPlayer->operator [](curseur);
+	while(_pTabIndexPlayer->Suivant(curseur)) {	// Pour chaque joueur
+		player = _pTabIndexPlayer->operator [](curseur);
 
 		if(player) {
 			player->AfficheProjectils();
@@ -315,8 +315,8 @@ void CGame::deplaceTousPlayer() {
 	CPlayer *player;
 	int curseur = -1;
 
-	while(pTabIndexPlayer->Suivant(curseur)) {
-		player = pTabIndexPlayer->operator [](curseur);
+	while(_pTabIndexPlayer && _pTabIndexPlayer->Suivant(curseur)) {
+		player = _pTabIndexPlayer->operator [](curseur);
 
 		if(player) {
 			player->deplace();
@@ -328,8 +328,8 @@ void CGame::faitTousRequetesClavier() {
 	CPlayer *player;
 	int curseur = -1;
 
-	while(pTabIndexPlayer->Suivant(curseur)) {	//exécute les requêtes clavier sur les joueurs
-		player = pTabIndexPlayer->operator[](curseur);
+	while(_pTabIndexPlayer && _pTabIndexPlayer->Suivant(curseur)) {	//exécute les requêtes clavier sur les joueurs
+		player = _pTabIndexPlayer->operator[](curseur);
 
 		if(player) {
 			player->faitRequeteClavier();
@@ -341,8 +341,8 @@ void CGame::faitTousPlayerGravite() {
 	int curseur = -1;
 	CPlayer *player;			//Prends le premier player
 
-	while(pTabIndexPlayer->Suivant(curseur)) {
-		player = pTabIndexPlayer->operator [](curseur);
+	while(_pTabIndexPlayer && _pTabIndexPlayer->Suivant(curseur)) {
+		player = _pTabIndexPlayer->operator [](curseur);
 
 		if(player) {
 			player->exeActionFunc();	//exécute l'action périodique (gravité,...) du joueur

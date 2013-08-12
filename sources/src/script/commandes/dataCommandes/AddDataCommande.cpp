@@ -57,9 +57,6 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 				printErrLn("La branche parent specifiee n'existe pas", userOutput);
 			}
 		}
-		else {
-			printErrLn("Syntaxe incorrecte (arbre inconnu)", userOutput);
-		}
 	}
 	else if(subCommande1 == "valeur") {
 		DataTree* tree = NULL;
@@ -113,9 +110,6 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 			else {
 				printErrLn("Syntaxe incorrecte (type de donnee inconnu)", userOutput);
 			}
-		}
-		else {
-			printErrLn("Syntaxe incorrecte (arbre inconnu)", userOutput);
 		}
 	}
 	else {

@@ -17,13 +17,19 @@ HelpCommande::HelpCommande(CommandeInterpreter* interpreter) : Commande(interpre
 
 void HelpCommande::executeIt(std::string ligne, bool userOutput) {
 	JktUtils::StringUtils::trim(ligne);
-	Commande* commande = _interpreter->getCommande(ligne);
 
-	if(commande == NULL) {
-		printErrLn("Cette commande n'existe pas", userOutput);
+	if(ligne.size() == 0) {
+		printErrLn("Veuillez saisir le nom d'une commande", userOutput);
 	}
 	else {
-		printStdLn(commande->getHelp(), userOutput);
+		Commande* commande = _interpreter->getCommande(ligne);
+
+		if(commande == NULL) {
+			printErrLn("Cette commande n'existe pas", userOutput);
+		}
+		else {
+			printStdLn(commande->getHelp(), userOutput);
+		}
 	}
 }
 

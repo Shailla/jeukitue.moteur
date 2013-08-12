@@ -86,7 +86,7 @@ TRACE().p( TRACE_MENU, "lanceInfoServer(var=%x)", arg );
 
 	MenuInfoserver.add_ItemsDroits( 0, "????" );
 	MenuInfoserver.add_ItemsDroits( 1, "????" );
-	Reseau.getClient()->sendRequestInfoToServer();		// Envoie ses infos au serveur
+	Reseau.getClient()->sendRequestInfoToServer();		// Demande ses infos au serveur
 
 	CDlg::SetMenuActif( &MenuInfoserver );
 }

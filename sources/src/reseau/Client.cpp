@@ -5,6 +5,7 @@
 
 using namespace std;
 
+#include "main/Fabrique.h"
 #include "util/Erreur.h"
 #include "util/V3D.h"
 #include "util/TableauIndex.cpp"
@@ -16,6 +17,7 @@ using namespace std;
 #include "spatial/contact.h"
 #include "main/Clavier.h"
 #include "main/Game.h"
+#include "menu/MultijoueursView.h"
 
 #include "enumReseau.h"
 #include "reseau/Client.h"
@@ -315,6 +317,10 @@ TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Info serveur%T", this );
 				spaMaitre.readChar( txt );				// Réception de la map en cours
 				m_InfoServer.map = txt;
 				m_InfoServer.Ready( true );			// Indique que les infos sont actualisées
+
+				MultijoueursView* view = (MultijoueursView*)Fabrique::getAgarView()->getView(Viewer::MULTIJOUEURS_VIEW);
+				view->setServerName(m_InfoServer.nom);
+				view->setActiveMap(m_InfoServer.map);
 			}
 			result = true;
 			break;
@@ -336,6 +342,10 @@ TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse ping%T", this );
 				cout << endl << "Reponse a un ping recue";
 				if( m_timePingClientServer==spaMaitre.read32() ) {
 					m_pingClientServer = SDL_GetTicks() - m_timePingClientServer;
+
+					MultijoueursView* view = (MultijoueursView*)Fabrique::getAgarView()->getView(Viewer::MULTIJOUEURS_VIEW);
+					view->setServerName(m_InfoServer.nom);
+					view->setPing(m_pingClientServer);
 				}
 			}
 			result = true;

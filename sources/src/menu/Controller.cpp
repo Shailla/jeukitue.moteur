@@ -4,7 +4,7 @@
 using namespace std;
 
 #ifdef WIN32
-	#include <windows.h>
+#include <windows.h>
 #endif
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -24,6 +24,7 @@ using namespace std;
 #include "menu/ConfigurationJoueurView.h"
 #include "menu/ConfigurationReseauView.h"
 #include "menu/LanceServeurView.h"
+#include "menu/MultijoueursView.h"
 #include "menu/ProgressBarView.h"
 #include "menu/ConfigurationCommandesView.h"
 #include "main/Fabrique.h"
@@ -52,24 +53,26 @@ using namespace std;
 using namespace JktMenu;
 using namespace JktMoteur;
 using namespace JktPlugin;
+using namespace JktNet;
 
 extern CGame Game;
 extern CCfg Config;
+extern CReseau Reseau;
 void quit_game(int code);
 
 Viewer* Controller::m_agarView;
 
 Controller::Controller(Viewer* agarView) {
-    m_agarView = agarView;
+	m_agarView = agarView;
 }
 
 Controller::~Controller(void) {
 }
 
 void Controller::executeAction(AG_Event *event) {
-    int action = AG_INT(1);
+	int action = AG_INT(1);
 
-    switch(action) {
+	switch(action) {
 	case ShowMainMenuAction:
 		m_agarView->showMenuView(Viewer::MAIN_MENU_VIEW);
 		break;
@@ -78,13 +81,13 @@ void Controller::executeAction(AG_Event *event) {
 		m_agarView->showMenuView(Viewer::MULTIJOUEURS_VIEW);
 		break;
 
-    case ShowConfigurationMenuAction:
-        m_agarView->showMenuView(Viewer::CONFIGURATION_VIEW);
-        break;
+	case ShowConfigurationMenuAction:
+		m_agarView->showMenuView(Viewer::CONFIGURATION_VIEW);
+		break;
 
-    case QuitGameAction:
-    	Game.Quit();
-        break;
+	case QuitGameAction:
+		Game.Quit();
+		break;
 
 	case ShowConfigurationVideoViewAction:
 		m_agarView->showMenuView(Viewer::CONFIGURATION_VIDEO_VIEW);
@@ -103,241 +106,267 @@ void Controller::executeAction(AG_Event *event) {
 		break;
 
 	case WaitUserCommandChoice:
-		{
-			int commandId = AG_INT(2);
+	{
+		int commandId = AG_INT(2);
 
-			ConfigurationCommandesView::beginWaitUserCommandChoice(commandId);
+		ConfigurationCommandesView::beginWaitUserCommandChoice(commandId);
 
-			// Réactualise la fenêtre
-			m_agarView->showMenuView(Viewer::CONFIGURATION_COMMANDES_VIEW);
-		}
-		break;
+		// Réactualise la fenêtre
+		m_agarView->showMenuView(Viewer::CONFIGURATION_COMMANDES_VIEW);
+	}
+	break;
 
 	case ShowConfigurationAudio:
 		m_agarView->showMenuView(Viewer::CONFIGURATION_AUDIO_VIEW);
 		break;
 
-    case ShowCentralisateurViewAction:
-		{
-			Centralisateur* centralisateur = Fabrique::getCentralisateur();
-			centralisateur->connecter((char*)Config.Joueur.nom.c_str(),
-			                          (char*)Config.Centralisateur.getIp().c_str(),
-				                      Config.Centralisateur.getPort());
-	        centralisateur->sendSignalement();
+	case ShowCentralisateurViewAction:
+	{
+		Centralisateur* centralisateur = Fabrique::getCentralisateur();
+		centralisateur->connecter((char*)Config.Joueur.nom.c_str(),
+				(char*)Config.Centralisateur.getIp().c_str(),
+				Config.Centralisateur.getPort());
+		centralisateur->sendSignalement();
 
-			m_agarView->showMenuView(Viewer::CENTRALISATEUR_VIEW);
-		}
-        break;
+		m_agarView->showMenuView(Viewer::CENTRALISATEUR_VIEW);
+	}
+	break;
 
-    case ShowMenuConfigCentralisateurAction:
-        m_agarView->showMenuView(Viewer::CONFIG_CENTRALISATEUR_VIEW);
-        break;
-
-	// Envoi d'un message de chat sur le serveur centralisateur
-	case SendGlobalChatTextAction:
-		{
-			CentralisateurView* view = (CentralisateurView*)m_agarView->getView(Viewer::CENTRALISATEUR_VIEW);
-			const char* textToSend = view->getTextToSend();
-			Centralisateur* centralisateur = Fabrique::getCentralisateur();
-			centralisateur->sendMessageChat(string(textToSend), Config.Joueur.nom.c_str());
-			view->clearTextToSend();
-		}
+	case ShowMenuConfigCentralisateurAction:
+		m_agarView->showMenuView(Viewer::CONFIG_CENTRALISATEUR_VIEW);
 		break;
 
-    case ShowMenuOpenSceneAction:
-        m_agarView->showMenuView(Viewer::OPEN_SCENE_VIEW);
-        break;
+		// Envoi d'un message de chat sur le serveur centralisateur
+	case SendGlobalChatTextAction:
+	{
+		CentralisateurView* view = (CentralisateurView*)m_agarView->getView(Viewer::CENTRALISATEUR_VIEW);
+		const char* textToSend = view->getTextToSend();
+		Centralisateur* centralisateur = Fabrique::getCentralisateur();
+		centralisateur->sendMessageChat(string(textToSend), Config.Joueur.nom.c_str());
+		view->clearTextToSend();
+	}
+	break;
 
-    case ShowPluginsManagementViewAction:
-        m_agarView->showMenuView(Viewer::PLUGINS_MANAGEMENT_VIEW);
-        break;
+	case ShowMenuOpenSceneAction:
+		m_agarView->showMenuView(Viewer::OPEN_SCENE_VIEW);
+		break;
 
-    case ShowAboutViewAction:
-        m_agarView->showMenuView(Viewer::ABOUT_VIEW);
-        break;
+	case ShowPluginsManagementViewAction:
+		m_agarView->showMenuView(Viewer::PLUGINS_MANAGEMENT_VIEW);
+		break;
 
-    case ShowOpenAseViewAction:
-        m_agarView->showMenuView(Viewer::OPEN_SCENE_ASE_VIEW);
-        break;
+	case ShowAboutViewAction:
+		m_agarView->showMenuView(Viewer::ABOUT_VIEW);
+		break;
 
-	// Ouvre l'écran de choix d'une Map en mode de jeu local
+	case ShowOpenAseViewAction:
+		m_agarView->showMenuView(Viewer::OPEN_SCENE_ASE_VIEW);
+		break;
+
+		// Ouvre l'écran de choix d'une Map en mode de jeu local
 	case ShowOpenMapViewAction:
-        m_agarView->showMenuView(Viewer::OPEN_SCENE_MAP_VIEW);
-        break;
+		m_agarView->showMenuView(Viewer::OPEN_SCENE_MAP_VIEW);
+		break;
 
-	// Ecran de choix d'une Map à lancer en mode serveur
+		// Ecran de choix d'une Map à lancer en mode serveur
 	case ShowLanceServeurViewAction:
 		m_agarView->showMenuView(Viewer::LANCE_SERVEUR_VIEW);
 		break;
 
-	// Ouvere une MAP en mode serveur
+		// Ouvere une MAP en mode serveur
 	case LanceServeurMapAction:
-        {
-            // Récupération du nom de la Map à ouvrir
-			int mapNumber = AG_INT(2);
-			LanceServeurView* view = (LanceServeurView*)m_agarView->getView(Viewer::LANCE_SERVEUR_VIEW);
-			string mapName = view->getMapName(mapNumber);
+	{
+		// Récupération du nom de la Map à ouvrir
+		int mapNumber = AG_INT(2);
+		LanceServeurView* view = (LanceServeurView*)m_agarView->getView(Viewer::LANCE_SERVEUR_VIEW);
+		string mapName = view->getMapName(mapNumber);
 
-			cout << endl << "Ouverture de la Map '" << mapName << "'";
+		cout << endl << "Ouverture de la Map '" << mapName << "'";
 
-			// Ouverture de la Map
-            Game.RequeteProcess.setOuvreMapServer(mapName);
-        }
-		break;
+		// Ouverture de la Map
+		Game.RequeteProcess.setOuvreMapServer(mapName);
+	}
+	break;
 
 	// Ouverture d'une Map en mode de jeu local
 	case OpenMapAction:
-        {
-            // Récupération du nom de la Map à ouvrir
-			int mapNumber = AG_INT(2);
-			OpenSceneMapView* view = (OpenSceneMapView*)m_agarView->getView(Viewer::OPEN_SCENE_MAP_VIEW);
-			string mapName = view->getMapName(mapNumber);
+	{
+		// Récupération du nom de la Map à ouvrir
+		int mapNumber = AG_INT(2);
+		OpenSceneMapView* view = (OpenSceneMapView*)m_agarView->getView(Viewer::OPEN_SCENE_MAP_VIEW);
+		string mapName = view->getMapName(mapNumber);
 
-			cout << endl << "Ouverture de la Map '" << mapName << "'";
+		cout << endl << "Ouverture de la Map '" << mapName << "'";
 
-			// Ouverture de la Map
-            Game.RequeteProcess.setOuvreMapLocal(mapName);
-        }
-        break;
+		// Ouverture de la Map
+		Game.RequeteProcess.setOuvreMapLocal(mapName);
+	}
+	break;
 
 	case RejoindrePartieServerAction:
-		break;
+	{
+		CClient* client = Reseau.getClient();
+
+		if(client) {
+			client->sendJoinTheGame(Config.Joueur.nom);
+		}
+	}
+	break;
 
 	case InfoServerAction:
-		break;
+	{
+		MultijoueursView* view = (MultijoueursView*)m_agarView->getView(Viewer::MULTIJOUEURS_VIEW);
+		view->setServerName("");
+		view->setActiveMap("");
+		CClient* client = Reseau.getClient();
+
+		if(client) {
+			client->sendRequestInfoToServer();		// Demande ses infos au serveur
+		}
+	}
+	break;
 
 	case PingServerAction:
-		break;
+	{
+		MultijoueursView* view = (MultijoueursView*)m_agarView->getView(Viewer::MULTIJOUEURS_VIEW);
+		view->setPing(-1);
+		CClient* client = Reseau.getClient();
 
-    // Activation d'un plugin
+		if(client) {
+			client->sendPingToServer();				// Demande au serveur de répondre à un ping
+		}
+	}
+	break;
+
+	// Activation d'un plugin
 	case PluginActivateAction:
-		{
-			// Récupération du nom de la Map à ouvrir
-			int pluginNumber = AG_INT(2);
-			PluginsManagementView* view = (PluginsManagementView*)m_agarView->getView(Viewer::PLUGINS_MANAGEMENT_VIEW);
-			string pluginName = view->getPluginName(pluginNumber);
+	{
+		// Récupération du nom de la Map à ouvrir
+		int pluginNumber = AG_INT(2);
+		PluginsManagementView* view = (PluginsManagementView*)m_agarView->getView(Viewer::PLUGINS_MANAGEMENT_VIEW);
+		string pluginName = view->getPluginName(pluginNumber);
 
-			cout << endl << "Activate plugin : '" << pluginName << "'";
+		cout << endl << "Activate plugin : '" << pluginName << "'";
 
-			PluginEngine* pluginEngine = Fabrique::getPluginEngine();
-			pluginEngine->activatePlugin(pluginName);
-		}
-		break;
+		PluginEngine* pluginEngine = Fabrique::getPluginEngine();
+		pluginEngine->activatePlugin(pluginName);
+	}
+	break;
 
-    // Désactivation d'un plugin
+	// Désactivation d'un plugin
 	case PluginDeactivateAction:
-		{
-			// Récupération du nom de la Map à ouvrir
-			int pluginNumber = AG_INT(2);
-			PluginsManagementView* view = (PluginsManagementView*)m_agarView->getView(Viewer::PLUGINS_MANAGEMENT_VIEW);
-			string pluginName = view->getPluginName(pluginNumber);
+	{
+		// Récupération du nom de la Map à ouvrir
+		int pluginNumber = AG_INT(2);
+		PluginsManagementView* view = (PluginsManagementView*)m_agarView->getView(Viewer::PLUGINS_MANAGEMENT_VIEW);
+		string pluginName = view->getPluginName(pluginNumber);
 
-			cout << endl << "Deactivate plugin : '" << pluginName << "'";
+		cout << endl << "Deactivate plugin : '" << pluginName << "'";
 
-			PluginEngine* pluginEngine = Fabrique::getPluginEngine();
-			pluginEngine->deactivatePlugin(pluginName);
-		}
-		break;
+		PluginEngine* pluginEngine = Fabrique::getPluginEngine();
+		pluginEngine->deactivatePlugin(pluginName);
+	}
+	break;
 
 	// Menu de configuration d'Agar
 	case ShowAgarConfigurationViewAction:
-		{
-			DEV_ConfigShow();
-		}
-		break;
+	{
+		DEV_ConfigShow();
+	}
+	break;
 
 	// Affiche le menu de debug
 	case ShowDebugViewAction:
-		{
-			m_agarView->showMenuView(Viewer::DEBUG_MENU_VIEW);
-		}
-		break;
+	{
+		m_agarView->showMenuView(Viewer::DEBUG_MENU_VIEW);
+	}
+	break;
 
 	// Affiche les données de la MAP courante sous forme d'un arbre
 	case ShowMapTreeViewAction:
-		{
-			m_agarView->showMenuView(Viewer::MAP_TREE_VIEW);
-		}
-		break;
+	{
+		m_agarView->showMenuView(Viewer::MAP_TREE_VIEW);
+	}
+	break;
 
 	// Affiche les données de la MAP courante sous forme d'un arbre
 	case ShowDataTreeViewAction:
-		{
-			m_agarView->showMenuView(Viewer::DATA_TREE_VIEW);
-		}
-		break;
+	{
+		m_agarView->showMenuView(Viewer::DATA_TREE_VIEW);
+	}
+	break;
 
 	// Affiche la denière erreur OpenGL dans une popup
 	case ShowLastOpenGlErrorViewAction:
-		{
-			stringstream openGlError;
-			openGlError << "Deniere erreur OpenGL : '" << gluErrorString(glGetError()) << "'";
-			cerr << endl << __FILE__ << ":" << __LINE__ << " " << openGlError.str();
-			AG_TextMsg(AG_MSG_ERROR, openGlError.str().c_str());
-		}
-		break;
+	{
+		stringstream openGlError;
+		openGlError << "Deniere erreur OpenGL : '" << gluErrorString(glGetError()) << "'";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " " << openGlError.str();
+		AG_TextMsg(AG_MSG_ERROR, openGlError.str().c_str());
+	}
+	break;
 
 	// Import d'un fichier ASE
 	case ImportAseAction:
-        {
-            // Récupération du nom de la Map à ouvrir
-			int aseNumber = AG_INT(2);
-			OpenSceneASEView* view = (OpenSceneASEView*)m_agarView->getView(Viewer::OPEN_SCENE_ASE_VIEW);
-			string aseName = view->getAseName(aseNumber);
+	{
+		// Récupération du nom de la Map à ouvrir
+		int aseNumber = AG_INT(2);
+		OpenSceneASEView* view = (OpenSceneASEView*)m_agarView->getView(Viewer::OPEN_SCENE_ASE_VIEW);
+		string aseName = view->getAseName(aseNumber);
 
-			// Ouverture de la Map
-			string nomRep = "./Map/" + aseName + "/";
+		// Ouverture de la Map
+		string nomRep = "./Map/" + aseName + "/";
 
-			if(CFindFolder::mkdir(nomRep.c_str()) != 0)	{	// Création du répertoire pour les textures
-				// Si un répertoire existe déjà, demande s'il faut l'écraser
-				OpenSceneASEEcraseRepView* view = (OpenSceneASEEcraseRepView*)m_agarView->getView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
-				view->setRepName(nomRep);	// Nom du répertoire du fichier Ase
-				view->setAseName(aseName);	// Nom du fichier Ase
-
-				m_agarView->showMenuView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
-			}
-			else {
-				try {
-					ConsoleAvancementView* console = (ConsoleAvancementView*)m_agarView->getView(Viewer::CONSOLE_AVANCEMENT_VIEW);
-					console->init("Import fichier ASE");
-					m_agarView->showMenuView(Viewer::CONSOLE_AVANCEMENT_VIEW);
-
-					// Import du fichier ASE
-					AseImporter::lanceImportAse(aseName, console);
-				}
-				catch(CErreur& erreur) {
-					stringstream texte;
-					texte << "Echec d'import ASE : " << erreur.toString();
-					AG_TextMsg(AG_MSG_ERROR, texte.str().c_str());
-				}
-			}
-        }
-        break;
-
-	case OpenSceneASEEcraseRepOuiAction:
-		{
+		if(CFindFolder::mkdir(nomRep.c_str()) != 0)	{	// Création du répertoire pour les textures
+			// Si un répertoire existe déjà, demande s'il faut l'écraser
 			OpenSceneASEEcraseRepView* view = (OpenSceneASEEcraseRepView*)m_agarView->getView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
-			
+			view->setRepName(nomRep);	// Nom du répertoire du fichier Ase
+			view->setAseName(aseName);	// Nom du fichier Ase
+
+			m_agarView->showMenuView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
+		}
+		else {
 			try {
-				// Suppression du répertoire
-				string repName = view->getRepName();
-				AseImporter::supprimeRepertoire(repName);
-				
-				// Import du fichier ASE
 				ConsoleAvancementView* console = (ConsoleAvancementView*)m_agarView->getView(Viewer::CONSOLE_AVANCEMENT_VIEW);
 				console->init("Import fichier ASE");
 				m_agarView->showMenuView(Viewer::CONSOLE_AVANCEMENT_VIEW);
 
-				string aseName = view->getAseName();
+				// Import du fichier ASE
 				AseImporter::lanceImportAse(aseName, console);
 			}
-			catch(CErreur &erreur) {
+			catch(CErreur& erreur) {
 				stringstream texte;
 				texte << "Echec d'import ASE : " << erreur.toString();
 				AG_TextMsg(AG_MSG_ERROR, texte.str().c_str());
 			}
 		}
-		break;
+	}
+	break;
+
+	case OpenSceneASEEcraseRepOuiAction:
+	{
+		OpenSceneASEEcraseRepView* view = (OpenSceneASEEcraseRepView*)m_agarView->getView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
+
+		try {
+			// Suppression du répertoire
+			string repName = view->getRepName();
+			AseImporter::supprimeRepertoire(repName);
+
+			// Import du fichier ASE
+			ConsoleAvancementView* console = (ConsoleAvancementView*)m_agarView->getView(Viewer::CONSOLE_AVANCEMENT_VIEW);
+			console->init("Import fichier ASE");
+			m_agarView->showMenuView(Viewer::CONSOLE_AVANCEMENT_VIEW);
+
+			string aseName = view->getAseName();
+			AseImporter::lanceImportAse(aseName, console);
+		}
+		catch(CErreur &erreur) {
+			stringstream texte;
+			texte << "Echec d'import ASE : " << erreur.toString();
+			AG_TextMsg(AG_MSG_ERROR, texte.str().c_str());
+		}
+	}
+	break;
 
 	case OpenSceneASEEcraseRepNonAction:
 		m_agarView->showMenuView(Viewer::MAIN_MENU_VIEW);
@@ -345,104 +374,104 @@ void Controller::executeAction(AG_Event *event) {
 		break;
 
 	case SaveConfigJoueurAction:
-		{
-			ConfigurationJoueurView* view = (ConfigurationJoueurView*)m_agarView->getView(Viewer::CONFIGURATION_JOUEUR_VIEW);
-			Config.Joueur.nom = view->getJoueurName();
-			Config.Joueur.mapName = view->getJoueurMapName();
-			Config.Ecrit();
-		}
-		break;
+	{
+		ConfigurationJoueurView* view = (ConfigurationJoueurView*)m_agarView->getView(Viewer::CONFIGURATION_JOUEUR_VIEW);
+		Config.Joueur.nom = view->getJoueurName();
+		Config.Joueur.mapName = view->getJoueurMapName();
+		Config.Ecrit();
+	}
+	break;
 
 	case SaveConfigReseauAction:
-		{
-			ConfigurationReseauView* view = (ConfigurationReseauView*)m_agarView->getView(Viewer::CONFIGURATION_RESEAU_VIEW);
-			Config.Reseau.setIpServer(view->getIpServeur());
-			Config.Reseau.setPort(view->getPort());
-			Config.Reseau.setPortTree(view->getPortTree());
-			Config.Reseau.setServeur(view->isModeServeur());
-			Config.Ecrit();
+	{
+		ConfigurationReseauView* view = (ConfigurationReseauView*)m_agarView->getView(Viewer::CONFIGURATION_RESEAU_VIEW);
+		Config.Reseau.setIpServer(view->getIpServeur());
+		Config.Reseau.setPort(view->getPort());
+		Config.Reseau.setPortTree(view->getPortTree());
+		Config.Reseau.setServeur(view->isModeServeur());
+		Config.Ecrit();
 
-			AG_TextMsg(AG_MSG_WARNING, "Configuration mise a jour");
-		}
-		break;
+		AG_TextMsg(AG_MSG_WARNING, "Configuration mise a jour");
+	}
+	break;
 
 
 	// Mise à jour de la configuration du centralisateur
 	case SaveConfigCentralisateurAction:
-		{
-            ConfigCentralisateurView* view = (ConfigCentralisateurView*)m_agarView->getView(Viewer::CONFIG_CENTRALISATEUR_VIEW);
-			Config.Centralisateur.setIp(view->getAdresse());
-			Config.Centralisateur.setPort(view->getPort());
-			Config.Ecrit();
+	{
+		ConfigCentralisateurView* view = (ConfigCentralisateurView*)m_agarView->getView(Viewer::CONFIG_CENTRALISATEUR_VIEW);
+		Config.Centralisateur.setIp(view->getAdresse());
+		Config.Centralisateur.setPort(view->getPort());
+		Config.Ecrit();
 
-			AG_TextMsg(AG_MSG_WARNING, "Configuration mise a jour");
-		}
-		break;
+		AG_TextMsg(AG_MSG_WARNING, "Configuration mise a jour");
+	}
+	break;
 
 	// Mise à jour de la page des fichiers téléchargeables par le jeu
 	case ReloadDownloadFilesAction:
-		{
-			try {
-				Centralisateur* centralisateur = Fabrique::getCentralisateur();
-				vector<DownloadFileItem> items = centralisateur->askDownloadFileList(4635);
+	{
+		try {
+			Centralisateur* centralisateur = Fabrique::getCentralisateur();
+			vector<DownloadFileItem> items = centralisateur->askDownloadFileList(4635);
 
-				CentralisateurView* view = (CentralisateurView*)m_agarView->getView(Viewer::CENTRALISATEUR_VIEW);
-				view->updateDownloadFileList(items);
-			}
-			catch(CentralisateurTcpException& exception) {
-				AG_TextMsg(AG_MSG_WARNING, "Impossible d'obtenir la listes des fichiers en telechargement");
-			}
+			CentralisateurView* view = (CentralisateurView*)m_agarView->getView(Viewer::CENTRALISATEUR_VIEW);
+			view->updateDownloadFileList(items);
 		}
-		break;
+		catch(CentralisateurTcpException& exception) {
+			AG_TextMsg(AG_MSG_WARNING, "Impossible d'obtenir la listes des fichiers en telechargement");
+		}
+	}
+	break;
 
 	// Mise à jour de la page des fichiers téléchargeables par le jeu
 	case DownloadOneFileAction:
-		{
-			long downloadId = AG_LONG(2);
+	{
+		long downloadId = AG_LONG(2);
 
-			try {
-				Centralisateur* centralisateur = Fabrique::getCentralisateur();
+		try {
+			Centralisateur* centralisateur = Fabrique::getCentralisateur();
 
-				ProgressBarView* view = (ProgressBarView*)m_agarView->getView(Viewer::PROGRESS_BAR_VIEW);
-				
-				view->show();
+			ProgressBarView* view = (ProgressBarView*)m_agarView->getView(Viewer::PROGRESS_BAR_VIEW);
 
-				centralisateur->downloadOneFile(4635, downloadId, view);
-			}
-			catch(CentralisateurTcpException& exception) {
-				AG_TextMsg(AG_MSG_WARNING, "Erreur lors du telechargement");
-			}
+			view->show();
+
+			centralisateur->downloadOneFile(4635, downloadId, view);
 		}
-		break;
+		catch(CentralisateurTcpException& exception) {
+			AG_TextMsg(AG_MSG_WARNING, "Erreur lors du telechargement");
+		}
+	}
+	break;
 
 	// Demande de rafraichissement de la vue passée en paramètre
 	case Refresh:
-		{
-			View* view = (View*)AG_PTR(2);
-			view->refresh();
-		}
-		break;
+	{
+		View* view = (View*)AG_PTR(2);
+		view->refresh();
+	}
+	break;
 
-    case QuitAction:
+	case QuitAction:
 		quit_game(0);
 		break;
 
-    case ExecuteUserCommandeAction:
-    {
-    	ConsoleView* view = (ConsoleView*)m_agarView->getView(Viewer::CONSOLE_VIEW);
-    	string commande = view->getCommandAndClearCommandLine();
+	case ExecuteUserCommandeAction:
+	{
+		ConsoleView* view = (ConsoleView*)m_agarView->getView(Viewer::CONSOLE_VIEW);
+		string commande = view->getCommandAndClearCommandLine();
 
-    	if(!JktUtils::StringUtils::isBlank(commande)) {
-    		Fabrique::getCommandeInterpreter()->interpreteCommande(commande, true);
-    	}
+		if(!JktUtils::StringUtils::isBlank(commande)) {
+			Fabrique::getCommandeInterpreter()->interpreteCommande(commande, true);
+		}
 
-    	break;
-    }
+		break;
+	}
 
-    default:
+	default:
 		TRACE().p( TRACE_ERROR, "Unknown action : %d!", action );
-        AG_TextMsg(AG_MSG_WARNING, "Action inconnue : %d!", action);
-        break;
-    }
+		AG_TextMsg(AG_MSG_WARNING, "Action inconnue : %d!", action);
+		break;
+	}
 }
 

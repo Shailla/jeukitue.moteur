@@ -38,6 +38,18 @@ char* StringUtils::toChars(const std::string& str) {
 }
 
 /**
+ * Copy a string instance in a char* and :
+ *    - allocate the memory for the char*
+ *    - terminate the char* with the termination character ('\0')
+ */
+void StringUtils::toChars(const std::string& str, char* out, int maxLength) {
+	int length = (str.length()<maxLength)?str.length():maxLength;
+
+	str.copy(out, length);
+	out[length] = '\0';
+}
+
+/**
  * Attention, cette méthode n'est pas finie, pour l'instant elle vérifie uniquement si la chaîne n'est pas vide !
  * ""		: true
  * "     "	: true

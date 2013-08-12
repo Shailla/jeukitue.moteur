@@ -1476,7 +1476,7 @@ void executeJktRequests() {
 		int i = 0;
 
 		if(erwin != NULL) {
-			Game.Erwin(erwin);								// Indique que 'erwin' est le joueur principal
+			Game.Erwin(erwin);									// Indique que 'erwin' est le joueur principal
 			Game._pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
 		}
 

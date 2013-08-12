@@ -200,6 +200,15 @@ void Controller::executeAction(AG_Event *event) {
         }
         break;
 
+	case RejoindrePartieServerAction:
+		break;
+
+	case InfoServerAction:
+		break;
+
+	case PingServerAction:
+		break;
+
     // Activation d'un plugin
 	case PluginActivateAction:
 		{

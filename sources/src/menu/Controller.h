@@ -51,7 +51,10 @@ public:
 		ShowLastOpenGlErrorViewAction,				// Affiche la derniere erreur OpenGL dans une popup
 		ShowMapTreeViewAction,						// Affiche les données de la MAP courante sous forme d'un arbre
 		ShowDataTreeViewAction,
-		Refresh										// Demande de rafraichissement de la fenêtre
+		Refresh,									// Demande de rafraichissement de la fenêtre
+		RejoindrePartieServerAction,				// Rejoindre la partie en cours sur le serveur
+		InfoServerAction,							// Obtenir les informations du serveur
+		PingServerAction							// Afficher dans la console le résultat d'un ping sur le serveur
 	};
 
     static Viewer* m_agarView;

@@ -29,13 +29,13 @@ ConfigurationReseauView::ConfigurationReseauView(const AG_EventFn controllerCall
 
 	// IP du serveur
 	_ipServeurTexbox = AG_TextboxNew(m_window, 0, _ipServeur);
-	AG_TextboxSetLabel(_ipServeurTexbox, "Adresse IP (si serveur) :");
+	AG_TextboxSetLabel(_ipServeurTexbox, "Adresse IP du serveur :");
 	AG_TextboxBindUTF8(_ipServeurTexbox, _ipServeur, sizeof(_ipServeur));
 	AG_TextboxSizeHint(_ipServeurTexbox, "1234567890123456789012345678901234567890");
 
     // Champs ports du serveur ou du client selon le mode
-	AG_NumericalNewIntR(m_window, 0, NULL, "Port :", &_port, 0, 65000);
-	AG_NumericalNewIntR(m_window, 0, NULL, "Port arbre :", &_portTree, 0, 65000);
+	AG_NumericalNewIntR(m_window, 0, NULL, "Port serveur primitif :", &_port, 0, 65000);
+	AG_NumericalNewIntR(m_window, 0, NULL, "Port serveur moderne :", &_portTree, 0, 65000);
 
 
 	/* *********************************

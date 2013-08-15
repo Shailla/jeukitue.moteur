@@ -41,6 +41,7 @@ char* StringUtils::toChars(const std::string& str) {
  * Copy a string instance in a char* and :
  *    - allocate the memory for the char*
  *    - terminate the char* with the termination character ('\0')
+ *    - limit the size to maxLength bytes
  */
 void StringUtils::toChars(const std::string& str, char* out, int maxLength) {
 	int length = (str.length()<maxLength)?str.length():maxLength;

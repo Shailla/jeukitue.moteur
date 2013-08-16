@@ -24,7 +24,7 @@ class NotConnectedInterlocutor2 {
 	std::queue<DataAddress*> _technicalMessagesReceived;
 	std::queue<DataAddress*> _dataToSend;
 	std::queue<DataAddress*> _technicalMessagesToSend;
-	queue<Interlocutor2*> _newInterlocutors;
+	std::queue<Interlocutor2*> _newInterlocutors;
 
 	SDL_mutex* _mutexDataReceived;
 	SDL_mutex* _mutexDataToSend;

@@ -8,6 +8,7 @@
 
 #include <string>
 #include <queue>
+#include <iostream>
 
 using namespace std;
 
@@ -185,7 +186,7 @@ Interlocutor2* NotConnectedInterlocutor2::popNewInterlocutor() {
 	SDL_LockMutex(_mutexNewInterlocutors);
 
 	if(!_newInterlocutors.empty()) {
-		_newInterlocutors.front();
+		newInterlocutor = _newInterlocutors.front();
 		_newInterlocutors.pop();
 	}
 	else {
@@ -199,8 +200,6 @@ Interlocutor2* NotConnectedInterlocutor2::popNewInterlocutor() {
 
 void NotConnectedInterlocutor2::pushNewInterlocutor(Interlocutor2* newInterlocutor) {
 	SDL_LockMutex(_mutexNewInterlocutors);
-
 	_newInterlocutors.push(newInterlocutor);
-
 	SDL_UnlockMutex(_mutexNewInterlocutors);
 }

@@ -251,7 +251,7 @@ void CClient::sendPingToServer() {
 		cout << endl << "Ping envoye au serveur";
 }
 
-void CClient::sendJoinTheGame( string &nomPlayer ) {
+void CClient::sendJoinTheGame(string &nomPlayer) {
 	TRACE().p( TRACE_RESEAU, "CClient::sendJoinTheGame(nomPlayer=%s) begin%T", nomPlayer.c_str(), this );
 
 	setStatut( JKT_STATUT_CLIENT_DEMJTG );	// Statut, demande de "Join The Game" envoyée

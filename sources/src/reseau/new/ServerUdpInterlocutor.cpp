@@ -307,7 +307,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 						memcpy(_packetOut->data, data->getBytes(), _packetOut->len);
 						_packetOut->address = client->getIpAddress();
 						SDLNet_UDP_Send(_socket, -1, _packetOut);
-						cout << endl << "Envoi de donnees techniques en mode conntecte a " << IpUtils::translateAddress(_packetOut->address);
+						cout << endl << "Envoi de donnees techniques en mode connecte a " << IpUtils::translateAddress(_packetOut->address);
 					}
 
 					delete data;

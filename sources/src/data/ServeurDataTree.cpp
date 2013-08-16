@@ -81,6 +81,8 @@ Donnee* ServeurDataTree::addMarqueurFromDistant(DistantTreeProxy* client, Donnee
 }
 
 void ServeurDataTree::addDistant(Interlocutor2* interlocutor) {
+	cout << endl << "BBBBBBBBBBBBBBBBBBBBBBBB : " << interlocutor;
+
 	// Init the marqueurs
 	DistantTreeProxy* distant = new DistantTreeProxy(interlocutor);
 	initDistantBranche(distant, &getRoot());

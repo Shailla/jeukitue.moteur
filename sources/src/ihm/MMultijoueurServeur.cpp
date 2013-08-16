@@ -82,8 +82,7 @@ TRACE().p( TRACE_MENU, "lanceMenuMultijoueurserveur(var=%x)", var );
 
 	if( var )		// S'il y a demande de connection réseau
 	{
-		if( !Reseau.ouvreServer() )
-		{
+		if( !Reseau.ouvreServer() ) {
 			cout << endl << "Echec ouverture server";
 			Reseau.setOn( false );		// Signale que le réseau ne peut pas être utilisé
 			BoiteErreurMultijoueurserveur = new CDlgBoite( "Erreur", "Le serveur ne peut etre ouvert", retourErreurMultijoueurserveur, CDlgBoite::JKT_DLG_ERREUR );

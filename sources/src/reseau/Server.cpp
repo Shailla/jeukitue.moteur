@@ -54,8 +54,10 @@ TRACE().p( TRACE_RESEAU, "CServer::CServer() begin%T", this );
 TRACE().p( TRACE_RESEAU, "CServer::CServer() end%T", this );
 }
 
-CServer::~CServer()
-{
+CServer::~CServer() {
+}
+
+void CServer::ferme() {
 TRACE().p( TRACE_RESEAU, "CServer::~CServer() begin%T", this );
 	SDLNet_FreeSocketSet( socketSet );		// Libère le socket set du serveur
 	socketSet = 0;
@@ -64,8 +66,6 @@ TRACE().p( TRACE_RESEAU, "CServer::~CServer() begin%T", this );
 		_serverUdpInterlocutor->close();
 
 	delete _serverUdpInterlocutor;
-
-	Game.quit();
 TRACE().p( TRACE_RESEAU, "CServer::~CServer() end%T", this );
 }
 
@@ -411,11 +411,7 @@ TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 	if(result) {
 		if( SDLNet_UDP_AddSocket( socketSet, spaMaitre.getSocket() )==-1 ) {
 TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
-			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AddSocket : " << SDLNet_GetError();
-			SDLNet_FreeSocketSet( socketSet );		// Libère le socket set du serveur
-			socketSet = 0;
-
-			spaMaitre.close();
+			ferme();
 
 			result = false;
 		}
@@ -435,8 +431,7 @@ TRACE().p( TRACE_RESEAU, "CServer::ouvre() -> %b end%T", result, this );
 	return notConnectedServerInterlocutor;	// Ouverture serveur réussie
 }
 
-void CServer::emet()
-{
+void CServer::emet() {
 	CPlayer *player, *player2;
 	int curseur = -1, curseur2;
 

@@ -8,6 +8,7 @@
 #include "menu/AboutView.h"
 #include "menu/CentralisateurView.h"
 #include "menu/MultijoueursView.h"
+#include "menu/MultijoueursClientView.h"
 #include "menu/ConfigurationView.h"
 #include "menu/ConfigCentralisateurView.h"
 #include "menu/OpenSceneView.h"
@@ -33,6 +34,7 @@ Viewer::Viewer(AG_EventFn controllerCallback) {
 	addMenuView(MAIN_MENU_VIEW, new MainMenuView(controllerCallback));
 	addMenuView(ABOUT_VIEW, new AboutView(controllerCallback, this));
 	addMenuView(MULTIJOUEURS_VIEW, new MultijoueursView(controllerCallback));
+	addMenuView(MULTIJOUEURS_CLIENT_VIEW, new MultijoueursClientView(controllerCallback));
 	addMenuView(CENTRALISATEUR_VIEW, new CentralisateurView(controllerCallback));
 	addMenuView(CONFIGURATION_VIEW, new ConfigurationView(controllerCallback));
 	addMenuView(CONFIG_CENTRALISATEUR_VIEW, new ConfigCentralisateurView(controllerCallback));

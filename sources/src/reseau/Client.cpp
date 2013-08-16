@@ -17,7 +17,7 @@ using namespace std;
 #include "spatial/contact.h"
 #include "main/Clavier.h"
 #include "main/Game.h"
-#include "menu/MultijoueursView.h"
+#include "menu/MultijoueursClientView.h"
 
 #include "enumReseau.h"
 #include "reseau/Client.h"
@@ -30,13 +30,9 @@ namespace JktNet
 {
 
 CClient::CClient() {
-TRACE().p( TRACE_RESEAU, "CClient::CClient() begin%T", this );
+	TRACE().p( TRACE_RESEAU, "CClient::CClient() begin%T", this );
 	m_MaxPlayers = 0;
-
 	socketSet = 0;
-
-	Game.quit();
-
 	m_uNbrPlayers = 0;
 	m_Statut = JKT_STATUT_CLIENT_INIT;
 	m_pingClientServer = 0;
@@ -44,13 +40,13 @@ TRACE().p( TRACE_RESEAU, "CClient::CClient() begin%T", this );
 	IDpersonnel = 0;
 
 	_clientUdpInterlocutor = 0;
-TRACE().p( TRACE_RESEAU, "CClient::CClient() end%T", this );
+	TRACE().p( TRACE_RESEAU, "CClient::CClient() end%T", this );
 }
 
 CClient::~CClient() {
-TRACE().p( TRACE_RESEAU, "CClient::~CClient() begin%T", this );
-	Game.quit();
-TRACE().p( TRACE_RESEAU, "CClient::~CClient() end%T", this );
+	TRACE().p( TRACE_RESEAU, "CClient::~CClient() begin%T", this );
+	ferme();
+	TRACE().p( TRACE_RESEAU, "CClient::~CClient() end%T", this );
 }
 
 void CClient::setStatut( StatutClient statut ) {
@@ -87,7 +83,7 @@ void CClient::decodeConnecte( Uint16 code1, Uint16 code2 ) {
 		break;
 
 	case SERVER_TREE_DATA_UPDATE:
-//		updateTreeData();
+		//		updateTreeData();
 		break;
 
 	case SERVER_ERROR:		// Réception d'un code d'erreur
@@ -103,17 +99,17 @@ void CClient::decodeConnecte( Uint16 code1, Uint16 code2 ) {
 void CClient::decodeError( Uint16 code2 ) {
 	switch( code2 ) {
 	case UDP_ERROR_NOGAME:
-TRACE().p( TRACE_INFO, "CClient::decodeError() Pas de partie en cours sur le serveur%T", this );
+		TRACE().p( TRACE_INFO, "CClient::decodeError() Pas de partie en cours sur le serveur%T", this );
 		cout << endl << "Pas de partie en cours sur le serveur";
 		break;
 
 	case UDP_ERROR_SATURE:
-TRACE().p( TRACE_INFO, "CClient::decodeError() Serveur sature%T", this );
+		TRACE().p( TRACE_INFO, "CClient::decodeError() Serveur sature%T", this );
 		cout << endl << "Serveur sature";
 		break;
 
 	default:
-TRACE().p( TRACE_ERROR, "CClient::decodeError() Reception d'un paquet ERROR inconnu%T", this );
+		TRACE().p( TRACE_ERROR, "CClient::decodeError() Reception d'un paquet ERROR inconnu%T", this );
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet ERROR inconnu";
 		break;
 	}
@@ -127,12 +123,12 @@ void CClient::decodeRecap( Uint16 code2 ) {
 			var1 = spaMaitre.read16();	// Réception du nombre de joueurs
 
 			if( m_uNbrPlayers!=var1 ) {
-TRACE().p( TRACE_ERROR, "CClient::switchRecepClient() Le nombre de joueurs a change%T", this );
+				TRACE().p( TRACE_ERROR, "CClient::switchRecepClient() Le nombre de joueurs a change%T", this );
 				cerr << endl << __FILE__ << ":" << __LINE__ << " LE JEU N'EST PLUS PERTINENT, le nombre de joueurs a change !";
 				nbrPlayers( var1 );
 			}
 			else {
-					// Lit les données des joueurs
+				// Lit les données des joueurs
 				CPlayer *player;
 				int curseur = -1;
 				while( (curseur=SuivantPlayer(curseur))<getMaxPlayers() ) {
@@ -152,7 +148,7 @@ TRACE().p( TRACE_ERROR, "CClient::switchRecepClient() Le nombre de joueurs a cha
 
 	default:
 		TRACE().p( TRACE_ERROR, "CClient::switchRecepClient() Reception d'un paquet RECAP inconnu : %s%T",
-		spaMaitre.debugToString().c_str(), this );
+				spaMaitre.debugToString().c_str(), this );
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet RECAP inconnu";
 		break;
 	}
@@ -163,7 +159,9 @@ int CClient::getMaxPlayers() {
 }
 
 Interlocutor2* CClient::ouvre(const string &address, Uint16 port, Uint16 portTree) {
-TRACE().p( TRACE_RESEAU, "CClient::ouvre(address=%s,port=%d) begin%T", address.c_str(), port, this );
+	TRACE().p( TRACE_RESEAU, "CClient::ouvre(address=%s,port=%d) begin%T", address.c_str(), port, this );
+
+	cout << endl << __FILE__ << ":" << __LINE__ << " Ouverture client : " << address << ":" << port;
 
 	bool result = true;		// Indique si au fur de la fonction si tout s'est bien passé
 	Interlocutor2* interlocutor;
@@ -174,10 +172,10 @@ TRACE().p( TRACE_RESEAU, "CClient::ouvre(address=%s,port=%d) begin%T", address.c
 	if(result) {
 		socketSet = SDLNet_AllocSocketSet( 20 );	// Nombre maxi de sockets à écouter
 		if( !socketSet ) {
-TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
+			TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
 			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AllocSocketSet: " << SDLNet_GetError();
 
-			spaMaitre.close();
+			ferme();
 
 			result = false;
 		}
@@ -185,13 +183,10 @@ TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
 
 	if(result) {
 		if( SDLNet_UDP_AddSocket( socketSet, spaMaitre.getSocket() )==-1 ) {
-TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
+			TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
 			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AddSocket : " << SDLNet_GetError();
 
-			SDLNet_FreeSocketSet( socketSet );		// Libère le socket set du serveur
-			socketSet = 0;
-
-			spaMaitre.close();
+			ferme();
 
 			result = false;
 		}
@@ -209,8 +204,24 @@ TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
 	if(interlocutor)
 		setStatut( JKT_STATUT_CLIENT_READY );	// Indique que le client est prêt
 
-TRACE().p( TRACE_RESEAU, "CClient::ouvre() -> %b end%T", result, this );
+	TRACE().p( TRACE_RESEAU, "CClient::ouvre() -> %b end%T", result, this );
 	return interlocutor;
+}
+
+void CClient::ferme() {
+	if(socketSet) {
+		SDLNet_FreeSocketSet( socketSet );		// Libère le socket set du serveur
+		socketSet = 0;
+	}
+
+	spaMaitre.close();
+
+	setStatut( JKT_STATUT_CLIENT_NULL );	// Indique que le client est prêt
+
+	if(_clientUdpInterlocutor) {
+		delete _clientUdpInterlocutor;
+		_clientUdpInterlocutor = 0;
+	}
 }
 
 void CClient::sendRequestInfoToServer() {
@@ -220,7 +231,7 @@ void CClient::sendRequestInfoToServer() {
 	spaMaitre.addCode( CLIENT_INFO, CLIENT_NULL );
 
 	if( !spaMaitre.send() )	{	// Acquittement de la réception du packet
-		cout << endl << "SDL_UDP_Send : ",SDLNet_GetError();
+		cout << endl << "SDL_UDP_Send : ", SDLNet_GetError();
 	}
 	else {
 		cout << endl << "Demande d'info envoyee au serveur";
@@ -241,7 +252,7 @@ void CClient::sendPingToServer() {
 }
 
 void CClient::sendJoinTheGame( string &nomPlayer ) {
-TRACE().p( TRACE_RESEAU, "CClient::sendJoinTheGame(nomPlayer=%s) begin%T", nomPlayer.c_str(), this );
+	TRACE().p( TRACE_RESEAU, "CClient::sendJoinTheGame(nomPlayer=%s) begin%T", nomPlayer.c_str(), this );
 
 	setStatut( JKT_STATUT_CLIENT_DEMJTG );	// Statut, demande de "Join The Game" envoyée
 
@@ -250,13 +261,13 @@ TRACE().p( TRACE_RESEAU, "CClient::sendJoinTheGame(nomPlayer=%s) begin%T", nomPl
 	spaMaitre.add( nomPlayer );	// Envoie nom du joueur qui veut s'y joindre
 
 	setStatut( JKT_STATUT_CLIENT_DEMJTG );	// Statut, demande de "Join The Game" envoyée,
-											// en attente de réponse du serveur
+	// en attente de réponse du serveur
 
 	if( !spaMaitre.send() ) {
 		TRACE().p( TRACE_ERROR, "CClient::sendJoinTheGame() SDL_UDP_Send : %s%T", SDLNet_GetError(), this );
 	}
 
-TRACE().p( TRACE_RESEAU, "CClient::sendJoinTheGame() end%T", this );
+	TRACE().p( TRACE_RESEAU, "CClient::sendJoinTheGame() end%T", this );
 }
 
 void CClient::recoit() {
@@ -310,7 +321,7 @@ bool CClient::decodeNonConnecte( Uint16 code1, Uint16 code2 ) {
 		case SERVER_ACK:
 			if( spaMaitre.getPacketIn()->len>5 ) {
 				char txt[50];
-TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Info serveur%T", this );
+				TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Info serveur%T", this );
 				cout << endl << "Reponse a la demande d'info serveur recue";
 				spaMaitre.readChar( txt );				// Réception nom du serveur
 				m_InfoServer.nom = txt;
@@ -318,7 +329,7 @@ TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Info serveur%T", this );
 				m_InfoServer.map = txt;
 				m_InfoServer.Ready( true );			// Indique que les infos sont actualisées
 
-				MultijoueursView* view = (MultijoueursView*)Fabrique::getAgarView()->getView(Viewer::MULTIJOUEURS_VIEW);
+				MultijoueursClientView* view = (MultijoueursClientView*)Fabrique::getAgarView()->getView(Viewer::MULTIJOUEURS_CLIENT_VIEW);
 				view->setServerName(m_InfoServer.nom);
 				view->setActiveMap(m_InfoServer.map);
 			}
@@ -326,145 +337,145 @@ TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Info serveur%T", this );
 			break;
 
 		default:
-TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu 5%s%T",
-spaMaitre.debugToString().c_str(), this );
+			TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu 5%s%T",
+					spaMaitre.debugToString().c_str(), this );
 			result = false;
 			break;
 		}
 		result = false;
 		break;
 
-	case SERVER_PING:
-		switch( code2 ) {
-		case SERVER_ACK:
-			if( spaMaitre.getPacketIn()->len==8 ) {
-TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse ping%T", this );
-				cout << endl << "Reponse a un ping recue";
-				if( m_timePingClientServer==spaMaitre.read32() ) {
-					m_pingClientServer = SDL_GetTicks() - m_timePingClientServer;
+		case SERVER_PING:
+			switch( code2 ) {
+			case SERVER_ACK:
+				if( spaMaitre.getPacketIn()->len==8 ) {
+					TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse ping%T", this );
+					cout << endl << "Reponse a un ping recue";
+					if( m_timePingClientServer==spaMaitre.read32() ) {
+						m_pingClientServer = SDL_GetTicks() - m_timePingClientServer;
 
-					MultijoueursView* view = (MultijoueursView*)Fabrique::getAgarView()->getView(Viewer::MULTIJOUEURS_VIEW);
-					view->setServerName(m_InfoServer.nom);
-					view->setPing(m_pingClientServer);
+						MultijoueursClientView* view = (MultijoueursClientView*)Fabrique::getAgarView()->getView(Viewer::MULTIJOUEURS_CLIENT_VIEW);
+						view->setServerName(m_InfoServer.nom);
+						view->setPing(m_pingClientServer);
+					}
 				}
-			}
-			result = true;
-			break;
-		default:
-TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu 4%s%T", spaMaitre.debugToString().c_str(), this );
-			result = false;
-			break;
-		}
-		break;
-
-	case SERVER_JTG:		// Ca concerne 'joindre la partie active du serveur'
-		switch( code2 ) {
-		case SERVER_ERROR:
-			code3 = spaMaitre.read16();
-			switch( code3 ) {
-			case UDP_ERROR_NOGAME:
-TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Pas de partie en cours%T", this );
-				cout << endl << "Pas de partie en cours sur le serveur";
+				result = true;
 				break;
-
-			case UDP_ERROR_SATURE:
-TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Serveur sature%T", this );
-				cout << endl << "Serveur sature";
-				break;
-
 			default:
-TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu 3%s%T", spaMaitre.debugToString().c_str(), this );
-				cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet ERROR inconnu";
+				TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu 4%s%T", spaMaitre.debugToString().c_str(), this );
+				result = false;
 				break;
 			}
-			result = true;
 			break;
 
-		case SERVER_ACK:	// Acceptation recue du serveur pour joindre la partie
-			if( getStatut()==JKT_STATUT_CLIENT_DEMJTG )
-			{
-TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse JTG%T", this );
-				CPlayer *player;
-				cout << endl << "Acceptation recue du serveur pour joindre la partie";
+			case SERVER_JTG:		// Ca concerne 'joindre la partie active du serveur'
+				switch( code2 ) {
+				case SERVER_ERROR:
+					code3 = spaMaitre.read16();
+					switch( code3 ) {
+					case UDP_ERROR_NOGAME:
+						TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Pas de partie en cours%T", this );
+						cout << endl << "Pas de partie en cours sur le serveur";
+						break;
 
-					// Détachement du socket du port principal du serveur
-				SDLNet_UDP_Unbind( spaMaitre.getSocket(), spaMaitre.getPacketOut()->channel );
+					case UDP_ERROR_SATURE:
+						TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Serveur sature%T", this );
+						cout << endl << "Serveur sature";
+						break;
 
-					// Attachement au port du serveur qui est réservé à ce client
-				spaMaitre.getPacketOut()->channel=SDLNet_UDP_Bind( spaMaitre.getSocket(),-1,&spaMaitre.getPacketIn()->address);
-				spaMaitre.getPacketIn()->channel = spaMaitre.getPacketOut()->channel;
-				if( spaMaitre.getPacketOut()->channel==-1 )
-					cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
+					default:
+						TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu 3%s%T", spaMaitre.debugToString().c_str(), this );
+						cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet ERROR inconnu";
+						break;
+					}
+					result = true;
+					break;
 
-				Game.setStatutClient( JKT_STATUT_CLIENT_OUV );	// Indique l'ouverture en cours
+					case SERVER_ACK:	// Acceptation recue du serveur pour joindre la partie
+						if( getStatut()==JKT_STATUT_CLIENT_DEMJTG )
+						{
+							TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse JTG%T", this );
+							CPlayer *player;
+							cout << endl << "Acceptation recue du serveur pour joindre la partie";
 
-				IDpersonnel = spaMaitre.read16();	// Lecture de l'identifiant du joueur
-				spaMaitre.readString( nomMAP );		// Nom de la MAP en cours sur le serveur
-				setMaxPlayers( spaMaitre.read16());	// Nombre max de joueurs sur le serveur
-				nbrPlayers( spaMaitre.read16() );	// Nombre de joeurs sur le serveur
+							// Détachement du socket du port principal du serveur
+							SDLNet_UDP_Unbind( spaMaitre.getSocket(), spaMaitre.getPacketOut()->channel );
 
-				cout << endl;
-				cout << endl << "Identifiant :\t\t" << IDpersonnel;
-				cout << endl << "Nom de la MAP en cours :\t\t" << nomMAP;
-				cout << endl << "Nombre de joueurs maxi :\t\t" << getMaxPlayers();
-				cout << endl << "Nombre de joueurs sur le serveur :\t" << nbrPlayers();
-				cout << endl;
+							// Attachement au port du serveur qui est réservé à ce client
+							spaMaitre.getPacketOut()->channel=SDLNet_UDP_Bind( spaMaitre.getSocket(),-1,&spaMaitre.getPacketIn()->address);
+							spaMaitre.getPacketIn()->channel = spaMaitre.getPacketOut()->channel;
+							if( spaMaitre.getPacketOut()->channel==-1 )
+								cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
 
-					// Crée la liste des joueurs
-				for( unsigned int i=0 ; i<nbrPlayers() ; i++)	// Recherche des joueurs existants
-				{
-					player = new CPlayer();
+							Game.setStatutClient( JKT_STATUT_CLIENT_OUV );	// Indique l'ouverture en cours
 
-					player->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
-					player->changeContact( JktMoteur::contactPlayer );		// Associe une fonction de gestion des contacts avec la map
+							IDpersonnel = spaMaitre.read16();	// Lecture de l'identifiant du joueur
+							spaMaitre.readString( nomMAP );		// Nom de la MAP en cours sur le serveur
+							setMaxPlayers( spaMaitre.read16());	// Nombre max de joueurs sur le serveur
+							nbrPlayers( spaMaitre.read16() );	// Nombre de joeurs sur le serveur
 
-					Uint16 id = spaMaitre.read16();		// Identifiant du joueur
-					string nom_p = player->nom();
-					spaMaitre.readString( nom_p );	// Nom du joueur
-					spaMaitre.readRecapFromServer( *player );			// Lecture des position, vitesse, Phi et Teta du joueur
+							cout << endl;
+							cout << endl << "Identifiant :\t\t" << IDpersonnel;
+							cout << endl << "Nom de la MAP en cours :\t\t" << nomMAP;
+							cout << endl << "Nombre de joueurs maxi :\t\t" << getMaxPlayers();
+							cout << endl << "Nombre de joueurs sur le serveur :\t" << nbrPlayers();
+							cout << endl;
 
-					player->init();
-					AjoutePlayer( id, player );
+							// Crée la liste des joueurs
+							for( unsigned int i=0 ; i<nbrPlayers() ; i++)	// Recherche des joueurs existants
+							{
+								player = new CPlayer();
+
+								player->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
+								player->changeContact( JktMoteur::contactPlayer );		// Associe une fonction de gestion des contacts avec la map
+
+								Uint16 id = spaMaitre.read16();		// Identifiant du joueur
+								string nom_p = player->nom();
+								spaMaitre.readString( nom_p );	// Nom du joueur
+								spaMaitre.readRecapFromServer( *player );			// Lecture des position, vitesse, Phi et Teta du joueur
+
+								player->init();
+								AjoutePlayer( id, player );
+							}
+
+							// Affichage des infos des joueurs
+							int curseur = -1;
+							while( (curseur=SuivantPlayer(curseur))<getMaxPlayers() )
+							{
+								float pos[3];
+								player = GetPlayer( curseur );
+								cout << endl << curseur;
+								if( curseur==IDpersonnel )	// S'il s'agit du joueur de cet ordinateur
+									cout << " *";
+								cout << "\t" << player->nom();
+								player->getPosition( pos );
+								cout << "\t" << pos[0] << ";" << pos[1] << ";" << pos[2];
+							}
+
+							Game.deleteErwin();	// Détruit le joueur principal, s'il existe
+
+							Game.Erwin( GetPlayer( IDpersonnel ) );	// Joueur principal
+
+							Game.RequeteProcess.setOuvreMap( nomMAP );
+						}
+						else
+						{
+							TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse JKT sans demande%T", this );
+							cerr << endl << __FILE__ << ":" << __LINE__ << " Acceptation JTG recue sans demande envoyée";
+						}
+						result = true;	// Le paquet a été utilisé
+						break;
+
+					default:
+						TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu %s%T", spaMaitre.debugToString().c_str(), this );
+						cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet inconnu 7";
+						result = false;
+						break;
 				}
-
-					// Affichage des infos des joueurs
-				int curseur = -1;
-				while( (curseur=SuivantPlayer(curseur))<getMaxPlayers() )
-				{
-					float pos[3];
-					player = GetPlayer( curseur );
-					cout << endl << curseur;
-					if( curseur==IDpersonnel )	// S'il s'agit du joueur de cet ordinateur
-						cout << " *";
-					cout << "\t" << player->nom();
-					player->getPosition( pos );
-					cout << "\t" << pos[0] << ";" << pos[1] << ";" << pos[2];
-				}
-
-				Game.deleteErwin();	// Détruit le joueur principal, s'il existe
-
-				Game.Erwin( GetPlayer( IDpersonnel ) );	// Joueur principal
-
-				Game.RequeteProcess.setOuvreMap( nomMAP );
-			}
-			else
-			{
-TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse JKT sans demande%T", this );
-				cerr << endl << __FILE__ << ":" << __LINE__ << " Acceptation JTG recue sans demande envoyée";
-			}
-			result = true;	// Le paquet a été utilisé
-			break;
-
-		default:
-TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu %s%T", spaMaitre.debugToString().c_str(), this );
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet inconnu 7";
-			result = false;
-			break;
-		}
-		break;
-	default:
-		result = false;
-		break;
+				break;
+				default:
+					result = false;
+					break;
 	}
 
 	return result;
@@ -505,7 +516,7 @@ void CClient::emet( CPlayer &player ) {
 
 	position = spaMaitre.getPosition();
 	spaMaitre.add16( 0 );	// Ca sert juste à avancer de 16 bits dans le paquet pour laisser
-							// une place libre pour la variable flags (voir fin de emetClient)
+	// une place libre pour la variable flags (voir fin de emetClient)
 
 	if( clavier->m_bIndic ) {
 		flags |= 0x0001;	// Indique qu'il y a des requetes clavier à prendre en compte

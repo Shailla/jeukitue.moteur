@@ -15,6 +15,7 @@ public:
 		ShowMainMenuAction = 0,
 		ShowAboutViewAction,
 		ShowMultijoueursMenuAction,
+		ShowMultijoueursClientMenuAction,
 		ShowLanceServeurViewAction,
 		LanceServeurMapAction,
 		ShowCentralisateurViewAction,

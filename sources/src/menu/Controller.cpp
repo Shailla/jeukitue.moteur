@@ -25,6 +25,7 @@ using namespace std;
 #include "menu/ConfigurationReseauView.h"
 #include "menu/LanceServeurView.h"
 #include "menu/MultijoueursView.h"
+#include "menu/MultijoueursClientView.h"
 #include "menu/ProgressBarView.h"
 #include "menu/ConfigurationCommandesView.h"
 #include "main/Fabrique.h"
@@ -79,6 +80,10 @@ void Controller::executeAction(AG_Event *event) {
 
 	case ShowMultijoueursMenuAction:
 		m_agarView->showMenuView(Viewer::MULTIJOUEURS_VIEW);
+		break;
+
+	case ShowMultijoueursClientMenuAction:
+		m_agarView->showMenuView(Viewer::MULTIJOUEURS_CLIENT_VIEW);
 		break;
 
 	case ShowConfigurationMenuAction:
@@ -210,12 +215,15 @@ void Controller::executeAction(AG_Event *event) {
 		if(client) {
 			client->sendJoinTheGame(Config.Joueur.nom);
 		}
+		else {
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Client non connecte - Echec de demande d'informations au serveur";
+		}
 	}
 	break;
 
 	case InfoServerAction:
 	{
-		MultijoueursView* view = (MultijoueursView*)m_agarView->getView(Viewer::MULTIJOUEURS_VIEW);
+		MultijoueursClientView* view = (MultijoueursClientView*)m_agarView->getView(Viewer::MULTIJOUEURS_CLIENT_VIEW);
 		view->setServerName("");
 		view->setActiveMap("");
 		CClient* client = Reseau.getClient();
@@ -223,17 +231,23 @@ void Controller::executeAction(AG_Event *event) {
 		if(client) {
 			client->sendRequestInfoToServer();		// Demande ses infos au serveur
 		}
+		else {
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Client non connecte - Echec de demande d'informations au serveur";
+		}
 	}
 	break;
 
 	case PingServerAction:
 	{
-		MultijoueursView* view = (MultijoueursView*)m_agarView->getView(Viewer::MULTIJOUEURS_VIEW);
+		MultijoueursClientView* view = (MultijoueursClientView*)m_agarView->getView(Viewer::MULTIJOUEURS_CLIENT_VIEW);
 		view->setPing(-1);
 		CClient* client = Reseau.getClient();
 
 		if(client) {
 			client->sendPingToServer();				// Demande au serveur de répondre à un ping
+		}
+		else {
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Client non connecte - Echec de demande d'informations au serveur";
 		}
 	}
 	break;

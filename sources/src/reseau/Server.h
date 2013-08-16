@@ -49,6 +49,7 @@ public:
 	bool acceptPlayer( CSPA *spa );				// Accepte un nouveau joueur dans la partie
 
 	NotConnectedInterlocutor2* ouvre(Uint16 port, Uint16 portTree);
+	void ferme();
 	void emet();
 
 private:

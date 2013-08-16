@@ -242,6 +242,9 @@ int MapLoader::loadGameServerThread(void* gameDtoVar) {
 		erwin->setCri( cri1.c_str() );				// Cri du joueur
 		erwin->nom("ERWIN");
 		erwin->init();								// Initialise certaines données
+
+		// TODO initialiser le spa d'Erwin pour éviter un bug : erwin->spa.open(ip);
+
 		gameDto->setErwin(erwin);
 	}
 

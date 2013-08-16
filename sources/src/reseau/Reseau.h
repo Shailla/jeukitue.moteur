@@ -16,6 +16,9 @@
 namespace JktNet
 {
 
+class CServer;
+class CClient;
+
 class CReseau {
 		// Variables membres 
 	CServer *m_Server;

@@ -108,6 +108,7 @@ TRACE().p( TRACE_RESEAU, "CReseau::fermeServer()%T", this );
 	m_Server = 0;
 
 	m_On = false;			// Indique que le réseau est inactif
+
 	Game.Quit();
 }
 
@@ -154,6 +155,7 @@ TRACE().p( TRACE_RESEAU, "CReseau::fermeClient()%T", this );
 	m_Client = 0;
 
 	m_On = false;		// Signale que le réseau n'est plus prêt
+
 	Game.Quit();
 }
 

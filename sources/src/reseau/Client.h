@@ -71,6 +71,7 @@ public:
 	void decodeConnecte( Uint16, Uint16 ); 		//Décode les paquets recus du réseau
 	bool decodeNonConnecte( Uint16 code1, Uint16 code2 );
 	Interlocutor2* ouvre(const string &address, Uint16 port, Uint16 portTree);
+	void ferme();
 	CInfoServer getInfoServer();
 	int getPingClientServeur();
 	void emet( CPlayer &player );

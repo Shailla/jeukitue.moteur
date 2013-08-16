@@ -84,8 +84,10 @@ NotConnectedInterlocutor2* ServerUdpInterlocutor::connect() throw(ConnectionFail
 		}
 
 		setConnexionStatus(CONNECTED);
+		cout << endl << "Serveur connecte";
 
 		startProcesses();
+		cout << endl << "Processus du serveur lances";
 	}
 	catch(ConnectionFailedException& exception) {
 		cerr << endl << exception.getMessage();
@@ -294,6 +296,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 						memcpy(_packetOut->data, data->getBytes(), _packetOut->len);
 						_packetOut->address = client->getIpAddress();
 						SDLNet_UDP_Send(_socket, -1, _packetOut);
+						cout << endl << "Envoi de donnees techniques";
 					}
 
 					delete data;
@@ -308,6 +311,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 						memcpy(_packetOut->data, data->getBytes(), _packetOut->len);
 						_packetOut->address = client->getIpAddress();
 						SDLNet_UDP_Send(_socket, -1, _packetOut);
+						cout << endl << "Envoi de donnees";
 					}
 
 					delete data;
@@ -381,10 +385,7 @@ void ServerUdpInterlocutor::receivingProcess() {
 	while(CONNECTED == getConnexionStatus()) {
 		int socketReady = SDLNet_CheckSockets(_socketSet, 1000);
 
-		if(socketReady == -1) {
-			cerr << endl << "Server SDLNet_CheckSockets - UDP receive : " << SDLNet_GetError();
-		}
-		else if(socketReady > 0) {
+		if(socketReady > 0) {
 			receiveOnePacket();
 		}
 	}

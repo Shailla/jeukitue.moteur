@@ -1487,10 +1487,12 @@ void executeJktRequests() {
 		CPlayer *player;
 		int playerIndex = -1;
 
+		// Initialisation de chacun des joueurs
 		while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
 			player = (*Game._pTabIndexPlayer)[playerIndex];
 			player->initGL();
 			player->choiceOneEntryPoint();
+
 		}
 
 

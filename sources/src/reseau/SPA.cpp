@@ -57,13 +57,11 @@ TRACE().p( TRACE_RESEAU, "CSPA::open() -> %b end%T", result, this );
 	return result;
 }
 
-UDPsocket CSPA::getSocket() const
-{
+UDPsocket CSPA::getSocket() const {
 	return m_Socket;
 }
 
-bool CSPA::open( const IPaddress &address )
-{
+bool CSPA::open(const IPaddress &address) {
 TRACE().p( TRACE_RESEAU, "CSPA::open(address=[%s,%d]) begin%T", SDLNet_ResolveIP( (IPaddress*)&address ), address.port, this );
 	bool result = true;
 

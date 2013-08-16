@@ -1,6 +1,6 @@
 
-#ifndef __JKT__CRESEAU_H
-#define __JKT__CRESEAU_H
+#ifndef __JKT__NETWORKMANAGER_H
+#define __JKT__NETWORKMANAGER_H
 
 #include "enumReseau.h"
 #include "reseau/new/Interlocutor2.h"
@@ -19,18 +19,18 @@ namespace JktNet
 class CServer;
 class CClient;
 
-class CReseau {
+class NetworkManager {
 		// Variables membres 
-	CServer *m_Server;
-	CClient *m_Client;
+	CServer *_Server;
+	CClient *_Client;
 
-	bool m_On;						// Indique si le réseau peut être utilisé ou non
+	bool _On;						// Indique si le réseau peut être utilisé ou non
 
 public:
 
 		// Constructeurs / Destructeur
-	CReseau();		
-	~CReseau();
+	NetworkManager();		
+	~NetworkManager();
 
 	void setOn( bool on );					// Indique si le réseau peut être utilisé ou non
 	bool getOn();							// Est-ce que le réseau peut être utilisé ou non ?

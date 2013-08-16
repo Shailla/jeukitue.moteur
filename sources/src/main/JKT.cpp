@@ -105,7 +105,7 @@ class CGame;
 #include "spatial/Particule.h"
 #include "spatial/MoteurParticules.h"
 #include "spatial/MoteurParticulesNeige.h"
-#include "reseau/Reseau.h"
+#include "reseau/NetworkManager.h"
 #include "reseau/enumReseau.h"
 #include "menu/Controller.h"
 #include "menu/Viewer.h"
@@ -196,7 +196,7 @@ unsigned int frpsTimer = 0, frpTimer = 0;
 
 CMachin *machin;	// Pour tester le son 3D
 
-CReseau Reseau;
+NetworkManager Reseau;
 
 void gravitePlayer(CPlayer *player)	// Fonction implémentant la gravité
 {									// aux objets qui doivent la subire

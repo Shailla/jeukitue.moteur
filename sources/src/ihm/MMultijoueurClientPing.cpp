@@ -17,10 +17,10 @@ using namespace std;
 
 #include "reseau/Client.h"
 #include "reseau/Server.h"
-#include "reseau/Reseau.h"
+#include "reseau/NetworkManager.h"
 #include "main/Focus.h"
 #include "main/Cfg.h"
-#include "reseau/Reseau.h"
+#include "reseau/NetworkManager.h"
 
 #include "ihm/MMultijoueur.h"
 
@@ -34,9 +34,9 @@ class CMouve;
 class CGame;
 class CGeoObject;
 class CPorte;
-class CReseau;
+class NetworkManager;
 
-extern JktNet::CReseau Reseau;
+extern JktNet::NetworkManager Reseau;
 
 
 namespace JktMenu

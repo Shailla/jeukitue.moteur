@@ -19,7 +19,7 @@ using namespace std;
 #include "reseau/Client.h"
 #include "reseau/Server.h"
 #include "main/Focus.h"
-#include "reseau/Reseau.h"
+#include "reseau/NetworkManager.h"
 #include "main/Cfg.h"
 #include "main/Game.h"
 #include "reseau/enumReseau.h"

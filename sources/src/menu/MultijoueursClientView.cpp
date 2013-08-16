@@ -7,14 +7,14 @@
 #include "util/StringUtils.h"
 #include "menu/View.h"
 #include "menu/Controller.h"
-#include "reseau/Reseau.h"
+#include "reseau/NetworkManager.h"
 
 #include "menu/MultijoueursClientView.h"
 
 using namespace std;
 using namespace JktNet;
 
-extern CReseau Reseau;
+extern NetworkManager Reseau;
 
 MultijoueursClientView::MultijoueursClientView(const AG_EventFn controllerCallback)
 :View(controllerCallback)

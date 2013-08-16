@@ -18,7 +18,7 @@ using namespace std;
 #include "reseau/Server.h"
 #include "main/Focus.h"
 #include "main/Cfg.h"
-#include "reseau/Reseau.h"
+#include "reseau/NetworkManager.h"
 #include "util/Trace.h"
 
 #include "ihm/MMultijoueur.h"
@@ -30,7 +30,7 @@ class CGame;
 class CGeoObject;
 class CPorte;
 
-extern JktNet::CReseau Reseau;
+extern JktNet::NetworkManager Reseau;
 extern CCfg Config;
 
 	/************************************/

@@ -40,7 +40,7 @@ using namespace std;
 #include "reseau/SPA.h"
 #include "reseau/Client.h"
 #include "reseau/Server.h"
-#include "reseau/Reseau.h"
+#include "reseau/NetworkManager.h"
 #include "spatial/Map.h"
 #include "spatial/materiau/MaterialTexture.h"
 #include "spatial/materiau/MaterialMulti.h"
@@ -58,7 +58,7 @@ using namespace JktNet;
 
 extern CGame Game;
 extern CCfg Config;
-extern CReseau Reseau;
+extern NetworkManager Reseau;
 void quit_game(int code);
 
 Viewer* Controller::m_agarView;

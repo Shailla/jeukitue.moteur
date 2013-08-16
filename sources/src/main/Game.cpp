@@ -25,7 +25,7 @@ class CGame;
 #include "reseau/Server.h"
 #include "main/RequeteProcess.h"
 #include "spatial/Map.h"
-#include "reseau/Reseau.h"
+#include "reseau/NetworkManager.h"
 #include "util/Trace.h"
 #include "main/Clavier.h"
 
@@ -34,7 +34,7 @@ class CGame;
 
 using namespace JktNet;
 
-extern CReseau Reseau;
+extern NetworkManager Reseau;
 
 #define Pi 3.14159265f			//nombre pi pour les calculs
 

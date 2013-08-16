@@ -7,7 +7,7 @@
 #include "util/StringUtils.h"
 #include "menu/View.h"
 #include "menu/Controller.h"
-#include "reseau/Reseau.h"
+#include "reseau/NetworkManager.h"
 
 #include "menu/MultijoueursView.h"
 

@@ -28,7 +28,7 @@ class CGame;
 #include "util/Trace.h"
 
 #include "enumReseau.h"
-#include "reseau/Reseau.h"
+#include "reseau/NetworkManager.h"
 
 extern CCfg Config;
 extern CGame Game;
@@ -38,57 +38,57 @@ void JktMoteur::contactPlayer(CPlayer *player, float *normal, float distanceW);
 namespace JktNet
 {
 
-CReseau::CReseau() {
-	m_On = false;	// Réseau inactivé par défaut
-	m_Client = 0;
-	m_Server = 0;
+NetworkManager::NetworkManager() {
+	_On = false;	// Réseau inactivé par défaut
+	_Client = 0;
+	_Server = 0;
 }
 
-CReseau::~CReseau() {
-	m_On = false;	// Réseau inactivé par défaut
+NetworkManager::~NetworkManager() {
+	_On = false;	// Réseau inactivé par défaut
 
-	if( m_Client ) {
-		delete m_Client;
-		m_Client = 0;
+	if( _Client ) {
+		delete _Client;
+		_Client = 0;
 	}
 
-	if( m_Server ) {
-		delete m_Server;
-		m_Server = 0;
+	if( _Server ) {
+		delete _Server;
+		_Server = 0;
 	}
 }
 
-void CReseau::setOn( bool on ) {
+void NetworkManager::setOn( bool on ) {
 TRACE().p( TRACE_RESEAU, "CReseau::setOn(on=%b)%T", on, this );
-	m_On = on;
+	_On = on;
 }
 
-bool CReseau::getOn() {
-	return m_On;
+bool NetworkManager::getOn() {
+	return _On;
 }
 
-bool CReseau::ouvreServer() {
+bool NetworkManager::ouvreServer() {
 TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() begin%T", this );
 	bool result = false;
 
-	if(m_Client) {
-		delete m_Client;				// détruit le client
-		m_Client = 0;
+	if(_Client) {
+		delete _Client;				// détruit le client
+		_Client = 0;
 	}
 
-	if(m_Server) {
-		delete m_Server;				// Détruit le serveur
-		m_Server = 0;
+	if(_Server) {
+		delete _Server;				// Détruit le serveur
+		_Server = 0;
 	}
 
-	m_Server = new CServer();
+	_Server = new CServer();
 
-	NotConnectedInterlocutor2* notConnectedServerInterlocutor = m_Server->ouvre(Config.Reseau.getPort(), Config.Reseau.getPortTree());
+	NotConnectedInterlocutor2* notConnectedServerInterlocutor = _Server->ouvre(Config.Reseau.getPort(), Config.Reseau.getPortTree());
 
 	if(notConnectedServerInterlocutor) {
 		Game.setModeServer();
-		m_Server->setStatut( JKT_STATUT_SERVER_READY );
-		m_On = true;			// Indique que le réseau est actif
+		_Server->setStatut( JKT_STATUT_SERVER_READY );
+		_On = true;			// Indique que le réseau est actif
 		result = true;
 	}
 	else {
@@ -99,46 +99,46 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() -> %b end%T", result, this );
 	return result;
 }
 
-void CReseau::fermeServer() {
+void NetworkManager::fermeServer() {
 TRACE().p( TRACE_RESEAU, "CReseau::fermeServer()%T", this );
 	cout << endl << "Fermeture du serveur UDP";
 
-	if( m_Server )
-		delete m_Server;
-	m_Server = 0;
+	if( _Server )
+		delete _Server;
+	_Server = 0;
 
-	m_On = false;			// Indique que le réseau est inactif
+	_On = false;			// Indique que le réseau est inactif
 
 	Game.Quit();
 }
 
-Interlocutor2* CReseau::ouvreClient() {
+Interlocutor2* NetworkManager::ouvreClient() {
 TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() begin%T", this );
 
 	bool result = false;
 
-	if( m_Client ) {
-		delete m_Client;				// détruit le client
-		m_Client = 0;
+	if( _Client ) {
+		delete _Client;				// détruit le client
+		_Client = 0;
 	}
 
-	if( m_Server ) {
-		delete m_Server;				// Détruit le serveur
-		m_Server = 0;
+	if( _Server ) {
+		delete _Server;				// Détruit le serveur
+		_Server = 0;
 	}
 
-	m_Client = new CClient();
+	_Client = new CClient();
 
-	Interlocutor2* interlocutor = m_Client->ouvre(Config.Reseau.getIpServer(), Config.Reseau.getPort(), Config.Reseau.getPortTree());
+	Interlocutor2* interlocutor = _Client->ouvre(Config.Reseau.getIpServer(), Config.Reseau.getPort(), Config.Reseau.getPortTree());
 
 	if(interlocutor) {
 		Game.setModeClient();
-		m_On = true;		// Signale que le réseau est prêt
+		_On = true;		// Signale que le réseau est prêt
 		result = true;
 	}
 	else {
 		Game.setModeNull();
-		m_On = true;		// Signale que le réseau n'est pas prêt
+		_On = true;		// Signale que le réseau n'est pas prêt
 		result = false;
 	}
 
@@ -146,22 +146,22 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() -> %b end%T", result, this );
 	return interlocutor;
 }
 
-void CReseau::fermeClient() {
+void NetworkManager::fermeClient() {
 TRACE().p( TRACE_RESEAU, "CReseau::fermeClient()%T", this );
 	cout << endl << "Deconnexion du serveur";
 
-	if( m_Client )
-		delete m_Client;
-	m_Client = 0;
+	if( _Client )
+		delete _Client;
+	_Client = 0;
 
-	m_On = false;		// Signale que le réseau n'est plus prêt
+	_On = false;		// Signale que le réseau n'est plus prêt
 
 	Game.Quit();
 }
 
-void CReseau::recoitServer() {
+void NetworkManager::recoitServer() {
 	int numReady;
-	numReady = SDLNet_CheckSockets( m_Server->socketSet, 0 );	// Nombre de sockets ayant une activité détectée
+	numReady = SDLNet_CheckSockets( _Server->socketSet, 0 );	// Nombre de sockets ayant une activité détectée
 
 	if( numReady==-1 ) {
 		cout << "SDLNet_CheckSockets: " << SDLNet_GetError();
@@ -169,30 +169,30 @@ void CReseau::recoitServer() {
 	else if( numReady ) {
 		CPlayer *player;
 
-		if( SDLNet_SocketReady( m_Server->spaMaitre.getSocket() ) ) {
-			m_Server->decodeServerUDP( &m_Server->spaMaitre );
+		if( SDLNet_SocketReady( _Server->spaMaitre.getSocket() ) ) {
+			_Server->decodeServerUDP( &_Server->spaMaitre );
 			numReady--;
 		}
 
 		int curseur = -1;
 
 		while( Game._pTabIndexPlayer->Suivant(curseur) && numReady ) {	// S'il reste de l'activité sur un socket et des proxy joueurs à voir
-			player = m_Server->GetPlayer( curseur );
+			player = _Server->GetPlayer( curseur );
 
 			if( SDLNet_SocketReady( player->spa.getSocket() ) ) {	// S'il y a de l'activité sur ce socket
-				m_Server->decodeProxyPlayer( player );
+				_Server->decodeProxyPlayer( player );
 				numReady--;
 			}
 		}
 	}
 }
 
-CServer *CReseau::getServer() {
-	return m_Server;
+CServer *NetworkManager::getServer() {
+	return _Server;
 }
 
-CClient *CReseau::getClient() {
-	return m_Client;
+CClient *NetworkManager::getClient() {
+	return _Client;
 }
 
 }	// JktNet

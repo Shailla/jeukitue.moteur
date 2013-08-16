@@ -216,7 +216,7 @@ void Controller::executeAction(AG_Event *event) {
 			client->sendJoinTheGame(Config.Joueur.nom);
 		}
 		else {
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Client non connecte - Echec de demande d'informations au serveur";
+			AG_TextMsg(AG_MSG_ERROR, "Action impossible, vous n'etes pas connecte");
 		}
 	}
 	break;
@@ -232,7 +232,7 @@ void Controller::executeAction(AG_Event *event) {
 			client->sendRequestInfoToServer();		// Demande ses infos au serveur
 		}
 		else {
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Client non connecte - Echec de demande d'informations au serveur";
+			AG_TextMsg(AG_MSG_ERROR, "Action impossible, vous n'etes pas connecte");
 		}
 	}
 	break;
@@ -247,8 +247,14 @@ void Controller::executeAction(AG_Event *event) {
 			client->sendPingToServer();				// Demande au serveur de répondre à un ping
 		}
 		else {
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Client non connecte - Echec de demande d'informations au serveur";
+			AG_TextMsg(AG_MSG_ERROR, "Action impossible, vous n'etes pas connecte");
 		}
+	}
+	break;
+
+	case DeconnectClientAction:
+	{
+		Reseau.fermeClient();
 	}
 	break;
 

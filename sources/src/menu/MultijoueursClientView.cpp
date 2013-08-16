@@ -36,6 +36,7 @@ MultijoueursClientView::MultijoueursClientView(const AG_EventFn controllerCallba
 	AG_Button* buttonRejoindre = AG_ButtonNewFn(m_window, 0, "Rejoindre la partie", controllerCallback, "%i", Controller::RejoindrePartieServerAction);
 	AG_Button* buttonInfo = AG_ButtonNewFn(m_window, 0, "Obtenir info serveur", controllerCallback, "%i", Controller::InfoServerAction);
 	AG_Button* buttonPing = AG_ButtonNewFn(m_window, 0, "Pinguer le serveur", controllerCallback, "%i", Controller::PingServerAction);
+	AG_Button* buttonDeconnect = AG_ButtonNewFn(m_window, 0, "Deconnecter", controllerCallback, "%i", Controller::DeconnectClientAction);
     AG_SeparatorNewHoriz(m_window);
 
     // Informations serveur
@@ -50,6 +51,7 @@ MultijoueursClientView::MultijoueursClientView(const AG_EventFn controllerCallba
     AG_ExpandHoriz(buttonRejoindre);
     AG_ExpandHoriz(buttonInfo);
     AG_ExpandHoriz(buttonPing);
+    AG_ExpandHoriz(buttonDeconnect);
     AG_ExpandHoriz(labelServerName);
     AG_ExpandHoriz(labelActiveMap);
     AG_ExpandHoriz(labelPing);
@@ -76,8 +78,6 @@ void MultijoueursClientView::show() {
 }
 
 void MultijoueursClientView::hide() {
-	Reseau.fermeClient();
-
 	View::hide();
 }
 

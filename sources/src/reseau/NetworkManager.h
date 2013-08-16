@@ -21,10 +21,10 @@ class CClient;
 
 class NetworkManager {
 		// Variables membres 
-	CServer *_Server;
-	CClient *_Client;
+	CServer *_server;
+	CClient *_client;
 
-	bool _On;						// Indique si le réseau peut être utilisé ou non
+	bool _on;						// Indique si le réseau peut être utilisé ou non
 
 public:
 

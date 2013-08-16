@@ -19,7 +19,7 @@ public:
 	virtual ~StringUtils();
 
 	static char* toChars(const std::string& str);
-	static void toChars(const std::string& str, char* out, int maxLength);
+	static void toChars(const std::string& str, char* out, unsigned int maxLength);
 	static bool isBlank(const std::string& str);
 
 	static std::string findAndEraseFirstWord(std::string& s);

@@ -55,7 +55,8 @@ public:
 		Refresh,									// Demande de rafraichissement de la fenêtre
 		RejoindrePartieServerAction,				// Rejoindre la partie en cours sur le serveur
 		InfoServerAction,							// Obtenir les informations du serveur
-		PingServerAction							// Afficher dans la console le résultat d'un ping sur le serveur
+		PingServerAction,							// Afficher dans la console le résultat d'un ping sur le serveur
+		DeconnectClientAction						// Déconnecte le client du serveur
 	};
 
     static Viewer* m_agarView;

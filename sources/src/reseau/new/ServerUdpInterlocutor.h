@@ -10,6 +10,7 @@
 
 #include <string>
 #include <map>
+#include <queue>
 
 using namespace std;
 
@@ -67,20 +68,42 @@ class ServerUdpInterlocutor : TechnicalInterlocutor {
 	map<IPaddress, ClientOfServer*> _clientsOfServer;
 
 private:
+
+	/* ******************************************************
+	 * High level methods
+	 * *****************************************************/
+
+	/** Thread which receives and translates the packets. */
 	void receivingProcess();
+
+	/** Thread which translates and sends the packets. */
 	void sendingProcess();
+
+	/** Thread which read the translated received packets and decide what to send. */
 	void intelligenceProcess();
 
+
+	/* ******************************************************
+	 * Low level methods
+	 * *****************************************************/
+
 	void receiveOnePacket();
+
+	/** Method which is started when a connection to the server demand is received. */
 	void manageConnection(const IPaddress& address, C2SHelloTechnicalMessage* msg);
+
+	/** Method which is started when a disconnection to the server information is received. */
 	void manageDisconnection(const IPaddress& address, C2SByeTechnicalMessage* msg);
 
 public:
 	ServerUdpInterlocutor(Uint16 localPort);
 	virtual ~ServerUdpInterlocutor();
 
-	void close();
+	/** Connect the server. */
 	NotConnectedInterlocutor2* connect() throw(ConnectionFailedException);
+
+	/** Close the server and free it's resources. */
+	void close();
 };
 
 #endif /* SERVERINTERLOCUTOR_H_ */

@@ -15,6 +15,7 @@ using namespace std;
 #include "SDL.h"
 #include "SDL_net.h"
 
+#include "util/IpUtils.h"
 #include "reseau/new/message/TechnicalMessage.h"
 #include "reseau/new/message/C2SByeTechnicalMessage.h"
 #include "reseau/new/message/C2SHelloTechnicalMessage.h"
@@ -22,6 +23,8 @@ using namespace std;
 #include "reseau/new/Interlocutor2.h"
 
 #include "reseau/new/ServerUdpInterlocutor.h"
+
+using namespace JktUtils;
 
 bool operator < (const IPaddress& adr1, const IPaddress& adr2) {
 	if(adr1.host != adr2.host) {
@@ -146,6 +149,7 @@ void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloT
 
 		client->setConnexionStatus(TechnicalInterlocutor::CONNECTED);
 		_clientsOfServer[address] = client;
+		_notConnectedInterlocutor->pushNewInterlocutor(clientInterlocutor);
 	}
 
 
@@ -175,6 +179,8 @@ void ServerUdpInterlocutor::manageDisconnection(const IPaddress& address, C2SBye
 
 void ServerUdpInterlocutor::intelligenceProcess() {
 	while(CONNECTED == getConnexionStatus()) {
+		SDL_LockMutex(getMutexIntelligence());
+
 		SDL_CondWaitTimeout(getCondIntelligence(), getMutexIntelligence(), 1000);
 
 
@@ -192,7 +198,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 				if(techMsg) {
 					switch(techMsg->getCode()) {
 					case TechnicalMessage::C2S_HELLO:
-						cout << endl << "Server says : C2S_HELLO received from " << (int)(((char*)&address.host)[0]) << "." << (int)(((char*)&address.host)[1]) << "." << (int)(((char*)&address.host)[2]) << "." << (int)(((char*)&address.host)[3]) << ":" << address.port;
+						cout << endl << "Server says : C2S_HELLO received from " << IpUtils::translateAddress(address);
 						manageConnection(address, (C2SHelloTechnicalMessage*)techMsg);
 						break;
 					}
@@ -245,7 +251,11 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 				}
 			}
 		}
+
+		SDL_UnlockMutex(getMutexIntelligence());
 	}
+
+	SDL_UnlockMutex(getMutexIntelligence());
 
 	cout << endl << "Server says : Stop intelligence process";
 }
@@ -270,6 +280,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 					memcpy(_packetOut->data, data->getBytes()->getBytes(), _packetOut->len);
 					_packetOut->address = data->getAddress();
 					SDLNet_UDP_Send(_socket, -1, _packetOut);
+					cout << endl << "Envoi de donnees techniques en mode non-connecte a " << IpUtils::translateAddress(_packetOut->address);
 				}
 
 				delete data;
@@ -296,7 +307,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 						memcpy(_packetOut->data, data->getBytes(), _packetOut->len);
 						_packetOut->address = client->getIpAddress();
 						SDLNet_UDP_Send(_socket, -1, _packetOut);
-						cout << endl << "Envoi de donnees techniques";
+						cout << endl << "Envoi de donnees techniques en mode conntecte a " << IpUtils::translateAddress(_packetOut->address);
 					}
 
 					delete data;
@@ -311,7 +322,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 						memcpy(_packetOut->data, data->getBytes(), _packetOut->len);
 						_packetOut->address = client->getIpAddress();
 						SDLNet_UDP_Send(_socket, -1, _packetOut);
-						cout << endl << "Envoi de donnees";
+						cout << endl << "Envoi de donnees a " << IpUtils::translateAddress(_packetOut->address);
 					}
 
 					delete data;

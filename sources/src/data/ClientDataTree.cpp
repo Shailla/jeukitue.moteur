@@ -26,7 +26,6 @@ using namespace std;
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
 #include "util/CollectionsUtils.h"
-#include "data/Interlocutor.h"
 #include "data/DistantTreeProxy.h"
 
 #include "data/ClientDataTree.h"

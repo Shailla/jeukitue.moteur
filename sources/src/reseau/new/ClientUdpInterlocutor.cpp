@@ -171,6 +171,7 @@ void ClientUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg
 	}
 
 	if(_tryConnectionNumber > 10) {
+		cout << endl << "Client says : Server does not respond after " << _tryConnectionNumber << " connection requests sent" << flush;
 		close();
 	}
 	else if(currentTime - _tryConnectionLastTime > 1000) {
@@ -185,6 +186,8 @@ void ClientUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg
 
 void ClientUdpInterlocutor::intelligenceProcess() {
 	while(STOPPED != getConnexionStatus() && STOPPING != getConnexionStatus()) {
+		SDL_LockMutex(getMutexIntelligence());
+
 		SDL_CondWaitTimeout(getCondIntelligence(), getMutexIntelligence(), 1000);
 
 		JktUtils::Bytes* msg;
@@ -234,7 +237,10 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 		}
 
 		delete msg;
+		SDL_UnlockMutex(getMutexIntelligence());
 	}
+
+	SDL_UnlockMutex(getMutexIntelligence());
 
 	cout << endl << "Client says : Stop intelligence process" << flush;
 }

@@ -16,6 +16,7 @@
 
 #include "util/types/Bytes.h"
 #include "reseau/new/DataAddress.h"
+#include "reseau/new/Interlocutor2.h"
 
 class NotConnectedInterlocutor2 {
 	std::string _name;
@@ -23,10 +24,13 @@ class NotConnectedInterlocutor2 {
 	std::queue<DataAddress*> _technicalMessagesReceived;
 	std::queue<DataAddress*> _dataToSend;
 	std::queue<DataAddress*> _technicalMessagesToSend;
+	queue<Interlocutor2*> _newInterlocutors;
+
 	SDL_mutex* _mutexDataReceived;
 	SDL_mutex* _mutexDataToSend;
 	SDL_cond* _condDataToSend;
 	SDL_cond* _condIntelligence;
+	SDL_mutex* _mutexNewInterlocutors;
 
 public:
 	NotConnectedInterlocutor2();
@@ -50,6 +54,13 @@ public:
 	void waitDataToSend(int timeout);
 	void pushDataToSend(const IPaddress& address, JktUtils::Bytes* bytes);
 	DataAddress* popDataToSend();
+
+
+	/** Push the interlocutor of a client who has just been connected to the server in the list of the new server's clients. */
+	void pushNewInterlocutor(Interlocutor2* newInterlocutor);
+
+	/** Pop the interlocutor of a client who has been connected to the server. */
+	Interlocutor2* popNewInterlocutor();
 };
 
 #endif /* INTERLOCUTOR_RESEAU_H_ */

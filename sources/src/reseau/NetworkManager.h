@@ -4,6 +4,7 @@
 
 #include "enumReseau.h"
 #include "reseau/new/Interlocutor2.h"
+#include "reseau/new/NotConnectedInterlocutor2.h"
 
 /* Remarque, le protocole est comme suit par exemple :
 	- UDP_INFO, NULL : demande les infos serveur
@@ -42,7 +43,7 @@ public:
 
 	CServer *getServer();
 
-	bool ouvreServer();	// Connecte le serveur
+	NotConnectedInterlocutor2* ouvreServer();	// Connecte le serveur
 	void fermeServer();										// Déconnecte le serveur
 
 	void recoitServer();									// Recoit tous les paquets

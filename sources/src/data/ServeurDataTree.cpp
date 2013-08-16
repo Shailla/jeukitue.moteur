@@ -23,7 +23,6 @@ using namespace std;
 #include "data/communication/message/ClientToServer/UpdateValeurFromClientChangement.h"
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
-#include "data/Interlocutor.h"
 
 #include "data/ServeurDataTree.h"
 

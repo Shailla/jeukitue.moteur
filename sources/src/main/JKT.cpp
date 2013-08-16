@@ -54,7 +54,7 @@ using namespace std;
 using namespace glfont;
 
 #include "util/GenRef.h"
-#include "ressource/RessourcesLoader.h"
+#include "util/IpUtils.h"
 #include "util/math_vectoriel.h"		//Fonctions de calculs vectoriels
 #include "util/V3D.h"
 #include "util/mathFast.h"
@@ -63,6 +63,7 @@ using namespace glfont;
 #include "util/TableauIndex.cpp"		//Liste Indexée
 #include "util/FindFolder.h"
 #include "util/Erreur.h"
+#include "ressource/RessourcesLoader.h"
 
 class CGame;
 
@@ -117,7 +118,6 @@ class CGame;
 #include "data/ServeurDataTree.h"
 #include "data/ClientDataTree.h"
 #include "data/DistantTreeProxy.h"
-#include "data/Interlocutor.h"
 
 #include "reseau/new/ClientUdpInterlocutor.h"
 #include "reseau/new/ServerUdpInterlocutor.h"
@@ -134,6 +134,7 @@ using namespace JktSon;
 
 ServeurDataTree* serveurDataTree = 0;
 ClientDataTree* clientDataTree = 0;
+NotConnectedInterlocutor2* _notConnectedServerInterlocutor = 0;
 
 float GLIGHTX, GLIGHTY, GLIGHTZ;
 GLFont myfont;
@@ -1439,7 +1440,9 @@ void executeJktRequests() {
 		// Connexion du serveur
 		serveurDataTree = new ServeurDataTree();
 
-		if(!Reseau.ouvreServer()) {
+		_notConnectedServerInterlocutor = Reseau.ouvreServer();
+
+		if(!_notConnectedServerInterlocutor) {
 			Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
 			AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du serveur");
 		}
@@ -1591,6 +1594,19 @@ void boucle() {
 
 
 		/* ***********************************************************
+		 * Traites les connexions à l'arbre de données
+		 * **********************************************************/
+
+		if(_notConnectedServerInterlocutor) {
+			Interlocutor2* newInterlocutor;
+
+			while((newInterlocutor = _notConnectedServerInterlocutor->popNewInterlocutor())) {
+				serveurDataTree->addDistant(newInterlocutor);
+			}
+		}
+
+
+		/* ***********************************************************
 		 * Traites les changements des données du jeu
 		 * **********************************************************/
 
@@ -1682,12 +1698,12 @@ int main(int argc, char** argv) {
 		const char *host = SDLNet_ResolveIP( &ipaddress );
 
 		if(host)
-			cout << endl << "Nom de la machine locale : " << host;
+			cout << endl << "Nom et adresse de la machine locale : " << host << " / " << IpUtils::translateAddress(ipaddress);
 		else
-			cout << endl << "Nom de la machine locale : Inconnu";
+			cout << endl << "Nom de la machine locale : <Inconnu>" << " / " << IpUtils::translateAddress(ipaddress);
 	}
 	else {
-		cout << endl << "Nom de la machine locale : Inconnu";
+		cout << endl << "Echec de resolution du nom de la machine locale";
 	}
 
 	Fabrique::construct();
@@ -1695,22 +1711,21 @@ int main(int argc, char** argv) {
 	// Création du démon de gestion des sons
 	DemonSons = new CDemonSons();
 
-//	Interlocutor2 clientInterlocutor;
-//	Interlocutor2 serverInterlocutor;
+
 //
 //	try {
 //		cout << endl << "TEST - Création du 1er client" << flush;
 //		ClientUdpInterlocutor client1(4968);
 //
 //		cout << endl << "TEST - Le 1er client tente de se connecter au serveur pendant 5 secondes" << flush;
-//		client1.connect(&clientInterlocutor, "localhost", 5968);
+//		Interlocutor2* client1Interlocutor = client1.connect("localhost", 5968);
 //		SDL_Delay(5000);
 //
 //		cout << endl << "TEST - Création du serveur" << flush;
 //		ServerUdpInterlocutor server(5968);
 //
 //		cout << endl << "TEST - Connexion du serveur" << flush;
-//		server.connect(&serverInterlocutor);
+//		NotConnectedInterlocutor2* serverInterlocutor = server.connect();
 //
 //		SDL_Delay(10000);
 //
@@ -1719,7 +1734,7 @@ int main(int argc, char** argv) {
 //		ClientUdpInterlocutor client2(4969);
 //
 //		cout << endl << "TEST - Le 2° client tente de se connecter au serveur pendant 10 secondes" << flush;
-//		client2.connect(&clientInterlocutor, "localhost", 5968);
+//		Interlocutor2* client2Interlocutor = client2.connect("localhost", 5968);
 //		SDL_Delay(10000);
 //	}
 //	catch(JktException& exception) {

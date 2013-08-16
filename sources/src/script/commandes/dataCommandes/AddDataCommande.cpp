@@ -15,7 +15,6 @@ using namespace std;
 #include "util/StringUtils.h"
 #include "data/ServeurDataTree.h"
 #include "data/DistantTreeProxy.h"
-#include "data/Interlocutor.h"
 #include "data/ClientDataTree.h"
 #include "script/exception/IllegalParameterException.h"
 

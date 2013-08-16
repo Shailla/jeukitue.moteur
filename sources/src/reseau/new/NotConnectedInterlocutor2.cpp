@@ -22,6 +22,7 @@ NotConnectedInterlocutor2::NotConnectedInterlocutor2() {
 	_mutexDataReceived = SDL_CreateMutex();
 	_mutexDataToSend = SDL_CreateMutex();
 	_condDataToSend = SDL_CreateCond();
+	_mutexNewInterlocutors = SDL_CreateMutex();
 	_condIntelligence = NULL;
 }
 
@@ -176,4 +177,30 @@ DataAddress* NotConnectedInterlocutor2::popDataToSend(void) {
 	SDL_UnlockMutex(_mutexDataToSend);
 
 	return result;
+}
+
+Interlocutor2* NotConnectedInterlocutor2::popNewInterlocutor() {
+	Interlocutor2* newInterlocutor;
+
+	SDL_LockMutex(_mutexNewInterlocutors);
+
+	if(!_newInterlocutors.empty()) {
+		_newInterlocutors.front();
+		_newInterlocutors.pop();
+	}
+	else {
+		newInterlocutor = 0;
+	}
+
+	SDL_UnlockMutex(_mutexNewInterlocutors);
+
+	return newInterlocutor;
+}
+
+void NotConnectedInterlocutor2::pushNewInterlocutor(Interlocutor2* newInterlocutor) {
+	SDL_LockMutex(_mutexNewInterlocutors);
+
+	_newInterlocutors.push(newInterlocutor);
+
+	SDL_UnlockMutex(_mutexNewInterlocutors);
 }

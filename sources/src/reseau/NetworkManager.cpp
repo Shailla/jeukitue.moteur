@@ -67,7 +67,7 @@ bool NetworkManager::getOn() {
 	return _on;
 }
 
-bool NetworkManager::ouvreServer() {
+NotConnectedInterlocutor2* NetworkManager::ouvreServer() {
 TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() begin%T", this );
 	bool result = false;
 
@@ -96,7 +96,7 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() begin%T", this );
 	}
 
 TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() -> %b end%T", result, this );
-	return result;
+	return notConnectedServerInterlocutor;
 }
 
 void NetworkManager::fermeServer() {

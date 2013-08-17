@@ -1222,21 +1222,21 @@ GameDto* serverGameDto;
 
 void executeJktRequests() {
 
-//	/* *******************************************************
-//	 * Exécution de l'ouverture d'une MAP en mode multijoueurs
-//	 * ******************************************************/
-//
-//	if( Game.RequeteProcess.isOuvreMap() ) {		// S'il y a une demande d'ouvertue de MAP
-//		Aide = false;
-//		const string mapName = Game.RequeteProcess.getOuvreMap();
-//
-//		openMap( mapName );	// Ouvre la MAP voulue
-//
-//		Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );		// Indique que la partie est lancée en mode client
-//		pFocus->SetPlayFocus();								// Met l'interception des commandes sur le mode jeu
-//
-//		Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
-//	}
+	//	/* *******************************************************
+	//	 * Exécution de l'ouverture d'une MAP en mode multijoueurs
+	//	 * ******************************************************/
+	//
+	//	if( Game.RequeteProcess.isOuvreMap() ) {		// S'il y a une demande d'ouvertue de MAP
+	//		Aide = false;
+	//		const string mapName = Game.RequeteProcess.getOuvreMap();
+	//
+	//		openMap( mapName );	// Ouvre la MAP voulue
+	//
+	//		Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );		// Indique que la partie est lancée en mode client
+	//		pFocus->SetPlayFocus();								// Met l'interception des commandes sur le mode jeu
+	//
+	//		Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
+	//	}
 
 
 	/* *******************************************************
@@ -1579,18 +1579,22 @@ void communique() {
 		 * ******************************************/
 
 		// Le client réceptionne les données du serveur
-		if((Game.isModeClient()) &&(
-				(Game.getStatutClient()==JKT_STATUT_CLIENT_READY)	||
-				(Game.getStatutClient()==JKT_STATUT_CLIENT_DEMJTG)	||
-				(Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) ) ) {
+		CClient* client = Reseau.getClient();
 
-			// Recoit les données du serveur
-			Reseau.getClient()->recoit();
+		if(client) {
+			if((Game.isModeClient()) &&(
+					(Game.getStatutClient()==JKT_STATUT_CLIENT_READY)	||
+					(Game.getStatutClient()==JKT_STATUT_CLIENT_DEMJTG)	||
+					(Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) ) ) {
 
-			// Emet les données vers le serveur
-			if(Game.getMap() && Game.Erwin()) {
-				if(Game.getStatutClient() == JKT_STATUT_CLIENT_PLAY) {
-					Game.getClient()->emet( *Game.Erwin() );		// Emet les requetes et données du joueur actif;
+				// Recoit les données du serveur
+				client->recoit();
+
+				// Emet les données vers le serveur
+				if(Game.getMap() && Game.Erwin()) {
+					if(Game.getStatutClient() == JKT_STATUT_CLIENT_PLAY) {
+						client->emet( *Game.Erwin() );		// Emet les requetes et données du joueur actif;
+					}
 				}
 			}
 		}

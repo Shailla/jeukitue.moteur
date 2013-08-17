@@ -33,6 +33,7 @@ class CGame;
 #include "main/Game.h"
 
 using namespace JktNet;
+using namespace JktMoteur;
 
 extern NetworkManager Reseau;
 
@@ -82,6 +83,10 @@ TRACE().p( TRACE_ERROR, "CGame::getStatutClient() begin%T", this );
 
 TRACE().p( TRACE_ERROR, "CGame::getStatutClient() -> %d end%T", statut, this );
 	return statut;
+}
+
+int CGame::getMaxPlayers() const {
+	return _pTabIndexPlayer->getMax();
 }
 
 void CGame::setPlayerList(int nbr) {
@@ -264,6 +269,15 @@ CPlayer *CGame::Erwin() {
 	return m_Erwin;
 }
 
+void CGame::quitCurrentMap() {
+	CMap* currentMap = getMap();
+
+	if(currentMap) {
+		currentMap->freeGL();
+		changeActiveMap(0);
+	}
+}
+
 void CGame::deletePlayers() {
 	if(_pTabIndexPlayer) {
 		CPlayer *player;
@@ -281,12 +295,6 @@ void CGame::deletePlayers() {
 
 void CGame::Erwin(CPlayer *erwin) {
 	m_Erwin = erwin;
-}
-
-void CGame::deleteErwin() {
-	if(m_Erwin)
-		delete m_Erwin;
-	m_Erwin = NULL;
 }
 
 JktMoteur::CMap *CGame::getMap() {

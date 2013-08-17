@@ -21,24 +21,31 @@ CRequeteProcess::~CRequeteProcess()
 	SDL_DestroyMutex(_mutex);
 }
 
-void CRequeteProcess::setOuvreMapLocal( string nomMAP ) {
+void CRequeteProcess::setOuvreMapLocal(const string& nomMAP ) {
 	SDL_mutexP(_mutex);
+
 	_openMapLocalEtape = OMLE_DEMANDE;		// Indique la présence d'une demande d'ouverture d'une MAP
-	_MapAOuvrir = nomMAP;	// Nom de la MAP en question
+	_MapAOuvrir = nomMAP;					// Nom de la MAP en question
+
 	SDL_mutexV(_mutex);
 }
 
-void CRequeteProcess::setOuvreMapServer( string nomMAP ) {
+void CRequeteProcess::setOuvreMapServer(const string& nomMAP ) {
 	SDL_mutexP(_mutex);
+
 	_openMapServerEtape = OMSE_DEMANDE;		// Indique la présence d'une demande d'ouverture d'une MAP
-	_MapAOuvrir = nomMAP;	// Nom de la MAP en question
+	_MapAOuvrir = nomMAP;					// Nom de la MAP en question
+
 	SDL_mutexV(_mutex);
 }
 
-void CRequeteProcess::setOuvreMap( string nomMAP ) {
+void CRequeteProcess::setOuvreMap(const string& nomMAP ) {
 	SDL_mutexP(_mutex);
-	_bOpenMap = true;		// Indique la présence d'une demande d'ouverture d'une MAP
-	_MapAOuvrir = nomMAP;	// Nom de la MAP en question
+
+	_openMapClientEtape = OMCE_DEMANDE;		// Indique la présence d'une demande d'ouverture d'une MAP
+	_bOpenMap = true;						// Indique la présence d'une demande d'ouverture d'une MAP
+	_MapAOuvrir = nomMAP;					// Nom de la MAP en question
+
 	SDL_mutexV(_mutex);
 }
 

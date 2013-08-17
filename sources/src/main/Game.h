@@ -85,12 +85,15 @@ public:
 	void Refresh();					// Rafraichi les classe qui en ont besoin
 	void GereContactPlayers();		// Gère les contacts entre tous les joueurs et la map
 	void setPlayerList(int nbr);	// Indique le nombre de joueurs de la partie
+	int getMaxPlayers() const;
 	void quit();					// Quitte la partie en cours
 
-		// Gestion du joueur principal (actif)
-	CPlayer *Erwin();								// Revoie le joueur principal
-	void Erwin( CPlayer *erwin );					// Set le joueur principal
-	void deleteErwin();								// Détruit le joueur principal s'il existe
+	// Gestion de la MAP courante
+	void quitCurrentMap();
+
+	// Gestion du joueur principal (actif)
+	CPlayer* Erwin();								// Renvoie le joueur principal
+	void Erwin(CPlayer *erwin);					// Set le joueur principal
 
 	// Gestion des joueurs
 	void deletePlayers();								// Détruit tous les joueurs

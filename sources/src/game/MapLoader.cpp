@@ -30,18 +30,18 @@ MapLoader::MapLoader() {
 MapLoader::~MapLoader() {
 }
 
-void MapLoader::launcheGameLoading(GameDto* gameDto) {
-	SDL_CreateThread(loadGameThread, (void*)gameDto); 	// Lance l'ouverture de la MAP dans un thread
+void MapLoader::launchLocalGameLoading(GameDto* gameDto) {
+	SDL_CreateThread(loadLocalGameThread, (void*)gameDto); 	// Lance l'ouverture de la MAP dans un thread
 }
 
-int MapLoader::loadGameThread(void* gameDtoVar) {
+int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 	GameDto* gameDto = (GameDto*)gameDtoVar;
 
 	ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
 
 	/**************************************
-	* Lecture du fichier MAP
-	**************************************/
+	 * Lecture du fichier MAP
+	 **************************************/
 
 	string mapName(gameDto->getMapName());
 
@@ -56,8 +56,8 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 
 
 	/**************************************
-	* Chargement de sons pour les joueurs
-	**************************************/
+	 * Chargement de sons pour les joueurs
+	 **************************************/
 
 	// Récupération des ressources de cris des personnages
 	console->println(ConsoleView::COT_INFO, "Lecture du premier cri...");
@@ -177,18 +177,98 @@ int MapLoader::loadGameThread(void* gameDtoVar) {
 
 
 
-void MapLoader::launcheGameServerLoading(GameDto* gameDto) {
-	SDL_CreateThread(loadGameServerThread, (void*)gameDto); 	// Lance l'ouverture de la MAP dans un thread
+void MapLoader::launchClientGameLoading(GameDto* gameDto) {
+	SDL_CreateThread(loadClientGameThread, (void*)gameDto); 	// Lance l'ouverture de la MAP dans un thread
 }
 
-int MapLoader::loadGameServerThread(void* gameDtoVar) {
+int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	GameDto* gameDto = (GameDto*)gameDtoVar;
 
 	ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
 
 	/**************************************
-	* Lecture du fichier MAP
-	**************************************/
+	 * Lecture du fichier MAP
+	 **************************************/
+
+	string mapName(gameDto->getMapName());
+
+	console->println(ConsoleView::COT_INFO, string("Lecture de la MAP '").append(mapName).append("'..."));
+	cout << endl << "Lecture de la MAP '" << mapName << "'..." << flush;
+
+	CMap* map = new CMap(mapName);
+	gameDto->setMap(map);
+
+
+	/***************************************************
+	 * Chargement des ressources pour les joueurs
+	 ****************************************************/
+
+	// Cris des personnages
+	console->println(ConsoleView::COT_INFO, "Lecture du cri...");
+	cout << endl << "Lecture du cri...";
+
+	string cri1 = "@Bruit\\cri_1.wav";
+	JktUtils::RessourcesLoader::getFileRessource(cri1);
+
+	// Chargement du skin
+	string mapJoueur;
+	mapJoueur.append("@Joueur\\").append(Config.Joueur.mapName);
+
+	console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
+	cout << endl << "Lecture du skin '" << mapJoueur << "'...";
+
+	CMap *pMapJoueur = new CMap(mapJoueur);
+	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
+	console->println(ConsoleView::COT_INFO, "Scaling du skin");
+	cout << endl << "Scaling du skin";
+	pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
+
+
+	/***************************************
+	 * Initialisation des joueurs
+	 ***************************************/
+
+	// Initialisation des joueurs
+	console->println(ConsoleView::COT_INFO, "Initialisation des joueurs...");
+	cout << endl << "Initialisation des joueurs..." << flush;
+
+	int curseur = -1;
+	CPlayer* player;
+
+	while( (curseur=Game._pTabIndexPlayer->Suivant(curseur)) < Game.getMaxPlayers() ) {
+		player = Game._pTabIndexPlayer->operator []( curseur );
+
+		player->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
+		player->changeContact(contactPlayer);			// Associe une fonction de gestion des contacts avec la map
+		player->Skin(pMapJoueur);
+		player->setCri( cri1.c_str() );					// Cri du joueur
+		player->init();
+
+		// TODO l'initialisation du spa des player n'est pas faite, est-elle nécessaire ?
+	}
+
+	console->println(ConsoleView::COT_INFO, "Partie chargee");
+	cout << endl << "Partie chargee" << flush;
+
+	Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_OUVERTURE);
+
+	return 0;
+}
+
+
+
+void MapLoader::launchServerGameLoading(GameDto* gameDto) {
+	SDL_CreateThread(loadServerGameThread, (void*)gameDto); 	// Lance l'ouverture de la MAP dans un thread
+}
+
+int MapLoader::loadServerGameThread(void* gameDtoVar) {
+	GameDto* gameDto = (GameDto*)gameDtoVar;
+
+	ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
+
+	/**************************************
+	 * Lecture du fichier MAP
+	 **************************************/
 
 	string mapName(gameDto->getMapName());
 
@@ -203,8 +283,8 @@ int MapLoader::loadGameServerThread(void* gameDtoVar) {
 
 
 	/**************************************
-	* Chargement de sons pour les joueurs
-	**************************************/
+	 * Chargement de sons pour les joueurs
+	 **************************************/
 
 	// Récupération des ressources de cris des personnages
 	console->println(ConsoleView::COT_INFO, "Lecture du cri...");

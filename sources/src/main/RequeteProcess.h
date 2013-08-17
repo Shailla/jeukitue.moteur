@@ -45,9 +45,9 @@ public:
 	CRequeteProcess();
 	~CRequeteProcess();
 
-	void setOuvreMapLocal( string nomMAP );					// Inscrit une demande d'ouverture de MAP
-	void setOuvreMapServer( string nomMAP );				// Inscrit une demande d'ouverture de MAP
-	void setOuvreMap( string nomMAP );						// Inscrit une demande d'ouverture de MAP
+	void setOuvreMapLocal(const string& nomMAP );					// Inscrit une demande d'ouverture de MAP
+	void setOuvreMapServer(const string& nomMAP );				// Inscrit une demande d'ouverture de MAP
+	void setOuvreMap(const string& nomMAP );						// Inscrit une demande d'ouverture de MAP
 	bool isOuvreMap();										// Intéroge sur la présence d'une demande d'ouverture de MAP
 	void setOuvreMapLocaleEtape(OUVRE_MAP_LOCALE_ETAPES etape);
 	void setOuvreMapServerEtape(OUVRE_MAP_SERVER_ETAPES etape);

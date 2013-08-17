@@ -18,11 +18,13 @@ class MapLoader {
 	MapLoader();	// Masquage du constructeur de singleton
 	virtual ~MapLoader();
 
-	static int loadGameThread(void* gameDtoVar);
-	static int loadGameServerThread(void* gameDtoVar);
+	static int loadLocalGameThread(void* gameDtoVar);
+	static int loadClientGameThread(void* gameDtoVar);
+	static int loadServerGameThread(void* gameDtoVar);
 public:
-	static void launcheGameLoading(GameDto* gameDto);
-	static void launcheGameServerLoading(GameDto* gameDto);
+	static void launchLocalGameLoading(GameDto* gameDto);
+	static void launchClientGameLoading(GameDto* gameDto);
+	static void launchServerGameLoading(GameDto* gameDto);
 };
 
 #endif /* MAPLOADER_H_ */

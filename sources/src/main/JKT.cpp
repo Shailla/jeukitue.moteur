@@ -1216,26 +1216,27 @@ void openMap(const string& nomFichierMap) {
 }
 
 GameDto* localeGameDto;
+GameDto* clientGameDto;
 GameDto* serverGameDto;
 
 
 void executeJktRequests() {
 
-	/* *******************************************************
-	 * Exécution de l'ouverture d'une MAP en mode multijoueurs
-	 * ******************************************************/
-
-	if( Game.RequeteProcess.isOuvreMap() ) {		// S'il y a une demande d'ouvertue de MAP
-		Aide = false;
-		const string mapName = Game.RequeteProcess.getOuvreMap();
-
-		openMap( mapName );	// Ouvre la MAP voulue
-
-		Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );		// Indique que la partie est lancée en mode client
-		pFocus->SetPlayFocus();								// Met l'interception des commandes sur le mode jeu
-
-		Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
-	}
+//	/* *******************************************************
+//	 * Exécution de l'ouverture d'une MAP en mode multijoueurs
+//	 * ******************************************************/
+//
+//	if( Game.RequeteProcess.isOuvreMap() ) {		// S'il y a une demande d'ouvertue de MAP
+//		Aide = false;
+//		const string mapName = Game.RequeteProcess.getOuvreMap();
+//
+//		openMap( mapName );	// Ouvre la MAP voulue
+//
+//		Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );		// Indique que la partie est lancée en mode client
+//		pFocus->SetPlayFocus();								// Met l'interception des commandes sur le mode jeu
+//
+//		Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
+//	}
 
 
 	/* *******************************************************
@@ -1281,7 +1282,7 @@ void executeJktRequests() {
 
 		Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_OUVERTURE_EN_COURS);
 
-		MapLoader::launcheGameLoading(localeGameDto);		// Lance l'ouverture de la MAP
+		MapLoader::launchLocalGameLoading(localeGameDto);		// Lance l'ouverture de la MAP
 	}
 	break;
 
@@ -1308,7 +1309,7 @@ void executeJktRequests() {
 		int i = 0;
 
 		if(erwin != NULL) {
-			Game.Erwin(erwin);								// Indique que 'erwin' est le joueur principal
+			Game.Erwin(erwin);									// Indique que 'erwin' est le joueur principal
 			Game._pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
 		}
 
@@ -1355,17 +1356,6 @@ void executeJktRequests() {
 	{
 		Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
 
-		// Fermeture de la MAP courante et destruction des joueurs
-		CMap* currentMap = Game.getMap();
-		if(currentMap) {
-			currentMap->freeGL();
-			Game.changeActiveMap(NULL);
-		}
-
-		Game.Erwin(NULL);
-
-		Game.deletePlayers();
-
 		// Connexion du client
 		Interlocutor2* clientInterlocutor = Reseau.ouvreClient();
 
@@ -1379,12 +1369,47 @@ void executeJktRequests() {
 			// Lancement ouverture MAP demandée
 			const string mapName = Game.RequeteProcess.getOuvreMap();
 
-			serverGameDto = new GameDto(mapName);
+			clientGameDto = new GameDto(mapName);
 
 			Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_OUVERTURE_EN_COURS);
 
-			MapLoader::launcheGameServerLoading(serverGameDto);		// Lance l'ouverture de la MAP
+			MapLoader::launchClientGameLoading(clientGameDto);		// Lance l'ouverture de la MAP
 		}
+	}
+	break;
+
+	case CRequeteProcess::OMCE_OUVERTURE:
+	{
+		// Activation de la MAP ouverte
+		CMap* map = clientGameDto->getMap();
+		map->initGL();
+		Game.changeActiveMap(map);
+
+		// Activation de chacun des joueurs
+		CPlayer *player;
+		int playerIndex = -1;
+
+		while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
+			player = (*Game._pTabIndexPlayer)[playerIndex];
+			player->initGL();
+			player->choiceOneEntryPoint();
+		}
+
+		// Lancement du jeu en mode local
+		Aide = false;
+		pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
+
+		JktNet::CClient *client = Game.getClient();
+		client->nomMAP = clientGameDto->getMapName();			// Informe le serveur sur le nom de la MAP lancée
+		client->setStatut( JktNet::JKT_STATUT_CLIENT_PLAY );
+		Game.setModeClient();						// Jeu en mode jeu local
+
+		delete clientGameDto;
+
+		cout << "\nFINI";
+		cout << flush;
+
+		Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_AUCUNE);
 	}
 	break;
 	}
@@ -1443,7 +1468,7 @@ void executeJktRequests() {
 
 			Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_OUVERTURE_EN_COURS);
 
-			MapLoader::launcheGameServerLoading(serverGameDto);		// Lance l'ouverture de la MAP
+			MapLoader::launchServerGameLoading(serverGameDto);		// Lance l'ouverture de la MAP
 		}
 	}
 	break;
@@ -1701,36 +1726,36 @@ int main(int argc, char** argv) {
 	DemonSons = new CDemonSons();
 
 
-//
-//	try {
-//		cout << endl << "TEST - Création du 1er client" << flush;
-//		ClientUdpInterlocutor client1(4968);
-//
-//		cout << endl << "TEST - Le 1er client tente de se connecter au serveur pendant 5 secondes" << flush;
-//		Interlocutor2* client1Interlocutor = client1.connect("localhost", 5968);
-//		SDL_Delay(5000);
-//
-//		cout << endl << "TEST - Création du serveur" << flush;
-//		ServerUdpInterlocutor server(5968);
-//
-//		cout << endl << "TEST - Connexion du serveur" << flush;
-//		NotConnectedInterlocutor2* serverInterlocutor = server.connect();
-//
-//		SDL_Delay(10000);
-//
-//
-//		cout << endl << "TEST - Création 2° du client" << flush;
-//		ClientUdpInterlocutor client2(4969);
-//
-//		cout << endl << "TEST - Le 2° client tente de se connecter au serveur pendant 10 secondes" << flush;
-//		Interlocutor2* client2Interlocutor = client2.connect("localhost", 5968);
-//		SDL_Delay(10000);
-//	}
-//	catch(JktException& exception) {
-//		cerr << endl << "ERREUR CATCHEE : " << exception.getMessage() << flush;
-//	}
-//
-//	exit(0);
+	//
+	//	try {
+	//		cout << endl << "TEST - Création du 1er client" << flush;
+	//		ClientUdpInterlocutor client1(4968);
+	//
+	//		cout << endl << "TEST - Le 1er client tente de se connecter au serveur pendant 5 secondes" << flush;
+	//		Interlocutor2* client1Interlocutor = client1.connect("localhost", 5968);
+	//		SDL_Delay(5000);
+	//
+	//		cout << endl << "TEST - Création du serveur" << flush;
+	//		ServerUdpInterlocutor server(5968);
+	//
+	//		cout << endl << "TEST - Connexion du serveur" << flush;
+	//		NotConnectedInterlocutor2* serverInterlocutor = server.connect();
+	//
+	//		SDL_Delay(10000);
+	//
+	//
+	//		cout << endl << "TEST - Création 2° du client" << flush;
+	//		ClientUdpInterlocutor client2(4969);
+	//
+	//		cout << endl << "TEST - Le 2° client tente de se connecter au serveur pendant 10 secondes" << flush;
+	//		Interlocutor2* client2Interlocutor = client2.connect("localhost", 5968);
+	//		SDL_Delay(10000);
+	//	}
+	//	catch(JktException& exception) {
+	//		cerr << endl << "ERREUR CATCHEE : " << exception.getMessage() << flush;
+	//	}
+	//
+	//	exit(0);
 
 
 	// Lancement de l'introduction du jeu

@@ -22,8 +22,6 @@ using namespace std;
 #include "enumReseau.h"
 #include "reseau/Client.h"
 
-void gravitePlayer(CPlayer *player);
-
 extern CGame Game;
 
 namespace JktNet
@@ -31,7 +29,6 @@ namespace JktNet
 
 CClient::CClient() {
 	TRACE().p( TRACE_RESEAU, "CClient::CClient() begin%T", this );
-	m_MaxPlayers = 0;
 	socketSet = 0;
 	m_uNbrPlayers = 0;
 	m_Statut = JKT_STATUT_CLIENT_INIT;
@@ -57,23 +54,7 @@ StatutClient CClient::getStatut() {
 	return m_Statut;
 }
 
-void CClient::setMaxPlayers( int nbr ) {
-	Game.setPlayerList( nbr );
-}
-
-bool CClient::AjoutePlayer( int pos, CPlayer *player )
-{	return Game._pTabIndexPlayer->Ajoute( pos, player );	}
-
-CPlayer* CClient::GetPlayer(int pos)	// Retourne un pointeur sur l'élément indexé 'pos'
-{	return Game._pTabIndexPlayer->operator [](pos);	}
-
-int CClient::SuivantPlayer( int pos )	// Renvoie l'index de l'élément après l'élément indexé par 'pos'
-{	return Game._pTabIndexPlayer->Suivant( pos );		}
-
-unsigned int CClient::nbrPlayers()
-{	return m_uNbrPlayers;	}
-
-void CClient::nbrPlayers( unsigned int nbr )
+void CClient::nbrPlayers(unsigned int nbr)
 {	m_uNbrPlayers = nbr;	}
 
 void CClient::decodeConnecte( Uint16 code1, Uint16 code2 ) {
@@ -131,7 +112,7 @@ void CClient::decodeRecap( Uint16 code2 ) {
 				// Lit les données des joueurs
 				CPlayer *player;
 				int curseur = -1;
-				while( (curseur=SuivantPlayer(curseur))<getMaxPlayers() ) {
+				while( (curseur=Game._pTabIndexPlayer->Suivant(curseur)) < Game.getMaxPlayers() ) {
 					var1 = spaMaitre.read16();		// Identifiant du joueur
 
 					if( var1!=curseur ) {
@@ -139,7 +120,7 @@ void CClient::decodeRecap( Uint16 code2 ) {
 						cout << endl << "LE JEU N'EST PLUS PERTINENT, les joueurs ont change !";
 					}
 
-					player = GetPlayer( curseur );
+					player = Game._pTabIndexPlayer->operator [](curseur);
 					spaMaitre.readRecapFromServer( *player );
 				}
 			}
@@ -152,10 +133,6 @@ void CClient::decodeRecap( Uint16 code2 ) {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet RECAP inconnu";
 		break;
 	}
-}
-
-int CClient::getMaxPlayers() {
-	return m_MaxPlayers;
 }
 
 Interlocutor2* CClient::ouvre(const string &address, Uint16 port, Uint16 portTree) {
@@ -311,7 +288,7 @@ int CClient::getPingClientServeur() {
 	return ping;
 }
 
-bool CClient::decodeNonConnecte( Uint16 code1, Uint16 code2 ) {
+bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 	bool result = false;
 	Uint16 code3;
 
@@ -409,52 +386,79 @@ bool CClient::decodeNonConnecte( Uint16 code1, Uint16 code2 ) {
 
 							Game.setStatutClient( JKT_STATUT_CLIENT_OUV );	// Indique l'ouverture en cours
 
-							IDpersonnel = spaMaitre.read16();	// Lecture de l'identifiant du joueur
-							spaMaitre.readString( nomMAP );		// Nom de la MAP en cours sur le serveur
-							setMaxPlayers( spaMaitre.read16());	// Nombre max de joueurs sur le serveur
-							nbrPlayers( spaMaitre.read16() );	// Nombre de joeurs sur le serveur
+							IDpersonnel = spaMaitre.read16();		// Lecture de l'identifiant du joueur
+							spaMaitre.readString( nomMAP );			// Nom de la MAP en cours sur le serveur
+							Game.setPlayerList(spaMaitre.read16());		// Nombre max de joueurs sur le serveur
+							nbrPlayers( spaMaitre.read16() );		// Nombre de joeurs sur le serveur
 
 							cout << endl;
 							cout << endl << "Identifiant :\t\t" << IDpersonnel;
 							cout << endl << "Nom de la MAP en cours :\t\t" << nomMAP;
-							cout << endl << "Nombre de joueurs maxi :\t\t" << getMaxPlayers();
-							cout << endl << "Nombre de joueurs sur le serveur :\t" << nbrPlayers();
+							cout << endl << "Nombre de joueurs maxi :\t\t" << Game.getMaxPlayers();
+							cout << endl << "Nombre de joueurs sur le serveur :\t" << m_uNbrPlayers;
 							cout << endl;
 
-							// Crée la liste des joueurs
-							for( unsigned int i=0 ; i<nbrPlayers() ; i++)	// Recherche des joueurs existants
-							{
+
+							/* *************************************************************
+							 * Sortie de la partie en cours
+							 * ************************************************************/
+
+							// Quitte la MAP en cours
+							Game.quitCurrentMap();
+
+							// Supprime les joueurs
+							Game.Erwin(0);
+							Game.deletePlayers();
+
+
+							/* *************************************************************
+							 * Construction de la nouvelle liste de joueurs
+							 * ************************************************************/
+
+							// Import de la nouvelle liste de joueurs
+							for( unsigned int i=0 ; i<m_uNbrPlayers ; i++) {
 								player = new CPlayer();
 
-								player->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
-								player->changeContact( JktMoteur::contactPlayer );		// Associe une fonction de gestion des contacts avec la map
+								// Identifiant du joueur sur le serveur
+								Uint16 id = spaMaitre.read16();
+								Game._pTabIndexPlayer->Ajoute( id, player );
 
-								Uint16 id = spaMaitre.read16();		// Identifiant du joueur
-								string nom_p = player->nom();
-								spaMaitre.readString( nom_p );	// Nom du joueur
-								spaMaitre.readRecapFromServer( *player );			// Lecture des position, vitesse, Phi et Teta du joueur
+								// Nom du joueur
+								string nom_p;
+								spaMaitre.readString( nom_p );
+								player->nom(nom_p);
 
-								player->init();
-								AjoutePlayer( id, player );
+								// Lecture des position, vitesse, Phi et Teta du joueur
+								spaMaitre.readRecapFromServer( *player );
 							}
 
 							// Affichage des infos des joueurs
 							int curseur = -1;
-							while( (curseur=SuivantPlayer(curseur))<getMaxPlayers() )
-							{
-								float pos[3];
-								player = GetPlayer( curseur );
+							float pos[3];
+
+							while( (curseur=Game._pTabIndexPlayer->Suivant(curseur)) < Game.getMaxPlayers() ) {
+								player = Game._pTabIndexPlayer->operator []( curseur );
 								cout << endl << curseur;
+
 								if( curseur==IDpersonnel )	// S'il s'agit du joueur de cet ordinateur
 									cout << " *";
+
 								cout << "\t" << player->nom();
 								player->getPosition( pos );
 								cout << "\t" << pos[0] << ";" << pos[1] << ";" << pos[2];
 							}
 
-							Game.deleteErwin();	// Détruit le joueur principal, s'il existe
 
-							Game.Erwin( GetPlayer( IDpersonnel ) );	// Joueur principal
+							/* *************************************************************
+							 * Attribution du joueur principal
+							 * ************************************************************/
+
+							Game.Erwin( Game._pTabIndexPlayer->operator []( IDpersonnel ) );
+
+
+							/* *************************************************************
+							 * Lancement de l'ouverture de la MAP
+							 * ************************************************************/
 
 							Game.RequeteProcess.setOuvreMap( nomMAP );
 						}

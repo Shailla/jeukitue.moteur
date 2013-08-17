@@ -19,11 +19,12 @@ DebugMenuView::DebugMenuView(const AG_EventFn controllerCallback)
 	AG_Button* _buttonMapTree = AG_ButtonNewFn(m_window, 0, "Arbre de la MAP", controllerCallback, "%i", Controller::ShowMapTreeViewAction);
 	AG_Button* _buttonErreurOpenGl = AG_ButtonNewFn(m_window, 0, "Derniere erreur OpenGL", controllerCallback, "%i", Controller::ShowLastOpenGlErrorViewAction);
 	AG_Button* _buttonDataTree = AG_ButtonNewFn(m_window, 0, "Arbre donnees", controllerCallback, "%i", Controller::ShowDataTreeViewAction);
-
+	AG_Button* _buttonPlayersList = AG_ButtonNewFn(m_window, 0, "Liste des joueurs", controllerCallback, "%i", Controller::ShowPlayersListViewAction);
 
     AG_ExpandHoriz(_buttonMapTree);
 	AG_ExpandHoriz(_buttonErreurOpenGl);
 	AG_ExpandHoriz(_buttonDataTree);
+	AG_ExpandHoriz(_buttonPlayersList);
 
 	// Bouton retour
     AG_SeparatorNewHoriz(m_window);

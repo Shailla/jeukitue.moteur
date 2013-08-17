@@ -46,7 +46,7 @@ MultijoueursClientView::MultijoueursClientView(const AG_EventFn controllerCallba
     AG_Label* labelPing = AG_LabelNewPolledMT(m_window, 0, &_agMutex, "Ping : %i", &_ping);
 
 	// Bouton retour
-    AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowMainMenuAction);
+    AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowMultijoueursMenuAction);
 
     AG_ExpandHoriz(buttonRejoindre);
     AG_ExpandHoriz(buttonInfo);

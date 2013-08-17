@@ -51,7 +51,8 @@ public:
 		ShowDebugViewAction,						// Affiche le menu de degbug
 		ShowLastOpenGlErrorViewAction,				// Affiche la derniere erreur OpenGL dans une popup
 		ShowMapTreeViewAction,						// Affiche les données de la MAP courante sous forme d'un arbre
-		ShowDataTreeViewAction,
+		ShowDataTreeViewAction,						// Affiche l'arbre de données
+		ShowPlayersListViewAction,					// Affiche la liste des joueurs
 		Refresh,									// Demande de rafraichissement de la fenêtre
 		RejoindrePartieServerAction,				// Rejoindre la partie en cours sur le serveur
 		InfoServerAction,							// Obtenir les informations du serveur

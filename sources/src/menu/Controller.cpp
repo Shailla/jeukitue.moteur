@@ -316,6 +316,12 @@ void Controller::executeAction(AG_Event *event) {
 	}
 	break;
 
+	case ShowPlayersListViewAction:
+	{
+		m_agarView->showMenuView(Viewer::PLAYERS_LIST_VIEW);
+	}
+	break;
+
 	// Affiche la denière erreur OpenGL dans une popup
 	case ShowLastOpenGlErrorViewAction:
 	{

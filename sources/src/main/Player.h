@@ -33,8 +33,8 @@ class CPlayer {
 	CClavier *m_pClavier;	//pointeur sur la class des requêtes clavier
 
 	//POINTEURS SUR LES FONCTIONS SPECIALES
-	void (*actionFunc)(CPlayer *player);	//fonction périodique à réaliser (gravité par exemple)
-	void (*contactFunc)(CPlayer *player, float *normal, float distanceW); //focntion agissant lors d'un contact avec la map
+	void (*_actionFunc)(CPlayer *player);	//fonction périodique à réaliser (gravité par exemple)
+	void (*_contactFunc)(CPlayer *player, float *normal, float distanceW); //focntion agissant lors d'un contact avec la map
 	int m_ArmeActif;		// Numéro de l'arme actuellement active
 	int m_NbrArmes;			// Nombre d'armes
 

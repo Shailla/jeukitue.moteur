@@ -26,7 +26,7 @@ DataTreeView::DataTreeView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
-	AG_WindowSetCaption(m_window, "Serveur");
+	AG_WindowSetCaption(m_window, "Arbre des donnees");
 
 	AG_Box* box = AG_BoxNewHoriz(m_window, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
 	AG_Expand(box);
@@ -34,7 +34,6 @@ DataTreeView::DataTreeView(const AG_EventFn controllerCallback)
 	drawWidgets(m_window, box);
 
     AG_SeparatorNewHoriz(m_window);
-
 
 	// Boutons
 	AG_Box* boxButtons = AG_BoxNewHoriz(m_window, 0);
@@ -69,12 +68,9 @@ void DataTreeView::drawWidgets(AG_Window* window, AG_Box* box) {
 	AG_TableAddCol(clientsTable, "Conf. rev.", "<XXXXXXXXXXXX>", NULL);
 	AG_Expand(clientsTable);
 
-	_window = window;
 	_dataList = dataList;
 	_clientsTable = clientsTable;
 }
-
-
 
 void DataTreeView::refresh(AG_Event* event) {
 	DataTreeView* thiz = (DataTreeView*)AG_PTR(1);
@@ -110,7 +106,7 @@ void DataTreeView::refreshTree() {
 	AG_TlistEnd(_dataList);
 
 	// Rafraichissement de la page
-	AG_WindowUpdate(_window);
+	AG_WindowUpdate(m_window);
 }
 
 void DataTreeView::show(void) {

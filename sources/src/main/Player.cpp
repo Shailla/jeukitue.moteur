@@ -78,8 +78,8 @@ CPlayer::CPlayer() {
 	m_PhiVue = 0.0f;
 
 	m_pClavier = NULL;
-	actionFunc = NULL;			// Pas d'action périodique à réaliser
-	contactFunc = NULL;		// Pas d'action à réaliser lors d'un contact avec la map
+	_actionFunc = NULL;			// Pas d'action périodique à réaliser
+	_contactFunc = NULL;		// Pas d'action à réaliser lors d'un contact avec la map
 
 	m_pSkin = NULL;				// Pas de skin associé par défaut
 
@@ -309,11 +309,11 @@ void CPlayer::setVitesse(const float vit[3]) {
 }
 
 void CPlayer::changeAction(void (*action)(CPlayer *player)) {
-	actionFunc = action;	//définit l'action périodique à réaliser
+	_actionFunc = action;	//définit l'action périodique à réaliser
 }
 
 void CPlayer::changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW)) {
-	contactFunc = contact;	//définit l'action à réaliser lors d'un contact avec la map
+	_contactFunc = contact;	//définit l'action à réaliser lors d'un contact avec la map
 }
 
 void CPlayer::Affiche() {
@@ -414,11 +414,17 @@ void CPlayer::freeGL() {
 void CPlayer::createClavier()
 {	m_pClavier = new CClavier();	}
 
-void CPlayer::exeActionFunc()	// Exécute l'action périodique associée au joueur
-{	actionFunc( this );		}
+void CPlayer::exeActionFunc() {	// Exécute l'action périodique associée au joueur
+	if(_actionFunc) {
+		_actionFunc( this );
+	}
+}
 
-void CPlayer::exeContactFunc(float *normal, float distanceW)	// Exécute fonction gestion contacts avec joueur
-{	contactFunc( this, normal, distanceW );	}
+void CPlayer::exeContactFunc(float *normal, float distanceW) {	// Exécute fonction gestion contacts avec joueur
+	if(_contactFunc) {
+		_contactFunc( this, normal, distanceW );
+	}
+}
 
 float CPlayer::Phi() const {
 	return m_Phi;

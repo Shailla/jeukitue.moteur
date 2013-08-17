@@ -92,6 +92,9 @@ public:
 	void Erwin( CPlayer *erwin );					// Set le joueur principal
 	void deleteErwin();								// Détruit le joueur principal s'il existe
 
+	// Gestion des joueurs
+	void deletePlayers();								// Détruit tous les joueurs
+
 	void afficheToutesTextures(int x, int y, int tailleX, int tailleY) const;
 	void afficheViseur(int x, int y) const;			// Affiche le joueur à la position voulue sur l'écran
 	void deplaceTousPlayer();

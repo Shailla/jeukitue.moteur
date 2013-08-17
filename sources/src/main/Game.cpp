@@ -264,6 +264,21 @@ CPlayer *CGame::Erwin() {
 	return m_Erwin;
 }
 
+void CGame::deletePlayers() {
+	if(_pTabIndexPlayer) {
+		CPlayer *player;
+		int playerIndex = -1;
+
+		while(_pTabIndexPlayer->Suivant(playerIndex)) {
+			player = _pTabIndexPlayer->operator [](playerIndex);
+			player->freeGL();
+		}
+
+		delete _pTabIndexPlayer;
+		_pTabIndexPlayer = 0;
+	}
+}
+
 void CGame::Erwin(CPlayer *erwin) {
 	m_Erwin = erwin;
 }

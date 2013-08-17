@@ -473,6 +473,7 @@ bool CClient::decodeNonConnecte( Uint16 code1, Uint16 code2 ) {
 						break;
 				}
 				break;
+
 				default:
 					result = false;
 					break;

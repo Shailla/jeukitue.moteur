@@ -1364,18 +1364,7 @@ void executeJktRequests() {
 
 		Game.Erwin(NULL);
 
-		if(Game._pTabIndexPlayer) {
-			CPlayer *player;
-			int playerIndex = -1;
-			while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
-				player = Game._pTabIndexPlayer->operator [](playerIndex);
-				player->freeGL();
-			}
-
-			delete Game._pTabIndexPlayer;
-			Game._pTabIndexPlayer = NULL;
-		}
-
+		Game.deletePlayers();
 
 		// Connexion du client
 		Interlocutor2* clientInterlocutor = Reseau.ouvreClient();

@@ -235,7 +235,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	int curseur = -1;
 	CPlayer* player;
 
-	while( (curseur=Game._pTabIndexPlayer->Suivant(curseur)) < Game.getMaxPlayers() ) {
+	while(Game._pTabIndexPlayer->Suivant(curseur)) {
 		player = Game._pTabIndexPlayer->operator []( curseur );
 
 		player->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité

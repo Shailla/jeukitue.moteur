@@ -112,7 +112,7 @@ void CClient::decodeRecap( Uint16 code2 ) {
 				// Lit les données des joueurs
 				CPlayer *player;
 				int curseur = -1;
-				while( (curseur=Game._pTabIndexPlayer->Suivant(curseur)) < Game.getMaxPlayers() ) {
+				while(Game._pTabIndexPlayer->Suivant(curseur)) {
 					var1 = spaMaitre.read16();		// Identifiant du joueur
 
 					if( var1!=curseur ) {
@@ -372,31 +372,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 						if( getStatut()==JKT_STATUT_CLIENT_DEMJTG )
 						{
 							TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse JTG%T", this );
-							CPlayer *player;
 							cout << endl << "Acceptation recue du serveur pour joindre la partie";
-
-							// Détachement du socket du port principal du serveur
-							SDLNet_UDP_Unbind( spaMaitre.getSocket(), spaMaitre.getPacketOut()->channel );
-
-							// Attachement au port du serveur qui est réservé à ce client
-							spaMaitre.getPacketOut()->channel=SDLNet_UDP_Bind( spaMaitre.getSocket(),-1,&spaMaitre.getPacketIn()->address);
-							spaMaitre.getPacketIn()->channel = spaMaitre.getPacketOut()->channel;
-							if( spaMaitre.getPacketOut()->channel==-1 )
-								cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
-
-							Game.setStatutClient( JKT_STATUT_CLIENT_OUV );	// Indique l'ouverture en cours
-
-							IDpersonnel = spaMaitre.read16();		// Lecture de l'identifiant du joueur
-							spaMaitre.readString( nomMAP );			// Nom de la MAP en cours sur le serveur
-							Game.setPlayerList(spaMaitre.read16());		// Nombre max de joueurs sur le serveur
-							nbrPlayers( spaMaitre.read16() );		// Nombre de joeurs sur le serveur
-
-							cout << endl;
-							cout << endl << "Identifiant :\t\t" << IDpersonnel;
-							cout << endl << "Nom de la MAP en cours :\t\t" << nomMAP;
-							cout << endl << "Nombre de joueurs maxi :\t\t" << Game.getMaxPlayers();
-							cout << endl << "Nombre de joueurs sur le serveur :\t" << m_uNbrPlayers;
-							cout << endl;
 
 
 							/* *************************************************************
@@ -412,10 +388,40 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 
 
 							/* *************************************************************
+							 * Récupération d'informations du serveur
+							 * ************************************************************/
+
+							// Détachement du socket du port principal du serveur
+							SDLNet_UDP_Unbind( spaMaitre.getSocket(), spaMaitre.getPacketOut()->channel );
+
+							// Attachement au port du serveur qui est réservé à ce client
+							spaMaitre.getPacketOut()->channel=SDLNet_UDP_Bind( spaMaitre.getSocket(),-1,&spaMaitre.getPacketIn()->address);
+							spaMaitre.getPacketIn()->channel = spaMaitre.getPacketOut()->channel;
+							if( spaMaitre.getPacketOut()->channel==-1 )
+								cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
+
+							Game.setStatutClient( JKT_STATUT_CLIENT_OUV );	// Indique l'ouverture en cours
+
+							IDpersonnel = spaMaitre.read16();			// Lecture de l'identifiant du joueur
+							spaMaitre.readString( nomMAP );				// Nom de la MAP en cours sur le serveur
+							Game.setPlayerList(spaMaitre.read16());		// Nombre max de joueurs sur le serveur
+							nbrPlayers( spaMaitre.read16() );			// Nombre de joeurs sur le serveur
+
+							cout << endl;
+							cout << endl << "Identifiant :\t\t" << IDpersonnel;
+							cout << endl << "Nom de la MAP en cours :\t\t" << nomMAP;
+							cout << endl << "Nombre de joueurs maxi :\t\t" << Game.getMaxPlayers();
+							cout << endl << "Nombre de joueurs sur le serveur :\t" << m_uNbrPlayers;
+							cout << endl;
+
+
+							/* *************************************************************
 							 * Construction de la nouvelle liste de joueurs
 							 * ************************************************************/
 
 							// Import de la nouvelle liste de joueurs
+							CPlayer *player;
+
 							for( unsigned int i=0 ; i<m_uNbrPlayers ; i++) {
 								player = new CPlayer();
 
@@ -436,7 +442,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 							int curseur = -1;
 							float pos[3];
 
-							while( (curseur=Game._pTabIndexPlayer->Suivant(curseur)) < Game.getMaxPlayers() ) {
+							while(Game._pTabIndexPlayer->Suivant(curseur)) {
 								player = Game._pTabIndexPlayer->operator []( curseur );
 								cout << endl << curseur;
 

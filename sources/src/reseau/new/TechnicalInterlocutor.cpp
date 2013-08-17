@@ -37,8 +37,8 @@ void TechnicalInterlocutor::waitProcessesFinished() {
 	int status;
 
 	SDL_WaitThread(_threadReceiving, &status);
-	SDL_WaitThread(_threadReceiving, &status);
-	SDL_WaitThread(_threadReceiving, &status);
+	SDL_WaitThread(_threadSending, &status);
+	SDL_WaitThread(_threadIntelligence, &status);
 }
 
 int TechnicalInterlocutor::startReceivingProcess(void* thiz) {

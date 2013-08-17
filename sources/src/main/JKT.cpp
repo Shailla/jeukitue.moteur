@@ -1392,7 +1392,6 @@ void executeJktRequests() {
 		while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
 			player = (*Game._pTabIndexPlayer)[playerIndex];
 			player->initGL();
-			player->choiceOneEntryPoint();
 		}
 
 		// Lancement du jeu en mode local

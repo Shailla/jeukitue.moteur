@@ -49,11 +49,12 @@ public:
 	CClient();
 	~CClient();
 
-	void sendRequestInfoToServer();
-	void sendPingToServer();
-	void sendJoinTheGame( string &nomPlayer );
+	Interlocutor2* connect(const string &address, Uint16 port, Uint16 portTree);
+	void disconnect();
 
-	void recoit();
+	void sendNotConnectedRequestInfoToServer();
+	void sendNotConnectedRequestPingToServer();
+	void sendConnectedRequestJoinTheGame(const string& nomPlayer );
 
 	void setStatut(StatutClient statut);		// Renseigne l'état du client (déconnecté,connecté, partie en cours...)
 	StatutClient getStatut();					// Retourne l'état du client
@@ -61,13 +62,13 @@ public:
 	unsigned int nbrPlayers();					// Donne le nombre de joueurs sur la MAP en cours
 	void nbrPlayers(unsigned int nbr);			// Implémente le nombre de joueurs sur la MAP en cours
 
-	void decodeConnecte( Uint16, Uint16 ); 		//Décode les paquets recus du réseau
-	bool decodeNonConnecte( Uint16 code1, Uint16 code2 );
-	Interlocutor2* ouvre(const string &address, Uint16 port, Uint16 portTree);
-	void ferme();
 	CInfoServer getInfoServer();
 	int getPingClientServeur();
+
 	void emet( CPlayer &player );
+	void recoit();
+	void decodeConnecte( Uint16, Uint16 ); 		//Décode les paquets recus du réseau
+	bool decodeNonConnecte( Uint16 code1, Uint16 code2 );
 
 private:
 	void decodeRecap( Uint16 code2 );		// Gestion des msg de récapitulation de partie

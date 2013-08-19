@@ -101,7 +101,7 @@ TRACE().p( TRACE_MENU, "lancePingServer(var=%x)", arg );
 
 void actuPing( void *arg ) {	// Réactualise la valeur du ping
 	bAttenteMenuPing = true;			// On passe en état d'attente d'un ping
-	Reseau.getClient()->sendPingToServer();		// Envoie un ping au serveur
+	Reseau.getClient()->sendNotConnectedRequestPingToServer();		// Envoie un ping au serveur
 	MenuPingserver.add_ItemsDroits( 0, "????" );
 }
 

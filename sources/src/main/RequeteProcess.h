@@ -45,21 +45,22 @@ public:
 	CRequeteProcess();
 	~CRequeteProcess();
 
-	void setOuvreMapLocal(const string& nomMAP );					// Inscrit une demande d'ouverture de MAP
-	void setOuvreMapServer(const string& nomMAP );				// Inscrit une demande d'ouverture de MAP
-	void setOuvreMap(const string& nomMAP );						// Inscrit une demande d'ouverture de MAP
-	bool isOuvreMap();										// Intéroge sur la présence d'une demande d'ouverture de MAP
+	void setOuvreMapLocal(const string& nomMAP );					// Inscrit une demande d'ouverture de MAP en mode de jeu local
+	void setOuvreMapClient(const string& nomMAP );					// Inscrit une demande d'ouverture de MAP en mode de jeu client
+	void setOuvreMapServer(const string& nomMAP );					// Inscrit une demande d'ouverture de MAP en mode de jeu serveur
+
 	void setOuvreMapLocaleEtape(OUVRE_MAP_LOCALE_ETAPES etape);
 	void setOuvreMapServerEtape(OUVRE_MAP_SERVER_ETAPES etape);
 	void setOuvreMapClientEtape(OUVRE_MAP_CLIENT_ETAPES etape);
-	int getOuvreMapLocaleEtape();							// Intéroge sur la présence d'une demande d'ouverture de MAP en jeu local
-	int getOuvreMapServerEtape();							// Intéroge sur la présence d'une demande d'ouverture de MAP en jeu serveur
-	int getOuvreMapClientEtape();							// Intéroge sur la présence d'une demande d'ouverture de MAP en jeu client
 
-	string getOuvreMap();									// Renvoie le nom de la MAP à ouvrir et détruit la demande
+	int getOuvreMapLocaleEtape();									// Intéroge sur la présence d'une demande d'ouverture de MAP en jeu local
+	int getOuvreMapClientEtape();									// Intéroge sur la présence d'une demande d'ouverture de MAP en jeu client
+	int getOuvreMapServerEtape();									// Intéroge sur la présence d'une demande d'ouverture de MAP en jeu serveur
 
-	void setTakePicture();									// Inscrit une demande de prise de photo de la scène
-	bool isTakePicture();									// Intéroge sur la présence d'un demande de prise de photo
+	string getOuvreMap();											// Renvoie le nom de la MAP à ouvrir et détruit la demande
+
+	void setTakePicture();											// Inscrit une demande de prise de photo de la scène
+	bool isTakePicture();											// Intéroge sur la présence d'un demande de prise de photo
 };
 
 #endif

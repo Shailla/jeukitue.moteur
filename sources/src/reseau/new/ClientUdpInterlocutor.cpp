@@ -171,7 +171,7 @@ void ClientUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg
 	}
 
 	if(_tryConnectionNumber > 10) {
-		cout << endl << "Client says : Server does not respond after " << _tryConnectionNumber << " connection requests sent" << flush;
+		cout << endl << "Client says : Server does not respond after " << (_tryConnectionNumber-1) << " connection requests sent" << flush;
 		close();
 	}
 	else if(currentTime - _tryConnectionLastTime > 1000) {

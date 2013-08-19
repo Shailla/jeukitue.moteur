@@ -24,30 +24,31 @@ class CPlayer;
 	// Cette classe est destinée à contenir toutes les paramètres vivants, c'est à dire
 	// toutes les données et variables de la partie en cours, du réseau...
 
-class CGame
-{
-	CPlayer *m_Erwin;				// Pointeur sur le joueur actif
-	JktMoteur::CMap	*m_pMap;		// Map en cours de jeu
-	int m_Mode;						// Mode de jeu (parie normale, client ou serveur
-	bool m_bGravite;				// Indique si la gravité est active
-
+class CGame {
 public:
-	enum modePartie {
+	enum ModePartie {
 		JKT_MODE_PARTIE_NULL,		// Pas de jeu en cours
 		JKT_MODE_PARTIE_LOCAL,		// Mode de jeu local (c'est à dire pas en réseau)
 		JKT_MODE_PARTIE_CLIENT,		// Mode client connecté à un serveur
 		JKT_MODE_PARTIE_SERVER,		// Mode serveur de jeu
 	};
 
+private:
+	CPlayer* _erwin;				// Pointeur sur le joueur actif
+	JktMoteur::CMap	*_map;			// Map en cours de jeu
+	ModePartie _mode;						// Mode de jeu (parie normale, client ou serveur)
+	bool _gravite;					// Indique si la gravité est active
+
+public:
 	JktUtils::CTableauIndex<CPlayer> *_pTabIndexPlayer;	// Liste indexée des joueurs
 
 	CRequeteProcess RequeteProcess;		// Requetes inter-processus
 
-			// FONCTIONS MEMBRES
-		// Constructeurs/destructeur
+		// FONCTIONS MEMBRES
+	// Constructeurs/destructeur
 	CGame();
 
-		// Généralités
+	// Généralités
 	bool isModeNull();		// Indique si aucune partie n'est en cours
 	bool isModeLocal();		// Indique si une partie locale est en cours
 	bool isModeClient();	// Indique si une partie réseau client est en cours
@@ -56,30 +57,30 @@ public:
 	bool Gravite() const;	// Indique si la gravité est active
 	void Gravite(bool gravite);
 
-		// Gestion de la Map
+	// Gestion de la Map
 	JktMoteur::CMap *getMap();
 	void changeActiveMap(JktMoteur::CMap* map);
 	bool openMap( const string &nomFichierMap ) throw(JktUtils::CErreur);
 
-		// Gestion du mode
+	// Gestion du mode
 	void setModeNull();					// Passe en mode "pas de jeu en cours"
 
-		// Gestion du mode local
+	// Gestion du mode local
 	void setModeLocal();					// Passe en mode de jeu local
 
-		// Gestion du client
+	// Gestion du client
 	void setModeClient();									// Crée la classe Client pour un jeu en mode client
 	JktNet::CClient *getClient();							// Retourne le pointeur sur la classe CClient
 	void setStatutClient( JktNet::StatutClient statut );	// Renseigne le statut du client
 	JktNet::StatutClient getStatutClient();					// Donne le statut du client
 
-		// Gestion du serveur
+	// Gestion du serveur
 	void setModeServer();							// Crée la classe Server pour un jeu en mode serveur
 	JktNet::CServer *getServer();		// Retourne le pointeur sur la classe CServer
 	void setStatutServer( JktNet::StatutServer statut );				// Renseigne le statut du serveur
 	JktNet::StatutServer getStatutServer();							// Donne le statut du serveur
 
-		// Gestion du jeu
+	// Gestion du jeu
 	void AffichePlayers();			// Affiche tous les joueurs
 	void AfficheProjectils();		// Affiche tous les projectils
 	void Refresh();					// Rafraichi les classe qui en ont besoin

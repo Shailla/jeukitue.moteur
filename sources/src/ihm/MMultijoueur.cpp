@@ -95,7 +95,7 @@ TRACE().p( TRACE_MENU, "lanceMenuMultijoueurclient(var=%x)", arg );
 
 void lanceJoindrePartie( void *arg) {
 TRACE().p( TRACE_MENU, "lanceJoindrePartie(var=%x)", arg );
-	Reseau.getClient()->sendJoinTheGame(Config.Joueur.nom);
+	Reseau.getClient()->sendConnectedRequestJoinTheGame(Config.Joueur.nom);
 }
 
 void lanceMenuMultijoueur(void *var) {

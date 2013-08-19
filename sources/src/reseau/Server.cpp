@@ -57,7 +57,7 @@ TRACE().p( TRACE_RESEAU, "CServer::CServer() end%T", this );
 CServer::~CServer() {
 }
 
-void CServer::ferme() {
+void CServer::disconnect() {
 TRACE().p( TRACE_RESEAU, "CServer::~CServer() begin%T", this );
 	SDLNet_FreeSocketSet( socketSet );		// Libère le socket set du serveur
 	socketSet = 0;
@@ -378,7 +378,7 @@ TRACE().p( TRACE_ERROR, "CServer::switchJTG() : Packet inconnu%T", this );
 TRACE().p( TRACE_RESEAU, "CServer::switchJTG() end%T", this );
 }
 
-NotConnectedInterlocutor2* CServer::ouvre(Uint16 port, Uint16 portTree) {
+NotConnectedInterlocutor2* CServer::connect(Uint16 port, Uint16 portTree) {
 TRACE().p( TRACE_RESEAU, "CServer::ouvre(port=%d) begin%T", port, this );
 
 
@@ -411,7 +411,7 @@ TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 	if(result) {
 		if( SDLNet_UDP_AddSocket( socketSet, spaMaitre.getSocket() )==-1 ) {
 TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
-			ferme();
+			disconnect();
 
 			result = false;
 		}

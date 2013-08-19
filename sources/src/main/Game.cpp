@@ -40,28 +40,27 @@ extern NetworkManager Reseau;
 #define Pi 3.14159265f			//nombre pi pour les calculs
 
 CGame::CGame() {
-	m_Mode = JKT_MODE_PARTIE_NULL;
-
+	_mode = JKT_MODE_PARTIE_NULL;
 	_pTabIndexPlayer = NULL;	// Pas de liste de joueurs
-	m_pMap = NULL;			// Pas de map
-	m_Erwin = NULL;			// Pas de joueur actif
-	m_bGravite = true;		// Par défaut la gravité est active
+	_map = NULL;			// Pas de map
+	_erwin = NULL;			// Pas de joueur actif
+	_gravite = true;		// Par défaut la gravité est active
 }
 
 bool CGame::isModeServer() {
-	return m_Mode == JKT_MODE_PARTIE_SERVER;
+	return _mode == JKT_MODE_PARTIE_SERVER;
 }
 
 bool CGame::isModeClient() {
-	return m_Mode == JKT_MODE_PARTIE_CLIENT;
+	return _mode == JKT_MODE_PARTIE_CLIENT;
 }
 
 bool CGame::isModeLocal() {
-	return m_Mode == JKT_MODE_PARTIE_LOCAL;
+	return _mode == JKT_MODE_PARTIE_LOCAL;
 }
 
 bool CGame::isModeNull() {
-	return m_Mode == JKT_MODE_PARTIE_NULL;
+	return _mode == JKT_MODE_PARTIE_NULL;
 }
 
 void CGame::setStatutClient( JktNet::StatutClient statut ) {
@@ -76,7 +75,7 @@ JktNet::StatutClient CGame::getStatutClient() {
 TRACE().p( TRACE_ERROR, "CGame::getStatutClient() begin%T", this );
 
 	JktNet::StatutClient statut;
-	if( m_Mode==JKT_MODE_PARTIE_CLIENT )
+	if( _mode==JKT_MODE_PARTIE_CLIENT )
 		statut = Reseau.getClient()->getStatut();
 	else
 		statut = JKT_STATUT_CLIENT_NULL;
@@ -119,11 +118,11 @@ TRACE().p( TRACE_INFO, "CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap
 
 	bool result = true;
 
-	if( m_pMap )
-		delete m_pMap;
+	if( _map )
+		delete _map;
 
 	try {
-		m_pMap = new JktMoteur::CMap( nomFichierMap );
+		_map = new JktMoteur::CMap( nomFichierMap );
 	}
 	catch(JktUtils::CErreur& erreur) {
 		cerr << endl << __FILE__ << ":" << __LINE__ <<  " " << erreur.toString() << endl;
@@ -135,32 +134,32 @@ TRACE().p( TRACE_INFO, "CGame::openMap() -> %b end%T", result, this );
 }
 
 void CGame::changeActiveMap(JktMoteur::CMap* map) {
-	if( m_pMap )
-		delete m_pMap;
+	if( _map )
+		delete _map;
 
-	m_pMap = map;
+	_map = map;
 }
 
 void CGame::setStatutServer(JktNet::StatutServer statut) {
-	if( m_Mode==JKT_MODE_PARTIE_SERVER )
+	if( _mode==JKT_MODE_PARTIE_SERVER )
 		Reseau.getServer()->setStatut( statut );
 }
 
 JktNet::StatutServer CGame::getStatutServer() {
-	if( m_Mode==JKT_MODE_PARTIE_SERVER )
+	if( _mode==JKT_MODE_PARTIE_SERVER )
 		return Reseau.getServer()->getStatut();
 	else
 		return JKT_STATUT_SERVER_NULL;
 }
 
 void CGame::Quit() {
-	m_Mode = JKT_MODE_PARTIE_NULL;
+	_mode = JKT_MODE_PARTIE_NULL;
 
-	m_Erwin = 0;		// Oublie qu'il y a eu un joueur principal
+	_erwin = 0;		// Oublie qu'il y a eu un joueur principal
 
-	if( m_pMap ) {
-		delete m_pMap;
-		m_pMap = 0;
+	if( _map ) {
+		delete _map;
+		_map = 0;
 	}
 
 	cout << "\nDestruction des joueurs begin";
@@ -182,23 +181,23 @@ void CGame::Quit() {
 	}
 	cout << "\nDestruction des joueurs end";
 
-	m_Mode = JKT_MODE_PARTIE_NULL;	// Passe effectivemtn en mode 'aucune partie en cours'
+	_mode = JKT_MODE_PARTIE_NULL;	// Passe effectivemtn en mode 'aucune partie en cours'
 }
 
 void CGame::setModeNull() {
-	m_Mode = JKT_MODE_PARTIE_NULL;
+	_mode = JKT_MODE_PARTIE_NULL;
 }
 
 void CGame::setModeLocal() {
-	m_Mode = JKT_MODE_PARTIE_LOCAL;
+	_mode = JKT_MODE_PARTIE_LOCAL;
 }
 
 void CGame::setModeClient() {
-	m_Mode = JKT_MODE_PARTIE_CLIENT;
+	_mode = JKT_MODE_PARTIE_CLIENT;
 }
 
 void CGame::setModeServer() {
-	m_Mode = JKT_MODE_PARTIE_SERVER;
+	_mode = JKT_MODE_PARTIE_SERVER;
 }
 
 JktNet::CClient *CGame::getClient()
@@ -209,7 +208,7 @@ JktNet::CServer *CGame::getServer()
 
 void CGame::Refresh() {
 		// Rafraichissement de la map
-	m_pMap->Refresh( this );
+	_map->Refresh( this );
 
 		// Rafraichissement des projectils des joueurs
 	CPlayer *player;
@@ -232,7 +231,7 @@ void CGame::GereContactPlayers() {	// Gère les contacts de tous les joueurs avec
 
 		if(player) {
 			player->Pente(0.0f);
-			m_pMap->GereContactPlayer(player);		// Gère les contact avec la map de player
+			_map->GereContactPlayer(player);		// Gère les contact avec la map de player
 		}
 	}
 }
@@ -266,7 +265,7 @@ void CGame::AfficheProjectils() {	// Affiche tous les projectils
 }
 
 CPlayer *CGame::Erwin() {
-	return m_Erwin;
+	return _erwin;
 }
 
 void CGame::quitCurrentMap() {
@@ -294,16 +293,16 @@ void CGame::deletePlayers() {
 }
 
 void CGame::Erwin(CPlayer *erwin) {
-	m_Erwin = erwin;
+	_erwin = erwin;
 }
 
 JktMoteur::CMap *CGame::getMap() {
-	return m_pMap;
+	return _map;
 }
 
 void CGame::afficheToutesTextures(int x, int y, int tailleX, int tailleY) const {	// Affiche à l'écran toutes les textures de la Map
-	if(m_pMap)
-		m_pMap->afficheToutesTextures(x, y, tailleX, tailleY, 6, 6, 0);
+	if(_map)
+		_map->afficheToutesTextures(x, y, tailleX, tailleY, 6, 6, 0);
 }
 
 void CGame::afficheViseur(int x, int y) const {
@@ -374,25 +373,25 @@ void CGame::faitTousPlayerGravite() {
 }
 
 void CGame::timer() {
-	if( m_bGravite )				// Si la gravité est active
+	if( _gravite )				// Si la gravité est active
 		faitTousPlayerGravite();
 
-	if(m_pMap)
+	if(_map)
 		Refresh();					// Rafraichi les classes qui ont besoin de l'être (celles de type CMouve et CProjectil)
 
 	faitTousRequetesClavier();		// Exécute les requêtes clavier sur tous les joueurs
 
 
-	if(m_pMap)
+	if(_map)
 		GereContactPlayers();		// Gère tous les contacts entre la map et les joueurs
 
 	deplaceTousPlayer();			// Déplace tous les joueurs de leurs vitesses
 }
 
 void CGame::Gravite(bool gravite) {
-	m_bGravite = gravite;
+	_gravite = gravite;
 }
 
 bool CGame::Gravite() const {
-	return m_bGravite;
+	return _gravite;
 }

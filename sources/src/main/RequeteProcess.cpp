@@ -39,7 +39,7 @@ void CRequeteProcess::setOuvreMapServer(const string& nomMAP ) {
 	SDL_mutexV(_mutex);
 }
 
-void CRequeteProcess::setOuvreMap(const string& nomMAP ) {
+void CRequeteProcess::setOuvreMapClient(const string& nomMAP ) {
 	SDL_mutexP(_mutex);
 
 	_openMapClientEtape = OMCE_DEMANDE;		// Indique la présence d'une demande d'ouverture d'une MAP
@@ -59,9 +59,6 @@ string CRequeteProcess::getOuvreMap() {
 
 	return map;
 }
-
-bool CRequeteProcess::isOuvreMap()
-{	return _bOpenMap;			}
 
 void CRequeteProcess::setOuvreMapLocaleEtape(OUVRE_MAP_LOCALE_ETAPES etape) {
 	SDL_mutexP(_mutex);

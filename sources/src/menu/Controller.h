@@ -57,6 +57,7 @@ public:
 		RejoindrePartieServerAction,				// Rejoindre la partie en cours sur le serveur
 		InfoServerAction,							// Obtenir les informations du serveur
 		PingServerAction,							// Afficher dans la console le résultat d'un ping sur le serveur
+		ConnectClientAction,						// Connecte le client au serveur
 		DeconnectClientAction						// Déconnecte le client du serveur
 	};
 

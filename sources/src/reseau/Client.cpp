@@ -42,7 +42,7 @@ CClient::CClient() {
 
 CClient::~CClient() {
 	TRACE().p( TRACE_RESEAU, "CClient::~CClient() begin%T", this );
-	ferme();
+	disconnect();
 	TRACE().p( TRACE_RESEAU, "CClient::~CClient() end%T", this );
 }
 
@@ -61,10 +61,6 @@ void CClient::decodeConnecte( Uint16 code1, Uint16 code2 ) {
 	switch( code1 ) {
 	case SERVER_RECAP:		// Réception d'une récapitulation de partie du serveur
 		decodeRecap( code2 );
-		break;
-
-	case SERVER_TREE_DATA_UPDATE:
-		//		updateTreeData();
 		break;
 
 	case SERVER_ERROR:		// Réception d'un code d'erreur
@@ -128,17 +124,15 @@ void CClient::decodeRecap( Uint16 code2 ) {
 		break;
 
 	default:
-		TRACE().p( TRACE_ERROR, "CClient::switchRecepClient() Reception d'un paquet RECAP inconnu : %s%T",
-				spaMaitre.debugToString().c_str(), this );
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet RECAP inconnu";
 		break;
 	}
 }
 
-Interlocutor2* CClient::ouvre(const string &address, Uint16 port, Uint16 portTree) {
-	TRACE().p( TRACE_RESEAU, "CClient::ouvre(address=%s,port=%d) begin%T", address.c_str(), port, this );
+Interlocutor2* CClient::connect(const string &address, Uint16 port, Uint16 portTree) {
+	disconnect();
 
-	cout << endl << __FILE__ << ":" << __LINE__ << " Ouverture client : " << address << ":" << port;
+	cout << endl << __FILE__ << ":" << __LINE__ << " Ouverture client : " << address << " port=" << port << " portArbre=" << portTree;
 
 	bool result = true;		// Indique si au fur de la fonction si tout s'est bien passé
 	Interlocutor2* interlocutor;
@@ -149,22 +143,16 @@ Interlocutor2* CClient::ouvre(const string &address, Uint16 port, Uint16 portTre
 	if(result) {
 		socketSet = SDLNet_AllocSocketSet( 20 );	// Nombre maxi de sockets à écouter
 		if( !socketSet ) {
-			TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
 			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AllocSocketSet: " << SDLNet_GetError();
-
-			ferme();
-
+			disconnect();
 			result = false;
 		}
 	}
 
 	if(result) {
 		if( SDLNet_UDP_AddSocket( socketSet, spaMaitre.getSocket() )==-1 ) {
-			TRACE().p( TRACE_ERROR, "CClient::ouvre() : %s%T", SDLNet_GetError(), this );
 			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AddSocket : " << SDLNet_GetError();
-
-			ferme();
-
+			disconnect();
 			result = false;
 		}
 	}
@@ -181,11 +169,10 @@ Interlocutor2* CClient::ouvre(const string &address, Uint16 port, Uint16 portTre
 	if(interlocutor)
 		setStatut( JKT_STATUT_CLIENT_READY );	// Indique que le client est prêt
 
-	TRACE().p( TRACE_RESEAU, "CClient::ouvre() -> %b end%T", result, this );
 	return interlocutor;
 }
 
-void CClient::ferme() {
+void CClient::disconnect() {
 	if(socketSet) {
 		SDLNet_FreeSocketSet( socketSet );		// Libère le socket set du serveur
 		socketSet = 0;
@@ -201,13 +188,13 @@ void CClient::ferme() {
 	}
 }
 
-void CClient::sendRequestInfoToServer() {
+void CClient::sendNotConnectedRequestInfoToServer() {
 	m_InfoServer.Ready( false );	// Indique l'attente d'actualisation de ces infos
 
 	spaMaitre.init();
 	spaMaitre.addCode( CLIENT_INFO, CLIENT_NULL );
 
-	if( !spaMaitre.send() )	{	// Acquittement de la réception du packet
+	if( !spaMaitre.send() )	{
 		cout << endl << "SDL_UDP_Send : ", SDLNet_GetError();
 	}
 	else {
@@ -215,7 +202,7 @@ void CClient::sendRequestInfoToServer() {
 	}
 }
 
-void CClient::sendPingToServer() {
+void CClient::sendNotConnectedRequestPingToServer() {
 	m_pingClientServer = -1;	// Initialisation de la durée du ping
 	m_timePingClientServer = SDL_GetTicks();	// Temps à l'envoie du ping
 
@@ -228,9 +215,7 @@ void CClient::sendPingToServer() {
 		cout << endl << "Ping envoye au serveur";
 }
 
-void CClient::sendJoinTheGame(string &nomPlayer) {
-	TRACE().p( TRACE_RESEAU, "CClient::sendJoinTheGame(nomPlayer=%s) begin%T", nomPlayer.c_str(), this );
-
+void CClient::sendConnectedRequestJoinTheGame(const string& nomPlayer) {
 	setStatut( JKT_STATUT_CLIENT_DEMJTG );	// Statut, demande de "Join The Game" envoyée
 
 	spaMaitre.init();
@@ -243,15 +228,13 @@ void CClient::sendJoinTheGame(string &nomPlayer) {
 	if( !spaMaitre.send() ) {
 		TRACE().p( TRACE_ERROR, "CClient::sendJoinTheGame() SDL_UDP_Send : %s%T", SDLNet_GetError(), this );
 	}
-
-	TRACE().p( TRACE_RESEAU, "CClient::sendJoinTheGame() end%T", this );
 }
 
 void CClient::recoit() {
 	int numReady;
 	Uint16 code1, code2;
 
-	numReady = SDLNet_CheckSockets( socketSet, 0 );	// Nombre de sockets ayant une activité détectée
+	numReady = SDLNet_CheckSockets( socketSet, 0 );		// Nombre de sockets ayant une activité détectée
 
 	if( numReady==-1 ) {
 		cout << "SDLNet_CheckSockets: " << SDLNet_GetError();
@@ -262,9 +245,11 @@ void CClient::recoit() {
 				spaMaitre.init();
 				spaMaitre.readCode( code1, code2 );
 
-				if( !decodeNonConnecte( code1, code2 ) )	// Décode les paquets en mode non connecté
+				bool isNotConnectedMessage = decodeNonConnecte( code1, code2 );			// Tente de décoder les paquets en mode déconnecté
+
+				if(!isNotConnectedMessage)
 					if( getStatut()==JKT_STATUT_CLIENT_PLAY )	// Si une partie est en cours
-						decodeConnecte( code1, code2 );	// Décode les paquest en mode connecté
+						decodeConnecte( code1, code2 );			// Décode les paquest en mode connecté
 			}
 		}
 	}
@@ -466,7 +451,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 							 * Lancement de l'ouverture de la MAP
 							 * ************************************************************/
 
-							Game.RequeteProcess.setOuvreMap( nomMAP );
+							Game.RequeteProcess.setOuvreMapClient( nomMAP );
 						}
 						else
 						{

@@ -213,7 +213,7 @@ void Controller::executeAction(AG_Event *event) {
 		CClient* client = Reseau.getClient();
 
 		if(client) {
-			client->sendJoinTheGame(Config.Joueur.nom);
+			client->sendConnectedRequestJoinTheGame(Config.Joueur.nom);
 		}
 		else {
 			AG_TextMsg(AG_MSG_ERROR, "Action impossible, vous n'etes pas connecte");
@@ -229,7 +229,7 @@ void Controller::executeAction(AG_Event *event) {
 		CClient* client = Reseau.getClient();
 
 		if(client) {
-			client->sendRequestInfoToServer();		// Demande ses infos au serveur
+			client->sendNotConnectedRequestInfoToServer();		// Demande ses infos au serveur
 		}
 		else {
 			AG_TextMsg(AG_MSG_ERROR, "Action impossible, vous n'etes pas connecte");
@@ -244,10 +244,19 @@ void Controller::executeAction(AG_Event *event) {
 		CClient* client = Reseau.getClient();
 
 		if(client) {
-			client->sendPingToServer();				// Demande au serveur de répondre à un ping
+			client->sendNotConnectedRequestPingToServer();				// Demande au serveur de répondre à un ping
 		}
 		else {
 			AG_TextMsg(AG_MSG_ERROR, "Action impossible, vous n'etes pas connecte");
+		}
+	}
+	break;
+
+	case ConnectClientAction:
+	{
+		if( !Reseau.ouvreClient() ) {
+			Reseau.setOn( false );		// Signale que le réseau ne peut pas être utilisé
+			AG_TextMsg(AG_MSG_ERROR, "Echec de connexion au serveur");
 		}
 	}
 	break;

@@ -48,8 +48,8 @@ public:
 	void decodeProxyPlayer( CPlayer *player ); 	// Décode les paquets provenant des différents joueurs
 	bool acceptPlayer( CSPA *spa );				// Accepte un nouveau joueur dans la partie
 
-	NotConnectedInterlocutor2* ouvre(Uint16 port, Uint16 portTree);
-	void ferme();
+	NotConnectedInterlocutor2* connect(Uint16 port, Uint16 portTree);
+	void disconnect();
 	void emet();
 
 private:

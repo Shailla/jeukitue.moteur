@@ -498,9 +498,10 @@ void display() {		// Fonction principale d'affichage
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 	if(Game.getMap()) {		// Si il y a une map a afficher
-		if(Game.Erwin()) {		// S'il y a un joueur principal
+		CPlayer* erwin = Game.Erwin();
+
+		if(erwin) {		// S'il y a un joueur principal
 			float vect[3];
-			CPlayer *erwin = Game.Erwin();
 
 			erwin->getPosVue(vect);
 			glTranslatef(-vect[0], -vect[1], vect[2]);	// Placement du point de vue
@@ -1508,7 +1509,6 @@ void executeJktRequests() {
 			player = (*Game._pTabIndexPlayer)[playerIndex];
 			player->initGL();
 			player->choiceOneEntryPoint();
-
 		}
 
 
@@ -1582,20 +1582,12 @@ void communique() {
 		CClient* client = Reseau.getClient();
 
 		if(client) {
-			if((Game.isModeClient()) &&(
-					(Game.getStatutClient()==JKT_STATUT_CLIENT_READY)	||
-					(Game.getStatutClient()==JKT_STATUT_CLIENT_DEMJTG)	||
-					(Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) ) ) {
+			// Recoit les données du serveur en mode déconnecté, ainsi qu'en mode connecté si on l'est
+			client->recoit();
 
-				// Recoit les données du serveur
-				client->recoit();
-
-				// Emet les données vers le serveur
-				if(Game.getMap() && Game.Erwin()) {
-					if(Game.getStatutClient() == JKT_STATUT_CLIENT_PLAY) {
-						client->emet( *Game.Erwin() );		// Emet les requetes et données du joueur actif;
-					}
-				}
+			// Emet les données ddu joueur actif vers le serveur
+			if(Game.getMap() && Game.Erwin() && Game.isModeClient() && (Game.getStatutClient() == JKT_STATUT_CLIENT_PLAY)) {
+				client->emet( *Game.Erwin() );		// Emet les requetes et données du joueur actif;
 			}
 		}
 	}

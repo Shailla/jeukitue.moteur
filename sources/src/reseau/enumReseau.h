@@ -13,8 +13,7 @@ enum enteteServer {
 	SERVER_PING,				// Ping
 	SERVER_VERSION,				// Version du programme
 	SERVER_JTG,					// Demande à joindre la partie acive sur le serveur
-	SERVER_RECAP,				// Récapitulation de partie
-	SERVER_TREE_DATA_UPDATE		// Mise à jour des données de l'arbre de données
+	SERVER_RECAP				// Récapitulation de partie
 };
 
 enum errorUDP {

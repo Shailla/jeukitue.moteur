@@ -18,7 +18,7 @@ namespace JktPlugin {
 
 const char PluginWindowProxy::className[] = "Window";
 
-Lunar<PluginWindowProxy>::RegType PluginWindowProxy::methods[] = {
+Luna<PluginWindowProxy>::FunctionType PluginWindowProxy::methods[] = {
 		{"setTitle", &PluginWindowProxy::setTitle},
 		{"show", &PluginWindowProxy::show},
 		{"hide", &PluginWindowProxy::hide},

@@ -20,7 +20,7 @@ namespace JktPlugin {
 
 const char PluginNotebookProxy::className[] = "Notebook";
 
-Lunar<PluginNotebookProxy>::RegType PluginNotebookProxy::methods[] = {
+Luna<PluginNotebookProxy>::FunctionType PluginNotebookProxy::methods[] = {
 		{"addTab", &PluginNotebookProxy::addTab},
 		{0, 0}
 };
@@ -50,7 +50,7 @@ int PluginNotebookProxy::addTab(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
 		const string tabTitle = lua_tostring(L, 1);
 		PluginTabProxy* tabProxy = new PluginTabProxy(_pluginContext, _pluginNotebook->addTab(tabTitle));
-		Lunar<PluginTabProxy>::push(L, tabProxy, false);
+		Luna<PluginTabProxy>::push(L, tabProxy);
 	}
 
 	return 1;

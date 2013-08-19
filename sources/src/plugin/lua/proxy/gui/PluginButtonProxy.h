@@ -14,7 +14,7 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#include "lunar.h"
+#include "lunaFive.h"
 
 #include "plugin/api/gui/listener/ButtonPressedListener.h"
 
@@ -24,9 +24,9 @@ class PluginContext;
 class PluginButton;
 
 class PluginButtonProxy : public ButtonPressedListener {
-	friend class Lunar<PluginButtonProxy>;
+	friend class Luna<PluginButtonProxy>;
 	static const char className[];
-	static Lunar<PluginButtonProxy>::RegType methods[];
+	static Luna<PluginButtonProxy>::FunctionType methods[];
 	PluginContext* _pluginContext;
 	PluginButton* _pluginButton;
 public:

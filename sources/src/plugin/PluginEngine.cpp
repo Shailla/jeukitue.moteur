@@ -113,13 +113,13 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	// Initialisation des classes dans Lua
 	pluginContext->logInfo("Initialisation des classes Lua...");
 
-	Lunar<PluginCheckboxProxy>::Register(L);
-	Lunar<PluginButtonProxy>::Register(L);
-	Lunar<PluginBoxProxy>::Register(L);
-	Lunar<PluginNotebookProxy>::Register(L);
-	Lunar<PluginNumericProxy>::Register(L);
-	Lunar<PluginTabProxy>::Register(L);
-	Lunar<PluginWindowProxy>::Register(L);
+	Luna<PluginCheckboxProxy>::Register(L);
+	Luna<PluginButtonProxy>::Register(L);
+	Luna<PluginBoxProxy>::Register(L);
+	Luna<PluginNotebookProxy>::Register(L);
+	Luna<PluginNumericProxy>::Register(L);
+	Luna<PluginTabProxy>::Register(L);
+	Luna<PluginWindowProxy>::Register(L);
 
 
 	/* ******************************************************************************

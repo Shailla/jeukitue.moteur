@@ -14,7 +14,7 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#include "lunar.h"
+#include "lunaFive.h"
 
 #include "plugin/lua/proxy/gui/AbstractPluginPanelProxy.h"
 
@@ -25,9 +25,9 @@ namespace JktPlugin {
 class PluginContext;
 
 class PluginWindowProxy : public AbstractPluginPanelProxy {
-	friend class Lunar<PluginWindowProxy>;
+	friend class Luna<PluginWindowProxy>;
 	static const char className[];
-	static Lunar<PluginWindowProxy>::RegType methods[];
+	static Luna<PluginWindowProxy>::FunctionType methods[];
 
 	PluginContext* _pluginContext;
 	PluginWindow* _pluginWindow;

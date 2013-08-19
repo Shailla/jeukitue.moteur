@@ -19,7 +19,7 @@ namespace JktPlugin {
 
 const char PluginTabProxy::className[] = "Tab";
 
-Lunar<PluginTabProxy>::RegType PluginTabProxy::methods[] = {
+Luna<PluginTabProxy>::FunctionType PluginTabProxy::methods[] = {
 		{"addCheckbox", &AbstractPluginPanelProxy::addCheckbox},
 		{"addNotebook", &AbstractPluginPanelProxy::addNotebook},
 		{"addBoxHoriz", &AbstractPluginPanelProxy::addBoxHoriz},

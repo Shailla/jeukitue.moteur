@@ -14,7 +14,7 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#include "lunar.h"
+#include "lunaFive.h"
 
 namespace JktPlugin {
 
@@ -22,9 +22,9 @@ class PluginContext;
 class PluginNotebook;
 
 class PluginNotebookProxy {
-	friend class Lunar<PluginNotebookProxy>;
+	friend class Luna<PluginNotebookProxy>;
 	static const char className[];
-	static Lunar<PluginNotebookProxy>::RegType methods[];
+	static Luna<PluginNotebookProxy>::FunctionType methods[];
 
 	PluginContext* _pluginContext;
 	PluginNotebook* _pluginNotebook;

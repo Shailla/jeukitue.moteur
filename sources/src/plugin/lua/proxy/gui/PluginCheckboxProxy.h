@@ -14,16 +14,16 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#include "lunar.h"
+#include "lunaFive.h"
 
 #include "plugin/api/gui/PluginCheckbox.h"
 
 namespace JktPlugin {
 
 class PluginCheckboxProxy {
-	friend class Lunar<PluginCheckboxProxy>;
+	friend class Luna<PluginCheckboxProxy>;
 	static const char className[];
-	static Lunar<PluginCheckboxProxy>::RegType methods[];
+	static Luna<PluginCheckboxProxy>::FunctionType methods[];
 
 	PluginCheckbox* _pluginCheckbox;
 public:

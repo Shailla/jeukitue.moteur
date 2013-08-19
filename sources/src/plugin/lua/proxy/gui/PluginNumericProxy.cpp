@@ -18,7 +18,7 @@ namespace JktPlugin {
 
 const char PluginNumericProxy::className[] = "Numeric";
 
-Lunar<PluginNumericProxy>::RegType PluginNumericProxy::methods[] = {
+Luna<PluginNumericProxy>::FunctionType PluginNumericProxy::methods[] = {
 		{"getValue", &PluginNumericProxy::getValue},
 		{0, 0}
 };

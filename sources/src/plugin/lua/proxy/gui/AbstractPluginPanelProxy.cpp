@@ -45,7 +45,7 @@ AbstractPluginPanelProxy::~AbstractPluginPanelProxy() {
 int AbstractPluginPanelProxy::addNotebook(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
 		PluginNotebookProxy* notebookProxy = new PluginNotebookProxy(_pluginContext, _pluginPanel->addNotebook());
-		Lunar<PluginNotebookProxy>::push(L, notebookProxy, false);
+		Luna<PluginNotebookProxy>::push(L, notebookProxy);
 	}
 
 	return 1;
@@ -60,7 +60,7 @@ int AbstractPluginPanelProxy::addCheckbox(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
 		const char* checkboxText = lua_tostring(L, 1);
 		PluginCheckboxProxy* checkboxProxy = new PluginCheckboxProxy(_pluginPanel->addCheckbox(checkboxText));
-		Lunar<PluginCheckboxProxy>::push(L, checkboxProxy, false);
+		Luna<PluginCheckboxProxy>::push(L, checkboxProxy);
 	}
 
 	return 1;
@@ -80,7 +80,7 @@ int AbstractPluginPanelProxy::addButton(lua_State* L) {
 		PluginButton* pluginButton = _pluginPanel->addButton(buttonText, buttonProxy);
 		buttonProxy->setWrappedObject(pluginButton);
 
-		Lunar<PluginButtonProxy>::push(L, buttonProxy, false);
+		Luna<PluginButtonProxy>::push(L, buttonProxy);
 	}
 
 	return 1;
@@ -93,7 +93,7 @@ int AbstractPluginPanelProxy::addButton(lua_State* L) {
 int AbstractPluginPanelProxy::addBoxHoriz(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
 		PluginBoxProxy* boxProxy = new PluginBoxProxy(_pluginContext, _pluginPanel->addBoxHoriz());
-		Lunar<PluginBoxProxy>::push(L, boxProxy, false);
+		Luna<PluginBoxProxy>::push(L, boxProxy);
 	}
 
 	return 1;
@@ -106,7 +106,7 @@ int AbstractPluginPanelProxy::addBoxHoriz(lua_State* L) {
 int AbstractPluginPanelProxy::addBoxVert(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
 		PluginBoxProxy* boxProxy = new PluginBoxProxy(_pluginContext, _pluginPanel->addBoxVert());
-		Lunar<PluginBoxProxy>::push(L, boxProxy, false);
+		Luna<PluginBoxProxy>::push(L, boxProxy);
 	}
 
 	return 1;
@@ -123,7 +123,7 @@ int AbstractPluginPanelProxy::addNumeric(lua_State* L) {
 		const char* numericText = lua_tostring(L, 1);
 		const char* numericUnite = lua_tostring(L, 1);
 		PluginNumericProxy* numericProxy = new PluginNumericProxy(_pluginPanel->addNumeric(numericText, numericUnite));
-		Lunar<PluginNumericProxy>::push(L, numericProxy, false);
+		Luna<PluginNumericProxy>::push(L, numericProxy);
 	}
 
 	return 1;

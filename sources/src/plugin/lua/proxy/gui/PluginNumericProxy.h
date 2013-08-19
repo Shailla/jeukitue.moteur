@@ -14,16 +14,16 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#include "lunar.h"
+#include "lunaFive.h"
 
 #include "plugin/api/gui/PluginNumeric.h"
 
 namespace JktPlugin {
 
 class PluginNumericProxy {
-	friend class Lunar<PluginNumericProxy>;
+	friend class Luna<PluginNumericProxy>;
 	static const char className[];
-	static Lunar<PluginNumericProxy>::RegType methods[];
+	static Luna<PluginNumericProxy>::FunctionType methods[];
 
 	PluginNumeric* _pluginNumeric;
 public:

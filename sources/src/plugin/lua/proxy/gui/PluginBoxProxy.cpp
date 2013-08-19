@@ -18,7 +18,7 @@ namespace JktPlugin {
 
 const char PluginBoxProxy::className[] = "Box";
 
-Lunar<PluginBoxProxy>::RegType PluginBoxProxy::methods[] = {
+Luna<PluginBoxProxy>::FunctionType PluginBoxProxy::methods[] = {
 		{"addButton", &AbstractPluginPanelProxy::addButton},
 		{"addCheckbox", &AbstractPluginPanelProxy::addCheckbox},
 		{"addNotebook", &AbstractPluginPanelProxy::addNotebook},

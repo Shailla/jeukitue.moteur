@@ -14,7 +14,7 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#include "lunar.h"
+#include "lunaFive.h"
 
 #include "plugin/lua/proxy/gui/AbstractPluginPanelProxy.h"
 
@@ -24,9 +24,9 @@ class PluginContext;
 class PluginTab;
 
 class PluginTabProxy : public AbstractPluginPanelProxy {
-	friend class Lunar<PluginTabProxy>;
+	friend class Luna<PluginTabProxy>;
 	static const char className[];
-	static Lunar<PluginTabProxy>::RegType methods[];
+	static Luna<PluginTabProxy>::FunctionType methods[];
 
 	PluginContext* _pluginContext;
 	PluginTab* _pluginTab;

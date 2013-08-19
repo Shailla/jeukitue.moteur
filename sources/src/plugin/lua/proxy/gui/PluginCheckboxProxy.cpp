@@ -18,7 +18,7 @@ namespace JktPlugin {
 
 const char PluginCheckboxProxy::className[] = "Checkbox";
 
-Lunar<PluginCheckboxProxy>::RegType PluginCheckboxProxy::methods[] = {
+Luna<PluginCheckboxProxy>::FunctionType PluginCheckboxProxy::methods[] = {
 		{"getValue", &PluginCheckboxProxy::getValue},
 		{"setValue", &PluginCheckboxProxy::setValue},
 		{0, 0}

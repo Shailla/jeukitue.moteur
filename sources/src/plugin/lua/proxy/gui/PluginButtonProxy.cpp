@@ -18,7 +18,7 @@ namespace JktPlugin {
 
 const char PluginButtonProxy::className[] = "Button";
 
-Lunar<PluginButtonProxy>::RegType PluginButtonProxy::methods[] = {
+Luna<PluginButtonProxy>::FunctionType PluginButtonProxy::methods[] = {
 		{0, 0}
 };
 
@@ -49,7 +49,7 @@ void PluginButtonProxy::buttonPressedEvent(void) {
 		lua_pop(_pluginContext->getLuaState(), 1);
 	}
 	else {
-		Lunar<PluginButtonProxy>::push(_pluginContext->getLuaState(), this, false);
+		Luna<PluginButtonProxy>::push(_pluginContext->getLuaState(), this);
 		lua_call(_pluginContext->getLuaState(), 1, 0);
 	}
 }

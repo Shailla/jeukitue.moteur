@@ -30,7 +30,7 @@ class CGame;
 class CGeoObject;
 class CPorte;
 
-extern JktNet::NetworkManager Reseau;
+extern JktNet::NetworkManager _networkManager;
 extern CCfg Config;
 
 	/************************************/
@@ -54,7 +54,7 @@ void lanceMenuMultijoueurserveur( void *arg );
 void retourMultijoueurclient( void *arg )
 {
 TRACE().p( TRACE_MENU, "retourMultijoueurclient(var=%x)", arg );
-	Reseau.fermeClient();
+	_networkManager.fermeClient();
 	lanceMenuPrinc( 0 );
 }
 
@@ -77,9 +77,9 @@ CMenu MenuMultijoueurclient( "CLIENT MULTI-JOUEURS", item_menu_multijoueurclient
 
 void lanceMenuMultijoueurclientconnect(void *var) {
 TRACE().p( TRACE_MENU, "lanceMenuMultijoueurclientconnect(var=%x)", var );
-	if( !Reseau.ouvreClient() ) {
+	if( !_networkManager.ouvreClient() ) {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Echec de connexion au serveur";
-		Reseau.setOn( false );		// Signale que le réseau ne peut pas être utilisé
+		_networkManager.setOn( false );		// Signale que le réseau ne peut pas être utilisé
 		lanceMenuPrinc( 0 );		// Retour au menu principal
 	}
 	else
@@ -95,7 +95,7 @@ TRACE().p( TRACE_MENU, "lanceMenuMultijoueurclient(var=%x)", arg );
 
 void lanceJoindrePartie( void *arg) {
 TRACE().p( TRACE_MENU, "lanceJoindrePartie(var=%x)", arg );
-	Reseau.getClient()->sendConnectedRequestJoinTheGame(Config.Joueur.nom);
+	_networkManager.getClient()->sendConnectedRequestJoinTheGame(Config.Joueur.nom);
 }
 
 void lanceMenuMultijoueur(void *var) {

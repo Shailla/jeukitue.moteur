@@ -35,7 +35,7 @@ class CGame;
 using namespace JktNet;
 using namespace JktMoteur;
 
-extern NetworkManager Reseau;
+extern NetworkManager _networkManager;
 
 #define Pi 3.14159265f			//nombre pi pour les calculs
 
@@ -66,7 +66,7 @@ bool CGame::isModeNull() {
 void CGame::setStatutClient( JktNet::StatutClient statut ) {
 TRACE().p( TRACE_ERROR, "CGame::setStatusClient(status=%d) begin%T", statut, this );
 
-	Reseau.getClient()->setStatut( statut );
+	_networkManager.getClient()->setStatut( statut );
 
 TRACE().p( TRACE_ERROR, "CGame::setStatusClient() end%T", this );
 }
@@ -76,7 +76,7 @@ TRACE().p( TRACE_ERROR, "CGame::getStatutClient() begin%T", this );
 
 	JktNet::StatutClient statut;
 	if( _mode==JKT_MODE_PARTIE_CLIENT )
-		statut = Reseau.getClient()->getStatut();
+		statut = _networkManager.getClient()->getStatut();
 	else
 		statut = JKT_STATUT_CLIENT_NULL;
 
@@ -142,12 +142,12 @@ void CGame::changeActiveMap(JktMoteur::CMap* map) {
 
 void CGame::setStatutServer(JktNet::StatutServer statut) {
 	if( _mode==JKT_MODE_PARTIE_SERVER )
-		Reseau.getServer()->setStatut( statut );
+		_networkManager.getServer()->setStatut( statut );
 }
 
 JktNet::StatutServer CGame::getStatutServer() {
 	if( _mode==JKT_MODE_PARTIE_SERVER )
-		return Reseau.getServer()->getStatut();
+		return _networkManager.getServer()->getStatut();
 	else
 		return JKT_STATUT_SERVER_NULL;
 }
@@ -201,10 +201,10 @@ void CGame::setModeServer() {
 }
 
 JktNet::CClient *CGame::getClient()
-{	return Reseau.getClient();		}
+{	return _networkManager.getClient();		}
 
 JktNet::CServer *CGame::getServer()
-{	return Reseau.getServer();		}
+{	return _networkManager.getServer();		}
 
 void CGame::Refresh() {
 		// Rafraichissement de la map

@@ -14,7 +14,7 @@ using namespace std;
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
 #include "util/Trace.h"
-
+#include "main/Cfg.h"
 #include "reseau/Client.h"
 #include "reseau/Server.h"
 #include "main/Focus.h"
@@ -35,7 +35,8 @@ class CGeoObject;
 class CPorte;
 class NetworkManager;
 
-extern JktNet::NetworkManager Reseau;
+extern JktNet::NetworkManager _networkManager;
+extern CCfg Config;
 
 
 namespace JktMenu
@@ -69,7 +70,7 @@ CMenu MenuInfoserver( "INFOS SERVEUR", item_menu_infoserver, 2,
 						liste_suivant_infoserver, retourInfoserver, 0, refreshInfoserver );
 
 void refreshInfoserver() {
-	JktNet::CClient::CInfoServer infoServer = Reseau.getClient()->getInfoServer();
+	JktNet::CClient::CInfoServer infoServer = _networkManager.getClient()->getInfoServer();
 
 	if( infoServer.Ready() == true )
 	{
@@ -86,7 +87,7 @@ TRACE().p( TRACE_MENU, "lanceInfoServer(var=%x)", arg );
 
 	MenuInfoserver.add_ItemsDroits( 0, "????" );
 	MenuInfoserver.add_ItemsDroits( 1, "????" );
-	Reseau.getClient()->sendNotConnectedRequestInfoToServer();		// Demande ses infos au serveur
+	_networkManager.getClient()->sendNotConnectedRequestInfoToServer(Config.Reseau.getIpServer(), Config.Reseau.getPort());		// Demande ses infos au serveur
 
 	CDlg::SetMenuActif( &MenuInfoserver );
 }

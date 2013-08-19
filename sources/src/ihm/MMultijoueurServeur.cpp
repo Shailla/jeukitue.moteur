@@ -32,7 +32,7 @@ class CGame;
 class CGeoObject;
 class CPorte;
 
-extern JktNet::NetworkManager Reseau;
+extern JktNet::NetworkManager _networkManager;
 
 #include "ihm/MMenuPrinc.h"
 #include "ihm/MMultijoueurServeurLancePartie.h"
@@ -60,7 +60,7 @@ const char *item_menu_multijoueurserveur[] =
 void retourMultiserveur( void *arg )
 {
 TRACE().p( TRACE_MENU, "retourMultiserveur(var=%x)", arg );
-	Reseau.fermeServer();
+	_networkManager.fermeServer();
 	lanceMenuPrinc( 0 );
 }
 
@@ -82,9 +82,9 @@ TRACE().p( TRACE_MENU, "lanceMenuMultijoueurserveur(var=%x)", var );
 
 	if( var )		// S'il y a demande de connection réseau
 	{
-		if( !Reseau.ouvreServer() ) {
+		if( !_networkManager.ouvreServer() ) {
 			cout << endl << "Echec ouverture server";
-			Reseau.setOn( false );		// Signale que le réseau ne peut pas être utilisé
+			_networkManager.setOn( false );		// Signale que le réseau ne peut pas être utilisé
 			BoiteErreurMultijoueurserveur = new CDlgBoite( "Erreur", "Le serveur ne peut etre ouvert", retourErreurMultijoueurserveur, CDlgBoite::JKT_DLG_ERREUR );
 			BoiteErreurMultijoueurserveur->addBouton( 2, "Ok", retourErreurMultijoueurserveur );
 			CDlg::SetMenuActif( BoiteErreurMultijoueurserveur );

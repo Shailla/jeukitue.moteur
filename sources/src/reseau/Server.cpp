@@ -153,15 +153,15 @@ TRACE().p( TRACE_RESEAU, "CServer::acceptPlayer(spa=%x) begin%T", spa, this );
 	char nomNewPlayer[50];
 	CPlayer *player, *player2;
 
-	player = new CPlayer();							// Crée le réceptacle du nouveau joueur
-	player->changeAction( gravitePlayer );			// Associe au joueur une fonction de gravité
+	player = new CPlayer();								// Crée le réceptacle du nouveau joueur
+	player->changeAction( gravitePlayer );				// Associe au joueur une fonction de gravité
 	player->changeContact( JktMoteur::contactPlayer );	// Associe une fonction de gestion des contacts avec la map
-	spa->readChar( nomNewPlayer );					// Récupère le nom du nouveau joueur
-	player->nom( nomNewPlayer );					// Enregistre le nom du nouveau joueur
+	spa->readChar( nomNewPlayer );						// Récupère le nom du nouveau joueur
+	player->nom( nomNewPlayer );						// Enregistre le nom du nouveau joueur
 	player->init();
 
 			// Ouverture d'un lien SPA et création du joueur
-	result = player->spa.open( spa->getPacketIn()->address );
+	result = player->spa.openInClientMode( spa->getPacketIn()->address );
 
 	if( result ) {
 		if( SDLNet_UDP_AddSocket( socketSet, player->spa.getSocket() )==-1 ) {
@@ -379,8 +379,6 @@ TRACE().p( TRACE_RESEAU, "CServer::switchJTG() end%T", this );
 }
 
 NotConnectedInterlocutor2* CServer::connect(Uint16 port, Uint16 portTree) {
-TRACE().p( TRACE_RESEAU, "CServer::ouvre(port=%d) begin%T", port, this );
-
 
 	/* ***********************************************************************
 	 * Ouverture d'un serveur primitif
@@ -390,7 +388,7 @@ TRACE().p( TRACE_RESEAU, "CServer::ouvre(port=%d) begin%T", port, this );
 	NotConnectedInterlocutor2* notConnectedServerInterlocutor = 0;
 	cout << endl << "Ouverture d'un serveur sur port " << port;
 
-	if( !spaMaitre.open( port ) ) {
+	if( !spaMaitre.openInServerMode( port ) ) {
 TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 		result = false;
 	}

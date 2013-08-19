@@ -58,7 +58,7 @@ using namespace JktNet;
 
 extern CGame Game;
 extern CCfg Config;
-extern NetworkManager Reseau;
+extern NetworkManager _networkManager;
 void quit_game(int code);
 
 Viewer* Controller::m_agarView;
@@ -128,9 +128,7 @@ void Controller::executeAction(AG_Event *event) {
 	case ShowCentralisateurViewAction:
 	{
 		Centralisateur* centralisateur = Fabrique::getCentralisateur();
-		centralisateur->connecter((char*)Config.Joueur.nom.c_str(),
-				(char*)Config.Centralisateur.getIp().c_str(),
-				Config.Centralisateur.getPort());
+		centralisateur->connecter((char*)Config.Joueur.nom.c_str(), (char*)Config.Centralisateur.getIp().c_str(), Config.Centralisateur.getPort());
 		centralisateur->sendSignalement();
 
 		m_agarView->showMenuView(Viewer::CENTRALISATEUR_VIEW);
@@ -210,7 +208,7 @@ void Controller::executeAction(AG_Event *event) {
 
 	case RejoindrePartieServerAction:
 	{
-		CClient* client = Reseau.getClient();
+		CClient* client = _networkManager.getClient();
 
 		if(client) {
 			client->sendConnectedRequestJoinTheGame(Config.Joueur.nom);
@@ -226,10 +224,10 @@ void Controller::executeAction(AG_Event *event) {
 		MultijoueursClientView* view = (MultijoueursClientView*)m_agarView->getView(Viewer::MULTIJOUEURS_CLIENT_VIEW);
 		view->setServerName("");
 		view->setActiveMap("");
-		CClient* client = Reseau.getClient();
+		CClient* client = _networkManager.getClient();
 
 		if(client) {
-			client->sendNotConnectedRequestInfoToServer();		// Demande ses infos au serveur
+			client->sendNotConnectedRequestInfoToServer(Config.Reseau.getIpServer(), Config.Reseau.getPort());		// Demande ses infos au serveur
 		}
 		else {
 			AG_TextMsg(AG_MSG_ERROR, "Action impossible, vous n'etes pas connecte");
@@ -241,10 +239,10 @@ void Controller::executeAction(AG_Event *event) {
 	{
 		MultijoueursClientView* view = (MultijoueursClientView*)m_agarView->getView(Viewer::MULTIJOUEURS_CLIENT_VIEW);
 		view->setPing(-1);
-		CClient* client = Reseau.getClient();
+		CClient* client = _networkManager.getClient();
 
 		if(client) {
-			client->sendNotConnectedRequestPingToServer();				// Demande au serveur de répondre à un ping
+			client->sendNotConnectedRequestPingToServer(Config.Reseau.getIpServer(), Config.Reseau.getPort());				// Demande au serveur de répondre à un ping
 		}
 		else {
 			AG_TextMsg(AG_MSG_ERROR, "Action impossible, vous n'etes pas connecte");
@@ -254,8 +252,8 @@ void Controller::executeAction(AG_Event *event) {
 
 	case ConnectClientAction:
 	{
-		if( !Reseau.ouvreClient() ) {
-			Reseau.setOn( false );		// Signale que le réseau ne peut pas être utilisé
+		if( !_networkManager.ouvreClient() ) {
+			_networkManager.setOn( false );		// Signale que le réseau ne peut pas être utilisé
 			AG_TextMsg(AG_MSG_ERROR, "Echec de connexion au serveur");
 		}
 	}
@@ -263,7 +261,7 @@ void Controller::executeAction(AG_Event *event) {
 
 	case DeconnectClientAction:
 	{
-		Reseau.fermeClient();
+		_networkManager.fermeClient();
 	}
 	break;
 

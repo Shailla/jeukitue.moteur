@@ -44,9 +44,9 @@ public:
 	CServer *getServer();
 
 	NotConnectedInterlocutor2* ouvreServer();	// Connecte le serveur
-	void fermeServer();										// Déconnecte le serveur
+	void fermeServer();							// Déconnecte le serveur
 
-	void recoitServer();									// Recoit tous les paquets
+	void recoitServer();						// Recoit tous les paquets
 
 
 	/* ********************************************************
@@ -55,7 +55,7 @@ public:
 
 	CClient *getClient();
 
-	Interlocutor2* ouvreClient();						// Connecte le client au serveur
+	Interlocutor2* ouvreClient();			// Connecte le client au serveur
 	void fermeClient();						// Déconnecte le client du serveur
 };
 

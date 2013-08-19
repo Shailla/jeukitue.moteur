@@ -16,19 +16,19 @@ namespace JktNet
 
 class CServer	// Contient les données courantes du serveur (nombre de joueur, partie en cours,...)
 {
-	int m_uNbrPlayers;		// Nombre de joueurs actuellement dans la partie
-	StatutServer m_Statut;	// Etat du serveur (déconnecté, connecté, partie en cours, ...)
+	int m_uNbrPlayers;				// Nombre de joueurs actuellement dans la partie
+	StatutServer m_Statut;			// Etat du serveur (déconnecté, connecté, partie en cours, ...)
 
 public:
-	int maxPlayers;			// Nombre maximum de joueurs acceptés sur le serveur
+	int maxPlayers;					// Nombre maximum de joueurs acceptés sur le serveur
 	CSPA spaMaitre;
 	SDLNet_SocketSet socketSet;		// Les sockets à écouter
 
-	string nom;				// Nom du serveur
-	string nameMap;			// Nom de la MAP ouverte en mode multi-joueurs
+	string nom;						// Nom du serveur
+	string nameMap;					// Nom de la MAP ouverte en mode multi-joueurs
 	
-	bool bGame;				// true si une partie est en cours
-	string nomMAP;			// Nom du fichier MAP de la partie en cours
+	bool bGame;						// true si une partie est en cours
+	string nomMAP;					// Nom du fichier MAP de la partie en cours
 
 	// Serveur moderne
 	ServerUdpInterlocutor* _serverUdpInterlocutor;

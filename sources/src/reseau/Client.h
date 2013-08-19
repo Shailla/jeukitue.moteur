@@ -39,11 +39,11 @@ private:
 	ClientUdpInterlocutor* _clientUdpInterlocutor;
 
 public:
-	SDLNet_SocketSet socketSet;		// Les sockets à écouter
-	CSPA spaMaitre;
-	StatutClient m_Statut;			// Etat du client (demande de connexion envoyée, connecté, ...)
-	int IDpersonnel;				// Identifiant du joueur (sur ce PC)
-	string nomMAP;					// Nom de la MAP en cours
+	SDLNet_SocketSet _socketSet;		// Les sockets à écouter
+	CSPA _spaMaitre;
+	StatutClient _statut;				// Etat du client (demande de connexion envoyée, connecté, ...)
+	int IDpersonnel;					// Identifiant du joueur (sur ce PC)
+	string nomMAP;						// Nom de la MAP en cours
 
 		// Constructeurs/destructeurs
 	CClient();
@@ -52,8 +52,12 @@ public:
 	Interlocutor2* connect(const string &address, Uint16 port, Uint16 portTree);
 	void disconnect();
 
-	void sendNotConnectedRequestInfoToServer();
-	void sendNotConnectedRequestPingToServer();
+	bool sendNotConnectedRequestInfoToServer(const IPaddress &destination);
+	bool sendNotConnectedRequestInfoToServer(const string& destinationAddress, Uint16 destinationPort);
+
+	bool sendNotConnectedRequestPingToServer(const IPaddress &destination);
+	bool sendNotConnectedRequestPingToServer(const string& destinationAddress, Uint16 destinationPort);
+
 	void sendConnectedRequestJoinTheGame(const string& nomPlayer );
 
 	void setStatut(StatutClient statut);		// Renseigne l'état du client (déconnecté,connecté, partie en cours...)

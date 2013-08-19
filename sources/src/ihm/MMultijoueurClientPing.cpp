@@ -15,6 +15,7 @@ using namespace std;
 #include "ihm/Menu.h"
 #include "util/Trace.h"
 
+#include "main/Cfg.h"
 #include "reseau/Client.h"
 #include "reseau/Server.h"
 #include "reseau/NetworkManager.h"
@@ -36,8 +37,8 @@ class CGeoObject;
 class CPorte;
 class NetworkManager;
 
-extern JktNet::NetworkManager Reseau;
-
+extern JktNet::NetworkManager _networkManager;
+extern CCfg Config;
 
 namespace JktMenu
 {
@@ -73,7 +74,7 @@ CMenu MenuPingserver(title_menu_pingserver, item_menu_pingserver, 1, liste_suiva
 
 void refreshPingserver() {
 	if( bAttenteMenuPing ) {
-		Uint32 ping = Reseau.getClient()->getPingClientServeur();
+		Uint32 ping = _networkManager.getClient()->getPingClientServeur();
 
 		if(ping> 0) {
 			if( ping >=9999 ) {		// Délai trop long !
@@ -101,7 +102,7 @@ TRACE().p( TRACE_MENU, "lancePingServer(var=%x)", arg );
 
 void actuPing( void *arg ) {	// Réactualise la valeur du ping
 	bAttenteMenuPing = true;			// On passe en état d'attente d'un ping
-	Reseau.getClient()->sendNotConnectedRequestPingToServer();		// Envoie un ping au serveur
+	_networkManager.getClient()->sendNotConnectedRequestPingToServer(Config.Reseau.getIpServer(), Config.Reseau.getPort());		// Envoie un ping au serveur
 	MenuPingserver.add_ItemsDroits( 0, "????" );
 }
 

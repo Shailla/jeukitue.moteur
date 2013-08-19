@@ -197,7 +197,7 @@ unsigned int frpsTimer = 0, frpTimer = 0;
 
 CMachin *machin;	// Pour tester le son 3D
 
-NetworkManager Reseau;
+NetworkManager _networkManager;
 
 void gravitePlayer(CPlayer *player)	// Fonction implémentant la gravité
 {									// aux objets qui doivent la subire
@@ -1358,7 +1358,7 @@ void executeJktRequests() {
 		Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
 
 		// Connexion du client
-		Interlocutor2* clientInterlocutor = Reseau.ouvreClient();
+		Interlocutor2* clientInterlocutor = _networkManager.ouvreClient();
 
 		if(!clientInterlocutor) {
 			Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_AUCUNE);
@@ -1454,7 +1454,7 @@ void executeJktRequests() {
 		// Connexion du serveur
 		serveurDataTree = new ServeurDataTree();
 
-		_notConnectedServerInterlocutor = Reseau.ouvreServer();
+		_notConnectedServerInterlocutor = _networkManager.ouvreServer();
 
 		if(!_notConnectedServerInterlocutor) {
 			Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
@@ -1553,7 +1553,7 @@ void executeJktRequests() {
 void communique() {
 	frpTimer++;
 
-	if(Reseau.getOn()) {	// Si le réseau est actif
+	if(_networkManager.getOn()) {	// Si le réseau est actif
 
 		/* *******************************************
 		 * Le serveur émet et réceptionne des données
@@ -1568,7 +1568,7 @@ void communique() {
 
 				// Réception des données des clients
 				if(Game.getMap()) {			// Si une partie est en cours en mode de jeu client ou serveur
-					Reseau.recoitServer();	// Recoit les données des clients
+					_networkManager.recoitServer();	// Recoit les données des clients
 				}
 			}
 		}
@@ -1579,7 +1579,7 @@ void communique() {
 		 * ******************************************/
 
 		// Le client réceptionne les données du serveur
-		CClient* client = Reseau.getClient();
+		CClient* client = _networkManager.getClient();
 
 		if(client) {
 			// Recoit les données du serveur en mode déconnecté, ainsi qu'en mode connecté si on l'est

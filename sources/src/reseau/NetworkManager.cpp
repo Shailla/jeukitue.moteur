@@ -40,7 +40,7 @@ namespace JktNet
 
 NetworkManager::NetworkManager() {
 	_on = false;	// Réseau inactivé par défaut
-	_client = 0;
+	_client = new CClient();
 	_server = 0;
 }
 

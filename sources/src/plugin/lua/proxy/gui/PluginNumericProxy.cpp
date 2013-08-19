@@ -16,11 +16,15 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char PluginNumericProxy::className[] = "Numeric";
+const char* PluginNumericProxy::className = "Numeric";
 
-Luna<PluginNumericProxy>::FunctionType PluginNumericProxy::methods[] = {
+const Luna<PluginNumericProxy>::FunctionType PluginNumericProxy::methods[] = {
 		{"getValue", &PluginNumericProxy::getValue},
-		{0, 0}
+		{0}
+};
+
+const Luna<PluginNumericProxy>::PropertyType PluginNumericProxy::properties[] = {
+	{0}
 };
 
 PluginNumericProxy::PluginNumericProxy(lua_State* L) {

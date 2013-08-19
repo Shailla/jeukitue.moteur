@@ -17,15 +17,19 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char PluginTabProxy::className[] = "Tab";
+const char* PluginTabProxy::className = "Tab";
 
-Luna<PluginTabProxy>::FunctionType PluginTabProxy::methods[] = {
+const Luna<PluginTabProxy>::FunctionType PluginTabProxy::methods[] = {
 		{"addCheckbox", &AbstractPluginPanelProxy::addCheckbox},
 		{"addNotebook", &AbstractPluginPanelProxy::addNotebook},
 		{"addBoxHoriz", &AbstractPluginPanelProxy::addBoxHoriz},
 		{"addBoxVert", &AbstractPluginPanelProxy::addBoxVert},
 		{"addNumeric", &AbstractPluginPanelProxy::addNumeric},
-		{0, 0}
+		{0}
+};
+
+const Luna<PluginTabProxy>::PropertyType PluginTabProxy::properties[] = {
+	{0}
 };
 
 PluginTabProxy::PluginTabProxy(lua_State* L) : AbstractPluginPanelProxy(L) {

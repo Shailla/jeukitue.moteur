@@ -16,12 +16,16 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char PluginCheckboxProxy::className[] = "Checkbox";
+const char* PluginCheckboxProxy::className = "Checkbox";
 
-Luna<PluginCheckboxProxy>::FunctionType PluginCheckboxProxy::methods[] = {
+const Luna<PluginCheckboxProxy>::FunctionType PluginCheckboxProxy::methods[] = {
 		{"getValue", &PluginCheckboxProxy::getValue},
 		{"setValue", &PluginCheckboxProxy::setValue},
-		{0, 0}
+		{0}
+};
+
+const Luna<PluginCheckboxProxy>::PropertyType PluginCheckboxProxy::properties[] = {
+	{0}
 };
 
 PluginCheckboxProxy::PluginCheckboxProxy(lua_State* L) {

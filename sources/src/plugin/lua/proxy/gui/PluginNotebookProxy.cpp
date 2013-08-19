@@ -18,11 +18,15 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char PluginNotebookProxy::className[] = "Notebook";
+const char* PluginNotebookProxy::className = "Notebook";
 
-Luna<PluginNotebookProxy>::FunctionType PluginNotebookProxy::methods[] = {
+const Luna<PluginNotebookProxy>::FunctionType PluginNotebookProxy::methods[] = {
 		{"addTab", &PluginNotebookProxy::addTab},
-		{0, 0}
+		{0}
+};
+
+const Luna<PluginNotebookProxy>::PropertyType PluginNotebookProxy::properties[] = {
+	{0}
 };
 
 PluginNotebookProxy::PluginNotebookProxy(lua_State* L) {

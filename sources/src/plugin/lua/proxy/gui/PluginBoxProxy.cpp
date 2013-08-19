@@ -16,16 +16,20 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char PluginBoxProxy::className[] = "Box";
+const char* PluginBoxProxy::className = "Box";
 
-Luna<PluginBoxProxy>::FunctionType PluginBoxProxy::methods[] = {
+const Luna<PluginBoxProxy>::FunctionType PluginBoxProxy::methods[] = {
 		{"addButton", &AbstractPluginPanelProxy::addButton},
 		{"addCheckbox", &AbstractPluginPanelProxy::addCheckbox},
 		{"addNotebook", &AbstractPluginPanelProxy::addNotebook},
 		{"addBoxHoriz", &AbstractPluginPanelProxy::addBoxHoriz},
 		{"addBoxVert", &AbstractPluginPanelProxy::addBoxVert},
 		{"addNumeric", &AbstractPluginPanelProxy::addNumeric},
-		{0, 0}
+		{0}
+};
+
+const Luna<PluginBoxProxy>::PropertyType PluginBoxProxy::properties[] = {
+	{0}
 };
 
 PluginBoxProxy::PluginBoxProxy(lua_State* L) : AbstractPluginPanelProxy(L) {

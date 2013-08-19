@@ -26,8 +26,12 @@ class PluginContext;
 
 class PluginWindowProxy : public AbstractPluginPanelProxy {
 	friend class Luna<PluginWindowProxy>;
-	static const char className[];
-	static Luna<PluginWindowProxy>::FunctionType methods[];
+	static const char *className;
+	static const Luna<PluginWindowProxy>::FunctionType methods[];
+	static const Luna<PluginWindowProxy>::PropertyType properties[];
+
+	bool isExisting; // This is used by Luna to see whether it's been created by createFromExisting.  Don't set it.
+	bool isPrecious; // This is used to tell Luna not to garbage collect the object, in case other objects might reference it.  Set it in your classes constructor.
 
 	PluginContext* _pluginContext;
 	PluginWindow* _pluginWindow;

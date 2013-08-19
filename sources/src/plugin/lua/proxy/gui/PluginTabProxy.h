@@ -25,8 +25,12 @@ class PluginTab;
 
 class PluginTabProxy : public AbstractPluginPanelProxy {
 	friend class Luna<PluginTabProxy>;
-	static const char className[];
-	static Luna<PluginTabProxy>::FunctionType methods[];
+	static const char *className;
+	static const Luna<PluginTabProxy>::FunctionType methods[];
+	static const Luna<PluginTabProxy>::PropertyType properties[];
+
+	bool isExisting; // This is used by Luna to see whether it's been created by createFromExisting.  Don't set it.
+	bool isPrecious; // This is used to tell Luna not to garbage collect the object, in case other objects might reference it.  Set it in your classes constructor.
 
 	PluginContext* _pluginContext;
 	PluginTab* _pluginTab;

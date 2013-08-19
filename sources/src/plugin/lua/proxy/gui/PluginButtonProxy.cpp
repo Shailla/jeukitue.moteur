@@ -16,10 +16,14 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char PluginButtonProxy::className[] = "Button";
+const char* PluginButtonProxy::className = "Button";
 
-Luna<PluginButtonProxy>::FunctionType PluginButtonProxy::methods[] = {
-		{0, 0}
+const Luna<PluginButtonProxy>::FunctionType PluginButtonProxy::methods[] = {
+		{0}
+};
+
+const Luna<PluginButtonProxy>::PropertyType PluginButtonProxy::properties[] = {
+	{0}
 };
 
 PluginButtonProxy::PluginButtonProxy(lua_State* L) {

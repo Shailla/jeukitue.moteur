@@ -23,8 +23,12 @@ namespace JktPlugin {
 
 class PluginBoxProxy : public AbstractPluginPanelProxy {
 	friend class Luna<PluginBoxProxy>;
-	static const char className[];
-	static Luna<PluginBoxProxy>::FunctionType methods[];
+	static const char* className;
+	static const Luna<PluginBoxProxy>::FunctionType methods[];
+	static const Luna<PluginBoxProxy>::PropertyType properties[];
+
+	bool isExisting; // This is used by Luna to see whether it's been created by createFromExisting.  Don't set it.
+	bool isPrecious; // This is used to tell Luna not to garbage collect the object, in case other objects might reference it.  Set it in your classes constructor.
 
 	PluginBox* _pluginBox;
 public:

@@ -22,8 +22,12 @@ namespace JktPlugin {
 
 class PluginNumericProxy {
 	friend class Luna<PluginNumericProxy>;
-	static const char className[];
-	static Luna<PluginNumericProxy>::FunctionType methods[];
+	static const char *className;
+	static const Luna<PluginNumericProxy>::FunctionType methods[];
+	static const Luna<PluginNumericProxy>::PropertyType properties[];
+
+	bool isExisting; // This is used by Luna to see whether it's been created by createFromExisting.  Don't set it.
+	bool isPrecious; // This is used to tell Luna not to garbage collect the object, in case other objects might reference it.  Set it in your classes constructor.
 
 	PluginNumeric* _pluginNumeric;
 public:

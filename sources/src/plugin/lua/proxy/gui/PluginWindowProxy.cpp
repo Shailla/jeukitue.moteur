@@ -16,9 +16,9 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char PluginWindowProxy::className[] = "Window";
+const char* PluginWindowProxy::className = "Window";
 
-Luna<PluginWindowProxy>::FunctionType PluginWindowProxy::methods[] = {
+const Luna<PluginWindowProxy>::FunctionType PluginWindowProxy::methods[] = {
 		{"setTitle", &PluginWindowProxy::setTitle},
 		{"show", &PluginWindowProxy::show},
 		{"hide", &PluginWindowProxy::hide},
@@ -30,7 +30,11 @@ Luna<PluginWindowProxy>::FunctionType PluginWindowProxy::methods[] = {
 		{"addBoxHoriz", &AbstractPluginPanelProxy::addBoxHoriz},
 		{"addBoxVert", &AbstractPluginPanelProxy::addBoxVert},
 		{"addNumeric", &AbstractPluginPanelProxy::addNumeric},
-		{0, 0}
+		{0}
+};
+
+const Luna<PluginWindowProxy>::PropertyType PluginWindowProxy::properties[] = {
+	{0}
 };
 
 PluginWindowProxy::PluginWindowProxy(lua_State* L) : AbstractPluginPanelProxy(L) {

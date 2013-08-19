@@ -70,13 +70,13 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	 * Initialisation Lua
 	 * *****************************************************************************/
 
-	lua_State* L = lua_open();
+	lua_State* L = luaL_newstate();
 	luaopen_io(L); 		// provides io.*
 	luaopen_base(L);
 	luaopen_table(L);
 	luaopen_string(L);
 	luaopen_math(L);
-	luaopen_loadlib(L);
+//	luaopen_loadlib(L);
 
 
 	/* ******************************************************************************

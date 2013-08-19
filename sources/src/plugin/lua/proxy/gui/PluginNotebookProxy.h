@@ -23,8 +23,12 @@ class PluginNotebook;
 
 class PluginNotebookProxy {
 	friend class Luna<PluginNotebookProxy>;
-	static const char className[];
-	static Luna<PluginNotebookProxy>::FunctionType methods[];
+	static const char *className;
+	static const Luna<PluginNotebookProxy>::FunctionType methods[];
+	static const Luna<PluginNotebookProxy>::PropertyType properties[];
+
+	bool isExisting; // This is used by Luna to see whether it's been created by createFromExisting.  Don't set it.
+	bool isPrecious; // This is used to tell Luna not to garbage collect the object, in case other objects might reference it.  Set it in your classes constructor.
 
 	PluginContext* _pluginContext;
 	PluginNotebook* _pluginNotebook;

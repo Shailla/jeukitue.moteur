@@ -17,6 +17,7 @@ class ConsoleView : public View
 {
 	AG_Console* _console;
 	AG_Textbox* _commande;
+	AG_Button* _buttonOk;
 	char _commandToExecute[200];
 
 	char _mapOuverteName[30];

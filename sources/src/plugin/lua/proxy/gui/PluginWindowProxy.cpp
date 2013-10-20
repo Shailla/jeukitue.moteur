@@ -24,7 +24,6 @@ const Luna<PluginWindowProxy>::FunctionType PluginWindowProxy::methods[] = {
 		{"hide", &PluginWindowProxy::hide},
 		{"setSize", &PluginWindowProxy::setSize},
 		{"setPosition", &PluginWindowProxy::setPosition},
-
 		{"addCheckbox", &AbstractPluginPanelProxy::addCheckbox},
 		{"addNotebook", &AbstractPluginPanelProxy::addNotebook},
 		{"addBoxHoriz", &AbstractPluginPanelProxy::addBoxHoriz},
@@ -59,9 +58,9 @@ PluginWindowProxy::~PluginWindowProxy() {
  *    - Param 2 : Position du coin haut gauche sur l'axe vertical en pixels
  */
 int PluginWindowProxy::setPosition(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER)) {
-		const int x = lua_tonumber(L, 1);
-		const int y = lua_tonumber(L, 2);
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 3, LUA_PARAM_USERDATA, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER)) {
+		const int x = lua_tonumber(L, 2);
+		const int y = lua_tonumber(L, 3);
 		_pluginWindow->setPosition(x, y);
 	}
 
@@ -74,9 +73,9 @@ int PluginWindowProxy::setPosition(lua_State* L) {
  *    - Param 2 : Taille sur l'axe vertical en pixels
  */
 int PluginWindowProxy::setSize(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER)) {
-		const int w = lua_tonumber(L, 1);
-		const int h = lua_tonumber(L, 2);
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 3, LUA_PARAM_USERDATA, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER)) {
+		const int w = lua_tonumber(L, 2);
+		const int h = lua_tonumber(L, 3);
 		_pluginWindow->setSize(w, h);
 	}
 
@@ -90,8 +89,8 @@ int PluginWindowProxy::setSize(lua_State* L) {
 int PluginWindowProxy::setTitle(lua_State* L) {
 	lua_gettop(L);
 
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
-		const char* title = lua_tostring(L, 1);
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_USERDATA, LUA_PARAM_STRING)) {
+		const char* title = lua_tostring(L, 2);
 		_pluginWindow->setTitle(title);
 	}
 
@@ -102,7 +101,7 @@ int PluginWindowProxy::setTitle(lua_State* L) {
  * Afficher la fenêtre.
  */
 int PluginWindowProxy::show(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_USERDATA)) {
 		_pluginWindow->show();
 	}
 
@@ -113,7 +112,7 @@ int PluginWindowProxy::show(lua_State* L) {
  * Afficher la fenêtre.
  */
 int PluginWindowProxy::hide(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_USERDATA)) {
 		_pluginWindow->hide();
 	}
 

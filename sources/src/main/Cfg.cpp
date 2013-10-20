@@ -874,6 +874,9 @@ void CCfg::CDisplay::InitAgar() {
 	AG_ListDriverNames(drvNames, sizeof(drvNames));
 
 	cout << endl << "Available drivers : " << drvNames;
+
+	AG_Driver *driver = (AG_Driver *)agDriverSw;
+	cout << endl << "Driver Agar actif : " << driver->_inherit.name;
 }
 
 bool CCfg::CDisplay::chargeGLExtension(const char* ext, string& extensions) {

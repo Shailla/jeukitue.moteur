@@ -7,7 +7,6 @@ using namespace std;
 
 #include <agar/core.h>
 #include <agar/gui.h>
-#include <agar/gui/style.h>
 
 #include "util/FindFolder.h"
 #include "menu/View.h"

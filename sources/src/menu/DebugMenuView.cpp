@@ -1,7 +1,6 @@
 
 #include <agar/core.h>
 #include <agar/gui.h>
-#include <agar/gui/style.h>
 
 #include "menu/View.h"
 #include "menu/Controller.h"

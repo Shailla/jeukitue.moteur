@@ -32,23 +32,23 @@ void LuaUtils::report_lua_errors(lua_State *L, int status) {
 }
 
 
-bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const char* FUNCTION, int typesNbr, ...) {
+bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const char* FUNCTION, int expectedParamNbr, ...) {
 	va_list vl;
-	va_start(vl, typesNbr);
+	va_start(vl, expectedParamNbr);
 
 	// Vérifie si le nombre de paramètres est bon
 	int paramNbr = lua_gettop(L);
 
-	if(paramNbr != typesNbr) {
+	if(paramNbr != expectedParamNbr) {
 		ostringstream message;
-		message << "Mauvais nombre de parametres (attendu=" << typesNbr << ", recus=" << paramNbr << ")";
+		message << "Mauvais nombre de parametres (attendu=" << expectedParamNbr << ", recus=" << paramNbr << ")";
 		PluginEngine::getPluginContext(L)->logError(message.str());
 
 		return false;
 	}
 
 	// Vérifie les types de chaque paramètre
-	for(int i=1 ; i<typesNbr+1 ; i++) {
+	for(int i=1 ; i<expectedParamNbr+1 ; i++) {
 		const LUA_PARAMETER_TYPES type = (LUA_PARAMETER_TYPES)va_arg(vl, int);
 
 		switch(type) {
@@ -74,6 +74,15 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 			if(!lua_isnumber(L, i)) {
 				ostringstream message;
 				message << "Mauvais format du parametre " << i << " (attendu=Entier)";
+				PluginEngine::getPluginContext(L)->logError(message.str());
+
+				return false;
+			}
+			break;
+		case LUA_PARAM_USERDATA:
+			if(!lua_isuserdata(L, i)) {
+				ostringstream message;
+				message << "Mauvais format du parametre " << i << " (attendu=Userdata)";
 				PluginEngine::getPluginContext(L)->logError(message.str());
 
 				return false;

@@ -51,8 +51,8 @@ PluginNotebookProxy::~PluginNotebookProxy() {
  *    - Param 1 : Titre de l'onglet
  */
 int PluginNotebookProxy::addTab(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
-		const string tabTitle = lua_tostring(L, 1);
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_USERDATA, LUA_PARAM_STRING)) {
+		const string tabTitle = lua_tostring(L, 2);
 		PluginTabProxy* tabProxy = new PluginTabProxy(_pluginContext, _pluginNotebook->addTab(tabTitle));
 		Luna<PluginTabProxy>::push(L, tabProxy);
 	}

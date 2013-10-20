@@ -692,7 +692,6 @@ void display() {		// Fonction principale d'affichage
 }
 
 void chopeLesEvenements() {
-	SDL_PumpEvents();							// Collecte les évênements
 	Uint8 *keystate = SDL_GetKeyState(0);		// Récupère les touches clavier appuyées
 	Uint8 mouse = SDL_GetMouseState(0, 0);
 
@@ -843,10 +842,10 @@ void chopeLesEvenements() {
 }
 
 void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
-	//	cout << endl << " -> AGAR";
-	//	string evDesc;
-	//	CCfg::resolve(sdlEvent, evDesc);
-	//	cout << " -> {" << evDesc << "}";
+	cout << endl << " -> AGAR";
+	string evDesc;
+	CCfg::resolve(sdlEvent, evDesc);
+	cout << " -> {" << evDesc << "}";
 
 	if(sdlEvent->type == SDL_KEYDOWN && sdlEvent->key.keysym.sym == SDLK_ESCAPE) {
 		Viewer* agarView = Fabrique::getAgarView();
@@ -854,21 +853,32 @@ void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
 		agarView->hideAllMenuViews();
 	}
 	else {
-		AG_Driver *driver = (AG_Driver *)agDriverSw;
-
 		switch (sdlEvent->type) {
-		case SDL_MOUSEMOTION:
-		case SDL_MOUSEBUTTONUP:
+
 		case SDL_MOUSEBUTTONDOWN:
+		{
+			AG_DriverEvent agarEvent;
+			AG_SDL_TranslateEvent(agDriverSw, sdlEvent, &agarEvent);
+			AG_ProcessEvent((AG_Driver *)agDriverSw, &agarEvent);
+			break;
+		}
+		case SDL_MOUSEBUTTONUP:
+		{
+			AG_DriverEvent agarEvent;
+			AG_SDL_TranslateEvent(agDriverSw, sdlEvent, &agarEvent);
+			AG_ProcessEvent((AG_Driver *)agDriverSw, &agarEvent);
+			break;
+		}
+		case SDL_MOUSEMOTION:
 		case SDL_KEYDOWN:
 		case SDL_KEYUP:
 		case SDL_VIDEORESIZE:
 		case SDL_VIDEOEXPOSE:
 		case SDL_QUIT:
 		{
-			AG_DriverEvent driverEvent;
-			AG_SDL_TranslateEvent(driver, sdlEvent, &driverEvent);
-			AG_ProcessEvent(driver, &driverEvent);
+			AG_DriverEvent agarEvent;
+			AG_SDL_TranslateEvent(agDriverSw, sdlEvent, &agarEvent);
+			AG_ProcessEvent((AG_Driver *)agDriverSw, &agarEvent);
 			break;
 		}
 		default:
@@ -877,6 +887,12 @@ void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
 			break;
 		}
 	}
+
+//	AG_DriverEvent dev;
+//
+//	while(AG_GetNextEvent(NULL, &dev) > 0) {
+//	    AG_ProcessEvent(NULL, &dev);
+//	}
 }
 
 void play_handle_key_down( SDL_Event *event ) {
@@ -1671,6 +1687,7 @@ void boucle() {
 		// Dessine la scène 3D et les menus
 		display();
 
+		SDL_PumpEvents();	// Collecte les évênements
 		process_events();	// vérifie les évênements
 	}
 }

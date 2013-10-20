@@ -47,7 +47,7 @@ PluginNumericProxy::~PluginNumericProxy() {
  *    - Return 1 : Value setted in the numeric field
  */
 int PluginNumericProxy::getValue(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_USERDATA)) {
 		float value = _pluginNumeric->getValue();
 		lua_pushnumber(L, value);
 	}

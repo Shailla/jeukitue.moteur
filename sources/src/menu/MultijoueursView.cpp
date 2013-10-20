@@ -20,7 +20,7 @@ MultijoueursView::MultijoueursView(const AG_EventFn controllerCallback)
     AG_WindowSetCaption(m_window, "Multi-joueurs");
 
 	// Fonctions client
-	AG_Button* buttoModeClient = AG_ButtonNewFn(m_window, 0, "Mode client", controllerCallback, "%i", Controller::ShowMultijoueursClientMenuAction);
+	AG_Button* buttoModeClient = AG_ButtonNewFn(m_window, 0, "Jouer sur un serveur", controllerCallback, "%i", Controller::ShowMultijoueursClientMenuAction);
     AG_SeparatorNewHoriz(m_window);
 
 	// Fonctions serveur

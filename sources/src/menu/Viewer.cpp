@@ -1,6 +1,5 @@
 #include "Viewer.h"
 
-#include <agar/gui/style.h>
 #include <agar/core.h>
 #include <agar/gui.h>
 
@@ -130,7 +129,6 @@ void Viewer::draw(void) {
         }
 
         AG_ObjectLock(win);
-    	//AG_WidgetDraw(win);
         AG_WindowDraw(win);
         AG_ObjectUnlock(win);
     }

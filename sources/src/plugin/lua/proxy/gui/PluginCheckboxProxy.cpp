@@ -44,7 +44,7 @@ PluginCheckboxProxy::~PluginCheckboxProxy() {
 }
 
 int PluginCheckboxProxy::getValue(lua_State* L) {
-	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
+	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_USERDATA);
 	const bool value = _pluginCheckbox->getValue();
 	lua_pushboolean(L, value);
 
@@ -52,8 +52,8 @@ int PluginCheckboxProxy::getValue(lua_State* L) {
 }
 
 int PluginCheckboxProxy::setValue(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_BOOLEAN)) {
-		const bool value = lua_toboolean(L, 1);
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_USERDATA, LUA_PARAM_BOOLEAN)) {
+		const bool value = lua_toboolean(L, 2);
 		_pluginCheckbox->setValue(value);
 	}
 

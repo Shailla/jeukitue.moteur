@@ -1,7 +1,6 @@
 
 #include <agar/core.h>
 #include <agar/gui.h>
-#include <agar/gui/style.h>
 
 #include "menu/View.h"
 #include "menu/Controller.h"
@@ -32,11 +31,18 @@ MainMenuView::MainMenuView(const AG_EventFn controllerCallback) : View(controlle
     AG_ExpandHoriz(_debug);
     AG_ExpandHoriz(_buttonQuitter);
 
+    AG_ObjectSetName(_buttonOuvrirScene, "BOUTON OUVRIR SCENE");
+    AG_ObjectSetName(_buttonMultijoueurs, "BOUTON MULTI");
+    AG_ObjectSetName(_buttonConfiguration, "BOUTON CONFIG");
+    AG_ObjectSetName(_buttonQuitGame, "BOUTON QUIT GAME");
+    AG_ObjectSetName(_About, "BOUTON ABOUT");
+    AG_ObjectSetName(_debug, "BOUTON DEBUG");
+    AG_ObjectSetName(_buttonQuitter, "BOUTON QUITTER");
+
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 25, 50);
+
     hide();
 }
-
-
 
 MainMenuView::~MainMenuView(void) {
 }

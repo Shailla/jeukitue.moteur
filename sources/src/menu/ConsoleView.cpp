@@ -36,12 +36,12 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	_console = AG_ConsoleNew(tabMain, AG_CONSOLE_EXPAND);
 
 	AG_Box* box = AG_BoxNewHoriz(m_window, AG_BOX_HFILL);
-	_commande = AG_TextboxNew(box, AG_TEXTBOX_STATIC|AG_TEXTBOX_HFILL, "Commande : ");
+	_commande = AG_TextboxNew(box, AG_TEXTBOX_EXCL|AG_TEXTBOX_HFILL, "Commande : ");
 	AG_WidgetFocus(_commande);
 	AG_WidgetEnable(_commande);
 	AG_SetEvent(_commande, "textbox-return", controllerCallback, "%i", Controller::ExecuteUserCommandeAction); // L'appui sur ENTER est interprêté
 
-	AG_ButtonNewFn(box, 0, "Ok", controllerCallback, "%i", Controller::ExecuteUserCommandeAction);
+	_buttonOk = AG_ButtonNewFn(box, 0, "Ok", controllerCallback, "%i", Controller::ExecuteUserCommandeAction);
 
 
 	/******************************
@@ -150,7 +150,7 @@ void ConsoleView::println(ConsoleOutputType type, const string& texte) {
 	str << texte;
 
 	AG_ConsoleLine* line = AG_ConsoleAppendLine(_console, str.str().c_str());
-	line->cFg = *lineColor;
+	AG_ConsoleMsgColor(line, lineColor);
 }
 
 void ConsoleView::setMapOuverteName(const std::string& mapName) {

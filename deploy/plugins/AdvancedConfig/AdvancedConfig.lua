@@ -46,7 +46,6 @@ function loadJoueurConfiguration()
 	checkboxOutlineJoueurVisibility:setValue(getConfigurationParameter("PLAYER_OUTLINE_VISIBILITY"));
 	checkboxAxesMeterVisibility:setValue(getConfigurationParameter("CUBIC_METER_VISIBILITY"));
 	checkboxCubicMeterVisibility:setValue(getConfigurationParameter("AXES_METER_VISIBILITY"));
-	checkboxSkinJoueurVisibility:setValue(getConfigurationParameter("Coucou"));
 	checkboxAxesMeterVisibility:setValue(isAxesMeterVisible());
 	checkboxCubicMeterVisibility:setValue(isCubicMeterVisible());
 end
@@ -74,6 +73,6 @@ function eventManager(event)
 		
 	-- Evénement non-pris en compte
 	else
-		log("Evenement inconnu");
+		log("Evenement inconnu" .. event);
 	end
 end

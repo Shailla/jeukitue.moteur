@@ -329,6 +329,12 @@ void Controller::executeAction(AG_Event *event) {
 	}
 	break;
 
+	case ShowNetworkConnectionsViewAction:
+	{
+		m_agarView->showMenuView(Viewer::NETWORK_CONNECTIONS_VIEW);
+	}
+	break;
+
 	// Affiche la denière erreur OpenGL dans une popup
 	case ShowLastOpenGlErrorViewAction:
 	{

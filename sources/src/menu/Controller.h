@@ -53,6 +53,7 @@ public:
 		ShowMapTreeViewAction,						// Affiche les données de la MAP courante sous forme d'un arbre
 		ShowDataTreeViewAction,						// Affiche l'arbre de données
 		ShowPlayersListViewAction,					// Affiche la liste des joueurs
+		ShowNetworkConnectionsViewAction,			// Affiche la liste courante des connexions résea
 		Refresh,									// Demande de rafraichissement de la fenêtre
 		RejoindrePartieServerAction,				// Rejoindre la partie en cours sur le serveur
 		InfoServerAction,							// Obtenir les informations du serveur

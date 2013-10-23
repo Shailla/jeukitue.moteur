@@ -1,0 +1,8 @@
+
+D:\jkt\moteur\sources\src\main\Cfg.cpp:635 Aucun driver d'acquisition du son détecté.
+D:\jkt\moteur\sources\src\main\divers.cpp:46 Quit game with code : 0
+D:\jkt\moteur\sources\src\main\divers.cpp:97Derniere erreur FMOD : No errors
+Derniere erreur SDL : 
+Derniere erreur SDL_Net : 
+Derniere erreur openGL : énumérant non valide
+Derniere erreur Agar : Cursor changes not allowed

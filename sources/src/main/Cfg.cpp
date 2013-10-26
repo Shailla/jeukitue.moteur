@@ -68,9 +68,9 @@ const char* CCfg::CST_CEN_IP =					"centralisateur.ip";
 const char* CCfg::CST_CEN_PORT =				"centralisateur.port";
 
 const char* CCfg::CST_NET_SERVEUR =				"reseau.serveur";
-const char* CCfg::CST_NET_IP =					"reseau.ip";
-const char* CCfg::CST_NET_PORT =				"reseau.port";
-const char* CCfg::CST_NET_PORTTREE =			"reseau.portTree";
+const char* CCfg::CST_NET_IP =					"reseau.serveur.ip";
+const char* CCfg::CST_NET_PORT =				"reseau.serveur.port";
+const char* CCfg::CST_NET_PORTTREE =			"reseau.serveur.portTree";
 
 const char* CCfg::CST_JOU_NOM =					"joueur.nom";
 const char* CCfg::CST_JOU_MAPNOM =				"joueur.mapNom";

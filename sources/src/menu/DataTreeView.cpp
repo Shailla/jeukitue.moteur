@@ -19,13 +19,13 @@ using namespace std;
 #include "menu/DataTreeView.h"
 
 extern ServeurDataTree* serveurDataTree;
-extern ServeurDataTree* clientDataTree;
+extern ClientDataTree* clientDataTree;
 
 DataTreeView::DataTreeView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
-	AG_WindowSetCaption(m_window, "Arbre des donnees");
+	AG_WindowSetCaption(m_window, "Arbre des donnees - null");
 
 	AG_Box* box = AG_BoxNewHoriz(m_window, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
 	AG_Expand(box);
@@ -83,12 +83,15 @@ void DataTreeView::refreshTree() {
 
 	if(serveurDataTree) {
 		_dataTree = serveurDataTree;
+		AG_WindowSetCaption(m_window, "Arbre des donnees - serveur");
 	}
 	else if(clientDataTree) {
 		_dataTree = clientDataTree;
+		AG_WindowSetCaption(m_window, "Arbre des donnees - client");
 	}
 	else {
 		_dataTree = 0;
+		AG_WindowSetCaption(m_window, "Arbre des donnees - null");
 	}
 
 	AG_TlistBegin(_dataList);

@@ -189,7 +189,7 @@ void CClient::disconnect() {
 }
 
 bool CClient::sendNotConnectedRequestInfoToServer(const string& destinationAddress, Uint16 destinationPort) {
-	bool result;
+	bool result = true;
 	IPaddress destination;
 
 	if(SDLNet_ResolveHost(&destination, destinationAddress.c_str(), destinationPort)) {
@@ -198,34 +198,27 @@ bool CClient::sendNotConnectedRequestInfoToServer(const string& destinationAddre
 	}
 
 	if(result) {
-		sendNotConnectedRequestInfoToServer(destination);
+		m_InfoServer.Ready( false );	// Indique l'attente d'actualisation de ces infos
+
+		_spaMaitre.init();
+		_spaMaitre.addCode( CLIENT_INFO, CLIENT_NULL );
+
+		cout << endl << "Sending info request to server '" << destinationAddress << ":" << destinationPort << "'";
+		result = _spaMaitre.send(destination);
+	}
+
+	if(result) {
+		cout << endl << "Info request sent to '" << destinationAddress << ":" << destinationPort << "'";
+	}
+	else {
+		cerr << endl << "Error sending info request to '" << destinationAddress << ":" << destinationPort << "'";
 	}
 
 	return result;
 }
 
-bool CClient::sendNotConnectedRequestInfoToServer(const IPaddress &destination) {
-	m_InfoServer.Ready( false );	// Indique l'attente d'actualisation de ces infos
-
-	_spaMaitre.init();
-	_spaMaitre.addCode( CLIENT_INFO, CLIENT_NULL );
-
-	return _spaMaitre.send(destination);
-}
-
-bool CClient::sendNotConnectedRequestPingToServer(const IPaddress &destination) {
-	m_pingClientServer = -1;					// Initialisation de la durée du ping
-	m_timePingClientServer = SDL_GetTicks();	// Temps à l'envoie du ping
-
-	_spaMaitre.init();
-	_spaMaitre.addCode( CLIENT_PING, CLIENT_NULL );
-	_spaMaitre.add32( m_timePingClientServer );
-
-	return _spaMaitre.send(destination);
-}
-
 bool CClient::sendNotConnectedRequestPingToServer(const string& destinationAddress, Uint16 destinationPort) {
-	bool result;
+	bool result = true;
 	IPaddress destination;
 
 	if(SDLNet_ResolveHost(&destination, destinationAddress.c_str(), destinationPort)) {
@@ -234,7 +227,22 @@ bool CClient::sendNotConnectedRequestPingToServer(const string& destinationAddre
 	}
 
 	if(result) {
-		sendNotConnectedRequestPingToServer(destination);
+		m_pingClientServer = -1;					// Initialisation de la durée du ping
+		m_timePingClientServer = SDL_GetTicks();	// Temps à l'envoie du ping
+
+		_spaMaitre.init();
+		_spaMaitre.addCode( CLIENT_PING, CLIENT_NULL );
+		_spaMaitre.add32( m_timePingClientServer );
+
+		cout << endl << "Sending ping request to server '" << destinationAddress << ":" << destinationPort << "'";
+		result = _spaMaitre.send(destination);
+	}
+
+	if(result) {
+		cout << endl << "Ping request sent to '" << destinationAddress << ":" << destinationPort << "'";
+	}
+	else {
+		cerr << endl << "Error sending ping request to '" << destinationAddress << ":" << destinationPort << "'";
 	}
 
 	return result;

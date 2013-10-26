@@ -92,8 +92,8 @@ void ConfigurationReseauView::show(void) {
 	Config.Reseau.getIpServer().copy(_ipServeur, Config.Reseau.getIpServer().length(), 0);
 
 	// Ports du serveur ou du client selon le mode
-	_port = Config.Reseau.getPort();
-	_portTree = Config.Reseau.getPortTree();
+	_port = Config.Reseau.getServerPort();
+	_portTree = Config.Reseau.getServerPortTree();
 
 
 	/* *********************************

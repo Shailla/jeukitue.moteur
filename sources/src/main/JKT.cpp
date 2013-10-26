@@ -842,10 +842,10 @@ void chopeLesEvenements() {
 }
 
 void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
-	cout << endl << " -> AGAR";
-	string evDesc;
-	CCfg::resolve(sdlEvent, evDesc);
-	cout << " -> {" << evDesc << "}";
+//	cout << endl << " -> AGAR";
+//	string evDesc;
+//	CCfg::resolve(sdlEvent, evDesc);
+//	cout << " -> {" << evDesc << "}";
 
 	if(sdlEvent->type == SDL_KEYDOWN && sdlEvent->key.keysym.sym == SDLK_ESCAPE) {
 		Viewer* agarView = Fabrique::getAgarView();

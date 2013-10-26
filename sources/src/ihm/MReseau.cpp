@@ -116,7 +116,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigReseau(var=%x)", var );
 	}
 
 	ostringstream port;
-	port << Config.Reseau.getPort();
+	port << Config.Reseau.getServerPort();
 	MenuConfigReseau->add_ItemsDroits( i++, port.str().c_str() );
 }
 

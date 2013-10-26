@@ -123,8 +123,8 @@ private:
 		string _IpServer;		// Adresse IP du serveur (s'il s'agit d'un client)
 		bool _serveur;	// true s'il s'agit d'un serveur, false si c'est un client
 	public:
-		Uint16 getPort() const							{ return _Port;				}
-		Uint16 getPortTree() const						{ return _portTree;			}
+		Uint16 getServerPort() const							{ return _Port;				}
+		Uint16 getServerPortTree() const						{ return _portTree;			}
 		string getIpServer() const						{ return _IpServer;			}
 		bool isServeur() const							{ return _serveur;			}
 

@@ -87,7 +87,7 @@ TRACE().p( TRACE_MENU, "lanceInfoServer(var=%x)", arg );
 
 	MenuInfoserver.add_ItemsDroits( 0, "????" );
 	MenuInfoserver.add_ItemsDroits( 1, "????" );
-	_networkManager.getClient()->sendNotConnectedRequestInfoToServer(Config.Reseau.getIpServer(), Config.Reseau.getPort());		// Demande ses infos au serveur
+	_networkManager.getClient()->sendNotConnectedRequestInfoToServer(Config.Reseau.getIpServer(), Config.Reseau.getServerPort());		// Demande ses infos au serveur
 
 	CDlg::SetMenuActif( &MenuInfoserver );
 }

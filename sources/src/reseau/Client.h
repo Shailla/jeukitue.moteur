@@ -52,10 +52,8 @@ public:
 	Interlocutor2* connect(const string &address, Uint16 port, Uint16 portTree);
 	void disconnect();
 
-	bool sendNotConnectedRequestInfoToServer(const IPaddress &destination);
 	bool sendNotConnectedRequestInfoToServer(const string& destinationAddress, Uint16 destinationPort);
 
-	bool sendNotConnectedRequestPingToServer(const IPaddress &destination);
 	bool sendNotConnectedRequestPingToServer(const string& destinationAddress, Uint16 destinationPort);
 
 	void sendConnectedRequestJoinTheGame(const string& nomPlayer );

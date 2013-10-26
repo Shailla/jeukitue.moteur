@@ -83,7 +83,7 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() begin%T", this );
 
 	_server = new CServer();
 
-	NotConnectedInterlocutor2* notConnectedServerInterlocutor = _server->connect(Config.Reseau.getPort(), Config.Reseau.getPortTree());
+	NotConnectedInterlocutor2* notConnectedServerInterlocutor = _server->connect(Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree());
 
 	if(notConnectedServerInterlocutor) {
 		Game.setModeServer();
@@ -129,7 +129,7 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() begin%T", this );
 
 	_client = new CClient();
 
-	Interlocutor2* interlocutor = _client->connect(Config.Reseau.getIpServer(), Config.Reseau.getPort(), Config.Reseau.getPortTree());
+	Interlocutor2* interlocutor = _client->connect(Config.Reseau.getIpServer(), Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree());
 
 	if(interlocutor) {
 		Game.setModeClient();

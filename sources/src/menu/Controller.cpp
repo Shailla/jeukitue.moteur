@@ -227,7 +227,7 @@ void Controller::executeAction(AG_Event *event) {
 		CClient* client = _networkManager.getClient();
 
 		if(client) {
-			client->sendNotConnectedRequestInfoToServer(Config.Reseau.getIpServer(), Config.Reseau.getPort());		// Demande ses infos au serveur
+			client->sendNotConnectedRequestInfoToServer(Config.Reseau.getIpServer(), Config.Reseau.getServerPort());		// Demande ses infos au serveur
 		}
 		else {
 			AG_TextMsg(AG_MSG_ERROR, "Action impossible, vous n'etes pas connecte");
@@ -242,7 +242,7 @@ void Controller::executeAction(AG_Event *event) {
 		CClient* client = _networkManager.getClient();
 
 		if(client) {
-			client->sendNotConnectedRequestPingToServer(Config.Reseau.getIpServer(), Config.Reseau.getPort());				// Demande au serveur de répondre à un ping
+			client->sendNotConnectedRequestPingToServer(Config.Reseau.getIpServer(), Config.Reseau.getServerPort());				// Demande au serveur de répondre à un ping
 		}
 		else {
 			AG_TextMsg(AG_MSG_ERROR, "Action impossible, vous n'etes pas connecte");

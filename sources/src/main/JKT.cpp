@@ -197,7 +197,7 @@ unsigned int frpsTimer = 0, frpTimer = 0;
 
 CMachin *machin;	// Pour tester le son 3D
 
-NetworkManager _networkManager;
+NetworkManager* _networkManager;
 
 void gravitePlayer(CPlayer *player)	// Fonction implémentant la gravité
 {									// aux objets qui doivent la subire
@@ -1374,7 +1374,7 @@ void executeJktRequests() {
 		Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
 
 		// Connexion du client
-		Interlocutor2* clientInterlocutor = _networkManager.ouvreClient();
+		Interlocutor2* clientInterlocutor = _networkManager->ouvreClient();
 
 		if(!clientInterlocutor) {
 			Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_AUCUNE);
@@ -1470,7 +1470,7 @@ void executeJktRequests() {
 		// Connexion du serveur
 		serveurDataTree = new ServeurDataTree();
 
-		_notConnectedServerInterlocutor = _networkManager.ouvreServer();
+		_notConnectedServerInterlocutor = _networkManager->ouvreServer();
 
 		if(!_notConnectedServerInterlocutor) {
 			Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
@@ -1569,7 +1569,7 @@ void executeJktRequests() {
 void communique() {
 	frpTimer++;
 
-	if(_networkManager.getOn()) {	// Si le réseau est actif
+	if(_networkManager->getOn()) {	// Si le réseau est actif
 
 		/* *******************************************
 		 * Le serveur émet et réceptionne des données
@@ -1584,7 +1584,7 @@ void communique() {
 
 				// Réception des données des clients
 				if(Game.getMap()) {			// Si une partie est en cours en mode de jeu client ou serveur
-					_networkManager.recoitServer();	// Recoit les données des clients
+					_networkManager->recoitServer();	// Recoit les données des clients
 				}
 			}
 		}
@@ -1595,7 +1595,7 @@ void communique() {
 		 * ******************************************/
 
 		// Le client réceptionne les données du serveur
-		CClient* client = _networkManager.getClient();
+		CClient* client = _networkManager->getClient();
 
 		if(client) {
 			// Recoit les données du serveur en mode déconnecté, ainsi qu'en mode connecté si on l'est
@@ -1707,6 +1707,7 @@ int main(int argc, char** argv) {
 	Config.Display.Init();	// Initialisation SDL, OpenGL et Agar
 
 	Config.Reseau.Init();	// Initialisation du réseau
+	_networkManager = new NetworkManager();
 
 	Config.Audio.Init();	// Initialisation audio
 	Config.Ecrit();			// Enregistre les éventuelles modifications de la configuration
@@ -1771,7 +1772,9 @@ int main(int argc, char** argv) {
 
 
 	// Lancement de l'introduction du jeu
-	load_Intro( Config.Display.X, Config.Display.Y );	// Affiche l'introduction du jeu
+	if(Config.General._playIntro) {
+		load_Intro( Config.Display.X, Config.Display.Y );	// Affiche l'introduction du jeu
+	}
 
 	// Initialisation pour les menus et boîtes de dialogue
 	{

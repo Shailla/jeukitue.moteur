@@ -46,6 +46,8 @@ PFNGLBUFFERDATAARBPROC glBufferData;
 PFNGLDELETEBUFFERSARBPROC glDeleteBuffers;
 
 
+const char* CCfg::CST_GEN_PLAY_INTRO = 			"general.playIntro";
+
 const char* CCfg::CST_VID_DISPLAY = 			"video.display";
 const char* CCfg::CST_VID_FULLSCREEN =			"video.fullscreen";
 
@@ -112,10 +114,18 @@ void CCfg::Lit() {
 	try {
 
 		/* ***************************************
+		 * Générale
+		 * **************************************/
+
+		do fichier >> mot;	while(mot!=CST_GEN_PLAY_INTRO);		// Indique si l'intro du jeu doit être lancée au démarrage
+		fichier >> General._playIntro;
+
+
+		/* ***************************************
 		 * Vidéo
 		 * **************************************/
 
-		do fichier >> mot;	while( mot!=CST_VID_DISPLAY );	// Propriétés d'affichage
+		do fichier >> mot;	while( mot!=CST_VID_DISPLAY );		// Propriétés d'affichage
 		fichier >> Display.X >> Display.Y;
 
 		do fichier >> mot;	while( mot!=CST_VID_FULLSCREEN );	// Propriétés d'affichage
@@ -269,7 +279,10 @@ void CCfg::Ecrit() {
 	string nomFichierEntier = "./" + nomFichierConfig + ".ini";
 	ofstream fichier( nomFichierEntier.c_str() );
 
-	fichier << "\n-------------------------VIDEO-------------------------\n";
+	fichier << "\n-------------------------GENERAL-------------------------\n";
+	fichier << endl << CST_GEN_PLAY_INTRO << "\t\t" << General._playIntro;
+
+	fichier << "\n\n\n-------------------------VIDEO-------------------------\n";
 	fichier << endl << CST_VID_DISPLAY << "\t\t" << Display.X << "\t" << Display.Y;
 	fichier << endl << CST_VID_FULLSCREEN << "\t" << Display.Fullscreen();
 

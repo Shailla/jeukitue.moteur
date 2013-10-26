@@ -19,6 +19,8 @@
 using namespace std;
 
 class CCfg {
+	static const char* CST_GEN_PLAY_INTRO;
+
 	static const char* CST_VID_DISPLAY;
 	static const char* CST_VID_FULLSCREEN;
 
@@ -55,6 +57,11 @@ class CCfg {
 	static const char* CST_DEB_AFFICHEFICHIER;
 	static const char* CST_DEB_AFFICHENORMAUX;
 
+
+	class CGeneral {
+	public :
+		bool _playIntro;
+	};
 
 	class CAudio {
 	public :
@@ -157,6 +164,7 @@ private:
 	string nomFichierConfig;
 
 public:
+	CGeneral General;				// Configuration générale
 	CDisplay Display;				// Configuration de l'affichage
 	CAudio Audio;					// Configuration audio
 	CCommandes Commandes;			// Configuration des commandes

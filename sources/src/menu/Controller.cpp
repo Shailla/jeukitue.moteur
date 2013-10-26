@@ -58,7 +58,7 @@ using namespace JktNet;
 
 extern CGame Game;
 extern CCfg Config;
-extern NetworkManager _networkManager;
+extern NetworkManager* _networkManager;
 void quit_game(int code);
 
 Viewer* Controller::m_agarView;
@@ -208,7 +208,7 @@ void Controller::executeAction(AG_Event *event) {
 
 	case RejoindrePartieServerAction:
 	{
-		CClient* client = _networkManager.getClient();
+		CClient* client = _networkManager->getClient();
 
 		if(client) {
 			client->sendConnectedRequestJoinTheGame(Config.Joueur.nom);
@@ -224,7 +224,7 @@ void Controller::executeAction(AG_Event *event) {
 		MultijoueursClientView* view = (MultijoueursClientView*)m_agarView->getView(Viewer::MULTIJOUEURS_CLIENT_VIEW);
 		view->setServerName("");
 		view->setActiveMap("");
-		CClient* client = _networkManager.getClient();
+		CClient* client = _networkManager->getClient();
 
 		if(client) {
 			client->sendNotConnectedRequestInfoToServer(Config.Reseau.getIpServer(), Config.Reseau.getServerPort());		// Demande ses infos au serveur
@@ -239,7 +239,7 @@ void Controller::executeAction(AG_Event *event) {
 	{
 		MultijoueursClientView* view = (MultijoueursClientView*)m_agarView->getView(Viewer::MULTIJOUEURS_CLIENT_VIEW);
 		view->setPing(-1);
-		CClient* client = _networkManager.getClient();
+		CClient* client = _networkManager->getClient();
 
 		if(client) {
 			client->sendNotConnectedRequestPingToServer(Config.Reseau.getIpServer(), Config.Reseau.getServerPort());				// Demande au serveur de répondre à un ping
@@ -252,8 +252,8 @@ void Controller::executeAction(AG_Event *event) {
 
 	case ConnectClientAction:
 	{
-		if( !_networkManager.ouvreClient() ) {
-			_networkManager.setOn( false );		// Signale que le réseau ne peut pas être utilisé
+		if( !_networkManager->ouvreClient() ) {
+			_networkManager->setOn( false );		// Signale que le réseau ne peut pas être utilisé
 			AG_TextMsg(AG_MSG_ERROR, "Echec de connexion au serveur");
 		}
 	}
@@ -261,7 +261,7 @@ void Controller::executeAction(AG_Event *event) {
 
 	case DeconnectClientAction:
 	{
-		_networkManager.fermeClient();
+		_networkManager->fermeClient();
 	}
 	break;
 

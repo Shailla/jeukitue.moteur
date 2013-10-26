@@ -122,7 +122,7 @@ void CServer::decodeServerUDP( CSPA *spa ) {
 			break;
 
 		default:
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Paquet inconnu decodeServerUDP";
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Paquet inconnu decodeServerUDP (" << code1 << ")";
 			break;
 		}
 	}
@@ -251,7 +251,7 @@ void CServer::switchInfo( CSPA *spa, Uint16 code2 ) {	// Réception d'une demande
 TRACE().p( TRACE_RESEAU, "CServer::switchInfo(spa=%x,code2=%d) begin%T", spa, code2, this );
 	switch( code2 ) {
 	case CLIENT_NULL:
-		cerr << endl << __FILE__ << ":" << __LINE__ << "Reception d'une demande d'info serveur";
+		cout << endl << __FILE__ << ":" << __LINE__ << "Reception d'une demande d'info serveur";
 		spa->getPacketOut()->channel = SDLNet_UDP_Bind( spa->getSocket(), -1, &spa->getPacketIn()->address );
 		if( spa->getPacketOut()->channel==-1 ) {
 TRACE().p( TRACE_ERROR, "CServer::switchInfo() %s%T", SDLNet_GetError(), this );

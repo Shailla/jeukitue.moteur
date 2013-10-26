@@ -28,6 +28,7 @@
 #include "menu/MapTreeView.h"
 #include "menu/DataTreeView.h"
 #include "menu/PlayersView.h"
+#include "menu/NetworkConnectionsView.h"
 
 Viewer::Viewer(AG_EventFn controllerCallback) {
 	// Initialisation des fenêtres

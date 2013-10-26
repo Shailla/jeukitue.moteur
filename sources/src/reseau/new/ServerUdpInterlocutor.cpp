@@ -171,9 +171,12 @@ void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloT
 }
 
 void ServerUdpInterlocutor::manageDisconnection(const IPaddress& address, C2SByeTechnicalMessage* msg) {
-	if(_clientsOfServer.find(address) == _clientsOfServer.end()) {
-		cout << endl << "Server says : Client disconnected : " << address.port << ":" << address.host;
+	if(_clientsOfServer.find(address) != _clientsOfServer.end()) {
+		cout << endl << "Server says : Client disconnected : " << address.host << ":" << address.port;
 		_clientsOfServer.erase(address);
+	}
+	else {
+		cout << endl << "Server says : Client to disconnect not found : " << address.host << ":" << address.port;
 	}
 }
 

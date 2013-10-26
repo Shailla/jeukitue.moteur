@@ -132,7 +132,7 @@ void CClient::decodeRecap( Uint16 code2 ) {
 Interlocutor2* CClient::connect(const string& remAddress, Uint16 remPort, Uint16 remPortTree) {
 	disconnect();
 
-	cout << endl << __FILE__ << ":" << __LINE__ << " Ouverture client : " << remAddress << " port=" << remPort << " portArbre=" << remPortTree;
+	cout << endl << " Ouverture client : " << remAddress << " port=" << remPort << " portArbre=" << remPortTree;
 
 	bool result = true;		// Indique si au fur de la fonction si tout s'est bien passé
 	Interlocutor2* interlocutor;

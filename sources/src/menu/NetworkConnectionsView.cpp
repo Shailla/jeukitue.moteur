@@ -34,7 +34,7 @@ NetworkConnectionsView::NetworkConnectionsView(const AG_EventFn controllerCallba
 	AG_ButtonNewFn(boxButtons, 0, "Retour", controllerCallback, "%i", Controller::ShowDebugViewAction);
 
 	// Bouton rafraîchir
-	AG_ButtonNewFn(boxButtons, 0, "Rafraichir", PlayersView::refresh, "%p", this);
+	AG_ButtonNewFn(boxButtons, 0, "Rafraichir", NetworkConnectionsView::refresh, "%p", this);
 
 	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_TC, 100, 50);
 	hide();
@@ -45,24 +45,24 @@ NetworkConnectionsView::~NetworkConnectionsView(void) {
 
 
 void NetworkConnectionsView::refresh(AG_Event* event) {
-	PlayersView* thiz = (PlayersView*)AG_PTR(1);
+	NetworkConnectionsView* thiz = (NetworkConnectionsView*)AG_PTR(1);
 	thiz->refreshList();
 }
 
-void NetworkConnectionsView::NetworkConnectionsView() {
+void NetworkConnectionsView::refreshList() {
 
-	AG_TableBegin(_playersTable);
-
-	if(Game._pTabIndexPlayer) {
-		int curseur = -1;
-		CPlayer* player;
-
-		while(Game._pTabIndexPlayer->Suivant(curseur)) {
-			player = Game._pTabIndexPlayer->operator []( curseur );
-			AG_TableAddRow(_playersTable, "%s:%s:%s:", player->nom().c_str(), "xxx.xxx.xxx.xxx", "xxxxx");
-		}
-	}
-	AG_TableEnd(_playersTable);
+//	AG_TableBegin(_playersTable);
+//
+//	if(Game._pTabIndexPlayer) {
+//		int curseur = -1;
+//		CPlayer* player;
+//
+//		while(Game._pTabIndexPlayer->Suivant(curseur)) {
+//			player = Game._pTabIndexPlayer->operator []( curseur );
+//			AG_TableAddRow(_playersTable, "%s:%s:%s:", player->nom().c_str(), "xxx.xxx.xxx.xxx", "xxxxx");
+//		}
+//	}
+//	AG_TableEnd(_playersTable);
 
 	// Rafraichissement de la page
 	AG_WindowUpdate(m_window);

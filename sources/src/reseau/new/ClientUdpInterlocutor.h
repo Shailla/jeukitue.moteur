@@ -44,7 +44,7 @@ private:
 	void manageConnection(TechnicalMessage* lastConnectionMsg);
 
 public:
-	ClientUdpInterlocutor(Uint16 localPort);
+	ClientUdpInterlocutor(const string& name, Uint16 localPort);
 	virtual ~ClientUdpInterlocutor();
 
 	void close();

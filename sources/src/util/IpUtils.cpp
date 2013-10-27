@@ -32,7 +32,7 @@ string IpUtils::translateIp(IPaddress address) {
 string IpUtils::translateAddress(IPaddress address) {
 	stringstream str;
 
-	str << translateIp(address) << ":" << address.port;
+	str << translateIp(address) << ":" << SDLNet_Read16(&address.port);
 
 	return str.str();
 }

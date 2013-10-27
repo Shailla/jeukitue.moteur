@@ -96,7 +96,7 @@ private:
 	void manageDisconnection(const IPaddress& address, C2SByeTechnicalMessage* msg);
 
 public:
-	ServerUdpInterlocutor(Uint16 localPort);
+	ServerUdpInterlocutor(const string& name, Uint16 localPort);
 	virtual ~ServerUdpInterlocutor();
 
 	/** Connect the server. */

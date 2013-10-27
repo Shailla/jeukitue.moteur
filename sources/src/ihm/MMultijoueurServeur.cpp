@@ -37,6 +37,7 @@ extern JktNet::NetworkManager _networkManager;
 #include "ihm/MMenuPrinc.h"
 #include "ihm/MMultijoueurServeurLancePartie.h"
 
+extern CCfg Config;
 
 namespace JktMenu
 {
@@ -82,7 +83,7 @@ TRACE().p( TRACE_MENU, "lanceMenuMultijoueurserveur(var=%x)", var );
 
 	if( var )		// S'il y a demande de connection réseau
 	{
-		if( !_networkManager.ouvreServer() ) {
+		if( !_networkManager.ouvreServer(Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree()) ) {
 			cout << endl << "Echec ouverture server";
 			_networkManager.setOn( false );		// Signale que le réseau ne peut pas être utilisé
 			BoiteErreurMultijoueurserveur = new CDlgBoite( "Erreur", "Le serveur ne peut etre ouvert", retourErreurMultijoueurserveur, CDlgBoite::JKT_DLG_ERREUR );

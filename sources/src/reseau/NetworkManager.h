@@ -2,6 +2,8 @@
 #ifndef __JKT__NETWORKMANAGER_H
 #define __JKT__NETWORKMANAGER_H
 
+#include <string>
+
 #include "enumReseau.h"
 #include "reseau/new/Interlocutor2.h"
 #include "reseau/new/NotConnectedInterlocutor2.h"
@@ -43,7 +45,7 @@ public:
 
 	CServer *getServer();
 
-	NotConnectedInterlocutor2* ouvreServer();	// Connecte le serveur
+	NotConnectedInterlocutor2* ouvreServer(Uint16 serverPort, Uint16 serverTreePort);	// Connecte le serveur
 	void fermeServer();							// Déconnecte le serveur
 
 	void recoitServer();						// Recoit tous les paquets
@@ -55,7 +57,7 @@ public:
 
 	CClient *getClient();
 
-	Interlocutor2* ouvreClient();			// Connecte le client au serveur
+	Interlocutor2* ouvreClient(const std::string& serverIp, Uint16 serverPort, Uint16 serverTreePort);			// Connecte le client au serveur
 	void fermeClient();						// Déconnecte le client du serveur
 };
 

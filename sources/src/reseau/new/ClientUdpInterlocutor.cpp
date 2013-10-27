@@ -15,6 +15,7 @@ using namespace std;
 #include "SDL_net.h"
 
 #include "util/types/Bytes.h"
+#include "util/IpUtils.h"
 
 using namespace JktUtils;
 
@@ -26,7 +27,7 @@ using namespace JktUtils;
 
 #include "reseau/new/ClientUdpInterlocutor.h"
 
-ClientUdpInterlocutor::ClientUdpInterlocutor(Uint16 localPort) : TechnicalInterlocutor(localPort) {
+ClientUdpInterlocutor::ClientUdpInterlocutor(const string& name, Uint16 localPort) : TechnicalInterlocutor(name, localPort) {
 	_interlocutor = NULL;
 	_distantIp = "";
 	_distantPort = 0;
@@ -36,8 +37,6 @@ ClientUdpInterlocutor::ClientUdpInterlocutor(Uint16 localPort) : TechnicalInterl
 	_packetOut = 0;
 	_tryConnectionLastTime = 0;
 	_tryConnectionNumber = 0;
-
-	setConnexionStatus(STOPPED);
 }
 
 ClientUdpInterlocutor::~ClientUdpInterlocutor() {
@@ -153,34 +152,39 @@ void ClientUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg
 		switch(lastConnectionMsg->getCode()) {
 		case TechnicalMessage::S2C_CONNECTION_ACCEPTED:
 		{
-//			S2CConnectionAcceptedTechnicalMessage* msg = (S2CConnectionAcceptedTechnicalMessage*)lastConnectionMsg;
-//			int port = msg->getPort();
+			//			S2CConnectionAcceptedTechnicalMessage* msg = (S2CConnectionAcceptedTechnicalMessage*)lastConnectionMsg;
+			//			int port = msg->getPort();
 
-			cout << endl << "Client says : Connection accepted received" << flush;
+			log("Connection accepted received");
 			setConnexionStatus(CONNECTED);
 
 			break;
 		}
 		case TechnicalMessage::S2C_CONNECTION_REFUSED:
 		{
-			cout << endl << "Client says : Connection refused received" << flush;
+			log("Connection refused received");
 			close();
 			break;
 		}
 		}
 	}
 
-	if(_tryConnectionNumber > 10) {
-		cout << endl << "Client says : Server does not respond after " << (_tryConnectionNumber-1) << " connection requests sent" << flush;
-		close();
-	}
-	else if(currentTime - _tryConnectionLastTime > 1000) {
-		cout << endl << "Client says : Asking connection" << flush;
+	if(CONNECTING == getConnexionStatus()) {
+		if(_tryConnectionNumber > 10) {
+			stringstream message;
+			message << "Server does not respond after " << (_tryConnectionNumber-1) << " connection requests sent";
+			log(message);
 
-		C2SHelloTechnicalMessage msg;
-		_interlocutor->pushTechnicalMessageToSend(msg.toBytes());
-		_tryConnectionLastTime = currentTime;
-		_tryConnectionNumber++;
+			close();
+		}
+		else if(currentTime - _tryConnectionLastTime > 1000) {
+			log("Asking connection");
+
+			C2SHelloTechnicalMessage msg;
+			_interlocutor->pushTechnicalMessageToSend(msg.toBytes());
+			_tryConnectionLastTime = currentTime;
+			_tryConnectionNumber++;
+		}
 	}
 }
 
@@ -242,7 +246,7 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 
 	SDL_UnlockMutex(getMutexIntelligence());
 
-	cout << endl << "Client says : Stop intelligence process" << flush;
+	log("Stop intelligence process");
 }
 
 void ClientUdpInterlocutor::sendingProcess() {
@@ -257,6 +261,11 @@ void ClientUdpInterlocutor::sendingProcess() {
 				memcpy(_packetOut->data, data->getBytes(), _packetOut->len);
 				_packetOut->address = _distantAddress;
 				SDLNet_UDP_Send(_socket, -1, _packetOut);
+
+				stringstream message;
+				message << "Envoi de donnees techniques a " << IpUtils::translateAddress(_packetOut->address);
+				log(message);
+
 			}
 
 			delete data;
@@ -269,13 +278,17 @@ void ClientUdpInterlocutor::sendingProcess() {
 				memcpy(_packetOut->data, data->getBytes(), _packetOut->len);
 				_packetOut->address = _distantAddress;
 				SDLNet_UDP_Send(_socket, -1, _packetOut);
+
+				stringstream message;
+				message << "Client : Envoi de donnees user a " << IpUtils::translateAddress(_packetOut->address);
+				log(message);
 			}
 
 			delete data;
 		}
 	}
 
-	cout << endl << "Client says : Stop sending process" << flush;
+	log("Stop sending process");
 }
 
 void ClientUdpInterlocutor::receiveOnePacket() {
@@ -327,5 +340,5 @@ void ClientUdpInterlocutor::receivingProcess() {
 		}
 	}
 
-	cout << endl << "Client says : Stop receiving process" << flush;
+	log("Stop receiving process");
 }

@@ -122,6 +122,8 @@ class CGame;
 #include "reseau/new/ClientUdpInterlocutor.h"
 #include "reseau/new/ServerUdpInterlocutor.h"
 
+#include "test/TestSuite.h"
+
 using namespace JktMenu;
 using namespace JktNet;
 using namespace JktMoteur;
@@ -1374,7 +1376,7 @@ void executeJktRequests() {
 		Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
 
 		// Connexion du client
-		Interlocutor2* clientInterlocutor = _networkManager->ouvreClient();
+		Interlocutor2* clientInterlocutor = _networkManager->ouvreClient(Config.Reseau.getIpServer(), Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree());
 
 		if(!clientInterlocutor) {
 			Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_AUCUNE);
@@ -1470,7 +1472,7 @@ void executeJktRequests() {
 		// Connexion du serveur
 		serveurDataTree = new ServeurDataTree();
 
-		_notConnectedServerInterlocutor = _networkManager->ouvreServer();
+		_notConnectedServerInterlocutor = _networkManager->ouvreServer(Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree());
 
 		if(!_notConnectedServerInterlocutor) {
 			Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
@@ -1694,6 +1696,18 @@ void boucle() {
 
 int main(int argc, char** argv) {
 	TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
+
+	if(argc > 1) {
+		if(string("test") == argv[1]) {
+			cout << endl << "MODE TEST" << endl;
+			JktTest::TestSuite* testSuite = new JktTest::TestSuite();
+
+			testSuite->init();
+			testSuite->launchTests();
+			exit(0);
+		}
+	}
+
 
 	atexit( quit_JKT );
 

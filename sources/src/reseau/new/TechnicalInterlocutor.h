@@ -8,6 +8,8 @@
 #ifndef TECHNICALINTERLOCUTOR_H_
 #define TECHNICALINTERLOCUTOR_H_
 
+#include <string>
+
 #include "reseau/new/Interlocutor2.h"
 
 class TechnicalInterlocutor {
@@ -27,6 +29,7 @@ protected:
 	};
 
 private:
+	std::string _name;
 	Uint16 _localPort;
 	CONNEXION_STATUS _status;
 	SDL_Thread* _threadReceiving;
@@ -53,12 +56,17 @@ protected:
 	SDL_cond* getCondIntelligence();
 
 public:
-	TechnicalInterlocutor(Uint16 localPort);
+	TechnicalInterlocutor(const string& name, Uint16 localPort);
 	virtual ~TechnicalInterlocutor();
 
 	Uint16 getLocalPort() const;
 	CONNEXION_STATUS getConnexionStatus() const;
 	virtual void close();
+
+	// Log methods
+	void log(const char* message);
+	void log(const string& message);
+	void log(const stringstream& message);
 };
 
 #endif /* TECHNICALINTERLOCUTOR_H_ */

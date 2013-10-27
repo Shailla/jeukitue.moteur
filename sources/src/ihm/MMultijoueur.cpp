@@ -77,7 +77,7 @@ CMenu MenuMultijoueurclient( "CLIENT MULTI-JOUEURS", item_menu_multijoueurclient
 
 void lanceMenuMultijoueurclientconnect(void *var) {
 TRACE().p( TRACE_MENU, "lanceMenuMultijoueurclientconnect(var=%x)", var );
-	if( !_networkManager.ouvreClient() ) {
+	if( !_networkManager.ouvreClient(Config.Reseau.getIpServer(), Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree()) ) {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Echec de connexion au serveur";
 		_networkManager.setOn( false );		// Signale que le réseau ne peut pas être utilisé
 		lanceMenuPrinc( 0 );		// Retour au menu principal

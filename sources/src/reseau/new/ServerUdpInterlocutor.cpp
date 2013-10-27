@@ -35,7 +35,7 @@ bool operator < (const IPaddress& adr1, const IPaddress& adr2) {
 	}
 }
 
-ServerUdpInterlocutor::ServerUdpInterlocutor(Uint16 localPort) : TechnicalInterlocutor(localPort) {
+ServerUdpInterlocutor::ServerUdpInterlocutor(const string& name, Uint16 localPort) : TechnicalInterlocutor(name, localPort), _clientsOfServer() {
 	_notConnectedInterlocutor = NULL;
 	_distantIp = "";
 	_distantPort = 0;
@@ -43,8 +43,6 @@ ServerUdpInterlocutor::ServerUdpInterlocutor(Uint16 localPort) : TechnicalInterl
 	_socketSet = 0;
 	_packetIn = 0;
 	_packetOut = 0;
-
-	setConnexionStatus(STOPPED);
 }
 
 ServerUdpInterlocutor::~ServerUdpInterlocutor() {
@@ -87,10 +85,9 @@ NotConnectedInterlocutor2* ServerUdpInterlocutor::connect() throw(ConnectionFail
 		}
 
 		setConnexionStatus(CONNECTED);
-		cout << endl << "Serveur connecte";
 
 		startProcesses();
-		cout << endl << "Processus du serveur lances";
+		log("Les processus sont lances");
 	}
 	catch(ConnectionFailedException& exception) {
 		cerr << endl << exception.getMessage();
@@ -166,17 +163,22 @@ void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloT
 		S2CConnectionAcceptedTechnicalMessage msg(getLocalPort());
 		client->getInterlocutor()->pushTechnicalMessageToSend(msg.toBytes());
 
-		cout << endl << "Server says : Send connection accepted message";
+		log("Send 'connection accepted' message");
 	}
 }
 
 void ServerUdpInterlocutor::manageDisconnection(const IPaddress& address, C2SByeTechnicalMessage* msg) {
 	if(_clientsOfServer.find(address) != _clientsOfServer.end()) {
-		cout << endl << "Server says : Client disconnected : " << address.host << ":" << address.port;
+		stringstream message;
+		message << "Client disconnected : " << IpUtils::translateAddress(address);
+		log(message);
+
 		_clientsOfServer.erase(address);
 	}
 	else {
-		cout << endl << "Server says : Client to disconnect not found : " << address.host << ":" << address.port;
+		stringstream message;
+		message << "Client to disconnect not found :  : " << IpUtils::translateAddress(address);
+		log(message);
 	}
 }
 
@@ -201,13 +203,18 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 				if(techMsg) {
 					switch(techMsg->getCode()) {
 					case TechnicalMessage::C2S_HELLO:
-						cout << endl << "Server says : C2S_HELLO received from " << IpUtils::translateAddress(address);
+						stringstream message;
+						message << "C2S_HELLO received from " << IpUtils::translateAddress(address);
+						log(message);
+
 						manageConnection(address, (C2SHelloTechnicalMessage*)techMsg);
 						break;
 					}
 				}
 				else {
-					// unkown message => ignore it
+					stringstream message;
+					message << "Unknown not connected technical message received from " << IpUtils::translateAddress(address) << " => ignored";
+					log(message);
 				}
 
 				delete msg;
@@ -236,17 +243,29 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 					if(techMsg) {
 						switch(techMsg->getCode()) {
 						case TechnicalMessage::C2S_HELLO:
+						{
+							stringstream message;
+							message << "C2S_HELLO received from " << IpUtils::translateAddress(address);
+							log(message);
+
 							manageConnection(address, (C2SHelloTechnicalMessage*)techMsg);
 							break;
-
+						}
 						case TechnicalMessage::C2S_BYE:
-							cout << endl << "Server says : C2S_BYE received";
+						{
+							stringstream message;
+							message << "C2S_BYE received from " << IpUtils::translateAddress(address);
+							log(message);
+
 							manageDisconnection(address, (C2SByeTechnicalMessage*)techMsg);
 							break;
 						}
+						}
 					}
 					else {
-						// unkown message => ignore it
+						stringstream message;
+						message << "Unknown connected technical message received from " << IpUtils::translateAddress(address) << " => ignored";
+						log(message);
 					}
 
 					delete msg;
@@ -260,7 +279,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 
 	SDL_UnlockMutex(getMutexIntelligence());
 
-	cout << endl << "Server says : Stop intelligence process";
+	log("Stop intelligence process");
 }
 
 void ServerUdpInterlocutor::sendingProcess() {
@@ -283,7 +302,10 @@ void ServerUdpInterlocutor::sendingProcess() {
 					memcpy(_packetOut->data, data->getBytes()->getBytes(), _packetOut->len);
 					_packetOut->address = data->getAddress();
 					SDLNet_UDP_Send(_socket, -1, _packetOut);
-					cout << endl << "Envoi de donnees techniques en mode non-connecte a " << IpUtils::translateAddress(_packetOut->address);
+
+					stringstream message;
+					message << "Envoi de donnees techniques en mode non-connecte a " << IpUtils::translateAddress(_packetOut->address);
+					log(message);
 				}
 
 				delete data;
@@ -310,7 +332,10 @@ void ServerUdpInterlocutor::sendingProcess() {
 						memcpy(_packetOut->data, data->getBytes(), _packetOut->len);
 						_packetOut->address = client->getIpAddress();
 						SDLNet_UDP_Send(_socket, -1, _packetOut);
-						cout << endl << "Envoi de donnees techniques en mode connecte a " << IpUtils::translateAddress(_packetOut->address);
+
+						stringstream message;
+						message << "Envoi de donnees techniques en mode connecte a " << IpUtils::translateAddress(_packetOut->address);
+						log(message);
 					}
 
 					delete data;
@@ -325,7 +350,10 @@ void ServerUdpInterlocutor::sendingProcess() {
 						memcpy(_packetOut->data, data->getBytes(), _packetOut->len);
 						_packetOut->address = client->getIpAddress();
 						SDLNet_UDP_Send(_socket, -1, _packetOut);
-						cout << endl << "Envoi de donnees a " << IpUtils::translateAddress(_packetOut->address);
+
+						stringstream message;
+						message << "Envoi de donnees a " << IpUtils::translateAddress(_packetOut->address);
+						log(message);
 					}
 
 					delete data;
@@ -359,7 +387,9 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 				}
 			}
 			else {
-				// Message inconsistant => ignoré
+				stringstream message;
+				message << "Message inconsistant et client inconnu from " << IpUtils::translateAddress(address) << " ==> ignoré";
+				log(message);
 			}
 		}
 		else {
@@ -389,7 +419,9 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 				}
 			}
 			else {
-				// Message inconsistant => ignoré
+				stringstream message;
+				message << "Message inconsistant de client connu from " << IpUtils::translateAddress(address) << " ==> ignoré";
+				log(message);
 			}
 		}
 	}
@@ -404,5 +436,6 @@ void ServerUdpInterlocutor::receivingProcess() {
 		}
 	}
 
-	cout << endl << "Server says : Stop receiving process";
+
+	log("Stop receiving process");
 }

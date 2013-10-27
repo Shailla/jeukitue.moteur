@@ -162,7 +162,7 @@ Interlocutor2* CClient::connect(const string& remAddress, Uint16 remPort, Uint16
 	 * **********************************************************************/
 
 	if(result) {
-		_clientUdpInterlocutor = new ClientUdpInterlocutor(0);
+		_clientUdpInterlocutor = new ClientUdpInterlocutor("Client", 0);
 		interlocutor = _clientUdpInterlocutor->connect(remAddress, remPortTree);
 	}
 

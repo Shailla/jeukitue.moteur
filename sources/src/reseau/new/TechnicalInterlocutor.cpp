@@ -5,13 +5,20 @@
  *      Author: vgdj7997
  */
 
+#include <string>
+#include <sstream>
+#include <iostream>
+
+using namespace std;
+
 #include "SDL.h"
 
 #include "reseau/new/message/TechnicalMessage.h"
 
 #include "reseau/new/TechnicalInterlocutor.h"
 
-TechnicalInterlocutor::TechnicalInterlocutor(Uint16 portLocal) {
+TechnicalInterlocutor::TechnicalInterlocutor(const string& name, Uint16 portLocal) {
+	_name = name;
 	_localPort = portLocal;
 
 	_mutexIntelligence = SDL_CreateMutex();
@@ -59,6 +66,26 @@ int TechnicalInterlocutor::startIntelligenceProcess(void* thiz) {
 void TechnicalInterlocutor::setConnexionStatus(CONNEXION_STATUS status) {
 	_status = status;
 	SDL_CondSignal(_condIntelligence);
+
+	switch(_status) {
+	case STOPPED:
+		log("I am now STOPPED");
+		break;
+	case CONNECTING:
+		log("I am now CONNECTING");
+		break;
+	case CONNECTED:
+		log("I am now CONNECTED");
+		break;
+	case STOPPING:
+		log("I am now STOPPING");
+		break;
+	default:
+		stringstream message;
+		message << "We should never be here " << __FILE__ << " " << __LINE__;
+		log(message);
+		break;
+	}
 }
 
 TechnicalInterlocutor::CONNEXION_STATUS TechnicalInterlocutor::getConnexionStatus() const {
@@ -75,4 +102,16 @@ SDL_mutex* TechnicalInterlocutor::getMutexIntelligence() {
 
 SDL_cond* TechnicalInterlocutor::getCondIntelligence() {
 	return _condIntelligence;
+}
+
+void TechnicalInterlocutor::log(const char* message) {
+	cout << endl << _name << " : " << message;
+}
+
+void TechnicalInterlocutor::log(const string& message) {
+	cout << endl << _name << " : " << message;
+}
+
+void TechnicalInterlocutor::log(const stringstream& message) {
+	cout << endl << _name << " : " << message.str();
 }

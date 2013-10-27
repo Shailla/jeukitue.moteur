@@ -252,7 +252,7 @@ void Controller::executeAction(AG_Event *event) {
 
 	case ConnectClientAction:
 	{
-		if( !_networkManager->ouvreClient() ) {
+		if( !_networkManager->ouvreClient(Config.Reseau.getIpServer(), Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree()) ) {
 			_networkManager->setOn( false );		// Signale que le réseau ne peut pas être utilisé
 			AG_TextMsg(AG_MSG_ERROR, "Echec de connexion au serveur");
 		}

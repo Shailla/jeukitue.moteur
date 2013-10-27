@@ -147,8 +147,6 @@ void CServer::decodeProxyPlayer( CPlayer *player ) {
 }
 
 bool CServer::acceptPlayer( CSPA *spa ) {
-TRACE().p( TRACE_RESEAU, "CServer::acceptPlayer(spa=%x) begin%T", spa, this );
-
 	bool result = true;
 	char nomNewPlayer[50];
 	CPlayer *player, *player2;
@@ -160,7 +158,7 @@ TRACE().p( TRACE_RESEAU, "CServer::acceptPlayer(spa=%x) begin%T", spa, this );
 	player->nom( nomNewPlayer );						// Enregistre le nom du nouveau joueur
 	player->init();
 
-			// Ouverture d'un lien SPA et création du joueur
+	// Ouverture d'un lien SPA et création du joueur
 	result = player->spa.openInClientMode( spa->getPacketIn()->address );
 
 	if( result ) {
@@ -177,14 +175,17 @@ TRACE().p( TRACE_ERROR, "CServer::acceptPlayer() : %s%T", SDLNet_GetError(), thi
 	}
 
 	int IDPlayer = AjoutePlayer( player );	// Ajoute le joueur pour de bon et identifie-le
-	Game.Erwin( player );			// Place le nouveau joueur comme joueur principal
-		//////////////////////////////////////////////////////////////////////////////////////
-		// Dis au client qu'il est accepté dans le jeu et donne-lui les infos de la partie	//
-		//////////////////////////////////////////////////////////////////////////////////////
+	Game.Erwin( player );					// Place le nouveau joueur comme joueur principal
+
+
+	/* /////////////////////////////////////////////////////////////////////////////////
+	// Dis au client qu'il est accepté dans le jeu et donne-lui les infos de la partie
+	////////////////////////////////////////////////////////////////////////////////////*/
+
 	player->spa.init();
 	player->spa.addCode( SERVER_JTG, SERVER_ACK );		// Acquitte la jonction du joueur à la partie
 	player->spa.add16( (Uint16)IDPlayer );				// Envoie son identifiant au nouveau proxy-joueur
-	player->spa.add( nomMAP );				// Envoie le nom de la MAP en cours
+	player->spa.add( nomMAP );							// Envoie le nom de la MAP en cours
 	player->spa.add16( (Uint16)maxPlayers );			// Envoie le nombre max de joueurs sur la MAP
 	player->spa.add16( (Uint16)this->m_uNbrPlayers );	// Envoie le nombre de joueurs en cours
 
@@ -202,7 +203,6 @@ TRACE().p( TRACE_ERROR, "CServer::acceptPlayer() : %s%T", SDLNet_GetError(), thi
 
 	player->spa.send();
 
-TRACE().p( TRACE_RESEAU, "CServer::acceptPlayer() -> %b end%T", result, this );
 	return result;	// OK
 }
 
@@ -251,16 +251,17 @@ void CServer::switchInfo( CSPA *spa, Uint16 code2 ) {	// Réception d'une demande
 TRACE().p( TRACE_RESEAU, "CServer::switchInfo(spa=%x,code2=%d) begin%T", spa, code2, this );
 	switch( code2 ) {
 	case CLIENT_NULL:
-		cout << endl << __FILE__ << ":" << __LINE__ << "Reception d'une demande d'info serveur";
+		cout << endl << "Server says : Reception d'une demande d'info serveur";
 		spa->getPacketOut()->channel = SDLNet_UDP_Bind( spa->getSocket(), -1, &spa->getPacketIn()->address );
+
 		if( spa->getPacketOut()->channel==-1 ) {
-TRACE().p( TRACE_ERROR, "CServer::switchInfo() %s%T", SDLNet_GetError(), this );
 			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
 			cerr << endl << __FILE__ << ":" << __LINE__ << " Reponse info serveur impossible";
 		}
 		else {
-TRACE().p( TRACE_INFO, "CServer::switchInfo() : Reponse info%T", this );
-				// Envoie des infos serveur au client
+			// Envoie des infos serveur au client
+			cout << endl << "Server says : Emmission des infor serveur";
+
 			spa->init();
 			spa->addCode( SERVER_INFO, SERVER_ACK );
 			spa->add( nom );
@@ -283,11 +284,10 @@ TRACE().p( TRACE_RESEAU, "CServer::switchPing(spa=%x,code2=%d) begin%T", spa, co
 	switch( code2 ) {
 	case CLIENT_NULL:
 		if( spa->getPacketIn()->len==8 ) {
-			cout << endl << "Reception d'une demande de ping";
+			cout << endl << "Server says : Reception d'une demande de ping";
 			spa->getPacketOut()->channel = SDLNet_UDP_Bind( spa->getSocket(), -1, &spa->getPacketIn()->address );
 
 			if( spa->getPacketOut()->channel==-1 ) {
-TRACE().p( TRACE_ERROR, "CServer::switchPing() : %s%T", SDLNet_GetError(), this );
 				cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
 				cerr << endl << __FILE__ << ":" << __LINE__ << " Reponse ping impossible";
 			}
@@ -295,7 +295,7 @@ TRACE().p( TRACE_ERROR, "CServer::switchPing() : %s%T", SDLNet_GetError(), this 
 TRACE().p( TRACE_INFO, "CServer::switchPing() : Envoi reponse ping%T", this );
 					// Envoie de la réponse au ping
 				Uint32 time;
-				cout << endl << "Emmission de la reponse au ping";
+				cout << endl << "Server says : Emmission de la reponse au ping";
 				time = spa->read32();
 
 				spa->init();
@@ -307,7 +307,6 @@ TRACE().p( TRACE_INFO, "CServer::switchPing() : Envoi reponse ping%T", this );
 		break;
 
 	default:
-TRACE().p( TRACE_ERROR, "CServer::switchPing() : Packet inconnu%T", this );
 		cerr << endl << __FILE__ << ":" << __LINE__ << "Reception d'un paquet inconnu 2";
 		break;
 	}
@@ -320,7 +319,7 @@ TRACE().p( TRACE_RESEAU, "CServer::switchJTG(spa=%x,code2=%d) begin%T", spa, cod
 	switch( code2 )
 	{
 	case CLIENT_NULL:
-		cout << endl << "Reception de demande a se joindre a la partie";
+		cout << endl << "Server says : Reception de demande a se joindre a la partie";
 		if( m_Statut!=JKT_STATUT_SERVER_PLAY )	// S'il n'y a pas de partie en cours
 		{
 			spa->getPacketOut()->channel = SDLNet_UDP_Bind( spa->getSocket(), -1, &spa->getPacketIn()->address );
@@ -386,7 +385,7 @@ NotConnectedInterlocutor2* CServer::connect(Uint16 port, Uint16 portTree) {
 
 	bool result = true;
 	NotConnectedInterlocutor2* notConnectedServerInterlocutor = 0;
-	cout << endl << "Ouverture d'un serveur sur port " << port;
+	cout << endl << "Ouverture d'un serveur sur port " << port << " et portTree " << portTree;
 
 	if( !spaMaitre.openInServerMode( port ) ) {
 TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
@@ -421,7 +420,7 @@ TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 	 * **********************************************************************/
 
 	if(result) {
-		_serverUdpInterlocutor = new ServerUdpInterlocutor(portTree);
+		_serverUdpInterlocutor = new ServerUdpInterlocutor("Server", portTree);
 		notConnectedServerInterlocutor = _serverUdpInterlocutor->connect();
 	}
 

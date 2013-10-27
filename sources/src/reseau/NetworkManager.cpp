@@ -30,7 +30,6 @@ class CGame;
 #include "enumReseau.h"
 #include "reseau/NetworkManager.h"
 
-extern CCfg Config;
 extern CGame Game;
 
 void JktMoteur::contactPlayer(CPlayer *player, float *normal, float distanceW);
@@ -67,7 +66,7 @@ bool NetworkManager::getOn() {
 	return _on;
 }
 
-NotConnectedInterlocutor2* NetworkManager::ouvreServer() {
+NotConnectedInterlocutor2* NetworkManager::ouvreServer(Uint16 serverPort, Uint16 serverTreePort) {
 TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() begin%T", this );
 	bool result = false;
 
@@ -83,7 +82,7 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() begin%T", this );
 
 	_server = new CServer();
 
-	NotConnectedInterlocutor2* notConnectedServerInterlocutor = _server->connect(Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree());
+	NotConnectedInterlocutor2* notConnectedServerInterlocutor = _server->connect(serverPort, serverTreePort);
 
 	if(notConnectedServerInterlocutor) {
 		Game.setModeServer();
@@ -112,7 +111,7 @@ TRACE().p( TRACE_RESEAU, "CReseau::fermeServer()%T", this );
 	Game.Quit();
 }
 
-Interlocutor2* NetworkManager::ouvreClient() {
+Interlocutor2* NetworkManager::ouvreClient(const string& serverIp, Uint16 serverPort, Uint16 serverTreePort) {
 TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() begin%T", this );
 
 	bool result = false;
@@ -129,7 +128,7 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() begin%T", this );
 
 	_client = new CClient();
 
-	Interlocutor2* interlocutor = _client->connect(Config.Reseau.getIpServer(), Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree());
+	Interlocutor2* interlocutor = _client->connect(serverIp, serverPort, serverTreePort);
 
 	if(interlocutor) {
 		Game.setModeClient();

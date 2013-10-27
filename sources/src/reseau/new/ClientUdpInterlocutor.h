@@ -21,7 +21,7 @@ using namespace std;
 
 class TechnicalMessage;
 
-class ClientUdpInterlocutor : TechnicalInterlocutor {
+class ClientUdpInterlocutor : public TechnicalInterlocutor {
 	string _distantIp;
 	Uint16 _distantPort;
 	Interlocutor2* _interlocutor;

@@ -57,6 +57,10 @@ void CClient::nbrPlayers(unsigned int nbr) {
 	m_uNbrPlayers = nbr;
 }
 
+ClientUdpInterlocutor* CClient::getClientUdpInterlocutor() {
+	return _clientUdpInterlocutor;
+}
+
 void CClient::decodeConnecte( Uint16 code1, Uint16 code2 ) {
 	switch( code1 ) {
 	case SERVER_RECAP:		// Réception d'une récapitulation de partie du serveur

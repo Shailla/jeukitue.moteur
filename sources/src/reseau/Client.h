@@ -58,6 +58,8 @@ public:
 
 	void sendConnectedRequestJoinTheGame(const string& nomPlayer );
 
+	ClientUdpInterlocutor* getClientUdpInterlocutor();
+
 	void setStatut(StatutClient statut);		// Renseigne l'état du client (déconnecté,connecté, partie en cours...)
 	StatutClient getStatut();					// Retourne l'état du client
 

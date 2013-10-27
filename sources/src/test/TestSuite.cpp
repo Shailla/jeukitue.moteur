@@ -33,11 +33,12 @@ void TestSuite::launchTests() {
 	vector<Test*>::iterator iter;
 	int nbr = 1;
 	int nbrOk = 0;
+	int nbrKo = 0;
 	string testName;
 
-	cout << endl << "==============================================================";
+	cout << endl << "============================================================================";
 	cout << endl << "  LANCEMENT DE L'EXECUTION DE " << _tests.size() << " TESTS";
-	cout << endl << "==============================================================";
+	cout << endl << "============================================================================";
 	cout << endl;
 
 	for(iter = _tests.begin() ; iter != _tests.end() ; iter++) {
@@ -45,26 +46,31 @@ void TestSuite::launchTests() {
 			Test* test = *iter;
 			testName = test->getName();
 
-			cout << endl << "=== " << nbr << " LAUNCHING TEST '" << testName << "'";
+			cout << endl << "<<<<<< " << nbr << " LAUNCHING TEST '" << testName << "' >>>>>>";
 			test->test();
-			cout << endl << "=== " << nbr << " TEST '" << testName << "' OK";
+			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' OK <<<<<<";
 
 			nbrOk++;
 		}
 		catch(TestError& error) {
-			cout << endl << "=== " << nbr << " TEST '" << testName << "' KO (file = " << error._file << ", line = " << error._line << ", message = " << error._message << ")";
+			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (file = " << error._file << ", line = " << error._line << ", message = " << error._message << ") <<<<<<";
+			nbrKo++;
 		}
 		catch(...) {
-			cout << endl << "=== " << nbr << " TEST '" << testName << "' KO (with unexpected exception)";
+			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (with unexpected exception) <<<<<<";
+			nbrKo++;
 		}
 
 		nbr++;
 	}
 
 	cout << endl;
-	cout << endl << "==============================================================";
-	cout << endl << "  " << nbrOk << " TESTS REUSSIS SUR " << _tests.size() << " TESTS";
-	cout << endl << "==============================================================";
+	cout << endl << "============================================================================";
+	cout << endl << "  RESULTATS :";
+	cout << endl << "  \t" << nbrOk << " test(s) réussi(s)";
+	cout << endl << "  \t" << nbrKo << " test(s) en échec";
+	cout << endl << "  \tNombre total de test(s) : " << _tests.size();
+	cout << endl << "============================================================================";
 }
 
 } /* namespace JktTest */

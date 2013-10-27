@@ -18,11 +18,11 @@ using namespace std;
 
 #include "reseau/new/NotConnectedInterlocutor2.h"
 
-NotConnectedInterlocutor2::NotConnectedInterlocutor2() {
+NotConnectedInterlocutor2::NotConnectedInterlocutor2(SDL_cond* condDataToSend, SDL_mutex* mutexDataToSend) {
 	_name = "";
 	_mutexDataReceived = SDL_CreateMutex();
-	_mutexDataToSend = SDL_CreateMutex();
-	_condDataToSend = SDL_CreateCond();
+	_mutexDataToSend = mutexDataToSend;
+	_condDataToSend = condDataToSend;
 	_mutexNewInterlocutors = SDL_CreateMutex();
 	_condIntelligence = NULL;
 }

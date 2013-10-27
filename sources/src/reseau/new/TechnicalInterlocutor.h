@@ -13,7 +13,7 @@
 #include "reseau/new/Interlocutor2.h"
 
 class TechnicalInterlocutor {
-protected:
+public:
 	enum CONNEXION_STATUS {
 		/** Initial status, can't connect, can't send or receive messages. */
 		STOPPED = 0,

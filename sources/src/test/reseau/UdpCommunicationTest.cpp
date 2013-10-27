@@ -7,9 +7,12 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include "reseau/NetworkManager.h"
 #include "util/types/Bytes.h"
+#include "reseau/enumReseau.h"
+#include "reseau/Client.h"
 
 #include "test/reseau/UdpCommunicationTest.h"
 
@@ -33,49 +36,101 @@ void UdpCommunicationTest::test() {
 	const string data1 = "Coucou";
 	const string data2 = "Hello";
 
+	SDL_Delay(1000);	// Laisse démarrer le programme avant de commencer le test
+
 
 	/* ********************************************************
 	 * Monte un serveur
 	 * ********************************************************/
 
+	log("Monte un serveur");
+
 	JktNet::NetworkManager* serverNM = new NetworkManager();
 	NotConnectedInterlocutor2* serverInterlocutor = serverNM->ouvreServer(serverPort, serverTreePort);
 
-	ASSERT_NOT_NULL(serverInterlocutor);
+	ASSERT_NOT_NULL(serverInterlocutor, "");
 
 	/* ********************************************************
 	 * Monte un client
 	 * ********************************************************/
 
+	log("Monte un client");
+
 	// Monte un client vers ce serveur
 	JktNet::NetworkManager* clientNM = new NetworkManager();
 	Interlocutor2* clientInterlocutor = clientNM->ouvreClient("127.0.0.1", serverPort, serverTreePort);
 
-	ASSERT_NOT_NULL(clientInterlocutor);
+	ASSERT_NOT_NULL(clientInterlocutor, "");
 
 
 	/* ********************************************************
 	 * Teste la connexion du client au serveur
 	 * ********************************************************/
+	Interlocutor2* clientOfServer;
 
-	SDL_Delay(3000);	// Temps pour l'établissement de la connexion du client au serveur
+	{
+		log("Calcule du temps de connexion au serveur");
 
-	Interlocutor2* clientOfServer = serverInterlocutor->popNewInterlocutor();
+		Uint32 tempsAvantConnexion = SDL_GetTicks();
 
-	ASSERT_NOT_NULL(clientOfServer);
+		TechnicalInterlocutor::CONNEXION_STATUS status;
+
+		for(int i = 0 ; i < 10000 ; i++) {
+			status = clientNM->getClient()->getClientUdpInterlocutor()->getConnexionStatus();
+
+			if(status == TechnicalInterlocutor::CONNEXION_STATUS::CONNECTED) {
+				break;
+			}
+
+			SDL_Delay(1);
+		}
+
+		ASSERT_EQUAL(TechnicalInterlocutor::CONNEXION_STATUS::CONNECTED, status, "La connexion a echoue");
+
+		Uint32 temps = SDL_GetTicks() - tempsAvantConnexion;
+
+		stringstream message;
+		message << "Temps de connexion au serveur : " << temps << " ms";
+		log(message);
+
+		ASSERT_TRUE(temps < 5, "Le temps de connexion est trop long");
+
+		clientOfServer = serverInterlocutor->popNewInterlocutor();
+
+		ASSERT_NOT_NULL(clientOfServer, "La connexion est erronee");
+	}
 
 
 	/* ********************************************************
 	 * Teste l'envoie d'un message du client vers le serveur
 	 * ********************************************************/
 	{
+		log("Calcul du temps d'envoie d'un message du client vers le serveur");
+
 		clientInterlocutor->pushDataToSend(new Bytes(data1));
 
-		SDL_Delay(3000);
+		Bytes* data;
+		Uint32 tempsAvantEnvoi = SDL_GetTicks();
 
-		Bytes* data = clientOfServer->popDataReceived();
-		ASSERT_NOT_NULL(data);
-		ASSERT_EQUAL(data1, data->getBytes());
+		for(int i = 0 ; i < 10000 ; i++) {
+			data = clientOfServer->popDataReceived();
+
+			if(data) {
+				break;
+			}
+
+			SDL_Delay(1);
+		}
+
+		Uint32 temps = SDL_GetTicks() - tempsAvantEnvoi;
+
+		stringstream message;
+		message << "Temps d'envoie d'un message du client vers le serveur : " << temps << " ms";
+		log(message);
+
+		ASSERT_NOT_NULL(data, "Aucune donnee recue malgre un long temps d'attente");
+		ASSERT_EQUAL(data1, data->getBytes(), "La donnee recue ne correspond pas a la donnee envoyee");
+		ASSERT_TRUE(temps < 5, "Le temps d'envoi d'un message du client vers le serveur est trop long");
 	}
 
 
@@ -83,13 +138,33 @@ void UdpCommunicationTest::test() {
 	 * Teste l'envoie d'un message du serveur vers le client
 	 * ********************************************************/
 	{
-		clientOfServer->pushDataToSend(new Bytes(data1));
+		log("Calcul du temps d'envoie d'un message du serveur vers le client");
 
-		SDL_Delay(3000);
+		clientOfServer->pushDataToSend(new Bytes(data2));
 
-		Bytes* data = clientInterlocutor->popDataReceived();
-		ASSERT_NOT_NULL(data);
-		ASSERT_EQUAL(data1, data->getBytes());
+		Uint32 tempsAvantEnvoi = SDL_GetTicks();
+		Bytes* data;
+
+		for(int i = 0 ; i < 10000 ; i++) {
+			data = clientInterlocutor->popDataReceived();
+
+			if(data) {
+				break;
+			}
+
+			SDL_Delay(1);
+		}
+
+		Uint32 temps = SDL_GetTicks() - tempsAvantEnvoi;
+
+		stringstream message;
+		message << "Temps d'envoie d'un message du serveur vers le client : " << temps << " ms";
+		log(message);
+
+		ASSERT_NOT_NULL(data, "Aucune donnee recue malgre un long temps d'attente");
+		ASSERT_EQUAL(data2, data->getBytes(), "La donnee recue ne correspond pas a la donnee envoyee");
+		ASSERT_TRUE(temps < 5, "Le temps d'envoi d'un message du serveur vers le client est trop long");
+
 	}
 }
 

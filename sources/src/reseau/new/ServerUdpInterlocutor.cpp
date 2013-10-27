@@ -43,6 +43,9 @@ ServerUdpInterlocutor::ServerUdpInterlocutor(const string& name, Uint16 localPor
 	_socketSet = 0;
 	_packetIn = 0;
 	_packetOut = 0;
+	_sendingMutex = SDL_CreateMutex();
+	_sendingCondition = SDL_CreateCond();
+	_clientsOfServerMutex = SDL_CreateMutex();
 }
 
 ServerUdpInterlocutor::~ServerUdpInterlocutor() {
@@ -50,7 +53,7 @@ ServerUdpInterlocutor::~ServerUdpInterlocutor() {
 }
 
 NotConnectedInterlocutor2* ServerUdpInterlocutor::connect() throw(ConnectionFailedException) {
-	_notConnectedInterlocutor = new NotConnectedInterlocutor2();
+	_notConnectedInterlocutor = new NotConnectedInterlocutor2(_sendingCondition, _sendingMutex);
 	_notConnectedInterlocutor->setCondIntelligence(getCondIntelligence());
 
 	_packetIn = SDLNet_AllocPacket(65535);
@@ -132,6 +135,8 @@ void ServerUdpInterlocutor::close() {
 }
 
 void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloTechnicalMessage* msg) {
+	SDL_LockMutex(_clientsOfServerMutex);
+
 	map<IPaddress, ClientOfServer*>::iterator it = _clientsOfServer.find(address);
 
 
@@ -141,12 +146,21 @@ void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloT
 
 	// Si le client n'est pas encore connecté alors enregistre sa connexion
 	if(it == _clientsOfServer.end()) {
-		Interlocutor2* clientInterlocutor = new Interlocutor2();
+		Interlocutor2* clientInterlocutor = new Interlocutor2(_sendingCondition, _sendingMutex);
 		ClientOfServer* client = new ClientOfServer(address, clientInterlocutor);
 
 		client->setConnexionStatus(TechnicalInterlocutor::CONNECTED);
 		_clientsOfServer[address] = client;
 		_notConnectedInterlocutor->pushNewInterlocutor(clientInterlocutor);
+
+		stringstream message;
+		message << "This client is now connected : " << IpUtils::translateAddress(address);
+		log(message);
+	}
+	else {
+		stringstream message;
+		message << "This client is already connected : " << IpUtils::translateAddress(address);
+		log(message);
 	}
 
 
@@ -165,9 +179,13 @@ void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloT
 
 		log("Send 'connection accepted' message");
 	}
+
+	SDL_UnlockMutex(_clientsOfServerMutex);
 }
 
 void ServerUdpInterlocutor::manageDisconnection(const IPaddress& address, C2SByeTechnicalMessage* msg) {
+	SDL_LockMutex(_clientsOfServerMutex);
+
 	if(_clientsOfServer.find(address) != _clientsOfServer.end()) {
 		stringstream message;
 		message << "Client disconnected : " << IpUtils::translateAddress(address);
@@ -180,14 +198,22 @@ void ServerUdpInterlocutor::manageDisconnection(const IPaddress& address, C2SBye
 		message << "Client to disconnect not found :  : " << IpUtils::translateAddress(address);
 		log(message);
 	}
+
+	SDL_UnlockMutex(_clientsOfServerMutex);
 }
 
 void ServerUdpInterlocutor::intelligenceProcess() {
+	bool firstExecution = true;
+
 	while(CONNECTED == getConnexionStatus()) {
 		SDL_LockMutex(getMutexIntelligence());
 
-		SDL_CondWaitTimeout(getCondIntelligence(), getMutexIntelligence(), 1000);
-
+		if(!firstExecution) {
+			SDL_CondWaitTimeout(getCondIntelligence(), getMutexIntelligence(), 1000);
+		}
+		else {
+			firstExecution = false;
+		}
 
 		/* ***********************************************************
 		 * Gestion des clients non-connectés
@@ -228,11 +254,19 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 		 * ***********************************************************/
 
 		{
+			SDL_LockMutex(_clientsOfServerMutex);
+
 			JktUtils::Bytes* msg;
 
 			map<IPaddress, ClientOfServer*>::iterator iter;
 
+			int aaaa = 0;
+
+			cout << endl << "TTTTTTTTTTTTTTTTTTTTTTTT (" << _clientsOfServer.size() << "): " << flush;
+
 			for(iter = _clientsOfServer.begin() ; iter != _clientsOfServer.end() ; iter++) {
+				cout << endl << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (" << _clientsOfServer.size() << "): " << aaaa++ << flush;
+
 				IPaddress address = iter->first;
 				ClientOfServer* client = iter->second;
 
@@ -272,20 +306,26 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 					delete techMsg;
 				}
 			}
+
+			SDL_UnlockMutex(_clientsOfServerMutex);
 		}
 
 		SDL_UnlockMutex(getMutexIntelligence());
 	}
 
-	SDL_UnlockMutex(getMutexIntelligence());
-
 	log("Stop intelligence process");
 }
 
 void ServerUdpInterlocutor::sendingProcess() {
+	bool firstExecution = true;
 
 	while(CONNECTED == getConnexionStatus()) {
-		_notConnectedInterlocutor->waitDataToSend(1000);
+		if(!firstExecution) {
+			_notConnectedInterlocutor->waitDataToSend(1000);	// _notConnectedInterlocutor uses the same sending mutex and condition than the clients of the server interlocutor
+		}
+		else {
+			firstExecution = false;
+		}
 
 
 		/* *********************************************
@@ -318,6 +358,8 @@ void ServerUdpInterlocutor::sendingProcess() {
 		 * *********************************************/
 
 		{
+			SDL_LockMutex(_clientsOfServerMutex);
+
 			JktUtils::Bytes* data;
 
 			map<IPaddress, ClientOfServer*>::iterator iter;
@@ -344,21 +386,24 @@ void ServerUdpInterlocutor::sendingProcess() {
 				// Envoi les messages de données tant que le serveur est connecté, sinon purge les
 				while((data = client->getInterlocutor()->popDataToSend())) {
 					if(CONNECTED == getConnexionStatus() && CONNECTED == client->getConnexionStatus()) {
-						cout << endl << "Server says : Sending some data message";
+						_packetOut->len = data->size() + 2;
 
-						_packetOut->len = data->size();
-						memcpy(_packetOut->data, data->getBytes(), _packetOut->len);
+						SDLNet_Write16(TechnicalMessage::TECHNICAL_MESSAGE::DATA, _packetOut->data);
+
+						memcpy(_packetOut->data + 2, data->getBytes(), _packetOut->len);
 						_packetOut->address = client->getIpAddress();
 						SDLNet_UDP_Send(_socket, -1, _packetOut);
 
 						stringstream message;
-						message << "Envoi de donnees a " << IpUtils::translateAddress(_packetOut->address);
+						message << "Envoi de donnees user a " << IpUtils::translateAddress(_packetOut->address);
 						log(message);
 					}
 
 					delete data;
 				}
 			}
+
+			SDL_UnlockMutex(_clientsOfServerMutex);
 		}
 	}
 
@@ -367,6 +412,8 @@ void ServerUdpInterlocutor::sendingProcess() {
 
 void ServerUdpInterlocutor::receiveOnePacket() {
 	int packetReceived = SDLNet_UDP_Recv(_socket, _packetIn);
+
+	SDL_LockMutex(_clientsOfServerMutex);
 
 	if(CONNECTED == getConnexionStatus() && packetReceived) {
 		IPaddress address = _packetIn->address;
@@ -406,6 +453,10 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 					char* data = new char[size - offset];
 					memcpy(data, _packetIn->data + offset, size - offset);
 					client->getInterlocutor()->pushDataReceived(new JktUtils::Bytes(data, size - offset));
+
+					stringstream message;
+					message << "Reception de donnees user from " << IpUtils::translateAddress(address);
+					log(message);
 					break;
 				}
 
@@ -414,6 +465,10 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
 					client->getInterlocutor()->pushTechnicalMessageReceived(new JktUtils::Bytes(data, size));
+
+					stringstream message;
+					message << "Reception de donnees techniques from " << IpUtils::translateAddress(address);
+					log(message);
 					break;
 				}
 				}
@@ -425,6 +480,8 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 			}
 		}
 	}
+
+	SDL_UnlockMutex(_clientsOfServerMutex);
 }
 
 void ServerUdpInterlocutor::receivingProcess() {

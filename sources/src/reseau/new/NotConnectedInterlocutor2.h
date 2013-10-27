@@ -33,7 +33,7 @@ class NotConnectedInterlocutor2 {
 	SDL_mutex* _mutexNewInterlocutors;
 
 public:
-	NotConnectedInterlocutor2();
+	NotConnectedInterlocutor2(SDL_cond* condDataToSend, SDL_mutex* mutexDataToSend);
 	virtual ~NotConnectedInterlocutor2();
 
 	const std::string& getName() const;

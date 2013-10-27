@@ -17,11 +17,11 @@ using namespace std;
 
 #include "reseau/new/Interlocutor2.h"
 
-Interlocutor2::Interlocutor2() {
+Interlocutor2::Interlocutor2(SDL_cond* condDataToSend, SDL_mutex* mutexDataToSend) {
 	_name = "";
 	_mutexDataReceived = SDL_CreateMutex();
-	_mutexDataToSend = SDL_CreateMutex();
-	_condDataToSend = SDL_CreateCond();
+	_mutexDataToSend = mutexDataToSend;
+	_condDataToSend = condDataToSend;
 	_condIntelligence = NULL;
 }
 

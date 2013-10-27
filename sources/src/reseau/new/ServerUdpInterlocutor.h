@@ -65,6 +65,10 @@ class ServerUdpInterlocutor : TechnicalInterlocutor {
 	UDPpacket* _packetIn;
 	UDPpacket* _packetOut;
 
+	SDL_mutex* _sendingMutex;
+	SDL_cond* _sendingCondition;
+
+	SDL_mutex* _clientsOfServerMutex;
 	map<IPaddress, ClientOfServer*> _clientsOfServer;
 
 private:

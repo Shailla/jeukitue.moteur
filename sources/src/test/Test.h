@@ -12,9 +12,11 @@
 
 using namespace std;
 
-#define ASSERT_NULL(var) assertNull(__FILE__, __LINE__, var)
-#define ASSERT_NOT_NULL(var) assertNotNull(__FILE__, __LINE__, var)
-#define ASSERT_EQUAL(expected, var) assertEqual(__FILE__, __LINE__, expected, var)
+#define ASSERT_TRUE(var, message) assertTrue(__FILE__, __LINE__, var, message)
+#define ASSERT_FALSE(var, message) assertFalse(__FILE__, __LINE__, var, message)
+#define ASSERT_NULL(var, message) assertNull(__FILE__, __LINE__, var, message)
+#define ASSERT_NOT_NULL(var, message) assertNotNull(__FILE__, __LINE__, var, message)
+#define ASSERT_EQUAL(expected, var, message) assertEqual(__FILE__, __LINE__, expected, var, message)
 
 namespace JktTest {
 
@@ -44,11 +46,20 @@ public:
 	string getName();
 	virtual void test() = 0;
 
+	// Assertion methods
+	void assertTrue(const char* file, int line, bool var, const char* message = 0);
+	void assertFalse(const char* file, int line, bool var, const char* message = 0);
 	void assertNull(const char* file, int line, const void* var, const char* message = 0);
 	void assertNotNull(const char* file, int line, const void* var, const char* message = 0);
 	void assertEqual(const char* file, int line, const void* expected, const void* var, const char* message = 0);
 	void assertEqual(const char* file, int line, const string& expected, const string& var, const char* message = 0);
 	void assertEqual(const char* file, int line, const char* expected, const char* var, const char* message = 0);
+	void assertEqual(const char* file, int line, int expected, int var, const char* message = 0);
+
+	// Log methods
+	void log(const char* message);
+	void log(const string& message);
+	void log(const stringstream& message);
 };
 
 } /* namespace JktTest */

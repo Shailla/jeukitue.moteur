@@ -44,7 +44,7 @@ ClientUdpInterlocutor::~ClientUdpInterlocutor() {
 }
 
 Interlocutor2* ClientUdpInterlocutor::connect(const string& distantIp, Uint16 distantPort) throw(ConnectionFailedException) {
-	_interlocutor = new Interlocutor2();
+	_interlocutor = new Interlocutor2(SDL_CreateCond(), SDL_CreateMutex());
 	_distantIp = distantIp;
 	_distantPort = distantPort;
 
@@ -177,7 +177,7 @@ void ClientUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg
 
 			close();
 		}
-		else if(currentTime - _tryConnectionLastTime > 1000) {
+		else if((_tryConnectionNumber == 0) || (currentTime - _tryConnectionLastTime > 1000)) {
 			log("Asking connection");
 
 			C2SHelloTechnicalMessage msg;
@@ -189,10 +189,17 @@ void ClientUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg
 }
 
 void ClientUdpInterlocutor::intelligenceProcess() {
+	bool firstExecution = true;
+
 	while(STOPPED != getConnexionStatus() && STOPPING != getConnexionStatus()) {
 		SDL_LockMutex(getMutexIntelligence());
 
-		SDL_CondWaitTimeout(getCondIntelligence(), getMutexIntelligence(), 1000);
+		if(!firstExecution) {
+			SDL_CondWaitTimeout(getCondIntelligence(), getMutexIntelligence(), 1000);
+		}
+		else {
+			firstExecution = false;
+		}
 
 		JktUtils::Bytes* msg;
 
@@ -211,6 +218,12 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 
 				case TechnicalMessage::S2C_DISCONNECTION:
 					break;
+
+				default:
+					stringstream message;
+					message << "Reception de donnees techniques inconnues ==> ignoré";
+					log(message);
+					break;
 				}
 
 				if(techMsg) {
@@ -218,7 +231,9 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 				}
 			}
 			else {
-				// unkown message => ignore it
+				stringstream message;
+				message << "Reception de donnees inconnues ==> ignoré";
+				log(message);
 			}
 		}
 
@@ -241,20 +256,26 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 		}
 
 		delete msg;
+
 		SDL_UnlockMutex(getMutexIntelligence());
 	}
-
-	SDL_UnlockMutex(getMutexIntelligence());
 
 	log("Stop intelligence process");
 }
 
 void ClientUdpInterlocutor::sendingProcess() {
+	bool firstExecution = true;
+
 	while(STOPPED != getConnexionStatus() && STOPPING != getConnexionStatus()) {
-		_interlocutor->waitDataToSend(1000);
+		if(!firstExecution) {
+			_interlocutor->waitDataToSend(1000);
+		}
+		else {
+			firstExecution = false;
+		}
 		JktUtils::Bytes* data;
 
-		// Envoi les messages techniques tant qu'on est pas arrêté, sinon purge les
+		// Envoi les messages techniques si on n'est pas arrêté, sinon purge les
 		while((data = _interlocutor->popTechnicalMessageToSend()))  {
 			if(STOPPED != getConnexionStatus()) {
 				_packetOut->len = data->size();
@@ -265,22 +286,25 @@ void ClientUdpInterlocutor::sendingProcess() {
 				stringstream message;
 				message << "Envoi de donnees techniques a " << IpUtils::translateAddress(_packetOut->address);
 				log(message);
-
 			}
 
 			delete data;
 		}
 
-		// Envoi les messages de données tant qu'on est connecté, sinon purge les
+		// Envoi les messages de données si on est connecté, sinon purge les
 		while((data = _interlocutor->popDataToSend())) {
 			if(CONNECTED == getConnexionStatus()) {
-				_packetOut->len = data->size();
-				memcpy(_packetOut->data, data->getBytes(), _packetOut->len);
+				// Pour un message de données on écrit explicitement le code DATA en début de flux
+				_packetOut->len = data->size() + 2;
+
+				SDLNet_Write16(TechnicalMessage::TECHNICAL_MESSAGE::DATA, _packetOut->data);	// Message de données
+
+				memcpy(_packetOut->data+2, data->getBytes(), _packetOut->len);
 				_packetOut->address = _distantAddress;
 				SDLNet_UDP_Send(_socket, -1, _packetOut);
 
 				stringstream message;
-				message << "Client : Envoi de donnees user a " << IpUtils::translateAddress(_packetOut->address);
+				message << "Envoi de donnees user a " << IpUtils::translateAddress(_packetOut->address);
 				log(message);
 			}
 
@@ -320,7 +344,9 @@ void ClientUdpInterlocutor::receiveOnePacket() {
 			}
 		}
 		else {
-			// Message inconsistant => ignoré
+			stringstream message;
+			message << "Message inconsistant from " << IpUtils::translateAddress(_packetIn->address) << " ==> ignoré";
+			log(message);
 		}
 	}
 }

@@ -28,7 +28,7 @@ class Interlocutor2 {
 	SDL_cond* _condIntelligence;
 
 public:
-	Interlocutor2();
+	Interlocutor2(SDL_cond* condDataToSend, SDL_mutex* mutexDataToSend);
 	virtual ~Interlocutor2();
 
 	const std::string& getName() const;

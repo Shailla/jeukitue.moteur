@@ -317,10 +317,11 @@ void ClientUdpInterlocutor::receivingProcess() {
 		int socketReady = SDLNet_CheckSockets(_socketSet, 1000);
 
 		if(STOPPED != getConnexionStatus()) {
-			if(socketReady == -1) {
+			if(socketReady <= -1) {
 				cerr << endl << "Client SDLNet_CheckSockets - UDP receive : " << SDLNet_GetError();
+				perror("SDLNet_CheckSockets");
 			}
-			else if(socketReady > 0) {
+			else {
 				receiveOnePacket();
 			}
 		}

@@ -134,15 +134,15 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 		if(changements.size()) {
 			vector<Changement*>::iterator itCh;
 
-			for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
+			for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
 				cout << endl << "serveur" << " to " << interlocutor->getName() << "\t : " << (*itCh)->toString() << flush;
 			}
 
 			ostringstream out;
 			DataSerializer::toStream(changements, out);
 
-			for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
-				delete *itCh;
+			for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
+				delete (*itCh);
 			}
 
 			interlocutor->pushDataToSend(new JktUtils::Bytes(out.str()));

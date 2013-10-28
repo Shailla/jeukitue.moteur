@@ -137,7 +137,7 @@ void ServerUdpInterlocutor::close() {
 void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloTechnicalMessage* msg) {
 	SDL_LockMutex(_clientsOfServerMutex);
 
-	map<IPaddress, ClientOfServer*>::iterator it = _clientsOfServer.find(address);
+	map<IPaddress, ClientOfServer*>::iterator clientIt = _clientsOfServer.find(address);
 
 
 	/* **************************************************
@@ -145,7 +145,7 @@ void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloT
 	 * *************************************************/
 
 	// Si le client n'est pas encore connecté alors enregistre sa connexion
-	if(it == _clientsOfServer.end()) {
+	if(clientIt == _clientsOfServer.end()) {
 		Interlocutor2* clientInterlocutor = new Interlocutor2(_sendingCondition, _sendingMutex);
 		ClientOfServer* client = new ClientOfServer(address, clientInterlocutor);
 
@@ -156,46 +156,16 @@ void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloT
 		stringstream message;
 		message << "This client is now connected : " << IpUtils::translateAddress(address);
 		log(message);
-	}
-	else {
-		stringstream message;
-		message << "This client is already connected : " << IpUtils::translateAddress(address);
-		log(message);
-	}
 
-
-	/* **************************************************
-	 * Confirmation connexion client
-	 * *************************************************/
-
-	// S'il est maintenant connecté alors confirme au client qu'il est connecté (même s'il l'était déjà, peut-être n'a-t-il pas reçu la précédente confirmation)
-	it = _clientsOfServer.find(address);
-
-	if(it != _clientsOfServer.end()) {
-		ClientOfServer* client = it->second;
-
+		// Confirmation connexion client
 		S2CConnectionAcceptedTechnicalMessage msg(getLocalPort());
 		client->getInterlocutor()->pushTechnicalMessageToSend(msg.toBytes());
 
 		log("Send 'connection accepted' message");
 	}
-
-	SDL_UnlockMutex(_clientsOfServerMutex);
-}
-
-void ServerUdpInterlocutor::manageDisconnection(const IPaddress& address, C2SByeTechnicalMessage* msg) {
-	SDL_LockMutex(_clientsOfServerMutex);
-
-	if(_clientsOfServer.find(address) != _clientsOfServer.end()) {
-		stringstream message;
-		message << "Client disconnected : " << IpUtils::translateAddress(address);
-		log(message);
-
-		_clientsOfServer.erase(address);
-	}
 	else {
 		stringstream message;
-		message << "Client to disconnect not found :  : " << IpUtils::translateAddress(address);
+		message << "This client is already connected : " << IpUtils::translateAddress(address);
 		log(message);
 	}
 
@@ -258,17 +228,15 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 
 			JktUtils::Bytes* msg;
 
-			map<IPaddress, ClientOfServer*>::iterator iter;
+			bool incrementIter = true;
+			map<IPaddress, ClientOfServer*>::iterator iter = _clientsOfServer.begin();
 
-			int aaaa = 0;
-
-			cout << endl << "TTTTTTTTTTTTTTTTTTTTTTTT (" << _clientsOfServer.size() << "): " << flush;
-
-			for(iter = _clientsOfServer.begin() ; iter != _clientsOfServer.end() ; iter++) {
-				cout << endl << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA (" << _clientsOfServer.size() << "): " << aaaa++ << flush;
-
+			while(iter != _clientsOfServer.end()) {
 				IPaddress address = iter->first;
 				ClientOfServer* client = iter->second;
+
+				bool c2s_hello_received = false;
+				bool c2s_bye_received = false;
 
 				// Gestion des événements liés aux clients non-connectés
 				while((msg = client->getInterlocutor()->popTechnicalMessageReceived())) {
@@ -278,20 +246,20 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 						switch(techMsg->getCode()) {
 						case TechnicalMessage::C2S_HELLO:
 						{
-							stringstream message;
-							message << "C2S_HELLO received from " << IpUtils::translateAddress(address);
-							log(message);
+							stringstream message1;
+							message1 << "C2S_HELLO received from connected client : " << IpUtils::translateAddress(address);
+							log(message1);
 
-							manageConnection(address, (C2SHelloTechnicalMessage*)techMsg);
+							c2s_hello_received = true;
 							break;
 						}
 						case TechnicalMessage::C2S_BYE:
 						{
-							stringstream message;
-							message << "C2S_BYE received from " << IpUtils::translateAddress(address);
-							log(message);
+							stringstream message1;
+							message1 << "C2S_BYE received from connected client : " << IpUtils::translateAddress(address);
+							log(message1);
 
-							manageDisconnection(address, (C2SByeTechnicalMessage*)techMsg);
+							c2s_bye_received = true;
 							break;
 						}
 						}
@@ -304,6 +272,32 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 
 					delete msg;
 					delete techMsg;
+				}
+
+				if(c2s_bye_received) {
+					// One or more C2S_BYE messages have been received for a client who is connected, disconnect it
+					_clientsOfServer.erase(iter++);		// Need post-increment to manage std::map removing idiom
+					incrementIter = false;				// Do not increment a second time the iterator
+
+					stringstream message2;
+					message2 << "Client is now disconnected : " << IpUtils::translateAddress(address);
+					log(message2);
+				}
+				else if(c2s_hello_received) {
+					// One or more C2S_HELLO messages have been received for a client which is connected, perhaps he has just been connected or not, in any case send a connection accepted confirmation
+					stringstream message2;
+					message2 << "Send 'connection accepted' message : "  << IpUtils::translateAddress(address);
+					log(message2);
+
+					S2CConnectionAcceptedTechnicalMessage msg(getLocalPort());
+					client->getInterlocutor()->pushTechnicalMessageToSend(msg.toBytes());
+				}
+
+				if(incrementIter) {
+					++iter;
+				}
+				else {
+					incrementIter = true;
 				}
 			}
 

@@ -251,8 +251,6 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 			_interlocutor->pushTechnicalMessageToSend(msg.toBytes());
 			_interlocutor->pushTechnicalMessageToSend(msg.toBytes());
 			_interlocutor->pushTechnicalMessageToSend(msg.toBytes());
-
-			setConnexionStatus(STOPPED);
 		}
 
 		delete msg;
@@ -338,6 +336,7 @@ void ClientUdpInterlocutor::receiveOnePacket() {
 				if(STOPPED != getConnexionStatus()) {
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
+
 					_interlocutor->pushTechnicalMessageReceived(new Bytes(data, size));
 				}
 				break;
@@ -356,11 +355,7 @@ void ClientUdpInterlocutor::receivingProcess() {
 		int socketReady = SDLNet_CheckSockets(_socketSet, 1000);
 
 		if(STOPPED != getConnexionStatus()) {
-			if(socketReady <= -1) {
-				cerr << endl << "Client SDLNet_CheckSockets - UDP receive : " << SDLNet_GetError();
-				perror("SDLNet_CheckSockets");
-			}
-			else {
+			if(socketReady > 0) {
 				receiveOnePacket();
 			}
 		}

@@ -93,11 +93,8 @@ private:
 
 	void receiveOnePacket();
 
-	/** Method which is started when a connection to the server demand is received. */
+	/** Method which is started when a connection to the server demand is received for a not connected client. */
 	void manageConnection(const IPaddress& address, C2SHelloTechnicalMessage* msg);
-
-	/** Method which is started when a disconnection to the server information is received. */
-	void manageDisconnection(const IPaddress& address, C2SByeTechnicalMessage* msg);
 
 public:
 	ServerUdpInterlocutor(const string& name, Uint16 localPort);

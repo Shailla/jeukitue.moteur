@@ -92,26 +92,23 @@ void DistantTreeProxy::collecteChangementsInClientTree(vector<Changement*>& chan
 
 void DistantTreeProxy::collecteChangementsInServerTree(vector<Changement*>& changements) {
 	map<Donnee*, MarqueurDistant*>::iterator itMa;
+	Branche* branche;
+	Changement* changement;
+	MarqueurDistant* marqueur;
+	Donnee* donnee;
 
 	for(itMa = _marqueurs.begin() ; itMa != _marqueurs.end() ; itMa++) {
-		MarqueurDistant* marqueur = itMa->second;
-		Donnee* donnee = marqueur->getDonnee();
+		marqueur = itMa->second;
+		donnee = marqueur->getDonnee();
 
-		Branche* branche = dynamic_cast<Branche*>(donnee);
-		Changement* changement = NULL;
+		branche = dynamic_cast<Branche*>(donnee);
+		changement = NULL;
 
 		if(branche) {
 			// NOUVELLE BRANCHE : branche présente sur le serveur mais dont le client n'a pas connaissance
 			if(marqueur->getConfirmedRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
 				changement = new AddBrancheFromServerChangement(branche->getParentBrancheId(), branche->getBrancheId(), branche->getRevision(), branche->getBrancheName());
 			}
-
-			if(changement) {
-				changement->update(marqueur);
-				changements.push_back(changement);
-			}
-
-			continue;
 		}
 		else {
 			Valeur* valeur = (Valeur*)(donnee);
@@ -127,11 +124,11 @@ void DistantTreeProxy::collecteChangementsInServerTree(vector<Changement*>& chan
 			else if(marqueur->getConfirmedRevision() != valeur->getRevision()) {
 				changement = new UpdateValeurFromServerChangement(valeur);
 			}
+		}
 
-			if(changement) {
-				changement->update(marqueur);
-				changements.push_back(changement);
-			}
+		if(changement) {
+			changement->update(marqueur);
+			changements.push_back(changement);
 		}
 	}
 }

@@ -125,15 +125,17 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 	vector<DistantTreeProxy*>::const_iterator clientIter;
 	vector<Changement*> changements;
 
+	DistantTreeProxy* client;
+	Interlocutor2* interlocutor;
+	vector<Changement*>::iterator itCh;
+
 	for(clientIter = getDistants().begin() ; clientIter != getDistants().end() ; clientIter++) {
-		DistantTreeProxy* client = *clientIter;
-		Interlocutor2* interlocutor = client->getInterlocutor();
+		client = *clientIter;
+		interlocutor = client->getInterlocutor();
 		client->collecteChangementsInServerTree(changements);
 
 		// Emission des changements
 		if(changements.size()) {
-			vector<Changement*>::iterator itCh;
-
 			for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
 				cout << endl << "serveur" << " to " << interlocutor->getName() << "\t : " << (*itCh)->toString() << flush;
 			}
@@ -142,10 +144,12 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 			DataSerializer::toStream(changements, out);
 
 			for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
-				delete (*itCh);
+				delete *itCh;
 			}
 
 			interlocutor->pushDataToSend(new JktUtils::Bytes(out.str()));
+
+			changements.clear();
 		}
 	}
 }

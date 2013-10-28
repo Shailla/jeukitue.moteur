@@ -1752,39 +1752,6 @@ int main(int argc, char** argv) {
 	// Création du démon de gestion des sons
 	DemonSons = new CDemonSons();
 
-
-	//
-	//	try {
-	//		cout << endl << "TEST - Création du 1er client" << flush;
-	//		ClientUdpInterlocutor client1(4968);
-	//
-	//		cout << endl << "TEST - Le 1er client tente de se connecter au serveur pendant 5 secondes" << flush;
-	//		Interlocutor2* client1Interlocutor = client1.connect("localhost", 5968);
-	//		SDL_Delay(5000);
-	//
-	//		cout << endl << "TEST - Création du serveur" << flush;
-	//		ServerUdpInterlocutor server(5968);
-	//
-	//		cout << endl << "TEST - Connexion du serveur" << flush;
-	//		NotConnectedInterlocutor2* serverInterlocutor = server.connect();
-	//
-	//		SDL_Delay(10000);
-	//
-	//
-	//		cout << endl << "TEST - Création 2° du client" << flush;
-	//		ClientUdpInterlocutor client2(4969);
-	//
-	//		cout << endl << "TEST - Le 2° client tente de se connecter au serveur pendant 10 secondes" << flush;
-	//		Interlocutor2* client2Interlocutor = client2.connect("localhost", 5968);
-	//		SDL_Delay(10000);
-	//	}
-	//	catch(JktException& exception) {
-	//		cerr << endl << "ERREUR CATCHEE : " << exception.getMessage() << flush;
-	//	}
-	//
-	//	exit(0);
-
-
 	// Lancement de l'introduction du jeu
 	if(Config.General._playIntro) {
 		load_Intro( Config.Display.X, Config.Display.Y );	// Affiche l'introduction du jeu

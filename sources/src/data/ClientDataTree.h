@@ -35,8 +35,8 @@ public:
 	 * Serveur local actions
 	 * ****************************************************/
 
-	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName, int revision);
-	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, int revision, const JktUtils::Data* valeur);
+	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
+	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::Data* valeur);
 	Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data* value);
 
 

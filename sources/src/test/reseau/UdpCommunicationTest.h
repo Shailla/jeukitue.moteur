@@ -8,6 +8,8 @@
 #ifndef UDPCOMMUNICATIONTEST_H_
 #define UDPCOMMUNICATIONTEST_H_
 
+#include <string>
+
 #include "test/Test.h"
 
 namespace JktTest {
@@ -17,7 +19,7 @@ public:
 	UdpCommunicationTest();
 	virtual ~UdpCommunicationTest();
 
-	string getName();
+	std::string getName();
 	void test();
 };
 

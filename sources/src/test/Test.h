@@ -34,6 +34,13 @@ public:
 			_message = message;
 		}
 	}
+
+	TestError(const char* file, int line, const string message) {
+		_file = file;
+		_line = line;
+
+		_message = message;
+	}
 };
 
 class Test {

@@ -11,6 +11,7 @@ using namespace std;
 
 #include "main/Cfg.h"
 #include "test/reseau/UdpCommunicationTest.h"
+#include "test/data/DataTreeTest.h"
 
 #include "test/TestSuite.h"
 
@@ -20,6 +21,7 @@ namespace JktTest {
 
 TestSuite::TestSuite() {
 	_tests.push_back(new UdpCommunicationTest());
+	_tests.push_back(new DataTreeTest());
 }
 
 TestSuite::~TestSuite() {

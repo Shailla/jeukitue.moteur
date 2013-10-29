@@ -29,7 +29,11 @@ UdpCommunicationTest::~UdpCommunicationTest() {
 }
 
 void UdpCommunicationTest::test() {
-	// Test data
+
+	/* ********************************************************
+	 * Test data
+	 * ********************************************************/
+
 	Uint16 serverPort = 777;
 	Uint16 serverTreePort = 778;
 

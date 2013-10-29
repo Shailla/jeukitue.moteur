@@ -34,8 +34,8 @@ ServeurDataTree::ServeurDataTree() {
 ServeurDataTree::~ServeurDataTree() {
 }
 
-Branche* ServeurDataTree::createBranche(const vector<int>& parentBrancheId, const string& brancheName, int revision) {
-	return addBrancheFromDistant(parentBrancheId, brancheName, 0, revision, NULL);
+Branche* ServeurDataTree::createBranche(const vector<int>& parentBrancheId, const string& brancheName) {
+	return addBrancheFromDistant(parentBrancheId, brancheName, 0, 0, NULL);
 }
 
 Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, int revision, DistantTreeProxy* distant) {
@@ -46,8 +46,8 @@ Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBranche
 	return (Branche*)addMarqueurFromDistant(distant, branche, brancheClientTmpId);
 }
 
-Valeur* ServeurDataTree::createValeur(const vector<int>& parentBrancheId, const string& valeurName, int revision, const Data* valeur) {
-	return addValeurFromDistant(parentBrancheId, valeurName, 0, revision, valeur, NULL);
+Valeur* ServeurDataTree::createValeur(const vector<int>& parentBrancheId, const string& valeurName, const Data* valeur) {
+	return addValeurFromDistant(parentBrancheId, valeurName, 0, 0, valeur, NULL);
 }
 
 Valeur* ServeurDataTree::updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data* valeur) {

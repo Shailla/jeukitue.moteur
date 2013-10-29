@@ -55,25 +55,33 @@ void Test::assertNotNull(const char* file, int line, const void* var, const char
 
 void Test::assertEqual(const char* file, int line, const void* expected, const void* var, const char* message) {
 	if(expected != var) {
-		throw TestError(file, line, message);
+		stringstream msg;
+		msg << message << " | " << "Valeur attendue [" << expected << "] obtenu [" << var << "]";
+		throw TestError(file, line, msg.str());
 	}
 }
 
 void Test::assertEqual(const char* file, int line, const string& expected, const string& var, const char* message) {
 	if(expected != var) {
-		throw TestError(file, line, message);
+		stringstream msg;
+		msg << message << " | " << "Valeur attendue [" << expected << "] obtenu [" << var << "]";
+		throw TestError(file, line, msg.str());
 	}
 }
 
 void Test::assertEqual(const char* file, int line, const char* expected, const char* var, const char* message) {
 	if(!strcmp(expected, var)) {
-		throw TestError(file, line, message);
+		stringstream msg;
+		msg << message << " | " << "Valeur attendue [" << expected << "] obtenu [" << var << "]";
+		throw TestError(file, line, msg.str());
 	}
 }
 
 void Test::assertEqual(const char* file, int line, int expected, int var, const char* message) {
 	if(expected != var) {
-		throw TestError(file, line, message);
+		stringstream msg;
+		msg << message << " | " << "Valeur attendue [" << expected << "] obtenu [" << var << "]";
+		throw TestError(file, line, msg.str());
 	}
 }
 

@@ -25,10 +25,12 @@ void DataTreeTest::test() {
 	 * Test data
 	 * ********************************************************/
 
-	const string brancheRoot = "root";
+	const string rootName = "root";
+	vector<int> rootFullId;
 
-	vector<int> branche0Id;
-	branche0Id = {0};
+	int branche0Id = 0;
+	vector<int> branche0FullId;
+	branche0FullId.push_back(branche0Id);
 	const string branche0Name = "branche-0";
 
 
@@ -38,7 +40,7 @@ void DataTreeTest::test() {
 	ServeurDataTree serverTree;
 
 	Branche& root = serverTree.getRoot();
-	ASSERT_EQUAL(brancheRoot, root.getBrancheName(), "Le nom de la branche 0 est incorrect");
+	ASSERT_EQUAL(rootName, root.getBrancheName(), "Le nom de la branche 0 est incorrect");
 	ASSERT_EQUAL(0, root.getRevision(), "La révision initiale d'une branche devrait être nulle");
 
 
@@ -53,8 +55,8 @@ void DataTreeTest::test() {
 	 * Test d'ajout d'une branche
 	 * ***************************************************************************/
 
-	serverTree.createBranche(branche0Id, branche0Name);
-	Branche* branche0 = serverTree.getBranche(branche0Id);
+	serverTree.createBranche(rootFullId, branche0Name);
+	Branche* branche0 = serverTree.getBranche(branche0FullId);
 	ASSERT_EQUAL(branche0Name, branche0->getBrancheName(), "Le nom de la branche 0 est incorrect");
 
 }

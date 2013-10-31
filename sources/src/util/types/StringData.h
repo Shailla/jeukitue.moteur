@@ -17,6 +17,7 @@ namespace JktUtils {
 class StringData : public Data {
 	std::string _value;
 public:
+	StringData(const char* value);
 	StringData(const std::string& value);
 	StringData(std::istringstream& in);
 	virtual ~StringData();

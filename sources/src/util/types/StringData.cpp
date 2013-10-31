@@ -15,6 +15,10 @@ using namespace std;
 
 namespace JktUtils {
 
+StringData::StringData(const char* value) {
+	_value = value;
+}
+
 StringData::StringData(const string& value) {
 	_value = value;
 }

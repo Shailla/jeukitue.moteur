@@ -48,6 +48,9 @@ public:
 	void waitDataToSend(int timeout);
 	void pushDataToSend(JktUtils::Bytes* bytes);
 	JktUtils::Bytes* popDataToSend();
+
+	int numberDataReceived(void);
+	int numberDataToSend(void);
 };
 
 #endif /* INTERLOCUTOR_RESEAU_H_ */

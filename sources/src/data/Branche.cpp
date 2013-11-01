@@ -243,6 +243,14 @@ const Valeur* Branche::addValeurInt(int valeurId, const string& valeurName, int 
 		newValeur = new ValeurInt(this, valeurId, valeurName, -1, valeurRevision, intData->getValue());
 		_valeurs[valeurId] = newValeur;
 	}
+	else if(const JktUtils::FloatData* floatData = dynamic_cast<const JktUtils::FloatData*>(valeur)) {
+		newValeur = new ValeurFloat(this, valeurId, valeurName, -1, valeurRevision, floatData->getValue());
+		_valeurs[valeurId] = newValeur;
+	}
+	else if(const JktUtils::StringData* stringData = dynamic_cast<const JktUtils::StringData*>(valeur)) {
+		newValeur = new ValeurString(this, valeurId, valeurName, -1, valeurRevision, stringData->getValue());
+		_valeurs[valeurId] = newValeur;
+	}
 	else {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Type de valeur inconnu";
 	}
@@ -259,7 +267,12 @@ map<int, Valeur*>& Branche::getValeurs() {
 }
 
 Valeur* Branche::getValeur(int valeurId) {
-	return _valeurs.at(valeurId);
+	try {
+		return _valeurs.at(valeurId);
+	}
+	catch(std::out_of_range& exception) {
+		return 0;
+	}
 }
 
 string Branche::getBrancheName() const {

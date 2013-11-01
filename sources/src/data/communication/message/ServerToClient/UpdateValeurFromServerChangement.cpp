@@ -23,18 +23,11 @@ UpdateValeurFromServerChangement::UpdateValeurFromServerChangement(istringstream
 	unserialize(in);
 }
 
-UpdateValeurFromServerChangement::UpdateValeurFromServerChangement(const Valeur* valeur) : Changement("UpdateValeurChangement") {
-	_brancheId = valeur->getBrancheId();
-	_valeurId = valeur->getValeurId();
-
-	_revision = valeur->getRevision();
-
-	if(const ValeurInt* valeurInt = dynamic_cast<const ValeurInt*>(valeur)) {
-		_valeur = new JktUtils::IntData(valeurInt->getValeur());
-	}
-	else {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Valeur de type inconnu";
-	}
+UpdateValeurFromServerChangement::UpdateValeurFromServerChangement(const vector<int>& brancheId, int valeurId, int revision, JktUtils::Data* valeur) : Changement("UpdateValeurChangement") {
+	_brancheId = brancheId;
+	_valeurId = valeurId;
+	_revision = revision;
+	_valeur = valeur;
 }
 
 UpdateValeurFromServerChangement::~UpdateValeurFromServerChangement() {

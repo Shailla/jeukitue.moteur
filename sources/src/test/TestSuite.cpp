@@ -58,10 +58,10 @@ void TestSuite::launchTests() {
 			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (file = " << error._file << ", line = " << error._line << ", message = " << error._message << ") <<<<<<";
 			nbrKo++;
 		}
-		catch(...) {
-			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (with unexpected exception) <<<<<<";
-			nbrKo++;
-		}
+//		catch(...) {
+//			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (with unexpected exception) <<<<<<";
+//			nbrKo++;
+//		}
 
 		nbr++;
 	}

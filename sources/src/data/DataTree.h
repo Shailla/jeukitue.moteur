@@ -17,11 +17,12 @@
 class DataTree {
 	Branche _root;
 
+protected:
+	virtual void initDistantBranche(DistantTreeProxy* distant, Branche* branche) = 0;
+
 public:
 	DataTree();
 	virtual ~DataTree();
-
-	virtual void initDistantBranche(DistantTreeProxy* distant, Branche* branche) = 0;
 
 
 	/* *****************************************************
@@ -29,6 +30,7 @@ public:
 	 * ****************************************************/
 
 	virtual Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) = 0;
+
 	virtual Valeur* createValeur(const std::vector<int>& brancheId, const std::string& valeurName, const JktUtils::Data* valeur) = 0;
 	virtual Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data* valeur) = 0;
 

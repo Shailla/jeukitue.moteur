@@ -115,14 +115,11 @@ void DistantTreeProxy::collecteChangementsInServerTree(vector<Changement*>& chan
 
 			// NOUVELLE VALEUR : branche présente sur le serveur mais dont le client n'a pas connaissance
 			if(marqueur->getConfirmedRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
-				if(ValeurInt* valeurInt = dynamic_cast<ValeurInt*>(valeur)) {
-					JktUtils::Data* data = new JktUtils::IntData(valeurInt->getValeur());
-					changement = new AddValeurFromServerChangement(valeurInt->getBrancheId(), valeurInt->getValeurId(), valeurInt->getRevision(), valeurInt->getValeurName(), data);
-				}
+				changement = new AddValeurFromServerChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision(), valeur->getValeurName(), valeur->getValeurData());
 			}
 			// VALEUR MODIFIEE : branche présente sur le serveur mais dont le client n'a pas connaissance
 			else if(marqueur->getConfirmedRevision() != valeur->getRevision()) {
-				changement = new UpdateValeurFromServerChangement(valeur);
+				changement = new UpdateValeurFromServerChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision(), valeur->getValeurData());
 			}
 		}
 

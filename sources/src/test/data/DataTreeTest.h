@@ -12,9 +12,12 @@
 
 #include "test/Test.h"
 
+class Interlocutor2;
+
 namespace JktTest {
 
 class DataTreeTest : public Test {
+	void echange(Interlocutor2* interlocutor);
 public:
 	DataTreeTest();
 	virtual ~DataTreeTest();

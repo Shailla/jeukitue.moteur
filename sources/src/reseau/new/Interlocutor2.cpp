@@ -160,3 +160,23 @@ JktUtils::Bytes* Interlocutor2::popDataToSend(void) {
 
 	return result;
 }
+
+int Interlocutor2::numberDataReceived(void) {
+	SDL_LockMutex(_mutexDataReceived);
+
+	int result = _dataReceived.size();
+
+	SDL_UnlockMutex(_mutexDataReceived);
+
+	return result;
+}
+
+int Interlocutor2::numberDataToSend(void) {
+	SDL_LockMutex(_mutexDataToSend);
+
+	int result = _dataToSend.size();
+
+	SDL_UnlockMutex(_mutexDataToSend);
+
+	return result;
+}

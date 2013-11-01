@@ -56,3 +56,7 @@ Valeur* DataTree::getValeur(const vector<int>& brancheId, int valeurId) throw(No
 Branche& DataTree::getRoot() {
 	return _root;
 }
+
+bool DataTree::containsDonnee(Donnee* donnee) {
+	return _donnees.find(donnee) != _donnees.end();
+}

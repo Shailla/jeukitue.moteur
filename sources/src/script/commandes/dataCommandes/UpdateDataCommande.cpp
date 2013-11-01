@@ -79,7 +79,7 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 					}
 
 					if(value) {
-						valeur = tree->updateValeur(brancheId, valeurId, value);
+						valeur->updateValeur(value);
 
 						ostringstream result;
 						result << "Valeur mise à jour. Nouvelle revision " << valeur->getRevision() << ".";

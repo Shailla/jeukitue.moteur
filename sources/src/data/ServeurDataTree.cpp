@@ -34,6 +34,16 @@ ServeurDataTree::ServeurDataTree() {
 ServeurDataTree::~ServeurDataTree() {
 }
 
+Branche* ServeurDataTree::createBranche(Branche* parentBranche, const string& brancheName) throw(NotExistingBrancheException) {
+	if(!containsDonnee(parentBranche)) {
+		throw NotExistingBrancheException();
+	}
+
+	Branche* branche = parentBranche->createSubBrancheForServer(brancheName, 0);
+
+	return (Branche*)initDonneeAndMarqueurFromDistant(NULL, branche, 0);
+}
+
 Branche* ServeurDataTree::createBranche(const vector<int>& parentBrancheId, const string& brancheName) {
 	return addBrancheFromDistant(parentBrancheId, brancheName, 0, 0, NULL);
 }
@@ -43,26 +53,34 @@ Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBranche
 
 	Branche* branche = parentBranche->createSubBrancheForServer(brancheName, revision);
 
-	return (Branche*)addMarqueurFromDistant(distant, branche, brancheClientTmpId);
+	return (Branche*)initDonneeAndMarqueurFromDistant(distant, branche, brancheClientTmpId);
 }
 
 Valeur* ServeurDataTree::createValeur(const vector<int>& parentBrancheId, const string& valeurName, const Data* valeur) {
 	return addValeurFromDistant(parentBrancheId, valeurName, 0, 0, valeur, NULL);
 }
 
-Valeur* ServeurDataTree::updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data* valeur) {
-	return NULL;
-};
+Valeur* ServeurDataTree::createValeur(Branche* parentBranche, const string& valeurName, const Data* valeur) throw(NotExistingBrancheException) {
+	if(!containsDonnee(parentBranche)) {
+			throw NotExistingBrancheException();
+		}
+
+	Valeur* val = parentBranche->createValeurForServeur(valeurName, 0, valeur);
+
+	return (Valeur*)initDonneeAndMarqueurFromDistant(NULL, val, 0);
+}
 
 Valeur* ServeurDataTree::addValeurFromDistant(const vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int revision, const Data* valeur, DistantTreeProxy* distant) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 
 	Valeur* val = parentBranche->createValeurForServeur(valeurName, revision, valeur);
 
-	return (Valeur*)addMarqueurFromDistant(distant, val, valeurClientTmpId);
+	return (Valeur*)initDonneeAndMarqueurFromDistant(distant, val, valeurClientTmpId);
 }
 
-Donnee* ServeurDataTree::addMarqueurFromDistant(DistantTreeProxy* client, Donnee* donnee, int donneeClientTmpId) {
+Donnee* ServeurDataTree::initDonneeAndMarqueurFromDistant(DistantTreeProxy* client, Donnee* donnee, int donneeClientTmpId) {
+	_donnees.insert(donnee);
+
 	vector<DistantTreeProxy*>::const_iterator clIter;
 
 	// Ajoute un marqueur pour chaque distant et met l'identifiant temporaire dans le distant du client qui a créé la donnée

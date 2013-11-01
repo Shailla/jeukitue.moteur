@@ -231,7 +231,7 @@ Valeur* Branche::createValeurForServeur(const string& valeurName, int revision, 
 	return newValeur;
 }
 
-const Valeur* Branche::addValeurInt(int valeurId, const string& valeurName, int valeurRevision, const JktUtils::Data* valeur) {
+const Valeur* Branche::addValeur(int valeurId, const string& valeurName, int valeurRevision, const JktUtils::Data* valeur) {
 	Valeur* newValeur = NULL;
 
 	if(_valeurs.find(valeurId) != _valeurs.end()) {

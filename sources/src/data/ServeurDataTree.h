@@ -19,7 +19,7 @@
 class ServeurDataTree : public DataTree {
 	std::vector<DistantTreeProxy*> _clients;
 
-	Donnee* addMarqueurFromDistant(DistantTreeProxy* distant, Donnee* valeur, int donneeClientTmpId);
+	Donnee* initDonneeAndMarqueurFromDistant(DistantTreeProxy* distant, Donnee* valeur, int donneeClientTmpId);
 	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
 
 	/* ****************************************************
@@ -41,10 +41,15 @@ public:
 	 * Serveur local actions
 	 * ****************************************************/
 
-	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
+	// Gestion branches et valeurs par référence
+	Branche* createBranche(Branche* parentBranche, const std::string& brancheName) throw (NotExistingBrancheException);
+	Valeur* createValeur(Branche* parentBranche, const std::string& valeurName, const JktUtils::Data* valeur) throw (NotExistingBrancheException);
+	void updateValeur(Valeur* valeur, const JktUtils::Data* value);
 
+	// Gestion branches et valeurs avec coordonnées vectorielles
+	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
 	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::Data* valeur);
-	Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data* valeur);
+	Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data* value);
 
 
 	/* ****************************************************

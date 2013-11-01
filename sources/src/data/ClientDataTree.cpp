@@ -48,30 +48,47 @@ void ClientDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bran
 
 }
 
+Branche* ClientDataTree::createBranche(Branche* parentBranche, const std::string& brancheName) throw (NotExistingBrancheException) {
+	if(!containsDonnee(parentBranche)) {
+		throw NotExistingBrancheException();
+	}
+
+	Branche* branche = parentBranche->createSubBrancheForClient(brancheName, 0);
+	initDonneeAndServeurMarqueur(branche);
+
+	return branche;
+}
+
 Branche* ClientDataTree::createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 	Branche* branche = parentBranche->createSubBrancheForClient(brancheName, 0);
-	addServeurMarqueur(branche);
+	initDonneeAndServeurMarqueur(branche);
 
 	return branche;
+}
+
+Valeur* ClientDataTree::createValeur(Branche* parentBranche, const std::string& valeurName, const Data* value) throw (NotExistingBrancheException) {
+	if(!containsDonnee(parentBranche)) {
+		throw NotExistingBrancheException();
+	}
+
+	Valeur* valeur = parentBranche->createValeurForClient(valeurName, 0, value);
+	initDonneeAndServeurMarqueur(valeur);
+
+	return valeur;
 }
 
 Valeur* ClientDataTree::createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const Data* value) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 	Valeur* valeur = parentBranche->createValeurForClient(valeurName, 0, value);
-	addServeurMarqueur(valeur);
+	initDonneeAndServeurMarqueur(valeur);
 
 	return valeur;
 }
 
-Valeur* ClientDataTree::updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data* value) {
-	Valeur* valeur = getValeur(brancheId, valeurId);
-	valeur->updateValeur(value);
+void ClientDataTree::initDonneeAndServeurMarqueur(Donnee* donnee) {
+	_donnees.insert(donnee);
 
-	return valeur;
-}
-
-void ClientDataTree::addServeurMarqueur(Donnee* donnee) {
 	_serverTreeProxy->addMarqueur(donnee, 0);
 }
 
@@ -164,7 +181,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 					// Le serveur informe de la création d'une nouvelle valeur
 					else if(AddValeurFromServerChangement* chgt = dynamic_cast<AddValeurFromServerChangement*>(*itCh)) {
 						Branche* parent = getBranche(chgt->getBrancheId());
-						const Valeur* valeur = parent->addValeurInt(chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
+						const Valeur* valeur = parent->addValeur(chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
 
 						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
 					}

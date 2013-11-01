@@ -23,7 +23,7 @@ class ClientDataTree : public DataTree {
 	DistantTreeProxy* _serverTreeProxy;
 
 	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
-	void addServeurMarqueur(Donnee* donnee);
+	void initDonneeAndServeurMarqueur(Donnee* donnee);
 public:
 	ClientDataTree(const std::string& clientName, Interlocutor2* serverInterlocutor);
 	virtual ~ClientDataTree();
@@ -35,9 +35,13 @@ public:
 	 * Serveur local actions
 	 * ****************************************************/
 
+	// Gestion branches et valeurs par référence
+	Branche* createBranche(Branche* parentBranche, const std::string& brancheName) throw(NotExistingBrancheException);
+	Valeur* createValeur(Branche* parentBranche, const std::string& valeurName, const JktUtils::Data* valeur) throw(NotExistingBrancheException);
+
+	// Gestion branches et valeurs avec coordonnées vectorielles
 	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
 	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::Data* valeur);
-	Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::Data* value);
 
 
 	/* ****************************************************

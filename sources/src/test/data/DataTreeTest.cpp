@@ -308,7 +308,7 @@ void DataTreeTest::test() {
 	Branche* brancheClient1 = clientTree.createBranche(rootFullId, branche1Name);
 
 	// Ajout d'une valeur
-	Valeur* valeurClient1 = clientTree.createValeur(branche1FullId, "valeur-1", new IntData(99));
+	Valeur* valeurClient1 = clientTree.createValeur(brancheClient1, "valeur-1", new IntData(99));
 
 
 	/* ****************************************************************************

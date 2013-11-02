@@ -5,6 +5,7 @@
  *      Author: vgdj7997
  */
 
+#include <map>
 #include <string>
 #include <iostream>
 #include <stdexcept>
@@ -313,4 +314,39 @@ vector<int> Branche::getBrancheFullId() const {
 	getBrancheFullId(id);
 
 	return id;
+}
+
+void Branche::print(ostringstream& out, int indentation) {
+	int i;
+
+	// Affiche la branche
+	out << endl;
+
+	for(i = 0 ; i < indentation ; i++) {
+		out << "   ";
+	}
+
+	out << "+:" << _brancheId << ":" << getRevision() << " '" << _brancheName << "'";
+	map<int, Valeur*>::iterator valIt;
+
+	// Affiche les valeurs de la branche
+	for(valIt = _valeurs.begin() ; valIt != _valeurs.end() ; ++valIt) {
+		Valeur* valeur = valIt->second;
+
+		out << endl;
+
+		for(i = 0 ; i < indentation ; i++) {
+				out << "   ";
+		}
+
+		out << "-:" << valeur->getValeurId() << ":" << valeur->getRevision() << " '" << valeur->getValeurName() << "'";
+	}
+
+	// Affiche les branches de la branche
+	map<int, Branche*>::iterator brIt;
+
+	for(brIt = _subBranches.begin() ; brIt != _subBranches.end() ; ++brIt) {
+		Branche* branche = brIt->second;
+		branche->print(out, indentation+1);
+	}
 }

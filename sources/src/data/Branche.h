@@ -8,6 +8,7 @@
 #ifndef BRANCHE_H_
 #define BRANCHE_H_
 
+#include <sstream>
 #include <string>
 #include <map>
 
@@ -76,6 +77,8 @@ public:
 
 	/** Ajoute une valeur entière qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
 	const Valeur* addValeur(int valeurId, const std::string& valeurName, int valeurRevision, const JktUtils::Data* valeur);
+
+	void print(std::ostringstream& out, int indentation);
 };
 
 #endif /* BRANCHE_H_ */

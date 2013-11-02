@@ -71,6 +71,9 @@ void DataTreeTest::test() {
 	const string valeurFloatName = "valeur-float";
 	const float valeurFloatValue = 6.83f;
 
+	const string valeurClient1Name = "valeur-int-client-1";
+	const int valeurClient1Value = 927;
+
 
 	/* ****************************************************************************
 	 * Serveur : Création du serveur
@@ -308,8 +311,13 @@ void DataTreeTest::test() {
 	Branche* brancheClient1 = clientTree.createBranche(rootFullId, branche1Name);
 
 	// Ajout d'une valeur
-	Valeur* valeurClient1 = clientTree.createValeur(brancheClient1, "valeur-1", new IntData(99));
-
+	Valeur* valeurClient1 = clientTree.createValeur(brancheClient1, valeurClient1Name, new IntData(valeurClient1Value));
+	{
+		ostringstream arbre;
+		arbre << endl << "ARBRE CLIENT 1 :" << endl;
+		clientTree.getRoot().print(arbre, 0);
+		log(arbre);
+	}
 
 	/* ****************************************************************************
 	 * Serveur : Vérifie si les marqueurs des données du client sont bien mis
@@ -343,6 +351,26 @@ void DataTreeTest::test() {
 	};
 
 	serverTree.receiveChangementsFromClients();
+
+	{
+		ostringstream arbre;
+		arbre << endl << "ARBRE SERVER 1 :" << endl;
+		serverTree.getRoot().print(arbre, 0);
+		log(arbre);
+	}
+
+	/* ****************************************************************************
+	 * Serveur : Vérifie si le serveur a bien reçu les données du client
+	 * ***************************************************************************/
+
+	Branche* brancheClient1S = serverTree.getBranche(brancheClient1->getBrancheFullId());
+	ASSERT_NOT_NULL(brancheClient1S, "Le serveur n'a pas recu la branche");
+	ASSERT_EQUAL(branche1Name, brancheClient1S->getBrancheName(), "La branche recue par le serveur est mal nommée");
+
+	ValeurInt* valeurClient1S = (ValeurInt*)serverTree.getBranche(brancheClient1->getBrancheFullId());
+	ASSERT_NOT_NULL(valeurClient1S, "Le serveur n'a pas recu la valeur");
+	ASSERT_EQUAL(valeurClient1Name, valeurClient1S->getValeurName(), "La valeur recue par le serveur est mal nommée");
+	ASSERT_EQUAL(valeurClient1Value, valeurClient1S->getValeur(), "La valeur recue par le serveur est mal nommée");
 }
 
 } /* namespace JktTest */

@@ -66,7 +66,7 @@ public:
 	// Log methods
 	void log(const char* message);
 	void log(const string& message);
-	void log(const stringstream& message);
+	void log(const ostringstream& message);
 };
 
 } /* namespace JktTest */

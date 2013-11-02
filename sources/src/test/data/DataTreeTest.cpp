@@ -314,7 +314,7 @@ void DataTreeTest::test() {
 	Valeur* valeurClient1 = clientTree.createValeur(brancheClient1, valeurClient1Name, new IntData(valeurClient1Value));
 	{
 		ostringstream arbre;
-		arbre << endl << "ARBRE CLIENT 1 :" << endl;
+		arbre << endl << "ARBRE CLIENT 1 :";
 		clientTree.getRoot().print(arbre, 0);
 		log(arbre);
 	}
@@ -354,7 +354,7 @@ void DataTreeTest::test() {
 
 	{
 		ostringstream arbre;
-		arbre << endl << "ARBRE SERVER 1 :" << endl;
+		arbre << endl << "ARBRE SERVER 1 :";
 		serverTree.getRoot().print(arbre, 0);
 		log(arbre);
 	}

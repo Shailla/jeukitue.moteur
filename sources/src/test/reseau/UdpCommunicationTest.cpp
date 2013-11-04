@@ -93,7 +93,7 @@ void UdpCommunicationTest::test() {
 
 		Uint32 temps = SDL_GetTicks() - tempsAvantConnexion;
 
-		stringstream message;
+		ostringstream message;
 		message << "Temps de connexion au serveur : " << temps << " ms";
 		log(message);
 
@@ -128,7 +128,7 @@ void UdpCommunicationTest::test() {
 
 		Uint32 temps = SDL_GetTicks() - tempsAvantEnvoi;
 
-		stringstream message;
+		ostringstream message;
 		message << "Temps d'envoie d'un message du client vers le serveur : " << temps << " ms";
 		log(message);
 
@@ -161,7 +161,7 @@ void UdpCommunicationTest::test() {
 
 		Uint32 temps = SDL_GetTicks() - tempsAvantEnvoi;
 
-		stringstream message;
+		ostringstream message;
 		message << "Temps d'envoie d'un message du serveur vers le client : " << temps << " ms";
 		log(message);
 

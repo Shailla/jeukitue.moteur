@@ -34,45 +34,55 @@ void DataTreeTest::test() {
 	 * Test data
 	 * ********************************************************/
 
-	// Data branche root
+	/* ------------------ Global data ------------------ */
+
+	// Server branche root
 	const string rootName = "root";
 	vector<int> rootFullId;
 
-	// Data branche 0
-	int branche0Id = 0;
-	vector<int> branche0FullId;
-	branche0FullId.push_back(branche0Id);
-	const string branche0Name = "branche-0";
+	/* ------------------ Server data ------------------ */
 
-	// Data branche 1
-	int branche1Id = 1;
-	vector<int> branche1FullId;
-	branche1FullId.push_back(branche1Id);
-	const string branche1Name = "branche-1";
+	// Server branche 0
+	int branche0ServerId = 0;
+	vector<int> branche0ServerFullId;
+	branche0ServerFullId.push_back(branche0ServerId);
+	const string branche0ServerName = "branche-0-server";
 
-	// Data valeur string
-	const int valeurStringId = 0;
-	vector<int> valeurStringFullId = branche0FullId;
-	valeurStringFullId.push_back(valeurStringId);
-	const string valeurStringName = "valeur-string";
-	const string valeurStringValue = "valeur-string-value";
+	// Server valeur string
+	const int valeurStringServerId = 0;
+	vector<int> valeurStringServerFullId = branche0ServerFullId;
+	valeurStringServerFullId.push_back(valeurStringServerId);
+	const string valeurStringServerName = "valeur-string-server";
+	const string valeurStringServerValue = "valeur-string-server-value";
 
-	// Data valeur int
-	const int valeurIntId = 1;
-	vector<int> valeurIntFullId = branche0FullId;
-	valeurIntFullId.push_back(valeurIntId);
-	const string valeurIntName = "valeur-int";
-	const float valeurIntValue = 637;
+	// Server valeur int
+	const int valeurIntServerId = 1;
+	vector<int> valeurIntServerFullId = branche0ServerFullId;
+	valeurIntServerFullId.push_back(valeurIntServerId);
+	const string valeurIntServerName = "valeur-int-server";
+	const float valeurIntServerValue = 637;
 
-	// Data valeur float
-	const int valeurFloatId = 2;
-	vector<int> valeurFloatFullId = branche0FullId;
-	valeurFloatFullId.push_back(valeurFloatId);
-	const string valeurFloatName = "valeur-float";
-	const float valeurFloatValue = 6.83f;
+	// Server valeur float
+	const int valeurFloatServerId = 2;
+	vector<int> valeurFloatServerFullId = branche0ServerFullId;
+	valeurFloatServerFullId.push_back(valeurFloatServerId);
+	const string valeurFloatServerName = "valeur-float-server";
+	const float valeurFloatServerValue = 6.83f;
 
-	const string valeurClient1Name = "valeur-int-client-1";
-	const int valeurClient1Value = 927;
+	/* ------------------ Client data ------------------ */
+
+	// Client branche 1
+	int branche0Client0Id = 1;
+	vector<int> branche0Client0FullId;
+	branche0Client0FullId.push_back(branche0Client0Id);
+	const string branche0Client0Name = "branche-0-client-0";
+
+	// Client valeur 1
+	int valeur0Client0Id = 0;
+	vector<int> valeur0Client0FullId;
+	valeur0Client0FullId.push_back(valeur0Client0Id);
+	const string valeur0Client0Name = "valeur-0-client-0";
+	const int valeur0Client0Value = 927;
 
 
 	/* ****************************************************************************
@@ -92,11 +102,11 @@ void DataTreeTest::test() {
 	 * ***************************************************************************/
 
 	{
-		Branche* branche0Tmp = serverTree.createBranche(rootFullId, branche0Name);
-		Branche* branche0 = serverTree.getBranche(branche0FullId);
+		Branche* branche0Tmp = serverTree.createBranche(rootFullId, branche0ServerName);
+		Branche* branche0 = serverTree.getBranche(branche0ServerFullId);
 
 		ASSERT_EQUAL(branche0Tmp, branche0, "La branche créée et celle lue devraient être les mêmes");
-		ASSERT_EQUAL(branche0Name, branche0->getBrancheName(), "Le nom de la branche 0 est incorrect");
+		ASSERT_EQUAL(branche0ServerName, branche0->getBrancheName(), "Le nom de la branche 0 est incorrect");
 		ASSERT_EQUAL(0, branche0->getRevision(), "La révision initiale d'une branche devrait être nulle");
 	}
 
@@ -107,35 +117,35 @@ void DataTreeTest::test() {
 
 	// Valeur string
 	{
-		Valeur* valeurStringTmp = serverTree.createValeur(branche0FullId, valeurStringName, new StringData(valeurStringValue));
-		ValeurString* valeurString = (ValeurString*)serverTree.getValeur(branche0FullId, valeurStringId);
+		Valeur* valeurStringTmp = serverTree.createValeur(branche0ServerFullId, valeurStringServerName, new StringData(valeurStringServerValue));
+		ValeurString* valeurString = (ValeurString*)serverTree.getValeur(branche0ServerFullId, valeurStringServerId);
 
 		ASSERT_EQUAL(valeurStringTmp, valeurString, "La valeur créée et celle lue devraient être les mêmes");
-		ASSERT_EQUAL(valeurStringName, valeurString->getValeurName(), "Le nom de la valeur string est incorrect");
+		ASSERT_EQUAL(valeurStringServerName, valeurString->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurString->getRevision(), "La révision initiale d'une valeur devrait être nulle");
-		ASSERT_EQUAL(valeurStringValue, valeurString->getValeur(), "La valeur de la valeur est fausse");
+		ASSERT_EQUAL(valeurStringServerValue, valeurString->getValeur(), "La valeur de la valeur est fausse");
 	}
 
 	// Valeur int
 	{
-		Valeur* valeurIntTmp = serverTree.createValeur(branche0FullId, valeurIntName, new IntData(valeurIntValue));
-		ValeurInt* valeurInt = (ValeurInt*)serverTree.getValeur(branche0FullId, valeurIntId);
+		Valeur* valeurIntTmp = serverTree.createValeur(branche0ServerFullId, valeurIntServerName, new IntData(valeurIntServerValue));
+		ValeurInt* valeurInt = (ValeurInt*)serverTree.getValeur(branche0ServerFullId, valeurIntServerId);
 
 		ASSERT_EQUAL(valeurIntTmp, valeurInt, "La valeur créée et celle lue devraient être les mêmes");
-		ASSERT_EQUAL(valeurIntName, valeurInt->getValeurName(), "Le nom de la valeur string est incorrect");
+		ASSERT_EQUAL(valeurIntServerName, valeurInt->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurInt->getRevision(), "La révision initiale d'une valeur devrait être nulle");
-		ASSERT_EQUAL(valeurIntValue, valeurInt->getValeur(), "La valeur de la valeur est fausse");
+		ASSERT_EQUAL(valeurIntServerValue, valeurInt->getValeur(), "La valeur de la valeur est fausse");
 	}
 
 	// Valeur float
 	{
-		Valeur* valeurFloatTmp = serverTree.createValeur(branche0FullId, valeurFloatName, new FloatData(valeurFloatValue));
-		ValeurFloat* valeurFloat = (ValeurFloat*) serverTree.getValeur(branche0FullId, valeurFloatId);
+		Valeur* valeurFloatTmp = serverTree.createValeur(branche0ServerFullId, valeurFloatServerName, new FloatData(valeurFloatServerValue));
+		ValeurFloat* valeurFloat = (ValeurFloat*) serverTree.getValeur(branche0ServerFullId, valeurFloatServerId);
 
 		ASSERT_EQUAL(valeurFloatTmp, valeurFloat, "La valeur créée et celle lue devraient être les mêmes");
-		ASSERT_EQUAL(valeurFloatName, valeurFloat->getValeurName(), "Le nom de la valeur string est incorrect");
+		ASSERT_EQUAL(valeurFloatServerName, valeurFloat->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurFloat->getRevision(), "La révision initiale d'une valeur devrait être nulle");
-		ASSERT_EQUAL(valeurFloatValue, valeurFloat->getValeur(), "La valeur de la valeur est fausse");
+		ASSERT_EQUAL(valeurFloatServerValue, valeurFloat->getValeur(), "La valeur de la valeur est fausse");
 	}
 
 
@@ -144,7 +154,7 @@ void DataTreeTest::test() {
 	 * ***************************************************************************/
 
 	Interlocutor2 interlocutor(SDL_CreateCond(), SDL_CreateMutex());
-	ClientDataTree clientTree("client-test", &interlocutor);
+	ClientDataTree clientTree("client-0", &interlocutor);
 
 	// Vérification de la branche root
 	Branche& root = clientTree.getRoot();
@@ -229,9 +239,9 @@ void DataTreeTest::test() {
 	 * ***************************************************************************/
 
 	{
-		Branche* branche0 = clientTree.getBranche(branche0FullId);
+		Branche* branche0 = clientTree.getBranche(branche0ServerFullId);
 
-		ASSERT_EQUAL(branche0Name, branche0->getBrancheName(), "Le nom de la branche 0 est incorrect");
+		ASSERT_EQUAL(branche0ServerName, branche0->getBrancheName(), "Le nom de la branche 0 est incorrect");
 		ASSERT_EQUAL(0, branche0->getRevision(), "La révision initiale d'une branche devrait être nulle");
 	}
 
@@ -242,29 +252,29 @@ void DataTreeTest::test() {
 
 	// Valeur string
 	{
-		ValeurString* valeurString = (ValeurString*)clientTree.getValeur(branche0FullId, valeurStringId);
+		ValeurString* valeurString = (ValeurString*)clientTree.getValeur(branche0ServerFullId, valeurStringServerId);
 
-		ASSERT_EQUAL(valeurStringName, valeurString->getValeurName(), "Le nom de la valeur string est incorrect");
+		ASSERT_EQUAL(valeurStringServerName, valeurString->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurString->getRevision(), "La révision initiale d'une valeur devrait être nulle");
-		ASSERT_EQUAL(valeurStringValue, valeurString->getValeur(), "La valeur de la valeur est fausse");
+		ASSERT_EQUAL(valeurStringServerValue, valeurString->getValeur(), "La valeur de la valeur est fausse");
 	}
 
 	// Valeur int
 	{
-		ValeurInt* valeurInt = (ValeurInt*)clientTree.getValeur(branche0FullId, valeurIntId);
+		ValeurInt* valeurInt = (ValeurInt*)clientTree.getValeur(branche0ServerFullId, valeurIntServerId);
 
-		ASSERT_EQUAL(valeurIntName, valeurInt->getValeurName(), "Le nom de la valeur string est incorrect");
+		ASSERT_EQUAL(valeurIntServerName, valeurInt->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurInt->getRevision(), "La révision initiale d'une valeur devrait être nulle");
-		ASSERT_EQUAL(valeurIntValue, valeurInt->getValeur(), "La valeur de la valeur est fausse");
+		ASSERT_EQUAL(valeurIntServerValue, valeurInt->getValeur(), "La valeur de la valeur est fausse");
 	}
 
 	// Valeur float
 	{
-		ValeurFloat* valeurFloat = (ValeurFloat*)clientTree.getValeur(branche0FullId, valeurFloatId);
+		ValeurFloat* valeurFloat = (ValeurFloat*)clientTree.getValeur(branche0ServerFullId, valeurFloatServerId);
 
-		ASSERT_EQUAL(valeurFloatName, valeurFloat->getValeurName(), "Le nom de la valeur string est incorrect");
+		ASSERT_EQUAL(valeurFloatServerName, valeurFloat->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurFloat->getRevision(), "La révision initiale d'une valeur devrait être nulle");
-		ASSERT_EQUAL(valeurFloatValue, valeurFloat->getValeur(), "La valeur de la valeur est fausse");
+		ASSERT_EQUAL(valeurFloatServerValue, valeurFloat->getValeur(), "La valeur de la valeur est fausse");
 	}
 
 
@@ -308,13 +318,13 @@ void DataTreeTest::test() {
 	 * ***************************************************************************/
 
 	// Ajout d'une branche
-	Branche* brancheClient1 = clientTree.createBranche(rootFullId, branche1Name);
+	Branche* brancheClient1 = clientTree.createBranche(rootFullId, branche0Client0Name);
 
 	// Ajout d'une valeur
-	Valeur* valeurClient1 = clientTree.createValeur(brancheClient1, valeurClient1Name, new IntData(valeurClient1Value));
+	Valeur* valeurClient1 = clientTree.createValeur(brancheClient1, valeur0Client0Name, new IntData(valeur0Client0Value));
 	{
 		ostringstream arbre;
-		arbre << endl << "ARBRE CLIENT 1 :";
+		arbre << endl << "ARBRE CLIENT 0 :";
 		clientTree.getRoot().print(arbre, 0);
 		log(arbre);
 	}
@@ -354,7 +364,7 @@ void DataTreeTest::test() {
 
 	{
 		ostringstream arbre;
-		arbre << endl << "ARBRE SERVER 1 :";
+		arbre << endl << "ARBRE SERVER :";
 		serverTree.getRoot().print(arbre, 0);
 		log(arbre);
 	}
@@ -363,14 +373,14 @@ void DataTreeTest::test() {
 	 * Serveur : Vérifie si le serveur a bien reçu les données du client
 	 * ***************************************************************************/
 
-	Branche* brancheClient1S = serverTree.getBranche(brancheClient1->getBrancheFullId());
-	ASSERT_NOT_NULL(brancheClient1S, "Le serveur n'a pas recu la branche");
-	ASSERT_EQUAL(branche1Name, brancheClient1S->getBrancheName(), "La branche recue par le serveur est mal nommée");
+	Branche* branche0Client0S = serverTree.getBranche(branche0Client0FullId);
+	ASSERT_NOT_NULL(branche0Client0S, "Le serveur n'a pas recu la branche");
+	ASSERT_EQUAL(branche0Client0Name, branche0Client0S->getBrancheName(), "La branche recue par le serveur est mal nommée");
 
-	ValeurInt* valeurClient1S = (ValeurInt*)serverTree.getBranche(brancheClient1->getBrancheFullId());
+	ValeurInt* valeurClient1S = (ValeurInt*)serverTree.getValeur(branche0Client0FullId, valeur0Client0Id);
 	ASSERT_NOT_NULL(valeurClient1S, "Le serveur n'a pas recu la valeur");
-	ASSERT_EQUAL(valeurClient1Name, valeurClient1S->getValeurName(), "La valeur recue par le serveur est mal nommée");
-	ASSERT_EQUAL(valeurClient1Value, valeurClient1S->getValeur(), "La valeur recue par le serveur est mal nommée");
+	ASSERT_EQUAL(valeur0Client0Name, valeurClient1S->getValeurName(), "La valeur recue par le serveur est mal nommée");
+	ASSERT_EQUAL(valeur0Client0Value, valeurClient1S->getValeur(), "La valeur recue par le serveur est mal nommée");
 }
 
 } /* namespace JktTest */

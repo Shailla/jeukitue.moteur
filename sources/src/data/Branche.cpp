@@ -326,7 +326,7 @@ void Branche::print(ostringstream& out, int indentation) {
 		out << "   ";
 	}
 
-	out << "+:" << _brancheId << ":" << getRevision() << " '" << _brancheName << "'";
+	out << "+ [" << _brancheId << ":" << _brancheTmpId << ":" << getRevision() << "] '" << _brancheName << "'";
 	map<int, Valeur*>::iterator valIt;
 
 	// Affiche les valeurs de la branche
@@ -339,7 +339,7 @@ void Branche::print(ostringstream& out, int indentation) {
 				out << "   ";
 		}
 
-		out << "-:" << valeur->getValeurId() << ":" << valeur->getRevision() << " '" << valeur->getValeurName() << "'";
+		out << "- [" << valeur->getValeurId() << ":" << valeur->getValeurTmpId() << ":" << valeur->getRevision() << "] '" << valeur->getValeurName() << "'";
 	}
 
 	// Affiche les branches de la branche

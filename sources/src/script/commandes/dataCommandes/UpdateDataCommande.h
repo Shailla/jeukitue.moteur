@@ -20,6 +20,7 @@ class UpdateDataCommande : public Commande {
 public:
 	UpdateDataCommande(CommandeInterpreter* interpreter);
 
+	std::string getShortHelp() const;
 	std::string getHelp() const;
 };
 

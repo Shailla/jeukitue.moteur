@@ -42,8 +42,6 @@ public:
 	 * ****************************************************/
 
 	// Gestion branches et valeurs par référence
-	Branche* createBranche(Branche* parentBranche, const std::string& brancheName) throw (NotExistingBrancheException);
-	Valeur* createValeur(Branche* parentBranche, const std::string& valeurName, const JktUtils::Data* valeur) throw (NotExistingBrancheException);
 	void updateValeur(Valeur* valeur, const JktUtils::Data* value);
 
 	// Gestion branches et valeurs avec coordonnées vectorielles

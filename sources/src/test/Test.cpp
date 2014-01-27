@@ -85,16 +85,16 @@ void Test::assertEqual(const char* file, int line, int expected, int var, const 
 	}
 }
 
-void Test::log(const char* message) {
-	cout << flush << endl << endl << "= " << SDL_GetTicks() << " TEST : " << message << flush;
+void Test::log(const char* message, int line) {
+	cout << endl << "LOG [" << SDL_GetTicks() << " ms - " << line << "] " << message << flush;
 }
 
-void Test::log(const string& message) {
-	cout << flush << endl << endl << "= " << SDL_GetTicks() << " TEST : " << message << flush;
+void Test::log(const string& message, int line) {
+	cout << endl << "LOG [" << SDL_GetTicks() << " ms - " << line << "] " << message << flush;
 }
 
-void Test::log(const ostringstream& message) {
-	cout << flush << endl << endl << "= " << SDL_GetTicks() << " TEST : " << message.str() << flush;
+void Test::log(const ostringstream& message, int line) {
+	cout << endl << "LOG [" << SDL_GetTicks() << " ms - " << line << "] " << message.str() << flush;
 }
 
 } /* namespace JktTest */

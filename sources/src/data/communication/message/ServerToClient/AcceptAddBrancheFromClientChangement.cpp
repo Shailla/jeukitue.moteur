@@ -19,11 +19,11 @@ using namespace std;
 
 #include "data/communication/message/ServerToClient/AcceptAddBrancheFromClientChangement.h"
 
-AcceptAddBrancheFromClientChangement::AcceptAddBrancheFromClientChangement(istringstream& in) : Changement("AcceptAddBrancheFromClientChangement") {
+AcceptAddBrancheFromClientChangement::AcceptAddBrancheFromClientChangement(istringstream& in) : Changement("AcceptAddBrancheFromClientChangement", PRIORITY_AcceptAddBrancheFromClientChangement) {
 	unserialize(in);
 }
 
-AcceptAddBrancheFromClientChangement::AcceptAddBrancheFromClientChangement(const vector<int>& parentBrancheId, int brancheTmpId, int brancheId, int revision) : Changement("AcceptAddBrancheFromClientChangement") {
+AcceptAddBrancheFromClientChangement::AcceptAddBrancheFromClientChangement(const vector<int>& parentBrancheId, int brancheTmpId, int brancheId, int revision) : Changement("AcceptAddBrancheFromClientChangement", PRIORITY_AcceptAddBrancheFromClientChangement) {
 	_parentBrancheId = parentBrancheId;
 	_brancheTmpId = brancheTmpId;
 	_brancheId = brancheId;
@@ -38,7 +38,7 @@ void AcceptAddBrancheFromClientChangement::update(MarqueurDistant* marqueur) {
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }
 
-void AcceptAddBrancheFromClientChangement::serialize(ostringstream& out) {
+void AcceptAddBrancheFromClientChangement::serialize(ostringstream& out) const {
 	// Serialize
 	StreamUtils::write(out, (int)ACCEPT_ADD_BRANCHE_FROM_CLIENT);
 
@@ -55,7 +55,7 @@ void AcceptAddBrancheFromClientChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _revision);
 }
 
-string AcceptAddBrancheFromClientChangement::toString() {
+string AcceptAddBrancheFromClientChangement::toString() const {
 	ostringstream str;
 
 	str << "[" << _dataType;
@@ -88,4 +88,8 @@ int AcceptAddBrancheFromClientChangement::getBrancheId() const {
 
 int AcceptAddBrancheFromClientChangement::getRevision() const {
 	return _revision;
+}
+
+int AcceptAddBrancheFromClientChangement::getRootDistance() const {
+	return _parentBrancheId.size();
 }

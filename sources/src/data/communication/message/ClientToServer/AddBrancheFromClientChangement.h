@@ -29,8 +29,8 @@ public:
 	AddBrancheFromClientChangement(const std::vector<int>& parentBrancheId, int brancheTmpId, int revision, const std::string& brancheName);
 
 	void update(MarqueurDistant* marqueur);
-	void serialize(std::ostringstream& out);
-	std::string toString();
+	void serialize(std::ostringstream& out) const;
+	std::string toString() const;
 
 
 	/* *******************************************
@@ -41,6 +41,7 @@ public:
 	int getBrancheTmpId() const;
 	const std::string& getBrancheName() const;
 	int getRevision() const;
+	int getRootDistance() const;
 };
 
 #endif /* ADDBRANCHEFROMCLIENTCHANGEMENT_H_ */

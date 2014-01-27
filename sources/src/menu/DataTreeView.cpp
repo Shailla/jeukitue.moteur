@@ -119,11 +119,11 @@ void DataTreeView::show(void) {
 void DataTreeView::drawBranche(DataTreeView* thiz, Branche* branche, int depth) {
 	// Valeurs filles
 	{
-		map<int, Valeur*>& valeurs = branche->getValeurs();
-		map<int, Valeur*>::iterator itVa;
+		vector<Valeur*>& valeurs = branche->getValeurs();
+		vector<Valeur*>::iterator itVa;
 
 		for(itVa = valeurs.begin() ; itVa != valeurs.end() ; itVa++) {
-			Valeur* valeur = itVa->second;
+			Valeur* valeur = *itVa;
 
 			ostringstream txt;
 
@@ -136,11 +136,11 @@ void DataTreeView::drawBranche(DataTreeView* thiz, Branche* branche, int depth) 
 
 	// Branches filles
 	{
-		map<int, Branche*>& subBranches = branche->getSubBranches();
-		map<int, Branche*>::const_iterator itBr;
+		vector<Branche*>& subBranches = branche->getSubBranches();
+		vector<Branche*>::const_iterator itBr;
 
 		for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
-			Branche* subBranche = itBr->second;
+			Branche* subBranche = *itBr;
 
 			ostringstream tete;
 			tete << "Branche[" << subBranche->getBrancheId() << " r" << subBranche->getRevision() << " '" << subBranche->getBrancheName()  << "']";

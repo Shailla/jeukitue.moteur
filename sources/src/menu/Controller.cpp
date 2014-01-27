@@ -106,7 +106,7 @@ void Controller::executeAction(AG_Event *event) {
 		m_agarView->showMenuView(Viewer::CONFIGURATION_JOUEUR_VIEW);
 		break;
 
-	case ShowConfigurationCommandes:
+	case ShowConfigurationCommandesViewAction:
 		m_agarView->showMenuView(Viewer::CONFIGURATION_COMMANDES_VIEW);
 		break;
 
@@ -121,7 +121,7 @@ void Controller::executeAction(AG_Event *event) {
 	}
 	break;
 
-	case ShowConfigurationAudio:
+	case ShowConfigurationAudioViewAction:
 		m_agarView->showMenuView(Viewer::CONFIGURATION_AUDIO_VIEW);
 		break;
 

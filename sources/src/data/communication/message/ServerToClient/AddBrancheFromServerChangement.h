@@ -30,8 +30,8 @@ public:
 	AddBrancheFromServerChangement(const std::vector<int>& parentBrancheId, int brancheId, int revision, const std::string& brancheName);
 
 	void update(MarqueurDistant* marqueur);
-	void serialize(std::ostringstream& out);
-	std::string toString();
+	void serialize(std::ostringstream& out) const;
+	std::string toString() const;
 
 
 	/* *******************************************
@@ -42,6 +42,7 @@ public:
 	const std::vector<int>& getParentBrancheId() const;
 	const std::string& getBrancheName() const;
 	int getRevision() const;
+	int getRootDistance() const;
 };
 
 #endif /* ADDBRANCHEFROMSERVERCHANGEMENT_H_ */

@@ -17,7 +17,7 @@ ConfigurationAudioView::ConfigurationAudioView(const AG_EventFn controllerCallba
 :View(controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
-    AG_WindowSetCaption(m_window, "Vidéo");
+    AG_WindowSetCaption(m_window, "Audio");
 
     AG_SeparatorNewHoriz(m_window);
 	
@@ -27,7 +27,7 @@ ConfigurationAudioView::ConfigurationAudioView(const AG_EventFn controllerCallba
 	AG_ButtonNewFn(box, 0, "Retour", controllerCallback, "%i", Controller::ShowConfigurationMenuAction);
     
 	// Bouton appliquer
-	AG_ButtonNewFn(box, 0, "Appliquer", controllerCallback, "%i", Controller::ShowConfigurationVideoViewAction);
+	AG_ButtonNewFn(box, 0, "Appliquer", controllerCallback, "%i", Controller::ShowConfigurationAudioViewAction);
 
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);
 	AG_WindowShow(m_window);

@@ -17,7 +17,7 @@
 class MarqueurDistant;
 
 class AddValeurFromServerChangement: public Changement {
-	std::vector<int> _brancheId;
+	std::vector<int> _parentBrancheId;
 	int _valeurId;
 	std::string _valeurName;
 	int _revision;
@@ -31,19 +31,20 @@ public:
 	~AddValeurFromServerChangement();
 
 	void update(MarqueurDistant* marqueur);
-	void serialize(std::ostringstream& out);
-	std::string toString();
+	void serialize(std::ostringstream& out) const;
+	std::string toString() const;
 
 
 	/* *******************************************
 	 * Accessors
 	 * ******************************************/
 
-	const std::vector<int>& getBrancheId() const;
+	const std::vector<int>& getParentBrancheId() const;
 	int getValeurId() const;
 	const std::string& getValeurName() const;
 	int getRevision() const;
 	const JktUtils::Data* getValeur() const;
+	int getRootDistance() const;
 };
 
 #endif /* ADDBRANCHECHANGEMENT_H_ */

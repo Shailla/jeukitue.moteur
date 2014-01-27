@@ -20,6 +20,8 @@ public:
 	virtual ~UdpCommunicationTest();
 
 	std::string getName();
+	std::string getDescription();
+
 	void test();
 };
 

@@ -15,12 +15,12 @@ using namespace std;
 
 #include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"
 
-AddValeurFromClientChangement::AddValeurFromClientChangement(istringstream& in) : Changement("AddValeurFromClientChangement") {
+AddValeurFromClientChangement::AddValeurFromClientChangement(istringstream& in) : Changement("AddValeurFromClientChangement", PRIORITY_AddValeurFromClientChangement) {
 	unserialize(in);
 }
 
-AddValeurFromClientChangement::AddValeurFromClientChangement(const vector<int>& brancheId, int valeurTmpId, int revision, const string& valeurName, JktUtils::Data* valeur) : Changement("AddValeurFromClientChangement") {
-	_brancheId = brancheId;
+AddValeurFromClientChangement::AddValeurFromClientChangement(const vector<int>& parentBrancheId, int valeurTmpId, int revision, const string& valeurName, JktUtils::Data* valeur) : Changement("AddValeurFromClientChangement", PRIORITY_AddValeurFromClientChangement) {
+	_parentBrancheId = parentBrancheId;
 	_valeurTmpId = valeurTmpId;
 	_revision = revision;
 	_valeurName = valeurName;
@@ -38,11 +38,11 @@ void AddValeurFromClientChangement::update(MarqueurDistant* marqueur) {
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }
 
-void AddValeurFromClientChangement::serialize(ostringstream& out) {
+void AddValeurFromClientChangement::serialize(ostringstream& out) const {
 	// Serialize
 	StreamUtils::write(out, (int)ADD_VALEUR_FROM_CLIENT_MESSAGE);
 
-	StreamUtils::write(out, _brancheId);
+	StreamUtils::write(out, _parentBrancheId);
 	StreamUtils::write(out, _valeurTmpId);
 	StreamUtils::write(out, _valeurName);
 	StreamUtils::write(out, _revision);
@@ -50,20 +50,20 @@ void AddValeurFromClientChangement::serialize(ostringstream& out) {
 }
 
 void AddValeurFromClientChangement::unserialize(istringstream& in) {
-	StreamUtils::read(in, _brancheId);
+	StreamUtils::read(in, _parentBrancheId);
 	StreamUtils::read(in, _valeurTmpId);
 	StreamUtils::read(in, _valeurName);
 	StreamUtils::read(in, _revision);
 	_valeur = StreamUtils::readData(in);
 }
 
-string AddValeurFromClientChangement::toString() {
+string AddValeurFromClientChangement::toString() const {
 	ostringstream str;
 
 	str << "[" << _dataType;
 
 	str << " brancheId:";
-	StreamUtils::writeHumanReadable(str, _brancheId);
+	StreamUtils::writeHumanReadable(str, _parentBrancheId);
 
 	str << "; valeurTmpId:" << _valeurTmpId;
 
@@ -79,8 +79,8 @@ string AddValeurFromClientChangement::toString() {
 	return str.str();
 }
 
-const std::vector<int>& AddValeurFromClientChangement::getBrancheId() const {
-	return _brancheId;
+const std::vector<int>& AddValeurFromClientChangement::getParentBrancheId() const {
+	return _parentBrancheId;
 }
 
 int AddValeurFromClientChangement::getValeurTmpId() const {
@@ -97,4 +97,8 @@ int AddValeurFromClientChangement::getRevision() const {
 
 JktUtils::Data* AddValeurFromClientChangement::getValeur() const {
 	return _valeur;
+}
+
+int AddValeurFromClientChangement::getRootDistance() const {
+	return _parentBrancheId.size();
 }

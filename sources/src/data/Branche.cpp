@@ -8,6 +8,8 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <vector>
+#include <algorithm>
 #include <stdexcept>
 
 using namespace std;
@@ -38,11 +40,16 @@ void Branche::setBrancheId(int brancheId) {
 	_brancheId = brancheId;
 }
 
-Branche* Branche::getSubBranche(int brancheId) const {
+Branche* Branche::getSubBrancheByIdOrTmpId(int brancheId) const {
 	Branche* branche = NULL;
 
 	try {
-		branche = _subBranches.at(brancheId);
+		if(brancheId >= 0) {
+			branche = _subBranchesById.at(brancheId);
+		}
+		else {
+			branche = _subBranchesByTmpId.at(brancheId);
+		}
 	}
 	catch(out_of_range& exception) {
 		branche = NULL;
@@ -51,13 +58,22 @@ Branche* Branche::getSubBranche(int brancheId) const {
 	return branche;
 }
 
+Branche* Branche::getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException) {
+	if(brancheId >= 0) {
+		return getSubBrancheByIdOrTmpId(brancheId);
+	}
+	else {
+		return getSubBrancheByDistantTmpId(distant, brancheId);
+	}
+}
+
 Branche* Branche::getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheTmpId) throw(NotExistingBrancheException) {
-	map<int, Branche*>::iterator it;
+	vector<Branche*>::iterator it;
 	MarqueurDistant* marqueur;
 	Branche* subBranche = NULL;
 
 	for(it = _subBranches.begin() ; (it!=_subBranches.end() && subBranche==NULL) ; it++) {
-		subBranche = it->second;
+		subBranche = *it;
 		marqueur = subBranche->getMarqueur(distant);
 
 		if(marqueur->getTemporaryId() != brancheTmpId) {
@@ -73,12 +89,12 @@ Branche* Branche::getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int bra
 }
 
 Valeur* Branche::getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) throw(NotExistingValeurException) {
-	map<int, Valeur*>::iterator it;
+	vector<Valeur*>::iterator it;
 	MarqueurDistant* marqueur;
 	Valeur* valeur = NULL;
 
 	for(it = _valeurs.begin() ; (it!=_valeurs.end() && valeur==NULL) ; it++) {
-		valeur = it->second;
+		valeur = *it;
 		marqueur = valeur->getMarqueur(distant);
 
 		if(marqueur->getTemporaryId() != valeurTmpId) {
@@ -93,24 +109,17 @@ Valeur* Branche::getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTm
 	return valeur;
 }
 
-Branche* Branche::getSubBrancheByTmpId(int brancheTmpId) const {
-	Branche* branche = NULL;
-
-	try {
-		branche = _subBranches.at( -brancheTmpId );
-	}
-	catch(out_of_range& exception) {
-		branche = NULL;
-	}
-
-	return branche;
-}
-
-Valeur* Branche::getValeurByTmpId(int valeurTmpId) const {
+Valeur* Branche::getValeurByIdOrTmpId(int valeurId) const {
 	Valeur* valeur = NULL;
 
 	try {
-		valeur = _valeurs.at( -valeurTmpId );
+		if(valeurId >= 0) {
+			valeur = _valeursById.at(valeurId);
+		}
+		else {
+			valeur = _valeursByTmpId.at(valeurId);
+		}
+
 	}
 	catch(out_of_range& exception) {
 		valeur = NULL;
@@ -121,11 +130,12 @@ Valeur* Branche::getValeurByTmpId(int valeurTmpId) const {
 
 Branche* Branche::createSubBrancheForClient(const string& brancheName, int revision) {
 	// Alloue une référence pour la nouvelle branche
-	int tmpRef = _brancheTmpRefGenerator.genRef();		// On démarre à 1
+	int tmpRef = -_brancheTmpRefGenerator.genRef();		// On démarre à -1
 
 	// Crée la nouvelle branche
 	Branche* newBranche = new Branche(this, -1, brancheName, revision, tmpRef);
-	_subBranches[-tmpRef] = newBranche;		// Moins 1 pour éviter les collisions avec les ID non temporaires
+	_subBranchesByTmpId[tmpRef] = newBranche;		// Moins 1 pour éviter les collisions avec les ID non temporaires
+	_subBranches.push_back(newBranche);
 
 	return newBranche;
 }
@@ -133,36 +143,42 @@ Branche* Branche::createSubBrancheForClient(const string& brancheName, int revis
 
 Branche* Branche::createSubBrancheForServer(const string& brancheName, int revision) {
 	// Alloue une référence pour la nouvelle branche
-	int ref = _brancheRefGenerator.genRef() - 1;		// On soustrait 1 pour que les identifiants démarrent à 0
+	int ref = _brancheRefGenerator.genRef();	// On démarre à 1
 
 	// Crée la nouvelle branche
 	Branche* newBranche = new Branche(this, ref, brancheName, revision, -1);
-	_subBranches[ref] = newBranche;
+	_subBranchesById[ref] = newBranche;
+	_subBranches.push_back(newBranche);
 
 	return newBranche;
 }
 
 Branche* Branche::addSubBranche(int brancheId, const std::string& brancheName, int brancheRevision) {
-	if(_subBranches.find(brancheId) != _subBranches.end()) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " La branche existe deja";
-	}
+	Branche* newBranche;
+	map<int, Branche*>::iterator iter = _subBranchesById.find(brancheId);
 
-	// Crée la nouvelle branche
-	Branche* newBranche = new Branche(this, brancheId, brancheName, brancheRevision, -1);
-	_subBranches[brancheId] = newBranche;
+	if(iter != _subBranchesById.end()) {
+		cerr << endl << __FILE__ << ":" << __LINE__ << " La branche existe deja";
+		newBranche = iter->second;
+	}
+	else {
+		// Crée la nouvelle branche
+		newBranche = new Branche(this, brancheId, brancheName, brancheRevision, -1);
+		_subBranchesById[brancheId] = newBranche;
+		_subBranches.push_back(newBranche);
+	}
 
 	return newBranche;
 }
 
 Branche* Branche::acceptTmpSubBranche(int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException) {
-	Branche* branche = getSubBrancheByTmpId(brancheTmpId);
+	Branche* branche = getSubBrancheByIdOrTmpId(brancheTmpId);
 
 	if(!branche) {
 		throw NotExistingBrancheException();
 	}
 
-	_subBranches.erase( -brancheTmpId );
-	_subBranches[brancheId] = branche;
+	_subBranchesById[brancheId] = branche;
 	branche->setBrancheId(brancheId);
 	branche->setRevision(brancheRevision);
 
@@ -170,14 +186,13 @@ Branche* Branche::acceptTmpSubBranche(int brancheTmpId, int brancheId, int branc
 }
 
 Valeur* Branche::acceptTmpValeur(int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException) {
-	Valeur* valeur = getValeurByTmpId(valeurTmpId);
+	Valeur* valeur = getValeurByIdOrTmpId(valeurTmpId);
 
 	if(!valeur) {
 		throw NotExistingBrancheException();
 	}
 
-	_valeurs.erase( -valeurTmpId );
-	_valeurs[valeurId] = valeur;
+	_valeursById[valeurId] = valeur;
 	valeur->setValeurId(valeurId);
 	valeur->setRevision(valeurRevision);
 
@@ -186,7 +201,7 @@ Valeur* Branche::acceptTmpValeur(int valeurTmpId, int valeurId, int valeurRevisi
 
 Valeur* Branche::createValeurForClient(const string& valeurName, int revision, const Data* valeur) {
 	// Alloue une référence pour la nouvelle branche
-	int tmpRef = _valeurTmpRefGenerator.genRef();		// On démarre à 1
+	int tmpRef = -_valeurTmpRefGenerator.genRef();		// On démarre à -1
 
 	// Crée la nouvelle branche
 	Valeur* newValeur = NULL;
@@ -202,7 +217,8 @@ Valeur* Branche::createValeurForClient(const string& valeurName, int revision, c
 	}
 
 	if(newValeur) {
-		_valeurs[-tmpRef] = newValeur;
+		_valeursByTmpId[tmpRef] = newValeur;
+		_valeurs.push_back(newValeur);
 	}
 
 	return newValeur;
@@ -210,7 +226,7 @@ Valeur* Branche::createValeurForClient(const string& valeurName, int revision, c
 
 Valeur* Branche::createValeurForServeur(const string& valeurName, int revision, const Data* valeur) {
 	// Alloue une référence pour la nouvelle branche
-	int ref = _valeurRefGenerator.genRef() - 1;		// On soustrait 1 pour que les identifiants démarrent à 0
+	int ref = _valeurRefGenerator.genRef();		// On démarre à 1
 
 	// Crée la nouvelle branche
 	Valeur* newValeur = NULL;
@@ -226,54 +242,50 @@ Valeur* Branche::createValeurForServeur(const string& valeurName, int revision, 
 	}
 
 	if(newValeur) {
-		_valeurs[ref] = newValeur;
+		_valeursById[ref] = newValeur;
+		_valeurs.push_back(newValeur);
 	}
 
 	return newValeur;
 }
 
 const Valeur* Branche::addValeur(int valeurId, const string& valeurName, int valeurRevision, const JktUtils::Data* valeur) {
-	Valeur* newValeur = NULL;
+	Valeur* newValeur = getValeurByIdOrTmpId(valeurId);
 
-	if(_valeurs.find(valeurId) != _valeurs.end()) {
+	if(newValeur) {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " La valeur existe deja";
 	}
-
-	// Crée la nouvelle valeur
-	if(const JktUtils::IntData* intData = dynamic_cast<const JktUtils::IntData*>(valeur)) {
-		newValeur = new ValeurInt(this, valeurId, valeurName, -1, valeurRevision, intData->getValue());
-		_valeurs[valeurId] = newValeur;
-	}
-	else if(const JktUtils::FloatData* floatData = dynamic_cast<const JktUtils::FloatData*>(valeur)) {
-		newValeur = new ValeurFloat(this, valeurId, valeurName, -1, valeurRevision, floatData->getValue());
-		_valeurs[valeurId] = newValeur;
-	}
-	else if(const JktUtils::StringData* stringData = dynamic_cast<const JktUtils::StringData*>(valeur)) {
-		newValeur = new ValeurString(this, valeurId, valeurName, -1, valeurRevision, stringData->getValue());
-		_valeurs[valeurId] = newValeur;
-	}
 	else {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Type de valeur inconnu";
+		// Crée la nouvelle valeur
+		if(const JktUtils::IntData* intData = dynamic_cast<const JktUtils::IntData*>(valeur)) {
+			newValeur = new ValeurInt(this, valeurId, valeurName, -1, valeurRevision, intData->getValue());
+			_valeursById[valeurId] = newValeur;
+			_valeurs.push_back(newValeur);
+		}
+		else if(const JktUtils::FloatData* floatData = dynamic_cast<const JktUtils::FloatData*>(valeur)) {
+			newValeur = new ValeurFloat(this, valeurId, valeurName, -1, valeurRevision, floatData->getValue());
+			_valeursById[valeurId] = newValeur;
+			_valeurs.push_back(newValeur);
+		}
+		else if(const JktUtils::StringData* stringData = dynamic_cast<const JktUtils::StringData*>(valeur)) {
+			newValeur = new ValeurString(this, valeurId, valeurName, -1, valeurRevision, stringData->getValue());
+			_valeursById[valeurId] = newValeur;
+			_valeurs.push_back(newValeur);
+		}
+		else {
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Type de valeur inconnu";
+		}
 	}
 
 	return newValeur;
 }
 
-map<int, Branche*>& Branche::getSubBranches() {
+vector<Branche*>& Branche::getSubBranches() {
 	return _subBranches;
 }
 
-map<int, Valeur*>& Branche::getValeurs() {
+vector<Valeur*>& Branche::getValeurs() {
 	return _valeurs;
-}
-
-Valeur* Branche::getValeur(int valeurId) {
-	try {
-		return _valeurs.at(valeurId);
-	}
-	catch(std::out_of_range& exception) {
-		return 0;
-	}
 }
 
 string Branche::getBrancheName() const {
@@ -302,11 +314,44 @@ vector<int> Branche::getParentBrancheId(void) const {
 	return parentBrancheId;
 }
 
+vector<int> Branche::getParentBrancheIdOrTmpId(void) const {
+	vector<int> parentBrancheIdOrTmpId;
+
+	if(_parent) {
+		parentBrancheIdOrTmpId = _parent->getBrancheFullIdOrTmpId();
+	}
+	else {
+		// Do nothing, return empty id
+	}
+
+	return parentBrancheIdOrTmpId;
+}
+
 void Branche::getBrancheFullId(vector<int>& id) const {
 	if(_parent) {
 		_parent->getBrancheFullId(id);
 		id.push_back(_brancheId);
 	}
+}
+
+void Branche::getBrancheFullIdOrTmpId(vector<int>& id) const {
+	if(_parent) {
+		_parent->getBrancheFullIdOrTmpId(id);
+
+		if(_brancheId >= 0) {
+			id.push_back(_brancheId);
+		}
+		else {
+			id.push_back(_brancheTmpId);	// On passe l'identifiant temporaire en nombre négatif pour qu'il puisse être reconnu comme tel
+		}
+	}
+}
+
+vector<int> Branche::getBrancheFullIdOrTmpId() const {
+	vector<int> id;
+	getBrancheFullIdOrTmpId(id);
+
+	return id;
 }
 
 vector<int> Branche::getBrancheFullId() const {
@@ -316,37 +361,68 @@ vector<int> Branche::getBrancheFullId() const {
 	return id;
 }
 
-void Branche::print(ostringstream& out, int indentation) {
+string Branche::print(int indentation, bool details) {
+	ostringstream out;
+	print(out, details, indentation);
+
+	return out.str();
+}
+
+void Branche::print(ostringstream& out, bool details, int indentation) {
+	const char* TABULATION = "\t";
 	int i;
 
 	// Affiche la branche
 	out << endl;
 
 	for(i = 0 ; i < indentation ; i++) {
-		out << "   ";
+		out << TABULATION;
 	}
 
-	out << "+ [" << _brancheId << ":" << _brancheTmpId << ":" << getRevision() << "] '" << _brancheName << "'";
-	map<int, Valeur*>::iterator valIt;
+	out << "+ [id=" << _brancheId;
+	if(details) {
+		out << " tmpId=" << _brancheTmpId;
+	}
+	out << " rv=" << getRevision() << "] '" << _brancheName << "'";
 
-	// Affiche les valeurs de la branche
-	for(valIt = _valeurs.begin() ; valIt != _valeurs.end() ; ++valIt) {
-		Valeur* valeur = valIt->second;
+	// Affiche les valeurs de la branche de manière ordonnée
+	vector<Valeur*> valeurs = _valeurs;
+	sort(valeurs.begin(), valeurs.end(), Valeur::highestId);
+
+	vector<Valeur*>::iterator valIt;
+
+	for(valIt = valeurs.begin() ; valIt != valeurs.end() ; ++valIt) {
+		Valeur* valeur = *valIt;
 
 		out << endl;
 
-		for(i = 0 ; i < indentation ; i++) {
-				out << "   ";
+		for(i = 0 ; i < indentation+1 ; i++) {
+			out << TABULATION;
 		}
 
-		out << "- [" << valeur->getValeurId() << ":" << valeur->getValeurTmpId() << ":" << valeur->getRevision() << "] '" << valeur->getValeurName() << "'";
+		out << ". [id=" << valeur->getValeurId();
+		if(details) {
+			out << " tmpId=" << valeur->getValeurTmpId();
+		}
+
+		out << " rv=" << valeur->getRevision() << "] '" << valeur->getValeurName() << "' <" << valeur->getValeurData()->toString() << ">";
 	}
 
 	// Affiche les branches de la branche
-	map<int, Branche*>::iterator brIt;
+	vector<Branche*> branches = _subBranches;
+	sort(branches.begin(), branches.end(), Branche::highestId);
 
-	for(brIt = _subBranches.begin() ; brIt != _subBranches.end() ; ++brIt) {
-		Branche* branche = brIt->second;
-		branche->print(out, indentation+1);
+	vector<Branche*>::iterator brIt;
+
+	for(brIt = branches.begin() ; brIt != branches.end() ; ++brIt) {
+		Branche* branche = *brIt;
+		branche->print(out, details, indentation+1);
 	}
+}
+
+bool Branche::highestId(const Branche* left, const Branche* right) {
+	int leftId = left->getBrancheId();
+	int rightId = right->getBrancheId();
+
+	return leftId < rightId;
 }

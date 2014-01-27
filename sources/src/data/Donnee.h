@@ -12,6 +12,8 @@
 
 class DistantTreeProxy;
 class MarqueurDistant;
+class Branche;
+class Valeur;
 
 class Donnee {
 	/**
@@ -39,6 +41,8 @@ public:
 	 */
 	int getRevision() const;
 	void setRevision(int revision);
+
+	static bool highestRevision(const Donnee* left, const Donnee* right);
 };
 
 #endif /* DONNEE_H_ */

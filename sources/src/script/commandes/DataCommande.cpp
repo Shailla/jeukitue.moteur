@@ -40,6 +40,10 @@ void DataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalPa
 	}
 }
 
+string DataCommande::getShortHelp() const {
+	return "Manipule les arbres de données";
+}
+
 string DataCommande::getHelp() const {
 	return
 "data add branche <brancheName> <brancheId> : Ajouter une branche nommee <brancheName> dans l'arbre de donnees sous la branche <brancheId>.\

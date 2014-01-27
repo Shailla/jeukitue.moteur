@@ -106,6 +106,10 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 	}
 }
 
+string UpdateDataCommande::getShortHelp() const {
+	return "Met à jour une donnée de l'arbre";
+}
+
 string UpdateDataCommande::getHelp() const {
 	return
 "data update valeur server <valeur> <brancheId> <valeurId> : Met a jour dans les donnees serveur la valeur nommee identifiee <valeurId> sur la branche <brancheId> avec la valeur <valeur>.\

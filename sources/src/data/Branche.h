@@ -11,6 +11,7 @@
 #include <sstream>
 #include <string>
 #include <map>
+#include <vector>
 
 #include "util/GenRef.h"
 #include "util/types/Data.h"
@@ -26,34 +27,44 @@ class Branche : public Donnee {
 	int _brancheTmpId;
 	std::string _brancheName;
 
-	std::map<int, Branche*> _subBranches;
-	std::map<int, Valeur*> _valeurs;
+	std::vector<Branche*> _subBranches;
+	std::map<int, Branche*> _subBranchesById;
+	std::map<int, Branche*> _subBranchesByTmpId;
+
+	std::vector<Valeur*> _valeurs;
+	std::map<int, Valeur*> _valeursById;
+	std::map<int, Valeur*> _valeursByTmpId;
 
 	JktUtils::CGenRef _brancheTmpRefGenerator;
 	JktUtils::CGenRef _brancheRefGenerator;
 	JktUtils::CGenRef _valeurRefGenerator;
 	JktUtils::CGenRef _valeurTmpRefGenerator;
+
 public:
 	Branche(Branche* parent, int brancheId, const std::string& brancheName, int revision, int tmpId);
 	virtual ~Branche();
 
-	Branche* getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheTmpId) throw(NotExistingBrancheException);
-	Branche* getSubBrancheByTmpId(int brancheTmpId) const;
-	Branche* getSubBranche(int brancheId) const;
-	std::map<int, Branche*>& getSubBranches();
+	Branche* getSubBrancheByIdOrTmpId(int brancheId) const;
+	Branche* getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException);
+	Branche* getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException);
+	std::vector<Branche*>& getSubBranches();
+
 	void setBrancheId(int brancheId);
 
-	std::map<int, Valeur*>& getValeurs();
-	Valeur* getValeur(int valeurId);
+	std::vector<Valeur*>& getValeurs();
+	Valeur* getValeurByIdOrTmpId(int valeurId) const;
+	Valeur* getValeurByIdOrDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) throw(NotExistingValeurException);
 	Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) throw(NotExistingValeurException);
-	Valeur* getValeurByTmpId(int valeurTmpId) const;
 
 	std::string getBrancheName() const;
 	int getBrancheId() const;
 	int getBrancheTmpId() const;
 	std::vector<int> getParentBrancheId(void) const;
+	std::vector<int> getParentBrancheIdOrTmpId(void) const;
 	void getBrancheFullId(std::vector<int>& id) const;
+	void getBrancheFullIdOrTmpId(std::vector<int>& id) const;
 	std::vector<int> getBrancheFullId() const;
+	std::vector<int> getBrancheFullIdOrTmpId() const;
 
 	/** Attribue son identifiant définitf à une branche temporaire */
 	Branche* acceptTmpSubBranche(int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException);
@@ -78,7 +89,21 @@ public:
 	/** Ajoute une valeur entière qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
 	const Valeur* addValeur(int valeurId, const std::string& valeurName, int valeurRevision, const JktUtils::Data* valeur);
 
-	void print(std::ostringstream& out, int indentation);
+	/**
+	 * Affiche le sous-arbre et ses données et caractéristiques partagées avec les autres arbres.
+	 * 2 arbres synchronisés et stabilisés généreront exactement le même affichage avec cette méthode.
+	 */
+	std::string print(int indentation, bool details);
+
+	/**
+	 * Affiche le sous-arbre et ses données et caractéristiques partagées avec les autres arbres.
+	 * Si details=false seules les informations partagées sont affichées, donc 2 arbres synchronisés
+	 * et stabilisés généreront exactement le même affichage avec cette méthode.
+	 * Si details=true alors plus de caractérisques sont affichées.
+	 */
+	void print(std::ostringstream& out, bool details, int indentation);
+
+	static bool highestId(const Branche* left, const Branche* right);
 };
 
 #endif /* BRANCHE_H_ */

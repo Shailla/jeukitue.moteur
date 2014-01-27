@@ -116,6 +116,10 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 	}
 }
 
+string AddDataCommande::getShortHelp() const {
+	return "Ajoute un donnée sur un arbre";
+}
+
 string AddDataCommande::getHelp() const {
 	return
 "data add branche server <brancheName> : Ajoute aux donnees du serveur une branche nommee <brancheName> dans l'arbre de donnees sous la branche <brancheId>.\

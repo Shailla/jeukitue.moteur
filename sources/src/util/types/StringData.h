@@ -23,7 +23,7 @@ public:
 	virtual ~StringData();
 
 	void serialize(std::ostringstream& out);
-	void serializeHumanReadable(std::ostringstream& out);
+	void toString(std::ostringstream& out);
 
 	const std::string& getValue() const;
 };

@@ -17,7 +17,7 @@
 #include "data/communication/message/Changement.h"
 
 class AddValeurFromClientChangement: public Changement {
-	std::vector<int> _brancheId;
+	std::vector<int> _parentBrancheId;
 	int _valeurTmpId;
 	string _valeurName;
 	int _revision;
@@ -31,19 +31,20 @@ public:
 	~AddValeurFromClientChangement();
 
 	void update(MarqueurDistant* marqueur);
-	void serialize(std::ostringstream& out);
-	std::string toString();
+	void serialize(std::ostringstream& out) const;
+	std::string toString() const;
 
 
 	/* *******************************************
 	 * Accessors
 	 * ******************************************/
 
-	const std::vector<int>& getBrancheId() const;
+	const std::vector<int>& getParentBrancheId() const;
 	int getValeurTmpId() const;
 	const string& getValeurName() const;
 	int getRevision() const;
 	JktUtils::Data* getValeur() const;
+	int getRootDistance() const;
 };
 
 #endif /* ADDVALEURFROMCLIENTCHANGEMENT_H_ */

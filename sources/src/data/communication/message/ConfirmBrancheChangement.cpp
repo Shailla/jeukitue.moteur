@@ -19,11 +19,11 @@ using namespace std;
 
 #include "data/communication/message/ConfirmBrancheChangement.h"
 
-ConfirmBrancheChangement::ConfirmBrancheChangement(istringstream& in) : Changement("ConfirmBrancheChangement") {
+ConfirmBrancheChangement::ConfirmBrancheChangement(istringstream& in) : Changement("ConfirmBrancheChangement", PRIORITY_ConfirmBrancheChangement) {
 	unserialize(in);
 }
 
-ConfirmBrancheChangement::ConfirmBrancheChangement(const vector<int>& brancheId, int revision) : Changement("ConfirmBrancheChangement") {
+ConfirmBrancheChangement::ConfirmBrancheChangement(const vector<int>& brancheId, int revision) : Changement("ConfirmBrancheChangement", PRIORITY_ConfirmBrancheChangement) {
 	_brancheId = brancheId;
 	_revision = revision;
 }
@@ -36,7 +36,7 @@ void ConfirmBrancheChangement::update(MarqueurDistant* marqueur) {
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }
 
-void ConfirmBrancheChangement::serialize(ostringstream& out) {
+void ConfirmBrancheChangement::serialize(ostringstream& out) const {
 	// Serialize
 	StreamUtils::write(out, (int)CONFIRM_BRANCHE_MESSAGE);
 
@@ -49,7 +49,7 @@ void ConfirmBrancheChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _revision);
 }
 
-string ConfirmBrancheChangement::toString() {
+string ConfirmBrancheChangement::toString() const {
 	ostringstream str;
 
 	str << "[" << _dataType;
@@ -70,4 +70,8 @@ const std::vector<int>& ConfirmBrancheChangement::getBrancheId() const {
 
 int ConfirmBrancheChangement::getRevision() const {
 	return _revision;
+}
+
+int ConfirmBrancheChangement::getRootDistance() const {
+	return _brancheId.size();
 }

@@ -32,10 +32,6 @@ public:
 	 * Actions
 	 * ****************************************************/
 
-	// Gestion branches et valeurs par référence
-	virtual Branche* createBranche(Branche* parentBranche, const std::string& brancheName) throw(NotExistingBrancheException) = 0;
-	virtual Valeur* createValeur(Branche* parentBranche, const std::string& valeurName, const JktUtils::Data* valeur) throw(NotExistingBrancheException) = 0;
-
 	// Gestion branches et valeurs avec coordonnées vectorielles
 	virtual Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) = 0;
 	virtual Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::Data* valeur) = 0;
@@ -47,6 +43,9 @@ public:
 
 	Branche& getRoot();
 
+	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException);
+	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
+
 	/**
 	 * Retourne la branche idéntifiée.
 	 *
@@ -56,6 +55,7 @@ public:
 
 	Valeur* getValeur(const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
 
+	/** Indique si la branche ou valeur est contenue dans l'arbre. */
 	bool containsDonnee(Donnee* donnee);
 };
 

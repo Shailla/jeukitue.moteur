@@ -26,8 +26,9 @@ public:
 	static std::string findAndEraseFirstString(std::string& s);
 	static std::string findFirstWord(std::string& s);
 
-	static std::vector<std::string> splitBySpaces(std::string s);
-	static std::vector<std::string> split(std::string s, int (isSeparator)(int));
+	static std::vector<std::string> splitByCarriageReturns(const std::string& s);
+	static std::vector<std::string> splitBySpaces(const std::string& s);
+	static std::vector<std::string> split(const std::string& s, int (isSeparator)(int));
 
 	// trim from start
 	static void ltrim(std::string& s);
@@ -38,6 +39,7 @@ public:
 	// trim from both ends
 	static void trim(std::string& s);
 
+	static int isCarriageReturn(int c);
 	static int isGuillemet(int c);
 };
 

@@ -28,6 +28,9 @@ public:
 	static void write(std::ostringstream& out, JktUtils::Data& data);
 	static void writeHumanReadable(std::ostringstream& out, JktUtils::Data& data);
 
+	static void read(std::istringstream& in, float& data);
+	static void write(std::ostringstream& out, float data);
+
 	static void read(std::istringstream& in, int& data);
 	static void write(std::ostringstream& out, int data);
 

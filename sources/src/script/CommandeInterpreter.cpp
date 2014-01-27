@@ -5,6 +5,7 @@
  *      Author: vgdj7997
  */
 
+#include <vector>
 #include <string>
 #include <iostream>
 
@@ -34,6 +35,10 @@ CommandeInterpreter::CommandeInterpreter(Viewer* viewer) {
 CommandeInterpreter::~CommandeInterpreter() {
 }
 
+const map<string, Commande*>& CommandeInterpreter::getCommandes() const {
+	return _commandes;
+}
+
 Commande* CommandeInterpreter::getCommande(const string& commandeName) {
 	return _commandes[commandeName];
 }
@@ -59,14 +64,26 @@ void CommandeInterpreter::interpreteCommande(string ligne, bool userOutput) {
 void CommandeInterpreter::printStdLn(const std::string& msg, bool userOutput) {
 	if(userOutput) {
 		ConsoleView* console = (ConsoleView*)_viewer->getView(Viewer::CONSOLE_VIEW);
-		console->println(ConsoleView::COT_COMMAND_RESULT, msg);
+
+		vector<string> lines = StringUtils::splitByCarriageReturns(msg);
+		vector<string>::iterator it;
+
+		for(it = lines.begin() ; it != lines.end() ; it++) {
+			console->println(ConsoleView::COT_COMMAND_RESULT, *it);
+		}
 	}
 }
 
 void CommandeInterpreter::printErrLn(const std::string& msg, bool userOutput) {
 	if(userOutput) {
 		ConsoleView* console = (ConsoleView*)_viewer->getView(Viewer::CONSOLE_VIEW);
-		console->println(ConsoleView::COT_COMMAND_ERROR, msg);
+
+		vector<string> lines = StringUtils::splitByCarriageReturns(msg);
+		vector<string>::iterator it;
+
+		for(it = lines.begin() ; it != lines.end() ; it++) {
+			console->println(ConsoleView::COT_COMMAND_ERROR, *it);
+		}
 	}
 }
 

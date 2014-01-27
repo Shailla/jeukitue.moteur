@@ -10,8 +10,6 @@
 
 #include <string>
 
-using namespace std;
-
 #define ASSERT_TRUE(var, message) assertTrue(__FILE__, __LINE__, var, message)
 #define ASSERT_FALSE(var, message) assertFalse(__FILE__, __LINE__, var, message)
 #define ASSERT_NULL(var, message) assertNull(__FILE__, __LINE__, var, message)
@@ -22,9 +20,9 @@ namespace JktTest {
 
 class TestError {
 public:
-	string _file;
+	std::string _file;
 	int _line;
-	string _message;
+	std::string _message;
 
 	TestError(const char* file, int line, const char* message) {
 		_file = file;
@@ -35,7 +33,7 @@ public:
 		}
 	}
 
-	TestError(const char* file, int line, const string message) {
+	TestError(const char* file, int line, const std::string message) {
 		_file = file;
 		_line = line;
 
@@ -50,7 +48,8 @@ public:
 	Test(const string& testName);
 	virtual ~Test();
 
-	string getName();
+	std::string getName();
+	virtual std::string getDescription() = 0;
 	virtual void test() = 0;
 
 	// Assertion methods
@@ -59,14 +58,14 @@ public:
 	void assertNull(const char* file, int line, const void* var, const char* message = 0);
 	void assertNotNull(const char* file, int line, const void* var, const char* message = 0);
 	void assertEqual(const char* file, int line, const void* expected, const void* var, const char* message = 0);
-	void assertEqual(const char* file, int line, const string& expected, const string& var, const char* message = 0);
+	void assertEqual(const char* file, int line, const std::string& expected, const std::string& var, const char* message = 0);
 	void assertEqual(const char* file, int line, const char* expected, const char* var, const char* message = 0);
 	void assertEqual(const char* file, int line, int expected, int var, const char* message = 0);
 
 	// Log methods
-	void log(const char* message);
-	void log(const string& message);
-	void log(const ostringstream& message);
+	void log(const char* message, int line);
+	void log(const string& message, int line);
+	void log(const ostringstream& message, int line);
 };
 
 } /* namespace JktTest */

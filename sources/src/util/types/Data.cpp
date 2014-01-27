@@ -48,4 +48,11 @@ Data* Data::unserialize(std::istringstream& in) throw(UnserializeException) {
 	return data;
 }
 
+std::string Data::toString() const {
+	std::ostringstream ss;
+	toString(ss);
+
+	return ss.str();
+}
+
 };

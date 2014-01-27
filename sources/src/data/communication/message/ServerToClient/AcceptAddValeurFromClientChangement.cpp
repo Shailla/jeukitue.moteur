@@ -18,12 +18,12 @@ using namespace std;
 
 #include "data/communication/message/ServerToClient/AcceptAddValeurFromClientChangement.h"
 
-AcceptAddValeurFromClientChangement::AcceptAddValeurFromClientChangement(istringstream& in) : Changement("AcceptAddValeurFromClientChangement") {
+AcceptAddValeurFromClientChangement::AcceptAddValeurFromClientChangement(istringstream& in) : Changement("AcceptAddValeurFromClientChangement", PRIORITY_AcceptAddValeurFromClientChangement) {
 	unserialize(in);
 }
 
-AcceptAddValeurFromClientChangement::AcceptAddValeurFromClientChangement(const vector<int>& brancheId, int valeurTmpId, int valeurId, int revision) : Changement("AcceptAddValeurFromClientChangement") {
-	_brancheId = brancheId;
+AcceptAddValeurFromClientChangement::AcceptAddValeurFromClientChangement(const vector<int>& parentBrancheId, int valeurTmpId, int valeurId, int revision) : Changement("AcceptAddValeurFromClientChangement", PRIORITY_AcceptAddValeurFromClientChangement) {
+	_parentBrancheId = parentBrancheId;
 	_valeurTmpId = valeurTmpId;
 	_valeurId = valeurId;
 	_revision = revision;
@@ -37,30 +37,30 @@ void AcceptAddValeurFromClientChangement::update(MarqueurDistant* marqueur) {
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }
 
-void AcceptAddValeurFromClientChangement::serialize(ostringstream& out) {
+void AcceptAddValeurFromClientChangement::serialize(ostringstream& out) const {
 	// Serialize
 	StreamUtils::write(out, (int)ACCEPT_ADD_VALEUR_FROM_CLIENT);
 
-	StreamUtils::write(out, _brancheId);
+	StreamUtils::write(out, _parentBrancheId);
 	StreamUtils::write(out, _valeurTmpId);
 	StreamUtils::write(out, _valeurId);
 	StreamUtils::write(out, _revision);
 }
 
 void AcceptAddValeurFromClientChangement::unserialize(istringstream& in) {
-	StreamUtils::read(in, _brancheId);
+	StreamUtils::read(in, _parentBrancheId);
 	StreamUtils::read(in, _valeurTmpId);
 	StreamUtils::read(in, _valeurId);
 	StreamUtils::read(in, _revision);
 }
 
-string AcceptAddValeurFromClientChangement::toString() {
+string AcceptAddValeurFromClientChangement::toString() const {
 	ostringstream str;
 
 	str << "[" << _dataType;
 
 	str << "; brancheId:";
-	StreamUtils::writeHumanReadable(str, _brancheId);
+	StreamUtils::writeHumanReadable(str, _parentBrancheId);
 
 	str << "; valeurTmpId:" << _valeurTmpId;
 
@@ -73,8 +73,8 @@ string AcceptAddValeurFromClientChangement::toString() {
 	return str.str();
 }
 
-const std::vector<int>& AcceptAddValeurFromClientChangement::getBrancheId() const {
-	return _brancheId;
+const std::vector<int>& AcceptAddValeurFromClientChangement::getParentBrancheId() const {
+	return _parentBrancheId;
 }
 
 int AcceptAddValeurFromClientChangement::getValeurTmpId() const {
@@ -87,4 +87,8 @@ int AcceptAddValeurFromClientChangement::getValeurId() const {
 
 int AcceptAddValeurFromClientChangement::getRevision() const {
 	return _revision;
+}
+
+int AcceptAddValeurFromClientChangement::getRootDistance() const {
+	return _parentBrancheId.size();
 }

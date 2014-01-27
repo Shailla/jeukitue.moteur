@@ -30,6 +30,10 @@ public:
 	CommandeInterpreter(Viewer* viewer);
 	virtual ~CommandeInterpreter();
 
+	/** Retourne la liste des commandes */
+	const map<string, Commande*>& getCommandes() const;
+
+	/** Retourne une commande spécifiée par son nom */
 	Commande* getCommande(const std::string& commandeName);
 
 	void interpreteCommande(std::string commande, bool userOutput);

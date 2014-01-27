@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -34,22 +35,12 @@ ServeurDataTree::ServeurDataTree() {
 ServeurDataTree::~ServeurDataTree() {
 }
 
-Branche* ServeurDataTree::createBranche(Branche* parentBranche, const string& brancheName) throw(NotExistingBrancheException) {
-	if(!containsDonnee(parentBranche)) {
-		throw NotExistingBrancheException();
-	}
-
-	Branche* branche = parentBranche->createSubBrancheForServer(brancheName, 0);
-
-	return (Branche*)initDonneeAndMarqueurFromDistant(NULL, branche, 0);
-}
-
 Branche* ServeurDataTree::createBranche(const vector<int>& parentBrancheId, const string& brancheName) {
 	return addBrancheFromDistant(parentBrancheId, brancheName, 0, 0, NULL);
 }
 
 Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, int revision, DistantTreeProxy* distant) {
-	Branche* parentBranche = getBranche(parentBrancheId);
+	Branche* parentBranche = getBrancheFromDistant(distant, parentBrancheId);
 
 	Branche* branche = parentBranche->createSubBrancheForServer(brancheName, revision);
 
@@ -60,18 +51,8 @@ Valeur* ServeurDataTree::createValeur(const vector<int>& parentBrancheId, const 
 	return addValeurFromDistant(parentBrancheId, valeurName, 0, 0, valeur, NULL);
 }
 
-Valeur* ServeurDataTree::createValeur(Branche* parentBranche, const string& valeurName, const Data* valeur) throw(NotExistingBrancheException) {
-	if(!containsDonnee(parentBranche)) {
-			throw NotExistingBrancheException();
-		}
-
-	Valeur* val = parentBranche->createValeurForServeur(valeurName, 0, valeur);
-
-	return (Valeur*)initDonneeAndMarqueurFromDistant(NULL, val, 0);
-}
-
 Valeur* ServeurDataTree::addValeurFromDistant(const vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int revision, const Data* valeur, DistantTreeProxy* distant) {
-	Branche* parentBranche = getBranche(parentBrancheId);
+	Branche* parentBranche = getBrancheFromDistant(distant, parentBrancheId);
 
 	Valeur* val = parentBranche->createValeurForServeur(valeurName, revision, valeur);
 
@@ -103,6 +84,8 @@ void ServeurDataTree::addDistant(Interlocutor2* interlocutor) {
 	DistantTreeProxy* distant = new DistantTreeProxy(interlocutor);
 	initDistantBranche(distant, &getRoot());
 
+	cout << endl << "AJOUT D'UN DISTANT : " << interlocutor->getName() << flush;
+
 	_clients.push_back(distant);
 }
 
@@ -120,21 +103,21 @@ void ServeurDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bra
 
 	// Init sub-branches
 	{
-		map<int, Branche*>& subBranches = branche->getSubBranches();
-		map<int, Branche*>::iterator itBr;
+		vector<Branche*>& subBranches = branche->getSubBranches();
+		vector<Branche*>::iterator itBr;
 
 		for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
-			initDistantBranche(distant, itBr->second);
+			initDistantBranche(distant, *itBr);
 		}
 	}
 
 	// Init values
 	{
-		map<int, Valeur*>& valeurs = branche->getValeurs();
-		map<int, Valeur*>::iterator iterVl;
+		vector<Valeur*>& valeurs = branche->getValeurs();
+		vector<Valeur*>::iterator iterVl;
 
 		for(iterVl = valeurs.begin() ; iterVl != valeurs.end() ; iterVl++) {
-			distant->addMarqueur(iterVl->second, 0);
+			distant->addMarqueur(*iterVl, 0);
 		}
 	}
 }
@@ -178,7 +161,8 @@ Branche* ServeurDataTree::getBrancheByDistantTmpId(DistantTreeProxy* distant, co
 	Branche* parentBranche = &getRoot();
 
 	for(iter = parentBrancheId.begin() ; (iter != parentBrancheId.end() && parentBranche != NULL) ; iter++) {
-		parentBranche = parentBranche->getSubBranche(*iter);
+		int aa = *iter;
+		parentBranche = parentBranche->getSubBrancheByIdOrDistantTmpId(distant, aa);
 	}
 
 	if(!parentBranche) {
@@ -200,7 +184,7 @@ Valeur* ServeurDataTree::getValeurByDistantTmpId(DistantTreeProxy* distant, cons
 	Branche* branche = &getRoot();
 
 	for(iter = brancheId.begin() ; (iter != brancheId.end() && branche != NULL) ; iter++) {
-		branche = branche->getSubBranche(*iter);
+		branche = branche->getSubBrancheByIdOrDistantTmpId(distant, *iter);
 	}
 
 	if(!branche) {
@@ -223,9 +207,9 @@ void ServeurDataTree::receiveChangementsFromClients() {
 		for(it = _clients.begin() ; it != _clients.end() ; it++) {
 			DistantTreeProxy* distant = *it;
 			Interlocutor2* interlocutor = distant->getInterlocutor();
-			JktUtils::Bytes* data = interlocutor->popDataReceived();
+			JktUtils::Bytes* data;
 
-			if(data) {
+			while((data = interlocutor->popDataReceived())) {
 				vector<Changement*> changements;
 				vector<Changement*> answers;
 
@@ -235,11 +219,16 @@ void ServeurDataTree::receiveChangementsFromClients() {
 				istringstream in(str);
 				DataSerializer::fromStream(changements, in);
 
+				// Tri des changements de manière à les effectuer en commençant par ceux qui sont le plus proche de la racine, puis les second niveau, puis etc...
+				std::sort(changements.begin(), changements.end(), Changement::highestPriority);
 
 				vector<Changement*>::iterator itCh;
 
-				try {
-					for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
+				cout << endl << "NOMBRE DE CHANGEMENTS A PRENDRE EN COMPTE : " << changements.size() << endl << flush;
+
+
+				for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
+					try {
 						cout << endl << "serveur" << " from " << interlocutor->getName() << "\t : " << (*itCh)->toString() << flush;
 
 						// Le client confirme la révision de branche qu'il a reçu
@@ -281,10 +270,10 @@ void ServeurDataTree::receiveChangementsFromClients() {
 
 							try {
 								// Si la valeur existe déjà on renvoie juste la réponse au client
-								valeur = getValeurByDistantTmpId(distant, chgt->getBrancheId(), chgt->getValeurTmpId());
+								valeur = getValeurByDistantTmpId(distant, chgt->getParentBrancheId(), chgt->getValeurTmpId());
 							}
 							catch(NotExistingValeurException& exception) {
-								valeur = addValeurFromDistant(chgt->getBrancheId(), chgt->getValeurName(), chgt->getValeurTmpId(), chgt->getRevision(), chgt->getValeur(), distant);
+								valeur = addValeurFromDistant(chgt->getParentBrancheId(), chgt->getValeurName(), chgt->getValeurTmpId(), chgt->getRevision(), chgt->getValeur(), distant);
 							}
 
 							MarqueurDistant* marqueur = distant->getMarqueur(valeur);
@@ -295,7 +284,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 
 						// Le client demande la modification d'une valeur
 						else if(UpdateValeurFromClientChangement* chgt = dynamic_cast<UpdateValeurFromClientChangement*>(*itCh)) {
-							Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
+							Valeur* valeur = getValeur(chgt->getParentBrancheId(), chgt->getValeurId());
 
 							if(valeur->getRevision() < chgt->getRevision()) {
 								valeur->setValeur(chgt->getRevision(), *chgt->getValeur());
@@ -314,18 +303,18 @@ void ServeurDataTree::receiveChangementsFromClients() {
 						else {
 							throw DataCommunicationException("Changement de type inconnu");
 						}
-
-						delete *itCh;
 					}
-				}
-				catch(const NotExistingValeurException& exception) {
-					cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingValeurException";
-				}
-				catch(const NotExistingBrancheException& exception) {
-					cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingBrancheException";
-				}
-				catch(const DataCommunicationException& exception) {
-					cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
+					catch(const NotExistingValeurException& exception) {
+						cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingValeurException";
+					}
+					catch(const NotExistingBrancheException& exception) {
+						cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingBrancheException";
+					}
+					catch(const DataCommunicationException& exception) {
+						cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
+					}
+
+					delete *itCh;
 				}
 
 				// Emission des changements au client

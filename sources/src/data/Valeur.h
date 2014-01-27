@@ -29,6 +29,7 @@ public:
 	virtual ~Valeur();
 
 	vector<int> getBrancheId() const;
+	vector<int> getBrancheIdOrTmpId() const;
 	string getValeurName() const;
 	int getValeurTmpId() const;
 	int getValeurId() const;
@@ -37,6 +38,7 @@ public:
 	virtual void updateValeur(const JktUtils::Data* data) = 0;
 	virtual JktUtils::Data* getValeurData() const = 0;
 	virtual std::string toString() const = 0;
+	static bool highestId(const Valeur* left, const Valeur* right);
 };
 
 #endif /* VALEUR_H_ */

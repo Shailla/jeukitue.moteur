@@ -66,7 +66,7 @@ void DistantTreeProxy::collecteChangementsInClientTree(vector<Changement*>& chan
 		if(branche) {
 			// NOUVELLE BRANCHE : branche présente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
 			if(branche->getBrancheId() < 0) {
-				changement = new AddBrancheFromClientChangement(branche->getParentBrancheId(), branche->getBrancheTmpId(), branche->getRevision(), branche->getBrancheName());
+				changement = new AddBrancheFromClientChangement(branche->getParentBrancheIdOrTmpId(), branche->getBrancheTmpId(), branche->getRevision(), branche->getBrancheName());
 			}
 		}
 		else {
@@ -74,12 +74,12 @@ void DistantTreeProxy::collecteChangementsInClientTree(vector<Changement*>& chan
 
 			// NOUVELLE VALEUR : valeur présente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
 			if(valeur->getValeurId() < 0) {
-				changement = new AddValeurFromClientChangement(valeur->getBrancheId(), valeur->getValeurTmpId(), valeur->getRevision(), valeur->getValeurName(), valeur->getValeurData());
+				changement = new AddValeurFromClientChangement(valeur->getBrancheIdOrTmpId(), valeur->getValeurTmpId(), valeur->getRevision(), valeur->getValeurName(), valeur->getValeurData());
 			}
 
 			// UPDATE VALEUR : Une valeur a changé et le client n'en a pas encore connaissance
 			else if(valeur->getRevision() > marqueur->getConfirmedRevision()) {
-				changement = new UpdateValeurFromClientChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision(), valeur->getValeurData());
+				changement = new UpdateValeurFromClientChangement(valeur->getBrancheIdOrTmpId(), valeur->getValeurId(), valeur->getRevision(), valeur->getValeurData());
 			}
 		}
 

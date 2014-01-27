@@ -63,7 +63,7 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	 * *****************************************************************************/
 
 	string pluginDirectory = string(PLUGINS_DIRECTORY).append(pluginName).append("/");
-	cerr << endl << __FILE__ << ":" << __LINE__ << " Activation of plugin : '" << pluginName << "' in '" << pluginDirectory << "'";
+	cout << endl << __FILE__ << ":" << __LINE__ << " Activation of plugin : '" << pluginName << "' in '" << pluginDirectory << "'";
 
 
 	/* ******************************************************************************

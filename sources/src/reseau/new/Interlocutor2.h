@@ -49,8 +49,10 @@ public:
 	void pushDataToSend(JktUtils::Bytes* bytes);
 	JktUtils::Bytes* popDataToSend();
 
-	int numberDataReceived(void);
-	int numberDataToSend(void);
+	int countDataReceived(void);
+	int countTechnicalMessagesReceived(void);
+	int countTechnicalMessagesToSend(void);
+	int countDataToSend(void);
 };
 
 #endif /* INTERLOCUTOR_RESEAU_H_ */

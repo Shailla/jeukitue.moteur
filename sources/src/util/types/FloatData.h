@@ -13,14 +13,14 @@
 namespace JktUtils {
 
 class FloatData : public Data {
-	int _value;
+	float _value;
 public:
 	FloatData(float value);
 	FloatData(std::istringstream& in);
 	virtual ~FloatData();
 
 	void serialize(std::ostringstream& out);
-	void serializeHumanReadable(std::ostringstream& out);
+	void toString(std::ostringstream& out);
 
 	float getValue() const;
 };

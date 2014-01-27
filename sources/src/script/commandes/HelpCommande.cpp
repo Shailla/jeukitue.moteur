@@ -5,6 +5,8 @@
  *      Author: Erwin
  */
 
+#include <sstream>
+
 using namespace std;
 
 #include "util/StringUtils.h"
@@ -19,7 +21,17 @@ void HelpCommande::executeIt(std::string ligne, bool userOutput) {
 	JktUtils::StringUtils::trim(ligne);
 
 	if(ligne.size() == 0) {
-		printErrLn("Veuillez saisir le nom d'une commande", userOutput);
+		ostringstream ss;
+		ss << "Liste des commandes :";
+
+		map<string, Commande*>::const_iterator cIt;
+		const map<string, Commande*>& commandes = _interpreter->getCommandes();
+
+		for(cIt = commandes.begin() ; cIt != commandes.end() ; cIt++) {
+			ss << endl << "  " << cIt->first << " : " << cIt->second->getShortHelp();
+		}
+
+		printStdLn(ss.str(), userOutput);
 	}
 	else {
 		Commande* commande = _interpreter->getCommande(ligne);
@@ -31,6 +43,10 @@ void HelpCommande::executeIt(std::string ligne, bool userOutput) {
 			printStdLn(commande->getHelp(), userOutput);
 		}
 	}
+}
+
+std::string HelpCommande::getShortHelp() const {
+	return "Affiche l'aide";
 }
 
 std::string HelpCommande::getHelp() const {

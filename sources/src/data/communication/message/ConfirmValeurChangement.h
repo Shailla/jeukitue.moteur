@@ -29,8 +29,8 @@ public:
 	~ConfirmValeurChangement();
 
 	void update(MarqueurDistant* marqueur);
-	void serialize(std::ostringstream& out);
-	std::string toString();
+	void serialize(std::ostringstream& out) const;
+	std::string toString() const;
 
 
 	/* *******************************************
@@ -40,6 +40,7 @@ public:
 	const std::vector<int>& getBrancheId() const;
 	int getValeurId() const;
 	int getRevision() const;
+	int getRootDistance() const;
 };
 
 #endif /* UPDATEVALEURCHANGEMENT_H_ */

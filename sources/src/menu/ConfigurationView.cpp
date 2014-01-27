@@ -17,11 +17,11 @@ ConfigurationView::ConfigurationView(const AG_EventFn controllerCallback)
 	AG_ExpandHoriz(buttonJoueur);
 
 	// Configuration Commandes (clavier, souris, ...)
-    AG_Button* buttonCommandes = AG_ButtonNewFn(m_window, 0, "Commandes", controllerCallback, "%i", Controller::ShowConfigurationCommandes);
+    AG_Button* buttonCommandes = AG_ButtonNewFn(m_window, 0, "Commandes", controllerCallback, "%i", Controller::ShowConfigurationCommandesViewAction);
 	AG_ExpandHoriz(buttonCommandes);
 
 	// Configuration Audio
-    AG_Button* buttonAudio = AG_ButtonNewFn(m_window, 0, "Audio", controllerCallback, "%i", Controller::ShowConfigurationAudio);
+    AG_Button* buttonAudio = AG_ButtonNewFn(m_window, 0, "Audio", controllerCallback, "%i", Controller::ShowConfigurationAudioViewAction);
 	AG_ExpandHoriz(buttonAudio);
 
 	// Configuration Vidéo

@@ -19,11 +19,11 @@ using namespace std;
 
 #include "data/communication/message/ConfirmValeurChangement.h"
 
-ConfirmValeurChangement::ConfirmValeurChangement(istringstream& in) : Changement("ConfirmValeurChangement") {
+ConfirmValeurChangement::ConfirmValeurChangement(istringstream& in) : Changement("ConfirmValeurChangement", PRIORITY_ConfirmValeurChangement) {
 	unserialize(in);
 }
 
-ConfirmValeurChangement::ConfirmValeurChangement(const vector<int>& brancheId, int valeurId, int revision) : Changement("ConfirmValeurChangement") {
+ConfirmValeurChangement::ConfirmValeurChangement(const vector<int>& brancheId, int valeurId, int revision) : Changement("ConfirmValeurChangement", PRIORITY_ConfirmValeurChangement) {
 	_brancheId = brancheId;
 	_valeurId = valeurId;
 	_revision = revision;
@@ -37,7 +37,7 @@ void ConfirmValeurChangement::update(MarqueurDistant* marqueur) {
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }
 
-void ConfirmValeurChangement::serialize(ostringstream& out) {
+void ConfirmValeurChangement::serialize(ostringstream& out) const {
 	// Serialize
 	StreamUtils::write(out, (int)CONFIRM_VALEUR_MESSAGE);
 
@@ -52,7 +52,7 @@ void ConfirmValeurChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _revision);
 }
 
-string ConfirmValeurChangement::toString() {
+string ConfirmValeurChangement::toString() const {
 	ostringstream str;
 
 	str << "[" << _dataType;
@@ -79,4 +79,8 @@ int ConfirmValeurChangement::getValeurId() const {
 
 int ConfirmValeurChangement::getRevision() const {
 	return _revision;
+}
+
+int ConfirmValeurChangement::getRootDistance() const {
+	return _brancheId.size();
 }

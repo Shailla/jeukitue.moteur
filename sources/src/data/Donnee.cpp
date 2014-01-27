@@ -9,6 +9,9 @@
 
 #include "data/MarqueurDistant.h"
 
+#include "data/Branche.h"
+#include "data/Valeur.h"
+
 #include "data/Donnee.h"
 
 using namespace std;

@@ -30,8 +30,8 @@ public:
 	~AcceptAddBrancheFromClientChangement();
 
 	void update(MarqueurDistant* marqueur);
-	void serialize(std::ostringstream& out);
-	std::string toString();
+	void serialize(std::ostringstream& out) const;
+	std::string toString() const;
 
 
 	/* *******************************************
@@ -42,6 +42,7 @@ public:
 	int getBrancheTmpId() const;
 	int getBrancheId() const;
 	int getRevision() const;
+	int getRootDistance() const;
 };
 
 #endif /* ACCEPTADDBRANCHEFROMCLIENTCHANGEMENT_H_ */

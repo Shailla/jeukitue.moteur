@@ -28,6 +28,18 @@ UdpCommunicationTest::UdpCommunicationTest() : Test("UdpCommunicationTest") {
 UdpCommunicationTest::~UdpCommunicationTest() {
 }
 
+string UdpCommunicationTest::getDescription() {
+	string description;
+
+	description += "Tests réalisés :";
+	description += "\n - Crée un client et un serveur UDP";
+	description += "\n - Connecte le client au serveur";
+	description += "\n - Envoie des données du client au serveur";
+	description += "\n - Envoie des données du serveur au client";
+
+	return description;
+}
+
 void UdpCommunicationTest::test() {
 
 	/* ********************************************************
@@ -47,7 +59,7 @@ void UdpCommunicationTest::test() {
 	 * Monte un serveur
 	 * ********************************************************/
 
-	log("Monte un serveur");
+	log("Monte un serveur", __LINE__);
 
 	JktNet::NetworkManager* serverNM = new NetworkManager();
 	NotConnectedInterlocutor2* serverInterlocutor = serverNM->ouvreServer(serverPort, serverTreePort);
@@ -58,7 +70,7 @@ void UdpCommunicationTest::test() {
 	 * Monte un client
 	 * ********************************************************/
 
-	log("Monte un client");
+	log("Monte un client", __LINE__);
 
 	// Monte un client vers ce serveur
 	JktNet::NetworkManager* clientNM = new NetworkManager();
@@ -73,7 +85,7 @@ void UdpCommunicationTest::test() {
 	Interlocutor2* clientOfServer;
 
 	{
-		log("Calcule du temps de connexion au serveur");
+		log("Calcule du temps de connexion au serveur", __LINE__);
 
 		Uint32 tempsAvantConnexion = SDL_GetTicks();
 
@@ -95,9 +107,9 @@ void UdpCommunicationTest::test() {
 
 		ostringstream message;
 		message << "Temps de connexion au serveur : " << temps << " ms";
-		log(message);
+		log(message, __LINE__);
 
-		ASSERT_TRUE(temps < 5, "Le temps de connexion est trop long");
+		ASSERT_TRUE(temps < 10, "Le temps de connexion est trop long");
 
 		clientOfServer = serverInterlocutor->popNewInterlocutor();
 
@@ -109,7 +121,7 @@ void UdpCommunicationTest::test() {
 	 * Teste l'envoie d'un message du client vers le serveur
 	 * ********************************************************/
 	{
-		log("Calcul du temps d'envoie d'un message du client vers le serveur");
+		log("Calcul du temps d'envoie d'un message du client vers le serveur", __LINE__);
 
 		clientInterlocutor->pushDataToSend(new Bytes(data1));
 
@@ -130,7 +142,7 @@ void UdpCommunicationTest::test() {
 
 		ostringstream message;
 		message << "Temps d'envoie d'un message du client vers le serveur : " << temps << " ms";
-		log(message);
+		log(message, __LINE__);
 
 		ASSERT_NOT_NULL(data, "Aucune donnee recue malgre un long temps d'attente");
 		ASSERT_EQUAL(data1, data->getBytes(), "La donnee recue ne correspond pas a la donnee envoyee");
@@ -142,7 +154,7 @@ void UdpCommunicationTest::test() {
 	 * Teste l'envoie d'un message du serveur vers le client
 	 * ********************************************************/
 	{
-		log("Calcul du temps d'envoie d'un message du serveur vers le client");
+		log("Calcul du temps d'envoie d'un message du serveur vers le client", __LINE__);
 
 		clientOfServer->pushDataToSend(new Bytes(data2));
 
@@ -163,12 +175,11 @@ void UdpCommunicationTest::test() {
 
 		ostringstream message;
 		message << "Temps d'envoie d'un message du serveur vers le client : " << temps << " ms";
-		log(message);
+		log(message, __LINE__);
 
 		ASSERT_NOT_NULL(data, "Aucune donnee recue malgre un long temps d'attente");
 		ASSERT_EQUAL(data2, data->getBytes(), "La donnee recue ne correspond pas a la donnee envoyee");
 		ASSERT_TRUE(temps < 5, "Le temps d'envoi d'un message du serveur vers le client est trop long");
-
 	}
 }
 

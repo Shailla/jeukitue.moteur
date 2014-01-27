@@ -32,6 +32,7 @@ public:
 	virtual ~Commande();
 
 	virtual std::string getHelp() const = 0;
+	virtual std::string getShortHelp() const = 0;
 	void execute(const std::string& ligne, bool userOutput);
 
 	// Gestion des sous-commandes

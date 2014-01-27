@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -48,34 +49,12 @@ void ClientDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bran
 
 }
 
-Branche* ClientDataTree::createBranche(Branche* parentBranche, const std::string& brancheName) throw (NotExistingBrancheException) {
-	if(!containsDonnee(parentBranche)) {
-		throw NotExistingBrancheException();
-	}
-
-	Branche* branche = parentBranche->createSubBrancheForClient(brancheName, 0);
-	initDonneeAndServeurMarqueur(branche);
-
-	return branche;
-}
-
 Branche* ClientDataTree::createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 	Branche* branche = parentBranche->createSubBrancheForClient(brancheName, 0);
 	initDonneeAndServeurMarqueur(branche);
 
 	return branche;
-}
-
-Valeur* ClientDataTree::createValeur(Branche* parentBranche, const std::string& valeurName, const Data* value) throw (NotExistingBrancheException) {
-	if(!containsDonnee(parentBranche)) {
-		throw NotExistingBrancheException();
-	}
-
-	Valeur* valeur = parentBranche->createValeurForClient(valeurName, 0, value);
-	initDonneeAndServeurMarqueur(valeur);
-
-	return valeur;
 }
 
 Valeur* ClientDataTree::createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const Data* value) {
@@ -110,14 +89,14 @@ Branche* ClientDataTree::getBrancheByTmpId(const vector<int>& parentBrancheId, i
 	Branche* parentBranche = &getRoot();
 
 	for(iter = parentBrancheId.begin() ; (iter != parentBrancheId.end() && parentBranche != NULL) ; iter++) {
-		parentBranche = parentBranche->getSubBranche(*iter);
+		parentBranche = parentBranche->getSubBrancheByIdOrTmpId(*iter);
 	}
 
 	if(!parentBranche) {
 		throw NotExistingBrancheException();
 	}
 
-	Branche* branche = parentBranche->getSubBrancheByTmpId(brancheTmpId);
+	Branche* branche = parentBranche->getSubBrancheByIdOrTmpId(brancheTmpId);
 
 	if(!branche) {
 		throw NotExistingBrancheException();
@@ -128,7 +107,6 @@ Branche* ClientDataTree::getBrancheByTmpId(const vector<int>& parentBrancheId, i
 
 void ClientDataTree::receiveChangementsFromServer() {
 	try {
-		vector<Changement*> changements;
 		vector<Changement*> answers;
 
 		/* ********************************************
@@ -138,14 +116,18 @@ void ClientDataTree::receiveChangementsFromServer() {
 		Interlocutor2* interlocutor = _serverTreeProxy->getInterlocutor();
 
 		// Récupération des données du serveur
-		JktUtils::Bytes* fromServer = interlocutor->popDataReceived();
+		JktUtils::Bytes* fromServer;
 
-		if(fromServer) {
+		while((fromServer = interlocutor->popDataReceived())) {
+			vector<Changement*> changements;
+
 			istringstream in(string(fromServer->getBytes(), fromServer->size()));
 			DataSerializer::fromStream(changements, in);
 			delete fromServer;
 
 			vector<Changement*>::iterator itCh;
+
+			std::sort(changements.begin(), changements.end(), Changement::highestPriority);
 
 			for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
 				cout << endl << _clientName << " from " << interlocutor->getName() << "\t : " << (*itCh)->toString() << flush;
@@ -160,8 +142,8 @@ void ClientDataTree::receiveChangementsFromServer() {
 					}
 
 					// Le serveur accepte la création de la nouvelle branche demandée par ce client et lui attribue son identifiant définitif
-					if(AcceptAddValeurFromClientChangement* chgt = dynamic_cast<AcceptAddValeurFromClientChangement*>(*itCh)) {
-						Branche* branche = getBranche(chgt->getBrancheId());
+					else if(AcceptAddValeurFromClientChangement* chgt = dynamic_cast<AcceptAddValeurFromClientChangement*>(*itCh)) {
+						Branche* branche = getBranche(chgt->getParentBrancheId());
 						Valeur* valeur = branche->acceptTmpValeur(chgt->getValeurTmpId(), chgt->getValeurId(), chgt->getRevision());
 
 						MarqueurDistant* marqueur = _serverTreeProxy->getMarqueur(valeur);
@@ -180,7 +162,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 
 					// Le serveur informe de la création d'une nouvelle valeur
 					else if(AddValeurFromServerChangement* chgt = dynamic_cast<AddValeurFromServerChangement*>(*itCh)) {
-						Branche* parent = getBranche(chgt->getBrancheId());
+						Branche* parent = getBranche(chgt->getParentBrancheId());
 						const Valeur* valeur = parent->addValeur(chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
 
 						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
@@ -188,7 +170,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 
 					// Le serveur informe de la modification d'une valeur
 					else if(UpdateValeurFromServerChangement* chgt = dynamic_cast<UpdateValeurFromServerChangement*>(*itCh)) {
-						Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
+						Valeur* valeur = getValeur(chgt->getParentBrancheId(), chgt->getValeurId());
 						valeur->setValeur(chgt->getRevision(), *chgt->getValeur());
 
 						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
@@ -231,7 +213,6 @@ void ClientDataTree::receiveChangementsFromServer() {
 
 void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
 	vector<Changement*>::iterator iter;
-
 	Interlocutor2* interlocutor = _serverTreeProxy->getInterlocutor();
 
 	if(changements.size()) {

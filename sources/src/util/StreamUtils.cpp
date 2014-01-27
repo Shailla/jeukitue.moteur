@@ -22,7 +22,7 @@ void StreamUtils::write(ostringstream& out, JktUtils::Data& data) {
 }
 
 void StreamUtils::writeHumanReadable(ostringstream& out, JktUtils::Data& data) {
-	data.serializeHumanReadable(out);
+	data.toString(out);
 }
 
 void StreamUtils::read(istringstream& in, int& data) {
@@ -30,6 +30,14 @@ void StreamUtils::read(istringstream& in, int& data) {
 }
 
 void StreamUtils::write(ostringstream& out, int data) {
+	out.write((char*)&data, sizeof(int));
+}
+
+void StreamUtils::read(istringstream& in, float& data) {
+	in.read((char*)&data, sizeof(int));
+}
+
+void StreamUtils::write(ostringstream& out, float data) {
 	out.write((char*)&data, sizeof(int));
 }
 

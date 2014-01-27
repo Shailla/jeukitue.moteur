@@ -17,10 +17,11 @@ Bytes::Bytes(char* bytes, int size) {
 }
 
 Bytes::Bytes(const string& str) {
-	_bytes = new char[str.size()]();
-	str.copy(_bytes, str.size());
-
 	_size = str.size();
+
+	_bytes = new char[_size + 1];
+	str.copy(_bytes, _size);
+	_bytes[_size] = '\0';
 }
 
 Bytes::~Bytes() {

@@ -20,7 +20,7 @@ public:
 	virtual ~IntData();
 
 	void serialize(std::ostringstream& out);
-	void serializeHumanReadable(std::ostringstream& out);
+	void toString(std::ostringstream& out);
 
 	int getValue() const;
 };

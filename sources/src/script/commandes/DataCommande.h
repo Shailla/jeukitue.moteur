@@ -18,6 +18,7 @@ class DataCommande : public Commande {
 public:
 	DataCommande (CommandeInterpreter* interpreter);
 
+	std::string getShortHelp() const;
 	std::string getHelp() const;
 };
 

@@ -23,6 +23,10 @@ vector<int> Valeur::getBrancheId() const {
 	return _parent->getBrancheFullId();
 }
 
+vector<int> Valeur::getBrancheIdOrTmpId() const {
+	return _parent->getBrancheFullIdOrTmpId();
+}
+
 string Valeur::getValeurName() const {
 	return _valeurName;
 }
@@ -37,4 +41,11 @@ int Valeur::getValeurId() const {
 
 void Valeur::setValeurId(int valeurId) {
 	_valeurId = valeurId;
+}
+
+bool Valeur::highestId(const Valeur* left, const Valeur* right) {
+	int leftId = left->getValeurId();
+	int rightId = right->getValeurId();
+
+	return leftId < rightId;
 }

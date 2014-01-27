@@ -15,11 +15,11 @@ using namespace std;
 
 #include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
 
-AddBrancheFromClientChangement::AddBrancheFromClientChangement(istringstream& in) : Changement("AddBrancheFromClientChangement") {
+AddBrancheFromClientChangement::AddBrancheFromClientChangement(istringstream& in) : Changement("AddBrancheFromClientChangement", PRIORITY_AddBrancheFromClientChangement) {
 	unserialize(in);
 }
 
-AddBrancheFromClientChangement::AddBrancheFromClientChangement(const vector<int>& parentBrancheId, int brancheTmpId, int revision, const string& brancheName) : Changement("AddBrancheFromClientChangement") {
+AddBrancheFromClientChangement::AddBrancheFromClientChangement(const vector<int>& parentBrancheId, int brancheTmpId, int revision, const string& brancheName) : Changement("AddBrancheFromClientChangement", PRIORITY_AddBrancheFromClientChangement) {
 	_parentBrancheId = parentBrancheId;
 	_brancheTmpId = brancheTmpId;
 	_revision = revision;
@@ -31,7 +31,7 @@ void AddBrancheFromClientChangement::update(MarqueurDistant* marqueur) {
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
 }
 
-void AddBrancheFromClientChangement::serialize(ostringstream& out) {
+void AddBrancheFromClientChangement::serialize(ostringstream& out) const {
 	// Serialize
 	StreamUtils::write(out, (int)ADD_BRANCHE_FROM_CLIENT_MESSAGE);
 
@@ -48,7 +48,7 @@ void AddBrancheFromClientChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _revision);
 }
 
-string AddBrancheFromClientChangement::toString() {
+string AddBrancheFromClientChangement::toString() const {
 	ostringstream str;
 
 	str << "[" << _dataType;
@@ -81,4 +81,8 @@ const std::vector<int>& AddBrancheFromClientChangement::getParentBrancheId() con
 
 int AddBrancheFromClientChangement::getRevision() const {
 	return _revision;
+}
+
+int AddBrancheFromClientChangement::getRootDistance() const {
+	return _parentBrancheId.size();
 }

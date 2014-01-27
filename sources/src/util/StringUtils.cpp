@@ -81,6 +81,10 @@ int StringUtils::isGuillemet(int c) {
 	return c == '"';
 }
 
+int StringUtils::isCarriageReturn(int c) {
+	return c == '\n';
+}
+
 string StringUtils::findAndEraseFirstString(string& s) {
 	string result;
 
@@ -110,15 +114,19 @@ string StringUtils::findFirstWord(string& s) {
 	return result;
 }
 
-vector<string> StringUtils::splitBySpaces(string s) {
+vector<string> StringUtils::splitByCarriageReturns(const string& s) {
+	return split(s, isCarriageReturn);
+}
+
+vector<string> StringUtils::splitBySpaces(const string& s) {
 	return split(s, isspace);
 }
 
-vector<string> StringUtils::split(string s, int (isSeparator)(int)) {
+vector<string> StringUtils::split(const string& s, int (isSeparator)(int)) {
 	vector<string> result;
 
-	string::iterator finMot = s.begin();
-	string::iterator debutMot;
+	string::const_iterator finMot = s.begin();
+	string::const_iterator debutMot;
 
 	do {
 		debutMot = find_if(finMot, s.end(), not1(ptr_fun<int, int>(isSeparator)));

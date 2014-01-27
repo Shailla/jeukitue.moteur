@@ -48,9 +48,11 @@ void TestSuite::launchTests() {
 			Test* test = *iter;
 			testName = test->getName();
 
-			cout << endl << "<<<<<< " << nbr << " LAUNCHING TEST '" << testName << "' >>>>>>";
-			test->test();
-			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' OK <<<<<<";
+			cout << endl << ">>>>>>>>>>>>>>>>>>>>>>>> " << nbr << " LAUNCHING TEST '" << testName << "' >>>>>>>>>>>>>>>>>>>>>>>>";
+			cout << endl << "Description of the test : " << test->getDescription() << endl;
+			test->test();	// Exécution du test
+			cout << endl << endl << "<<<<<<<<<<<<<<<<<<<<<<<< " << nbr << " TEST '" << testName << "' OK <<<<<<<<<<<<<<<<<<<<<<<<";
+			cout << endl;
 
 			nbrOk++;
 		}
@@ -58,10 +60,10 @@ void TestSuite::launchTests() {
 			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (file = " << error._file << ", line = " << error._line << ", message = " << error._message << ") <<<<<<";
 			nbrKo++;
 		}
-//		catch(...) {
-//			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (with unexpected exception) <<<<<<";
-//			nbrKo++;
-//		}
+		catch(...) {
+			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (with unexpected exception) <<<<<<";
+			nbrKo++;
+		}
 
 		nbr++;
 	}

@@ -18,6 +18,7 @@ class HelpCommande : public Commande {
 public:
 	HelpCommande (CommandeInterpreter* interpreter);
 
+	std::string getShortHelp() const;
 	std::string getHelp() const;
 };
 

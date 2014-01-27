@@ -47,6 +47,8 @@ void DataSerializer::fromStream(vector<Changement*>& changements, istringstream&
 
 	try {
 		for(;;) {
+			changement = NULL;
+
 			try {
 				StreamUtils::read(in, messageType);
 			}

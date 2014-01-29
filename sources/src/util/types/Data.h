@@ -29,8 +29,12 @@ public:
 
 	static Data* unserialize(std::istringstream& in) throw(UnserializeException);
 	virtual void serialize(std::ostringstream& out) = 0;
+
+	/** Obtenir une description de la donnée */
 	std::string toString() const;
-	virtual void toString(std::ostringstream& out) = 0;
+
+	/** Obtenir une description de la donnée */
+	virtual void toString(std::ostringstream& out) const = 0;
 };
 
 };

@@ -105,6 +105,7 @@ void PluginEngine::activatePlugin(string& pluginName) {
 
 	lua_register(L, "getScreenSize", &PluginConfigurationProxy::getScreenSize);
 
+	lua_register(L, "getAvailableAudioDrivers", &PluginConfigurationProxy::getAvailableAudioDrivers);
 	lua_register(L, "getConfigurationParameter", &PluginConfigurationProxy::getConfigurationParameter);
 	lua_register(L, "setConfigurationParameter", &PluginConfigurationProxy::setConfigurationParameter);
 
@@ -175,7 +176,7 @@ void PluginEngine::activatePlugin(string& pluginName) {
 		// la fonction n'existe pas
 		lua_pop(L, 1);
 
-		pluginContext->logError("La fonction 'onLoad' n'existe pas, votre plugin doit définir cette fonction.");
+		pluginContext->logError("La fonction 'onLoad' n'existe pas, tout plugin doit définir cette fonction.");
 		pluginContext->logLuaError(status);
 		lua_close(L);
 

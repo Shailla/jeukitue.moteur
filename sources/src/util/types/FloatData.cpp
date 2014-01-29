@@ -26,7 +26,7 @@ void FloatData::serialize(std::ostringstream& out) {
 	StreamUtils::write(out, _value);
 }
 
-void FloatData::toString(std::ostringstream& out) {
+void FloatData::toString(std::ostringstream& out) const {
 	out << "float-'" << _value << "'";
 }
 

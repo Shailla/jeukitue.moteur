@@ -35,7 +35,7 @@ void StringData::serialize(std::ostringstream& out) {
 	StreamUtils::write(out, _value);
 }
 
-void StringData::toString(std::ostringstream& out) {
+void StringData::toString(std::ostringstream& out) const {
 	out << "string-'" << _value << "'";
 }
 

@@ -101,6 +101,10 @@ template < class T > class Luna {
 		lua_pushcfunction(L, &Luna < T >::to_string);
 		lua_settable(L, metatable);
 
+		lua_pushstring(L, "__eq");		// To be able to compare two Luna objects (not natively possible with full userdata)
+		lua_pushcfunction(L, &Luna < T >::equals);
+		lua_settable(L, metatable);
+
 		lua_pushstring(L, "__index");
 		lua_pushcfunction(L, &Luna < T >::property_getter);
 		lua_settable(L, metatable);
@@ -273,6 +277,20 @@ template < class T > class Luna {
 			lua_pushfstring(L, "%s (%p)", T::className, (void*)*obj);
 		else
 			lua_pushstring(L,"Empty object");
+
+		return 1;
+	}
+
+	/*
+	 * Method which compares two Luna objects.
+	 * The full userdatas (as opposed to light userdata) can't be natively compared one to other, we have to had this to do it.
+	 */
+	static int equals(lua_State* L)
+	{
+		T** obj1 = static_cast<T**>(lua_touserdata(L, -1));
+		T** obj2 = static_cast<T**>(lua_touserdata(L, 1));
+
+		lua_pushboolean(L, *obj1 == *obj2);
 
 		return 1;
 	}

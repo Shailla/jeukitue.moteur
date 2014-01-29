@@ -26,7 +26,7 @@ void IntData::serialize(std::ostringstream& out) {
 	StreamUtils::write(out, _value);
 }
 
-void IntData::toString(std::ostringstream& out) {
+void IntData::toString(std::ostringstream& out) const {
 	out << "int-'" << _value << "'";
 }
 

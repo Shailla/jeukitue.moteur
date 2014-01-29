@@ -10,6 +10,8 @@
 
 using namespace std;
 
+#include "fmod.h"
+
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/PluginEngine.h"
 #include "main/Cfg.h"
@@ -37,6 +39,31 @@ int PluginConfigurationProxy::getScreenSize(lua_State *L) {
 	lua_pushnumber(L, 123);
 
 	return 2;
+}
+
+/**
+ * Obtenir la liste des drivers audios disponibles.
+ *    - Return 1 : Dimension horizontale en pixels
+ *    - Return 2 : Dimension verticale en pixels
+ */
+int PluginConfigurationProxy::getAvailableAudioDrivers(lua_State *L) {
+	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
+
+	int nbrAudioDrivers = FSOUND_GetNumDrivers();
+
+	lua_newtable(L);
+
+	cout << endl << "LISTE DES DRIVERS :";
+
+	for(int i=0 ; i<nbrAudioDrivers ; i++) {
+		lua_pushinteger(L, i);
+		lua_pushstring(L, FSOUND_GetDriverName(i));
+		lua_settable(L, -3);
+
+		cout << endl << "  DRIVER : " << i << " - " << FSOUND_GetDriverName(i) << endl;
+	}
+
+	return 1;
 }
 
 

@@ -20,7 +20,7 @@ public:
 	virtual ~FloatData();
 
 	void serialize(std::ostringstream& out);
-	void toString(std::ostringstream& out);
+	void toString(std::ostringstream& out) const;
 
 	float getValue() const;
 };

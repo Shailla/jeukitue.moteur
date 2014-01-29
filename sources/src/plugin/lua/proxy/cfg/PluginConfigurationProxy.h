@@ -29,6 +29,9 @@ class PluginConfigurationProxy {
 public:
 	static int getScreenSize(lua_State *L);
 
+	/** Get the list of the available audio drivers on the computer */
+	static int getAvailableAudioDrivers(lua_State *L);
+
 	static int getConfigurationParameter(lua_State* L);
 	static int setConfigurationParameter(lua_State* L);
 };

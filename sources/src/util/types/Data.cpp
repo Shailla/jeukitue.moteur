@@ -50,7 +50,7 @@ Data* Data::unserialize(std::istringstream& in) throw(UnserializeException) {
 
 std::string Data::toString() const {
 	std::ostringstream ss;
-	toString(ss);
+	this->toString(ss);
 
 	return ss.str();
 }

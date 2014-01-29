@@ -459,7 +459,6 @@ void DataTreeTest::clientTests() {
 	Branche* branche0Client0S = serverTree.getBranche(branche0Client0FullId);
 	ASSERT_NOT_NULL(branche0Client0S, "Le serveur n'a pas recu la branche");
 	ASSERT_EQUAL(branche0Client0Name, branche0Client0S->getBrancheName(), "La branche recue par le serveur est mal nommée");
-	MarqueurDistant* marqueurBranche0Client0S = branche0Client0S->getMarqueur(distant);
 
 	// Valeur 0
 	ValeurInt* valeur0Client0S = (ValeurInt*)serverTree.getValeur(branche0Client0FullId, valeur0Client0Id);

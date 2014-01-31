@@ -25,6 +25,8 @@ const Luna<PluginWindowProxy>::FunctionType PluginWindowProxy::methods[] = {
 		{"setSize", &PluginWindowProxy::setSize},
 		{"setPosition", &PluginWindowProxy::setPosition},
 		{"addCheckbox", &AbstractPluginPanelProxy::addCheckbox},
+		{"addComboList", &AbstractPluginPanelProxy::addComboList},
+		{"addButton", &AbstractPluginPanelProxy::addButton},
 		{"addNotebook", &AbstractPluginPanelProxy::addNotebook},
 		{"addBoxHoriz", &AbstractPluginPanelProxy::addBoxHoriz},
 		{"addBoxVert", &AbstractPluginPanelProxy::addBoxVert},

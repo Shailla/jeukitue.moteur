@@ -91,7 +91,7 @@ int PluginConfigurationProxy::getConfigurationParameter(lua_State* L) {
 		else {
 			ostringstream message;
 			message << "Nom du parametre de configuration inconnu (recu='" << paramName << "')";
-			PluginEngine::getPluginContext(L)->logError(message.str());
+			PluginEngine::getPluginContext(L)->logScriptError(message.str());
 		}
 	}
 
@@ -126,7 +126,7 @@ int PluginConfigurationProxy::setConfigurationParameter(lua_State* L) {
 		else {
 			ostringstream message;
 			message << "Nom du parametre de configuration inconnu (recu='" << paramName << "')";
-			PluginEngine::getPluginContext(L)->logError(message.str());
+			PluginEngine::getPluginContext(L)->logScriptError(message.str());
 		}
 	}
 

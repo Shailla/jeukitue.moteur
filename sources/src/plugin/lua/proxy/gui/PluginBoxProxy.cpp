@@ -20,6 +20,7 @@ const char* PluginBoxProxy::className = "Box";
 
 const Luna<PluginBoxProxy>::FunctionType PluginBoxProxy::methods[] = {
 		{"addButton", &AbstractPluginPanelProxy::addButton},
+		{"addComboList", &AbstractPluginPanelProxy::addComboList},
 		{"addCheckbox", &AbstractPluginPanelProxy::addCheckbox},
 		{"addNotebook", &AbstractPluginPanelProxy::addNotebook},
 		{"addBoxHoriz", &AbstractPluginPanelProxy::addBoxHoriz},

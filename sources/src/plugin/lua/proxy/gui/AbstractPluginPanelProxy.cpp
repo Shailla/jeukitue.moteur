@@ -6,6 +6,7 @@
  */
 
 #include "plugin/lua/proxy/gui/PluginButtonProxy.h"
+#include "plugin/lua/proxy/gui/PluginComboListProxy.h"
 #include "plugin/lua/proxy/gui/PluginBoxProxy.h"
 #include "plugin/lua/proxy/gui/PluginCheckboxProxy.h"
 #include "plugin/lua/proxy/gui/PluginNotebookProxy.h"
@@ -81,6 +82,25 @@ int AbstractPluginPanelProxy::addButton(lua_State* L) {
 		buttonProxy->setWrappedObject(pluginButton);
 
 		Luna<PluginButtonProxy>::push(L, buttonProxy);
+	}
+
+	return 1;
+}
+
+/**
+ * Ajoute une combo list dans le panel.
+ *    - Param 1 : label de la combo list
+ *    - Return 1 : objet de type Checkbox
+ */
+int AbstractPluginPanelProxy::addComboList(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_USERDATA, LUA_PARAM_STRING)) {
+		const char* label = lua_tostring(L, 2);
+
+		PluginComboListProxy* comboProxy = new PluginComboListProxy(_pluginContext);
+		PluginComboList* pluginComboList = _pluginPanel->addComboList(label);
+		comboProxy->setWrappedObject(pluginComboList);
+
+		Luna<PluginComboListProxy>::push(L, comboProxy);
 	}
 
 	return 1;

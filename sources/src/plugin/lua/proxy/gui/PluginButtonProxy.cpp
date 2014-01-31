@@ -16,7 +16,7 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char* PluginButtonProxy::className = "Button";
+const char* PluginButtonProxy::className = "ComboList";
 
 const Luna<PluginButtonProxy>::FunctionType PluginButtonProxy::methods[] = {
 		{0}
@@ -49,12 +49,14 @@ void PluginButtonProxy::buttonPressedEvent(void) {
 	// on vérifie si la fonction existe bien
 	if (!lua_isfunction(_pluginContext->getLuaState(), -1)) {
 		// la fonction n'existe pas
-		_pluginContext->logError("la fonction eventManager n'existe pas");
+		_pluginContext->logError("la fonction 'eventManager' n'existe pas");
 		lua_pop(_pluginContext->getLuaState(), 1);
 	}
 	else {
 		Luna<PluginButtonProxy>::push(_pluginContext->getLuaState(), this);
-		lua_call(_pluginContext->getLuaState(), 1, 0);
+
+		int status = lua_pcall(_pluginContext->getLuaState(), 1, 0, 0);
+		_pluginContext->logLuaError(status);
 	}
 }
 

@@ -27,6 +27,7 @@ public:
 	// Enfants
 	int addNotebook(lua_State* L);
 	int addButton(lua_State* L);
+	int addComboList(lua_State* L);
 	int addCheckbox(lua_State* L);
 	int addBoxHoriz(lua_State* L);
 	int addBoxVert(lua_State* L);

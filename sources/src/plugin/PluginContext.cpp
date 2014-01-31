@@ -53,13 +53,20 @@ void PluginContext::logInfo(const string& trace) {
 /**
  * Emet une trace d'erreur dans le fichier de log du plugin.
  */
-void PluginContext::logError(const string& trace) {
+void PluginContext::logScriptError(const string& trace) {
 	// Récupère le numéro de la ligne en cours d'exécution dans le code LUA du plugin
 	lua_Debug ar;
 	lua_getstack(_luaState, 1, &ar);
 	lua_getinfo(_luaState, "l", &ar);
 
 	_logFile << endl << LOG_ERROR_PREFIX << "(ligne " << ar.currentline << ") " << trace.c_str() << flush;
+}
+
+/**
+ * Emet une trace d'erreur dans le fichier de log du plugin.
+ */
+void PluginContext::logError(const string& trace) {
+	_logFile << endl << LOG_ERROR_PREFIX << trace << flush;
 }
 
 /**

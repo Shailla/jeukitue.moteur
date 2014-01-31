@@ -7,6 +7,7 @@
 
 #include "plugin/api/gui/PluginBox.h"
 #include "plugin/api/gui/PluginButton.h"
+#include "plugin/api/gui/PluginComboList.h"
 #include "plugin/api/gui/PluginCheckbox.h"
 #include "plugin/api/gui/PluginNotebook.h"
 #include "plugin/api/gui/PluginNumeric.h"
@@ -36,6 +37,10 @@ PluginCheckbox* PluginPanel::addCheckbox(const string& checkboxText) {
 
 PluginButton* PluginPanel::addButton(const string& buttonText, ButtonPressedListener* buttonPressedListener) {
 	return new PluginButton(getParent(), buttonText, buttonPressedListener);
+}
+
+PluginComboList* PluginPanel::addComboList(const string& title) {
+	return new PluginComboList(getParent(), title);
 }
 
 PluginBox* PluginPanel::addBoxHoriz() {

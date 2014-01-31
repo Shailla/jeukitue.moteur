@@ -17,6 +17,7 @@ namespace JktPlugin {
 
 class PluginBox;
 class PluginButton;
+class PluginComboList;
 class PluginCheckbox;
 class PluginNotebook;
 class PluginNumeric;
@@ -33,6 +34,7 @@ public:
 	PluginNotebook* addNotebook();
 	PluginCheckbox* addCheckbox(const std::string& checkboxText);
 	PluginButton* addButton(const std::string& buttonText, ButtonPressedListener* buttonPressedListener);
+	PluginComboList* addComboList(const std::string& title);
 	PluginBox* addBoxHoriz();
 	PluginBox* addBoxVert();
 	PluginNumeric* addNumeric(const std::string& numericText, const std::string& numericUnite);

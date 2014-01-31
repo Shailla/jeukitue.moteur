@@ -40,6 +40,7 @@ public:
 	void logUser(const std::string& trace);
 	void logInfo(const std::string& trace);
 	void logError(const std::string& trace);
+	void logScriptError(const std::string& trace);
 	void logLuaError(const int status);
 };
 

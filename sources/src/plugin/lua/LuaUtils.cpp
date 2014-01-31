@@ -42,7 +42,7 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 	if(paramNbr != expectedParamNbr) {
 		ostringstream message;
 		message << "Mauvais nombre de parametres (attendu=" << expectedParamNbr << ", recus=" << paramNbr << ")";
-		PluginEngine::getPluginContext(L)->logError(message.str());
+		PluginEngine::getPluginContext(L)->logScriptError(message.str());
 
 		return false;
 	}
@@ -56,7 +56,7 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 			if(!lua_isstring(L, i)) {
 				ostringstream message;
 				message << "Mauvais format du parametre " << i << " (attendu=String)";
-				PluginEngine::getPluginContext(L)->logError(message.str());
+				PluginEngine::getPluginContext(L)->logScriptError(message.str());
 
 				return false;
 			}
@@ -65,7 +65,7 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 			if(!lua_isboolean(L, i)) {
 				ostringstream message;
 				message << "Mauvais format du parametre " << i << " (attendu=Booleen)";
-				PluginEngine::getPluginContext(L)->logError(message.str());
+				PluginEngine::getPluginContext(L)->logScriptError(message.str());
 
 				return false;
 			}
@@ -74,7 +74,7 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 			if(!lua_isnumber(L, i)) {
 				ostringstream message;
 				message << "Mauvais format du parametre " << i << " (attendu=Entier)";
-				PluginEngine::getPluginContext(L)->logError(message.str());
+				PluginEngine::getPluginContext(L)->logScriptError(message.str());
 
 				return false;
 			}
@@ -83,7 +83,7 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 			if(!lua_isuserdata(L, i)) {
 				ostringstream message;
 				message << "Mauvais format du parametre " << i << " (attendu=Userdata)";
-				PluginEngine::getPluginContext(L)->logError(message.str());
+				PluginEngine::getPluginContext(L)->logScriptError(message.str());
 
 				return false;
 			}

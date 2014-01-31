@@ -21,6 +21,8 @@ const char* PluginTabProxy::className = "Tab";
 
 const Luna<PluginTabProxy>::FunctionType PluginTabProxy::methods[] = {
 		{"addCheckbox", &AbstractPluginPanelProxy::addCheckbox},
+		{"addButton", &AbstractPluginPanelProxy::addButton},
+		{"addComboList", &AbstractPluginPanelProxy::addComboList},
 		{"addNotebook", &AbstractPluginPanelProxy::addNotebook},
 		{"addBoxHoriz", &AbstractPluginPanelProxy::addBoxHoriz},
 		{"addBoxVert", &AbstractPluginPanelProxy::addBoxVert},

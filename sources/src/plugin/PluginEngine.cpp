@@ -10,6 +10,7 @@
 using namespace std;
 
 #include "plugin/lua/proxy/cfg/PluginConfigurationProxy.h"
+#include "plugin/lua/proxy/gui/PluginComboListProxy.h"
 #include "plugin/lua/proxy/gui/PluginBoxProxy.h"
 #include "plugin/lua/proxy/gui/PluginButtonProxy.h"
 #include "plugin/lua/proxy/gui/PluginCheckboxProxy.h"
@@ -115,6 +116,7 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	pluginContext->logInfo("Initialisation des classes Lua...");
 
 	Luna<PluginCheckboxProxy>::Register(L);
+	Luna<PluginComboListProxy>::Register(L);
 	Luna<PluginButtonProxy>::Register(L);
 	Luna<PluginBoxProxy>::Register(L);
 	Luna<PluginNotebookProxy>::Register(L);
@@ -133,8 +135,9 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	int status = luaL_loadfile(L, pluginFile.c_str());
 
 	if(status != 0) {
-		pluginContext->logError("Echec de chargement du fichier du plugin");
+		pluginContext->logScriptError("Echec de chargement du fichier du plugin");
 		pluginContext->logLuaError(status);
+		pluginContext->logError("Echec d'initialisation du plugin.");
 		lua_close(L);
 		delete pluginContext;
 
@@ -149,9 +152,11 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	pluginContext->logInfo("Initialisation du script...");
 
 	// Appel principal pour l'initialisation du script chargé
-	if(lua_pcall(L, 0, LUA_MULTRET, 0) != 0) {
-		pluginContext->logError("Impossible d'initialiser le script.");
+	status = lua_pcall(L, 0, LUA_MULTRET, 0);
+
+	if(status != 0) {
 		pluginContext->logLuaError(status);
+		pluginContext->logError("Echec d'initialisation du plugin.");
 		lua_close(L);
 
 		_mapNamePlugin.erase(pluginName);
@@ -178,6 +183,7 @@ void PluginEngine::activatePlugin(string& pluginName) {
 
 		pluginContext->logError("La fonction 'onLoad' n'existe pas, tout plugin doit définir cette fonction.");
 		pluginContext->logLuaError(status);
+		pluginContext->logError("Echec d'initialisation du plugin.");
 		lua_close(L);
 
 		_mapNamePlugin.erase(pluginName);
@@ -189,7 +195,20 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	}
 
 	// Exécution de la méthode d'init du plugin
-	lua_call(L, 0, 0);
+	status = lua_pcall(L, 0, 0, 0);
+
+	if(status) {
+		pluginContext->logLuaError(status);
+		pluginContext->logError("Echec d'initialisation du plugin.");
+		lua_close(L);
+
+		_mapNamePlugin.erase(pluginName);
+		_mapLuaContext.erase(L);
+
+		delete pluginContext;
+
+		return;
+	}
 
 	pluginContext->logInfo("Plugin activé.");
 }

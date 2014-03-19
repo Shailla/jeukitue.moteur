@@ -6,6 +6,7 @@
  */
 
 #include "plugin/api/gui/PluginButton.h"
+#include "plugin/api/gui/PluginComboList.h"
 
 #include "plugin/api/gui/PluginGuiController.h"
 
@@ -17,9 +18,14 @@ PluginGuiController::PluginGuiController() {
 PluginGuiController::~PluginGuiController() {
 }
 
-void PluginGuiController::catchButtonEvents(AG_Event* event) {
+void PluginGuiController::catchButtonEvent(AG_Event* event) {
 	PluginButton* pluginButton = (PluginButton*)AG_PTR(1);
 	pluginButton->buttonPressedEvent(event);
+}
+
+void PluginGuiController::catchComboListEvent(AG_Event* event) {
+	PluginComboList* pluginComboList = (PluginComboList*)AG_PTR(1);
+	pluginComboList->selectionChangedEvent(event);
 }
 
 } /* namespace JktPlugin */

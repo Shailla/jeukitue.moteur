@@ -9,6 +9,7 @@
 
 using namespace std;
 
+#include "main/Fabrique.h"
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/PluginEngine.h"
 
@@ -16,28 +17,34 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char* PluginBoxProxy::className = "Box";
+const char PluginBoxProxy::className[] = "Box";
 
-const Luna<PluginBoxProxy>::FunctionType PluginBoxProxy::methods[] = {
+Lunar<PluginBoxProxy>::RegType PluginBoxProxy::methods[] = {
+		// Widgets enfants
 		{"addButton", &AbstractPluginPanelProxy::addButton},
-		{"addComboList", &AbstractPluginPanelProxy::addComboList},
 		{"addCheckbox", &AbstractPluginPanelProxy::addCheckbox},
+		{"addComboList", &AbstractPluginPanelProxy::addComboList},
+		{"addLabel", &AbstractPluginPanelProxy::addLabel},
+		{"addNumeric", &AbstractPluginPanelProxy::addNumeric},
+		{"addSeparator", &AbstractPluginPanelProxy::addSeparator},
+
+		// Containers enfants
 		{"addNotebook", &AbstractPluginPanelProxy::addNotebook},
 		{"addBoxHoriz", &AbstractPluginPanelProxy::addBoxHoriz},
 		{"addBoxVert", &AbstractPluginPanelProxy::addBoxVert},
-		{"addNumeric", &AbstractPluginPanelProxy::addNumeric},
-		{0}
-};
 
-const Luna<PluginBoxProxy>::PropertyType PluginBoxProxy::properties[] = {
-	{0}
+		// Opérations
+		{"expand", &AbstractPluginPanelProxy::expand},
+		{"expandHoriz", &AbstractPluginPanelProxy::expandHoriz},
+		{"expandVert", &AbstractPluginPanelProxy::expandVert},
+		{0}
 };
 
 PluginBoxProxy::PluginBoxProxy(lua_State* L) : AbstractPluginPanelProxy(L) {
 	_pluginBox = NULL;
 
 	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
-	AbstractPluginPanelProxy::setPluginContext(PluginEngine::getPluginContext(L));
+	AbstractPluginPanelProxy::setPluginContext(Fabrique::getPluginEngine()->getPluginContext(L));
 
 	cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur Lua : Cannot create new PluginWindowProxy in Lua";
 }
@@ -48,6 +55,10 @@ PluginBoxProxy::PluginBoxProxy(PluginContext* pluginContext, PluginBox* pluginBo
 }
 
 PluginBoxProxy::~PluginBoxProxy() {
+}
+
+int PluginBoxProxy::push(lua_State* L) {
+	return Lunar<PluginBoxProxy>::push(L, this);
 }
 
 } /* namespace JktPlugin */

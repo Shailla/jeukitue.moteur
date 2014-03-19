@@ -6,6 +6,7 @@
  */
 
 #include "plugin/lua/proxy/gui/PluginButtonProxy.h"
+#include "plugin/lua/proxy/gui/PluginLabelProxy.h"
 #include "plugin/lua/proxy/gui/PluginComboListProxy.h"
 #include "plugin/lua/proxy/gui/PluginBoxProxy.h"
 #include "plugin/lua/proxy/gui/PluginCheckboxProxy.h"
@@ -44,9 +45,9 @@ AbstractPluginPanelProxy::~AbstractPluginPanelProxy() {
  *    - Return 1 : container de type NoteBook
  */
 int AbstractPluginPanelProxy::addNotebook(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_USERDATA)) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
 		PluginNotebookProxy* notebookProxy = new PluginNotebookProxy(_pluginContext, _pluginPanel->addNotebook());
-		Luna<PluginNotebookProxy>::push(L, notebookProxy);
+		Lunar<PluginNotebookProxy>::push(L, notebookProxy);
 	}
 
 	return 1;
@@ -58,10 +59,10 @@ int AbstractPluginPanelProxy::addNotebook(lua_State* L) {
  *    - Return 1 : objet de type Checkbox
  */
 int AbstractPluginPanelProxy::addCheckbox(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_USERDATA, LUA_PARAM_STRING)) {
-		const char* checkboxText = lua_tostring(L, 2);
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
+		const char* checkboxText = lua_tostring(L, 1);
 		PluginCheckboxProxy* checkboxProxy = new PluginCheckboxProxy(_pluginPanel->addCheckbox(checkboxText));
-		Luna<PluginCheckboxProxy>::push(L, checkboxProxy);
+		Lunar<PluginCheckboxProxy>::push(L, checkboxProxy);
 	}
 
 	return 1;
@@ -74,14 +75,33 @@ int AbstractPluginPanelProxy::addCheckbox(lua_State* L) {
  *    - Return 1 : objet de type Checkbox
  */
 int AbstractPluginPanelProxy::addButton(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_USERDATA, LUA_PARAM_STRING)) {
-		const char* buttonText = lua_tostring(L, 2);
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
+		const char* buttonText = lua_tostring(L, 1);
 
 		PluginButtonProxy* buttonProxy = new PluginButtonProxy(_pluginContext);
 		PluginButton* pluginButton = _pluginPanel->addButton(buttonText, buttonProxy);
 		buttonProxy->setWrappedObject(pluginButton);
 
-		Luna<PluginButtonProxy>::push(L, buttonProxy);
+		Lunar<PluginButtonProxy>::push(L, buttonProxy);
+	}
+
+	return 1;
+}
+
+/**
+ * Ajoute un label dans le panel.
+ *    - Param 1 : texte affiché dans le label
+ *    - Return 1 : objet de type Label
+ */
+int AbstractPluginPanelProxy::addLabel(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
+		const char* labelText = lua_tostring(L, 1);
+
+		PluginLabelProxy* labelProxy = new PluginLabelProxy(_pluginContext);
+		PluginLabel* pluginLabel = _pluginPanel->addLabel(labelText);
+		labelProxy->setWrappedObject(pluginLabel);
+
+		Lunar<PluginLabelProxy>::push(L, labelProxy);
 	}
 
 	return 1;
@@ -93,14 +113,14 @@ int AbstractPluginPanelProxy::addButton(lua_State* L) {
  *    - Return 1 : objet de type Checkbox
  */
 int AbstractPluginPanelProxy::addComboList(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_USERDATA, LUA_PARAM_STRING)) {
-		const char* label = lua_tostring(L, 2);
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
+		const char* label = lua_tostring(L, 1);
 
 		PluginComboListProxy* comboProxy = new PluginComboListProxy(_pluginContext);
-		PluginComboList* pluginComboList = _pluginPanel->addComboList(label);
+		PluginComboList* pluginComboList = _pluginPanel->addComboList(label, comboProxy);
 		comboProxy->setWrappedObject(pluginComboList);
 
-		Luna<PluginComboListProxy>::push(L, comboProxy);
+		Lunar<PluginComboListProxy>::push(L, comboProxy);
 	}
 
 	return 1;
@@ -111,9 +131,9 @@ int AbstractPluginPanelProxy::addComboList(lua_State* L) {
  *    - Return 1 : container de type Box
  */
 int AbstractPluginPanelProxy::addBoxHoriz(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_USERDATA)) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
 		PluginBoxProxy* boxProxy = new PluginBoxProxy(_pluginContext, _pluginPanel->addBoxHoriz());
-		Luna<PluginBoxProxy>::push(L, boxProxy);
+		Lunar<PluginBoxProxy>::push(L, boxProxy);
 	}
 
 	return 1;
@@ -124,9 +144,20 @@ int AbstractPluginPanelProxy::addBoxHoriz(lua_State* L) {
  *    - Return 1 : container de type Box
  */
 int AbstractPluginPanelProxy::addBoxVert(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_USERDATA)) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
 		PluginBoxProxy* boxProxy = new PluginBoxProxy(_pluginContext, _pluginPanel->addBoxVert());
-		Luna<PluginBoxProxy>::push(L, boxProxy);
+		Lunar<PluginBoxProxy>::push(L, boxProxy);
+	}
+
+	return 1;
+}
+
+/**
+ * Ajoute un séparateur horizontal.
+ */
+int AbstractPluginPanelProxy::addSeparator(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+		_pluginPanel->addSeparator();
 	}
 
 	return 1;
@@ -139,11 +170,44 @@ int AbstractPluginPanelProxy::addBoxVert(lua_State* L) {
  *    - Return 1 : objet de type Numeric
  */
 int AbstractPluginPanelProxy::addNumeric(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 3, LUA_PARAM_USERDATA, LUA_PARAM_STRING, LUA_PARAM_STRING)) {
-		const char* numericText = lua_tostring(L, 2);
-		const char* numericUnite = lua_tostring(L, 3);
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_STRING, LUA_PARAM_STRING)) {
+		const char* numericText = lua_tostring(L, 1);
+		const char* numericUnite = lua_tostring(L, 2);
 		PluginNumericProxy* numericProxy = new PluginNumericProxy(_pluginPanel->addNumeric(numericText, numericUnite));
-		Luna<PluginNumericProxy>::push(L, numericProxy);
+		Lunar<PluginNumericProxy>::push(L, numericProxy);
+	}
+
+	return 1;
+}
+
+/**
+ * Etend l'objet.
+ */
+int AbstractPluginPanelProxy::expand(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+		_pluginPanel->expand();
+	}
+
+	return 1;
+}
+
+/**
+ * Etend l'objet horizontalement.
+ */
+int AbstractPluginPanelProxy::expandHoriz(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+		_pluginPanel->expandHoriz();
+	}
+
+	return 1;
+}
+
+/**
+ * Etend l'objet verticalement.
+ */
+int AbstractPluginPanelProxy::expandVert(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+		_pluginPanel->expandVert();
 	}
 
 	return 1;

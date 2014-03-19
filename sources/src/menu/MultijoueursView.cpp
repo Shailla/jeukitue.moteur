@@ -32,7 +32,7 @@ MultijoueursView::MultijoueursView(const AG_EventFn controllerCallback)
     AG_SeparatorNewHoriz(m_window);
 
 	// Bouton retour
-    AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowMainMenuAction);
+    AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowMenuAction);
 
     AG_ExpandHoriz(buttoModeClient);
     AG_ExpandHoriz(buttonLancerServer);
@@ -41,6 +41,7 @@ MultijoueursView::MultijoueursView(const AG_EventFn controllerCallback)
 
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 25, 50);
 	AG_WindowShow(m_window);
+
     hide();
 }
 

@@ -36,7 +36,7 @@ public:
 private:
 	CPlayer* _erwin;				// Pointeur sur le joueur actif
 	JktMoteur::CMap	*_map;			// Map en cours de jeu
-	ModePartie _mode;						// Mode de jeu (parie normale, client ou serveur)
+	ModePartie _mode;				// Mode de jeu (parie normale, client ou serveur)
 	bool _gravite;					// Indique si la gravité est active
 
 public:
@@ -75,22 +75,17 @@ public:
 	JktNet::StatutClient getStatutClient();					// Donne le statut du client
 
 	// Gestion du serveur
-	void setModeServer();							// Crée la classe Server pour un jeu en mode serveur
-	JktNet::CServer *getServer();		// Retourne le pointeur sur la classe CServer
-	void setStatutServer( JktNet::StatutServer statut );				// Renseigne le statut du serveur
-	JktNet::StatutServer getStatutServer();							// Donne le statut du serveur
+	void setModeServer();									// Crée la classe Server pour un jeu en mode serveur
+	JktNet::CServer *getServer();							// Retourne le pointeur sur la classe CServer
+	void setStatutServer( JktNet::StatutServer statut );	// Renseigne le statut du serveur
+	JktNet::StatutServer getStatutServer();					// Donne le statut du serveur
 
 	// Gestion du jeu
 	void AffichePlayers();			// Affiche tous les joueurs
 	void AfficheProjectils();		// Affiche tous les projectils
-	void Refresh();					// Rafraichi les classe qui en ont besoin
-	void GereContactPlayers();		// Gère les contacts entre tous les joueurs et la map
+
 	void setPlayerList(int nbr);	// Indique le nombre de joueurs de la partie
 	int getMaxPlayers() const;
-	void quit();					// Quitte la partie en cours
-
-	// Gestion de la MAP courante
-	void quitCurrentMap();
 
 	// Gestion du joueur principal (actif)
 	CPlayer* Erwin();								// Renvoie le joueur principal
@@ -99,11 +94,20 @@ public:
 	// Gestion des joueurs
 	void deletePlayers();								// Détruit tous les joueurs
 
-	void afficheToutesTextures(int x, int y, int tailleX, int tailleY) const;
-	void afficheViseur(int x, int y) const;			// Affiche le joueur à la position voulue sur l'écran
+private:
+	void Refresh();					// Rafraichi les classe qui en ont besoin
 	void deplaceTousPlayer();
 	void faitTousRequetesClavier();
 	void faitTousPlayerGravite();
+	void GereContactPlayers();		// Gère les contacts entre tous les joueurs et la map
+
+public:
+	void quitCurrentMap();
+
+	// Fonctions d'affichage
+	void afficheToutesTextures(int x, int y, int tailleX, int tailleY) const;
+	void afficheViseur(int x, int y) const;			// Affiche le joueur à la position voulue sur l'écran
+
 	void timer();
 };
 

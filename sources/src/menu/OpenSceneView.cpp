@@ -16,7 +16,7 @@ OpenSceneView::OpenSceneView(const AG_EventFn controllerCallback)
 	m_buttonConvertirSceneASE = AG_ButtonNewFn(m_window, 0, "Importer une scene ASE", controllerCallback, "%i", Controller::ShowOpenAseViewAction);
     m_buttonOuvrirSceneMap = AG_ButtonNewFn(m_window, 0, "Ouvrir une scene Map", controllerCallback, "%i", Controller::ShowOpenMapViewAction);
     AG_SeparatorNewHoriz(m_window);
-    m_buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowMainMenuAction);
+    m_buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowMenuAction);
 
     AG_ExpandHoriz(m_buttonConvertirSceneASE);
     AG_ExpandHoriz(m_buttonOuvrirSceneMap);

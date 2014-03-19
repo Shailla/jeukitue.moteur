@@ -18,15 +18,11 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char* PluginNotebookProxy::className = "Notebook";
+const char PluginNotebookProxy::className[] = "Notebook";
 
-const Luna<PluginNotebookProxy>::FunctionType PluginNotebookProxy::methods[] = {
+Lunar<PluginNotebookProxy>::RegType PluginNotebookProxy::methods[] = {
 		{"addTab", &PluginNotebookProxy::addTab},
 		{0}
-};
-
-const Luna<PluginNotebookProxy>::PropertyType PluginNotebookProxy::properties[] = {
-	{0}
 };
 
 PluginNotebookProxy::PluginNotebookProxy(lua_State* L) {
@@ -46,15 +42,19 @@ PluginNotebookProxy::PluginNotebookProxy(PluginContext* pluginContext, PluginNot
 PluginNotebookProxy::~PluginNotebookProxy() {
 }
 
+int PluginNotebookProxy::push(lua_State* L) {
+	return Lunar<PluginNotebookProxy>::push(L, this);
+}
+
 /**
  * Ajoute un onglet au notebook.
  *    - Param 1 : Titre de l'onglet
  */
 int PluginNotebookProxy::addTab(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_USERDATA, LUA_PARAM_STRING)) {
-		const string tabTitle = lua_tostring(L, 2);
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
+		const string tabTitle = lua_tostring(L, 1);
 		PluginTabProxy* tabProxy = new PluginTabProxy(_pluginContext, _pluginNotebook->addTab(tabTitle));
-		Luna<PluginTabProxy>::push(L, tabProxy);
+		Lunar<PluginTabProxy>::push(L, tabProxy);
 	}
 
 	return 1;

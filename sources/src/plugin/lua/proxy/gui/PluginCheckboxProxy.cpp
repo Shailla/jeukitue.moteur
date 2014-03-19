@@ -16,16 +16,12 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char* PluginCheckboxProxy::className = "Checkbox";
+const char PluginCheckboxProxy::className[] = "Checkbox";
 
-const Luna<PluginCheckboxProxy>::FunctionType PluginCheckboxProxy::methods[] = {
+Lunar<PluginCheckboxProxy>::RegType PluginCheckboxProxy::methods[] = {
 		{"getValue", &PluginCheckboxProxy::getValue},
 		{"setValue", &PluginCheckboxProxy::setValue},
 		{0}
-};
-
-const Luna<PluginCheckboxProxy>::PropertyType PluginCheckboxProxy::properties[] = {
-	{0}
 };
 
 PluginCheckboxProxy::PluginCheckboxProxy(lua_State* L) {
@@ -43,8 +39,12 @@ PluginCheckboxProxy::PluginCheckboxProxy(PluginCheckbox* pluginCheckbox) {
 PluginCheckboxProxy::~PluginCheckboxProxy() {
 }
 
+int PluginCheckboxProxy::push(lua_State* L) {
+	return Lunar<PluginCheckboxProxy>::push(L, this);
+}
+
 int PluginCheckboxProxy::getValue(lua_State* L) {
-	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_USERDATA);
+	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
 	const bool value = _pluginCheckbox->getValue();
 	lua_pushboolean(L, value);
 
@@ -52,8 +52,8 @@ int PluginCheckboxProxy::getValue(lua_State* L) {
 }
 
 int PluginCheckboxProxy::setValue(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_USERDATA, LUA_PARAM_BOOLEAN)) {
-		const bool value = lua_toboolean(L, 2);
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_BOOLEAN)) {
+		const bool value = lua_toboolean(L, 1);
 		_pluginCheckbox->setValue(value);
 	}
 

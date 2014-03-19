@@ -17,7 +17,12 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#include "lunaFive.h"
+#include "SDL.h"
+
+#include "lunar.h"
+
+#include "plugin/PluginWidgetEvent.h"
+#include "plugin/PluginActionEvent.h"
 
 namespace JktPlugin {
 
@@ -30,8 +35,11 @@ class PluginContext {
 	std::ofstream _logFile;
 	lua_State* _luaState;
 	const std::string _pluginName;
+
+	SDL_mutex* _dispatchEventMutex;
+
 public:
-	PluginContext(lua_State* luaState, const std::string& pluginName, const std::string& pluginDirectory);
+	PluginContext(lua_State* luaState, const std::string& pluginName, const std::string& pluginsDirectory);
 	virtual ~PluginContext();
 
 	lua_State* getLuaState();
@@ -42,6 +50,9 @@ public:
 	void logError(const std::string& trace);
 	void logScriptError(const std::string& trace);
 	void logLuaError(const int status);
+
+	void dispatchEvent(PluginWidgetEvent* event);
+	void dispatchEvent(const PluginActionEvent& event);
 };
 
 } /* namespace JktPlugin */

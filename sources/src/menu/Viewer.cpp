@@ -1,14 +1,15 @@
 #include "Viewer.h"
 
+#include <iostream>
+
+using namespace std;
+
 #include <agar/core.h>
 #include <agar/gui.h>
 
-#include "menu/MainMenuView.h"
-#include "menu/AboutView.h"
 #include "menu/CentralisateurView.h"
 #include "menu/MultijoueursView.h"
 #include "menu/MultijoueursClientView.h"
-#include "menu/ConfigurationView.h"
 #include "menu/ConfigCentralisateurView.h"
 #include "menu/OpenSceneView.h"
 #include "menu/OpenSceneASEView.h"
@@ -16,7 +17,6 @@
 #include "menu/OpenSceneASEEcraseRepView.h"
 #include "menu/ConsoleAvancementView.h"
 #include "menu/LanceServeurView.h"
-#include "menu/ConfigurationAudioView.h"
 #include "menu/ConfigurationCommandesView.h"
 #include "menu/ConfigurationVideoView.h"
 #include "menu/ConfigurationJoueurView.h"
@@ -32,12 +32,9 @@
 
 Viewer::Viewer(AG_EventFn controllerCallback) {
 	// Initialisation des fenêtres
-	addMenuView(MAIN_MENU_VIEW, new MainMenuView(controllerCallback));
-	addMenuView(ABOUT_VIEW, new AboutView(controllerCallback, this));
 	addMenuView(MULTIJOUEURS_VIEW, new MultijoueursView(controllerCallback));
 	addMenuView(MULTIJOUEURS_CLIENT_VIEW, new MultijoueursClientView(controllerCallback));
 	addMenuView(CENTRALISATEUR_VIEW, new CentralisateurView(controllerCallback));
-	addMenuView(CONFIGURATION_VIEW, new ConfigurationView(controllerCallback));
 	addMenuView(CONFIG_CENTRALISATEUR_VIEW, new ConfigCentralisateurView(controllerCallback));
 	addMenuView(OPEN_SCENE_VIEW, new OpenSceneView(controllerCallback));
 	addMenuView(PLUGINS_MANAGEMENT_VIEW, new PluginsManagementView(controllerCallback));
@@ -46,7 +43,6 @@ Viewer::Viewer(AG_EventFn controllerCallback) {
 	addMenuView(OPEN_SCENE_ASE_ECRASE_REP_VIEW, new OpenSceneASEEcraseRepView(controllerCallback));
 	addMenuView(CONSOLE_AVANCEMENT_VIEW, new ConsoleAvancementView(controllerCallback));
 	addMenuView(LANCE_SERVEUR_VIEW, new LanceServeurView(controllerCallback));
-	addMenuView(CONFIGURATION_AUDIO_VIEW, new ConfigurationAudioView(controllerCallback));
 	addMenuView(CONFIGURATION_COMMANDES_VIEW, new ConfigurationCommandesView(controllerCallback));
 	addMenuView(CONFIGURATION_VIDEO_VIEW, new ConfigurationVideoView(controllerCallback));
 	addMenuView(CONFIGURATION_JOUEUR_VIEW, new ConfigurationJoueurView(controllerCallback));
@@ -63,6 +59,8 @@ Viewer::Viewer(AG_EventFn controllerCallback) {
 void Viewer::addMenuView(VIEWS viewId, View* view) {
 	_views[viewId] = view;
 	_menuViews[viewId] = view;
+
+	cerr << endl << "CREATION VUE n°" << viewId << " : " << view << endl << flush;
 }
 
 void Viewer::addSimpleView(VIEWS viewId, View* view) {
@@ -78,18 +76,18 @@ Viewer::~Viewer(void) {
 }
 
 void Viewer::showView(VIEWS viewId) {
-	View* view = _views[viewId];
+	map<VIEWS, View*>::iterator iter = _views.find(viewId);
 
-	if(view) {
-		view->show();
+	if(iter != _views.end()) {
+		iter->second->show();
 	}
 }
 
 void Viewer::hideView(VIEWS viewId) {
-	View* view = _views[viewId];
+	map<VIEWS, View*>::iterator iter = _views.find(viewId);
 
-	if(view) {
-		view->hide();
+	if(iter != _views.end()) {
+		iter->second->hide();
 	}
 }
 
@@ -99,10 +97,14 @@ void Viewer::showMenuView(VIEWS viewId) {
 
 	for(iter = _menuViews.begin() ; iter != _menuViews.end() ; iter++) {
 		if((*iter).first == viewId) {
+			cerr << endl << "SHOW " << (*iter).first << " " << (*iter).second << endl << flush;
 			(*iter).second->show();
+			cerr << endl << "SHOW END " << (*iter).first << " " << (*iter).second << endl << flush;
 		}
 		else {
+			cerr << endl << "HIDE " << (*iter).first << " " << (*iter).second << endl << flush;
 			(*iter).second->hide();
+			cerr << endl << "HIDE END " << (*iter).first << " " << (*iter).second << endl << flush;
 		}
 	}
 }
@@ -112,12 +114,21 @@ void Viewer::hideAllMenuViews(void) {
 	map<VIEWS, View*>::iterator iter;
 
 	for(iter = _menuViews.begin() ; iter != _menuViews.end() ; iter++) {
+		cerr << endl << "HIDE all " << (*iter).first << " " << (*iter).second << endl << flush;
 		(*iter).second->hide();
+		cerr << endl << "HIDE all END " << (*iter).first << " " << (*iter).second << endl << flush;
 	}
 }
 
 View* Viewer::getView(VIEWS viewId) {
-	return _views[viewId];
+	map<VIEWS, View*>::iterator iter = _views.find(viewId);
+
+	if(iter != _views.end()) {
+		return iter->second;
+	}
+	else {
+		return 0;
+	}
 }
 
 void Viewer::draw(void) {

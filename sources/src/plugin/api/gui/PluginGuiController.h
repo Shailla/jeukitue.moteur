@@ -18,7 +18,8 @@ public:
 	PluginGuiController();
 	virtual ~PluginGuiController();
 
-	static void catchButtonEvents(AG_Event* event);
+	static void catchButtonEvent(AG_Event* event);
+	static void catchComboListEvent(AG_Event* event);
 };
 
 } /* namespace JktPlugin */

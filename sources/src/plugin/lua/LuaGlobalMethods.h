@@ -22,6 +22,7 @@ public:
 	virtual ~LuaGlobalMethods();
 
 	static int log(lua_State* L);
+	static int pushEvent(lua_State* L);
 };
 
 } /* namespace JktPlugin */

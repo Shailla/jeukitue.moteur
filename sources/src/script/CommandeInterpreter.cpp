@@ -40,7 +40,8 @@ const map<string, Commande*>& CommandeInterpreter::getCommandes() const {
 }
 
 Commande* CommandeInterpreter::getCommande(const string& commandeName) {
-	return _commandes[commandeName];
+	std::map<std::string, Commande*>::iterator it = _commandes.find(commandeName);
+	return (it==_commandes.end())?NULL:it->second;
 }
 
 void CommandeInterpreter::interpreteCommande(string ligne, bool userOutput) {

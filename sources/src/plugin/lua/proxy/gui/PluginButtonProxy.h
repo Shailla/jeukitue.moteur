@@ -14,8 +14,9 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#include "lunaFive.h"
+#include "lunar.h"
 
+#include "plugin/lua/proxy/LunarProxy.h"
 #include "plugin/api/gui/listener/ButtonPressedListener.h"
 
 namespace JktPlugin {
@@ -23,24 +24,27 @@ namespace JktPlugin {
 class PluginContext;
 class PluginButton;
 
-class PluginButtonProxy : public ButtonPressedListener {
-	friend class Luna<PluginButtonProxy>;
-	static const char *className;
-	static const Luna<PluginButtonProxy>::FunctionType methods[];
-	static const Luna<PluginButtonProxy>::PropertyType properties[];
+class PluginButtonProxy : public LunarProxy, public ButtonPressedListener {
+public:
+	static const char className[];
+	static Lunar<PluginButtonProxy>::RegType methods[];
 
-	bool isExisting; // This is used by Luna to see whether it's been created by createFromExisting.  Don't set it.
-	bool isPrecious; // This is used to tell Luna not to garbage collect the object, in case other objects might reference it.  Set it in your classes constructor.
-
+private:
 	PluginContext* _pluginContext;
 	PluginButton* _pluginButton;
+
 public:
 	PluginButtonProxy(lua_State* L);
 	PluginButtonProxy(PluginContext* pluginContext);
 	virtual ~PluginButtonProxy();
 
-	void setWrappedObject(PluginButton* pluginButton);
 	void buttonPressedEvent();
+	int push(lua_State* L);
+	void setWrappedObject(PluginButton* pluginButton);
+
+	int expand(lua_State* L);
+	int expandHoriz(lua_State* L);
+	int expandVert(lua_State* L);
 };
 
 } /* namespace JktPlugin */

@@ -9,6 +9,7 @@
 
 using namespace std;
 
+#include "main/Fabrique.h"
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/PluginEngine.h"
 #include "plugin/api/gui/PluginTab.h"
@@ -17,21 +18,27 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char* PluginTabProxy::className = "Tab";
+const char PluginTabProxy::className[] = "Tab";
 
-const Luna<PluginTabProxy>::FunctionType PluginTabProxy::methods[] = {
-		{"addCheckbox", &AbstractPluginPanelProxy::addCheckbox},
+Lunar<PluginTabProxy>::RegType PluginTabProxy::methods[] = {
+		// Widgets enfants
 		{"addButton", &AbstractPluginPanelProxy::addButton},
+		{"addCheckbox", &AbstractPluginPanelProxy::addCheckbox},
 		{"addComboList", &AbstractPluginPanelProxy::addComboList},
+		{"addLabel", &AbstractPluginPanelProxy::addLabel},
+		{"addNumeric", &AbstractPluginPanelProxy::addNumeric},
+		{"addSeparator", &AbstractPluginPanelProxy::addSeparator},
+
+		// Containers enfants
 		{"addNotebook", &AbstractPluginPanelProxy::addNotebook},
 		{"addBoxHoriz", &AbstractPluginPanelProxy::addBoxHoriz},
 		{"addBoxVert", &AbstractPluginPanelProxy::addBoxVert},
-		{"addNumeric", &AbstractPluginPanelProxy::addNumeric},
-		{0}
-};
 
-const Luna<PluginTabProxy>::PropertyType PluginTabProxy::properties[] = {
-	{0}
+		// Opérations
+		{"expand", &AbstractPluginPanelProxy::expand},
+		{"expandHoriz", &AbstractPluginPanelProxy::expandHoriz},
+		{"expandVert", &AbstractPluginPanelProxy::expandVert},
+		{0}
 };
 
 PluginTabProxy::PluginTabProxy(lua_State* L) : AbstractPluginPanelProxy(L) {
@@ -39,7 +46,7 @@ PluginTabProxy::PluginTabProxy(lua_State* L) : AbstractPluginPanelProxy(L) {
 	_pluginTab = NULL;
 
 	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
-	AbstractPluginPanelProxy::setPluginContext(PluginEngine::getPluginContext(L));
+	AbstractPluginPanelProxy::setPluginContext(Fabrique::getPluginEngine()->getPluginContext(L));
 
 	cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur Lua : Cannot create new PluginWindowProxy in Lua";
 }
@@ -52,6 +59,10 @@ PluginTabProxy::PluginTabProxy(PluginContext* pluginContext, PluginTab* pluginTa
 }
 
 PluginTabProxy::~PluginTabProxy() {
+}
+
+int PluginTabProxy::push(lua_State* L) {
+	return Lunar<PluginTabProxy>::push(L, this);
 }
 
 } /* namespace JktPlugin */

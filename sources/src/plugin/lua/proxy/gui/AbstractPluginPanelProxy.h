@@ -24,14 +24,24 @@ public:
 	void setPluginContext(PluginContext* pluginContext);
 	void setPanel(PluginPanel* pluginPanel);
 
-	// Enfants
-	int addNotebook(lua_State* L);
+	// Widgets enfants
 	int addButton(lua_State* L);
 	int addComboList(lua_State* L);
 	int addCheckbox(lua_State* L);
+	int addLabel(lua_State* L);
+	int addNumeric(lua_State* L);
+
+	int addSeparator(lua_State* L);
+
+	// Containers enfants
 	int addBoxHoriz(lua_State* L);
 	int addBoxVert(lua_State* L);
-	int addNumeric(lua_State* L);
+	int addNotebook(lua_State* L);
+
+	// Opérations
+	int expand(lua_State* L);
+	int expandHoriz(lua_State* L);
+	int expandVert(lua_State* L);
 };
 
 } /* namespace JktPlugin */

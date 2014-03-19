@@ -35,7 +35,7 @@ PluginsManagementView::PluginsManagementView(const AG_EventFn controllerCallback
 
     // Bouton retour
     AG_SeparatorNewHoriz(m_window);
-	AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", m_controllerCallback, "%i", Controller::ShowMainMenuAction);
+	AG_Button* buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", m_controllerCallback, "%i", Controller::ShowConfigurationMenuAction);
 	AG_ExpandHoriz(buttonRetour);
 
 	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);
@@ -67,9 +67,8 @@ void PluginsManagementView::show(void) {
 
 	vector<string>::iterator iterPluginName = _pluginNames.begin();
 
-
-
 	int pluginNumber = 0;
+
 	while(iterPluginName < _pluginNames.end()) {
 		string pluginName = *iterPluginName;
 		AG_Box* box = AG_BoxNewHoriz(_scrollview, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
@@ -81,6 +80,7 @@ void PluginsManagementView::show(void) {
 
 		// Boutons associés au plugin ("Activer", "Désactiver", "Exécuter")
 		AG_Box* boxButtons = AG_BoxNewHoriz(box, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
+		AG_ExpandHoriz(boxButtons);
 
 		AG_Button* buttonActivate = AG_ButtonNewFn(boxButtons,
 									   	   0,

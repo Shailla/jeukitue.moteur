@@ -16,15 +16,11 @@ using namespace std;
 
 namespace JktPlugin {
 
-const char* PluginNumericProxy::className = "Numeric";
+const char PluginNumericProxy::className[] = "Numeric";
 
-const Luna<PluginNumericProxy>::FunctionType PluginNumericProxy::methods[] = {
+Lunar<PluginNumericProxy>::RegType PluginNumericProxy::methods[] = {
 		{"getValue", &PluginNumericProxy::getValue},
 		{0}
-};
-
-const Luna<PluginNumericProxy>::PropertyType PluginNumericProxy::properties[] = {
-	{0}
 };
 
 PluginNumericProxy::PluginNumericProxy(lua_State* L) {
@@ -42,12 +38,16 @@ PluginNumericProxy::PluginNumericProxy(PluginNumeric* pluginNumeric) {
 PluginNumericProxy::~PluginNumericProxy() {
 }
 
+int PluginNumericProxy::push(lua_State* L) {
+	return Lunar<PluginNumericProxy>::push(L, this);
+}
+
 /**
  * Modifier les dimensions de la fenêtre.
  *    - Return 1 : Value setted in the numeric field
  */
 int PluginNumericProxy::getValue(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_USERDATA)) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
 		float value = _pluginNumeric->getValue();
 		lua_pushnumber(L, value);
 	}

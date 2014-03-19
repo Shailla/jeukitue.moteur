@@ -8,6 +8,7 @@
 #define VERSION_YEAR	2004
 
 #include <string>
+#include <vector>
 #ifdef WIN32
 	#include <windows.h>
 #endif
@@ -52,6 +53,9 @@ class CCfg {
 	static const char* CST_JOU_OUTLINEVISIBILITY;
 	static const char* CST_JOU_SKINVISIBILITY;
 
+	static const char* CST_PLU_ACT_BEGIN;
+	static const char* CST_PLU_ACT_END;
+
 	static const char* CST_DEB_SONPERFORMANCES;
 	static const char* CST_DEB_SONSPECTRE;
 	static const char* CST_DEB_AFFICHEFICHIER;
@@ -63,16 +67,21 @@ class CCfg {
 		bool _playIntro;
 	};
 
+public:
 	class CAudio {
 	public :
+		static const int AVAILABLE_AUDIO_OUTPUTS_NBR;
+		static const char *AVAILABLE_AUDIO_OUTPUTS[];
+
 		int m_Output;
 		int m_Mixer;
 		int m_Driver;
 		int m_DriverRecord;
 
 		bool Init();
+		bool testInitAndSaveConfiguration(int driver, int output, int mixer, int driverRecord);
 	};
-public:
+
 	class CComID {
 	public:
 		SDLKey key;		// Touche du clavier correspondant
@@ -151,6 +160,11 @@ private:
 		bool outlineVisibility;		// Indique si les contours physiques du joueur (ellipsoïde qui l'entoure) est visible
 	};
 
+	class CPlugin {		// Configuration du moteur de plugin
+	public:
+		vector<string> _defaultPluging;
+	};
+
 	class CDebug {
 	public:
 		bool bSonPerformances;		// Indique si l'usage CPU du son doit être affiché
@@ -171,6 +185,7 @@ public:
 	CCentralisateur Centralisateur;	// Configuration de la connexion au centralisateur
 	CReseau Reseau;					// Configuration du réseau
 	CJoueur Joueur;					// Informations sur le joueur principal (nom,...)
+	CPlugin Plugin;					// Configuration du moteur de plugins
 	CDebug Debug;					// Paramètres servant au débuggage
 		
 	CCfg();

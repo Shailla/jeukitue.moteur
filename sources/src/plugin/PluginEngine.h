@@ -17,25 +17,30 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#include "lunaFive.h"
+#include "lunar.h"
 
 #include "plugin/PluginContext.h"
 
 namespace JktPlugin {
 
 class PluginEngine {
-	static std::map<std::string, PluginContext*> _mapNamePlugin;
-	static std::map<const lua_State*, PluginContext*> _mapLuaContext;
+	static const std::string PLUGIN_MAIN_FILENAME;
+
+	std::map<std::string, PluginContext*> _mapNamePlugin;
+	std::map<const lua_State*, PluginContext*> _mapLuaContext;
 
 public:
 	PluginEngine();
 	virtual ~PluginEngine();
 
-	void activatePlugin(std::string& pluginName);
-	void deactivatePlugin(std::string& pluginName);
+	void activateDefaultPlugins();
+	void activatePlugin(const std::string& pluginName);
+	void deactivatePlugin(const std::string& pluginName);
 
-	static PluginContext* getPluginContext(std::string& pluginName);
-	static PluginContext* getPluginContext(const lua_State* L);
+	PluginContext* getPluginContext(const std::string& pluginName);
+	PluginContext* getPluginContext(const lua_State* L);
+
+	void dispatchEvent(const PluginActionEvent& event);
 };
 
 } /* namespace JktPlugin */

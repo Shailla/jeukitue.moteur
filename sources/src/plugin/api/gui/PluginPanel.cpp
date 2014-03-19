@@ -7,6 +7,7 @@
 
 #include "plugin/api/gui/PluginBox.h"
 #include "plugin/api/gui/PluginButton.h"
+#include "plugin/api/gui/PluginLabel.h"
 #include "plugin/api/gui/PluginComboList.h"
 #include "plugin/api/gui/PluginCheckbox.h"
 #include "plugin/api/gui/PluginNotebook.h"
@@ -39,8 +40,12 @@ PluginButton* PluginPanel::addButton(const string& buttonText, ButtonPressedList
 	return new PluginButton(getParent(), buttonText, buttonPressedListener);
 }
 
-PluginComboList* PluginPanel::addComboList(const string& title) {
-	return new PluginComboList(getParent(), title);
+PluginLabel* PluginPanel::addLabel(const string& labelText) {
+	return new PluginLabel(getParent(), labelText);
+}
+
+PluginComboList* PluginPanel::addComboList(const string& title, SelectionChangedListener* selectionChangedListener) {
+	return new PluginComboList(getParent(), title, selectionChangedListener);
 }
 
 PluginBox* PluginPanel::addBoxHoriz() {
@@ -57,6 +62,22 @@ PluginBox* PluginPanel::addBoxVert() {
 
 PluginNumeric* PluginPanel::addNumeric(const std::string& numericText, const std::string& numericUnite) {
 	return new PluginNumeric(getParent(), numericText, numericUnite);
+}
+
+void PluginPanel::addSeparator() {
+	AG_SeparatorNew(getParent(), AG_SEPARATOR_HORIZ);
+}
+
+void PluginPanel::expand() {
+	AG_Expand(getParent());
+}
+
+void PluginPanel::expandHoriz() {
+	AG_ExpandHoriz(getParent());
+}
+
+void PluginPanel::expandVert() {
+	AG_ExpandVert(getParent());
 }
 
 } /* namespace JktPlugin */

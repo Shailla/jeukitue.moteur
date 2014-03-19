@@ -7,6 +7,8 @@
 
 #include <agar/core.h>
 
+#include "plugin/lua/proxy/PluginEventProxy.h"
+
 #include "plugin/PluginContext.h"
 
 using namespace std;
@@ -18,12 +20,14 @@ const char* PluginContext::LOG_INFO_PREFIX = 		"INFO   : ";
 const char* PluginContext::LOG_ERROR_PREFIX = 		"ERREUR : ";
 const char* PluginContext::LOG_ERROR_LUA_PREFIX = 	"ERREUR LUA : ";
 
-PluginContext::PluginContext(lua_State* luaState, const string& pluginName, const string& pluginDirectory) : _pluginName(pluginName) {
+PluginContext::PluginContext(lua_State* luaState, const string& pluginName, const string& pluginsDirectory) : _pluginName(pluginName) {
 	_luaState = luaState;
 
 	// TODO Gérer l'erreur d'ouverture du fichier de log
-	string pluginLogFile = string(pluginDirectory).append(pluginName).append(".log");
+	string pluginLogFile = string(pluginsDirectory).append(pluginName).append(".log");
 	_logFile.open(pluginLogFile.c_str());
+
+	_dispatchEventMutex = SDL_CreateMutex();
 }
 
 PluginContext::~PluginContext() {
@@ -77,6 +81,42 @@ void PluginContext::logLuaError(const int status) {
 		_logFile << endl << LOG_ERROR_LUA_PREFIX << lua_tostring(_luaState, -1) << flush;
 		lua_pop(_luaState, 1);
 	}
+}
+
+void PluginContext::dispatchEvent(PluginWidgetEvent* event) {
+	SDL_LockMutex(_dispatchEventMutex);
+
+	PluginEventProxy* eventProxy = new PluginEventProxy(event);
+
+	lua_getglobal(_luaState, "eventManager");
+
+	// on vérifie si la fonction existe bien
+	if (lua_isfunction(_luaState, -1)) {
+		Lunar<PluginEventProxy>::push(_luaState, eventProxy, true);
+
+		int status = lua_pcall(_luaState, 1, 0, 0);
+		logLuaError(status);
+	}
+
+	SDL_UnlockMutex(_dispatchEventMutex);
+}
+
+void PluginContext::dispatchEvent(const PluginActionEvent& event) {
+	SDL_LockMutex(_dispatchEventMutex);
+
+	PluginEventProxy* eventProxy = new PluginEventProxy(event);
+
+	lua_getglobal(_luaState, "eventManager");
+
+	// on vérifie si la fonction existe bien
+	if (lua_isfunction(_luaState, -1)) {
+		Lunar<PluginEventProxy>::push(_luaState, eventProxy, true);
+
+		int status = lua_pcall(_luaState, 1, 0, 0);
+		logLuaError(status);
+	}
+
+	SDL_UnlockMutex(_dispatchEventMutex);
 }
 
 } /* namespace JktPlugin */

@@ -10,20 +10,22 @@
 using namespace std;
 
 #include "plugin/lua/LuaUtils.h"
+#include "plugin/PluginWidgetEvent.h"
+#include "plugin/PluginContext.h"
 #include "plugin/PluginEngine.h"
+#include "plugin/api/gui/PluginButton.h"
 
 #include "plugin/lua/proxy/gui/PluginButtonProxy.h"
 
 namespace JktPlugin {
 
-const char* PluginButtonProxy::className = "ComboList";
+const char PluginButtonProxy::className[] = "Button";
 
-const Luna<PluginButtonProxy>::FunctionType PluginButtonProxy::methods[] = {
+Lunar<PluginButtonProxy>::RegType PluginButtonProxy::methods[] = {
+		{"expand", &PluginButtonProxy::expand},
+		{"expandHoriz", &PluginButtonProxy::expandHoriz},
+		{"expandVert", &PluginButtonProxy::expandVert},
 		{0}
-};
-
-const Luna<PluginButtonProxy>::PropertyType PluginButtonProxy::properties[] = {
-	{0}
 };
 
 PluginButtonProxy::PluginButtonProxy(lua_State* L) {
@@ -39,25 +41,50 @@ PluginButtonProxy::PluginButtonProxy(PluginContext* pluginContext) {
 PluginButtonProxy::~PluginButtonProxy() {
 }
 
+int PluginButtonProxy::push(lua_State* L) {
+	return Lunar<PluginButtonProxy>::push(L, this);
+}
+
+void PluginButtonProxy::buttonPressedEvent() {
+	PluginWidgetEvent* event = new PluginWidgetEvent(this);
+	_pluginContext->dispatchEvent(event);
+}
+
 void PluginButtonProxy::setWrappedObject(PluginButton* pluginButton) {
 	_pluginButton = pluginButton;
 }
 
-void PluginButtonProxy::buttonPressedEvent(void) {
-	lua_getglobal(_pluginContext->getLuaState(), "eventManager");
-
-	// on vérifie si la fonction existe bien
-	if (!lua_isfunction(_pluginContext->getLuaState(), -1)) {
-		// la fonction n'existe pas
-		_pluginContext->logError("la fonction 'eventManager' n'existe pas");
-		lua_pop(_pluginContext->getLuaState(), 1);
+/**
+ * Expand the widget.
+ */
+int PluginButtonProxy::expand(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+		_pluginButton->expand();
 	}
-	else {
-		Luna<PluginButtonProxy>::push(_pluginContext->getLuaState(), this);
 
-		int status = lua_pcall(_pluginContext->getLuaState(), 1, 0, 0);
-		_pluginContext->logLuaError(status);
+	return 0;
+}
+
+/**
+ * Expand the widget horizontally.
+ */
+int PluginButtonProxy::expandHoriz(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+		_pluginButton->expandHoriz();
 	}
+
+	return 0;
+}
+
+/**
+ * Expand the widget vertically.
+ */
+int PluginButtonProxy::expandVert(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+		_pluginButton->expandVert();
+	}
+
+	return 0;
 }
 
 } /* namespace JktPlugin */

@@ -13,9 +13,10 @@ void Fabrique::construct(void) {
     _centralisateur = new Centralisateur(udpController);
 
     // Agar initialization
-    _agarView = new Viewer(Controller::executeAction);
-    _agarController = new Controller(_agarView);
     _pluginEngine = new PluginEngine();
+    _agarView = new Viewer(Controller::executeAction);
+
+    _agarController = new Controller(_agarView, _pluginEngine);
     _commandeInterpreter = new CommandeInterpreter(_agarView);
 }
 

@@ -9,10 +9,12 @@
 
 using namespace std;
 
+#include "plugin/lua/proxy/PluginEventProxy.h"
 #include "plugin/lua/proxy/cfg/PluginConfigurationProxy.h"
 #include "plugin/lua/proxy/gui/PluginComboListProxy.h"
 #include "plugin/lua/proxy/gui/PluginBoxProxy.h"
 #include "plugin/lua/proxy/gui/PluginButtonProxy.h"
+#include "plugin/lua/proxy/gui/PluginLabelProxy.h"
 #include "plugin/lua/proxy/gui/PluginCheckboxProxy.h"
 #include "plugin/lua/proxy/gui/PluginNotebookProxy.h"
 #include "plugin/lua/proxy/gui/PluginNumericProxy.h"
@@ -20,17 +22,16 @@ using namespace std;
 #include "plugin/lua/proxy/gui/PluginWindowProxy.h"
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/lua/LuaGlobalMethods.h"
-
-using namespace JktPlugin;
+#include "main/Cfg.h"
 
 #include "plugin/PluginEngine.h"
 
 extern const char* PLUGINS_DIRECTORY;
+extern CCfg Config;
 
 namespace JktPlugin {
 
-std::map<string, PluginContext*> PluginEngine::_mapNamePlugin;
-std::map<const lua_State*, PluginContext*> PluginEngine::_mapLuaContext;
+const string PluginEngine::PLUGIN_MAIN_FILENAME = "main";
 
 PluginEngine::PluginEngine() {
 }
@@ -38,18 +39,54 @@ PluginEngine::PluginEngine() {
 PluginEngine::~PluginEngine() {
 }
 
-PluginContext* PluginEngine::getPluginContext(string& pluginName) {
-	return _mapNamePlugin[pluginName];
+void PluginEngine::dispatchEvent(const PluginActionEvent& event) {
+	std::map<std::string, PluginContext*>::iterator iter = _mapNamePlugin.begin();
+
+	for( ; iter != _mapNamePlugin.end() ; iter++) {
+		iter->second->dispatchEvent(event);
+	}
+}
+
+PluginContext* PluginEngine::getPluginContext(const string& pluginName) {
+	std::map<std::string, PluginContext*>::iterator iter = _mapNamePlugin.find(pluginName);
+
+	if(iter == _mapNamePlugin.end()) {
+		return 0;
+	}
+	else {
+		return iter->second;
+	}
 }
 
 PluginContext* PluginEngine::getPluginContext(const lua_State* L) {
-	return _mapLuaContext[L];
+	std::map<const lua_State*, PluginContext*>::iterator iter = _mapLuaContext.find(L);
+
+	if(iter == _mapLuaContext.end()) {
+		return 0;
+	}
+	else {
+		return iter->second;
+	}
+}
+
+/**
+ * Activate the some plugins which are activated by default, the list of them
+ * is given in the Jkt configuration.
+ */
+void PluginEngine::activateDefaultPlugins() {
+	vector<string>::iterator iter;
+
+	cout << endl << "ACTIVATION DES PLUGINS PAR DEFAUT";
+
+	for(iter = Config.Plugin._defaultPluging.begin() ; iter !=Config.Plugin._defaultPluging.end() ; iter++) {
+		activatePlugin(*iter);
+	}
 }
 
 /**
  * Activate the plugin.
  */
-void PluginEngine::activatePlugin(string& pluginName) {
+void PluginEngine::activatePlugin(const string& pluginName) {
 	PluginContext* pluginContext = getPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
@@ -63,7 +100,7 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	 * Initialisation des variables
 	 * *****************************************************************************/
 
-	string pluginDirectory = string(PLUGINS_DIRECTORY).append(pluginName).append("/");
+	const string pluginDirectory = string(PLUGINS_DIRECTORY).append(pluginName).append("/");
 	cout << endl << __FILE__ << ":" << __LINE__ << " Activation of plugin : '" << pluginName << "' in '" << pluginDirectory << "'";
 
 
@@ -84,60 +121,62 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	 * Création du contexte et logger du plugin
 	 * *****************************************************************************/
 
-	pluginContext = new PluginContext(L, pluginName, pluginDirectory);
-
-
-	/* ******************************************************************************
-	 * Initialisation du contexte du plugin
-	 * *****************************************************************************/
-
-	pluginContext->logInfo("Consolidation du contexte...");
-
-	_mapNamePlugin[pluginName] = pluginContext;
-	_mapLuaContext[L] = pluginContext;
+	pluginContext = new PluginContext(L, pluginName, PLUGINS_DIRECTORY);
 
 
 	/* *******************************************************************************
 	 * Déclaration des fonctions et classes mises à disposition dans les plugins
 	 * ******************************************************************************/
 
+	pluginContext->logInfo("Consolidation du contexte...");
+
 	// Initialisation des fonctions dans Lua
 	pluginContext->logInfo("Initialisation des fonctions Lua...");
 
-	lua_register(L, "getScreenSize", &PluginConfigurationProxy::getScreenSize);
+	lua_register(L, "log", &LuaGlobalMethods::log);
+	lua_register(L, "pushEvent", &LuaGlobalMethods::pushEvent);
 
+	lua_register(L, "getScreenSize", &PluginConfigurationProxy::getScreenSize);
 	lua_register(L, "getAvailableAudioDrivers", &PluginConfigurationProxy::getAvailableAudioDrivers);
+	lua_register(L, "getAvailableAudioRecordDrivers", &PluginConfigurationProxy::getAvailableAudioRecordDrivers);
+	lua_register(L, "getAvailableAudioOutputs", &PluginConfigurationProxy::getAvailableAudioOutputs);
 	lua_register(L, "getConfigurationParameter", &PluginConfigurationProxy::getConfigurationParameter);
 	lua_register(L, "setConfigurationParameter", &PluginConfigurationProxy::setConfigurationParameter);
+	lua_register(L, "getConstant", &PluginConfigurationProxy::getConstant);
+	lua_register(L, "initAudio", &PluginConfigurationProxy::initAudio);
 
-	lua_register(L, "log", &LuaGlobalMethods::log);
 
 	// Initialisation des classes dans Lua
 	pluginContext->logInfo("Initialisation des classes Lua...");
 
-	Luna<PluginCheckboxProxy>::Register(L);
-	Luna<PluginComboListProxy>::Register(L);
-	Luna<PluginButtonProxy>::Register(L);
-	Luna<PluginBoxProxy>::Register(L);
-	Luna<PluginNotebookProxy>::Register(L);
-	Luna<PluginNumericProxy>::Register(L);
-	Luna<PluginTabProxy>::Register(L);
-	Luna<PluginWindowProxy>::Register(L);
+	Lunar<PluginEventProxy>::Register(L);
+
+	Lunar<PluginButtonProxy>::Register(L);
+	Lunar<PluginCheckboxProxy>::Register(L);
+	Lunar<PluginComboListProxy>::Register(L);
+	Lunar<PluginLabelProxy>::Register(L);
+	Lunar<PluginNumericProxy>::Register(L);
+
+	Lunar<PluginBoxProxy>::Register(L);
+	Lunar<PluginNotebookProxy>::Register(L);
+	Lunar<PluginTabProxy>::Register(L);
+	Lunar<PluginWindowProxy>::Register(L);
 
 
 	/* ******************************************************************************
 	 * Chargement du fichier Lua du plugin
 	 * *****************************************************************************/
 
-	string pluginFile = string(pluginDirectory).append(pluginName).append(".lua");
+	string pluginFile = string(pluginDirectory).append(PLUGIN_MAIN_FILENAME).append(".lua");
 	pluginContext->logInfo(string("Chargement du script '").append(pluginFile).append("'..."));
 
 	int status = luaL_loadfile(L, pluginFile.c_str());
 
 	if(status != 0) {
-		pluginContext->logScriptError("Echec de chargement du fichier du plugin");
+		pluginContext->logError("Echec de chargement du fichier du plugin");
 		pluginContext->logLuaError(status);
 		pluginContext->logError("Echec d'initialisation du plugin.");
+
 		lua_close(L);
 		delete pluginContext;
 
@@ -155,13 +194,11 @@ void PluginEngine::activatePlugin(string& pluginName) {
 	status = lua_pcall(L, 0, LUA_MULTRET, 0);
 
 	if(status != 0) {
+		pluginContext->logError("Echec d'initialisation du script");
 		pluginContext->logLuaError(status);
 		pluginContext->logError("Echec d'initialisation du plugin.");
+
 		lua_close(L);
-
-		_mapNamePlugin.erase(pluginName);
-		_mapLuaContext.erase(L);
-
 		delete pluginContext;
 
 		return;
@@ -169,7 +206,21 @@ void PluginEngine::activatePlugin(string& pluginName) {
 
 
 	/* *******************************************************************************
-	 * Exécution de la méthode d'initialisation du plugin
+	 * Vérification de la présence d'une fonction "eventManager" dans le plugin
+	 * ******************************************************************************/
+
+	lua_getglobal(L, "eventManager");
+
+	if (!lua_isfunction(L, -1)) {
+		// la fonction n'existe pas
+		pluginContext->logInfo("la fonction 'eventManager' n'existe pas");
+	}
+
+	lua_pop(L, 1);
+
+
+	/* *******************************************************************************
+	 * Exécution de la méthode d'initialisation du plugin ("onLoad")
 	 * ******************************************************************************/
 
 	pluginContext->logInfo("Exécution de la fonction onLoad du script...");
@@ -184,39 +235,37 @@ void PluginEngine::activatePlugin(string& pluginName) {
 		pluginContext->logError("La fonction 'onLoad' n'existe pas, tout plugin doit définir cette fonction.");
 		pluginContext->logLuaError(status);
 		pluginContext->logError("Echec d'initialisation du plugin.");
+
 		lua_close(L);
-
-		_mapNamePlugin.erase(pluginName);
-		_mapLuaContext.erase(L);
-
 		delete pluginContext;
 
 		return;
 	}
 
+	// Référencement du plugin
+	_mapNamePlugin[pluginName] = pluginContext;
+	_mapLuaContext[L] = pluginContext;
+
+	pluginContext->logInfo("Plugin initialisé");
+
 	// Exécution de la méthode d'init du plugin
+	pluginContext->logInfo("Exécution du plugin");
+
 	status = lua_pcall(L, 0, 0, 0);
 
 	if(status) {
 		pluginContext->logLuaError(status);
-		pluginContext->logError("Echec d'initialisation du plugin.");
-		lua_close(L);
-
-		_mapNamePlugin.erase(pluginName);
-		_mapLuaContext.erase(L);
-
-		delete pluginContext;
-
-		return;
+		pluginContext->logError("Echec d'exécution du plugin.");
 	}
-
-	pluginContext->logInfo("Plugin activé.");
+	else {
+		pluginContext->logInfo("Plugin en cours d'exécution");
+	}
 }
 
 /**
  * Deactivate the plugin.
  */
-void PluginEngine::deactivatePlugin(string& pluginName) {
+void PluginEngine::deactivatePlugin(const string& pluginName) {
 	PluginContext* pluginContext = getPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
@@ -226,9 +275,9 @@ void PluginEngine::deactivatePlugin(string& pluginName) {
 
 		_mapLuaContext.erase(pluginContext->getLuaState());
 		_mapNamePlugin.erase(pluginName);
+		delete pluginContext;
 
 		pluginContext->logInfo("Plugin désactivé");
-		delete pluginContext;
 	}
 	else {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Le plugin ne peut pas être désactivé, il n'est pas actif '" << pluginName << "'";

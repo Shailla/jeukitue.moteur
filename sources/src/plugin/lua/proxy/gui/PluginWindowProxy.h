@@ -14,8 +14,9 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#include "lunaFive.h"
+#include "lunar.h"
 
+#include "plugin/lua/proxy/LunarProxy.h"
 #include "plugin/lua/proxy/gui/AbstractPluginPanelProxy.h"
 
 #include "plugin/api/gui/PluginWindow.h"
@@ -24,20 +25,20 @@ namespace JktPlugin {
 
 class PluginContext;
 
-class PluginWindowProxy : public AbstractPluginPanelProxy {
-	friend class Luna<PluginWindowProxy>;
-	static const char *className;
-	static const Luna<PluginWindowProxy>::FunctionType methods[];
-	static const Luna<PluginWindowProxy>::PropertyType properties[];
+class PluginWindowProxy : public LunarProxy, public AbstractPluginPanelProxy {
+public:
+	static const char className[];
+	static Lunar<PluginWindowProxy>::RegType methods[];
 
-	bool isExisting; // This is used by Luna to see whether it's been created by createFromExisting.  Don't set it.
-	bool isPrecious; // This is used to tell Luna not to garbage collect the object, in case other objects might reference it.  Set it in your classes constructor.
-
+private:
 	PluginContext* _pluginContext;
 	PluginWindow* _pluginWindow;
+
 public:
 	PluginWindowProxy(lua_State* L);
 	virtual ~PluginWindowProxy();
+
+	int push(lua_State* L);
 
 	// Visibilité
 	int show(lua_State* L);

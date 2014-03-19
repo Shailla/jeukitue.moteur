@@ -141,13 +141,6 @@ void CPlayer::ActiveArmeDown() {
 		m_ArmeActif = m_NbrArmes-1;
 }
 
-/**
- * Renvoi le numéro de l'arme active
- */
-int CPlayer::ArmeActif() {
-	return m_ArmeActif;
-}
-
 CPlayer::~CPlayer() {
 	if( m_pClavier )
 	{
@@ -360,11 +353,16 @@ void CPlayer::AfficheProjectils() {		// Affiche tous les projectils du joueur
 void CPlayer::Tir() {
 	CV3D Dir;
 
-	if(ArmeActif() == 1) {			// Si l'arme active est le laser, alors tire un laser
+	switch(m_ArmeActif) {
+	// Si l'arme active est le laser, alors tire un laser
+	case 1:
 		TabProjectil.Ajoute(new CLaser(this));
-	}
-	else if(ArmeActif() == 2) {		// Si l'arme active est le lance-rocket, alors tire un rocket
+		break;
+
+	// Si l'arme active est le lance-rocket, alors tire un rocket
+	case 2:
 		TabProjectil.Ajoute(new CRocket(this));
+		break;
 	}
 }
 

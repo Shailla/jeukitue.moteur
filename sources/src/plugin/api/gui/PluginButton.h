@@ -19,13 +19,17 @@
 namespace JktPlugin {
 
 class PluginButton {
-	ButtonPressedListener* _buttonPressedListener;
 	AG_Button* _button;
+	ButtonPressedListener* _buttonPressedListener;
 public:
 	PluginButton(AG_Widget* parent, const std::string& buttonText, ButtonPressedListener* buttonPressedListener);
 	virtual ~PluginButton();
 
 	void buttonPressedEvent(AG_Event* event);
+
+	void expand();
+	void expandHoriz();
+	void expandVert();
 };
 
 } /* namespace JktPlugin */

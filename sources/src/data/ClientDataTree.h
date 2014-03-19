@@ -9,7 +9,6 @@
 #define CLIENTDATATREE_H_
 
 #include <string>
-#include <map>
 #include <vector>
 
 using namespace std;

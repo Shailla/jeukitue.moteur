@@ -14,27 +14,27 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#include "lunaFive.h"
+#include "lunar.h"
 
+#include "plugin/lua/proxy/LunarProxy.h"
 #include "plugin/api/gui/PluginCheckbox.h"
 
 namespace JktPlugin {
 
-class PluginCheckboxProxy {
-	friend class Luna<PluginCheckboxProxy>;
-	static const char *className;
-	static const Luna<PluginCheckboxProxy>::FunctionType methods[];
-	static const Luna<PluginCheckboxProxy>::PropertyType properties[];
+class PluginCheckboxProxy : public LunarProxy {
+public:
+	static const char className[];
+	static Lunar<PluginCheckboxProxy>::RegType methods[];
 
-	bool isExisting; // This is used by Luna to see whether it's been created by createFromExisting.  Don't set it.
-	bool isPrecious; // This is used to tell Luna not to garbage collect the object, in case other objects might reference it.  Set it in your classes constructor.
-
+private:
 	PluginCheckbox* _pluginCheckbox;
+
 public:
 	PluginCheckboxProxy(lua_State* L);
 	PluginCheckboxProxy(PluginCheckbox* pluginCheckbox);
 	virtual ~PluginCheckboxProxy();
 
+	int push(lua_State* L);
 	int getValue(lua_State* L);
 	int setValue(lua_State* L);
 };

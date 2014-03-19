@@ -155,8 +155,6 @@ CFocus *pFocus;
 
 int numMainPlayer = 0;	// Numéro du joueur principal dans la MAP (identifie le joueur principal dans la liste des joueurs de la MAP)
 
-SDL_TimerID timer_ID = 0;
-
 bool Aide = false;
 
 extern JktSon::CDemonSons *DemonSons;	// Requêtes des sons à jouer
@@ -222,9 +220,11 @@ void initMenu(void) {
 	Aide = false;
 
 	// Lancement de l'IHM, on entre dans le menu principal du jeu
-	Viewer* agarView = Fabrique::getAgarView();
 	pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
-	agarView->showMenuView(Viewer::MAIN_MENU_VIEW);
+
+	AG_Event event;
+	AG_EventArgs(&event, "%i", Controller::Action::ShowMenuAction);
+	Controller::executeAction(&event);
 }
 
 void updateSon3D()
@@ -807,7 +807,7 @@ void chopeLesEvenements() {
 			erwin->getClavier()->m_bIndic = true;
 		}
 
-		if( keystate[Config.Commandes.Tir1.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir1.mouse)) ) {	// Tire au laser
+		if( keystate[Config.Commandes.Tir1.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir1.mouse)) ) {	// Tire avec l'arme sélectionnée
 			erwin->Tir();		// Valide un tir
 		}
 
@@ -816,8 +816,7 @@ void chopeLesEvenements() {
 			erwin->getClavier()->m_bIndic = true;
 		}
 
-		if( keystate[Config.Commandes.Tir2.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir2.mouse)) )	//si bouton gauche souris
-		{													//alors tire un projectile qui rebondit
+		if( keystate[Config.Commandes.Tir2.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir2.mouse)) ) {	// Tire de projectile qui rebondit
 			CPlayer *balle;
 
 			float cosTeta = /*FastCos0( erwin->Teta/180.0f*Pi );	//*/cosf( erwin->Teta()/180.0f*Pi );
@@ -850,9 +849,11 @@ void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
 //	cout << " -> {" << evDesc << "}";
 
 	if(sdlEvent->type == SDL_KEYDOWN && sdlEvent->key.keysym.sym == SDLK_ESCAPE) {
-		Viewer* agarView = Fabrique::getAgarView();
 		pFocus->SetPlayFocus();
-		agarView->hideAllMenuViews();
+
+		AG_Event event;
+		AG_EventArgs(&event, "%i", Controller::Action::HideMenuAction);
+		Controller::executeAction(&event);
 	}
 	else {
 		switch (sdlEvent->type) {
@@ -1041,7 +1042,9 @@ void play_handle_key_down( SDL_Event *event ) {
 			break;
 
 		case SDLK_s :
-			Game.getMap()->ChangeSelectionMode();
+			if(Game.getMap()) {
+				Game.getMap()->ChangeSelectionMode();
+			}
 			break;
 
 		case SDLK_p :		// Demande la prise d'une photo au prochain display
@@ -1097,9 +1100,11 @@ void play_handle_key_down( SDL_Event *event ) {
 
 		case SDLK_ESCAPE:
 		{
-			Viewer* agarView = Fabrique::getAgarView();
 			pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
-			agarView->showMenuView(Viewer::MAIN_MENU_VIEW);
+
+			AG_Event event;
+			AG_EventArgs(&event, "%i", Controller::Action::ShowMenuAction);
+			Controller::executeAction(&event);
 		}
 		break;
 
@@ -1698,6 +1703,7 @@ int main(int argc, char** argv) {
 	TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 	if(argc > 1) {
+		// Exécution des tests unitaires
 		if(string("test") == argv[1]) {
 			cout << endl << "MODE TEST" << endl;
 			JktTest::TestSuite* testSuite = new JktTest::TestSuite();
@@ -1800,6 +1806,9 @@ int main(int argc, char** argv) {
 	reqSon->Boucle( true );
 	machin->req_son = reqSon;
 	DemonSons->Play( machin->req_son );
+
+	// Initialisation des plugins démarrés par défaut
+	Fabrique::getPluginEngine()->activateDefaultPlugins();
 
 	initMenu();
 

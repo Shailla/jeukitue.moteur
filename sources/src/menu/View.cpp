@@ -1,3 +1,7 @@
+#include <iostream>
+
+using namespace std;
+
 #include "menu/View.h"
 
 View::View(const AG_EventFn controllerCallback) {
@@ -13,8 +17,11 @@ void View::refresh() {
 }
 
 void View::show(void) {
+	cerr << endl << "yoyo1 " << m_window << endl << flush;
 	AG_WindowShow(m_window);
+	cerr << endl << "yoyo2 " << m_window << endl << flush;
 	AG_WidgetFocus(m_window);
+	cerr << endl << "yoyo3 " << m_window << endl << flush;
 }
 
 void View::hide(void) {

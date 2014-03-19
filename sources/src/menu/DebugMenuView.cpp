@@ -30,7 +30,7 @@ DebugMenuView::DebugMenuView(const AG_EventFn controllerCallback)
 	// Bouton retour
     AG_SeparatorNewHoriz(m_window);
 
-    AG_Button* _buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowMainMenuAction);
+    AG_Button* _buttonRetour = AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowMenuAction);
     AG_ExpandHoriz(_buttonRetour);
 
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 25, 50);

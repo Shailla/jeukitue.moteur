@@ -79,6 +79,9 @@ const char* CCfg::CST_JOU_MAPNOM =				"joueur.mapNom";
 const char* CCfg::CST_JOU_OUTLINEVISIBILITY =	"joueur.outlineVisibility";
 const char* CCfg::CST_JOU_SKINVISIBILITY =		"joueur.skinVisibility";
 
+const char* CCfg::CST_PLU_ACT_BEGIN =			"plugin.activate.begin";
+const char* CCfg::CST_PLU_ACT_END =				"plugin.activate.end";
+
 const char* CCfg::CST_DEB_SONPERFORMANCES =		"debug.sonPerformances";
 const char* CCfg::CST_DEB_SONSPECTRE =			"debug.sonSpectre";
 const char* CCfg::CST_DEB_AFFICHEFICHIER =		"debug.afficheFichier";
@@ -251,6 +254,22 @@ void CCfg::Lit() {
 		do fichier >> mot;	while( mot!=CST_JOU_SKINVISIBILITY );
 		fichier >> Joueur.skinVisibility;
 
+		/* ***************************************
+		 * Plugin
+		 * **************************************/
+
+		do fichier >> mot;	while( mot!=CST_PLU_ACT_BEGIN );
+
+		do {
+			fichier >> mot;
+			if(mot != CST_PLU_ACT_END) {
+				Plugin._defaultPluging.push_back(mot);
+			}
+			else {
+				break;
+			}
+		}
+		while(true);
 
 		/* ***************************************
 		 * Debug
@@ -324,6 +343,14 @@ void CCfg::Ecrit() {
 	fichier << endl << CST_JOU_MAPNOM << "\t\t\t\t" << Joueur.mapName;
 	fichier << endl << CST_JOU_OUTLINEVISIBILITY << "\t" << Joueur.outlineVisibility;
 	fichier << endl << CST_JOU_SKINVISIBILITY << "\t\t" << Joueur.skinVisibility;
+
+	fichier << "\n\n\n------------------------PLUGIN-------------------------\n";
+	vector<string>::iterator iter;
+	fichier << CST_PLU_ACT_BEGIN << endl;
+	for(iter = Plugin._defaultPluging.begin() ; iter != Plugin._defaultPluging.end() ; iter++) {
+		fichier << *iter << endl;
+	}
+	fichier << CST_PLU_ACT_END;
 
 	fichier << "\n\n\n------------------------DEBUG-------------------------\n";
 	fichier << endl << CST_DEB_SONPERFORMANCES << "\t\t" << Debug.bSonPerformances;
@@ -555,7 +582,34 @@ const char* CCfg::resolve(const SDLKey sym) {
 	return result;
 }
 
+const int CCfg::CAudio::AVAILABLE_AUDIO_OUTPUTS_NBR = 4;
+
+const char *CCfg::CAudio::AVAILABLE_AUDIO_OUTPUTS[] =
+	{
+	#ifdef _WIN32
+		"Direct Sound",
+		"Windows Multimedia Waveout",
+		"ASIO",
+		"NoSound",
+	#elif defined(__linux__)
+		"OSS - Open Sound System",
+		"ESD - Elightment Sound Daemon",
+		"ALSA 0.9 - Advanced Linux Sound Architecture",
+		"NoSound",
+	#endif
+	};
+
+/**
+ * Initialise the audio drivers with the Jkt configuration parameters.
+ */
 bool CCfg::CAudio::Init() {
+	testInitAndSaveConfiguration(m_Driver, m_Output, m_Mixer, m_DriverRecord);
+}
+
+/**
+ * Try to initialise the audio drivers with new parameters and save them in the configuration if they work correctly.
+ */
+bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixer, int driverRecord) {
 	TRACE().p( TRACE_SON, "CCfg::CAudio::Init()" );
 	unsigned int caps = 0;
 
@@ -563,27 +617,30 @@ bool CCfg::CAudio::Init() {
 	cout << "\nVersion de FMOD\t\t" << FSOUND_GetVersion() << endl;
 
 	if(FSOUND_GetVersion() < FMOD_VERSION) {
-		cout << "Error : You are using the wrong DLL version!  You should be using FMOD" <<
-				FMOD_VERSION << endl;
+		cout << "Error : You are using a wrong FMOD DLL version!  You should be using at least version " << FMOD_VERSION << endl;
+
 		return false;
 	}
 
-	FSOUND_SetOutput( m_Output );		// Sélection de l'output
+	FSOUND_SetOutput( output );		// Sélection de l'output
+	m_Output = output;
 
 	remarquesDriver = new char*[FSOUND_GetNumDrivers()];
 	string rem;
 
-	for(int i=0 ; i<FSOUND_GetNumDrivers() ; i++)
-	{
+	for(int i = 0 ; i < FSOUND_GetNumDrivers() ; i++) {
 		FSOUND_GetDriverCaps(i, &caps);
 		rem = "";
 
 		if (!caps)
 			rem = "Supporte software mode uniquement. Supporte mal 3D sound hardware. ";
+
 		if (caps & FSOUND_CAPS_HARDWARE)
 			rem += "Supporte hardware 3D sound. ";
+
 		if (caps & FSOUND_CAPS_EAX2)
 			rem += "Supporte EAX 2 reverb. ";
+
 		if (caps & FSOUND_CAPS_EAX3)
 			rem += "Supporte EAX 3 reverb. ";
 
@@ -591,16 +648,16 @@ bool CCfg::CAudio::Init() {
 		strcpy( remarquesDriver[i], rem.c_str() );
 	}
 
-	if(FSOUND_GetNumDrivers > 0)	// Vérifie s'il y a un driver pour le son
-	{
-		if(m_Driver<FSOUND_GetNumDrivers() ) {
-			FSOUND_SetDriver(m_Driver);	// Sélection du driver configuré
+	if(FSOUND_GetNumDrivers > 0) {	// Vérifie s'il y a un driver pour le son
+		if(driver < FSOUND_GetNumDrivers() ) {
+			FSOUND_SetDriver(driver);	// Sélection du driver configuré
+			m_Driver = driver;
 		}
-		else	// Le driver configuré ne peut pas fonctionner
-		{
+		else {	// Le driver configuré ne peut pas fonctionner
 			cerr << endl << __FILE__ << ":" << __LINE__ << " Driver son mal configuré, choix par défaut.";
-			m_Driver = 0;	// Modification du fichier de configuration
+			driver = 0;	// Modification du fichier de configuration
 			FSOUND_SetDriver(0);						// Choix du driver par défaut
+			m_Driver = 0;
 		}
 	}
 	else {
@@ -608,43 +665,42 @@ bool CCfg::CAudio::Init() {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Aucun driver son détecté.";
 	}
 
-	FSOUND_SetMixer( m_Mixer );			// Sélection du mixer
+	FSOUND_SetMixer(mixer);			// Sélection du mixer
+	m_Mixer = mixer;
 
 	// Initialisation
 	if(!FSOUND_Init(44100, 32, FSOUND_INIT_GLOBALFOCUS)) {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FSOUND_Init : "<< FMOD_ErrorString(FSOUND_GetError()) << endl;
 		FSOUND_Close();
-		//		return -1;
 	}
 
 	FSOUND_DSP_SetActive( FSOUND_DSP_GetFFTUnit(), true );
 
-	if( FSOUND_Record_GetNumDrivers()!=0 ) {	// Vérifie s'il y a un driver d'acquisition du son
-		if( m_DriverRecord<FSOUND_Record_GetNumDrivers() ) {
-			if( !FSOUND_Record_SetDriver(m_DriverRecord))	// Sélection du driver
-			{															// d'entrée pour le micro
+	if( FSOUND_Record_GetNumDrivers() > 0 ) {	// Vérifie s'il y a un driver d'acquisition du son
+		if( driverRecord < FSOUND_Record_GetNumDrivers() ) {
+			if( !FSOUND_Record_SetDriver(driverRecord)) {	// Sélection du driver				// d'entrée pour le micro
 				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FSOUND_Record_SetDriver : " << FMOD_ErrorString(FSOUND_GetError()) << endl;
 				cerr << endl << __FILE__ << ":" << __LINE__ << "\tAVIS AU PROGRAMMEUR" << endl
 						<< "Le programme va planter s'il y a une tentative d'utilisation du micro !!!" << endl;
-				/*		FSOUND_Close();
-				return -1;*/
+			}
+			else {
+				m_DriverRecord = driverRecord;
 			}
 		}
 		else {		// Le driver de record ne peut pas fonctionner
 			cerr << endl << __FILE__ << ":" << __LINE__ << "Driver de record son mal configuré, choix par défaut.";
-			m_DriverRecord = 0;	// Modification de la config => choix par défaut
 
 			if( !FSOUND_Record_SetDriver(0) ) {		// Sélection du driver de record par défaut
 				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FSOUND_Record_SetDriver : " << FMOD_ErrorString(FSOUND_GetError()) << endl;
 				cerr << endl << __FILE__ << ":" << __LINE__ << "\tAVIS AU PROGRAMMEUR" << endl
 						<< "Le programme va planter s'il y a une tentative d'utilisation du micro !!!" << endl;
-				/*		FSOUND_Close();
-				return -1;*/
+			}
+			else {
+				m_DriverRecord = 0;
 			}
 		}
 	}
 	else {		// Aucun driver d'acquisition du son détecté
-		m_DriverRecord = -1;
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Aucun driver d'acquisition du son détecté.";
 	}
 
@@ -656,14 +712,21 @@ bool CCfg::CAudio::Init() {
 
 	FSOUND_GetDriverCaps(FSOUND_GetDriver(), &caps);
 
-	if (!caps)
+	if (!caps) {
 		cout << "\tCe driver supporte seulement le mode software.\n\tIl ne supporte pas bien le son 3D.\n";
-	if (caps & FSOUND_CAPS_HARDWARE)
+	}
+
+	if (caps & FSOUND_CAPS_HARDWARE) {
 		cout << "\t- Ce driver supporte le son 3D en hardware!\n";
-	if (caps & FSOUND_CAPS_EAX2)
+	}
+
+	if (caps & FSOUND_CAPS_EAX2) {
 		cout << "\t- Ce driver supporte l'EAX 2 reverb!\n";
-	if (caps & FSOUND_CAPS_EAX3)
+	}
+
+	if (caps & FSOUND_CAPS_EAX3) {
 		cout << "\t- Ce driver supporte l'EAX 3 reverb!\n";
+	}
 
 	cout << "FSOUND Record Driver : " << resolveDriverRecord(FSOUND_Record_GetDriver()) << endl;
 

@@ -14,7 +14,7 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#include "lunaFive.h"
+#include "lunar.h"
 
 namespace JktPlugin {
 

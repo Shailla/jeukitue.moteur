@@ -106,13 +106,6 @@ void CGame::setPlayerList(int nbr) {
 	}
 }
 
-void CGame::quit() {
-	if(_pTabIndexPlayer)
-		delete _pTabIndexPlayer;
-
-	_pTabIndexPlayer = 0;
-}
-
 bool CGame::openMap(const string &nomFichierMap) throw(JktUtils::CErreur) {
 TRACE().p( TRACE_INFO, "CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(), this );
 

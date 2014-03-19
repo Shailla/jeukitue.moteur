@@ -17,11 +17,13 @@ namespace JktPlugin {
 
 class PluginBox;
 class PluginButton;
+class PluginLabel;
 class PluginComboList;
 class PluginCheckbox;
 class PluginNotebook;
 class PluginNumeric;
 class ButtonPressedListener;
+class SelectionChangedListener;
 
 class PluginPanel {
 public:
@@ -30,14 +32,24 @@ public:
 
 	virtual AG_Widget* getParent() = 0;
 
-	// Enfants
-	PluginNotebook* addNotebook();
-	PluginCheckbox* addCheckbox(const std::string& checkboxText);
+	// Widgets enfants
+
 	PluginButton* addButton(const std::string& buttonText, ButtonPressedListener* buttonPressedListener);
-	PluginComboList* addComboList(const std::string& title);
+	PluginCheckbox* addCheckbox(const std::string& checkboxText);
+	PluginComboList* addComboList(const std::string& title, SelectionChangedListener* selectionChangedListener);
+	PluginLabel* addLabel(const std::string& buttonText);
+	PluginNotebook* addNotebook();
+	PluginNumeric* addNumeric(const std::string& numericText, const std::string& numericUnite);
+	void addSeparator();
+
+	// Containers enfants
 	PluginBox* addBoxHoriz();
 	PluginBox* addBoxVert();
-	PluginNumeric* addNumeric(const std::string& numericText, const std::string& numericUnite);
+
+	// Opérations
+	void expand();
+	void expandHoriz();
+	void expandVert();
 };
 
 } /* namespace JktPlugin */

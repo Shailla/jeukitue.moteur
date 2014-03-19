@@ -9,9 +9,9 @@ appliquerJoueurButton = 0;
 reinitialiserJoueurButton = 0;
 
 function onLoad()
-	-- the first program in every language
 	log("Version Lua : " .. _VERSION)
 
+	-- Ouverture fenêtre
 	local window = Window();
 	window:setTitle("Configuration avancee");
 	window:setSize(200, 200);
@@ -37,6 +37,12 @@ function onLoad()
 	boxCamera:addNumeric("...", "pixels");
 	boxCamera:addNumeric("...", "pixels");
 
+	local drivers = getAvailableAudioDrivers();
+	log("Liste des drivers :");
+	for k,v in pairs(drivers) do
+		log("  "..k.." : "..v);
+	end
+	
 	window:show();
 end
 
@@ -69,6 +75,6 @@ function eventManager(event)
 		
 	-- Evénement non-pris en compte
 	else
-		log("Evenement inconnu" .. event);
+		log("Evenement inconnu ("..event:__tostring()..")");
 	end
 end

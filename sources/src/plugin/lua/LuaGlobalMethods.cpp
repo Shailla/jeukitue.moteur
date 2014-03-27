@@ -29,7 +29,7 @@ int LuaGlobalMethods::log(lua_State* L) {
 }
 
 /**
- * Sent a new event from the plugin to the jkt event controller
+ * Send a new event from the plugin to the JKT event controller
  */
 int LuaGlobalMethods::pushEvent(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_NUMBER)) {

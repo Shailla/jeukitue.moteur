@@ -31,7 +31,7 @@ using namespace std;
 #include "menu/NetworkConnectionsView.h"
 
 Viewer::Viewer(AG_EventFn controllerCallback) {
-	// Initialisation des fenêtres
+	// Initialisation des fenï¿½tres
 	addMenuView(MULTIJOUEURS_VIEW, new MultijoueursView(controllerCallback));
 	addMenuView(MULTIJOUEURS_CLIENT_VIEW, new MultijoueursClientView(controllerCallback));
 	addMenuView(CENTRALISATEUR_VIEW, new CentralisateurView(controllerCallback));
@@ -59,8 +59,6 @@ Viewer::Viewer(AG_EventFn controllerCallback) {
 void Viewer::addMenuView(VIEWS viewId, View* view) {
 	_views[viewId] = view;
 	_menuViews[viewId] = view;
-
-	cerr << endl << "CREATION VUE n°" << viewId << " : " << view << endl << flush;
 }
 
 void Viewer::addSimpleView(VIEWS viewId, View* view) {
@@ -72,6 +70,17 @@ Viewer::~Viewer(void) {
 
 	for(iter = _views.begin() ; iter != _views.end() ; iter++) {
 		delete (*iter).second;
+	}
+}
+
+View* Viewer::getView(VIEWS viewId) {
+	map<VIEWS, View*>::iterator iter = _views.find(viewId);
+
+	if(iter != _views.end()) {
+		return iter->second;
+	}
+	else {
+		return 0;
 	}
 }
 
@@ -97,14 +106,10 @@ void Viewer::showMenuView(VIEWS viewId) {
 
 	for(iter = _menuViews.begin() ; iter != _menuViews.end() ; iter++) {
 		if((*iter).first == viewId) {
-			cerr << endl << "SHOW " << (*iter).first << " " << (*iter).second << endl << flush;
 			(*iter).second->show();
-			cerr << endl << "SHOW END " << (*iter).first << " " << (*iter).second << endl << flush;
 		}
 		else {
-			cerr << endl << "HIDE " << (*iter).first << " " << (*iter).second << endl << flush;
 			(*iter).second->hide();
-			cerr << endl << "HIDE END " << (*iter).first << " " << (*iter).second << endl << flush;
 		}
 	}
 }
@@ -114,20 +119,7 @@ void Viewer::hideAllMenuViews(void) {
 	map<VIEWS, View*>::iterator iter;
 
 	for(iter = _menuViews.begin() ; iter != _menuViews.end() ; iter++) {
-		cerr << endl << "HIDE all " << (*iter).first << " " << (*iter).second << endl << flush;
 		(*iter).second->hide();
-		cerr << endl << "HIDE all END " << (*iter).first << " " << (*iter).second << endl << flush;
-	}
-}
-
-View* Viewer::getView(VIEWS viewId) {
-	map<VIEWS, View*>::iterator iter = _views.find(viewId);
-
-	if(iter != _views.end()) {
-		return iter->second;
-	}
-	else {
-		return 0;
 	}
 }
 

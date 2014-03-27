@@ -19,15 +19,15 @@ ConfigurationVideoView::ConfigurationVideoView(const AG_EventFn controllerCallba
 :View(controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
-    AG_WindowSetCaption(m_window, "Vidéo");
+    AG_WindowSetCaption(m_window, "VidÃ©o");
 
-	// Résolution
+	// Rï¿½solution
 	_resoCombo = AG_ComboNew(m_window, 0, "Resolution");
 	AG_WidgetDisable(_resoCombo->tbox);
 	AG_ExpandHoriz(_resoCombo);
 	AG_ComboSizeHint(_resoCombo, "XXXX*XXXX", 10);
 
-	// Mode plein écran
+	// Mode plein ï¿½cran
 	AG_CheckboxNewInt(m_window, 0, "Plein ecran", &_fullScreen);
 	
     AG_SeparatorNewHoriz(m_window);
@@ -50,12 +50,12 @@ ConfigurationVideoView::~ConfigurationVideoView(void) {
 
 void ConfigurationVideoView::show(void)
 {
-	// Résolution d'écran active
+	// Rï¿½solution d'ï¿½cran active
 //	ostringstream resoActive;
 //	resoActive << Config.Display.X << " * " << Config.Display.Y;
 //	AG_LabelText(_resoActive, resoActive.str().c_str());
 
-	// Résolutions d'écran disponibles
+	// Rï¿½solutions d'ï¿½cran disponibles
 	AG_TlistClear(_resoCombo->list);
 
 	SDL_Rect **modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
@@ -67,7 +67,7 @@ void ConfigurationVideoView::show(void)
 		AG_TlistAdd(_resoCombo->list, NULL, reso.str().c_str());
 	}
 
-	// Mode plein écran actif
+	// Mode plein ï¿½cran actif
 	if(Config.Display.Fullscreen())
 	{
 		_fullScreen = 1;

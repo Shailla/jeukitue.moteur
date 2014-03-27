@@ -1,3 +1,8 @@
+
+#include <iostream>
+
+using namespace std;
+
 #include "main/Fabrique.h"
 
 using namespace JktPlugin;
@@ -14,7 +19,7 @@ void Fabrique::construct(void) {
 
     // Agar initialization
     _pluginEngine = new PluginEngine();
-    _agarView = new Viewer(Controller::executeAction);
+    _agarView = new Viewer(&Controller::executeAction);
 
     _agarController = new Controller(_agarView, _pluginEngine);
     _commandeInterpreter = new CommandeInterpreter(_agarView);
@@ -25,17 +30,38 @@ Centralisateur* Fabrique::getCentralisateur() {
 }
 
 Viewer* Fabrique::getAgarView() {
+
+	if(!_agarView) {
+		cerr << endl << "ACCES PREMATURE A UN ELEMENT DE LA FABRIQUE" << endl << flush;
+		exit(1);
+	}
+
     return _agarView;
 }
 
 Controller* Fabrique::getAgarController() {
-    return _agarController;
+	if(!_agarController) {
+		cerr << endl << "ACCES PREMATURE A UN ELEMENT DE LA FABRIQUE" << endl << flush;
+		exit(1);
+	}
+
+	return _agarController;
 }
 
 PluginEngine* Fabrique::getPluginEngine() {
+	if(!_pluginEngine) {
+		cerr << endl << "ACCES PREMATURE A UN ELEMENT DE LA FABRIQUE" << endl << flush;
+		exit(1);
+	}
+
     return _pluginEngine;
 }
 
 CommandeInterpreter* Fabrique::getCommandeInterpreter() {
+	if(!_commandeInterpreter) {
+		cerr << endl << "ACCES PREMATURE A UN ELEMENT DE LA FABRIQUE" << endl << flush;
+		exit(1);
+	}
+
     return _commandeInterpreter;
 }

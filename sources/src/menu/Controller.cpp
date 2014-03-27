@@ -80,18 +80,13 @@ Controller::~Controller(void) {
 void Controller::executeAction(AG_Event *event) {
 	SDL_LockMutex(_controllerMutex);
 
-	cerr << endl << "ON ENTRE" << endl << flush;
-
 	int action = AG_INT(1);
 
 	cerr << endl << "VALEUR DE L'ACTION " << action << endl << flush;
 
-	if(action >= 10000) {	// Au delà de 10000 il s'agit d'une action d'un plugin, on la redispatche à tous les plugins
-		cerr << endl << "ON VIENT ICI 1" << endl << flush;
+	if(action >= 10000) {	// Au delï¿½ de 10000 il s'agit d'une action d'un plugin, on la redispatche ï¿½ tous les plugins
 		PluginActionEvent evt((Controller::Action)action);
-		cerr << endl << "ON VIENT ICI 2" << endl << flush;
 		_pluginEngine->dispatchEvent(evt);
-		cerr << endl << "ON VIENT ICI 3" << endl << flush;
 	}
 	else {
 		switch(action) {
@@ -156,7 +151,7 @@ void Controller::executeAction(AG_Event *event) {
 
 			ConfigurationCommandesView::beginWaitUserCommandChoice(commandId);
 
-			// Réactualise la fenêtre
+			// Rï¿½actualise la fenï¿½tre
 			_agarView->showMenuView(Viewer::CONFIGURATION_COMMANDES_VIEW);
 		}
 		break;
@@ -198,12 +193,12 @@ void Controller::executeAction(AG_Event *event) {
 			_agarView->showMenuView(Viewer::OPEN_SCENE_ASE_VIEW);
 			break;
 
-			// Ouvre l'écran de choix d'une Map en mode de jeu local
+			// Ouvre l'ï¿½cran de choix d'une Map en mode de jeu local
 		case ShowOpenMapViewAction:
 			_agarView->showMenuView(Viewer::OPEN_SCENE_MAP_VIEW);
 			break;
 
-			// Ecran de choix d'une Map à lancer en mode serveur
+			// Ecran de choix d'une Map ï¿½ lancer en mode serveur
 		case ShowLanceServeurViewAction:
 			_agarView->showMenuView(Viewer::LANCE_SERVEUR_VIEW);
 			break;
@@ -211,7 +206,7 @@ void Controller::executeAction(AG_Event *event) {
 			// Ouvere une MAP en mode serveur
 		case LanceServeurMapAction:
 		{
-			// Récupération du nom de la Map à ouvrir
+			// Rï¿½cupï¿½ration du nom de la Map ï¿½ ouvrir
 			int mapNumber = AG_INT(2);
 			LanceServeurView* view = (LanceServeurView*)_agarView->getView(Viewer::LANCE_SERVEUR_VIEW);
 			string mapName = view->getMapName(mapNumber);
@@ -226,7 +221,7 @@ void Controller::executeAction(AG_Event *event) {
 		// Ouverture d'une Map en mode de jeu local
 		case OpenMapAction:
 		{
-			// Récupération du nom de la Map à ouvrir
+			// Rï¿½cupï¿½ration du nom de la Map ï¿½ ouvrir
 			int mapNumber = AG_INT(2);
 			OpenSceneMapView* view = (OpenSceneMapView*)_agarView->getView(Viewer::OPEN_SCENE_MAP_VIEW);
 			string mapName = view->getMapName(mapNumber);
@@ -274,7 +269,7 @@ void Controller::executeAction(AG_Event *event) {
 			CClient* client = _networkManager->getClient();
 
 			if(client) {
-				client->sendNotConnectedRequestPingToServer(Config.Reseau.getIpServer(), Config.Reseau.getServerPort());				// Demande au serveur de répondre à un ping
+				client->sendNotConnectedRequestPingToServer(Config.Reseau.getIpServer(), Config.Reseau.getServerPort());				// Demande au serveur de rï¿½pondre ï¿½ un ping
 			}
 			else {
 				AG_TextMsg(AG_MSG_ERROR, "Action impossible, vous n'etes pas connecte");
@@ -285,7 +280,7 @@ void Controller::executeAction(AG_Event *event) {
 		case ConnectClientAction:
 		{
 			if( !_networkManager->ouvreClient(Config.Reseau.getIpServer(), Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree()) ) {
-				_networkManager->setOn( false );		// Signale que le réseau ne peut pas être utilisé
+				_networkManager->setOn( false );		// Signale que le rï¿½seau ne peut pas ï¿½tre utilisï¿½
 				AG_TextMsg(AG_MSG_ERROR, "Echec de connexion au serveur");
 			}
 		}
@@ -300,7 +295,7 @@ void Controller::executeAction(AG_Event *event) {
 		// Activation d'un plugin
 		case PluginActivateAction:
 		{
-			// Récupération du nom de la Map à ouvrir
+			// Rï¿½cupï¿½ration du nom de la Map ï¿½ ouvrir
 			int pluginNumber = AG_INT(2);
 			PluginsManagementView* view = (PluginsManagementView*)_agarView->getView(Viewer::PLUGINS_MANAGEMENT_VIEW);
 			string pluginName = view->getPluginName(pluginNumber);
@@ -312,10 +307,10 @@ void Controller::executeAction(AG_Event *event) {
 		}
 		break;
 
-		// Désactivation d'un plugin
+		// Dï¿½sactivation d'un plugin
 		case PluginDeactivateAction:
 		{
-			// Récupération du nom de la Map à ouvrir
+			// Rï¿½cupï¿½ration du nom de la Map ï¿½ ouvrir
 			int pluginNumber = AG_INT(2);
 			PluginsManagementView* view = (PluginsManagementView*)_agarView->getView(Viewer::PLUGINS_MANAGEMENT_VIEW);
 			string pluginName = view->getPluginName(pluginNumber);
@@ -337,20 +332,18 @@ void Controller::executeAction(AG_Event *event) {
 		// Affiche le menu de debug
 		case ShowDebugViewAction:
 		{
-			cerr << endl << "ALORS LA Y'A UN PROBLEME" << endl << flush;
 			_agarView->showMenuView(Viewer::DEBUG_MENU_VIEW);
-			cerr << endl << "AH BAH NON" << endl << flush;
 		}
 		break;
 
-		// Affiche les données de la MAP courante sous forme d'un arbre
+		// Affiche les donnï¿½es de la MAP courante sous forme d'un arbre
 		case ShowMapTreeViewAction:
 		{
 			_agarView->showMenuView(Viewer::MAP_TREE_VIEW);
 		}
 		break;
 
-		// Affiche les données de la MAP courante sous forme d'un arbre
+		// Affiche les donnï¿½es de la MAP courante sous forme d'un arbre
 		case ShowDataTreeViewAction:
 		{
 			_agarView->showMenuView(Viewer::DATA_TREE_VIEW);
@@ -369,7 +362,7 @@ void Controller::executeAction(AG_Event *event) {
 		}
 		break;
 
-		// Affiche la denière erreur OpenGL dans une popup
+		// Affiche la deniï¿½re erreur OpenGL dans une popup
 		case ShowLastOpenGlErrorViewAction:
 		{
 			stringstream openGlError;
@@ -382,7 +375,7 @@ void Controller::executeAction(AG_Event *event) {
 		// Import d'un fichier ASE
 		case ImportAseAction:
 		{
-			// Récupération du nom de la Map à ouvrir
+			// Rï¿½cupï¿½ration du nom de la Map ï¿½ ouvrir
 			int aseNumber = AG_INT(2);
 			OpenSceneASEView* view = (OpenSceneASEView*)_agarView->getView(Viewer::OPEN_SCENE_ASE_VIEW);
 			string aseName = view->getAseName(aseNumber);
@@ -390,10 +383,10 @@ void Controller::executeAction(AG_Event *event) {
 			// Ouverture de la Map
 			string nomRep = "./Map/" + aseName + "/";
 
-			if(CFindFolder::mkdir(nomRep.c_str()) != 0)	{	// Création du répertoire pour les textures
-				// Si un répertoire existe déjà, demande s'il faut l'écraser
+			if(CFindFolder::mkdir(nomRep.c_str()) != 0)	{	// Crï¿½ation du rï¿½pertoire pour les textures
+				// Si un rï¿½pertoire existe dï¿½jï¿½, demande s'il faut l'ï¿½craser
 				OpenSceneASEEcraseRepView* view = (OpenSceneASEEcraseRepView*)_agarView->getView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
-				view->setRepName(nomRep);	// Nom du répertoire du fichier Ase
+				view->setRepName(nomRep);	// Nom du rï¿½pertoire du fichier Ase
 				view->setAseName(aseName);	// Nom du fichier Ase
 
 				_agarView->showMenuView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
@@ -421,7 +414,7 @@ void Controller::executeAction(AG_Event *event) {
 			OpenSceneASEEcraseRepView* view = (OpenSceneASEEcraseRepView*)_agarView->getView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
 
 			try {
-				// Suppression du répertoire
+				// Suppression du rï¿½pertoire
 				string repName = view->getRepName();
 				AseImporter::supprimeRepertoire(repName);
 
@@ -473,7 +466,7 @@ void Controller::executeAction(AG_Event *event) {
 		break;
 
 
-		// Mise à jour de la configuration du centralisateur
+		// Mise ï¿½ jour de la configuration du centralisateur
 		case SaveConfigCentralisateurAction:
 		{
 			ConfigCentralisateurView* view = (ConfigCentralisateurView*)_agarView->getView(Viewer::CONFIG_CENTRALISATEUR_VIEW);
@@ -485,7 +478,7 @@ void Controller::executeAction(AG_Event *event) {
 		}
 		break;
 
-		// Mise à jour de la page des fichiers téléchargeables par le jeu
+		// Mise ï¿½ jour de la page des fichiers tï¿½lï¿½chargeables par le jeu
 		case ReloadDownloadFilesAction:
 		{
 			try {
@@ -501,7 +494,7 @@ void Controller::executeAction(AG_Event *event) {
 		}
 		break;
 
-		// Mise à jour de la page des fichiers téléchargeables par le jeu
+		// Mise ï¿½ jour de la page des fichiers tï¿½lï¿½chargeables par le jeu
 		case DownloadOneFileAction:
 		{
 			long downloadId = AG_LONG(2);
@@ -521,7 +514,7 @@ void Controller::executeAction(AG_Event *event) {
 		}
 		break;
 
-		// Demande de rafraichissement de la vue passée en paramètre
+		// Demande de rafraichissement de la vue passï¿½e en paramï¿½tre
 		case Refresh:
 		{
 			View* view = (View*)AG_PTR(2);
@@ -552,7 +545,6 @@ void Controller::executeAction(AG_Event *event) {
 		}
 	}
 
-	cerr << endl << "ON SORT" << endl << flush;
 	SDL_UnlockMutex(_controllerMutex);
 }
 

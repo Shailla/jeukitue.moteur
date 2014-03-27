@@ -37,10 +37,12 @@ void PluginWindow::setTitle(const char titre[]) {
 
 void PluginWindow::show() {
 	AG_WindowShow(_window);
+	AG_WidgetFocus(_window);
 }
 
 void PluginWindow::hide() {
 	AG_WindowHide(_window);
+	AG_WidgetUnfocus(_window);
 }
 
 } /* namespace JktPlugin */

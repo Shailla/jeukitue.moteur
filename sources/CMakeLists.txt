@@ -73,10 +73,10 @@ ENDIF(MSVC)
 	
 	file(
 		GLOB LIB_AGAR_SRC
-		C:/agar-trunk/core/*.c
-		C:/agar-trunk/dev/*.c
-		C:/agar-trunk/math/*.c
-		C:/agar-trunk/gui/*.c
+		D:/_compile2/agar-comile-propre/core/*.c
+		D:/_compile2/agar-comile-propre/dev/*.c
+		D:/_compile2/agar-comile-propre/math/*.c
+		D:/_compile2/agar-comile-propre/gui/*.c
 	)
 
 	set_source_files_properties(${LIB_AGAR_SRC} PROPERTIES HEADER_FILE_ONLY TRUE)

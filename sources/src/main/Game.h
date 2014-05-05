@@ -8,6 +8,9 @@
 #include "main/RequeteProcess.h"
 #include "reseau/enumReseau.h"
 
+#include "data/ServeurDataTree.h"
+#include "data/ClientDataTree.h"
+
 namespace JktNet
 {
 	class CClient ;
@@ -41,6 +44,9 @@ private:
 
 public:
 	JktUtils::CTableauIndex<CPlayer> *_pTabIndexPlayer;	// Liste indexée des joueurs
+
+	ServeurDataTree* _serverDataTree;
+	ClientDataTree* _clientDataTree;
 
 	CRequeteProcess RequeteProcess;		// Requetes inter-processus
 
@@ -79,6 +85,12 @@ public:
 	JktNet::CServer *getServer();							// Retourne le pointeur sur la classe CServer
 	void setStatutServer( JktNet::StatutServer statut );	// Renseigne le statut du serveur
 	JktNet::StatutServer getStatutServer();					// Donne le statut du serveur
+
+	void setServerDataTree(ServeurDataTree* serverDataTree);
+	ServeurDataTree* getServerDataTree();
+
+	void setClientDataTree(ClientDataTree* clientDataTree);
+	ClientDataTree* getClientDataTree();
 
 	// Gestion du jeu
 	void AffichePlayers();			// Affiche tous les joueurs

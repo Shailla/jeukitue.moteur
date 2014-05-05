@@ -17,13 +17,13 @@ using namespace std;
 #include "data/DistantTreeProxy.h"
 #include "data/ClientDataTree.h"
 #include "script/exception/IllegalParameterException.h"
+#include "main/Game.h"
 
 #include "script/commandes/dataCommandes/AddDataCommande.h"
 
 using namespace JktUtils;
 
-extern ServeurDataTree* serveurDataTree;
-extern ClientDataTree* clientDataTree;
+extern CGame Game;
 
 AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
@@ -31,13 +31,16 @@ AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(in
 void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalParameterException) {
 	string subCommande1 = StringUtils::findAndEraseFirstWord(ligne);
 
+	ServeurDataTree* serverDataTree = Game.getServerDataTree();
+	ClientDataTree* clientDataTree = Game.getClientDataTree();
+
 	if(subCommande1 == "branche") {
 		DataTree* tree = NULL;
 
-		if(serveurDataTree != 0) {
-			tree = serveurDataTree;
+		if(serverDataTree) {
+			tree = serverDataTree;
 		}
-		else if(clientDataTree != 0) {
+		else if(clientDataTree) {
 			tree = clientDataTree;
 		}
 		else {
@@ -60,10 +63,10 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 	else if(subCommande1 == "valeur") {
 		DataTree* tree = NULL;
 
-		if(serveurDataTree != 0) {
-			tree = serveurDataTree;
+		if(serverDataTree) {
+			tree = serverDataTree;
 		}
-		else if(clientDataTree != 0) {
+		else if(clientDataTree) {
 			tree = clientDataTree;
 		}
 		else {

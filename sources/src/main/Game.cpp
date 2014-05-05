@@ -145,6 +145,22 @@ JktNet::StatutServer CGame::getStatutServer() {
 		return JKT_STATUT_SERVER_NULL;
 }
 
+void CGame::setServerDataTree(ServeurDataTree* serverDataTree) {
+	_serverDataTree = serverDataTree;
+}
+
+ServeurDataTree* CGame::getServerDataTree() {
+	return _serverDataTree;
+}
+
+void CGame::setClientDataTree(ClientDataTree* clientDataTree) {
+	_clientDataTree = clientDataTree;
+}
+
+ClientDataTree* CGame::getClientDataTree() {
+	return _clientDataTree;
+}
+
 void CGame::Quit() {
 	_mode = JKT_MODE_PARTIE_NULL;
 

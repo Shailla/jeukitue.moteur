@@ -134,15 +134,13 @@ using namespace JktSon;
 
 #include "jkt.h"
 
-ServeurDataTree* serveurDataTree = 0;
-ClientDataTree* clientDataTree = 0;
 NotConnectedInterlocutor2* _notConnectedServerInterlocutor = 0;
 
 float GLIGHTX, GLIGHTY, GLIGHTZ;
 GLFont myfont;
 
 CCfg Config;		// Contient la configuration du jeu
-CGame Game;			// Contient toutes les donnï¿½es vivantes du jeu
+CGame Game;			// Contient toutes les données vivantes du jeu
 
 const char nomFichierJoueur[] = "@Joueur\\joueurTex";
 
@@ -157,7 +155,7 @@ int numMainPlayer = 0;	// Numï¿½ro du joueur principal dans la MAP (identifie le
 
 bool Aide = false;
 
-extern JktSon::CDemonSons *DemonSons;	// Requï¿½tes des sons ï¿½ jouer
+extern JktSon::CDemonSons *DemonSons;	// Requêtes des sons
 
 Uint32 tempsTimer = 0;		// Temps pris par la fonction 'timer'
 Uint32 tempsDisplay = 0;	// Temps pris par la fonction 'display'
@@ -1388,7 +1386,8 @@ void executeJktRequests() {
 			AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du client au serveur");
 		}
 		else {
-			clientDataTree = new ClientDataTree(string("jkt"), clientInterlocutor);
+			// Création de l'arbre des données du client
+			Game.setClientDataTree(new ClientDataTree(string("jkt"), clientInterlocutor));
 
 			// Lancement ouverture MAP demandï¿½e
 			const string mapName = Game.RequeteProcess.getOuvreMap();
@@ -1473,10 +1472,7 @@ void executeJktRequests() {
 			Game._pTabIndexPlayer = NULL;
 		}
 
-
-		// Connexion du serveur
-		serveurDataTree = new ServeurDataTree();
-
+		// Création de l'arbre des données du serveur
 		_notConnectedServerInterlocutor = _networkManager->ouvreServer(Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree());
 
 		if(!_notConnectedServerInterlocutor) {
@@ -1484,7 +1480,10 @@ void executeJktRequests() {
 			AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du serveur");
 		}
 		else {
-			// Lancement ouverture MAP demandï¿½e
+			// Connexion du serveur
+			Game.setServerDataTree(new ServeurDataTree());
+
+			// Lancement ouverture MAP demandée
 			const string mapName = Game.RequeteProcess.getOuvreMap();
 
 			serverGameDto = new GameDto(mapName);
@@ -1626,37 +1625,45 @@ void boucle() {
 
 
 		/* ***********************************************************
-		 * Traites les connexions ï¿½ l'arbre de donnï¿½es
+		 * Traites les connexions à l'arbre de données
 		 * **********************************************************/
 
 		if(_notConnectedServerInterlocutor) {
 			Interlocutor2* newInterlocutor;
 
 			while((newInterlocutor = _notConnectedServerInterlocutor->popNewInterlocutor())) {
-				serveurDataTree->addDistant(newInterlocutor);
+				ServeurDataTree* serverDataTree = Game.getServerDataTree();
+
+				if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
+					serverDataTree->addDistant(newInterlocutor);
+				}
 			}
 		}
 
 
 		/* ***********************************************************
-		 * Traites les changements des donnï¿½es du jeu
+		 * Traites les changements des données du jeu
 		 * **********************************************************/
 
-		// Traite les changements de donnï¿½es cï¿½tï¿½ serveur
-		if(serveurDataTree) {
-			serveurDataTree->receiveChangementsFromClients();		// Le serveur reï¿½oit les changements des donnï¿½e du jeu de la part des clients
-			serveurDataTree->diffuseChangementsToClients();			// Diffuse les changements des donnï¿½es du jeu aux clients
+		// Traite les changements de données côté serveur
+		ServeurDataTree* serverDataTree = Game.getServerDataTree();
+
+		if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
+			serverDataTree->receiveChangementsFromClients();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
+			serverDataTree->diffuseChangementsToClients();			// Diffuse les changements des données du jeu aux clients
 		}
 
-		// Traite les changements de donnï¿½es cï¿½tï¿½ client
-		if(clientDataTree) {
-			clientDataTree->receiveChangementsFromServer();		// Le client reï¿½oit les changements des donnï¿½es du jeu de la part du serveur
-			clientDataTree->diffuseChangementsToServer();		// Le client reï¿½oit diffuse les changements des donnï¿½es du jeu vers le serveur
+		// Traite les changements de données côté client
+		ClientDataTree* clientDataTree = Game.getClientDataTree();
+
+		if(clientDataTree) {		// TODO clientDataTree devrait être protégé par un mutex
+			clientDataTree->receiveChangementsFromServer();		// Le client reçoit les changements des donnï¿½es du jeu de la part du serveur
+			clientDataTree->diffuseChangementsToServer();		// Le client reçoit diffuse les changements des donnï¿½es du jeu vers le serveur
 		}
 
 
 		/* **********************************************
-		 * Lecture des ï¿½vï¿½nements claviers, souris, ...
+		 * Lecture des événements claviers, souris, ...
 		 * *********************************************/
 
 		if( Game.getMap()) {	// Si une partie est en cours en mode de jeu local, client ou serveur
@@ -1670,7 +1677,7 @@ void boucle() {
 
 		/* ****************************************************************
 		 * Communique
-		 * (ï¿½change des donnï¿½es client -> serveur ou serveur -> clients)
+		 * (échange des données client -> serveur ou serveur -> clients)
 		 * ****************************************************************/
 
 		communique();

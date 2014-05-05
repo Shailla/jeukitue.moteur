@@ -19,13 +19,13 @@ using namespace std;
 #include "data/ServeurDataTree.h"
 #include "data/ClientDataTree.h"
 #include "script/exception/IllegalParameterException.h"
+#include "main/Game.h"
 
 #include "script/commandes/dataCommandes/UpdateDataCommande.h"
 
 using namespace JktUtils;
 
-extern ServeurDataTree* serveurDataTree;
-extern ClientDataTree* clientDataTree;
+extern CGame Game;
 
 UpdateDataCommande::UpdateDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
@@ -33,11 +33,14 @@ UpdateDataCommande::UpdateDataCommande(CommandeInterpreter* interpreter) : Comma
 void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalParameterException) {
 	string subCommande1 = StringUtils::findAndEraseFirstWord(ligne);
 
+	ServeurDataTree* serverDataTree = Game.getServerDataTree();
+	ClientDataTree* clientDataTree = Game.getClientDataTree();
+
 	if(subCommande1 == "valeur") {
 		DataTree* tree = NULL;
 
-		if(serveurDataTree != 0) {
-			tree = serveurDataTree;
+		if(serverDataTree != 0) {
+			tree = serverDataTree;
 		}
 		else if(clientDataTree != 0) {
 			tree = clientDataTree;

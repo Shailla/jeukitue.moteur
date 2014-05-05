@@ -71,12 +71,13 @@ ENDIF(MSVC)
 		#../libs/nvwa-0.9/nvwa/debug_new.cpp
 	)
 	
+	
 	file(
 		GLOB LIB_AGAR_SRC
-		D:/_compile2/agar-comile-propre/core/*.c
-		D:/_compile2/agar-comile-propre/dev/*.c
-		D:/_compile2/agar-comile-propre/math/*.c
-		D:/_compile2/agar-comile-propre/gui/*.c
+		D:/jkt/moteur/libs/agar-trunk/core/*.c
+		D:/jkt/moteur/libs/agar-trunk/dev/*.c
+		D:/jkt/moteur/libs/agar-trunk/math/*.c
+		D:/jkt/moteur/libs/agar-trunk/gui/*.c
 	)
 
 	set_source_files_properties(${LIB_AGAR_SRC} PROPERTIES HEADER_FILE_ONLY TRUE)

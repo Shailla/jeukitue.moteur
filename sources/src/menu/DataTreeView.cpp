@@ -15,11 +15,11 @@ using namespace std;
 #include "data/ClientDataTree.h"
 #include "data/MarqueurDistant.h"
 #include "reseau/new/Interlocutor2.h"
+#include "main/Game.h"
 
 #include "menu/DataTreeView.h"
 
-extern ServeurDataTree* serveurDataTree;
-extern ClientDataTree* clientDataTree;
+extern CGame Game;
 
 DataTreeView::DataTreeView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
@@ -80,9 +80,11 @@ void DataTreeView::refreshTree() {
 	/* ************************************
 	 * Mise à jour de l'abre des données
 	 * ***********************************/
+	ServeurDataTree* serverDataTree = Game.getServerDataTree();
+	ClientDataTree* clientDataTree = Game.getClientDataTree();
 
-	if(serveurDataTree) {
-		_dataTree = serveurDataTree;
+	if(serverDataTree) {
+		_dataTree = serverDataTree;
 		AG_WindowSetCaption(m_window, "Arbre des donnees - serveur");
 	}
 	else if(clientDataTree) {

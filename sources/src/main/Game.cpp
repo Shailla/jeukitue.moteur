@@ -42,6 +42,8 @@ extern NetworkManager* _networkManager;
 CGame::CGame() {
 	_mode = JKT_MODE_PARTIE_NULL;
 	_pTabIndexPlayer = NULL;	// Pas de liste de joueurs
+	_serverDataTree = NULL;
+	_clientDataTree = NULL;
 	_map = NULL;			// Pas de map
 	_erwin = NULL;			// Pas de joueur actif
 	_gravite = true;		// Par défaut la gravité est active

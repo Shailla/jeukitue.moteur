@@ -12,7 +12,7 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////
 
-// ï¿½ virer
+// A virer
 #include <string>
 #include <set>
 #include <iostream>
@@ -480,7 +480,7 @@ void addGraphicObjectToDestruct(GraphicObject* graphicObject) {
 }
 
 void display() {		// Fonction principale d'affichage
-	Uint32 temps = SDL_GetTicks();	// Temps au dï¿½but du rï¿½affichage
+	Uint32 temps = SDL_GetTicks();	// Temps au début du réaffichage
 
 	CSPA::computeDebits(temps);
 
@@ -654,7 +654,7 @@ void display() {		// Fonction principale d'affichage
 
 
 	/*******************************************************
-	  Echange des buffers graphique -> affiche ï¿½ l'ï¿½cran.
+	  Echange des buffers graphique -> affiche à l'écran.
 	 ******************************************************/
 
 	SDL_GL_SwapBuffers();
@@ -666,7 +666,7 @@ void display() {		// Fonction principale d'affichage
 
 	GraphicObject* object;
 
-	// Initialisation des objets graphiques ï¿½ initialiser
+	// Initialisation des objets graphiques à initialiser
 	SDL_LockMutex(_grahicObjectsToInitializeMutex);
 
 	while (!_grahicObjectsToInitialize.empty()) {
@@ -677,7 +677,7 @@ void display() {		// Fonction principale d'affichage
 	}
 	SDL_UnlockMutex(_grahicObjectsToInitializeMutex);
 
-	// Descruction des objets graphiques ï¿½ dï¿½truire
+	// Descruction des objets graphiques à détruire
 	SDL_LockMutex(_grahicObjectsToDestructMutex);
 
 	while (!_grahicObjectsToDestruct.empty()) {
@@ -692,7 +692,7 @@ void display() {		// Fonction principale d'affichage
 }
 
 void chopeLesEvenements() {
-	Uint8 *keystate = SDL_GetKeyState(0);		// Rï¿½cupï¿½re les touches clavier appuyï¿½es
+	Uint8 *keystate = SDL_GetKeyState(0);		// Récupère les touches clavier appuyées
 	Uint8 mouse = SDL_GetMouseState(0, 0);
 
 	if(Game.Erwin()) {
@@ -805,7 +805,7 @@ void chopeLesEvenements() {
 			erwin->getClavier()->m_bIndic = true;
 		}
 
-		if( keystate[Config.Commandes.Tir1.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir1.mouse)) ) {	// Tire avec l'arme sï¿½lectionnï¿½e
+		if( keystate[Config.Commandes.Tir1.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir1.mouse)) ) {	// Tire avec l'arme sélectionnée
 			erwin->Tir();		// Valide un tir
 		}
 
@@ -822,20 +822,20 @@ void chopeLesEvenements() {
 			float cosPhi = /*FastCos0( erwin->Phi/180.0f*Pi );	//*/cosf( erwin->Phi()/180.0f*Pi );
 			float sinPhi = /*FastSin0( erwin->Phi/180.0f*Pi );	//*/sinf( erwin->Phi()/180.0f*Pi );
 
-			balle = new CPlayer(); //crï¿½e un autre joueur
+			balle = new CPlayer(); //crée un autre joueur
 			float vect[3];
 			erwin->getPosition( vect );
-			balle->setPosition( vect[0], vect[1], vect[2]);		//positionne le projectile sur la map
+			balle->setPosition( vect[0], vect[1], vect[2]);		// positionne le projectile sur la map
 
 			erwin->getVitesse( vect );
 			balle->changeVitesse( sinTeta*cosPhi*10*quantumVitesse + vect[0],
 					sinPhi*10*quantumVitesse + vect[1],
 					cosTeta*cosPhi*10*quantumVitesse + vect[2]);
 
-			balle->changeAction( gravitePlayer );	//associe au projectile une fonction de gravitï¿½
-			balle->changeContact( contactSprite );	//associe une fonction pour les contacts avec la map
+			balle->changeAction( gravitePlayer );	// associe au projectile une fonction de gravitï¿½
+			balle->changeContact( contactSprite );	// associe une fonction pour les contacts avec la map
 
-			Game._pTabIndexPlayer->Ajoute(balle);			//ajoute le projectile ï¿½ la liste des joueurs
+			Game._pTabIndexPlayer->Ajoute(balle);			// ajoute le projectile à la liste des joueurs
 		}
 	}
 }
@@ -908,7 +908,7 @@ void play_handle_key_down( SDL_Event *event ) {
 	CPlayer *erwin = Game.Erwin();
 
 	switch( event->type ) {
-	case SDL_MOUSEMOTION:		// Si c'est un ï¿½vï¿½nement 'souris'
+	case SDL_MOUSEMOTION:		// Si c'est un évênement 'souris'
 		if( erwin ) {
 			// Rotation par rapport au plan horizontal (regarder en l'air ou vers le bas)
 			erwin->Phi( erwin->Phi() + event->motion.yrel );
@@ -919,7 +919,7 @@ void play_handle_key_down( SDL_Event *event ) {
 			if(erwin->Phi()<-90.0)
 				erwin->Phi( -90.0f );
 
-			// Rotation par rapport ï¿½ l'axe verticale (regarder ï¿½ droite ou ï¿½ gauche)
+			// Rotation par rapport à l'axe verticale (regarder à droite ou à gauche)
 			erwin->Teta( erwin->Teta() + event->motion.xrel );
 			if(erwin->Teta()>180.0f)
 				erwin->Teta( erwin->Teta() - 360.0f );
@@ -941,7 +941,7 @@ void play_handle_key_down( SDL_Event *event ) {
 			else if(mouseButtonDown == Config.Commandes.SelectWeaponUp.mouse) {
 				erwin->ActiveArmeUp();
 			}
-			// Sï¿½lection arme prï¿½cï¿½dente
+			// Sï¿½lection arme prï¿½cédente
 			else if(mouseButtonDown == Config.Commandes.SelectWeaponDown.mouse) {
 				erwin->ActiveArmeDown();
 			}
@@ -957,11 +957,11 @@ void play_handle_key_down( SDL_Event *event ) {
 			if(keyDown == Config.Commandes.Tir1.key) {
 				erwin->Tir();
 			}
-			// Sï¿½lection arme suivante
+			// Sélection arme suivante
 			else if(keyDown == Config.Commandes.SelectWeaponUp.key) {
 				erwin->ActiveArmeUp();
 			}
-			// Sï¿½lection arme prï¿½cï¿½dente
+			// Sélection arme précédente
 			else if(keyDown == Config.Commandes.SelectWeaponDown.key) {
 				erwin->ActiveArmeDown();
 			}
@@ -1010,12 +1010,12 @@ void play_handle_key_down( SDL_Event *event ) {
 			lanceMenuMode( 0 );
 			break;
 
-		case SDLK_g :		// Dï¿½sactive / active la gravitï¿½ (et annule la vitesse)
+		case SDLK_g :		// Désactive / active la gravité (et annule la vitesse)
 			if( Game.getMap() )
 				Game.Gravite( !Game.Gravite() );
 			break;
 
-		case SDLK_v :		// Dï¿½sactive / active la gravitï¿½ (et annule la vitesse)
+		case SDLK_v :		// Désactive / active la gravité (et annule la vitesse)
 			if( Game.getMap() )
 				Game.Erwin()->changeVitesse(0.0f, 0.0f, 0.0f);
 			break;
@@ -1060,7 +1060,7 @@ void play_handle_key_down( SDL_Event *event ) {
 			JKT_AfficheToutesTextures = !JKT_AfficheToutesTextures;
 			break;
 
-		case SDLK_o :		// Retour du joueur ï¿½ la position d'origine avec vitesse nulle
+		case SDLK_o :		// Retour du joueur à la position d'origine avec vitesse nulle
 			if(Game.Erwin()) {
 				Game.Erwin()->choiceOneEntryPoint();
 				Game.Erwin()->changeVitesse( 0.0f, 0.0f, 0.0f );
@@ -1147,7 +1147,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	string nomFichierMap = (char*)nomFichier;
 
 	if( !Game.openMap( nomFichierMap ) ) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur ï¿½ l'ouvertur du fichier Map : " << nomFichierMap;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur à l'ouverture du fichier Map : " << nomFichierMap;
 		return false;
 	}
 
@@ -1322,7 +1322,7 @@ void executeJktRequests() {
 		map->initGL();
 		Game.changeActiveMap(map);
 
-		// Dï¿½finition des joueurs
+		// Définition des joueurs
 		Game.setPlayerList(localeGameDto->getPlayersMaxNumber());
 
 		CPlayer* erwin = localeGameDto->getErwin();
@@ -1332,11 +1332,11 @@ void executeJktRequests() {
 
 		if(erwin != NULL) {
 			Game.Erwin(erwin);									// Indique que 'erwin' est le joueur principal
-			Game._pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal ï¿½ la liste des joueurs
+			Game._pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
 		}
 
 		for(vector<CPlayer*>::iterator iter = localeGameDto->getPlayers().begin() ; iter != localeGameDto->getPlayers().end() ; ++iter) {
-			Game._pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur ï¿½ la liste des joueurs
+			Game._pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
 		}
 
 		CPlayer *player;
@@ -1364,7 +1364,7 @@ void executeJktRequests() {
 
 
 	/* **************************************************************
-	 * Exï¿½cution du workflow d'ouverture d'une MAP en mode client
+	 * Exécution du workflow d'ouverture d'une MAP en mode client
 	 * *************************************************************/
 
 	etape = Game.RequeteProcess.getOuvreMapClientEtape();
@@ -1389,7 +1389,7 @@ void executeJktRequests() {
 			// Création de l'arbre des données du client
 			Game.setClientDataTree(new ClientDataTree(string("jkt"), clientInterlocutor));
 
-			// Lancement ouverture MAP demandï¿½e
+			// Lancement ouverture MAP demandée
 			const string mapName = Game.RequeteProcess.getOuvreMap();
 
 			clientGameDto = new GameDto(mapName);
@@ -1495,7 +1495,7 @@ void executeJktRequests() {
 	}
 	break;
 
-	case CRequeteProcess::OMSE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la mï¿½thode "openMap"
+	case CRequeteProcess::OMSE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la méthode "openMap"
 		// Nothing to do
 		break;
 
@@ -1557,10 +1557,10 @@ void executeJktRequests() {
 
 
 	/* *******************************************
-	 * Exï¿½cution d'une capture d'ï¿½cran
+	 * Exécution d'une capture d'écran
 	 * ******************************************/
 
-	if( Game.RequeteProcess.isTakePicture() ) {	// S'il y a une demande de prise de photo de la scï¿½ne
+	if( Game.RequeteProcess.isTakePicture() ) {	// S'il y a une demande de prise de photo de la scène
 		CPhoto photo( Config.Display.X, Config.Display.Y );
 
 		string fichier_photo("./Images/photo.bmp");
@@ -1575,17 +1575,17 @@ void executeJktRequests() {
 void communique() {
 	frpTimer++;
 
-	if(_networkManager->getOn()) {	// Si le rï¿½seau est actif
+	if(_networkManager->getOn()) {	// Si le réseau est actif
 
 		/* *******************************************
-		 * Le serveur ï¿½met et rï¿½ceptionne des donnï¿½es
+		 * Le serveur émet et réceptionne des données
 		 * ******************************************/
 
-		// Envoie des donnï¿½es aux clients
+		// Envoie des données aux clients
 		if(Game.isModeServer()) {
 			if(Game.getStatutServer() == JKT_STATUT_SERVER_PLAY) {
 
-				// Emet les donnï¿½es vers les clients
+				// Emet les données vers les clients
 				Game.getServer()->emet();
 
 				// Rï¿½ception des donnï¿½es des clients
@@ -1597,17 +1597,17 @@ void communique() {
 
 
 		/* *******************************************
-		 * Le client ï¿½met et rï¿½ceptionne des donnï¿½es
+		 * Le client émet et réceptionne des données
 		 * ******************************************/
 
-		// Le client rï¿½ceptionne les donnï¿½es du serveur
+		// Le client réceptionne les données du serveur
 		CClient* client = _networkManager->getClient();
 
 		if(client) {
-			// Recoit les donnï¿½es du serveur en mode dï¿½connectï¿½, ainsi qu'en mode connectï¿½ si on l'est
+			// Recoit les données du serveur en mode déconnecté, ainsi qu'en mode connecté si on l'est
 			client->recoit();
 
-			// Emet les donnï¿½es ddu joueur actif vers le serveur
+			// Emet les données ddu joueur actif vers le serveur
 			if(Game.getMap() && Game.Erwin() && Game.isModeClient() && (Game.getStatutClient() == JKT_STATUT_CLIENT_PLAY)) {
 				client->emet( *Game.Erwin() );		// Emet les requetes et donnï¿½es du joueur actif;
 			}
@@ -1710,7 +1710,7 @@ int main(int argc, char** argv) {
 	TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
 
 	if(argc > 1) {
-		// Exï¿½cution des tests unitaires
+		// Exécution des tests unitaires
 		if(string("test") == argv[1]) {
 			cout << endl << "MODE TEST" << endl;
 			JktTest::TestSuite* testSuite = new JktTest::TestSuite();
@@ -1746,7 +1746,7 @@ int main(int argc, char** argv) {
 
 	cout << "\n\tINFO DIVERSES";
 
-	// Info rï¿½seau
+	// Info réseau
 	IPaddress ipaddress;
 	if(!SDLNet_ResolveHost( &ipaddress, "localhost", 0 )) {
 		const char *host = SDLNet_ResolveIP( &ipaddress );
@@ -1762,7 +1762,7 @@ int main(int argc, char** argv) {
 
 	Fabrique::construct();
 
-	// Crï¿½ation du dï¿½mon de gestion des sons
+	// Création du démon de gestion des sons
 	DemonSons = new CDemonSons();
 
 	// Lancement de l'introduction du jeu
@@ -1770,7 +1770,7 @@ int main(int argc, char** argv) {
 		load_Intro( Config.Display.X, Config.Display.Y );	// Affiche l'introduction du jeu
 	}
 
-	// Initialisation pour les menus et boï¿½tes de dialogue
+	// Initialisation pour les menus et boîtes de dialogue
 	{
 		string fonte = "@Fonte\\Fonte.glf";		// Chargement de la fonte de caractï¿½res
 		JktUtils::RessourcesLoader::getFileRessource(fonte);
@@ -1788,11 +1788,11 @@ int main(int argc, char** argv) {
 
 	// Initialisation de la classe CDlgBoite pour l'IHM
 	if( !CDlgBoite::INIT_CLASSE() )
-		return 1;	// Erreur fatale si la classe n'a pas pu ï¿½tre initialisï¿½e
+		return 1;	// Erreur fatale si la classe n'a pas pu être initialisée
 
-	// Initialisation de la classe CRocket, rï¿½flï¿½chir oï¿½ mettre cette initialisation
+	// Initialisation de la classe CRocket, réfléchir oû mettre cette initialisation
 	if( !CRocket::INIT_CLASSE() )
-		return 1;	// Erreur fatale si CRocket ne peut ï¿½tre initialisï¿½e
+		return 1;	// Erreur fatale si CRocket ne peut être initialisée
 
 
 

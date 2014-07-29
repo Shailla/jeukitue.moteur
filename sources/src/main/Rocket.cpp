@@ -78,7 +78,7 @@ CRocket::CRocket(CPlayer *player) : CProjectil(player) {
 	player->getPosition( pos );
 	m_Pos = pos;	// Position de départ de la rocket
 	m_Teta = player->Teta();			// Orientation de la rocket
-	m_Phi = player->Phi();			//
+	m_Phi = player->Phi();				//
 	m_State = ROCKET_STATE_DEPL;		// Etat de départ
 	m_Taille = ROCKET_RAYON;
 }

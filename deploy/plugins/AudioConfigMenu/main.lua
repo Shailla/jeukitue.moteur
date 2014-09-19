@@ -1,4 +1,4 @@
-
+ï»¿
 -- Constantes
 windowWeight = 400
 windowHeight = 400
@@ -21,7 +21,7 @@ function onLoad()
 	-- Creation IHM
 	-- ----------------------------------------
 
-	-- Ouverture fenêtre
+	-- Ouverture fenÃªtre
 	window = Window();
 	window:setTitle("Configuration audio");
 	
@@ -81,7 +81,7 @@ function onLoad()
 	-- Chargement des valeurs courantes
 	loadAudioConfiguration();
 		
-	-- Affichage de la fenêtre
+	-- Affichage de la fenÃªtre
 	window:setSize(windowWeight, windowHeight);
 	
 	local screenSizeWeight, screenSizeHeight = getScreenSize();
@@ -91,7 +91,7 @@ function onLoad()
 end
 
 --
--- Lit la configuration joueur par défaut
+-- Lit la configuration joueur par dÃ©faut
 --
 function loadAudioConfiguration()
 	-- Lit driver audio courant
@@ -147,14 +147,14 @@ function eventManager(event)
 			log("Activation de la nouvelle configuration audio");
 			appliqueAudioConfiguration();
 			
-		-- Lecture de la configuration joueur par défaut
+		-- Lecture de la configuration joueur par dÃ©faut
 		elseif source == reinitialiserAudioButton then
 			log("Lecture de la configuration audio actuelle");
 			loadAudioConfiguration();
 			
-		-- Evénement non-pris en compte
+		-- EvÃªnement non-pris en compte
 		else
-			log("Evenement ignoré ("..event:__tostring()..")");
+			log("Evenement ignorÃ© ("..event:__tostring()..")");
 		end
 	end
 end

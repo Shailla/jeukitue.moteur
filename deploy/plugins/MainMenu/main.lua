@@ -1,4 +1,4 @@
-
+ï»¿
 -- Constantes
 windowWeight = 200
 windowHeight = 300
@@ -21,7 +21,7 @@ function onLoad()
 	-- Creation IHM
 	-- ----------------------------------------
 
-	-- Ouverture fenêtre
+	-- Ouverture fenÃªtre
 	window = Window();
 	window:setTitle("Menu principal");
 	
@@ -53,7 +53,7 @@ function onLoad()
 	quitButton = window:addButton("Quitter");
 	quitButton:expandHoriz();
 	
-	-- Affichage de la fenêtre
+	-- Affichage de la fenÃªtre
 	window:setSize(windowWeight, windowHeight);
 	
 	local screenSizeWeight, screenSizeHeight = getScreenSize();
@@ -117,9 +117,9 @@ function eventManager(event)
 		elseif source == backButton then
 			window:hide();
 			
-		-- Evénement non-pris en compte
+		-- EvÃªnement non-pris en compte
 		else
-			log("Evenement ignoré ("..event:__tostring()..")");
+			log("Evenement ignorÃ© ("..event:__tostring()..")");
 		end
 	end
 end

@@ -1,4 +1,4 @@
-
+﻿
 -- Constantes
 windowWeight = 200
 windowHeight = 300
@@ -24,7 +24,7 @@ function onLoad()
 	-- Creation IHM
 	-- ----------------------------------------
 
-	-- Ouverture fen�tre
+	-- Ouverture fenêtre
 	window = Window();
 	window:setTitle("Configuration");
 	
@@ -38,10 +38,10 @@ function onLoad()
 	audioButton = window:addButton("Audio");
 	audioButton:expandHoriz();
 	
-	videoButton = window:addButton("Video");
+	videoButton = window:addButton("Vidéo");
 	videoButton:expandHoriz();
 	
-	reseauButton = window:addButton("Reseau");
+	reseauButton = window:addButton("Réseau");
 	reseauButton:expandHoriz();
 	
 	centralisateurButton = window:addButton("Centralisateur");
@@ -59,7 +59,7 @@ function onLoad()
 	backButton = window:addButton("Retour");
 	backButton:expandHoriz();
 	
-	-- Affichage de la fen�tre
+	-- Affichage de la fenêtre
 	window:setSize(windowWeight, windowHeight);
 	
 	local screenSizeWeight, screenSizeHeight = getScreenSize();
@@ -127,9 +127,9 @@ function eventManager(event)
 			window:hide();
 			pushEvent(1012);
 			
-		-- Ev�nement non-pris en compte
+		-- Evênement non-pris en compte
 		else
-			log("Evenement ignor� ("..event:__tostring()..")");
+			log("Evênement ignoré ("..event:__tostring()..")");
 		end
 	end
 end

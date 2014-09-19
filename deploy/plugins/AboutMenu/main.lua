@@ -1,4 +1,4 @@
-
+﻿
 -- Constantes
 windowWeight = 400
 windowHeight = 400
@@ -16,7 +16,7 @@ function onLoad()
 	-- Creation IHM
 	-- ----------------------------------------
 
-	-- Ouverture fen�tre
+	-- Ouverture fenêtre
 	window = Window();
 	window:setTitle("A propos");
 	
@@ -35,7 +35,7 @@ function onLoad()
 	local agarLabel = window:addLabel("Version Agar : "..getConstant("AGAR_VERSION"));
 	agarLabel:expandHoriz();
 	
-	local creatorLabel = window:addLabel("JKT a ete developpe par Jean-Claude Vogel, ahuut@yahoo.fr");
+	local creatorLabel = window:addLabel("JKT a été developpé par Jean-Claude Vogel, ahuut@yahoo.fr");
 	creatorLabel:expandHoriz();
 	
 	-- Boutons
@@ -45,7 +45,7 @@ function onLoad()
 	boxBoutonsAudio:expandHoriz();
 	backButton = boxBoutonsAudio:addButton("Retour");
 		
-	-- Affichage de la fen�tre
+	-- Affichage de la fenêtre
 	window:setSize(windowWeight, windowHeight);
 	
 	local screenSizeWeight, screenSizeHeight = getScreenSize();
@@ -80,9 +80,9 @@ function eventManager(event)
 			window:hide();
 			pushEvent(1002);	-- Show main menu
 		
-		-- Ev�nement non-pris en compte
+		-- Evênement non-pris en compte
 		else
-			log("Evenement ignor� ("..event:__tostring()..")");
+			log("Evenement ignoré ("..event:__tostring()..")");
 		end
 	end
 end

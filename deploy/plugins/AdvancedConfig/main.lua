@@ -1,4 +1,4 @@
-
+ï»¿
 -- Variables globales
 checkboxSkinJoueurVisibility = 0;
 checkboxOutlineJoueurVisibility = 0;
@@ -11,7 +11,7 @@ reinitialiserJoueurButton = 0;
 function onLoad()
 	log("Version Lua : " .. _VERSION)
 
-	-- Ouverture fenêtre
+	-- Ouverture fenÃªtre
 	local window = Window();
 	window:setTitle("Configuration avancee");
 	window:setSize(200, 200);
@@ -31,7 +31,7 @@ function onLoad()
 	appliquerJoueurButton = boxBoutonsJoueur:addButton("Appliquer");
 	reinitialiserJoueurButton = boxBoutonsJoueur:addButton("Reinitialiser");
 
-	-- Onglet caméra
+	-- Onglet camÃ©ra
 	local tabCamera = notebook:addTab("Camera");
 	local boxCamera = tabCamera:addBoxVert();
 	boxCamera:addNumeric("...", "pixels");
@@ -46,7 +46,7 @@ function onLoad()
 	window:show();
 end
 
--- Lit la configuration joueur par défaut
+-- Lit la configuration joueur par dÃ©faut
 function loadJoueurConfiguration()
 	checkboxSkinJoueurVisibility:setValue(getConfigurationParameter("SKIN_VISIBILITY"));
 	checkboxOutlineJoueurVisibility:setValue(getConfigurationParameter("PLAYER_OUTLINE_VISIBILITY"));
@@ -68,12 +68,12 @@ function eventManager(event)
 		log("Enregistrement de la configuration du joueur");
 		saveJoueurConfiguration();
 		
-	-- Lecture de la configuration joueur par défaut
+	-- Lecture de la configuration joueur par dÃ©faut
 	elseif event == reinitialiserJoueurButton then
-		log("Lecture de la configuration joueur par défaut");
+		log("Lecture de la configuration joueur par dÃ©faut");
 		loadJoueurConfiguration();
 		
-	-- Evénement non-pris en compte
+	-- EvÃªnement non-pris en compte
 	else
 		log("Evenement inconnu ("..event:__tostring()..")");
 	end

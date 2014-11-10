@@ -1,8 +1,7 @@
 project/EclipseCDT4-MinGW-Makefiles/*
-!touch
 libs/zipArchive-4.2.1/ZipArchive/*.o
 libs/zipArchive-4.2.1/ZipArchive/bzip2/*.o
 libs/zipArchive-4.2.1/ZipArchive/zlib/*.o
 deploy/Debug-g++/*
-**/touch
 deploy/plugins/*.log
+!touch

@@ -2,13 +2,13 @@ project/EclipseCDT4-MinGW-Makefiles/*
 libs/**/*.o
 deploy/Debug-g++/*
 deploy/plugins/**/*.log
-deploy2/plugins/**/*.log
 deploy/stderr.txt
 deploy/stdout.txt
-deploy2/stderr.txt
-deploy2/stdout.txt
 deploy/jkt.exe
 deploy/libjkt.dll.a
+deploy2/plugins/**/*.log
+deploy2/stderr.txt
+deploy2/stdout.txt
 deploy2/jkt.exe
 deploy2/libjkt.dll.a
 deploy2/*.dll

@@ -194,9 +194,10 @@ void CTextureMaterialGeo::AfficheSelection(float r,float v,float b)
 void CTextureMaterialGeo::AfficheNormals() {
 	float pos[3], bout[ 3 ];
 	float facteur = 0.05f;
-	if( m_TabVectNormaux )
-	{
+
+	if( m_TabVectNormaux ) {
 		glBegin( GL_LINES );
+
 		for( int i=0; i < m_NumVertex ; i++ ) //dessine toutes les faces de la map
 		{
 			glColor3f( 1.0f, 0.0f, 0.0f );
@@ -204,7 +205,7 @@ void CTextureMaterialGeo::AfficheNormals() {
 			pos[ 1 ] = m_TabVertex[ i*3 + 1 ];
 			pos[ 2 ] = m_TabVertex[ i*3 + 2 ];
 
-			bout[ 0 ] = (m_TabVectNormaux[ (9*i)+0   ]*facteur) + pos[ 0 ];
+			bout[ 0 ] = (m_TabVectNormaux[ (9*i)+0 ]*facteur) + pos[ 0 ];
 			bout[ 1 ] = (m_TabVectNormaux[ (9*i)+1 ]*facteur) + pos[ 1 ];
 			bout[ 2 ] = (m_TabVectNormaux[ (9*i)+2 ]*facteur) + pos[ 2 ];
 
@@ -388,15 +389,14 @@ void CTextureMaterialGeo::EchangeYZ()	// Echange les axes X et Y de l'objet
 
 void CTextureMaterialGeo::Scale( float scaleX, float scaleY, float scaleZ )
 {
-	for( int i=0 ; i<m_NumVertex ; i++ )
-	{
+	for( int i=0 ; i<m_NumVertex ; i++ ) {
 		m_TabVertex[ (3*i) ] *= scaleX;
 		m_TabVertex[ (3*i)+1 ] *= scaleY;
 		m_TabVertex[ (3*i)+2 ] *= scaleZ;
 	}
 
 	if( m_TabVectNormaux ) {
-		for( int i=0 ; i<(m_NumVertex*3) ; i++ ) {
+		for( int i=0 ; i<(m_NumVertex) ; i++ ) {
 			m_TabVectNormaux[ (3*i)+0 ] *= scaleX;
 			m_TabVectNormaux[ (3*i)+1 ] *= scaleY;
 			m_TabVectNormaux[ (3*i)+2 ] *= scaleZ;

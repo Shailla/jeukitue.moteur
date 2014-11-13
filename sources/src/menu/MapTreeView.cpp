@@ -75,7 +75,7 @@ void MapTreeView::show(void) {
 
 		// Branche des lumières
 		{
-			vector<CLight*> lights = currentMap->m_TabLight;
+			vector<CLight*>& lights = currentMap->getLights();
 
 			ostringstream lightsStr;
 			lightsStr << lights.size() << " lumieres";

@@ -28,6 +28,8 @@ class EntryPoint;
 class CMap {
 	vector<CGeo*> m_TabGeo;					// Liste des objets géométriques
 	vector<CMouve*> m_TabMouve;				// Liste des objets nécessitant une actualisation (portes,...)
+	vector<EntryPoint> _entryPoints;		// Liste des points d'entrée des joueurs sur la Map
+	vector<CLight*> m_TabLight;				// Liste des lumières
 
 	bool Init() throw(JktUtils::CErreur);	// Initialisation de la CMap
 	bool Lit(const string &nomFichier);
@@ -35,18 +37,17 @@ class CMap {
 
 	int m_Selection;						// Object géo sélectionné
 	bool m_bSelection;						// Indique si le mode sélection est actif ou non
-	vector<EntryPoint> _entryPoints;		// Liste des points d'entrée des joueurs sur la Map
 
 	/** Indique si les éléments OpenGL de la MAP ont été initialisés. */
 	bool _isGlActivated;
+
 	void afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
 public:
-	vector<CLight*> m_TabLight;				// Liste des lumières
 	vector<CMaterial*> m_TabMaterial;		// Liste des matériaux A VOIR : devrait être membre privé
 
 		// Constructeurs / destructeur
 	CMap();
-	CMap(const string &nomFichier ) throw(JktUtils::CErreur);
+	CMap(const string &nomFichier) throw(JktUtils::CErreur);
 	~CMap();
 
 		// Fonctions membres
@@ -78,6 +79,8 @@ public:
 		// A VOIR Fonctions qui n'ont rien à faire ici
 	void GereContactPlayer(CPlayer *player);								// Gère tous les contacts entre la map et les joueurs
 	float GereLaserPlayer(float *pos, JktUtils::CV3D &Dir, float dist );	// Envoie d'un laser sur la map
+
+	vector<CLight*>& getLights();
 
 	/**
 	 * Affiche toutes les textures de la MAP dans un rectangle dont le coin bas gauche est en (x,y) et les dimensions sont (tailleX, tailleY).

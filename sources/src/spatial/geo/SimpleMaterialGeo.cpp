@@ -121,15 +121,15 @@ void CSimpleMaterialGeo::freeGL() {
 void CSimpleMaterialGeo::Affiche() {
 	glDisable(GL_TEXTURE_2D);
 
-	vector<CLight*> &tabLight = getMap()->m_TabLight;
+	vector<CLight*>& lights = getMap()->getLights();
 	vector<CLight*>::iterator iterLight;
 
 	glLineWidth(1);
 
-	if(tabLight.size()) {
+	if(lights.size()) {
 		glEnable( GL_LIGHTING );
 
-		for(iterLight=tabLight.begin() ; iterLight!=tabLight.end() ; iterLight++) {
+		for(iterLight=lights.begin() ; iterLight!=lights.end() ; iterLight++) {
 			CLight* light = (*iterLight);
 			light->Active();
 		}
@@ -154,11 +154,11 @@ void CSimpleMaterialGeo::Affiche() {
 
 	m_Material->Desactive();
 
-	if(tabLight.size()) {
+	if(lights.size()) {
 		glDisableClientState(GL_NORMAL_ARRAY);
 		glDisable( GL_LIGHTING );
 
-		for( iterLight=tabLight.begin() ; iterLight!=tabLight.end() ; iterLight++ )
+		for( iterLight=lights.begin() ; iterLight!=lights.end() ; iterLight++ )
 			(*iterLight)->Desactive();
 	}
 
@@ -427,7 +427,7 @@ void CSimpleMaterialGeo::Scale( float scaleX, float scaleY, float scaleZ )
 	}
 
 	if( m_TabVectNormaux ) {
-		for( int i=0 ; i<(m_NumVertex*3) ; i++ ) {
+		for( int i=0 ; i<(m_NumVertex) ; i++ ) {
 			m_TabVectNormaux[ (3*i)+0 ] *= scaleX;
 			m_TabVectNormaux[ (3*i)+1 ] *= scaleY;
 			m_TabVectNormaux[ (3*i)+2 ] *= scaleZ;

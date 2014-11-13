@@ -171,17 +171,15 @@ void CGeoObject::AfficheWithMaterialSimple(CMaterial *mat)
 {
 	glDisable(GL_TEXTURE_2D);
 
-	vector<CLight*> &tabLight = getMap()->m_TabLight;
+	vector<CLight*>& tabLight = getMap()->getLights();
 	vector<CLight*>::iterator iterLight;
 
-	if(tabLight.size())
-	{
+	if(tabLight.size()) {
 		glEnable( GL_LIGHTING );
 		for( iterLight=tabLight.begin() ; iterLight!=tabLight.end() ; iterLight++ )
 			(*iterLight)->Active();
 	}
-	else
-	{
+	else {
 		glDisable(GL_LIGHTING);
 		glColor3fv(mat->m_Diffuse);
 		cout << endl << m_Color[0] << " " << m_Color[1] << " " << m_Color[2];
@@ -191,34 +189,30 @@ void CGeoObject::AfficheWithMaterialSimple(CMaterial *mat)
 
 	mat->Active();
 
-	if( m_TabVectNormaux )
-	{
+	if( m_TabVectNormaux ) {
 		glNormalPointer(GL_FLOAT, 0, m_TabVectNormaux);
 		glEnableClientState(GL_NORMAL_ARRAY);
 	}
 
 	glDrawElements(JKT_RenderMode,3*m_NumFaces,GL_UNSIGNED_INT,m_TabFaces);
 
-	if( m_TabVectNormaux )
-	{
+	if( m_TabVectNormaux ) {
 		glDisableClientState(GL_NORMAL_ARRAY);
 	}
 
 	mat->Desactive();
 
-	if(tabLight.size())
-	{
+	if(tabLight.size()) {
 		for( iterLight=tabLight.begin() ; iterLight!=tabLight.end() ; iterLight++ )
 			(*iterLight)->Desactive();
 	}
 
 		//AFFICHAGE DES VECTEURS NORMAUX
-	if( Config.Debug.bAfficheNormaux )
-	{
+	if( Config.Debug.bAfficheNormaux ) {
 		float pos[3], bout[ 3 ];
 		float facteur = 0.05f;
-		if( m_TabVectNormaux )
-		{
+
+		if( m_TabVectNormaux ) {
 			glBegin( GL_LINES );
 			for( int i=0; i < m_NumFaces ; i++ ) //dessine toutes les faces de la map
 			{
@@ -258,13 +252,13 @@ void CGeoObject::AfficheWithMaterialSimple(CMaterial *mat)
 				glVertex3fv( pos );
 				glVertex3fv( bout );
 			}
+
 			glEnd();
 		}
 	}
 }
 
-void CGeoObject::AfficheSelection(float r,float v,float b)
-{
+void CGeoObject::AfficheSelection(float r,float v,float b) {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 
@@ -276,8 +270,7 @@ void CGeoObject::AfficheSelection(float r,float v,float b)
 	glDrawElements(JKT_RenderMode,3*m_NumFaces,GL_UNSIGNED_INT,m_TabFaces);
 }
 
-const char* CGeoObject::toString()
-{
+const char* CGeoObject::toString() {
 	ostringstream ttt;
 	ttt << identifier << " Nom=" << getName() << " Mat=";
 

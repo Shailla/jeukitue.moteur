@@ -447,7 +447,7 @@ void CMultiMaterialGeo::Scale( float scaleX, float scaleY, float scaleZ )
 	}
 
 	if( m_TabVectNormaux ) {
-		for( int i=0 ; i<(m_NumVertex*3) ; i++ ) {
+		for( int i=0 ; i<(m_NumVertex) ; i++ ) {
 			m_TabVectNormaux[ (3*i)+0 ] *= scaleX;
 			m_TabVectNormaux[ (3*i)+1 ] *= scaleY;
 			m_TabVectNormaux[ (3*i)+2 ] *= scaleZ;

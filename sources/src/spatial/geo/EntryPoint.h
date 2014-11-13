@@ -30,6 +30,7 @@ public:
 	void EchangeXZ();										// Echange les coordonnées X et Z de l'objet
 	void EchangeYZ();										// Echange les coordonnées Y et Z de l'objet
 	void Scale(float scaleX, float scaleY, float scaleZ);	// Homothétie pondérée selon X, Y et Z de l'objet
+	void translate(float x, float y, float z);				// Translation pondérée selon X, Y et Z de l'objet
 
 	JktUtils::CV3D getEntryPosition();
 };

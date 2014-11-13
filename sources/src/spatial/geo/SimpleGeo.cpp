@@ -320,6 +320,14 @@ void CSimpleGeo::Scale( float scaleX, float scaleY, float scaleZ )
 	}
 }
 
+void CSimpleGeo::translate( float x, float y, float z ) {
+	for( int i=0 ; i<m_NumVertex ; i++ ) {
+		m_TabVertex[ (3*i)+0 ] += x;
+		m_TabVertex[ (3*i)+1 ] += y;
+		m_TabVertex[ (3*i)+2 ] += z;
+	}
+}
+
 void CSimpleGeo::Color( float r, float g, float b )
 {
 	m_Color[0] = r;

@@ -57,6 +57,7 @@ public:
 	virtual void EchangeXZ() = 0;							// Echange les coordonnées X et Z de l'objet
 	virtual void EchangeYZ() = 0;							// Echange les coordonnées Y et Z de l'objet
 	virtual void Scale( float scaleX, float scaleY, float scaleZ ) = 0;	// Homothétie pondérée selon X, Y et Z de l'objet
+	virtual void translate(float x, float y, float z) = 0;				// Translation pondérée selon X, Y et Z de l'objet
 	virtual void GereContactPlayer( const float pos[3], CPlayer *player ) = 0;	// Gère les contact entre 'player' et l'objet géo
 	virtual float GereLaser( float pos[3], CV3D &Dir, float dist) = 0;	// Voir la définition de la fonction
 

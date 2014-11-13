@@ -307,20 +307,43 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeYZ()%T", this );
 void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
 TRACE().p( TRACE_MOTEUR3D, "CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scaleX, scaleY, scaleZ, this );
 
-	// Entry points
-	vector<EntryPoint>::iterator iterEntry;
-	for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
-		(*iterEntry).Scale(scaleX, scaleY, scaleZ);
+	if(scaleX!=1.0 || scaleY!=1.0 || scaleZ!=1.0) {
+		// Entry points
+		vector<EntryPoint>::iterator iterEntry;
+		for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
+			(*iterEntry).Scale(scaleX, scaleY, scaleZ);
 
-	// Geo
-	vector<CGeo*>::iterator iterGeo;
-	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
-		(*iterGeo)->Scale( scaleX, scaleY, scaleZ );
+		// Geo
+		vector<CGeo*>::iterator iterGeo;
+		for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
+			(*iterGeo)->Scale( scaleX, scaleY, scaleZ );
 
-	// Lights
-	vector<CLight*>::iterator iterLight;
-	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
-		(*iterLight)->Scale( scaleX, scaleY, scaleZ );
+		// Lights
+		vector<CLight*>::iterator iterLight;
+		for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
+			(*iterLight)->Scale( scaleX, scaleY, scaleZ );
+	}
+}
+
+void CMap::translate(float x, float y, float z) {
+TRACE().p( TRACE_MOTEUR3D, "CMap::translate(x=%f,y=%f,z=%f)%T", x, y, z, this );
+
+	if(x!=0.0 || y!=0.0 || z!=0.0) {
+		// Entry points
+		vector<EntryPoint>::iterator iterEntry;
+		for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
+			(*iterEntry).translate(x, y, z);
+
+		// Geo
+		vector<CGeo*>::iterator iterGeo;
+		for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
+			(*iterGeo)->translate(x, y, z);
+
+		// Lights
+		vector<CLight*>::iterator iterLight;
+		for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
+			(*iterLight)->translate(x, y, z);
+	}
 }
 
 bool CMap::Lit(const string &nomFichier) {
@@ -363,13 +386,27 @@ bool CMap::Lit(CMap& map, const string &nomFichier) {
 						throw CErreur(0, erreur);
 					}
 
-					const char* subMapName = el->Attribute(Xml::NOM);
+					const char* subMapName = el->Attribute(Xml::NOM);	// Lecture nom de la Map à importer
 
 					if(!subMapName)
 						throw CErreur(0, "Fichier Map corrompu : Nom de la sous-Map a importer manquant");
 
+					// Lecture de la translation à appliquer à la Map
+					float translation[3];
+					Xml::Lit3fv(el, Xml::TRANSLATE, Xml::X, Xml::Y, Xml::Z, translation);
+
+					// Lecture du scaling à appliquer à la Map
+					float scaling[3];
+					Xml::Lit3fv(el, Xml::SCALE, Xml::X, Xml::Y, Xml::Z, scaling);
+
+					// Lecture de la Map
 					CMap subMap;
 					Lit(subMap, string(subMapName));
+
+					subMap.translate(translation[0], translation[1], translation[2]);
+					subMap.Scale(scaling[0], scaling[1], scaling[2]);
+
+					// Fusion des Map
 					map.merge(subMap);
 					subMap.m_TabGeo.clear();
 					subMap.m_TabMouve.clear();

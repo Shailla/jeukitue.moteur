@@ -23,6 +23,10 @@ const char* Xml::IMPORT = "Import";
 // Points d'entrée joeurs
 const char* Xml::ENTRYPOINT = "EntryPoint";
 
+// Opérations
+const char* Xml::SCALE = "Scale";
+const char* Xml::TRANSLATE = "Translate";
+
 // Géo
 const char* Xml::GEO = "Geo";
 const char* Xml::SOLIDE = "Solide";
@@ -50,6 +54,7 @@ const char* Xml::CANAL = "Canal";
 const char* Xml::CANAUX = "Canaux";
 const char* Xml::ID = "Id";
 const char* Xml::MULTITEXVERTEX = "MultiTexVertex";
+
 // Lumières
 const char* Xml::FALLOFF = "FallOff";
 const char* Xml::LUMIERE = "Lumiere";

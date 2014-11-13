@@ -71,7 +71,8 @@ public:
 	void EchangeXY();							// Echange les coordonnées X et Y des objets géo du map
 	void EchangeXZ();							// Echange les coordonnées X et Z des objets géo du map
 	void EchangeYZ();							// Echange les coordonnées Y et Z des objets géo du map
-	void Scale(float scaleX, float sclaeY, float scaleZ);	// Homothétie sur les objets géo (ils sont multipliés par scale)
+	void Scale(float scaleX, float sclaeY, float scaleZ);	// Homothétie la Map (coordonnées multipliées par scale)
+	void translate(float x, float y, float z);				// Translation de la Map selon x, y, z
 	/** Intègre tous les éléments d'une autre Map dans celle-ci. */
 	void merge(CMap& map);
 		// A VOIR Fonctions qui n'ont rien à faire ici

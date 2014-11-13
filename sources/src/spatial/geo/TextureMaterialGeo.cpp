@@ -394,6 +394,24 @@ void CTextureMaterialGeo::Scale( float scaleX, float scaleY, float scaleZ )
 		m_TabVertex[ (3*i)+1 ] *= scaleY;
 		m_TabVertex[ (3*i)+2 ] *= scaleZ;
 	}
+
+	if( m_TabVectNormaux ) {
+		for( int i=0 ; i<(m_NumVertex*3) ; i++ ) {
+			m_TabVectNormaux[ (3*i)+0 ] *= scaleX;
+			m_TabVectNormaux[ (3*i)+1 ] *= scaleY;
+			m_TabVectNormaux[ (3*i)+2 ] *= scaleZ;
+
+			normalise( &m_TabVectNormaux[ 3*i ] );
+		}
+	}
+}
+
+void CTextureMaterialGeo::translate( float x, float y, float z ) {
+	for( int i=0 ; i<m_NumVertex ; i++ ) {
+		m_TabVertex[ (3*i)+0 ] += x;
+		m_TabVertex[ (3*i)+1 ] += y;
+		m_TabVertex[ (3*i)+2 ] += z;
+	}
 }
 
 bool CTextureMaterialGeo::Lit(TiXmlElement* element)

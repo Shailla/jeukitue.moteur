@@ -149,6 +149,13 @@ void CLight::Scale( float scaleX, float scaleY, float scaleZ )	// Homothétie pon
 	m_Position[ 2 ] *= scaleZ;
 }
 
+void CLight::translate( float x, float y, float z )	// Translation pondérée selon X, Y et Z de l'objet
+{
+	m_Position[ 0 ] += x;
+	m_Position[ 1 ] += y;
+	m_Position[ 2 ] += z;
+}
+
 void CLight::SetPosition( const float position[4] ) {
 	m_Position[0] = position[0];
 	m_Position[1] = position[1];

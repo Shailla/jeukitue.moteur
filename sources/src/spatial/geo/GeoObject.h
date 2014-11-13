@@ -83,6 +83,7 @@ public:
 	void EchangeXZ();			// Echange les coordonnées X et Z de l'objet
 	void EchangeYZ();			// Echange les coordonnées Y et Z de l'objet
 	void Scale( float scaleX, float scaleY, float scaleZ );	// Homothétie pondérée selon X, Y et Z de l'objet
+	void translate( float x, float y, float z );			// Translation pondérée selon X, Y et Z de l'objet
 	void setMaterial(int matRef);					// Associe l'objet au matériau de référence matRef
 	void Color( float r, float g, float b );		// défini la couleur de l'objet
 	bool TestContactPave( const float pos[3], float dist );	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo

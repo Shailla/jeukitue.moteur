@@ -61,6 +61,8 @@ public:
 	static const char* FALLOFF;
 	static const char* POSITION;
 	static const char* DIRECTION;
+	static const char* TRANSLATE;
+	static const char* SCALE;
 	static const char* X;
 	static const char* Y;
 	static const char* Z;

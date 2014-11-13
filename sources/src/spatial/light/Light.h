@@ -66,6 +66,7 @@ public :
 	virtual void EchangeXZ();			// Echange les coordonnées X et Z de l'objet
 	virtual void EchangeYZ();			// Echange les coordonnées Y et Z de l'objet
 	virtual void Scale( float scaleX, float scaleY, float scaleZ );	// Homothétie pondérée selon X, Y et Z de l'objet
+	virtual void translate( float x, float y, float z );			// Translation pondérée selon X, Y et Z de l'objet
 
 	virtual void Active();		// Active la lumière
 	virtual void Desactive();	// Désactive la lumière

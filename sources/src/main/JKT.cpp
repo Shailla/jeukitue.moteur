@@ -1010,12 +1010,12 @@ void play_handle_key_down( SDL_Event *event ) {
 			lanceMenuMode( 0 );
 			break;
 
-		case SDLK_g :		// Désactive / active la gravité (et annule la vitesse)
+		case SDLK_g :		// Désactive / active la gravité
 			if( Game.getMap() )
 				Game.Gravite( !Game.Gravite() );
 			break;
 
-		case SDLK_v :		// Désactive / active la gravité (et annule la vitesse)
+		case SDLK_v :		// Annule la vitesse du joueur actif
 			if( Game.getMap() )
 				Game.Erwin()->changeVitesse(0.0f, 0.0f, 0.0f);
 			break;
@@ -1056,7 +1056,7 @@ void play_handle_key_down( SDL_Event *event ) {
 				JKT_RenderMode = GL_TRIANGLES;
 			break;
 
-		case SDLK_t:
+		case SDLK_t:		// Affiche les textures actives dans un damier
 			JKT_AfficheToutesTextures = !JKT_AfficheToutesTextures;
 			break;
 
@@ -1796,15 +1796,15 @@ int main(int argc, char** argv) {
 
 
 
-	// Mise en place du moteur de particules pour la neige, rï¿½flï¿½chir oï¿½ mettre ï¿½a
+	// Mise en place du moteur de particules pour la neige, réfléchir où mettre ça
 	CV3D posMoteurParticulesNeige( -2.35f, 1.5f, 0.0f );
 	CV3D tailleMoteurParticulesNeige(3.0f, 3.0f, 3.0f);
 	moteurParticulesNeige = new CMoteurParticulesNeige(10000, posMoteurParticulesNeige, tailleMoteurParticulesNeige);
 
-	// Dï¿½lai d'attente aprï¿½s l'intro du jeu, je sais plus ï¿½ quoi il sert
+	// Délai d'attente aprés l'intro du jeu, je sais plus à quoi il sert
 	SDL_Delay( 1000 );
 
-	// Crï¿½ation d'un haut parleur qui se dï¿½place pour tester le son 3D
+	// Création d'un haut parleur qui se déplace pour tester le son 3D
 	machin = new CMachin();
 	string fichierSon3D = "@Musique\\drumloop.wav";
 	JktUtils::RessourcesLoader::getFileRessource(fichierSon3D);
@@ -1819,7 +1819,7 @@ int main(int argc, char** argv) {
 
 	initMenu();
 
-	// Entrï¿½e dans la boucle principale du jeu
+	// Entrée dans la boucle principale du jeu
 	Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
 	boucle();
 

@@ -424,8 +424,24 @@ void CSimpleMaterialGeo::Scale( float scaleX, float scaleY, float scaleZ )
 		m_TabVertex[ (3*i) ] *= scaleX;
 		m_TabVertex[ (3*i)+1 ] *= scaleY;
 		m_TabVertex[ (3*i)+2 ] *= scaleZ;
+	}
 
-		// TODO Prendre en compte l'effet du Scale sur les vecteurs normaux
+	if( m_TabVectNormaux ) {
+		for( int i=0 ; i<(m_NumVertex*3) ; i++ ) {
+			m_TabVectNormaux[ (3*i)+0 ] *= scaleX;
+			m_TabVectNormaux[ (3*i)+1 ] *= scaleY;
+			m_TabVectNormaux[ (3*i)+2 ] *= scaleZ;
+
+			normalise( &m_TabVectNormaux[ 3*i ] );
+		}
+	}
+}
+
+void CSimpleMaterialGeo::translate( float x, float y, float z ) {
+	for( int i=0 ; i<m_NumVertex ; i++ ) {
+		m_TabVertex[ (3*i)+0 ] += x;
+		m_TabVertex[ (3*i)+1 ] += y;
+		m_TabVertex[ (3*i)+2 ] += z;
 	}
 }
 

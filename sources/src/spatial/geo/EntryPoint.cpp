@@ -87,4 +87,10 @@ void EntryPoint::Scale(float scaleX, float scaleY, float scaleZ) {
 	_entryPosition.Z *= scaleZ;
 }
 
+void EntryPoint::translate(float x, float y, float z) {
+	_entryPosition.X += x;
+	_entryPosition.Y += y;
+	_entryPosition.Z += z;
+}
+
 } /* namespace JktMoteur */

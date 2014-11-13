@@ -572,10 +572,8 @@ void CGeoObject::EchangeYZ()	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CGeoObject::Scale( float scaleX, float scaleY, float scaleZ )
-{
-	for( int i=0 ; i<m_NumVertex ; i++ )
-	{
+void CGeoObject::Scale( float scaleX, float scaleY, float scaleZ ) {
+	for( int i=0 ; i<m_NumVertex ; i++ ) {
 		m_TabVertex[ (3*i)+0 ] *= scaleX;
 		m_TabVertex[ (3*i)+1 ] *= scaleY;
 		m_TabVertex[ (3*i)+2 ] *= scaleZ;
@@ -589,6 +587,14 @@ void CGeoObject::Scale( float scaleX, float scaleY, float scaleZ )
 
 			normalise( &m_TabVectNormaux[ 3*i ] );
 		}
+	}
+}
+
+void CGeoObject::translate( float x, float y, float z ) {
+	for( int i=0 ; i<m_NumVertex ; i++ ) {
+		m_TabVertex[ (3*i)+0 ] += x;
+		m_TabVertex[ (3*i)+1 ] += y;
+		m_TabVertex[ (3*i)+2 ] += z;
 	}
 }
 

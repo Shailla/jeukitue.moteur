@@ -741,6 +741,10 @@ void CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int t
 	}
 }
 
+vector<CLight*>& CMap::getLights() {
+	return m_TabLight;
+}
+
 void CMap::afficheToutesTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex) {
 	int posX = 0;
 	int posY = 0;

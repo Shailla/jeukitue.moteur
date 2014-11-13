@@ -29,14 +29,7 @@ class CSimpleGeo:public CGeo
 {
 	friend class GeoMaker;
 	string tostring;
-public:
-	static const char* identifier;
-	CSimpleGeo(CMap *map, const string& name, unsigned int nbrVertex, float* vertex, unsigned int nbrFaces, int* faces, float* color, bool solid=true);
-	CSimpleGeo(CMap *map);
-	void Init();								// Initialisation de l'objet
-	void initGL();
-	void freeGL();
-private:
+
 	float _minX, _minY, _minZ, _maxX, _maxY, _maxZ;	// Coordonnées du pavé englobant l'objet géo
 	float m_Centre[3];			// Centre de la sphère englobant l'objet
 	float m_Rayon;				// Rayon de la sphère englobant l'objet
@@ -53,10 +46,18 @@ private:
 	enum {	VBO_VERTEX=0, VBO_FACES };
 	static const int VBO_BUFFER_SIZE = 2;
 	GLuint m_VboBufferNames[VBO_BUFFER_SIZE];
+
 public:
-		// Destructeur
+	static const char* identifier;
+
+	CSimpleGeo(CMap *map, const string& name, unsigned int nbrVertex, float* vertex, unsigned int nbrFaces, int* faces, float* color, bool solid=true);
+	CSimpleGeo(CMap *map);
 	~CSimpleGeo();
-		//Fonctions membres
+
+	void Init();								// Initialisation de l'objet
+	void initGL();
+	void freeGL();
+
 private:
 	void MinMax();			// Calcul les variables MinX,...,MaxZ de cet objet géométrique
 	void Bulle();			// Calcul les variables 'centre' et rayon

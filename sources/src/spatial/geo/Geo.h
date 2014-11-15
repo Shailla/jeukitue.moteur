@@ -41,6 +41,7 @@ public:
 
 		// Fonctions membres
 	CMap *getMap();			// Navigabilité vers l'objet qui contient cet objet (la Map étant l'objet racine)
+	void setMap(CMap* map);
 	void setName(const string &nom);	// Implémente le nom du géo
 	const char *getName();				// Renvoie le nom de l'objet
 	unsigned int getReference();	// Renvoie la référence de l'objet

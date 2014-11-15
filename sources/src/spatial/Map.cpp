@@ -195,8 +195,10 @@ void CMap::merge(CMap& map) {
 	for(iterEntryPoint=map._entryPoints.begin() ; iterEntryPoint!=map._entryPoints.end() ; iterEntryPoint++)
 		_entryPoints.push_back(*iterEntryPoint);
 
-	for(iterGeo=map.m_TabGeo.begin() ; iterGeo!=map.m_TabGeo.end() ; iterGeo++)
+	for(iterGeo=map.m_TabGeo.begin() ; iterGeo!=map.m_TabGeo.end() ; iterGeo++) {
+		(*iterGeo)->setMap(this);
 		m_TabGeo.push_back(*iterGeo);
+	}
 
 	for(iterMouve=map.m_TabMouve.begin() ; iterMouve!=map.m_TabMouve.end() ; iterMouve++)
 		m_TabMouve.push_back(*iterMouve);

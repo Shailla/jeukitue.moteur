@@ -190,7 +190,7 @@ void MapTreeView::showOneLight(AG_TreetblRow* parentRow, const CLight* light, co
 AG_TreetblRow* MapTreeView::addFloat4TabToTree(AG_Treetbl* tree, AG_TreetblRow* parentRow, const int id, const int depth, const char* name, const float value[4]) {
 	if(value) {
 		ostringstream var;
-		var << value[0] << ", " << value[1] << ", " << value[2] << ", " << value[3];
+		var << value[0] << "; " << value[1] << "; " << value[2] << "; " << value[3];
 
 		return AG_TreetblAddRow(tree, parentRow, id, "%d%s%d%s", depth, name, depth+1, var.str().c_str());
 	}

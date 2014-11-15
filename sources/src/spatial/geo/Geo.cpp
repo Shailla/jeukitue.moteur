@@ -28,6 +28,10 @@ CGeo::~CGeo()
 CMap *CGeo::getMap()
 {	return pMap;	}
 
+void CGeo::setMap(CMap* map) {
+	pMap = map;
+}
+
 unsigned int CGeo::getReference()
 {
 	return m_Reference;

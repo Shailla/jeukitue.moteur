@@ -62,7 +62,7 @@ void MapTreeView::show(void) {
 
 			ostringstream materiauxStr;
 			materiauxStr << materiaux.size() << " materiaux";
-			AG_TreetblRow* materiauxRow = AG_TreetblAddRow(_tree, NULL, rowId++, "%d%s", 0, materiauxStr.str().c_str());
+			AG_TreetblRow* materiauxRow = AG_TreetblAddRow(_tree, NULL, rowId++, "%s", 0, materiauxStr.str().c_str());
 
 			vector<CMaterial*>::iterator iter;
 
@@ -73,13 +73,14 @@ void MapTreeView::show(void) {
 			}
 		}
 
+
 		// Branche des lumières
 		{
 			vector<CLight*>& lights = currentMap->getLights();
 
 			ostringstream lightsStr;
 			lightsStr << lights.size() << " lumieres";
-			AG_TreetblRow* lightsRow = AG_TreetblAddRow(_tree, NULL, rowId++, "%d%s", 0, lightsStr.str().c_str());
+			AG_TreetblRow* lightsRow = AG_TreetblAddRow(_tree, NULL, rowId++, "%s", 0, lightsStr.str().c_str());
 
 			vector<CLight*>::iterator iter;
 
@@ -118,12 +119,12 @@ void MapTreeView::showOneMaterial(AG_TreetblRow* parentRow, const CMaterial* mat
 		break;
 	}
 
-	AG_TreetblRow* materiauRow = AG_TreetblAddRow(_tree, parentRow, rowId++, "%d%s", depth, materiauStr.str().c_str());
+	AG_TreetblRow* materiauRow = AG_TreetblAddRow(_tree, parentRow, rowId++, "%s", depth, materiauStr.str().c_str());
 
 	// Référence OpenGL
 	ostringstream matRef;
 	matRef << mat->getRef();
-	AG_TreetblAddRow(_tree, materiauRow, rowId++, "%d%s%d%s", depth+1, "Ref. OpenGL : ", depth+2, matRef.str().c_str());
+	AG_TreetblAddRow(_tree, materiauRow, rowId++, "%s,%s", depth+1, "Ref. OpenGL : ", depth+2, matRef.str().c_str());
 
 	// Lumière ambiante
 	addFloat4TabToTree(_tree, materiauRow, rowId++, depth+1, "Ambiante : ", mat->m_Ambient);
@@ -140,8 +141,8 @@ void MapTreeView::showOneMaterial(AG_TreetblRow* parentRow, const CMaterial* mat
 			CMaterialTexture* texture = (CMaterialTexture*)mat;
 			ostringstream textureId;
 			textureId << texture->_texture->getGlTexName();
-			AG_TreetblAddRow(_tree, materiauRow, rowId++, "%d%s%d%s", depth+1, "Fichier de texture : ", depth+2, texture->m_FichierTexture.c_str());
-			AG_TreetblAddRow(_tree, materiauRow, rowId++, "%d%s%d%s", depth+1, "Identifiant de texture : ", depth+2, textureId.str().c_str());
+			AG_TreetblAddRow(_tree, materiauRow, rowId++, "%s,%s", depth+1, "Fichier de texture : ", depth+2, texture->m_FichierTexture.c_str());
+			AG_TreetblAddRow(_tree, materiauRow, rowId++, "%s,%s", depth+1, "Identifiant de texture : ", depth+2, textureId.str().c_str());
 		}
 		break;
 	case CMaterial::MAT_TYPE_MULTI:
@@ -164,9 +165,9 @@ void MapTreeView::showOneLight(AG_TreetblRow* parentRow, const CLight* light, co
 	ostringstream lightStr;
 	lightStr << "Lumiere";
 
-	AG_TreetblRow* lightRow = AG_TreetblAddRow(_tree, parentRow, rowId++, "%d%s", depth, lightStr.str().c_str());
+	AG_TreetblRow* lightRow = AG_TreetblAddRow(_tree, parentRow, rowId++, "%s", depth, lightStr.str().c_str());
 
-	AG_TreetblAddRow(_tree, lightRow, rowId++, "%d%s%d%s", depth+1, "Ref. OpenGL : ", light->getRefLight());
+	AG_TreetblAddRow(_tree, lightRow, rowId++, "%s,%s", depth+1, "Ref. OpenGL : ", light->getRefLight());
 
 	// Position
 	float position[4], ambiante[4], diffuse[4], speculaire[4];
@@ -192,9 +193,9 @@ AG_TreetblRow* MapTreeView::addFloat4TabToTree(AG_Treetbl* tree, AG_TreetblRow* 
 		ostringstream var;
 		var << value[0] << "; " << value[1] << "; " << value[2] << "; " << value[3];
 
-		return AG_TreetblAddRow(tree, parentRow, id, "%d%s%d%s", depth, name, depth+1, var.str().c_str());
+		return AG_TreetblAddRow(tree, parentRow, id, "%s,%s", depth, name, depth+1, var.str().c_str());
 	}
 	else {
-		return AG_TreetblAddRow(tree, parentRow, id, "%d%s%d%s", depth, name, depth+1, "--NULL--");
+		return AG_TreetblAddRow(tree, parentRow, id, "%s,%s", depth, name, depth+1, "--NULL--");
 	}
 }

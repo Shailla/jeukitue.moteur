@@ -505,7 +505,9 @@ bool CMultiMaterialGeo::Lit(TiXmlElement* el)
 	m_TabTexVertex = CGeoMaker::LitTexVertex(el, m_NumVertex);
 
 	// Sous-Matériaux de texture
-	m_CanauxNumbers = *CGeoMaker::LitSousMateriaux(el);
+	map<int, int>* canauxNumbers = CGeoMaker::LitSousMateriaux(el);
+	m_CanauxNumbers = *canauxNumbers;
+	delete canauxNumbers;
 
 	return true;
 }

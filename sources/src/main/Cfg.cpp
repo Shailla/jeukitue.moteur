@@ -625,10 +625,11 @@ bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixe
 	FSOUND_SetOutput( output );		// Sélection de l'output
 	m_Output = output;
 
-	remarquesDriver = new char*[FSOUND_GetNumDrivers()];
+	int numDrivers = FSOUND_GetNumDrivers();
+	remarquesDriver = new char*[numDrivers];
 	string rem;
 
-	for(int i = 0 ; i < FSOUND_GetNumDrivers() ; i++) {
+	for(int i = 0 ; i < numDrivers ; i++) {
 		FSOUND_GetDriverCaps(i, &caps);
 		rem = "";
 
@@ -644,19 +645,19 @@ bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixe
 		if (caps & FSOUND_CAPS_EAX3)
 			rem += "Supporte EAX 3 reverb. ";
 
-		remarquesDriver[i] = new char[rem.size()];
+		remarquesDriver[i] = new char[rem.size() + 1];
 		strcpy( remarquesDriver[i], rem.c_str() );
 	}
 
-	if(FSOUND_GetNumDrivers > 0) {	// Vérifie s'il y a un driver pour le son
-		if(driver < FSOUND_GetNumDrivers() ) {
-			FSOUND_SetDriver(driver);	// Sélection du driver configuré
+	if(numDrivers > 0) {	// Vérifie s'il y a un driver pour le son
+		if(driver < numDrivers ) {
+			FSOUND_SetDriver(driver);			// Sélection du driver configuré
 			m_Driver = driver;
 		}
-		else {	// Le driver configuré ne peut pas fonctionner
+		else {									// Le driver configuré ne peut pas fonctionner
 			cerr << endl << __FILE__ << ":" << __LINE__ << " Driver son mal configuré, choix par défaut.";
-			driver = 0;	// Modification du fichier de configuration
-			FSOUND_SetDriver(0);						// Choix du driver par défaut
+			driver = 0;							// Modification du fichier de configuration
+			FSOUND_SetDriver(0);				// Choix du driver par défaut
 			m_Driver = 0;
 		}
 	}

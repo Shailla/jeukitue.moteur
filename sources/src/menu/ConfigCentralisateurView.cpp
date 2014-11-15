@@ -18,6 +18,7 @@ ConfigCentralisateurView::ConfigCentralisateurView(const AG_EventFn controllerCa
 	/* *******************************
 	 * Initialisation de la fenêtre
 	 * ******************************/
+	memset(_adresse, '\0', sizeof(_adresse));
 
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
     AG_WindowSetCaption(m_window, "Centralisateur");

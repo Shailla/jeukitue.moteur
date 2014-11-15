@@ -944,15 +944,14 @@ map<int,int>* CGeoMaker::LitSousMateriaux(TiXmlElement* el)
 	cout << "\n--" << el->Attribute("Nom");
 
 	TiXmlElement* elCan = el->FirstChildElement(Xml::SOUSMATERIAUX);
-	if(!elCan)
-	{
+
+	if(!elCan) {
 		string str = "Fichier Map corrompu : LitSousMateriaux 1 - ";
 		str += el->Value();
 		throw CErreur(0, str.c_str());
 	}
 
-	if(!elCan->Attribute(Xml::NBR, &nbr))
-	{
+	if(!elCan->Attribute(Xml::NBR, &nbr)) {
 		string str = "Fichier Map corrompu : LitSousMateriaux 2 - ";
 		str += el->Value();
 		throw CErreur(0, str.c_str());
@@ -960,17 +959,14 @@ map<int,int>* CGeoMaker::LitSousMateriaux(TiXmlElement* el)
 
 	TiXmlElement* elC = elCan->FirstChildElement(Xml::SOUSMATERIAU);
 
-	for( ; elC!=0 ; elC=elC->NextSiblingElement())
-	{
-		if(!elC->Attribute(Xml::ID, &var1))
-		{
+	for( ; elC!=0 ; elC=elC->NextSiblingElement()) {
+		if(!elC->Attribute(Xml::ID, &var1)) {
 			string str = "Fichier Map corrompu : LitSousMateriaux 3 - ";
 			str += elC->Value();
 			throw CErreur(0, str.c_str());
 		}
 
-		if(!elC->Attribute(Xml::NBRFACES, &var2))
-		{
+		if(!elC->Attribute(Xml::NBRFACES, &var2)) {
 			string str = "Fichier Map corrompu : LitSousMateriaux 4 - ";
 			str += elC->Value();
 			throw CErreur(0, str.c_str());
@@ -979,8 +975,7 @@ map<int,int>* CGeoMaker::LitSousMateriaux(TiXmlElement* el)
 		refcanaux[(int)var1] = (int)var2;
 	}
 
-	if(canaux->size() != nbr)
-	{
+	if(canaux->size() != nbr) {
 		string str = "Fichier Map corrompu : LitSousMateriaux 5 - ";
 		str += el->Value();
 		throw CErreur(0, str.c_str());

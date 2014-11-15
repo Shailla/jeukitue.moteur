@@ -92,19 +92,18 @@ CMenu::~CMenu()
 TRACE().p( TRACE_MENU, "CMenu::~CMenu() titre=%s%T", titre, this );
 		// Titre
 	if( titre )
-		delete titre;
+		delete[] titre;
 
-		// Items
+	// Items
 	del_Items();
 
-		// Fonctions suivantes des items
+	// Fonctions suivantes des items
 	if( fonction_suivante )
-		delete fonction_suivante;
+		delete[] fonction_suivante;
 
-		// Arguments des fonctions suivantes des items
-	if( arg )
-	{
-		delete arg;
+	// Arguments des fonctions suivantes des items
+	if( arg ) {
+		delete[] arg;
 	}
 
 	del_ItemsDroits();
@@ -292,25 +291,24 @@ void CMenu::add_ItemsRem(int num, char *txt)	// Implémente le num° item droit
 
 void CMenu::del_Items()
 {
-	if( items )
-	{
+	if( items ) {
 		for( int i=0 ; i<nbrChoixY ; i++ )
 			if( items[i] )
-				delete items[i];
+				delete[] items[i];
 
-		delete items;
+		delete[] items;
 		items = 0;
 	}
 }
 
 void CMenu::del_ItemsDroits()	// Efface la liste des items droits
 {
-	if( items_droits )
-	{
+	if( items_droits ) {
 		for( int i=0 ; i<nbrChoixY ; i++ )
 			if( items_droits[ i ] )
-				delete items_droits[ i ];
-		delete items_droits;
+				delete[] items_droits[ i ];
+
+		delete[] items_droits;
 	}
 
 	items_droits = 0;
@@ -318,12 +316,12 @@ void CMenu::del_ItemsDroits()	// Efface la liste des items droits
 
 void CMenu::del_ItemsRem()
 {
-	if( items_rem )
-	{
+	if( items_rem ) {
 		for( int i=0 ; i<nbrChoixY ; i++ )
 			if( items_rem[ i ] )
-				delete items_rem[ i ];
-		delete items_rem;
+				delete[] items_rem[ i ];
+
+		delete[] items_rem;
 	}
 
 	items_rem = 0;

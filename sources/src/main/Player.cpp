@@ -317,8 +317,11 @@ void CPlayer::Affiche() {
 	glRotated(-m_Teta, 0.0f, 1.0f, 0.0f); //Rotation par rapport à l'axe verticale
 
 	// Affiche un ellipsoïde qui trace les contours physiques du joueur si le jeu est configuré pour
-	if(Config.Joueur.outlineVisibility)
-		gluSphere(gluNewQuadric(), 0.1f, 16, 16);
+	if(Config.Joueur.outlineVisibility) {
+		GLUquadric* quadric = gluNewQuadric();
+		gluSphere(quadric, 0.1f, 16, 16);
+		gluDeleteQuadric(quadric);
+	}
 
 	// Affiche le skin du joueur s'il existe et si le jeu est configuré pour
 	if(Config.Joueur.skinVisibility)

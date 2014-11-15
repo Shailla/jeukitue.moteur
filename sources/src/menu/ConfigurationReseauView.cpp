@@ -15,6 +15,7 @@ ConfigurationReseauView::ConfigurationReseauView(const AG_EventFn controllerCall
 	/* *******************************
 	 * Initialisation de la fenêtre
 	 * ******************************/
+	memset(_ipServeur, '\0', sizeof(_ipServeur));
 
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
     AG_WindowSetCaption(m_window, "Reseau");

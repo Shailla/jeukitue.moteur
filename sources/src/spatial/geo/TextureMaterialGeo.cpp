@@ -359,12 +359,10 @@ void CTextureMaterialGeo::EchangeXY()	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CTextureMaterialGeo::EchangeXZ()	// Echange les axes X et Y de l'objet
-{
+void CTextureMaterialGeo::EchangeXZ() {	// Echange les axes X et Y de l'objet
 	float varX, varZ;
 
-	for( int i=0 ; i<m_NumVertex ; i++ )
-	{
+	for( int i=0 ; i<m_NumVertex ; i++ ) {
 		varX = m_TabVertex[ 3*i ];
 		varZ = m_TabVertex[ (3*i)+2 ];
 
@@ -373,12 +371,10 @@ void CTextureMaterialGeo::EchangeXZ()	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CTextureMaterialGeo::EchangeYZ()	// Echange les axes X et Y de l'objet
-{
+void CTextureMaterialGeo::EchangeYZ() {	// Echange les axes X et Y de l'objet
 	float varY, varZ;
 
-	for( int i=0 ; i<m_NumVertex ; i++ )
-	{
+	for( int i=0 ; i<m_NumVertex ; i++ ) {
 		varY = m_TabVertex[ (3*i)+1 ];
 		varZ = m_TabVertex[ (3*i)+2 ];
 
@@ -387,8 +383,7 @@ void CTextureMaterialGeo::EchangeYZ()	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CTextureMaterialGeo::Scale( float scaleX, float scaleY, float scaleZ )
-{
+void CTextureMaterialGeo::Scale(float scaleX, float scaleY, float scaleZ) {
 	for( int i=0 ; i<m_NumVertex ; i++ ) {
 		m_TabVertex[ (3*i) ] *= scaleX;
 		m_TabVertex[ (3*i)+1 ] *= scaleY;
@@ -406,7 +401,7 @@ void CTextureMaterialGeo::Scale( float scaleX, float scaleY, float scaleZ )
 	}
 }
 
-void CTextureMaterialGeo::translate( float x, float y, float z ) {
+void CTextureMaterialGeo::translate(float x, float y, float z) {
 	for( int i=0 ; i<m_NumVertex ; i++ ) {
 		m_TabVertex[ (3*i)+0 ] += x;
 		m_TabVertex[ (3*i)+1 ] += y;
@@ -414,8 +409,7 @@ void CTextureMaterialGeo::translate( float x, float y, float z ) {
 	}
 }
 
-bool CTextureMaterialGeo::Lit(TiXmlElement* element)
-{
+bool CTextureMaterialGeo::Lit(TiXmlElement* element) {
 	double ref;
 
 	// Nom

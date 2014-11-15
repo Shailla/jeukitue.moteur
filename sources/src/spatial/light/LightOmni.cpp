@@ -104,7 +104,11 @@ void CLightOmni::Active()
 
 	glDisable( GL_LIGHTING );
 	glColor3f( 0.0f, 1.0f, 1.0f );
-	gluSphere( gluNewQuadric(), 0.05, 64, 64 );
+
+	GLUquadric* quadric = gluNewQuadric();
+	gluSphere(quadric, 0.05, 64, 64);
+	gluDeleteQuadric(quadric);
+
 	glEnable( GL_LIGHTING );
 
 	glPopMatrix();

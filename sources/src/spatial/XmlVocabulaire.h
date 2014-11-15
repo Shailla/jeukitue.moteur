@@ -73,10 +73,10 @@ public:
 	static void SaveElement(TiXmlElement* element, const char* name, int valeur);
 	static void SaveAttribut(TiXmlElement* element, const char* name, float valeur);
 	static void SaveElement(TiXmlElement* element, const char* name, bool valeur);
-	static void Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, float* valeur);
-	static void LitCouleur3fv(TiXmlElement* el, const char* name, float* couleur);
-	static void LitPosition3fv(TiXmlElement* el, const char* name, float* couleur);
-	static void LitDirection3fv(TiXmlElement* el, const char* name, float* direction);
+	static bool Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, float* valeur);
+	static bool LitCouleur3fv(TiXmlElement* el, const char* name, float* couleur);
+	static bool LitPosition3fv(TiXmlElement* el, const char* name, float* couleur);
+	static bool LitDirection3fv(TiXmlElement* el, const char* name, float* direction);
 	static unsigned int LitMaterialRef(TiXmlElement* el);
 	static double LitValeur(TiXmlElement* el, const char* name);
 	static bool LitSolidite(TiXmlElement* el);

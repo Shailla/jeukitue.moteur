@@ -393,11 +393,19 @@ bool CMap::Lit(CMap& map, const string &nomFichier) {
 
 					// Lecture de la translation à appliquer à la Map
 					float translation[3];
-					Xml::Lit3fv(el, Xml::TRANSLATE, Xml::X, Xml::Y, Xml::Z, translation);
+					if(!Xml::Lit3fv(el, Xml::TRANSLATE, Xml::X, Xml::Y, Xml::Z, translation)) {
+						translation[0] = 0.0;
+						translation[1] = 0.0;
+						translation[2] = 0.0;
+					}
 
 					// Lecture du scaling à appliquer à la Map
 					float scaling[3];
-					Xml::Lit3fv(el, Xml::SCALE, Xml::X, Xml::Y, Xml::Z, scaling);
+					if(!Xml::Lit3fv(el, Xml::SCALE, Xml::X, Xml::Y, Xml::Z, scaling)) {
+						scaling[0] = 1.0;
+						scaling[1] = 1.0;
+						scaling[2] = 1.0;
+					}
 
 					// Lecture de la Map
 					CMap subMap;
@@ -433,8 +441,10 @@ bool CMap::Lit(CMap& map, const string &nomFichier) {
 
 					EntryPoint* entry = EntryPointMaker::Lit(el);
 
-					if(entry)
+					if(entry) {
 						map.add(*entry);
+						delete entry;
+					}
 				}
 			}
 		}

@@ -269,7 +269,11 @@ void updateSon3D()
 	glPushMatrix();
 	glTranslatef( machin->position.X, machin->position.Y, machin->position.Z );
 	glColor3f( 1.0f, 1.0f, 0.0f );
-	gluSphere( gluNewQuadric(), 0.05, 16, 16 );
+
+	GLUquadric* quadric = gluNewQuadric();
+	gluSphere(quadric, 0.05, 16, 16);
+	gluDeleteQuadric(quadric);
+
 	glPopMatrix();
 }
 
@@ -577,7 +581,10 @@ void display() {		// Fonction principale d'affichage
 		}
 
 		glColor3f(1.0f, 0.2f, 0.2f);
-		gluSphere(gluNewQuadric(), 0.05, 16, 16);
+
+		GLUquadric* quadric = gluNewQuadric();
+		gluSphere(quadric, 0.05, 16, 16);
+		gluDeleteQuadric(quadric);
 
 		if( Game.Erwin() )
 			updateSon3D();	// Positionne le joueur et les objets bruyants dans l'espace sonore
@@ -1698,11 +1705,11 @@ void boucle() {
 		 * Affiche la scï¿½ne
 		 * **********************************************************/
 
-		// Dessine la scï¿½ne 3D et les menus
+		// Dessine la scène 3D et les menus
 		display();
 
-		SDL_PumpEvents();	// Collecte les ï¿½vï¿½nements
-		process_events();	// vï¿½rifie les ï¿½vï¿½nements
+		SDL_PumpEvents();	// Collecte les événements
+		process_events();	// vérifie les événements
 	}
 }
 
@@ -1726,7 +1733,7 @@ int main(int argc, char** argv) {
 
 	string fichier;
 
-	Config.AfficheDateCompilation();		// Affiche le nï¿½ de version du programme
+	Config.AfficheDateCompilation();		// Affiche la date de compilation du programme
 	Config.NommeConfig( nomFichierConfig );	// Nomme le fichier de configuration
 	Config.Lit();							// Lit le fichier de configuration
 

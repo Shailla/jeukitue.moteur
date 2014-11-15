@@ -121,16 +121,14 @@ void Xml::SaveElement(TiXmlElement* element, const char* name, bool valeur)
 	element->LinkEndChild(el);
 }
 
-void Xml::SaveAttribut(TiXmlElement* element, const char* name, float valeur)
-{
+void Xml::SaveAttribut(TiXmlElement* element, const char* name, float valeur) {
 	stringstream ss;
 	ss << valeur;
 
 	element->SetAttribute(name, ss.str().c_str());
 }
 
-void Xml::Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, float* valeur)
-{
+bool Xml::Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, float* valeur) {
 	double x1, x2, x3;
 
 	if(!el)
@@ -138,34 +136,40 @@ void Xml::Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char*
 
 	TiXmlElement *elLig = el->FirstChildElement(name);
 
-	if(!elLig->Attribute(X1, &x1))
-		throw CErreur(0, "Xml::LitCouleur3fv> Fichier map corrompu : Lit3fv X1");
+	if(elLig) {
+		if(!elLig->Attribute(X1, &x1))
+			throw CErreur(0, "Xml::LitCouleur3fv> Fichier map corrompu : Lit3fv X1");
 
-	if(!elLig->Attribute(X2, &x2))
-		throw CErreur(0, "Xml::LitCouleur3fv>Fichier map corrompu : Lit3fv X2");
+		if(!elLig->Attribute(X2, &x2))
+			throw CErreur(0, "Xml::LitCouleur3fv>Fichier map corrompu : Lit3fv X2");
 
-	if(!elLig->Attribute(X3, &x3))
-		throw CErreur(0, "Xml::LitCouleur3fv>Fichier map corrompu : Lit3fv X3");
+		if(!elLig->Attribute(X3, &x3))
+			throw CErreur(0, "Xml::LitCouleur3fv>Fichier map corrompu : Lit3fv X3");
 
-	valeur[0] = (float)x1;
-	valeur[1] = (float)x2;
-	valeur[2] = (float)x3;
+		valeur[0] = (float)x1;
+		valeur[1] = (float)x2;
+		valeur[2] = (float)x3;
+
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
-void Xml::LitCouleur3fv(TiXmlElement* el, const char* name, float* couleur) {
-	Lit3fv(el, name, Xml::R, Xml::G, Xml::B, couleur);
+bool Xml::LitCouleur3fv(TiXmlElement* el, const char* name, float* couleur) {
+	return Lit3fv(el, name, Xml::R, Xml::G, Xml::B, couleur);
 }
 
-void Xml::LitPosition3fv(TiXmlElement* el, const char* name, float* position) {
-	Lit3fv(el, name, Xml::X, Xml::Y, Xml::Z, position);
+bool Xml::LitPosition3fv(TiXmlElement* el, const char* name, float* position) {
+	return Lit3fv(el, name, Xml::X, Xml::Y, Xml::Z, position);
 }
 
-void Xml::LitDirection3fv(TiXmlElement* el, const char* name, float* direction) {
-	Lit3fv(el, name, Xml::X, Xml::Y, Xml::Z, direction);
+bool Xml::LitDirection3fv(TiXmlElement* el, const char* name, float* direction) {
+	return Lit3fv(el, name, Xml::X, Xml::Y, Xml::Z, direction);
 }
 
-unsigned int Xml::LitMaterialRef(TiXmlElement* el)
-{
+unsigned int Xml::LitMaterialRef(TiXmlElement* el) {
 	double ref;
 	TiXmlElement* elMat = el->FirstChildElement(Xml::MATERIAU);
 
@@ -178,8 +182,7 @@ unsigned int Xml::LitMaterialRef(TiXmlElement* el)
 	return (unsigned int)ref;
 }
 
-double Xml::LitValeur(TiXmlElement* el, const char* name)
-{
+double Xml::LitValeur(TiXmlElement* el, const char* name) {
 	double valeur;
 	TiXmlElement* elVal = el->FirstChildElement(name);
 
@@ -192,8 +195,7 @@ double Xml::LitValeur(TiXmlElement* el, const char* name)
 	return valeur;
 }
 
-bool Xml::LitSolidite(TiXmlElement* el)
-{
+bool Xml::LitSolidite(TiXmlElement* el) {
 	TiXmlElement* elSol = el->FirstChildElement(Xml::SOLIDE);
 	bool solidite;
 

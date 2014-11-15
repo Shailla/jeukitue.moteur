@@ -79,7 +79,10 @@ void CLaser::Affiche()
 
 	glTranslatef( 0.0f, 0.0f, -m_Delta );
 	glColor3f( 0.0f, 0.0f, 1.0f );
-	gluSphere( gluNewQuadric(), 0.05, 16, 16 );
+
+	GLUquadric* quadric = gluNewQuadric();
+	gluSphere(quadric, 0.05, 16, 16);
+	gluDeleteQuadric(quadric);
 
 	glPopMatrix();
 }

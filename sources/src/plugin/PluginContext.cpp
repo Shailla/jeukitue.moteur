@@ -87,6 +87,7 @@ void PluginContext::dispatchEvent(PluginWidgetEvent* event) {
 	SDL_LockMutex(_dispatchEventMutex);
 
 	PluginEventProxy* eventProxy = new PluginEventProxy(event);
+	delete event;
 
 	lua_getglobal(_luaState, "eventManager");
 

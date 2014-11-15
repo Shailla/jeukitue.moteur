@@ -26,7 +26,9 @@ public:
 	void Desactive();
 
 	void SetDirection( float direction[3] );
+	void getDirection(float direction[3]) const;
 	void SetFallOff( float falloff );
+	float getFallOff() const;
 
 	void EchangeXY();										// Echange les coordonnées X et Y de l'objet
 	void EchangeXZ();										// Echange les coordonnées X et Z de l'objet

@@ -12,6 +12,8 @@
 #include "spatial/materiau/MaterialTexture.h"
 #include "spatial/materiau/MaterialMulti.h"
 #include "spatial/light/Light.h"
+#include "spatial/light/LightOmni.h"
+#include "spatial/light/LightTarget.h"
 #include "spatial/widget/Texture.h"
 
 #include "menu/MapTreeView.h"
@@ -162,10 +164,24 @@ void MapTreeView::showOneMaterial(AG_TreetblRow* parentRow, const CMaterial* mat
 }
 
 void MapTreeView::showOneLight(AG_TreetblRow* parentRow, const CLight* light, const int depth, int& rowId) {
-	ostringstream lightStr;
-	lightStr << "Lumiere";
+	AG_TreetblRow* lightRow;
 
-	AG_TreetblRow* lightRow = AG_TreetblAddRow(_tree, parentRow, rowId++, "%s", depth, lightStr.str().c_str());
+	if(dynamic_cast<const CLightOmni*>(light)) {
+		lightRow = AG_TreetblAddRow(_tree, parentRow, rowId++, "%s", depth, "Lumiere omni");
+	}
+	else if(const  CLightTarget* target = dynamic_cast<const CLightTarget*>(light)) {
+		lightRow = AG_TreetblAddRow(_tree, parentRow, rowId++, "%s", depth, "Lumiere target");
+		float direction[3];
+		target->getDirection(direction);
+		AG_TreetblAddRow(_tree, lightRow, rowId++, "%s,%s", depth+1, "Direction : ", direction);
+		AG_TreetblAddRow(_tree, lightRow, rowId++, "%s,%s", depth+1, "Fall off : ", target->getFallOff());
+	}
+	else if(dynamic_cast<const CLight*>(light)) {
+		lightRow = AG_TreetblAddRow(_tree, parentRow, rowId++, "%s", depth, "Lumiere normale");
+	}
+	else {
+		lightRow = AG_TreetblAddRow(_tree, parentRow, rowId++, "%s", depth, "Lumiere inconnue");
+	}
 
 	AG_TreetblAddRow(_tree, lightRow, rowId++, "%s,%s", depth+1, "Ref. OpenGL : ", light->getRefLight());
 

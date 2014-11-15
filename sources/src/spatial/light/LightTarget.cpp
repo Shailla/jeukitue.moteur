@@ -24,17 +24,24 @@ extern float GLIGHTX, GLIGHTY, GLIGHTZ;
 namespace JktMoteur
 {
 
-CLightTarget::CLightTarget(void)
-{
+CLightTarget::CLightTarget(void) {
 	m_fFallOff = 0.0f;
 }
 
-CLightTarget::~CLightTarget(void)
-{
+CLightTarget::~CLightTarget(void) {
 }
 
-void CLightTarget::SetDirection( float direction[3] )
-{
+void CLightTarget::getDirection(float direction[3]) const {
+	direction[ 0 ] = m_Direction[ 0 ];
+	direction[ 1 ] = m_Direction[ 1 ];
+	direction[ 2 ] = m_Direction[ 2 ];
+}
+
+float CLightTarget::getFallOff() const {
+	return m_fFallOff;
+}
+
+void CLightTarget::SetDirection( float direction[3] ) {
 	m_Direction[ 0 ] = direction[ 0 ];
 	m_Direction[ 1 ] = direction[ 1 ];
 	m_Direction[ 2 ] = direction[ 2 ];

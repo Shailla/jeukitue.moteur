@@ -58,7 +58,7 @@ const char* Xml::MULTITEXVERTEX = "MultiTexVertex";
 // Lumières
 const char* Xml::FALLOFF = "FallOff";
 const char* Xml::LUMIERE = "Lumiere";
-const char* Xml::OMNI = "Target";
+const char* Xml::OMNI = "Omni";
 const char* Xml::TARGET = "Target";
 
 // Spatial

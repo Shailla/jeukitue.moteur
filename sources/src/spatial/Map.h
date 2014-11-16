@@ -26,6 +26,9 @@ class CGeoObject;
 class EntryPoint;
 
 class CMap {
+	string _name;							// Nom de la Map ("Monde" par exemple pour "Monde.map.xml")
+	string _filename;						// Nom du fichier de la Map (par exemple "Monde.map.xml")
+	string _binariesDirectory;				// Répertoires des binaires de la Map (textures, plugins, ...)
 	vector<CGeo*> m_TabGeo;					// Liste des objets géométriques
 	vector<CMouve*> m_TabMouve;				// Liste des objets nécessitant une actualisation (portes,...)
 	vector<EntryPoint> _entryPoints;		// Liste des points d'entrée des joueurs sur la Map
@@ -34,7 +37,7 @@ class CMap {
 
 	bool Init() throw(JktUtils::CErreur);	// Initialisation de la CMap
 	bool Lit(const string &nomFichier);
-	static bool Lit(CMap& map, const string &nomFichier);
+	static bool Lit(CMap& map, const string &mapName);
 
 	int m_Selection;						// Object géo sélectionné
 	bool m_bSelection;						// Indique si le mode sélection est actif ou non

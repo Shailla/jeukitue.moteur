@@ -49,8 +49,8 @@ PluginWindowProxy::PluginWindowProxy(lua_State* L) : AbstractPluginPanelProxy(L)
 
 	_pluginContext = NULL;
 
-	_pluginWindow = new PluginWindow(Fabrique::getPluginEngine()->getPluginContext(L));
-	AbstractPluginPanelProxy::setPluginContext(Fabrique::getPluginEngine()->getPluginContext(L));
+	_pluginWindow = new PluginWindow(Fabrique::getPluginEngine()->getGlobalPluginContext(L));
+	AbstractPluginPanelProxy::setPluginContext(Fabrique::getPluginEngine()->getGlobalPluginContext(L));
 	AbstractPluginPanelProxy::setPanel((PluginPanel*)_pluginWindow);
 }
 

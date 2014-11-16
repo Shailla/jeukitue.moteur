@@ -353,20 +353,24 @@ bool CMap::Lit(const string &nomFichier) {
 	return Lit(*this, nomFichier);
 }
 
-bool CMap::Lit(CMap& map, const string &nomFichier) {
-	string nomFichierComplet = string(nomFichier);
-	bool isResource = JktUtils::RessourcesLoader::getFileRessource(nomFichierComplet);
+bool CMap::Lit(CMap& map, const string& mapName) {
+	// Répertoire et fichier de la Map
+	string partialFileName = mapName;
+	bool isResource = JktUtils::RessourcesLoader::getFileRessource(partialFileName);
 
 	// Si le fichier Map n'est pas une resource alors c'est une map classique
 	if(!isResource) {
-		nomFichierComplet = ".\\map\\" + nomFichierComplet;
+		partialFileName = ".\\map\\" + partialFileName;
 	}
 
-	string nomFichierXml = nomFichierComplet + ".map.xml";	// Chemin complet fichier Map XML
-	string repertoireBinaires = string(nomFichierComplet);	// Chemin des fichier binaires de la Map
+	map._name = mapName;								// Nom de la Map
+	map._filename = partialFileName + ".map.xml";		// Chemin complet fichier Map XML
+	map._binariesDirectory = partialFileName;			// Chemin des fichier binaires de la Map
+
+	// Lecture XML de la Map
 	bool result = false;
 
-	TiXmlDocument document(nomFichierXml.c_str());
+	TiXmlDocument document(map._filename.c_str());
 
 	if(document.LoadFile()) {
 		// Element de map
@@ -385,7 +389,7 @@ bool CMap::Lit(CMap& map, const string &nomFichier) {
 					}
 
 					string pluginFilename = el->Attribute(Xml::NOM);	// Lecture nom de la Map à importer
-					RessourcesLoader::getFileRessource(repertoireBinaires, pluginFilename);
+					RessourcesLoader::getFileRessource(map._binariesDirectory, pluginFilename);
 					map._plugins.push_back(pluginFilename);
 				}
 			}
@@ -469,7 +473,7 @@ bool CMap::Lit(CMap& map, const string &nomFichier) {
 					Xml::throwCorruptedMapFileException(Xml::MATERIAU, el->Value());
 				}
 
-				CMaterial* mat = CMaterialMaker::Lit(el, repertoireBinaires);
+				CMaterial* mat = CMaterialMaker::Lit(el, map._binariesDirectory);
 
 				if(mat)
 					map.add(mat);
@@ -512,7 +516,7 @@ bool CMap::Lit(CMap& map, const string &nomFichier) {
 		result = true;
 	}
 	else {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Ouverture impossible : " << nomFichierXml;
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Ouverture impossible : " << map._filename;
 	}
 
 	return result;
@@ -534,7 +538,7 @@ void CMap::initPlugins() {
 	vector<string>::iterator it;
 
 	for(it = _plugins.begin() ; it != _plugins.end() ; it++) {
-		Fabrique::getPluginEngine()->activateMapPlugin(*it);
+		Fabrique::getPluginEngine()->activateMapPlugin(*it, _binariesDirectory);
 	}
 }
 

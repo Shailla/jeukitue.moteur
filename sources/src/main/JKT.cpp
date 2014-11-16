@@ -1831,7 +1831,7 @@ int main(int argc, char** argv) {
 	DemonSons->Play( machin->req_son );
 
 	// Initialisation des plugins démarrés par défaut
-	Fabrique::getPluginEngine()->activateDefaultPlugins();
+	Fabrique::getPluginEngine()->activateDefaultGlobalPlugins();
 
 	initMenu();
 

@@ -161,7 +161,7 @@ int PluginConfigurationProxy::getConfigurationParameter(lua_State* L) {
 		else {
 			ostringstream message;
 			message << "Nom du parametre de configuration inconnu (recu='" << paramName << "')";
-			Fabrique::getPluginEngine()->getPluginContext(L)->logScriptError(message.str());
+			Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 			return 0;
 		}
 	}
@@ -205,7 +205,7 @@ int PluginConfigurationProxy::getConstant(lua_State* L) {
 		else {
 			ostringstream message;
 			message << "Nom de constante inconnu (recu='" << cstName << "')";
-			Fabrique::getPluginEngine()->getPluginContext(L)->logScriptError(message.str());
+			Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 			return 0;
 		}
 	}
@@ -257,7 +257,7 @@ int PluginConfigurationProxy::setConfigurationParameter(lua_State* L) {
 		else {
 			ostringstream message;
 			message << "Nom du parametre de configuration inconnu (recu='" << paramName << "')";
-			Fabrique::getPluginEngine()->getPluginContext(L)->logScriptError(message.str());
+			Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 		}
 	}
 

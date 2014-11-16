@@ -26,8 +26,8 @@ namespace JktPlugin {
 class PluginEngine {
 	static const std::string PLUGIN_MAIN_FILENAME;
 
-	std::map<std::string, PluginContext*> _namePlugin;
-	std::map<const lua_State*, PluginContext*> _luaContext;
+	std::map<std::string, PluginContext*> _nameGlobalPlugin;
+	std::map<const lua_State*, PluginContext*> _luaGlobalContext;
 
 	std::map<std::string, PluginContext*> _nameMapPlugin;
 	std::map<const lua_State*, PluginContext*> _luaMapContext;
@@ -36,17 +36,19 @@ public:
 	PluginEngine();
 	virtual ~PluginEngine();
 
-	void activateDefaultPlugins();
+	PluginContext* activatePlugin(const string& pluginName, const string& pluginDirectory);
 
 	// Gestion des plugins du jeu
-	void activatePlugin(const std::string& pluginName);
-	void deactivatePlugin(const std::string& pluginName);
-	PluginContext* getPluginContext(const std::string& pluginName);
-	PluginContext* getPluginContext(const lua_State* L);
+	void activateDefaultGlobalPlugins();
+	void activateGlobalPlugin(const std::string& pluginName);
+	void deactivateGlobalPlugin(const std::string& pluginName);
+	PluginContext* getGlobalPluginContext(const std::string& pluginName);
+	PluginContext* getGlobalPluginContext(const lua_State* L);
 
 	// Gestion des plugins de la Map active
-	void activateMapPlugin(const std::string& pluginFilename);
+	void activateMapPlugin(const string& pluginName, const string pluginDirectory);
 	void deactivateMapPlugins();
+	PluginContext* getMapPluginContext(const std::string& pluginName);
 
 	void dispatchEvent(const PluginActionEvent& event);
 };

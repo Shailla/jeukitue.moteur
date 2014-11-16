@@ -40,17 +40,17 @@ PluginEngine::~PluginEngine() {
 }
 
 void PluginEngine::dispatchEvent(const PluginActionEvent& event) {
-	std::map<std::string, PluginContext*>::iterator iter = _namePlugin.begin();
+	std::map<std::string, PluginContext*>::iterator iter = _nameGlobalPlugin.begin();
 
-	for( ; iter != _namePlugin.end() ; iter++) {
+	for( ; iter != _nameGlobalPlugin.end() ; iter++) {
 		iter->second->dispatchEvent(event);
 	}
 }
 
-PluginContext* PluginEngine::getPluginContext(const string& pluginName) {
-	std::map<std::string, PluginContext*>::iterator iter = _namePlugin.find(pluginName);
+PluginContext* PluginEngine::getGlobalPluginContext(const string& pluginName) {
+	std::map<std::string, PluginContext*>::iterator iter = _nameGlobalPlugin.find(pluginName);
 
-	if(iter == _namePlugin.end()) {
+	if(iter == _nameGlobalPlugin.end()) {
 		return 0;
 	}
 	else {
@@ -58,10 +58,21 @@ PluginContext* PluginEngine::getPluginContext(const string& pluginName) {
 	}
 }
 
-PluginContext* PluginEngine::getPluginContext(const lua_State* L) {
-	std::map<const lua_State*, PluginContext*>::iterator iter = _luaContext.find(L);
+PluginContext* PluginEngine::getMapPluginContext(const string& pluginName) {
+	std::map<std::string, PluginContext*>::iterator iter = _nameMapPlugin.find(pluginName);
 
-	if(iter == _luaContext.end()) {
+	if(iter == _nameMapPlugin.end()) {
+		return 0;
+	}
+	else {
+		return iter->second;
+	}
+}
+
+PluginContext* PluginEngine::getGlobalPluginContext(const lua_State* L) {
+	std::map<const lua_State*, PluginContext*>::iterator iter = _luaGlobalContext.find(L);
+
+	if(iter == _luaGlobalContext.end()) {
 		return 0;
 	}
 	else {
@@ -73,36 +84,17 @@ PluginContext* PluginEngine::getPluginContext(const lua_State* L) {
  * Activate the some plugins which are activated by default, the list of them
  * is given in the Jkt configuration.
  */
-void PluginEngine::activateDefaultPlugins() {
+void PluginEngine::activateDefaultGlobalPlugins() {
 	vector<string>::iterator iter;
 
 	cout << endl << "ACTIVATION DES PLUGINS PAR DEFAUT";
 
 	for(iter = Config.Plugin._defaultPluging.begin() ; iter !=Config.Plugin._defaultPluging.end() ; iter++) {
-		activatePlugin(*iter);
+		activateGlobalPlugin(*iter);
 	}
 }
 
-/**
- * Activate the plugin.
- */
-void PluginEngine::activatePlugin(const string& pluginName) {
-	PluginContext* pluginContext = getPluginContext(pluginName);
-
-	if(pluginContext != NULL) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Le plugin est déjà actif '" << pluginName << "'";
-		pluginContext->logError("Tentative d'activation du plugin alors qu'il est déjà actif");
-		return;
-	}
-
-
-	/* ******************************************************************************
-	 * Initialisation des variables
-	 * *****************************************************************************/
-
-	const string pluginDirectory = string(PLUGINS_DIRECTORY).append(pluginName).append("/");
-	cout << endl << __FILE__ << ":" << __LINE__ << " Activation of plugin : '" << pluginName << "' in '" << pluginDirectory << "'";
-
+PluginContext* PluginEngine::activatePlugin(const string& pluginName, const string& pluginDirectory) {
 
 	/* ******************************************************************************
 	 * Initialisation Lua
@@ -121,7 +113,7 @@ void PluginEngine::activatePlugin(const string& pluginName) {
 	 * Création du contexte et logger du plugin
 	 * *****************************************************************************/
 
-	pluginContext = new PluginContext(L, pluginName, PLUGINS_DIRECTORY);
+	PluginContext* pluginContext = new PluginContext(L, pluginName, pluginDirectory);
 
 
 	/* *******************************************************************************
@@ -180,9 +172,8 @@ void PluginEngine::activatePlugin(const string& pluginName) {
 		lua_close(L);
 		delete pluginContext;
 
-		return;
+		return 0;
 	}
-
 
 	/* *******************************************************************************
 	 * Initialisation du script
@@ -201,9 +192,8 @@ void PluginEngine::activatePlugin(const string& pluginName) {
 		lua_close(L);
 		delete pluginContext;
 
-		return;
+		return 0;
 	}
-
 
 	/* *******************************************************************************
 	 * Vérification de la présence d'une fonction "eventManager" dans le plugin
@@ -239,33 +229,99 @@ void PluginEngine::activatePlugin(const string& pluginName) {
 		lua_close(L);
 		delete pluginContext;
 
+		return 0;
+	}
+
+	return pluginContext;
+}
+
+/**
+ * Activate the plugin.
+ */
+void PluginEngine::activateGlobalPlugin(const string& pluginName) {
+	PluginContext* pluginContext = getGlobalPluginContext(pluginName);
+
+	if(pluginContext != NULL) {
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Le plugin est déjà actif '" << pluginName << "'";
+		pluginContext->logError("Tentative d'activation du plugin alors qu'il est déjà actif");
 		return;
 	}
 
-	// Référencement du plugin
-	_namePlugin[pluginName] = pluginContext;
-	_luaContext[L] = pluginContext;
+	/* ******************************************************************************
+	 * Initialisation des variables
+	 * *****************************************************************************/
 
-	pluginContext->logInfo("Plugin initialisé");
+	const string pluginDirectory = string(PLUGINS_DIRECTORY).append(pluginName).append("/");
+	cout << endl << __FILE__ << ":" << __LINE__ << " Activation of plugin : '" << pluginName << "' in '" << pluginDirectory << "'";
 
-	// Exécution de la méthode d'init du plugin
-	pluginContext->logInfo("Exécution du plugin");
+	pluginContext = activatePlugin(pluginName, PLUGINS_DIRECTORY);
 
-	status = lua_pcall(L, 0, 0, 0);
+	if(pluginContext) {
+		// Référencement du plugin
+		lua_State* L = pluginContext->getLuaState();
 
-	if(status) {
-		pluginContext->logLuaError(status);
-		pluginContext->logError("Echec d'exécution du plugin.");
-	}
-	else {
-		pluginContext->logInfo("Plugin en cours d'exécution");
+		_nameGlobalPlugin[pluginName] = pluginContext;
+		_luaGlobalContext[L] = pluginContext;
+
+		pluginContext->logInfo("Plugin initialisé");
+
+		// Exécution de la méthode d'init du plugin
+		pluginContext->logInfo("Exécution du plugin");
+
+		int status = lua_pcall(L, 0, 0, 0);
+
+		if(status) {
+			pluginContext->logLuaError(status);
+			pluginContext->logError("Echec d'exécution du plugin.");
+		}
+		else {
+			pluginContext->logInfo("Plugin en cours d'exécution");
+		}
 	}
 }
 
 /**
  * Activate the plugin.
  */
-void PluginEngine::activateMapPlugin(const string& pluginFilename) {
+void PluginEngine::activateMapPlugin(const string& pluginName, const string pluginDirectory) {
+	PluginContext* pluginContext = getMapPluginContext(pluginName);
+
+	if(pluginContext != NULL) {
+		cerr << endl << __FILE__ << ":" << __LINE__ << "Le plugin de Map est déjà actif '" << pluginName << "'";
+		pluginContext->logError("Tentative d'activation du plugin de Map alors qu'il est déjà actif");
+		return;
+	}
+
+	/* ******************************************************************************
+	 * Initialisation des variables
+	 * *****************************************************************************/
+
+	cout << endl << __FILE__ << ":" << __LINE__ << " Activation of Map plugin : '" << pluginName << "' in '" << pluginDirectory << "'";
+
+	pluginContext = activatePlugin(pluginName, PLUGINS_DIRECTORY);
+
+	if(pluginContext) {
+		// Référencement du plugin
+		lua_State* L = pluginContext->getLuaState();
+
+		_nameMapPlugin[pluginName] = pluginContext;
+		_luaMapContext[L] = pluginContext;
+
+		pluginContext->logInfo("Plugin de Map initialisé");
+
+		// Exécution de la méthode d'init du plugin
+		pluginContext->logInfo("Exécution du plugin de Map");
+
+		int status = lua_pcall(L, 0, 0, 0);
+
+		if(status) {
+			pluginContext->logLuaError(status);
+			pluginContext->logError("Echec d'exécution du plugin de Map.");
+		}
+		else {
+			pluginContext->logInfo("Plugin de Map en cours d'exécution");
+		}
+	}
 }
 
 void PluginEngine::deactivateMapPlugins() {
@@ -296,16 +352,16 @@ void PluginEngine::deactivateMapPlugins() {
 /**
  * Deactivate the plugin.
  */
-void PluginEngine::deactivatePlugin(const string& pluginName) {
-	PluginContext* pluginContext = getPluginContext(pluginName);
+void PluginEngine::deactivateGlobalPlugin(const string& pluginName) {
+	PluginContext* pluginContext = getGlobalPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
 		pluginContext->logInfo("Début de désactivation du plugin");
 
 		lua_close(pluginContext->getLuaState());
 
-		_luaContext.erase(pluginContext->getLuaState());
-		_namePlugin.erase(pluginName);
+		_luaGlobalContext.erase(pluginContext->getLuaState());
+		_nameGlobalPlugin.erase(pluginName);
 
 		pluginContext->logInfo("Plugin désactivé");
 

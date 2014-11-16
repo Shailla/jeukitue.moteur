@@ -303,7 +303,7 @@ void Controller::executeAction(AG_Event *event) {
 			cout << endl << "Activate plugin : '" << pluginName << "'";
 
 			PluginEngine* pluginEngine = Fabrique::getPluginEngine();
-			pluginEngine->activatePlugin(pluginName);
+			pluginEngine->activateGlobalPlugin(pluginName);
 		}
 		break;
 
@@ -318,7 +318,7 @@ void Controller::executeAction(AG_Event *event) {
 			cout << endl << "Deactivate plugin : '" << pluginName << "'";
 
 			PluginEngine* pluginEngine = Fabrique::getPluginEngine();
-			pluginEngine->deactivatePlugin(pluginName);
+			pluginEngine->deactivateGlobalPlugin(pluginName);
 		}
 		break;
 

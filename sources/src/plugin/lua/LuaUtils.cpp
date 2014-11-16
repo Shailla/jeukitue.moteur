@@ -44,7 +44,7 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 	if(paramNbr != expectedParamNbr) {
 		ostringstream message;
 		message << "Mauvais nombre de parametres (attendu=" << expectedParamNbr << ", recus=" << paramNbr << ")";
-		Fabrique::getPluginEngine()->getPluginContext(L)->logScriptError(message.str());
+		Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 
 		return false;
 	}
@@ -58,7 +58,7 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 			if(!lua_isstring(L, i)) {
 				ostringstream message;
 				message << "Mauvais format du parametre " << i << " (attendu=String)";
-				Fabrique::getPluginEngine()->getPluginContext(L)->logScriptError(message.str());
+				Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 
 				return false;
 			}
@@ -67,7 +67,7 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 			if(!lua_isboolean(L, i)) {
 				ostringstream message;
 				message << "Mauvais format du parametre " << i << " (attendu=Booleen)";
-				Fabrique::getPluginEngine()->getPluginContext(L)->logScriptError(message.str());
+				Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 
 				return false;
 			}
@@ -76,7 +76,7 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 			if(!lua_isnumber(L, i)) {
 				ostringstream message;
 				message << "Mauvais format du parametre " << i << " (attendu=Entier)";
-				Fabrique::getPluginEngine()->getPluginContext(L)->logScriptError(message.str());
+				Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 
 				return false;
 			}
@@ -85,7 +85,7 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 			if(!lua_isuserdata(L, i)) {
 				ostringstream message;
 				message << "Mauvais format du parametre " << i << " (attendu=Userdata)";
-				Fabrique::getPluginEngine()->getPluginContext(L)->logScriptError(message.str());
+				Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 
 				return false;
 			}

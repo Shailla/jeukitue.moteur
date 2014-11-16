@@ -21,7 +21,7 @@ LuaGlobalMethods::~LuaGlobalMethods() {
 
 int LuaGlobalMethods::log(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
-		PluginContext* pluginContext = Fabrique::getPluginEngine()->getPluginContext(L);
+		PluginContext* pluginContext = Fabrique::getPluginEngine()->getGlobalPluginContext(L);
 		pluginContext->logUser(lua_tostring(L, 1));
 	}
 
@@ -36,7 +36,7 @@ int LuaGlobalMethods::pushEvent(lua_State* L) {
 		int pluginActionId = lua_tonumber(L, 1);
 
 		if(pluginActionId < Controller::Action::PLUGIN_BASE_ID) {
-			PluginContext* pluginContext = Fabrique::getPluginEngine()->getPluginContext(L);
+			PluginContext* pluginContext = Fabrique::getPluginEngine()->getGlobalPluginContext(L);
 			string message = "Illegal use of an internal action id (";
 			message += pluginActionId;
 			message += ")";

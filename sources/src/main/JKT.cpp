@@ -1028,8 +1028,13 @@ void play_handle_key_down( SDL_Event *event ) {
 			break;
 
 		case SDLK_RETURN :	// Sauve le fichier map actuel
-			if( Game.getMap() )
-				Game.getMap()->Save( "save" );
+			if(Game.getMap()) {
+				ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
+				string saveMapName("save-" + SDL_GetTicks());
+				console->println(ConsoleView::COT_INFO, string("Enregistrement de la Map : ") + saveMapName);
+
+				Game.getMap()->Save(saveMapName);
+			}
 			break;
 
 		case SDLK_KP_PLUS :

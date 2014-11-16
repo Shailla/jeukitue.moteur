@@ -1030,10 +1030,14 @@ void play_handle_key_down( SDL_Event *event ) {
 		case SDLK_RETURN :	// Sauve le fichier map actuel
 			if(Game.getMap()) {
 				ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
-				string saveMapName("save-" + SDL_GetTicks());
-				console->println(ConsoleView::COT_INFO, string("Enregistrement de la Map : ") + saveMapName);
 
-				Game.getMap()->Save(saveMapName);
+				time_t currentTime;
+				time(&currentTime);
+				ostringstream saveMapName;
+				saveMapName << "save-" << currentTime;
+				console->println(ConsoleView::COT_INFO, string("Enregistrement de la Map : ") + saveMapName.str());
+
+				Game.getMap()->Save(saveMapName.str());
 			}
 			break;
 

@@ -30,6 +30,7 @@ class CMap {
 	vector<CMouve*> m_TabMouve;				// Liste des objets nécessitant une actualisation (portes,...)
 	vector<EntryPoint> _entryPoints;		// Liste des points d'entrée des joueurs sur la Map
 	vector<CLight*> m_TabLight;				// Liste des lumières
+	vector<string> _plugins;				// Liste des plugins de la Map
 
 	bool Init() throw(JktUtils::CErreur);	// Initialisation de la CMap
 	bool Lit(const string &nomFichier);
@@ -51,6 +52,7 @@ public:
 	~CMap();
 
 		// Fonctions membres
+	void initPlugins();	// Chargement ou exécution des plugins de la Map
 	bool initGL();		// Initialisation dans le contexte OpenGL
 	bool freeGL();		// Initialisation dans le contexte OpenGL
 

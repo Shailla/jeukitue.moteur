@@ -1830,7 +1830,7 @@ int main(int argc, char** argv) {
 	machin->req_son = reqSon;
 	DemonSons->Play( machin->req_son );
 
-	// Initialisation des plugins dï¿½marrï¿½s par dï¿½faut
+	// Initialisation des plugins démarrés par défaut
 	Fabrique::getPluginEngine()->activateDefaultPlugins();
 
 	initMenu();

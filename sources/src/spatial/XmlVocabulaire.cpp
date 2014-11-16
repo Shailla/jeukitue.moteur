@@ -17,6 +17,10 @@ const char* Xml::MATERIAUX = "Materiaux";
 const char* Xml::LUMIERES = "Lumieres";
 const char* Xml::GEOS = "Geos";
 
+// Plugins
+const char* Xml::PLUGINS = "Plugins";
+const char* Xml::LOAD = "Load";
+
 // Imports
 const char* Xml::IMPORT = "Import";
 
@@ -90,8 +94,16 @@ const char* Xml::TYPE = "Type";
 const char* Xml::VALEUR = "Valeur";
 const char* Xml::VRAI = "true";
 
-void Xml::SaveElement(TiXmlElement* element, const char* name, float valeur)
-{
+void Xml::throwCorruptedMapFileException(const char* expected, const char* value) throw(CErreur) {
+	string erreur = "Fichier MAP corrompu, element '";
+	erreur += expected;
+	erreur += "' attendu, mais '";
+	erreur += value;
+	erreur += "' trouve";
+	throw CErreur(0, erreur);
+}
+
+void Xml::SaveElement(TiXmlElement* element, const char* name, float valeur) {
 	stringstream ss;
 	ss << valeur;
 
@@ -101,16 +113,14 @@ void Xml::SaveElement(TiXmlElement* element, const char* name, float valeur)
 	element->LinkEndChild(el);
 }
 
-void Xml::SaveElement(TiXmlElement* element, const char* name, int valeur)
-{
+void Xml::SaveElement(TiXmlElement* element, const char* name, int valeur) {
 	TiXmlElement* el = new TiXmlElement(name);
 	el->SetAttribute(Xml::VALEUR, valeur);
 
 	element->LinkEndChild(el);
 }
 
-void Xml::SaveElement(TiXmlElement* element, const char* name, bool valeur)
-{
+void Xml::SaveElement(TiXmlElement* element, const char* name, bool valeur) {
 	TiXmlElement* el = new TiXmlElement(name);
 
 	if(valeur)

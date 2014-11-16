@@ -40,17 +40,17 @@ PluginEngine::~PluginEngine() {
 }
 
 void PluginEngine::dispatchEvent(const PluginActionEvent& event) {
-	std::map<std::string, PluginContext*>::iterator iter = _mapNamePlugin.begin();
+	std::map<std::string, PluginContext*>::iterator iter = _namePlugin.begin();
 
-	for( ; iter != _mapNamePlugin.end() ; iter++) {
+	for( ; iter != _namePlugin.end() ; iter++) {
 		iter->second->dispatchEvent(event);
 	}
 }
 
 PluginContext* PluginEngine::getPluginContext(const string& pluginName) {
-	std::map<std::string, PluginContext*>::iterator iter = _mapNamePlugin.find(pluginName);
+	std::map<std::string, PluginContext*>::iterator iter = _namePlugin.find(pluginName);
 
-	if(iter == _mapNamePlugin.end()) {
+	if(iter == _namePlugin.end()) {
 		return 0;
 	}
 	else {
@@ -59,9 +59,9 @@ PluginContext* PluginEngine::getPluginContext(const string& pluginName) {
 }
 
 PluginContext* PluginEngine::getPluginContext(const lua_State* L) {
-	std::map<const lua_State*, PluginContext*>::iterator iter = _mapLuaContext.find(L);
+	std::map<const lua_State*, PluginContext*>::iterator iter = _luaContext.find(L);
 
-	if(iter == _mapLuaContext.end()) {
+	if(iter == _luaContext.end()) {
 		return 0;
 	}
 	else {
@@ -114,7 +114,7 @@ void PluginEngine::activatePlugin(const string& pluginName) {
 	luaopen_table(L);
 	luaopen_string(L);
 	luaopen_math(L);
-//	luaopen_loadlib(L);
+	//	luaopen_loadlib(L);
 
 
 	/* ******************************************************************************
@@ -243,8 +243,8 @@ void PluginEngine::activatePlugin(const string& pluginName) {
 	}
 
 	// Référencement du plugin
-	_mapNamePlugin[pluginName] = pluginContext;
-	_mapLuaContext[L] = pluginContext;
+	_namePlugin[pluginName] = pluginContext;
+	_luaContext[L] = pluginContext;
 
 	pluginContext->logInfo("Plugin initialisé");
 
@@ -263,6 +263,37 @@ void PluginEngine::activatePlugin(const string& pluginName) {
 }
 
 /**
+ * Activate the plugin.
+ */
+void PluginEngine::activateMapPlugin(const string& pluginFilename) {
+}
+
+void PluginEngine::deactivateMapPlugins() {
+	map<std::string, PluginContext*>::iterator itName;
+	map<const lua_State*, PluginContext*>::iterator itContext;
+
+	for(itName = _nameMapPlugin.begin() ; itName != _nameMapPlugin.end() ; itName++) {
+		PluginContext* pluginContext = itName->second;
+
+		if(pluginContext != NULL) {
+			pluginContext->logInfo("Début de désactivation du plugin de Map");
+
+			lua_close(pluginContext->getLuaState());
+			pluginContext->logInfo("Plugin de Map désactivé");
+
+			delete pluginContext;
+		}
+		else {
+			cerr << endl << __FILE__ << ":" << __LINE__ << " Le plugin de Map ne peut pas être désactivé, il n'est pas actif '" << itName->first << "'";
+		}
+	}
+
+	_nameMapPlugin.clear();
+	_luaMapContext.clear();
+}
+
+
+/**
  * Deactivate the plugin.
  */
 void PluginEngine::deactivatePlugin(const string& pluginName) {
@@ -273,11 +304,12 @@ void PluginEngine::deactivatePlugin(const string& pluginName) {
 
 		lua_close(pluginContext->getLuaState());
 
-		_mapLuaContext.erase(pluginContext->getLuaState());
-		_mapNamePlugin.erase(pluginName);
-		delete pluginContext;
+		_luaContext.erase(pluginContext->getLuaState());
+		_namePlugin.erase(pluginName);
 
 		pluginContext->logInfo("Plugin désactivé");
+
+		delete pluginContext;
 	}
 	else {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Le plugin ne peut pas être désactivé, il n'est pas actif '" << pluginName << "'";

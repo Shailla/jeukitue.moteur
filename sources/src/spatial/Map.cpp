@@ -20,6 +20,7 @@ class CGame;
 #include "util/Trace.h"
 #include "util/TraceMethod.h"
 #include "util/Erreur.h"
+#include "main/Fabrique.h"
 #include "util/Tableau.cpp"
 #include "spatial/materiau/Material.h"
 #include "spatial/materiau/MaterialMaker.h"
@@ -373,19 +374,32 @@ bool CMap::Lit(CMap& map, const string &nomFichier) {
 		if(!elMap)
 			throw CErreur(0,"Fichier map corrompu");
 
+		// Lecture des plugins de la Map
+		{
+			TiXmlElement* elPlugins = elMap->FirstChildElement(Xml::PLUGINS);
+
+			if(elPlugins) {
+				for(TiXmlElement* el=elPlugins->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
+					if(strcmp(Xml::LOAD, el->Value())) {
+						Xml::throwCorruptedMapFileException(Xml::LOAD, el->Value());
+					}
+
+					string pluginFilename = el->Attribute(Xml::NOM);	// Lecture nom de la Map à importer
+					RessourcesLoader::getFileRessource(repertoireBinaires, pluginFilename);
+					map._plugins.push_back(pluginFilename);
+				}
+			}
+		}
+
+
 		// Lecture des imports de sous-Map
 		{
-			TiXmlElement* elImport = elMap->FirstChildElement(Xml::IMPORTS);
+			TiXmlElement* elImports = elMap->FirstChildElement(Xml::IMPORTS);
 
-			if(elImport) {
-				for(TiXmlElement* el=elImport->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
+			if(elImports) {
+				for(TiXmlElement* el=elImports->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 					if(strcmp(Xml::IMPORT, el->Value())) {
-						string erreur = "Fichier MAP corrompu : '";
-						erreur += Xml::IMPORT;
-						erreur += "' attendu, '";
-						erreur += el->Value();
-						erreur += "' recu";
-						throw CErreur(0, erreur);
+						Xml::throwCorruptedMapFileException(Xml::IMPORT, el->Value());
 					}
 
 					const char* subMapName = el->Attribute(Xml::NOM);	// Lecture nom de la Map à importer
@@ -433,12 +447,7 @@ bool CMap::Lit(CMap& map, const string &nomFichier) {
 			if(elEntry) {
 				for(TiXmlElement* el=elEntry->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 					if(strcmp(Xml::ENTRYPOINT, el->Value())) {
-						string erreur = "Fichier MAP corrompu : '";
-						erreur += Xml::ENTRYPOINT;
-						erreur += "' attendu, '";
-						erreur += el->Value();
-						erreur += "' recu";
-						throw CErreur(0, erreur);
+						Xml::throwCorruptedMapFileException(Xml::ENTRYPOINT, el->Value());
 					}
 
 					EntryPoint* entry = EntryPointMaker::Lit(el);
@@ -457,12 +466,7 @@ bool CMap::Lit(CMap& map, const string &nomFichier) {
 		if(elMat) {
 			for(TiXmlElement* el=elMat->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 				if(strcmp(Xml::MATERIAU, el->Value())) {
-					string erreur = "Fichier MAP corrompu : '";
-					erreur += Xml::MATERIAU;
-					erreur += "' attendu, '";
-					erreur += el->Value();
-					erreur += "' recu";
-					throw CErreur(0, erreur);
+					Xml::throwCorruptedMapFileException(Xml::MATERIAU, el->Value());
 				}
 
 				CMaterial* mat = CMaterialMaker::Lit(el, repertoireBinaires);
@@ -478,14 +482,8 @@ bool CMap::Lit(CMap& map, const string &nomFichier) {
 		if(elLight) {
 			for(TiXmlElement* el=elLight->FirstChildElement(); el!=0; el=el->NextSiblingElement())
 			{
-				if(strcmp(Xml::LUMIERE, el->Value()))
-				{
-					string erreur = "Fichier map corrompu : '";
-					erreur += Xml::LUMIERE;
-					erreur += "' attendu, '";
-					erreur += el->Value();
-					erreur += "' recu";
-					throw CErreur(0, erreur);
+				if(strcmp(Xml::LUMIERE, el->Value())) {
+					Xml::throwCorruptedMapFileException(Xml::LUMIERE, el->Value());
 				}
 
 				CLight* lum = CLightMaker::Lit(el);
@@ -501,12 +499,7 @@ bool CMap::Lit(CMap& map, const string &nomFichier) {
 		if(elGeo) {
 			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 				if(strcmp(Xml::GEO, el->Value())) {
-					string erreur = "Fichier map corrompu : '";
-					erreur += Xml::GEO;
-					erreur += "' attendu, '";
-					erreur += el->Value();
-					erreur += "' recu";
-					throw CErreur(0, erreur);
+					Xml::throwCorruptedMapFileException(Xml::GEO, el->Value());
 				}
 
 				CGeo* geo = CGeoMaker::Lit(el, &map);
@@ -535,6 +528,14 @@ bool CMap::Init() throw(JktUtils::CErreur) {	// Initialisation de la CMap
 	}
 
 	return true;
+}
+
+void CMap::initPlugins() {
+	vector<string>::iterator it;
+
+	for(it = _plugins.begin() ; it != _plugins.end() ; it++) {
+		Fabrique::getPluginEngine()->activateMapPlugin(*it);
+	}
 }
 
 bool CMap::initGL() {

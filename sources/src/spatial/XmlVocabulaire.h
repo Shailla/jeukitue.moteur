@@ -4,6 +4,8 @@
 
 #include "tinyxml.h"
 
+#include "util/Erreur.h"
+
 class Xml
 {
 public:
@@ -31,6 +33,8 @@ public:
 	static const char* S3;
 	static const char* U;
 	static const char* V;
+	static const char* PLUGINS;
+	static const char* LOAD;
 	static const char* CANAL;
 	static const char* CANAUX;
 	static const char* ID;
@@ -69,6 +73,7 @@ public:
 	static const char* TYPE;
 
 	// Boîte à outils XML
+	static void throwCorruptedMapFileException(const char* expected, const char* value) throw(JktUtils::CErreur);
 	static void SaveElement(TiXmlElement* element, const char* name, float valeur);
 	static void SaveElement(TiXmlElement* element, const char* name, int valeur);
 	static void SaveAttribut(TiXmlElement* element, const char* name, float valeur);

@@ -142,13 +142,11 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	pluginContext->logInfo("Initialisation des classes Lua...");
 
 	Lunar<PluginEventProxy>::Register(L);
-
 	Lunar<PluginButtonProxy>::Register(L);
 	Lunar<PluginCheckboxProxy>::Register(L);
 	Lunar<PluginComboListProxy>::Register(L);
 	Lunar<PluginLabelProxy>::Register(L);
 	Lunar<PluginNumericProxy>::Register(L);
-
 	Lunar<PluginBoxProxy>::Register(L);
 	Lunar<PluginNotebookProxy>::Register(L);
 	Lunar<PluginTabProxy>::Register(L);
@@ -159,7 +157,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	 * Chargement du fichier Lua du plugin
 	 * *****************************************************************************/
 
-	string pluginFile = string(pluginDirectory).append(PLUGIN_MAIN_FILENAME).append(".lua");
+	string pluginFile = string(pluginDirectory).append(pluginName).append(".lua");
 	pluginContext->logInfo(string("Chargement du script '").append(pluginFile).append("'..."));
 
 	int status = luaL_loadfile(L, pluginFile.c_str());
@@ -254,7 +252,7 @@ void PluginEngine::activateGlobalPlugin(const string& pluginName) {
 	const string pluginDirectory = string(PLUGINS_DIRECTORY).append(pluginName).append("/");
 	cout << endl << __FILE__ << ":" << __LINE__ << " Activation of plugin : '" << pluginName << "' in '" << pluginDirectory << "'";
 
-	pluginContext = activatePlugin(pluginName, PLUGINS_DIRECTORY);
+	pluginContext = activatePlugin("main", pluginDirectory);
 
 	if(pluginContext) {
 		// Référencement du plugin
@@ -298,7 +296,7 @@ void PluginEngine::activateMapPlugin(const string& pluginName, const string plug
 
 	cout << endl << __FILE__ << ":" << __LINE__ << " Activation of Map plugin : '" << pluginName << "' in '" << pluginDirectory << "'";
 
-	pluginContext = activatePlugin(pluginName, PLUGINS_DIRECTORY);
+	pluginContext = activatePlugin(pluginName, pluginDirectory);
 
 	if(pluginContext) {
 		// Référencement du plugin

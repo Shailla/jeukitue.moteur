@@ -42,8 +42,8 @@ class CMap {
 	int m_Selection;						// Object géo sélectionné
 	bool m_bSelection;						// Indique si le mode sélection est actif ou non
 
-	/** Indique si les éléments OpenGL de la MAP ont été initialisés. */
-	bool _isGlActivated;
+	bool _isGlActivated;					// Indique si les éléments OpenGL de la MAP ont été initialisés
+	bool _isPluginsActivated;				// Indique si les plugins de la MAP ont été initialisés
 
 	void afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
 public:
@@ -56,8 +56,9 @@ public:
 
 		// Fonctions membres
 	void initPlugins();	// Chargement ou exécution des plugins de la Map
+	void freePlugins();
 	bool initGL();		// Initialisation dans le contexte OpenGL
-	bool freeGL();		// Initialisation dans le contexte OpenGL
+	bool freeGL();
 
 //	bool SaveFichierMap(const string &nomFichier);		// Sauvegarde du CMap dans un fichier *.map
 	bool Save(const string nomFichier);	// Sauvegarde du CMap dans un fichier *.map.xml

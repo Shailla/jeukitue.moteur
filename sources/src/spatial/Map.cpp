@@ -61,6 +61,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() begin%T", this );
 	m_bSelection = false;
 	m_Selection = 0;
 	_isGlActivated = false;
+	_isPluginsActivated = false;
 }
 
 CMap::CMap(const string &nomFichier) throw(JktUtils::CErreur) {
@@ -75,6 +76,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str
 	m_bSelection = false;
 	m_Selection = 0;
 	_isGlActivated = false;
+	_isPluginsActivated = false;
 
 	Init();
 TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() end%T", this );
@@ -114,6 +116,10 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 	// Si nécessaire, initialise les éléments OpenGL de la MAP
 	if(!_isGlActivated) {
 		initGL();
+	}
+
+	if(!_isPluginsActivated) {
+		initPlugins();
 	}
 
 	glEnableClientState( GL_VERTEX_ARRAY );
@@ -365,7 +371,7 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 
 	map._name = mapName;								// Nom de la Map
 	map._filename = partialFileName + ".map.xml";		// Chemin complet fichier Map XML
-	map._binariesDirectory = partialFileName;			// Chemin des fichier binaires de la Map
+	map._binariesDirectory = partialFileName + "\\";			// Chemin des fichier binaires de la Map
 
 	// Lecture XML de la Map
 	bool result = false;
@@ -540,6 +546,13 @@ void CMap::initPlugins() {
 	for(it = _plugins.begin() ; it != _plugins.end() ; it++) {
 		Fabrique::getPluginEngine()->activateMapPlugin(*it, _binariesDirectory);
 	}
+
+	_isPluginsActivated = true;	// Indique que les éléments OpenGL de la MAP ont bien été initialisés
+}
+
+void CMap::freePlugins() {
+	Fabrique::getPluginEngine()->deactivateMapPlugins();
+	_isPluginsActivated = false;			// Indique que les éléments OpenGL de la MAP ont bien été initialisés
 }
 
 bool CMap::initGL() {
@@ -572,6 +585,8 @@ bool CMap::freeGL() {
 		CGeo* geo = (*iterGeo);
 		geo->freeGL();
 	}
+
+	_isGlActivated = false;
 
 	return true;
 }

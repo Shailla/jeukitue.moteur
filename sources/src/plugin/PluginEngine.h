@@ -32,11 +32,11 @@ class PluginEngine {
 	std::map<std::string, PluginContext*> _nameMapPlugin;
 	std::map<const lua_State*, PluginContext*> _luaMapContext;
 
+	PluginContext* activatePlugin(const string& pluginName, const string& pluginDirectory);
+
 public:
 	PluginEngine();
 	virtual ~PluginEngine();
-
-	PluginContext* activatePlugin(const string& pluginName, const string& pluginDirectory);
 
 	// Gestion des plugins du jeu
 	void activateDefaultGlobalPlugins();

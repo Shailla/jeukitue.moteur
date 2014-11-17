@@ -1295,6 +1295,7 @@ void executeJktRequests() {
 		// Fermeture de la MAP courante et destruction des joueurs
 		CMap* currentMap = Game.getMap();
 		if(currentMap) {
+			currentMap->freePlugins();
 			currentMap->freeGL();
 			Game.changeActiveMap(NULL);
 		}
@@ -1336,6 +1337,7 @@ void executeJktRequests() {
 		// Activation de la MAP ouverte
 		CMap* map = localeGameDto->getMap();
 		map->initGL();
+		map->initPlugins();
 		Game.changeActiveMap(map);
 
 		// Définition des joueurs

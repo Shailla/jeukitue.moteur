@@ -283,6 +283,7 @@ void CGame::quitCurrentMap() {
 	CMap* currentMap = getMap();
 
 	if(currentMap) {
+		currentMap->freePlugins();
 		currentMap->freeGL();
 		changeActiveMap(0);
 	}

@@ -22,7 +22,17 @@ LuaGlobalMethods::~LuaGlobalMethods() {
 int LuaGlobalMethods::log(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
 		PluginContext* pluginContext = Fabrique::getPluginEngine()->getGlobalPluginContext(L);
-		pluginContext->logUser(lua_tostring(L, 1));
+
+		if(pluginContext) {
+			pluginContext->logUser(lua_tostring(L, 1));
+		}
+		else {
+			pluginContext = Fabrique::getPluginEngine()->getMapPluginContext(L);
+
+			if(pluginContext) {
+				pluginContext->logUser(lua_tostring(L, 1));
+			}
+		}
 	}
 
 	return 0;

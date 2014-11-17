@@ -80,6 +80,17 @@ PluginContext* PluginEngine::getGlobalPluginContext(const lua_State* L) {
 	}
 }
 
+PluginContext* PluginEngine::getMapPluginContext(const lua_State* L) {
+	std::map<const lua_State*, PluginContext*>::iterator iter = _luaMapContext.find(L);
+
+	if(iter == _luaMapContext.end()) {
+		return 0;
+	}
+	else {
+		return iter->second;
+	}
+}
+
 /**
  * Activate the some plugins which are activated by default, the list of them
  * is given in the Jkt configuration.

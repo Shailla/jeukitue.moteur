@@ -49,6 +49,7 @@ public:
 	void activateMapPlugin(const string& pluginName, const string pluginDirectory);
 	void deactivateMapPlugins();
 	PluginContext* getMapPluginContext(const std::string& pluginName);
+	PluginContext* getMapPluginContext(const lua_State* L);
 
 	void dispatchEvent(const PluginActionEvent& event);
 };

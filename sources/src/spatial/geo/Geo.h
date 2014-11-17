@@ -44,19 +44,19 @@ public:
 	void setMap(CMap* map);
 	void setName(const string &nom);	// Implémente le nom du géo
 	const char *getName();				// Renvoie le nom de l'objet
-	unsigned int getReference();	// Renvoie la référence de l'objet
+	unsigned int getReference();		// Renvoie la référence de l'objet
 
 		// Interface
-	virtual void initGL() = 0;							// Initialisation de l'objet géométrique
-	virtual void freeGL() = 0;							// Libération des ressources de l'objet dans le contexte OpenGL
-	virtual void Init() = 0;								// Initialisation de l'objet géométrique
-	virtual void Affiche() = 0;							// Affiche l'objet géométrique
-	virtual void AfficheSelection(float r,float v,float b) = 0;	// Affiche l'objet géométrique en couleur unique
+	virtual void initGL() = 0;											// Initialisation de l'objet géométrique
+	virtual void freeGL() = 0;											// Libération des ressources de l'objet dans le contexte OpenGL
+	virtual void Init() = 0;											// Initialisation de l'objet géométrique
+	virtual void Affiche() = 0;											// Affiche l'objet géométrique
+	virtual void AfficheSelection(float r,float v,float b) = 0;			// Affiche l'objet géométrique en couleur unique
 	virtual bool Lit(TiXmlElement* el) = 0;
-	virtual bool Save(TiXmlElement* element) = 0;		// Sauve l'objet géo dans un fichier Map
-	virtual void EchangeXY() = 0;							// Echange les coordonnées X et Y de l'objet
-	virtual void EchangeXZ() = 0;							// Echange les coordonnées X et Z de l'objet
-	virtual void EchangeYZ() = 0;							// Echange les coordonnées Y et Z de l'objet
+	virtual bool Save(TiXmlElement* element) = 0;						// Sauve l'objet géo dans un fichier Map
+	virtual void EchangeXY() = 0;										// Echange les coordonnées X et Y de l'objet
+	virtual void EchangeXZ() = 0;										// Echange les coordonnées X et Z de l'objet
+	virtual void EchangeYZ() = 0;										// Echange les coordonnées Y et Z de l'objet
 	virtual void Scale( float scaleX, float scaleY, float scaleZ ) = 0;	// Homothétie pondérée selon X, Y et Z de l'objet
 	virtual void translate(float x, float y, float z) = 0;				// Translation pondérée selon X, Y et Z de l'objet
 	virtual void GereContactPlayer( const float pos[3], CPlayer *player ) = 0;	// Gère les contact entre 'player' et l'objet géo

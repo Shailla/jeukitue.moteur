@@ -55,9 +55,7 @@ class CNavette;
 const char* CGeoObject::identifier = "GeoObject";
 
 		//CONSTRUCTEURS
-CGeoObject::CGeoObject( CMap *map, unsigned int nbrVertex, unsigned int nbrFaces )
-	:CGeo( map )
-{
+CGeoObject::CGeoObject(CMap *map, unsigned int nbrVertex, unsigned int nbrFaces) : CGeo(map) {
 	m_Color[0] = 1.0;	//Couleur blanche par défaut
 	m_Color[1] = 1.0;
 	m_Color[2] = 1.0;

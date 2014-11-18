@@ -14,17 +14,25 @@ namespace JktMoteur
 class CMap;
 class CIstreamMap;
 
-class Dirigeable : public CMouve
-{
-	JktUtils::CV3D _position;		// Position de l'objet
+class Dirigeable : public CMouve {
+	CMap* _map;
+	// Vitesse de l'objet dans l'arbre de données
+	ValeurFloat _vitesseX;
+	ValeurFloat _vitesseY;
+	ValeurFloat _vitesseZ;
+
+	// Position de l'objet dans l'arbre de données
+	ValeurFloat _positionX;
+	ValeurFloat _positionY;
+	ValeurFloat _positionZ;
 
 public:
-	Dirigeable( CMap *map );
+	Dirigeable(CMap *map, const vector<int> vitesseDataId, const vector<int> positionDataId);
 	~Dirigeable();
 
 	void Init();					// Initialisation de l'objet géométrique
 	void Affiche();					// Fonction d'affichage de l'objet géométrique
-	void Refresh( CGame *game );	// Rafraichissement des données, position, vitesse, ... de l'objet
+	void Refresh(CGame *game);		// Rafraichissement des données, position, vitesse, ... de l'objet
 };
 
 }	// JktMoteur

@@ -56,7 +56,9 @@ using namespace JktUtils;
 namespace JktMoteur
 {
 
-CMap::CMap() {
+const char* CMap::identifier = "Map";
+
+CMap::CMap(CMap* parent) : CGeo(parent) {
 TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() begin%T", this );
 	m_bSelection = false;
 	m_Selection = 0;
@@ -64,7 +66,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() begin%T", this );
 	_isPluginsActivated = false;
 }
 
-CMap::CMap(const string &nomFichier) throw(JktUtils::CErreur) {
+CMap::CMap(CMap* parent, const string& nomFichier) throw(JktUtils::CErreur) : CGeo(parent) {
 TRACE().p( TRACE_MOTEUR3D, "CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str(), this );
 	if( !Lit(nomFichier) ) {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur à la lecture du fichier MAP : " << nomFichier;
@@ -112,6 +114,15 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() begin%T", this );
 TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() end%T", this );
 }
 
+const char* CMap::toString() {
+	ostringstream ttt;
+	ttt << identifier << " Nom=" << getName() << " Mat=";
+
+	tostring = ttt.str();
+
+	return tostring.c_str();
+}
+
 void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 	// Si nécessaire, initialise les éléments OpenGL de la MAP
 	if(!_isGlActivated) {
@@ -142,6 +153,27 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 		for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ ) {
 			(*iterGeo)->Affiche();			// Affichage de l'objet géo
 		}
+	}
+
+	glDisable( GL_VERTEX_ARRAY );
+}
+
+void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objets géo de du MAP
+	// Si nécessaire, initialise les éléments OpenGL de la MAP
+	if(!_isGlActivated) {
+		initGL();
+	}
+
+	if(!_isPluginsActivated) {
+		initPlugins();
+	}
+
+	glEnableClientState( GL_VERTEX_ARRAY );
+
+	vector<CGeo*>::iterator iterGeo;
+
+	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++) {
+		(*iterGeo)->AfficheSelection(r, v, b);
 	}
 
 	glDisable( GL_VERTEX_ARRAY );
@@ -237,21 +269,18 @@ void CMap::add( CNavette *navette ) {		// Une navette est avant tout un objet gé
 }
 
 void CMap::GereContactPlayer( CPlayer *player ) {
-	float pos[3];
-	player->getPosition(pos);
-
 	vector<CGeo*>::iterator iterGeo;
 
 	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++)
-		(*iterGeo)->GereContactPlayer(pos, player);	// Gère les contacts entre l'objet géo et le joueur
+		(*iterGeo)->GereContactPlayer(player);	// Gère les contacts entre l'objet géo et le joueur
 }
 
-float CMap::GereLaserPlayer( float *pos, CV3D &Dir, float dist ) {
+float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 	// Renvoie la distance du premier point de contact entre un rayon laser parti du point 'pos'
 	// dans la direction 'Dir' si cette distance est inférieure à 'dist', renvoie 'dist' sinon
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
-		dist = (*iterGeo)->GereLaser( pos, Dir, dist );
+		dist = (*iterGeo)->GereLaserPlayer( pos, Dir, dist );
 
 	return dist;	// Renvoie la distance du premier contact trouvé entre le laser et une face d'objet géo
 }
@@ -359,6 +388,14 @@ bool CMap::Lit(const string &nomFichier) {
 	return Lit(*this, nomFichier);
 }
 
+bool CMap::Lit(TiXmlElement* el) {
+	return false;
+}
+
+bool CMap::Save(TiXmlElement* element) {			// Sauve l'objet géo dans un fichier Map
+	return false;
+}
+
 bool CMap::Lit(CMap& map, const string& mapName) {
 	// Répertoire et fichier de la Map
 	string partialFileName = mapName;
@@ -369,8 +406,8 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 		partialFileName = ".\\map\\" + partialFileName;
 	}
 
-	map._name = mapName;								// Nom de la Map
-	map._filename = partialFileName + ".map.xml";		// Chemin complet fichier Map XML
+	map.setName(mapName);										// Nom de la Map
+	map._filename = partialFileName + ".map.xml";				// Chemin complet fichier Map XML
 	map._binariesDirectory = partialFileName + "\\";			// Chemin des fichier binaires de la Map
 
 	// Lecture XML de la Map
@@ -434,7 +471,7 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 					}
 
 					// Lecture de la Map
-					CMap subMap;
+					CMap subMap(0);
 					Lit(subMap, string(subMapName));
 
 					subMap.translate(translation[0], translation[1], translation[2]);
@@ -528,7 +565,7 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 	return result;
 }
 
-bool CMap::Init() throw(JktUtils::CErreur) {	// Initialisation de la CMap
+void CMap::Init() throw(JktUtils::CErreur) {	// Initialisation de la CMap
 	// Initialisation des object géométriques
 	vector<CGeo*>::iterator iterGeo;
 
@@ -536,8 +573,6 @@ bool CMap::Init() throw(JktUtils::CErreur) {	// Initialisation de la CMap
 		CGeo* geo = (*iterGeo);
 		geo->Init();
 	}
-
-	return true;
 }
 
 void CMap::initPlugins() {
@@ -555,7 +590,7 @@ void CMap::freePlugins() {
 	_isPluginsActivated = false;			// Indique que les éléments OpenGL de la MAP ont bien été initialisés
 }
 
-bool CMap::initGL() {
+void CMap::initGL() {
 	// Letcure des fichiers de texture
 	vector<CMaterial*>::iterator iterMat;
 
@@ -573,11 +608,9 @@ bool CMap::initGL() {
 	}
 
 	_isGlActivated = true;	// Indique que les éléments OpenGL de la MAP ont bien été initialisés
-
-	return true;
 }
 
-bool CMap::freeGL() {
+void CMap::freeGL() {
 	// Initialisation des object géométriques dans le contexte OpenGL
 	vector<CGeo*>::iterator iterGeo;
 
@@ -587,45 +620,7 @@ bool CMap::freeGL() {
 	}
 
 	_isGlActivated = false;
-
-	return true;
 }
-
-/*bool CMap::SaveFichierMap( const string &nomFichier )
-{
-TRACE().p( TRACE_MOTEUR3D, "CMap::SaveFichierMap() %T", this );
-
-		// CREATION DES FICHIERS
-	string nomFichierMap = "./map/" + nomFichier + ".map";
-
-	ofstream fichier( nomFichierMap.c_str() );
-
-	fichier << "Start";		// Indique le début d'une description de Map ou de sous-Map
-
-		// SAUVEGARDE DES MATERIAUX
-	vector<CMaterial*>::iterator iterMat;
-	for( iterMat=m_TabMaterial.begin() ; iterMat!=m_TabMaterial.end() ; iterMat++ )
-		(*iterMat)->SaveFichierMap(fichier);		// Sauvegarde du matériau
-
-		// SAUVEGARDE DES LUMIERES
-	vector<CLight*>::iterator iterLight;
-	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
-		(*iterLight)->SaveFichierMap( fichier );
-
-		// SAUVEGARDE DES OBJETS GEOMETRIQUES
-	vector<CGeo*>::iterator iterGeo;
-	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
-	{
-		(*iterGeo)->SaveNameType( fichier );		// Sauvegarde du nom du type d'objet géo
-		(*iterGeo)->SaveFichierMap( fichier );		// Sauvegarde des paramètres de l'objet
-	}
-
-	fichier.close();
-	cout << endl << "Sauvegarde du fichier MAP Ok !!";
-
-TRACE().p( TRACE_MOTEUR3D, "CMap::SaveFichierMap() Sauvegarde du fichier MAP Ok%T", this );
-	return true;
-}*/
 
 bool CMap::Save(const string nomFichier) {
 TRACE().p( TRACE_MOTEUR3D, "CMap::Save() %T", this );

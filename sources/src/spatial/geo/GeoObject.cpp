@@ -55,9 +55,7 @@ class CNavette;
 const char* CGeoObject::identifier = "GeoObject";
 
 		//CONSTRUCTEURS
-CGeoObject::CGeoObject( CMap *map, unsigned int nbrVertex, unsigned int nbrFaces )
-	:CGeo( map )
-{
+CGeoObject::CGeoObject( CMap *map, unsigned int nbrVertex, unsigned int nbrFaces ) : CGeo( map ) {
 	m_Color[0] = 1.0;	//Couleur blanche par défaut
 	m_Color[1] = 1.0;
 	m_Color[2] = 1.0;
@@ -631,321 +629,6 @@ void CGeoObject::Color( float r, float g, float b )
 	m_Color[2] = b;
 }
 
-/*bool CGeoObject::LitFichier( CIfstreamMap &fichier )
-{
-	return LitFichierGeoObject(fichier);
-}*/
-
-/*bool CGeoObject::LitFichierGeoObject( CIfstreamMap &fichier )
-{
-	string mot, nom;
-	int i, nbrCanaux;
-	char ch;
-
-		// Lecture de la référence de l'object
-	fichier >> mot;
-	if( mot!="Reference" )
-	{
-		cerr << __LINE__;
-		return false;
-	}
-	unsigned int reference;
-	fichier >> reference;
-
-		// Lecture du nom de l'objet géo entre guillemets
-	fichier >> mot;
-	if( mot!="Nom" )
-	{
-		cerr << "001";
-		return false;
-	}
-
-	fichier >> ch;		// Recherche du guillemet ouvrant
-	if( ch!='\"' )
-	{
-		cerr << "002";
-		return false;
-	}
-
-	do
-	{
-		fichier.get( ch );
-		if( ch=='\n' )
-		{
-			cerr << "003";
-			return false;
-		}
-
-		if( ch!='\"' )
-			nom += ch;
-	}while( ch!='\"' );
-
-	setName( nom );
-
-	fichier >> mot;		// Présence matériau
-	if( mot!="PresenceMateriau" )
-	{
-		cerr << "004";
-		return false;
-	}
-
-	fichier >> m_bMaterialTexture;
-
-	if( m_bMaterialTexture )	// Référence matériau
-	{
-		fichier >> mot;
-		if( mot!="ReferenceMateriau" )
-		{
-			cerr << "005";
-			return false;
-		}
-
-		fichier >> m_MaterialTexture;
-		setMaterial( m_MaterialTexture );
-	}
-	else
-	{
-		m_TypeMateriau = CMaterial::MAT_TYPE_SIMPLE;
-	}
-
-	fichier >> mot;		// Couleur
-	if( mot!="Couleur" )
-	{
-		cerr << "006";
-		return false;
-	}
-
-	fichier >> m_Color[0] >> m_Color[1] >> m_Color[2];
-
-	fichier >> mot;		// "Nombre de sommets"
-	if( mot!="NombreDeSommets" )
-	{
-		cerr << "007";
-		return false;
-	}
-
-	fichier >> m_NumVertex;
-
-	fichier >> mot;		// "Nombre d'index de sommets"
-	if( mot!="NombreDIndexDeSommets" )
-	{
-		cerr << "008";
-		return false;
-	}
-
-	fichier >> m_NumFaces;
-
-	fichier >> mot;
-	if( mot!="NombreDeSommetsDeTexture" )
-	{
-		cerr << "009";
-		return false;
-	}
-
-	fichier >> m_NumTexVertex;
-
-	fichier >> mot;		// "Nombre d'index de sommets de texture"
-	if( mot!="NombreDIndexDeSommetsDeTexture" )
-	{
-		cerr << "010";
-		return false;
-	}
-
-	fichier >> m_NumTexFaces;
-
-	fichier >> mot;
-	if( mot!="NbrCanauxDeTexture" )
-	{
-		cerr << "011";
-		return false;
-	}
-
-	fichier >> nbrCanaux;
-
-	fichier >> mot;			// Solidité
-	if( mot!="Solidité" )
-	{
-		cerr << "012";
-		return false;
-	}
-
-	fichier >> m_bSolid;
-
-	fichier >> mot;			// "Sommets"
-	if( mot!="Sommets" )
-	{
-		cerr << "013";
-		return false;
-	}
-
-	m_TabVertex = new float[ 3*m_NumVertex ];
-
-	for( i=0 ; i<m_NumVertex ; i++ )	// Lecture des sommets
-		fichier >> m_TabVertex[ 3*i ] >> m_TabVertex[ (3*i)+1 ] >> m_TabVertex[ (3*i)+2 ];
-
-	fichier >> mot;	// "Index de sommets"
-	if( mot!="IndexDeSommets" )
-	{
-		cerr << "014";
-		return false;
-	}
-
-	m_TabFaces = new int[ 3*m_NumFaces ];
-
-	if( m_TypeMateriau==CMaterial::MAT_TYPE_MULTI )	// Si le matériau associé est un matériau multiple
-		m_TabSubMat = new int[ m_NumFaces ];
-
-	for( i=0 ; i<m_NumFaces ; i++ )
-	{
-		fichier >> m_TabFaces[3*i] >> m_TabFaces[(3*i)+1] >> m_TabFaces[(3*i)+2];
-
-		if( m_TypeMateriau==CMaterial::MAT_TYPE_MULTI )	// Si le matériau associé est un matériau multiple
-		{
-			fichier >> mot;
-			if( mot!="*" )
-			{
-				cerr << "015";
-				return false;
-			}
-
-			fichier >> m_TabSubMat[ i ];	// Lecture de la référence de sous-matériau
-		}
-	}
-
-	int canal;
-	TabTex.clear();	// Vide le tableau des canaux de texture (pas nécessaire normalement
-
-	for( int k=0 ; k<nbrCanaux ; k++ )
-	{
-		fichier >> mot;		// Numéro de canal de texture
-		if( mot!="CanalDeTexture" )
-		{
-			cerr << "016";
-			return false;
-		}
-
-		fichier >> canal;
-
-		TabTex[ canal ] = new CChanTex();
-
-		fichier >> mot;	// "Sommets de texture"
-		if( mot!="SommetsDeTexture" )
-		{
-			cerr << "017";
-			return false;
-		}
-
-		TabTex[ canal ]->setTexVertex(3*m_NumTexVertex, new float[3*m_NumTexVertex]);
-		float *texVertex = TabTex[ canal ]->getTexVertex();
-
-		for( i=0 ; i<m_NumTexVertex ; i++ )
-			fichier >> texVertex[3*i] >> texVertex[(3*i)+1] >> texVertex[(3*i)+2];
-
-		fichier >> mot;	// "Index de sommets de texture"
-		if( mot!="IndexDeSommetsDeTexture" )
-		{
-			cerr << "018";
-			return false;
-		}
-
-		TabTex[ canal ]->setTexFaces(3*m_NumTexFaces, new int[ 3*m_NumTexFaces ]);
-		int *texFaces = TabTex[ canal ]->getTexFaces();
-
-		for( i=0 ; i<m_NumTexFaces ; i++ )
-			fichier >> texFaces[3*i] >> texFaces[(3*i)+1] >> texFaces[(3*i)+2];
-	}
-
-	fichier >> mot;
-	if( mot!="VecteursNormaux" )
-	{
-		cerr << "019";
-		return false;
-	}
-
-	m_TabVectNormaux = new float[ m_NumFaces * 9 ];
-
-	for( int m=0 ; m < 9*m_NumFaces ; m++ )
-		fichier >> m_TabVectNormaux[ m ];
-
-	return true;
-}*/
-
-/*bool CGeoObject::SaveNameType( ofstream &fichier )
-{
-	fichier << "\n\nGeoObject\n";	// Cette classe est un GeoObject
-	return true;
-}*/
-
-/*bool CGeoObject::SaveFichierMap( ofstream &fichier )
-{
-	int i=0;
-
-	fichier << "\tReference\t\t" << getReference();
-
-	fichier << "\tNom\t\t\t\t\"" << getName() << '\"';	// Sauvegarde du nom de l'objet
-
-	fichier << "\n\tPresenceMateriau\t\t" << m_bMaterialTexture;	// Materiau (présence ou non)
-	if( m_bMaterialTexture )	// Référence matériau s'il existe
-		fichier << "\n\tReferenceMateriau\t\t" <<	m_MaterialTexture;
-
-	fichier << "\n\tCouleur\t\t\t\t" << m_Color[0] << "\t" << m_Color[1] << "\t" << m_Color[2]; // Couleur
-
-	fichier << "\n\tNombreDeSommets\t\t\t" << m_NumVertex;					// Nombre de sommets
-	fichier << "\n\tNombreDIndexDeSommets\t\t" << m_NumFaces;				// Nombre d'index de sommets
-	fichier << "\n\tNombreDeSommetsDeTexture\t" << m_NumTexVertex;		// Nombre de sommets de texture
-	fichier << "\n\tNombreDIndexDeSommetsDeTexture\t" << m_NumTexFaces;	// Nombre d'index de sommets de texture
-	fichier << "\n\tNbrCanauxDeTexture\t\t" << (unsigned int)TabTex.size();	// Nombre de canaux de texture
-
-	fichier << "\n\tSolidité\t\t\t" << m_bSolid;						// Solidité
-
-		// Sommets
-	fichier << "\n\n\tSommets";
-	for( i=0 ; i<m_NumVertex ; i++ )
-		fichier << "\n\t\t" << m_TabVertex[3*i] << "\t" << m_TabVertex[(3*i)+1] << "\t" << m_TabVertex[(3*i)+2];
-
-		// Index de sommets et références de sous-matériaux
-	fichier << "\n\n\tIndexDeSommets";
-
-	for( i=0 ; i<m_NumFaces ; i++ )
-	{
-		fichier << "\n\t\t" << m_TabFaces[3*i] << "\t" << m_TabFaces[(3*i)+1] << "\t" << m_TabFaces[(3*i)+2];
-
-		if( m_TypeMateriau==CMaterial::MAT_TYPE_MULTI )		// Sauvegarde des références de texture en cas de
-		{
-			cout << endl << "Geo avec matMulti : " << getName() << endl;
-			fichier << "\t* " << m_TabSubMat[i];	// texture multiple
-		}
-	}
-
-		// Sauvegarde des canaux de texture
-	for( map<int,CChanTex*>::iterator p=TabTex.begin() ; p!=TabTex.end() ; p++ )
-	{
-		fichier << "\n\n\tCanalDeTexture\t" << (*p).first;
-
-		float *texVertex = (*p).second->getTexVertex();
-		int *texFaces = (*p).second->getTexFaces();
-
-			// Sommets de texture
-		fichier << "\n\n\tSommetsDeTexture";
-		for( i=0 ; i<m_NumTexVertex ; i++ )
-			fichier << "\n\t\t" << texVertex[3*i] << "\t" << texVertex[(3*i)+1] << "\t" << texVertex[(3*i)+2];
-
-			// Index des sommets de texture
-		fichier << "\n\n\tIndexDeSommetsDeTexture";
-		for( i=0 ; i<m_NumTexFaces ; i++ )
-			fichier << "\n\t\t" << texFaces[3*i] << "\t" << texFaces[(3*i)+1] << "\t" << texFaces[(3*i)+2];
-	}
-
-	if( m_TabVectNormaux )
-	{
-		fichier << "\n\n\tVecteursNormaux";
-		for( int m=0 ; m<m_NumFaces*3 ; m++ )
-			fichier << "\n\t\t" <<  m_TabVectNormaux[m*3] << "\t" << m_TabVectNormaux[m*3+1] << "\t" << m_TabVectNormaux[m*3+2];
-	}
-
-	return true;
-}*/
-
 bool CGeoObject::Save(TiXmlElement* element)
 {
 	int i=0;
@@ -1104,14 +787,16 @@ bool CGeoObject::Contact( const float pos[3], float dist )
 	return false;
 }
 
-void CGeoObject::GereContactPlayer( const float pos[3], CPlayer *player )
-{
+void CGeoObject::GereContactPlayer(CPlayer *player) {
+	float pos[3];
+	player->getPosition(pos);
+
 	float dist = 0.1f;	// Rayon de la sphère représentant le volume du joueur
 	float distanceW;
+
 	if( m_bSolid )	// Si l'objet est solide
 		if( TestContactPave( pos, 0.05f+dist ) )	// Teste proximité 'joueur / l'objet géo'
-			for( int i=0; i<m_NumFaces; i++)		//pour chaque triangle de l'objet géo.
-			{
+			for( int i=0; i<m_NumFaces; i++) {		//pour chaque triangle de l'objet géo.
 				distanceW = testContactTriangle( i, pos, dist );
 
 				if( distanceW<500.0f ) // Teste le contact avec le joueur (1.0f = valeur arbitraire mais grande)
@@ -1140,7 +825,7 @@ void CGeoObject::setOffsetMateriau(int offset)
 	m_OffsetMateriau = offset;
 }
 
-float CGeoObject::GereLaser(float pos[3], CV3D &Dir, float dist)
+float CGeoObject::GereLaserPlayer(float pos[3], CV3D &Dir, float dist)
 {
 	float distanceVar;
 	float *vertex, *normal;

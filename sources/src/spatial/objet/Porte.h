@@ -39,8 +39,8 @@ public:
 	//bool SaveFichierMap( ofstream &fichier );		// Sauve l'objet géo dans un fichier Map
 	bool Save(TiXmlElement* element);
 
-	void GereContactPlayer( const float pos[3], CPlayer *player );
-	float GereLaser( float pos[3], JktUtils::CV3D &Dir, float dist );
+	void GereContactPlayer(CPlayer *player );
+	float GereLaserPlayer( float pos[3], JktUtils::CV3D &Dir, float dist );
 };
 
 }	// JktMoteur

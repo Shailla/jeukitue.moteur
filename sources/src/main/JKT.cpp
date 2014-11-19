@@ -1179,11 +1179,11 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	string mapJoueurPrincipal;
 	mapJoueurPrincipal.append("@Joueur\\").append(Config.Joueur.mapName);
 
-	CMap *pMapJoueur = new CMap( mapJoueurPrincipal );
+	CMap *pMapJoueur = new CMap(0, mapJoueurPrincipal);
 	pMapJoueur->EchangeXZ();					// Ajuste les coordonn�es
 	pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
 
-	CMap *pMapJoueur2 = new CMap(nomFichierJoueur);
+	CMap *pMapJoueur2 = new CMap(0, nomFichierJoueur);
 	pMapJoueur2->EchangeXZ();					// Ajuste les coordonn�es
 	pMapJoueur2->Scale( -0.10f, 0.10f, 0.10f );
 

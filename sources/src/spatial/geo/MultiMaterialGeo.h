@@ -22,17 +22,12 @@ using namespace std;
 namespace JktMoteur
 {
 
-class CMultiMaterialGeo:public CGeo
-{
+class CMultiMaterialGeo:public CGeo {
+	static const char* identifier;
 	int m_OffsetMateriaux;			// Sert lors de la lecture des références matériaux
 	string tostring;
 	CMaterialMulti* m_Material;		// Matériau multiple associé
-public:
-	static const char* identifier;
-	CMultiMaterialGeo(CMap* map, const string& name, CMaterialMulti* mat, unsigned int nbrfaces, float* vertex, float* normals, float* texvertex, std::map<int,int> &canauxnumbers, bool solid=true);
-	CMultiMaterialGeo(CMap *map);
-	void Init();					// Initialisation de l'objet
-private:
+
 	float minX, minY, minZ, maxX, maxY, maxZ;	// Coordonnées du pavé englobant l'objet géo
 	float m_Centre[3];			// Centre de la sphère englobant l'objet
 	float m_Rayon;				// Rayon de la sphère englobant l'objet
@@ -51,26 +46,26 @@ private:
 	GLuint m_VboBufferNames[VBO_BUFFER_SIZE];
 	void initGL();
 	void freeGL();
-public:
-		// Destructeur
-	~CMultiMaterialGeo();
 
-	float *m_TabVectNormaux;	// Pointeur sur le tableau des vecteurs normaux
-private:
 	void MinMax();			// Calcul les variables MinX,...,MaxZ de cet objet géométrique
 	void Bulle();			// Calcul les variables 'centre' et rayon
 	void ConstruitBase();	// Construit les vecteurs normaux aux triangles de l'objet géo
 	void AfficheNormals();
+
 public:
+	CMultiMaterialGeo(CMap* map, const string& name, CMaterialMulti* mat, unsigned int nbrfaces, float* vertex, float* normals, float* texvertex, std::map<int,int> &canauxnumbers, bool solid=true);
+	CMultiMaterialGeo(CMap *map);
+	~CMultiMaterialGeo();
+	void Init();					// Initialisation de l'objet
+
+	float *m_TabVectNormaux;	// Pointeur sur le tableau des vecteurs normaux
+
+	// Transformations
 	void EchangeXY();			// Echange les coordonnées X et Y de l'objet
 	void EchangeXZ();			// Echange les coordonnées X et Z de l'objet
 	void EchangeYZ();			// Echange les coordonnées Y et Z de l'objet
 	void Scale(float scaleX, float scaleY, float scaleZ);	// Homothétie pondérée selon X, Y et Z de l'objet
 	void translate(float x, float y, float z);				// Translation pondérée selon X, Y et Z de l'objet
-
-	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
-	void GereContactPlayer(const float pos[3], CPlayer *player);
-	float GereLaser(float pos[3], CV3D &Dir, float dist);	// Voir la définition de la fonction
 
 	void setMaterial(int matRef);	// Associe l'objet au matériau de référence matRef
 	void setNormalVertex(float *tab);			// Implémente les normales aux sommets
@@ -79,17 +74,20 @@ public:
 	void setTexVertex(float *tab);				// Implémente les sommets de texture
 	void setOffsetMateriau(int offset);			// Décale la référence matériau de l'offset
 
-		// Fonctions pour l'interface CGeo
-	//bool LitFichier(CIfstreamMap &fichier);			// Lit un objet géo dans un fichier Map
-	//bool SaveNameType(ofstream &fichier);				// Sauve le nom du type d'objet géométrique
-	//bool SaveFichierMap(ofstream &fichier);			// Sauve l'objet géo dans un fichier Map
+	// Affichage
+	void Affiche();									// Affiche cet objet géo
+	void AfficheSelection(float r,float v,float b);	// Affiche l'objet en couleur unique
+
+	// Sérialisation
 	bool Save(TiXmlElement* element);
 	bool Lit(TiXmlElement* el);
 
+	// Gestion des contacts
 	bool Contact( const float pos[3], float dist );
+	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
+	void GereContactPlayer(CPlayer *player);
+	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist);	// Voir la définition de la fonction
 
-	void Affiche();									// Affiche cet objet géo
-	void AfficheSelection(float r,float v,float b);	// Affiche l'objet en couleur unique
 	const char* toString();
 };
 

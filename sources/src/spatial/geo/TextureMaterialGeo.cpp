@@ -675,14 +675,16 @@ bool CTextureMaterialGeo::Contact( const float pos[3], float dist )
 	return false;
 }
 
-void CTextureMaterialGeo::GereContactPlayer( const float pos[3], CPlayer *player )
-{
+void CTextureMaterialGeo::GereContactPlayer(CPlayer *player ) {
+	float pos[3];
+	player->getPosition(pos);
+
 	float dist = 0.1f;	// Rayon de la sphère représentant le volume du joueur
 	float distanceW;
+
 	if( m_bSolid )	// Si l'objet est solide
 		if( TestContactPave( pos, 0.05f+dist ) )	// Teste proximité 'joueur / l'objet géo'
-			for( int i=0; i<m_NumVertex; i=i+3)		//pour chaque triangle de l'objet géo.
-			{
+			for( int i=0; i<m_NumVertex; i=i+3) {		//pour chaque triangle de l'objet géo.
 				distanceW = testContactTriangle( i, pos, dist );
 
 				if( distanceW<500.0f ) // Teste le contact avec le joueur (1.0f = valeur arbitraire mais grande)
@@ -706,7 +708,7 @@ bool CTextureMaterialGeo::TestContactPave( const float pos[3], float dist )
 	return false;	// Le point 'pos' se trouve à une distance supérieure
 }
 
-float CTextureMaterialGeo::GereLaser( float pos[3], CV3D &Dir, float dist)
+float CTextureMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist)
 {
 	float distanceVar;
 	float *vertex, *normal;

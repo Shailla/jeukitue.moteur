@@ -48,7 +48,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 	console->println(ConsoleView::COT_INFO, string("Lecture de la MAP '").append(mapName).append("'..."));
 	cout << endl << "Lecture de la MAP '" << mapName << "'..." << flush;
 
-	CMap* map = new CMap(mapName);
+	CMap* map = new CMap(0, mapName);
 	gameDto->setMap(map);
 
 	// Création joueurs
@@ -84,7 +84,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'..."));
 		cout << endl << "Lecture du skin '" << mapJoueur << "'...";
 
-		CMap *pMapJoueur = new CMap(mapJoueur);
+		CMap *pMapJoueur = new CMap(0, mapJoueur);
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		cout << endl << "Scaling du skin";
@@ -113,7 +113,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		console->println(ConsoleView::COT_INFO, "Lecture du skin 'GrosBonhomme'...");
 		cout << "\nLecture du skin 'GrosBonhomme'...";
 
-		CMap *pMapJoueurJulien = new CMap("GrosBonhomme");
+		CMap *pMapJoueurJulien = new CMap(0, "GrosBonhomme");
 		pMapJoueurJulien->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		cout << endl << "Scaling du skin";
@@ -146,7 +146,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'..."));
 		cout << endl << "Lecture du skin '" << mapJoueur << "'...";
 
-		CMap *pMapJoueur = new CMap(mapJoueur);
+		CMap *pMapJoueur = new CMap(0, mapJoueur);
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		cout << endl << "Scaling du skin";
@@ -195,7 +195,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	console->println(ConsoleView::COT_INFO, string("Lecture de la MAP '").append(mapName).append("'..."));
 	cout << endl << "Lecture de la MAP '" << mapName << "'..." << flush;
 
-	CMap* map = new CMap(mapName);
+	CMap* map = new CMap(0, mapName);
 	gameDto->setMap(map);
 
 
@@ -217,7 +217,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
 	cout << endl << "Lecture du skin '" << mapJoueur << "'...";
 
-	CMap *pMapJoueur = new CMap(mapJoueur);
+	CMap *pMapJoueur = new CMap(0, mapJoueur);
 	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 	console->println(ConsoleView::COT_INFO, "Scaling du skin");
 	cout << endl << "Scaling du skin";
@@ -275,7 +275,7 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 	console->println(ConsoleView::COT_INFO, string("Lecture de la MAP '").append(mapName).append("'..."));
 	cout << endl << "Lecture de la MAP '" << mapName << "'..." << flush;
 
-	CMap* map = new CMap(mapName);
+	CMap* map = new CMap(0, mapName);
 	gameDto->setMap(map);
 
 	// Création joueurs
@@ -305,7 +305,7 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 		console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
 		cout << endl << "Lecture du skin '" << mapJoueur << "'...";
 
-		CMap *pMapJoueur = new CMap(mapJoueur);
+		CMap *pMapJoueur = new CMap(0, mapJoueur);
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		cout << endl << "Scaling du skin";

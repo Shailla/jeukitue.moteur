@@ -294,7 +294,7 @@ int threadConvertASE_1(void *arg)
 	BoiteConvertASE = new CDlgBoite( "Tache en cours", "Ouverture du fichier ASE en cours...", lanceMenuConvertASE, CDlgBoite::JKT_DLG_ENCOURS );
 	CDlg::SetMenuActif( BoiteConvertASE );
 
-	pMapASE = new CMap();		// Crée une classe pour recevoir les données de la map
+	pMapASE = new CMap(0);		// Crée une classe pour recevoir les données de la map
 
 	// Conversion fichier ASE -> fichier Map
 	if(	!CFichierASE::LitFichierASE(nomFichierASE.c_str(), pMapASE, Config.Debug.bAfficheFichier ) )	// Lit le fichier ASE de la map

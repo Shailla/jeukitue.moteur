@@ -685,8 +685,10 @@ bool CSimpleMaterialGeo::Contact( const float pos[3], float dist )
 	return false;
 }
 
-void CSimpleMaterialGeo::GereContactPlayer( const float pos[3], CPlayer *player )
-{
+void CSimpleMaterialGeo::GereContactPlayer(CPlayer *player) {
+	float pos[3];
+	player->getPosition(pos);
+
 	float dist = 0.1f;	// Rayon de la sphère représentant le volume du joueur
 	float distanceW;
 	if( m_bSolid )	// Si l'objet est solide
@@ -716,7 +718,7 @@ bool CSimpleMaterialGeo::TestContactPave( const float pos[3], float dist )
 	return false;	// Le point 'pos' se trouve à une distance supérieure
 }
 
-float CSimpleMaterialGeo::GereLaser( float pos[3], CV3D &Dir, float dist)
+float CSimpleMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist)
 {
 	float distanceVar;
 	float *vertex, *normal;

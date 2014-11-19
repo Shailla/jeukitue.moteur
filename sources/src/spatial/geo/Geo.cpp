@@ -41,19 +41,16 @@ void CGeo::initGL() {}
 
 void CGeo::freeGL() {}
 
-void CGeo::setName( const string &nom )
-{
-	m_Nom.clear();
-	m_Nom = nom;
+void CGeo::setName( const string &nom ) {
+	_name.clear();
+	_name = nom;
 }
 
-const char *CGeo::getName()
-{
-	return m_Nom.c_str();
+const char *CGeo::getName() {
+	return _name.c_str();
 }
 
-bool CGeo::Contact( const float pos[3], float dist )
-{
+bool CGeo::Contact( const float pos[3], float dist ) {
 	return false;
 }
 

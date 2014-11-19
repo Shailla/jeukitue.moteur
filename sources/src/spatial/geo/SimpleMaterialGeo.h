@@ -69,8 +69,8 @@ public:
 	void translate( float x, float y, float z );			// Translation pondérée selon X, Y et Z de l'objet
 
 	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
-	void GereContactPlayer(const float pos[3], CPlayer *player);
-	float GereLaser(float pos[3], CV3D &Dir, float dist);	// Voir la définition de la fonction
+	void GereContactPlayer(CPlayer *player);
+	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist);	// Voir la définition de la fonction
 
 	void setMaterial(int matRef);	// Associe l'objet au matériau de référence matRef
 	void setNormalVertex(float *tab);			// Implémente les normales aux sommets

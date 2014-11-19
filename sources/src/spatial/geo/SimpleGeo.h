@@ -69,10 +69,10 @@ public:
 	void EchangeYZ();			// Echange les coordonnées Y et Z de l'objet
 	void Scale(float scaleX, float scaleY, float scaleZ);	// Homothétie pondérée selon X, Y et Z de l'objet
 	void translate( float x, float y, float z );			// Translation pondérée selon X, Y et Z de l'objet
-	void Color(float r, float g, float b);		// défini la couleur de l'objet
+	void Color(float r, float g, float b);					// défini la couleur de l'objet
 	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
-	void GereContactPlayer(const float pos[3], CPlayer *player);
-	float GereLaser(float pos[3], CV3D &Dir, float dist);	// Voir la définition de la fonction
+	void GereContactPlayer(CPlayer *player);
+	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist);	// Voir la définition de la fonction
 
 	void setVertex(int num, float *tab);		// Implémente les sommets
 	void setFaces(int num, int *tab);			// Implémente les indices de sommets

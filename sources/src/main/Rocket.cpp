@@ -55,7 +55,7 @@ TRACE().p( TRACE_OTHER, "CRocket::INIT_CLASSE()" );
 			return false;	// L'initialisation a échoué
 		}
 
-		_mapRocket = new JktMoteur::CMap("@Arme\\Missile");
+		_mapRocket = new JktMoteur::CMap(0, "@Arme\\Missile");
 
 		m_B_INIT_CLASSE = true;	// Indique que l'initialisation a été faite
 	}

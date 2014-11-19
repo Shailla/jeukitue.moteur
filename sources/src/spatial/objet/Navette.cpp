@@ -23,6 +23,7 @@ class CGame;
 #include "spatial/geo/GeoObject.h"
 #include "son/DemonSons.h"
 #include "main/Game.h"
+#include "main/Player.h"
 
 #include "Navette.h"
 
@@ -321,24 +322,26 @@ void CNavette::Refresh( CGame *game )
 	}
 }
 
-float CNavette::GereLaser( float pos[3], CV3D &Dir, float dist )
+float CNavette::GereLaserPlayer( float pos[3], CV3D &Dir, float dist )
 {
 	float newPos[3];
 	newPos[0] = pos[0] - m_Position.X;
 	newPos[1] = pos[1] - m_Position.Y;
 	newPos[2] = pos[2] + m_Position.Z;
 
-	return CGeoObject::GereLaser( newPos, Dir, dist );
+	return CGeoObject::GereLaserPlayer( newPos, Dir, dist );
 }
 
-void CNavette::GereContactPlayer( const float pos[3], CPlayer *player )
-{
+void CNavette::GereContactPlayer(CPlayer *player ) {
+	float pos[3];
+	player->getPosition(pos);
+
 	float newPos[3];
 	newPos[0] = pos[0] - m_Position.X;
 	newPos[1] = pos[1] - m_Position.Y;
 	newPos[2] = pos[2] + m_Position.Z;
 
-	CGeoObject::GereContactPlayer( newPos, player );
+	CGeoObject::GereContactPlayer(player);
 }
 
 }	// JktMoteur

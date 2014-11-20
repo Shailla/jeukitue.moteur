@@ -85,7 +85,7 @@ public:
 	// Gestion des contacts
 	bool Contact( const float pos[3], float dist );
 	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
-	void GereContactPlayer(CPlayer *player);
+	void GereContactPlayer(float positionPlayer[3], CPlayer *player);
 	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist);	// Voir la définition de la fonction
 
 	const char* toString();

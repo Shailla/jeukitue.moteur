@@ -65,7 +65,7 @@ public:
 	bool Save(TiXmlElement* element);
 
 	float GereLaserPlayer(float pos[3], JktUtils::CV3D &Dir, float dist);
-	void GereContactPlayer(CPlayer *player);
+	void GereContactPlayer(float positionPlayer[3], CPlayer *player);
 };
 
 }	// JktMoteur

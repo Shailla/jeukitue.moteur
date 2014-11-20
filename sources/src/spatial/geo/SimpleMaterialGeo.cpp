@@ -685,17 +685,14 @@ bool CSimpleMaterialGeo::Contact( const float pos[3], float dist )
 	return false;
 }
 
-void CSimpleMaterialGeo::GereContactPlayer(CPlayer *player) {
-	float pos[3];
-	player->getPosition(pos);
-
+void CSimpleMaterialGeo::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	float dist = 0.1f;	// Rayon de la sphère représentant le volume du joueur
 	float distanceW;
 	if( m_bSolid )	// Si l'objet est solide
-		if( TestContactPave( pos, 0.05f+dist ) )	// Teste proximité 'joueur / l'objet géo'
+		if( TestContactPave( positionPlayer, 0.05f+dist ) )	// Teste proximité 'joueur / l'objet géo'
 			for( int i=0; i<m_NumVertex; i=i+3)		//pour chaque triangle de l'objet géo.
 			{
-				distanceW = testContactTriangle( i, pos, dist );
+				distanceW = testContactTriangle( i, positionPlayer, dist );
 
 				if( distanceW<500.0f ) // Teste le contact avec le joueur (1.0f = valeur arbitraire mais grande)
 					player->exeContactFunc( &m_pNormalTriangle[3*i], distanceW );	// On a contact !

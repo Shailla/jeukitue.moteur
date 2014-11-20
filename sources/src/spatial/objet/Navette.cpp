@@ -332,16 +332,13 @@ float CNavette::GereLaserPlayer( float pos[3], CV3D &Dir, float dist )
 	return CGeoObject::GereLaserPlayer( newPos, Dir, dist );
 }
 
-void CNavette::GereContactPlayer(CPlayer *player ) {
-	float pos[3];
-	player->getPosition(pos);
-
+void CNavette::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	float newPos[3];
-	newPos[0] = pos[0] - m_Position.X;
-	newPos[1] = pos[1] - m_Position.Y;
-	newPos[2] = pos[2] + m_Position.Z;
+	newPos[0] = positionPlayer[0] - m_Position.X;
+	newPos[1] = positionPlayer[1] - m_Position.Y;
+	newPos[2] = positionPlayer[2] + m_Position.Z;
 
-	CGeoObject::GereContactPlayer(player);
+	CGeoObject::GereContactPlayer(newPos, player);
 }
 
 }	// JktMoteur

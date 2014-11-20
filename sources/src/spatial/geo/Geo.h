@@ -68,7 +68,7 @@ public:
 	virtual void translate(float x, float y, float z) = 0;				// Translation pondérée selon X, Y et Z de l'objet
 
 	// Gestion des contacts
-	virtual void GereContactPlayer(CPlayer *player ) = 0;	// Gère les contact entre 'player' et l'objet géo
+	virtual void GereContactPlayer(float positionPlayer[3], CPlayer *player ) = 0;	// Gère les contact entre 'player' et l'objet géo
 	virtual float GereLaserPlayer( float pos[3], CV3D &Dir, float dist) = 0;	// Voir la définition de la fonction
 	virtual bool Contact( const float pos[3], float dist );
 };

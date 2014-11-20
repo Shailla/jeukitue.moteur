@@ -87,7 +87,7 @@ public:
 	void setMaterial(int matRef);					// Associe l'objet au matériau de référence matRef
 	void Color( float r, float g, float b );		// défini la couleur de l'objet
 	bool TestContactPave( const float pos[3], float dist );	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
-	void GereContactPlayer(CPlayer *player);
+	void GereContactPlayer(float positionPlayer[3], CPlayer *player);
 	float GereLaserPlayer( float pos[3], CV3D &Dir, float dist);	// Voir la définition de la fonction
 
 	void setVertex( float *tab, int num );		// Implémente les sommets

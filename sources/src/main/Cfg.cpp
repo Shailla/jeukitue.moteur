@@ -602,7 +602,7 @@ const char *CCfg::CAudio::AVAILABLE_AUDIO_OUTPUTS[] =
 /**
  * Initialise the audio drivers with the Jkt configuration parameters.
  */
-bool CCfg::CAudio::Init() {
+void CCfg::CAudio::Init() {
 	testInitAndSaveConfiguration(m_Driver, m_Output, m_Mixer, m_DriverRecord);
 }
 

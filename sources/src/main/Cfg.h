@@ -78,7 +78,7 @@ public:
 		int m_Driver;
 		int m_DriverRecord;
 
-		bool Init();
+		void Init();
 		bool testInitAndSaveConfiguration(int driver, int output, int mixer, int driverRecord);
 	};
 

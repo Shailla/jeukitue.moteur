@@ -56,6 +56,7 @@ public:
 	virtual void Affiche() = 0;									// Affiche l'objet géométrique
 	virtual void AfficheSelection(float r,float v,float b) = 0;	// Affiche l'objet géométrique en couleur unique
 
+	// Sérialisation
 	virtual bool Lit(TiXmlElement* el) = 0;
 	virtual bool Save(TiXmlElement* element) = 0;			// Sauve l'objet géo dans un fichier Map
 

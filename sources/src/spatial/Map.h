@@ -108,8 +108,11 @@ public:
 
 	// Gestion des contacts
 	bool Contact(const float pos[3], const float dist);	// Indique s'il y a un triangle à une distance inférieure à 'dist' de la position 'pos'
-		// A VOIR Fonctions qui n'ont rien à faire ici
-	void GereContactPlayer(CPlayer *player);								// Gère tous les contacts entre la map et les joueurs
+
+	/**
+	 * positionPlayer : position du jouer ou position calculé ce qui permet d'optimiser certains contacts quand un objet a bougé en considérant que c'est plutôt le
+	 */
+	void GereContactPlayer(float positionPlayer[3], CPlayer *player);								// Gère tous les contacts entre la map et les joueurs
 	float GereLaserPlayer(float pos[3], JktUtils::CV3D &Dir, float dist);	// Envoie d'un laser sur la map
 
 	vector<CLight*>& getLights();

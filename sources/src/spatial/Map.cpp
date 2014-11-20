@@ -268,11 +268,20 @@ void CMap::add( CNavette *navette ) {		// Une navette est avant tout un objet gé
 	m_TabMouve.push_back( navette );	// Ajoute porte à la liste des objets à rafraichir
 }
 
-void CMap::GereContactPlayer( CPlayer *player ) {
+void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
+	if(!positionPlayer) {
+		float positionPlayerDefault[3];
+		positionPlayerDefault[0] = 0.0;
+		positionPlayerDefault[1] = 0.0;
+		positionPlayerDefault[2] = 0.0;
+
+		positionPlayer = positionPlayerDefault;
+	}
+
 	vector<CGeo*>::iterator iterGeo;
 
 	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++)
-		(*iterGeo)->GereContactPlayer(player);	// Gère les contacts entre l'objet géo et le joueur
+		(*iterGeo)->GereContactPlayer(positionPlayer, player);	// Gère les contacts entre l'objet géo et le joueur
 }
 
 float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
@@ -716,7 +725,6 @@ void CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int t
 				int x2 = x1 + tailleX/nbrX;
 				int y1 = y + posY*tailleY/nbrY;
 				int y2 = y1 + tailleY/nbrY;
-
 
 				glBegin(GL_QUADS);
 					glTexCoord2f(0.0f, 0.0f);

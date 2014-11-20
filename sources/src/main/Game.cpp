@@ -242,7 +242,7 @@ void CGame::GereContactPlayers() {	// Gère les contacts de tous les joueurs avec
 
 		if(player) {
 			player->Pente(0.0f);
-			_map->GereContactPlayer(player);		// Gère les contact avec la map de player
+			_map->GereContactPlayer(0, player);		// Gère les contact avec la map de player
 		}
 	}
 }

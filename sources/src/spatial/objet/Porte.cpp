@@ -94,7 +94,7 @@ void CPorte::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	newPos[ 1 ] = positionPlayer[ 1 ] - m_fOuverture;
 	newPos[ 2 ] = positionPlayer[ 2 ];
 
-	CGeoObject::GereContactPlayer(positionPlayer, player);
+	CGeoObject::GereContactPlayer(newPos, player);
 }
 
 void CPorte::Refresh( CGame *game ) {

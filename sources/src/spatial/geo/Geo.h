@@ -58,7 +58,7 @@ public:
 
 	// Sérialisation
 	virtual bool Lit(TiXmlElement* el) = 0;
-	virtual bool Save(TiXmlElement* element) = 0;			// Sauve l'objet géo dans un fichier Map
+	virtual bool Save(TiXmlElement* element) = 0;		// Sauve l'objet géo dans un fichier Map
 
 	// Transformations 3D
 	virtual void EchangeXY() = 0;										// Echange les coordonnées X et Y de l'objet

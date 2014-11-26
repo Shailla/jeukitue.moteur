@@ -169,6 +169,8 @@ void CGame::Quit() {
 	_erwin = 0;		// Oublie qu'il y a eu un joueur principal
 
 	if( _map ) {
+		_map->freePlugins();
+		_map->freeGL();
 		delete _map;
 		_map = 0;
 	}

@@ -17,6 +17,7 @@ class CGame;
 #include "spatial/XmlVocabulaire.h"
 #include "util/Erreur.h"
 #include "util/V3D.h"
+#include "spatial/Map.h"
 #include "spatial/IfstreamMap.h"
 #include "spatial/geo/GeoMaker.h"
 #include "spatial/materiau/MaterialTexture.h"
@@ -30,7 +31,7 @@ class CGame;
 namespace JktMoteur
 {
 
-Dirigeable::Dirigeable(CMap *map, const vector<int> vitesseDataId, const vector<int> positionDataId) {
+Dirigeable::Dirigeable(CMap *map, const vector<int> positionDataId, const vector<int> vitesseDataId) {
 	_map = map;
 }
 
@@ -44,7 +45,7 @@ void Dirigeable::Init() {			// Initialisation de l'objet géométrique
 void Dirigeable::Affiche() {		// Fonction d'affichage de la porte
 	glPushMatrix();
 
-	glTranslatef(_positionX.getValeur(), _positionY.getValeur(), _positionZ.getValeur());	// Translation de la porte de la valeur de son ouverture
+	glTranslatef(_positionX->getValeur(), _positionY->getValeur(), _positionZ->getValeur());	// Translation de la porte de la valeur de son ouverture
 	_map->Affiche();						// Affichage
 
 	glPopMatrix();

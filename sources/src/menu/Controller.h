@@ -18,7 +18,7 @@ class Controller
 {
 public:
 	enum Action {
-		Unknown,
+		Unknown = 10,
 		ShowLanceServeurViewAction,
 		LanceServeurMapAction,
 		ShowCentralisateurViewAction,
@@ -69,7 +69,7 @@ public:
 		ShowMenuOpenSceneAction					= 1016,		// Show the open scene (MAP or ASE) menu
 		QuitGameAction							= 1017,		// Quit the current MAP
 		QuitAction								= 1018,		// Quit the game
-
+		RefreshMap								= 1100,		// Regular refresh event (to update a plugin 3D object position for instance)
 		// The actions created by the plugins should not be referenced in C++ code, their identifiers are higher than 10000
 	};
 

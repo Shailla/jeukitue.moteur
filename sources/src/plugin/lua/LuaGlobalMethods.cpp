@@ -13,6 +13,8 @@
 
 namespace JktPlugin {
 
+static const char* LuaGlobalMethods::REFRESH_EVENT_TYPE = "refresh";
+
 LuaGlobalMethods::LuaGlobalMethods() {
 }
 
@@ -56,6 +58,25 @@ int LuaGlobalMethods::pushEvent(lua_State* L) {
 			AG_Event event;
 			AG_EventArgs(&event, "%i", pluginActionId);
 			Controller::executeAction(&event);
+		}
+	}
+
+	return 0;
+}
+
+/**
+ * Subscribe the plugin to receive events of a specific type
+ */
+int LuaGlobalMethods::subscribeEvents(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
+		PluginContext* pluginContext = Fabrique::getPluginEngine()->getPluginContext(L);
+		string type = lua_tostring(L, 1);
+
+		if(type == REFRESH_EVENT_TYPE) {
+			pluginContext->subscribeRefreshEvents(true);
+		}
+		else {
+			pluginContext->logError("Unknown event subscription type : '" + type + "'");
 		}
 	}
 

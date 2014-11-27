@@ -38,6 +38,8 @@ class PluginContext {
 
 	SDL_mutex* _dispatchEventMutex;
 
+	bool _subscribedRefreshEvents;
+
 public:
 	PluginContext(lua_State* luaState, const std::string& pluginName, const std::string& pluginsDirectory);
 	virtual ~PluginContext();
@@ -53,6 +55,8 @@ public:
 
 	void dispatchEvent(PluginWidgetEvent* event);
 	void dispatchEvent(const PluginActionEvent& event);
+	void subscribeRefreshEvents(const bool state);
+	bool isSubscribedRefreshEvents() const;
 };
 
 } /* namespace JktPlugin */

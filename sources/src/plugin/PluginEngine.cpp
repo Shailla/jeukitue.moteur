@@ -11,6 +11,7 @@ using namespace std;
 
 #include "plugin/lua/proxy/PluginEventProxy.h"
 #include "plugin/lua/proxy/cfg/PluginConfigurationProxy.h"
+#include "plugin/lua/proxy/data/PluginDataTreeProxy.h"
 #include "plugin/lua/proxy/gui/PluginComboListProxy.h"
 #include "plugin/lua/proxy/gui/PluginBoxProxy.h"
 #include "plugin/lua/proxy/gui/PluginButtonProxy.h"
@@ -39,11 +40,53 @@ PluginEngine::PluginEngine() {
 PluginEngine::~PluginEngine() {
 }
 
-void PluginEngine::dispatchEvent(const PluginActionEvent& event) {
-	std::map<std::string, PluginContext*>::iterator iter = _nameGlobalPlugin.begin();
+void PluginEngine::sendRefreshEvent() {
+	PluginActionEvent evt(Controller::Action::RefreshMap);
 
-	for( ; iter != _nameGlobalPlugin.end() ; iter++) {
-		iter->second->dispatchEvent(event);
+	// Global plugins
+	{
+		std::map<std::string, PluginContext*>::iterator iter = _nameGlobalPlugin.begin();
+
+		for( ; iter != _nameGlobalPlugin.end() ; iter++) {
+			PluginContext* context = iter->second;
+
+			if(context->isSubscribedRefreshEvents()) {
+				context->dispatchEvent(evt);
+			}
+		}
+	}
+
+	// Map plugins
+	{
+		std::map<std::string, PluginContext*>::iterator iter = _nameMapPlugin.begin();
+
+		for( ; iter != _nameMapPlugin.end() ; iter++) {
+			PluginContext* context = iter->second;
+
+			if(context->isSubscribedRefreshEvents()) {
+				context->dispatchEvent(evt);
+			}
+		}
+	}
+}
+
+void PluginEngine::dispatchEvent(const PluginActionEvent& event) {
+	// Global plugins dispatching
+	{
+		std::map<std::string, PluginContext*>::iterator iter = _nameGlobalPlugin.begin();
+
+		for( ; iter != _nameGlobalPlugin.end() ; iter++) {
+			iter->second->dispatchEvent(event);
+		}
+	}
+
+	// Map plugins dispatching
+	{
+		std::map<std::string, PluginContext*>::iterator iter = _nameMapPlugin.begin();
+
+		for( ; iter != _nameMapPlugin.end() ; iter++) {
+			iter->second->dispatchEvent(event);
+		}
 	}
 }
 
@@ -69,11 +112,18 @@ PluginContext* PluginEngine::getMapPluginContext(const string& pluginName) {
 	}
 }
 
-PluginContext* PluginEngine::getGlobalPluginContext(const lua_State* L) {
+PluginContext* PluginEngine::getPluginContext(const lua_State* L) {
 	std::map<const lua_State*, PluginContext*>::iterator iter = _luaGlobalContext.find(L);
 
 	if(iter == _luaGlobalContext.end()) {
-		return 0;
+		iter = _luaMapContext.find(L);
+
+		if(iter == _luaMapContext.end()) {
+			return 0;
+		}
+		else {
+			return iter->second;
+		}
 	}
 	else {
 		return iter->second;
@@ -84,6 +134,17 @@ PluginContext* PluginEngine::getMapPluginContext(const lua_State* L) {
 	std::map<const lua_State*, PluginContext*>::iterator iter = _luaMapContext.find(L);
 
 	if(iter == _luaMapContext.end()) {
+		return 0;
+	}
+	else {
+		return iter->second;
+	}
+}
+
+PluginContext* PluginEngine::getGlobalPluginContext(const lua_State* L) {
+	std::map<const lua_State*, PluginContext*>::iterator iter = _luaGlobalContext.find(L);
+
+	if(iter == _luaGlobalContext.end()) {
 		return 0;
 	}
 	else {
@@ -138,7 +199,9 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 
 	lua_register(L, "log", &LuaGlobalMethods::log);
 	lua_register(L, "pushEvent", &LuaGlobalMethods::pushEvent);
+	lua_register(L, "subscribeEvents", &LuaGlobalMethods::subscribeEvents);
 
+	// Fonctions pour la configuration
 	lua_register(L, "getScreenSize", &PluginConfigurationProxy::getScreenSize);
 	lua_register(L, "getAvailableAudioDrivers", &PluginConfigurationProxy::getAvailableAudioDrivers);
 	lua_register(L, "getAvailableAudioRecordDrivers", &PluginConfigurationProxy::getAvailableAudioRecordDrivers);
@@ -148,6 +211,8 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	lua_register(L, "getConstant", &PluginConfigurationProxy::getConstant);
 	lua_register(L, "initAudio", &PluginConfigurationProxy::initAudio);
 
+	// Fonctions d'accès aux données
+	lua_register(L, "getMapDataTree", &PluginDataTreeProxy::getMapDataTree);
 
 	// Initialisation des classes dans Lua
 	pluginContext->logInfo("Initialisation des classes Lua...");

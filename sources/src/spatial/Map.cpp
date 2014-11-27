@@ -712,6 +712,8 @@ void CMap::Refresh(CGame *game) {
 
 	for(iterMouve=m_TabMouve.begin() ; iterMouve!=m_TabMouve.end() ; iterMouve++)
 		(*iterMouve)->Refresh(game);
+
+	Fabrique::getPluginEngine()->sendRefreshEvent();
 }
 
 void CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index) {

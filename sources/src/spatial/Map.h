@@ -37,8 +37,6 @@ class CMap : CGeo {
 	vector<CLight*> m_TabLight;				// Liste des lumières
 	vector<string> _plugins;				// Liste des plugins de la Map
 
-	void Init() throw(JktUtils::CErreur);	// Initialisation de la CMap
-
 	int m_Selection;						// Object géo sélectionné
 	bool m_bSelection;						// Indique si le mode sélection est actif ou non
 
@@ -61,6 +59,8 @@ public:
 	bool Lit(const string &nomFichier);
 	bool Lit(TiXmlElement* el);
 	bool Save(TiXmlElement* element);			// Sauve l'objet géo dans un fichier Map
+
+	void Init() throw(JktUtils::CErreur);	// Initialisation de la CMap
 
 	// Gestion des plugins de la Map
 	void initPlugins();		// Chargement / exécution des plugins de la Map

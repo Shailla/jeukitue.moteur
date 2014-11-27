@@ -27,6 +27,8 @@ PluginContext::PluginContext(lua_State* luaState, const string& pluginName, cons
 	string pluginLogFile = string(pluginsDirectory).append(pluginName).append(".log");
 	_logFile.open(pluginLogFile.c_str());
 
+	_subscribedRefreshEvents = false;
+
 	_dispatchEventMutex = SDL_CreateMutex();
 }
 
@@ -102,6 +104,10 @@ void PluginContext::dispatchEvent(PluginWidgetEvent* event) {
 	SDL_UnlockMutex(_dispatchEventMutex);
 }
 
+bool PluginContext::isSubscribedRefreshEvents() const {
+	return _subscribedRefreshEvents;
+}
+
 void PluginContext::dispatchEvent(const PluginActionEvent& event) {
 	SDL_LockMutex(_dispatchEventMutex);
 
@@ -116,6 +122,14 @@ void PluginContext::dispatchEvent(const PluginActionEvent& event) {
 		int status = lua_pcall(_luaState, 1, 0, 0);
 		logLuaError(status);
 	}
+
+	SDL_UnlockMutex(_dispatchEventMutex);
+}
+
+void PluginContext::subscribeRefreshEvents(const bool state) {
+	SDL_LockMutex(_dispatchEventMutex);
+
+	_subscribedRefreshEvents = state;
 
 	SDL_UnlockMutex(_dispatchEventMutex);
 }

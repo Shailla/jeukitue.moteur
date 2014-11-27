@@ -3,7 +3,7 @@
 
 #include "spatial/Mouve.h"
 
-#include "util/V3D.h"
+#include "data/ValeurFloat.h"
 
 class CGame;
 class CPlayer;
@@ -16,18 +16,19 @@ class CIstreamMap;
 
 class Dirigeable : public CMouve {
 	CMap* _map;
+
 	// Vitesse de l'objet dans l'arbre de données
-	ValeurFloat _vitesseX;
-	ValeurFloat _vitesseY;
-	ValeurFloat _vitesseZ;
+	ValeurFloat* _vitesseX;
+	ValeurFloat* _vitesseY;
+	ValeurFloat* _vitesseZ;
 
 	// Position de l'objet dans l'arbre de données
-	ValeurFloat _positionX;
-	ValeurFloat _positionY;
-	ValeurFloat _positionZ;
+	ValeurFloat* _positionX;
+	ValeurFloat* _positionY;
+	ValeurFloat* _positionZ;
 
 public:
-	Dirigeable(CMap *map, const vector<int> vitesseDataId, const vector<int> positionDataId);
+	Dirigeable(CMap *map, const vector<int> positionDataId, const vector<int> vitesseDataId);
 	~Dirigeable();
 
 	void Init();					// Initialisation de l'objet géométrique

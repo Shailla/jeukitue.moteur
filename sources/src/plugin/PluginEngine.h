@@ -38,6 +38,8 @@ public:
 	PluginEngine();
 	virtual ~PluginEngine();
 
+	PluginContext* getPluginContext(const lua_State* L);
+
 	// Gestion des plugins du jeu
 	void activateDefaultGlobalPlugins();
 	void activateGlobalPlugin(const std::string& pluginName);
@@ -52,6 +54,7 @@ public:
 	PluginContext* getMapPluginContext(const lua_State* L);
 
 	void dispatchEvent(const PluginActionEvent& event);
+	void sendRefreshEvent();
 };
 
 } /* namespace JktPlugin */

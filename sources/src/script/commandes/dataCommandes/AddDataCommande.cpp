@@ -31,28 +31,18 @@ AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(in
 void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalParameterException) {
 	string subCommande1 = StringUtils::findAndEraseFirstWord(ligne);
 
-	ServeurDataTree* serverDataTree = Game.getServerDataTree();
-	ClientDataTree* clientDataTree = Game.getClientDataTree();
-
 	if(subCommande1 == "branche") {
-		DataTree* tree = NULL;
+		DataTree* dataTree = Game.getDataTree();
 
-		if(serverDataTree) {
-			tree = serverDataTree;
-		}
-		else if(clientDataTree) {
-			tree = clientDataTree;
-		}
-		else {
+		if(!dataTree) {
 			printErrLn("Client et serveur tous deux inactifs", userOutput);
 		}
-
-		if(tree) {
+		else {
 			string brancheName = StringUtils::findAndEraseFirstWord(ligne);
 			vector<int> parentBrancheId = getIntParameters(ligne);
 
 			try {
-				tree->createBranche(parentBrancheId, brancheName);
+				dataTree->createBranche(parentBrancheId, brancheName);
 				printStdLn("Branche creee.", userOutput);
 			}
 			catch(NotExistingBrancheException& exception) {
@@ -61,19 +51,12 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 		}
 	}
 	else if(subCommande1 == "valeur") {
-		DataTree* tree = NULL;
+		DataTree* dataTree = Game.getDataTree();
 
-		if(serverDataTree) {
-			tree = serverDataTree;
-		}
-		else if(clientDataTree) {
-			tree = clientDataTree;
-		}
-		else {
+		if(!dataTree) {
 			printErrLn("Client et serveur tous deux inactifs", userOutput);
 		}
-
-		if(tree) {
+		else {
 			string valeurType = StringUtils::findAndEraseFirstWord(ligne);
 
 			// Nom de la valeur
@@ -104,7 +87,7 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 				// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
 				vector<int> brancheId = getIntParameters(ligne);
 
-				tree->createValeur(brancheId, valeurName, valeur);
+				dataTree->createValeur(brancheId, valeurName, valeur);
 				delete valeur;
 
 				printStdLn("Valeur creee.", userOutput);

@@ -33,23 +33,13 @@ UpdateDataCommande::UpdateDataCommande(CommandeInterpreter* interpreter) : Comma
 void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalParameterException) {
 	string subCommande1 = StringUtils::findAndEraseFirstWord(ligne);
 
-	ServeurDataTree* serverDataTree = Game.getServerDataTree();
-	ClientDataTree* clientDataTree = Game.getClientDataTree();
-
 	if(subCommande1 == "valeur") {
-		DataTree* tree = NULL;
+		DataTree* dataTree = Game.getDataTree();
 
-		if(serverDataTree != 0) {
-			tree = serverDataTree;
-		}
-		else if(clientDataTree != 0) {
-			tree = clientDataTree;
-		}
-		else {
+		if(dataTree == 0) {
 			printErrLn("Client et serveur tous deux inactifs", userOutput);
 		}
-
-		if(tree) {
+		else {
 			// Valeur de la valeur
 			string valueStr = StringUtils::findAndEraseFirstWord(ligne);
 
@@ -61,7 +51,7 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 				brancheId.erase(brancheId.end() - 1);
 				int valeurId = *(valeurFullId.end() - 1);
 
-				Valeur* valeur = tree->getValeur(brancheId, valeurId);
+				Valeur* valeur = dataTree->getValeur(brancheId, valeurId);
 
 				if(valeur) {
 					Data* value = NULL;
@@ -99,9 +89,6 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 			else {
 				printErrLn("Syntaxe incorrecte (identifiant de la valeur incomplet)", userOutput);
 			}
-		}
-		else {
-			printErrLn("Syntaxe incorrecte (arbre inconnu)", userOutput);
 		}
 	}
 	else {

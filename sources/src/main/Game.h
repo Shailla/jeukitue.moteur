@@ -86,6 +86,8 @@ public:
 	void setStatutServer( JktNet::StatutServer statut );	// Renseigne le statut du serveur
 	JktNet::StatutServer getStatutServer();					// Donne le statut du serveur
 
+	DataTree* CGame::getDataTree();
+
 	void setServerDataTree(ServeurDataTree* serverDataTree);
 	ServeurDataTree* getServerDataTree();
 

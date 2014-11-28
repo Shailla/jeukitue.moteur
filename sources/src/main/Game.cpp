@@ -159,6 +159,19 @@ void CGame::setClientDataTree(ClientDataTree* clientDataTree) {
 	_clientDataTree = clientDataTree;
 }
 
+
+DataTree* CGame::getDataTree() {
+	if(_serverDataTree != 0) {
+		return _serverDataTree;
+	}
+	else if(_clientDataTree != 0) {
+		return _clientDataTree;
+	}
+	else {
+		return 0;
+	}
+}
+
 ClientDataTree* CGame::getClientDataTree() {
 	return _clientDataTree;
 }

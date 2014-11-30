@@ -23,6 +23,7 @@ enum LUA_PARAMETER_TYPES {
 	LUA_PARAM_NUMBER,	// Paramètre de type nombre entier
 	LUA_PARAM_STRING,	// Paramètre de type chaîne de caractères
 	LUA_PARAM_USERDATA,	//
+	LUA_PARAM_ARRAY_INT,	// Paramètre de type tableau d'entiers
 	LUA_PARAM_ANY		// Paramètre de type indifférent, n'importe quel type de paramètre
 };
 

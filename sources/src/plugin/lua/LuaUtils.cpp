@@ -49,42 +49,66 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 		return false;
 	}
 
+	int index = 1;
+
 	// Vérifie les types de chaque paramètre
-	for(int i=1 ; i<expectedParamNbr+1 ; i++) {
+	for(int id=0 ; id<expectedParamNbr ; id++) {
 		const LUA_PARAMETER_TYPES type = (LUA_PARAMETER_TYPES)va_arg(vl, int);
 
 		switch(type) {
 		case LUA_PARAM_STRING:
-			if(!lua_isstring(L, i)) {
+			if(!lua_isstring(L, index++)) {
 				ostringstream message;
-				message << "Mauvais format du parametre " << i << " (attendu=String)";
+				message << "Mauvais format du parametre " << index << " (attendu=String)";
 				Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 
 				return false;
 			}
 			break;
 		case LUA_PARAM_BOOLEAN:
-			if(!lua_isboolean(L, i)) {
+			if(!lua_isboolean(L, index++)) {
 				ostringstream message;
-				message << "Mauvais format du parametre " << i << " (attendu=Booleen)";
+				message << "Mauvais format du parametre " << index << " (attendu=Booleen)";
 				Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 
 				return false;
 			}
 			break;
-		case LUA_PARAM_NUMBER:
-			if(!lua_isnumber(L, i)) {
+		case LUA_PARAM_ARRAY_INT:
+			if(!lua_isnumber(L, index)) {
 				ostringstream message;
-				message << "Mauvais format du parametre " << i << " (attendu=Entier)";
+				message << "Mauvais format du parametre " << index << " (attendu=ArrayInt[nbr])";
+				Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
+
+				return false;
+			}
+			else {
+				int nbr = lua_tonumber(L, index++);
+
+				for(int j=0 ; j<nbr ; j++) {
+					if(!lua_isnumber(L, index++)) {
+						ostringstream message;
+						message << "Mauvais format du parametre " << index << " (attendu=ArrayInt[" << j << "])";
+						Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
+
+						return false;
+					}
+				}
+			}
+			break;
+		case LUA_PARAM_NUMBER:
+			if(!lua_isnumber(L, index++)) {
+				ostringstream message;
+				message << "Mauvais format du parametre " << index << " (attendu=Entier)";
 				Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 
 				return false;
 			}
 			break;
 		case LUA_PARAM_USERDATA:
-			if(!lua_isuserdata(L, i)) {
+			if(!lua_isuserdata(L, index++)) {
 				ostringstream message;
-				message << "Mauvais format du parametre " << i << " (attendu=Userdata)";
+				message << "Mauvais format du parametre " << index << " (attendu=Userdata)";
 				Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 
 				return false;

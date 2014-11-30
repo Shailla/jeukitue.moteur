@@ -14,15 +14,17 @@ vitZ = 0;
 function onLoad()
 	log("Version Lua : " .. _VERSION)
 	
-	--mapDataTree = getMapDataTree();
+	mapDataTree = getDataTree();
 	
-	--posX = mapDataTree:allocFloat();
-	--posY = mapDataTree:allocFloat();
-	--posZ = mapDataTree:allocFloat();
+	brancheId = {1, 1};
 	
-	--vitX = mapDataTree:allocFloat();
-	--vitY = mapDataTree:allocFloat();
-	--vitZ = mapDataTree:allocFloat();
+	posX = mapDataTree:createValeur(brancheId, "float", "posX");
+	posY = mapDataTree:createValeur(brancheId, "float", "posY");
+	posZ = mapDataTree:createValeur(brancheId, "float", "posZ");
+	
+	vitX = mapDataTree:createValeur(brancheId, "float", "vitX");
+	vitY = mapDataTree:createValeur(brancheId, "float", "vitY");
+	vitZ = mapDataTree:createValeur(brancheId, "float", "vitZ");
 	
 	subscribeEvents("refresh");
 end

@@ -23,6 +23,8 @@ using namespace std;
 
 #include "plugin/lua/proxy/data/PluginDataTreeProxy.h"
 
+extern CGame Game;			// Contient toutes les données vivantes du jeu
+
 namespace JktPlugin {
 
 const char PluginDataTreeProxy::className[] = "DataTree";
@@ -60,11 +62,23 @@ int PluginDataTreeProxy::getMapDataTree(lua_State *L) {
 }
 
 /**
- * .
- *    - Return 1 :
+ * Create a new valeur in the data tree in a branche.
+ * 	- Param 1 <brancheId> : branche id in which the valeur will be created
+ * 	- Param 2 <valeurType> : type of the value ("int", "float", "string")
+ * 	- Param 3 <valeurName> : name of the valeur
+ *  - Return 1 <valeurId> : id of the new valeur
  */
 int PluginDataTreeProxy::createValeur(lua_State *L) {
-	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 2, LUA_PARAM_STRING, LUA_PARAM_STRING);
+	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 3, LUA_PARAM_ARRAY_INT, LUA_PARAM_STRING, LUA_PARAM_STRING);
+
+	int index=1;
+	vector<int> brancheId;
+
+	int nbr = lua_tonumber(L, index++);
+
+	for(int i=0 ; i<nbr ; i++) {
+		brancheId.push_back(lua_tonumber(L, index++));
+	}
 
 	const string valeurType = lua_tostring(L, 1);
 	const string valeurName = lua_tostring(L, 2);
@@ -82,13 +96,19 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
 		valeur = new JktUtils::StringData(0);
 	}
 
-	dataTree->createValeur(0, valeurName.c_str(), valeur);
+	dataTree->createValeur(brancheId, valeurName.c_str(), valeur);
 
-	return 2;
+	return index;
 }
 
+/**
+ * Create a new branche in the data tree in a parent branche.
+ * 	- Param 1 <parentBrancheId> : branche id in which the new branche will be created
+ * 	- Param 3 <brancheName> : name of the branche
+ *  - Return 1 <brancheId> : id of the new branche
+ */
 int PluginDataTreeProxy::createBranche(lua_State *L) {
-	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 3, LUA_PARAM_NUMBER, LUA_PARAM_STRING);
+	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 3, LUA_PARAM_ARRAY_INT, LUA_PARAM_NUMBER, LUA_PARAM_STRING);
 
 	int index = 1;
 

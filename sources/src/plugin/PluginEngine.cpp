@@ -212,7 +212,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	lua_register(L, "initAudio", &PluginConfigurationProxy::initAudio);
 
 	// Fonctions d'accès aux données
-	lua_register(L, "getMapDataTree", &PluginDataTreeProxy::getMapDataTree);
+	lua_register(L, "getDataTree", &PluginDataTreeProxy::getMapDataTree);
 
 	// Initialisation des classes dans Lua
 	pluginContext->logInfo("Initialisation des classes Lua...");
@@ -227,6 +227,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	Lunar<PluginNotebookProxy>::Register(L);
 	Lunar<PluginTabProxy>::Register(L);
 	Lunar<PluginWindowProxy>::Register(L);
+	Lunar<PluginDataTreeProxy>::Register(L);
 
 
 	/* ******************************************************************************

@@ -13,9 +13,8 @@ using namespace std;
 #include "util/types/FloatData.h"
 #include "util/types/StringData.h"
 #include "util/StringUtils.h"
-#include "data/ServeurDataTree.h"
+#include "data/DataTree.h"
 #include "data/DistantTreeProxy.h"
-#include "data/ClientDataTree.h"
 #include "script/exception/IllegalParameterException.h"
 #include "main/Game.h"
 

@@ -16,7 +16,7 @@ function onLoad()
 	
 	mapDataTree = getDataTree();
 	
-	brancheId = {1, 1};
+	brancheId = {11, 15};
 	
 	posX = mapDataTree:createValeur(brancheId, "float", "posX");
 	posY = mapDataTree:createValeur(brancheId, "float", "posY");

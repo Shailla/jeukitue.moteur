@@ -73,21 +73,24 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
 
 	vector<int> brancheId;
 
+	int index = 1;
+
 	lua_pushnil(L);
 
-	while(lua_next(L, -2)) {
-	    if(lua_isnumber(L, -2)) {
-	        brancheId.push_back((int)lua_tonumber(L, -2));
+	while(lua_next(L, index)) {
+	    if(lua_isnumber(L, -1)) {
+	        int var = (int)lua_tonumber(L, -1);
+	        brancheId.push_back(var);
 	    }
+
 	    lua_pop(L, 1);
 	}
-	lua_pop(L, 1);
 
-	const string valeurType = lua_tostring(L, 1);
-	lua_pop(L, 1);
+	index++;
 
-	const string valeurName = lua_tostring(L, 1);
-	lua_pop(L, 1);
+	const string valeurType = lua_tostring(L, index++);
+
+	const string valeurName = lua_tostring(L, index++);
 
 	DataTree* dataTree = Game.getDataTree();
 	const JktUtils::Data* valeur;
@@ -100,6 +103,11 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
 	}
 	else if(valeurType == "string") {
 		valeur = new JktUtils::StringData(0);
+	}
+	else {
+		ostringstream message;
+		message << "Type de valeur " << valeurType << " inconnu";
+		Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 	}
 
 	dataTree->createValeur(brancheId, valeurName.c_str(), valeur);

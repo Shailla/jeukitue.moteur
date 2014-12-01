@@ -93,16 +93,16 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
 	const string valeurName = lua_tostring(L, index++);
 
 	DataTree* dataTree = Game.getDataTree();
-	const JktUtils::Data* valeur;
+	const JktUtils::Data* data;
 
 	if(valeurType == "int") {
-		valeur = new JktUtils::IntData(0);
+		data = new JktUtils::IntData(0);
 	}
 	else if(valeurType == "float") {
-		valeur = new JktUtils::FloatData(0);
+		data = new JktUtils::FloatData(0);
 	}
 	else if(valeurType == "string") {
-		valeur = new JktUtils::StringData(0);
+		data = new JktUtils::StringData(0);
 	}
 	else {
 		ostringstream message;
@@ -110,7 +110,7 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
 		Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 	}
 
-	dataTree->createValeur(brancheId, valeurName.c_str(), valeur);
+	Valeur* valeur = dataTree->createValeur(brancheId, valeurName.c_str(), data);
 
 	return 0;
 }
@@ -126,22 +126,26 @@ int PluginDataTreeProxy::createBranche(lua_State *L) {
 
 	int index = 1;
 
-	vector<int> brancheId;
+	vector<int> parentBrancheId;
 
 	lua_pushnil(L);
 
-	while(lua_next(L, (index++)-2)) {  // <== here is your mistake
-	    if(lua_isnumber(L, (index++)-1)) {
-	        int i = (int)lua_tonumber(L, (index++)-1);
-	        //use number
+	while(lua_next(L, index)) {
+	    if(lua_isnumber(L, -1)) {
+	        int var = (int)lua_tonumber(L, -1);
+	        parentBrancheId.push_back(var);
 	    }
+
+	    lua_pop(L, 1);
 	}
+
+	index++;
 
 	const string brancheName = lua_tostring(L, index++);
 
 	DataTree* dataTree = Game.getDataTree();
 
-	dataTree->createBranche(brancheId, brancheName.c_str());
+	Branche* branche = dataTree->createBranche(parentBrancheId, brancheName.c_str());
 
 	return 2;
 }

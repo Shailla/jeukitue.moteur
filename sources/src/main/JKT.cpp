@@ -1314,7 +1314,9 @@ void executeJktRequests() {
 			Game._pTabIndexPlayer = NULL;
 		}
 
-		// Lancement ouverture MAP demandï¿½e
+		Game.setLocalDataTree(new LocalDataTree());
+
+		// Lancement ouverture MAP demandée
 		const string mapName = Game.RequeteProcess.getOuvreMap();
 
 		localeGameDto = new GameDto(mapName);

@@ -8,6 +8,7 @@
 #include "main/RequeteProcess.h"
 #include "reseau/enumReseau.h"
 
+#include "data/LocalDataTree.h"
 #include "data/ServeurDataTree.h"
 #include "data/ClientDataTree.h"
 
@@ -45,6 +46,7 @@ private:
 public:
 	JktUtils::CTableauIndex<CPlayer> *_pTabIndexPlayer;	// Liste indexée des joueurs
 
+	LocalDataTree* _localDataTree;
 	ServeurDataTree* _serverDataTree;
 	ClientDataTree* _clientDataTree;
 
@@ -87,6 +89,9 @@ public:
 	JktNet::StatutServer getStatutServer();					// Donne le statut du serveur
 
 	DataTree* getDataTree();
+
+	void setLocalDataTree(LocalDataTree* localDataTree);
+	LocalDataTree* getLocalDataTree();
 
 	void setServerDataTree(ServeurDataTree* serverDataTree);
 	ServeurDataTree* getServerDataTree();

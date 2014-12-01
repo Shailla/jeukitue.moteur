@@ -42,6 +42,7 @@ extern NetworkManager* _networkManager;
 CGame::CGame() {
 	_mode = JKT_MODE_PARTIE_NULL;
 	_pTabIndexPlayer = NULL;	// Pas de liste de joueurs
+	_localDataTree = NULL;
 	_serverDataTree = NULL;
 	_clientDataTree = NULL;
 	_map = NULL;			// Pas de map
@@ -147,8 +148,16 @@ JktNet::StatutServer CGame::getStatutServer() {
 		return JKT_STATUT_SERVER_NULL;
 }
 
+void CGame::setLocalDataTree(LocalDataTree* localDataTree) {
+	_localDataTree = localDataTree;
+}
+
 void CGame::setServerDataTree(ServeurDataTree* serverDataTree) {
 	_serverDataTree = serverDataTree;
+}
+
+LocalDataTree* CGame::getLocalDataTree() {
+	return _localDataTree;
 }
 
 ServeurDataTree* CGame::getServerDataTree() {
@@ -167,6 +176,9 @@ DataTree* CGame::getDataTree() {
 	else if(_clientDataTree != 0) {
 		return _clientDataTree;
 	}
+	else if(_localDataTree != 0) {
+			return _localDataTree;
+		}
 	else {
 		return 0;
 	}

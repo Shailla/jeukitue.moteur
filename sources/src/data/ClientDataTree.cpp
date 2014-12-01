@@ -46,7 +46,6 @@ const string& ClientDataTree::getClientName() const {
 }
 
 void ClientDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* branche) {
-
 }
 
 Branche* ClientDataTree::createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) {

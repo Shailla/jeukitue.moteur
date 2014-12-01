@@ -80,10 +80,15 @@ void DataTreeView::refreshTree() {
 	/* ************************************
 	 * Mise à jour de l'abre des données
 	 * ***********************************/
+	LocalDataTree* localDataTree = Game.getLocalDataTree();
 	ServeurDataTree* serverDataTree = Game.getServerDataTree();
 	ClientDataTree* clientDataTree = Game.getClientDataTree();
 
-	if(serverDataTree) {
+	if(localDataTree) {
+		_dataTree = localDataTree;
+		AG_WindowSetCaption(m_window, "Arbre des donnees - local");
+	}
+	else if(serverDataTree) {
 		_dataTree = serverDataTree;
 		AG_WindowSetCaption(m_window, "Arbre des donnees - serveur");
 	}

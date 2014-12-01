@@ -69,19 +69,25 @@ int PluginDataTreeProxy::getMapDataTree(lua_State *L) {
  *  - Return 1 <valeurId> : id of the new valeur
  */
 int PluginDataTreeProxy::createValeur(lua_State *L) {
-	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 3, LUA_PARAM_ARRAY_INT, LUA_PARAM_STRING, LUA_PARAM_STRING);
+//	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 3, LUA_PARAM_ARRAY_INT, LUA_PARAM_STRING, LUA_PARAM_STRING);
 
-	int index=1;
 	vector<int> brancheId;
 
-	int nbr = lua_tonumber(L, index++);
+	lua_pushnil(L);
 
-	for(int i=0 ; i<nbr ; i++) {
-		brancheId.push_back(lua_tonumber(L, index++));
+	while(lua_next(L, -2)) {
+	    if(lua_isnumber(L, -2)) {
+	        brancheId.push_back((int)lua_tonumber(L, -2));
+	    }
+	    lua_pop(L, 1);
 	}
+	lua_pop(L, 1);
 
 	const string valeurType = lua_tostring(L, 1);
-	const string valeurName = lua_tostring(L, 2);
+	lua_pop(L, 1);
+
+	const string valeurName = lua_tostring(L, 1);
+	lua_pop(L, 1);
 
 	DataTree* dataTree = Game.getDataTree();
 	const JktUtils::Data* valeur;
@@ -98,7 +104,7 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
 
 	dataTree->createValeur(brancheId, valeurName.c_str(), valeur);
 
-	return index;
+	return 0;
 }
 
 /**
@@ -114,10 +120,13 @@ int PluginDataTreeProxy::createBranche(lua_State *L) {
 
 	vector<int> brancheId;
 
-	int nbr = lua_tonumber(L, index++);
+	lua_pushnil(L);
 
-	for(int i=0 ; i<nbr ; i++) {
-		brancheId.push_back(lua_tonumber(L, index++));
+	while(lua_next(L, (index++)-2)) {  // <== here is your mistake
+	    if(lua_isnumber(L, (index++)-1)) {
+	        int i = (int)lua_tonumber(L, (index++)-1);
+	        //use number
+	    }
 	}
 
 	const string brancheName = lua_tostring(L, index++);

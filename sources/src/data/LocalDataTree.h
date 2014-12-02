@@ -18,12 +18,12 @@ using namespace std;
 #include "data/DataTree.h"
 
 class LocalDataTree : public DataTree {
-	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
 public:
 	LocalDataTree();
 	virtual ~LocalDataTree();
 
-	Branche* getBrancheByTmpId(const vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
+	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
+
 
 	/* *****************************************************
 	 * Serveur local actions

@@ -32,6 +32,7 @@ class CGame;
 #include "spatial/light/LightTarget.h"
 #include "spatial/light/LightMaker.h"
 #include "spatial/Mouve.h"
+#include "spatial/objet/Dirigeable.h"
 #include "spatial/geo/Geo.h"
 #include "spatial/geo/EntryPoint.h"
 #include "spatial/geo/SimpleGeo.h"
@@ -135,6 +136,13 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 
 	glEnableClientState( GL_VERTEX_ARRAY );
 
+	vector<Dirigeable*>::iterator iterDirigeable;
+
+	for(iterDirigeable=m_TabGeo.begin() ; iterDirigeable!=_dirigeables.end() ; iterDirigeable++) {
+		(*iterDirigeable)->Affiche();			// Affichage de l'objet géo
+
+	}
+
 	vector<CGeo*>::iterator iterGeo;
 
 	if(m_bSelection) {
@@ -177,6 +185,10 @@ void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objet
 	}
 
 	glDisable( GL_VERTEX_ARRAY );
+}
+
+void CMap::add(Dirigeable* dirigeable) {
+	_dirigeables.push_back(dirigeable);	// Ajoute geo à la liste des objets affichables
 }
 
 void CMap::add(CGeo* geo) {

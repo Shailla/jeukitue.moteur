@@ -28,7 +28,7 @@ class Dirigeable : public CMouve {
 	ValeurFloat* _positionZ;
 
 public:
-	Dirigeable(CMap *map, const vector<int> positionDataId, const vector<int> vitesseDataId);
+	Dirigeable(CMap *map);
 	~Dirigeable();
 
 	void Init();					// Initialisation de l'objet géométrique

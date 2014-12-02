@@ -72,6 +72,7 @@ class CGame;
 #include "spatial/materiau/Material.h"
 #include "spatial/IfstreamMap.h"
 #include "spatial/geo/Geo.h"				//Paramï¿½tres des objets gï¿½omï¿½triques
+#include "spatial/objet/Dirigeable.h"
 #include "spatial/Mouve.h"
 #include "spatial/geo/GeoObject.h"
 #include "Rocket.h"
@@ -1341,6 +1342,9 @@ void executeJktRequests() {
 		map->initGL();
 		map->initPlugins();
 		Game.changeActiveMap(map);
+
+		Dirigeable* dirigeable = new Dirigeable(0);
+		map->add(dirigeable);
 
 		// Définition des joueurs
 		Game.setPlayerList(localeGameDto->getPlayersMaxNumber());

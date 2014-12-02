@@ -31,8 +31,21 @@ class CGame;
 namespace JktMoteur
 {
 
-Dirigeable::Dirigeable(CMap *map, const vector<int> positionDataId, const vector<int> vitesseDataId) {
+Dirigeable::Dirigeable(CMap *map) {
 	_map = map;
+	DataTree* dataTree = Game.getLocalDataTree();
+
+	vector<int> brancheId;
+	brancheId.push_back(1);
+	brancheId.push_back(1);
+
+	_vitesseX = dataTree->getValeur(brancheId, 1);
+	_vitesseY = dataTree->getValeur(brancheId, 2);
+	_vitesseZ = dataTree->getValeur(brancheId, 3);
+
+	_positionX = dataTree->getValeur(brancheId, 4);
+	_positionY = dataTree->getValeur(brancheId, 5);
+	_positionZ = dataTree->getValeur(brancheId, 6);
 }
 
 Dirigeable::~Dirigeable(void) {
@@ -46,7 +59,9 @@ void Dirigeable::Affiche() {		// Fonction d'affichage de la porte
 	glPushMatrix();
 
 	glTranslatef(_positionX->getValeur(), _positionY->getValeur(), _positionZ->getValeur());	// Translation de la porte de la valeur de son ouverture
-	_map->Affiche();						// Affichage
+//	_map->Affiche();						// Affichage
+	GLUquadric* quadric = gluNewQuadric();
+	gluSphere(quadric, 0.05, 16, 16);
 
 	glPopMatrix();
 }

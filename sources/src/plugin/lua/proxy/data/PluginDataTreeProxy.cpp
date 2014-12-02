@@ -33,6 +33,7 @@ PluginDataTreeProxy* PluginDataTreeProxy::_this = 0;
 
 Lunar<PluginDataTreeProxy>::RegType PluginDataTreeProxy::methods[] = {
 		{"createValeur", &PluginDataTreeProxy::createValeur},
+		{"createBranche", &PluginDataTreeProxy::createBranche},
 		{0}
 };
 
@@ -112,7 +113,20 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
 
 	Valeur* valeur = dataTree->createValeur(brancheId, valeurName.c_str(), data);
 
-	return 0;
+	vector<int> valeurBrancheId = valeur->getBrancheId();
+	int valeurId = valeur->getValeurId();
+
+	lua_createtable(L, valeurBrancheId.size() + 1, 0);
+
+	for(int i=0; i<valeurBrancheId.size(); i++) {
+		lua_pushinteger(L, valeurBrancheId.at(i));
+		lua_rawseti (L, -2, i);
+	}
+
+	lua_pushinteger(L, valeurId);
+	lua_rawseti (L, -2, valeurBrancheId.size());
+
+	return 1;
 }
 
 /**
@@ -122,7 +136,7 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
  *  - Return 1 <brancheId> : id of the new branche
  */
 int PluginDataTreeProxy::createBranche(lua_State *L) {
-	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 3, LUA_PARAM_ARRAY_INT, LUA_PARAM_NUMBER, LUA_PARAM_STRING);
+//	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 3, LUA_PARAM_ARRAY_INT, LUA_PARAM_NUMBER, LUA_PARAM_STRING);
 
 	int index = 1;
 
@@ -147,7 +161,16 @@ int PluginDataTreeProxy::createBranche(lua_State *L) {
 
 	Branche* branche = dataTree->createBranche(parentBrancheId, brancheName.c_str());
 
-	return 2;
+	vector<int> brancheId = branche->getBrancheFullId();
+
+	lua_createtable(L, brancheId.size() + 1, 0);
+
+	for(int i=0; i<brancheId.size(); i++) {
+		lua_pushinteger(L, brancheId.at(i));
+		lua_rawseti (L, -2, i);
+	}
+
+	return 1;
 }
 
 } /* namespace JktPlugin */

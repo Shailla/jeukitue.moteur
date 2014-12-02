@@ -18,6 +18,7 @@ using namespace JktUtils;
 
 namespace JktMoteur {
 class CLight;
+class Dirigeable;
 class CMouve;
 class CMaterial;
 class CPorte;
@@ -31,6 +32,7 @@ class CMap : CGeo {
 
 	string _filename;						// Nom du fichier de la Map (par exemple "Monde.map.xml")
 	string _binariesDirectory;				// Répertoires des binaires de la Map (textures, plugins, ...)
+	vector<Dirigeable*> _dirigeables;
 	vector<CGeo*> m_TabGeo;					// Liste des objets géométriques
 	vector<CMouve*> m_TabMouve;				// Liste des objets nécessitant une actualisation (portes,...)
 	vector<EntryPoint> _entryPoints;		// Liste des points d'entrée des joueurs sur la Map
@@ -90,6 +92,7 @@ public:
 	 */
 	void afficheToutesTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex);
 
+	void add(Dirigeable* dirigeable);
 	void add(CGeo *geo);			// Ajoute un GeoObject à la map
 	void add(CMaterial *mat);		// Ajoute un matériau à la map
 	void add(CLight *light);		// Ajoute une lumière à la map

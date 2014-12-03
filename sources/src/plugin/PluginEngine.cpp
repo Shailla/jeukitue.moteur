@@ -12,6 +12,7 @@ using namespace std;
 #include "plugin/lua/proxy/PluginEventProxy.h"
 #include "plugin/lua/proxy/cfg/PluginConfigurationProxy.h"
 #include "plugin/lua/proxy/data/PluginDataTreeProxy.h"
+#include "plugin/lua/proxy/data/PluginDataValeurProxy.h"
 #include "plugin/lua/proxy/gui/PluginComboListProxy.h"
 #include "plugin/lua/proxy/gui/PluginBoxProxy.h"
 #include "plugin/lua/proxy/gui/PluginButtonProxy.h"
@@ -228,6 +229,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	Lunar<PluginTabProxy>::Register(L);
 	Lunar<PluginWindowProxy>::Register(L);
 	Lunar<PluginDataTreeProxy>::Register(L);
+	Lunar<PluginDataValeurProxy>::Register(L);
 
 
 	/* ******************************************************************************

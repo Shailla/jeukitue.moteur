@@ -20,6 +20,7 @@ using namespace std;
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/PluginEngine.h"
 #include "main/Game.h"
+#include "plugin/lua/proxy/data/PluginDataValeurProxy.h"
 
 #include "plugin/lua/proxy/data/PluginDataTreeProxy.h"
 
@@ -112,19 +113,9 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
 	}
 
 	Valeur* valeur = dataTree->createValeur(brancheId, valeurName.c_str(), data);
+	PluginDataValeurProxy* valeurProxy = new PluginDataValeurProxy(valeur);
 
-	vector<int> valeurBrancheId = valeur->getBrancheId();
-	int valeurId = valeur->getValeurId();
-
-	lua_createtable(L, valeurBrancheId.size() + 1, 0);
-
-	for(int i=0; i<valeurBrancheId.size(); i++) {
-		lua_pushinteger(L, valeurBrancheId.at(i));
-		lua_rawseti (L, -2, i);
-	}
-
-	lua_pushinteger(L, valeurId);
-	lua_rawseti (L, -2, valeurBrancheId.size());
+	Lunar<PluginDataValeurProxy>::push(L, valeurProxy);
 
 	return 1;
 }

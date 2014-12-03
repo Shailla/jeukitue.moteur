@@ -11,6 +11,7 @@ using namespace std;
 	#include <windows.h>
 #endif
 #include <GL/gl.h>
+#include <GL/glu.h>
 
 class CGame;
 
@@ -28,6 +29,8 @@ class CGame;
 
 #include "spatial/objet/Dirigeable.h"
 
+extern CGame Game;
+
 namespace JktMoteur
 {
 
@@ -36,6 +39,7 @@ Dirigeable::Dirigeable(CMap *map) {
 	DataTree* dataTree = Game.getLocalDataTree();
 
 	vector<int> brancheId;
+	brancheId.push_back(1);
 	brancheId.push_back(1);
 	brancheId.push_back(1);
 
@@ -52,7 +56,7 @@ Dirigeable::~Dirigeable(void) {
 }
 
 void Dirigeable::Init() {			// Initialisation de l'objet géométrique
-	_map->Init();
+//	_map->Init();
 }
 
 void Dirigeable::Affiche() {		// Fonction d'affichage de la porte
@@ -60,6 +64,7 @@ void Dirigeable::Affiche() {		// Fonction d'affichage de la porte
 
 	glTranslatef(_positionX->getValeur(), _positionY->getValeur(), _positionZ->getValeur());	// Translation de la porte de la valeur de son ouverture
 //	_map->Affiche();						// Affichage
+	glColor3f(0.0f, 1.0f, 1.0f);
 	GLUquadric* quadric = gluNewQuadric();
 	gluSphere(quadric, 0.05, 16, 16);
 

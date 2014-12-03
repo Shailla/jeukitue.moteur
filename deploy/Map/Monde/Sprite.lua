@@ -17,18 +17,26 @@ function onLoad()
 	mapDataTree = getDataTree();
 	
 	rootBrancheId = mapDataTree:createBranche({}, "root");
-	
 	mapBrancheId = mapDataTree:createBranche(rootBrancheId, "map");
-	
 	spriteBrancheId = mapDataTree:createBranche(mapBrancheId, "sprite1");
 
-	vitXValeurId = mapDataTree:createValeur(spriteBrancheId, "float", "vitX");
-	vitYValeurId = mapDataTree:createValeur(spriteBrancheId, "float", "vitY");
-	vitZValeurId = mapDataTree:createValeur(spriteBrancheId, "float", "vitZ");
+	vitX = mapDataTree:createValeur(spriteBrancheId, "float", "vitX");
+	vitY = mapDataTree:createValeur(spriteBrancheId, "float", "vitY");
+	vitZ = mapDataTree:createValeur(spriteBrancheId, "float", "vitZ");
 
-	posXValeurId = mapDataTree:createValeur(spriteBrancheId, "float", "posX");
-	posYValeurId = mapDataTree:createValeur(spriteBrancheId, "float", "posY");
-	posZValeurId = mapDataTree:createValeur(spriteBrancheId, "float", "posZ");	
+	posX = mapDataTree:createValeur(spriteBrancheId, "float", "posX");
+	posY = mapDataTree:createValeur(spriteBrancheId, "float", "posY");
+	posZ = mapDataTree:createValeur(spriteBrancheId, "float", "posZ");	
+	
+	traceIds();
+	
+	vitX:setValue(0.02);
+	vitY:setValue(0);
+	vitZ:setValue(0);
+
+	posX:setValue(0);
+	posY:setValue(0.5);
+	posZ:setValue(0.5);	
 	
 	subscribeEvents("refresh");
 end
@@ -37,12 +45,12 @@ function traceIds()
 	traceId("root", rootBrancheId);
 	traceId("mapBrancheId", mapBrancheId);
 	traceId("spriteBrancheId", spriteBrancheId);
-	traceId("vitXValeurId", vitXValeurId);
-	traceId("vitYValeurId", vitYValeurId);
-	traceId("vitZValeurId", vitZValeurId);
-	traceId("posXValeurId", posXValeurId);
-	traceId("posYValeurId", posYValeurId);
-	traceId("posZValeurId", posZValeurId);
+	traceId("vitXValeurId", vitX:getValeurFullId());
+	traceId("vitYValeurId", vitY:getValeurFullId());
+	traceId("vitZValeurId", vitZ:getValeurFullId());
+	traceId("posXValeurId", posX:getValeurFullId());
+	traceId("posYValeurId", posY:getValeurFullId());
+	traceId("posZValeurId", posZ:getValeurFullId());
 end
 
 function traceId(object, id)
@@ -64,19 +72,23 @@ function eventManager(event)
 		local actionId = event:getActionId();
 		if actionId == 1100 then
 			-- Vitesse du sprite
-			if posX < -1 then
-				vitX = 0.02;
-			elseif posX > 1 then
-				vitX = 0.02;
+			if posX:getValue() < -1 then
+				if vitX:getValue() < 0 then
+					vitX:setValue(0.02);
+				end
+			elseif posX:getValue() > 1 then
+				if vitX:getValue() > 0 then
+					vitX:setValue(-0.02);
+				end
 			end
 			
-			vitY = 0;
-			vitZ = 0;
+			vitY:setValue(0);
+			vitZ:setValue(0);
 			
 			-- Position du sprite
-			posX = posX + vitX;
-			posY = 0.5;
-			posZ = 0.5;
+			posX:setValue(posX:getValue() + vitX:getValue());
+			posY:setValue(0.5);
+			posZ:setValue(0.5);
 		end
 	end
 end

@@ -1,5 +1,5 @@
-#ifndef __JKT__PORTE_H
-#define __JKT__PORTE_H
+#ifndef __JKT__DIRIGEABLE_H
+#define __JKT__DIRIGEABLE_H
 
 #include "spatial/Mouve.h"
 

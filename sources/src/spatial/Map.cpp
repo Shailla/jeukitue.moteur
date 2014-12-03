@@ -138,7 +138,7 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 
 	vector<Dirigeable*>::iterator iterDirigeable;
 
-	for(iterDirigeable=m_TabGeo.begin() ; iterDirigeable!=_dirigeables.end() ; iterDirigeable++) {
+	for(iterDirigeable=_dirigeables.begin() ; iterDirigeable!=_dirigeables.end() ; iterDirigeable++) {
 		(*iterDirigeable)->Affiche();			// Affichage de l'objet géo
 
 	}

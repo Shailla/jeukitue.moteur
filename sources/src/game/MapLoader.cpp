@@ -88,7 +88,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		cout << endl << "Scaling du skin";
-		pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
+		pMapJoueur->Scale( -0.6f, 0.6f, 0.6f );
 
 		// Création du joueur
 		console->println(ConsoleView::COT_INFO, "Creation du joueur principal...");
@@ -110,14 +110,14 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 	 ***************************************/
 	{
 		// Chargement du skin
-		console->println(ConsoleView::COT_INFO, "Lecture du skin 'GrosBonhomme'...");
-		cout << "\nLecture du skin 'GrosBonhomme'...";
+		console->println(ConsoleView::COT_INFO, "Lecture du skin 'JoueurTex'...");
+		cout << "\nLecture du skin 'JoueurTex'...";
 
-		CMap *pMapJoueurJulien = new CMap(0, "GrosBonhomme");
+		CMap *pMapJoueurJulien = new CMap(0, "JoueurTex");
 		pMapJoueurJulien->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		cout << endl << "Scaling du skin";
-		pMapJoueurJulien->Scale( -0.10f, 0.10f, 0.10f );
+		pMapJoueurJulien->Scale( -0.6f, 0.6f, 0.6f );
 
 		// Création d'un second joueur
 		console->println(ConsoleView::COT_INFO, "Creation du second joueur...");
@@ -150,7 +150,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		cout << endl << "Scaling du skin";
-		pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
+		pMapJoueur->Scale( -0.6f, 0.6f, 0.6f );
 
 		// Création d'un troisième joueur
 		console->println(ConsoleView::COT_INFO, "Creation du troisieme joueur...");

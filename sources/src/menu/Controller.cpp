@@ -145,6 +145,15 @@ void Controller::executeAction(AG_Event *event) {
 			_agarView->showMenuView(Viewer::CONFIGURATION_COMMANDES_VIEW);
 			break;
 
+		case showConfigurationAdvancedViewAction:
+			{
+				_agarView->hideAllMenuViews();
+
+				PluginActionEvent evt(Controller::Action::showConfigurationAdvancedViewAction);
+				_pluginEngine->dispatchEvent(evt);
+			}
+			break;
+
 		case WaitUserCommandChoice:
 		{
 			int commandId = AG_INT(2);

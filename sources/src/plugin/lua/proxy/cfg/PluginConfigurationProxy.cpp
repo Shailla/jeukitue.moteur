@@ -118,6 +118,17 @@ int PluginConfigurationProxy::getAvailableAudioOutputs(lua_State *L) {
 }
 
 /**
+ * Enregistre la configuration courante du jeu.
+ */
+int PluginConfigurationProxy::saveConfiguration(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+		Config.Ecrit();
+	}
+
+	return 0;
+}
+
+/**
  * Retourne la valeur d'un paramètre global de configuration du moteur.
  *    - Param 1 : nom du paramètre demandé
  *    - Return 1 : valeur du paramètre

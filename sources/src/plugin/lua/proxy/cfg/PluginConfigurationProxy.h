@@ -36,6 +36,8 @@ class PluginConfigurationProxy {
 	static const char* CST_AGAR_VERSION;
 
 public:
+	static int saveConfiguration(lua_State *L);
+
 	static int getScreenSize(lua_State *L);
 
 	/** Get the list of the available audio drivers on the computer */

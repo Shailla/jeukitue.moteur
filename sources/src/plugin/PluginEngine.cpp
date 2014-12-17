@@ -203,6 +203,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	lua_register(L, "subscribeEvents", &LuaGlobalMethods::subscribeEvents);
 
 	// Fonctions pour la configuration
+	lua_register(L, "saveConfiguration", &PluginConfigurationProxy::saveConfiguration);
 	lua_register(L, "getScreenSize", &PluginConfigurationProxy::getScreenSize);
 	lua_register(L, "getAvailableAudioDrivers", &PluginConfigurationProxy::getAvailableAudioDrivers);
 	lua_register(L, "getAvailableAudioRecordDrivers", &PluginConfigurationProxy::getAvailableAudioRecordDrivers);

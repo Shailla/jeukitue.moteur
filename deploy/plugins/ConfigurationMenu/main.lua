@@ -14,8 +14,9 @@ audioButton = 0
 videoButton = 0
 reseauButton = 0
 centralisateurButton = 0
-pluginsButton = 0
 agarButton = 0
+advancedConfigurationButton = 0
+pluginsButton = 0
 
 function onLoad()
 	log("Version Lua : " .. _VERSION)
@@ -47,11 +48,14 @@ function onLoad()
 	centralisateurButton = window:addButton("Centralisateur");
 	centralisateurButton:expandHoriz();
 	
-	pluginsButton = window:addButton("Plugins");
-	pluginsButton:expandHoriz();
-	
 	agarButton = window:addButton("Configuration Agar");
 	agarButton:expandHoriz();
+	
+	advancedConfigurationButton = window:addButton("Configuration avancée");
+	advancedConfigurationButton:expandHoriz();
+
+	pluginsButton = window:addButton("Plugins");
+	pluginsButton:expandHoriz();
 	
 	-- Boutons
 	window:addSeparator();
@@ -79,7 +83,7 @@ function eventManager(event)
 		
 		log("Action event : "..actionId);
 		
-		if actionId == 1004 then		-- Show configuration audio
+		if actionId == 1004 then		-- Show configuration menu
 			log("SHOW");
 			window:show();
 		elseif actionId == 1001 then	-- Hide menu
@@ -97,7 +101,7 @@ function eventManager(event)
 			
 		elseif source == joueurButton then
 			window:hide();
-			pushEvent(1007);	-- Show main menu
+			pushEvent(1007);
 		
 		elseif source == commandesButton then
 			window:hide();
@@ -119,13 +123,17 @@ function eventManager(event)
 			window:hide();
 			pushEvent(1010);
 			
-		elseif source == pluginsButton then
-			window:hide();
-			pushEvent(1011);
-			
 		elseif source == agarButton then
 			window:hide();
 			pushEvent(1012);
+		
+		elseif source == advancedConfigurationButton then
+			window:hide();
+			pushEvent(1019);
+		
+		elseif source == pluginsButton then
+			window:hide();
+			pushEvent(1011);
 			
 		-- Evênement non-pris en compte
 		else

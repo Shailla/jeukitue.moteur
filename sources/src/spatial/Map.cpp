@@ -281,12 +281,10 @@ void CMap::add( CNavette *navette ) {		// Une navette est avant tout un objet gé
 }
 
 void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
-	if(!positionPlayer) {
-		float positionPlayerDefault[3];
-		positionPlayerDefault[0] = 0.0;
-		positionPlayerDefault[1] = 0.0;
-		positionPlayerDefault[2] = 0.0;
+	float positionPlayerDefault[3];
 
+	if(!positionPlayer) {
+		player->getPosition(positionPlayerDefault);
 		positionPlayer = positionPlayerDefault;
 	}
 

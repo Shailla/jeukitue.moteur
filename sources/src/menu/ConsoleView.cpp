@@ -70,6 +70,11 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	AG_Label* label = AG_LabelNewPolledMT(scrollInfo, 0, &_agMutex, "Map ouverte : %s", _mapOuverteName);
 	AG_LabelSizeHint(label, 1, "Map ouverte : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
+	// Nom du joueur courant
+	memset(_activePlayerName, '\0', sizeof(_activePlayerName));
+	label = AG_LabelNewPolledMT(scrollInfo, 0, &_agMutex, "Joueur : %s", _activePlayerName);
+	AG_LabelSizeHint(label, 1, "Joueur : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
 	// Distance parcourue par le tir laser
 	label = AG_LabelNewPolledMT(scrollInfo, 0, &_agMutex, "Distance laser : %f", &delta);
 	AG_LabelSizeHint(label, 1, "Distance laser : xxxxxx");
@@ -155,7 +160,13 @@ void ConsoleView::println(ConsoleOutputType type, const string& texte) {
 
 void ConsoleView::setMapOuverteName(const std::string& mapName) {
 	AG_MutexLock(&_agMutex);
-	mapName.copy(_mapOuverteName, sizeof(_mapOuverteName));
+	JktUtils::StringUtils::toChars(mapName, _mapOuverteName, sizeof(_mapOuverteName));
+	AG_MutexUnlock(&_agMutex);
+}
+
+void ConsoleView::setActivePlayerName(const std::string& activePlayerName) {
+	AG_MutexLock(&_agMutex);
+	JktUtils::StringUtils::toChars(activePlayerName, _activePlayerName, sizeof(_activePlayerName));
 	AG_MutexUnlock(&_agMutex);
 }
 

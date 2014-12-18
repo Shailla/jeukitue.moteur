@@ -1108,8 +1108,10 @@ void play_handle_key_down( SDL_Event *event ) {
 					Game._pTabIndexPlayer->Suivant(numMainPlayer);
 				}
 
-				// Sï¿½lectionne le joueur en tant que joueur principal
-				Game.Erwin(Game._pTabIndexPlayer->operator [](numMainPlayer));
+				// Sélectionne le joueur en tant que joueur principal
+				CPlayer* erwin = Game._pTabIndexPlayer->operator [](numMainPlayer);
+				Game.Erwin(erwin);
+				((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setActivePlayerName(erwin->nom());
 			}
 			break;
 
@@ -1168,7 +1170,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 		return false;
 	}
 
-	// Crï¿½ation joueurs
+	// Création joueurs
 	Game.setPlayerList( 10 );	// Indique que la partie peut contenir jusqu'ï¿½ 10 joueurs
 
 
@@ -1181,12 +1183,12 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	mapJoueurPrincipal.append("@Joueur\\").append(Config.Joueur.mapName);
 
 	CMap *pMapJoueur = new CMap(0, mapJoueurPrincipal);
-	pMapJoueur->EchangeXZ();					// Ajuste les coordonnï¿½es
-	pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
+	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
+	pMapJoueur->Scale( -0.06f, 0.06f, 0.06f );
 
 	CMap *pMapJoueur2 = new CMap(0, nomFichierJoueur);
-	pMapJoueur2->EchangeXZ();					// Ajuste les coordonnï¿½es
-	pMapJoueur2->Scale( -0.10f, 0.10f, 0.10f );
+	pMapJoueur2->EchangeXZ();					// Ajuste les coordonnées
+	pMapJoueur2->Scale( -0.06f, 0.06f, 0.06f );
 
 	cout << endl;
 
@@ -1195,7 +1197,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	 * Chargement de sons pour les joueurs
 	 **************************************/
 
-	// Rï¿½cupï¿½ration des ressources de cris des personnages
+	// Récupération des ressources de cris des personnages
 	string cri1 = "@Bruit\\cri_1.wav";
 	JktUtils::RessourcesLoader::getFileRessource(cri1);
 
@@ -1204,25 +1206,25 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 
 
 	/***********************************
-	 * Crï¿½ation des joueurs dans la Map
+	 * Création des joueurs dans la Map
 	 ***********************************/
 
-	// Crï¿½ation du joueur principal
-	CPlayer *erwin = new CPlayer();				// Crï¿½e le joueur principal (celui gï¿½rï¿½ par le clavier et l'ï¿½cran)
-	erwin->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravitï¿½
+	// Création du joueur principal
+	CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
+	erwin->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	erwin->changeContact( contactPlayer );		// Associe une fonction de gestion des contacts avec la map
 	erwin->Skin( pMapJoueur );
 	erwin->setCri( cri1.c_str() );				// Cri du joueur
 	erwin->nom( "ERWIN" );
-	erwin->init();								// Initialise certaines donnï¿½es
+	erwin->init();								// Initialise certaines données
 	erwin->choiceOneEntryPoint();
 	Game.Erwin( erwin );						// Indique que 'erwin' est le joueur principal
-	Game._pTabIndexPlayer->Ajoute( 0, erwin );	// Ajoute le joueur principal ï¿½ la liste des joueurs
+	Game._pTabIndexPlayer->Ajoute( 0, erwin );	// Ajoute le joueur principal à la liste des joueurs
 
 	// Crï¿½ation d'un second joueur
 	CPlayer *julien;
 	julien = new CPlayer();						// Crï¿½e un autre joueur
-	julien->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravitï¿½
+	julien->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	julien->changeContact( contactPlayer );		// Associe une fonction pour les contacts avec la map
 	julien->Skin( pMapJoueur2 );
 	julien->setCri( cri1.c_str() );

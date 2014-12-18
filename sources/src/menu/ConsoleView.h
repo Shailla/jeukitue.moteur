@@ -21,6 +21,7 @@ class ConsoleView : public View
 	char _commandToExecute[200];
 
 	char _mapOuverteName[30];
+	char _activePlayerName[30];
 	Uint32 _dureeCalcules, _dureeDisplay;
 	AG_Mutex _agMutex;
 
@@ -40,6 +41,7 @@ public:
 	void println(ConsoleOutputType type, const string& texte);
 	string getCommandAndClearCommandLine(void);
 	void setMapOuverteName(const std::string& mapName);
+	void setActivePlayerName(const std::string& activePlayerName);
 	void setDureeCalcules(Uint32 ecart);
 	void setDureeDisplay(Uint32 ecart);
 

@@ -113,7 +113,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		console->println(ConsoleView::COT_INFO, "Lecture du skin 'JoueurTex'...");
 		cout << "\nLecture du skin 'JoueurTex'...";
 
-		CMap *pMapJoueurJulien = new CMap(0, "JoueurTex");
+		CMap *pMapJoueurJulien = new CMap(0, "@Joueur\\joueurTex");
 		pMapJoueurJulien->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		cout << endl << "Scaling du skin";

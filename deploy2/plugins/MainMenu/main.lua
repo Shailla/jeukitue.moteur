@@ -9,9 +9,9 @@ window = 0
 sceneButton = 0
 multiButton = 0
 configurationButton = 0
-quitMapButton = 0
 aboutButton = 0
 debugButton = 0
+quitMapButton = 0
 quitButton = 0
 
 function onLoad()
@@ -35,9 +35,6 @@ function onLoad()
 	configurationButton = window:addButton("Configuration");
 	configurationButton:expandHoriz();
 	
-	quitMapButton = window:addButton("Quitter la partie");
-	quitMapButton:expandHoriz();
-	
 	aboutButton = window:addButton("A propos");
 	aboutButton:expandHoriz();
 	
@@ -49,6 +46,9 @@ function onLoad()
 
 	backButton = window:addButton("Retour au jeu");
 	backButton:expandHoriz();
+
+	quitMapButton = window:addButton("Quitter la partie");
+	quitMapButton:expandHoriz();
 	
 	quitButton = window:addButton("Quitter");
 	quitButton:expandHoriz();

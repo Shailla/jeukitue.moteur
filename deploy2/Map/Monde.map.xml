@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Map>
+	<Plugins>
+		<Load Nom="Sprite" />
+	</Plugins>	
+	<Imports>
+		<Import Nom="Hangards" />
+		<Import Nom="Hangards">
+			<Translate X="50.0" Y="0.0" Z="0.0" />
+			<Scale X="1.0" Y="1.0" Z="1.0" />
+		</Import>
+	</Imports>
+    <EntryPoints>
+        <EntryPoint>
+            <Position X="-0.064221" Y="1.46471" Z="-2.60413" />
+        </EntryPoint>
+        <EntryPoint>
+            <Position X="-19.7477" Y="0" Z="-7.52718" />
+        </EntryPoint>
+    </EntryPoints>
+</Map>

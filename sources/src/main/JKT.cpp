@@ -492,6 +492,8 @@ void display() {		// Fonction principale d'affichage
 	/* **********************************************************
 	 * Mise en place de la perspective
 	 * *********************************************************/
+	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );					// Spécifie la couleur de vidage du tampon chromatique
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
@@ -499,8 +501,6 @@ void display() {		// Fonction principale d'affichage
 	glEnable( GL_DEPTH_TEST );
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
-
-	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 	if(Game.getMap()) {		// Si il y a une map a afficher
 		CPlayer* erwin = Game.Erwin();
@@ -1721,7 +1721,7 @@ void boucle() {
 
 
 		/* ***********************************************************
-		 * Affiche la scï¿½ne
+		 * Affiche la scène
 		 * **********************************************************/
 
 		// Dessine la scène 3D et les menus
@@ -1747,7 +1747,6 @@ int main(int argc, char** argv) {
 		}
 	}
 
-
 	atexit( quit_JKT );
 
 	string fichier;
@@ -1759,7 +1758,7 @@ int main(int argc, char** argv) {
 	cout << "\n\tRESUME DE L'INITIALISATION VIDEO";
 	Config.Display.Init();	// Initialisation SDL, OpenGL et Agar
 
-	Config.Reseau.Init();	// Initialisation du rï¿½seau
+	Config.Reseau.Init();	// Initialisation du réseau
 	_networkManager = new NetworkManager();
 
 	Config.Audio.Init();	// Initialisation audio

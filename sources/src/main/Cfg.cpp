@@ -890,9 +890,9 @@ void CCfg::CDisplay::InitOpenGL() {
 	cout << "\nExtensions openGL disponibles :\t" << glGetString(GL_EXTENSIONS);
 	cout << "\nVersion GLU :\t\t" << gluGetString(GLU_VERSION);
 
-	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );	// Vide le tampon chromatique
+	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );					// Spécifie la couleur de vidage du tampon chromatique
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-	glShadeModel( GL_SMOOTH );				// Mode dégradé pour le remplissage des polynomes
+	glShadeModel( GL_SMOOTH );								// Mode dégradé pour le remplissage des polynomes
 	glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
 	glViewport( 0, 0, X, Y );
 

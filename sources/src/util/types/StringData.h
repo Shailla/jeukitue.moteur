@@ -22,10 +22,12 @@ public:
 	StringData(std::istringstream& in);
 	virtual ~StringData();
 
-	void serialize(std::ostringstream& out);
+	void serialize(std::ostringstream& out) const;
 	void toString(std::ostringstream& out) const;
 
 	const std::string& getValue() const;
+
+	Data& operator=(const Data& data);
 };
 
 }

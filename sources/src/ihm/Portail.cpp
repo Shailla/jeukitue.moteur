@@ -14,6 +14,7 @@ class CGame;
 class CGeoObject;
 class CPorte;
 
+#include "main/divers.h"
 #include "util/Trace.h"
 #include "spatial/IfstreamMap.h"
 #include "main/Focus.h"
@@ -22,15 +23,13 @@ class CPorte;
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
 
-void quit_game( int code );
-
 namespace JktMenu
 {
 
 void quit_JKTici(void *var)
 {
-TRACE().p( TRACE_MENU, "quit_JKTici(%x)", var );
-	quit_game( 0 );
+TRACE().debug("quit_JKTici(%x)", var);
+	quit_game("Qui game from old gui action", 0);
 }
 
 #include "ihm/Portail.h"

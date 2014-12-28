@@ -12,6 +12,8 @@ using namespace std;
 #include "SDL.h"
 #include "SDL_net.h"
 
+#include "util/Trace.h"
+#include "util/TraceMethod.h"
 #include "util/Erreur.h"
 #include "util/V3D.h"
 #include "util/TableauIndex.cpp"
@@ -22,7 +24,6 @@ using namespace std;
 #include "reseau/Server.h"
 #include "main/Clavier.h"
 #include "spatial/contact.h"
-#include "util/Trace.h"
 #include "main/Game.h"
 
 #include "reseau/enumReseau.h"
@@ -39,7 +40,7 @@ namespace JktNet
 
 CServer::CServer()
 {
-TRACE().p( TRACE_RESEAU, "CServer::CServer() begin%T", this );
+TRACE().debug("CServer::CServer() begin%T", this );
 	maxPlayers = 10;					// 10 joueurs maxi pas défaut
 	m_uNbrPlayers = 0;					// Aucun joueur
 	nom = "ServerJKT";					// Nom de serveur par défaut
@@ -51,14 +52,14 @@ TRACE().p( TRACE_RESEAU, "CServer::CServer() begin%T", this );
 
 	_serverUdpInterlocutor = 0;
 
-TRACE().p( TRACE_RESEAU, "CServer::CServer() end%T", this );
+TRACE().debug("CServer::CServer() end%T", this );
 }
 
 CServer::~CServer() {
 }
 
 void CServer::disconnect() {
-TRACE().p( TRACE_RESEAU, "CServer::~CServer() begin%T", this );
+TRACE().debug("CServer::~CServer() begin%T", this );
 	SDLNet_FreeSocketSet( socketSet );		// Libère le socket set du serveur
 	socketSet = 0;
 
@@ -66,7 +67,7 @@ TRACE().p( TRACE_RESEAU, "CServer::~CServer() begin%T", this );
 		_serverUdpInterlocutor->close();
 
 	delete _serverUdpInterlocutor;
-TRACE().p( TRACE_RESEAU, "CServer::~CServer() end%T", this );
+TRACE().debug("CServer::~CServer() end%T", this );
 }
 
 CPlayer *CServer::GetPlayer( int pos )
@@ -79,7 +80,7 @@ StatutServer CServer::getStatut()
 {	return m_Statut;		}
 
 int CServer::AjoutePlayer( CPlayer *player ) {
-TRACE().p( TRACE_RESEAU, "CServer::AjoutePlayer(player=%x)%T", player, this );
+TRACE().debug("CServer::AjoutePlayer(player=%x)%T", player, this );
 
 	int nbr;
 	if( m_uNbrPlayers<this->maxPlayers ) {
@@ -90,7 +91,7 @@ TRACE().p( TRACE_RESEAU, "CServer::AjoutePlayer(player=%x)%T", player, this );
 		nbr = -1;
 	}
 
-TRACE().p( TRACE_RESEAU, "CServer::AjoutePlayer() -> %d end%T", nbr, this );
+TRACE().debug("CServer::AjoutePlayer() -> %d end%T", nbr, this );
 	return nbr;
 }
 
@@ -122,7 +123,7 @@ void CServer::decodeServerUDP( CSPA *spa ) {
 			break;
 
 		default:
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Paquet inconnu decodeServerUDP (" << code1 << ")";
+			TRACE().error("Paquet inconnu decodeServerUDP (%d)", code1);
 			break;
 		}
 	}
@@ -140,13 +141,14 @@ void CServer::decodeProxyPlayer( CPlayer *player ) {
 			break;
 
 		default:
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet PROXYPLAYER inconnu";
+			TRACE().warn("Reception d'un paquet PROXYPLAYER inconnu");
 			break;
 		}
 	}
 }
 
 bool CServer::acceptPlayer( CSPA *spa ) {
+	TRACEMETHOD();
 	bool result = true;
 	char nomNewPlayer[50];
 	CPlayer *player, *player2;
@@ -163,8 +165,8 @@ bool CServer::acceptPlayer( CSPA *spa ) {
 
 	if( result ) {
 		if( SDLNet_UDP_AddSocket( socketSet, player->spa.getSocket() )==-1 ) {
-TRACE().p( TRACE_ERROR, "CServer::acceptPlayer() : %s%T", SDLNet_GetError(), this );
-			cout << endl << "SDLNet_AddSocket : " << SDLNet_GetError();
+TRACE().debug("CServer::acceptPlayer() : %s%T", SDLNet_GetError(), this );
+			TRACE().error("SDLNet_AddSocket : ", SDLNet_GetError());
 
 			player->spa.close();
 
@@ -242,25 +244,25 @@ void CServer::switchRecapServer( CPlayer *player, Uint16 code2 ) {
 		break;
 
 	default:
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet RECAP inconnu";
+		TRACE().error("Reception d'un paquet RECAP inconnu");
 		break;
 	}
 }
 
 void CServer::switchInfo( CSPA *spa, Uint16 code2 ) {	// Réception d'une demande d'info serveur
-TRACE().p( TRACE_RESEAU, "CServer::switchInfo(spa=%x,code2=%d) begin%T", spa, code2, this );
+TRACE().debug("CServer::switchInfo(spa=%x,code2=%d) begin%T", spa, code2, this );
 	switch( code2 ) {
 	case CLIENT_NULL:
-		cout << endl << "Server says : Reception d'une demande d'info serveur";
+		TRACE().info("Server says : Reception d'une demande d'info serveur");
 		spa->getPacketOut()->channel = SDLNet_UDP_Bind( spa->getSocket(), -1, &spa->getPacketIn()->address );
 
 		if( spa->getPacketOut()->channel==-1 ) {
-			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Reponse info serveur impossible";
+			TRACE().error("SDLNet_UDP_Bind : ", SDLNet_GetError());
+			TRACE().error("Reponse info serveur impossible");
 		}
 		else {
 			// Envoie des infos serveur au client
-			cout << endl << "Server says : Emmission des infor serveur";
+			TRACE().info("Server says : Emmission des infor serveur");
 
 			spa->init();
 			spa->addCode( SERVER_INFO, SERVER_ACK );
@@ -271,31 +273,31 @@ TRACE().p( TRACE_RESEAU, "CServer::switchInfo(spa=%x,code2=%d) begin%T", spa, co
 		break;
 
 	default:
-TRACE().p( TRACE_ERROR, "CServer::switchInfo() : Packet inconnu%T", this );
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet inconnu 1";
+TRACE().debug("CServer::switchInfo() : Packet inconnu%T", this );
+		TRACE().info("Reception d'un paquet inconnu");
 		break;
 	}
-TRACE().p( TRACE_RESEAU, "CServer::switchInfo() end%T", this );
+TRACE().debug("CServer::switchInfo() end%T", this );
 }
 
 void CServer::switchPing( CSPA *spa, Uint16 code2 )	// Réception d'une demande de ping
 {
-TRACE().p( TRACE_RESEAU, "CServer::switchPing(spa=%x,code2=%d) begin%T", spa, code2, this );
+TRACE().debug("CServer::switchPing(spa=%x,code2=%d) begin%T", spa, code2, this );
 	switch( code2 ) {
 	case CLIENT_NULL:
 		if( spa->getPacketIn()->len==8 ) {
-			cout << endl << "Server says : Reception d'une demande de ping";
+			TRACE().info("Server says : Reception d'une demande de ping");
 			spa->getPacketOut()->channel = SDLNet_UDP_Bind( spa->getSocket(), -1, &spa->getPacketIn()->address );
 
 			if( spa->getPacketOut()->channel==-1 ) {
-				cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
-				cerr << endl << __FILE__ << ":" << __LINE__ << " Reponse ping impossible";
+				TRACE().error("SDLNet_UDP_Bind : %s", SDLNet_GetError());
+				TRACE().error("Reponse ping impossible");
 			}
 			else {
-TRACE().p( TRACE_INFO, "CServer::switchPing() : Envoi reponse ping%T", this );
+TRACE().debug("CServer::switchPing() : Envoi reponse ping%T", this );
 					// Envoie de la réponse au ping
 				Uint32 time;
-				cout << endl << "Server says : Emmission de la reponse au ping";
+				TRACE().info("Server says : Emmission de la reponse au ping");
 				time = spa->read32();
 
 				spa->init();
@@ -307,33 +309,32 @@ TRACE().p( TRACE_INFO, "CServer::switchPing() : Envoi reponse ping%T", this );
 		break;
 
 	default:
-		cerr << endl << __FILE__ << ":" << __LINE__ << "Reception d'un paquet inconnu 2";
+		TRACE().warn("Reception d'un paquet inconnu");
 		break;
 	}
-TRACE().p( TRACE_RESEAU, "CServer::switchPing() end%T", this );
+TRACE().debug("CServer::switchPing() end%T", this );
 }
 
 void CServer::switchJTG( CSPA *spa, Uint16 code2 )	// Réception d'une demande de JTG
 {
-TRACE().p( TRACE_RESEAU, "CServer::switchJTG(spa=%x,code2=%d) begin%T", spa, code2, this );
+TRACE().debug("CServer::switchJTG(spa=%x,code2=%d) begin%T", spa, code2, this );
 	switch( code2 )
 	{
 	case CLIENT_NULL:
-		cout << endl << "Server says : Reception de demande a se joindre a la partie";
+		TRACE().info("Server says : Reception de demande a se joindre a la partie");
 		if( m_Statut!=JKT_STATUT_SERVER_PLAY )	// S'il n'y a pas de partie en cours
 		{
 			spa->getPacketOut()->channel = SDLNet_UDP_Bind( spa->getSocket(), -1, &spa->getPacketIn()->address );
-			if( spa->getPacketOut()->channel==-1 )
-			{
-TRACE().p( TRACE_ERROR, "CServer::switchJTG() SDLNet_UDP_Bind : %s%T", SDLNet_GetError(), this );
-				cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
-				cerr << endl << __FILE__ << ":" << __LINE__ << " Reponse ping impossible";
+
+			if( spa->getPacketOut()->channel==-1 ) {
+TRACE().debug("CServer::switchJTG() SDLNet_UDP_Bind : %s%T", SDLNet_GetError(), this );
+				TRACE().error("SDLNet_UDP_Bind : %s", SDLNet_GetError());
+				TRACE().error("Reponse ping impossible");
 			}
-			else
-			{
-TRACE().p( TRACE_INFO, "CServer::switchJTG() : Pas de partie en cours%T", this );
+			else {
+TRACE().debug("CServer::switchJTG() : Pas de partie en cours%T", this );
 					// Envoie d'une erreur signalant qu'il n'y a pas de partie en cours
-				cout << endl << "Demande refusee, pas de partie en cours";
+				TRACE().info("Demande refusee, pas de partie en cours");
 				spa->init();
 				spa->addCode( SERVER_JTG, SERVER_ERROR );
 				spa->add16( UDP_ERROR_NOGAME );
@@ -345,16 +346,14 @@ TRACE().p( TRACE_INFO, "CServer::switchJTG() : Pas de partie en cours%T", this )
 		if( m_uNbrPlayers>=maxPlayers )	// Si le nbr max de joueurs est atteint
 		{
 			spa->getPacketOut()->channel = SDLNet_UDP_Bind( spa->getSocket(), -1, &spa->getPacketIn()->address );
-			if( spa->getPacketOut()->channel==-1 )
-			{
-TRACE().p( TRACE_ERROR, "CServer::switchJTG() SDLNet_UDP_Bind : %s%T", SDLNet_GetError(), this );
-				cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind : " << SDLNet_GetError();
-				cerr << endl << __FILE__ << ":" << __LINE__ << " Reponse ping impossible";
+			if( spa->getPacketOut()->channel==-1 ) {
+TRACE().debug("CServer::switchJTG() SDLNet_UDP_Bind : %s%T", SDLNet_GetError(), this );
+				TRACE().error("SDLNet_UDP_Bind : %s", SDLNet_GetError());
+				TRACE().error("Reponse ping impossible");
 			}
-			else
-			{
-TRACE().p( TRACE_INFO, "CServer::switchJTG() : Serveur sature%T", this );
-				cout << endl << "Serveur saturé";
+			else {
+TRACE().debug("CServer::switchJTG() : Serveur sature%T", this );
+				TRACE().info("Serveur saturé");
 				spa->init();
 				spa->addCode( SERVER_JTG, SERVER_ERROR );
 				spa->add16( UDP_ERROR_SATURE );
@@ -365,16 +364,16 @@ TRACE().p( TRACE_INFO, "CServer::switchJTG() : Serveur sature%T", this );
 		}
 
 		if( acceptPlayer( spa ) )		// Ajoute le client associé à spa en tant que joueur
-			cout << endl << "Demande acceptée";
+			TRACE().info("Demande acceptée");
 		else
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Demande infructueuse";
+			TRACE().error(" Demande infructueuse");
 		break;
 	default:
-TRACE().p( TRACE_ERROR, "CServer::switchJTG() : Packet inconnu%T", this );
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet inconnu 3";
+TRACE().debug("CServer::switchJTG() : Packet inconnu%T", this );
+		TRACE().error("Reception d'un paquet inconnu 3");
 		break;
 	}
-TRACE().p( TRACE_RESEAU, "CServer::switchJTG() end%T", this );
+TRACE().debug("CServer::switchJTG() end%T", this );
 }
 
 NotConnectedInterlocutor2* CServer::connect(Uint16 port, Uint16 portTree) {
@@ -385,10 +384,10 @@ NotConnectedInterlocutor2* CServer::connect(Uint16 port, Uint16 portTree) {
 
 	bool result = true;
 	NotConnectedInterlocutor2* notConnectedServerInterlocutor = 0;
-	cout << endl << "Ouverture d'un serveur sur port " << port << " et portTree " << portTree;
+	TRACE().info("Ouverture d'un serveur sur port %d et portTree %d", port, portTree);
 
 	if( !spaMaitre.openInServerMode( port ) ) {
-TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
+TRACE().debug("CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 		result = false;
 	}
 
@@ -396,8 +395,8 @@ TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 		socketSet = SDLNet_AllocSocketSet( 20 );	// Nombre maxi de sockets à écouter
 
 		if( !socketSet ) {
-TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
-			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AllocSocketSet: " << SDLNet_GetError();
+TRACE().debug("CServer::ouvre() : %s %T", SDLNet_GetError(), this );
+			TRACE().error("SDLNet_AllocSocketSet : %s", SDLNet_GetError());
 
 			spaMaitre.close();
 
@@ -407,7 +406,7 @@ TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 
 	if(result) {
 		if( SDLNet_UDP_AddSocket( socketSet, spaMaitre.getSocket() )==-1 ) {
-TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
+TRACE().debug("CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 			disconnect();
 
 			result = false;
@@ -424,7 +423,7 @@ TRACE().p( TRACE_ERROR, "CServer::ouvre() : %s %T", SDLNet_GetError(), this );
 		notConnectedServerInterlocutor = _serverUdpInterlocutor->connect();
 	}
 
-TRACE().p( TRACE_RESEAU, "CServer::ouvre() -> %b end%T", result, this );
+TRACE().debug("CServer::ouvre() -> %b end%T", result, this);
 	return notConnectedServerInterlocutor;	// Ouverture serveur réussie
 }
 

@@ -14,22 +14,27 @@ extern "C" {
 #include "lauxlib.h"
 }
 
+class DataTree;
+
 namespace JktPlugin {
 
 class PluginDataTreeProxy {
-	static PluginDataTreeProxy* _this;
+	DataTree* _dataTree;
 public:
 	static const char className[];
 	static Lunar<PluginDataTreeProxy>::RegType methods[];
 
-	static int getMapDataTree(lua_State *L);
-	static PluginDataTreeProxy* getInstance();
+	static int getDataTree(lua_State *L);
 
-	PluginDataTreeProxy();
+	PluginDataTreeProxy(DataTree* dataTree);
 	PluginDataTreeProxy(lua_State* L);
 
-	int createValeur(lua_State *L);
+	// Branches operations
+	int getBranche(lua_State *L);
 	int createBranche(lua_State *L);
+
+	// Valeurs operations
+	int createValeur(lua_State *L);
 };
 
 } /* namespace JktPlugin */

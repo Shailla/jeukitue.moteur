@@ -7,12 +7,12 @@
 
 #include <string>
 #include <sstream>
-#include <iostream>
 
 using namespace std;
 
 #include "SDL.h"
 
+#include "util/Trace.h"
 #include "reseau/new/message/TechnicalMessage.h"
 
 #include "reseau/new/TechnicalInterlocutor.h"
@@ -105,13 +105,13 @@ SDL_cond* TechnicalInterlocutor::getCondIntelligence() {
 }
 
 void TechnicalInterlocutor::log(const char* message) {
-	cout << endl << _name << " : " << message;
+	TRACE().info("'%s' : '%s'", _name.c_str(), message);
 }
 
 void TechnicalInterlocutor::log(const string& message) {
-	cout << endl << _name << " : " << message;
+	TRACE().info("'%s' : '%s'", _name.c_str(), message.c_str());
 }
 
 void TechnicalInterlocutor::log(const stringstream& message) {
-	cout << endl << _name << " : " << message.str();
+	TRACE().info("'%s' : '%s'", _name.c_str(), message.str().c_str());
 }

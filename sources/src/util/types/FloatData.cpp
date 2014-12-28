@@ -21,7 +21,7 @@ FloatData::FloatData(std::istringstream& in) {
 FloatData::~FloatData() {
 }
 
-void FloatData::serialize(std::ostringstream& out) {
+void FloatData::serialize(std::ostringstream& out) const {
 	StreamUtils::write(out, FLOAT_DATA_TYPE);
 	StreamUtils::write(out, _value);
 }
@@ -32,6 +32,11 @@ void FloatData::toString(std::ostringstream& out) const {
 
 float FloatData::getValue() const {
 	return _value;
+}
+
+Data& FloatData::operator=(const Data& data) {
+	_value = ((const FloatData&)data)._value;
+	return *this;
 }
 
 }

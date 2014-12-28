@@ -24,12 +24,11 @@ public:
 	virtual ~ValeurFloat();
 
 	float getValeur() const;
-	JktUtils::Data* getValeurData() const;
+	JktUtils::AnyData getValeurData() const;
 
 	void setValeur(int revision, float valeur);
-	void setValeur(int revision, const JktUtils::Data& data);
+	void setValeur(int revision, const JktUtils::AnyData& data);
 
-	void updateValeur(const JktUtils::Data* data);
 	void updateValeur(float valeur);
 
 	std::string toString() const;

@@ -40,9 +40,9 @@ CClient::CClient() {
 }
 
 CClient::~CClient() {
-	TRACE().p( TRACE_RESEAU, "CClient::~CClient() begin%T", this );
+	TRACE().debug("CClient::~CClient() begin%T", this);
 	disconnect();
-	TRACE().p( TRACE_RESEAU, "CClient::~CClient() end%T", this );
+	TRACE().debug("CClient::~CClient() end%T", this);
 }
 
 void CClient::setStatut( StatutClient statut ) {
@@ -80,17 +80,17 @@ void CClient::decodeConnecte( Uint16 code1, Uint16 code2 ) {
 void CClient::decodeError( Uint16 code2 ) {
 	switch( code2 ) {
 	case UDP_ERROR_NOGAME:
-		TRACE().p( TRACE_INFO, "CClient::decodeError() Pas de partie en cours sur le serveur%T", this );
+		TRACE().debug("CClient::decodeError() Pas de partie en cours sur le serveur%T", this );
 		cout << endl << "Pas de partie en cours sur le serveur";
 		break;
 
 	case UDP_ERROR_SATURE:
-		TRACE().p( TRACE_INFO, "CClient::decodeError() Serveur sature%T", this );
+		TRACE().debug("CClient::decodeError() Serveur sature%T", this );
 		cout << endl << "Serveur sature";
 		break;
 
 	default:
-		TRACE().p( TRACE_ERROR, "CClient::decodeError() Reception d'un paquet ERROR inconnu%T", this );
+		TRACE().debug("CClient::decodeError() Reception d'un paquet ERROR inconnu%T", this );
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet ERROR inconnu";
 		break;
 	}
@@ -104,7 +104,7 @@ void CClient::decodeRecap( Uint16 code2 ) {
 			var1 = _spaMaitre.read16();	// Réception du nombre de joueurs
 
 			if( m_uNbrPlayers!=var1 ) {
-				TRACE().p( TRACE_ERROR, "CClient::switchRecepClient() Le nombre de joueurs a change%T", this );
+				TRACE().debug("CClient::switchRecepClient() Le nombre de joueurs a change%T", this );
 				cerr << endl << __FILE__ << ":" << __LINE__ << " LE JEU N'EST PLUS PERTINENT, le nombre de joueurs a change !";
 				nbrPlayers( var1 );
 			}
@@ -116,7 +116,7 @@ void CClient::decodeRecap( Uint16 code2 ) {
 					var1 = _spaMaitre.read16();		// Identifiant du joueur
 
 					if( var1!=curseur ) {
-						TRACE().p( TRACE_ERROR, "CClient::switchRecepClient() Les joueurs ont change%T", this );
+						TRACE().debug("CClient::switchRecepClient() Les joueurs ont change%T", this);
 						cout << endl << "LE JEU N'EST PLUS PERTINENT, les joueurs ont change !";
 					}
 
@@ -263,7 +263,7 @@ void CClient::sendConnectedRequestJoinTheGame(const string& nomPlayer) {
 	// en attente de réponse du serveur
 
 	if( !_spaMaitre.send() ) {
-		TRACE().p( TRACE_ERROR, "CClient::sendJoinTheGame() SDL_UDP_Send : %s%T", SDLNet_GetError(), this );
+		TRACE().debug("CClient::sendJoinTheGame() SDL_UDP_Send : %s%T", SDLNet_GetError(), this );
 	}
 }
 
@@ -320,7 +320,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 		case SERVER_ACK:
 			if( _spaMaitre.getPacketIn()->len>5 ) {
 				char txt[50];
-				TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Info serveur%T", this );
+				TRACE().debug("CClient::decodeNonConnecte() : Info serveur%T", this);
 				cout << endl << "Reponse a la demande d'info serveur recue";
 				_spaMaitre.readChar( txt );				// Réception nom du serveur
 				m_InfoServer.nom = txt;
@@ -336,7 +336,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 			break;
 
 		default:
-			TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu 5%s%T",
+			TRACE().debug("CClient::decodeNonConnecte() : Packet inconnu 5%s%T",
 					_spaMaitre.debugToString().c_str(), this );
 			result = false;
 			break;
@@ -348,7 +348,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 			switch( code2 ) {
 			case SERVER_ACK:
 				if( _spaMaitre.getPacketIn()->len==8 ) {
-					TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse ping%T", this );
+					TRACE().debug("CClient::decodeNonConnecte() : Reponse ping%T", this );
 					cout << endl << "Reponse a un ping recue";
 					if( m_timePingClientServer==_spaMaitre.read32() ) {
 						m_pingClientServer = SDL_GetTicks() - m_timePingClientServer;
@@ -361,7 +361,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 				result = true;
 				break;
 			default:
-				TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu 4%s%T", _spaMaitre.debugToString().c_str(), this );
+				TRACE().debug("CClient::decodeNonConnecte() : Packet inconnu 4%s%T", _spaMaitre.debugToString().c_str(), this);
 				result = false;
 				break;
 			}
@@ -373,17 +373,17 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 					code3 = _spaMaitre.read16();
 					switch( code3 ) {
 					case UDP_ERROR_NOGAME:
-						TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Pas de partie en cours%T", this );
+						TRACE().debug("CClient::decodeNonConnecte() : Pas de partie en cours%T", this);
 						cout << endl << "Pas de partie en cours sur le serveur";
 						break;
 
 					case UDP_ERROR_SATURE:
-						TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Serveur sature%T", this );
+						TRACE().debug("CClient::decodeNonConnecte() : Serveur sature%T", this );
 						cout << endl << "Serveur sature";
 						break;
 
 					default:
-						TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu 3%s%T", _spaMaitre.debugToString().c_str(), this );
+						TRACE().debug("CClient::decodeNonConnecte() : Packet inconnu 3%s%T", _spaMaitre.debugToString().c_str(), this);
 						cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet ERROR inconnu";
 						break;
 					}
@@ -393,7 +393,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 					case SERVER_ACK:	// Acceptation recue du serveur pour joindre la partie
 						if( getStatut()==JKT_STATUT_CLIENT_DEMJTG )
 						{
-							TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse JTG%T", this );
+							TRACE().debug("CClient::decodeNonConnecte() : Reponse JTG%T", this);
 							cout << endl << "Acceptation recue du serveur pour joindre la partie";
 
 
@@ -492,14 +492,14 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 						}
 						else
 						{
-							TRACE().p( TRACE_INFO, "CClient::decodeNonConnecte() : Reponse JKT sans demande%T", this );
+							TRACE().debug("CClient::decodeNonConnecte() : Reponse JKT sans demande%T", this);
 							cerr << endl << __FILE__ << ":" << __LINE__ << " Acceptation JTG recue sans demande envoyée";
 						}
 						result = true;	// Le paquet a été utilisé
 						break;
 
 					default:
-						TRACE().p( TRACE_ERROR, "CClient::decodeNonConnecte() : Packet inconnu %s%T", _spaMaitre.debugToString().c_str(), this );
+						TRACE().debug("CClient::decodeNonConnecte() : Packet inconnu %s%T", _spaMaitre.debugToString().c_str(), this);
 						cerr << endl << __FILE__ << ":" << __LINE__ << " Reception d'un paquet inconnu 7";
 						result = false;
 						break;

@@ -19,10 +19,12 @@ public:
 	IntData(std::istringstream& in);
 	virtual ~IntData();
 
-	void serialize(std::ostringstream& out);
+	void serialize(std::ostringstream& out) const;
 	void toString(std::ostringstream& out) const;
 
 	int getValue() const;
+
+	Data& operator=(const Data& data);
 };
 
 }

@@ -15,7 +15,6 @@ using namespace std;
 #include "spatial/materiau/MaterialMaker.h"
 #include "spatial/IfstreamMap.h"
 #include "util/Trace.h"
-#include "util/TraceMethod.h"
 
 #include "MaterialMulti.h"
 

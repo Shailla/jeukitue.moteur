@@ -10,6 +10,8 @@
 
 using namespace std;
 
+#include "util/Trace.h"
+
 #include "data/communication/message/Changement.h"
 
 Changement::Changement(const string& dataType, int priority) {
@@ -28,7 +30,7 @@ bool Changement::highestPriority(const Changement* left, const Changement* right
 	int leftPriority = left->getPriority();
 	int rightPriority = right->getPriority();
 
-	cout << endl << "LEFT : '" << left->toString() << "' RIGHT : '" << right->toString() << "'" << flush;
+	TRACE().info("Sorting LEFT : '%s' RIGHT : '%s'", left->toString().c_str(), right->toString().c_str());
 
 	if(leftPriority > rightPriority) {
 		return true;

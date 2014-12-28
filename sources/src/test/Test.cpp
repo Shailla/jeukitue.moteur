@@ -12,6 +12,8 @@ using namespace std;
 
 #include "SDL.h"
 
+#include "util/Trace.h"
+
 #include "test/Test.h"
 
 namespace JktTest {
@@ -27,13 +29,13 @@ string Test::getName() {
 }
 
 
-void Test::assertTrue(const char* file, int line, bool var, const char* message) {
+void Test::assertTrue(const char* file, int line, bool var, const char* message) throw(TestError) {
 	if(!var) {
 		throw TestError(file, line, message);
 	}
 }
 
-void Test::assertFalse(const char* file, int line, bool var, const char* message) {
+void Test::assertFalse(const char* file, int line, bool var, const char* message) throw(TestError) {
 	if(var) {
 		throw TestError(file, line, message);
 	}
@@ -77,6 +79,14 @@ void Test::assertEqual(const char* file, int line, const char* expected, const c
 	}
 }
 
+void Test::assertEqual(const char* file, int line, float expected, float var, const char* message) {
+	if(expected != var) {
+		stringstream msg;
+		msg << message << " | " << "Valeur attendue [" << expected << "] obtenu [" << var << "]";
+		throw TestError(file, line, msg.str());
+	}
+}
+
 void Test::assertEqual(const char* file, int line, int expected, int var, const char* message) {
 	if(expected != var) {
 		stringstream msg;
@@ -86,15 +96,30 @@ void Test::assertEqual(const char* file, int line, int expected, int var, const 
 }
 
 void Test::log(const char* message, int line) {
-	cout << endl << "LOG [" << SDL_GetTicks() << " ms - " << line << "] " << message << flush;
+	ostringstream msg;
+
+	msg << endl << "LOG [" << SDL_GetTicks() << " ms - " << line << "] " << message << flush;
+
+	cout << msg.str();
+	TRACE().info(msg.str().c_str());
 }
 
 void Test::log(const string& message, int line) {
-	cout << endl << "LOG [" << SDL_GetTicks() << " ms - " << line << "] " << message << flush;
+	ostringstream msg;
+
+	msg << endl << "LOG [" << SDL_GetTicks() << " ms - " << line << "] " << message << flush;
+
+	cout << msg.str();
+	TRACE().info(msg.str().c_str());
 }
 
 void Test::log(const ostringstream& message, int line) {
-	cout << endl << "LOG [" << SDL_GetTicks() << " ms - " << line << "] " << message.str() << flush;
+	ostringstream msg;
+
+	msg << endl << "LOG [" << SDL_GetTicks() << " ms - " << line << "] " << message.str() << flush;
+
+	cout << msg.str();
+	TRACE().info(msg.str().c_str());
 }
 
 } /* namespace JktTest */

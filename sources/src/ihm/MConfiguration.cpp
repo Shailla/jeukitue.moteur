@@ -28,7 +28,6 @@ namespace JktMenu
 void lanceMenuConfigVideo(void *arg);
 void lanceMenuConfigAudio(void *arg);
 void lanceMenuConfigCommandes(void *arg);
-void lanceMenuConfigReseau(void *arg);
 void lanceMenuConfigDebug(void *arg);
 
 char title_menu_config[] = "CONFIGURATION";
@@ -38,7 +37,7 @@ PF liste_suivant_config[] =
 	lanceMenuConfigVideo,
 	lanceMenuConfigAudio,
 	lanceMenuConfigCommandes,
-	lanceMenuConfigReseau,
+	0,
 	lanceMenuConfigDebug,
 };
 
@@ -55,7 +54,7 @@ CMenu MenuConfig(title_menu_config, (const char**)item_menu_config, 5, liste_sui
 
 void lanceMenuConfig(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfig(var=%x)", var );
+TRACE().debug("lanceMenuConfig(var=%x)", var);
 	CDlg::SetMenuActif( &MenuConfig );
 }
 

@@ -18,7 +18,6 @@ class CGame;
 
 #include "spatial/XmlVocabulaire.h"
 #include "util/Trace.h"
-#include "util/TraceMethod.h"
 #include "util/Erreur.h"
 #include "main/Fabrique.h"
 #include "util/Tableau.cpp"
@@ -60,7 +59,7 @@ namespace JktMoteur
 const char* CMap::identifier = "Map";
 
 CMap::CMap(CMap* parent) : CGeo(parent) {
-TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() begin%T", this );
+TRACE().debug("CMap::CMap() begin%T", this );
 	m_bSelection = false;
 	m_Selection = 0;
 	_isGlActivated = false;
@@ -68,7 +67,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() begin%T", this );
 }
 
 CMap::CMap(CMap* parent, const string& nomFichier) throw(JktUtils::CErreur) : CGeo(parent) {
-TRACE().p( TRACE_MOTEUR3D, "CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str(), this );
+TRACE().debug("CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str(), this );
 	if( !Lit(nomFichier) ) {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur à la lecture du fichier MAP : " << nomFichier;
 	}
@@ -82,11 +81,11 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str
 	_isPluginsActivated = false;
 
 	Init();
-TRACE().p( TRACE_MOTEUR3D, "CMap::CMap() end%T", this );
+TRACE().debug("CMap::CMap() end%T", this );
 }
 
 CMap::~CMap() {
-TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() begin%T", this );
+TRACE().debug("CMap::~CMap() begin%T", this );
 
 	// Destruction des objets géo
 	vector<CGeo*>::iterator iterGeo;
@@ -112,7 +111,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() begin%T", this );
 
 	m_TabLight.clear();
 
-TRACE().p( TRACE_MOTEUR3D, "CMap::~CMap() end%T", this );
+TRACE().debug("CMap::~CMap() end%T", this );
 }
 
 const char* CMap::toString() {
@@ -305,7 +304,7 @@ float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 }
 
 void CMap::EchangeXY() {
-TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeXY()%T", this );
+TRACE().debug("CMap::EchangeXY()%T", this );
 
 	// Entry points
 	vector<EntryPoint>::iterator iterEntry;
@@ -324,7 +323,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeXY()%T", this );
 }
 
 void CMap::EchangeXZ() {
-TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeXZ()%T", this );
+TRACE().debug("CMap::EchangeXZ()%T", this );
 
 	// Entry points
 	vector<EntryPoint>::iterator iterEntry;
@@ -343,7 +342,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeXZ()%T", this );
 }
 
 void CMap::EchangeYZ() {
-TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeYZ()%T", this );
+TRACE().debug("CMap::EchangeYZ()%T", this );
 
 	// Entry points
 	vector<EntryPoint>::iterator iterEntry;
@@ -362,7 +361,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::EchangeYZ()%T", this );
 }
 
 void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
-TRACE().p( TRACE_MOTEUR3D, "CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scaleX, scaleY, scaleZ, this );
+TRACE().debug("CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scaleX, scaleY, scaleZ, this );
 
 	if(scaleX!=1.0 || scaleY!=1.0 || scaleZ!=1.0) {
 		// Entry points
@@ -383,7 +382,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scale
 }
 
 void CMap::translate(float x, float y, float z) {
-TRACE().p( TRACE_MOTEUR3D, "CMap::translate(x=%f,y=%f,z=%f)%T", x, y, z, this );
+TRACE().debug("CMap::translate(x=%f,y=%f,z=%f)%T", x, y, z, this );
 
 	if(x!=0.0 || y!=0.0 || z!=0.0) {
 		// Entry points
@@ -642,7 +641,7 @@ void CMap::freeGL() {
 }
 
 bool CMap::Save(const string nomFichier) {
-TRACE().p( TRACE_MOTEUR3D, "CMap::Save() %T", this );
+TRACE().debug("CMap::Save() %T", this );
 
 		// CREATION DES FICHIERS
 	string nomFichierMap = "./map/" + nomFichier + ".map.xml";
@@ -699,7 +698,7 @@ TRACE().p( TRACE_MOTEUR3D, "CMap::Save() %T", this );
 
 	cout << endl << "Sauvegarde du fichier MAP Ok !!";
 
-TRACE().p( TRACE_MOTEUR3D, "CMap::SaveFichierMap() Sauvegarde du fichier MAP Ok%T", this );
+TRACE().debug("CMap::SaveFichierMap() Sauvegarde du fichier MAP Ok%T", this );
 	return true;
 }
 

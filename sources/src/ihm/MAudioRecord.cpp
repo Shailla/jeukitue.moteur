@@ -37,7 +37,7 @@ CMenu *MenuRecord;
 
 void retourRecord(void *var)	// Libérations mémoire et retour au menu supérieur
 {
-TRACE().p( TRACE_MENU, "retourRecord(var=%x)", var );
+TRACE().debug("retourRecord(var=%x)", var);
 	CDlg::SetMenuActif( 0 );
 	delete MenuRecord;
 
@@ -46,7 +46,7 @@ TRACE().p( TRACE_MENU, "retourRecord(var=%x)", var );
 
 void lanceRecord(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceRecord(var=%x)", arg );
+TRACE().debug("lanceRecord(var=%x)", arg);
 //	FSOUND_Record_SetDriver( (int)arg );
 	Config.Audio.m_DriverRecord = *(int*)arg;
 	Config.Ecrit();
@@ -55,7 +55,7 @@ TRACE().p( TRACE_MENU, "lanceRecord(var=%x)", arg );
 
 void lanceMenuConfigAudioDriversRecord(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigAudioDriversRecord(var=%x)", var );
+TRACE().debug("lanceMenuConfigAudioDriversRecord(var=%x)", var);
 	int nbrRecord = FSOUND_Record_GetNumDrivers();	// Nombre driver possibles
 
 	PF *liste_suivant;

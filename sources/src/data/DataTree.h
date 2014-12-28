@@ -12,7 +12,7 @@
 
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/exception/NotExistingValeurException.h"
-#include "util/types/Data.h"
+#include "util/types/AnyData.h"
 #include "data/Branche.h"
 #include "data/DistantTreeProxy.h"
 
@@ -34,7 +34,7 @@ public:
 
 	// Gestion branches et valeurs avec coordonnées vectorielles
 	virtual Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) = 0;
-	virtual Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::Data* valeur) = 0;
+	virtual Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur) = 0;
 
 
 	/* *********************************
@@ -47,11 +47,18 @@ public:
 	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
 
 	/**
-	 * Retourne la branche idéntifiée.
+	 * Retourne la branche idéntifiée par son identifiant.
 	 *
 	 * @param brancheId coordonnées de la branche dans l'arbre
 	 */
 	Branche* getBranche(const vector<int>& brancheId) throw(NotExistingBrancheException);
+
+	/**
+	 * Retourne la branche idéntifiée par son chemin.
+	 *
+	 * @param branchePath chemin d'accès à la branche
+	 */
+	Branche* getBranche(const vector<string>& branchePath) throw(NotExistingBrancheException);
 
 	Valeur* getValeur(const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
 

@@ -5,10 +5,7 @@
  *      Author: Erwin
  */
 
-#include <iostream>
-
-using namespace std;
-
+#include "util/Trace.h"
 #include "plugin/lua/proxy/PluginEventProxy.h"
 #include "plugin/lua/proxy/cfg/PluginConfigurationProxy.h"
 #include "plugin/lua/proxy/data/PluginDataTreeProxy.h"
@@ -160,7 +157,7 @@ PluginContext* PluginEngine::getGlobalPluginContext(const lua_State* L) {
 void PluginEngine::activateDefaultGlobalPlugins() {
 	vector<string>::iterator iter;
 
-	cout << endl << "ACTIVATION DES PLUGINS PAR DEFAUT";
+	TRACE().info("ACTIVATION DES PLUGINS PAR DEFAUT");
 
 	for(iter = Config.Plugin._defaultPluging.begin() ; iter !=Config.Plugin._defaultPluging.end() ; iter++) {
 		activateGlobalPlugin(*iter);
@@ -174,13 +171,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	 * *****************************************************************************/
 
 	lua_State* L = luaL_newstate();
-	luaopen_io(L); 		// provides io.*
-	luaopen_base(L);
-	luaopen_table(L);
-	luaopen_string(L);
-	luaopen_math(L);
-	//	luaopen_loadlib(L);
-
+	luaL_openlibs(L);
 
 	/* ******************************************************************************
 	 * Création du contexte et logger du plugin
@@ -214,7 +205,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	lua_register(L, "initAudio", &PluginConfigurationProxy::initAudio);
 
 	// Fonctions d'accès aux données
-	lua_register(L, "getDataTree", &PluginDataTreeProxy::getMapDataTree);
+	lua_register(L, "getDataTree", &PluginDataTreeProxy::getDataTree);
 
 	// Initialisation des classes dans Lua
 	pluginContext->logInfo("Initialisation des classes Lua...");
@@ -320,7 +311,7 @@ void PluginEngine::activateGlobalPlugin(const string& pluginName) {
 	PluginContext* pluginContext = getGlobalPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Le plugin est déjà actif '" << pluginName << "'";
+		TRACE().error("Le plugin '%s' est déjà actif", pluginName.c_str());
 		pluginContext->logError("Tentative d'activation du plugin alors qu'il est déjà actif");
 		return;
 	}
@@ -330,7 +321,7 @@ void PluginEngine::activateGlobalPlugin(const string& pluginName) {
 	 * *****************************************************************************/
 
 	const string pluginDirectory = string(PLUGINS_DIRECTORY).append(pluginName).append("/");
-	cout << endl << __FILE__ << ":" << __LINE__ << " Activation of plugin : '" << pluginName << "' in '" << pluginDirectory << "'";
+	TRACE().info("Activation of plugin : '%s' in '%s'", pluginName.c_str(), pluginDirectory.c_str());
 
 	pluginContext = activatePlugin("main", pluginDirectory);
 
@@ -365,7 +356,7 @@ void PluginEngine::activateMapPlugin(const string& pluginName, const string plug
 	PluginContext* pluginContext = getMapPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << "Le plugin de Map est déjà actif '" << pluginName << "'";
+		TRACE().error("Le plugin de Map '%s' est déjà actif", pluginName.c_str());
 		pluginContext->logError("Tentative d'activation du plugin de Map alors qu'il est déjà actif");
 		return;
 	}
@@ -374,7 +365,7 @@ void PluginEngine::activateMapPlugin(const string& pluginName, const string plug
 	 * Initialisation des variables
 	 * *****************************************************************************/
 
-	cout << endl << __FILE__ << ":" << __LINE__ << " Activation of Map plugin : '" << pluginName << "' in '" << pluginDirectory << "'";
+	TRACE().info("Activation of Map plugin : '%s' in '%s'", pluginName.c_str(), pluginDirectory.c_str());
 
 	pluginContext = activatePlugin(pluginName, pluginDirectory);
 
@@ -418,7 +409,7 @@ void PluginEngine::deactivateMapPlugins() {
 			delete pluginContext;
 		}
 		else {
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Le plugin de Map ne peut pas être désactivé, il n'est pas actif '" << itName->first << "'";
+			TRACE().error("Le plugin de Map ne peut pas être désactivé, il n'est pas actif '%s'", itName->first.c_str());
 		}
 	}
 
@@ -446,7 +437,7 @@ void PluginEngine::deactivateGlobalPlugin(const string& pluginName) {
 		delete pluginContext;
 	}
 	else {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Le plugin ne peut pas être désactivé, il n'est pas actif '" << pluginName << "'";
+		TRACE().error("Le plugin ne peut pas être désactivé, il n'est pas actif '%s'", pluginName.c_str());
 	}
 }
 

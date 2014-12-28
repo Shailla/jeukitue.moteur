@@ -163,7 +163,7 @@ void CBouton::afficheTexte()
 
 bool CDlgBoite::INIT_CLASSE()
 {
-TRACE().p( TRACE_MENU, "CDlgBoite::INIT_CLASSE()" );
+TRACE().debug("CDlgBoite::INIT_CLASSE()" );
 
 	if( !m_B_INIT_CLASSE ) {
 		// Lecture des sons et images des styles de boites de dialogue
@@ -191,7 +191,7 @@ TRACE().p( TRACE_MENU, "CDlgBoite::INIT_CLASSE()" );
 CDlgBoite::CDlgBoite( const char *titre, const char *txt, PF fct_retour, JKT_DLG type )
 	: CDlg()
 {
-TRACE().p( TRACE_MENU, "CDlgBoite::CDlgBoite(titre=%x,txt=%s,fct_retour=%x,type=%d)%T", titre, txt, fct_retour, type, this );
+TRACE().debug("CDlgBoite::CDlgBoite(titre=%x,txt=%s,fct_retour=%x,type=%d)%T", titre, txt, fct_retour, type, this );
 	m_Type = type;
 
 	m_Titre = new char[ strlen( titre ) + 1 ];

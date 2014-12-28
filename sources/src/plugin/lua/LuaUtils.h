@@ -8,6 +8,8 @@
 #ifndef LUAUTILS_H_
 #define LUAUTILS_H_
 
+#include <vector>
+
 extern "C" {
 #include "lua.h"
 #include "lualib.h"
@@ -15,6 +17,8 @@ extern "C" {
 }
 
 #include "lunar.h"
+
+using namespace std;
 
 namespace JktPlugin {
 
@@ -32,9 +36,14 @@ class LuaUtils {
 public:
 	virtual ~LuaUtils();
 
-	void static report_lua_errors(lua_State *L, int status);
+	static void report_lua_errors(lua_State *L, int status);
 
-	bool static isCheckLuaParametersTypes(lua_State* L, const char* FILE, const char* FUNCTION, int expectedParamNbr, ...);
+	static bool isCheckLuaParametersTypes(lua_State* L, const char* FILE, const char* FUNCTION, int expectedParamNbr, ...);
+
+	static void readStringArray(lua_State *L, vector<string>& array, int& index);
+	static void readIntArray(lua_State *L, vector<int>& array, int& index);
+	static void pushIntArray(lua_State *L, const vector<int> array, int oneMoreValue);
+	static void pushIntArray(lua_State *L, const vector<int> array);
 };
 
 } /* namespace JktPlugin */

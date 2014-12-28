@@ -9,9 +9,6 @@
 
 using namespace std;
 
-#include "util/types/IntData.h"
-#include "util/types/FloatData.h"
-#include "util/types/StringData.h"
 #include "util/StringUtils.h"
 #include "data/ValeurInt.h"
 #include "data/ValeurFloat.h"
@@ -54,32 +51,33 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 				Valeur* valeur = dataTree->getValeur(brancheId, valeurId);
 
 				if(valeur) {
-					Data* value = NULL;
+					bool result = true;
 
-					if(dynamic_cast<ValeurInt*>(valeur)) {
-						// Valeur de la valeur
-						string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
-						value = new IntData(getIntParameter(valeurStr));
+					try {
+						if(dynamic_cast<ValeurInt*>(valeur)) {
+							// Valeur de la valeur
+							string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
+							((ValeurInt*)valeur)->updateValeur(getIntParameter(valeurStr));
+						}
+						else if(dynamic_cast<ValeurFloat*>(valeur)) {
+							// Valeur de la valeur
+							string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
+							((ValeurFloat*)valeur)->updateValeur(getFloatParameter(valeurStr));
+						}
+						else if(dynamic_cast<ValeurString*>(valeur)) {
+							// Valeur de la valeur
+							((ValeurString*)valeur)->updateValeur(StringUtils::findAndEraseFirstString(ligne));
+						}
 					}
-					else if(dynamic_cast<ValeurFloat*>(valeur)) {
-						// Valeur de la valeur
-						string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
-						value = new FloatData(getFloatParameter(valeurStr));
-					}
-					else if(dynamic_cast<ValeurString*>(valeur)) {
-						// Valeur de la valeur
-						value = new StringData(StringUtils::findAndEraseFirstString(ligne));
+					catch(IllegalParameterException& exception) {
+						printErrLn("Valeur incompatible avec le type de la valeur", userOutput);
+						result = false;
 					}
 
-					if(value) {
-						valeur->updateValeur(value);
-
+					if(result) {
 						ostringstream result;
 						result << "Valeur mise à jour. Nouvelle revision " << valeur->getRevision() << ".";
 						printStdLn(result.str().c_str(), userOutput);
-					}
-					else {
-						printErrLn("Type de valeur inconnu", userOutput);
 					}
 				}
 				else {
@@ -102,7 +100,7 @@ string UpdateDataCommande::getShortHelp() const {
 
 string UpdateDataCommande::getHelp() const {
 	return
-"data update valeur server <valeur> <brancheId> <valeurId> : Met a jour dans les donnees serveur la valeur nommee identifiee <valeurId> sur la branche <brancheId> avec la valeur <valeur>.\
+			"data update valeur server <valeur> <brancheId> <valeurId> : Met a jour dans les donnees serveur la valeur nommee identifiee <valeurId> sur la branche <brancheId> avec la valeur <valeur>.\
 \nLe type de valeur (entier, flottant, ...) est detecte automatiquement.\
 \nExemple : data update valeur client Erwin 22 0 3 2\
 \n---\

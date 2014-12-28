@@ -43,7 +43,7 @@ namespace JktMenu
 CMenu::CMenu(const char *newTitle, const char **newItems, int nbrItems, PF *fct_suivante, PF fct_retour, void **liste_arg, PFV fct_refresh )
 		:CDlg()
 {
-TRACE().p( TRACE_MENU, "CMenu::CMenu(newTitle=%s,nbrItems=%d,...)%T", newTitle, nbrItems, this );
+TRACE().debug("CMenu::CMenu(newTitle=%s,nbrItems=%d,...)%T", newTitle, nbrItems, this);
 	ajust = 0;
 
 	// Titre du menu
@@ -89,7 +89,7 @@ TRACE().p( TRACE_MENU, "CMenu::CMenu(newTitle=%s,nbrItems=%d,...)%T", newTitle, 
 
 CMenu::~CMenu()
 {
-TRACE().p( TRACE_MENU, "CMenu::~CMenu() titre=%s%T", titre, this );
+TRACE().debug("CMenu::~CMenu() titre=%s%T", titre, this);
 		// Titre
 	if( titre )
 		delete[] titre;

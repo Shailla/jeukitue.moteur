@@ -30,7 +30,7 @@ StringData::StringData(std::istringstream& in) {
 StringData::~StringData() {
 }
 
-void StringData::serialize(std::ostringstream& out) {
+void StringData::serialize(std::ostringstream& out) const {
 	StreamUtils::write(out, STRING_DATA_TYPE);
 	StreamUtils::write(out, _value);
 }
@@ -41,6 +41,11 @@ void StringData::toString(std::ostringstream& out) const {
 
 const std::string& StringData::getValue() const {
 	return _value;
+}
+
+Data& StringData::operator=(const Data& data) {
+	_value = ((const StringData&)data)._value;
+	return *this;
 }
 
 }

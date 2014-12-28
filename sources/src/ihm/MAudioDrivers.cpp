@@ -57,7 +57,7 @@ CMenu MenuConfigAudioDrivers( "DRIVERS", item_menu_config_audio_drivers, 4,
 
 void lanceMenuConfigAudioDrivers(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigAudioDrivers(var=%x)", var );
+TRACE().debug("lanceMenuConfigAudioDrivers(var=%x)", var);
 	MenuConfigAudioDrivers.add_ItemsDroits( 0, resolveOutput(Config.Audio.m_Output) );
 	MenuConfigAudioDrivers.add_ItemsDroits( 1, resolveMixer(Config.Audio.m_Mixer) );
 	MenuConfigAudioDrivers.add_ItemsDroits( 2, (char*)resolveDriver(Config.Audio.m_Driver) );

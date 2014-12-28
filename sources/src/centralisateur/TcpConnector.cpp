@@ -1,10 +1,9 @@
-
-#include <iostream>
 #include <fstream>
 
 #include "SDL_net.h"
 #include "ZipArchive.h"
 
+#include "util/Trace.h"
 #include "reseau/TcpUtils.h"
 #include "util/FindFolder.h"
 #include "ressource/RessourceConstantes.h"
@@ -67,7 +66,7 @@ vector<DownloadFileItem> TcpConnector::askDownloadFileList(const int port) throw
 
 		list.push_back(item);
 
-		cout << endl << "Download id='" << item._identifier << "', nom='" << item._nom << "', taille='" << item._taille << "'";
+		TRACE().info("Download id='%l', nom='%s', taille='%d'", item._identifier, item._nom.c_str(), item._taille);
 	}
 
 	// Fermeture de la socket
@@ -157,7 +156,7 @@ int downloadOneFileThread(void* threadData)
 		ofstream tmpFile(tmpFilename.c_str(), ios_base::trunc | ios_base::binary);	// Toute ancienne donnée dans le fichier est écrasée
 
 		if(!tmpFile) {
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur ouverture du fichier";
+			TRACE().error("Erreur ouverture du fichier");
 		}
 
 		int accompli = 0;
@@ -186,7 +185,7 @@ int downloadOneFileThread(void* threadData)
 		destDirectory.append(item._nom).append("/");
 
 		if(CFindFolder::mkdir(destDirectory.c_str()) != 0) {
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Le repertoire '" << destDirectory << "' existe deja";
+			TRACE().error(" Le repertoire '%s' existe deja", destDirectory.c_str());
 		}
 
 		// Décompression de l'archive

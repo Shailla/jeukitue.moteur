@@ -13,7 +13,7 @@
 
 namespace JktPlugin {
 
-static const char* LuaGlobalMethods::REFRESH_EVENT_TYPE = "refresh";
+const char* LuaGlobalMethods::REFRESH_EVENT_TYPE = "refresh";
 
 LuaGlobalMethods::LuaGlobalMethods() {
 }

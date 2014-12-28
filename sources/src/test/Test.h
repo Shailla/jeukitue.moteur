@@ -53,14 +53,15 @@ public:
 	virtual void test() = 0;
 
 	// Assertion methods
-	void assertTrue(const char* file, int line, bool var, const char* message = 0);
-	void assertFalse(const char* file, int line, bool var, const char* message = 0);
+	void assertTrue(const char* file, int line, bool var, const char* message = 0) throw(TestError);
+	void assertFalse(const char* file, int line, bool var, const char* message = 0) throw(TestError);
 	void assertNull(const char* file, int line, const void* var, const char* message = 0);
 	void assertNotNull(const char* file, int line, const void* var, const char* message = 0);
 	void assertEqual(const char* file, int line, const void* expected, const void* var, const char* message = 0);
 	void assertEqual(const char* file, int line, const std::string& expected, const std::string& var, const char* message = 0);
 	void assertEqual(const char* file, int line, const char* expected, const char* var, const char* message = 0);
 	void assertEqual(const char* file, int line, int expected, int var, const char* message = 0);
+	void assertEqual(const char* file, int line, float expected, float var, const char* message = 0);
 
 	// Log methods
 	void log(const char* message, int line);

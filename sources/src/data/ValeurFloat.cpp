@@ -10,7 +10,9 @@
 
 using namespace std;
 
-#include "util/types/FloatData.h"
+#include "util/Trace.h"
+#include "util/types/AnyData.h"
+
 #include "data/ValeurFloat.h"
 
 using namespace JktUtils;
@@ -26,8 +28,8 @@ float ValeurFloat::getValeur() const {
 	return _valeur;
 }
 
-Data* ValeurFloat::getValeurData() const {
-	return new JktUtils::FloatData(_valeur);
+AnyData ValeurFloat::getValeurData() const {
+	return JktUtils::AnyData(_valeur);
 }
 
 void ValeurFloat::setValeur(int revision, float valeur) {
@@ -40,31 +42,18 @@ void ValeurFloat::updateValeur(float valeur) {
 	update();
 }
 
-void ValeurFloat::updateValeur(const JktUtils::Data* data) {
-	try {
-		const JktUtils::FloatData* stringData = dynamic_cast<const JktUtils::FloatData*>(data);
-		_valeur = stringData->getValue();
-
-		update();
-	}
-	catch(bad_cast& exception) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Type 'float' attendu";
-	}
-}
-
-void ValeurFloat::setValeur(int revision, const JktUtils::Data& data) {
-	try {
-		const JktUtils::FloatData& intData = dynamic_cast<const JktUtils::FloatData&>(data);
+void ValeurFloat::setValeur(int revision, const JktUtils::AnyData& data) {
+	if(data.isFloat()) {
 		setRevision(revision);
-		_valeur = intData.getValue();
+		_valeur = data.getValueFloat();
 	}
-	catch(bad_cast& exception) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Type 'float' attendu";
+	else {
+		TRACE().error("Type de valeur inattendu");
 	}
 }
 
 std::string ValeurFloat::toString() const {
 	ostringstream str;
-	str << _valeur;
+	str << "float-'" << _valeur << "'";
 	return str.str();
 }

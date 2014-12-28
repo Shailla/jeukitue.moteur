@@ -12,7 +12,7 @@
 #include <vector>
 #include <string>
 
-#include "util/types/Data.h"
+#include "util/types/AnyData.h"
 
 class StreamUtils {
 public:
@@ -24,15 +24,15 @@ public:
 	class ReadStreamError {
 	};
 
-	static JktUtils::Data* readData(std::istringstream& in);
-	static void write(std::ostringstream& out, JktUtils::Data& data);
-	static void writeHumanReadable(std::ostringstream& out, JktUtils::Data& data);
+	static JktUtils::AnyData readData(std::istringstream& in);
+	static void write(std::ostringstream& out, const JktUtils::AnyData& data);
+	static void writeHumanReadable(std::ostringstream& out, const JktUtils::AnyData& data);
 
 	static void read(std::istringstream& in, float& data);
-	static void write(std::ostringstream& out, float data);
+	static void write(std::ostringstream& out, const float& data);
 
 	static void read(std::istringstream& in, int& data);
-	static void write(std::ostringstream& out, int data);
+	static void write(std::ostringstream& out, const int& data);
 
 	static void read(std::istringstream& in, std::vector<int>& data);
 	static void write(std::ostringstream& out, const std::vector<int>& data);

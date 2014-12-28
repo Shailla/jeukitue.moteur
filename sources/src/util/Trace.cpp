@@ -19,10 +19,34 @@ Donnees::Donnees(int line, const char *sourceFile) {
 	_sourceFile = sourceFile;
 }
 
-void Donnees::p(int indic, const char *txt, ... ) {
+void Donnees::p(TraceLevel level, const char *txt, ... ) {
 	va_list vl;
 	va_start(vl, txt);
-	Trace::instance().print( TRACE_NORMAL, _line, _sourceFile, indic, txt, vl );
+	Trace::instance().print(level, TRACE_NORMAL, _line, _sourceFile, txt, vl );
+}
+
+void Donnees::debug(const char *txt, ... ) {
+	va_list vl;
+	va_start(vl, txt);
+	Trace::instance().print(TraceLevel::TRACE_LEVEL_DEBUG, TRACE_NORMAL, _line, _sourceFile, txt, vl );
+}
+
+void Donnees::info(const char *txt, ... ) {
+	va_list vl;
+	va_start(vl, txt);
+	Trace::instance().print(TraceLevel::TRACE_LEVEL_INFO, TRACE_NORMAL, _line, _sourceFile, txt, vl );
+}
+
+void Donnees::warn(const char *txt, ... ) {
+	va_list vl;
+	va_start(vl, txt);
+	Trace::instance().print(TraceLevel::TRACE_LEVEL_WARN, TRACE_NORMAL, _line, _sourceFile, txt, vl );
+}
+
+void Donnees::error(const char *txt, ... ) {
+	va_list vl;
+	va_start(vl, txt);
+	Trace::instance().print(TraceLevel::TRACE_LEVEL_ERROR, TRACE_NORMAL, _line, _sourceFile, txt, vl );
 }
 
 Trace::Trace() {
@@ -30,10 +54,10 @@ Trace::Trace() {
 	SDL_LockMutex( m_Mutex );
 
 	string name;
-	stringstream nomFichier, nomFichierXML;
+	stringstream nomFichier;
 	int numeroFichier = -1, num;
 
-	char chemin[] = "./Traces/";
+	char chemin[] = "./log/";
 
 	CFindFolder folder( chemin, NOM_FICHIER_TRACE, EXT_FICHIER_TRACE );
 
@@ -53,35 +77,11 @@ Trace::Trace() {
 		}
 	}
 
-	CFindFolder folderXml( chemin, NOM_FICHIER_TRACE, EXT_XML_FICHIER_TRACE );
-
-	while(folderXml.findNext(name)) {
-		cout << endl << name << " ";
-		name = string( name.begin()+strlen(NOM_FICHIER_TRACE), name.end()-strlen(EXT_XML_FICHIER_TRACE) );	// Extraction du numéro du fichier trace
-		cout << name;
-
-		if(name == "0") {
-			if( numeroFichier < 0 )
-				numeroFichier = 0;
-		}
-		else {
-			num = atoi( name.c_str() );
-
-			if( num > numeroFichier )
-				numeroFichier = num;
-		}
-	}
-
 	numeroFichier++;	// Numéro nouveau fichier = plus grand numéro d'ancien fichier + 1
 
-		// Ouverture du fichier de trace
-	nomFichier << "./Traces/" << NOM_FICHIER_TRACE << numeroFichier << EXT_FICHIER_TRACE;
+	// Ouverture du fichier de trace
+	nomFichier << "./log/" << NOM_FICHIER_TRACE << numeroFichier << EXT_FICHIER_TRACE;
 	m_Fichier.open( nomFichier.str().c_str() );
-
-		// Ouverture du fichier de trace en version XML
-	nomFichierXML << "./Traces/" << NOM_FICHIER_TRACE << numeroFichier << EXT_XML_FICHIER_TRACE;
-	m_FichierXML.open( nomFichierXML.str().c_str() );
-	m_FichierXML << "<?xml version='1.0' encoding='utf-8'?>" << endl << endl << "<TracesJKT>" << endl;
 
 	m_Instance = this;
 
@@ -93,10 +93,8 @@ Trace::~Trace() {
 
 	cout << endl << "FIN DES TRACES" << endl;
 
-	m_FichierXML << endl << endl << "</TracesJKT>" << flush;
 	m_Fichier.flush();
 
-	m_FichierXML.close();
 	m_Fichier.close();
 
 	m_Instance = 0;
@@ -111,133 +109,101 @@ Trace &Trace::instance() {
 	return *m_Instance;
 }
 
-void Trace::print_old( int type, int line, const char *nomFichier, int indic, const char *txt, ... ) {
-	va_list vl;
-	va_start( vl, txt );
-
-	print( type, line, nomFichier, indic, txt, vl );
-}
-
-void Trace::print(int type, int line, const char *nomFichier, int indic, const char *txt, va_list &vl) {
+void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFichier, const char *txt, va_list &vl) {
 	SDL_LockMutex( m_Mutex );
 
-	if( (indic & LEVEL_TRACE) || (LEVEL_TRACE ==-1) )	// Si on ne veut pas cette trace-là alors sors
+	if( (level >= LEVEL_TRACE) || (LEVEL_TRACE ==-1) )	// Si on ne veut pas cette trace-là alors sors
 	{
 		bool prec = false;	// Indique que le caractère précédent était un %
-		stringstream ligne, ligne1, ligne2, ligne3, ligne4, ligne5;
-		stringstream ligneXML;
 		void *THIS = 0;
 		bool bTHIS = false;
 
-			// Début de la trace XML
-		switch( type )
-		{
-		case TRACE_NORMAL:
-			ligne1 << "Normal\t";
-			ligneXML << "<normal" << flush;
+		stringstream ligne;
+
+		// Niveau de log
+		ligne.width(6);
+		ligne.setf( ios_base::left, ios_base::adjustfield );
+
+		switch(level) {
+		case TRACE_LEVEL_DEBUG:
+			ligne << "DEBUG";
 			break;
-		case TRACE_BEGIN:
-			ligne1 << "Begin\t";
-			ligneXML << "<begin" << flush;
+		case TRACE_LEVEL_INFO:
+			ligne << "INFO";
 			break;
-		case TRACE_END:
-			ligne1 << "End\t";
-			ligneXML << "<end" << flush;
+		case TRACE_LEVEL_WARN:
+			ligne << "WARN";
+			break;
+		case TRACE_LEVEL_ERROR:
+			ligne << "ERROR";
 			break;
 		}
 
-			// Insère le nom du fichier tracé
-		ligne1 << nomFichier << "(" << line << ")" << flush;
-		ligneXML << " fichier=" << '"' << nomFichier << '"' << flush;
-		ligneXML << " ligne=" << '"' << line << '"' << flush;
-
-		ligne.width( 28 );
-		ligne.setf( ios_base::left, ios_base::adjustfield );
-		ligne << ligne1.str() << flush;
-
-			// Insère le temps relatif
-		ligne2 << SDL_GetTicks();
-		ligneXML << " temps=" << '"' << SDL_GetTicks() << '"' << flush;
-
+		// Temps
 		ligne.width( 10 );
 		ligne.setf( ios_base::left, ios_base::adjustfield );
-		ligne << ligne2.str() << flush;
 
-			// Insère le numéro de thread et le pointeur this
-		ligne3 << "(thread=" << SDL_ThreadID() << ",this=";
-		ligneXML << " thread=" << '"' << SDL_ThreadID() << '"' << flush;
-		ligneXML << " this=" << '"' << flush;
+		ligne << SDL_GetTicks();
 
-		if( bTHIS )
-		{
-			ligne3 << THIS << ")";
-			ligneXML << THIS << '"';
+		// This et thread
+		stringstream var1;
+
+		if( bTHIS ) {
+			var1 << "[" << SDL_ThreadID() << "-" << THIS << "]";
 		}
-		else
-		{
-			ligne3 << ")";
-			ligneXML << '"';
+		else {
+			var1 << "[" << SDL_ThreadID() << "-0]";
 		}
 
-		ligne.width( 20 );
+		ligne.width(15);
 		ligne.setf( ios_base::left, ios_base::adjustfield );
-		ligne << ligne3.str() << flush;
+		ligne << var1.str();
 
-		ligneXML << " package=" << '"' << flush;
+		// Fichier source et ligne
+		string varFichier = nomFichier;
+		size_t pos = varFichier.find(FICHIER_SOURCE_BASE);
+		varFichier.replace(0, pos + sizeof(FICHIER_SOURCE_BASE)-1, "");
 
-		switch( indic ) {
-		case TRACE_ERROR:
-			ligne4 << "TRACE_ERROR";
-			ligneXML << "TRACE_ERROR" << '"';
+		stringstream var2;
+		var2 << varFichier << "(" << line << ")";
+
+		ligne.width(40);
+		ligne.setf( ios_base::left, ios_base::adjustfield );
+		ligne << var2.str();
+
+		// Message précédé éventuellement par Begin ou End si c'est une TraceMethod
+		switch( type ) {
+		case TRACE_BEGIN:
+			ligne << "Begin - ";
 			break;
-		case TRACE_INFO:
-			ligne4 << "TRACE_INFO";
-			ligneXML << "TRACE_INFO" << '"';
+		case TRACE_END:
+			ligne << "End - ";
 			break;
-		case TRACE_SON:
-			ligne4 << "TRACE_SON";
-			ligneXML << "TRACE_SON" << '"';
-			break;
-		case TRACE_MOTEUR3D:
-			ligne4 << "TRACE_MOTEUR3D";
-			ligneXML << "TRACE_MOTEUR3D" << '"';
-			break;
-		case TRACE_MENU:
-			ligne4 << "TRACE_MENU";
-			ligneXML << "TRACE_MENU" << '"';
-			break;
-		case TRACE_UTILS:
-			ligne4 << "TRACE_UTILS";
-			ligneXML << "TRACE_UTILS" << '"';
-			break;
-		case TRACE_RESEAU:
-			ligne4 << "TRACE_RESEAU";
-			ligneXML << "TRACE_RESEAU" << '"';
-			break;
-		case TRACE_OTHER:
-			ligne4 << "TRACE_OTHER";
-			ligneXML << "TRACE_OTHER" << '"';
+		default:
+		case TRACE_NORMAL:
+			// nothing
 			break;
 		}
-
-		ligne.width( 15 );
-		ligne.setf( ios_base::left, ios_base::adjustfield );
-		ligne << ligne4.str() << flush;
 
 		for( int i=0 ; txt[i]!='\0' ; i++ ) {
 			if( !prec ) {
 				if( txt[i]=='%' )
 					prec = true;
 				else
-					ligne5 << txt[i];
+					ligne << txt[i];
 			}
 			else {
-				switch( txt[i] )
-				{
+				switch( txt[i] ) {
 					case 'd':
 					{
 						int a = va_arg( vl, int );
-						ligne5 << a;
+						ligne << a;
+						break;
+					}
+					case 'l':
+					{
+						int a = va_arg( vl, int );
+						ligne << a;
 						break;
 					}
 					case 'b':
@@ -248,9 +214,9 @@ void Trace::print(int type, int line, const char *nomFichier, int indic, const c
 						int a = va_arg( vl, int );
 #endif
 						if( a )
-							ligne5 << "true";
+							ligne << "true";
 						else
-							ligne5 << "false";
+							ligne << "false";
 						break;
 					}
 					case 'f':
@@ -260,19 +226,19 @@ void Trace::print(int type, int line, const char *nomFichier, int indic, const c
 #else
 						double a = va_arg( vl, double );
 #endif
-						ligne5 <<  a;
+						ligne <<  a;
 						break;
 					}
 					case 'x':
 					{
 						void *a = va_arg( vl, void* );
-						ligne5 <<  a;
+						ligne <<  a;
 						break;
 					}
 					case 's':
 					{
 						char *a = va_arg( vl, char* );
-						ligne5 <<  a;
+						ligne <<  a;
 						break;
 					}
 					case 'S':
@@ -284,7 +250,7 @@ void Trace::print(int type, int line, const char *nomFichier, int indic, const c
 					}
 					case '%':
 					{
-						ligne5 << '%';
+						ligne << '%';
 						break;
 					}
 					case 'T':	// Trace-t-on le pointeur de l'instance dans laquelle on est ?
@@ -296,7 +262,7 @@ void Trace::print(int type, int line, const char *nomFichier, int indic, const c
 					}
 					default:
 					{
-						ligne5 << "???";
+						ligne << "???";
 						break;
 					}
 				}
@@ -304,23 +270,9 @@ void Trace::print(int type, int line, const char *nomFichier, int indic, const c
 			}
 		}
 
-		ligne << ligne5.str() << endl << flush;
-		ligneXML << " texte=" << '"' << ligne5.str() << '"' << flush;
+		ligne << endl << flush;
 
 		m_Fichier << ligne.str();
-		m_FichierXML << ligneXML.str() << ">" << flush;
-
-		switch( type ) {
-		case TRACE_NORMAL:
-			m_FichierXML << "</normal>" << endl;
-			break;
-		case TRACE_BEGIN:
-			m_FichierXML << "</begin>" << endl;
-			break;
-		case TRACE_END:
-			m_FichierXML << "</end>" << endl;
-			break;
-		}
 
 		va_end( vl );
 	}

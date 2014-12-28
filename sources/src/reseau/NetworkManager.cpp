@@ -1,6 +1,3 @@
-
-
-#include <iostream>
 #include <vector>
 #include <fstream>
 #include <set>
@@ -16,6 +13,8 @@ using namespace std;
 
 class CGame;
 
+#include "util/Trace.h"
+#include "util/TraceMethod.h"
 #include "util/Erreur.h"
 #include "util/V3D.h"
 #include "main/Cfg.h"
@@ -25,7 +24,6 @@ class CGame;
 #include "reseau/Server.h"
 #include "spatial/contact.h"
 #include "main/Game.h"
-#include "util/Trace.h"
 
 #include "enumReseau.h"
 #include "reseau/NetworkManager.h"
@@ -58,7 +56,7 @@ NetworkManager::~NetworkManager() {
 }
 
 void NetworkManager::setOn( bool on ) {
-TRACE().p( TRACE_RESEAU, "CReseau::setOn(on=%b)%T", on, this );
+TRACE().debug("CReseau::setOn(on=%b)%T", on, this);
 	_on = on;
 }
 
@@ -67,7 +65,7 @@ bool NetworkManager::getOn() {
 }
 
 NotConnectedInterlocutor2* NetworkManager::ouvreServer(Uint16 serverPort, Uint16 serverTreePort) {
-TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() begin%T", this );
+TRACE().debug("CReseau::ouvreServer() begin%T", this);
 	bool result = false;
 
 	if(_client) {
@@ -94,13 +92,13 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() begin%T", this );
 		result = false;
 	}
 
-TRACE().p( TRACE_RESEAU, "CReseau::ouvreServer() -> %b end%T", result, this );
+TRACE().debug("CReseau::ouvreServer() -> %b end%T", result, this);
 	return notConnectedServerInterlocutor;
 }
 
 void NetworkManager::fermeServer() {
-TRACE().p( TRACE_RESEAU, "CReseau::fermeServer()%T", this );
-	cout << endl << "Fermeture du serveur UDP";
+TRACE().debug("CReseau::fermeServer()%T", this);
+	TRACE().info("Fermeture du serveur UDP");
 
 	if( _server )
 		delete _server;
@@ -112,7 +110,7 @@ TRACE().p( TRACE_RESEAU, "CReseau::fermeServer()%T", this );
 }
 
 Interlocutor2* NetworkManager::ouvreClient(const string& serverIp, Uint16 serverPort, Uint16 serverTreePort) {
-TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() begin%T", this );
+TRACE().debug("CReseau::ouvreClient() begin%T", this);
 
 	bool result = false;
 
@@ -141,13 +139,13 @@ TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() begin%T", this );
 		result = false;
 	}
 
-TRACE().p( TRACE_RESEAU, "CReseau::ouvreClient() -> %b end%T", result, this );
+TRACE().debug("CReseau::ouvreClient() -> %b end%T", result, this);
 	return interlocutor;
 }
 
 void NetworkManager::fermeClient() {
-TRACE().p( TRACE_RESEAU, "CReseau::fermeClient()%T", this );
-	cout << endl << "Deconnexion du serveur";
+TRACE().debug("CReseau::fermeClient()%T", this);
+	TRACE().info("Deconnexion du serveur");
 
 	if( _client )
 		delete _client;
@@ -159,11 +157,13 @@ TRACE().p( TRACE_RESEAU, "CReseau::fermeClient()%T", this );
 }
 
 void NetworkManager::recoitServer() {
+	TRACEMETHOD();
+
 	int numReady;
 	numReady = SDLNet_CheckSockets( _server->socketSet, 0 );	// Nombre de sockets ayant une activité détectée
 
 	if( numReady==-1 ) {
-		cout << "SDLNet_CheckSockets: " << SDLNet_GetError();
+		TRACE().error("SDLNet_CheckSockets : %s", SDLNet_GetError());
 	}
 	else if( numReady ) {
 		CPlayer *player;

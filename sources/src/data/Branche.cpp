@@ -14,9 +14,7 @@
 
 using namespace std;
 
-#include "util/types/IntData.h"
-#include "util/types/FloatData.h"
-#include "util/types/StringData.h"
+#include "data/Valeur.h"
 #include "data/ValeurInt.h"
 #include "data/ValeurFloat.h"
 #include "data/ValeurString.h"
@@ -38,6 +36,19 @@ Branche::~Branche() {
 
 void Branche::setBrancheId(int brancheId) {
 	_brancheId = brancheId;
+}
+
+Branche* Branche::getSubBrancheByName(string brancheName) const {
+	Branche* branche = NULL;
+
+	try {
+		branche = _subBranchesByName.at(brancheName);
+	}
+	catch(out_of_range& exception) {
+		branche = NULL;
+	}
+
+	return branche;
 }
 
 Branche* Branche::getSubBrancheByIdOrTmpId(int brancheId) const {
@@ -148,6 +159,7 @@ Branche* Branche::createSubBrancheForServer(const string& brancheName, int revis
 	// Crée la nouvelle branche
 	Branche* newBranche = new Branche(this, ref, brancheName, revision, -1);
 	_subBranchesById[ref] = newBranche;
+	_subBranchesByName[brancheName] = newBranche;
 	_subBranches.push_back(newBranche);
 
 	return newBranche;
@@ -179,6 +191,7 @@ Branche* Branche::acceptTmpSubBranche(int brancheTmpId, int brancheId, int branc
 	}
 
 	_subBranchesById[brancheId] = branche;
+	_subBranchesByName[branche->getBrancheName()] = branche;
 	branche->setBrancheId(brancheId);
 	branche->setRevision(brancheRevision);
 
@@ -199,21 +212,21 @@ Valeur* Branche::acceptTmpValeur(int valeurTmpId, int valeurId, int valeurRevisi
 	return valeur;
 }
 
-Valeur* Branche::createValeurForClient(const string& valeurName, int revision, const Data* valeur) {
+Valeur* Branche::createValeurForClient(const string& valeurName, int revision, const AnyData& valeur) {
 	// Alloue une référence pour la nouvelle branche
 	int tmpRef = -_valeurTmpRefGenerator.genRef();		// On démarre à -1
 
 	// Crée la nouvelle branche
 	Valeur* newValeur = NULL;
 
-	if(const IntData* value = dynamic_cast<const IntData*>(valeur)) {
-		newValeur = new ValeurInt(this, -1, valeurName, tmpRef, revision, value->getValue());
+	if(valeur.isInt()) {
+		newValeur = new ValeurInt(this, -1, valeurName, tmpRef, revision, valeur.getValueInt());
 	}
-	else if(const FloatData* value = dynamic_cast<const FloatData*>(valeur)) {
-		newValeur = new ValeurFloat(this, -1, valeurName, tmpRef, revision, value->getValue());
+	else if(valeur.isFloat()) {
+		newValeur = new ValeurFloat(this, -1, valeurName, tmpRef, revision, valeur.getValueFloat());
 	}
-	else if(const StringData* value = dynamic_cast<const StringData*>(valeur)) {
-		newValeur = new ValeurString(this, -1, valeurName, tmpRef, revision, value->getValue());
+	else if(valeur.isString()) {
+		newValeur = new ValeurString(this, -1, valeurName, tmpRef, revision, valeur.getValueString());
 	}
 
 	if(newValeur) {
@@ -224,21 +237,21 @@ Valeur* Branche::createValeurForClient(const string& valeurName, int revision, c
 	return newValeur;
 }
 
-Valeur* Branche::createValeurForServeur(const string& valeurName, int revision, const Data* valeur) {
+Valeur* Branche::createValeurForServeur(const string& valeurName, int revision, const AnyData& valeur) {
 	// Alloue une référence pour la nouvelle branche
 	int ref = _valeurRefGenerator.genRef();		// On démarre à 1
 
 	// Crée la nouvelle branche
 	Valeur* newValeur = NULL;
 
-	if(const IntData* value = dynamic_cast<const IntData*>(valeur)) {
-		newValeur = new ValeurInt(this, ref, valeurName, -1, revision, value->getValue());
+	if(valeur.isInt()) {
+		newValeur = new ValeurInt(this, ref, valeurName, -1, revision, valeur.getValueInt());
 	}
-	else if(const FloatData* value = dynamic_cast<const FloatData*>(valeur)) {
-		newValeur = new ValeurFloat(this, ref, valeurName, -1, revision, value->getValue());
+	else if(valeur.isFloat()) {
+		newValeur = new ValeurFloat(this, ref, valeurName, -1, revision, valeur.getValueFloat());
 	}
-	else if(const StringData* value = dynamic_cast<const StringData*>(valeur)) {
-		newValeur = new ValeurString(this, ref, valeurName, -1, revision, value->getValue());
+	else if(valeur.isString()) {
+		newValeur = new ValeurString(this, ref, valeurName, -1, revision, valeur.getValueString());
 	}
 
 	if(newValeur) {
@@ -249,7 +262,7 @@ Valeur* Branche::createValeurForServeur(const string& valeurName, int revision, 
 	return newValeur;
 }
 
-const Valeur* Branche::addValeur(int valeurId, const string& valeurName, int valeurRevision, const JktUtils::Data* valeur) {
+const Valeur* Branche::addValeur(int valeurId, const string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur) {
 	Valeur* newValeur = getValeurByIdOrTmpId(valeurId);
 
 	if(newValeur) {
@@ -257,18 +270,18 @@ const Valeur* Branche::addValeur(int valeurId, const string& valeurName, int val
 	}
 	else {
 		// Crée la nouvelle valeur
-		if(const JktUtils::IntData* intData = dynamic_cast<const JktUtils::IntData*>(valeur)) {
-			newValeur = new ValeurInt(this, valeurId, valeurName, -1, valeurRevision, intData->getValue());
+		if(valeur.isInt()) {
+			newValeur = new ValeurInt(this, valeurId, valeurName, -1, valeurRevision, valeur.getValueInt());
 			_valeursById[valeurId] = newValeur;
 			_valeurs.push_back(newValeur);
 		}
-		else if(const JktUtils::FloatData* floatData = dynamic_cast<const JktUtils::FloatData*>(valeur)) {
-			newValeur = new ValeurFloat(this, valeurId, valeurName, -1, valeurRevision, floatData->getValue());
+		else if(valeur.isFloat()) {
+			newValeur = new ValeurFloat(this, valeurId, valeurName, -1, valeurRevision, valeur.getValueFloat());
 			_valeursById[valeurId] = newValeur;
 			_valeurs.push_back(newValeur);
 		}
-		else if(const JktUtils::StringData* stringData = dynamic_cast<const JktUtils::StringData*>(valeur)) {
-			newValeur = new ValeurString(this, valeurId, valeurName, -1, valeurRevision, stringData->getValue());
+		else if(valeur.isString()) {
+			newValeur = new ValeurString(this, valeurId, valeurName, -1, valeurRevision, valeur.getValueString());
 			_valeursById[valeurId] = newValeur;
 			_valeurs.push_back(newValeur);
 		}
@@ -405,7 +418,7 @@ void Branche::print(ostringstream& out, bool details, int indentation) {
 			out << " tmpId=" << valeur->getValeurTmpId();
 		}
 
-		out << " rv=" << valeur->getRevision() << "] '" << valeur->getValeurName() << "' <" << valeur->getValeurData()->toString() << ">";
+		out << " rv=" << valeur->getRevision() << "] '" << valeur->getValeurName() << "' <" << valeur->toString() << ">";
 	}
 
 	// Affiche les branches de la branche

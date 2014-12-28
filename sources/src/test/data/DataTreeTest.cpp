@@ -9,9 +9,6 @@
 
 using namespace std;
 
-#include "util/types/StringData.h"
-#include "util/types/IntData.h"
-#include "util/types/FloatData.h"
 #include "data/ValeurString.h"
 #include "data/ValeurFloat.h"
 #include "data/ValeurInt.h"
@@ -132,7 +129,7 @@ void DataTreeTest::serverTests() {
 
 	// Valeur string
 	{
-		valeurServeurString = (ValeurString*)serverTree.createValeur(branche0ServerFullId, valeurStringServerName, new StringData(valeurStringServerValue));
+		valeurServeurString = (ValeurString*)serverTree.createValeur(branche0ServerFullId, valeurStringServerName, AnyData(valeurStringServerValue));
 		ValeurString* valeurString = (ValeurString*)serverTree.getValeur(branche0ServerFullId, valeurStringServerId);
 
 		ASSERT_EQUAL(valeurServeurString, valeurString, "La valeur créée et celle lue devraient être les mêmes");
@@ -143,7 +140,7 @@ void DataTreeTest::serverTests() {
 
 	// Valeur int
 	{
-		valeurServeurInt = (ValeurInt*)serverTree.createValeur(branche0ServerFullId, valeurIntServerName, new IntData(valeurIntServerValue));
+		valeurServeurInt = (ValeurInt*)serverTree.createValeur(branche0ServerFullId, valeurIntServerName, AnyData(valeurIntServerValue));
 		ValeurInt* valeurInt = (ValeurInt*)serverTree.getValeur(branche0ServerFullId, valeurIntServerId);
 
 		ASSERT_EQUAL(valeurServeurInt, valeurInt, "La valeur créée et celle lue devraient être les mêmes");
@@ -154,7 +151,7 @@ void DataTreeTest::serverTests() {
 
 	// Valeur float
 	{
-		valeurServeurFloat = (ValeurFloat*)serverTree.createValeur(branche0ServerFullId, valeurFloatServerName, new FloatData(valeurFloatServerValue));
+		valeurServeurFloat = (ValeurFloat*)serverTree.createValeur(branche0ServerFullId, valeurFloatServerName, AnyData(valeurFloatServerValue));
 		ValeurFloat* valeurFloat = (ValeurFloat*) serverTree.getValeur(branche0ServerFullId, valeurFloatServerId);
 
 		ASSERT_EQUAL(valeurServeurFloat, valeurFloat, "La valeur créée et celle lue devraient être les mêmes");
@@ -348,15 +345,16 @@ void DataTreeTest::clientTests() {
 	// Vérifie si les valeurs ont bien été mises à jour côté client 0
 	{
 		ValeurString* valeurString = (ValeurString*)client0Tree.getValeur(branche0ServerFullId, valeurStringServerId);
-		ASSERT_EQUAL(1, valeurString->getRevision(), "La revision aurait du être incrémentée");
+		cout << endl << "-->" << valeurString->getValeurName();
+		ASSERT_EQUAL(1, valeurString->getRevision(), "La révision aurait du être incrémentée");
 		ASSERT_EQUAL(newValeurServeurStringValue, valeurString->getValeur(), "La valeur de la valeur est fausse ou  n'a pas été mise à jour sur le client 0");
 
 		ValeurInt* valeurInt = (ValeurInt*)client0Tree.getValeur(branche0ServerFullId, valeurIntServerId);
-		ASSERT_EQUAL(1, valeurInt->getRevision(), "La revision aurait du être incrémentée");
+		ASSERT_EQUAL(1, valeurInt->getRevision(), "La révision aurait du être incrémentée");
 		ASSERT_EQUAL(newValeurServeurIntValue, valeurInt->getValeur(), "La valeur de la valeur est fausse ou  n'a pas été mise à jour sur le client 0");
 
 		ValeurFloat* valeurFloat = (ValeurFloat*)client0Tree.getValeur(branche0ServerFullId, valeurFloatServerId);
-		ASSERT_EQUAL(1, valeurFloat->getRevision(), "La revision aurait du être incrémentée");
+		ASSERT_EQUAL(1, valeurFloat->getRevision(), "La révision aurait du être incrémentée");
 		ASSERT_EQUAL(newValeurServeurFloatValue, valeurFloat->getValeur(), "La valeur de la valeur est fausse ou  n'a pas été mise à jour sur le client 0");
 	}
 
@@ -382,22 +380,22 @@ void DataTreeTest::clientTests() {
 	Branche* branche0Client0 = client0Tree.createBranche(rootFullId, branche0Client0Name);
 
 	// Ajout valeur 0
-	ValeurInt* valeur0Client0 = (ValeurInt*)client0Tree.createValeur(branche0Client0->getBrancheFullIdOrTmpId(), valeur0Client0Name, new IntData(valeur0Client0Value));
+	ValeurInt* valeur0Client0 = (ValeurInt*)client0Tree.createValeur(branche0Client0->getBrancheFullIdOrTmpId(), valeur0Client0Name, AnyData(valeur0Client0Value));
 
 	// Ajout branche 1
 	Branche* branche1Client0 = client0Tree.createBranche(branche0Client0->getBrancheFullIdOrTmpId(), branche1Client0Name);
 
 	// Ajout valeur 1
-	ValeurInt* valeur1Client0 = (ValeurInt*)client0Tree.createValeur(branche1Client0->getBrancheFullIdOrTmpId(), valeur1Client0Name, new IntData(valeur1Client0Value));
+	ValeurInt* valeur1Client0 = (ValeurInt*)client0Tree.createValeur(branche1Client0->getBrancheFullIdOrTmpId(), valeur1Client0Name, AnyData(valeur1Client0Value));
 
 	// Ajout branche 2
 	Branche* branche2Client0 = client0Tree.createBranche(branche0Client0->getBrancheFullIdOrTmpId(), branche2Client0Name);
 
 	// Ajout valeur 2
-	ValeurInt* valeur2Client0 = (ValeurInt*)client0Tree.createValeur(branche2Client0->getBrancheFullIdOrTmpId(), valeur2Client0Name, new IntData(valeur2Client0Value));
+	ValeurInt* valeur2Client0 = (ValeurInt*)client0Tree.createValeur(branche2Client0->getBrancheFullIdOrTmpId(), valeur2Client0Name, AnyData(valeur2Client0Value));
 
 	// Ajout valeur 3
-	ValeurInt* valeur3Client0 = (ValeurInt*)client0Tree.createValeur(branche2Client0->getBrancheFullIdOrTmpId(), valeur3Client0Name, new IntData(valeur3Client0Value));
+	ValeurInt* valeur3Client0 = (ValeurInt*)client0Tree.createValeur(branche2Client0->getBrancheFullIdOrTmpId(), valeur3Client0Name, AnyData(valeur3Client0Value));
 
 	{
 		ostringstream arbre;
@@ -576,11 +574,11 @@ void DataTreeTest::multiClientsTests() {
 
 	log("CREATION DE DONNEES PAR CLIENT 1", __LINE__);
 
-	client1Tree.createValeur(branche0ServerFullId, "valeur-0-client1", new IntData(41));
-	client1Tree.createValeur(branche0ServerFullId, "valeur-1-client1", new StringData("Yoyo"));
-	client1Tree.createValeur(branche2Client0FullId, "valeur-2-client1", new FloatData(1.0235f));
+	client1Tree.createValeur(branche0ServerFullId, "valeur-0-client1", AnyData(41));
+	client1Tree.createValeur(branche0ServerFullId, "valeur-1-client1", AnyData("Yoyo"));
+	client1Tree.createValeur(branche2Client0FullId, "valeur-2-client1", AnyData(1.0235f));
 	Branche* branche0Client1 = client1Tree.createBranche(branche2Client0FullId, "branche-0-client1");
-	client1Tree.createValeur(branche0Client1->getBrancheFullIdOrTmpId(), "valeur-3-client1", new StringData("Hummm"));
+	client1Tree.createValeur(branche0Client1->getBrancheFullIdOrTmpId(), "valeur-3-client1", AnyData("Hummm"));
 
 
 	// La nouvelle valeur de client 1 descend vers le serveur
@@ -625,13 +623,13 @@ void DataTreeTest::multiClientsTests() {
 
 	log("CREATION DE DONNEES PAR 2 CLIENTS SIMULTANEMENT", __LINE__);
 
-	client0Tree.createValeur(branche0ServerFullId, "valeur-10-client0", new IntData(44));
-	client1Tree.createValeur(branche0ServerFullId, "valeur-11-client1", new IntData(45));
+	client0Tree.createValeur(branche0ServerFullId, "valeur-10-client0", AnyData(44));
+	client1Tree.createValeur(branche0ServerFullId, "valeur-11-client1", AnyData(45));
 
 	Branche* branche12Client0 = client0Tree.createBranche(branche2Client0FullId, "branche-12-client0");
-	client0Tree.createValeur(branche12Client0->getBrancheFullIdOrTmpId(), "valeur-12-client0", new StringData("Minou"));
+	client0Tree.createValeur(branche12Client0->getBrancheFullIdOrTmpId(), "valeur-12-client0", AnyData("Minou"));
 	Branche* branche13Client1 = client1Tree.createBranche(branche2Client0FullId, "branche-13-client1");
-	client1Tree.createValeur(branche13Client1->getBrancheFullIdOrTmpId(), "valeur-13-client1", new StringData("Poilu"));
+	client1Tree.createValeur(branche13Client1->getBrancheFullIdOrTmpId(), "valeur-13-client1", AnyData("Poilu"));
 
 	// Les nouvelles données de client 1 et  client 2 descendent vers le serveur
 	log("Envoi des données par les clients", __LINE__);

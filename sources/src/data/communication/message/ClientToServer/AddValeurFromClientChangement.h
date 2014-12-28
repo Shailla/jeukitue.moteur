@@ -11,7 +11,6 @@
 #include <sstream>
 #include <vector>
 
-#include "util/types/Data.h"
 #include "data/MarqueurDistant.h"
 #include "data/Branche.h"
 #include "data/communication/message/Changement.h"
@@ -21,13 +20,13 @@ class AddValeurFromClientChangement: public Changement {
 	int _valeurTmpId;
 	string _valeurName;
 	int _revision;
-	JktUtils::Data* _valeur;
+	JktUtils::AnyData _valeur;
 
 	void unserialize(std::istringstream& in);
 
 public:
 	AddValeurFromClientChangement(std::istringstream& in);
-	AddValeurFromClientChangement(const std::vector<int>& brancheId, int valeurTmpId, int revision, const string& valeurName, JktUtils::Data* valeur);
+	AddValeurFromClientChangement(const std::vector<int>& brancheId, int valeurTmpId, int revision, const string& valeurName, JktUtils::AnyData valeur);
 	~AddValeurFromClientChangement();
 
 	void update(MarqueurDistant* marqueur);
@@ -43,7 +42,7 @@ public:
 	int getValeurTmpId() const;
 	const string& getValeurName() const;
 	int getRevision() const;
-	JktUtils::Data* getValeur() const;
+	JktUtils::AnyData getValeur() const;
 	int getRootDistance() const;
 };
 

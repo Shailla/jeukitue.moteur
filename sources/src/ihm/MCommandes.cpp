@@ -70,7 +70,7 @@ CMenu MenuConfigCommandes(title_menu_config_commandes, item_menu_config_commande
 
 void lanceMenuConfigCommandes(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigCommandes(var=%x)", var );
+TRACE().debug("lanceMenuConfigCommandes(var=%x)", var);
 	MenuConfigCommandes.bItemsDroits = false;
 	MenuConfigCommandes.mode = 0;
 
@@ -89,7 +89,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigCommandes(var=%x)", var );
 
 void lanceMenuConfigCommandesAvancer(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesAvancer(var=%x)", arg );
+TRACE().debug("lanceMenuConfigCommandesAvancer(var=%x)", arg);
 	if( arg==0 ) {
 		MenuConfigCommandes.mode = 1;		// Mode saisie de touche
 		MenuConfigCommandes.bItemsDroits = true;
@@ -127,7 +127,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesAvancer(var=%x)", arg );
 
 void lanceMenuConfigCommandesReculer(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesReculer(var=%x)", arg );
+TRACE().debug("lanceMenuConfigCommandesReculer(var=%x)", arg);
 	if( arg==0 )
 	{
 		MenuConfigCommandes.mode = 1;	// Mode saisie de touche
@@ -170,7 +170,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesReculer(var=%x)", arg );
 
 void lanceMenuConfigCommandesGauche(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesGauche(var=%x)", arg );
+TRACE().debug("lanceMenuConfigCommandesGauche(var=%x)", arg);
 	if( arg==0 )
 	{
 		MenuConfigCommandes.mode = 1;	// Mode saisie de touche
@@ -213,7 +213,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesGauche(var=%x)", arg );
 
 void lanceMenuConfigCommandesDroite(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesDroite(var=%x)", arg );
+TRACE().debug("lanceMenuConfigCommandesDroite(var=%x)", arg);
 	if( arg==0 )
 	{
 		MenuConfigCommandes.mode = 1;	// Mode saisie de touche
@@ -256,7 +256,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesDroite(var=%x)", arg );
 
 void lanceMenuConfigCommandesTir1(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesTir1(var=%x)", arg );
+TRACE().debug("lanceMenuConfigCommandesTir1(var=%x)", arg);
 	if( arg==0 )
 	{
 		MenuConfigCommandes.mode = 1;	// Mode saisie de touche
@@ -299,7 +299,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesTir1(var=%x)", arg );
 
 void lanceMenuConfigCommandesTir2(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesTir2(var=%x)", arg );
+TRACE().debug("lanceMenuConfigCommandesTir2(var=%x)", arg);
 	if( arg==0 )
 	{
 		MenuConfigCommandes.mode = 1;	// Mode saisie de touche
@@ -342,7 +342,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesTir2(var=%x)", arg );
 
 void lanceMenuConfigCommandesMonter(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigCommandesMonter(var=%x)", arg );
+TRACE().debug("lanceMenuConfigCommandesMonter(var=%x)", arg);
 	if( arg==0 )
 	{
 		MenuConfigCommandes.mode = 1;	// Mode saisie de touche

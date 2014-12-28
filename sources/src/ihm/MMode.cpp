@@ -96,7 +96,7 @@ CMenu MenuModeSelection( "MODE SELECTION", item_menu_Mode_Selection, 2,
 
 void lanceMenuMode(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuMode(var=%x)", var );
+TRACE().debug("lanceMenuMode(var=%x)", var);
 	CDlg::SetMenuActif( &MenuMode );
 	pFocus->SetMenuFocus();		// Mets le focus sur le menu
 	Aide = true;
@@ -104,7 +104,7 @@ TRACE().p( TRACE_MENU, "lanceMenuMode(var=%x)", var );
 
 void lanceMenuModeSelection(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuModeSelection(var=%x)", var );
+TRACE().debug("lanceMenuModeSelection(var=%x)", var);
 	CDlg::SetMenuActif( &MenuModeSelection );
 }
 

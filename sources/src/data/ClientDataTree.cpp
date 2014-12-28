@@ -12,8 +12,9 @@
 
 using namespace std;
 
+#include "util/TraceMethod.h"
+#include "util/Trace.h"
 #include "util/StringUtils.h"
-#include "util/types/IntData.h"
 #include "data/ValeurInt.h"
 #include "data/MarqueurDistant.h"
 #include "data/exception/NotExistingBrancheException.h"
@@ -56,7 +57,7 @@ Branche* ClientDataTree::createBranche(const std::vector<int>& parentBrancheId, 
 	return branche;
 }
 
-Valeur* ClientDataTree::createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const Data* value) {
+Valeur* ClientDataTree::createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const AnyData value) {
 	Branche* parentBranche = getBranche(parentBrancheId);
 	Valeur* valeur = parentBranche->createValeurForClient(valeurName, 0, value);
 	initDonneeAndServeurMarqueur(valeur);
@@ -105,6 +106,8 @@ Branche* ClientDataTree::getBrancheByTmpId(const vector<int>& parentBrancheId, i
 }
 
 void ClientDataTree::receiveChangementsFromServer() {
+	TRACEMETHOD();
+
 	try {
 		vector<Changement*> answers;
 
@@ -129,7 +132,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 			std::sort(changements.begin(), changements.end(), Changement::highestPriority);
 
 			for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
-				cout << endl << _clientName << " from " << interlocutor->getName() << "\t : " << (*itCh)->toString() << flush;
+				TRACE().info("'%s' from '%s' : '%s'", _clientName.c_str(), interlocutor->getName().c_str(), (*itCh)->toString().c_str());
 
 				try {
 					// Le serveur accepte la création de la nouvelle branche demandée par ce client et lui attribue son identifiant définitif
@@ -170,7 +173,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 					// Le serveur informe de la modification d'une valeur
 					else if(UpdateValeurFromServerChangement* chgt = dynamic_cast<UpdateValeurFromServerChangement*>(*itCh)) {
 						Valeur* valeur = getValeur(chgt->getParentBrancheId(), chgt->getValeurId());
-						valeur->setValeur(chgt->getRevision(), *chgt->getValeur());
+						valeur->setValeur(chgt->getRevision(), chgt->getValeur());
 
 						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
 					}
@@ -211,12 +214,14 @@ void ClientDataTree::receiveChangementsFromServer() {
 }
 
 void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
+	TRACEMETHOD();
+
 	vector<Changement*>::iterator iter;
 	Interlocutor2* interlocutor = _serverTreeProxy->getInterlocutor();
 
 	if(changements.size()) {
 		for(iter = changements.begin() ; iter != changements.end() ; iter++) {
-			cout << endl << _clientName << " to " << interlocutor->getName() << "\t : " << (*iter)->toString() << flush;
+			TRACE().info("'%s' to '%s' : '%s'", _clientName.c_str(), interlocutor->getName().c_str(), (*iter)->toString().c_str());
 		}
 
 		ostringstream out;

@@ -19,7 +19,12 @@
 //#undef TRACE_ACTIVE
 #define TRACE_ACTIVE
 
-
+enum TraceLevel {
+	TRACE_LEVEL_DEBUG = 1,
+	TRACE_LEVEL_INFO = 2,
+	TRACE_LEVEL_WARN = 3,
+	TRACE_LEVEL_ERROR = 4
+};
 
 enum TraceType {
 	TRACE_NORMAL,
@@ -33,27 +38,23 @@ enum TraceType {
 	#define TRACE() "//"
 #endif
 
-#define NOM_FICHIER_TRACE		"traces"
+#define NOM_FICHIER_TRACE		"jkt."
 #define EXT_FICHIER_TRACE		".log"
-#define EXT_XML_FICHIER_TRACE	".xml"
 #define LEVEL_TRACE				-1
-
-#define TRACE_ERROR			1
-#define TRACE_INFO			2
-#define TRACE_SON			4
-#define TRACE_MOTEUR3D		8
-#define TRACE_MENU			16
-#define TRACE_UTILS			32
-#define TRACE_RESEAU		64
-#define TRACE_OTHER			128
+#define FICHIER_SOURCE_BASE		"\\src\\"
 
 class Donnees
 {
 	int _line;
 	const char *_sourceFile;
+	void p(TraceLevel level, const char *txt, ... );
 public:
 	Donnees(int line, const char *nomFichier);
-	void p(int indic, const char *txt, ... );
+
+	void debug(const char *txt, ... );
+	void info(const char *txt, ... );
+	void warn(const char *txt, ... );
+	void error(const char *txt, ... );
 };
 
 std::ofstream mFichier();
@@ -62,7 +63,6 @@ class Trace
 {
 	static Trace *m_Instance;
 	std::ofstream m_Fichier;
-	std::ofstream m_FichierXML;
 	SDL_mutex *m_Mutex;
 
 		// Constructor / destructor
@@ -71,8 +71,7 @@ class Trace
 
 public:
 	static Trace& instance();
-	void print( int type, int line, const char *nomFichier, int indic, const char *txt , va_list &vl );
-	void print_old( int type, int line, const char *nomFichier, int indic, const char *txt, ... );
+	void print(TraceLevel level, TraceType type, int line, const char *nomFichier, const char *txt , va_list &vl );
 };
 
 #endif

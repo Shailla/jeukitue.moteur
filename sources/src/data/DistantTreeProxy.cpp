@@ -12,8 +12,6 @@
 
 using namespace std;
 
-#include "util/types/Data.h"
-#include "util/types/IntData.h"
 #include "util/CollectionsUtils.h"
 #include "data/communication/message/Changement.h"
 #include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"

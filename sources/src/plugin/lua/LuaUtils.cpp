@@ -33,6 +33,66 @@ void LuaUtils::report_lua_errors(lua_State *L, int status) {
 	}
 }
 
+void LuaUtils::readStringArray(lua_State *L, vector<string>& array, int& index) {
+	lua_pushnil(L);
+
+	while(lua_next(L, index)) {
+	    if(lua_isstring(L, -1)) {
+	        const char* var = lua_tostring(L, -1);
+	        array.push_back(var);
+	    }
+
+	    lua_pop(L, 1);
+	}
+
+	index++;
+}
+
+void LuaUtils::readIntArray(lua_State *L, vector<int>& array, int& index) {
+	lua_pushnil(L);
+
+	while(lua_next(L, index)) {
+	    if(lua_isnumber(L, -1)) {
+	        int var = (int)lua_tonumber(L, -1);
+	        array.push_back(var);
+	    }
+
+	    lua_pop(L, 1);
+	}
+
+	index++;
+}
+
+void LuaUtils::pushIntArray(lua_State *L, const vector<int> array) {
+	lua_createtable(L, array.size() + 1, 0);
+
+	vector<int>::const_iterator iter;
+
+	int index = 1;
+
+	for(iter = array.begin() ; iter != array.end() ; iter++) {
+		int var = *iter;
+		lua_pushinteger(L, var);
+		lua_rawseti (L, -2, index++);
+	}
+}
+
+void LuaUtils::pushIntArray(lua_State *L, const vector<int> array, int oneMoreValue) {
+	lua_createtable(L, array.size() + 2, 0);
+
+	vector<int>::const_iterator iter;
+
+	int index = 1;
+
+	for(iter = array.begin() ; iter != array.end() ; iter++) {
+		int var = *iter;
+		lua_pushinteger(L, var);
+		lua_rawseti (L, -2, index++);
+	}
+
+	lua_pushinteger(L, oneMoreValue);
+	lua_rawseti (L, -2, index++);
+}
 
 bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const char* FUNCTION, int expectedParamNbr, ...) {
 	va_list vl;

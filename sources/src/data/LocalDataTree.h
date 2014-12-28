@@ -13,8 +13,6 @@
 
 using namespace std;
 
-#include "util/types/Data.h"
-
 #include "data/DataTree.h"
 
 class LocalDataTree : public DataTree {
@@ -31,7 +29,7 @@ public:
 
 	// Gestion branches et valeurs avec coordonnées vectorielles
 	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
-	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::Data* valeur);
+	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur);
 };
 
 #endif /* CLIENTDATATREE_H_ */

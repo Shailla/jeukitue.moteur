@@ -3,11 +3,11 @@
 /*//////////////////////////////////////////////////////////////////////////////////////////////
 					CHOSES A FAIRE
 
-Les fonctions de callback des players (gravitï¿½, contact, ...)ne sont pas
-implï¿½mentï¿½es proprement, il ne faudrait pas avoir besoin de leur fournir le pointeur
+Les fonctions de callback des players (gravité, contact, ...)ne sont pas
+implémentées proprement, il ne faudrait pas avoir besoin de leur fournir le pointeur
 sur le player (mais j'sais pas comment faire)
 
-Formaliser les vecteurs position et vitesse de maniï¿½re ï¿½ ce qu'il ne soit plus
+Formaliser les vecteurs position et vitesse de manière à ce qu'il ne soit plus
 indispensable d'inverser parfois certaines de leurs composantes selon l'utilisation
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////
@@ -39,8 +39,8 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 using namespace std;
 
 #define Pi				3.14159265f			//nombre pi pour les calculs
-#define quantumVitesse	0.003f				//pas d'augmentation de la vitesse du joueur (accï¿½lï¿½ration discrï¿½te)
-#define DELAY_TIMER		10					// Temps entre 2 calculs de scï¿½nes (en ms)
+#define quantumVitesse	0.003f				//pas d'augmentation de la vitesse du joueur (accélération discrête)
+#define DELAY_TIMER		10					// Temps entre 2 calculs de scènes (en ms)
 #define TAILLEFONT		0.7f				// Taille des fontes
 
 #include "SDL.h"
@@ -59,8 +59,8 @@ using namespace glfont;
 #include "util/V3D.h"
 #include "util/mathFast.h"
 #include "util/Trace.h"				// Gestion du fichier de traces
-#include "util/Tableau.cpp"			//Liste chaï¿½nï¿½e
-#include "util/TableauIndex.cpp"		//Liste Indexï¿½e
+#include "util/Tableau.cpp"			//Liste chaînée
+#include "util/TableauIndex.cpp"		//Liste Indexée
 #include "util/FindFolder.h"
 #include "util/Erreur.h"
 #include "ressource/RessourcesLoader.h"
@@ -71,7 +71,7 @@ class CGame;
 #include "main/Cfg.h"
 #include "spatial/materiau/Material.h"
 #include "spatial/IfstreamMap.h"
-#include "spatial/geo/Geo.h"				//Paramï¿½tres des objets gï¿½omï¿½triques
+#include "spatial/geo/Geo.h"				//Paramètres des objets géométriques
 #include "spatial/objet/Dirigeable.h"
 #include "spatial/Mouve.h"
 #include "spatial/geo/GeoObject.h"
@@ -79,18 +79,18 @@ class CGame;
 #include "Laser.h"
 #include "spatial/objet/Porte.h"
 #include "spatial/objet/Navette.h"
-#include "main/Clavier.h"		//Requï¿½tes du clavier
+#include "main/Clavier.h"		//Requêtes du clavier
 #include "Photo.h"
-#include "spatial/materiau/MaterialTexture.h"	//Paramï¿½tres des matï¿½riaux associï¿½s aux objets gï¿½omï¿½triques
+#include "spatial/materiau/MaterialTexture.h"	//Paramètres des matériaux associés aux objets géométriques
 #include "spatial/materiau/MaterialMulti.h"
-#include "spatial/light/Light.h"			//Lumiï¿½res de la map
+#include "spatial/light/Light.h"			//Lumières de la map
 #include "spatial/Map.h"
 #include "son/DemonSons.h"
 #include "son/Son.h"
 #include "son/ReqSon.h"
 #include "reseau/SPA.h"
 #include "main/Player.h"
-#include "spatial/contact.h"		//Fonctions utilisï¿½es pour le contact
+#include "spatial/contact.h"		//Fonctions utilisées pour le contact
 #include "main/divers.h"		//Initialisation d'SDL
 #include "son/audio.h"
 #include "ihm/DlgBoite.h"
@@ -119,6 +119,7 @@ class CGame;
 #include "data/ServeurDataTree.h"
 #include "data/ClientDataTree.h"
 #include "data/DistantTreeProxy.h"
+#include "data/DataTreeUtils.h"
 
 #include "reseau/new/ClientUdpInterlocutor.h"
 #include "reseau/new/ServerUdpInterlocutor.h"
@@ -152,7 +153,7 @@ string nomFichierConfig = "config";
 
 CFocus *pFocus;
 
-int numMainPlayer = 0;	// Numï¿½ro du joueur principal dans la MAP (identifie le joueur principal dans la liste des joueurs de la MAP)
+int numMainPlayer = 0;	// Numéro du joueur principal dans la MAP (identifie le joueur principal dans la liste des joueurs de la MAP)
 
 bool Aide = false;
 
@@ -198,12 +199,12 @@ CMachin *machin;	// Pour tester le son 3D
 
 NetworkManager* _networkManager;
 
-void gravitePlayer(CPlayer *player)	// Fonction implï¿½mentant la gravitï¿½
+void gravitePlayer(CPlayer *player)	// Fonction implémentant la gravité
 {									// aux objets qui doivent la subire
 	float vect[3];
 	player->getVitesse( vect );
 
-	vect[1] -= 0.5*quantumVitesse; // Ajout de gravitï¿½ au joueur
+	vect[1] -= 0.5*quantumVitesse; // Ajout de gravité au joueur
 
 	player->setVitesse( vect );
 }
@@ -260,10 +261,10 @@ void updateSon3D()
 	pos_machin[1] = machin->position.Y;
 	pos_machin[2] = machin->position.Z;
 
-	// Position du point d'ï¿½coute (le joueur)
+	// Position du point d'écoute (le joueur)
 	FSOUND_3D_Listener_SetAttributes(pos_erwin, 0, fx,fy,fz,tx,ty,tz);
 
-	// Position de l'ï¿½metteur du son
+	// Position de l'émetteur du son
 	((CReqSon3D*)machin->req_son)->SetPosition( pos_machin );
 	FSOUND_Update();
 
@@ -308,7 +309,7 @@ void afficheInfo( Uint32 tempsDisplay )
 			str2 = "Etat : Client ready";
 			break;
 		case JKT_STATUT_CLIENT_DEMJTG:
-			str2 = "Etat : Demande de JTG envoyï¿½e";
+			str2 = "Etat : Demande de JTG envoyée";
 			break;
 		case JKT_STATUT_CLIENT_OUV:
 			str2 = "Etat : Ouverture de la MAP en cours";
@@ -513,14 +514,15 @@ void display() {		// Fonction principale d'affichage
 			glRotated(erwin->PhiVue(), 1.0, 0.0, 0.0);	// Rotation par rapport au plan horizontal
 
 			glRotated(erwin->Phi(), 1.0, 0.0, 0.0);	// Rotation par rapport au plan horizontal
-			glRotated(erwin->Teta(), 0.0,1.0, 0.0);	// Rotation par rapport ï¿½ l'axe verticale
+			glRotated(erwin->Teta(), 0.0,1.0, 0.0);	// Rotation par rapport à l'axe verticale
 
 			erwin->getPosition(vect);
 			glTranslatef(-vect[0], -vect[1], vect[2]);	// Placement du point de vue
 
-			glRotated(erwin->TetaVue(), 0.0,1.0, 0.0);	// Rotation par rapport ï¿½ l'axe verticale
+			glRotated(erwin->TetaVue(), 0.0,1.0, 0.0);	// Rotation par rapport à l'axe verticale
 		}
 
+		Game.AfficheDirigeables();
 		Game.AffichePlayers();		// Affiche tous les joueurs
 
 		glEnable(GL_DEPTH_TEST);
@@ -528,10 +530,10 @@ void display() {		// Fonction principale d'affichage
 		Game.getMap()->Affiche();	// Affichage de la map
 		Game.AfficheProjectils();
 
-		// Dessine les axes dans la map	(sert au repï¿½rage pour la conception du jeu)
+		// Dessine les axes dans la map	(sert au repérage pour la conception du jeu)
 		if(Config.Debug.axesMeterVisibility) {
 			glLineWidth( 3 );
-			glBegin(GL_LINES);	// Dï¿½ssine les axes X Y Z
+			glBegin(GL_LINES);	// Dessine les axes X Y Z
 			glColor3f( 1.0f, 0.0f, 0.0f);	// Axe des X
 			glVertex3f( 1.0f, 0.0f, 0.0f);
 			glVertex3f( 0.0f, 0.0f, 0.0f);
@@ -544,7 +546,7 @@ void display() {		// Fonction principale d'affichage
 			glEnd();
 		}
 
-		// Dessine les axes dans la map	(sert au repï¿½rage pour la conception du jeu)
+		// Dessine les axes dans la map	(sert au repérage pour la conception du jeu)
 		if(Config.Debug.cubicMeterVisibility) {
 			glPushMatrix();
 			glTranslatef(0.0f, 0.0f, -0.5f);
@@ -840,7 +842,7 @@ void chopeLesEvenements() {
 					sinPhi*10*quantumVitesse + vect[1],
 					cosTeta*cosPhi*10*quantumVitesse + vect[2]);
 
-			balle->changeAction( gravitePlayer );	// associe au projectile une fonction de gravitï¿½
+			balle->changeAction( gravitePlayer );	// associe au projectile une fonction de gravité
 			balle->changeContact( contactSprite );	// associe une fonction pour les contacts avec la map
 
 			Game._pTabIndexPlayer->Ajoute(balle);			// ajoute le projectile à la liste des joueurs
@@ -945,11 +947,11 @@ void play_handle_key_down( SDL_Event *event ) {
 			if(mouseButtonDown == Config.Commandes.Tir1.mouse) {
 				erwin->Tir();	// Tir avec l'arme active
 			}
-			// Sï¿½lection arme suivante
+			// Sélection arme suivante
 			else if(mouseButtonDown == Config.Commandes.SelectWeaponUp.mouse) {
 				erwin->ActiveArmeUp();
 			}
-			// Sï¿½lection arme prï¿½cédente
+			// Sélection arme précédente
 			else if(mouseButtonDown == Config.Commandes.SelectWeaponDown.mouse) {
 				erwin->ActiveArmeDown();
 			}
@@ -999,11 +1001,11 @@ void play_handle_key_down( SDL_Event *event ) {
 			string trace5 = "Derniere erreur Agar : ";
 			trace5 += AG_GetError();
 
-			TRACE().p( TRACE_OTHER, trace1.c_str() );
-			TRACE().p( TRACE_OTHER, trace2.c_str() );
-			TRACE().p( TRACE_OTHER, trace3.c_str() );
-			TRACE().p( TRACE_OTHER, trace4.c_str() );
-			TRACE().p( TRACE_OTHER, trace5.c_str() );
+			TRACE().debug(trace1.c_str());
+			TRACE().debug(trace2.c_str());
+			TRACE().debug(trace3.c_str());
+			TRACE().debug(trace4.c_str());
+			TRACE().debug(trace5.c_str());
 
 			cerr << endl << __FILE__ << ":" << __LINE__;
 			cerr << trace1 << endl;
@@ -1044,14 +1046,14 @@ void play_handle_key_down( SDL_Event *event ) {
 
 		case SDLK_KP_PLUS :
 			if( Game.getMap() && Game.getMap()->IsSelectionMode() ) {
-				cout << endl << "Selection du suivant";
+				TRACE().info("Selection du suivant");
 				Game.getMap()->incrementeSelection();
 			}
 			break;
 
 		case SDLK_KP_MINUS :
 			if( Game.getMap() && Game.getMap()->IsSelectionMode() ) {
-				cout << endl << "Selection du precedent";
+				TRACE().info("Selection du precedent");
 				Game.getMap()->decrementeSelection();
 			}
 			break;
@@ -1102,9 +1104,9 @@ void play_handle_key_down( SDL_Event *event ) {
 			cout << endl << "Nombre de joeurs dans la partie : " << Game._pTabIndexPlayer->getNbr();
 
 			if(Game.getMap()) {
-				Game._pTabIndexPlayer->Suivant(numMainPlayer);	// Lit le numï¿½ro du joueur suivant
+				Game._pTabIndexPlayer->Suivant(numMainPlayer);	// Lit le numéro du joueur suivant
 
-				if(numMainPlayer < 0) {				// Si on a atteint la fin de la liste alors prend ï¿½ nouveau le premier de liste
+				if(numMainPlayer < 0) {				// Si on a atteint la fin de la liste alors prend à nouveau le premier de liste
 					Game._pTabIndexPlayer->Suivant(numMainPlayer);
 				}
 
@@ -1148,7 +1150,7 @@ static void process_events(void) {
 	while( SDL_PollEvent( &event ) ) {
 		switch( event.type ) {
 		case SDL_QUIT:
-			quit_game( 0 );
+			quit_game("SDL quit event", 0 );
 			break;
 
 		default:
@@ -1171,7 +1173,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	}
 
 	// Création joueurs
-	Game.setPlayerList( 10 );	// Indique que la partie peut contenir jusqu'ï¿½ 10 joueurs
+	Game.setPlayerList( 10 );	// Indique que la partie peut contenir jusqu'à 10 joueurs
 
 
 	/**************************************
@@ -1221,9 +1223,9 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	Game.Erwin( erwin );						// Indique que 'erwin' est le joueur principal
 	Game._pTabIndexPlayer->Ajoute( 0, erwin );	// Ajoute le joueur principal à la liste des joueurs
 
-	// Crï¿½ation d'un second joueur
+	// Création d'un second joueur
 	CPlayer *julien;
-	julien = new CPlayer();						// Crï¿½e un autre joueur
+	julien = new CPlayer();						// Crée un autre joueur
 	julien->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	julien->changeContact( contactPlayer );		// Associe une fonction pour les contacts avec la map
 	julien->Skin( pMapJoueur2 );
@@ -1231,19 +1233,19 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	julien->nom( "JULIEN" );
 	julien->init();
 	julien->choiceOneEntryPoint();
-	Game._pTabIndexPlayer->Ajoute( 1, julien );	// Ajoute le joueur ï¿½ la liste des joueurs
+	Game._pTabIndexPlayer->Ajoute( 1, julien );	// Ajoute le joueur à la liste des joueurs
 
-	// Crï¿½ation d'un troisiï¿½me joueur
+	// Création d'un troisième joueur
 	CPlayer *sprite;
-	sprite = new CPlayer();						// Crï¿½e un autre joueur
-	sprite->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravitï¿½
+	sprite = new CPlayer();						// Crée un autre joueur
+	sprite->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	sprite->changeContact( contactSprite );		// Associe une fonction pour les contacts avec la map
 	sprite->Skin( pMapJoueur );
 	sprite->setCri( cri2.c_str() );
 	sprite->nom( "SPRITE" );
 	sprite->init();
 	sprite->choiceOneEntryPoint();
-	Game._pTabIndexPlayer->Ajoute( 2, sprite );	// Ajoute le joueur ï¿½ la liste des joueurs
+	Game._pTabIndexPlayer->Ajoute( 2, sprite );	// Ajoute le joueur à la liste des joueurs
 
 	return true;
 }
@@ -1264,7 +1266,7 @@ GameDto* serverGameDto;
 void executeJktRequests() {
 
 	//	/* *******************************************************
-	//	 * Exï¿½cution de l'ouverture d'une MAP en mode multijoueurs
+	//	 * Exécution de l'ouverture d'une MAP en mode multijoueurs
 	//	 * ******************************************************/
 	//
 	//	if( Game.RequeteProcess.isOuvreMap() ) {		// S'il y a une demande d'ouvertue de MAP
@@ -1273,7 +1275,7 @@ void executeJktRequests() {
 	//
 	//		openMap( mapName );	// Ouvre la MAP voulue
 	//
-	//		Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );		// Indique que la partie est lancï¿½e en mode client
+	//		Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );		// Indique que la partie est lancée en mode client
 	//		pFocus->SetPlayFocus();								// Met l'interception des commandes sur le mode jeu
 	//
 	//		Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
@@ -1281,7 +1283,7 @@ void executeJktRequests() {
 
 
 	/* *******************************************************
-	 * Exï¿½cution du workflow d'ouverture d'une MAP locale
+	 * Exécution du workflow d'ouverture d'une MAP locale
 	 * ******************************************************/
 
 	int etape = Game.RequeteProcess.getOuvreMapLocaleEtape();
@@ -1317,7 +1319,9 @@ void executeJktRequests() {
 			Game._pTabIndexPlayer = NULL;
 		}
 
-		Game.setLocalDataTree(new LocalDataTree());
+		LocalDataTree* dataTree = new LocalDataTree();
+		DataTreeUtils::formatGameDataTree(dataTree);
+		Game.setLocalDataTree(dataTree);
 
 		// Lancement ouverture MAP demandée
 		const string mapName = Game.RequeteProcess.getOuvreMap();
@@ -1330,7 +1334,7 @@ void executeJktRequests() {
 	}
 	break;
 
-	case CRequeteProcess::OMLE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la mï¿½thode "openMap"
+	case CRequeteProcess::OMLE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la méthode "openMap"
 		// Nothing to do
 		break;
 
@@ -1413,7 +1417,9 @@ void executeJktRequests() {
 		}
 		else {
 			// Création de l'arbre des données du client
-			Game.setClientDataTree(new ClientDataTree(string("jkt"), clientInterlocutor));
+			ClientDataTree* dataTree = new ClientDataTree(string("jkt"), clientInterlocutor);
+			DataTreeUtils::formatGameDataTree(dataTree);
+			Game.setClientDataTree(dataTree);
 
 			// Lancement ouverture MAP demandée
 			const string mapName = Game.RequeteProcess.getOuvreMap();
@@ -1448,7 +1454,7 @@ void executeJktRequests() {
 		pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
 
 		JktNet::CClient *client = Game.getClient();
-		client->nomMAP = clientGameDto->getMapName();			// Informe le serveur sur le nom de la MAP lancï¿½e
+		client->nomMAP = clientGameDto->getMapName();			// Informe le serveur sur le nom de la MAP lancée
 		client->setStatut( JktNet::JKT_STATUT_CLIENT_PLAY );
 		Game.setModeClient();						// Jeu en mode jeu local
 
@@ -1463,7 +1469,7 @@ void executeJktRequests() {
 	}
 
 	/* **************************************************************
-	 * Exï¿½cution du workflow d'ouverture d'une MAP en mode serveur
+	 * Exécution du workflow d'ouverture d'une MAP en mode serveur
 	 * *************************************************************/
 
 	etape = Game.RequeteProcess.getOuvreMapServerEtape();
@@ -1507,7 +1513,9 @@ void executeJktRequests() {
 		}
 		else {
 			// Connexion du serveur
-			Game.setServerDataTree(new ServeurDataTree());
+			ServeurDataTree* dataTree = new ServeurDataTree();
+			DataTreeUtils::formatGameDataTree(dataTree);
+			Game.setServerDataTree(dataTree);
 
 			// Lancement ouverture MAP demandée
 			const string mapName = Game.RequeteProcess.getOuvreMap();
@@ -1532,7 +1540,7 @@ void executeJktRequests() {
 		map->initGL();
 		Game.changeActiveMap(map);
 
-		// Dï¿½finition des joueurs
+		// Définition des joueurs
 		Game.setPlayerList(serverGameDto->getPlayersMaxNumber());
 
 		CPlayer* erwin = serverGameDto->getErwin();
@@ -1542,11 +1550,11 @@ void executeJktRequests() {
 
 		if(erwin != NULL) {
 			Game.Erwin(erwin);									// Indique que 'erwin' est le joueur principal
-			Game._pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal ï¿½ la liste des joueurs
+			Game._pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
 		}
 
 		for(vector<CPlayer*>::iterator iter = serverGameDto->getPlayers().begin() ; iter != serverGameDto->getPlayers().end() ; ++iter) {
-			Game._pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur ï¿½ la liste des joueurs
+			Game._pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
 		}
 
 		CPlayer *player;
@@ -1565,7 +1573,7 @@ void executeJktRequests() {
 		pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
 
 		JktNet::CServer *server = Game.getServer();
-		server->nomMAP = serverGameDto->getMapName();					// Informe le serveur sur le nom de la MAP lancï¿½e
+		server->nomMAP = serverGameDto->getMapName();					// Informe le serveur sur le nom de la MAP lancée
 		Game.setPlayerList( server->maxPlayers );
 		server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
 		Game.setModeServer();						// Jeu en mode jeu local
@@ -1614,9 +1622,9 @@ void communique() {
 				// Emet les données vers les clients
 				Game.getServer()->emet();
 
-				// Rï¿½ception des donnï¿½es des clients
+				// Réception des données des clients
 				if(Game.getMap()) {			// Si une partie est en cours en mode de jeu client ou serveur
-					_networkManager->recoitServer();	// Recoit les donnï¿½es des clients
+					_networkManager->recoitServer();	// Recoit les données des clients
 				}
 			}
 		}
@@ -1635,7 +1643,7 @@ void communique() {
 
 			// Emet les données ddu joueur actif vers le serveur
 			if(Game.getMap() && Game.Erwin() && Game.isModeClient() && (Game.getStatutClient() == JKT_STATUT_CLIENT_PLAY)) {
-				client->emet( *Game.Erwin() );		// Emet les requetes et donnï¿½es du joueur actif;
+				client->emet( *Game.Erwin() );		// Emet les requetes et données du joueur actif;
 			}
 		}
 	}
@@ -1683,8 +1691,8 @@ void boucle() {
 		ClientDataTree* clientDataTree = Game.getClientDataTree();
 
 		if(clientDataTree) {		// TODO clientDataTree devrait être protégé par un mutex
-			clientDataTree->receiveChangementsFromServer();		// Le client reçoit les changements des donnï¿½es du jeu de la part du serveur
-			clientDataTree->diffuseChangementsToServer();		// Le client reçoit diffuse les changements des donnï¿½es du jeu vers le serveur
+			clientDataTree->receiveChangementsFromServer();		// Le client reçoit les changements des données du jeu de la part du serveur
+			clientDataTree->diffuseChangementsToServer();		// Le client reçoit diffuse les changements des données du jeu vers le serveur
 		}
 
 
@@ -1696,7 +1704,7 @@ void boucle() {
 			if( 	Game.isModeLocal()
 					|| 	(Game.isModeClient() && Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY)
 					|| 	(Game.isModeServer() && Game.getStatutServer()==JKT_STATUT_SERVER_PLAY) ) {
-				chopeLesEvenements();	// Prends les requï¿½tes du joueur pour permettre mï¿½me au serveur de jouer
+				chopeLesEvenements();	// Prends les requêtes du joueur pour permettre même au serveur de jouer
 			}
 		}
 
@@ -1711,9 +1719,9 @@ void boucle() {
 
 		/* ****************************************************
 		 * Effectue les calculs physiques
-		 * (gravitï¿½, gestion des contacts, dï¿½placements, ...)
+		 * (gravité, gestion des contacts, déplacements, ...)
 		 * ***************************************************/
-		Uint32 temps = SDL_GetTicks();	// Temps au dï¿½but du timer (->mesure du temps de calcul)
+		Uint32 temps = SDL_GetTicks();	// Temps au début du timer (->mesure du temps de calcul)
 
 		Game.timer();
 
@@ -1733,7 +1741,7 @@ void boucle() {
 }
 
 int main(int argc, char** argv) {
-	TRACE().p( TRACE_OTHER, "main(argc=%d,argv=%x)", argc, argv );
+//	TRACE().debug("main(argc=%d,argv=%x)", argc, argv);
 
 	if(argc > 1) {
 		// Exécution des tests unitaires
@@ -1743,6 +1751,8 @@ int main(int argc, char** argv) {
 
 			testSuite->init();
 			testSuite->launchTests();
+			cout << flush;
+			cerr << flush;
 			exit(0);
 		}
 	}
@@ -1762,9 +1772,9 @@ int main(int argc, char** argv) {
 	_networkManager = new NetworkManager();
 
 	Config.Audio.Init();	// Initialisation audio
-	Config.Ecrit();			// Enregistre les ï¿½ventuelles modifications de la configuration
+	Config.Ecrit();			// Enregistre les éventuelles modifications de la configuration
 
-	srand(SDL_GetTicks());		// Initialisation de la fonction rand() pour les nombres alï¿½atoires
+	srand(SDL_GetTicks());		// Initialisation de la fonction rand() pour les nombres aléatoires
 
 	_grahicObjectsToInitializeMutex = SDL_CreateMutex();
 	_grahicObjectsToDestructMutex = SDL_CreateMutex();
@@ -1797,17 +1807,17 @@ int main(int argc, char** argv) {
 
 	// Initialisation pour les menus et boîtes de dialogue
 	{
-		string fonte = "@Fonte\\Fonte.glf";		// Chargement de la fonte de caractï¿½res
+		string fonte = "@Fonte\\Fonte.glf";		// Chargement de la fonte de caractères
 		JktUtils::RessourcesLoader::getFileRessource(fonte);
 		unsigned int texFonte;
 		glGenTextures(1, &texFonte);
 
 		if( !myfont.Create(fonte.c_str(), texFonte) ) {
-			TRACE().p( TRACE_ERROR, "main() Echec ouverture texture de fonte (%s) : %d", fonte.c_str(), texFonte );
+			TRACE().debug("main() Echec ouverture texture de fonte (%s) : %d", fonte.c_str(), texFonte);
 			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec d'ouverture de la fonte : " << fonte << endl;
 		}
 		else {
-			TRACE().p( TRACE_INFO, "main() Texture de fonte (%s) : %d", fonte.c_str(), texFonte );
+			TRACE().debug("main() Texture de fonte (%s) : %d", fonte.c_str(), texFonte);
 		}
 	}
 
@@ -1820,9 +1830,9 @@ int main(int argc, char** argv) {
 		return 1;	// Erreur fatale si CRocket ne peut être initialisée
 
 
-
 	// Mise en place du moteur de particules pour la neige, réfléchir où mettre ça
 	CV3D posMoteurParticulesNeige( -2.35f, 1.5f, 0.0f );
+//	CV3D tailleMoteurParticulesNeige(3.0f, 3.0f, 3.0f);
 	CV3D tailleMoteurParticulesNeige(3.0f, 3.0f, 3.0f);
 	moteurParticulesNeige = new CMoteurParticulesNeige(10000, posMoteurParticulesNeige, tailleMoteurParticulesNeige);
 
@@ -1848,6 +1858,6 @@ int main(int argc, char** argv) {
 	Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
 	boucle();
 
-	return 1;	// On ne devrait normalement jamais exï¿½cuter cette ligne
+	return 1;	// On ne devrait normalement jamais exécuter cette ligne
 }
 

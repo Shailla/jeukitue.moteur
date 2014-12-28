@@ -5,18 +5,14 @@
 
 using namespace std;
 
-#define TRACEMETHOD CTraceMethod t(__LINE__,__FILE__,
+#define TRACEMETHOD() CTraceMethod t(__LINE__,__FILE__)
 
-class CTraceMethod
-{
-	std::string m_Texte;
-	void *m_ClassePtr;
-	int m_Category; 
+class CTraceMethod {
 	int m_Ligne;
 	string m_NomFichier;
 
 public:
-	CTraceMethod(int ligne, const char *nomFichier, int category, void *ptr, char *txt, ... );
+	CTraceMethod(int ligne, const char *nomFichier);
 	~CTraceMethod();
 };
 

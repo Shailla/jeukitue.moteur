@@ -82,7 +82,7 @@ void CGenRef::delRef(unsigned ref)
 	}
 
 	if(iter == sequence.end() || ref<(*iter).m_Debut) {
-		TRACE().p( TRACE_ERROR, "Tentative de suppression d'une référence inconnue 'ref=%d'", ref);
+		TRACE().debug("Tentative de suppression d'une référence inconnue 'ref=%d'", ref);
 		cout << endl << "Tentative de suppression d'une référence inconnue 'ref=" << ref << "'";
 		return;
 	}

@@ -39,7 +39,7 @@ void TestSuite::launchTests() {
 	string testName;
 
 	cout << endl << "============================================================================";
-	cout << endl << "  LANCEMENT DE L'EXECUTION DE " << _tests.size() << " TESTS";
+	cout << endl << "  LANCEMENT 2 L'EXECUTION DE " << _tests.size() << " TESTS";
 	cout << endl << "============================================================================";
 	cout << endl;
 
@@ -52,16 +52,16 @@ void TestSuite::launchTests() {
 			cout << endl << "Description of the test : " << test->getDescription() << endl;
 			test->test();	// Exécution du test
 			cout << endl << endl << "<<<<<<<<<<<<<<<<<<<<<<<< " << nbr << " TEST '" << testName << "' OK <<<<<<<<<<<<<<<<<<<<<<<<";
-			cout << endl;
+			cout << endl << flush;
 
 			nbrOk++;
 		}
 		catch(TestError& error) {
-			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (file = " << error._file << ", line = " << error._line << ", message = " << error._message << ") <<<<<<";
+			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (file = " << error._file << ", line = " << error._line << ", message = " << error._message << ") <<<<<<" << flush;
 			nbrKo++;
 		}
 		catch(...) {
-			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (with unexpected exception) <<<<<<";
+			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (with unexpected exception) <<<<<<" << flush;
 			nbrKo++;
 		}
 
@@ -74,7 +74,7 @@ void TestSuite::launchTests() {
 	cout << endl << "  \t" << nbrOk << " test(s) réussi(s)";
 	cout << endl << "  \t" << nbrKo << " test(s) en échec";
 	cout << endl << "  \tNombre total de test(s) : " << _tests.size();
-	cout << endl << "============================================================================";
+	cout << endl << "============================================================================" << flush;
 }
 
 } /* namespace JktTest */

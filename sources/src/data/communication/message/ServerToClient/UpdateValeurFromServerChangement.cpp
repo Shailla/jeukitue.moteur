@@ -12,7 +12,6 @@
 using namespace std;
 
 #include "util/StreamUtils.h"
-#include "util/types/IntData.h"
 #include "data/ValeurInt.h"
 #include "data/ServeurDataTree.h"
 #include "data/MarqueurDistant.h"
@@ -23,7 +22,7 @@ UpdateValeurFromServerChangement::UpdateValeurFromServerChangement(istringstream
 	unserialize(in);
 }
 
-UpdateValeurFromServerChangement::UpdateValeurFromServerChangement(const vector<int>& parentBrancheId, int valeurId, int revision, JktUtils::Data* valeur) : Changement("UpdateValeurChangement", PRIORITY_UpdateValeurFromServerChangement) {
+UpdateValeurFromServerChangement::UpdateValeurFromServerChangement(const vector<int>& parentBrancheId, int valeurId, int revision, JktUtils::AnyData valeur) : Changement("UpdateValeurChangement", PRIORITY_UpdateValeurFromServerChangement) {
 	_parentBrancheId = parentBrancheId;
 	_valeurId = valeurId;
 	_revision = revision;
@@ -31,9 +30,6 @@ UpdateValeurFromServerChangement::UpdateValeurFromServerChangement(const vector<
 }
 
 UpdateValeurFromServerChangement::~UpdateValeurFromServerChangement() {
-	if(_valeur) {
-		delete _valeur;
-	}
 };
 
 void UpdateValeurFromServerChangement::update(MarqueurDistant* marqueur) {
@@ -48,7 +44,7 @@ void UpdateValeurFromServerChangement::serialize(ostringstream& out) const {
 	StreamUtils::write(out, _parentBrancheId);
 	StreamUtils::write(out, _valeurId);
 	StreamUtils::write(out, _revision);
-	StreamUtils::write(out, *_valeur);
+	StreamUtils::write(out, _valeur);
 }
 
 void UpdateValeurFromServerChangement::unserialize(istringstream& in) {
@@ -71,7 +67,7 @@ string UpdateValeurFromServerChangement::toString() const {
 	str << "; revision:" << _revision;
 
 	str << "; data:";
-	StreamUtils::writeHumanReadable(str, *_valeur);
+	StreamUtils::writeHumanReadable(str, _valeur);
 
 	str << "]\t" << Changement::toString();
 
@@ -90,7 +86,7 @@ int UpdateValeurFromServerChangement::getRevision() const {
 	return _revision;
 }
 
-const JktUtils::Data* UpdateValeurFromServerChangement::getValeur() const {
+const JktUtils::AnyData UpdateValeurFromServerChangement::getValeur() const {
 	return _valeur;
 }
 

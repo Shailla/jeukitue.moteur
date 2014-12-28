@@ -12,10 +12,11 @@
 
 using namespace std;
 
+#include "util/Trace.h"
+#include "util/TraceMethod.h"
 #include "data/MarqueurDistant.h"
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/exception/DataCommunicationException.h"
-#include "util/types/IntData.h"
 #include "data/communication/DataSerializer.h"
 #include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
 #include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"
@@ -47,11 +48,11 @@ Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBranche
 	return (Branche*)initDonneeAndMarqueurFromDistant(distant, branche, brancheClientTmpId);
 }
 
-Valeur* ServeurDataTree::createValeur(const vector<int>& parentBrancheId, const string& valeurName, const Data* valeur) {
+Valeur* ServeurDataTree::createValeur(const vector<int>& parentBrancheId, const string& valeurName, const AnyData valeur) {
 	return addValeurFromDistant(parentBrancheId, valeurName, 0, 0, valeur, NULL);
 }
 
-Valeur* ServeurDataTree::addValeurFromDistant(const vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int revision, const Data* valeur, DistantTreeProxy* distant) {
+Valeur* ServeurDataTree::addValeurFromDistant(const vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int revision, const AnyData valeur, DistantTreeProxy* distant) {
 	Branche* parentBranche = getBrancheFromDistant(distant, parentBrancheId);
 
 	Valeur* val = parentBranche->createValeurForServeur(valeurName, revision, valeur);
@@ -84,7 +85,7 @@ void ServeurDataTree::addDistant(Interlocutor2* interlocutor) {
 	DistantTreeProxy* distant = new DistantTreeProxy(interlocutor);
 	initDistantBranche(distant, &getRoot());
 
-	cout << endl << "AJOUT D'UN DISTANT : " << interlocutor->getName() << flush;
+	TRACE().info("AJOUT D'UN DISTANT : '%s'", interlocutor->getName().c_str());
 
 	_clients.push_back(distant);
 }
@@ -123,6 +124,8 @@ void ServeurDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bra
 }
 
 void ServeurDataTree::diffuseChangementsToClients(void) {
+	TRACEMETHOD();
+
 	vector<DistantTreeProxy*>::const_iterator clientIter;
 	vector<Changement*> changements;
 
@@ -138,7 +141,7 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 		// Emission des changements
 		if(changements.size()) {
 			for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
-				cout << endl << "serveur" << " to " << interlocutor->getName() << "\t : " << (*itCh)->toString() << flush;
+				TRACE().debug("serveur to '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str());
 			}
 
 			ostringstream out;
@@ -201,6 +204,8 @@ Valeur* ServeurDataTree::getValeurByDistantTmpId(DistantTreeProxy* distant, cons
 }
 
 void ServeurDataTree::receiveChangementsFromClients() {
+	TRACEMETHOD();
+
 	try {
 		vector<DistantTreeProxy*>::iterator it;
 
@@ -224,12 +229,12 @@ void ServeurDataTree::receiveChangementsFromClients() {
 
 				vector<Changement*>::iterator itCh;
 
-				cout << endl << "NOMBRE DE CHANGEMENTS A PRENDRE EN COMPTE : " << changements.size() << endl << flush;
+				TRACE().info("NOMBRE DE CHANGEMENTS A PRENDRE EN COMPTE : %d", changements.size());
 
 
 				for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
 					try {
-						cout << endl << "serveur" << " from " << interlocutor->getName() << "\t : " << (*itCh)->toString() << flush;
+						TRACE().error("serveur from '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str());
 
 						// Le client confirme la révision de branche qu'il a reçu
 						if(ConfirmBrancheChangement* chgt = dynamic_cast<ConfirmBrancheChangement*>(*itCh)) {
@@ -287,7 +292,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 							Valeur* valeur = getValeur(chgt->getParentBrancheId(), chgt->getValeurId());
 
 							if(valeur->getRevision() < chgt->getRevision()) {
-								valeur->setValeur(chgt->getRevision(), *chgt->getValeur());
+								valeur->setValeur(chgt->getRevision(), chgt->getValeur());
 
 								MarqueurDistant* marqueur = distant->getMarqueur(valeur);
 								marqueur->setConfirmedRevision(chgt->getRevision());
@@ -295,7 +300,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 								answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), chgt->getValeurId(), valeur->getRevision()));
 							}
 							else {
-								cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : La révision client est plus ancienne que celle du serveur";
+								TRACE().error(" Exception : La révision client est plus ancienne que celle du serveur");
 							}
 						}
 
@@ -305,13 +310,13 @@ void ServeurDataTree::receiveChangementsFromClients() {
 						}
 					}
 					catch(const NotExistingValeurException& exception) {
-						cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingValeurException";
+						TRACE().error("NotExistingValeurException");
 					}
 					catch(const NotExistingBrancheException& exception) {
-						cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingBrancheException";
+						TRACE().error("NotExistingBrancheException");
 					}
 					catch(const DataCommunicationException& exception) {
-						cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
+						TRACE().error("DataCommunicationException : %s", exception.getMessage().c_str());
 					}
 
 					delete *itCh;
@@ -322,7 +327,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 					vector<Changement*>::iterator itCh;
 
 					for(itCh = answers.begin() ; itCh != answers.end() ; itCh++) {
-						cout << endl << "serveur" << " to " << interlocutor->getName() << "\t : " << (*itCh)->toString() << flush;
+						TRACE().info("serveur '%s', : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str());
 					}
 
 					ostringstream out;
@@ -338,7 +343,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 		}
 	}
 	catch(DataCommunicationException& exception) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
+		TRACE().error("DataCommunicationException : %s", exception.getMessage().c_str());
 	}
 }
 

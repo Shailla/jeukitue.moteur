@@ -40,7 +40,7 @@ void DataSerializer::toStream(vector<Changement*>& changements, ostringstream& o
 }
 
 void DataSerializer::fromStream(vector<Changement*>& changements, istringstream& in) throw(DataCommunicationException) {
-	in.exceptions(istringstream::eofbit);
+	in.exceptions(istringstream::eofbit|istringstream::failbit|istringstream::badbit);
 
 	int messageType;
 	Changement* changement;

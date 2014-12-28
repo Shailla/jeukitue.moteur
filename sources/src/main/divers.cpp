@@ -4,7 +4,6 @@
 #endif
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <iostream>
 #include <string>
 #include <vector>
 #include <cmath>
@@ -34,38 +33,22 @@ using namespace JktSon;
 
 extern JktSon::CDemonSons *DemonSons;
 
-void quit_game() {
-TRACE().p( TRACE_OTHER, "quit_game()" );
-	cerr << endl << __FILE__ << ":" << __LINE__ << " quit_game()";
-	exit(0);
-}
-
-void quit_game(int code)	// Quitte proprement le jeu
-{
-TRACE().p( TRACE_OTHER, "quit_game(code=%d)", code );
-	cerr << endl << __FILE__ << ":" << __LINE__ << " Quit game with code : " << code;
-	cerr.flush();
-	exit( code );
-}
-
 void quit_game(const char* txt, int code)	// Quitte proprement le jeu
 {
-TRACE().p( TRACE_OTHER, "quit_game(code=%d,txt=%s)", code, txt );
-	cerr << endl << __FILE__ << ":" << __LINE__ << " Quit game with code and message : " << code << " - '" << txt << "'";
-	cerr.flush();
+TRACE().debug("quit_game(code=%d,txt=%s)", code, txt);
+	cerr << endl << __FILE__ << ":" << __LINE__ << " Quit game with code and message : " << code << " - '" << txt << "'" << flush;
 	exit( code );
 }
 
 void quit_game(const string& txt, int code)	// Quitte proprement le jeu
 {
-TRACE().p( TRACE_OTHER, "quit_game(code=%d,txt=%s)", code, txt.c_str() );
-cerr << endl << __FILE__ << ":" << __LINE__ << " Quit game with code and message : " << code << " - '" << txt << "'";
-	cerr.flush();
+TRACE().debug("quit_game(code=%d,txt=%s)", code, txt.c_str());
+	cerr << endl << __FILE__ << ":" << __LINE__ << " Quit game with code and message : " << code << " - '" << txt << "'" << flush;
 	exit( code );
 }
 
 void quit_JKT() {
-TRACE().p( TRACE_OTHER, "quit_JKT()" );
+TRACE().debug("quit_JKT()");
 	string trace1 = "Derniere erreur FMOD : ";
 	trace1 += FMOD_ErrorString(FSOUND_GetError());
 
@@ -88,11 +71,11 @@ TRACE().p( TRACE_OTHER, "quit_JKT()" );
 		trace5 += "Aucune";
 	}
 
-TRACE().p( TRACE_OTHER, trace1.c_str() );
-TRACE().p( TRACE_OTHER, trace2.c_str() );
-TRACE().p( TRACE_OTHER, trace3.c_str() );
-TRACE().p( TRACE_OTHER, trace4.c_str() );
-TRACE().p( TRACE_OTHER, trace5.c_str() );
+TRACE().debug(trace1.c_str());
+TRACE().debug(trace2.c_str());
+TRACE().debug(trace3.c_str());
+TRACE().debug(trace4.c_str());
+TRACE().debug(trace5.c_str());
 
 	cerr << endl << __FILE__ << ":" << __LINE__;
 	cerr << trace1 << endl;
@@ -100,14 +83,13 @@ TRACE().p( TRACE_OTHER, trace5.c_str() );
 	cerr << trace3 << endl;
 	cerr << trace4 << endl;
 	cerr << trace5 << endl;
-
 	cerr.flush();
 
 	FSOUND_Close();		// Fermeture d'FMOD
 	SDLNet_Quit();		// Fermeture d'SDL_Net
 	SDL_Quit();			// Fermeture de SDL
 
-	cout << endl << "Erreur OpenGL : " << gluErrorString(glGetError());
+	TRACE().error("Erreur OpenGL : %s", gluErrorString(glGetError()));
 }
 
 bool checkEventsForIntro(void)		// Vérifie si 'escape' ou le bouton souris ont été frappés
@@ -130,7 +112,7 @@ bool checkEventsForIntro(void)		// Vérifie si 'escape' ou le bouton souris ont é
 			break;
 
         case SDL_QUIT:
-			quit_game(0);
+			quit_game("SDL quit event in intro", 0);
 			break;
 
 		default:
@@ -147,7 +129,7 @@ CSon* sonHurlement;		// Son hurlement du sauveur de la planète
 
 
 void load_Intro( int width, int height ) {
-TRACE().p( TRACE_OTHER, "load_Intro(width=%d,height=%d)", width, height );
+TRACE().debug("load_Intro(width=%d,height=%d)", width, height);
 	string bruitChariot = "@Bruit\\chariot.wav";		// Chargement de la fonte de caractères
 	JktUtils::RessourcesLoader::getFileRessource(bruitChariot);
 	sonChariot = DemonSons->CreateSon( bruitChariot.c_str() );		// Son retour chariot machine à écrire
@@ -174,7 +156,7 @@ TRACE().p( TRACE_OTHER, "load_Intro(width=%d,height=%d)", width, height );
 
 
 void load_IntroSub(const int width, const int height ) {
-TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
+TRACE().debug("load_IntroSub(width=%d,height=%d)", width, height);
 	GLFont fonteIntro;
 	unsigned int texFonteIntro;
 
@@ -207,11 +189,11 @@ TRACE().p( TRACE_OTHER, "load_IntroSub(width=%d,height=%d)", width, height );
 	glGenTextures( 1, &texFonteIntro );
 
 	if( !fonteIntro.Create( fileFonteIntro, texFonteIntro ) ) {
-		TRACE().p( TRACE_ERROR, "loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro );
+		TRACE().debug("loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro);
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec d'ouverture de la fonte : " << fileFonteIntro << endl;
 	}
 	else {
-		TRACE().p( TRACE_INFO, "loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro );
+		TRACE().debug("loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro);
 	}
 
 	glMatrixMode( GL_PROJECTION );

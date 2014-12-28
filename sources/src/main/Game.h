@@ -100,6 +100,7 @@ public:
 	ClientDataTree* getClientDataTree();
 
 	// Gestion du jeu
+	void AfficheDirigeables();
 	void AffichePlayers();			// Affiche tous les joueurs
 	void AfficheProjectils();		// Affiche tous les projectils
 

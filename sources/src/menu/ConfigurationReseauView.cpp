@@ -25,9 +25,6 @@ ConfigurationReseauView::ConfigurationReseauView(const AG_EventFn controllerCall
      * Personnalisation de la fenêtre
      * ********************************/
 
-    // Mode serveur ou client
-    AG_CheckboxNewInt(m_window, 0, "Mode serveur :", &_isModeServeur);
-
 	// IP du serveur
 	_ipServeurTexbox = AG_TextboxNew(m_window, 0, _ipServeur);
 	AG_TextboxSetLabel(_ipServeurTexbox, "Adresse IP du serveur :");
@@ -71,22 +68,10 @@ int ConfigurationReseauView::getPortTree(void) const {
 	return _portTree;
 }
 
-bool ConfigurationReseauView::isModeServeur(void) const {
-	if(_isModeServeur) {
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-
 void ConfigurationReseauView::show(void) {
 	/* ********************************
 	 * Initialisation des valeurs
 	 * *******************************/
-
-	// Activation du mode serveur
-	_isModeServeur = Config.Reseau.isServeur();
 
 	// IP du serveur
 	memset(_ipServeur, '\0', sizeof(_ipServeur));

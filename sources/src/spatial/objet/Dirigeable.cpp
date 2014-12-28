@@ -40,16 +40,17 @@ Dirigeable::Dirigeable(CMap *map) {
 
 	vector<int> brancheId;
 	brancheId.push_back(1);
+	brancheId.push_back(2);
 	brancheId.push_back(1);
 	brancheId.push_back(1);
 
-	_vitesseX = dataTree->getValeur(brancheId, 1);
-	_vitesseY = dataTree->getValeur(brancheId, 2);
-	_vitesseZ = dataTree->getValeur(brancheId, 3);
+	_vitesseX = (ValeurFloat*)dataTree->getValeur(brancheId, 1);
+	_vitesseY = (ValeurFloat*)dataTree->getValeur(brancheId, 2);
+	_vitesseZ = (ValeurFloat*)dataTree->getValeur(brancheId, 3);
 
-	_positionX = dataTree->getValeur(brancheId, 4);
-	_positionY = dataTree->getValeur(brancheId, 5);
-	_positionZ = dataTree->getValeur(brancheId, 6);
+	_positionX = (ValeurFloat*)dataTree->getValeur(brancheId, 4);
+	_positionY = (ValeurFloat*)dataTree->getValeur(brancheId, 5);
+	_positionZ = (ValeurFloat*)dataTree->getValeur(brancheId, 6);
 }
 
 Dirigeable::~Dirigeable(void) {
@@ -60,10 +61,29 @@ void Dirigeable::Init() {			// Initialisation de l'objet géométrique
 }
 
 void Dirigeable::Affiche() {		// Fonction d'affichage de la porte
+//	glPushMatrix();
+//
+//	float x = _positionX->getValeur();
+//	float y = _positionY->getValeur();
+//	float z = _positionZ->getValeur();
+//
+//	glTranslatef(x, y, z);	// Translation de la porte de la valeur de son ouverture
+////	_map->Affiche();						// Affichage
+//	glColor3f(0.0f, 1.0f, 1.0f);
+//	GLUquadric* quadric = gluNewQuadric();
+//	gluSphere(quadric, 0.05, 16, 16);
+//
+//	glPopMatrix();
+}
+
+void Dirigeable::Affiche(Branche* branche) {		// Fonction d'affichage de la porte
 	glPushMatrix();
 
-	glTranslatef(_positionX->getValeur(), _positionY->getValeur(), _positionZ->getValeur());	// Translation de la porte de la valeur de son ouverture
-//	_map->Affiche();						// Affichage
+	float x = ((ValeurFloat*)branche->getValeurByIdOrTmpId(4))->getValeur();
+	float y = ((ValeurFloat*)branche->getValeurByIdOrTmpId(5))->getValeur();
+	float z = ((ValeurFloat*)branche->getValeurByIdOrTmpId(6))->getValeur();
+
+	glTranslatef(x, y, z);	// Translation de la porte de la valeur de son ouverture
 	glColor3f(0.0f, 1.0f, 1.0f);
 	GLUquadric* quadric = gluNewQuadric();
 	gluSphere(quadric, 0.05, 16, 16);

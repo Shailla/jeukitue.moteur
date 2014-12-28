@@ -12,7 +12,7 @@
 
 using namespace std;
 
-#include "util/types/Data.h"
+#include "util/types/AnyData.h"
 #include "data/Donnee.h"
 
 #include "util/GenRef.h"
@@ -34,9 +34,8 @@ public:
 	int getValeurTmpId() const;
 	int getValeurId() const;
 	void setValeurId(int valeurId);
-	virtual void setValeur(int revision, const JktUtils::Data& data) = 0;
-	virtual void updateValeur(const JktUtils::Data* data) = 0;
-	virtual JktUtils::Data* getValeurData() const = 0;
+	virtual void setValeur(int revision, const JktUtils::AnyData& data) = 0;
+	virtual JktUtils::AnyData getValeurData() const = 0;
 	virtual std::string toString() const = 0;
 	static bool highestId(const Valeur* left, const Valeur* right);
 };

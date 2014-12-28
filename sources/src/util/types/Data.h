@@ -28,13 +28,15 @@ public:
 	virtual ~Data();
 
 	static Data* unserialize(std::istringstream& in) throw(UnserializeException);
-	virtual void serialize(std::ostringstream& out) = 0;
+	virtual void serialize(std::ostringstream& out) const = 0;
 
 	/** Obtenir une description de la donnée */
 	std::string toString() const;
 
 	/** Obtenir une description de la donnée */
 	virtual void toString(std::ostringstream& out) const = 0;
+
+	virtual Data& operator=(const Data& data) = 0;
 };
 
 };

@@ -6,7 +6,6 @@
  */
 
 #include <sstream>
-#include <iostream>
 #include <string>
 #include <map>
 
@@ -15,6 +14,7 @@ using namespace std;
 #include "SDL.h"
 #include "SDL_net.h"
 
+#include "util/Trace.h"
 #include "util/IpUtils.h"
 #include "reseau/new/message/TechnicalMessage.h"
 #include "reseau/new/message/C2SByeTechnicalMessage.h"
@@ -93,7 +93,7 @@ NotConnectedInterlocutor2* ServerUdpInterlocutor::connect() throw(ConnectionFail
 		log("Les processus sont lances");
 	}
 	catch(ConnectionFailedException& exception) {
-		cerr << endl << exception.getMessage();
+		TRACE().error("ConnectionFailedException : %s", exception.getMessage().c_str());
 
 		close();
 
@@ -401,7 +401,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 		}
 	}
 
-	cout << endl << "Server says : Stop sending process";
+	TRACE().info("Server says : Stop sending process");
 }
 
 void ServerUdpInterlocutor::receiveOnePacket() {

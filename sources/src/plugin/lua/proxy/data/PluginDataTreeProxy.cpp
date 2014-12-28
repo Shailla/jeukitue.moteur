@@ -12,9 +12,6 @@ using namespace std;
 
 #include "fmod.h"
 
-#include "util/types/IntData.h"
-#include "util/types/FloatData.h"
-#include "util/types/StringData.h"
 #include "data/DataTree.h"
 #include "main/Fabrique.h"
 #include "plugin/lua/LuaUtils.h"
@@ -30,37 +27,48 @@ namespace JktPlugin {
 
 const char PluginDataTreeProxy::className[] = "DataTree";
 
-PluginDataTreeProxy* PluginDataTreeProxy::_this = 0;
-
 Lunar<PluginDataTreeProxy>::RegType PluginDataTreeProxy::methods[] = {
 		{"createValeur", &PluginDataTreeProxy::createValeur},
+		{"getBranche", &PluginDataTreeProxy::getBranche},
 		{"createBranche", &PluginDataTreeProxy::createBranche},
 		{0}
 };
 
-PluginDataTreeProxy::PluginDataTreeProxy() {
+PluginDataTreeProxy::PluginDataTreeProxy(DataTree* dataTree) {
+	_dataTree = dataTree;
 }
 
 PluginDataTreeProxy::PluginDataTreeProxy(lua_State* L) {
-
-}
-
-PluginDataTreeProxy* PluginDataTreeProxy::getInstance() {
-	if(!_this) {
-		_this = new PluginDataTreeProxy();
-	}
-
-	return _this;
+	_dataTree = 0;
 }
 
 /**
  * .
  *    - Return 1 :
  */
-int PluginDataTreeProxy::getMapDataTree(lua_State *L) {
+int PluginDataTreeProxy::getDataTree(lua_State *L) {
 	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
 
-	return Lunar<PluginDataTreeProxy>::push(L, getInstance());
+	DataTree* dataTree = Game.getDataTree();
+	return Lunar<PluginDataTreeProxy>::push(L, new PluginDataTreeProxy(dataTree));
+}
+
+/**
+ */
+int PluginDataTreeProxy::getBranche(lua_State *L) {
+//	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 3, LUA_PARAM_ARRAY_INT, LUA_PARAM_STRING, LUA_PARAM_STRING);
+
+	vector<string> branchePath;
+
+	int index = 1;
+
+	LuaUtils::readStringArray(L, branchePath, index);
+
+	Branche* branche = _dataTree->getBranche(branchePath);
+
+	LuaUtils::pushIntArray(L, branche->getBrancheFullId());
+
+	return 1;
 }
 
 /**
@@ -77,34 +85,22 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
 
 	int index = 1;
 
-	lua_pushnil(L);
-
-	while(lua_next(L, index)) {
-	    if(lua_isnumber(L, -1)) {
-	        int var = (int)lua_tonumber(L, -1);
-	        brancheId.push_back(var);
-	    }
-
-	    lua_pop(L, 1);
-	}
-
-	index++;
+	LuaUtils::readIntArray(L, brancheId, index);
 
 	const string valeurType = lua_tostring(L, index++);
 
 	const string valeurName = lua_tostring(L, index++);
 
-	DataTree* dataTree = Game.getDataTree();
-	const JktUtils::Data* data;
+	JktUtils::AnyData data;
 
 	if(valeurType == "int") {
-		data = new JktUtils::IntData(0);
+		data.update((int)0);
 	}
 	else if(valeurType == "float") {
-		data = new JktUtils::FloatData(0);
+		data.update((float)0);
 	}
 	else if(valeurType == "string") {
-		data = new JktUtils::StringData(0);
+		data.update(string(""));
 	}
 	else {
 		ostringstream message;
@@ -112,7 +108,7 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
 		Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 	}
 
-	Valeur* valeur = dataTree->createValeur(brancheId, valeurName.c_str(), data);
+	Valeur* valeur = _dataTree->createValeur(brancheId, valeurName.c_str(), data);
 	PluginDataValeurProxy* valeurProxy = new PluginDataValeurProxy(valeur);
 
 	Lunar<PluginDataValeurProxy>::push(L, valeurProxy);
@@ -129,37 +125,21 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
 int PluginDataTreeProxy::createBranche(lua_State *L) {
 //	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 3, LUA_PARAM_ARRAY_INT, LUA_PARAM_NUMBER, LUA_PARAM_STRING);
 
+	// Get input values
 	int index = 1;
 
 	vector<int> parentBrancheId;
-
-	lua_pushnil(L);
-
-	while(lua_next(L, index)) {
-	    if(lua_isnumber(L, -1)) {
-	        int var = (int)lua_tonumber(L, -1);
-	        parentBrancheId.push_back(var);
-	    }
-
-	    lua_pop(L, 1);
-	}
-
-	index++;
+	LuaUtils::readIntArray(L, parentBrancheId, index);
 
 	const string brancheName = lua_tostring(L, index++);
 
+	// Do staff
 	DataTree* dataTree = Game.getDataTree();
-
 	Branche* branche = dataTree->createBranche(parentBrancheId, brancheName.c_str());
 
+	// Push return values
 	vector<int> brancheId = branche->getBrancheFullId();
-
-	lua_createtable(L, brancheId.size() + 1, 0);
-
-	for(int i=0; i<brancheId.size(); i++) {
-		lua_pushinteger(L, brancheId.at(i));
-		lua_rawseti (L, -2, i);
-	}
+	LuaUtils::pushIntArray(L, brancheId);
 
 	return 1;
 }

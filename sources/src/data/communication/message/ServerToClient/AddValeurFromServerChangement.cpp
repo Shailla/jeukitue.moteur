@@ -20,7 +20,7 @@ AddValeurFromServerChangement::AddValeurFromServerChangement(istringstream& in) 
 	unserialize(in);
 }
 
-AddValeurFromServerChangement::AddValeurFromServerChangement(const vector<int>& parentBrancheId, int valeurId, int revision, const string& valeurName, JktUtils::Data* valeur) : Changement("AddValeurFromServerChangement", PRIORITY_AddValeurFromServerChangement) {
+AddValeurFromServerChangement::AddValeurFromServerChangement(const vector<int>& parentBrancheId, int valeurId, int revision, const string& valeurName, JktUtils::AnyData valeur) : Changement("AddValeurFromServerChangement", PRIORITY_AddValeurFromServerChangement) {
 	_parentBrancheId = parentBrancheId;
 	_valeurId = valeurId;
 	_revision = revision;
@@ -29,9 +29,6 @@ AddValeurFromServerChangement::AddValeurFromServerChangement(const vector<int>& 
 }
 
 AddValeurFromServerChangement::~AddValeurFromServerChangement() {
-	if(_valeur) {
-		delete _valeur;
-	}
 };
 
 void AddValeurFromServerChangement::update(MarqueurDistant* marqueur) {
@@ -47,7 +44,7 @@ void AddValeurFromServerChangement::serialize(ostringstream& out) const {
 	StreamUtils::write(out, _valeurId);
 	StreamUtils::write(out, _valeurName);
 	StreamUtils::write(out, _revision);
-	StreamUtils::write(out, *_valeur);
+	StreamUtils::write(out, _valeur);
 }
 
 void AddValeurFromServerChangement::unserialize(istringstream& in) {
@@ -73,7 +70,7 @@ string AddValeurFromServerChangement::toString() const {
 	str << "; revision:" << _revision;
 
 	str << "; data:";
-	StreamUtils::writeHumanReadable(str, *_valeur);
+	StreamUtils::writeHumanReadable(str, _valeur);
 
 	str << "]\t" << Changement::toString();
 
@@ -96,7 +93,7 @@ int AddValeurFromServerChangement::getRevision() const {
 	return _revision;
 }
 
-const JktUtils::Data* AddValeurFromServerChangement::getValeur() const {
+const JktUtils::AnyData AddValeurFromServerChangement::getValeur() const {
 	return _valeur;
 }
 

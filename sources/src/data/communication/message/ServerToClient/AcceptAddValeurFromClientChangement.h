@@ -11,7 +11,6 @@
 #include <sstream>
 #include <vector>
 
-#include "util/types/Data.h"
 #include "data/MarqueurDistant.h"
 #include "data/Branche.h"
 #include "data/communication/message/Changement.h"

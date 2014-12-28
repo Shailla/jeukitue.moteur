@@ -17,8 +17,6 @@ using namespace std;
 #include "util/Trace.h"
 #include "main/divers.h"
 
-#include "ihm/MReseau.h"
-
 using namespace JktMenu;
 
 class CGame;
@@ -48,7 +46,7 @@ public:
 
 void lanceMenuConfigVideoDisplay(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigVideoDisplay(var=%x)", var );
+TRACE().debug("lanceMenuConfigVideoDisplay(var=%x)", var);
 	int nbr;
 		// Récupère la liste des modes vidéo disponibles
 	SDL_Rect **modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
@@ -85,7 +83,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigVideoDisplay(var=%x)", var );
 
 void lanceDisplaySizeChange(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceDisplay640_468(var=%x)", arg );
+TRACE().debug("lanceDisplay640_468(var=%x)", arg);
 
 	rect *rr = (rect*)arg;
 

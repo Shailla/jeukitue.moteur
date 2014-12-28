@@ -12,9 +12,9 @@ using namespace std;
 
 #include "fmod.h"
 
-#include "util/types/IntData.h"
-#include "util/types/FloatData.h"
-#include "util/types/StringData.h"
+#include "data/ValeurInt.h"
+#include "data/ValeurFloat.h"
+#include "data/ValeurString.h"
 #include "data/DataTree.h"
 #include "main/Fabrique.h"
 #include "data/ValeurFloat.h"
@@ -41,6 +41,7 @@ PluginDataValeurProxy::PluginDataValeurProxy(Valeur* valeur) {
 }
 
 PluginDataValeurProxy::PluginDataValeurProxy(lua_State* L) {
+	_valeur = 0;
 }
 
 /**
@@ -48,10 +49,17 @@ PluginDataValeurProxy::PluginDataValeurProxy(lua_State* L) {
  *    - Return 1 :
  */
 int PluginDataValeurProxy::getValue(lua_State *L) {
-	if(dynamic_cast<ValeurFloat*>(_valeur)) {
-		 JktUtils::FloatData* data = (JktUtils::FloatData*)_valeur->getValeurData();
-		 double value = data->getValue();
+	if(dynamic_cast<ValeurInt*>(_valeur)) {
+		int value = ((ValeurInt*)_valeur)->getValeur();
 		lua_pushnumber(L, value);
+	}
+	else if(dynamic_cast<ValeurFloat*>(_valeur)) {
+		double value = ((ValeurFloat*)_valeur)->getValeur();
+		lua_pushnumber(L, value);
+	}
+	else if(dynamic_cast<ValeurString*>(_valeur)) {
+		string value = ((ValeurString*)_valeur)->getValeur();
+		lua_pushstring(L, value.c_str());
 	}
 	else {
 		cerr << endl << "PluginDataValeurProxy:getValue Type de valeur non-pris en compte" << endl << flush;
@@ -67,8 +75,7 @@ int PluginDataValeurProxy::getValue(lua_State *L) {
 int PluginDataValeurProxy::setValue(lua_State *L) {
 	if(dynamic_cast<ValeurFloat*>(_valeur)) {
 		double value = lua_tonumber(L, -1);
-		JktUtils::FloatData data(value);
-		_valeur->setValeur(0, data);
+		((ValeurFloat*)_valeur)->updateValeur(value);
 	}
 	else {
 		cerr << endl << "PluginDataValeurProxy:setValue Type de valeur non-pris en compte" << endl << flush;
@@ -85,15 +92,7 @@ int PluginDataValeurProxy::getValeurFullId(lua_State *L) {
 	vector<int> valeurBrancheId = _valeur->getBrancheId();
 	int valeurId = _valeur->getValeurId();
 
-	lua_createtable(L, valeurBrancheId.size() + 1, 0);
-
-	for(int i=0; i<valeurBrancheId.size(); i++) {
-		lua_pushinteger(L, valeurBrancheId.at(i));
-		lua_rawseti (L, -2, i);
-	}
-
-	lua_pushinteger(L, valeurId);
-	lua_rawseti (L, -2, valeurBrancheId.size());
+	LuaUtils::pushIntArray(L, valeurBrancheId, valeurId);
 
 	return 1;
 }
@@ -103,14 +102,9 @@ int PluginDataValeurProxy::getValeurFullId(lua_State *L) {
  *    - Return 1 :
  */
 int PluginDataValeurProxy::getBrancheId(lua_State *L) {
-	vector<int> valeurBrancheId = _valeur->getBrancheId();
+	vector<int> brancheId = _valeur->getBrancheId();
 
-	lua_createtable(L, valeurBrancheId.size(), 0);
-
-	for(int i=0; i<valeurBrancheId.size(); i++) {
-		lua_pushinteger(L, valeurBrancheId.at(i));
-		lua_rawseti (L, -2, i);
-	}
+	LuaUtils::pushIntArray(L, brancheId);
 
 	return 1;
 }

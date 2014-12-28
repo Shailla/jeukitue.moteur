@@ -25,6 +25,7 @@ class CGame;
 #include "reseau/Server.h"
 #include "main/RequeteProcess.h"
 #include "spatial/Map.h"
+#include "spatial/objet/Dirigeable.h"
 #include "reseau/NetworkManager.h"
 #include "util/Trace.h"
 #include "main/Clavier.h"
@@ -67,15 +68,15 @@ bool CGame::isModeNull() {
 }
 
 void CGame::setStatutClient( JktNet::StatutClient statut ) {
-TRACE().p( TRACE_ERROR, "CGame::setStatusClient(status=%d) begin%T", statut, this );
+TRACE().debug("CGame::setStatusClient(status=%d) begin%T", statut, this);
 
 	_networkManager->getClient()->setStatut( statut );
 
-TRACE().p( TRACE_ERROR, "CGame::setStatusClient() end%T", this );
+TRACE().debug("CGame::setStatusClient() end%T", this);
 }
 
 JktNet::StatutClient CGame::getStatutClient() {
-TRACE().p( TRACE_ERROR, "CGame::getStatutClient() begin%T", this );
+TRACE().debug("CGame::getStatutClient() begin%T", this);
 
 	JktNet::StatutClient statut;
 	if( _mode==JKT_MODE_PARTIE_CLIENT )
@@ -83,7 +84,7 @@ TRACE().p( TRACE_ERROR, "CGame::getStatutClient() begin%T", this );
 	else
 		statut = JKT_STATUT_CLIENT_NULL;
 
-TRACE().p( TRACE_ERROR, "CGame::getStatutClient() -> %d end%T", statut, this );
+TRACE().debug("CGame::getStatutClient() -> %d end%T", statut, this);
 	return statut;
 }
 
@@ -110,7 +111,7 @@ void CGame::setPlayerList(int nbr) {
 }
 
 bool CGame::openMap(const string &nomFichierMap) throw(JktUtils::CErreur) {
-TRACE().p( TRACE_INFO, "CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(), this );
+TRACE().debug("CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(), this);
 
 	bool result = true;
 
@@ -125,7 +126,7 @@ TRACE().p( TRACE_INFO, "CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap
 		result = false;
 	}
 
-TRACE().p( TRACE_INFO, "CGame::openMap() -> %b end%T", result, this );
+TRACE().debug("CGame::openMap() -> %b end%T", result, this);
 	return result;
 }
 
@@ -271,6 +272,24 @@ void CGame::GereContactPlayers() {	// Gère les contacts de tous les joueurs avec
 			player->Pente(0.0f);
 			_map->GereContactPlayer(0, player);		// Gère les contact avec la map de player
 		}
+	}
+}
+
+void CGame::AfficheDirigeables() {
+	DataTree* dataTree = getDataTree();
+
+	vector<string> dirigeablesBrPath;
+	dirigeablesBrPath.push_back("map");
+	dirigeablesBrPath.push_back("sprites");
+	dirigeablesBrPath.push_back("dirigeables");
+
+	Branche* dirigeablesBr = dataTree->getBranche(dirigeablesBrPath);
+
+	vector<Branche*>& subBranches = dirigeablesBr->getSubBranches();
+	vector<Branche*>::const_iterator itBr;
+
+	for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
+		Dirigeable::Affiche(*itBr);
 	}
 }
 

@@ -12,7 +12,6 @@
 using namespace std;
 
 #include "util/StreamUtils.h"
-#include "util/types/IntData.h"
 #include "data/ValeurInt.h"
 #include "data/ServeurDataTree.h"
 

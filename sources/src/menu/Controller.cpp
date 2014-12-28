@@ -13,6 +13,7 @@ using namespace std;
 #include <agar/gui.h>
 #include <agar/dev.h>
 
+#include "main/divers.h"
 #include "menu/ConsoleView.h"
 #include "menu/CentralisateurView.h"
 #include "menu/ConfigCentralisateurView.h"
@@ -61,7 +62,6 @@ using namespace JktNet;
 extern CGame Game;
 extern CCfg Config;
 extern NetworkManager* _networkManager;
-void quit_game(int code);
 
 Viewer* Controller::_agarView;
 JktPlugin::PluginEngine* Controller::_pluginEngine;
@@ -467,7 +467,6 @@ void Controller::executeAction(AG_Event *event) {
 			Config.Reseau.setIpServer(view->getIpServeur());
 			Config.Reseau.setPort(view->getPort());
 			Config.Reseau.setPortTree(view->getPortTree());
-			Config.Reseau.setServeur(view->isModeServeur());
 			Config.Ecrit();
 
 			AG_TextMsg(AG_MSG_WARNING, "Configuration mise a jour");
@@ -532,7 +531,7 @@ void Controller::executeAction(AG_Event *event) {
 		break;
 
 		case QuitAction:
-			quit_game(0);
+			quit_game("Quit game user action", 0);
 			break;
 
 		case ExecuteUserCommandeAction:
@@ -548,7 +547,7 @@ void Controller::executeAction(AG_Event *event) {
 		}
 
 		default:
-			TRACE().p( TRACE_ERROR, "Unknown action : %d!", action );
+			TRACE().debug("Unknown action : %d!", action);
 			AG_TextMsg(AG_MSG_WARNING, "Action inconnue : %d!", action);
 			break;
 		}

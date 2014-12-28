@@ -14,7 +14,6 @@
 #include <vector>
 
 #include "util/GenRef.h"
-#include "util/types/Data.h"
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/exception/NotExistingValeurException.h"
 #include "data/Donnee.h"
@@ -30,6 +29,7 @@ class Branche : public Donnee {
 	std::vector<Branche*> _subBranches;
 	std::map<int, Branche*> _subBranchesById;
 	std::map<int, Branche*> _subBranchesByTmpId;
+	std::map<string, Branche*> _subBranchesByName;
 
 	std::vector<Valeur*> _valeurs;
 	std::map<int, Valeur*> _valeursById;
@@ -44,6 +44,7 @@ public:
 	Branche(Branche* parent, int brancheId, const std::string& brancheName, int revision, int tmpId);
 	virtual ~Branche();
 
+	Branche* getSubBrancheByName(string brancheName) const;
 	Branche* getSubBrancheByIdOrTmpId(int brancheId) const;
 	Branche* getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException);
 	Branche* getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException);
@@ -81,13 +82,13 @@ public:
 	Branche* addSubBranche(int brancheId, const std::string& brancheName, int brancheRevision);
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant temporaire */
-	Valeur* createValeurForClient(const std::string& valeurName, int revision, const JktUtils::Data* valeur);
+	Valeur* createValeurForClient(const std::string& valeurName, int revision, const JktUtils::AnyData& valeur);
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant */
-	Valeur* createValeurForServeur(const std::string& valeurName, int revision, const JktUtils::Data* valeur);
+	Valeur* createValeurForServeur(const std::string& valeurName, int revision, const JktUtils::AnyData& valeur);
 
 	/** Ajoute une valeur entière qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
-	const Valeur* addValeur(int valeurId, const std::string& valeurName, int valeurRevision, const JktUtils::Data* valeur);
+	const Valeur* addValeur(int valeurId, const std::string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur);
 
 	/**
 	 * Affiche le sous-arbre et ses données et caractéristiques partagées avec les autres arbres.

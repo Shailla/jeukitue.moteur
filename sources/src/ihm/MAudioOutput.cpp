@@ -67,13 +67,13 @@ CMenu MenuConfigAudioDriversOutput("DRIVERS OUTPUT",
 
 void lanceMenuConfigAudioDriversOutput(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigAudioDriversOutput(var=%x)", var );
+TRACE().debug("lanceMenuConfigAudioDriversOutput(var=%x)", var);
 	CDlg::SetMenuActif( &MenuConfigAudioDriversOutput );
 }
 
 void lanceOutput1(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceOutput1(var=%x)", arg );
+TRACE().debug("lanceOutput1(var=%x)", arg);
 #ifdef _WIN32
 	Config.Audio.m_Output = FSOUND_OUTPUT_DSOUND;
 #elif defined(__linux__)
@@ -86,7 +86,7 @@ TRACE().p( TRACE_MENU, "lanceOutput1(var=%x)", arg );
 
 void lanceOutput2(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceOutput2(var=%x)", arg );
+TRACE().debug("lanceOutput2(var=%x)", arg);
 #ifdef _WIN32
 	Config.Audio.m_Output = FSOUND_OUTPUT_WINMM;
 #elif defined(__linux__)
@@ -99,7 +99,7 @@ TRACE().p( TRACE_MENU, "lanceOutput2(var=%x)", arg );
 
 void lanceOutput3(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceOutput3(var=%x)", arg );
+TRACE().debug("lanceOutput3(var=%x)", arg);
 #ifdef _WIN32
 	Config.Audio.m_Output = FSOUND_OUTPUT_ASIO;
 #elif defined(__linux__)
@@ -112,7 +112,7 @@ TRACE().p( TRACE_MENU, "lanceOutput3(var=%x)", arg );
 
 void lanceOutput4(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceOutput4(var=%x)", arg );
+TRACE().debug("lanceOutput4(var=%x)", arg);
 	Config.Audio.m_Output = FSOUND_OUTPUT_NOSOUND;
 //	FSOUND_SetOutput( Config.Audio.Output );
 	Config.Ecrit();

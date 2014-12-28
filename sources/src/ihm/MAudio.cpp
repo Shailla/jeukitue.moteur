@@ -50,7 +50,7 @@ CMenu MenuConfigAudio(title_menu_config_audio, item_menu_config_audio, 1,
 
 void lanceMenuConfigAudio(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigAudio(var=%x)", var );
+TRACE().debug("lanceMenuConfigAudio(var=%x)", var);
 	CDlg::SetMenuActif( &MenuConfigAudio );
 }
 

@@ -94,7 +94,7 @@ CPlayer::CPlayer() {
 			_weaponsChoice = JktMoteur::litFichierIcone("@Icone/Armes.bmp", 0.75f, pixelsWeaponsChoice);
 		}
 		catch(CErreur& erreur) {
-			TRACE().p( TRACE_ERROR, "CPlayer::CPlayer() Echec de lecture de texture d'icone des armes%T", this );
+			TRACE().debug("CPlayer::CPlayer() Echec de lecture de texture d'icone des armes%T", this);
 			_weaponsChoice = NULL;
 		}
 	}

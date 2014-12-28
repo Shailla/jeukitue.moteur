@@ -31,7 +31,6 @@ namespace JktMenu
 void quit_JKTici( void *var );
 void lanceMenuConfig( void *var );			// Menu de configuration vidéo, son, réseau, clavier,...
 void lanceMenuOpenScene( void *var );		// Menu d'ouverture fichiers ASE et MAP
-void lanceMenuMultijoueur( void *var );		// Menu pour le jeu multi-joueurs
 void lanceMenuPrinc( void *var );
 
 	/****************************/
@@ -49,7 +48,7 @@ void quit_PartieEnCours(void *var)
 PF liste_suivant_princ2[] =
 {
 	lanceMenuOpenScene,
-	lanceMenuMultijoueur,
+	0,
 	lanceMenuConfig,
 	quit_PartieEnCours,
 	quit_JKTici,

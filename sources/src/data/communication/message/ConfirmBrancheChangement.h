@@ -11,7 +11,6 @@
 #include <sstream>
 #include <vector>
 
-#include "util/types/Data.h"
 #include "data/communication/message/Changement.h"
 
 class MarqueurDistant;

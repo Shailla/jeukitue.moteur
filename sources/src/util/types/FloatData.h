@@ -19,10 +19,12 @@ public:
 	FloatData(std::istringstream& in);
 	virtual ~FloatData();
 
-	void serialize(std::ostringstream& out);
+	void serialize(std::ostringstream& out) const;
 	void toString(std::ostringstream& out) const;
 
 	float getValue() const;
+
+	Data& operator=(const Data& data);
 };
 
 }

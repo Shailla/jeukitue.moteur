@@ -13,41 +13,41 @@ using namespace std;
 
 #include "util/StreamUtils.h"
 
-JktUtils::Data* StreamUtils::readData(istringstream& in) {
-	return JktUtils::Data::unserialize(in);
+JktUtils::AnyData StreamUtils::readData(istringstream& in) {
+	return JktUtils::AnyData(in);
 }
 
-void StreamUtils::write(ostringstream& out, JktUtils::Data& data) {
+void StreamUtils::write(ostringstream& out, const JktUtils::AnyData& data) {
 	data.serialize(out);
 }
 
-void StreamUtils::writeHumanReadable(ostringstream& out, JktUtils::Data& data) {
+void StreamUtils::writeHumanReadable(ostringstream& out, const JktUtils::AnyData& data) {
 	data.toString(out);
 }
 
 void StreamUtils::read(istringstream& in, int& data) {
-	in.read((char*)&data, sizeof(int));
+	in.read((char*)(&data), sizeof(int));
 }
 
-void StreamUtils::write(ostringstream& out, int data) {
-	out.write((char*)&data, sizeof(int));
+void StreamUtils::write(ostringstream& out, const int& data) {
+	out.write((const char*)(&data), sizeof(int));
 }
 
 void StreamUtils::read(istringstream& in, float& data) {
-	in.read((char*)&data, sizeof(int));
+	in.read((char*)(&data), sizeof(float));
 }
 
-void StreamUtils::write(ostringstream& out, float data) {
-	out.write((char*)&data, sizeof(int));
+void StreamUtils::write(ostringstream& out, const float& data) {
+	out.write((const char*)(&data), sizeof(float));
 }
 
 void StreamUtils::read(istringstream& in, vector<int>& data) {
 	int size, var;
 
-	in.read((char*)&size, sizeof(int));;
+	in.read((char*)(&size), sizeof(int));
 
 	for(int i=0 ; i<size ; i++) {
-		in.read((char*)&var, sizeof(int));
+		in.read((char*)(&var), sizeof(int));
 		data.push_back(var);
 	}
 }
@@ -71,20 +71,20 @@ void StreamUtils::writeHumanReadable(ostringstream& out, const vector<int>& data
 }
 
 void StreamUtils::write(ostringstream& out, const vector<int>& data) {
-	int var = data.size();
-	out.write((char*)&var, sizeof(int));
+	int size = data.size();
+	out.write((const char*)(&size), sizeof(int));
 
 	vector<int>::const_iterator it;
 
 	for(it = data.begin() ; it != data.end() ; it++) {
-		out.write((char*)&(*it), sizeof(int));
+		out.write((const char*)(&(*it)), sizeof(int));
 	}
 }
 
 void StreamUtils::read(istringstream& in, string& data) {
 	int size;
 
-	in.read((char*)&size, sizeof(int));
+	in.read((char*)(&size), sizeof(int));
 
 	char* var = new char[size + 1];
 	in.read(var, size);
@@ -94,9 +94,8 @@ void StreamUtils::read(istringstream& in, string& data) {
 }
 
 void StreamUtils::write(ostringstream& out, const string& data) {
-	int var = data.size();
-	out.write((char*)&var, sizeof(int));
+	int size = data.size();
+	out.write((const char*)(&size), sizeof(int));
 
-	vector<int>::iterator it;
-	out.write(data.c_str(), data.size());
+	out.write(data.c_str(), size);
 }

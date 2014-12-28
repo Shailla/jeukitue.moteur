@@ -30,7 +30,7 @@ CV3D::CV3D(const float b[3])
 	Z = b[2];
 }
 
-bool CV3D::operator ==( CV3D b )
+bool CV3D::operator ==(const CV3D& b)
 {
 	if( X==b.X )
 		if( Y==b.Y )
@@ -40,7 +40,7 @@ bool CV3D::operator ==( CV3D b )
 	return false;
 }
 
-bool CV3D::operator !=( CV3D b )
+bool CV3D::operator !=(const CV3D& b)
 {
 	if( X!=b.X )
 		return true;
@@ -54,19 +54,18 @@ bool CV3D::operator !=( CV3D b )
 	return false;
 }
 
-void CV3D::operator =( CV3D b )
-{
+void CV3D::operator =(const CV3D& b) {
 	X = b.X;
 	Y = b.Y;
 	Z = b.Z;
 }
 
-CV3D CV3D::operator *( CV3D b )	// Multiplication vectorielle
+CV3D CV3D::operator *(const CV3D& b)	// Multiplication vectorielle
 {
 	return CV3D( (Y*b.Z)-(Z*b.Y), (Z*b.X)-(X*b.Z), (X*b.Y)-(Y*b.X) );
 }
 
-float CV3D::operator ^( CV3D b )	// Multiplication scalaire
+float CV3D::operator ^(const CV3D& b)	// Multiplication scalaire
 {
 	return (X*b.X) + (Y*b.Y) + (Z*b.Z);
 }
@@ -76,12 +75,12 @@ CV3D CV3D::operator *( float sca )	// Multiplication par un scalaire
 	return CV3D( sca*X, sca*Y, sca*Z );
 }
 
-CV3D CV3D::operator +( CV3D b )
+CV3D CV3D::operator +(const CV3D& b)
 {
 	return CV3D( X+b.X, Y+b.Y, Z+b.Z );
 }
 
-CV3D CV3D::operator -( CV3D b )
+CV3D CV3D::operator -(const CV3D& b)
 {
 	return CV3D( X-b.X, Y-b.Y, Z-b.Z );
 }
@@ -91,7 +90,7 @@ CV3D CV3D::operator -( const float *b )
 	return CV3D( X-b[0], Y-b[1], Z-b[2] );
 }
 
-void CV3D::operator +=( CV3D b )
+void CV3D::operator +=(const CV3D& b)
 {
 	X += b.X;
 	Y += b.Y;
@@ -103,7 +102,7 @@ CV3D CV3D::operator +()
 	return CV3D( +X, +Y, +Z );
 }
 
-void CV3D::operator -=( CV3D b )
+void CV3D::operator -=(const CV3D& b)
 {
 	X -= b.X;
 	Y -= b.Y;

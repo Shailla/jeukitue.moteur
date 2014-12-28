@@ -19,9 +19,8 @@ Bytes::Bytes(char* bytes, int size) {
 Bytes::Bytes(const string& str) {
 	_size = str.size();
 
-	_bytes = new char[_size + 1];
+	_bytes = new char[_size];
 	str.copy(_bytes, _size);
-	_bytes[_size] = '\0';
 }
 
 Bytes::~Bytes() {

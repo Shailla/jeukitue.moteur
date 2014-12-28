@@ -54,7 +54,7 @@ class DataTreeTest : public Test {
 	const int valeurIntServerId = 2;
 	vector<int> valeurIntServerFullId;
 	const string valeurIntServerName = "valeur-int-server";
-	const float valeurIntServerValue = 637;
+	const int valeurIntServerValue = 637;
 
 	// Server valeur float
 	const int valeurFloatServerId = 3;

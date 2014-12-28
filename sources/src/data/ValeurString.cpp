@@ -10,7 +10,9 @@
 
 using namespace std;
 
-#include "util/types/StringData.h"
+#include "util/Trace.h"
+#include "util/types/AnyData.h"
+
 #include "data/ValeurString.h"
 
 using namespace JktUtils;
@@ -26,8 +28,8 @@ const std::string& ValeurString::getValeur() const {
 	return _valeur;
 }
 
-Data* ValeurString::getValeurData() const {
-	return new JktUtils::StringData(_valeur);
+AnyData ValeurString::getValeurData() const {
+	return JktUtils::AnyData(_valeur);
 }
 
 void ValeurString::setValeur(int revision, const std::string& valeur) {
@@ -40,32 +42,19 @@ void ValeurString::updateValeur(const std::string& valeur) {
 	update();
 }
 
-void ValeurString::updateValeur(const JktUtils::Data* data) {
-	try {
-		const JktUtils::StringData* stringData = dynamic_cast<const JktUtils::StringData*>(data);
-		_valeur = stringData->getValue();
-
-		update();
-	}
-	catch(bad_cast& exception) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Type 'string' attendu";
-	}
-}
-
-void ValeurString::setValeur(int revision, const JktUtils::Data& data) {
-	try {
-		const JktUtils::StringData& stringData = dynamic_cast<const JktUtils::StringData&>(data);
+void ValeurString::setValeur(int revision, const JktUtils::AnyData& data) {
+	if(data.isString()) {
 		setRevision(revision);
-		_valeur = stringData.getValue();
+		_valeur = data.getValueString();
 	}
-	catch(bad_cast& exception) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Type 'int' attendu";
+	else {
+		TRACE().error("Type de valeur inattendu");
 	}
 }
 
 std::string ValeurString::toString() const {
 	ostringstream str;
-	str << _valeur;
+	str << "string-'" << _valeur << "'";
 	return str.str();
 }
 

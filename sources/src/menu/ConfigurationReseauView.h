@@ -16,7 +16,6 @@ class ConfigurationReseauView : public View
 	char _ipServeur[40];			// Adresse IP du serveur de jeu
 	int _port;						// Port du serveur
 	int _portTree;
-	int _isModeServeur;				// Mode serveur si vrai
 
 public:
 	ConfigurationReseauView(const AG_EventFn controllerCallback);

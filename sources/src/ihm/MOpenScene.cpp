@@ -53,7 +53,7 @@ CMenu MenuOpenScene( "OUVRIR UNE SCENE", item_menu_open_scene, 2,
 
 void lanceMenuOpenScene(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuOpenScene(var=%x)", var );
+TRACE().debug("lanceMenuOpenScene(var=%x)", var);
 	CDlg::SetMenuActif( &MenuOpenScene );
 }
 

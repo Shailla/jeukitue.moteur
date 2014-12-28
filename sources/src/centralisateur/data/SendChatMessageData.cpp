@@ -4,6 +4,7 @@ using namespace std;
 
 #include "SDL_net.h"
 
+#include "util/Trace.h"
 #include "centralisateur/UdpConnector.h"
 #include "centralisateur/UdpController.h"
 
@@ -58,7 +59,7 @@ UDPpacket* SendChatMessageData::toPacket(void)
 	// Texte du message
 	strncpy((char*)current, _message.c_str(), _message.length());
 
-	cout << "Envoi message chat>'" << _message << "'";
+	TRACE().info("Envoi message chat>'%s'", _message.c_str());
 
     UDPpacket *packet = new UDPpacket();
     packet->data = data;

@@ -14,8 +14,6 @@ using namespace std;
 #include "main/Cfg.h"
 #include "util/Trace.h"
 
-#include "ihm/MReseau.h"
-
 using namespace JktMenu;
 
 class CGame;
@@ -52,7 +50,7 @@ CMenu MenuConfigVideo( "CONFIGURATION VIDEO", item_menu_config_video, 2,
 
 void lanceMenuConfigVideo(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigVideo(var=%x)", var );
+TRACE().debug("lanceMenuConfigVideo(var=%x)", var);
 	ostringstream size;
 	size << Config.Display.X << " * " << Config.Display.Y;
 	MenuConfigVideo.add_ItemsDroits( 0, size.str().c_str() );
@@ -67,7 +65,7 @@ TRACE().p( TRACE_MENU, "lanceMenuConfigVideo(var=%x)", var );
 
 void lanceMenuConfigVideoFullscreenOnOff(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigVideoFullscreenOnOff(var=%x)", var );
+TRACE().debug("lanceMenuConfigVideoFullscreenOnOff(var=%x)", var);
 	Config.Display.Fullscreen( !Config.Display.Fullscreen() );
 	Config.Ecrit();
 

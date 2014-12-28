@@ -6,6 +6,7 @@
 
 #include "SDL_net.h"
 
+#include "util/Trace.h"
 #include "menu/View.h"
 #include "menu/Controller.h"
 #include "reseau/TcpUtils.h"
@@ -139,7 +140,7 @@ void CentralisateurView::setPlayerList(char** playerList, int nombreJoueurs)
 
 	for(int i=0 ; i<nombreJoueurs ; i++) {
 		_playerList.push_back(playerList[i]);
-		std::cout << "Joueur connecté au chat :" << playerList[i];
+		TRACE().info("Joueur connecté au chat : '%s'", playerList[i]);
 	}
 }
 

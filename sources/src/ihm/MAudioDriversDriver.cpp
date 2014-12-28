@@ -37,7 +37,7 @@ CMenu *MenuDriver;
 
 void retourDriver(void *var)	// Libérations mémoire et retour au menu supérieur
 {
-TRACE().p( TRACE_MENU, "retourDriver(var=%x)", var );
+TRACE().debug("retourDriver(var=%x)", var);
 	CDlg::SetMenuActif( 0 );
 	delete MenuDriver;
 
@@ -46,7 +46,7 @@ TRACE().p( TRACE_MENU, "retourDriver(var=%x)", var );
 
 void lanceDriver(void *arg)
 {
-TRACE().p( TRACE_MENU, "lanceDriver(var=%x)", arg );
+TRACE().debug("lanceDriver(var=%x)", arg);
 //	FSOUND_SetDriver( (int)arg );
 	Config.Audio.m_Driver = *(int*)arg;
 	Config.Ecrit();
@@ -55,7 +55,7 @@ TRACE().p( TRACE_MENU, "lanceDriver(var=%x)", arg );
 
 void lanceMenuConfigAudioDriversDriver(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuConfigDriversDriver(var=%x)", var );
+TRACE().debug("lanceMenuConfigDriversDriver(var=%x)", var);
 	int nbrDriver = FSOUND_GetNumDrivers();	// Nombre driver possibles
 
 	PF *liste_suivant;

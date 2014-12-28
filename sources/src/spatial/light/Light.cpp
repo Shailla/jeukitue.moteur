@@ -71,7 +71,7 @@ int CLight::takeLight()
 	}
 	else
 	{
-		TRACE().p( TRACE_ERROR, "Clight::findFreeLight() : Aucune lumiere n'est disponible" );
+		TRACE().debug("Clight::findFreeLight() : Aucune lumiere n'est disponible" );
 		return 0;
 	}
 }

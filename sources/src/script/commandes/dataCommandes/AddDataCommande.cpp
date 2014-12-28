@@ -9,9 +9,6 @@
 
 using namespace std;
 
-#include "util/types/IntData.h"
-#include "util/types/FloatData.h"
-#include "util/types/StringData.h"
 #include "util/StringUtils.h"
 #include "data/DataTree.h"
 #include "data/DistantTreeProxy.h"
@@ -61,33 +58,36 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 			// Nom de la valeur
 			string valeurName = StringUtils::findAndEraseFirstWord(ligne);
 
-			Data* valeur = NULL;
+			AnyData valeur;
+			bool valued = true;
 
 			if(valeurType == "int") {
 				// Valeur de la valeur
 				string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
-				valeur = new IntData(getIntParameter(valeurStr));
+				valeur.update(getIntParameter(valeurStr));
 			}
 			else if(valeurType == "float") {
 				// Valeur de la valeur
 				string valeurStr = StringUtils::findAndEraseFirstWord(ligne);
-				valeur = new FloatData(getFloatParameter(valeurStr));
+				valeur.update(getFloatParameter(valeurStr));
 			}
 			else if(valeurType == "string") {
 				// Valeur de la valeur
 				cout << endl << "LIGNE'" << ligne << "'";
 				const string& valeurStr = StringUtils::findAndEraseFirstString(ligne);
-				valeur = new StringData(valeurStr);
+				valeur.update(valeurStr);
 				cout << endl << "LIGNE'" << ligne << "'";
 				cout << endl << "RES'" << valeurStr << "'";
 			}
+			else {
+				valued = false;
+			}
 
-			if(valeur) {
+			if(valued) {
 				// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
 				vector<int> brancheId = getIntParameters(ligne);
 
 				dataTree->createValeur(brancheId, valeurName, valeur);
-				delete valeur;
 
 				printStdLn("Valeur creee.", userOutput);
 			}

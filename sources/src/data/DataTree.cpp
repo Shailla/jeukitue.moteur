@@ -51,6 +51,23 @@ Branche* DataTree::getBranche(const vector<int>& brancheId) throw(NotExistingBra
 	return branche;
 }
 
+Branche* DataTree::getBranche(const vector<string>& branchePath) throw(NotExistingBrancheException) {
+	vector<string>::const_iterator iter;
+
+	Branche* branche = &_root;
+
+	for(iter = branchePath.begin() ; (iter != branchePath.end() && branche != NULL) ; iter++) {
+		string name = *iter;
+		branche = branche->getSubBrancheByName(name);
+	}
+
+	if(branche == NULL) {
+		throw NotExistingBrancheException();
+	}
+
+	return branche;
+}
+
 Valeur* DataTree::getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
 	vector<int>::const_iterator iter;
 

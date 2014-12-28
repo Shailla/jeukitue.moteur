@@ -18,19 +18,19 @@ public:
 	CV3D(const float b[3]);
 
 		// Opérateurs
-	void operator=(CV3D b);				// Affectation
-	bool operator!=(CV3D b);				// Comparaison
-	bool operator==(CV3D b);				// Comparaison
-	CV3D operator*(CV3D b);				// Multiplication vectorielle
-	float operator^(CV3D b);				// Multiplication scalaire
-	CV3D operator *(float sca);			// Multiplication par un scalaire
-	CV3D operator+(CV3D b);				// Addition vectorielle
-	CV3D operator+();						// 
+	void operator=(const CV3D& b);				// Affectation
+	bool operator!=(const CV3D& b);				// Comparaison
+	bool operator==(const CV3D& b);				// Comparaison
+	CV3D operator*(const CV3D& b);				// Multiplication vectorielle
+	float operator^(const CV3D& b);				// Multiplication scalaire
+	CV3D operator *(float sca);					// Multiplication par un scalaire
+	CV3D operator+(const CV3D& b);				// Addition vectorielle
+	CV3D operator+();							//
 	CV3D operator -(const float *b);
-	CV3D operator-(CV3D b);				// Soustraction vectorielle
-	CV3D operator-();						//
-	void operator+=(CV3D b);
-	void operator-=(CV3D b);
+	CV3D operator-(const CV3D& b);				// Soustraction vectorielle
+	CV3D operator-();
+	void operator+=(const CV3D& b);
+	void operator-=(const CV3D& b);
 
 		// Opérateurs hybride fonctionnant avec les vecteurs de la forme 'float[3]'
 	void operator =(const float[3]);

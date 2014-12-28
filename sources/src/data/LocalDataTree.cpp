@@ -15,7 +15,6 @@ using namespace std;
 #include "data/MarqueurDistant.h"
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/exception/DataCommunicationException.h"
-#include "util/types/IntData.h"
 #include "data/communication/DataSerializer.h"
 #include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
 #include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"
@@ -45,7 +44,7 @@ Branche* LocalDataTree::createBranche(const vector<int>& parentBrancheId, const 
 	return branche;
 }
 
-Valeur* LocalDataTree::createValeur(const vector<int>& parentBrancheId, const string& valeurName, const Data* valeur) {
+Valeur* LocalDataTree::createValeur(const vector<int>& parentBrancheId, const string& valeurName, const AnyData valeur) {
 	Branche* parentBranche = getBrancheFromDistant(0, parentBrancheId);
 
 	Valeur* val = parentBranche->createValeurForServeur(valeurName, 0, valeur);

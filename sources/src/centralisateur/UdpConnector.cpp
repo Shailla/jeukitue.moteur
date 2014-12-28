@@ -72,8 +72,7 @@ int UdpConnector::receive() {
 
     if(!m_socket) {
         const char* message = SDLNet_GetError();
-        cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Open: " << message;
-		TRACE().p( TRACE_ERROR, "SDLNet_UDP_Open: '%s'", message );
+		TRACE().error("SDLNet_UDP_Open: '%s'", message );
         throw OpenUdpSocketException(m_portLocal, message);
     }
 
@@ -82,8 +81,7 @@ int UdpConnector::receive() {
 
     if(!m_socketSet) {
         const char* message = SDLNet_GetError();
-        cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AllocSocketSet: " << message;
-		TRACE().p( TRACE_ERROR, "SDLNet_AllocSocketSet: '%s'", message );
+		TRACE().error("SDLNet_AllocSocketSet: '%s'", message );
         throw OpenUdpSocketException(m_portLocal, message);
     }
 
@@ -91,8 +89,7 @@ int UdpConnector::receive() {
 
     if(numused==-1) {
         const char* message = SDLNet_GetError();
-        cerr << endl << __FILE__ << ":" << __LINE__ << "S DLNet_UDP_AddSocket: " << message;
-		TRACE().p( TRACE_ERROR, "SDLNet_UDP_AddSocket: '%s'", message );
+		TRACE().error("SDLNet_UDP_AddSocket: '%s'", message );
         throw OpenUdpSocketException(m_portLocal, message);
     }
 
@@ -102,8 +99,7 @@ int UdpConnector::receive() {
 
     if(m_channel == -1) {
         const char* message = SDLNet_GetError();
-        cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_UDP_Bind: " << message;
-		TRACE().p( TRACE_ERROR, "SDLNet_UDP_Bind: '%s'", message );
+		TRACE().error("SDLNet_UDP_Bind: '%s'", message );
         throw BindingUdpException(message);
     }
 
@@ -112,9 +108,7 @@ int UdpConnector::receive() {
 		int numReady = SDLNet_CheckSockets( m_socketSet, 1000 );	// Nombre de sockets ayant une activité détectée
 
         if( numReady==-1 ) {
-			const char* message = SDLNet_GetError();
-			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_CheckSockets: " << message;
-			TRACE().p( TRACE_ERROR, "SDLNet_CheckSockets: '%s'", message );
+			TRACE().error("SDLNet_CheckSockets: '%s'", SDLNet_GetError());
 			perror("SDLNet_CheckSockets");
         }
         else if( numReady ) {

@@ -80,7 +80,7 @@ PF liste_suivant_Aide_Essai[] =
 
 void lanceMenuAide(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuAide(var=%x)", var );
+TRACE().debug("lanceMenuAide(var=%x)", var);
 	CDlg::SetMenuActif( &MenuAide );
 	pFocus->SetMenuFocus();		// Mets le focus sur le menu
 	Aide = true;
@@ -97,7 +97,7 @@ CMenu MenuAideEssai( "ESSAI", item_menu_Aide_Essai,	3, liste_suivant_Aide_Essai,
 
 void lanceMenuAideEssai(void *var)
 {
-TRACE().p( TRACE_MENU, "lanceMenuAideEssai(var=%x)", var );
+TRACE().debug("lanceMenuAideEssai(var=%x)", var);
 	CDlg::SetMenuActif( &MenuAideEssai );
 }
 

@@ -31,7 +31,7 @@ using namespace std;
 #include "menu/NetworkConnectionsView.h"
 
 Viewer::Viewer(AG_EventFn controllerCallback) {
-	// Initialisation des fenï¿½tres
+	// Initialisation des fenêtres
 	addMenuView(MULTIJOUEURS_VIEW, new MultijoueursView(controllerCallback));
 	addMenuView(MULTIJOUEURS_CLIENT_VIEW, new MultijoueursClientView(controllerCallback));
 	addMenuView(CENTRALISATEUR_VIEW, new CentralisateurView(controllerCallback));

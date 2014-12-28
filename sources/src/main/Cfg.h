@@ -137,17 +137,14 @@ private:
 		Uint16 _Port;			// Port à utiliser
 		Uint16 _portTree;		// Port à utiliser
 		string _IpServer;		// Adresse IP du serveur (s'il s'agit d'un client)
-		bool _serveur;	// true s'il s'agit d'un serveur, false si c'est un client
 	public:
 		Uint16 getServerPort() const							{ return _Port;				}
 		Uint16 getServerPortTree() const						{ return _portTree;			}
 		string getIpServer() const						{ return _IpServer;			}
-		bool isServeur() const							{ return _serveur;			}
 
 		void setIpServer(const string& ipServeur)		{ _IpServer = ipServeur;	}
 		void setPort(Uint16 port)						{ _Port = port;				}
 		void setPortTree(Uint16 portTree)				{ _portTree = portTree;		}
-		void setServeur(bool serveur)					{ _serveur = serveur;		}
 
 		void Init();
 	};

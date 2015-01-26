@@ -38,7 +38,7 @@ void Branche::setBrancheId(int brancheId) {
 	_brancheId = brancheId;
 }
 
-Branche* Branche::getSubBrancheByName(string brancheName) const {
+Branche* Branche::getSubBrancheByName(const string& brancheName) const {
 	Branche* branche = NULL;
 
 	try {
@@ -93,7 +93,7 @@ Branche* Branche::getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int bra
 	}
 
 	if(!subBranche) {
-		throw NotExistingBrancheException();
+		throw NotExistingBrancheException("Branche::getSubBrancheByDistantTmpId 1");
 	}
 
 	return subBranche;
@@ -114,7 +114,7 @@ Valeur* Branche::getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTm
 	}
 
 	if(!valeur) {
-		throw NotExistingValeurException();
+		throw NotExistingValeurException("Branche::getValeurByDistantTmpId 2");
 	}
 
 	return valeur;
@@ -152,9 +152,23 @@ Branche* Branche::createSubBrancheForClient(const string& brancheName, int revis
 }
 
 
-Branche* Branche::createSubBrancheForServer(const string& brancheName, int revision) {
+Branche* Branche::createSubBrancheForServer(const string& brancheName, int revision) throw(AlreadyExistingBrancheException) {
 	// Alloue une référence pour la nouvelle branche
 	int ref = _brancheRefGenerator.genRef();	// On démarre à 1
+
+	// Vérifie si la branche n'existe pas déjà
+	bool brancheExisting = true;
+
+	try {
+		_subBranchesByName.at(brancheName);
+	}
+	catch(out_of_range& exception) {
+		brancheExisting = false;
+	}
+
+	if(brancheExisting) {
+		throw AlreadyExistingBrancheException("La branche existe déjà");
+	}
 
 	// Crée la nouvelle branche
 	Branche* newBranche = new Branche(this, ref, brancheName, revision, -1);
@@ -187,7 +201,7 @@ Branche* Branche::acceptTmpSubBranche(int brancheTmpId, int brancheId, int branc
 	Branche* branche = getSubBrancheByIdOrTmpId(brancheTmpId);
 
 	if(!branche) {
-		throw NotExistingBrancheException();
+		throw NotExistingBrancheException("Branche::acceptTmpSubBranche");
 	}
 
 	_subBranchesById[brancheId] = branche;
@@ -202,7 +216,7 @@ Valeur* Branche::acceptTmpValeur(int valeurTmpId, int valeurId, int valeurRevisi
 	Valeur* valeur = getValeurByIdOrTmpId(valeurTmpId);
 
 	if(!valeur) {
-		throw NotExistingBrancheException();
+		throw NotExistingBrancheException("Branche::acceptTmpValeur");
 	}
 
 	_valeursById[valeurId] = valeur;

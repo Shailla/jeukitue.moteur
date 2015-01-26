@@ -1654,89 +1654,97 @@ void communique() {
  * **************************************/
 void boucle() {
 
-	for( ;; ) {
-		executeJktRequests();
+	try {
+		for( ;; ) {
+			executeJktRequests();
 
 
-		/* ***********************************************************
-		 * Traites les connexions à l'arbre de données
-		 * **********************************************************/
+			/* ***********************************************************
+			 * Traites les connexions à l'arbre de données
+			 * **********************************************************/
 
-		if(_notConnectedServerInterlocutor) {
-			Interlocutor2* newInterlocutor;
+			if(_notConnectedServerInterlocutor) {
+				Interlocutor2* newInterlocutor;
 
-			while((newInterlocutor = _notConnectedServerInterlocutor->popNewInterlocutor())) {
-				ServeurDataTree* serverDataTree = Game.getServerDataTree();
+				while((newInterlocutor = _notConnectedServerInterlocutor->popNewInterlocutor())) {
+					ServeurDataTree* serverDataTree = Game.getServerDataTree();
 
-				if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
-					serverDataTree->addDistant(newInterlocutor);
+					if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
+						serverDataTree->addDistant(newInterlocutor);
+					}
 				}
 			}
-		}
 
 
-		/* ***********************************************************
-		 * Traites les changements des données du jeu
-		 * **********************************************************/
+			/* ***********************************************************
+			 * Traites les changements des données du jeu
+			 * **********************************************************/
 
-		// Traite les changements de données côté serveur
-		ServeurDataTree* serverDataTree = Game.getServerDataTree();
+			// Traite les changements de données côté serveur
+			ServeurDataTree* serverDataTree = Game.getServerDataTree();
 
-		if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
-			serverDataTree->receiveChangementsFromClients();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
-			serverDataTree->diffuseChangementsToClients();			// Diffuse les changements des données du jeu aux clients
-		}
-
-		// Traite les changements de données côté client
-		ClientDataTree* clientDataTree = Game.getClientDataTree();
-
-		if(clientDataTree) {		// TODO clientDataTree devrait être protégé par un mutex
-			clientDataTree->receiveChangementsFromServer();		// Le client reçoit les changements des données du jeu de la part du serveur
-			clientDataTree->diffuseChangementsToServer();		// Le client reçoit diffuse les changements des données du jeu vers le serveur
-		}
-
-
-		/* **********************************************
-		 * Lecture des événements claviers, souris, ...
-		 * *********************************************/
-
-		if( Game.getMap()) {	// Si une partie est en cours en mode de jeu local, client ou serveur
-			if( 	Game.isModeLocal()
-					|| 	(Game.isModeClient() && Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY)
-					|| 	(Game.isModeServer() && Game.getStatutServer()==JKT_STATUT_SERVER_PLAY) ) {
-				chopeLesEvenements();	// Prends les requêtes du joueur pour permettre même au serveur de jouer
+			if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
+				serverDataTree->receiveChangementsFromClients();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
+				serverDataTree->diffuseChangementsToClients();			// Diffuse les changements des données du jeu aux clients
 			}
+
+			// Traite les changements de données côté client
+			ClientDataTree* clientDataTree = Game.getClientDataTree();
+
+			if(clientDataTree) {		// TODO clientDataTree devrait être protégé par un mutex
+				clientDataTree->receiveChangementsFromServer();		// Le client reçoit les changements des données du jeu de la part du serveur
+				clientDataTree->diffuseChangementsToServer();		// Le client reçoit diffuse les changements des données du jeu vers le serveur
+			}
+
+
+			/* **********************************************
+			 * Lecture des événements claviers, souris, ...
+			 * *********************************************/
+
+			if( Game.getMap()) {	// Si une partie est en cours en mode de jeu local, client ou serveur
+				if( 	Game.isModeLocal()
+						|| 	(Game.isModeClient() && Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY)
+						|| 	(Game.isModeServer() && Game.getStatutServer()==JKT_STATUT_SERVER_PLAY) ) {
+					chopeLesEvenements();	// Prends les requêtes du joueur pour permettre même au serveur de jouer
+				}
+			}
+
+
+			/* ****************************************************************
+			 * Communique
+			 * (échange des données client -> serveur ou serveur -> clients)
+			 * ****************************************************************/
+
+			communique();
+
+
+			/* ****************************************************
+			 * Effectue les calculs physiques
+			 * (gravité, gestion des contacts, déplacements, ...)
+			 * ***************************************************/
+			Uint32 temps = SDL_GetTicks();	// Temps au début du timer (->mesure du temps de calcul)
+
+			Game.timer();
+
+			((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setDureeCalcules(SDL_GetTicks() - temps);
+
+
+			/* ***********************************************************
+			 * Affiche la scène
+			 * **********************************************************/
+
+			// Dessine la scène 3D et les menus
+			display();
+
+			SDL_PumpEvents();	// Collecte les événements
+			process_events();	// vérifie les événements
 		}
-
-
-		/* ****************************************************************
-		 * Communique
-		 * (échange des données client -> serveur ou serveur -> clients)
-		 * ****************************************************************/
-
-		communique();
-
-
-		/* ****************************************************
-		 * Effectue les calculs physiques
-		 * (gravité, gestion des contacts, déplacements, ...)
-		 * ***************************************************/
-		Uint32 temps = SDL_GetTicks();	// Temps au début du timer (->mesure du temps de calcul)
-
-		Game.timer();
-
-		((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setDureeCalcules(SDL_GetTicks() - temps);
-
-
-		/* ***********************************************************
-		 * Affiche la scène
-		 * **********************************************************/
-
-		// Dessine la scène 3D et les menus
-		display();
-
-		SDL_PumpEvents();	// Collecte les événements
-		process_events();	// vérifie les événements
+	}
+	catch(NotExistingBrancheException& exception) {
+		TRACE().error("Unmanaged NotExistingBrancheException : %s", exception.getMessage().c_str());
+	}
+	catch(NotExistingValeurException& exception) {
+		TRACE().error("Unmanaged NotExistingValeurException : %s", exception.getMessage().c_str());
 	}
 }
 

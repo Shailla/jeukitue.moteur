@@ -12,6 +12,7 @@ using namespace std;
 
 #include "fmod.h"
 
+#include "util/Trace.h"
 #include "data/DataTree.h"
 #include "main/Fabrique.h"
 #include "plugin/lua/LuaUtils.h"
@@ -64,9 +65,14 @@ int PluginDataTreeProxy::getBranche(lua_State *L) {
 
 	LuaUtils::readStringArray(L, branchePath, index);
 
-	Branche* branche = _dataTree->getBranche(branchePath);
-
-	LuaUtils::pushIntArray(L, branche->getBrancheFullId());
+	try {
+		Branche* branche = _dataTree->getBranche(branchePath);
+		LuaUtils::pushIntArray(L, branche->getBrancheFullId());
+	}
+	catch(NotExistingBrancheException& exception) {
+		TRACE().warn("NotExistingBrancheException : %s", exception.getMessage().c_str());
+		lua_pushnil(L);
+	}
 
 	return 1;
 }

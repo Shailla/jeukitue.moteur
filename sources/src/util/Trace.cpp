@@ -272,7 +272,7 @@ void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFic
 
 		ligne << endl << flush;
 
-		m_Fichier << ligne.str();
+		m_Fichier << ligne.str() << flush;
 
 		va_end( vl );
 	}

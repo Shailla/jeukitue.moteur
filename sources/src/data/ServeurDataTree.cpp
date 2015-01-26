@@ -126,35 +126,43 @@ void ServeurDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bra
 void ServeurDataTree::diffuseChangementsToClients(void) {
 	TRACEMETHOD();
 
-	vector<DistantTreeProxy*>::const_iterator clientIter;
-	vector<Changement*> changements;
+	try {
+		vector<DistantTreeProxy*>::const_iterator clientIter;
+		vector<Changement*> changements;
 
-	DistantTreeProxy* client;
-	Interlocutor2* interlocutor;
-	vector<Changement*>::iterator itCh;
+		DistantTreeProxy* client;
+		Interlocutor2* interlocutor;
+		vector<Changement*>::iterator itCh;
 
-	for(clientIter = getDistants().begin() ; clientIter != getDistants().end() ; clientIter++) {
-		client = *clientIter;
-		interlocutor = client->getInterlocutor();
-		client->collecteChangementsInServerTree(changements);
+		for(clientIter = getDistants().begin() ; clientIter != getDistants().end() ; clientIter++) {
+			client = *clientIter;
+			interlocutor = client->getInterlocutor();
+			client->collecteChangementsInServerTree(changements);
 
-		// Emission des changements
-		if(changements.size()) {
-			for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
-				TRACE().debug("serveur to '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str());
+			// Emission des changements
+			if(changements.size()) {
+				for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
+					TRACE().debug("serveur to '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str());
+				}
+
+				ostringstream out;
+				DataSerializer::toStream(changements, out);
+
+				for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
+					delete *itCh;
+				}
+
+				interlocutor->pushDataToSend(new JktUtils::Bytes(out.str()));
+
+				changements.clear();
 			}
-
-			ostringstream out;
-			DataSerializer::toStream(changements, out);
-
-			for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
-				delete *itCh;
-			}
-
-			interlocutor->pushDataToSend(new JktUtils::Bytes(out.str()));
-
-			changements.clear();
 		}
+	}
+	catch(NotExistingBrancheException& exception) {
+		TRACE().error("Unmanaged NotExistingBrancheException : %s", exception.getMessage().c_str());
+	}
+	catch(NotExistingValeurException& exception) {
+		TRACE().error("Unmanaged NotExistingValeurException : %s", exception.getMessage().c_str());
 	}
 }
 
@@ -169,13 +177,13 @@ Branche* ServeurDataTree::getBrancheByDistantTmpId(DistantTreeProxy* distant, co
 	}
 
 	if(!parentBranche) {
-		throw NotExistingBrancheException();
+		throw NotExistingBrancheException("ServeurDataTree::getBrancheByDistantTmpId 1");
 	}
 
 	Branche* branche = parentBranche->getSubBrancheByDistantTmpId(distant, brancheTmpId);
 
 	if(!branche) {
-		throw NotExistingBrancheException();
+		throw NotExistingBrancheException("ServeurDataTree::getBrancheByDistantTmpId 2");
 	}
 
 	return branche;
@@ -191,13 +199,13 @@ Valeur* ServeurDataTree::getValeurByDistantTmpId(DistantTreeProxy* distant, cons
 	}
 
 	if(!branche) {
-		throw NotExistingBrancheException();
+		throw NotExistingBrancheException("ServeurDataTree::getValeurByDistantTmpId 1");
 	}
 
 	Valeur* valeur = branche->getValeurByDistantTmpId(distant, valeurTmpId);
 
 	if(!valeur) {
-		throw NotExistingValeurException();
+		throw NotExistingValeurException("ServeurDataTree::getValeurByDistantTmpId 2");
 	}
 
 	return valeur;
@@ -344,6 +352,12 @@ void ServeurDataTree::receiveChangementsFromClients() {
 	}
 	catch(DataCommunicationException& exception) {
 		TRACE().error("DataCommunicationException : %s", exception.getMessage().c_str());
+	}
+	catch(NotExistingBrancheException& exception) {
+		TRACE().error("Unmanaged NotExistingBrancheException : %s", exception.getMessage().c_str());
+	}
+	catch(NotExistingValeurException& exception) {
+		TRACE().error("Unmanaged NotExistingValeurException : %s", exception.getMessage().c_str());
 	}
 }
 

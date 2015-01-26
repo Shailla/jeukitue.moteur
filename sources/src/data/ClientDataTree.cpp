@@ -93,13 +93,13 @@ Branche* ClientDataTree::getBrancheByTmpId(const vector<int>& parentBrancheId, i
 	}
 
 	if(!parentBranche) {
-		throw NotExistingBrancheException();
+		throw NotExistingBrancheException("ClientDataTree::getBrancheByTmpId 1");
 	}
 
 	Branche* branche = parentBranche->getSubBrancheByIdOrTmpId(brancheTmpId);
 
 	if(!branche) {
-		throw NotExistingBrancheException();
+		throw NotExistingBrancheException("ClientDataTree::getBrancheByTmpId 2");
 	}
 
 	return branche;

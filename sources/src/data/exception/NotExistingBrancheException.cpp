@@ -7,7 +7,7 @@
 
 #include "data/exception/NotExistingBrancheException.h"
 
-NotExistingBrancheException::NotExistingBrancheException() {
+NotExistingBrancheException::NotExistingBrancheException(const std::string& message) : JktException(message) {
 }
 
 NotExistingBrancheException::~NotExistingBrancheException() {

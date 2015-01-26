@@ -44,7 +44,7 @@ public:
 	Branche(Branche* parent, int brancheId, const std::string& brancheName, int revision, int tmpId);
 	virtual ~Branche();
 
-	Branche* getSubBrancheByName(string brancheName) const;
+	Branche* getSubBrancheByName(const string& brancheName) const;
 	Branche* getSubBrancheByIdOrTmpId(int brancheId) const;
 	Branche* getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException);
 	Branche* getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException);
@@ -76,7 +76,7 @@ public:
 	Branche* createSubBrancheForClient(const std::string& brancheName, int revision);
 
 	/** Crée une nouvelle branche et lui attribue un identifiant */
-	Branche* createSubBrancheForServer(const std::string& brancheName, int revision);
+	Branche* createSubBrancheForServer(const std::string& brancheName, int revision) throw(AlreadyExistingBrancheException);
 
 	/** Ajoute une branche qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
 	Branche* addSubBranche(int brancheId, const std::string& brancheName, int brancheRevision);

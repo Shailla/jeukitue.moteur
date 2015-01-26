@@ -28,7 +28,7 @@ Branche* DataTree::getBrancheFromDistant(DistantTreeProxy* distant, const vector
 	}
 
 	if(branche == NULL) {
-		throw NotExistingBrancheException();
+		throw NotExistingBrancheException("DataTree::getBrancheFromDistant");
 	}
 
 	return branche;
@@ -45,7 +45,7 @@ Branche* DataTree::getBranche(const vector<int>& brancheId) throw(NotExistingBra
 	}
 
 	if(branche == NULL) {
-		throw NotExistingBrancheException();
+		throw NotExistingBrancheException("DataTree::getBranche 1");
 	}
 
 	return branche;
@@ -62,7 +62,7 @@ Branche* DataTree::getBranche(const vector<string>& branchePath) throw(NotExisti
 	}
 
 	if(branche == NULL) {
-		throw NotExistingBrancheException();
+		throw NotExistingBrancheException("DataTree::getBranche 2");
 	}
 
 	return branche;
@@ -79,14 +79,14 @@ Valeur* DataTree::getValeurFromDistant(DistantTreeProxy* distant, const vector<i
 		}
 
 		if(branche == NULL) {
-			throw NotExistingBrancheException();
+			throw NotExistingBrancheException("DataTree::getValeurFromDistant 1");
 		}
 	}
 
 	Valeur* valeur = branche->getValeurByIdOrTmpId(valeurId);
 
 	if(!valeur) {
-		throw NotExistingValeurException();
+		throw NotExistingValeurException("DataTree::getValeurFromDistant 2");
 	}
 
 	return valeur;
@@ -103,14 +103,14 @@ Valeur* DataTree::getValeur(const vector<int>& brancheId, int valeurId) throw(No
 		}
 
 		if(branche == NULL) {
-			throw NotExistingBrancheException();
+			throw NotExistingBrancheException("DataTree::getValeur 1");
 		}
 	}
 
 	Valeur* valeur = branche->getValeurByIdOrTmpId(valeurId);
 
 	if(!valeur) {
-		throw NotExistingValeurException();
+		throw NotExistingValeurException("DataTree::getValeur 2");
 	}
 
 	return valeur;

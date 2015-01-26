@@ -8,9 +8,11 @@
 #ifndef NOTEXISTINGVALEUREXCEPTION_H_
 #define NOTEXISTINGVALEUREXCEPTION_H_
 
-class NotExistingValeurException {
+#include "exception/JktException.h"
+
+class NotExistingValeurException : public JktException {
 public:
-	NotExistingValeurException();
+	NotExistingValeurException(const std::string& message);
 	virtual ~NotExistingValeurException();
 };
 

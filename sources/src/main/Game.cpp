@@ -283,13 +283,18 @@ void CGame::AfficheDirigeables() {
 	dirigeablesBrPath.push_back("sprites");
 	dirigeablesBrPath.push_back("dirigeables");
 
-	Branche* dirigeablesBr = dataTree->getBranche(dirigeablesBrPath);
+	try {
+		Branche* dirigeablesBr = dataTree->getBranche(dirigeablesBrPath);
 
-	vector<Branche*>& subBranches = dirigeablesBr->getSubBranches();
-	vector<Branche*>::const_iterator itBr;
+		vector<Branche*>& subBranches = dirigeablesBr->getSubBranches();
+		vector<Branche*>::const_iterator itBr;
 
-	for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
-		Dirigeable::Affiche(*itBr);
+		for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
+			Dirigeable::Affiche(*itBr);
+		}
+	}
+	catch(NotExistingBrancheException& exception) {
+		TRACE().warn("Unmanaged NotExistingBrancheException : %s", exception.getMessage().c_str());
 	}
 }
 

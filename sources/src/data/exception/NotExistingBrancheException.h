@@ -8,9 +8,11 @@
 #ifndef NOTEXISTINGBRANCHEEXCEPTION_H_
 #define NOTEXISTINGBRANCHEEXCEPTION_H_
 
-class NotExistingBrancheException {
+#include "exception/JktException.h"
+
+class NotExistingBrancheException : public JktException {
 public:
-	NotExistingBrancheException();
+	NotExistingBrancheException(const std::string& message);
 	virtual ~NotExistingBrancheException();
 };
 

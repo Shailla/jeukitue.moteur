@@ -27,6 +27,11 @@ class Dirigeable : public CMouve {
 	ValeurFloat* _positionY;
 	ValeurFloat* _positionZ;
 
+	// Couleur de l'objet dans l'arbre de données
+	ValeurFloat* _colorR;
+	ValeurFloat* _colorG;
+	ValeurFloat* _colorB;
+
 public:
 	Dirigeable(CMap *map);
 	~Dirigeable();

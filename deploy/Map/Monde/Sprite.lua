@@ -1,8 +1,11 @@
 ﻿
 mapDataTree = 0
-nbrSprites = 10
+nbrSprites = 100
 vitesses = {}
 positions = {}
+colorsR = {}
+colorsG = {}
+colorsB = {}
 
 function onLoad()
 	log("Version Lua : " .. _VERSION)
@@ -27,18 +30,29 @@ function createSprite(dirigeablesBrId, index)
 
 	posX = mapDataTree:createValeur(monSpriteBrId, "float", "posX");
 	posY = mapDataTree:createValeur(monSpriteBrId, "float", "posY");
-	posZ = mapDataTree:createValeur(monSpriteBrId, "float", "posZ");	
+	posZ = mapDataTree:createValeur(monSpriteBrId, "float", "posZ");
+
+	colorR = mapDataTree:createValeur(monSpriteBrId, "float", "colorRed");
+	colorG = mapDataTree:createValeur(monSpriteBrId, "float", "colorGreen");
+	colorB = mapDataTree:createValeur(monSpriteBrId, "float", "colorBlue");	
 	
 	vitX:setValue(0.02);
 	vitY:setValue(0.005+index*0.05*math.random());
 	vitZ:setValue(0.005+index*0.05*math.random());
 
-	posX:setValue(0);
-	posY:setValue(index*0.2*math.random());
-	posZ:setValue(0.5+index*0.2*math.random());	
+	posX:setValue(2*math.random());
+	posY:setValue(2*math.random());
+	posZ:setValue(0.5+2*math.random());	
+	
+	colorR:setValue(math.random());
+	colorG:setValue(math.random());
+	colorB:setValue(math.random());
 	
 	vitesses[index] = vitX;
 	positions[index] = posX;
+	colorsR[index] = colorR;
+	colorsG[index] = colorG;
+	colorsB[index] = colorB;
 end
 
 function traceId(object, id)
@@ -69,15 +83,24 @@ end
 function updateVitPos(index)
 	vitX = vitesses[index];
 	posX = positions[index];
+	colorR = colorsR[index];
+	colorG = colorsG[index];
+	colorB = colorsB[index];
 	
 	-- Vitesse du sprite
 	if posX:getValue() < -1 then
 		if vitX:getValue() < 0 then
-			vitX:setValue(0.005+0.05*math.random());
+			vitX:setValue(0.001+0.05*math.random());
+			colorR:setValue(math.random());
+			colorG:setValue(math.random());
+			colorB:setValue(math.random());
 		end
 	elseif posX:getValue() > 1 then
 		if vitX:getValue() > 0 then
-			vitX:setValue(-0.005-0.05*math.random());
+			vitX:setValue(-0.001-0.05*math.random());
+			colorR:setValue(math.random());
+			colorG:setValue(math.random());
+			colorB:setValue(math.random());
 		end
 	end
 	

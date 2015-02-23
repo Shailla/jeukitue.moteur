@@ -51,6 +51,10 @@ Dirigeable::Dirigeable(CMap *map) {
 	_positionX = (ValeurFloat*)dataTree->getValeur(brancheId, 4);
 	_positionY = (ValeurFloat*)dataTree->getValeur(brancheId, 5);
 	_positionZ = (ValeurFloat*)dataTree->getValeur(brancheId, 6);
+
+	_colorR = (ValeurFloat*)dataTree->getValeur(brancheId, 7);
+	_colorG = (ValeurFloat*)dataTree->getValeur(brancheId, 8);
+	_colorB = (ValeurFloat*)dataTree->getValeur(brancheId, 9);
 }
 
 Dirigeable::~Dirigeable(void) {
@@ -83,8 +87,12 @@ void Dirigeable::Affiche(Branche* branche) {		// Fonction d'affichage de la port
 	float y = ((ValeurFloat*)branche->getValeurByIdOrTmpId(5))->getValeur();
 	float z = ((ValeurFloat*)branche->getValeurByIdOrTmpId(6))->getValeur();
 
+	float red = ((ValeurFloat*)branche->getValeurByIdOrTmpId(7))->getValeur();
+	float green = ((ValeurFloat*)branche->getValeurByIdOrTmpId(8))->getValeur();
+	float blue = ((ValeurFloat*)branche->getValeurByIdOrTmpId(9))->getValeur();
+
 	glTranslatef(x, y, z);	// Translation de la porte de la valeur de son ouverture
-	glColor3f(0.0f, 1.0f, 1.0f);
+	glColor3f(red, green, blue);
 	GLUquadric* quadric = gluNewQuadric();
 	gluSphere(quadric, 0.05, 16, 16);
 

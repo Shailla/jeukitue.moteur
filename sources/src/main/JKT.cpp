@@ -846,7 +846,7 @@ void chopeLesEvenements() {
 			balle->changeContact( contactSprite );	// associe une fonction pour les contacts avec la map
 
 //			Game._pTabIndexPlayer->Ajoute(balle);			// ajoute le projectile à la liste des joueurs
-			Game.AjoutePlayer(balle);			// ajoute le projectile à la liste des joueurs
+			Game.addPlayer(balle);			// ajoute le projectile à la liste des joueurs
 		}
 	}
 }
@@ -1102,17 +1102,16 @@ void play_handle_key_down( SDL_Event *event ) {
 		break;
 
 		case SDLK_c :	// Change le joueur principal (=> change le point de vue et l'interraction clavier)
-			cout << endl << "Nombre de joeurs dans la partie : " << Game._pTabIndexPlayer->getNbr();
+			cout << endl << "Nombre de joeurs dans la partie : " << Game.getNbrPlayers();
 
 			if(Game.getMap()) {
-				Game._pTabIndexPlayer->Suivant(numMainPlayer);	// Lit le numéro du joueur suivant
+				CPlayer* erwin = Game.nextPlayer(numMainPlayer);	// Lit le numéro du joueur suivant
 
-				if(numMainPlayer < 0) {				// Si on a atteint la fin de la liste alors prend à nouveau le premier de liste
-					Game._pTabIndexPlayer->Suivant(numMainPlayer);
+				if(!erwin) {				// Si on a atteint la fin de la liste alors prend à nouveau le premier de liste
+					erwin = Game.nextPlayer(numMainPlayer);
 				}
 
 				// Sélectionne le joueur en tant que joueur principal
-				CPlayer* erwin = Game._pTabIndexPlayer->operator [](numMainPlayer);
 				Game.Erwin(erwin);
 				((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setActivePlayerName(erwin->nom());
 			}
@@ -1174,7 +1173,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	}
 
 	// Création joueurs
-	Game.setPlayerList( 10 );	// Indique que la partie peut contenir jusqu'à 10 joueurs
+	Game.createPlayerList( 10 );	// Indique que la partie peut contenir jusqu'à 10 joueurs
 
 
 	/**************************************
@@ -1221,8 +1220,8 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	erwin->nom( "ERWIN" );
 	erwin->init();								// Initialise certaines données
 	erwin->choiceOneEntryPoint();
-	Game.Erwin( erwin );						// Indique que 'erwin' est le joueur principal
-	Game._pTabIndexPlayer->Ajoute( 0, erwin );	// Ajoute le joueur principal à la liste des joueurs
+	Game.addPlayer(erwin);	// Ajoute le joueur principal à la liste des joueurs
+	Game.Erwin(erwin);						// Indique que 'erwin' est le joueur principal
 
 	// Création d'un second joueur
 	CPlayer *julien;
@@ -1234,7 +1233,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	julien->nom( "JULIEN" );
 	julien->init();
 	julien->choiceOneEntryPoint();
-	Game._pTabIndexPlayer->Ajoute( 1, julien );	// Ajoute le joueur à la liste des joueurs
+	Game.addPlayer(julien);	// Ajoute le joueur à la liste des joueurs
 
 	// Création d'un troisième joueur
 	CPlayer *sprite;
@@ -1246,7 +1245,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	sprite->nom( "SPRITE" );
 	sprite->init();
 	sprite->choiceOneEntryPoint();
-	Game._pTabIndexPlayer->Ajoute( 2, sprite );	// Ajoute le joueur à la liste des joueurs
+	Game.addPlayer(sprite);	// Ajoute le joueur à la liste des joueurs
 
 	return true;
 }
@@ -1308,17 +1307,7 @@ void executeJktRequests() {
 
 		Game.Erwin(NULL);
 
-		if(Game._pTabIndexPlayer) {
-			CPlayer *player;
-			int playerIndex = -1;
-			while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
-				player = Game._pTabIndexPlayer->operator [](playerIndex);
-				player->freeGL();
-			}
-
-			delete Game._pTabIndexPlayer;
-			Game._pTabIndexPlayer = NULL;
-		}
+		Game.deletePlayers();
 
 		LocalDataTree* dataTree = new LocalDataTree();
 		DataTreeUtils::formatGameDataTree(dataTree);
@@ -1354,27 +1343,23 @@ void executeJktRequests() {
 		map->add(dirigeable);
 
 		// Définition des joueurs
-		Game.setPlayerList(localeGameDto->getPlayersMaxNumber());
+		Game.createPlayerList(localeGameDto->getPlayersMaxNumber());
 
 		CPlayer* erwin = localeGameDto->getErwin();
 
-
-		int i = 0;
-
 		if(erwin != NULL) {
 			Game.Erwin(erwin);									// Indique que 'erwin' est le joueur principal
-			Game._pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
+			Game.addPlayer(erwin);		// Ajoute le joueur principal à la liste des joueurs
 		}
 
 		for(vector<CPlayer*>::iterator iter = localeGameDto->getPlayers().begin() ; iter != localeGameDto->getPlayers().end() ; ++iter) {
-			Game._pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
+			Game.addPlayer(*iter);				// Ajoute le joueur à la liste des joueurs
 		}
 
 		CPlayer *player;
 		int playerIndex = -1;
 
-		while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
-			player = (*Game._pTabIndexPlayer)[playerIndex];
+		while((player = Game.nextPlayer(playerIndex))) {
 			player->initGL();
 			player->choiceOneEntryPoint();
 		}
@@ -1445,8 +1430,7 @@ void executeJktRequests() {
 		CPlayer *player;
 		int playerIndex = -1;
 
-		while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
-			player = (*Game._pTabIndexPlayer)[playerIndex];
+		while((player = Game.nextPlayer(playerIndex))) {
 			player->initGL();
 		}
 
@@ -1493,17 +1477,7 @@ void executeJktRequests() {
 
 		Game.Erwin(NULL);
 
-		if(Game._pTabIndexPlayer) {
-			CPlayer *player;
-			int playerIndex = -1;
-			while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
-				player = Game._pTabIndexPlayer->operator [](playerIndex);
-				player->freeGL();
-			}
-
-			delete Game._pTabIndexPlayer;
-			Game._pTabIndexPlayer = NULL;
-		}
+		Game.deletePlayers();
 
 		// Création de l'arbre des données du serveur
 		_notConnectedServerInterlocutor = _networkManager->ouvreServer(Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree());
@@ -1542,28 +1516,24 @@ void executeJktRequests() {
 		Game.changeActiveMap(map);
 
 		// Définition des joueurs
-		Game.setPlayerList(serverGameDto->getPlayersMaxNumber());
+		Game.createPlayerList(serverGameDto->getPlayersMaxNumber());
 
 		CPlayer* erwin = serverGameDto->getErwin();
 
-
-		int i = 0;
-
 		if(erwin != NULL) {
 			Game.Erwin(erwin);									// Indique que 'erwin' est le joueur principal
-			Game._pTabIndexPlayer->Ajoute( i++, erwin );		// Ajoute le joueur principal à la liste des joueurs
+			Game.addPlayer(erwin);		// Ajoute le joueur principal à la liste des joueurs
 		}
 
 		for(vector<CPlayer*>::iterator iter = serverGameDto->getPlayers().begin() ; iter != serverGameDto->getPlayers().end() ; ++iter) {
-			Game._pTabIndexPlayer->Ajoute( i++, *iter );				// Ajoute le joueur à la liste des joueurs
+			Game.addPlayer(*iter);				// Ajoute le joueur à la liste des joueurs
 		}
 
 		CPlayer *player;
 		int playerIndex = -1;
 
 		// Initialisation de chacun des joueurs
-		while(Game._pTabIndexPlayer->Suivant(playerIndex)) {
-			player = (*Game._pTabIndexPlayer)[playerIndex];
+		while((player = Game.nextPlayer(playerIndex))) {
 			player->initGL();
 			player->choiceOneEntryPoint();
 		}
@@ -1575,7 +1545,7 @@ void executeJktRequests() {
 
 		JktNet::CServer *server = Game.getServer();
 		server->nomMAP = serverGameDto->getMapName();					// Informe le serveur sur le nom de la MAP lancée
-		Game.setPlayerList( server->maxPlayers );
+		Game.createPlayerList( server->maxPlayers );
 		server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
 		Game.setModeServer();						// Jeu en mode jeu local
 		server->bGame = true;						// Indique qu'une partie est en cours

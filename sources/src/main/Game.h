@@ -42,10 +42,9 @@ private:
 	JktMoteur::CMap	*_map;			// Map en cours de jeu
 	ModePartie _mode;				// Mode de jeu (parie normale, client ou serveur)
 	bool _gravite;					// Indique si la gravité est active
-
-public:
 	JktUtils::CTableauIndex<CPlayer> *_pTabIndexPlayer;	// Liste indexée des joueurs
 
+public:
 	LocalDataTree* _localDataTree;
 	ServeurDataTree* _serverDataTree;
 	ClientDataTree* _clientDataTree;
@@ -104,9 +103,6 @@ public:
 	void AffichePlayers();			// Affiche tous les joueurs
 	void AfficheProjectils();		// Affiche tous les projectils
 
-	void setPlayerList(int nbr);	// Indique le nombre de joueurs de la partie
-	int getMaxPlayers() const;
-
 	// Gestion du joueur principal (actif)
 	CPlayer* Erwin();								// Renvoie le joueur principal
 	void Erwin(CPlayer *erwin);					// Set le joueur principal
@@ -114,12 +110,20 @@ public:
 	// Gestion des joueurs
 	void deletePlayers();								// Détruit tous les joueurs
 
+	void createPlayerList(int size);	// Indique le nombre de joueurs de la partie
+	int getMaxPlayers() const;
+	int getNbrPlayers() const;
+
+	CPlayer* nextPlayer(int &pos);
+
 	/**
 	 * Ajout un joueur à la partie
 	 * @param player joueur à ajouter
 	 * @return index du joueur ou -1 si l'ajout a échoué
 	 */
-	int AjoutePlayer(CPlayer *player);
+	int addPlayer(CPlayer *player);
+	bool addPlayer(int index, CPlayer *player);
+	CPlayer* getPlayer(int index);
 
 private:
 	void Refresh();					// Rafraichi les classe qui en ont besoin

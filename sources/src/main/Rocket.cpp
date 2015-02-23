@@ -155,9 +155,7 @@ void CRocket::Deplace() {
 	CPlayer *player;
 	int curseur = -1;
 
-	while(Game._pTabIndexPlayer->Suivant(curseur)) {
-		player = Game._pTabIndexPlayer->operator [](curseur);
-
+	while((player = Game.nextPlayer(curseur))) {
 		if(player != m_Player) {
 			player->getPosition( pos2 );
 			EH.X = pos2[0] - pos[0];

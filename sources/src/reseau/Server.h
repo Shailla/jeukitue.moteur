@@ -38,7 +38,6 @@ public:
 	~CServer();
 
 	int AjoutePlayer(CPlayer *player);			// Ajoute un proxy-joueur à la partie en cours
-	CPlayer *GetPlayer(int pos);				// Renvoie le joueur pointé par le curseur
 	void partieEnCours(bool indic);				// Donne une valeur à bPartieEnCours
 	int nbrPlayers();							// Donne le nombre de joueurs sur le serveur
 	void setStatut( StatutServer statut);

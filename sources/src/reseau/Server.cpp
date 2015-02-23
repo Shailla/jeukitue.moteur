@@ -70,9 +70,6 @@ TRACE().debug("CServer::~CServer() begin%T", this );
 TRACE().debug("CServer::~CServer() end%T", this );
 }
 
-CPlayer *CServer::GetPlayer( int pos )
-{	return Game._pTabIndexPlayer->operator []( pos );	}
-
 void CServer::setStatut( StatutServer statut )
 {	m_Statut = statut;		}
 
@@ -86,7 +83,7 @@ TRACE().debug("CServer::AjoutePlayer(player=%x)%T", player, this );
 	if( m_uNbrPlayers<this->maxPlayers ) {
 		m_uNbrPlayers++;		// Incrémente le nbr de joueurs sur le serveur
 
-		indexPlayer = Game.AjoutePlayer(player);	// Ajoute le joueur à la liste
+		indexPlayer = Game.addPlayer(player);	// Ajoute le joueur à la liste
 	}
 	else {
 		indexPlayer = -1;
@@ -196,9 +193,7 @@ TRACE().debug("CServer::acceptPlayer() : %s%T", SDLNet_GetError(), this );
 	// Envoie les infos concernant chaque joueur
 	int curseur = -1;
 
-	while(Game._pTabIndexPlayer->Suivant(curseur)) {
-		player2 = GetPlayer( curseur );
-
+	while((player2 = Game.nextPlayer(curseur))) {
 		player->spa.add16( (Uint16)curseur );			// Envoie l'identifiant de ce proxy-joueur
 		player->spa.add( player2->nom() );	// Envoie son nom
 
@@ -433,28 +428,20 @@ void CServer::emet() {
 	CPlayer *player, *player2;
 	int curseur = -1, curseur2;
 
-	while(Game._pTabIndexPlayer->Suivant(curseur)) {	// Envoie à chaque client-joueur
-		player = GetPlayer( curseur );
+	while((player = Game.nextPlayer(curseur))) {	// Envoie à chaque client-joueur
+		player->spa.init();
+		player->spa.addCode( SERVER_RECAP, SERVER_NULL );		// Code de récapitulation
+		player->spa.add16( (Uint16)nbrPlayers() );				// Envoie le nombre de joueur
 
-		if(player) {
-			player->spa.init();
-			player->spa.addCode( SERVER_RECAP, SERVER_NULL );		// Code de récapitulation
-			player->spa.add16( (Uint16)nbrPlayers() );				// Envoie le nombre de joueur
+			// Envoie les infos concernant chaque joueur
+		curseur2 = -1;
 
-				// Envoie les infos concernant chaque joueur
-			curseur2 = -1;
-
-			while(Game._pTabIndexPlayer->Suivant(curseur2)) {
-				player2 = GetPlayer( curseur2 );
-
-				if(player2) {
-					player->spa.add16( (Uint16)curseur2 );			// Envoie l'identifiant de ce proxy-joueur
-					player->spa.addRecapFromServer( *player2 );
-				}
-			}
-
-			player->spa.send();
+		while((player2 = Game.nextPlayer(curseur2))) {
+			player->spa.add16( (Uint16)curseur2 );			// Envoie l'identifiant de ce proxy-joueur
+			player->spa.addRecapFromServer( *player2 );
 		}
+
+		player->spa.send();
 	}
 }
 

@@ -112,7 +112,7 @@ void CClient::decodeRecap( Uint16 code2 ) {
 				// Lit les données des joueurs
 				CPlayer *player;
 				int curseur = -1;
-				while(Game._pTabIndexPlayer->Suivant(curseur)) {
+				while((player = Game.nextPlayer(curseur))) {
 					var1 = _spaMaitre.read16();		// Identifiant du joueur
 
 					if( var1!=curseur ) {
@@ -120,7 +120,6 @@ void CClient::decodeRecap( Uint16 code2 ) {
 						cout << endl << "LE JEU N'EST PLUS PERTINENT, les joueurs ont change !";
 					}
 
-					player = Game._pTabIndexPlayer->operator [](curseur);
 					_spaMaitre.readRecapFromServer( *player );
 				}
 			}
@@ -426,7 +425,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 
 							IDpersonnel = _spaMaitre.read16();			// Lecture de l'identifiant du joueur
 							_spaMaitre.readString( nomMAP );			// Nom de la MAP en cours sur le serveur
-							Game.setPlayerList(_spaMaitre.read16());	// Nombre max de joueurs sur le serveur
+							Game.createPlayerList(_spaMaitre.read16());	// Nombre max de joueurs sur le serveur
 							nbrPlayers( _spaMaitre.read16() );			// Nombre de joeurs sur le serveur
 
 							cout << endl;
@@ -449,7 +448,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 
 								// Identifiant du joueur sur le serveur
 								Uint16 id = _spaMaitre.read16();
-								Game._pTabIndexPlayer->Ajoute( id, player );
+								Game.addPlayer(id, player);
 
 								// Nom du joueur
 								string nom_p;
@@ -464,8 +463,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 							int curseur = -1;
 							float pos[3];
 
-							while(Game._pTabIndexPlayer->Suivant(curseur)) {
-								player = Game._pTabIndexPlayer->operator []( curseur );
+							while((player = Game.nextPlayer(curseur))) {
 								cout << endl << curseur;
 
 								if( curseur==IDpersonnel )	// S'il s'agit du joueur de cet ordinateur
@@ -481,7 +479,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 							 * Attribution du joueur principal
 							 * ************************************************************/
 
-							Game.Erwin( Game._pTabIndexPlayer->operator []( IDpersonnel ) );
+							Game.Erwin(Game.getPlayer(IDpersonnel));
 
 
 							/* *************************************************************

@@ -202,9 +202,7 @@ void CPlayer::choiceOneEntryPoint() {
 			curseur = -1;
 			valide = false;
 
-			while(Game._pTabIndexPlayer->Suivant(curseur)) {
-				player = Game._pTabIndexPlayer->operator [](curseur);
-
+			while((player = Game.nextPlayer(curseur))) {
 				if( player != this ) {	// Si le joueur en question n'est pas le joueur actuel
 					distance = (*iterEntry).getEntryPosition();
 					player->getPosition(pos);

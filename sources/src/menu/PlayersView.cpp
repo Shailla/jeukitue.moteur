@@ -57,15 +57,13 @@ void PlayersView::refreshList() {
 
 	AG_TableBegin(_playersTable);
 
-	if(Game._pTabIndexPlayer) {
-		int curseur = -1;
-		CPlayer* player;
+	int curseur = -1;
+	CPlayer* player;
 
-		while(Game._pTabIndexPlayer->Suivant(curseur)) {
-			player = Game._pTabIndexPlayer->operator []( curseur );
-			AG_TableAddRow(_playersTable, "%s:%s:%s:", player->nom().c_str(), "xxx.xxx.xxx.xxx", "xxxxx");
-		}
+	while((player = Game.nextPlayer(curseur))) {
+		AG_TableAddRow(_playersTable, "%s:%s:%s:", player->nom().c_str(), "xxx.xxx.xxx.xxx", "xxxxx");
 	}
+
 	AG_TableEnd(_playersTable);
 
 	// Rafraichissement de la page

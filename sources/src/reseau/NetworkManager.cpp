@@ -166,18 +166,15 @@ void NetworkManager::recoitServer() {
 		TRACE().error("SDLNet_CheckSockets : %s", SDLNet_GetError());
 	}
 	else if( numReady ) {
-		CPlayer *player;
-
 		if( SDLNet_SocketReady( _server->spaMaitre.getSocket() ) ) {
 			_server->decodeServerUDP( &_server->spaMaitre );
 			numReady--;
 		}
 
 		int curseur = -1;
+		CPlayer *player;
 
-		while( Game._pTabIndexPlayer->Suivant(curseur) && numReady ) {	// S'il reste de l'activité sur un socket et des proxy joueurs à voir
-			player = _server->GetPlayer( curseur );
-
+		while( (player = Game.nextPlayer(curseur)) && numReady ) {	// S'il reste de l'activité sur un socket et des proxy joueurs à voir
 			if( SDLNet_SocketReady( player->spa.getSocket() ) ) {	// S'il y a de l'activité sur ce socket
 				_server->decodeProxyPlayer( player );
 				numReady--;

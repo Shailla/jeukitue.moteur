@@ -92,12 +92,16 @@ int CGame::getMaxPlayers() const {
 	return _pTabIndexPlayer->getMax();
 }
 
-void CGame::setPlayerList(int nbr) {
+int CGame::getNbrPlayers() const {
+	return _pTabIndexPlayer->getNbr();
+}
+
+void CGame::createPlayerList(int size) {
 	if(_pTabIndexPlayer) {
 		delete _pTabIndexPlayer;
 	}
 
-	_pTabIndexPlayer = new CTableauIndex<CPlayer>(nbr);
+	_pTabIndexPlayer = new CTableauIndex<CPlayer>(size);
 
 	cout << endl << "setPlayerList";
 
@@ -107,6 +111,15 @@ void CGame::setPlayerList(int nbr) {
 		CPlayer* player = _pTabIndexPlayer->operator [](curseur);
 
 		cout << endl << "\t" << curseur << ":" << player;
+	}
+}
+
+CPlayer* CGame::nextPlayer(int& pos) {
+	if(_pTabIndexPlayer && _pTabIndexPlayer->Suivant(pos)) {
+		return _pTabIndexPlayer->operator [](pos);
+	}
+	else {
+		return 0;
 	}
 }
 
@@ -422,7 +435,21 @@ void CGame::faitTousRequetesClavier() {
 	}
 }
 
-int CGame::AjoutePlayer( CPlayer *player ) {
+CPlayer* CGame::getPlayer(int index) {
+	return _pTabIndexPlayer->operator [](index);
+}
+
+bool CGame::addPlayer(int index, CPlayer *player) {
+TRACE().debug("CGame::addPlayer(player=%x)%T", player, this );
+
+	bool result = _pTabIndexPlayer->Ajoute(index, player );
+
+TRACE().debug("CGame::addPlayer() -> indexPlayer=%d end%T", index, this );
+
+	return result;
+}
+
+int CGame::addPlayer(CPlayer *player) {
 TRACE().debug("CGame::AjoutePlayer(player=%x)%T", player, this );
 
 	int indexPlayer = _pTabIndexPlayer->Ajoute( player );

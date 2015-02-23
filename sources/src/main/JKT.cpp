@@ -845,7 +845,8 @@ void chopeLesEvenements() {
 			balle->changeAction( gravitePlayer );	// associe au projectile une fonction de gravité
 			balle->changeContact( contactSprite );	// associe une fonction pour les contacts avec la map
 
-			Game._pTabIndexPlayer->Ajoute(balle);			// ajoute le projectile à la liste des joueurs
+//			Game._pTabIndexPlayer->Ajoute(balle);			// ajoute le projectile à la liste des joueurs
+			Game.AjoutePlayer(balle);			// ajoute le projectile à la liste des joueurs
 		}
 	}
 }

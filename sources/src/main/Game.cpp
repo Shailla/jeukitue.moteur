@@ -422,6 +422,16 @@ void CGame::faitTousRequetesClavier() {
 	}
 }
 
+int CGame::AjoutePlayer( CPlayer *player ) {
+TRACE().debug("CGame::AjoutePlayer(player=%x)%T", player, this );
+
+	int indexPlayer = _pTabIndexPlayer->Ajoute( player );
+
+TRACE().debug("CGame::AjoutePlayer() -> indexPlayer=%d end%T", indexPlayer, this );
+
+	return indexPlayer;
+}
+
 void CGame::faitTousPlayerGravite() {
 	int curseur = -1;
 	CPlayer *player;			//Prends le premier player

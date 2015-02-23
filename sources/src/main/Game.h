@@ -114,6 +114,13 @@ public:
 	// Gestion des joueurs
 	void deletePlayers();								// Détruit tous les joueurs
 
+	/**
+	 * Ajout un joueur à la partie
+	 * @param player joueur à ajouter
+	 * @return index du joueur ou -1 si l'ajout a échoué
+	 */
+	int AjoutePlayer(CPlayer *player);
+
 private:
 	void Refresh();					// Rafraichi les classe qui en ont besoin
 	void deplaceTousPlayer();

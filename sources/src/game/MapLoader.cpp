@@ -53,7 +53,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 	gameDto->setMap(map);
 
 	// Création joueurs
-	gameDto->setPlayersMaxNumber(10);	// Indique que la partie peut contenir jusqu'à 10 joueurs
+	gameDto->setPlayersMaxNumber(20);	// Indique que la partie peut contenir jusqu'à 10 joueurs
 
 
 	/**************************************

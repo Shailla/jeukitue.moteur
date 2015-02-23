@@ -82,17 +82,18 @@ StatutServer CServer::getStatut()
 int CServer::AjoutePlayer( CPlayer *player ) {
 TRACE().debug("CServer::AjoutePlayer(player=%x)%T", player, this );
 
-	int nbr;
+	int indexPlayer;
 	if( m_uNbrPlayers<this->maxPlayers ) {
 		m_uNbrPlayers++;		// Incrémente le nbr de joueurs sur le serveur
-		nbr = Game._pTabIndexPlayer->Ajoute( player );	// Ajoute le joueur à la liste
+
+		indexPlayer = Game.AjoutePlayer(player);	// Ajoute le joueur à la liste
 	}
 	else {
-		nbr = -1;
+		indexPlayer = -1;
 	}
 
-TRACE().debug("CServer::AjoutePlayer() -> %d end%T", nbr, this );
-	return nbr;
+TRACE().debug("CServer::AjoutePlayer() -> indexPlayer=%d end%T", indexPlayer, this );
+	return indexPlayer;
 }
 
 int CServer::nbrPlayers()
@@ -177,6 +178,7 @@ TRACE().debug("CServer::acceptPlayer() : %s%T", SDLNet_GetError(), this );
 	}
 
 	int IDPlayer = AjoutePlayer( player );	// Ajoute le joueur pour de bon et identifie-le
+	// TODO Gérer le cas où IDPlayer vaut -1, lorsque l'ajout du joueur a échoué
 	Game.Erwin( player );					// Place le nouveau joueur comme joueur principal
 
 

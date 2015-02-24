@@ -70,7 +70,7 @@ int PluginDataTreeProxy::getBranche(lua_State *L) {
 		LuaUtils::pushIntArray(L, branche->getBrancheFullId());
 	}
 	catch(NotExistingBrancheException& exception) {
-		TRACE().warn("NotExistingBrancheException : %s", exception.getMessage().c_str());
+		TRACE().warn("NotExistingBrancheException : %s", exception.what());
 		lua_pushnil(L);
 	}
 

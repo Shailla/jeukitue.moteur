@@ -193,7 +193,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 					cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : NotExistingBrancheException";
 				}
 				catch(const DataCommunicationException& exception) {
-					cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
+					cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.what();
 				}
 
 				delete *itCh;
@@ -209,7 +209,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 		sendChangementsToServer(answers);
 	}
 	catch(DataCommunicationException& exception) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.getMessage();
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Exception : " << exception.what();
 	}
 }
 

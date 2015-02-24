@@ -14,6 +14,7 @@
 
 using namespace std;
 
+#include "util/CollectionsUtils.h"
 #include "data/Valeur.h"
 #include "data/ValeurInt.h"
 #include "data/ValeurFloat.h"
@@ -167,7 +168,9 @@ Branche* Branche::createSubBrancheForServer(const string& brancheName, int revis
 	}
 
 	if(brancheExisting) {
-		throw AlreadyExistingBrancheException("La branche existe déjà");
+		stringstream message;
+		message << "La branche nommée '" << brancheName << "' de parent " << CollectionsUtils::toString(getBrancheFullId()) << " existe déjà";
+		throw AlreadyExistingBrancheException(message.str());
 	}
 
 	// Crée la nouvelle branche

@@ -93,7 +93,7 @@ NotConnectedInterlocutor2* ServerUdpInterlocutor::connect() throw(ConnectionFail
 		log("Les processus sont lances");
 	}
 	catch(ConnectionFailedException& exception) {
-		TRACE().error("ConnectionFailedException : %s", exception.getMessage().c_str());
+		TRACE().error("ConnectionFailedException : %s", exception.what());
 
 		close();
 

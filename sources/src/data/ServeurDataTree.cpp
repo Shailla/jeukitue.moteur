@@ -159,10 +159,10 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 		}
 	}
 	catch(NotExistingBrancheException& exception) {
-		TRACE().error("Unmanaged NotExistingBrancheException : %s", exception.getMessage().c_str());
+		TRACE().error("Unmanaged NotExistingBrancheException : %s", exception.what());
 	}
 	catch(NotExistingValeurException& exception) {
-		TRACE().error("Unmanaged NotExistingValeurException : %s", exception.getMessage().c_str());
+		TRACE().error("Unmanaged NotExistingValeurException : %s", exception.what());
 	}
 }
 
@@ -324,7 +324,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 						TRACE().error("NotExistingBrancheException");
 					}
 					catch(const DataCommunicationException& exception) {
-						TRACE().error("DataCommunicationException : %s", exception.getMessage().c_str());
+						TRACE().error("DataCommunicationException : %s", exception.what());
 					}
 
 					delete *itCh;
@@ -351,13 +351,13 @@ void ServeurDataTree::receiveChangementsFromClients() {
 		}
 	}
 	catch(DataCommunicationException& exception) {
-		TRACE().error("DataCommunicationException : %s", exception.getMessage().c_str());
+		TRACE().error("DataCommunicationException : %s", exception.what());
 	}
 	catch(NotExistingBrancheException& exception) {
-		TRACE().error("Unmanaged NotExistingBrancheException : %s", exception.getMessage().c_str());
+		TRACE().error("Unmanaged NotExistingBrancheException : %s", exception.what());
 	}
 	catch(NotExistingValeurException& exception) {
-		TRACE().error("Unmanaged NotExistingValeurException : %s", exception.getMessage().c_str());
+		TRACE().error("Unmanaged NotExistingValeurException : %s", exception.what());
 	}
 }
 

@@ -14,7 +14,6 @@ JktException::JktException(const string& message) {
 JktException::~JktException(void) {
 }
 
-const string& JktException::getMessage() const {
-	return _message;
+const char* JktException::what() const throw() {
+	return _message.c_str();
 }
-

@@ -307,7 +307,7 @@ void CGame::AfficheDirigeables() {
 		}
 	}
 	catch(NotExistingBrancheException& exception) {
-		TRACE().warn("Unmanaged NotExistingBrancheException : %s", exception.getMessage().c_str());
+		TRACE().warn("Unmanaged NotExistingBrancheException : %s", exception.what());
 	}
 }
 

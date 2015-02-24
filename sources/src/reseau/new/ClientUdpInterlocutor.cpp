@@ -96,7 +96,7 @@ Interlocutor2* ClientUdpInterlocutor::connect(const string& distantIp, Uint16 di
 		startProcesses();
 	}
 	catch(ConnectionFailedException& exception) {
-		cerr << endl << exception.getMessage();
+		cerr << endl << exception.what();
 
 		close();
 

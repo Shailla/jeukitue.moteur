@@ -1712,10 +1712,10 @@ void boucle() {
 		}
 	}
 	catch(NotExistingBrancheException& exception) {
-		TRACE().error("Unmanaged NotExistingBrancheException : %s", exception.getMessage().c_str());
+		TRACE().error("Unmanaged NotExistingBrancheException : %s", exception.what());
 	}
 	catch(NotExistingValeurException& exception) {
-		TRACE().error("Unmanaged NotExistingValeurException : %s", exception.getMessage().c_str());
+		TRACE().error("Unmanaged NotExistingValeurException : %s", exception.what());
 	}
 }
 

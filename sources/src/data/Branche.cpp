@@ -187,7 +187,7 @@ Branche* Branche::addSubBranche(int brancheId, const std::string& brancheName, i
 	map<int, Branche*>::iterator iter = _subBranchesById.find(brancheId);
 
 	if(iter != _subBranchesById.end()) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " La branche existe deja";
+		cerr << endl << __FILE__ << ":" << __LINE__ << "La branche " << brancheId << " (" << brancheName << ") de parent " << CollectionsUtils::toString(getBrancheFullId()) << " existe déjà";
 		newBranche = iter->second;
 	}
 	else {
@@ -283,7 +283,7 @@ const Valeur* Branche::addValeur(int valeurId, const string& valeurName, int val
 	Valeur* newValeur = getValeurByIdOrTmpId(valeurId);
 
 	if(newValeur) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " La valeur existe deja";
+		cout << endl << __FILE__ << ":" << __LINE__ << "La valeur " << valeurId << " (" << valeurName << ") de parent " << CollectionsUtils::toString(getBrancheFullId()) << " existe déjà";
 	}
 	else {
 		// Crée la nouvelle valeur

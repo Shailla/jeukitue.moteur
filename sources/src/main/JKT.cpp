@@ -1404,7 +1404,7 @@ void executeJktRequests() {
 		else {
 			// Création de l'arbre des données du client
 			ClientDataTree* dataTree = new ClientDataTree(string("jkt"), clientInterlocutor);
-			DataTreeUtils::formatGameDataTree(dataTree);
+//			DataTreeUtils::formatGameDataTree(dataTree);
 			Game.setClientDataTree(dataTree);
 
 			// Lancement ouverture MAP demandée

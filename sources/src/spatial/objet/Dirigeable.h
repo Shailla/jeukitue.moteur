@@ -1,6 +1,12 @@
 #ifndef __JKT__DIRIGEABLE_H
 #define __JKT__DIRIGEABLE_H
 
+#ifdef WIN32
+	#include <windows.h>
+#endif
+#include <GL/gl.h>
+#include <GL/glu.h>
+
 #include "spatial/Mouve.h"
 
 #include "data/ValeurFloat.h"
@@ -15,25 +21,9 @@ class CMap;
 class CIstreamMap;
 
 class Dirigeable : public CMouve {
-	CMap* _map;
-
-	// Vitesse de l'objet dans l'arbre de données
-	ValeurFloat* _vitesseX;
-	ValeurFloat* _vitesseY;
-	ValeurFloat* _vitesseZ;
-
-	// Position de l'objet dans l'arbre de données
-	ValeurFloat* _positionX;
-	ValeurFloat* _positionY;
-	ValeurFloat* _positionZ;
-
-	// Couleur de l'objet dans l'arbre de données
-	ValeurFloat* _colorR;
-	ValeurFloat* _colorG;
-	ValeurFloat* _colorB;
 
 public:
-	Dirigeable(CMap *map);
+	Dirigeable();
 	~Dirigeable();
 
 	void Init();					// Initialisation de l'objet géométrique

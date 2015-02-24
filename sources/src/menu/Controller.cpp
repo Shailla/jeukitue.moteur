@@ -82,7 +82,7 @@ void Controller::executeAction(AG_Event *event) {
 
 	int action = AG_INT(1);
 
-	cerr << endl << "ACTION CONTROLLER : " << action << endl << flush;
+	cout << endl << "ACTION CONTROLLER : " << action << endl << flush;
 
 	if(action >= 10000) {	// Au delà de 10000 il s'agit d'une action d'un plugin, on la redispatche à tous les plugins
 		PluginActionEvent evt((Controller::Action)action);

@@ -1339,7 +1339,7 @@ void executeJktRequests() {
 		map->initPlugins();
 		Game.changeActiveMap(map);
 
-		Dirigeable* dirigeable = new Dirigeable(0);
+		Dirigeable* dirigeable = new Dirigeable();
 		map->add(dirigeable);
 
 		// Définition des joueurs

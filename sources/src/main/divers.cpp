@@ -78,11 +78,11 @@ TRACE().debug(trace4.c_str());
 TRACE().debug(trace5.c_str());
 
 	cerr << endl << __FILE__ << ":" << __LINE__;
-	cerr << trace1 << endl;
-	cerr << trace2 << endl;
-	cerr << trace3 << endl;
-	cerr << trace4 << endl;
-	cerr << trace5 << endl;
+	cerr << endl << trace1;
+	cerr << endl << trace2 << endl;
+	cerr << endl << trace3 << endl;
+	cerr << endl << trace4 << endl;
+	cerr << endl << trace5 << endl;
 	cerr.flush();
 
 	FSOUND_Close();		// Fermeture d'FMOD

@@ -68,23 +68,16 @@ bool CGame::isModeNull() {
 }
 
 void CGame::setStatutClient( JktNet::StatutClient statut ) {
-TRACE().debug("CGame::setStatusClient(status=%d) begin%T", statut, this);
-
 	_networkManager->getClient()->setStatut( statut );
-
-TRACE().debug("CGame::setStatusClient() end%T", this);
 }
 
 JktNet::StatutClient CGame::getStatutClient() {
-TRACE().debug("CGame::getStatutClient() begin%T", this);
-
 	JktNet::StatutClient statut;
 	if( _mode==JKT_MODE_PARTIE_CLIENT )
 		statut = _networkManager->getClient()->getStatut();
 	else
 		statut = JKT_STATUT_CLIENT_NULL;
 
-TRACE().debug("CGame::getStatutClient() -> %d end%T", statut, this);
 	return statut;
 }
 

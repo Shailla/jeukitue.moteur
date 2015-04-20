@@ -15,11 +15,11 @@ using namespace std;
 
 #include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
 
-AddBrancheFromClientChangement::AddBrancheFromClientChangement(istringstream& in) : Changement("AddBrancheFromClientChangement", PRIORITY_AddBrancheFromClientChangement) {
+AddBrancheFromClientChangement::AddBrancheFromClientChangement(istringstream& in) : Changement("AddBrFromClChgt", PRIORITY_AddBrancheFromClientChangement) {
 	unserialize(in);
 }
 
-AddBrancheFromClientChangement::AddBrancheFromClientChangement(const vector<int>& parentBrancheId, int brancheTmpId, int revision, const string& brancheName) : Changement("AddBrancheFromClientChangement", PRIORITY_AddBrancheFromClientChangement) {
+AddBrancheFromClientChangement::AddBrancheFromClientChangement(const vector<int>& parentBrancheId, int brancheTmpId, int revision, const string& brancheName) : Changement("AddBrFromClChgt", PRIORITY_AddBrancheFromClientChangement) {
 	_parentBrancheId = parentBrancheId;
 	_brancheTmpId = brancheTmpId;
 	_revision = revision;

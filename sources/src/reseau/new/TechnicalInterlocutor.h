@@ -64,9 +64,9 @@ public:
 	virtual void close();
 
 	// Log methods
-	void log(const char* message);
-	void log(const string& message);
-	void log(const stringstream& message);
+	void log(int line, const char* sourceFile, const char* message);
+	void log(int line, const char* sourceFile, const string& message);
+	void log(int line, const char* sourceFile, const stringstream& message);
 };
 
 #endif /* TECHNICALINTERLOCUTOR_H_ */

@@ -390,8 +390,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 					break;
 
 					case SERVER_ACK:	// Acceptation recue du serveur pour joindre la partie
-						if( getStatut()==JKT_STATUT_CLIENT_DEMJTG )
-						{
+						if( getStatut()==JKT_STATUT_CLIENT_DEMJTG ) {
 							TRACE().debug("CClient::decodeNonConnecte() : Reponse JTG%T", this);
 							cout << endl << "Acceptation recue du serveur pour joindre la partie";
 

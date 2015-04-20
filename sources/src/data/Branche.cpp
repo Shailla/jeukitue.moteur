@@ -194,6 +194,7 @@ Branche* Branche::addSubBranche(int brancheId, const std::string& brancheName, i
 		// Crée la nouvelle branche
 		newBranche = new Branche(this, brancheId, brancheName, brancheRevision, -1);
 		_subBranchesById[brancheId] = newBranche;
+		_subBranchesByName[brancheName] = newBranche;
 		_subBranches.push_back(newBranche);
 	}
 

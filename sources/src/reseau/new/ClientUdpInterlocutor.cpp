@@ -155,14 +155,14 @@ void ClientUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg
 			//			S2CConnectionAcceptedTechnicalMessage* msg = (S2CConnectionAcceptedTechnicalMessage*)lastConnectionMsg;
 			//			int port = msg->getPort();
 
-			log("Connection accepted received");
+			log(__LINE__, __FILE__, "Connection accepted received");
 			setConnexionStatus(CONNECTED);
 
 			break;
 		}
 		case TechnicalMessage::S2C_CONNECTION_REFUSED:
 		{
-			log("Connection refused received");
+			log(__LINE__, __FILE__, "Connection refused received");
 			close();
 			break;
 		}
@@ -173,12 +173,12 @@ void ClientUdpInterlocutor::manageConnection(TechnicalMessage* lastConnectionMsg
 		if(_tryConnectionNumber > 10) {
 			stringstream message;
 			message << "Server does not respond after " << (_tryConnectionNumber-1) << " connection requests sent";
-			log(message);
+			log(__LINE__, __FILE__, message);
 
 			close();
 		}
 		else if((_tryConnectionNumber == 0) || (currentTime - _tryConnectionLastTime > 1000)) {
-			log("Asking connection");
+			log(__LINE__, __FILE__, "Asking connection");
 
 			C2SHelloTechnicalMessage msg;
 			_interlocutor->pushTechnicalMessageToSend(msg.toBytes());
@@ -222,7 +222,7 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 				default:
 					stringstream message;
 					message << "Reception de donnees techniques inconnues ==> ignoré";
-					log(message);
+					log(__LINE__, __FILE__, message);
 					break;
 				}
 
@@ -233,7 +233,7 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 			else {
 				stringstream message;
 				message << "Reception de donnees inconnues ==> ignoré";
-				log(message);
+				log(__LINE__, __FILE__, message);
 			}
 		}
 
@@ -258,7 +258,7 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 		SDL_UnlockMutex(getMutexIntelligence());
 	}
 
-	log("Stop intelligence process");
+	log(__LINE__, __FILE__, "Stop intelligence process");
 }
 
 void ClientUdpInterlocutor::sendingProcess() {
@@ -283,7 +283,7 @@ void ClientUdpInterlocutor::sendingProcess() {
 
 				stringstream message;
 				message << "Envoi de donnees techniques a " << IpUtils::translateAddress(_packetOut->address);
-				log(message);
+				log(__LINE__, __FILE__, message);
 			}
 
 			delete data;
@@ -303,14 +303,14 @@ void ClientUdpInterlocutor::sendingProcess() {
 
 				stringstream message;
 				message << "Envoi de donnees user a " << IpUtils::translateAddress(_packetOut->address);
-				log(message);
+				log(__LINE__, __FILE__, message);
 			}
 
 			delete data;
 		}
 	}
 
-	log("Stop sending process");
+	log(__LINE__, __FILE__, "Stop sending process");
 }
 
 void ClientUdpInterlocutor::receiveOnePacket() {
@@ -345,7 +345,7 @@ void ClientUdpInterlocutor::receiveOnePacket() {
 		else {
 			stringstream message;
 			message << "Message inconsistant from " << IpUtils::translateAddress(_packetIn->address) << " ==> ignoré";
-			log(message);
+			log(__LINE__, __FILE__, message);
 		}
 	}
 }
@@ -361,5 +361,5 @@ void ClientUdpInterlocutor::receivingProcess() {
 		}
 	}
 
-	log("Stop receiving process");
+	log(__LINE__, __FILE__, "Stop receiving process");
 }

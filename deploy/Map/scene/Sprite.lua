@@ -1,6 +1,6 @@
 ﻿
 mapDataTree = 0
-nbrSprites = 100
+nbrSprites = 0
 vitesses = {}
 positions = {}
 colorsR = {}

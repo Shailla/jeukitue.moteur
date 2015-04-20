@@ -12,6 +12,7 @@
 
 using namespace std;
 
+#include "util/CollectionsUtils.h"
 #include "util/Trace.h"
 #include "util/TraceMethod.h"
 #include "data/MarqueurDistant.h"
@@ -124,8 +125,6 @@ void ServeurDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bra
 }
 
 void ServeurDataTree::diffuseChangementsToClients(void) {
-	TRACEMETHOD();
-
 	try {
 		vector<DistantTreeProxy*>::const_iterator clientIter;
 		vector<Changement*> changements;
@@ -142,7 +141,7 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 			// Emission des changements
 			if(changements.size()) {
 				for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
-					TRACE().debug("serveur to '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str());
+					TRACE().info("serveur to '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str());
 				}
 
 				ostringstream out;
@@ -268,6 +267,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 							}
 							catch(NotExistingBrancheException& exception) {
 								// Si la branche n'existe pas encore on la crée
+								cout << endl << "Distant '" << distant->getInterlocutor()->getName() << "' => La branche de parent " << CollectionsUtils::toString(chgt->getParentBrancheId()) << " et d'id temportaire " << chgt->getBrancheTmpId() << " n'existe pas encore, on va la créer" << flush;
 								branche = addBrancheFromDistant(chgt->getParentBrancheId(), chgt->getBrancheName(), chgt->getBrancheTmpId(), chgt->getRevision(), distant);
 							}
 

@@ -157,8 +157,6 @@ TRACE().debug("CReseau::fermeClient()%T", this);
 }
 
 void NetworkManager::recoitServer() {
-	TRACEMETHOD();
-
 	int numReady;
 	numReady = SDLNet_CheckSockets( _server->socketSet, 0 );	// Nombre de sockets ayant une activité détectée
 

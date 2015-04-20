@@ -170,15 +170,15 @@ void ConsoleView::setActivePlayerName(const std::string& activePlayerName) {
 	AG_MutexUnlock(&_agMutex);
 }
 
-void ConsoleView::setDureeCalcules(Uint32 ecart) {
+void ConsoleView::setDureeCalcules(Uint32 computateDuration) {
 	AG_MutexLock(&_agMutex);
-	_dureeCalcules = ecart;
+	_dureeCalcules = computateDuration;
 	AG_MutexUnlock(&_agMutex);
 }
 
-void ConsoleView::setDureeDisplay(Uint32 ecart) {
+void ConsoleView::setDureeDisplay(Uint32 displayDuration) {
 	AG_MutexLock(&_agMutex);
-	_dureeDisplay = ecart;
+	_dureeDisplay = displayDuration;
 	AG_MutexUnlock(&_agMutex);
 }
 

@@ -30,7 +30,7 @@ bool Changement::highestPriority(const Changement* left, const Changement* right
 	int leftPriority = left->getPriority();
 	int rightPriority = right->getPriority();
 
-	TRACE().info("Sorting LEFT : '%s' RIGHT : '%s'", left->toString().c_str(), right->toString().c_str());
+	TRACE().debug("Sorting LEFT : '%s' RIGHT : '%s'", left->toString().c_str(), right->toString().c_str());
 
 	if(leftPriority > rightPriority) {
 		return true;

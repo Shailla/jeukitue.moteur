@@ -42,8 +42,8 @@ public:
 	string getCommandAndClearCommandLine(void);
 	void setMapOuverteName(const std::string& mapName);
 	void setActivePlayerName(const std::string& activePlayerName);
-	void setDureeCalcules(Uint32 ecart);
-	void setDureeDisplay(Uint32 ecart);
+	void setDureeCalcules(Uint32 computateDuration);
+	void setDureeDisplay(Uint32 displayDuration);
 
 };
 

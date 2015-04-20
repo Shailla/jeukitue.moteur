@@ -1386,7 +1386,7 @@ void executeJktRequests() {
 	etape = Game.RequeteProcess.getOuvreMapClientEtape();
 
 	switch(etape) {
-	case CRequeteProcess::OMCE_AUCUNE:				// Aucune ouverture de MAP locale en cours
+	case CRequeteProcess::OMCE_AUCUNE:				// Aucune ouverture de MAP client en cours
 		// Nothing to do
 		break;
 
@@ -1612,7 +1612,7 @@ void communique() {
 			// Recoit les données du serveur en mode déconnecté, ainsi qu'en mode connecté si on l'est
 			client->recoit();
 
-			// Emet les données ddu joueur actif vers le serveur
+			// Emet les données du joueur actif vers le serveur
 			if(Game.getMap() && Game.Erwin() && Game.isModeClient() && (Game.getStatutClient() == JKT_STATUT_CLIENT_PLAY)) {
 				client->emet( *Game.Erwin() );		// Emet les requetes et données du joueur actif;
 			}
@@ -1624,6 +1624,7 @@ void communique() {
  * Boucle du jeu prinipale
  * **************************************/
 void boucle() {
+	Uint32 lastDataTreeUpdate = SDL_GetTicks();
 
 	try {
 		for( ;; ) {
@@ -1651,20 +1652,25 @@ void boucle() {
 			 * Traites les changements des données du jeu
 			 * **********************************************************/
 
-			// Traite les changements de données côté serveur
-			ServeurDataTree* serverDataTree = Game.getServerDataTree();
+			if(lastDataTreeUpdate - SDL_GetTicks() > 1000) {	// TODO pour l'instant on ne met à jour les données client-serveur qu'une fois par seconde, c'est une solution temporaire pour palier à l'explosion du nombre de messages échangés
 
-			if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
-				serverDataTree->receiveChangementsFromClients();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
-				serverDataTree->diffuseChangementsToClients();			// Diffuse les changements des données du jeu aux clients
-			}
+				// Traite les changements de données côté serveur
+				ServeurDataTree* serverDataTree = Game.getServerDataTree();
 
-			// Traite les changements de données côté client
-			ClientDataTree* clientDataTree = Game.getClientDataTree();
+				if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
+					serverDataTree->receiveChangementsFromClients();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
+					serverDataTree->diffuseChangementsToClients();			// Diffuse les changements des données du jeu aux clients
+				}
 
-			if(clientDataTree) {		// TODO clientDataTree devrait être protégé par un mutex
-				clientDataTree->receiveChangementsFromServer();		// Le client reçoit les changements des données du jeu de la part du serveur
-				clientDataTree->diffuseChangementsToServer();		// Le client reçoit diffuse les changements des données du jeu vers le serveur
+				// Traite les changements de données côté client
+				ClientDataTree* clientDataTree = Game.getClientDataTree();
+
+				if(clientDataTree) {		// TODO clientDataTree devrait être protégé par un mutex
+					clientDataTree->receiveChangementsFromServer();		// Le client reçoit les changements des données du jeu de la part du serveur
+					clientDataTree->diffuseChangementsToServer();		// Le client reçoit diffuse les changements des données du jeu vers le serveur
+				}
+
+				lastDataTreeUpdate = SDL_GetTicks();
 			}
 
 
@@ -1692,12 +1698,13 @@ void boucle() {
 			/* ****************************************************
 			 * Effectue les calculs physiques
 			 * (gravité, gestion des contacts, déplacements, ...)
+			 *
 			 * ***************************************************/
-			Uint32 temps = SDL_GetTicks();	// Temps au début du timer (->mesure du temps de calcul)
-
+			Uint32 beforeCompute = SDL_GetTicks();	// Temps au début du timer (->mesure du temps de calcul)
 			Game.timer();
+			Uint32 afterCompute = SDL_GetTicks();
 
-			((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setDureeCalcules(SDL_GetTicks() - temps);
+			((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setDureeCalcules(afterCompute - beforeCompute);
 
 
 			/* ***********************************************************

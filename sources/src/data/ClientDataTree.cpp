@@ -106,8 +106,6 @@ Branche* ClientDataTree::getBrancheByTmpId(const vector<int>& parentBrancheId, i
 }
 
 void ClientDataTree::receiveChangementsFromServer() {
-	TRACEMETHOD();
-
 	try {
 		vector<Changement*> answers;
 
@@ -214,8 +212,6 @@ void ClientDataTree::receiveChangementsFromServer() {
 }
 
 void ClientDataTree::sendChangementsToServer(vector<Changement*>& changements) {
-	TRACEMETHOD();
-
 	vector<Changement*>::iterator iter;
 	Interlocutor2* interlocutor = _serverTreeProxy->getInterlocutor();
 

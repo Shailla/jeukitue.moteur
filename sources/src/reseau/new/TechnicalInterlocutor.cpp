@@ -69,21 +69,21 @@ void TechnicalInterlocutor::setConnexionStatus(CONNEXION_STATUS status) {
 
 	switch(_status) {
 	case STOPPED:
-		log("I am now STOPPED");
+		log(__LINE__, __FILE__, "I am now STOPPED");
 		break;
 	case CONNECTING:
-		log("I am now CONNECTING");
+		log(__LINE__, __FILE__, "I am now CONNECTING");
 		break;
 	case CONNECTED:
-		log("I am now CONNECTED");
+		log(__LINE__, __FILE__,  "I am now CONNECTED");
 		break;
 	case STOPPING:
-		log("I am now STOPPING");
+		log(__LINE__, __FILE__, "I am now STOPPING");
 		break;
 	default:
 		stringstream message;
 		message << "We should never be here " << __FILE__ << " " << __LINE__;
-		log(message);
+		log(__LINE__, __FILE__, message);
 		break;
 	}
 }
@@ -104,14 +104,14 @@ SDL_cond* TechnicalInterlocutor::getCondIntelligence() {
 	return _condIntelligence;
 }
 
-void TechnicalInterlocutor::log(const char* message) {
-	TRACE().info("'%s' : '%s'", _name.c_str(), message);
+void TechnicalInterlocutor::log(int line, const char* sourceFile, const char* message) {
+	Donnees(line, sourceFile).info("'%s' : '%s'", _name.c_str(), message);
 }
 
-void TechnicalInterlocutor::log(const string& message) {
-	TRACE().info("'%s' : '%s'", _name.c_str(), message.c_str());
+void TechnicalInterlocutor::log(int line, const char* sourceFile, const string& message) {
+	Donnees(line, sourceFile).info("'%s' : '%s'", _name.c_str(), message.c_str());
 }
 
-void TechnicalInterlocutor::log(const stringstream& message) {
-	TRACE().info("'%s' : '%s'", _name.c_str(), message.str().c_str());
+void TechnicalInterlocutor::log(int line, const char* sourceFile, const stringstream& message) {
+	Donnees(line, sourceFile).info("'%s' : '%s'", _name.c_str(), message.str().c_str());
 }

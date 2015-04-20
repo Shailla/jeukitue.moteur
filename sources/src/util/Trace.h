@@ -40,7 +40,7 @@ enum TraceType {
 
 #define NOM_FICHIER_TRACE		"jkt."
 #define EXT_FICHIER_TRACE		".log"
-#define LEVEL_TRACE				-1
+#define LEVEL_TRACE				2
 #define FICHIER_SOURCE_BASE		"\\src\\"
 
 class Donnees

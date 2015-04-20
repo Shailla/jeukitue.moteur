@@ -90,7 +90,7 @@ NotConnectedInterlocutor2* ServerUdpInterlocutor::connect() throw(ConnectionFail
 		setConnexionStatus(CONNECTED);
 
 		startProcesses();
-		log("Les processus sont lances");
+		log(__LINE__, __FILE__, "Les processus sont lances");
 	}
 	catch(ConnectionFailedException& exception) {
 		TRACE().error("ConnectionFailedException : %s", exception.what());
@@ -155,18 +155,18 @@ void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloT
 
 		stringstream message;
 		message << "This client is now connected : " << IpUtils::translateAddress(address);
-		log(message);
+		log(__LINE__, __FILE__, message);
 
 		// Confirmation connexion client
 		S2CConnectionAcceptedTechnicalMessage msg(getLocalPort());
 		client->getInterlocutor()->pushTechnicalMessageToSend(msg.toBytes());
 
-		log("Send 'connection accepted' message");
+		log(__LINE__, __FILE__, "Send 'connection accepted' message");
 	}
 	else {
 		stringstream message;
 		message << "This client is already connected : " << IpUtils::translateAddress(address);
-		log(message);
+		log(__LINE__, __FILE__, message);
 	}
 
 	SDL_UnlockMutex(_clientsOfServerMutex);
@@ -201,7 +201,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 					case TechnicalMessage::C2S_HELLO:
 						stringstream message;
 						message << "C2S_HELLO received from " << IpUtils::translateAddress(address);
-						log(message);
+						log(__LINE__, __FILE__, message);
 
 						manageConnection(address, (C2SHelloTechnicalMessage*)techMsg);
 						break;
@@ -210,7 +210,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 				else {
 					stringstream message;
 					message << "Unknown not connected technical message received from " << IpUtils::translateAddress(address) << " => ignored";
-					log(message);
+					log(__LINE__, __FILE__, message);
 				}
 
 				delete msg;
@@ -248,7 +248,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 						{
 							stringstream message1;
 							message1 << "C2S_HELLO received from connected client : " << IpUtils::translateAddress(address);
-							log(message1);
+							log(__LINE__, __FILE__, message1);
 
 							c2s_hello_received = true;
 							break;
@@ -257,7 +257,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 						{
 							stringstream message1;
 							message1 << "C2S_BYE received from connected client : " << IpUtils::translateAddress(address);
-							log(message1);
+							log(__LINE__, __FILE__, message1);
 
 							c2s_bye_received = true;
 							break;
@@ -267,7 +267,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 					else {
 						stringstream message;
 						message << "Unknown connected technical message received from " << IpUtils::translateAddress(address) << " => ignored";
-						log(message);
+						log(__LINE__, __FILE__, message);
 					}
 
 					delete msg;
@@ -281,13 +281,13 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 
 					stringstream message2;
 					message2 << "Client is now disconnected : " << IpUtils::translateAddress(address);
-					log(message2);
+					log(__LINE__, __FILE__, message2);
 				}
 				else if(c2s_hello_received) {
 					// One or more C2S_HELLO messages have been received for a client which is connected, perhaps he has just been connected or not, in any case send a connection accepted confirmation
 					stringstream message2;
 					message2 << "Send 'connection accepted' message : "  << IpUtils::translateAddress(address);
-					log(message2);
+					log(__LINE__, __FILE__, message2);
 
 					S2CConnectionAcceptedTechnicalMessage msg(getLocalPort());
 					client->getInterlocutor()->pushTechnicalMessageToSend(msg.toBytes());
@@ -307,7 +307,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 		SDL_UnlockMutex(getMutexIntelligence());
 	}
 
-	log("Stop intelligence process");
+	log(__LINE__, __FILE__, "Stop intelligence process");
 }
 
 void ServerUdpInterlocutor::sendingProcess() {
@@ -339,7 +339,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 
 					stringstream message;
 					message << "Envoi de donnees techniques en mode non-connecte a " << IpUtils::translateAddress(_packetOut->address);
-					log(message);
+					log(__LINE__, __FILE__, message);
 				}
 
 				delete data;
@@ -371,7 +371,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 
 						stringstream message;
 						message << "Envoi de donnees techniques en mode connecte a " << IpUtils::translateAddress(_packetOut->address);
-						log(message);
+						log(__LINE__, __FILE__, message);
 					}
 
 					delete data;
@@ -390,7 +390,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 
 						stringstream message;
 						message << "Envoi de donnees user a " << IpUtils::translateAddress(_packetOut->address);
-						log(message);
+						log(__LINE__, __FILE__, message);
 					}
 
 					delete data;
@@ -430,7 +430,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 			else {
 				stringstream message;
 				message << "Message inconsistant et client inconnu from " << IpUtils::translateAddress(address) << " ==> ignoré";
-				log(message);
+				log(__LINE__, __FILE__, message);
 			}
 		}
 		else {
@@ -450,7 +450,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 
 					stringstream message;
 					message << "Reception de donnees user from " << IpUtils::translateAddress(address);
-					log(message);
+					log(__LINE__, __FILE__, message);
 					break;
 				}
 
@@ -462,7 +462,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 
 					stringstream message;
 					message << "Reception de donnees techniques from " << IpUtils::translateAddress(address);
-					log(message);
+					log(__LINE__, __FILE__, message);
 					break;
 				}
 				}
@@ -470,7 +470,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 			else {
 				stringstream message;
 				message << "Message inconsistant de client connu from " << IpUtils::translateAddress(address) << " ==> ignoré";
-				log(message);
+				log(__LINE__, __FILE__, message);
 			}
 		}
 	}
@@ -488,5 +488,5 @@ void ServerUdpInterlocutor::receivingProcess() {
 	}
 
 
-	log("Stop receiving process");
+	log(__LINE__, __FILE__, "Stop receiving process");
 }

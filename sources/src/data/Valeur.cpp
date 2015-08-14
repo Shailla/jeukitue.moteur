@@ -9,7 +9,7 @@
 
 #include "data/Valeur.h"
 
-Valeur::Valeur(Branche* parent, int valeurId, const string& valeurName, int valeurTmpId, int revision) : Donnee(revision) {
+Valeur::Valeur(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, int valeurTmpId, int revision) : Donnee(revision, valeurType) {
 	_parent = parent;
 	_valeurId = valeurId;
 	_valeurName = valeurName;

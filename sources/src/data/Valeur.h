@@ -17,15 +17,15 @@ using namespace std;
 
 #include "util/GenRef.h"
 
-class Branche;
+class AbstractBranche;
 
 class Valeur : public Donnee {
-	Branche* _parent;
+	AbstractBranche* _parent;
 	int _valeurId;
 	string _valeurName;
 	int _valeurTmpId;
 public:
-	Valeur(Branche* parent, int valeurId, const string& valeurName, int valeurTmpId, int revision);
+	Valeur(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, int valeurTmpId, int revision);
 	virtual ~Valeur();
 
 	vector<int> getBrancheId() const;

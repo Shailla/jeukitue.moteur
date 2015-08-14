@@ -123,39 +123,43 @@ void DataTreeView::show(void) {
 	View::show();
 }
 
-void DataTreeView::drawBranche(DataTreeView* thiz, Branche* branche, int depth) {
-	// Valeurs filles
-	{
-		vector<Valeur*>& valeurs = branche->getValeurs();
-		vector<Valeur*>::iterator itVa;
+void DataTreeView::drawBranche(DataTreeView* thiz, AbstractBranche* branche, int depth) {
+	Branche* br = dynamic_cast<Branche*>(branche);
 
-		for(itVa = valeurs.begin() ; itVa != valeurs.end() ; itVa++) {
-			Valeur* valeur = *itVa;
+	if(br) {
+		// Valeurs filles
+		{
+			vector<Valeur*>& valeurs = br->getValeurs();
+			vector<Valeur*>::iterator itVa;
 
-			ostringstream txt;
+			for(itVa = valeurs.begin() ; itVa != valeurs.end() ; itVa++) {
+				Valeur* valeur = *itVa;
 
-			txt << "Valeur[" << valeur->getValeurId() << " r" << valeur->getRevision() << " '" << valeur->getValeurName() << "'] : '" << valeur->toString() << "'";
+				ostringstream txt;
 
-			AG_TlistItem* item = AG_TlistAddPtr(thiz->_dataList, NULL, txt.str().c_str(), valeur);
-			item->depth = depth+1;
+				txt << "Valeur[" << valeur->getValeurId() << " r" << valeur->getRevision() << " '" << valeur->getValeurName() << "'] : '" << valeur->toString() << "'";
+
+				AG_TlistItem* item = AG_TlistAddPtr(thiz->_dataList, NULL, txt.str().c_str(), valeur);
+				item->depth = depth+1;
+			}
 		}
-	}
 
-	// Branches filles
-	{
-		vector<Branche*>& subBranches = branche->getSubBranches();
-		vector<Branche*>::const_iterator itBr;
+		// Branches filles
+		{
+			vector<Branche*>& subBranches = br->getSubBranches();
+			vector<Branche*>::const_iterator itBr;
 
-		for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
-			Branche* subBranche = *itBr;
+			for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
+				Branche* subBranche = *itBr;
 
-			ostringstream tete;
-			tete << "Branche[" << subBranche->getBrancheId() << " r" << subBranche->getRevision() << " '" << subBranche->getBrancheName()  << "']";
+				ostringstream tete;
+				tete << "Branche[" << subBranche->getBrancheId() << " r" << subBranche->getRevision() << " '" << subBranche->getBrancheName()  << "']";
 
-			AG_TlistItem* item = AG_TlistAddPtr(thiz->_dataList, NULL, tete.str().c_str(), subBranche);
-			item->depth = depth;
+				AG_TlistItem* item = AG_TlistAddPtr(thiz->_dataList, NULL, tete.str().c_str(), subBranche);
+				item->depth = depth;
 
-			drawBranche(thiz, subBranche, depth+1);
+				drawBranche(thiz, subBranche, depth+1);
+			}
 		}
 	}
 }

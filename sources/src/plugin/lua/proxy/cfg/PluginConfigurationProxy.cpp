@@ -18,10 +18,12 @@ using namespace std;
 #include "main/Cfg.h"
 #include "service/InformationService.h"
 #include "service/dto/VersionsDto.h"
+#include "main/Game.h"
 
 #include "plugin/lua/proxy/cfg/PluginConfigurationProxy.h"
 
 extern CCfg Config;		// Contient la configuration du jeu
+extern CGame Game;
 
 namespace JktPlugin {
 
@@ -175,6 +177,45 @@ int PluginConfigurationProxy::getConfigurationParameter(lua_State* L) {
 			Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 			return 0;
 		}
+	}
+
+	return 1;
+}
+
+/**
+ * Indique si le jeu actif est en mode local.
+ *    - Return 1 : vrai si le jeu est local, faux sinon
+ */
+int PluginConfigurationProxy::isModeLocal(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+		lua_pushboolean(L, Game.isModeLocal());
+		return 1;
+	}
+
+	return 1;
+}
+
+/**
+ * Indique si le jeu actif est en mode serveur.
+ *    - Return 1 : vrai si le jeu est en serveur, faux sinon
+ */
+int PluginConfigurationProxy::isModeServer(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+		lua_pushboolean(L, Game.isModeServer());
+		return 1;
+	}
+
+	return 1;
+}
+
+/**
+ * Indique si le jeu actif est en mode client.
+ *    - Return 1 : vrai si le jeu est en client, faux sinon
+ */
+int PluginConfigurationProxy::isModeClient(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+		lua_pushboolean(L, Game.isModeClient());
+		return 1;
 	}
 
 	return 1;

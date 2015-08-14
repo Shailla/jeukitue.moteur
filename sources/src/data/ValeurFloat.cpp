@@ -17,7 +17,7 @@ using namespace std;
 
 using namespace JktUtils;
 
-ValeurFloat::ValeurFloat(Branche* parent, int valeurId, const string& valeurName, int tmpId, int revision, float valeur) : Valeur(parent, valeurId, valeurName, tmpId, revision) {
+ValeurFloat::ValeurFloat(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, int tmpId, int revision, float valeur) : Valeur(parent, valeurId, valeurName, valeurType, tmpId, revision) {
 	_valeur = valeur;
 }
 

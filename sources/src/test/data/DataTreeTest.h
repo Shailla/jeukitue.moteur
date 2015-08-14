@@ -62,6 +62,11 @@ class DataTreeTest : public Test {
 	const string valeurFloatServerName = "valeur-float-server";
 	const float valeurFloatServerValue = 6.83f;
 
+	// Server branche 1
+	const int branche1ServerId = 3;
+	vector<int> branche1ServerFullId;
+	const string branche1ServerName = "branche-1-server";
+
 	/* ------------------ Client 0 data ------------------ */
 
 	// Branche 0
@@ -103,6 +108,12 @@ class DataTreeTest : public Test {
 	const string valeur3Client0Name = "valeur-3-client-0";
 	const int valeur3Client0Value = 547;
 
+	// Valeur 4 (dans la branche 2)
+	int valeur4Client0Id = 2;
+	vector<int> valeur4Client0FullId;
+	const string valeur4Client0Name = "valeur-4-client-0";
+	const int valeur4Client0Value = 742;
+
 	Branche* serveurRoot = 0;
 	ValeurString* valeurServeurString = 0;
 	ValeurInt* valeurServeurInt = 0;
@@ -129,6 +140,7 @@ private:
 	void serverTests();
 	void clientTests();
 	void multiClientsTests();
+	void privateTreeTest();
 };
 
 } /* namespace JktTest */

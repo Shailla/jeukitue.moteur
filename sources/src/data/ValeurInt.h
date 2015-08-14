@@ -20,7 +20,7 @@ class Branche;
 class ValeurInt : public Valeur {
 	int _valeur;
 public:
-	ValeurInt(Branche* parent, int valeurId, const string& valeurName, int tmpRef, int revision, int valeur);
+	ValeurInt(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, int tmpRef, int revision, int valeur);
 	virtual ~ValeurInt();
 
 	int getValeur() const;

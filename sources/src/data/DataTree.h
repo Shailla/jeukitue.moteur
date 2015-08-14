@@ -14,9 +14,15 @@
 #include "data/exception/NotExistingValeurException.h"
 #include "util/types/AnyData.h"
 #include "data/Branche.h"
+#include "data/PrivateBranche.h"
 #include "data/DistantTreeProxy.h"
 
 class DataTree {
+public:
+	static const int STATE_STARTING;	// Data tree not ready to receive data
+	static const int STATE_READY;		// Data tree ready to receive data
+
+private:
 	Branche _root;
 
 protected:

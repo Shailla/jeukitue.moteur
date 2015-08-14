@@ -17,7 +17,7 @@ using namespace std;
 
 using namespace JktUtils;
 
-ValeurString::ValeurString(Branche* parent, int valeurId, const string& valeurName, int tmpId, int revision, const std::string& valeur) : Valeur(parent, valeurId, valeurName, tmpId, revision) {
+ValeurString::ValeurString(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, int tmpId, int revision, const std::string& valeur) : Valeur(parent, valeurId, valeurName,  valeurType, tmpId, revision) {
 	_valeur = valeur;
 }
 

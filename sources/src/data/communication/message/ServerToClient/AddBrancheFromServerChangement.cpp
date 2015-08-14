@@ -20,9 +20,10 @@ AddBrancheFromServerChangement::AddBrancheFromServerChangement(istringstream& in
 	unserialize(in);
 }
 
-AddBrancheFromServerChangement::AddBrancheFromServerChangement(const vector<int>& parentBrancheId, int brancheId, int revision, const string& brancheName) : Changement("AddBrFromSerChgt", PRIORITY_AddBrancheFromServerChangement) {
+AddBrancheFromServerChangement::AddBrancheFromServerChangement(const vector<int>& parentBrancheId, int brancheId, DONNEE_TYPE brancheType, int revision, const string& brancheName) : Changement("AddBrFromSerChgt", PRIORITY_AddBrancheFromServerChangement) {
 	_parentBrancheId = parentBrancheId;
 	_brancheId = brancheId;
+	_brancheType = brancheType;
 	_revision = revision;
 	_brancheName = brancheName;
 }
@@ -38,6 +39,7 @@ void AddBrancheFromServerChangement::serialize(ostringstream& out) const {
 
 	StreamUtils::write(out, _parentBrancheId);
 	StreamUtils::write(out, _brancheId);
+	StreamUtils::write(out, _brancheType);
 	StreamUtils::write(out, _brancheName);
 	StreamUtils::write(out, _revision);
 }
@@ -45,6 +47,7 @@ void AddBrancheFromServerChangement::serialize(ostringstream& out) const {
 void AddBrancheFromServerChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _parentBrancheId);
 	StreamUtils::read(in, _brancheId);
+	StreamUtils::read(in, (int&)_brancheType);
 	StreamUtils::read(in, _brancheName);
 	StreamUtils::read(in, _revision);
 }

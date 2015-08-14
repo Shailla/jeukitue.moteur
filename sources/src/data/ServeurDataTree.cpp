@@ -41,12 +41,24 @@ Branche* ServeurDataTree::createBranche(const vector<int>& parentBrancheId, cons
 	return addBrancheFromDistant(parentBrancheId, brancheName, 0, 0, NULL);
 }
 
+PrivateBranche* ServeurDataTree::createPrivateBranche(const vector<int>& parentBrancheId, const string& brancheName) {
+	return addPrivateBrancheFromDistant(parentBrancheId, brancheName, 0, 0, NULL);
+}
+
 Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, int revision, DistantTreeProxy* distant) {
 	Branche* parentBranche = getBrancheFromDistant(distant, parentBrancheId);
 
-	Branche* branche = parentBranche->createSubBrancheForServer(brancheName, revision);
+	AbstractBranche* branche = parentBranche->createSubBrancheForServer(brancheName, DONNEE_SERVER, revision);
 
 	return (Branche*)initDonneeAndMarqueurFromDistant(distant, branche, brancheClientTmpId);
+}
+
+PrivateBranche* ServeurDataTree::addPrivateBrancheFromDistant(const vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, int revision, DistantTreeProxy* distant) {
+	Branche* parentBranche = getBrancheFromDistant(distant, parentBrancheId);
+
+	AbstractBranche* branche = parentBranche->createSubBrancheForServer(brancheName, DONNEE_CLIENT, revision);
+
+	return (PrivateBranche*)initDonneeAndMarqueurFromDistant(distant, branche, brancheClientTmpId);
 }
 
 Valeur* ServeurDataTree::createValeur(const vector<int>& parentBrancheId, const string& valeurName, const AnyData valeur) {
@@ -103,23 +115,53 @@ void ServeurDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bra
 		marqueur->setConfirmedRevision(0);
 	}
 
-	// Init sub-branches
-	{
-		vector<Branche*>& subBranches = branche->getSubBranches();
-		vector<Branche*>::iterator itBr;
+	Branche* bra = dynamic_cast<Branche*>(branche);
 
-		for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
-			initDistantBranche(distant, *itBr);
+	if(bra) {
+		// Init sub-branches
+		{
+			vector<Branche*>& subBranches = bra->getSubBranches();
+			vector<Branche*>::iterator itBr;
+
+			for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
+				initDistantBranche(distant, *itBr);
+			}
+		}
+
+		// Init values
+		{
+			vector<Valeur*>& valeurs = bra->getValeurs();
+			vector<Valeur*>::iterator iterVl;
+
+			for(iterVl = valeurs.begin() ; iterVl != valeurs.end() ; iterVl++) {
+				distant->addMarqueur(*iterVl, 0);
+			}
 		}
 	}
+	else {
+		PrivateBranche* pr = static_cast<PrivateBranche*>(branche);
+		map<DistantTreeProxy*, PrivateBranche::DistantPrivateBranche>::iterator dt;
 
-	// Init values
-	{
-		vector<Valeur*>& valeurs = branche->getValeurs();
-		vector<Valeur*>::iterator iterVl;
+		for(dt = pr->getDistants().begin() ; dt != pr->getDistants().end() ; dt++) {
+			// Init sub-branches
+			{
+				vector<Branche*>& subBranches = pr->getSubBranches(dt->first);
+				vector<Branche*>::iterator itBr;
 
-		for(iterVl = valeurs.begin() ; iterVl != valeurs.end() ; iterVl++) {
-			distant->addMarqueur(*iterVl, 0);
+				for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
+					initDistantBranche(distant, *itBr);
+				}
+			}
+
+			// Init values
+			{
+				vector<Valeur*>& valeurs = pr->getValeurs(dt->first);
+				vector<Valeur*>::iterator iterVl;
+
+				for(iterVl = valeurs.begin() ; iterVl != valeurs.end() ; iterVl++) {
+					distant->addMarqueur(*iterVl, 0);
+				}
+			}
 		}
 	}
 }
@@ -137,6 +179,8 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 			client = *clientIter;
 			interlocutor = client->getInterlocutor();
 			client->collecteChangementsInServerTree(changements);
+
+			// Priorise et filtre les changements qui seront vraiment envoyés
 
 			// Emission des changements
 			if(changements.size()) {
@@ -168,7 +212,7 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 Branche* ServeurDataTree::getBrancheByDistantTmpId(DistantTreeProxy* distant, const vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException) {
 	vector<int>::const_iterator iter;
 
-	Branche* parentBranche = &getRoot();
+	AbstractBranche* parentBranche = &getRoot();
 
 	for(iter = parentBrancheId.begin() ; (iter != parentBrancheId.end() && parentBranche != NULL) ; iter++) {
 		int aa = *iter;

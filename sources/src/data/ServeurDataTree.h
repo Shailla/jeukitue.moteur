@@ -28,6 +28,7 @@ class ServeurDataTree : public DataTree {
 	Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurTmpId) throw(NotExistingBrancheException, NotExistingValeurException);
 
 	Branche* addBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, DistantTreeProxy* distant);
+	PrivateBranche* addPrivateBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, DistantTreeProxy* distant);
 	Valeur* addValeurFromDistant(const vector<int>& parentBrancheId, const std::string& valeurName, int valeurTmpId, int revision, const JktUtils::AnyData valeur, DistantTreeProxy* distant);
 
 public:
@@ -44,6 +45,8 @@ public:
 
 	// Gestion branches et valeurs avec coordonnées vectorielles
 	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
+	PrivateBranche* createPrivateBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
+
 	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur);
 	Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::AnyData value);
 

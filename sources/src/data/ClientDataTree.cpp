@@ -89,14 +89,14 @@ Branche* ClientDataTree::getBrancheByTmpId(const vector<int>& parentBrancheId, i
 	Branche* parentBranche = &getRoot();
 
 	for(iter = parentBrancheId.begin() ; (iter != parentBrancheId.end() && parentBranche != NULL) ; iter++) {
-		parentBranche = parentBranche->getSubBrancheByIdOrTmpId(*iter);
+		parentBranche = (Branche*)parentBranche->getSubBrancheByIdOrTmpId(*iter);	// Un arbre client a des vraies  branches, pas besoin de passer par AbstractBranche
 	}
 
 	if(!parentBranche) {
 		throw NotExistingBrancheException("ClientDataTree::getBrancheByTmpId 1");
 	}
 
-	Branche* branche = parentBranche->getSubBrancheByIdOrTmpId(brancheTmpId);
+	Branche* branche = (Branche*)parentBranche->getSubBrancheByIdOrTmpId(brancheTmpId);
 
 	if(!branche) {
 		throw NotExistingBrancheException("ClientDataTree::getBrancheByTmpId 2");
@@ -136,7 +136,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 					// Le serveur accepte la création de la nouvelle branche demandée par ce client et lui attribue son identifiant définitif
 					if(AcceptAddBrancheFromClientChangement* chgt = dynamic_cast<AcceptAddBrancheFromClientChangement*>(*itCh)) {
 						Branche* parentBranche = getBranche(chgt->getParentBrancheId());
-						Branche* branche = parentBranche->acceptTmpSubBranche(chgt->getBrancheTmpId(), chgt->getBrancheId(), chgt->getRevision());
+						Branche* branche = (Branche*)parentBranche->acceptTmpSubBranche(chgt->getBrancheTmpId(), chgt->getBrancheId(), chgt->getRevision());
 
 						answers.push_back(new ConfirmBrancheChangement(branche->getBrancheFullId(), branche->getRevision()));
 					}
@@ -155,7 +155,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 					// Le serveur informe de la création d'une nouvelle branche
 					else if(AddBrancheFromServerChangement* chgt = dynamic_cast<AddBrancheFromServerChangement*>(*itCh)) {
 						Branche* parentBranche = getBranche(chgt->getParentBrancheId());
-						Branche* branche = parentBranche->addSubBranche(chgt->getBrancheId(), chgt->getBrancheName(), chgt->getRevision());
+						Branche* branche = (Branche*)parentBranche->addSubBranche(chgt->getBrancheId(), chgt->getBrancheName(), chgt->getRevision());
 
 						answers.push_back(new ConfirmBrancheChangement(branche->getBrancheFullId(), branche->getRevision()));
 					}

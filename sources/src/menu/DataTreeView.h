@@ -23,7 +23,7 @@ class DataTreeView : public View {
 	AG_Table* _clientsTable;
 	DataTree* _dataTree;
 
-	static void drawBranche(DataTreeView* details, Branche* branche, int depth);
+	static void drawBranche(DataTreeView* details, AbstractBranche* branche, int depth);
 	void refreshTree();
 	void drawWidgets(AG_Window* window, AG_Box* box);
 

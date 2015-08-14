@@ -18,7 +18,7 @@ class Branche;
 class ValeurString : public Valeur {
 	std::string _valeur;
 public:
-	ValeurString(Branche* parent, int valeurId, const string& valeurName, int tmpRef, int revision, const std::string& valeur);
+	ValeurString(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, int tmpRef, int revision, const std::string& valeur);
 	virtual ~ValeurString();
 
 	const std::string& getValeur() const;

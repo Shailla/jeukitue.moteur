@@ -236,7 +236,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	int curseur = -1;
 	CPlayer* player;
 
-	while(player = Game.nextPlayer(curseur)) {
+	while((player = Game.nextPlayer(curseur))) {
 		player->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
 		player->changeContact(contactPlayer);			// Associe une fonction de gestion des contacts avec la map
 		player->Skin(pMapJoueur);

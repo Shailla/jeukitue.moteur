@@ -37,7 +37,7 @@ LocalDataTree::~LocalDataTree() {
 Branche* LocalDataTree::createBranche(const vector<int>& parentBrancheId, const string& brancheName) {
 	Branche* parentBranche = getBrancheFromDistant(0, parentBrancheId);
 
-	Branche* branche = parentBranche->createSubBrancheForServer(brancheName, 0);
+	Branche* branche = parentBranche->createSubBrancheForServer(brancheName, DONNEE_LOCAL, 0);
 
 	_donnees.insert(branche);
 

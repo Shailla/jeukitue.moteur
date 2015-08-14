@@ -52,6 +52,10 @@ public:
 	static int getConfigurationParameter(lua_State* L);
 	static int setConfigurationParameter(lua_State* L);
 
+	static int isModeLocal(lua_State* L);
+	static int isModeClient(lua_State* L);
+	static int isModeServer(lua_State* L);
+
 	static int getConstant(lua_State* L);
 
 	static int initAudio(lua_State* L);

@@ -16,11 +16,16 @@
 
 using namespace std;
 
-Donnee::Donnee(int revision) {
+Donnee::Donnee(int revision, DONNEE_TYPE donneeType) {
 	_revision = revision;
+	_donneeType = donneeType;
 }
 
 Donnee::~Donnee() {
+}
+
+DONNEE_TYPE Donnee::getDonneeType() const {
+	return _donneeType;
 }
 
 MarqueurDistant* Donnee::getMarqueur(DistantTreeProxy* distant) {

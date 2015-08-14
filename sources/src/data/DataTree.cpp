@@ -11,7 +11,10 @@ using namespace std;
 
 #include "data/DataTree.h"
 
-DataTree::DataTree() : _root(NULL, 0, "root", 0, -1) {
+const int DataTree::STATE_STARTING = 0;		// Data tree not ready to receive data
+const int DataTree::STATE_READY = 1;		// Data tree ready to receive data
+
+DataTree::DataTree() : _root(NULL, 0, "root", DONNEE_SERVER, 0, -1) {
 }
 
 DataTree::~DataTree() {

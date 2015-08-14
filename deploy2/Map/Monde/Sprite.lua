@@ -8,17 +8,24 @@ colorsG = {}
 colorsB = {}
 
 function onLoad()
-	log("Version Lua : " .. _VERSION)
+	log("Version Lua B : " .. _VERSION)
 	
-	mapDataTree = getDataTree();
-
-	dirigeablesBrId = mapDataTree:getBranche( {"map", "sprites", "dirigeables"} );
-	
-	for index = 1, nbrSprites do
-		createSprite(dirigeablesBrId, index);
-	end
+	if (isModeServer() or isModeLocal()) then
+		log("Jeu en mode serveur ou local => initialisation des sprites");
 		
-	subscribeEvents("refresh");
+		mapDataTree = getDataTree();
+
+		dirigeablesBrId = mapDataTree:getBranche( {"map", "sprites", "dirigeables"} );
+		traceId("ID DIRIGEABLE", dirigeablesBrId);
+		
+		for index = 1, nbrSprites do
+			createSprite(dirigeablesBrId, index);
+		end
+			
+		subscribeEvents("refresh");
+	else
+		log("Jeu en mode client => pas initialisation des sprites (tâche laissée au serveur)");
+	end
 end
 
 function createSprite(dirigeablesBrId, index)

@@ -17,7 +17,7 @@ using namespace std;
 
 using namespace JktUtils;
 
-ValeurInt::ValeurInt(Branche* parent, int valeurId, const string& valeurName, int tmpId, int revision, int valeur) : Valeur(parent, valeurId, valeurName, tmpId, revision) {
+ValeurInt::ValeurInt(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, int tmpId, int revision, int valeur) : Valeur(parent, valeurId, valeurName, valeurType, tmpId, revision) {
 	_valeur = valeur;
 }
 

@@ -52,9 +52,11 @@ string DataTreeTest::getDescription() {
 
 void DataTreeTest::test() {
 	initTestData();			// Initialise les données utilisées par le test
+
 	serverTests();			// Initialise et peuple un arbre serveur, vérifie s'il est bien initialisé et peuplé
 	clientTests();			// Initialise et synchronise sur le serveur un arbre client, vérifie s'il est bien initialisé et synchronisé
-	multiClientsTests();	// Teste la diffusion de données sur plusieurs clients
+	multiClientsTests();	// Teste l'échange de données entre plusieurs clients
+	privateTreeTest();		// Teste la création d'une branche privée de données (données spécifiques à chaque client partagées avec le serveur)
 }
 
 void DataTreeTest::initTestData() {
@@ -71,6 +73,8 @@ void DataTreeTest::initTestData() {
 
 	valeurFloatServerFullId = branche0ServerFullId;
 	valeurFloatServerFullId.push_back(valeurFloatServerId);
+
+	branche1ServerFullId.push_back(branche1ServerId);
 
 	// Données client
 	branche0Client0FullId.push_back(branche0Client0Id);
@@ -91,6 +95,9 @@ void DataTreeTest::initTestData() {
 
 	valeur3Client0FullId = branche2Client0FullId;
 	valeur3Client0FullId.push_back(valeur3Client0Id);
+
+	valeur4Client0FullId = branche2Client0FullId;
+	valeur4Client0FullId.push_back(valeur4Client0Id);
 }
 
 void DataTreeTest::serverTests() {
@@ -223,7 +230,7 @@ void DataTreeTest::clientTests() {
 	client0Tree.receiveChangementsFromServer();
 
 	// Vérifie que le serveur et client-1 ont exactement le même arbre
-	ASSERT_EQUAL(serverTree.getRoot().print(0, false), client0Tree.getRoot().print(0, false), "Les abres client-0 et serveur devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)(serverTree.getRoot())).print(0, false), ((AbstractBranche&)(client0Tree.getRoot())).print(0, false), "Les abres client-0 et serveur devraient être identiques");
 
 
 	/* ****************************************************************************
@@ -367,7 +374,7 @@ void DataTreeTest::clientTests() {
 	checkSynchronisationClientServeur(__LINE__, client0Tree);
 
 	// Vérifie que le serveur et client-1 ont exactement le même arbre
-	ASSERT_EQUAL(serverTree.getRoot().print(0, false), client0Tree.getRoot().print(0, false), "Les abres client-0 et serveur devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(0, false), ((AbstractBranche&)client0Tree.getRoot()).print(0, false), "Les abres client-0 et serveur devraient être identiques");
 
 
 	/* ****************************************************************************
@@ -531,7 +538,7 @@ void DataTreeTest::clientTests() {
 	checkSynchronisationClientServeur(__LINE__, client0Tree);
 
 	// Vérifie que le serveur et client-0 ont exactement le même arbre
-	ASSERT_EQUAL(serverTree.getRoot().print(0, false), client0Tree.getRoot().print(0, false), "Les abres client-0 et serveur devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(0, false), ((AbstractBranche&)client0Tree.getRoot()).print(0, false), "Les abres client-0 et serveur devraient être identiques");
 }
 
 void DataTreeTest::multiClientsTests() {
@@ -561,7 +568,7 @@ void DataTreeTest::multiClientsTests() {
 	checkSynchronisationClientServeur(__LINE__, client1Tree);
 
 	// Vérifie que le serveur et client-1 ont exactement le même arbre
-	ASSERT_EQUAL(serverTree.getRoot().print(0, false), client1Tree.getRoot().print(0, false), "Les abres client-1 et serveur devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(0, false), ((AbstractBranche&)client1Tree.getRoot()).print(0, false), "Les abres client-1 et serveur devraient être identiques");
 
 	// Les arbres doivent désormais être stabilisés
 	checkSynchronisationClientServeur(__LINE__, client0Tree);
@@ -605,8 +612,8 @@ void DataTreeTest::multiClientsTests() {
 	checkSynchronisationClientServeur(__LINE__, client1Tree);
 
 	// Test l'égalité des 3 arbres
-	ASSERT_EQUAL(client1Tree.getRoot().print(0, false), client0Tree.getRoot().print(0, false), "Les abres client-1 et serveur devraient être identiques");
-	ASSERT_EQUAL(client1Tree.getRoot().print(0, false), serverTree.getRoot().print(0, false), "Les abres client-1 et client-0 devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)client1Tree.getRoot()).print(0, false), ((AbstractBranche&)client0Tree.getRoot()).print(0, false), "Les abres client-1 et serveur devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)client1Tree.getRoot()).print(0, false), ((AbstractBranche&)serverTree.getRoot()).print(0, false), "Les abres client-1 et client-0 devraient être identiques");
 
 	{
 		ostringstream arbre;
@@ -663,8 +670,8 @@ void DataTreeTest::multiClientsTests() {
 	checkSynchronisationClientServeur(__LINE__, client1Tree);
 
 	// Test l'égalité des 3 arbres
-	ASSERT_EQUAL(client1Tree.getRoot().print(0, false), client0Tree.getRoot().print(0, false), "Les abres client-1 et serveur devraient être identiques");
-	ASSERT_EQUAL(client1Tree.getRoot().print(0, false), serverTree.getRoot().print(0, false), "Les abres client-1 et client-0 devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)client1Tree.getRoot()).print(0, false), ((AbstractBranche&)client0Tree.getRoot()).print(0, false), "Les abres client-1 et client-0 devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)client1Tree.getRoot()).print(0, false), ((AbstractBranche&)serverTree.getRoot()).print(0, false), "Les abres client-1 et serveur devraient être identiques");
 
 	{
 		ostringstream arbre;
@@ -672,6 +679,13 @@ void DataTreeTest::multiClientsTests() {
 		serverTree.getRoot().print(arbre, true, 0);
 		log(arbre, __LINE__);
 	}
+}
+
+void DataTreeTest::privateTreeTest() {
+	log("CREATION BRANCHE DE DONNEES PRIVEES", __LINE__);
+
+	PrivateBranche* privateBranche = serverTree.createPrivateBranche(rootFullId, branche1ServerName);
+	serverTree.createValeur(privateBranche->getBrancheFullId(), "Private value 1 client 0", AnyData("Toutcru"));
 }
 
 void DataTreeTest::echangeDonneesClientServeur(int line, Interlocutor2& client) {

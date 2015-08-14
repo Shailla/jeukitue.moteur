@@ -25,18 +25,10 @@ using namespace std;
 
 using namespace JktUtils;
 
-Branche::Branche(Branche* parent, int brancheId, const string& brancheName, int revision, int brancheTmpId) : Donnee(revision) {
-	_parent = parent;
-	_brancheId = brancheId;
-	_brancheName = brancheName;
-	_brancheTmpId = brancheTmpId;
+Branche::Branche(AbstractBranche* parent, int brancheId, const string& brancheName, DONNEE_TYPE brancheType, int revision, int brancheTmpId) : AbstractBranche(parent, brancheId, brancheName, brancheType, revision, brancheTmpId) {
 }
 
 Branche::~Branche() {
-}
-
-void Branche::setBrancheId(int brancheId) {
-	_brancheId = brancheId;
 }
 
 Branche* Branche::getSubBrancheByName(const string& brancheName) const {
@@ -145,7 +137,7 @@ Branche* Branche::createSubBrancheForClient(const string& brancheName, int revis
 	int tmpRef = -_brancheTmpRefGenerator.genRef();		// On démarre à -1
 
 	// Crée la nouvelle branche
-	Branche* newBranche = new Branche(this, -1, brancheName, revision, tmpRef);
+	Branche* newBranche = new Branche(this, -1, brancheName, getDonneeType(), revision, tmpRef);
 	_subBranchesByTmpId[tmpRef] = newBranche;		// Moins 1 pour éviter les collisions avec les ID non temporaires
 	_subBranches.push_back(newBranche);
 
@@ -153,7 +145,7 @@ Branche* Branche::createSubBrancheForClient(const string& brancheName, int revis
 }
 
 
-Branche* Branche::createSubBrancheForServer(const string& brancheName, int revision) throw(AlreadyExistingBrancheException) {
+Branche* Branche::createSubBrancheForServer(const string& brancheName, DONNEE_TYPE type, int revision) throw(AlreadyExistingBrancheException) {
 	// Alloue une référence pour la nouvelle branche
 	int ref = _brancheRefGenerator.genRef();	// On démarre à 1
 
@@ -174,7 +166,29 @@ Branche* Branche::createSubBrancheForServer(const string& brancheName, int revis
 	}
 
 	// Crée la nouvelle branche
-	Branche* newBranche = new Branche(this, ref, brancheName, revision, -1);
+	DONNEE_TYPE resultType;
+	DONNEE_TYPE parentType = getDonneeType();
+
+	if(parentType == DONNEE_SERVER) {		// Sur une branche serveur on peut créer une branche locale ou serveur
+		if(type == DONNEE_CLIENT) {
+			resultType = DONNEE_CLIENT;
+		}
+		else {
+			resultType = DONNEE_SERVER;
+		}
+	}
+	else if(parentType == DONNEE_CLIENT || parentType == DONNEE_CLIENT_SUB) {	// Sur une branche client on ne peut créer qu'une donnée client fille
+		resultType = DONNEE_CLIENT_SUB;
+	}
+	else if(parentType == DONNEE_LOCAL) {	// Sur une branche local on ne peut créer qu'une donnée local
+		resultType = DONNEE_LOCAL;
+	}
+	else {
+		cerr << endl << "Type demandé inconnu";
+	}
+
+	Branche* newBranche = new Branche(this, ref, brancheName, resultType, revision, -1);
+
 	_subBranchesById[ref] = newBranche;
 	_subBranchesByName[brancheName] = newBranche;
 	_subBranches.push_back(newBranche);
@@ -192,7 +206,7 @@ Branche* Branche::addSubBranche(int brancheId, const std::string& brancheName, i
 	}
 	else {
 		// Crée la nouvelle branche
-		newBranche = new Branche(this, brancheId, brancheName, brancheRevision, -1);
+		newBranche = new Branche(this, brancheId, brancheName, getDonneeType(), brancheRevision, -1);
 		_subBranchesById[brancheId] = newBranche;
 		_subBranchesByName[brancheName] = newBranche;
 		_subBranches.push_back(newBranche);
@@ -238,13 +252,13 @@ Valeur* Branche::createValeurForClient(const string& valeurName, int revision, c
 	Valeur* newValeur = NULL;
 
 	if(valeur.isInt()) {
-		newValeur = new ValeurInt(this, -1, valeurName, tmpRef, revision, valeur.getValueInt());
+		newValeur = new ValeurInt(this, -1, valeurName, DONNEE_DEFAULT, tmpRef, revision, valeur.getValueInt());
 	}
 	else if(valeur.isFloat()) {
-		newValeur = new ValeurFloat(this, -1, valeurName, tmpRef, revision, valeur.getValueFloat());
+		newValeur = new ValeurFloat(this, -1, valeurName, DONNEE_DEFAULT, tmpRef, revision, valeur.getValueFloat());
 	}
 	else if(valeur.isString()) {
-		newValeur = new ValeurString(this, -1, valeurName, tmpRef, revision, valeur.getValueString());
+		newValeur = new ValeurString(this, -1, valeurName, DONNEE_DEFAULT, tmpRef, revision, valeur.getValueString());
 	}
 
 	if(newValeur) {
@@ -263,13 +277,13 @@ Valeur* Branche::createValeurForServeur(const string& valeurName, int revision, 
 	Valeur* newValeur = NULL;
 
 	if(valeur.isInt()) {
-		newValeur = new ValeurInt(this, ref, valeurName, -1, revision, valeur.getValueInt());
+		newValeur = new ValeurInt(this, ref, valeurName, DONNEE_DEFAULT, -1, revision, valeur.getValueInt());
 	}
 	else if(valeur.isFloat()) {
-		newValeur = new ValeurFloat(this, ref, valeurName, -1, revision, valeur.getValueFloat());
+		newValeur = new ValeurFloat(this, ref, valeurName, DONNEE_DEFAULT, -1, revision, valeur.getValueFloat());
 	}
 	else if(valeur.isString()) {
-		newValeur = new ValeurString(this, ref, valeurName, -1, revision, valeur.getValueString());
+		newValeur = new ValeurString(this, ref, valeurName, DONNEE_DEFAULT, -1, revision, valeur.getValueString());
 	}
 
 	if(newValeur) {
@@ -289,17 +303,17 @@ const Valeur* Branche::addValeur(int valeurId, const string& valeurName, int val
 	else {
 		// Crée la nouvelle valeur
 		if(valeur.isInt()) {
-			newValeur = new ValeurInt(this, valeurId, valeurName, -1, valeurRevision, valeur.getValueInt());
+			newValeur = new ValeurInt(this, valeurId, valeurName, DONNEE_DEFAULT, -1, valeurRevision, valeur.getValueInt());
 			_valeursById[valeurId] = newValeur;
 			_valeurs.push_back(newValeur);
 		}
 		else if(valeur.isFloat()) {
-			newValeur = new ValeurFloat(this, valeurId, valeurName, -1, valeurRevision, valeur.getValueFloat());
+			newValeur = new ValeurFloat(this, valeurId, valeurName, DONNEE_DEFAULT, -1, valeurRevision, valeur.getValueFloat());
 			_valeursById[valeurId] = newValeur;
 			_valeurs.push_back(newValeur);
 		}
 		else if(valeur.isString()) {
-			newValeur = new ValeurString(this, valeurId, valeurName, -1, valeurRevision, valeur.getValueString());
+			newValeur = new ValeurString(this, valeurId, valeurName, DONNEE_DEFAULT, -1, valeurRevision, valeur.getValueString());
 			_valeursById[valeurId] = newValeur;
 			_valeurs.push_back(newValeur);
 		}
@@ -317,86 +331,6 @@ vector<Branche*>& Branche::getSubBranches() {
 
 vector<Valeur*>& Branche::getValeurs() {
 	return _valeurs;
-}
-
-string Branche::getBrancheName() const {
-	return _brancheName;
-}
-
-int Branche::getBrancheId() const {
-	return _brancheId;
-}
-
-int Branche::getBrancheTmpId() const {
-	return _brancheTmpId;
-}
-
-
-vector<int> Branche::getParentBrancheId(void) const {
-	vector<int> parentBrancheId;
-
-	if(_parent) {
-		parentBrancheId = _parent->getBrancheFullId();
-	}
-	else {
-		// Do nothing, return empty id
-	}
-
-	return parentBrancheId;
-}
-
-vector<int> Branche::getParentBrancheIdOrTmpId(void) const {
-	vector<int> parentBrancheIdOrTmpId;
-
-	if(_parent) {
-		parentBrancheIdOrTmpId = _parent->getBrancheFullIdOrTmpId();
-	}
-	else {
-		// Do nothing, return empty id
-	}
-
-	return parentBrancheIdOrTmpId;
-}
-
-void Branche::getBrancheFullId(vector<int>& id) const {
-	if(_parent) {
-		_parent->getBrancheFullId(id);
-		id.push_back(_brancheId);
-	}
-}
-
-void Branche::getBrancheFullIdOrTmpId(vector<int>& id) const {
-	if(_parent) {
-		_parent->getBrancheFullIdOrTmpId(id);
-
-		if(_brancheId >= 0) {
-			id.push_back(_brancheId);
-		}
-		else {
-			id.push_back(_brancheTmpId);	// On passe l'identifiant temporaire en nombre négatif pour qu'il puisse être reconnu comme tel
-		}
-	}
-}
-
-vector<int> Branche::getBrancheFullIdOrTmpId() const {
-	vector<int> id;
-	getBrancheFullIdOrTmpId(id);
-
-	return id;
-}
-
-vector<int> Branche::getBrancheFullId() const {
-	vector<int> id;
-	getBrancheFullId(id);
-
-	return id;
-}
-
-string Branche::print(int indentation, bool details) {
-	ostringstream out;
-	print(out, details, indentation);
-
-	return out.str();
 }
 
 void Branche::print(ostringstream& out, bool details, int indentation) {
@@ -441,7 +375,7 @@ void Branche::print(ostringstream& out, bool details, int indentation) {
 
 	// Affiche les branches de la branche
 	vector<Branche*> branches = _subBranches;
-	sort(branches.begin(), branches.end(), Branche::highestId);
+	sort(branches.begin(), branches.end(), AbstractBranche::highestId);
 
 	vector<Branche*>::iterator brIt;
 
@@ -449,11 +383,4 @@ void Branche::print(ostringstream& out, bool details, int indentation) {
 		Branche* branche = *brIt;
 		branche->print(out, details, indentation+1);
 	}
-}
-
-bool Branche::highestId(const Branche* left, const Branche* right) {
-	int leftId = left->getBrancheId();
-	int rightId = right->getBrancheId();
-
-	return leftId < rightId;
 }

@@ -21,6 +21,7 @@ using namespace std;
 #include "data/ValeurFloat.h"
 #include "data/ValeurString.h"
 #include "data/MarqueurDistant.h"
+#include "data/exception/UnavailableOperationException.h"
 
 #include "data/PrivateBranche.h"
 
@@ -156,7 +157,6 @@ Branche* PrivateBranche::createSubBrancheForClient(DistantTreeProxy* distant, co
 
 	return newBranche;
 }
-
 
 Branche* PrivateBranche::createSubBrancheForServer(DistantTreeProxy* distant, const string& brancheName, DONNEE_TYPE type, int revision) throw(AlreadyExistingBrancheException) {
 	PrivateBranche::DistantPrivateBranche& dst = getDistant(distant);
@@ -408,4 +408,48 @@ void PrivateBranche::print(ostringstream& out, bool details, int indentation) {
 			branche->print(out, details, indentation+1);
 		}
 	}
+}
+
+Branche* PrivateBranche::createSubBrancheForServer(const std::string& brancheName, DONNEE_TYPE type, int revision) throw(AlreadyExistingBrancheException) {
+	throw UnavailableOperationException("Private branche need a distant for operation createSubBrancheForServer");
+}
+
+Valeur* PrivateBranche::createValeurForServeur(const std::string& valeurName, int revision, const JktUtils::AnyData& valeur) {
+	throw UnavailableOperationException("Private branche need a distant for operation createValeurForServeur");
+}
+
+Branche* PrivateBranche::getSubBrancheByName(const string& brancheName) const {
+	throw UnavailableOperationException("Private branche need a distant for operation getSubBrancheByName");
+}
+
+Branche* PrivateBranche::getSubBrancheByIdOrTmpId(int brancheId) const {
+	throw UnavailableOperationException("Private branche need a distant for operation getSubBrancheByIdOrTmpId");
+}
+
+std::vector<Branche*>& PrivateBranche::getSubBranches() {
+	throw UnavailableOperationException("Private branche need a distant for operation getSubBranches");
+}
+
+std::vector<Valeur*>& PrivateBranche::getValeurs() {
+	throw UnavailableOperationException("Private branche need a distant for operation getValeurs");
+}
+
+Valeur* PrivateBranche::getValeurByIdOrTmpId(int valeurId) const {
+	throw UnavailableOperationException("Private branche need a distant for operation getValeurByIdOrTmpId");
+}
+
+Branche* PrivateBranche::acceptTmpSubBranche(int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException) {
+	throw UnavailableOperationException("Private branche need a distant for operation acceptTmpSubBranche");
+}
+
+Valeur* PrivateBranche::acceptTmpValeur(int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException) {
+	throw UnavailableOperationException("Private branche need a distant for operation acceptTmpValeur");
+}
+
+Branche* PrivateBranche::addSubBranche(int brancheId, const std::string& brancheName, int brancheRevision) {
+	throw UnavailableOperationException("Private branche need a distant for operation addSubBranche");
+}
+
+const Valeur* PrivateBranche::addValeur(int valeurId, const std::string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur) {
+	throw UnavailableOperationException("Private branche need a distant for operation addValeur");
 }

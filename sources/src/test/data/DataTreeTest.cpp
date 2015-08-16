@@ -9,6 +9,7 @@
 
 using namespace std;
 
+#include "util/CollectionsUtils.h"
 #include "data/ValeurString.h"
 #include "data/ValeurFloat.h"
 #include "data/ValeurInt.h"
@@ -59,45 +60,60 @@ void DataTreeTest::test() {
 	privateTreeTest();		// Teste la création d'une branche privée de données (données spécifiques à chaque client partagées avec le serveur)
 }
 
+void DataTreeTest::logDataTreeElementId(const string dataTreeElementName, const vector<int>& dataTreeElementId) {
+	log(dataTreeElementName + " : " + CollectionsUtils::toString(dataTreeElementId), __LINE__);
+}
+
 void DataTreeTest::initTestData() {
-	log("CREATION DES DONNEES DE TEST", __LINE__);
+	log("INITIALISATION DES DONNEES DU TEST", __LINE__);
 
 	// Données serveur
 	branche0ServerFullId.push_back(branche0ServerId);
+	logDataTreeElementId("branche0ServerFullId", branche0ServerFullId);
 
 	valeurStringServerFullId = branche0ServerFullId;
 	valeurStringServerFullId.push_back(valeurStringServerId);
+	logDataTreeElementId("valeurStringServerFullId", valeurStringServerFullId);
 
 	valeurIntServerFullId = branche0ServerFullId;
 	valeurIntServerFullId.push_back(valeurIntServerId);
+	logDataTreeElementId("valeurIntServerFullId", valeurIntServerFullId);
 
 	valeurFloatServerFullId = branche0ServerFullId;
 	valeurFloatServerFullId.push_back(valeurFloatServerId);
+	logDataTreeElementId("valeurFloatServerFullId", valeurFloatServerFullId);
 
-	branche1ServerFullId.push_back(branche1ServerId);
+//	branche1ServerFullId.push_back(branche1ServerId);
 
 	// Données client
 	branche0Client0FullId.push_back(branche0Client0Id);
+	logDataTreeElementId("branche0Client0FullId", branche0Client0FullId);
 
 	valeur0Client0FullId.push_back(valeur0Client0Id);
+	logDataTreeElementId("valeur0Client0FullId", valeur0Client0FullId);
 
 	branche1Client0FullId = branche0Client0FullId;
 	branche1Client0FullId.push_back(branche1Client0Id);
+	logDataTreeElementId("branche1Client0FullId", branche1Client0FullId);
 
 	valeur1Client0FullId = branche1Client0FullId;
 	valeur1Client0FullId.push_back(valeur1Client0Id);
+	logDataTreeElementId("valeur1Client0FullId", valeur1Client0FullId);
 
 	branche2Client0FullId = branche0Client0FullId;
 	branche2Client0FullId.push_back(branche2Client0Id);
+	logDataTreeElementId("branche2Client0FullId", branche2Client0FullId);
 
 	valeur2Client0FullId = branche2Client0FullId;
 	valeur2Client0FullId.push_back(valeur2Client0Id);
+	logDataTreeElementId("valeur2Client0FullId", valeur2Client0FullId);
 
 	valeur3Client0FullId = branche2Client0FullId;
 	valeur3Client0FullId.push_back(valeur3Client0Id);
+	logDataTreeElementId("valeur3Client0FullId", valeur3Client0FullId);
 
-	valeur4Client0FullId = branche2Client0FullId;
-	valeur4Client0FullId.push_back(valeur4Client0Id);
+//	valeur4Client0FullId = branche2Client0FullId;
+//	valeur4Client0FullId.push_back(valeur4Client0Id);
 }
 
 void DataTreeTest::serverTests() {
@@ -684,8 +700,8 @@ void DataTreeTest::multiClientsTests() {
 void DataTreeTest::privateTreeTest() {
 	log("CREATION BRANCHE DE DONNEES PRIVEES", __LINE__);
 
-	PrivateBranche* privateBranche = serverTree.createPrivateBranche(rootFullId, branche1ServerName);
-	serverTree.createValeur(privateBranche->getBrancheFullId(), "Private value 1 client 0", AnyData("Toutcru"));
+//	PrivateBranche* privateBranche = serverTree.createPrivateBranche(rootFullId, branche1ServerName);
+//	serverTree.createValeur(privateBranche->getBrancheFullId(), "Private value 1 client 0", AnyData("Toutcru"));
 }
 
 void DataTreeTest::echangeDonneesClientServeur(int line, Interlocutor2& client) {

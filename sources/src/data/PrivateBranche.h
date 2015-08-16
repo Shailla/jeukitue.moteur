@@ -49,6 +49,28 @@ public:
 	PrivateBranche(AbstractBranche* parent, int brancheId, const std::string& brancheName, DONNEE_TYPE brancheType, int revision, int tmpId);
 	virtual ~PrivateBranche();
 
+
+	/* ************************************************************************ */
+	// Fonctions héritées de Branche non-compatibles avec les branches privées
+	/* ************************************************************************ */
+
+	Branche* createSubBrancheForServer(const std::string& brancheName, DONNEE_TYPE type, int revision) throw(AlreadyExistingBrancheException);
+	Valeur* createValeurForServeur(const std::string& valeurName, int revision, const JktUtils::AnyData& valeur);
+	Branche* getSubBrancheByName(const string& brancheName) const;
+	Branche* getSubBrancheByIdOrTmpId(int brancheId) const;
+	std::vector<Branche*>& getSubBranches();
+	std::vector<Valeur*>& getValeurs();
+	Valeur* getValeurByIdOrTmpId(int valeurId) const;
+	Branche* acceptTmpSubBranche(int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException);
+	Valeur* acceptTmpValeur(int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException);
+	Branche* addSubBranche(int brancheId, const std::string& brancheName, int brancheRevision);
+	const Valeur* addValeur(int valeurId, const std::string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur);
+
+
+	/* ************************************************************************ */
+	// Fonctions membres
+	/* ************************************************************************ */
+
 	DistantPrivateBranche& getDistant(DistantTreeProxy* distant);
 	map<DistantTreeProxy*, DistantPrivateBranche>& getDistants();
 

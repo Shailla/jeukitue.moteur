@@ -90,6 +90,8 @@ public:
 	 * Si details=true alors plus de caractérisques sont affichées.
 	 */
 	virtual void print(std::ostringstream& out, bool details, int indentation);
+
+	static bool highestId(const Branche* left, const Branche* right);
 };
 
 #endif /* BRANCHE_H_ */

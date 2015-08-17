@@ -375,12 +375,24 @@ void Branche::print(ostringstream& out, bool details, int indentation) {
 
 	// Affiche les branches de la branche
 	vector<Branche*> branches = _subBranches;
-	sort(branches.begin(), branches.end(), AbstractBranche::highestId);
+	sort(branches.begin(), branches.end(), Branche::highestId);
 
 	vector<Branche*>::iterator brIt;
 
 	for(brIt = branches.begin() ; brIt != branches.end() ; ++brIt) {
 		Branche* branche = *brIt;
 		branche->print(out, details, indentation+1);
+	}
+}
+
+bool Branche::highestId(const Branche* left, const Branche* right) {
+	int leftId = left->_brancheId;
+	int rightId = right->_brancheId;
+
+	if(leftId > 0 || rightId > 0) {
+		return leftId < rightId;
+	}
+	else {
+		return left->_brancheTmpId < right->_brancheTmpId;
 	}
 }

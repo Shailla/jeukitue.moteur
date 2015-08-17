@@ -16,11 +16,11 @@ using namespace std;
 
 #include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"
 
-AddValeurFromServerChangement::AddValeurFromServerChangement(istringstream& in) : Changement("AddValFromSerChgt", PRIORITY_AddValeurFromServerChangement) {
+AddValeurFromServerChangement::AddValeurFromServerChangement(istringstream& in) : Changement("AddValFromSerChgt", PRIORITY_AddValeurFromServerChangement, 0) {
 	unserialize(in);
 }
 
-AddValeurFromServerChangement::AddValeurFromServerChangement(const vector<int>& parentBrancheId, int valeurId, int revision, const string& valeurName, JktUtils::AnyData valeur) : Changement("AddValFromSerChgt", PRIORITY_AddValeurFromServerChangement) {
+AddValeurFromServerChangement::AddValeurFromServerChangement(const vector<int>& parentBrancheId, int valeurId, int revision, const string& valeurName, JktUtils::AnyData valeur) : Changement("AddValFromSerChgt", PRIORITY_AddValeurFromServerChangement, valeurId) {
 	_parentBrancheId = parentBrancheId;
 	_valeurId = valeurId;
 	_revision = revision;
@@ -53,6 +53,7 @@ void AddValeurFromServerChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _valeurName);
 	StreamUtils::read(in, _revision);
 	_valeur = StreamUtils::readData(in);
+	_minorPriority = _valeurId;
 }
 
 string AddValeurFromServerChangement::toString() const {

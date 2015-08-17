@@ -15,11 +15,11 @@ using namespace std;
 
 #include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"
 
-AddValeurFromClientChangement::AddValeurFromClientChangement(istringstream& in) : Changement("AddValFromClChgt", PRIORITY_AddValeurFromClientChangement) {
+AddValeurFromClientChangement::AddValeurFromClientChangement(istringstream& in) : Changement("AddValFromClChgt", PRIORITY_AddValeurFromClientChangement, 0) {
 	unserialize(in);
 }
 
-AddValeurFromClientChangement::AddValeurFromClientChangement(const vector<int>& parentBrancheId, int valeurTmpId, int revision, const string& valeurName, JktUtils::AnyData valeur) : Changement("AddValFromClChgt", PRIORITY_AddValeurFromClientChangement) {
+AddValeurFromClientChangement::AddValeurFromClientChangement(const vector<int>& parentBrancheId, int valeurTmpId, int revision, const string& valeurName, JktUtils::AnyData valeur) : Changement("AddValFromClChgt", PRIORITY_AddValeurFromClientChangement, valeurTmpId) {
 	_parentBrancheId = parentBrancheId;
 	_valeurTmpId = valeurTmpId;
 	_revision = revision;
@@ -52,6 +52,7 @@ void AddValeurFromClientChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _valeurName);
 	StreamUtils::read(in, _revision);
 	_valeur = StreamUtils::readData(in);
+	_minorPriority = _valeurTmpId;
 }
 
 string AddValeurFromClientChangement::toString() const {

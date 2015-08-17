@@ -15,11 +15,11 @@ using namespace std;
 
 #include "data/communication/message/ClientToServer/UpdateValeurFromClientChangement.h"
 
-UpdateValeurFromClientChangement::UpdateValeurFromClientChangement(istringstream& in) : Changement("UpdateValFromClChgt", PRIORITY_UpdateValeurFromClientChangement) {
+UpdateValeurFromClientChangement::UpdateValeurFromClientChangement(istringstream& in) : Changement("UpdateValFromClChgt", PRIORITY_UpdateValeurFromClientChangement, 0) {
 	unserialize(in);
 }
 
-UpdateValeurFromClientChangement::UpdateValeurFromClientChangement(const vector<int>& parentBrancheId, int valeurId, int revision, JktUtils::AnyData valeur) : Changement("UpdateValFromClChgt", PRIORITY_UpdateValeurFromClientChangement) {
+UpdateValeurFromClientChangement::UpdateValeurFromClientChangement(const vector<int>& parentBrancheId, int valeurId, int revision, JktUtils::AnyData valeur) : Changement("UpdateValFromClChgt", PRIORITY_UpdateValeurFromClientChangement, valeurId) {
 	_parentBrancheId = parentBrancheId;
 	_valeurId = valeurId;
 	_revision = revision;
@@ -49,6 +49,7 @@ void UpdateValeurFromClientChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _valeurId);
 	StreamUtils::read(in, _revision);
 	_valeur = StreamUtils::readData(in);
+	_minorPriority = _valeurId;
 }
 
 string UpdateValeurFromClientChangement::toString() const {

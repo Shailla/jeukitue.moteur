@@ -118,10 +118,3 @@ string AbstractBranche::print(int indentation, bool details) {
 
 	return out.str();
 }
-
-bool AbstractBranche::highestId(const AbstractBranche* left, const AbstractBranche* right) {
-	int leftId = left->getBrancheId();
-	int rightId = right->getBrancheId();
-
-	return leftId < rightId;
-}

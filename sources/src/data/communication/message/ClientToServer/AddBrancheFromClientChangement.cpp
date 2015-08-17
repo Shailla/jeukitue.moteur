@@ -15,11 +15,11 @@ using namespace std;
 
 #include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
 
-AddBrancheFromClientChangement::AddBrancheFromClientChangement(istringstream& in) : Changement("AddBrFromClChgt", PRIORITY_AddBrancheFromClientChangement) {
+AddBrancheFromClientChangement::AddBrancheFromClientChangement(istringstream& in) : Changement("AddBrFromClChgt", PRIORITY_AddBrancheFromClientChangement, 0) {
 	unserialize(in);
 }
 
-AddBrancheFromClientChangement::AddBrancheFromClientChangement(const vector<int>& parentBrancheId, int brancheTmpId, int revision, const string& brancheName) : Changement("AddBrFromClChgt", PRIORITY_AddBrancheFromClientChangement) {
+AddBrancheFromClientChangement::AddBrancheFromClientChangement(const vector<int>& parentBrancheId, int brancheTmpId, int revision, const string& brancheName) : Changement("AddBrFromClChgt", PRIORITY_AddBrancheFromClientChangement, brancheTmpId) {
 	_parentBrancheId = parentBrancheId;
 	_brancheTmpId = brancheTmpId;
 	_revision = revision;
@@ -46,6 +46,8 @@ void AddBrancheFromClientChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _brancheTmpId);
 	StreamUtils::read(in, _brancheName);
 	StreamUtils::read(in, _revision);
+
+	_minorPriority = _brancheTmpId;
 }
 
 string AddBrancheFromClientChangement::toString() const {

@@ -16,11 +16,11 @@ using namespace std;
 
 #include "data/communication/message/ServerToClient/AddBrancheFromServerChangement.h"
 
-AddBrancheFromServerChangement::AddBrancheFromServerChangement(istringstream& in) : Changement("AddBrFromSerChgt", PRIORITY_AddBrancheFromServerChangement) {
+AddBrancheFromServerChangement::AddBrancheFromServerChangement(istringstream& in) : Changement("AddBrFromSerChgt", PRIORITY_AddBrancheFromServerChangement, 0) {
 	unserialize(in);
 }
 
-AddBrancheFromServerChangement::AddBrancheFromServerChangement(const vector<int>& parentBrancheId, int brancheId, DONNEE_TYPE brancheType, int revision, const string& brancheName) : Changement("AddBrFromSerChgt", PRIORITY_AddBrancheFromServerChangement) {
+AddBrancheFromServerChangement::AddBrancheFromServerChangement(const vector<int>& parentBrancheId, int brancheId, DONNEE_TYPE brancheType, int revision, const string& brancheName) : Changement("AddBrFromSerChgt", PRIORITY_AddBrancheFromServerChangement, brancheId) {
 	_parentBrancheId = parentBrancheId;
 	_brancheId = brancheId;
 	_brancheType = brancheType;
@@ -50,6 +50,7 @@ void AddBrancheFromServerChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, (int&)_brancheType);
 	StreamUtils::read(in, _brancheName);
 	StreamUtils::read(in, _revision);
+	_minorPriority = _brancheId;
 }
 
 string AddBrancheFromServerChangement::toString() const {

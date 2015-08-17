@@ -18,11 +18,11 @@ using namespace std;
 
 #include "data/communication/message/ServerToClient/AcceptAddBrancheFromClientChangement.h"
 
-AcceptAddBrancheFromClientChangement::AcceptAddBrancheFromClientChangement(istringstream& in) : Changement("AcceptAddBrFromClChgt", PRIORITY_AcceptAddBrancheFromClientChangement) {
+AcceptAddBrancheFromClientChangement::AcceptAddBrancheFromClientChangement(istringstream& in) : Changement("AcceptAddBrFromClChgt", PRIORITY_AcceptAddBrancheFromClientChangement, 0) {
 	unserialize(in);
 }
 
-AcceptAddBrancheFromClientChangement::AcceptAddBrancheFromClientChangement(const vector<int>& parentBrancheId, int brancheTmpId, int brancheId, int revision) : Changement("AcceptAddBrFromClChgt", PRIORITY_AcceptAddBrancheFromClientChangement) {
+AcceptAddBrancheFromClientChangement::AcceptAddBrancheFromClientChangement(const vector<int>& parentBrancheId, int brancheTmpId, int brancheId, int revision) : Changement("AcceptAddBrFromClChgt", PRIORITY_AcceptAddBrancheFromClientChangement, brancheTmpId) {
 	_parentBrancheId = parentBrancheId;
 	_brancheTmpId = brancheTmpId;
 	_brancheId = brancheId;
@@ -52,6 +52,7 @@ void AcceptAddBrancheFromClientChangement::unserialize(istringstream& in) {
 	StreamUtils::read(in, _brancheTmpId);
 	StreamUtils::read(in, _brancheId);
 	StreamUtils::read(in, _revision);
+	_minorPriority = _brancheTmpId;
 }
 
 string AcceptAddBrancheFromClientChangement::toString() const {

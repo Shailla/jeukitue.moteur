@@ -58,10 +58,11 @@ protected:
 	virtual void unserialize(std::istringstream& in) = 0;
 
 protected:
-	int _priority;
+	int _majorPriority;
+	int _minorPriority;
 
 public:
-	Changement(const std::string& dataType, int priority);
+	Changement(const std::string& dataType, int majorPriority, int minorPriority);
 	virtual ~Changement();
 
 	virtual void update(MarqueurDistant* marqueur) = 0;
@@ -72,7 +73,14 @@ public:
 	 * should be executed before an other one.
 	 * For example, a change on a branch has an higher priority tan a change on a value.
 	 */
-	int getPriority() const;
+	int getMajorPriority() const;
+
+	/**
+	 * Return a number which indicates the absolute priority of this changement, the more it's priority is high, the more this changement
+	 * should be executed before an other one.
+	 * For example, a change on a branch has an higher priority tan a change on a value.
+	 */
+	int getMinorPriority() const;
 
 	/** Return the number of parent branches between the value or branche modified by this changements and the root branche of the tree. */
 	virtual int getRootDistance() const = 0;

@@ -71,8 +71,6 @@ public:
 	 * Si details=true alors plus de caractérisques sont affichées.
 	 */
 	virtual void print(std::ostringstream& out, bool details, int indentation) = 0;
-
-	static bool highestId(const AbstractBranche* left, const AbstractBranche* right);
 };
 
 #endif /* ABSTRACTBRANCHE_H_ */

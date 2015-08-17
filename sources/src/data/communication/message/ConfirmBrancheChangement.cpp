@@ -18,11 +18,11 @@ using namespace std;
 
 #include "data/communication/message/ConfirmBrancheChangement.h"
 
-ConfirmBrancheChangement::ConfirmBrancheChangement(istringstream& in) : Changement("ConfirmBrChgt", PRIORITY_ConfirmBrancheChangement) {
+ConfirmBrancheChangement::ConfirmBrancheChangement(istringstream& in) : Changement("ConfirmBrChgt", PRIORITY_ConfirmBrancheChangement, 0) {
 	unserialize(in);
 }
 
-ConfirmBrancheChangement::ConfirmBrancheChangement(const vector<int>& brancheId, int revision) : Changement("ConfirmBrChgt", PRIORITY_ConfirmBrancheChangement) {
+ConfirmBrancheChangement::ConfirmBrancheChangement(const vector<int>& brancheId, int revision) : Changement("ConfirmBrChgt", PRIORITY_ConfirmBrancheChangement, 0) {
 	_brancheId = brancheId;
 	_revision = revision;
 }

@@ -83,7 +83,7 @@ void DataTreeTest::initTestData() {
 	valeurFloatServerFullId.push_back(valeurFloatServerId);
 	logDataTreeElementId("valeurFloatServerFullId", valeurFloatServerFullId);
 
-//	branche1ServerFullId.push_back(branche1ServerId);
+	branche1ServerFullId.push_back(branche1ServerId);
 
 	// Données client
 	branche0Client0FullId.push_back(branche0Client0Id);
@@ -112,8 +112,8 @@ void DataTreeTest::initTestData() {
 	valeur3Client0FullId.push_back(valeur3Client0Id);
 	logDataTreeElementId("valeur3Client0FullId", valeur3Client0FullId);
 
-//	valeur4Client0FullId = branche2Client0FullId;
-//	valeur4Client0FullId.push_back(valeur4Client0Id);
+	valeur4Client0FullId = branche2Client0FullId;
+	valeur4Client0FullId.push_back(valeur4Client0Id);
 }
 
 void DataTreeTest::serverTests() {
@@ -490,6 +490,7 @@ void DataTreeTest::clientTests() {
 	// Branche 1
 	Branche* branche1Client0S = serverTree.getBranche(branche1Client0FullId);
 	ASSERT_NOT_NULL(branche1Client0S, "Le serveur n'a pas recu la branche");
+//	logDataTreeElementId("Identifiant", branche1Client0S->getBrancheFullId());
 	ASSERT_EQUAL(branche1Client0Name, branche1Client0S->getBrancheName(), "La branche recue par le serveur est mal nommée");
 
 	// Valeur 1
@@ -700,8 +701,15 @@ void DataTreeTest::multiClientsTests() {
 void DataTreeTest::privateTreeTest() {
 	log("CREATION BRANCHE DE DONNEES PRIVEES", __LINE__);
 
-//	PrivateBranche* privateBranche = serverTree.createPrivateBranche(rootFullId, branche1ServerName);
-//	serverTree.createValeur(privateBranche->getBrancheFullId(), "Private value 1 client 0", AnyData("Toutcru"));
+	PrivateBranche* privateBranche = serverTree.createPrivateBranche(rootFullId, branche1ServerName);
+	serverTree.createValeur(privateBranche->getBrancheFullId(), "Private value 1 client 0", AnyData("Toutcru"));
+
+	{
+		ostringstream arbre;
+		arbre << "ARBRE SERVER :";
+		serverTree.getRoot().print(arbre, true, 0);
+		log(arbre, __LINE__);
+	}
 }
 
 void DataTreeTest::echangeDonneesClientServeur(int line, Interlocutor2& client) {

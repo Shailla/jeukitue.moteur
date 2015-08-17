@@ -14,32 +14,37 @@ using namespace std;
 
 #include "data/communication/message/Changement.h"
 
-Changement::Changement(const string& dataType, int priority) {
+Changement::Changement(const string& dataType, int majorPriority, int minorPriority) {
 	_dataType = dataType;
-	_priority = priority;
+	_majorPriority = majorPriority;
+	_minorPriority = minorPriority;
 }
 
 Changement::~Changement() {
 }
 
-int Changement::getPriority() const {
-	return _priority;
+int Changement::getMajorPriority() const {
+	return _majorPriority;
+}
+
+int Changement::getMinorPriority() const {
+	return _minorPriority;
 }
 
 bool Changement::highestPriority(const Changement* left, const Changement* right) {
-	int leftPriority = left->getPriority();
-	int rightPriority = right->getPriority();
-
 	TRACE().debug("Sorting LEFT : '%s' RIGHT : '%s'", left->toString().c_str(), right->toString().c_str());
 
-	if(leftPriority > rightPriority) {
-		return true;
+	if(left->getRootDistance() != right->getRootDistance()) {
+		return left->getRootDistance() < right->getRootDistance();
 	}
-	else if(leftPriority < rightPriority) {
-		return false;
+	else if(left->_majorPriority != right->_majorPriority) {
+		return left->_majorPriority > right->_majorPriority;
+	}
+	else if(left->_minorPriority != right->_minorPriority) {
+		return left->_minorPriority > right->_minorPriority;
 	}
 	else {
-		return left->getRootDistance() < right->getRootDistance();
+		return left > right;
 	}
 }
 

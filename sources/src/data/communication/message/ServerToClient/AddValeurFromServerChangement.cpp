@@ -16,13 +16,14 @@ using namespace std;
 
 #include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"
 
-AddValeurFromServerChangement::AddValeurFromServerChangement(istringstream& in) : Changement("AddValFromSerChgt", PRIORITY_AddValeurFromServerChangement, 0) {
+AddValeurFromServerChangement::AddValeurFromServerChangement(istringstream& in) : Changement("AddValFromSrvChgt", PRIORITY_AddValeurFromServerChangement, 0) {
 	unserialize(in);
 }
 
-AddValeurFromServerChangement::AddValeurFromServerChangement(const vector<int>& parentBrancheId, int valeurId, int revision, const string& valeurName, JktUtils::AnyData valeur) : Changement("AddValFromSerChgt", PRIORITY_AddValeurFromServerChangement, valeurId) {
+AddValeurFromServerChangement::AddValeurFromServerChangement(const vector<int>& parentBrancheId, int valeurId, UPDATE_MODE updateMode, int revision, const string& valeurName, JktUtils::AnyData valeur) : Changement("AddValFromSrvChgt", PRIORITY_AddValeurFromServerChangement, valeurId) {
 	_parentBrancheId = parentBrancheId;
 	_valeurId = valeurId;
+	_updateMode = updateMode;
 	_revision = revision;
 	_valeurName = valeurName;
 	_valeur = valeur;
@@ -84,6 +85,10 @@ const std::vector<int>& AddValeurFromServerChangement::getParentBrancheId() cons
 
 int AddValeurFromServerChangement::getValeurId() const {
 	return _valeurId;
+}
+
+UPDATE_MODE AddValeurFromServerChangement::getUpdateMode() const {
+	return _updateMode;
 }
 
 const string& AddValeurFromServerChangement::getValeurName() const {

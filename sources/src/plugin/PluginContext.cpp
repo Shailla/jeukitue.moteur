@@ -7,6 +7,7 @@
 
 #include <agar/core.h>
 
+#include "util/Trace.h"
 #include "plugin/lua/proxy/PluginEventProxy.h"
 
 #include "plugin/PluginContext.h"
@@ -23,9 +24,17 @@ const char* PluginContext::LOG_ERROR_LUA_PREFIX = 	"ERREUR LUA : ";
 PluginContext::PluginContext(lua_State* luaState, const string& pluginName, const string& pluginsDirectory) : _pluginName(pluginName) {
 	_luaState = luaState;
 
-	// TODO Gérer l'erreur d'ouverture du fichier de log
 	string pluginLogFile = string(pluginsDirectory).append(pluginName).append(".log");
-	_logFile.open(pluginLogFile.c_str());
+
+	_logFile.exceptions(std::ofstream::failbit|std::ofstream::badbit);
+
+	try {
+		_logFile.open(pluginLogFile.c_str());
+	}
+	catch(std::ios_base::failure& exception) {
+		LOGERROR(("Cannot open log file '%s'", pluginLogFile.c_str()));
+	}
+
 
 	_subscribedRefreshEvents = false;
 

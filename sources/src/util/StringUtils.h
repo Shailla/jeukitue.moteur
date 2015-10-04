@@ -24,7 +24,7 @@ public:
 
 	static std::string findAndEraseFirstWord(std::string& s);
 	static std::string findAndEraseFirstString(std::string& s);
-	static std::string findFirstWord(std::string& s);
+	static std::string findFirstWord(const std::string& s);
 
 	static std::vector<std::string> splitByCarriageReturns(const std::string& s);
 	static std::vector<std::string> splitBySpaces(const std::string& s);

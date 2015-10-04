@@ -35,20 +35,20 @@ extern JktSon::CDemonSons *DemonSons;
 
 void quit_game(const char* txt, int code)	// Quitte proprement le jeu
 {
-TRACE().debug("quit_game(code=%d,txt=%s)", code, txt);
+LOGDEBUG(("quit_game(code=%d,txt=%s)", code, txt));
 	cerr << endl << __FILE__ << ":" << __LINE__ << " Quit game with code and message : " << code << " - '" << txt << "'" << flush;
 	exit( code );
 }
 
 void quit_game(const string& txt, int code)	// Quitte proprement le jeu
 {
-TRACE().debug("quit_game(code=%d,txt=%s)", code, txt.c_str());
+LOGDEBUG(("quit_game(code=%d,txt=%s)", code, txt.c_str()));
 	cerr << endl << __FILE__ << ":" << __LINE__ << " Quit game with code and message : " << code << " - '" << txt << "'" << flush;
 	exit( code );
 }
 
 void quit_JKT() {
-TRACE().debug("quit_JKT()");
+LOGDEBUG(("quit_JKT()"));
 	string trace1 = "Derniere erreur FMOD : ";
 	trace1 += FMOD_ErrorString(FSOUND_GetError());
 
@@ -71,11 +71,11 @@ TRACE().debug("quit_JKT()");
 		trace5 += "Aucune";
 	}
 
-TRACE().debug(trace1.c_str());
-TRACE().debug(trace2.c_str());
-TRACE().debug(trace3.c_str());
-TRACE().debug(trace4.c_str());
-TRACE().debug(trace5.c_str());
+LOGDEBUG((trace1.c_str()));
+LOGDEBUG((trace2.c_str()));
+LOGDEBUG((trace3.c_str()));
+LOGDEBUG((trace4.c_str()));
+LOGDEBUG((trace5.c_str()));
 
 	cerr << endl << __FILE__ << ":" << __LINE__;
 	cerr << endl << trace1;
@@ -89,7 +89,7 @@ TRACE().debug(trace5.c_str());
 	SDLNet_Quit();		// Fermeture d'SDL_Net
 	SDL_Quit();			// Fermeture de SDL
 
-	TRACE().error("Erreur OpenGL : %s", gluErrorString(glGetError()));
+	LOGERROR(("Erreur OpenGL : %s", gluErrorString(glGetError())));
 }
 
 bool checkEventsForIntro(void)		// Vérifie si 'escape' ou le bouton souris ont été frappés
@@ -129,7 +129,7 @@ CSon* sonHurlement;		// Son hurlement du sauveur de la planète
 
 
 void load_Intro( int width, int height ) {
-TRACE().debug("load_Intro(width=%d,height=%d)", width, height);
+LOGDEBUG(("load_Intro(width=%d,height=%d)", width, height));
 	string bruitChariot = "@Bruit\\chariot.wav";		// Chargement de la fonte de caractères
 	JktUtils::RessourcesLoader::getFileRessource(bruitChariot);
 	sonChariot = DemonSons->CreateSon( bruitChariot.c_str() );		// Son retour chariot machine à écrire
@@ -156,7 +156,7 @@ TRACE().debug("load_Intro(width=%d,height=%d)", width, height);
 
 
 void load_IntroSub(const int width, const int height ) {
-TRACE().debug("load_IntroSub(width=%d,height=%d)", width, height);
+LOGDEBUG(("load_IntroSub(width=%d,height=%d)", width, height));
 	GLFont fonteIntro;
 	unsigned int texFonteIntro;
 
@@ -189,11 +189,11 @@ TRACE().debug("load_IntroSub(width=%d,height=%d)", width, height);
 	glGenTextures( 1, &texFonteIntro );
 
 	if( !fonteIntro.Create( fileFonteIntro, texFonteIntro ) ) {
-		TRACE().debug("loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro);
+		LOGDEBUG(("loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro));
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec d'ouverture de la fonte : " << fileFonteIntro << endl;
 	}
 	else {
-		TRACE().debug("loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro);
+		LOGDEBUG(("loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro));
 	}
 
 	glMatrixMode( GL_PROJECTION );

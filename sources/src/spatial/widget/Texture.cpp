@@ -43,7 +43,7 @@ void Texture::initializeGraphicObject(void) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _largeur, _hauteur, 0, GL_RGBA, GL_UNSIGNED_BYTE, _pixels);
 
-	TRACE().info("Texture initialisee avec l'image '%s' sous la référence OpenGL '%d'", _nomFichier.c_str(), _glTexName);
+	LOGINFO(("Texture initialisee avec l'image '%s' sous la référence OpenGL '%d'", _nomFichier.c_str(), _glTexName));
 }
 
 void Texture::destructGraphicObject(void) {

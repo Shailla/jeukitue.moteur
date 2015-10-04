@@ -66,7 +66,7 @@ vector<DownloadFileItem> TcpConnector::askDownloadFileList(const int port) throw
 
 		list.push_back(item);
 
-		TRACE().info("Download id='%l', nom='%s', taille='%d'", item._identifier, item._nom.c_str(), item._taille);
+		LOGINFO(("Download id='%l', nom='%s', taille='%d'", item._identifier, item._nom.c_str(), item._taille));
 	}
 
 	// Fermeture de la socket
@@ -156,7 +156,7 @@ int downloadOneFileThread(void* threadData)
 		ofstream tmpFile(tmpFilename.c_str(), ios_base::trunc | ios_base::binary);	// Toute ancienne donnée dans le fichier est écrasée
 
 		if(!tmpFile) {
-			TRACE().error("Erreur ouverture du fichier");
+			LOGERROR(("Erreur ouverture du fichier"));
 		}
 
 		int accompli = 0;
@@ -185,7 +185,7 @@ int downloadOneFileThread(void* threadData)
 		destDirectory.append(item._nom).append("/");
 
 		if(CFindFolder::mkdir(destDirectory.c_str()) != 0) {
-			TRACE().error(" Le repertoire '%s' existe deja", destDirectory.c_str());
+			LOGERROR((" Le repertoire '%s' existe deja", destDirectory.c_str()));
 		}
 
 		// Décompression de l'archive

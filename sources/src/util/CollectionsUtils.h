@@ -8,10 +8,16 @@
 #ifndef COLLECTIONSUTILS_H_
 #define COLLECTIONSUTILS_H_
 
+#include <algorithm>
 #include <vector>
 #include <string>
 
 namespace JktUtils {
+
+template<class T>
+bool contains(std::vector<T>& list, T element) {
+	return std::find(list.begin(), list.end(), element) != list.end();
+}
 
 class CollectionsUtils {
 	CollectionsUtils();
@@ -20,6 +26,8 @@ public:
 
 	static std::string toString(const std::vector<int>& data);
 };
+
+
 
 } /* namespace JktUtils */
 #endif /* STRINGUTILS_H_ */

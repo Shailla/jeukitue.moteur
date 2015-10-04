@@ -18,6 +18,7 @@ class MarqueurDistant;
 class AddValeurFromServerChangement: public Changement {
 	std::vector<int> _parentBrancheId;
 	int _valeurId;
+	UPDATE_MODE _updateMode;
 	std::string _valeurName;
 	int _revision;
 	JktUtils::AnyData _valeur;
@@ -26,7 +27,7 @@ class AddValeurFromServerChangement: public Changement {
 
 public:
 	AddValeurFromServerChangement(std::istringstream& in);
-	AddValeurFromServerChangement(const std::vector<int>& brancheId, int valeurId, int revision, const std::string& valeurName, JktUtils::AnyData valeur);
+	AddValeurFromServerChangement(const std::vector<int>& brancheId, int valeurId, UPDATE_MODE updateMode, int revision, const std::string& valeurName, JktUtils::AnyData valeur);
 	~AddValeurFromServerChangement();
 
 	void update(MarqueurDistant* marqueur);
@@ -40,6 +41,7 @@ public:
 
 	const std::vector<int>& getParentBrancheId() const;
 	int getValeurId() const;
+	UPDATE_MODE getUpdateMode() const;
 	const std::string& getValeurName() const;
 	int getRevision() const;
 	const JktUtils::AnyData getValeur() const;

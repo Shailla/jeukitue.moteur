@@ -67,7 +67,7 @@ void suivantMAP(void *arg)
 
 void lanceMenuOpenMAP(void *var)
 {
-TRACE().debug("lanceMenuOpenMAP(var=%x)", var);
+LOGDEBUG(("lanceMenuOpenMAP(var=%x)", var));
 	int nbrFichier = 0;		// Nombre de fichiers ASE à prendre en compte
 
 	PF *liste_suivant_open_MAP;
@@ -106,7 +106,7 @@ TRACE().debug("lanceMenuOpenMAP(var=%x)", var);
 
 void retourMAP(void *var)	// Libérations mémoire et retour au menu supérieur
 {
-TRACE().debug("retourMAP(var=%x)", var);
+LOGDEBUG(("retourMAP(var=%x)", var));
 	delete MenuOpenMAP;
 	CDlg::SetMenuActif( 0 );
 

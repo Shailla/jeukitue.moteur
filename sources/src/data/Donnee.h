@@ -10,6 +10,7 @@
 
 #include <map>
 
+class DataTree;
 class DistantTreeProxy;
 class MarqueurDistant;
 class Branche;
@@ -24,20 +25,27 @@ class Valeur;
  * DONNEE_LOCAL  : Donnée non-partagée, elle reste en local sur le serveur ou le client
  */
 enum DONNEE_TYPE {
-	DONNEE_DEFAULT,		// On peut créer une donnée de type
-	DONNEE_SERVER,		// Donnée partagée par le serveur avec tous les clients
-	DONNEE_CLIENT,		// Donnée partagée par le serveur avec chacun des clients (chaque client possède ses propres données)
-	DONNEE_CLIENT_SUB,	// Donnée partagée par le serveur avec chacun des clients (chaque client possède ses propres données)
+	DONNEE_DEFAULT,		// Une donnée peut être créée de type par défaut pour recevoir le type approprié automatiquement
+	DONNEE_PUBLIC,		// Donnée partagée par le serveur avec tous les clients
+	DONNEE_PRIVATE,		// Donnée partagée par le serveur avec chacun des clients (chaque client possède ses propres données)
+	DONNEE_PRIVATE_SUB,	// Donnée partagée par le serveur avec chacun des clients (chaque client possède ses propres données)
 	DONNEE_LOCAL		// Donnée non-partagée, elle reste en local sur le serveur ou le client
 };
 
+enum UPDATE_MODE {
+	ANY = 0,		// Server as well as any client can change the value
+	SERVER_ONLY	// Server only can change the value, if client changes it it's value will not be shared with server or other clients and will be updated by server
+};
+
 class Donnee {
+	DataTree* _dataTree;
 	/**
 	 * Revision number of the data, incremented each time the data changes.
 	 */
 	int _revision;
 	std::map<DistantTreeProxy*, MarqueurDistant*> _marqueurs;
 	DONNEE_TYPE _donneeType;
+	UPDATE_MODE _updateMode;
 
 protected:
 
@@ -47,13 +55,15 @@ protected:
 	void update();
 
 public:
-	Donnee(int revision, DONNEE_TYPE donneeType);
+	Donnee(DataTree* dataTree, int revision, DONNEE_TYPE donneeType, UPDATE_MODE updateMode);
 	virtual ~Donnee();
 
 	MarqueurDistant* getMarqueur(DistantTreeProxy* distant);
 	MarqueurDistant* addMarqueur(DistantTreeProxy* distant, int donneeTmpId);
 
+	DataTree* getDataTree() const;
 	DONNEE_TYPE getDonneeType() const;
+	UPDATE_MODE getUpdateMode() const;
 
 	/**
 	 * Get the revision number of the data.

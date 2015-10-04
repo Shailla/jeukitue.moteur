@@ -6,10 +6,13 @@
  */
 
 #include <iostream>
+#include <exception>
 
 using namespace std;
 
 #include "main/Cfg.h"
+#include "test/utils/UtilsTest.h"
+#include "exception/JktException.h"
 #include "test/reseau/UdpCommunicationTest.h"
 #include "test/data/DataTreeTest.h"
 
@@ -20,6 +23,7 @@ extern CCfg Config;		// Contient la configuration du jeu
 namespace JktTest {
 
 TestSuite::TestSuite() {
+	_tests.push_back(new UtilsTest());
 	_tests.push_back(new UdpCommunicationTest());
 	_tests.push_back(new DataTreeTest());
 }
@@ -39,7 +43,7 @@ void TestSuite::launchTests() {
 	string testName;
 
 	cout << endl << "============================================================================";
-	cout << endl << "  LANCEMENT 2 L'EXECUTION DE " << _tests.size() << " TESTS";
+	cout << endl << "  ÉXÉCUTION DE " << _tests.size() << " TEST" << ((_tests.size()<=1)?"":"S");
 	cout << endl << "============================================================================";
 	cout << endl;
 
@@ -48,20 +52,33 @@ void TestSuite::launchTests() {
 			Test* test = *iter;
 			testName = test->getName();
 
-			cout << endl << ">>>>>>>>>>>>>>>>>>>>>>>> " << nbr << " LAUNCHING TEST '" << testName << "' >>>>>>>>>>>>>>>>>>>>>>>>";
+			cout << endl << ">>>>>>>>>>>>>>>>>>>>>>>> " << nbr << " - LAUNCHING TEST '" << testName << "' >>>>>>>>>>>>>>>>>>>>>>>>";
 			cout << endl << "Description of the test : " << test->getDescription() << endl;
 			test->test();	// Exécution du test
-			cout << endl << endl << "<<<<<<<<<<<<<<<<<<<<<<<< " << nbr << " TEST '" << testName << "' OK <<<<<<<<<<<<<<<<<<<<<<<<";
+			cout << endl << endl << "<<<<<<<<<<<<<<<<<<<<<<<< " << nbr << " - TEST '" << testName << "' OK <<<<<<<<<<<<<<<<<<<<<<<<";
 			cout << endl << flush;
 
+			_results.push_back(testName + " : OK");
 			nbrOk++;
 		}
 		catch(TestError& error) {
-			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (file = " << error._file << ", line = " << error._line << ", message = " << error._message << ") <<<<<<" << flush;
+			_results.push_back(testName + " : KO (error)");
+			cout << endl << endl << ">>>>>> " << nbr << " - TEST '" << testName << "' KO (file = " << error._file << ", line = " << error._line << ", message = " << error._message << ") <<<<<<" << flush;
+			nbrKo++;
+		}
+		catch(JktException& exception) {
+			_results.push_back(testName + " : KO (JktException)");
+			cout << endl << endl << ">>>>>> " << nbr << " - TEST '" << testName << "' KO (JktException : message = " << exception.what() << ") <<<<<<" << flush;
+			nbrKo++;
+		}
+		catch(std::exception& exception) {
+			_results.push_back(testName + " : KO (std::exception)");
+			cout << endl << endl << ">>>>>> " << nbr << " - TEST '" << testName << "' KO (std::exception : message = " << exception.what() << ") <<<<<<" << flush;
 			nbrKo++;
 		}
 		catch(...) {
-			cout << endl << endl << ">>>>>> " << nbr << " TEST '" << testName << "' KO (with unexpected exception) <<<<<<" << flush;
+			_results.push_back(testName + " : KO (unexpected exception)");
+			cout << endl << endl << ">>>>>> " << nbr << " - TEST '" << testName << "' KO (with unexpected exception) <<<<<<" << flush;
 			nbrKo++;
 		}
 
@@ -70,11 +87,20 @@ void TestSuite::launchTests() {
 
 	cout << endl;
 	cout << endl << "============================================================================";
-	cout << endl << "  RESULTATS :";
+	cout << endl << "  RÉSULTATS";
+	cout << endl << "============================================================================";
+	cout << endl << "  Détails :";
+	for(vector<string>::iterator it = _results.begin() ; it != _results.end() ; it++) {
+		cout << endl << "  \t- " << *it;
+	}
+	cout << endl << "----------------------------------------------------------------------------";
+	cout << endl << "  Synthèse :";
 	cout << endl << "  \t" << nbrOk << " test(s) réussi(s)";
 	cout << endl << "  \t" << nbrKo << " test(s) en échec";
 	cout << endl << "  \tNombre total de test(s) : " << _tests.size();
-	cout << endl << "============================================================================" << flush;
+	cout << endl;
+	cout << endl;
+	cout << endl;
 }
 
 } /* namespace JktTest */

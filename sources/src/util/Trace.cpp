@@ -14,6 +14,21 @@ using namespace std;
 
 Trace* Trace::m_Instance = NULL;
 
+void saveTime(Uint32& time) {
+	time = SDL_GetTicks();
+}
+
+void logTime(const char* msg, Uint32& time) {
+	Uint32 newTime = SDL_GetTicks();
+	Uint32 duree = newTime - time;
+
+	if(duree > 0) {
+		std::cout << std::endl << "TIME-" << msg << ": " << duree;
+	}
+
+	time = newTime;
+}
+
 Donnees::Donnees(int line, const char *sourceFile) {
 	_line = line;
 	_sourceFile = sourceFile;

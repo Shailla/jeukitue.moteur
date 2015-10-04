@@ -10,14 +10,27 @@
 #include "SDL.h"
 #include "SDL_thread.h"
 
+void saveTime(Uint32& time);
+
+void logTime(const char* msg, Uint32& time);
+
 
 /********************************************************************************
 *  If you don't want to compile with the trace system activated,
 *  so undefine TRACE_ACTIVE
 ********************************************************************************/
 
-//#undef TRACE_ACTIVE
-#define TRACE_ACTIVE
+#define TRACE_DEBUG_ACTIVE
+#undef TRACE_DEBUG_ACTIVE
+
+#define TRACE_INFO_ACTIVE
+#undef TRACE_INFO_ACTIVE
+
+#define TRACE_WARN_ACTIVE
+#undef TRACE_WARN_ACTIVE
+
+#define TRACE_ERROR_ACTIVE
+#undef TRACE_ERROR_ACTIVE
 
 enum TraceLevel {
 	TRACE_LEVEL_DEBUG = 1,
@@ -32,10 +45,28 @@ enum TraceType {
 	TRACE_END,
 };
 
-#ifdef TRACE_ACTIVE
-	#define TRACE()	Donnees(__LINE__,__FILE__)
+#ifdef TRACE_DEBUG_ACTIVE
+	#define LOGDEBUG(x)	Donnees(__LINE__,__FILE__).debug x
 #else
-	#define TRACE() "//"
+	#define LOGDEBUG(x)
+#endif
+
+#ifdef TRACE_INFO_ACTIVE
+	#define LOGINFO(x)	Donnees(__LINE__,__FILE__).info x
+#else
+	#define LOGINFO(x)
+#endif
+
+#ifdef TRACE_WARN_ACTIVE
+	#define LOGWARN(x)	Donnees(__LINE__,__FILE__).warn x
+#else
+	#define LOGWARN(x)
+#endif
+
+#ifdef TRACE_ERROR_ACTIVE
+	#define LOGERROR(x)	Donnees(__LINE__,__FILE__).error x
+#else
+	#define LOGERROR(x)
 #endif
 
 #define NOM_FICHIER_TRACE		"jkt."

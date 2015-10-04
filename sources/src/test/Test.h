@@ -42,10 +42,10 @@ public:
 };
 
 class Test {
-	string _testName;
+	std::string _testName;
 
 public:
-	Test(const string& testName);
+	Test(const std::string& testName);
 	virtual ~Test();
 
 	std::string getName();
@@ -65,8 +65,8 @@ public:
 
 	// Log methods
 	void log(const char* message, int line);
-	void log(const string& message, int line);
-	void log(const ostringstream& message, int line);
+	void log(const std::string& message, int line);
+	void log(const std::ostringstream& message, int line);
 };
 
 } /* namespace JktTest */

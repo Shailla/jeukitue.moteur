@@ -17,3 +17,4 @@ deploy2/libjkt.dll.a
 deploy2/*.dll
 deploy/Images/
 save-*.map.xml
+deploy/Images/photo.bmp

@@ -42,7 +42,7 @@ JktMoteur::CMap* CRocket::_mapRocket = NULL;			// Image 3D de la rocket
 #define TAILLE_TEX_EXPLOSION	0.1f
 
 bool CRocket::INIT_CLASSE() {
-TRACE().debug("CRocket::INIT_CLASSE()");
+LOGDEBUG(("CRocket::INIT_CLASSE()"));
 		// Initialise la classe si elle ne l'a pas encore été
 	if( !m_B_INIT_CLASSE ) {
 		try {

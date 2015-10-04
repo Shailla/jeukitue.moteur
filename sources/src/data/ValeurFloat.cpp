@@ -17,7 +17,7 @@ using namespace std;
 
 using namespace JktUtils;
 
-ValeurFloat::ValeurFloat(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, int tmpId, int revision, float valeur) : Valeur(parent, valeurId, valeurName, valeurType, tmpId, revision) {
+ValeurFloat::ValeurFloat(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, UPDATE_MODE updateMode, int tmpId, int revision, float valeur) : Valeur(parent, valeurId, valeurName, valeurType, updateMode, tmpId, revision) {
 	_valeur = valeur;
 }
 
@@ -48,7 +48,7 @@ void ValeurFloat::setValeur(int revision, const JktUtils::AnyData& data) {
 		_valeur = data.getValueFloat();
 	}
 	else {
-		TRACE().error("Type de valeur inattendu");
+		LOGERROR(("Type de valeur inattendu"));
 	}
 }
 

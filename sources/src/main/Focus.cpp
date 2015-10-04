@@ -16,7 +16,7 @@ CFocus::CFocus(	void (*play)(SDL_Event *event),
 				void (*menu)(SDL_Event *event),
 				void (*menuAgar)(SDL_Event *event) )
 {
-TRACE().debug("CFocus::CFocus(play=%x,menu=%x)%T", play, menu, this);
+LOGDEBUG(("CFocus::CFocus(play=%x,menu=%x)%T", play, menu, this));
 	play_handle_key_down = play;	// Implémente le focus dédié à une partie en cours
 	menu_handle_key_down = menu;	// Implémente le focus dédié au menu
 	menu_agar_handle_key_down = menuAgar;	// Implémente le focus dédié au menu
@@ -44,7 +44,7 @@ void CFocus::removeEventInterceptor() {
  * Choisi la fonction focus dédiée à une partie en cours
  */
 void CFocus::SetPlayFocus() {
-TRACE().debug("CFocus::SetPlayFocus()%T", this);
+LOGDEBUG(("CFocus::SetPlayFocus()%T", this));
 	if( focus_actif_handle_key_down != play_handle_key_down )
 	{
 		SDL_WarpMouse( 250, 250 );			//positionnement du curseur de la souris
@@ -61,7 +61,7 @@ TRACE().debug("CFocus::SetPlayFocus()%T", this);
  * Choisi la fonction focus dédiée au menu
  */
 void CFocus::SetMenuFocus() {
-TRACE().debug("CFocus::SetMenuFocus()%T", this);
+LOGDEBUG(("CFocus::SetMenuFocus()%T", this));
 	if( focus_actif_handle_key_down != menu_handle_key_down )
 	{
 		SDL_WarpMouse( 250, 250 );			//positionnement du curseur de la souris
@@ -78,7 +78,7 @@ TRACE().debug("CFocus::SetMenuFocus()%T", this);
  * Choisi la fonction focus dédiée au menu
  */
 void CFocus::SetMenuAgarFocus() {
-TRACE().debug("CFocus::SetMenuFocus()%T", this);
+LOGDEBUG(("CFocus::SetMenuFocus()%T", this));
 	if( focus_actif_handle_key_down != menu_handle_key_down )
 	{
 		SDL_WarpMouse( 250, 250 );			//positionnement du curseur de la souris
@@ -92,7 +92,7 @@ TRACE().debug("CFocus::SetMenuFocus()%T", this);
 }
 
 void CFocus::SwitchPlayOrConsoleFocus() {
-TRACE().debug("CFocus::ChangePlayOrConsoleFocus()%T", this);
+LOGDEBUG(("CFocus::ChangePlayOrConsoleFocus()%T", this));
 	if( focus_actif_handle_key_down == play_handle_key_down ) {
 		SetMenuAgarFocus();	
 	}

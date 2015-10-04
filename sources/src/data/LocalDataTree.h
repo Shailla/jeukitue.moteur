@@ -28,8 +28,10 @@ public:
 	 * ****************************************************/
 
 	// Gestion branches et valeurs avec coordonnées vectorielles
-	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
-	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur);
+	Branche* createBranche(DistantTreeProxy* distant, const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
+	Branche* createPrivateBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
+
+	Valeur* createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur) override;
 };
 
 #endif /* CLIENTDATATREE_H_ */

@@ -19,6 +19,8 @@ class ClientDataTree : public DataTree {
 	std::string _clientName;
 	DistantTreeProxy* _serverTreeProxy;
 
+	Uint32 _updateClientToServer;
+
 	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
 	void initDonneeAndServeurMarqueur(Donnee* donnee);
 public:
@@ -33,8 +35,10 @@ public:
 	 * ****************************************************/
 
 	// Gestion branches et valeurs avec coordonnées vectorielles
-	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
-	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur);
+	Branche* createBranche(DistantTreeProxy* distant, const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
+	Branche* createPrivateBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
+
+	Valeur* createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur) override;
 
 
 	/* ****************************************************

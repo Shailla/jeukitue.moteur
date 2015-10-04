@@ -11,10 +11,10 @@ using namespace std;
 
 #include "reseau/new/exception/ConnectionFailedException.h"
 
-ConnectionFailedException::ConnectionFailedException(void) {
+ConnectionFailedException::ConnectionFailedException(void) : JktException("ConnectionFailedException") {
 }
 
-ConnectionFailedException::ConnectionFailedException(const string& message) : JktException(message) {
+ConnectionFailedException::ConnectionFailedException(const string& message) : JktException("ConnectionFailedException", message) {
 }
 
 ConnectionFailedException::~ConnectionFailedException() {

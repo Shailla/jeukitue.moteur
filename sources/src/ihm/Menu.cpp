@@ -43,7 +43,7 @@ namespace JktMenu
 CMenu::CMenu(const char *newTitle, const char **newItems, int nbrItems, PF *fct_suivante, PF fct_retour, void **liste_arg, PFV fct_refresh )
 		:CDlg()
 {
-TRACE().debug("CMenu::CMenu(newTitle=%s,nbrItems=%d,...)%T", newTitle, nbrItems, this);
+LOGDEBUG(("CMenu::CMenu(newTitle=%s,nbrItems=%d,...)%T", newTitle, nbrItems, this));
 	ajust = 0;
 
 	// Titre du menu
@@ -54,8 +54,7 @@ TRACE().debug("CMenu::CMenu(newTitle=%s,nbrItems=%d,...)%T", newTitle, nbrItems,
 	choixY = 0;							// On focus sur le premier item du menu
 	nbrChoixY = nbrItems;				// Nombre d'items
 	items = new char*[ nbrItems ];		// Crétion et copie des items du menu
-	for( int i=0 ; i<nbrChoixY ; i++ )
-	{
+	for( int i=0 ; i<nbrChoixY ; i++ ) {
 		items[ i ] = new char[ strlen(newItems[i] )+1 ];
 		strcpy( items[ i ], newItems[ i ] );
 	}
@@ -66,14 +65,12 @@ TRACE().debug("CMenu::CMenu(newTitle=%s,nbrItems=%d,...)%T", newTitle, nbrItems,
 		fonction_suivante[ i ] = fct_suivante[ i ];
 
 		// Arguments des fonctions suivantes
-	if( liste_arg )
-	{
+	if( liste_arg ) {
 		arg = new void*[ nbrChoixY ];
 		for( int i=0 ; i<nbrChoixY ; i++ )
 			arg[ i ] = liste_arg[ i ];
 	}
-	else
-	{
+	else {
 		arg = 0;
 	}
 
@@ -89,7 +86,7 @@ TRACE().debug("CMenu::CMenu(newTitle=%s,nbrItems=%d,...)%T", newTitle, nbrItems,
 
 CMenu::~CMenu()
 {
-TRACE().debug("CMenu::~CMenu() titre=%s%T", titre, this);
+LOGDEBUG(("CMenu::~CMenu() titre=%s%T", titre, this));
 		// Titre
 	if( titre )
 		delete[] titre;

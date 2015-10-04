@@ -23,7 +23,7 @@ using namespace std;
 using namespace JktSon;
 CSon::CSon( CDemonSons* p,const char *name )
 {
-TRACE().debug("CSon::CSon(nom=%s,...)%T", name, this );
+LOGDEBUG(("CSon::CSon(nom=%s,...)%T", name, this ));
 	nom = name;
 	m_Sample = 0;
 	pDemon = p;
@@ -31,7 +31,7 @@ TRACE().debug("CSon::CSon(nom=%s,...)%T", name, this );
 
 CSon::~CSon()
 {
-TRACE().debug("CSon::~CSon() nom=%s%T", nom.c_str(), this );
+LOGDEBUG(("CSon::~CSon() nom=%s%T", nom.c_str(), this ));
 
 	set<CReqSon*>::iterator p;		// Destruction de toutes les requêtes sur ce son
 	for( p = m_TabReq.begin() ; p != m_TabReq.end() ; p++ )
@@ -48,12 +48,12 @@ TRACE().debug("CSon::~CSon() nom=%s%T", nom.c_str(), this );
 CSonMono::CSonMono(CDemonSons* p, const char *nomFichierSon)	// Constructeur avec lecture fichier son
 	:CSon( p, nomFichierSon )
 {
-TRACE().debug("CSonMono::CSonMono(nomFichierSon=%s)%T", nomFichierSon, this );
+LOGDEBUG(("CSonMono::CSonMono(nomFichierSon=%s)%T", nomFichierSon, this ));
 	m_Sample = FSOUND_Sample_Load( FSOUND_FREE, nomFichierSon, FSOUND_MONO, 0, 0 );
 
 	if( m_Sample==0 )
 	{
-TRACE().debug("CSonMono::CSonMono() %s%T", nomFichierSon, this );
+LOGDEBUG(("CSonMono::CSonMono() %s%T", nomFichierSon, this ));
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FMOD (" << nomFichierSon << ") :" << FMOD_ErrorString(FSOUND_GetError());
 		throw (int)1;	// Envoie d'une erreur de lecture de fichier
 	}
@@ -61,18 +61,18 @@ TRACE().debug("CSonMono::CSonMono() %s%T", nomFichierSon, this );
 
 CSonMono::~CSonMono()
 {
-TRACE().debug("CSonMono::~CSonMono() nom=%sT", nom.c_str(), this );
+LOGDEBUG(("CSonMono::~CSonMono() nom=%sT", nom.c_str(), this ));
 }
 
 CSonStereo::CSonStereo(CDemonSons* p,const char *nomFichierSon)	// Constructeur avec lecture fichier son
 	:CSon( p, nomFichierSon )
 {
-TRACE().debug("CSonStereo::CSonStereo(nomFichierSon=%s,...)%T", nomFichierSon, this );
+LOGDEBUG(("CSonStereo::CSonStereo(nomFichierSon=%s,...)%T", nomFichierSon, this ));
 	m_Sample = FSOUND_Sample_Load( FSOUND_FREE, nomFichierSon, FSOUND_STEREO, 0, 0 );
 
 	if( m_Sample==0 )
 	{
-TRACE().debug("CSonStereo::CSonStereo() %s%T", nomFichierSon, this );
+LOGDEBUG(("CSonStereo::CSonStereo() %s%T", nomFichierSon, this ));
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FMOD (" << nomFichierSon << ") :" << FMOD_ErrorString(FSOUND_GetError());
 		throw (int)1;	// Envoie d'une erreur de lecture de fichier
 	}
@@ -80,18 +80,18 @@ TRACE().debug("CSonStereo::CSonStereo() %s%T", nomFichierSon, this );
 
 CSonStereo::~CSonStereo()
 {
-TRACE().debug("CSonStereo::~CSonStereo() nom=%s%T", nom.c_str(), this );
+LOGDEBUG(("CSonStereo::~CSonStereo() nom=%s%T", nom.c_str(), this ));
 }
 
 CSon3D::CSon3D( CDemonSons* p,const char *nomFichierSon )	// Constructeur avec lecture fichier son
 	:CSon( p, nomFichierSon )
 {
-TRACE().debug("CSon3D::CSon3D(nomFichierSon=%s,...)%T", nomFichierSon, this );
+LOGDEBUG(("CSon3D::CSon3D(nomFichierSon=%s,...)%T", nomFichierSon, this ));
 	m_Sample = FSOUND_Sample_Load( FSOUND_FREE, nomFichierSon, FSOUND_HW3D, 0, 0 );
 
 	if( m_Sample==0 )
 	{
-TRACE().debug("CSon3D::CSon3D() %s%T", nomFichierSon, this );
+LOGDEBUG(("CSon3D::CSon3D() %s%T", nomFichierSon, this ));
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FMOD (" << nomFichierSon << ") :" << FMOD_ErrorString(FSOUND_GetError());
 		throw (int)1;	// Envoie d'une erreur de lecture de fichier
 	}
@@ -99,7 +99,7 @@ TRACE().debug("CSon3D::CSon3D() %s%T", nomFichierSon, this );
 
 CSon3D::~CSon3D()
 {
-TRACE().debug("CSon3D::~CSon3D() nom=%s%T", nom.c_str(), this );
+LOGDEBUG(("CSon3D::~CSon3D() nom=%s%T", nom.c_str(), this ));
 }
 
 CReqSon *CSonMono::PlayID( bool pause )

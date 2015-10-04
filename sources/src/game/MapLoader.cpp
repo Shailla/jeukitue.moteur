@@ -47,7 +47,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 	string mapName(gameDto->getMapName());
 
 	console->println(ConsoleView::COT_INFO, string("Lecture de la MAP '").append(mapName).append("'..."));
-	TRACE().info("Lecture de la MAP '%s'...", mapName.c_str());
+	LOGINFO(("Lecture de la MAP '%s'...", mapName.c_str()));
 
 	CMap* map = new CMap(0, mapName);
 	gameDto->setMap(map);
@@ -62,13 +62,13 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 
 	// Récupération des ressources de cris des personnages
 	console->println(ConsoleView::COT_INFO, "Lecture du premier cri...");
-	TRACE().info("Lecture du premier cri...");
+	LOGINFO(("Lecture du premier cri..."));
 
 	string cri1 = "@Bruit\\cri_1.wav";
 	JktUtils::RessourcesLoader::getFileRessource(cri1);
 
 	console->println(ConsoleView::COT_INFO, "Lecture du second cri...");
-	TRACE().info("Lecture du second cri...");
+	LOGINFO(("Lecture du second cri..."));
 
 	string cri2 = "@Bruit\\cri_1.wav";
 	JktUtils::RessourcesLoader::getFileRessource(cri2);
@@ -83,17 +83,17 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		mapJoueur.append("@Joueur\\").append(Config.Joueur.mapName);
 
 		console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'..."));
-		TRACE().info("Lecture du skin '%s'...", mapJoueur.c_str());
+		LOGINFO(("Lecture du skin '%s'...", mapJoueur.c_str()));
 
 		CMap *pMapJoueur = new CMap(0, mapJoueur);
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
-		TRACE().info("Scaling du skin");
+		LOGINFO(("Scaling du skin"));
 		pMapJoueur->Scale( -0.6f, 0.6f, 0.6f );
 
 		// Création du joueur
 		console->println(ConsoleView::COT_INFO, "Creation du joueur principal...");
-		TRACE().info("Creation du joueur principal...");
+		LOGINFO(("Creation du joueur principal..."));
 
 		CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
 		erwin->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
@@ -112,17 +112,17 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 	{
 		// Chargement du skin
 		console->println(ConsoleView::COT_INFO, "Lecture du skin 'JoueurTex'...");
-		TRACE().info("Lecture du skin 'JoueurTex'...");
+		LOGINFO(("Lecture du skin 'JoueurTex'..."));
 
 		CMap *pMapJoueurJulien = new CMap(0, "@Joueur\\joueurTex");
 		pMapJoueurJulien->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
-		TRACE().info("Scaling du skin");
+		LOGINFO(("Scaling du skin"));
 		pMapJoueurJulien->Scale( -0.6f, 0.6f, 0.6f );
 
 		// Création d'un second joueur
 		console->println(ConsoleView::COT_INFO, "Creation du second joueur...");
-		TRACE().info("Creation du second joueur...");
+		LOGINFO(("Creation du second joueur..."));
 
 		CPlayer *julien;
 		julien = new CPlayer();						// Crée un autre joueur
@@ -145,17 +145,17 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		mapJoueur.append("@Joueur\\").append(Config.Joueur.mapName);
 
 		console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'..."));
-		TRACE().info("Lecture du skin '%s'", mapJoueur.c_str());
+		LOGINFO(("Lecture du skin '%s'", mapJoueur.c_str()));
 
 		CMap *pMapJoueur = new CMap(0, mapJoueur);
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
-		TRACE().info("Scaling du skin");
+		LOGINFO(("Scaling du skin"));
 		pMapJoueur->Scale( -0.6f, 0.6f, 0.6f );
 
 		// Création d'un troisième joueur
 		console->println(ConsoleView::COT_INFO, "Creation du troisieme joueur...");
-		TRACE().info("Creation du troisieme joueur...");
+		LOGINFO(("Creation du troisieme joueur..."));
 
 		CPlayer *sprite;
 		sprite = new CPlayer();						// Crée un autre joueur
@@ -169,7 +169,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 	}
 
 	console->println(ConsoleView::COT_INFO, "Map lue");
-	TRACE().info("Map lue");
+	LOGINFO(("Map lue"));
 
 	Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_OUVERTURE);
 
@@ -194,7 +194,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	string mapName(gameDto->getMapName());
 
 	console->println(ConsoleView::COT_INFO, string("Lecture de la MAP '").append(mapName).append("'..."));
-	TRACE().info("Lecture de la MAP '%s'", mapName.c_str());
+	LOGINFO(("Lecture de la MAP '%s'", mapName.c_str()));
 
 	CMap* map = new CMap(0, mapName);
 	gameDto->setMap(map);
@@ -206,7 +206,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 
 	// Cris des personnages
 	console->println(ConsoleView::COT_INFO, "Lecture du cri...");
-	TRACE().info("Lecture du cri...");
+	LOGINFO(("Lecture du cri..."));
 
 	string cri1 = "@Bruit\\cri_1.wav";
 	JktUtils::RessourcesLoader::getFileRessource(cri1);
@@ -216,12 +216,12 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	mapJoueur.append("@Joueur\\").append(Config.Joueur.mapName);
 
 	console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
-	TRACE().info("Lecture du skin '%s'", mapJoueur.c_str());
+	LOGINFO(("Lecture du skin '%s'", mapJoueur.c_str()));
 
 	CMap *pMapJoueur = new CMap(0, mapJoueur);
 	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 	console->println(ConsoleView::COT_INFO, "Scaling du skin");
-	TRACE().info("Scaling du skin");
+	LOGINFO(("Scaling du skin"));
 	pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
 
 
@@ -231,7 +231,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 
 	// Initialisation des joueurs
 	console->println(ConsoleView::COT_INFO, "Initialisation des joueurs...");
-	TRACE().info("Initialisation des joueurs...");
+	LOGINFO(("Initialisation des joueurs..."));
 
 	int curseur = -1;
 	CPlayer* player;
@@ -247,7 +247,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	}
 
 	console->println(ConsoleView::COT_INFO, "Partie chargee");
-	TRACE().info("Partie chargee");
+	LOGINFO(("Partie chargee"));
 
 	Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_OUVERTURE);
 
@@ -272,7 +272,7 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 	string mapName(gameDto->getMapName());
 
 	console->println(ConsoleView::COT_INFO, string("Lecture de la MAP '").append(mapName).append("'..."));
-	TRACE().info("Lecture de la MAP '%s'", mapName.c_str());
+	LOGINFO(("Lecture de la MAP '%s'", mapName.c_str()));
 
 	CMap* map = new CMap(0, mapName);
 	gameDto->setMap(map);
@@ -287,7 +287,7 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 
 	// Récupération des ressources de cris des personnages
 	console->println(ConsoleView::COT_INFO, "Lecture du cri...");
-	TRACE().info("Lecture du cri...");
+	LOGINFO(("Lecture du cri..."));
 
 	string cri1 = "@Bruit\\cri_1.wav";
 	JktUtils::RessourcesLoader::getFileRessource(cri1);
@@ -302,17 +302,17 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 		mapJoueur.append("@Joueur\\").append(Config.Joueur.mapName);
 
 		console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
-		TRACE().info("Lecture du skin '%s'", mapJoueur.c_str());
+		LOGINFO(("Lecture du skin '%s'", mapJoueur.c_str()));
 
 		CMap *pMapJoueur = new CMap(0, mapJoueur);
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
-		TRACE().info("Scaling du skin");
+		LOGINFO(("Scaling du skin"));
 		pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
 
 		// Création du joueur
 		console->println(ConsoleView::COT_INFO, "Creation du joueur principal...");
-		TRACE().info("Creation du joueur principal...");
+		LOGINFO(("Creation du joueur principal..."));
 
 		CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
 		erwin->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
@@ -328,7 +328,7 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 	}
 
 	console->println(ConsoleView::COT_INFO, "Map lue");
-	TRACE().info("Map lue");
+	LOGINFO(("Map lue"));
 
 	Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_OUVERTURE);
 

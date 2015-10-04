@@ -48,7 +48,7 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 				brancheId.erase(brancheId.end() - 1);
 				int valeurId = *(valeurFullId.end() - 1);
 
-				Valeur* valeur = dataTree->getValeur(brancheId, valeurId);
+				Valeur* valeur = dataTree->getValeur(0, brancheId, valeurId);
 
 				if(valeur) {
 					bool result = true;

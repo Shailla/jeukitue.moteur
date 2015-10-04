@@ -9,6 +9,7 @@
 #define TESTSUITE_H_
 
 #include <vector>
+#include <string>
 
 #include "test/Test.h"
 
@@ -18,6 +19,7 @@ namespace JktTest {
 
 class TestSuite {
 	vector<Test*> _tests;
+	vector<string> _results;
 
 public:
 	TestSuite();

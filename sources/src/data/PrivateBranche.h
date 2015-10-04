@@ -22,8 +22,6 @@
 #include "data/Valeur.h"
 #include "data/DistantTreeProxy.h"
 
-
-
 class PrivateBranche : public Branche {
 
 	class DistantPrivateBranche {
@@ -51,23 +49,6 @@ public:
 
 
 	/* ************************************************************************ */
-	// Fonctions héritées de Branche non-compatibles avec les branches privées
-	/* ************************************************************************ */
-
-	Branche* createSubBrancheForServer(const std::string& brancheName, DONNEE_TYPE type, int revision) throw(AlreadyExistingBrancheException);
-	Valeur* createValeurForServeur(const std::string& valeurName, int revision, const JktUtils::AnyData& valeur);
-	Branche* getSubBrancheByName(const string& brancheName) const;
-	Branche* getSubBrancheByIdOrTmpId(int brancheId) const;
-	std::vector<Branche*>& getSubBranches();
-	std::vector<Valeur*>& getValeurs();
-	Valeur* getValeurByIdOrTmpId(int valeurId) const;
-	Branche* acceptTmpSubBranche(int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException);
-	Valeur* acceptTmpValeur(int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException);
-	Branche* addSubBranche(int brancheId, const std::string& brancheName, int brancheRevision);
-	const Valeur* addValeur(int valeurId, const std::string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur);
-
-
-	/* ************************************************************************ */
 	// Fonctions membres
 	/* ************************************************************************ */
 
@@ -79,17 +60,17 @@ public:
 
 	Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) throw(NotExistingValeurException);
 
-	Branche* getSubBrancheByName(DistantTreeProxy* distant, const string& brancheName);
-	Branche* getSubBrancheByIdOrTmpId(DistantTreeProxy* distant, int brancheId);
-	std::vector<Branche*>& getSubBranches(DistantTreeProxy* distant);
+	Branche* getSubBrancheByName(DistantTreeProxy* distant, const string& brancheName) override;
+	Branche* getSubBrancheByIdOrTmpId(DistantTreeProxy* distant, int brancheId) override;
+	std::vector<Branche*>& getSubBranches(DistantTreeProxy* distant) override;
 
 	std::vector<Valeur*>& getValeurs(DistantTreeProxy* distant);
-	Valeur* getValeurByIdOrTmpId(DistantTreeProxy* distant, int valeurId);
+	Valeur* getValeurByIdOrTmpId(DistantTreeProxy* distant, int valeurId) override;
 
 	/** Attribue son identifiant définitf à une branche temporaire */
-	Branche* acceptTmpSubBranche(DistantTreeProxy* distant, int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException);
+	Branche* acceptTmpSubBranche(DistantTreeProxy* distant, int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException) override;
 
-	Valeur* acceptTmpValeur(DistantTreeProxy* distant, int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException);
+	Valeur* acceptTmpValeur(DistantTreeProxy* distant, int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException) override;
 
 	/** Crée une nouvelle branche et lui attribue un identifiant temporaire */
 	Branche* createSubBrancheForClient(DistantTreeProxy* distant, const std::string& brancheName, int revision);
@@ -98,16 +79,16 @@ public:
 	Branche* createSubBrancheForServer(DistantTreeProxy* distant, const std::string& brancheName, DONNEE_TYPE type, int revision) throw(AlreadyExistingBrancheException);
 
 	/** Ajoute une branche qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
-	Branche* addSubBranche(DistantTreeProxy* distant, int brancheId, const std::string& brancheName, int brancheRevision);
+	Branche* addSubBranche(DistantTreeProxy* distant, int brancheId, DONNEE_TYPE type, const std::string& brancheName, int brancheRevision) override;
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant temporaire */
-	Valeur* createValeurForClient(DistantTreeProxy* distant, const std::string& valeurName, int revision, const JktUtils::AnyData& valeur);
+	Valeur* createValeurForClient(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::string& valeurName, int revision, const JktUtils::AnyData& valeur);
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant */
-	Valeur* createValeurForServeur(DistantTreeProxy* distant, const std::string& valeurName, int revision, const JktUtils::AnyData& valeur);
+	Valeur* createValeurForServeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::string& valeurName, int revision, const JktUtils::AnyData& valeur);
 
 	/** Ajoute une valeur entière qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
-	const Valeur* addValeur(DistantTreeProxy* distant, int valeurId, const std::string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur);
+	const Valeur* addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const std::string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur);
 
 	/**
 	 * Affiche le sous-arbre et ses données et caractéristiques partagées avec les autres arbres.

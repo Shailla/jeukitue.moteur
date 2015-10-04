@@ -51,9 +51,8 @@ const char *item_menu_open_scene[] =
 CMenu MenuOpenScene( "OUVRIR UNE SCENE", item_menu_open_scene, 2,
 						liste_suivant_open_scene, lanceMenuPrinc );
 
-void lanceMenuOpenScene(void *var)
-{
-TRACE().debug("lanceMenuOpenScene(var=%x)", var);
+void lanceMenuOpenScene(void *var) {
+LOGDEBUG(("lanceMenuOpenScene(var=%x)", var));
 	CDlg::SetMenuActif( &MenuOpenScene );
 }
 

@@ -4,16 +4,15 @@
 
 using namespace std;
 
-JktException::JktException(void) {
+JktException::JktException(const char* clazz) {
 }
 
-JktException::JktException(const string& message) {
-	_message = message;
+JktException::JktException(const char* clazz, const string& message):_clazz(clazz),_message(message) {
 }
 
 JktException::~JktException(void) {
 }
 
 const char* JktException::what() const throw() {
-	return _message.c_str();
+	return (_clazz + ": " + _message).c_str();
 }

@@ -22,7 +22,8 @@ using namespace std;
 class CCfg {
 	static const char* CST_GEN_PLAY_INTRO;
 
-	static const char* CST_VID_DISPLAY;
+	static const char* CST_VID_DISPLAY_POS;
+	static const char* CST_VID_DISPLAY_SIZE;
 	static const char* CST_VID_FULLSCREEN;
 
 	static const char* CST_AUD_OUTPUT;
@@ -47,6 +48,9 @@ class CCfg {
 	static const char* CST_NET_IP;
 	static const char* CST_NET_PORT;
 	static const char* CST_NET_PORTTREE;
+	static const char* CST_TREE_UPDATE_CLIENTTOSERVER_DELAY;
+	static const char* CST_TREE_UPDATE_SERVERTOCLIENT_DELAY;
+
 
 	static const char* CST_JOU_NOM;
 	static const char* CST_JOU_MAPNOM;
@@ -111,6 +115,7 @@ private:
         void InitAgar();
 		bool chargeGLExtension(const char* ext, string& extensions);
 	public :
+		string position;
 		int X;
 		int Y;
 		bool Fullscreen() const		{	return m_bFullscreen;	}
@@ -134,17 +139,23 @@ private:
 	class CReseau {		// Informations sur la config réseau
 		friend class CCfg;
 	protected:
-		Uint16 _Port;			// Port à utiliser
-		Uint16 _portTree;		// Port à utiliser
-		string _IpServer;		// Adresse IP du serveur (s'il s'agit d'un client)
+		Uint16 _Port;						// Port à utiliser
+		Uint16 _portTree;					// Port à utiliser
+		string _IpServer;					// Adresse IP du serveur (s'il s'agit d'un client)
+		int _treeUpdateClientToServerDelay;	// Temps mini entre 2 mises à jour des données de l'arbre par le client sur le serveur
+		int _treeUpdateServerToClientDelay;	// Temps mini entre 2 mises à jour des données de l'arbre par le serveur sur le client
 	public:
-		Uint16 getServerPort() const							{ return _Port;				}
-		Uint16 getServerPortTree() const						{ return _portTree;			}
-		string getIpServer() const						{ return _IpServer;			}
+		string getIpServer() const								{ return _IpServer;							}
+		Uint16 getServerPort() const							{ return _Port;								}
+		Uint16 getServerPortTree() const						{ return _portTree;							}
+		int getTreeUpdateClientToServerDelay() const			{ return _treeUpdateClientToServerDelay;	}
+		int getTreeUpdateServerToClientDelay() const			{ return _treeUpdateServerToClientDelay;	}
 
-		void setIpServer(const string& ipServeur)		{ _IpServer = ipServeur;	}
-		void setPort(Uint16 port)						{ _Port = port;				}
-		void setPortTree(Uint16 portTree)				{ _portTree = portTree;		}
+		void setIpServer(const string& ipServeur)										{ _IpServer = ipServeur;	}
+		void setPort(Uint16 port)														{ _Port = port;				}
+		void setPortTree(Uint16 portTree)												{ _portTree = portTree;		}
+		void setTreeUpdateClientToServerDelay(int treeUpdateClientToServerDelay)	{ _treeUpdateClientToServerDelay = treeUpdateClientToServerDelay;	}
+		void setTreeUpdateServerToClientDelay(int treeUpdateServerToClientDelay)	{ _treeUpdateServerToClientDelay = treeUpdateServerToClientDelay;	}
 
 		void Init();
 	};

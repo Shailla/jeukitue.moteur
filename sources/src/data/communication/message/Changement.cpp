@@ -10,8 +10,6 @@
 
 using namespace std;
 
-#include "util/Trace.h"
-
 #include "data/communication/message/Changement.h"
 
 Changement::Changement(const string& dataType, int majorPriority, int minorPriority) {
@@ -32,8 +30,6 @@ int Changement::getMinorPriority() const {
 }
 
 bool Changement::highestPriority(const Changement* left, const Changement* right) {
-	TRACE().debug("Sorting LEFT : '%s' RIGHT : '%s'", left->toString().c_str(), right->toString().c_str());
-
 	if(left->getRootDistance() != right->getRootDistance()) {
 		return left->getRootDistance() < right->getRootDistance();
 	}

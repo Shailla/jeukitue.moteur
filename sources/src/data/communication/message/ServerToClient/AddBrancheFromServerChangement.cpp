@@ -16,11 +16,11 @@ using namespace std;
 
 #include "data/communication/message/ServerToClient/AddBrancheFromServerChangement.h"
 
-AddBrancheFromServerChangement::AddBrancheFromServerChangement(istringstream& in) : Changement("AddBrFromSerChgt", PRIORITY_AddBrancheFromServerChangement, 0) {
+AddBrancheFromServerChangement::AddBrancheFromServerChangement(istringstream& in) : Changement("AddBrFromSrvChgt", PRIORITY_AddBrancheFromServerChangement, 0) {
 	unserialize(in);
 }
 
-AddBrancheFromServerChangement::AddBrancheFromServerChangement(const vector<int>& parentBrancheId, int brancheId, DONNEE_TYPE brancheType, int revision, const string& brancheName) : Changement("AddBrFromSerChgt", PRIORITY_AddBrancheFromServerChangement, brancheId) {
+AddBrancheFromServerChangement::AddBrancheFromServerChangement(const vector<int>& parentBrancheId, int brancheId, DONNEE_TYPE brancheType, int revision, const string& brancheName) : Changement("AddBrFromSrvChgt", PRIORITY_AddBrancheFromServerChangement, brancheId) {
 	_parentBrancheId = parentBrancheId;
 	_brancheId = brancheId;
 	_brancheType = brancheType;
@@ -82,6 +82,10 @@ const string& AddBrancheFromServerChangement::getBrancheName() const {
 
 const std::vector<int>& AddBrancheFromServerChangement::getParentBrancheId() const {
 	return _parentBrancheId;
+}
+
+DONNEE_TYPE AddBrancheFromServerChangement::getBrancheType() const {
+	return _brancheType;
 }
 
 int AddBrancheFromServerChangement::getRevision() const {

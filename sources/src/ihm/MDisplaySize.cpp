@@ -44,9 +44,8 @@ public:
 	rect(int ww, int hh ) {	w = ww;		h = hh;	}
 };
 
-void lanceMenuConfigVideoDisplay(void *var)
-{
-TRACE().debug("lanceMenuConfigVideoDisplay(var=%x)", var);
+void lanceMenuConfigVideoDisplay(void *var) {
+LOGDEBUG(("lanceMenuConfigVideoDisplay(var=%x)", var));
 	int nbr;
 		// Récupère la liste des modes vidéo disponibles
 	SDL_Rect **modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
@@ -58,8 +57,7 @@ TRACE().debug("lanceMenuConfigVideoDisplay(var=%x)", var);
 	void **liste_arguments = new void*[ nbr ];
 	char **items_menu = new char*[ nbr ];
 
-	for( int i=0 ; i<nbr ; i++ )
-	{
+	for( int i=0 ; i<nbr ; i++ ) {
 		char txt[50];
 		sprintf( txt, "%d x %d", modes[i]->w, modes[i]->h );
 		liste_suivants[i] = lanceDisplaySizeChange;
@@ -81,9 +79,8 @@ TRACE().debug("lanceMenuConfigVideoDisplay(var=%x)", var);
 	CDlg::SetMenuActif( MenuConfigVideoDisplaySize );
 }
 
-void lanceDisplaySizeChange(void *arg)
-{
-TRACE().debug("lanceDisplay640_468(var=%x)", arg);
+void lanceDisplaySizeChange(void *arg) {
+LOGDEBUG(("lanceDisplay640_468(var=%x)", arg));
 
 	rect *rr = (rect*)arg;
 
@@ -91,8 +88,7 @@ TRACE().debug("lanceDisplay640_468(var=%x)", arg);
 	Config.Ecrit();
 }
 
-void retourVideoSize(void *arg)
-{
+void retourVideoSize(void *arg) {
 	delete MenuConfigVideoDisplaySize;
 	CDlg::SetMenuActif( 0 );
 

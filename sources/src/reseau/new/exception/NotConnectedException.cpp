@@ -11,10 +11,10 @@ using namespace std;
 
 #include "reseau/new/exception/NotConnectedException.h"
 
-NotConnectedException::NotConnectedException(void) {
+NotConnectedException::NotConnectedException(void) : JktException("NotConnectedException") {
 }
 
-NotConnectedException::NotConnectedException(const string& message) : JktException(message) {
+NotConnectedException::NotConnectedException(const string& message) : JktException("NotConnectedException", message) {
 }
 
 NotConnectedException::~NotConnectedException() {

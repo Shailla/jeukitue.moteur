@@ -1,5 +1,5 @@
 /*
- * Branche.cpp
+ * PrivateBranche.cpp
  *
  *  Created on: 5 mars 2013
  *      Author: vgdj7997
@@ -22,6 +22,7 @@ using namespace std;
 #include "data/ValeurString.h"
 #include "data/MarqueurDistant.h"
 #include "data/exception/UnavailableOperationException.h"
+#include "data/exception/NotSpecifiedClientException.h"
 
 #include "data/PrivateBranche.h"
 
@@ -44,6 +45,10 @@ PrivateBranche::DistantPrivateBranche& PrivateBranche::getDistant(DistantTreePro
 Branche* PrivateBranche::getSubBrancheByName(DistantTreeProxy* distant, const string& brancheName) {
 	Branche* branche = NULL;
 
+	if(!distant) {
+		throw NotSpecifiedClientException("'getSubBrancheByName' need to know the client on private branche");
+	}
+
 	try {
 		branche = getDistant(distant)._subBranchesByName.at(brancheName);
 	}
@@ -56,6 +61,10 @@ Branche* PrivateBranche::getSubBrancheByName(DistantTreeProxy* distant, const st
 
 Branche* PrivateBranche::getSubBrancheByIdOrTmpId(DistantTreeProxy* distant, int brancheId) {
 	Branche* branche = NULL;
+
+	if(!distant) {
+		throw NotSpecifiedClientException("'getSubBrancheByIdOrTmpId' need to know the client on private branche");
+	}
 
 	PrivateBranche::DistantPrivateBranche& prBr = getDistant(distant);
 
@@ -75,6 +84,10 @@ Branche* PrivateBranche::getSubBrancheByIdOrTmpId(DistantTreeProxy* distant, int
 }
 
 Branche* PrivateBranche::getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException) {
+	if(!distant) {
+		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
+	}
+
 	if(brancheId >= 0) {
 		return getSubBrancheByIdOrTmpId(distant, brancheId);
 	}
@@ -88,7 +101,13 @@ Branche* PrivateBranche::getSubBrancheByDistantTmpId(DistantTreeProxy* distant, 
 	MarqueurDistant* marqueur;
 	Branche* subBranche = NULL;
 
-	for(it = getDistant(distant)._subBranches.begin() ; (it!=getDistant(distant)._subBranches.end() && subBranche==NULL) ; it++) {
+	if(!distant) {
+		throw NotSpecifiedClientException("'getSubBrancheByDistantTmpId' need to know the client on private branche");
+	}
+
+	PrivateBranche::DistantPrivateBranche& prBr = getDistant(distant);
+
+	for(it = prBr._subBranches.begin() ; (it!=prBr._subBranches.end() && subBranche==NULL) ; it++) {
 		subBranche = *it;
 		marqueur = subBranche->getMarqueur(distant);
 
@@ -109,7 +128,13 @@ Valeur* PrivateBranche::getValeurByDistantTmpId(DistantTreeProxy* distant, int v
 	MarqueurDistant* marqueur;
 	Valeur* valeur = NULL;
 
-	for(it = getDistant(distant)._valeurs.begin() ; (it!=getDistant(distant)._valeurs.end() && valeur==NULL) ; it++) {
+	if(!distant) {
+		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
+	}
+
+	PrivateBranche::DistantPrivateBranche& prBr = getDistant(distant);
+
+	for(it = prBr._valeurs.begin() ; (it!=prBr._valeurs.end() && valeur==NULL) ; it++) {
 		valeur = *it;
 		marqueur = valeur->getMarqueur(distant);
 
@@ -129,13 +154,18 @@ Valeur* PrivateBranche::getValeurByIdOrTmpId(DistantTreeProxy* distant, int vale
 	Valeur* valeur = NULL;
 
 	try {
-		if(valeurId >= 0) {
-			valeur = getDistant(distant)._valeursById.at(valeurId);
-		}
-		else {
-			valeur = getDistant(distant)._valeursByTmpId.at(valeurId);
+		if(!distant) {
+			throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
 		}
 
+		PrivateBranche::DistantPrivateBranche& prBr = getDistant(distant);
+
+		if(valeurId >= 0) {
+			valeur = prBr._valeursById.at(valeurId);
+		}
+		else {
+			valeur = prBr._valeursByTmpId.at(valeurId);
+		}
 	}
 	catch(out_of_range& exception) {
 		valeur = NULL;
@@ -145,6 +175,10 @@ Valeur* PrivateBranche::getValeurByIdOrTmpId(DistantTreeProxy* distant, int vale
 }
 
 Branche* PrivateBranche::createSubBrancheForClient(DistantTreeProxy* distant, const string& brancheName, int revision) {
+	if(!distant) {
+		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
+	}
+
 	PrivateBranche::DistantPrivateBranche& dst = getDistant(distant);
 
 	// Alloue une référence pour la nouvelle branche
@@ -159,6 +193,10 @@ Branche* PrivateBranche::createSubBrancheForClient(DistantTreeProxy* distant, co
 }
 
 Branche* PrivateBranche::createSubBrancheForServer(DistantTreeProxy* distant, const string& brancheName, DONNEE_TYPE type, int revision) throw(AlreadyExistingBrancheException) {
+	if(!distant) {
+		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
+	}
+
 	PrivateBranche::DistantPrivateBranche& dst = getDistant(distant);
 
 	// Alloue une référence pour la nouvelle branche
@@ -181,64 +219,64 @@ Branche* PrivateBranche::createSubBrancheForServer(DistantTreeProxy* distant, co
 	}
 
 	// Crée la nouvelle branche
-	DONNEE_TYPE resultType;
-	DONNEE_TYPE parentType = getDonneeType();
-
-	if(parentType == DONNEE_SERVER) {		// Sur une branche serveur on peut créer une branche locale ou serveur
-		if(type == DONNEE_CLIENT) {
-			resultType = DONNEE_CLIENT;
-		}
-		else {
-			resultType = DONNEE_SERVER;
-		}
-	}
-	else if(parentType == DONNEE_CLIENT || parentType == DONNEE_CLIENT_SUB) {	// Sur une branche client on ne peut créer qu'une donnée client fille
-		resultType = DONNEE_CLIENT_SUB;
-	}
-	else if(parentType == DONNEE_LOCAL) {	// Sur une branche local on ne peut créer qu'une donnée local
-		resultType = DONNEE_LOCAL;
-	}
-	else {
-		cerr << endl << "Type demandé inconnu";
+	if(type != DONNEE_DEFAULT && type != DONNEE_PRIVATE_SUB) {
+		cerr << endl << "Une branche privée ne peut créer que des sous-branches sous-privées";
 	}
 
-	Branche* newBranche = new Branche(this, ref, brancheName, resultType, revision, -1);
+	Branche* newBranche = new Branche(this, ref, brancheName, DONNEE_PRIVATE_SUB, revision, -1);
 
-	getDistant(distant)._subBranchesById[ref] = newBranche;
-	getDistant(distant)._subBranchesByName[brancheName] = newBranche;
-	getDistant(distant)._subBranches.push_back(newBranche);
+	dst._subBranchesById[ref] = newBranche;
+	dst._subBranchesByName[brancheName] = newBranche;
+	dst._subBranches.push_back(newBranche);
 
 	return newBranche;
 }
 
-Branche* PrivateBranche::addSubBranche(DistantTreeProxy* distant, int brancheId, const std::string& brancheName, int brancheRevision) {
+Branche* PrivateBranche::addSubBranche(DistantTreeProxy* distant, int brancheId, DONNEE_TYPE type, const std::string& brancheName, int brancheRevision) {
 	Branche* newBranche;
-	map<int, Branche*>::iterator iter = getDistant(distant)._subBranchesById.find(brancheId);
 
-	if(iter != getDistant(distant)._subBranchesById.end()) {
+	if(!distant) {
+		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
+	}
+
+	if(type != DONNEE_DEFAULT && type != DONNEE_PRIVATE_SUB) {
+		cerr << endl << "Une branche privée ne peut créer que des sous-branches sous-privées";
+	}
+
+	PrivateBranche::DistantPrivateBranche& prBr = getDistant(distant);
+
+	map<int, Branche*>::iterator iter = prBr._subBranchesById.find(brancheId);
+
+	if(iter != prBr._subBranchesById.end()) {
 		cerr << endl << __FILE__ << ":" << __LINE__ << "La branche " << brancheId << " (" << brancheName << ") de parent " << CollectionsUtils::toString(getBrancheFullId()) << " existe déjà";
 		newBranche = iter->second;
 	}
 	else {
 		// Crée la nouvelle branche
-		newBranche = new Branche(this, brancheId, brancheName, getDonneeType(), brancheRevision, -1);
-		getDistant(distant)._subBranchesById[brancheId] = newBranche;
-		getDistant(distant)._subBranchesByName[brancheName] = newBranche;
-		getDistant(distant)._subBranches.push_back(newBranche);
+		newBranche = new Branche(this, brancheId, brancheName, DONNEE_PRIVATE_SUB, brancheRevision, -1);
+		prBr._subBranchesById[brancheId] = newBranche;
+		prBr._subBranchesByName[brancheName] = newBranche;
+		prBr._subBranches.push_back(newBranche);
 	}
 
 	return newBranche;
 }
 
 Branche* PrivateBranche::acceptTmpSubBranche(DistantTreeProxy* distant, int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException) {
+	if(!distant) {
+		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
+	}
+
+	PrivateBranche::DistantPrivateBranche& prBr = getDistant(distant);
+
 	Branche* branche = getSubBrancheByIdOrTmpId(distant, brancheTmpId);
 
 	if(!branche) {
 		throw NotExistingBrancheException("PrivateBranche::acceptTmpSubBranche");
 	}
 
-	getDistant(distant)._subBranchesById[brancheId] = branche;
-	getDistant(distant)._subBranchesByName[branche->getBrancheName()] = branche;
+	prBr._subBranchesById[brancheId] = branche;
+	prBr._subBranchesByName[branche->getBrancheName()] = branche;
 	branche->setBrancheId(brancheId);
 	branche->setRevision(brancheRevision);
 
@@ -246,20 +284,30 @@ Branche* PrivateBranche::acceptTmpSubBranche(DistantTreeProxy* distant, int bran
 }
 
 Valeur* PrivateBranche::acceptTmpValeur(DistantTreeProxy* distant, int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException) {
+	if(!distant) {
+		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
+	}
+
+	PrivateBranche::DistantPrivateBranche& prBr = getDistant(distant);
+
 	Valeur* valeur = getValeurByIdOrTmpId(distant, valeurTmpId);
 
 	if(!valeur) {
 		throw NotExistingBrancheException("PrivateBranche::acceptTmpValeur");
 	}
 
-	getDistant(distant)._valeursById[valeurId] = valeur;
+	prBr._valeursById[valeurId] = valeur;
 	valeur->setValeurId(valeurId);
 	valeur->setRevision(valeurRevision);
 
 	return valeur;
 }
 
-Valeur* PrivateBranche::createValeurForClient(DistantTreeProxy* distant, const string& valeurName, int revision, const AnyData& valeur) {
+Valeur* PrivateBranche::createValeurForClient(DistantTreeProxy* distant, UPDATE_MODE updateMode, const string& valeurName, int revision, const AnyData& valeur) {
+	if(!distant) {
+		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
+	}
+
 	PrivateBranche::DistantPrivateBranche& dst = getDistant(distant);
 
 	// Alloue une référence pour la nouvelle branche
@@ -269,13 +317,13 @@ Valeur* PrivateBranche::createValeurForClient(DistantTreeProxy* distant, const s
 	Valeur* newValeur = NULL;
 
 	if(valeur.isInt()) {
-		newValeur = new ValeurInt(this, -1, valeurName, DONNEE_DEFAULT, tmpRef, revision, valeur.getValueInt());
+		newValeur = new ValeurInt(this, -1, valeurName, DONNEE_PRIVATE_SUB, updateMode, tmpRef, revision, valeur.getValueInt());
 	}
 	else if(valeur.isFloat()) {
-		newValeur = new ValeurFloat(this, -1, valeurName, DONNEE_DEFAULT, tmpRef, revision, valeur.getValueFloat());
+		newValeur = new ValeurFloat(this, -1, valeurName, DONNEE_PRIVATE_SUB, updateMode, tmpRef, revision, valeur.getValueFloat());
 	}
 	else if(valeur.isString()) {
-		newValeur = new ValeurString(this, -1, valeurName, DONNEE_DEFAULT, tmpRef, revision, valeur.getValueString());
+		newValeur = new ValeurString(this, -1, valeurName, DONNEE_PRIVATE_SUB, updateMode, tmpRef, revision, valeur.getValueString());
 	}
 
 	if(newValeur) {
@@ -286,7 +334,11 @@ Valeur* PrivateBranche::createValeurForClient(DistantTreeProxy* distant, const s
 	return newValeur;
 }
 
-Valeur* PrivateBranche::createValeurForServeur(DistantTreeProxy* distant, const string& valeurName, int revision, const AnyData& valeur) {
+Valeur* PrivateBranche::createValeurForServeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const string& valeurName, int revision, const AnyData& valeur) {
+	if(!distant) {
+		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
+	}
+
 	PrivateBranche::DistantPrivateBranche& dst = getDistant(distant);
 
 	// Alloue une référence pour la nouvelle branche
@@ -296,13 +348,13 @@ Valeur* PrivateBranche::createValeurForServeur(DistantTreeProxy* distant, const 
 	Valeur* newValeur = NULL;
 
 	if(valeur.isInt()) {
-		newValeur = new ValeurInt(this, ref, valeurName, DONNEE_DEFAULT, -1, revision, valeur.getValueInt());
+		newValeur = new ValeurInt(this, ref, valeurName, DONNEE_PRIVATE_SUB, updateMode, -1, revision, valeur.getValueInt());
 	}
 	else if(valeur.isFloat()) {
-		newValeur = new ValeurFloat(this, ref, valeurName, DONNEE_DEFAULT, -1, revision, valeur.getValueFloat());
+		newValeur = new ValeurFloat(this, ref, valeurName, DONNEE_PRIVATE_SUB, updateMode, -1, revision, valeur.getValueFloat());
 	}
 	else if(valeur.isString()) {
-		newValeur = new ValeurString(this, ref, valeurName, DONNEE_DEFAULT, -1, revision, valeur.getValueString());
+		newValeur = new ValeurString(this, ref, valeurName, DONNEE_PRIVATE_SUB, updateMode, -1, revision, valeur.getValueString());
 	}
 
 	if(newValeur) {
@@ -313,7 +365,11 @@ Valeur* PrivateBranche::createValeurForServeur(DistantTreeProxy* distant, const 
 	return newValeur;
 }
 
-const Valeur* PrivateBranche::addValeur(DistantTreeProxy* distant, int valeurId, const string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur) {
+const Valeur* PrivateBranche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur) {
+	if(!distant) {
+		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
+	}
+
 	PrivateBranche::DistantPrivateBranche& dst = getDistant(distant);
 	Valeur* newValeur = getValeurByIdOrTmpId(distant, valeurId);
 
@@ -323,17 +379,17 @@ const Valeur* PrivateBranche::addValeur(DistantTreeProxy* distant, int valeurId,
 	else {
 		// Crée la nouvelle valeur
 		if(valeur.isInt()) {
-			newValeur = new ValeurInt(this, valeurId, valeurName, DONNEE_DEFAULT, -1, valeurRevision, valeur.getValueInt());
+			newValeur = new ValeurInt(this, valeurId, valeurName, DONNEE_PRIVATE_SUB, updateMode, -1, valeurRevision, valeur.getValueInt());
 			dst._valeursById[valeurId] = newValeur;
 			dst._valeurs.push_back(newValeur);
 		}
 		else if(valeur.isFloat()) {
-			newValeur = new ValeurFloat(this, valeurId, valeurName, DONNEE_DEFAULT, -1, valeurRevision, valeur.getValueFloat());
+			newValeur = new ValeurFloat(this, valeurId, valeurName, DONNEE_PRIVATE_SUB, updateMode, -1, valeurRevision, valeur.getValueFloat());
 			dst._valeursById[valeurId] = newValeur;
 			dst._valeurs.push_back(newValeur);
 		}
 		else if(valeur.isString()) {
-			newValeur = new ValeurString(this, valeurId, valeurName, DONNEE_DEFAULT, -1, valeurRevision, valeur.getValueString());
+			newValeur = new ValeurString(this, valeurId, valeurName, DONNEE_PRIVATE_SUB, updateMode, -1, valeurRevision, valeur.getValueString());
 			dst._valeursById[valeurId] = newValeur;
 			dst._valeurs.push_back(newValeur);
 		}
@@ -366,8 +422,31 @@ void PrivateBranche::print(ostringstream& out, bool details, int indentation) {
 
 	BIG_IDENT = SMALL_IDENT + TABULATION;
 
+	out << endl;
+
 	// Affiche la branche
-	out << endl << SMALL_IDENT << "+ [id=" << _brancheId;
+	switch(getDonneeType()) {
+	case DONNEE_DEFAULT:
+		out << "+err_d";	// Une donnée ne devrait jamais être de ce type, elle est créée avec lui pour recevoir automatiquement son vrai type
+		break;
+	case DONNEE_PUBLIC:
+		out << "+pub";
+		break;
+	case DONNEE_PRIVATE:
+		out << "+pri";
+		break;
+	case DONNEE_PRIVATE_SUB:
+		out << "+prs";
+		break;
+	case DONNEE_LOCAL:
+		out << "+loc";
+		break;
+	default:
+		out << "+err";	// Type non-reconnu
+		break;
+	}
+
+	out << SMALL_IDENT << "+ [id=" << _brancheId;
 
 	if(details) {
 		out << " tmpId=" << _brancheTmpId;
@@ -379,7 +458,7 @@ void PrivateBranche::print(ostringstream& out, bool details, int indentation) {
 
 	for(itDt = _distants.begin() ; itDt != _distants.end() ; itDt++) {
 		// Affiche le distant
-		out << BIG_IDENT << "<< Distant '" << itDt->first->getInterlocutor()->getName() <<"' >>";
+		out << endl << BIG_IDENT << "[[ Distant '" << itDt->first->getInterlocutor()->getName() <<"' ]]";
 
 		// Affiche les valeurs de la branche de manière ordonnée
 		vector<Valeur*>& valeurs = getDistant(itDt->first)._valeurs;
@@ -391,7 +470,30 @@ void PrivateBranche::print(ostringstream& out, bool details, int indentation) {
 		for(valIt = valeurs.begin() ; valIt != valeurs.end() ; ++valIt) {
 			Valeur* valeur = *valIt;
 
-			out << endl << BIG_IDENT << ". [id=" << valeur->getValeurId();
+			out << endl;
+
+			switch(valeur->getDonneeType()) {
+			case DONNEE_DEFAULT:
+				out << ".err_d";	// Une donnée ne devrait jamais être de ce type, elle est créée avec pour recevoir automatiquement son vrai type
+				break;
+			case DONNEE_PUBLIC:
+				out << ".pub";
+				break;
+			case DONNEE_PRIVATE:
+				out << ".pri";
+				break;
+			case DONNEE_PRIVATE_SUB:
+				out << ".prs";
+				break;
+			case DONNEE_LOCAL:
+				out << ".loc";
+				break;
+			default:
+				out << ".err";
+				break;
+			}
+
+			out << SMALL_IDENT << ". [id=" << valeur->getValeurId();
 
 			if(details) {
 				out << " tmpId=" << valeur->getValeurTmpId();
@@ -411,48 +513,4 @@ void PrivateBranche::print(ostringstream& out, bool details, int indentation) {
 			branche->print(out, details, indentation+1);
 		}
 	}
-}
-
-Branche* PrivateBranche::createSubBrancheForServer(const std::string& brancheName, DONNEE_TYPE type, int revision) throw(AlreadyExistingBrancheException) {
-	throw UnavailableOperationException("Private branche need a distant for operation createSubBrancheForServer");
-}
-
-Valeur* PrivateBranche::createValeurForServeur(const std::string& valeurName, int revision, const JktUtils::AnyData& valeur) {
-	throw UnavailableOperationException("Private branche need a distant for operation createValeurForServeur");
-}
-
-Branche* PrivateBranche::getSubBrancheByName(const string& brancheName) const {
-	throw UnavailableOperationException("Private branche need a distant for operation getSubBrancheByName");
-}
-
-Branche* PrivateBranche::getSubBrancheByIdOrTmpId(int brancheId) const {
-	throw UnavailableOperationException("Private branche need a distant for operation getSubBrancheByIdOrTmpId");
-}
-
-std::vector<Branche*>& PrivateBranche::getSubBranches() {
-	throw UnavailableOperationException("Private branche need a distant for operation getSubBranches");
-}
-
-std::vector<Valeur*>& PrivateBranche::getValeurs() {
-	throw UnavailableOperationException("Private branche need a distant for operation getValeurs");
-}
-
-Valeur* PrivateBranche::getValeurByIdOrTmpId(int valeurId) const {
-	throw UnavailableOperationException("Private branche need a distant for operation getValeurByIdOrTmpId");
-}
-
-Branche* PrivateBranche::acceptTmpSubBranche(int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException) {
-	throw UnavailableOperationException("Private branche need a distant for operation acceptTmpSubBranche");
-}
-
-Valeur* PrivateBranche::acceptTmpValeur(int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException) {
-	throw UnavailableOperationException("Private branche need a distant for operation acceptTmpValeur");
-}
-
-Branche* PrivateBranche::addSubBranche(int brancheId, const std::string& brancheName, int brancheRevision) {
-	throw UnavailableOperationException("Private branche need a distant for operation addSubBranche");
-}
-
-const Valeur* PrivateBranche::addValeur(int valeurId, const std::string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur) {
-	throw UnavailableOperationException("Private branche need a distant for operation addValeur");
 }

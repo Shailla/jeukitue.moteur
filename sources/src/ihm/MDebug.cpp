@@ -56,7 +56,7 @@ const char *item_menu_config_debug[] =
 
 void retourMenuConfigDebug( void *arg)
 {
-TRACE().debug("retourMenuConfigDebug(var=%x)", arg);
+LOGDEBUG(("retourMenuConfigDebug(var=%x)", arg));
 	lanceMenuConfig( 0 );
 }
 
@@ -65,7 +65,7 @@ CMenu MenuConfigDebug( "DEBUG", item_menu_config_debug, 5,
 
 void lanceMenuConfigDebug(void *arg)
 {
-TRACE().debug("lanceMenuConfigDebug(var=%x)", arg);
+LOGDEBUG(("lanceMenuConfigDebug(var=%x)", arg));
 	if( Config.Debug.bSonPerformances )
 		MenuConfigDebug.add_ItemsDroits( 0, "Oui" );
 	else

@@ -100,8 +100,8 @@ void Test::log(const char* message, int line) {
 
 	msg << endl << "LOG [" << SDL_GetTicks() << " ms - " << line << "] " << message << flush;
 
-	cout << msg.str();
-	TRACE().info(msg.str().c_str());
+	cout << msg.str() << flush;
+	LOGINFO((msg.str().c_str()));
 }
 
 void Test::log(const string& message, int line) {
@@ -109,8 +109,8 @@ void Test::log(const string& message, int line) {
 
 	msg << endl << "LOG [" << SDL_GetTicks() << " ms - " << line << "] " << message << flush;
 
-	cout << msg.str();
-	TRACE().info(msg.str().c_str());
+	cout << msg.str() << flush;
+	LOGINFO((msg.str().c_str()));
 }
 
 void Test::log(const ostringstream& message, int line) {
@@ -118,8 +118,8 @@ void Test::log(const ostringstream& message, int line) {
 
 	msg << endl << "LOG [" << SDL_GetTicks() << " ms - " << line << "] " << message.str() << flush;
 
-	cout << msg.str();
-	TRACE().info(msg.str().c_str());
+	cout << msg.str() << flush;
+	LOGINFO((msg.str().c_str()));
 }
 
 } /* namespace JktTest */

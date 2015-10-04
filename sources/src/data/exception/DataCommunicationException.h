@@ -13,8 +13,8 @@
 #include "exception/JktException.h"
 
 class DataCommunicationException : public JktException {
-public:
 	DataCommunicationException();
+public:
 	DataCommunicationException(const std::string& message);
 	virtual ~DataCommunicationException();
 };

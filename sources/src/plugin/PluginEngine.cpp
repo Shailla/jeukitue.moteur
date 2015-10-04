@@ -157,7 +157,7 @@ PluginContext* PluginEngine::getGlobalPluginContext(const lua_State* L) {
 void PluginEngine::activateDefaultGlobalPlugins() {
 	vector<string>::iterator iter;
 
-	TRACE().info("ACTIVATION DES PLUGINS PAR DEFAUT");
+	LOGINFO(("ACTIVATION DES PLUGINS PAR DEFAUT"));
 
 	for(iter = Config.Plugin._defaultPluging.begin() ; iter !=Config.Plugin._defaultPluging.end() ; iter++) {
 		activateGlobalPlugin(*iter);
@@ -183,6 +183,15 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	/* *******************************************************************************
 	 * Déclaration des fonctions et classes mises à disposition dans les plugins
 	 * ******************************************************************************/
+
+	// Log date de lancement du plugin
+	time_t t = time(0);
+	struct tm* now = localtime(&t);
+	ostringstream date;
+	date << "--- " << now->tm_mday << "/" << (now->tm_mon+1) << "/" << (now->tm_year+1900)
+			<< " "
+			<< now->tm_hour << ":" << now->tm_min << ":" << now->tm_sec << " ---";
+	pluginContext->logInfo(date.str());
 
 	pluginContext->logInfo("Consolidation du contexte...");
 
@@ -285,7 +294,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	 * Exécution de la méthode d'initialisation du plugin ("onLoad")
 	 * ******************************************************************************/
 
-	pluginContext->logInfo("Exécution de la fonction onLoad du script...");
+	pluginContext->logInfo("Recherche de la fonction onLoad du script...");
 
 	lua_getglobal(L, "onLoad");
 
@@ -314,7 +323,7 @@ void PluginEngine::activateGlobalPlugin(const string& pluginName) {
 	PluginContext* pluginContext = getGlobalPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
-		TRACE().error("Le plugin '%s' est déjà actif", pluginName.c_str());
+		LOGERROR(("Le plugin '%s' est déjà actif", pluginName.c_str()));
 		pluginContext->logError("Tentative d'activation du plugin alors qu'il est déjà actif");
 		return;
 	}
@@ -324,7 +333,7 @@ void PluginEngine::activateGlobalPlugin(const string& pluginName) {
 	 * *****************************************************************************/
 
 	const string pluginDirectory = string(PLUGINS_DIRECTORY).append(pluginName).append("/");
-	TRACE().info("Activation of plugin : '%s' in '%s'", pluginName.c_str(), pluginDirectory.c_str());
+	LOGINFO(("Activation of plugin : '%s' in '%s'", pluginName.c_str(), pluginDirectory.c_str()));
 
 	pluginContext = activatePlugin("main", pluginDirectory);
 
@@ -359,7 +368,7 @@ void PluginEngine::activateMapPlugin(const string& pluginName, const string plug
 	PluginContext* pluginContext = getMapPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
-		TRACE().error("Le plugin de Map '%s' est déjà actif", pluginName.c_str());
+		LOGERROR(("Le plugin de Map '%s' est déjà actif", pluginName.c_str()));
 		pluginContext->logError("Tentative d'activation du plugin de Map alors qu'il est déjà actif");
 		return;
 	}
@@ -368,7 +377,7 @@ void PluginEngine::activateMapPlugin(const string& pluginName, const string plug
 	 * Initialisation des variables
 	 * *****************************************************************************/
 
-	TRACE().info("Activation of Map plugin : '%s' in '%s'", pluginName.c_str(), pluginDirectory.c_str());
+	LOGINFO(("Activation of Map plugin : '%s' in '%s'", pluginName.c_str(), pluginDirectory.c_str()));
 
 	pluginContext = activatePlugin(pluginName, pluginDirectory);
 
@@ -412,7 +421,7 @@ void PluginEngine::deactivateMapPlugins() {
 			delete pluginContext;
 		}
 		else {
-			TRACE().error("Le plugin de Map ne peut pas être désactivé, il n'est pas actif '%s'", itName->first.c_str());
+			LOGERROR(("Le plugin de Map ne peut pas être désactivé, il n'est pas actif '%s'", itName->first.c_str()));
 		}
 	}
 
@@ -440,7 +449,7 @@ void PluginEngine::deactivateGlobalPlugin(const string& pluginName) {
 		delete pluginContext;
 	}
 	else {
-		TRACE().error("Le plugin ne peut pas être désactivé, il n'est pas actif '%s'", pluginName.c_str());
+		LOGERROR(("Le plugin ne peut pas être désactivé, il n'est pas actif '%s'", pluginName.c_str()));
 	}
 }
 

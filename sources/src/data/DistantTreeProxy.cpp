@@ -28,6 +28,7 @@ using namespace std;
 
 DistantTreeProxy::DistantTreeProxy(Interlocutor2* interlocutor) {
 	_interlocutor = interlocutor;
+	_updateServerToClientTime = SDL_GetTicks();;
 }
 
 DistantTreeProxy::~DistantTreeProxy() {
@@ -113,7 +114,7 @@ void DistantTreeProxy::collecteChangementsInServerTree(vector<Changement*>& chan
 
 			// NOUVELLE VALEUR : valeur présente sur le serveur mais dont le client n'a pas connaissance
 			if(marqueur->getConfirmedRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
-				changement = new AddValeurFromServerChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision(), valeur->getValeurName(), valeur->getValeurData());
+				changement = new AddValeurFromServerChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getUpdateMode(), valeur->getRevision(), valeur->getValeurName(), valeur->getValeurData());
 			}
 			// VALEUR MODIFIEE : valeur présente sur le serveur dont le client a connaissance mais qui a changé
 			else if(marqueur->getConfirmedRevision() != valeur->getRevision()) {
@@ -126,4 +127,12 @@ void DistantTreeProxy::collecteChangementsInServerTree(vector<Changement*>& chan
 			changements.push_back(changement);
 		}
 	}
+}
+
+Uint32 DistantTreeProxy::getUpdateServerToClientTime() const {
+	return _updateServerToClientTime;
+}
+
+void DistantTreeProxy::setUpdateServerToClientTime(Uint32 updateServerToClientTime) {
+	_updateServerToClientTime = updateServerToClientTime;
 }

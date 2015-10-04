@@ -93,7 +93,7 @@ NotConnectedInterlocutor2* ServerUdpInterlocutor::connect() throw(ConnectionFail
 		log(__LINE__, __FILE__, "Les processus sont lances");
 	}
 	catch(ConnectionFailedException& exception) {
-		TRACE().error("ConnectionFailedException : %s", exception.what());
+		LOGERROR(("ConnectionFailedException : %s", exception.what()));
 
 		close();
 
@@ -401,7 +401,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 		}
 	}
 
-	TRACE().info("Server says : Stop sending process");
+	LOGINFO(("Server says : Stop sending process"));
 }
 
 void ServerUdpInterlocutor::receiveOnePacket() {

@@ -25,12 +25,14 @@ using namespace JktUtils;
 namespace JktTest {
 
 DataTreeTest::DataTreeTest() :
-		Test("DataTreeTest"),
-		interlocutorClient0(SDL_CreateCond(), SDL_CreateMutex()),
-		interlocutorClient1(SDL_CreateCond(), SDL_CreateMutex()),
-		serverTree(),
-		client0Tree("client-0", &interlocutorClient0),
-		client1Tree("client-1", &interlocutorClient1) {
+				Test("DataTreeTest"),
+				interlocutorClient0(SDL_CreateCond(), SDL_CreateMutex()),
+				interlocutorClient1(SDL_CreateCond(), SDL_CreateMutex()),
+				serverTree(),
+				client0Tree("client-0", &interlocutorClient0),
+				client1Tree("client-1", &interlocutorClient1),
+				distantClient0(0),
+				distantClient1(0){
 }
 
 DataTreeTest::~DataTreeTest() {
@@ -137,8 +139,8 @@ void DataTreeTest::serverTests() {
 	log("CREATION DE DONNEES SUR LE SERVEUR", __LINE__);
 
 	{
-		Branche* branche0Tmp = serverTree.createBranche(rootFullId, branche0ServerName);
-		Branche* branche0 = serverTree.getBranche(branche0ServerFullId);
+		Branche* branche0Tmp = serverTree.createBranche(0, rootFullId, branche0ServerName);
+		Branche* branche0 = serverTree.getBranche(0, branche0ServerFullId);
 
 		ASSERT_EQUAL(branche0Tmp, branche0, "La branche créée et celle lue devraient être les mêmes");
 		ASSERT_EQUAL(branche0ServerName, branche0->getBrancheName(), "Le nom de la branche 0 est incorrect");
@@ -152,8 +154,8 @@ void DataTreeTest::serverTests() {
 
 	// Valeur string
 	{
-		valeurServeurString = (ValeurString*)serverTree.createValeur(branche0ServerFullId, valeurStringServerName, AnyData(valeurStringServerValue));
-		ValeurString* valeurString = (ValeurString*)serverTree.getValeur(branche0ServerFullId, valeurStringServerId);
+		valeurServeurString = (ValeurString*)serverTree.createValeur(0, ANY, branche0ServerFullId, valeurStringServerName, AnyData(valeurStringServerValue));
+		ValeurString* valeurString = (ValeurString*)serverTree.getValeur(0, branche0ServerFullId, valeurStringServerId);
 
 		ASSERT_EQUAL(valeurServeurString, valeurString, "La valeur créée et celle lue devraient être les mêmes");
 		ASSERT_EQUAL(valeurStringServerName, valeurString->getValeurName(), "Le nom de la valeur string est incorrect");
@@ -163,8 +165,8 @@ void DataTreeTest::serverTests() {
 
 	// Valeur int
 	{
-		valeurServeurInt = (ValeurInt*)serverTree.createValeur(branche0ServerFullId, valeurIntServerName, AnyData(valeurIntServerValue));
-		ValeurInt* valeurInt = (ValeurInt*)serverTree.getValeur(branche0ServerFullId, valeurIntServerId);
+		valeurServeurInt = (ValeurInt*)serverTree.createValeur(0, ANY, branche0ServerFullId, valeurIntServerName, AnyData(valeurIntServerValue));
+		ValeurInt* valeurInt = (ValeurInt*)serverTree.getValeur(0, branche0ServerFullId, valeurIntServerId);
 
 		ASSERT_EQUAL(valeurServeurInt, valeurInt, "La valeur créée et celle lue devraient être les mêmes");
 		ASSERT_EQUAL(valeurIntServerName, valeurInt->getValeurName(), "Le nom de la valeur string est incorrect");
@@ -174,8 +176,8 @@ void DataTreeTest::serverTests() {
 
 	// Valeur float
 	{
-		valeurServeurFloat = (ValeurFloat*)serverTree.createValeur(branche0ServerFullId, valeurFloatServerName, AnyData(valeurFloatServerValue));
-		ValeurFloat* valeurFloat = (ValeurFloat*) serverTree.getValeur(branche0ServerFullId, valeurFloatServerId);
+		valeurServeurFloat = (ValeurFloat*)serverTree.createValeur(0, ANY, branche0ServerFullId, valeurFloatServerName, AnyData(valeurFloatServerValue));
+		ValeurFloat* valeurFloat = (ValeurFloat*) serverTree.getValeur(0, branche0ServerFullId, valeurFloatServerId);
 
 		ASSERT_EQUAL(valeurServeurFloat, valeurFloat, "La valeur créée et celle lue devraient être les mêmes");
 		ASSERT_EQUAL(valeurFloatServerName, valeurFloat->getValeurName(), "Le nom de la valeur string est incorrect");
@@ -201,7 +203,7 @@ void DataTreeTest::clientTests() {
 	ASSERT_EQUAL(0, root.getRevision(), "La révision initiale d'une branche devrait être nulle");
 
 	// Connexion à l'arbre serveur
-	serverTree.addDistant(&interlocutorClient0);
+	distantClient0 = serverTree.addDistant(&interlocutorClient0);
 
 	// Vérifie le nombre de marqueurs créés pour le client (nombre de marqueurs = 1 par branche et 1 par valeur)
 	const std::vector<DistantTreeProxy*> distants = serverTree.getDistants();
@@ -277,7 +279,7 @@ void DataTreeTest::clientTests() {
 	 * ***************************************************************************/
 
 	{
-		Branche* branche0 = client0Tree.getBranche(branche0ServerFullId);
+		Branche* branche0 = client0Tree.getBranche(0, branche0ServerFullId);
 
 		ASSERT_EQUAL(branche0ServerName, branche0->getBrancheName(), "Le nom de la branche 0 est incorrect");
 		ASSERT_EQUAL(0, branche0->getRevision(), "La révision initiale d'une branche devrait être nulle");
@@ -290,7 +292,7 @@ void DataTreeTest::clientTests() {
 
 	// Valeur string
 	{
-		ValeurString* valeurString = (ValeurString*)client0Tree.getValeur(branche0ServerFullId, valeurStringServerId);
+		ValeurString* valeurString = (ValeurString*)client0Tree.getValeur(0, branche0ServerFullId, valeurStringServerId);
 
 		ASSERT_EQUAL(valeurStringServerName, valeurString->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurString->getRevision(), "La révision initiale d'une valeur devrait être nulle");
@@ -299,7 +301,7 @@ void DataTreeTest::clientTests() {
 
 	// Valeur int
 	{
-		ValeurInt* valeurInt = (ValeurInt*)client0Tree.getValeur(branche0ServerFullId, valeurIntServerId);
+		ValeurInt* valeurInt = (ValeurInt*)client0Tree.getValeur(0, branche0ServerFullId, valeurIntServerId);
 
 		ASSERT_EQUAL(valeurIntServerName, valeurInt->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurInt->getRevision(), "La révision initiale d'une valeur devrait être nulle");
@@ -308,7 +310,7 @@ void DataTreeTest::clientTests() {
 
 	// Valeur float
 	{
-		ValeurFloat* valeurFloat = (ValeurFloat*)client0Tree.getValeur(branche0ServerFullId, valeurFloatServerId);
+		ValeurFloat* valeurFloat = (ValeurFloat*)client0Tree.getValeur(0, branche0ServerFullId, valeurFloatServerId);
 
 		ASSERT_EQUAL(valeurFloatServerName, valeurFloat->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurFloat->getRevision(), "La révision initiale d'une valeur devrait être nulle");
@@ -367,16 +369,16 @@ void DataTreeTest::clientTests() {
 
 	// Vérifie si les valeurs ont bien été mises à jour côté client 0
 	{
-		ValeurString* valeurString = (ValeurString*)client0Tree.getValeur(branche0ServerFullId, valeurStringServerId);
+		ValeurString* valeurString = (ValeurString*)client0Tree.getValeur(0, branche0ServerFullId, valeurStringServerId);
 		cout << endl << "-->" << valeurString->getValeurName();
 		ASSERT_EQUAL(1, valeurString->getRevision(), "La révision aurait du être incrémentée");
 		ASSERT_EQUAL(newValeurServeurStringValue, valeurString->getValeur(), "La valeur de la valeur est fausse ou  n'a pas été mise à jour sur le client 0");
 
-		ValeurInt* valeurInt = (ValeurInt*)client0Tree.getValeur(branche0ServerFullId, valeurIntServerId);
+		ValeurInt* valeurInt = (ValeurInt*)client0Tree.getValeur(0, branche0ServerFullId, valeurIntServerId);
 		ASSERT_EQUAL(1, valeurInt->getRevision(), "La révision aurait du être incrémentée");
 		ASSERT_EQUAL(newValeurServeurIntValue, valeurInt->getValeur(), "La valeur de la valeur est fausse ou  n'a pas été mise à jour sur le client 0");
 
-		ValeurFloat* valeurFloat = (ValeurFloat*)client0Tree.getValeur(branche0ServerFullId, valeurFloatServerId);
+		ValeurFloat* valeurFloat = (ValeurFloat*)client0Tree.getValeur(0, branche0ServerFullId, valeurFloatServerId);
 		ASSERT_EQUAL(1, valeurFloat->getRevision(), "La révision aurait du être incrémentée");
 		ASSERT_EQUAL(newValeurServeurFloatValue, valeurFloat->getValeur(), "La valeur de la valeur est fausse ou  n'a pas été mise à jour sur le client 0");
 	}
@@ -400,25 +402,25 @@ void DataTreeTest::clientTests() {
 	log("CREATION DE DONNEES SUR LE CLIENT", __LINE__);
 
 	// Ajout branche 0
-	Branche* branche0Client0 = client0Tree.createBranche(rootFullId, branche0Client0Name);
+	Branche* branche0Client0 = client0Tree.createBranche(0, rootFullId, branche0Client0Name);
 
 	// Ajout valeur 0
-	ValeurInt* valeur0Client0 = (ValeurInt*)client0Tree.createValeur(branche0Client0->getBrancheFullIdOrTmpId(), valeur0Client0Name, AnyData(valeur0Client0Value));
+	ValeurInt* valeur0Client0 = (ValeurInt*)client0Tree.createValeur(0, ANY, branche0Client0->getBrancheFullIdOrTmpId(), valeur0Client0Name, AnyData(valeur0Client0Value));
 
 	// Ajout branche 1
-	Branche* branche1Client0 = client0Tree.createBranche(branche0Client0->getBrancheFullIdOrTmpId(), branche1Client0Name);
+	Branche* branche1Client0 = client0Tree.createBranche(0, branche0Client0->getBrancheFullIdOrTmpId(), branche1Client0Name);
 
 	// Ajout valeur 1
-	ValeurInt* valeur1Client0 = (ValeurInt*)client0Tree.createValeur(branche1Client0->getBrancheFullIdOrTmpId(), valeur1Client0Name, AnyData(valeur1Client0Value));
+	ValeurInt* valeur1Client0 = (ValeurInt*)client0Tree.createValeur(0, ANY, branche1Client0->getBrancheFullIdOrTmpId(), valeur1Client0Name, AnyData(valeur1Client0Value));
 
 	// Ajout branche 2
-	Branche* branche2Client0 = client0Tree.createBranche(branche0Client0->getBrancheFullIdOrTmpId(), branche2Client0Name);
+	Branche* branche2Client0 = client0Tree.createBranche(0, branche0Client0->getBrancheFullIdOrTmpId(), branche2Client0Name);
 
 	// Ajout valeur 2
-	ValeurInt* valeur2Client0 = (ValeurInt*)client0Tree.createValeur(branche2Client0->getBrancheFullIdOrTmpId(), valeur2Client0Name, AnyData(valeur2Client0Value));
+	ValeurInt* valeur2Client0 = (ValeurInt*)client0Tree.createValeur(0, ANY, branche2Client0->getBrancheFullIdOrTmpId(), valeur2Client0Name, AnyData(valeur2Client0Value));
 
 	// Ajout valeur 3
-	ValeurInt* valeur3Client0 = (ValeurInt*)client0Tree.createValeur(branche2Client0->getBrancheFullIdOrTmpId(), valeur3Client0Name, AnyData(valeur3Client0Value));
+	ValeurInt* valeur3Client0 = (ValeurInt*)client0Tree.createValeur(0, ANY, branche2Client0->getBrancheFullIdOrTmpId(), valeur3Client0Name, AnyData(valeur3Client0Value));
 
 	{
 		ostringstream arbre;
@@ -477,41 +479,41 @@ void DataTreeTest::clientTests() {
 	 * ***************************************************************************/
 
 	// Branche 0
-	Branche* branche0Client0S = serverTree.getBranche(branche0Client0FullId);
+	Branche* branche0Client0S = serverTree.getBranche(0, branche0Client0FullId);
 	ASSERT_NOT_NULL(branche0Client0S, "Le serveur n'a pas recu la branche");
 	ASSERT_EQUAL(branche0Client0Name, branche0Client0S->getBrancheName(), "La branche recue par le serveur est mal nommée");
 
 	// Valeur 0
-	ValeurInt* valeur0Client0S = (ValeurInt*)serverTree.getValeur(branche0Client0FullId, valeur0Client0Id);
+	ValeurInt* valeur0Client0S = (ValeurInt*)serverTree.getValeur(0, branche0Client0FullId, valeur0Client0Id);
 	ASSERT_NOT_NULL(valeur0Client0S, "Le serveur n'a pas recu la valeur");
 	ASSERT_EQUAL(valeur0Client0Name, valeur0Client0S->getValeurName(), "La valeur recue par le serveur est mal nommée");
 	ASSERT_EQUAL(valeur0Client0Value, valeur0Client0S->getValeur(), "La valeur recue par le serveur est mal nommée");
 
 	// Branche 1
-	Branche* branche1Client0S = serverTree.getBranche(branche1Client0FullId);
+	Branche* branche1Client0S = serverTree.getBranche(0, branche1Client0FullId);
 	ASSERT_NOT_NULL(branche1Client0S, "Le serveur n'a pas recu la branche");
-//	logDataTreeElementId("Identifiant", branche1Client0S->getBrancheFullId());
+	//	logDataTreeElementId("Identifiant", branche1Client0S->getBrancheFullId());
 	ASSERT_EQUAL(branche1Client0Name, branche1Client0S->getBrancheName(), "La branche recue par le serveur est mal nommée");
 
 	// Valeur 1
-	ValeurInt* valeur1Client0S = (ValeurInt*)serverTree.getValeur(branche1Client0FullId, valeur1Client0Id);
+	ValeurInt* valeur1Client0S = (ValeurInt*)serverTree.getValeur(0, branche1Client0FullId, valeur1Client0Id);
 	ASSERT_NOT_NULL(valeur1Client0S, "Le serveur n'a pas recu la valeur");
 	ASSERT_EQUAL(valeur1Client0Name, valeur1Client0S->getValeurName(), "La valeur recue par le serveur est mal nommée");
 	ASSERT_EQUAL(valeur1Client0Value, valeur1Client0S->getValeur(), "La valeur recue par le serveur est mal nommée");
 
 	// Branche 2
-	Branche* branche2Client0S = serverTree.getBranche(branche2Client0FullId);
+	Branche* branche2Client0S = serverTree.getBranche(0, branche2Client0FullId);
 	ASSERT_NOT_NULL(branche2Client0S, "Le serveur n'a pas recu la branche");
 	ASSERT_EQUAL(branche2Client0Name, branche2Client0S->getBrancheName(), "La branche recue par le serveur est mal nommée");
 
 	// Valeur 2
-	ValeurInt* valeur2Client0S = (ValeurInt*)serverTree.getValeur(branche2Client0FullId, valeur2Client0Id);
+	ValeurInt* valeur2Client0S = (ValeurInt*)serverTree.getValeur(0, branche2Client0FullId, valeur2Client0Id);
 	ASSERT_NOT_NULL(valeur2Client0S, "Le serveur n'a pas recu la valeur");
 	ASSERT_EQUAL(valeur2Client0Name, valeur2Client0S->getValeurName(), "La valeur recue par le serveur est mal nommée");
 	ASSERT_EQUAL(valeur2Client0Value, valeur2Client0S->getValeur(), "La valeur recue par le serveur est mal nommée");
 
 	// Valeur 3
-	ValeurInt* valeur3Client0S = (ValeurInt*)serverTree.getValeur(branche2Client0FullId, valeur3Client0Id);
+	ValeurInt* valeur3Client0S = (ValeurInt*)serverTree.getValeur(0, branche2Client0FullId, valeur3Client0Id);
 	ASSERT_NOT_NULL(valeur3Client0S, "Le serveur n'a pas recu la valeur");
 	ASSERT_EQUAL(valeur3Client0Name, valeur3Client0S->getValeurName(), "La valeur recue par le serveur est mal nommée");
 	ASSERT_EQUAL(valeur3Client0Value, valeur3Client0S->getValeur(), "La valeur recue par le serveur est mal nommée");
@@ -567,7 +569,7 @@ void DataTreeTest::multiClientsTests() {
 	interlocutorClient1.setName("proxyClient1");
 
 	// Connexion à l'arbre serveur
-	serverTree.addDistant(&interlocutorClient1);
+	distantClient1 = serverTree.addDistant(&interlocutorClient1);
 
 	log("DIFFUSION DES DONNEES DU SERVEUR VERS CLIENT-1", __LINE__);
 
@@ -598,11 +600,11 @@ void DataTreeTest::multiClientsTests() {
 
 	log("CREATION DE DONNEES PAR CLIENT 1", __LINE__);
 
-	client1Tree.createValeur(branche0ServerFullId, "valeur-0-client1", AnyData(41));
-	client1Tree.createValeur(branche0ServerFullId, "valeur-1-client1", AnyData("Yoyo"));
-	client1Tree.createValeur(branche2Client0FullId, "valeur-2-client1", AnyData(1.0235f));
-	Branche* branche0Client1 = client1Tree.createBranche(branche2Client0FullId, "branche-0-client1");
-	client1Tree.createValeur(branche0Client1->getBrancheFullIdOrTmpId(), "valeur-3-client1", AnyData("Hummm"));
+	client1Tree.createValeur(0, ANY, branche0ServerFullId, "valeur-0-client1", AnyData(41));
+	client1Tree.createValeur(0, ANY, branche0ServerFullId, "valeur-1-client1", AnyData("Yoyo"));
+	client1Tree.createValeur(0, ANY, branche2Client0FullId, "valeur-2-client1", AnyData(1.0235f));
+	Branche* branche0Client1 = client1Tree.createBranche(0, branche2Client0FullId, "branche-0-client1");
+	client1Tree.createValeur(0, ANY, branche0Client1->getBrancheFullIdOrTmpId(), "valeur-3-client1", AnyData("Hummm"));
 
 
 	// La nouvelle valeur de client 1 descend vers le serveur
@@ -647,13 +649,13 @@ void DataTreeTest::multiClientsTests() {
 
 	log("CREATION DE DONNEES PAR 2 CLIENTS SIMULTANEMENT", __LINE__);
 
-	client0Tree.createValeur(branche0ServerFullId, "valeur-10-client0", AnyData(44));
-	client1Tree.createValeur(branche0ServerFullId, "valeur-11-client1", AnyData(45));
+	client0Tree.createValeur(0, ANY, branche0ServerFullId, "valeur-10-client0", AnyData(44));
+	client1Tree.createValeur(0, ANY, branche0ServerFullId, "valeur-11-client1", AnyData(45));
 
-	Branche* branche12Client0 = client0Tree.createBranche(branche2Client0FullId, "branche-12-client0");
-	client0Tree.createValeur(branche12Client0->getBrancheFullIdOrTmpId(), "valeur-12-client0", AnyData("Minou"));
-	Branche* branche13Client1 = client1Tree.createBranche(branche2Client0FullId, "branche-13-client1");
-	client1Tree.createValeur(branche13Client1->getBrancheFullIdOrTmpId(), "valeur-13-client1", AnyData("Poilu"));
+	Branche* branche12Client0 = client0Tree.createBranche(0, branche2Client0FullId, "branche-12-client0");
+	client0Tree.createValeur(0, ANY, branche12Client0->getBrancheFullIdOrTmpId(), "valeur-12-client0", AnyData("Minou"));
+	Branche* branche13Client1 = client1Tree.createBranche(0, branche2Client0FullId, "branche-13-client1");
+	client1Tree.createValeur(0, ANY, branche13Client1->getBrancheFullIdOrTmpId(), "valeur-13-client1", AnyData("Poilu"));
 
 	// Les nouvelles données de client 1 et  client 2 descendent vers le serveur
 	log("Envoi des données par les clients", __LINE__);
@@ -699,10 +701,19 @@ void DataTreeTest::multiClientsTests() {
 }
 
 void DataTreeTest::privateTreeTest() {
-	log("CREATION BRANCHE DE DONNEES PRIVEES", __LINE__);
+	log("CREATION D'UNE BRANCHE PRIVEE", __LINE__);
 
-	PrivateBranche* privateBranche = serverTree.createPrivateBranche(rootFullId, branche1ServerName);
-	serverTree.createValeur(privateBranche->getBrancheFullId(), "Private value 1 client 0", AnyData("Toutcru"));
+	PrivateBranche* privateBranche = (PrivateBranche*)serverTree.createPrivateBranche(rootFullId, branche1ServerName);
+
+
+	/* **********************************************************************************************************
+	 * Création de données privées sur Client 0
+	 * *********************************************************************************************************/
+
+	log("CREATION DE DONNEES SUR LA BRANCHE PRIVEE DE CLIENT 0", __LINE__);
+
+	Valeur* privClient0Value = serverTree.createValeur(distantClient0, ANY, privateBranche->getBrancheFullId(), "Client 0 - pr val", AnyData("Toutcru"));
+	Branche* privClient0Br = serverTree.createBranche(distantClient0, privateBranche->getBrancheFullId(), "Client 0 - pr br");
 
 	{
 		ostringstream arbre;
@@ -710,6 +721,128 @@ void DataTreeTest::privateTreeTest() {
 		serverTree.getRoot().print(arbre, true, 0);
 		log(arbre, __LINE__);
 	}
+
+
+	log("DIFFUSION DES DONNEES DU SERVEUR VERS CLIENT-0 et CLIENT-1", __LINE__);
+
+	serverTree.diffuseChangementsToClients();
+
+	echangeDonneesClientServeur(__LINE__, interlocutorClient0);
+	client0Tree.receiveChangementsFromServer();
+	client0Tree.diffuseChangementsToServer();
+	echangeDonneesClientServeur(__LINE__, interlocutorClient0);
+
+	echangeDonneesClientServeur(__LINE__, interlocutorClient1);
+	client1Tree.receiveChangementsFromServer();
+	client1Tree.diffuseChangementsToServer();
+	echangeDonneesClientServeur(__LINE__, interlocutorClient1);
+
+	serverTree.receiveChangementsFromClients();
+
+	// Les arbres doivent désormais être stabilisés
+	checkSynchronisationClientServeur(__LINE__, client0Tree);
+	checkSynchronisationClientServeur(__LINE__, client1Tree);
+
+	{
+		ostringstream arbre;
+		arbre << "ARBRE CLIENT 0 :";
+		client0Tree.getRoot().print(arbre, true, 0);
+		log(arbre, __LINE__);
+	}
+
+	{
+		ostringstream arbre;
+		arbre << "ARBRE CLIENT 1 :";
+		client1Tree.getRoot().print(arbre, true, 0);
+		log(arbre, __LINE__);
+	}
+
+	// Vérifications sur Client 0
+	ASSERT_EQUAL(DONNEE_PRIVATE, client0Tree.getBranche(0, privateBranche->getBrancheFullId())->getDonneeType(), "La branche devrait être privée côté client comme côté serveur");
+	ASSERT_EQUAL(DONNEE_PRIVATE_SUB, client0Tree.getBranche(0, privClient0Br->getBrancheFullId())->getDonneeType(), "La branche devrait être sub-privée côté client comme côté serveur");
+	ASSERT_EQUAL(DONNEE_PRIVATE_SUB, client0Tree.getValeur(0, privClient0Value->getBrancheId(), privClient0Value->getValeurId())->getDonneeType(), "La branche devrait être sub-privée côté client comme côté serveur");
+
+	// Vérifications sur Client 1
+	ASSERT_EQUAL(DONNEE_PRIVATE, client1Tree.getBranche(0, privateBranche->getBrancheFullId())->getDonneeType(), "La branche devrait être privée côté client comme côté serveur");
+	try {
+		ASSERT_EQUAL(DONNEE_PRIVATE_SUB, client1Tree.getBranche(0, privClient0Br->getBrancheFullId())->getDonneeType(), "La branche devrait être sub-privée côté client comme côté serveur");
+		ASSERT_TRUE(false, "This branche shouldn't exist on client 1 but only on client 0");
+	}
+	catch(NotExistingBrancheException& exception) {
+		// All right
+	}
+	try {
+		ASSERT_EQUAL(DONNEE_PRIVATE_SUB, client1Tree.getValeur(0, privClient0Value->getBrancheId(), privClient0Value->getValeurId())->getDonneeType(), "La branche devrait être sub-privée côté client comme côté serveur");
+		ASSERT_TRUE(false, "This value shouldn't exist on client 1 but only on client 0");
+	}
+	catch(NotExistingValeurException& exception) {
+		// All right
+	}
+
+
+	/* **********************************************************************************************************
+	 * Création de données privées sur Client 1
+	 * *********************************************************************************************************/
+
+	log("CREATION DE DONNEES SUR LA BRANCHE PRIVEE DE CLIENT 1", __LINE__);
+	Valeur* privClient1Value1 = serverTree.createValeur(distantClient1, ANY, privateBranche->getBrancheFullId(), "Private value 1 client 1", AnyData("Vache"));
+	Branche* privClient1Br1 = serverTree.createBranche(distantClient1, privateBranche->getBrancheFullId(), "Private branche 1 client 1");
+	Valeur* privClient1Value2 = serverTree.createValeur(distantClient1, ANY, privClient1Br1->getBrancheFullId(), "Private value 2 client 1", AnyData("Panda"));
+	Branche* privClient1Br2 = serverTree.createBranche(distantClient1, privClient1Br1->getBrancheFullId(), "Private branche 2 client 1");
+
+	{
+		ostringstream arbre;
+		arbre << "ARBRE SERVER :";
+		serverTree.getRoot().print(arbre, true, 0);
+		log(arbre, __LINE__);
+	}
+
+
+	log("DIFFUSION DES DONNEES DU SERVEUR VERS CLIENT-0 et CLIENT-1", __LINE__);
+
+	serverTree.diffuseChangementsToClients();
+
+	echangeDonneesClientServeur(__LINE__, interlocutorClient0);
+	client0Tree.receiveChangementsFromServer();
+	client0Tree.diffuseChangementsToServer();
+	echangeDonneesClientServeur(__LINE__, interlocutorClient0);
+
+	echangeDonneesClientServeur(__LINE__, interlocutorClient1);
+	client1Tree.receiveChangementsFromServer();
+	client1Tree.diffuseChangementsToServer();
+	echangeDonneesClientServeur(__LINE__, interlocutorClient1);
+
+	serverTree.receiveChangementsFromClients();
+
+	// Les arbres doivent désormais être stabilisés
+	checkSynchronisationClientServeur(__LINE__, client0Tree);
+	checkSynchronisationClientServeur(__LINE__, client1Tree);
+
+	{
+		ostringstream arbre;
+		arbre << "ARBRE CLIENT 0 :";
+		client0Tree.getRoot().print(arbre, true, 0);
+		log(arbre, __LINE__);
+	}
+
+	{
+		ostringstream arbre;
+		arbre << "ARBRE CLIENT 1 :";
+		client1Tree.getRoot().print(arbre, true, 0);
+		log(arbre, __LINE__);
+	}
+
+	// Vérifications sur Client 0
+	ASSERT_EQUAL(DONNEE_PRIVATE, client0Tree.getBranche(0, privateBranche->getBrancheFullId())->getDonneeType(), "La branche devrait être privée côté client comme côté serveur");
+	ASSERT_EQUAL(DONNEE_PRIVATE_SUB, client0Tree.getBranche(0, privClient0Br->getBrancheFullId())->getDonneeType(), "La branche devrait être sub-privée côté client comme côté serveur");
+	ASSERT_EQUAL(DONNEE_PRIVATE_SUB, client0Tree.getValeur(0, privClient0Value->getBrancheId(), privClient0Value->getValeurId())->getDonneeType(), "La valeur devrait être sub-privée côté client comme côté serveur");
+
+	// Vérifications sur Client 1
+	ASSERT_EQUAL(DONNEE_PRIVATE, client1Tree.getBranche(0, privateBranche->getBrancheFullId())->getDonneeType(), "La branche devrait être privée côté client comme côté serveur");
+	ASSERT_EQUAL(DONNEE_PRIVATE_SUB, client1Tree.getBranche(0, privClient1Br1->getBrancheFullId())->getDonneeType(), "La branche devrait être sub-privée côté client comme côté serveur");
+	ASSERT_EQUAL(DONNEE_PRIVATE_SUB, client1Tree.getValeur(0, privClient1Value1->getBrancheId(), privClient1Value1->getValeurId())->getDonneeType(), "La valeur devrait être sub-privée côté client comme côté serveur");
+	ASSERT_EQUAL(DONNEE_PRIVATE_SUB, client1Tree.getValeur(0, privClient1Value2->getBrancheId(), privClient1Value2->getValeurId())->getDonneeType(), "La valeur devrait être sub-privée côté client comme côté serveur");
+	ASSERT_EQUAL(DONNEE_PRIVATE_SUB, client1Tree.getBranche(0, privClient1Br2->getBrancheFullId())->getDonneeType(), "La branche devrait être sub-privée côté client comme côté serveur");
 }
 
 void DataTreeTest::echangeDonneesClientServeur(int line, Interlocutor2& client) {
@@ -728,7 +861,7 @@ void DataTreeTest::echangeDonneesClientServeur(int line, Interlocutor2& client) 
 }
 
 void DataTreeTest::checkSynchronisationClientServeur(int line, ClientDataTree& clientTree) {
-	log("VERIFICATION DE LA SYNCHRONISATION CLIENT SERVEUR avec " + clientTree.getClientName(), __LINE__);
+	log("VERIFICATION DE LA SYNCHRONISATION CLIENT SERVEUR avec " + clientTree.getClientName(), line);
 
 	serverTree.diffuseChangementsToClients();
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataReceived(), "countDataReceived 1: Il ne devrait rester aucun message à recevoir");

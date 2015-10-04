@@ -59,7 +59,7 @@ UDPpacket* SendChatMessageData::toPacket(void)
 	// Texte du message
 	strncpy((char*)current, _message.c_str(), _message.length());
 
-	TRACE().info("Envoi message chat>'%s'", _message.c_str());
+	LOGINFO(("Envoi message chat>'%s'", _message.c_str()));
 
     UDPpacket *packet = new UDPpacket();
     packet->data = data;

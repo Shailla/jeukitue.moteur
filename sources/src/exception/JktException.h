@@ -5,10 +5,11 @@
 #include <string>
 
 class JktException : public std::exception {
+	std::string _clazz;
 	std::string _message;
 public:
-    JktException(void);
-    JktException(const std::string& message);
+    JktException(const char* clazz);
+    JktException(const char* clazz, const std::string& message);
     ~JktException(void);
 
     const char* what() const throw();

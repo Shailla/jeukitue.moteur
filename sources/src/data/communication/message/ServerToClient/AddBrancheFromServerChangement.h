@@ -45,6 +45,7 @@ public:
 	const std::vector<int>& getParentBrancheId() const;
 	const std::string& getBrancheName() const;
 	int getRevision() const;
+	DONNEE_TYPE getBrancheType() const;
 	int getRootDistance() const;
 };
 

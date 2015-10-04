@@ -7,10 +7,10 @@
 
 #include "data/exception/DataCommunicationException.h"
 
-DataCommunicationException::DataCommunicationException() {
+DataCommunicationException::DataCommunicationException() : JktException("DataCommunicationException") {
 }
 
-DataCommunicationException::DataCommunicationException(const std::string& message) : JktException(message) {
+DataCommunicationException::DataCommunicationException(const std::string& message) : JktException("DataCommunicationException", message) {
 }
 
 DataCommunicationException::~DataCommunicationException() {

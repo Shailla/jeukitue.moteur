@@ -7,7 +7,7 @@
 
 #include "data/exception/NotExistingValeurException.h"
 
-NotExistingValeurException::NotExistingValeurException(const std::string& message) : JktException(message) {
+NotExistingValeurException::NotExistingValeurException(const std::string& message) : JktException("NotExistingValeurException", message) {
 }
 
 NotExistingValeurException::~NotExistingValeurException() {

@@ -8,7 +8,7 @@ colorsG = {}
 colorsB = {}
 
 function onLoad()
-	log("Version Lua B : " .. _VERSION)
+	log("Version Lua A : " .. _VERSION)
 	
 	if (isModeServer() or isModeLocal()) then
 		log("Jeu en mode serveur ou local => initialisation des sprites");

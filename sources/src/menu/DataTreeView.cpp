@@ -129,7 +129,7 @@ void DataTreeView::drawBranche(DataTreeView* thiz, AbstractBranche* branche, int
 	if(br) {
 		// Valeurs filles
 		{
-			vector<Valeur*>& valeurs = br->getValeurs();
+			vector<Valeur*>& valeurs = br->getValeurs(0);	// TODO Tenir compte des branches privées dans l'affichage de l'arbre
 			vector<Valeur*>::iterator itVa;
 
 			for(itVa = valeurs.begin() ; itVa != valeurs.end() ; itVa++) {
@@ -146,7 +146,7 @@ void DataTreeView::drawBranche(DataTreeView* thiz, AbstractBranche* branche, int
 
 		// Branches filles
 		{
-			vector<Branche*>& subBranches = br->getSubBranches();
+			vector<Branche*>& subBranches = br->getSubBranches(0);	// TODO Tenir compte des branches privées dans l'affichage de l'arbre
 			vector<Branche*>::const_iterator itBr;
 
 			for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {

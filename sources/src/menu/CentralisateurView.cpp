@@ -140,7 +140,7 @@ void CentralisateurView::setPlayerList(char** playerList, int nombreJoueurs)
 
 	for(int i=0 ; i<nombreJoueurs ; i++) {
 		_playerList.push_back(playerList[i]);
-		TRACE().info("Joueur connecté au chat : '%s'", playerList[i]);
+		LOGINFO(("Joueur connecté au chat : '%s'", playerList[i]));
 	}
 }
 

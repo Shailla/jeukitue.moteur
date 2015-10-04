@@ -36,7 +36,8 @@ protected:
 	JktUtils::CGenRef _valeurTmpRefGenerator;
 
 public:
-	AbstractBranche(AbstractBranche* parent, int brancheId, const std::string& brancheName, DONNEE_TYPE brancheType, int revision, int tmpId);
+	AbstractBranche(DataTree* dataTree, int brancheId, const std::string& brancheName, DONNEE_TYPE brancheType, int revision, int brancheTmpId);
+	AbstractBranche(AbstractBranche* parent, int brancheId, const std::string& brancheName, DONNEE_TYPE brancheType, int revision, int brancheTmpId);
 	virtual ~AbstractBranche();
 
 	void setBrancheId(int brancheId);

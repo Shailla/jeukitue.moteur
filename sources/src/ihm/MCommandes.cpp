@@ -68,9 +68,8 @@ const char *item_menu_config_commandes[] =
 CMenu MenuConfigCommandes(title_menu_config_commandes, item_menu_config_commandes, 7,
 						liste_suivant_config_commandes, lanceMenuConfig );
 
-void lanceMenuConfigCommandes(void *var)
-{
-TRACE().debug("lanceMenuConfigCommandes(var=%x)", var);
+void lanceMenuConfigCommandes(void *var) {
+LOGDEBUG(("lanceMenuConfigCommandes(var=%x)", var));
 	MenuConfigCommandes.bItemsDroits = false;
 	MenuConfigCommandes.mode = 0;
 
@@ -87,9 +86,8 @@ TRACE().debug("lanceMenuConfigCommandes(var=%x)", var);
 	CDlg::SetMenuActif( &MenuConfigCommandes );
 }
 
-void lanceMenuConfigCommandesAvancer(void *arg)
-{
-TRACE().debug("lanceMenuConfigCommandesAvancer(var=%x)", arg);
+void lanceMenuConfigCommandesAvancer(void *arg) {
+LOGDEBUG(("lanceMenuConfigCommandesAvancer(var=%x)", arg));
 	if( arg==0 ) {
 		MenuConfigCommandes.mode = 1;		// Mode saisie de touche
 		MenuConfigCommandes.bItemsDroits = true;
@@ -127,7 +125,7 @@ TRACE().debug("lanceMenuConfigCommandesAvancer(var=%x)", arg);
 
 void lanceMenuConfigCommandesReculer(void *arg)
 {
-TRACE().debug("lanceMenuConfigCommandesReculer(var=%x)", arg);
+LOGDEBUG(("lanceMenuConfigCommandesReculer(var=%x)", arg));
 	if( arg==0 )
 	{
 		MenuConfigCommandes.mode = 1;	// Mode saisie de touche
@@ -170,7 +168,7 @@ TRACE().debug("lanceMenuConfigCommandesReculer(var=%x)", arg);
 
 void lanceMenuConfigCommandesGauche(void *arg)
 {
-TRACE().debug("lanceMenuConfigCommandesGauche(var=%x)", arg);
+LOGDEBUG(("lanceMenuConfigCommandesGauche(var=%x)", arg));
 	if( arg==0 )
 	{
 		MenuConfigCommandes.mode = 1;	// Mode saisie de touche
@@ -213,7 +211,7 @@ TRACE().debug("lanceMenuConfigCommandesGauche(var=%x)", arg);
 
 void lanceMenuConfigCommandesDroite(void *arg)
 {
-TRACE().debug("lanceMenuConfigCommandesDroite(var=%x)", arg);
+LOGDEBUG(("lanceMenuConfigCommandesDroite(var=%x)", arg));
 	if( arg==0 )
 	{
 		MenuConfigCommandes.mode = 1;	// Mode saisie de touche
@@ -254,9 +252,8 @@ TRACE().debug("lanceMenuConfigCommandesDroite(var=%x)", arg);
 	}
 }
 
-void lanceMenuConfigCommandesTir1(void *arg)
-{
-TRACE().debug("lanceMenuConfigCommandesTir1(var=%x)", arg);
+void lanceMenuConfigCommandesTir1(void *arg) {
+LOGDEBUG(("lanceMenuConfigCommandesTir1(var=%x)", arg));
 	if( arg==0 )
 	{
 		MenuConfigCommandes.mode = 1;	// Mode saisie de touche
@@ -297,31 +294,25 @@ TRACE().debug("lanceMenuConfigCommandesTir1(var=%x)", arg);
 	}
 }
 
-void lanceMenuConfigCommandesTir2(void *arg)
-{
-TRACE().debug("lanceMenuConfigCommandesTir2(var=%x)", arg);
-	if( arg==0 )
-	{
+void lanceMenuConfigCommandesTir2(void *arg) {
+LOGDEBUG(("lanceMenuConfigCommandesTir2(var=%x)", arg));
+	if( arg==0 ) {
 		MenuConfigCommandes.mode = 1;	// Mode saisie de touche
 		MenuConfigCommandes.bItemsDroits = true;
 	}
-	else
-	{
+	else {
 		SDL_Event *event = (SDL_Event*)arg;
 
-		switch( event->type )
-		{
+		switch( event->type ) {
 		case SDL_KEYDOWN:
-			if( event->key.keysym.sym!=SDLK_ESCAPE )
-			{
+			if( event->key.keysym.sym!=SDLK_ESCAPE ) {
 				Config.Commandes.Tir2.key = event->key.keysym.sym;
 				Config.Commandes.Tir2.mouse = 0;
 				Config.Ecrit();	// Sauvegarde la configuration
 
 				lanceMenuConfigCommandes(0);
 			}
-			else
-			{
+			else {
 				lanceMenuConfigCommandes( 0 );
 			}
 			break;
@@ -342,7 +333,7 @@ TRACE().debug("lanceMenuConfigCommandesTir2(var=%x)", arg);
 
 void lanceMenuConfigCommandesMonter(void *arg)
 {
-TRACE().debug("lanceMenuConfigCommandesMonter(var=%x)", arg);
+LOGDEBUG(("lanceMenuConfigCommandesMonter(var=%x)", arg));
 	if( arg==0 )
 	{
 		MenuConfigCommandes.mode = 1;	// Mode saisie de touche
@@ -352,19 +343,16 @@ TRACE().debug("lanceMenuConfigCommandesMonter(var=%x)", arg);
 	{
 		SDL_Event *event = (SDL_Event*)arg;
 
-		switch( event->type )
-		{
+		switch( event->type ) {
 		case SDL_KEYDOWN:
-			if( event->key.keysym.sym!=SDLK_ESCAPE )
-			{
+			if( event->key.keysym.sym!=SDLK_ESCAPE ) {
 				Config.Commandes.Monter.key = event->key.keysym.sym;
 				Config.Commandes.Monter.mouse = 0;
 				Config.Ecrit();	// Sauvegarde la configuration
 
 				lanceMenuConfigCommandes(0);
 			}
-			else
-			{
+			else {
 				lanceMenuConfigCommandes( 0 );
 			}
 			break;

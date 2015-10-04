@@ -1002,11 +1002,11 @@ void play_handle_key_down( SDL_Event *event ) {
 			string trace5 = "Derniere erreur Agar : ";
 			trace5 += AG_GetError();
 
-			TRACE().debug(trace1.c_str());
-			TRACE().debug(trace2.c_str());
-			TRACE().debug(trace3.c_str());
-			TRACE().debug(trace4.c_str());
-			TRACE().debug(trace5.c_str());
+			LOGDEBUG((trace1.c_str()));
+			LOGDEBUG((trace2.c_str()));
+			LOGDEBUG((trace3.c_str()));
+			LOGDEBUG((trace4.c_str()));
+			LOGDEBUG((trace5.c_str()));
 
 			cerr << endl << __FILE__ << ":" << __LINE__;
 			cerr << trace1 << endl;
@@ -1047,14 +1047,14 @@ void play_handle_key_down( SDL_Event *event ) {
 
 		case SDLK_KP_PLUS :
 			if( Game.getMap() && Game.getMap()->IsSelectionMode() ) {
-				TRACE().info("Selection du suivant");
+				LOGINFO(("Selection du suivant"));
 				Game.getMap()->incrementeSelection();
 			}
 			break;
 
 		case SDLK_KP_MINUS :
 			if( Game.getMap() && Game.getMap()->IsSelectionMode() ) {
-				TRACE().info("Selection du precedent");
+				LOGINFO(("Selection du precedent"));
 				Game.getMap()->decrementeSelection();
 			}
 			break;
@@ -1310,7 +1310,7 @@ void executeJktRequests() {
 		Game.deletePlayers();
 
 		LocalDataTree* dataTree = new LocalDataTree();
-		DataTreeUtils::formatGameDataTree(dataTree);
+		DataTreeUtils::formatGameServerDataTree(dataTree);
 		Game.setLocalDataTree(dataTree);
 
 		// Lancement ouverture MAP demandée
@@ -1489,7 +1489,7 @@ void executeJktRequests() {
 		else {
 			// Connexion du serveur
 			ServeurDataTree* dataTree = new ServeurDataTree();
-			DataTreeUtils::formatGameDataTree(dataTree);
+			DataTreeUtils::formatGameServerDataTree(dataTree);
 			Game.setServerDataTree(dataTree);
 
 			// Lancement ouverture MAP demandée
@@ -1642,7 +1642,8 @@ void boucle() {
 					ServeurDataTree* serverDataTree = Game.getServerDataTree();
 
 					if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
-						serverDataTree->addDistant(newInterlocutor);
+						DistantTreeProxy* distant = serverDataTree->addDistant(newInterlocutor);
+						DataTreeUtils::formatGameClientDataTree(distant, serverDataTree);
 					}
 				}
 			}
@@ -1652,10 +1653,12 @@ void boucle() {
 			 * Traites les changements des données du jeu
 			 * **********************************************************/
 
-			if(lastDataTreeUpdate - SDL_GetTicks() > 1000) {	// TODO pour l'instant on ne met à jour les données client-serveur qu'une fois par seconde, c'est une solution temporaire pour palier à l'explosion du nombre de messages échangés
-
+			if(SDL_GetTicks() - lastDataTreeUpdate > 30) {	// Limitation (solution temporaire) des échanges de données pour éviter leur explosion
 				// Traite les changements de données côté serveur
 				ServeurDataTree* serverDataTree = Game.getServerDataTree();
+
+				Uint32 time;
+				saveTime(time);
 
 				if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
 					serverDataTree->receiveChangementsFromClients();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
@@ -1719,15 +1722,15 @@ void boucle() {
 		}
 	}
 	catch(NotExistingBrancheException& exception) {
-		TRACE().error("Unmanaged NotExistingBrancheException : %s", exception.what());
+		LOGERROR(("Unmanaged NotExistingBrancheException : %s", exception.what()));
 	}
 	catch(NotExistingValeurException& exception) {
-		TRACE().error("Unmanaged NotExistingValeurException : %s", exception.what());
+		LOGERROR(("Unmanaged NotExistingValeurException : %s", exception.what()));
 	}
 }
 
 int main(int argc, char** argv) {
-//	TRACE().debug("main(argc=%d,argv=%x)", argc, argv);
+//	LOGDEBUG(("main(argc=%d,argv=%x)", argc, argv);
 
 	if(argc > 1) {
 		// Exécution des tests unitaires
@@ -1799,11 +1802,11 @@ int main(int argc, char** argv) {
 		glGenTextures(1, &texFonte);
 
 		if( !myfont.Create(fonte.c_str(), texFonte) ) {
-			TRACE().debug("main() Echec ouverture texture de fonte (%s) : %d", fonte.c_str(), texFonte);
+			LOGDEBUG(("main() Echec ouverture texture de fonte (%s) : %d", fonte.c_str(), texFonte));
 			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec d'ouverture de la fonte : " << fonte << endl;
 		}
 		else {
-			TRACE().debug("main() Texture de fonte (%s) : %d", fonte.c_str(), texFonte);
+			LOGDEBUG(("main() Texture de fonte (%s) : %d", fonte.c_str(), texFonte));
 		}
 	}
 

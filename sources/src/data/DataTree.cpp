@@ -11,10 +11,8 @@ using namespace std;
 
 #include "data/DataTree.h"
 
-const int DataTree::STATE_STARTING = 0;		// Data tree not ready to receive data
-const int DataTree::STATE_READY = 1;		// Data tree ready to receive data
-
-DataTree::DataTree() : _root(NULL, 0, "root", DONNEE_SERVER, 0, -1) {
+DataTree::DataTree(TREE_TYPE treeType) : _root(this, 0, DONNEE_PUBLIC, 0, -1) {
+	_treeType = treeType;
 }
 
 DataTree::~DataTree() {
@@ -37,14 +35,14 @@ Branche* DataTree::getBrancheFromDistant(DistantTreeProxy* distant, const vector
 	return branche;
 }
 
-Branche* DataTree::getBranche(const vector<int>& brancheId) throw(NotExistingBrancheException) {
+Branche* DataTree::getBranche(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException) {
 	vector<int>::const_iterator iter;
 
 	Branche* branche = &_root;
 
 	for(iter = brancheId.begin() ; (iter != brancheId.end() && branche != NULL) ; iter++) {
 		int id = *iter;
-		branche = branche->getSubBrancheByIdOrTmpId(id);
+		branche = branche->getSubBrancheByIdOrTmpId(distant, id);
 	}
 
 	if(branche == NULL) {
@@ -54,14 +52,14 @@ Branche* DataTree::getBranche(const vector<int>& brancheId) throw(NotExistingBra
 	return branche;
 }
 
-Branche* DataTree::getBranche(const vector<string>& branchePath) throw(NotExistingBrancheException) {
+Branche* DataTree::getBranche(DistantTreeProxy* distant, const vector<string>& branchePath) throw(NotExistingBrancheException) {
 	vector<string>::const_iterator iter;
 
 	Branche* branche = &_root;
 
 	for(iter = branchePath.begin() ; (iter != branchePath.end() && branche != NULL) ; iter++) {
 		string name = *iter;
-		branche = branche->getSubBrancheByName(name);
+		branche = branche->getSubBrancheByName(distant, name);
 	}
 
 	if(branche == NULL) {
@@ -86,7 +84,7 @@ Valeur* DataTree::getValeurFromDistant(DistantTreeProxy* distant, const vector<i
 		}
 	}
 
-	Valeur* valeur = branche->getValeurByIdOrTmpId(valeurId);
+	Valeur* valeur = branche->getValeurByIdOrTmpId(distant, valeurId);
 
 	if(!valeur) {
 		throw NotExistingValeurException("DataTree::getValeurFromDistant 2");
@@ -95,14 +93,14 @@ Valeur* DataTree::getValeurFromDistant(DistantTreeProxy* distant, const vector<i
 	return valeur;
 }
 
-Valeur* DataTree::getValeur(const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
+Valeur* DataTree::getValeur(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
 	vector<int>::const_iterator iter;
 
 	Branche* branche = &_root;
 
 	if(brancheId.size() > 0) {
 		for(iter = brancheId.begin() ; (iter != brancheId.end() && branche != NULL) ; iter++) {
-			branche = branche->getSubBrancheByIdOrTmpId(*iter);
+			branche = branche->getSubBrancheByIdOrTmpId(distant, *iter);
 		}
 
 		if(branche == NULL) {
@@ -110,7 +108,7 @@ Valeur* DataTree::getValeur(const vector<int>& brancheId, int valeurId) throw(No
 		}
 	}
 
-	Valeur* valeur = branche->getValeurByIdOrTmpId(valeurId);
+	Valeur* valeur = branche->getValeurByIdOrTmpId(distant, valeurId);
 
 	if(!valeur) {
 		throw NotExistingValeurException("DataTree::getValeur 2");

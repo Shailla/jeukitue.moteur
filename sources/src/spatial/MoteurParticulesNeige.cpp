@@ -36,7 +36,7 @@ CV3D CMoteurParticulesNeige::getRandomParticulePosition() {
 CMoteurParticulesNeige::CMoteurParticulesNeige(unsigned int nbr, CV3D position, CV3D taille)
 	:CMoteurParticules()
 {
-TRACE().debug("CMoteurParticulesNeige::CMoteurParticulesNeige(pos_centre,nbr=%u) begin%T", nbr, this );
+LOGDEBUG(("CMoteurParticulesNeige::CMoteurParticulesNeige(pos_centre,nbr=%u) begin%T", nbr, this ));
 	nbrParticules = nbr;		// Nombre de particules du moteur
 	_centre = position;
 	_taille = taille;
@@ -56,11 +56,11 @@ TRACE().debug("CMoteurParticulesNeige::CMoteurParticulesNeige(pos_centre,nbr=%u)
 		ListeParticules[i].visible = true;
 		ListeParticules[i].date2naissance = lastTempsNew - ((float)rand() / (float)RAND_MAX)*10000;
 	}
-TRACE().debug("CMoteurParticulesNeige::CMoteurParticulesNeige() end%T", this );
+LOGDEBUG(("CMoteurParticulesNeige::CMoteurParticulesNeige() end%T", this ));
 }
 
 void CMoteurParticulesNeige::GenereTextureParticule() {
-TRACE().debug("CMoteurParticulesNeige::GenereTextureParticule() begin%T", this );
+LOGDEBUG(("CMoteurParticulesNeige::GenereTextureParticule() begin%T", this ));
 	unsigned char *pixels = new unsigned char[32*32*4*sizeof(unsigned char)];
 
 	unsigned int i = 0;
@@ -92,7 +92,7 @@ TRACE().debug("CMoteurParticulesNeige::GenereTextureParticule() begin%T", this )
 
 	delete[] pixels;
 
-TRACE().debug("CMoteurParticulesNeige::GenereTextureParticule() Texture neige : %d end%T", texName, this );
+LOGDEBUG(("CMoteurParticulesNeige::GenereTextureParticule() Texture neige : %d end%T", texName, this ));
 }
 
 void CMoteurParticulesNeige::Affiche() {

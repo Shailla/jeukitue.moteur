@@ -25,6 +25,7 @@ AddValeurFromClientChangement::AddValeurFromClientChangement(const vector<int>& 
 	_revision = revision;
 	_valeurName = valeurName;
 	_valeur = valeur;
+	_updateMode = UPDATE_MODE::ANY;
 }
 
 AddValeurFromClientChangement::~AddValeurFromClientChangement() {
@@ -83,6 +84,10 @@ const std::vector<int>& AddValeurFromClientChangement::getParentBrancheId() cons
 
 int AddValeurFromClientChangement::getValeurTmpId() const {
 	return _valeurTmpId;
+}
+
+UPDATE_MODE AddValeurFromClientChangement::getUpdateMode() const {
+	return _updateMode;
 }
 
 const string& AddValeurFromClientChangement::getValeurName() const {

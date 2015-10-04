@@ -22,12 +22,12 @@ using namespace JktSon;
 
 CDemonSons::CDemonSons()
 {
-TRACE().debug("CDemonSons::CDemonSons()%T", this);
+LOGDEBUG(("CDemonSons::CDemonSons()%T", this));
 }
 
 CDemonSons::~CDemonSons()
 {
-TRACE().debug("CDemonSons::~CDemonSons()%T", this);
+LOGDEBUG(("CDemonSons::~CDemonSons()%T", this));
 	set<CSon*>::iterator S;
 	for( S=m_TabSon.begin() ; S!=m_TabSon.end() ; S++ )
 		delete *S;
@@ -35,13 +35,13 @@ TRACE().debug("CDemonSons::~CDemonSons()%T", this);
 
 CSon3D* CDemonSons::CreateSon3D(const char *nomFichierSon)
 {
-TRACE().debug("CDemonSons::CreateSon3D(nomFichierSon=%s)%T", nomFichierSon, this);
+LOGDEBUG(("CDemonSons::CreateSon3D(nomFichierSon=%s)%T", nomFichierSon, this));
 	return (CSon3D*)CreateSon( nomFichierSon, SON_3D );
 }
 
 CSon* CDemonSons::CreateSon(const char *nomFichierSon, TYPE_SON type) // Charge un CSon à partir d'un fichier wave
 {
-TRACE().debug("CDemonSons::CreateSon(nomFichierSon=%s,type=%d)%T",nomFichierSon, type, this);
+LOGDEBUG(("CDemonSons::CreateSon(nomFichierSon=%s,type=%d)%T",nomFichierSon, type, this));
 	CSon *son = 0;
 
 	try
@@ -94,10 +94,10 @@ void CDemonSons::Play( CSon* id )	// Joue un son volatil donc sans retour d'iden
 
 void CDemonSons::Delete( CReqSon *req )
 {
-TRACE().debug("CDemonSons::Delete(req=%x)%T", req, this);
+LOGDEBUG(("CDemonSons::Delete(req=%x)%T", req, this));
 	map<CReqSon*,CSon*>::iterator r = m_TabReq.find( req );	// Trouve la requête dans la liste du démon
-	if( r!=m_TabReq.end() )
-	{
+
+	if( r!=m_TabReq.end() ) {
 			// Destruction de la requête
 		delete req;
 			// Trouve et supprime la requête dans la liste du son associé
@@ -109,15 +109,14 @@ TRACE().debug("CDemonSons::Delete(req=%x)%T", req, this);
 			// Supprime la requête dans la liste du démon
 		m_TabReq.erase( r );
 	}
-	else
-	{
+	else {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur (CDemonSons::Delete) : Delete impossible 2.";
 	}
 }
 
 void CDemonSons::Delete( CSon *son )
 {
-TRACE().debug("CDemonSons::Delete(son=%x)%T", son, this);
+LOGDEBUG(("CDemonSons::Delete(son=%x)%T", son, this));
 	set<CSon*>::iterator s = m_TabSon.find( son );	// Vérifie que le son existe
 	if( s==m_TabSon.end() )
 	{
@@ -141,7 +140,7 @@ void CDemonSons::Play( CReqSon *id )	// Relance la requête au début du son
 
 void CDemonSons::Erase( CReqSon *req )
 {
-TRACE().debug("CDemonSons::Erase(req=%x)%T", req, this);
+LOGDEBUG(("CDemonSons::Erase(req=%x)%T", req, this));
 	map<CReqSon*,CSon*>::iterator R = m_TabReq.find( req );
 	if( R!=m_TabReq.end() )
 		m_TabReq.erase( R );	// Supprime la requête de la liste redondante du démon

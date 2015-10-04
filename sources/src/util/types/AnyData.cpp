@@ -90,7 +90,7 @@ void AnyData::toString(std::ostringstream& out) const {
 
 	default:
 		out << "unknown-xxx";
-		TRACE().error("Type de AnyData inconnu");
+		LOGERROR(("Type de AnyData inconnu"));
 		break;
 	}
 }
@@ -120,7 +120,7 @@ void AnyData::serialize(std::ostringstream& out) const {
 		break;
 
 	default:
-		TRACE().error("Type de AnyData inconnu");
+		LOGERROR(("Type de AnyData inconnu"));
 		break;
 	}
 }
@@ -142,7 +142,7 @@ AnyData& AnyData::operator=(const AnyData& data) {
 		break;
 
 	default:
-		TRACE().error("Type de AnyData inconnu");
+		LOGERROR(("Type de AnyData inconnu"));
 		break;
 	}
 

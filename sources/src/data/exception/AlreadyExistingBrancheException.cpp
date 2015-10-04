@@ -7,7 +7,7 @@
 
 #include "data/exception/AlreadyExistingBrancheException.h"
 
-AlreadyExistingBrancheException::AlreadyExistingBrancheException(const std::string& message) : JktException(message) {
+AlreadyExistingBrancheException::AlreadyExistingBrancheException(const std::string& message) : JktException("AlreadyExistingBrancheException", message) {
 }
 
 AlreadyExistingBrancheException::~AlreadyExistingBrancheException() {

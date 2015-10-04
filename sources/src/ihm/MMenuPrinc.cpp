@@ -31,7 +31,7 @@ void lanceMenuTestencours( void *var );
 
 void lanceMenuTest(void *var)
 {
-TRACE().debug("lanceMenuTest(var=%x)", var);
+LOGDEBUG(("lanceMenuTest(var=%x)", var));
 	CDlgBoite* BoiteTest = new CDlgBoite( "Test 1", "Coucou comment ca va gros trou du cul qui pue de la moule frite sous son blouson", lanceMenuPrinc, CDlgBoite::JKT_DLG_ERREUR );
 	BoiteTest->addBouton( 1, "Menu", lanceMenuPrinc );
 	BoiteTest->addBouton( 2, "Test", lanceMenuTestencours );
@@ -40,9 +40,8 @@ TRACE().debug("lanceMenuTest(var=%x)", var);
 	CDlg::SetMenuActif( BoiteTest );
 }
 
-void lanceMenuTestencours( void *var )
-{
-TRACE().debug("lanceMenuTestencours(var=%x)", var);
+void lanceMenuTestencours( void *var ) {
+LOGDEBUG(("lanceMenuTestencours(var=%x)", var));
 	CDlgBoite *BoiteTestEnCours = new CDlgBoite( "Tache en cours", "Ouverture du fichier ASE en cours...", lanceMenuPrinc, CDlgBoite::JKT_DLG_ENCOURS );
 	CDlg::SetMenuActif( BoiteTestEnCours );
 }
@@ -67,9 +66,8 @@ const char *item_menu_princ[] =
 
 CMenu MenuPrinc( "MENU PRINCIPAL", item_menu_princ, 5, liste_suivant_princ, 0 );
 
-void lanceMenuPrinc(void *var)
-{
-TRACE().debug("lanceMenuPrinc(var=%x)", var);
+void lanceMenuPrinc(void *var) {
+LOGDEBUG(("lanceMenuPrinc(var=%x)", var));
 
 	if(Game.isModeNull())
 		CDlg::SetMenuActif( &MenuPrinc );

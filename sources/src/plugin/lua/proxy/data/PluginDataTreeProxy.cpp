@@ -66,11 +66,11 @@ int PluginDataTreeProxy::getBranche(lua_State *L) {
 	LuaUtils::readStringArray(L, branchePath, index);
 
 	try {
-		Branche* branche = _dataTree->getBranche(branchePath);
+		Branche* branche = _dataTree->getBranche(0, branchePath);
 		LuaUtils::pushIntArray(L, branche->getBrancheFullId());
 	}
 	catch(NotExistingBrancheException& exception) {
-		TRACE().warn("NotExistingBrancheException : %s", exception.what());
+		LOGWARN(("NotExistingBrancheException : %s", exception.what()));
 		lua_pushnil(L);
 	}
 
@@ -114,7 +114,7 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
 		Fabrique::getPluginEngine()->getGlobalPluginContext(L)->logScriptError(message.str());
 	}
 
-	Valeur* valeur = _dataTree->createValeur(brancheId, valeurName.c_str(), data);
+	Valeur* valeur = _dataTree->createValeur(0, ANY, brancheId, valeurName.c_str(), data);
 	PluginDataValeurProxy* valeurProxy = new PluginDataValeurProxy(valeur);
 
 	Lunar<PluginDataValeurProxy>::push(L, valeurProxy);
@@ -141,7 +141,7 @@ int PluginDataTreeProxy::createBranche(lua_State *L) {
 
 	// Do staff
 	DataTree* dataTree = Game.getDataTree();
-	Branche* branche = dataTree->createBranche(parentBrancheId, brancheName.c_str());
+	Branche* branche = dataTree->createBranche(0, parentBrancheId, brancheName.c_str());
 
 	// Push return values
 	vector<int> brancheId = branche->getBrancheFullId();

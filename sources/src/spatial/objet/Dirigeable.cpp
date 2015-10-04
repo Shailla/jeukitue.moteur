@@ -47,13 +47,13 @@ void Dirigeable::Affiche() {		// Fonction d'affichage de la porte
 void Dirigeable::Affiche(Branche* branche) {		// Fonction d'affichage de la porte
 	glPushMatrix();
 
-	float x = ((ValeurFloat*)branche->getValeurByIdOrTmpId(4))->getValeur();
-	float y = ((ValeurFloat*)branche->getValeurByIdOrTmpId(5))->getValeur();
-	float z = ((ValeurFloat*)branche->getValeurByIdOrTmpId(6))->getValeur();
+	float x = ((ValeurFloat*)branche->getValeurByIdOrTmpId(0, 4))->getValeur();
+	float y = ((ValeurFloat*)branche->getValeurByIdOrTmpId(0, 5))->getValeur();
+	float z = ((ValeurFloat*)branche->getValeurByIdOrTmpId(0, 6))->getValeur();
 
-	float red = ((ValeurFloat*)branche->getValeurByIdOrTmpId(7))->getValeur();
-	float green = ((ValeurFloat*)branche->getValeurByIdOrTmpId(8))->getValeur();
-	float blue = ((ValeurFloat*)branche->getValeurByIdOrTmpId(9))->getValeur();
+	float red = ((ValeurFloat*)branche->getValeurByIdOrTmpId(0, 7))->getValeur();
+	float green = ((ValeurFloat*)branche->getValeurByIdOrTmpId(0, 8))->getValeur();
+	float blue = ((ValeurFloat*)branche->getValeurByIdOrTmpId(0, 9))->getValeur();
 
 	glTranslatef(x, y, z);	// Translation de la porte de la valeur de son ouverture
 	glColor3f(red, green, blue);

@@ -547,7 +547,7 @@ void Controller::executeAction(AG_Event *event) {
 		}
 
 		default:
-			TRACE().debug("Unknown action : %d!", action);
+			LOGDEBUG(("Unknown action : %d!", action));
 			AG_TextMsg(AG_MSG_WARNING, "Action inconnue : %d!", action);
 			break;
 		}

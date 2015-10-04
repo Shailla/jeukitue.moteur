@@ -28,26 +28,37 @@ using namespace std;
 
 using namespace JktUtils;
 
-LocalDataTree::LocalDataTree() {
+LocalDataTree::LocalDataTree() : DataTree(TREE_LOCAL) {
 }
 
 LocalDataTree::~LocalDataTree() {
 }
 
-Branche* LocalDataTree::createBranche(const vector<int>& parentBrancheId, const string& brancheName) {
+Branche* LocalDataTree::createBranche(DistantTreeProxy* distant, const vector<int>& parentBrancheId, const string& brancheName) {
 	Branche* parentBranche = getBrancheFromDistant(0, parentBrancheId);
 
-	Branche* branche = parentBranche->createSubBrancheForServer(brancheName, DONNEE_LOCAL, 0);
+	Branche* branche = parentBranche->createSubBrancheForServer(0, brancheName, DONNEE_LOCAL, 0);
 
 	_donnees.insert(branche);
 
 	return branche;
 }
 
-Valeur* LocalDataTree::createValeur(const vector<int>& parentBrancheId, const string& valeurName, const AnyData valeur) {
+Branche* LocalDataTree::createPrivateBranche(const vector<int>& parentBrancheId, const string& brancheName) {
 	Branche* parentBranche = getBrancheFromDistant(0, parentBrancheId);
 
-	Valeur* val = parentBranche->createValeurForServeur(valeurName, 0, valeur);
+	Branche* branche = parentBranche->createSubBrancheForServer(0, brancheName, DONNEE_LOCAL, 0);
+
+	_donnees.insert(branche);
+
+	return branche;
+}
+
+
+Valeur* LocalDataTree::createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const vector<int>& parentBrancheId, const string& valeurName, const AnyData valeur) {
+	Branche* parentBranche = getBrancheFromDistant(0, parentBrancheId);
+
+	Valeur* val = parentBranche->createValeurForServeur(0, updateMode, valeurName, 0, valeur);
 
 	_donnees.insert(val);
 

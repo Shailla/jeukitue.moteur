@@ -1,7 +1,6 @@
 #include "exception/centralisateur/BindingUdpException.h"
 
-BindingUdpException::BindingUdpException(const char* message)
-{
+BindingUdpException::BindingUdpException(const char* message) {
     m_message = message;
 }
 

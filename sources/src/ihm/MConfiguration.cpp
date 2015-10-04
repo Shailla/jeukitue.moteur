@@ -52,9 +52,8 @@ const char *item_menu_config[] =
 
 CMenu MenuConfig(title_menu_config, (const char**)item_menu_config, 5, liste_suivant_config, lanceMenuPrinc );
 
-void lanceMenuConfig(void *var)
-{
-TRACE().debug("lanceMenuConfig(var=%x)", var);
+void lanceMenuConfig(void *var) {
+LOGDEBUG(("lanceMenuConfig(var=%x)", var));
 	CDlg::SetMenuActif( &MenuConfig );
 }
 

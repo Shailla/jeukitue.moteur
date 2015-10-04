@@ -29,7 +29,7 @@ class ServeurDataTree : public DataTree {
 
 	Branche* addBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, DistantTreeProxy* distant);
 	PrivateBranche* addPrivateBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, DistantTreeProxy* distant);
-	Valeur* addValeurFromDistant(const vector<int>& parentBrancheId, const std::string& valeurName, int valeurTmpId, int revision, const JktUtils::AnyData valeur, DistantTreeProxy* distant);
+	Valeur* addValeurFromDistant(const vector<int>& parentBrancheId, UPDATE_MODE updateMode, const std::string& valeurName, int valeurTmpId, int revision, const JktUtils::AnyData valeur, DistantTreeProxy* distant);
 
 public:
 	ServeurDataTree();
@@ -44,10 +44,10 @@ public:
 	void updateValeur(Valeur* valeur, const JktUtils::AnyData value);
 
 	// Gestion branches et valeurs avec coordonnées vectorielles
-	Branche* createBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
-	PrivateBranche* createPrivateBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
+	Branche* createBranche(DistantTreeProxy* distant, const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
+	Branche* createPrivateBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
 
-	Valeur* createValeur(const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur);
+	Valeur* createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur) override;
 	Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::AnyData value);
 
 
@@ -55,7 +55,7 @@ public:
 	 * Distants management
 	 * ***************************************************/
 
-	void addDistant(Interlocutor2* interlocutor);
+	DistantTreeProxy* addDistant(Interlocutor2* interlocutor);
 	const std::vector<DistantTreeProxy*>& getDistants();
 
 

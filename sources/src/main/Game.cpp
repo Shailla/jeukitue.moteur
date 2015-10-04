@@ -117,7 +117,7 @@ CPlayer* CGame::nextPlayer(int& pos) {
 }
 
 bool CGame::openMap(const string &nomFichierMap) throw(JktUtils::CErreur) {
-TRACE().debug("CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(), this);
+LOGDEBUG(("CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(), this));
 
 	bool result = true;
 
@@ -132,7 +132,7 @@ TRACE().debug("CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(),
 		result = false;
 	}
 
-TRACE().debug("CGame::openMap() -> %b end%T", result, this);
+LOGDEBUG(("CGame::openMap() -> %b end%T", result, this));
 	return result;
 }
 
@@ -290,9 +290,9 @@ void CGame::AfficheDirigeables() {
 	dirigeablesBrPath.push_back("dirigeables");
 
 	try {
-		Branche* dirigeablesBr = dataTree->getBranche(dirigeablesBrPath);
+		Branche* dirigeablesBr = dataTree->getBranche(0, dirigeablesBrPath);
 
-		vector<Branche*>& subBranches = dirigeablesBr->getSubBranches();
+		vector<Branche*>& subBranches = dirigeablesBr->getSubBranches(0);
 		vector<Branche*>::const_iterator itBr;
 
 		for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
@@ -300,7 +300,7 @@ void CGame::AfficheDirigeables() {
 		}
 	}
 	catch(NotExistingBrancheException& exception) {
-		TRACE().warn("Unmanaged NotExistingBrancheException : %s", exception.what());
+		LOGWARN(("Unmanaged NotExistingBrancheException : %s", exception.what()));
 	}
 }
 
@@ -433,21 +433,21 @@ CPlayer* CGame::getPlayer(int index) {
 }
 
 bool CGame::addPlayer(int index, CPlayer *player) {
-TRACE().debug("CGame::addPlayer(player=%x)%T", player, this );
+LOGDEBUG(("CGame::addPlayer(player=%x)%T", player, this ));
 
 	bool result = _pTabIndexPlayer->Ajoute(index, player );
 
-TRACE().debug("CGame::addPlayer() -> indexPlayer=%d end%T", index, this );
+LOGDEBUG(("CGame::addPlayer() -> indexPlayer=%d end%T", index, this ));
 
 	return result;
 }
 
 int CGame::addPlayer(CPlayer *player) {
-TRACE().debug("CGame::AjoutePlayer(player=%x)%T", player, this );
+LOGDEBUG(("CGame::AjoutePlayer(player=%x)%T", player, this ));
 
 	int indexPlayer = _pTabIndexPlayer->Ajoute( player );
 
-TRACE().debug("CGame::AjoutePlayer() -> indexPlayer=%d end%T", indexPlayer, this );
+LOGDEBUG(("CGame::AjoutePlayer() -> indexPlayer=%d end%T", indexPlayer, this ));
 
 	return indexPlayer;
 }

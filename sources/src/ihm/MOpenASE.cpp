@@ -63,7 +63,7 @@ CDlgBoite *BoiteConvertASE;
 
 void retourASE(void *var)	// Libérations mémoire et retour au menu supérieur
 {
-TRACE().debug("retourASE(var=%x)", var);
+LOGDEBUG(("retourASE(var=%x)", var));
 	delete MenuOpenASE;
 	CDlg::SetMenuActif( 0 );
 
@@ -75,8 +75,8 @@ bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep )
 	basic_string <char>::size_type index, npos = (basic_string <char>::size_type)-1;
 	char ch;
 
-	TRACE().debug("copieTexture(mat=%x,pMapASE=%x,nomRep=%s)", mat, pMapASE, nomRep.c_str() );
-	TRACE().debug("copieTexture() Fichier de texture=%s", mat->m_FichierTexture.c_str() );
+	LOGDEBUG(("copieTexture(mat=%x,pMapASE=%x,nomRep=%s)", mat, pMapASE, nomRep.c_str() ));
+	LOGDEBUG(("copieTexture() Fichier de texture=%s", mat->m_FichierTexture.c_str() ));
 
 	fstream from;	// Fichier source pour la copie du fichier de texture
 	fstream to;		// Fichier destination pour la copie du fichier de texture
@@ -87,7 +87,7 @@ bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep )
 	from.open( nom.c_str(), ios_base::binary|ios_base::in );	// Ouvre le fichier texture d'origine
 	if( from.fail() )
 	{
-		TRACE().debug("copieTexture() Echec d'ouverture du fichier de texture");
+		LOGDEBUG(("copieTexture() Echec d'ouverture du fichier de texture"));
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec d'ouverture du fichier de texture (" << nom << ")";
 		return false;	// Les choses se sont mal passées pour la conversion du fichier
 	}
@@ -107,7 +107,7 @@ bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep )
 	to.open( nom.c_str(), ios_base::binary|ios_base::out );	// Ouvre fichier destination texture
 	if( to.fail() )
 	{
-		TRACE().debug("copieTexture() Echec de creation du fichier de texture");
+		LOGDEBUG(("copieTexture() Echec de creation du fichier de texture"));
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec de creation du fichier de texture ( " << nom << " )";
 		return false;	// Les choses se sont mal passées pour la conversion du fichier
 	}
@@ -119,26 +119,25 @@ bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep )
 		// Vérifie si la copie s'est bien passé
 	if( !from.eof() )
 	{
-		TRACE().debug("copieTexture() Echec de copie du fichier de texture");
+		LOGDEBUG(("copieTexture() Echec de copie du fichier de texture"));
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec de copie du fichier de texture (" << nom << ")";
 		return false;	// La conversion n'a pas abouti
 	}
 
-TRACE().debug("copieTexture() Ok");
+LOGDEBUG(("copieTexture() Ok"));
 
 	return true;
 }
 
 void retourConfirmNon( void *arg )
 {
-TRACE().debug("retourConfirmNon(var=%x)", arg);
+LOGDEBUG(("retourConfirmNon(var=%x)", arg));
 	delete BoiteConfirmOk;
 	lanceMenuOpenScene( 0 );
 }
 
-void retourConfirmOui( void *arg )
-{
-TRACE().debug("retourConfirmOui(var=%x)", arg);
+void retourConfirmOui( void *arg ) {
+LOGDEBUG(("retourConfirmOui(var=%x)", arg));
 	delete BoiteConfirmOk;
 
 	if(deprecatedOpenMAP(arg)) {
@@ -164,7 +163,7 @@ void confirmOk( void *arg )
 
 void retourErreur( void *arg )
 {
-TRACE().debug("retourErreur(var=%x)", arg);
+LOGDEBUG(("retourErreur(var=%x)", arg));
 	delete BoiteErreur;
 	lanceMenuOpenScene( 0 );
 }
@@ -179,7 +178,7 @@ void erreur(const char *msg )
 
 void retourEcraserRep( void *arg )
 {
-TRACE().debug("retourEcraserRep(var=%x)", arg);
+	LOGDEBUG(("retourEcraserRep(var=%x)", arg));
 	delete BoiteEcraseRep;
 	lanceMenuOpenScene( 0 );
 }
@@ -377,7 +376,7 @@ void suivantASE(void *arg)
 
 void lanceMenuConvertASE(void *var)
 {
-TRACE().debug("lanceMenuConvertASE(var=%x)", var);
+LOGDEBUG(("lanceMenuConvertASE(var=%x)", var));
 	cout << "\nEst-ce que t'es là";
 //	struct _finddata_t fileinfo;
 //	intptr_t hFile;

@@ -7,7 +7,7 @@
 
 #include "data/exception/UnavailableOperationException.h"
 
-UnavailableOperationException::UnavailableOperationException(const std::string& message) : JktException(message) {
+UnavailableOperationException::UnavailableOperationException(const std::string& message) : JktException("UnavailableOperationException", message) {
 }
 
 UnavailableOperationException::~UnavailableOperationException() {

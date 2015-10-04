@@ -94,20 +94,20 @@ string StringUtils::findAndEraseFirstString(string& s) {
 	if(finString < s.end() && debutString + 1 < finString) {
 		result = string(debutString + 1, finString);
 
-		// Erase the first word
+		// Erase the first string
 		s.erase(s.begin(), finString + 1);
 	}
 
 	return result;
 }
 
-string StringUtils::findFirstWord(string& s) {
+string StringUtils::findFirstWord(const string& s) {
 	string result;
 
-	string::iterator debutMot = find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)));
+	string::const_iterator debutMot = find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)));
 
 	if(debutMot != s.end()) {
-		string::iterator finMot = find_if(debutMot, s.end(), ptr_fun<int, int>(isspace));
+		string::const_iterator finMot = find_if(debutMot, s.end(), ptr_fun<int, int>(isspace));
 		result = string(debutMot, finMot);
 	}
 
@@ -141,17 +141,17 @@ vector<string> StringUtils::split(const string& s, int (isSeparator)(int)) {
 }
 
 // trim from start
-void StringUtils::ltrim(string &s) {
+void StringUtils::ltrim(string& s) {
 	s.erase(s.begin(), find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))));
 }
 
 // trim from end
-void StringUtils::rtrim(string &s) {
+void StringUtils::rtrim(string& s) {
 	s.erase(find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(), s.end());
 }
 
 // trim from both ends
-void StringUtils::trim(string &s) {
+void StringUtils::trim(string& s) {
 	rtrim(s);
 	ltrim(s);
 }

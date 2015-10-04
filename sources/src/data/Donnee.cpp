@@ -16,9 +16,11 @@
 
 using namespace std;
 
-Donnee::Donnee(int revision, DONNEE_TYPE donneeType) {
+Donnee::Donnee(DataTree* dataTree, int revision, DONNEE_TYPE donneeType, UPDATE_MODE updateMode) {
+	_dataTree = dataTree;
 	_revision = revision;
 	_donneeType = donneeType;
+	_updateMode = updateMode;
 }
 
 Donnee::~Donnee() {
@@ -26,6 +28,14 @@ Donnee::~Donnee() {
 
 DONNEE_TYPE Donnee::getDonneeType() const {
 	return _donneeType;
+}
+
+UPDATE_MODE Donnee::getUpdateMode() const {
+	return _updateMode;
+}
+
+DataTree* Donnee::getDataTree() const {
+	return _dataTree;
 }
 
 MarqueurDistant* Donnee::getMarqueur(DistantTreeProxy* distant) {

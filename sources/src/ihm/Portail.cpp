@@ -28,7 +28,7 @@ namespace JktMenu
 
 void quit_JKTici(void *var)
 {
-TRACE().debug("quit_JKTici(%x)", var);
+LOGDEBUG(("quit_JKTici(%x)", var));
 	quit_game("Qui game from old gui action", 0);
 }
 

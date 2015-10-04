@@ -17,6 +17,7 @@
 
 class AddValeurFromClientChangement: public Changement {
 	std::vector<int> _parentBrancheId;
+	UPDATE_MODE _updateMode;
 	int _valeurTmpId;
 	string _valeurName;
 	int _revision;
@@ -40,6 +41,7 @@ public:
 
 	const std::vector<int>& getParentBrancheId() const;
 	int getValeurTmpId() const;
+	UPDATE_MODE getUpdateMode() const;
 	const string& getValeurName() const;
 	int getRevision() const;
 	JktUtils::AnyData getValeur() const;

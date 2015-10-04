@@ -56,7 +56,7 @@ NetworkManager::~NetworkManager() {
 }
 
 void NetworkManager::setOn( bool on ) {
-TRACE().debug("CReseau::setOn(on=%b)%T", on, this);
+LOGDEBUG(("CReseau::setOn(on=%b)%T", on, this));
 	_on = on;
 }
 
@@ -65,7 +65,7 @@ bool NetworkManager::getOn() {
 }
 
 NotConnectedInterlocutor2* NetworkManager::ouvreServer(Uint16 serverPort, Uint16 serverTreePort) {
-TRACE().debug("CReseau::ouvreServer() begin%T", this);
+LOGDEBUG(("CReseau::ouvreServer() begin%T", this));
 	bool result = false;
 
 	if(_client) {
@@ -92,13 +92,13 @@ TRACE().debug("CReseau::ouvreServer() begin%T", this);
 		result = false;
 	}
 
-TRACE().debug("CReseau::ouvreServer() -> %b end%T", result, this);
+LOGDEBUG(("CReseau::ouvreServer() -> %b end%T", result, this));
 	return notConnectedServerInterlocutor;
 }
 
 void NetworkManager::fermeServer() {
-TRACE().debug("CReseau::fermeServer()%T", this);
-	TRACE().info("Fermeture du serveur UDP");
+LOGDEBUG(("CReseau::fermeServer()%T", this));
+	LOGINFO(("Fermeture du serveur UDP"));
 
 	if( _server )
 		delete _server;
@@ -110,7 +110,7 @@ TRACE().debug("CReseau::fermeServer()%T", this);
 }
 
 Interlocutor2* NetworkManager::ouvreClient(const string& serverIp, Uint16 serverPort, Uint16 serverTreePort) {
-TRACE().debug("CReseau::ouvreClient() begin%T", this);
+LOGDEBUG(("CReseau::ouvreClient() begin%T", this));
 
 	bool result = false;
 
@@ -139,13 +139,13 @@ TRACE().debug("CReseau::ouvreClient() begin%T", this);
 		result = false;
 	}
 
-TRACE().debug("CReseau::ouvreClient() -> %b end%T", result, this);
+LOGDEBUG(("CReseau::ouvreClient() -> %b end%T", result, this));
 	return interlocutor;
 }
 
 void NetworkManager::fermeClient() {
-TRACE().debug("CReseau::fermeClient()%T", this);
-	TRACE().info("Deconnexion du serveur");
+LOGDEBUG(("CReseau::fermeClient()%T", this));
+	LOGINFO(("Deconnexion du serveur"));
 
 	if( _client )
 		delete _client;
@@ -161,7 +161,7 @@ void NetworkManager::recoitServer() {
 	numReady = SDLNet_CheckSockets( _server->socketSet, 0 );	// Nombre de sockets ayant une activité détectée
 
 	if( numReady==-1 ) {
-		TRACE().error("SDLNet_CheckSockets : %s", SDLNet_GetError());
+		LOGERROR(("SDLNet_CheckSockets : %s", SDLNet_GetError()));
 	}
 	else if( numReady ) {
 		if( SDLNet_SocketReady( _server->spaMaitre.getSocket() ) ) {

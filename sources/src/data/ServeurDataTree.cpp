@@ -31,24 +31,24 @@ using namespace std;
 
 using namespace JktUtils;
 
-ServeurDataTree::ServeurDataTree() {
+ServeurDataTree::ServeurDataTree() : DataTree(TREE_SERVER) {
 }
 
 ServeurDataTree::~ServeurDataTree() {
 }
 
-Branche* ServeurDataTree::createBranche(const vector<int>& parentBrancheId, const string& brancheName) {
-	return addBrancheFromDistant(parentBrancheId, brancheName, 0, 0, NULL);
+Branche* ServeurDataTree::createBranche(DistantTreeProxy* distant, const vector<int>& parentBrancheId, const string& brancheName) {
+	return addBrancheFromDistant(parentBrancheId, brancheName, 0, 0, distant);
 }
 
-PrivateBranche* ServeurDataTree::createPrivateBranche(const vector<int>& parentBrancheId, const string& brancheName) {
+Branche* ServeurDataTree::createPrivateBranche(const vector<int>& parentBrancheId, const string& brancheName) {
 	return addPrivateBrancheFromDistant(parentBrancheId, brancheName, 0, 0, NULL);
 }
 
 Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, int revision, DistantTreeProxy* distant) {
 	Branche* parentBranche = getBrancheFromDistant(distant, parentBrancheId);
 
-	AbstractBranche* branche = parentBranche->createSubBrancheForServer(brancheName, DONNEE_SERVER, revision);
+	AbstractBranche* branche = parentBranche->createSubBrancheForServer(distant, brancheName, DONNEE_DEFAULT, revision);
 
 	return (Branche*)initDonneeAndMarqueurFromDistant(distant, branche, brancheClientTmpId);
 }
@@ -56,19 +56,19 @@ Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBranche
 PrivateBranche* ServeurDataTree::addPrivateBrancheFromDistant(const vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, int revision, DistantTreeProxy* distant) {
 	Branche* parentBranche = getBrancheFromDistant(distant, parentBrancheId);
 
-	AbstractBranche* branche = parentBranche->createSubBrancheForServer(brancheName, DONNEE_CLIENT, revision);
+	AbstractBranche* branche = parentBranche->createSubBrancheForServer(distant, brancheName, DONNEE_PRIVATE, revision);
 
 	return (PrivateBranche*)initDonneeAndMarqueurFromDistant(distant, branche, brancheClientTmpId);
 }
 
-Valeur* ServeurDataTree::createValeur(const vector<int>& parentBrancheId, const string& valeurName, const AnyData valeur) {
-	return addValeurFromDistant(parentBrancheId, valeurName, 0, 0, valeur, NULL);
+Valeur* ServeurDataTree::createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const vector<int>& parentBrancheId, const string& valeurName, const AnyData valeur) {
+	return addValeurFromDistant(parentBrancheId, updateMode, valeurName, 0, 0, valeur, distant);
 }
 
-Valeur* ServeurDataTree::addValeurFromDistant(const vector<int>& parentBrancheId, const string& valeurName, int valeurClientTmpId, int revision, const AnyData valeur, DistantTreeProxy* distant) {
+Valeur* ServeurDataTree::addValeurFromDistant(const vector<int>& parentBrancheId, UPDATE_MODE updateMode, const string& valeurName, int valeurClientTmpId, int revision, const AnyData valeur, DistantTreeProxy* distant) {
 	Branche* parentBranche = getBrancheFromDistant(distant, parentBrancheId);
 
-	Valeur* val = parentBranche->createValeurForServeur(valeurName, revision, valeur);
+	Valeur* val = parentBranche->createValeurForServeur(distant, updateMode, valeurName, revision, valeur);
 
 	return (Valeur*)initDonneeAndMarqueurFromDistant(distant, val, valeurClientTmpId);
 }
@@ -76,31 +76,60 @@ Valeur* ServeurDataTree::addValeurFromDistant(const vector<int>& parentBrancheId
 Donnee* ServeurDataTree::initDonneeAndMarqueurFromDistant(DistantTreeProxy* client, Donnee* donnee, int donneeClientTmpId) {
 	_donnees.insert(donnee);
 
-	vector<DistantTreeProxy*>::const_iterator clIter;
+	DONNEE_TYPE type = donnee->getDonneeType();
 
-	// Ajoute un marqueur pour chaque distant et met l'identifiant temporaire dans le distant du client qui a créé la donnée
-	for(clIter = getDistants().begin() ; clIter != getDistants().end() ; clIter++) {
-		DistantTreeProxy* cl = *clIter;
+	switch(type) {
+	case DONNEE_PUBLIC:
+	case DONNEE_PRIVATE:
+	{
+		vector<DistantTreeProxy*>::const_iterator clIter;
 
-		if(cl == client) {
-			cl->addMarqueur(donnee, donneeClientTmpId);
+		// Ajoute un marqueur pour chaque distant et met l'identifiant temporaire dans le distant du client qui a créé la donnée
+		for(clIter = getDistants().begin() ; clIter != getDistants().end() ; clIter++) {
+			DistantTreeProxy* cl = *clIter;
+
+			if(cl == client) {
+				cl->addMarqueur(donnee, donneeClientTmpId);
+			}
+			else {
+				cl->addMarqueur(donnee, 0);
+			}
+		}
+	}
+	break;
+	case DONNEE_PRIVATE_SUB:
+		if(!client) {
+			cerr << endl << "Initialisation de donnée impossible sans client spécifié sur branche privée";
+		}
+		else if(contains<DistantTreeProxy*>(_clients, client)) {
+			client->addMarqueur(donnee, donneeClientTmpId);
 		}
 		else {
-			cl->addMarqueur(donnee, 0);
+			cerr << endl << "Initialisation de donnée impossible car client inconnu sur branche privée";
 		}
+
+		break;
+	case DONNEE_LOCAL:
+		// Pas besoin d'initialiser les marqueurs en mode local ils ne serviront à rien
+		break;
+	default:
+		cerr << endl << "Donnée à initialiser de type inconnu";
+		break;
 	}
 
 	return donnee;
 }
 
-void ServeurDataTree::addDistant(Interlocutor2* interlocutor) {
+DistantTreeProxy* ServeurDataTree::addDistant(Interlocutor2* interlocutor) {
 	// Init the marqueurs
 	DistantTreeProxy* distant = new DistantTreeProxy(interlocutor);
 	initDistantBranche(distant, &getRoot());
 
-	TRACE().info("AJOUT D'UN DISTANT : '%s'", interlocutor->getName().c_str());
+	LOGINFO(("AJOUT D'UN DISTANT : '%s'", interlocutor->getName().c_str()));
 
 	_clients.push_back(distant);
+
+	return distant;
 }
 
 const vector<DistantTreeProxy*>& ServeurDataTree::getDistants() {
@@ -120,7 +149,7 @@ void ServeurDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bra
 	if(bra) {
 		// Init sub-branches
 		{
-			vector<Branche*>& subBranches = bra->getSubBranches();
+			vector<Branche*>& subBranches = bra->getSubBranches(0);
 			vector<Branche*>::iterator itBr;
 
 			for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
@@ -130,7 +159,7 @@ void ServeurDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bra
 
 		// Init values
 		{
-			vector<Valeur*>& valeurs = bra->getValeurs();
+			vector<Valeur*>& valeurs = bra->getValeurs(0);
 			vector<Valeur*>::iterator iterVl;
 
 			for(iterVl = valeurs.begin() ; iterVl != valeurs.end() ; iterVl++) {
@@ -171,41 +200,51 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 		vector<DistantTreeProxy*>::const_iterator clientIter;
 		vector<Changement*> changements;
 
+		Uint32 now = SDL_GetTicks();
+
 		DistantTreeProxy* client;
 		Interlocutor2* interlocutor;
 		vector<Changement*>::iterator itCh;
 
+		Uint32 time;
+		saveTime(time);
+
 		for(clientIter = getDistants().begin() ; clientIter != getDistants().end() ; clientIter++) {
 			client = *clientIter;
-			interlocutor = client->getInterlocutor();
-			client->collecteChangementsInServerTree(changements);
 
-			// Priorise et filtre les changements qui seront vraiment envoyés
+			if(now - client->getUpdateServerToClientTime() >= 200) {
+				client->setUpdateServerToClientTime(now);
 
-			// Emission des changements
-			if(changements.size()) {
-				for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
-					TRACE().info("serveur to '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str());
+				interlocutor = client->getInterlocutor();
+				client->collecteChangementsInServerTree(changements);
+
+				// Priorise et filtre les changements qui seront vraiment envoyés
+
+				// Emission des changements
+				if(changements.size()) {
+//					for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
+//						LOGINFO(("serveur to '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str()));
+//					}
+
+					ostringstream out;
+					DataSerializer::toStream(changements, out);
+
+					for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
+						delete *itCh;
+					}
+
+					interlocutor->pushDataToSend(new JktUtils::Bytes(out.str()));
+
+					changements.clear();
 				}
-
-				ostringstream out;
-				DataSerializer::toStream(changements, out);
-
-				for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
-					delete *itCh;
-				}
-
-				interlocutor->pushDataToSend(new JktUtils::Bytes(out.str()));
-
-				changements.clear();
 			}
 		}
 	}
 	catch(NotExistingBrancheException& exception) {
-		TRACE().error("Unmanaged NotExistingBrancheException : %s", exception.what());
+		LOGERROR(("Unmanaged NotExistingBrancheException : %s", exception.what()));
 	}
 	catch(NotExistingValeurException& exception) {
-		TRACE().error("Unmanaged NotExistingValeurException : %s", exception.what());
+		LOGERROR(("Unmanaged NotExistingValeurException : %s", exception.what()));
 	}
 }
 
@@ -255,8 +294,6 @@ Valeur* ServeurDataTree::getValeurByDistantTmpId(DistantTreeProxy* distant, cons
 }
 
 void ServeurDataTree::receiveChangementsFromClients() {
-	TRACEMETHOD();
-
 	try {
 		vector<DistantTreeProxy*>::iterator it;
 
@@ -280,23 +317,23 @@ void ServeurDataTree::receiveChangementsFromClients() {
 
 				vector<Changement*>::iterator itCh;
 
-				TRACE().info("NOMBRE DE CHANGEMENTS A PRENDRE EN COMPTE : %d", changements.size());
+				LOGINFO(("NOMBRE DE CHANGEMENTS A PRENDRE EN COMPTE : %d", changements.size()));
 
 
 				for(itCh = changements.begin() ; itCh != changements.end() ; itCh++) {
 					try {
-						TRACE().error("serveur from '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str());
+						LOGINFO(("serveur from '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str()));
 
 						// Le client confirme la révision de branche qu'il a reçu
 						if(ConfirmBrancheChangement* chgt = dynamic_cast<ConfirmBrancheChangement*>(*itCh)) {
-							Branche* branche = getBranche(chgt->getBrancheId());
+							Branche* branche = getBranche(distant, chgt->getBrancheId());
 							MarqueurDistant* marqueur = distant->getMarqueur(branche);
 							marqueur->setConfirmedRevision(chgt->getRevision());
 						}
 
 						// Le client confirme la révision de valeur qu'il a reçu
 						else if(ConfirmValeurChangement* chgt = dynamic_cast<ConfirmValeurChangement*>(*itCh)) {
-							Valeur* valeur = getValeur(chgt->getBrancheId(), chgt->getValeurId());
+							Valeur* valeur = getValeur(distant, chgt->getBrancheId(), chgt->getValeurId());
 							MarqueurDistant* marqueur = distant->getMarqueur(valeur);
 							marqueur->setConfirmedRevision(chgt->getRevision());
 						}
@@ -330,7 +367,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 								valeur = getValeurByDistantTmpId(distant, chgt->getParentBrancheId(), chgt->getValeurTmpId());
 							}
 							catch(NotExistingValeurException& exception) {
-								valeur = addValeurFromDistant(chgt->getParentBrancheId(), chgt->getValeurName(), chgt->getValeurTmpId(), chgt->getRevision(), chgt->getValeur(), distant);
+								valeur = addValeurFromDistant(chgt->getParentBrancheId(), chgt->getUpdateMode(), chgt->getValeurName(), chgt->getValeurTmpId(), chgt->getRevision(), chgt->getValeur(), distant);
 							}
 
 							MarqueurDistant* marqueur = distant->getMarqueur(valeur);
@@ -341,7 +378,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 
 						// Le client demande la modification d'une valeur
 						else if(UpdateValeurFromClientChangement* chgt = dynamic_cast<UpdateValeurFromClientChangement*>(*itCh)) {
-							Valeur* valeur = getValeur(chgt->getParentBrancheId(), chgt->getValeurId());
+							Valeur* valeur = getValeur(distant, chgt->getParentBrancheId(), chgt->getValeurId());
 
 							if(valeur->getRevision() < chgt->getRevision()) {
 								valeur->setValeur(chgt->getRevision(), chgt->getValeur());
@@ -352,7 +389,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 								answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), chgt->getValeurId(), valeur->getRevision()));
 							}
 							else {
-								TRACE().error(" Exception : La révision client est plus ancienne que celle du serveur");
+								LOGERROR((" Exception : La révision client est plus ancienne que celle du serveur"));
 							}
 						}
 
@@ -362,13 +399,13 @@ void ServeurDataTree::receiveChangementsFromClients() {
 						}
 					}
 					catch(const NotExistingValeurException& exception) {
-						TRACE().error("NotExistingValeurException");
+						LOGERROR(("NotExistingValeurException"));
 					}
 					catch(const NotExistingBrancheException& exception) {
-						TRACE().error("NotExistingBrancheException");
+						LOGERROR(("NotExistingBrancheException"));
 					}
 					catch(const DataCommunicationException& exception) {
-						TRACE().error("DataCommunicationException : %s", exception.what());
+						LOGERROR(("DataCommunicationException : %s", exception.what()));
 					}
 
 					delete *itCh;
@@ -379,7 +416,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 					vector<Changement*>::iterator itCh;
 
 					for(itCh = answers.begin() ; itCh != answers.end() ; itCh++) {
-						TRACE().info("serveur '%s', : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str());
+						LOGINFO(("serveur '%s', : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str()));
 					}
 
 					ostringstream out;
@@ -395,13 +432,13 @@ void ServeurDataTree::receiveChangementsFromClients() {
 		}
 	}
 	catch(DataCommunicationException& exception) {
-		TRACE().error("DataCommunicationException : %s", exception.what());
+		LOGERROR(("DataCommunicationException : %s", exception.what()));
 	}
 	catch(NotExistingBrancheException& exception) {
-		TRACE().error("Unmanaged NotExistingBrancheException : %s", exception.what());
+		LOGERROR(("Unmanaged NotExistingBrancheException : %s", exception.what()));
 	}
 	catch(NotExistingValeurException& exception) {
-		TRACE().error("Unmanaged NotExistingValeurException : %s", exception.what());
+		LOGERROR(("Unmanaged NotExistingValeurException : %s", exception.what()));
 	}
 }
 

@@ -13,9 +13,13 @@
 class DataTreeUtils {
 	DataTreeUtils();
 public:
+	static const char* TREE_VID_BRANCHE_NAME;
+	static const char* TREE_CONTROL_BRANCHE_NAME;
+
 	virtual ~DataTreeUtils();
 
-	static void formatGameDataTree(DataTree* dataTree);
+	static void formatGameServerDataTree(DataTree* dataTree);
+	static void formatGameClientDataTree(DistantTreeProxy* distant, DataTree* dataTree);
 };
 
 #endif /* SRC_DATA_DATATREEUTILS_H_ */

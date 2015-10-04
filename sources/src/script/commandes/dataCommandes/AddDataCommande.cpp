@@ -38,7 +38,7 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 			vector<int> parentBrancheId = getIntParameters(ligne);
 
 			try {
-				dataTree->createBranche(parentBrancheId, brancheName);
+				dataTree->createBranche(0, parentBrancheId, brancheName);
 				printStdLn("Branche creee.", userOutput);
 			}
 			catch(NotExistingBrancheException& exception) {
@@ -87,7 +87,7 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 				// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
 				vector<int> brancheId = getIntParameters(ligne);
 
-				dataTree->createValeur(brancheId, valeurName, valeur);
+				dataTree->createValeur(0, ANY, brancheId, valeurName, valeur);
 
 				printStdLn("Valeur creee.", userOutput);
 			}

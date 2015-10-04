@@ -48,9 +48,8 @@ const char *item_menu_config_video[] =
 CMenu MenuConfigVideo( "CONFIGURATION VIDEO", item_menu_config_video, 2,
 						liste_suivant_config_video, lanceMenuConfig );
 
-void lanceMenuConfigVideo(void *var)
-{
-TRACE().debug("lanceMenuConfigVideo(var=%x)", var);
+void lanceMenuConfigVideo(void *var) {
+LOGDEBUG(("lanceMenuConfigVideo(var=%x)", var));
 	ostringstream size;
 	size << Config.Display.X << " * " << Config.Display.Y;
 	MenuConfigVideo.add_ItemsDroits( 0, size.str().c_str() );
@@ -63,9 +62,8 @@ TRACE().debug("lanceMenuConfigVideo(var=%x)", var);
 	CDlg::SetMenuActif( &MenuConfigVideo );
 }
 
-void lanceMenuConfigVideoFullscreenOnOff(void *var)
-{
-TRACE().debug("lanceMenuConfigVideoFullscreenOnOff(var=%x)", var);
+void lanceMenuConfigVideoFullscreenOnOff(void *var) {
+LOGDEBUG(("lanceMenuConfigVideoFullscreenOnOff(var=%x)", var));
 	Config.Display.Fullscreen( !Config.Display.Fullscreen() );
 	Config.Ecrit();
 

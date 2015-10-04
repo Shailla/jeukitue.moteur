@@ -26,6 +26,7 @@ using namespace std;
 
 #include "main/Extensions.h"
 #include "main/divers.h"
+#include "util/StringUtils.h"
 #include "util/Trace.h"
 #include "son/audio.h"
 #include "ressource/RessourcesLoader.h"
@@ -47,7 +48,8 @@ PFNGLDELETEBUFFERSARBPROC glDeleteBuffers;
 
 const char* CCfg::CST_GEN_PLAY_INTRO = 			"general.playIntro";
 
-const char* CCfg::CST_VID_DISPLAY = 			"video.display";
+const char* CCfg::CST_VID_DISPLAY_POS =			"video.display.position";
+const char* CCfg::CST_VID_DISPLAY_SIZE = 		"video.display.size";
 const char* CCfg::CST_VID_FULLSCREEN =			"video.fullscreen";
 
 const char* CCfg::CST_AUD_OUTPUT = 				"audio.output";
@@ -71,6 +73,8 @@ const char* CCfg::CST_CEN_PORT =				"centralisateur.port";
 const char* CCfg::CST_NET_IP =					"reseau.serveur.ip";
 const char* CCfg::CST_NET_PORT =				"reseau.serveur.port";
 const char* CCfg::CST_NET_PORTTREE =			"reseau.serveur.portTree";
+const char* CCfg::CST_TREE_UPDATE_CLIENTTOSERVER_DELAY =	"reseau.tree.update.client-to-server.delay";
+const char* CCfg::CST_TREE_UPDATE_SERVERTOCLIENT_DELAY =	"reseau.tree.update.server-to-client.delay";
 
 const char* CCfg::CST_JOU_NOM =					"joueur.nom";
 const char* CCfg::CST_JOU_MAPNOM =				"joueur.mapNom";
@@ -88,20 +92,20 @@ const char* CCfg::CST_DEB_AFFICHENORMAUX =		"debug.afficheNormaux";
 
 CCfg::CCfg()
 {
-	TRACE().debug("Cfg::Cfg()%T", this);
+	LOGDEBUG(("Cfg::Cfg()%T", this));
 }
 
 void CCfg::AfficheDateCompilation() {
-	TRACE().info("Date de compilation : %s", __DATE__);
+	LOGINFO(("Date de compilation : %s", __DATE__));
 }
 
 void CCfg::NommeConfig(const string &nomFichier) {
-	TRACE().debug("Cfg::NommeConfig(nomFichier=%s)%T", nomFichier.c_str(), this);
+	LOGDEBUG(("Cfg::NommeConfig(nomFichier=%s)%T", nomFichier.c_str(), this));
 	nomFichierConfig = nomFichier;
 }
 
 void CCfg::Lit() {
-	TRACE().debug("Cfg::Lit()%T", this);
+	LOGDEBUG(("Cfg::Lit()%T", this));
 	string mot;
 
 	string nomFichierEntier = "./" + nomFichierConfig + ".ini";
@@ -126,10 +130,14 @@ void CCfg::Lit() {
 		 * Vidéo
 		 * **************************************/
 
-		do fichier >> mot;	while( mot!=CST_VID_DISPLAY );		// Propriétés d'affichage
+		do fichier >> mot;	while( mot!=CST_VID_DISPLAY_POS );
+		fichier >> Display.position;
+		JktUtils::StringUtils::trim(Display.position);
+
+		do fichier >> mot;	while( mot!=CST_VID_DISPLAY_SIZE );
 		fichier >> Display.X >> Display.Y;
 
-		do fichier >> mot;	while( mot!=CST_VID_FULLSCREEN );	// Propriétés d'affichage
+		do fichier >> mot;	while( mot!=CST_VID_FULLSCREEN );
 		fichier >> Display.m_bFullscreen;
 
 
@@ -232,6 +240,13 @@ void CCfg::Lit() {
 		do fichier >> mot;	while( mot!=CST_NET_PORTTREE );
 		fichier >> Reseau._portTree;
 
+		do fichier >> mot;	while( mot!=CST_TREE_UPDATE_CLIENTTOSERVER_DELAY );
+		fichier >> Reseau._treeUpdateClientToServerDelay;
+
+		do fichier >> mot;	while( mot!=CST_TREE_UPDATE_SERVERTOCLIENT_DELAY );
+		fichier >> Reseau._treeUpdateServerToClientDelay;
+
+
 
 		/* ***************************************
 		 * Joueur
@@ -297,7 +312,8 @@ void CCfg::Ecrit() {
 	fichier << endl << CST_GEN_PLAY_INTRO << "\t\t" << General._playIntro;
 
 	fichier << "\n\n\n-------------------------VIDEO-------------------------\n";
-	fichier << endl << CST_VID_DISPLAY << "\t\t" << Display.X << "\t" << Display.Y;
+	fichier << endl << CST_VID_DISPLAY_POS << "\t\t" << Display.position;
+	fichier << endl << CST_VID_DISPLAY_SIZE << "\t\t" << Display.X << "\t" << Display.Y;
 	fichier << endl << CST_VID_FULLSCREEN << "\t" << Display.Fullscreen();
 
 	fichier << "\n\n\n-------------------------AUDIO-------------------------\n";
@@ -331,6 +347,8 @@ void CCfg::Ecrit() {
 	fichier << endl << CST_NET_IP << "\t\t\t" << Reseau._IpServer;
 	fichier << endl << CST_NET_PORT << "\t\t\t" << Reseau._Port;
 	fichier << endl << CST_NET_PORTTREE << "\t\t" << Reseau._portTree;
+	fichier << endl << CST_TREE_UPDATE_CLIENTTOSERVER_DELAY << "\t\t" << Reseau._treeUpdateClientToServerDelay;
+	fichier << endl << CST_TREE_UPDATE_SERVERTOCLIENT_DELAY << "\t\t" << Reseau._treeUpdateServerToClientDelay;
 
 	fichier << "\n\n\n------------------------JOUEUR-------------------------\n";
 	fichier << endl << CST_JOU_NOM << "\t\t\t\t\t" << Joueur.nom;
@@ -579,19 +597,19 @@ const char* CCfg::resolve(const SDLKey sym) {
 const int CCfg::CAudio::AVAILABLE_AUDIO_OUTPUTS_NBR = 4;
 
 const char *CCfg::CAudio::AVAILABLE_AUDIO_OUTPUTS[] =
-	{
-	#ifdef _WIN32
+{
+#ifdef _WIN32
 		"Direct Sound",
 		"Windows Multimedia Waveout",
 		"ASIO",
 		"NoSound",
-	#elif defined(__linux__)
+#elif defined(__linux__)
 		"OSS - Open Sound System",
 		"ESD - Elightment Sound Daemon",
 		"ALSA 0.9 - Advanced Linux Sound Architecture",
 		"NoSound",
-	#endif
-	};
+#endif
+};
 
 /**
  * Initialise the audio drivers with the Jkt configuration parameters.
@@ -604,14 +622,14 @@ void CCfg::CAudio::Init() {
  * Try to initialise the audio drivers with new parameters and save them in the configuration if they work correctly.
  */
 bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixer, int driverRecord) {
-	TRACE().debug("CCfg::CAudio::Init()");
+	LOGDEBUG(("CCfg::CAudio::Init()"));
 	unsigned int caps = 0;
 
 	// Initialisation audio de FMOD
-	TRACE().info("Version de FMOD : %f", FSOUND_GetVersion());
+	LOGINFO(("Version de FMOD : %f", FSOUND_GetVersion()));
 
 	if(FSOUND_GetVersion() < FMOD_VERSION) {
-		TRACE().info("Error : You are using a wrong FMOD DLL version!  You should be using at least version %f", FMOD_VERSION);
+		LOGINFO(("Error : You are using a wrong FMOD DLL version!  You should be using at least version %f", FMOD_VERSION));
 
 		return false;
 	}
@@ -649,7 +667,7 @@ bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixe
 			m_Driver = driver;
 		}
 		else {									// Le driver configuré ne peut pas fonctionner
-			TRACE().error("Driver son mal configuré, choix par défaut.");
+			LOGERROR(("Driver son mal configuré, choix par défaut."));
 			driver = 0;							// Modification du fichier de configuration
 			FSOUND_SetDriver(0);				// Choix du driver par défaut
 			m_Driver = 0;
@@ -657,7 +675,7 @@ bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixe
 	}
 	else {
 		// Pas de driver son
-		TRACE().error(" Aucun driver son détecté.");
+		LOGERROR((" Aucun driver son détecté."));
 	}
 
 	FSOUND_SetMixer(mixer);			// Sélection du mixer
@@ -665,7 +683,7 @@ bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixe
 
 	// Initialisation
 	if(!FSOUND_Init(44100, 32, FSOUND_INIT_GLOBALFOCUS)) {
-		TRACE().error("Erreur FSOUND_Init : %s", FMOD_ErrorString(FSOUND_GetError()));
+		LOGERROR(("Erreur FSOUND_Init : %s", FMOD_ErrorString(FSOUND_GetError())));
 		FSOUND_Close();
 	}
 
@@ -674,19 +692,19 @@ bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixe
 	if( FSOUND_Record_GetNumDrivers() > 0 ) {	// Vérifie s'il y a un driver d'acquisition du son
 		if( driverRecord < FSOUND_Record_GetNumDrivers() ) {
 			if( !FSOUND_Record_SetDriver(driverRecord)) {	// Sélection du driver				// d'entrée pour le micro
-				TRACE().error(" Erreur FSOUND_Record_SetDriver : %s", FMOD_ErrorString(FSOUND_GetError()));
-				TRACE().error("\tAVIS AU PROGRAMMEUR Le programme va planter s'il y a une tentative d'utilisation du micro !!!");
+				LOGERROR((" Erreur FSOUND_Record_SetDriver : %s", FMOD_ErrorString(FSOUND_GetError())));
+				LOGERROR(("\tAVIS AU PROGRAMMEUR Le programme va planter s'il y a une tentative d'utilisation du micro !!!"));
 			}
 			else {
 				m_DriverRecord = driverRecord;
 			}
 		}
 		else {		// Le driver de record ne peut pas fonctionner
-			TRACE().error("Driver de record son mal configuré, choix par défaut.");
+			LOGERROR(("Driver de record son mal configuré, choix par défaut."));
 
 			if( !FSOUND_Record_SetDriver(0) ) {		// Sélection du driver de record par défaut
-				TRACE().error("Erreur FSOUND_Record_SetDriver : ", FMOD_ErrorString(FSOUND_GetError()));
-				TRACE().error("\tAVIS AU PROGRAMMEUR Le programme va planter s'il y a une tentative d'utilisation du micro !!!");
+				LOGERROR(("Erreur FSOUND_Record_SetDriver : ", FMOD_ErrorString(FSOUND_GetError())));
+				LOGERROR(("\tAVIS AU PROGRAMMEUR Le programme va planter s'il y a une tentative d'utilisation du micro !!!"));
 			}
 			else {
 				m_DriverRecord = 0;
@@ -694,41 +712,41 @@ bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixe
 		}
 	}
 	else {		// Aucun driver d'acquisition du son détecté
-		TRACE().error(" Aucun driver d'acquisition du son détecté.");
+		LOGERROR((" Aucun driver d'acquisition du son détecté."));
 	}
 
 	// RESUME DE L'INITIALISATION
-	TRACE().info("RESUME DE L'INITIALISATION AUDIO");
-	TRACE().info("FSOUND Output Method : '%s'", resolveOutput(FSOUND_GetOutput()));
-	TRACE().info("FSOUND Mixer         : '%s'", resolveMixer(FSOUND_GetMixer()));
-	TRACE().info("FSOUND Driver        : '%s'", resolveDriver(FSOUND_GetDriver()));
+	LOGINFO(("RESUME DE L'INITIALISATION AUDIO"));
+	LOGINFO(("FSOUND Output Method : '%s'", resolveOutput(FSOUND_GetOutput())));
+	LOGINFO(("FSOUND Mixer         : '%s'", resolveMixer(FSOUND_GetMixer())));
+	LOGINFO(("FSOUND Driver        : '%s'", resolveDriver(FSOUND_GetDriver())));
 
 	FSOUND_GetDriverCaps(FSOUND_GetDriver(), &caps);
 
 	if (!caps) {
-		TRACE().info("\tCe driver supporte seulement le mode software.\n\tIl ne supporte pas bien le son 3D.");
+		LOGINFO(("\tCe driver supporte seulement le mode software.\n\tIl ne supporte pas bien le son 3D."));
 	}
 
 	if (caps & FSOUND_CAPS_HARDWARE) {
-		TRACE().info("\t- Ce driver supporte le son 3D en hardware!");
+		LOGINFO(("\t- Ce driver supporte le son 3D en hardware!"));
 	}
 
 	if (caps & FSOUND_CAPS_EAX2) {
-		TRACE().info("\t- Ce driver supporte l'EAX 2 reverb!");
+		LOGINFO(("\t- Ce driver supporte l'EAX 2 reverb!"));
 	}
 
 	if (caps & FSOUND_CAPS_EAX3) {
-		TRACE().info("\t- Ce driver supporte l'EAX 3 reverb!");
+		LOGINFO(("\t- Ce driver supporte l'EAX 3 reverb!"));
 	}
 
-	TRACE().info("FSOUND Record Driver : %s", resolveDriverRecord(FSOUND_Record_GetDriver()));
+	LOGINFO(("FSOUND Record Driver : %s", resolveDriverRecord(FSOUND_Record_GetDriver())));
 
 	int num2d, num3d, total;
 	FSOUND_GetNumHWChannels( &num2d, &num3d, &total );
 
-	TRACE().info("Hardware 2D channels : %d", num2d);
-	TRACE().info("Hardware 3D channels : %d", num3d);
-	TRACE().info("Total hardware channels : %d", total);
+	LOGINFO(("Hardware 2D channels : %d", num2d));
+	LOGINFO(("Hardware 3D channels : %d", num3d));
+	LOGINFO(("Total hardware channels : %d", total));
 
 	return true;
 }
@@ -740,7 +758,7 @@ void CCfg::CDisplay::Init() {
 }
 
 void CCfg::CDisplay::InitSDL() {
-	TRACE().debug("init_SDL(config) begin");
+	LOGDEBUG(("init_SDL(config) begin"));
 
 #ifdef WIN32
 	//	_putenv("SDL_VIDEODRIVER=directx");	// A FAIRE A FAIRE A FAIRE : code compatible Linux
@@ -748,7 +766,7 @@ void CCfg::CDisplay::InitSDL() {
 
 	if( SDL_Init( SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_NOPARACHUTE ) < 0 )	// First, initialize SDL's video subsystem
 	{
-		TRACE().error("Video initialization failed : %s", SDLNet_GetError());
+		LOGERROR(("Video initialization failed : %s", SDLNet_GetError()));
 		exit( 1 );
 	}
 
@@ -762,39 +780,39 @@ void CCfg::CDisplay::InitSDL() {
 
 	const SDL_VideoInfo* info = SDL_GetVideoInfo( );	// Let's get some video information
 	if( !info ) {
-		TRACE().error("Video query failed : %s", SDL_GetError());
+		LOGERROR(("Video query failed : %s", SDL_GetError()));
 		exit( 1 );
 	}
 
 	bpp = info->vfmt->BitsPerPixel;
 
 	if( SDL_GL_SetAttribute( SDL_GL_RED_SIZE, 8 )==-1 ) {
-		TRACE().error("Erreur init_SDL : SDL_GL_RED_SIZE");
+		LOGERROR(("Erreur init_SDL : SDL_GL_RED_SIZE"));
 		exit( 1 );
 	}
 
 	if( SDL_GL_SetAttribute( SDL_GL_GREEN_SIZE, 8 )==-1 ) {
-		TRACE().error("Erreur init_SDL : SDL_GL_GREEN_SIZE");
+		LOGERROR(("Erreur init_SDL : SDL_GL_GREEN_SIZE"));
 		exit( 1 );
 	}
 
 	if( SDL_GL_SetAttribute( SDL_GL_BLUE_SIZE, 8 )==-1 ) {
-		TRACE().error("Erreur init_SDL : SDL_GL_BLUE_SIZE");
+		LOGERROR(("Erreur init_SDL : SDL_GL_BLUE_SIZE"));
 		exit( 1 );
 	}
 
 	if( SDL_GL_SetAttribute( SDL_GL_ALPHA_SIZE, 8 )==-1 ) {
-		TRACE().error("Erreur init_SDL : SDL_GL_ALPHE_SIZE");
+		LOGERROR(("Erreur init_SDL : SDL_GL_ALPHE_SIZE"));
 		exit( 1 );
 	}
 
 	if( SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 )==-1 ) {
-		TRACE().error("Erreur init_SDL : SDL_GL_DEPTH_SIZE");
+		LOGERROR(("Erreur init_SDL : SDL_GL_DEPTH_SIZE"));
 		exit( 1 );
 	}
 
 	if( SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 )==-1 ) {
-		TRACE().error("Erreur init_SDL : SDL_GL_DOUBLEBUFFER");
+		LOGERROR(("Erreur init_SDL : SDL_GL_DOUBLEBUFFER"));
 		exit( 1 );
 	}
 
@@ -809,7 +827,7 @@ void CCfg::CDisplay::InitSDL() {
 	var << " ; blit_sw_A:1=" << info->blit_sw_A;
 	var << " ; blit_fill=" << info->blit_fill;
 	var << " ; video_mem=" << info->video_mem;
-	TRACE().info(var.str().c_str());
+	LOGINFO((var.str().c_str()));
 
 	flags = SDL_OPENGL | SDL_RESIZABLE;
 
@@ -821,65 +839,68 @@ void CCfg::CDisplay::InitSDL() {
 
 	// Check if there are any modes available
 	if( modes == (SDL_Rect **)0 ) {
-		TRACE().error("Aucun mode video n'est disponible");
+		LOGERROR(("Aucun mode video n'est disponible"));
 		exit( 1 );
 	}
 
 	/* Check if our resolution is restricted */
 	if(modes == (SDL_Rect **)-1) {
-		TRACE().info("Tous les modes video sont disponibles");
+		LOGINFO(("Tous les modes video sont disponibles"));
 	}
 	else {
 		/* Print valid modes */
-		TRACE().info("Modes video disponibles : ");
+		LOGINFO(("Modes video disponibles : "));
 
 		for( int i=0 ; modes[i] ; ++i ) {
-			TRACE().info("[%d * %d]", modes[i]->w, modes[i]->h);
+			LOGINFO(("[%d * %d]", modes[i]->w, modes[i]->h));
 		}
 	}
 
 	if( !SDL_VideoModeOK(X, Y, bpp, flags) ) {
-		TRACE().warn("WARNING : Mode video indisponible => mode choisi par defaut, corrigez la configuration");
+		LOGWARN(("WARNING : Mode video indisponible => mode choisi par defaut, corrigez la configuration"));
 		X = modes[0]->w;
 		Y = modes[0]->h;
 	}
 
-	putenv("SDL_VIDEO_WINDOW_POS=center"); 	//pour centrer la fenêtre
+	string windowPosition("SDL_VIDEO_WINDOW_POS=");
+	windowPosition = windowPosition + position;
+	putenv(windowPosition.c_str()); 	//pour centrer la fenêtre
 
 	screen = SDL_SetVideoMode(X, Y, bpp, flags);		// Set the video mode
 
 	if( screen == 0) {
-		TRACE().error("Error : Video mode set failed: ", SDL_GetError());
+		LOGERROR(("Error : Video mode set failed: ", SDL_GetError()));
 		exit( 1 );
 	}
 
-	SDL_WarpMouse( 250, 250 );			//positionnement du curseur de la souris
-	SDL_ShowCursor( SDL_DISABLE );		//Cache le curseur de la souris
-	SDL_WM_GrabInput( SDL_GRAB_ON );	//Active le mode déplacement relatif de la souris
+	SDL_WarpMouse( 250, 250 );			// Positionne le curseur de la souris
+	SDL_ShowCursor( SDL_DISABLE );		// Cache le curseur de la souris
+	SDL_WM_GrabInput( SDL_GRAB_ON );	// Active le mode déplacement relatif de la souris
 
 	SDL_EnableKeyRepeat( 500, 500 );	// Répétition des touches clavier
 
 	char txt1[50];
-	TRACE().info("Driver video :");
+	LOGINFO(("Driver video :"));
 	if( SDL_VideoDriverName(txt1, 50) ) {
-		TRACE().info(txt1);
+		LOGINFO((txt1));
 	}
 
 	SDL_EnableUNICODE(SDL_ENABLE);
 
-	TRACE().info("Video memory : %d Mo", info->video_mem/1024);
+	LOGINFO(("Video memory : %d Mo", info->video_mem/1024));
 
-	TRACE().debug("init_SDL(config) end");
+	LOGDEBUG(("init_SDL(config) end"));
 }
 
 void CCfg::CDisplay::InitOpenGL() {
-	TRACE().debug("setup_opengl(width=%d,height=%d) begin", X, Y);
+	LOGDEBUG(("setup_opengl(width=%d,height=%d) begin", X, Y));
+
 	// Informations openGL
-	TRACE().info("Version openGL : ", glGetString(GL_VERSION));
-	TRACE().info("Modele de la carte graphique : ", glGetString(GL_RENDERER));
-	TRACE().info("Fabricant de la carte graphique : ", glGetString(GL_VENDOR));
-	TRACE().info("Extensions openGL disponibles : ", glGetString(GL_EXTENSIONS));
-	TRACE().info("Version GLU : ", gluGetString(GLU_VERSION));
+	LOGINFO(("Version openGL : ", glGetString(GL_VERSION)));
+	LOGINFO(("Modele de la carte graphique : ", glGetString(GL_RENDERER)));
+	LOGINFO(("Fabricant de la carte graphique : ", glGetString(GL_VENDOR)));
+	LOGINFO(("Extensions openGL disponibles : ", glGetString(GL_EXTENSIONS)));
+	LOGINFO(("Version GLU : ", gluGetString(GLU_VERSION)));
 
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );					// Spécifie la couleur de vidage du tampon chromatique
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
@@ -900,69 +921,69 @@ void CCfg::CDisplay::InitOpenGL() {
 	glDeleteBuffers = (PFNGLDELETEBUFFERSARBPROC)SDL_GL_GetProcAddress("glDeleteBuffersARB");
 
 	if(!glGenBuffers) {
-		TRACE().error("OpenGL extension 'glGenBuffersARB' not available");
+		LOGERROR(("OpenGL extension 'glGenBuffersARB' not available"));
 		exit(1);
 	}
 
 	if(!glBindBuffer) {
-		TRACE().error("OpenGL extension 'glBindBufferARB' not available");
+		LOGERROR(("OpenGL extension 'glBindBufferARB' not available"));
 		exit(1);
 	}
 
 	if(!glBufferData) {
-		TRACE().error("OpenGL extension 'glBufferDataARB' not available");
+		LOGERROR(("OpenGL extension 'glBufferDataARB' not available"));
 		exit(1);
 	}
 
 	if(!glDeleteBuffers) {
-		TRACE().error("OpenGL extension 'glDeleteBuffersARB' not available");
+		LOGERROR(("OpenGL extension 'glDeleteBuffersARB' not available"));
 		exit(1);
 	}
 
-	TRACE().info("Erreur OpenGL : %s", gluErrorString(glGetError()));
+	LOGINFO(("Erreur OpenGL : %s", gluErrorString(glGetError())));
 
-	TRACE().debug("setup_opengl() end");
+	LOGDEBUG(("setup_opengl() end"));
 }
 
 void CCfg::CDisplay::InitAgar() {
-	TRACE().debug("setup Agar");
+	LOGDEBUG(("setup Agar"));
 	// Informations Agar
 	AG_AgarVersion agarVersion;
 	AG_GetVersion(&agarVersion);
 
-	TRACE().info("Version Agar : %d.%d.%d (%s)", agarVersion.major, agarVersion.minor, agarVersion.patch, agarVersion.release);
+	LOGINFO(("Version Agar : %d.%d.%d (%s)", agarVersion.major, agarVersion.minor, agarVersion.patch, agarVersion.release));
 
 	// Initialisation Agar (librairie de gestion du menu)
 	if(AG_InitCore("JKT", 0) == -1 || AG_InitVideoSDL(screen, flags) == -1) {
-		TRACE().error("Erreur d'initialisation Agar : '%s'", AG_GetError());
+		LOGERROR(("Erreur d'initialisation Agar : '%s'", AG_GetError()));
 	}
 
 	// Noms des drivers disponibles pour Agar
 	char drvNames[256];
 	AG_ListDriverNames(drvNames, sizeof(drvNames));
 
-	TRACE().info("Available drivers : %s", drvNames);
+	LOGINFO(("Available drivers : %s", drvNames));
 
 	AG_Driver *driver = (AG_Driver *)agDriverSw;
-	TRACE().info("Driver Agar actif : %s", driver->_inherit.name);
+	LOGINFO(("Driver Agar actif : %s", driver->_inherit.name));
 }
 
 bool CCfg::CDisplay::chargeGLExtension(const char* ext, string& extensions) {
 	// Recherche de l'extension qui nous intéresse : GL_ARB_texture_compression
 	if (extensions.find(ext) != std::string::npos) {
-		TRACE().info("Extension OpenGL supportée : %s", ext);
+		LOGINFO(("Extension OpenGL supportée : %s", ext));
 		return true;
 	}
 	else {
-		TRACE().info("Extension OpenGL non-supportée : ", ext);
+		LOGINFO(("Extension OpenGL non-supportée : "));
 		return false;
 	}
 }
 
 void CCfg::CDisplay::ChangeVideoSize(int x, int y) {
-	TRACE().debug("changeVideoSize(config) begin");
+	LOGDEBUG(("changeVideoSize(config) begin"));
 	if( !SDL_VideoModeOK(x, y, bpp, flags) ) {
-		TRACE().info("Mode video invalide");
+		LOGINFO(("Mode video invalide"));
 		return;
 	}
 
@@ -971,7 +992,7 @@ void CCfg::CDisplay::ChangeVideoSize(int x, int y) {
 
 	screen = SDL_SetVideoMode( x, y, bpp, flags );	// Set the video mode
 	if(screen == 0) {
-		TRACE().error("Video mode set failed : ", SDL_GetError());
+		LOGERROR(("Video mode set failed : ", SDL_GetError()));
 		exit( 1 );
 	}
 
@@ -980,12 +1001,12 @@ void CCfg::CDisplay::ChangeVideoSize(int x, int y) {
 
 	InitOpenGL();
 
-	TRACE().debug("changeVideoSize() end");
+	LOGDEBUG(("changeVideoSize() end"));
 }
 
 void CCfg::CReseau::Init() {
 	if(SDLNet_Init() == -1) {
-		TRACE().error("SDLNet_Init() failed : %s", SDLNet_GetError());
+		LOGERROR(("SDLNet_Init() failed : %s", SDLNet_GetError()));
 		exit( 1 );
 	}
 }

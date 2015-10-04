@@ -30,6 +30,9 @@ class DataTreeTest : public Test {
 	ClientDataTree client0Tree;
 	ClientDataTree client1Tree;
 
+	DistantTreeProxy* distantClient0;
+	DistantTreeProxy* distantClient1;
+
 	// Données de test
 	/* ------------------ Global data ------------------ */
 
@@ -65,7 +68,7 @@ class DataTreeTest : public Test {
 	// Server branche 1
 	const int branche1ServerId = 3;
 	vector<int> branche1ServerFullId;
-	const string branche1ServerName = "branche-1-server";
+	const string branche1ServerName = "PRIVATE-BRANCHE-1-server";
 
 	/* ------------------ Client 0 data ------------------ */
 

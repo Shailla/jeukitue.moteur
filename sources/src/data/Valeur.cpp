@@ -9,7 +9,7 @@
 
 #include "data/Valeur.h"
 
-Valeur::Valeur(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, int valeurTmpId, int revision) : Donnee(revision, valeurType) {
+Valeur::Valeur(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, UPDATE_MODE updateMode, int valeurTmpId, int revision) : Donnee(parent->getDataTree(), revision, valeurType, updateMode) {
 	_parent = parent;
 	_valeurId = valeurId;
 	_valeurName = valeurName;

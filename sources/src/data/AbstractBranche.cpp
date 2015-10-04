@@ -25,7 +25,14 @@ using namespace std;
 
 using namespace JktUtils;
 
-AbstractBranche::AbstractBranche(AbstractBranche* parent, int brancheId, const string& brancheName, DONNEE_TYPE brancheType, int revision, int brancheTmpId) : Donnee(revision, brancheType) {
+AbstractBranche::AbstractBranche(DataTree* dataTree, int brancheId, const string& brancheName, DONNEE_TYPE brancheType, int revision, int brancheTmpId) : Donnee(dataTree, revision, brancheType, UPDATE_MODE::ANY) {
+	_parent = 0;
+	_brancheId = brancheId;
+	_brancheName = brancheName;
+	_brancheTmpId = brancheTmpId;
+}
+
+AbstractBranche::AbstractBranche(AbstractBranche* parent, int brancheId, const string& brancheName, DONNEE_TYPE brancheType, int revision, int brancheTmpId) : Donnee(parent->getDataTree(), revision, brancheType, UPDATE_MODE::ANY) {
 	_parent = parent;
 	_brancheId = brancheId;
 	_brancheName = brancheName;

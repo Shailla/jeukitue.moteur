@@ -13,15 +13,19 @@
 #include <string>
 
 class ValeurInt;
+class DistantTreeProxy;
 
 class DistantTreeControl {
+	DistantTreeProxy* _distant;
 	ValeurInt* _state;
 	ValeurInt* _updateClientToServerDelay;
 	ValeurInt* _updateServerToClientDelay;
 
 public:
-	DistantTreeControl();
+	DistantTreeControl(DistantTreeProxy* distant);
 	virtual ~DistantTreeControl();
+
+	void attach(Branche* branche);
 
 	// State
 	TREE_STATE getState();

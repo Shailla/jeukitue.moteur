@@ -422,7 +422,7 @@ vector<Valeur*>& Branche::getValeurs(DistantTreeProxy* distant) {
 	return _valeurs;
 }
 
-void Branche::print(ostringstream& out, bool details, int indentation) {
+void Branche::print(ostringstream& out, DistantTreeProxy* distant, bool details, int indentation) {
 	int i;
 
 	// Affiche la branche
@@ -461,7 +461,7 @@ void Branche::print(ostringstream& out, bool details, int indentation) {
 	}
 	out << " rv=" << getRevision() << "]";
 
-	out << "'" << _brancheName << "'";
+	out << " '" << _brancheName << "'";
 
 	// Affiche les valeurs de la branche de manière ordonnée
 	vector<Valeur*> valeurs = _valeurs;
@@ -520,7 +520,7 @@ void Branche::print(ostringstream& out, bool details, int indentation) {
 	vector<Branche*>::iterator brIt;
 
 	for(brIt = branches.begin() ; brIt != branches.end() ; ++brIt) {
-		(*brIt)->print(out, details, indentation+1);
+		(*brIt)->print(out, distant, details, indentation+1);
 	}
 }
 

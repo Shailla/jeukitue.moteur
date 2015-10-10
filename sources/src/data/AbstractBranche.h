@@ -62,16 +62,21 @@ public:
 	/**
 	 * Affiche le sous-arbre et ses données et caractéristiques partagées avec les autres arbres.
 	 * 2 arbres synchronisés et stabilisés généreront exactement le même affichage avec cette méthode.
+	 *
+	 * @param distant distant dont l'abre doit être affiché, 0 pour afficher l'abre complet avec tous les distants
+	 *
 	 */
-	std::string print(int indentation, bool details);
+	std::string print(DistantTreeProxy* distant, int indentation, bool details);
 
 	/**
 	 * Affiche le sous-arbre et ses données et caractéristiques partagées avec les autres arbres.
 	 * Si details=false seules les informations partagées sont affichées, donc 2 arbres synchronisés
 	 * et stabilisés généreront exactement le même affichage avec cette méthode.
 	 * Si details=true alors plus de caractérisques sont affichées.
+	 *
+	 * @param distant distant dont l'abre doit être affiché, 0 pour afficher l'abre complet avec tous les distants
 	 */
-	virtual void print(std::ostringstream& out, bool details, int indentation) = 0;
+	virtual void print(std::ostringstream& out, DistantTreeProxy* distant, bool details, int indentation) = 0;
 };
 
 #endif /* ABSTRACTBRANCHE_H_ */

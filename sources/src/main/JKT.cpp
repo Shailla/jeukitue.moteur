@@ -1643,7 +1643,6 @@ void boucle() {
 
 					if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
 						DistantTreeProxy* distant = serverDataTree->addDistant(newInterlocutor);
-						DataTreeUtils::formatGameClientDataTree(distant, serverDataTree);
 					}
 				}
 			}

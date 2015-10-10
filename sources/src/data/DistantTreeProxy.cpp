@@ -26,12 +26,16 @@ using namespace std;
 
 #include "data/DistantTreeProxy.h"
 
-DistantTreeProxy::DistantTreeProxy(Interlocutor2* interlocutor) {
+DistantTreeProxy::DistantTreeProxy(Interlocutor2* interlocutor) : _control(this) {
 	_interlocutor = interlocutor;
 	_updateServerToClientTime = SDL_GetTicks();;
 }
 
 DistantTreeProxy::~DistantTreeProxy() {
+}
+
+DistantTreeControl& DistantTreeProxy::getControl() {
+	return _control;
 }
 
 Interlocutor2* DistantTreeProxy::getInterlocutor() const {

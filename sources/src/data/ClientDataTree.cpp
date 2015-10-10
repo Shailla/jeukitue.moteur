@@ -89,7 +89,7 @@ void ClientDataTree::diffuseChangementsToServer(void) {
 
 	Uint32 now = SDL_GetTicks();
 
-	if(now - _updateClientToServer >= 200) {
+	if(now - _updateClientToServer >= (Uint32)_serverTreeProxy->getControl().getUpdateClientToServerDelay()) {
 		_updateClientToServer = now;
 		_serverTreeProxy->collecteChangementsInClientTree(changements);
 		sendChangementsToServer(changements);

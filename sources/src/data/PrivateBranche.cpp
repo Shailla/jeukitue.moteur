@@ -409,18 +409,8 @@ vector<Valeur*>& PrivateBranche::getValeurs(DistantTreeProxy* distant) {
 	return getDistant(distant)._valeurs;
 }
 
-void PrivateBranche::print(ostringstream& out, bool details, int indentation) {
-	const char* TABULATION = "\t";
+void PrivateBranche::print(ostringstream& out, DistantTreeProxy* distant, bool details, int indentation) {
 	int i;
-
-	string SMALL_IDENT;
-	string BIG_IDENT;
-
-	for(i = 0 ; i < indentation ; i++) {
-		SMALL_IDENT += TABULATION;
-	}
-
-	BIG_IDENT = SMALL_IDENT + TABULATION;
 
 	out << endl;
 
@@ -446,7 +436,13 @@ void PrivateBranche::print(ostringstream& out, bool details, int indentation) {
 		break;
 	}
 
-	out << SMALL_IDENT << "+ [id=" << _brancheId;
+	out << "\t";
+
+	for(i = 0 ; i < indentation ; i++) {
+		out << "+";
+	}
+
+	out << "+ [id=" << _brancheId;
 
 	if(details) {
 		out << " tmpId=" << _brancheTmpId;
@@ -457,49 +453,51 @@ void PrivateBranche::print(ostringstream& out, bool details, int indentation) {
 	std::map<DistantTreeProxy*, DistantPrivateBranche>::iterator itDt;
 
 	for(itDt = _distants.begin() ; itDt != _distants.end() ; itDt++) {
-		// Affiche le distant
-		out << endl << BIG_IDENT << "[[ Distant '" << itDt->first->getInterlocutor()->getName() <<"' ]]";
+		if(!distant || itDt->first == distant) {
+			// Affiche le distant
+			out << endl << "\t" << "[[ Distant '" << itDt->first->getInterlocutor()->getName() <<"' ]]";
 
-		// Affiche les valeurs de la branche de manière ordonnée
-		vector<Valeur*>& valeurs = getDistant(itDt->first)._valeurs;
+			// Affiche les valeurs de la branche de manière ordonnée
+			vector<Valeur*>& valeurs = getDistant(itDt->first)._valeurs;
 
-		sort(valeurs.begin(), valeurs.end(), Valeur::highestId);
+			sort(valeurs.begin(), valeurs.end(), Valeur::highestId);
 
-		vector<Valeur*>::iterator valIt;
+			vector<Valeur*>::iterator valIt;
 
-		for(valIt = valeurs.begin() ; valIt != valeurs.end() ; ++valIt) {
-			Valeur* valeur = *valIt;
+			for(valIt = valeurs.begin() ; valIt != valeurs.end() ; ++valIt) {
+				Valeur* valeur = *valIt;
 
-			out << endl;
+				out << endl;
 
-			switch(valeur->getDonneeType()) {
-			case DONNEE_DEFAULT:
-				out << ".err_d";	// Une donnée ne devrait jamais être de ce type, elle est créée avec pour recevoir automatiquement son vrai type
-				break;
-			case DONNEE_PUBLIC:
-				out << ".pub";
-				break;
-			case DONNEE_PRIVATE:
-				out << ".pri";
-				break;
-			case DONNEE_PRIVATE_SUB:
-				out << ".prs";
-				break;
-			case DONNEE_LOCAL:
-				out << ".loc";
-				break;
-			default:
-				out << ".err";
-				break;
+				switch(valeur->getDonneeType()) {
+				case DONNEE_DEFAULT:
+					out << ".err_d";	// Une donnée ne devrait jamais être de ce type, elle est créée avec pour recevoir automatiquement son vrai type
+					break;
+				case DONNEE_PUBLIC:
+					out << ".pub";
+					break;
+				case DONNEE_PRIVATE:
+					out << ".pri";
+					break;
+				case DONNEE_PRIVATE_SUB:
+					out << ".prs";
+					break;
+				case DONNEE_LOCAL:
+					out << ".loc";
+					break;
+				default:
+					out << ".err";
+					break;
+				}
+
+				out << "\t" << ". [id=" << valeur->getValeurId();
+
+				if(details) {
+					out << " tmpId=" << valeur->getValeurTmpId();
+				}
+
+				out << " rv=" << valeur->getRevision() << "] '" << valeur->getValeurName() << "' <" << valeur->toString() << ">";
 			}
-
-			out << SMALL_IDENT << ". [id=" << valeur->getValeurId();
-
-			if(details) {
-				out << " tmpId=" << valeur->getValeurTmpId();
-			}
-
-			out << " rv=" << valeur->getRevision() << "] '" << valeur->getValeurName() << "' <" << valeur->toString() << ">";
 		}
 
 		// Affiche les branches de la branche
@@ -510,7 +508,7 @@ void PrivateBranche::print(ostringstream& out, bool details, int indentation) {
 
 		for(brIt = branches.begin() ; brIt != branches.end() ; ++brIt) {
 			Branche* branche = *brIt;
-			branche->print(out, details, indentation+1);
+			branche->print(out, distant, details, indentation+1);
 		}
 	}
 }

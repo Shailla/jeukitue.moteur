@@ -96,7 +96,7 @@ public:
 	 * et stabilisés généreront exactement le même affichage avec cette méthode.
 	 * Si details=true alors plus de caractérisques sont affichées.
 	 */
-	void print(std::ostringstream& out, bool details, int indentation);
+	void print(std::ostringstream& out, DistantTreeProxy* distant, bool details, int indentation) override;
 };
 
 #endif /* PRIVATE_BRANCHE_H_ */

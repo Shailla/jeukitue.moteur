@@ -33,6 +33,7 @@ public:
 	DistantTreeProxy(Interlocutor2* interlocutor);
 	virtual ~DistantTreeProxy();
 
+	DistantTreeControl& getControl();
 	Interlocutor2* getInterlocutor() const;
 	MarqueurDistant* getMarqueur(Donnee* donnee);
 	std::map<Donnee*, MarqueurDistant*>& getMarqueurs();

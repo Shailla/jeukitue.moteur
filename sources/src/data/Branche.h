@@ -92,7 +92,7 @@ public:
 	 * et stabilisés généreront exactement le même affichage avec cette méthode.
 	 * Si details=true alors plus de caractérisques sont affichées.
 	 */
-	virtual void print(std::ostringstream& out, bool details, int indentation);
+	virtual void print(std::ostringstream& out, DistantTreeProxy* distant, bool details, int indentation) override;
 
 	static bool highestId(const Branche* left, const Branche* right);
 };

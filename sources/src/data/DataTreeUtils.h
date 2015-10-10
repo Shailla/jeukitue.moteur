@@ -19,7 +19,6 @@ public:
 	virtual ~DataTreeUtils();
 
 	static void formatGameServerDataTree(DataTree* dataTree);
-	static void formatGameClientDataTree(DistantTreeProxy* distant, DataTree* dataTree);
 };
 
 #endif /* SRC_DATA_DATATREEUTILS_H_ */

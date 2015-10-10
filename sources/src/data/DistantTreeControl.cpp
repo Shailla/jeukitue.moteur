@@ -12,17 +12,28 @@
 
 using namespace std;
 
+#include "data/Branche.h"
 #include "data/ValeurInt.h"
+#include "main/Cfg.h"
 
 #include "data/DistantTreeControl.h"
 
-DistantTreeControl::DistantTreeControl() {
+extern CCfg Config;
+
+DistantTreeControl::DistantTreeControl(DistantTreeProxy* distant) {
+	_distant = distant;
 	_state = 0;
 	_updateClientToServerDelay = 0;
 	_updateServerToClientDelay = 0;
 }
 
 DistantTreeControl::~DistantTreeControl() {
+}
+
+void DistantTreeControl::attach(Branche* branche) {
+	_state = (ValeurInt*)branche->createValeurForServeur(_distant, ANY, "tree-state", 0, JktUtils::AnyData(TREE_STATE::STATE_NOT_READY));
+	_updateClientToServerDelay = (ValeurInt*)branche->createValeurForServeur(_distant, ANY, "tree-update-clientToServer-delay", 0, JktUtils::AnyData(Config.Reseau.getTreeUpdateClientToServerDelay()));
+	_updateServerToClientDelay = (ValeurInt*)branche->createValeurForServeur(_distant, ANY, "tree-update-serverToClient-delay", 0, JktUtils::AnyData(Config.Reseau.getTreeUpdateServerToClientDelay()));
 }
 
 TREE_STATE DistantTreeControl::getState() {
@@ -45,7 +56,7 @@ int DistantTreeControl::getUpdateClientToServerDelay() {
 		return _updateClientToServerDelay->getValeur();
 	}
 	else {
-		return -1;
+		return 200;
 	}
 }
 
@@ -60,7 +71,7 @@ int DistantTreeControl::getUpdateServerToClientDelay() {
 		return _updateServerToClientDelay->getValeur();
 	}
 	else {
-		return -1;
+		return 200;
 	}
 }
 

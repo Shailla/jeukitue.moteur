@@ -5,10 +5,24 @@
  *      Author: vgdj7997
  */
 
-#include <iostream>
-#include <sstream>
-#include <vector>
+#include <data/DataTreeUtils.h>
+#include <data/DistantTreeProxy.h>
+#include <data/Donnee.h>
+#include <data/exception/NotExistingValeurException.h>
+#include <data/PrivateBranche.h>
+#include <data/TreeConstants.h>
+#include <data/Valeur.h>
+#include <reseau/new/Interlocutor2.h>
+#include <SDL_stdinc.h>
+#include <SDL_timer.h>
+#include <util/types/AnyData.h>
+#include <util/types/Bytes.h>
 #include <algorithm>
+#include <iostream>
+#include <iterator>
+#include <set>
+#include <sstream>
+#include <utility>
 
 using namespace std;
 
@@ -32,6 +46,19 @@ using namespace std;
 using namespace JktUtils;
 
 ServeurDataTree::ServeurDataTree() : DataTree(TREE_SERVER) {
+	// Branche racine
+	vector<int> rootBrancheId;
+
+
+	/********************************************************************/
+	/* Branche des VID (Very Important Data) de l'arbre de données 		*/
+	/********************************************************************/
+
+	// Branche principale des VID
+	Branche* vidBranche = this->createBranche(0, rootBrancheId, DataTreeUtils::TREE_VID_BRANCHE_NAME);
+
+	// Branche de contrôle de l'arbre de données
+	this->createPrivateBranche(vidBranche->getBrancheFullId(), DataTreeUtils::TREE_CONTROL_BRANCHE_NAME);
 }
 
 ServeurDataTree::~ServeurDataTree() {
@@ -121,15 +148,33 @@ Donnee* ServeurDataTree::initDonneeAndMarqueurFromDistant(DistantTreeProxy* clie
 }
 
 DistantTreeProxy* ServeurDataTree::addDistant(Interlocutor2* interlocutor) {
+	LOGINFO(("AJOUT D'UN DISTANT : '%s'", interlocutor->getName().c_str()));
+
 	// Init the marqueurs
 	DistantTreeProxy* distant = new DistantTreeProxy(interlocutor);
 	initDistantBranche(distant, &getRoot());
 
-	LOGINFO(("AJOUT D'UN DISTANT : '%s'", interlocutor->getName().c_str()));
-
 	_clients.push_back(distant);
 
+	initDistant(distant);
+
 	return distant;
+}
+
+/**
+ * Formatte un arbre de données vierge en créant les branches et hiérarchies suivantes :
+ * [1]			"vid"
+ * [1,1]		  "tree-control"
+ * [1,1,1]		    "tree-state" int
+ * [1,1,1]		    "tree-update-delay" int
+ */
+void ServeurDataTree::initDistant(DistantTreeProxy* distant) {
+	vector<string> treeControlPath;
+	treeControlPath.push_back(DataTreeUtils::TREE_VID_BRANCHE_NAME);
+	treeControlPath.push_back(DataTreeUtils::TREE_CONTROL_BRANCHE_NAME);
+	PrivateBranche* treeControlBr = (PrivateBranche*)getBranche(distant, treeControlPath);
+
+	distant->getControl().attach(treeControlBr);
 }
 
 const vector<DistantTreeProxy*>& ServeurDataTree::getDistants() {
@@ -144,30 +189,7 @@ void ServeurDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bra
 		marqueur->setConfirmedRevision(0);
 	}
 
-	Branche* bra = dynamic_cast<Branche*>(branche);
-
-	if(bra) {
-		// Init sub-branches
-		{
-			vector<Branche*>& subBranches = bra->getSubBranches(0);
-			vector<Branche*>::iterator itBr;
-
-			for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
-				initDistantBranche(distant, *itBr);
-			}
-		}
-
-		// Init values
-		{
-			vector<Valeur*>& valeurs = bra->getValeurs(0);
-			vector<Valeur*>::iterator iterVl;
-
-			for(iterVl = valeurs.begin() ; iterVl != valeurs.end() ; iterVl++) {
-				distant->addMarqueur(*iterVl, 0);
-			}
-		}
-	}
-	else {
+	if(dynamic_cast<PrivateBranche*>(branche)) {
 		PrivateBranche* pr = static_cast<PrivateBranche*>(branche);
 		map<DistantTreeProxy*, PrivateBranche::DistantPrivateBranche>::iterator dt;
 
@@ -193,6 +215,27 @@ void ServeurDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bra
 			}
 		}
 	}
+	else {
+		// Init sub-branches
+		{
+			vector<Branche*>& subBranches = branche->getSubBranches(0);
+			vector<Branche*>::iterator itBr;
+
+			for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
+				initDistantBranche(distant, *itBr);
+			}
+		}
+
+		// Init values
+		{
+			vector<Valeur*>& valeurs = branche->getValeurs(0);
+			vector<Valeur*>::iterator iterVl;
+
+			for(iterVl = valeurs.begin() ; iterVl != valeurs.end() ; iterVl++) {
+				distant->addMarqueur(*iterVl, 0);
+			}
+		}
+	}
 }
 
 void ServeurDataTree::diffuseChangementsToClients(void) {
@@ -212,7 +255,7 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 		for(clientIter = getDistants().begin() ; clientIter != getDistants().end() ; clientIter++) {
 			client = *clientIter;
 
-			if(now - client->getUpdateServerToClientTime() >= 200) {
+			if(now - client->getUpdateServerToClientTime() >= (Uint32)client->getControl().getUpdateServerToClientDelay()) {
 				client->setUpdateServerToClientTime(now);
 
 				interlocutor = client->getInterlocutor();
@@ -222,9 +265,10 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 
 				// Emission des changements
 				if(changements.size()) {
-//					for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
-//						LOGINFO(("serveur to '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str()));
-//					}
+					for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
+						cout << endl << "serveur to '" << interlocutor->getName().c_str() << "' : '" << (*itCh)->toString().c_str() << "'" ;
+						LOGINFO(("serveur to '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str()));
+					}
 
 					ostringstream out;
 					DataSerializer::toStream(changements, out);

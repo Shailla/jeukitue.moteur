@@ -43,7 +43,7 @@ class DataTreeTest : public Test {
 	/* ------------------ Server data ------------------ */
 
 	// Server branche 0
-	const int branche0ServerId = 1;
+	const int branche0ServerId = 2;
 	vector<int> branche0ServerFullId;
 	const string branche0ServerName = "branche-0-server";
 

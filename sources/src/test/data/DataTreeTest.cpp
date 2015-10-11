@@ -208,36 +208,6 @@ void DataTreeTest::clientTests() {
 	distantClient0->getControl().setUpdateClientToServerDelay(0);
 	distantClient0->getControl().setUpdateServerToClientDelay(0);
 
-	// Vérifie le nombre de marqueurs créés pour le client (nombre de marqueurs = 1 par branche et 1 par valeur)
-	const std::vector<DistantTreeProxy*> distants = serverTree.getDistants();
-	DistantTreeProxy* distant = distants.at(0);
-	std::map<Donnee*, MarqueurDistant*> serveurMarqueurs = distant->getMarqueurs();
-	ASSERT_EQUAL(7, serveurMarqueurs.size(), "Le distant du client n'a pas le bon nombre de marqueurs");
-
-	/* ****************************************************************************
-	 * Serveur : Vérifie si les marqueurs des données du client sont bien
-	 * initialisés
-	 * ***************************************************************************/
-
-	std::map<Donnee*, MarqueurDistant*>::iterator marqueurIt;
-
-	for(marqueurIt = serveurMarqueurs.begin(); marqueurIt != serveurMarqueurs.end() ; marqueurIt++) {
-		Donnee* donnee = marqueurIt->first;
-		MarqueurDistant* marqueur = marqueurIt->second;
-
-		// Root n'a pas besoin d'être envoyé au client car il est créé par défaut donc ses marqueurs sont initialisés à 0 au lieu de -1 en révisions
-		if(donnee == serveurRoot) {
-			ASSERT_EQUAL(0, marqueur->getTemporaryId(), "L'identifiant temporaire est mal initialisé");
-			ASSERT_EQUAL(0, marqueur->getSentRevision(), "La révision envoyée est mal initialisée");
-			ASSERT_EQUAL(0, marqueur->getConfirmedRevision(), "La révision confirmée est mal initialisée");
-		}
-		else {
-			ASSERT_EQUAL(0, marqueur->getTemporaryId(), "L'identifiant temporaire est mal initialisé");
-			ASSERT_EQUAL(MarqueurDistant::MARQUEUR_REVISION_INIT, marqueur->getSentRevision(), "La révision envoyée est mal initialisée");
-			ASSERT_EQUAL(MarqueurDistant::MARQUEUR_REVISION_INIT, marqueur->getConfirmedRevision(), "La révision confirmée est mal initialisée");
-		}
-	}
-
 
 	/* ****************************************************************************
 	 * Client : Synchronisation et échange des données du serveur vers le client
@@ -251,30 +221,7 @@ void DataTreeTest::clientTests() {
 	client0Tree.receiveChangementsFromServer();
 
 	// Vérifie que le serveur et client-1 ont exactement le même arbre
-	ASSERT_EQUAL(((AbstractBranche&)(serverTree.getRoot())).print(0, 0, false), ((AbstractBranche&)(client0Tree.getRoot())).print(0, 0, false), "Les abres client-0 et serveur devraient être identiques");
-
-
-	/* ****************************************************************************
-	 * Serveur : Vérifie si les marqueurs des données du client sont bien mis
-	 * à jour suite à l'envoi des données
-	 * ***************************************************************************/
-
-	for(marqueurIt = serveurMarqueurs.begin(); marqueurIt != serveurMarqueurs.end() ; marqueurIt++) {
-		Donnee* donnee = marqueurIt->first;
-		MarqueurDistant* marqueur = marqueurIt->second;
-
-		// Root n'a pas besoin d'être envoyé au client car il est créé par défaut donc ses marqueurs sont initialisés à 0 au lieu de -1 en révisions
-		if(donnee == serveurRoot) {
-			ASSERT_EQUAL(0, marqueur->getTemporaryId(), "L'identifiant temporaire est mal initialisé");
-			ASSERT_EQUAL(0, marqueur->getSentRevision(), "La révision envoyée est mal initialisée");
-			ASSERT_EQUAL(0, marqueur->getConfirmedRevision(), "La révision confirmée est mal initialisée");
-		}
-		else {
-			ASSERT_EQUAL(0, marqueur->getTemporaryId(), "L'identifiant temporaire est mal initialisé");
-			ASSERT_EQUAL(0, marqueur->getSentRevision(), "La révision envoyée est fausse");
-			ASSERT_EQUAL(MarqueurDistant::MARQUEUR_REVISION_INIT, marqueur->getConfirmedRevision(), "La révision confirmée ne devrait pas avoir changé");
-		}
-	}
+	ASSERT_EQUAL(((AbstractBranche&)(serverTree.getRoot())).print(distantClient0, 0, false), ((AbstractBranche&)(client0Tree.getRoot())).print(0, 0, false), "Les abres client-0 et serveur devraient être identiques");
 
 
 	/* ****************************************************************************
@@ -325,29 +272,6 @@ void DataTreeTest::clientTests() {
 
 	serverTree.receiveChangementsFromClients();
 
-
-	/* ****************************************************************************
-	 * Serveur : Vérifie si les marqueurs des données du client sont bien mis
-	 * à jour suite à la réception des confirmations de changements du client
-	 * ***************************************************************************/
-
-	for(marqueurIt = serveurMarqueurs.begin(); marqueurIt != serveurMarqueurs.end() ; marqueurIt++) {
-		Donnee* donnee = marqueurIt->first;
-		MarqueurDistant* marqueur = marqueurIt->second;
-
-		// Root n'a pas besoin d'être envoyé au client car il est créé par défaut donc ses marqueurs sont initialisés à 0 au lieu de -1 en révisions
-		if(donnee == serveurRoot) {
-			ASSERT_EQUAL(0, marqueur->getTemporaryId(), "L'identifiant temporaire est mal initialisé");
-			ASSERT_EQUAL(0, marqueur->getSentRevision(), "La révision envoyée est mal initialisée");
-			ASSERT_EQUAL(0, marqueur->getConfirmedRevision(), "La révision confirmée est mal initialisée");
-		}
-		else {
-			ASSERT_EQUAL(0, marqueur->getTemporaryId(), "L'identifiant temporaire est mal initialisé");
-			ASSERT_EQUAL(0, marqueur->getSentRevision(), "La révision envoyée est fausse");
-			ASSERT_EQUAL(0, marqueur->getConfirmedRevision(), "La révision confirmée devrait avoir augmenté suite à la réception de la confirmation");
-		}
-	}
-
 	// Vérifie si client et serveur sont synchronisés, plus aucun message ne devrait être à échanger entre eux
 	checkSynchronisationClientServeur(__LINE__, client0Tree);
 
@@ -395,7 +319,7 @@ void DataTreeTest::clientTests() {
 	checkSynchronisationClientServeur(__LINE__, client0Tree);
 
 	// Vérifie que le serveur et client-1 ont exactement le même arbre
-	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(0, 0, false), ((AbstractBranche&)client0Tree.getRoot()).print(0, 0, false), "Les abres client-0 et serveur devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(distantClient0, 0, false), ((AbstractBranche&)client0Tree.getRoot()).print(0, 0, false), "Les abres client-0 et serveur devraient être identiques");
 
 
 	/* ****************************************************************************

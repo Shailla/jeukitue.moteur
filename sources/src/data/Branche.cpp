@@ -35,6 +35,33 @@ Branche::Branche(AbstractBranche* parent, int brancheId, const string& brancheNa
 Branche::~Branche() {
 }
 
+BrancheIterator::BrancheIterator(Branche* origin) {
+	next(origin);
+}
+
+bool BrancheIterator::operator++() {
+	vector<Branche*> subBranches = (*_position.top())->getSubBranches(0);
+	vector<Branche*>::iterator it = subBranches.begin();
+
+	if(next()) {
+
+	}
+	else if(it != subBranches.end()) {
+		return true;	// There is still some branches
+	}
+	else {
+		return false;	// No more branche
+	}
+}
+
+bool next() {
+
+}
+
+Branche* BrancheIterator::operator*() const {
+	return *_position.top();
+}
+
 Branche* Branche::getSubBrancheByName(DistantTreeProxy* distant, const string& brancheName) {
 	Branche* branche = NULL;
 
@@ -46,6 +73,19 @@ Branche* Branche::getSubBrancheByName(DistantTreeProxy* distant, const string& b
 	}
 
 	return branche;
+}
+
+Valeur* Branche::getValeurByName(DistantTreeProxy* distant, const string& valeurName) {
+	Valeur* valeur = NULL;
+
+	try {
+		valeur = _valeursByName.at(valeurName);
+	}
+	catch(out_of_range& exception) {
+		valeur = 0;
+	}
+
+	return valeur;
 }
 
 Branche* Branche::getSubBrancheByIdOrTmpId(DistantTreeProxy* distant, int brancheId) {
@@ -393,21 +433,22 @@ const Valeur* Branche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMo
 		// Crée la nouvelle valeur
 		if(valeur.isInt()) {
 			newValeur = new ValeurInt(this, valeurId, valeurName, resultType, updateMode, -1, valeurRevision, valeur.getValueInt());
-			_valeursById[valeurId] = newValeur;
-			_valeurs.push_back(newValeur);
 		}
 		else if(valeur.isFloat()) {
 			newValeur = new ValeurFloat(this, valeurId, valeurName, resultType, updateMode, -1, valeurRevision, valeur.getValueFloat());
-			_valeursById[valeurId] = newValeur;
-			_valeurs.push_back(newValeur);
 		}
 		else if(valeur.isString()) {
 			newValeur = new ValeurString(this, valeurId, valeurName, resultType, updateMode, -1, valeurRevision, valeur.getValueString());
-			_valeursById[valeurId] = newValeur;
-			_valeurs.push_back(newValeur);
 		}
 		else {
+			newValeur = 0;
 			cerr << endl << __FILE__ << ":" << __LINE__ << " Type de valeur inconnu";
+		}
+
+		if(newValeur) {
+			_valeursById[valeurId] = newValeur;
+			_valeursByName[valeurName] = newValeur;
+			_valeurs.push_back(newValeur);
 		}
 	}
 
@@ -508,9 +549,9 @@ void Branche::print(ostringstream& out, DistantTreeProxy* distant, bool details,
 
 		out << " rv=" << valeur->getRevision() << "]";
 
-		out << " <" << valeur->toString() << ">";
-
 		out << " '" << valeur->getValeurName() << "'";
+
+		out << " <" << valeur->toString() << ">";
 	}
 
 	// Affiche les branches de la branche

@@ -89,9 +89,16 @@ void ClientDataTree::diffuseChangementsToServer(void) {
 
 	Uint32 now = SDL_GetTicks();
 
+	cout << endl << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " << now;
+	cout << endl << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " << _updateClientToServer;
+	cout << endl << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " << (Uint32)_serverTreeProxy->getControl().getUpdateClientToServerDelay();
+	cout << endl << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " << now - _updateClientToServer;
+
 	if(now - _updateClientToServer >= (Uint32)_serverTreeProxy->getControl().getUpdateClientToServerDelay()) {
+		cout << endl << "BBBBBBBBBBB";
 		_updateClientToServer = now;
 		_serverTreeProxy->collecteChangementsInClientTree(changements);
+		cout << endl << "" << changements.size() << " changements to send";
 		sendChangementsToServer(changements);
 	}
 }

@@ -58,7 +58,7 @@ void Test::assertNotNull(const char* file, int line, const void* var, const char
 void Test::assertEqual(const char* file, int line, const void* expected, const void* var, const char* message) {
 	if(expected != var) {
 		stringstream msg;
-		msg << message << " | " << "Valeur attendue [" << expected << "] obtenu [" << var << "]";
+		msg << message << " | " << "\nValeur attendue [" << expected << "]\nvaleur obtenue [" << var << "]";
 		throw TestError(file, line, msg.str());
 	}
 }
@@ -66,7 +66,7 @@ void Test::assertEqual(const char* file, int line, const void* expected, const v
 void Test::assertEqual(const char* file, int line, const string& expected, const string& var, const char* message) {
 	if(expected != var) {
 		stringstream msg;
-		msg << message << " | " << "Valeur attendue : [" << expected << "]\nvaleur obtenue : [" << var << "]";
+		msg << message << " | " << "\nValeur attendue : [" << expected << "]\nvaleur obtenue : [" << var << "]";
 		throw TestError(file, line, msg.str());
 	}
 }
@@ -74,7 +74,7 @@ void Test::assertEqual(const char* file, int line, const string& expected, const
 void Test::assertEqual(const char* file, int line, const char* expected, const char* var, const char* message) {
 	if(!strcmp(expected, var)) {
 		stringstream msg;
-		msg << message << " | " << "Valeur attendue : [" << expected << "]\nvaleur obtenue : [" << var << "]";
+		msg << message << " | " << "\nValeur attendue : [" << expected << "]\nvaleur obtenue : [" << var << "]";
 		throw TestError(file, line, msg.str());
 	}
 }
@@ -82,7 +82,7 @@ void Test::assertEqual(const char* file, int line, const char* expected, const c
 void Test::assertEqual(const char* file, int line, float expected, float var, const char* message) {
 	if(expected != var) {
 		stringstream msg;
-		msg << message << " | " << "Valeur attendue [" << expected << "] obtenu [" << var << "]";
+		msg << message << " | " << "\nValeur attendue [" << expected << "]\nvaleur obtenue [" << var << "]";
 		throw TestError(file, line, msg.str());
 	}
 }
@@ -90,7 +90,7 @@ void Test::assertEqual(const char* file, int line, float expected, float var, co
 void Test::assertEqual(const char* file, int line, int expected, int var, const char* message) {
 	if(expected != var) {
 		stringstream msg;
-		msg << message << " | " << "Valeur attendue [" << expected << "] obtenu [" << var << "]";
+		msg << message << " | " << "\nValeur attendue [" << expected << "]\nvaleur obtenue [" << var << "]";
 		throw TestError(file, line, msg.str());
 	}
 }

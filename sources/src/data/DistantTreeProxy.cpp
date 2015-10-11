@@ -46,10 +46,6 @@ MarqueurDistant* DistantTreeProxy::getMarqueur(Donnee* donnee) {
 	return donnee->getMarqueur(this);
 }
 
-map<Donnee*, MarqueurDistant*>& DistantTreeProxy::getMarqueurs() {
-	return _marqueurs;
-}
-
 MarqueurDistant* DistantTreeProxy::addMarqueur(Donnee* donnee, int donneeTmpId) {
 	MarqueurDistant* marqueur = donnee->addMarqueur(this, donneeTmpId);
 	_marqueurs[donnee] = marqueur;
@@ -58,6 +54,9 @@ MarqueurDistant* DistantTreeProxy::addMarqueur(Donnee* donnee, int donneeTmpId) 
 
 void DistantTreeProxy::collecteChangementsInClientTree(vector<Changement*>& changements) {
 	map<Donnee*, MarqueurDistant*>::iterator itMa;
+
+
+
 
 	for(itMa = _marqueurs.begin() ; itMa != _marqueurs.end() ; itMa++) {
 		MarqueurDistant* marqueur = itMa->second;

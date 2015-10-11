@@ -58,7 +58,7 @@ ServeurDataTree::ServeurDataTree() : DataTree(TREE_SERVER) {
 	Branche* vidBranche = this->createBranche(0, rootBrancheId, DataTreeUtils::TREE_VID_BRANCHE_NAME);
 
 	// Branche de contrôle de l'arbre de données
-	this->createPrivateBranche(vidBranche->getBrancheFullId(), DataTreeUtils::TREE_CONTROL_BRANCHE_NAME);
+	createPrivateBranche(vidBranche->getBrancheFullId(), DataTreeUtils::TREE_CONTROL_BRANCHE_NAME);
 }
 
 ServeurDataTree::~ServeurDataTree() {
@@ -152,11 +152,10 @@ DistantTreeProxy* ServeurDataTree::addDistant(Interlocutor2* interlocutor) {
 
 	// Init the marqueurs
 	DistantTreeProxy* distant = new DistantTreeProxy(interlocutor);
+	initVid(distant);
 	initDistantBranche(distant, &getRoot());
 
 	_clients.push_back(distant);
-
-	initDistant(distant);
 
 	return distant;
 }
@@ -168,13 +167,13 @@ DistantTreeProxy* ServeurDataTree::addDistant(Interlocutor2* interlocutor) {
  * [1,1,1]		    "tree-state" int
  * [1,1,1]		    "tree-update-delay" int
  */
-void ServeurDataTree::initDistant(DistantTreeProxy* distant) {
+void ServeurDataTree::initVid(DistantTreeProxy* distant) {
 	vector<string> treeControlPath;
 	treeControlPath.push_back(DataTreeUtils::TREE_VID_BRANCHE_NAME);
 	treeControlPath.push_back(DataTreeUtils::TREE_CONTROL_BRANCHE_NAME);
 	PrivateBranche* treeControlBr = (PrivateBranche*)getBranche(distant, treeControlPath);
 
-	distant->getControl().attach(treeControlBr);
+	distant->getControl().create(treeControlBr);
 }
 
 const vector<DistantTreeProxy*>& ServeurDataTree::getDistants() {

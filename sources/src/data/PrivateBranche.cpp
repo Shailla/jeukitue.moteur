@@ -454,8 +454,10 @@ void PrivateBranche::print(ostringstream& out, DistantTreeProxy* distant, bool d
 
 	for(itDt = _distants.begin() ; itDt != _distants.end() ; itDt++) {
 		if(!distant || itDt->first == distant) {
-			// Affiche le distant
-			out << endl << "\t" << "[[ Distant '" << itDt->first->getInterlocutor()->getName() <<"' ]]";
+			// Affiche le distant uniquement si celui-ci n'a pas été explicitement spécifié
+			if(!distant) {
+				out << endl << "\t" << "[[ Distant '" << itDt->first->getInterlocutor()->getName() <<"' ]]";
+			}
 
 			// Affiche les valeurs de la branche de manière ordonnée
 			vector<Valeur*>& valeurs = getDistant(itDt->first)._valeurs;
@@ -490,7 +492,13 @@ void PrivateBranche::print(ostringstream& out, DistantTreeProxy* distant, bool d
 					break;
 				}
 
-				out << "\t" << ". [id=" << valeur->getValeurId();
+				out << "\t";
+
+				for(i = 0 ; i < indentation+1 ; i++) {
+					out << ".";
+				}
+
+				out << ". [id=" << valeur->getValeurId();
 
 				if(details) {
 					out << " tmpId=" << valeur->getValeurTmpId();

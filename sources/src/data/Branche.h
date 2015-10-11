@@ -8,9 +8,11 @@
 #ifndef BRANCHE_H_
 #define BRANCHE_H_
 
-#include <sstream>
-#include <string>
+#include <iterator>
 #include <map>
+#include <sstream>
+#include <stack>
+#include <string>
 #include <vector>
 
 #include "util/GenRef.h"
@@ -20,7 +22,18 @@
 #include "data/Donnee.h"
 #include "data/AbstractBranche.h"
 #include "data/Valeur.h"
-#include "data/DistantTreeProxy.h"
+
+class DistantTreeProxy;
+
+class BrancheIterator {
+	std::stack<vector<Branche*>::iterator> _position;
+	BrancheIterator(Branche* origin);
+	bool next();
+
+public:
+	bool operator++();
+	Branche* operator*() const;
+};
 
 class Branche : public AbstractBranche {
 	std::vector<Branche*> _subBranches;
@@ -31,6 +44,7 @@ class Branche : public AbstractBranche {
 	std::vector<Valeur*> _valeurs;
 	std::map<int, Valeur*> _valeursById;
 	std::map<int, Valeur*> _valeursByTmpId;
+	std::map<string, Valeur*> _valeursByName;
 
 	JktUtils::CGenRef _brancheTmpRefGenerator;
 	JktUtils::CGenRef _brancheRefGenerator;
@@ -57,6 +71,7 @@ public:
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant temporaire */
 	Valeur* createValeurForClient(UPDATE_MODE updateMode, const std::string& valeurName, int revision, const JktUtils::AnyData& valeur);
+	virtual Valeur* getValeurByName(DistantTreeProxy* distant, const string& valeurName);
 
 	/* ****************************************************** */
 	// Fonctions non-compatibles avec les branches privées

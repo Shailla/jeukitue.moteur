@@ -25,6 +25,7 @@ public:
 	DistantTreeControl(DistantTreeProxy* distant);
 	virtual ~DistantTreeControl();
 
+	void create(Branche* branche);
 	void attach(Branche* branche);
 
 	// State

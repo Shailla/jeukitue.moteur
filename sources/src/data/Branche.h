@@ -26,10 +26,15 @@
 class DistantTreeProxy;
 
 class BrancheIterator {
-	std::stack<vector<Branche*>::iterator> _position;
-	BrancheIterator(Branche* origin);
-	bool next();
+	friend Branche;
 
+	Branche* _origin;
+	DistantTreeProxy* _distant;
+	std::stack<vector<Branche*>::iterator> _position;
+
+
+	BrancheIterator(Branche* origin, DistantTreeProxy* distant);
+	void dig(Branche* origin);
 public:
 	bool operator++();
 	Branche* operator*() const;
@@ -57,6 +62,8 @@ public:
 	/** Create a branche */
 	Branche(AbstractBranche* parent, int brancheId, const std::string& brancheName, DONNEE_TYPE brancheType, int revision, int tmpId);
 	virtual ~Branche();
+
+	BrancheIterator begin(DistantTreeProxy* distant);
 
 	/* ****************************************************** */
 	// Fonctions compatibles avec les branches privées

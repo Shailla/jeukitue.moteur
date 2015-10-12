@@ -143,6 +143,7 @@ private:
 	void initTestData();
 	void serverTests();
 	void clientTests();
+	void iteratorTest();
 	void multiClientsTests();
 	void privateTreeTest();
 };

@@ -26,6 +26,58 @@ using namespace std;
 
 using namespace JktUtils;
 
+
+BrancheIterator::BrancheIterator(Branche* origin, DistantTreeProxy* distant) {
+	_origin = origin;
+	_distant = distant;
+
+	dig(_origin);
+}
+
+void BrancheIterator::dig(Branche* branche) {
+	vector<Branche*>& subBranches = branche->getSubBranches(_distant);
+	vector<Branche*>::iterator it = subBranches.begin();
+
+	if(it != subBranches.end()) {
+		_position.push(it);
+		dig(*it);
+	}
+}
+
+bool BrancheIterator::operator++() {
+	vector<Branche*>::iterator it = _position.top();
+	++it;
+	_position.pop();
+
+	Branche* parentBr;
+
+	if(_position.empty()) {
+		parentBr = _origin;
+	}
+	else {
+		parentBr = *_position.top();
+	}
+
+	vector<Branche*>& subBranches = parentBr->getSubBranches(_distant);
+
+	if(it != subBranches.end()) {
+		// S'il reste des feuilles on passe à la suivante et on commence par essayer de descendre au plus profond
+		_position.push(it);
+		dig(*it);
+	}
+	else {
+		// Si c'était la dernière feuille le pop() précédent a permis de remonter d'un cran
+	}
+
+	return !_position.empty();
+}
+
+Branche* BrancheIterator::operator*() const {
+	return *_position.top();
+}
+
+
+
 Branche::Branche(DataTree* dataTree, int brancheId, DONNEE_TYPE brancheType, int revision, int brancheTmpId) : AbstractBranche(dataTree, brancheId, "root", brancheType, revision, brancheTmpId) {
 }
 
@@ -33,33 +85,6 @@ Branche::Branche(AbstractBranche* parent, int brancheId, const string& brancheNa
 }
 
 Branche::~Branche() {
-}
-
-BrancheIterator::BrancheIterator(Branche* origin) {
-	next(origin);
-}
-
-bool BrancheIterator::operator++() {
-	vector<Branche*> subBranches = (*_position.top())->getSubBranches(0);
-	vector<Branche*>::iterator it = subBranches.begin();
-
-	if(next()) {
-
-	}
-	else if(it != subBranches.end()) {
-		return true;	// There is still some branches
-	}
-	else {
-		return false;	// No more branche
-	}
-}
-
-bool next() {
-
-}
-
-Branche* BrancheIterator::operator*() const {
-	return *_position.top();
 }
 
 Branche* Branche::getSubBrancheByName(DistantTreeProxy* distant, const string& brancheName) {
@@ -104,6 +129,10 @@ Branche* Branche::getSubBrancheByIdOrTmpId(DistantTreeProxy* distant, int branch
 	}
 
 	return branche;
+}
+
+BrancheIterator Branche::begin(DistantTreeProxy* distant) {
+	return BrancheIterator(this, distant);
 }
 
 Branche* Branche::getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException) {
@@ -508,11 +537,7 @@ void Branche::print(ostringstream& out, DistantTreeProxy* distant, bool details,
 	vector<Valeur*> valeurs = _valeurs;
 	sort(valeurs.begin(), valeurs.end(), Valeur::highestId);
 
-	vector<Valeur*>::iterator valIt;
-
-	for(valIt = valeurs.begin() ; valIt != valeurs.end() ; ++valIt) {
-		Valeur* valeur = *valIt;
-
+	for(Valeur* valeur : valeurs) {
 		out << endl;
 
 		switch(valeur->getDonneeType()) {
@@ -558,10 +583,8 @@ void Branche::print(ostringstream& out, DistantTreeProxy* distant, bool details,
 	vector<Branche*> branches = _subBranches;
 	sort(branches.begin(), branches.end(), Branche::highestId);
 
-	vector<Branche*>::iterator brIt;
-
-	for(brIt = branches.begin() ; brIt != branches.end() ; ++brIt) {
-		(*brIt)->print(out, distant, details, indentation+1);
+	for(Branche* br : branches) {
+		br->print(out, distant, details, indentation+1);
 	}
 }
 

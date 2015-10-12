@@ -26,14 +26,14 @@ using namespace JktUtils;
 namespace JktTest {
 
 DataTreeTest::DataTreeTest() :
-				Test("DataTreeTest"),
-				interlocutorClient0(SDL_CreateCond(), SDL_CreateMutex()),
-				interlocutorClient1(SDL_CreateCond(), SDL_CreateMutex()),
-				serverTree(),
-				client0Tree("client-0", &interlocutorClient0),
-				client1Tree("client-1", &interlocutorClient1),
-				distantClient0(0),
-				distantClient1(0){
+						Test("DataTreeTest"),
+						interlocutorClient0(SDL_CreateCond(), SDL_CreateMutex()),
+						interlocutorClient1(SDL_CreateCond(), SDL_CreateMutex()),
+						serverTree(),
+						client0Tree("client-0", &interlocutorClient0),
+						client1Tree("client-1", &interlocutorClient1),
+						distantClient0(0),
+						distantClient1(0){
 }
 
 DataTreeTest::~DataTreeTest() {
@@ -58,6 +58,7 @@ void DataTreeTest::test() {
 	initTestData();			// Initialise les données utilisées par le test
 
 	serverTests();			// Initialise et peuple un arbre serveur, vérifie s'il est bien initialisé et peuplé
+	iteratorTest();
 	clientTests();			// Initialise et synchronise sur le serveur un arbre client, vérifie s'il est bien initialisé et synchronisé
 	multiClientsTests();	// Teste l'échange de données entre plusieurs clients
 	privateTreeTest();		// Teste la création d'une branche privée de données (données spécifiques à chaque client partagées avec le serveur)
@@ -186,7 +187,29 @@ void DataTreeTest::serverTests() {
 		ASSERT_EQUAL(valeurFloatServerValue, valeurFloat->getValeur(), "La valeur de la valeur est fausse");
 	}
 
+	{
+		ostringstream arbre;
+		arbre << "ARBRE SERVER :";
+		serverTree.getRoot().print(arbre, 0, true, 0);
+		log(arbre, __LINE__);
+	}
+
 	this->serveurRoot = &serveurRoot;
+}
+
+void DataTreeTest::iteratorTest() {
+	BrancheIterator it = serverTree.getRoot().begin(0);
+
+	cout << endl << CollectionsUtils::toString(serverTree.getRoot().getBrancheFullId());
+	for(Branche* br : serverTree.getRoot().getSubBranches(0)) {
+		cout << endl << CollectionsUtils::toString(br->getBrancheFullId());
+	}
+
+	cout << endl << "----------------------------------";
+
+	do {
+		cout << endl << CollectionsUtils::toString((*it)->getBrancheFullId());
+	} while(++it);
 }
 
 void DataTreeTest::clientTests() {

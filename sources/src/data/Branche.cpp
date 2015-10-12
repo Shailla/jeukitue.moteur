@@ -39,41 +39,66 @@ void BrancheIterator::dig(Branche* branche) {
 	vector<Branche*>::iterator it = subBranches.begin();
 
 	if(it != subBranches.end()) {
-		_position.push(it);
+		_posIt.push(it);
 		dig(*it);
 	}
+}
+
+void BrancheIterator::push(vector<Branche*>::iterator it, vector<Branche*>::iterator end) {
+	_posIt.push(it);
+	_posEnd.push(end);
+}
+
+void BrancheIterator::pop() {
+
 }
 
 bool BrancheIterator::operator++() {
-	vector<Branche*>::iterator it = _position.top();
-	++it;
-	_position.pop();
+	vector<Branche*>::iterator it = _posIt.top();
+	vector<Branche*>::iterator end = _posEnd.top();
 
-	Branche* parentBr;
+	// Essaie d'avancer dans l'arbre
+	if(it != end) {
+		vector<Branche*> subBranches = (*it)->getSubBranches(_distant);
+		vector<Branche*>::iterator nextIt = subBranches.begin();
+		vector<Branche*>::iterator nextEnd = subBranches.end();
 
-	if(_position.empty()) {
-		parentBr = _origin;
-	}
-	else {
-		parentBr = *_position.top();
-	}
-
-	vector<Branche*>& subBranches = parentBr->getSubBranches(_distant);
-
-	if(it != subBranches.end()) {
-		// S'il reste des feuilles on passe à la suivante et on commence par essayer de descendre au plus profond
-		_position.push(it);
-		dig(*it);
-	}
-	else {
-		// Si c'était la dernière feuille le pop() précédent a permis de remonter d'un cran
+		if(nextIt != nextEnd) {
+			// Avance
+			push(nextIt, nextEnd);
+			return true;
+		}
 	}
 
-	return !_position.empty();
+	// Essaie de descendre ou de reculer
+	bool result = false;
+
+	while(_posIt.size() && !result) {
+		it = _posIt.top();
+		end = _posEnd.top();
+
+		if(it != end) {
+			++it;
+
+			if(it != end) {
+				// Descend
+				pop();
+				push(it, end);
+
+				result = true;
+			}
+			else {
+				// Recule
+				pop();
+			}
+		}
+	}
+
+	return !_posIt.empty();
 }
 
 Branche* BrancheIterator::operator*() const {
-	return *_position.top();
+	return *_posIt.top();
 }
 
 

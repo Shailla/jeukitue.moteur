@@ -30,13 +30,14 @@ class BrancheIterator {
 
 	Branche* _origin;
 	DistantTreeProxy* _distant;
-	stack<vector<Branche*>::iterator> _posIt;
-	stack<vector<Branche*>::iterator> _posEnd;
+
+	stack<Branche*> _br;
+	stack<int> _pos;
+	stack<int> _size;
 
 	BrancheIterator(Branche* origin, DistantTreeProxy* distant);
-	void dig(Branche* origin);
 
-	void push(vector<Branche*>::iterator it, vector<Branche*>::iterator end);
+	void push(Branche* br, int pos, int size);
 	void pop();
 
 public:

@@ -30,75 +30,70 @@ using namespace JktUtils;
 BrancheIterator::BrancheIterator(Branche* origin, DistantTreeProxy* distant) {
 	_origin = origin;
 	_distant = distant;
-
-	dig(_origin);
 }
 
-void BrancheIterator::dig(Branche* branche) {
-	vector<Branche*>& subBranches = branche->getSubBranches(_distant);
-	vector<Branche*>::iterator it = subBranches.begin();
+void BrancheIterator::push(Branche* br, int pos, int size) {
+	_br.push(br);
+	_pos.push(pos);
+	_size.push(size);
 
-	if(it != subBranches.end()) {
-		_posIt.push(it);
-		dig(*it);
-	}
-}
-
-void BrancheIterator::push(vector<Branche*>::iterator it, vector<Branche*>::iterator end) {
-	_posIt.push(it);
-	_posEnd.push(end);
+	cout << endl << "Bzzz : " << CollectionsUtils::toString(br->getBrancheFullId()) << " " << pos << " " << size;
 }
 
 void BrancheIterator::pop() {
-
+	_br.pop();
+	_pos.pop();
+	_size.pop();
 }
 
 bool BrancheIterator::operator++() {
-	vector<Branche*>::iterator it = _posIt.top();
-	vector<Branche*>::iterator end = _posEnd.top();
+	Branche* br;
+	int pos, size;
+
+	if(_br.empty()) {
+		push(_origin, 0, 1);	// Il n'y a qu'une origine, d'où le 1
+		return true;
+	}
+
+	pos = _pos.top();
+	size = _size.top();
 
 	// Essaie d'avancer dans l'arbre
-	if(it != end) {
-		vector<Branche*> subBranches = (*it)->getSubBranches(_distant);
-		vector<Branche*>::iterator nextIt = subBranches.begin();
-		vector<Branche*>::iterator nextEnd = subBranches.end();
+	if(pos < size) {
+		br = _br.top();
+		vector<Branche*>& subBranches = br->getSubBranches(_distant);
 
-		if(nextIt != nextEnd) {
+		if(subBranches.size() > 0) {
 			// Avance
-			push(nextIt, nextEnd);
+			push(subBranches[0], 0, subBranches.size());
 			return true;
 		}
 	}
 
 	// Essaie de descendre ou de reculer
-	bool result = false;
+	while(_br.size()) {
+		pos = _pos.top();
+		size = _size.top();
 
-	while(_posIt.size() && !result) {
-		it = _posIt.top();
-		end = _posEnd.top();
+		if(pos+1 < size) {
+			// Descend
+			pop();
+			br = _br.top();
+			vector<Branche*>& subBranches = br->getSubBranches(_distant);
+			push(subBranches[pos+1], pos+1, subBranches.size());
 
-		if(it != end) {
-			++it;
-
-			if(it != end) {
-				// Descend
-				pop();
-				push(it, end);
-
-				result = true;
-			}
-			else {
-				// Recule
-				pop();
-			}
+			return true;
+		}
+		else {
+			pop();
 		}
 	}
 
-	return !_posIt.empty();
+	return !_br.empty();
 }
 
 Branche* BrancheIterator::operator*() const {
-	return *_posIt.top();
+	return _br.top();
 }
 
 

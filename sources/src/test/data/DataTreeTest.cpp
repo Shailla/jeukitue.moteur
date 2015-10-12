@@ -198,18 +198,19 @@ void DataTreeTest::serverTests() {
 }
 
 void DataTreeTest::iteratorTest() {
-	BrancheIterator it = serverTree.getRoot().begin(0);
-
 	cout << endl << CollectionsUtils::toString(serverTree.getRoot().getBrancheFullId());
+
 	for(Branche* br : serverTree.getRoot().getSubBranches(0)) {
 		cout << endl << CollectionsUtils::toString(br->getBrancheFullId());
 	}
 
-	cout << endl << "----------------------------------";
+	cout << endl << "----------------------------------" << flush;
 
-	do {
-		cout << endl << CollectionsUtils::toString((*it)->getBrancheFullId());
-	} while(++it);
+	BrancheIterator it = serverTree.getRoot().begin(0);
+
+	while(++it) {
+		cout << endl << CollectionsUtils::toString((*it)->getBrancheFullId()) << flush;
+	}
 }
 
 void DataTreeTest::clientTests() {

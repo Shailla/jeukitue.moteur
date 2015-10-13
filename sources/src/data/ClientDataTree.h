@@ -52,6 +52,7 @@ public:
 	 * ***************************************************/
 
 	void diffuseChangementsToServer(void);
+	void collecteChangements(vector<Changement*>& changements);
 	void receiveChangementsFromServer();
 	void sendChangementsToServer(vector<Changement*>& changements);
 };

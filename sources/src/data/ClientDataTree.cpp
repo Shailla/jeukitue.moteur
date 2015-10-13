@@ -89,17 +89,53 @@ void ClientDataTree::diffuseChangementsToServer(void) {
 
 	Uint32 now = SDL_GetTicks();
 
-	cout << endl << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " << now;
-	cout << endl << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " << _updateClientToServer;
-	cout << endl << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " << (Uint32)_serverTreeProxy->getControl().getUpdateClientToServerDelay();
-	cout << endl << "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA " << now - _updateClientToServer;
-
 	if(now - _updateClientToServer >= (Uint32)_serverTreeProxy->getControl().getUpdateClientToServerDelay()) {
-		cout << endl << "BBBBBBBBBBB";
 		_updateClientToServer = now;
-		_serverTreeProxy->collecteChangementsInClientTree(changements);
-		cout << endl << "" << changements.size() << " changements to send";
+		collecteChangements(changements);
 		sendChangementsToServer(changements);
+	}
+}
+
+void ClientDataTree::collecteChangements(vector<Changement*>& changements) {
+	BrancheIterator it = getRoot().begin(0);
+
+	Donnee* donnee;
+	Branche* branche;
+	Valeur* valeur;
+	MarqueurDistant* marqueur;
+	Changement* changement;
+
+	while(++it) {
+		donnee = *it;
+		marqueur = donnee->getMarqueur(0);
+
+		branche = dynamic_cast<Branche*>(_serverTreeProxy);
+		changement = NULL;
+
+		if(branche) {
+			// NOUVELLE BRANCHE : branche présente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
+			if(branche->getBrancheId() < 0) {
+				changement = new AddBrancheFromClientChangement(branche->getParentBrancheIdOrTmpId(), branche->getBrancheTmpId(), branche->getRevision(), branche->getBrancheName());
+			}
+		}
+		else {
+			valeur = (Valeur*)(donnee);
+
+			// NOUVELLE VALEUR : valeur présente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
+			if(valeur->getValeurId() < 0) {
+				changement = new AddValeurFromClientChangement(valeur->getBrancheIdOrTmpId(), valeur->getValeurTmpId(), valeur->getRevision(), valeur->getValeurName(), valeur->getValeurData());
+			}
+
+			// UPDATE VALEUR : Une valeur a changé et le client n'en a pas encore connaissance
+			else if(valeur->getRevision() > marqueur->getConfirmedRevision()) {
+				changement = new UpdateValeurFromClientChangement(valeur->getBrancheIdOrTmpId(), valeur->getValeurId(), valeur->getRevision(), valeur->getValeurData());
+			}
+		}
+
+		if(changement) {
+			changement->update(marqueur);
+			changements.push_back(changement);
+		}
 	}
 }
 

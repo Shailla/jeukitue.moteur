@@ -36,8 +36,6 @@ public:
 	Interlocutor2* getInterlocutor() const;
 	MarqueurDistant* getMarqueur(Donnee* donnee);
 	MarqueurDistant* addMarqueur(Donnee* donnee, int donneeTmpId);
-	void collecteChangementsInClientTree(std::vector<Changement*>& changements);
-	void collecteChangementsInServerTree(std::vector<Changement*>& changements);
 
 	DistantTreeControl& getControl();
 	Uint32 getUpdateServerToClientTime() const;

@@ -36,8 +36,6 @@ void BrancheIterator::push(Branche* br, int pos, int size) {
 	_br.push(br);
 	_pos.push(pos);
 	_size.push(size);
-
-	cout << endl << "Bzzz : " << CollectionsUtils::toString(br->getBrancheFullId()) << " " << pos << " " << size;
 }
 
 void BrancheIterator::pop() {
@@ -51,45 +49,54 @@ bool BrancheIterator::operator++() {
 	int pos, size;
 
 	if(_br.empty()) {
-		push(_origin, 0, 1);	// Il n'y a qu'une origine, d'où le 1
+		vector<Branche*>& subBranches = _origin->getSubBranches(_distant);
+		push(_origin, 0, subBranches.size());
+
 		return true;
 	}
+
+	// Essaie d'avancer dans l'arbre
 
 	pos = _pos.top();
 	size = _size.top();
 
-	// Essaie d'avancer dans l'arbre
 	if(pos < size) {
+		// Avance
 		br = _br.top();
 		vector<Branche*>& subBranches = br->getSubBranches(_distant);
 
-		if(subBranches.size() > 0) {
-			// Avance
-			push(subBranches[0], 0, subBranches.size());
-			return true;
-		}
+		Branche* subBranche = subBranches[pos];
+		push(subBranche, 0, subBranche->getSubBranches(_distant).size());
+
+		return true;
 	}
 
-	// Essaie de descendre ou de reculer
+	// Essaie de descendre, sinon recule jusqu'à pouvoir descendre ou avoir fini
 	while(_br.size()) {
 		pos = _pos.top();
 		size = _size.top();
+		br = _br.top();
 
 		if(pos+1 < size) {
 			// Descend
 			pop();
-			br = _br.top();
+			push(br, pos+1, size);
+
+			// Et avance
 			vector<Branche*>& subBranches = br->getSubBranches(_distant);
-			push(subBranches[pos+1], pos+1, subBranches.size());
+
+			Branche* subBranche = subBranches[pos+1];
+			push(subBranche, 0, subBranche->getSubBranches(_distant).size());
 
 			return true;
 		}
 		else {
+			// Recule
 			pop();
 		}
 	}
 
-	return !_br.empty();
+	return false;
 }
 
 Branche* BrancheIterator::operator*() const {

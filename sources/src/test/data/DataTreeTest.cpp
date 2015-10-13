@@ -58,7 +58,7 @@ void DataTreeTest::test() {
 	initTestData();			// Initialise les données utilisées par le test
 
 	serverTests();			// Initialise et peuple un arbre serveur, vérifie s'il est bien initialisé et peuplé
-	iteratorTest();
+	iteratorTest();			// Utilise l'itérateur servant à parcours l'arbre de données
 	clientTests();			// Initialise et synchronise sur le serveur un arbre client, vérifie s'il est bien initialisé et synchronisé
 	multiClientsTests();	// Teste l'échange de données entre plusieurs clients
 	privateTreeTest();		// Teste la création d'une branche privée de données (données spécifiques à chaque client partagées avec le serveur)
@@ -198,18 +198,12 @@ void DataTreeTest::serverTests() {
 }
 
 void DataTreeTest::iteratorTest() {
-	cout << endl << CollectionsUtils::toString(serverTree.getRoot().getBrancheFullId());
-
-	for(Branche* br : serverTree.getRoot().getSubBranches(0)) {
-		cout << endl << CollectionsUtils::toString(br->getBrancheFullId());
-	}
-
-	cout << endl << "----------------------------------" << flush;
-
 	BrancheIterator it = serverTree.getRoot().begin(0);
 
 	while(++it) {
-		cout << endl << CollectionsUtils::toString((*it)->getBrancheFullId()) << flush;
+		ostringstream msg;
+		msg << endl << "==> " << CollectionsUtils::toString((*it)->getBrancheFullId()) << flush;
+		log(msg.str(), __LINE__);
 	}
 }
 

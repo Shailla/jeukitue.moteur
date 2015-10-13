@@ -66,6 +66,7 @@ public:
 	 * ***************************************************/
 
 	void diffuseChangementsToClients(void);
+	void collecteChangements(vector<Changement*>& changements, DistantTreeProxy* distant);
 	void receiveChangementsFromClients();
 };
 

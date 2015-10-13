@@ -6,9 +6,8 @@
  */
 
 #include <iostream>
-#include <sstream>
 #include <vector>
-#include <algorithm>
+#include <sstream>
 
 using namespace std;
 
@@ -25,6 +24,9 @@ using namespace std;
 #include "data/communication/message/ServerToClient/AcceptAddBrancheFromClientChangement.h"
 #include "data/communication/message/ServerToClient/AcceptAddValeurFromClientChangement.h"
 #include "data/communication/message/ServerToClient/UpdateValeurFromServerChangement.h"
+#include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
+#include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"
+#include "data/communication/message/ClientToServer/UpdateValeurFromClientChangement.h"
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
 #include "util/CollectionsUtils.h"

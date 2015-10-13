@@ -5,24 +5,10 @@
  *      Author: vgdj7997
  */
 
-#include <data/DataTreeUtils.h>
-#include <data/DistantTreeProxy.h>
-#include <data/Donnee.h>
-#include <data/exception/NotExistingValeurException.h>
-#include <data/PrivateBranche.h>
-#include <data/TreeConstants.h>
-#include <data/Valeur.h>
-#include <reseau/new/Interlocutor2.h>
-#include <SDL_stdinc.h>
-#include <SDL_timer.h>
-#include <util/types/AnyData.h>
-#include <util/types/Bytes.h>
-#include <algorithm>
 #include <iostream>
 #include <iterator>
-#include <set>
+#include <vector>
 #include <sstream>
-#include <utility>
 
 using namespace std;
 
@@ -38,8 +24,12 @@ using namespace std;
 #include "data/communication/message/ServerToClient/AcceptAddBrancheFromClientChangement.h"
 #include "data/communication/message/ServerToClient/AcceptAddValeurFromClientChangement.h"
 #include "data/communication/message/ClientToServer/UpdateValeurFromClientChangement.h"
+#include "data/communication/message/ServerToClient/AddBrancheFromServerChangement.h"
+#include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"
+#include "data/communication/message/ServerToClient/UpdateValeurFromServerChangement.h"
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
+#include "data/DataTreeUtils.h"
 
 #include "data/ServeurDataTree.h"
 

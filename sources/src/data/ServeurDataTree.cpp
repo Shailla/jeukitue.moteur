@@ -284,27 +284,27 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 void ServeurDataTree::collecteChangements(vector<Changement*>& changements, DistantTreeProxy* distant) {
 	BrancheIterator it = getRoot().begin(0);
 
-	Donnee* donnee;
 	Branche* branche;
-	Valeur* valeur;
 	Changement* changement;
 	MarqueurDistant* marqueur;
 
 	while(++it) {
-		donnee = *it;
-		marqueur = donnee->getMarqueur(distant);
+		branche = *it;
+		marqueur = branche->getMarqueur(distant);
 
-		branche = dynamic_cast<Branche*>(donnee);
-		changement = NULL;
+		// NOUVELLE BRANCHE : branche présente sur le serveur mais dont le client n'a pas connaissance
+		if(marqueur->getConfirmedRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
+			changement = new AddBrancheFromServerChangement(branche->getParentBrancheId(), branche->getBrancheId(), branche->getDonneeType(), branche->getRevision(), branche->getBrancheName());
 
-		if(branche) {
-			// NOUVELLE BRANCHE : branche présente sur le serveur mais dont le client n'a pas connaissance
-			if(marqueur->getConfirmedRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
-				changement = new AddBrancheFromServerChangement(branche->getParentBrancheId(), branche->getBrancheId(), branche->getDonneeType(), branche->getRevision(), branche->getBrancheName());
-			}
+			changement->update(marqueur);
+			changements.push_back(changement);
 		}
-		else {
-			valeur = (Valeur*)(donnee);
+
+		vector<Valeur*>& valeurs = branche->getValeurs(distant);
+
+		for(Valeur* valeur : valeurs) {
+			changement = 0;
+			marqueur = valeur->getMarqueur(distant);
 
 			// NOUVELLE VALEUR : valeur présente sur le serveur mais dont le client n'a pas connaissance
 			if(marqueur->getConfirmedRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
@@ -314,11 +314,11 @@ void ServeurDataTree::collecteChangements(vector<Changement*>& changements, Dist
 			else if(marqueur->getConfirmedRevision() != valeur->getRevision()) {
 				changement = new UpdateValeurFromServerChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision(), valeur->getValeurData());
 			}
-		}
 
-		if(changement) {
-			changement->update(marqueur);
-			changements.push_back(changement);
+			if(changement) {
+				changement->update(marqueur);
+				changements.push_back(changement);
+			}
 		}
 	}
 }

@@ -56,7 +56,6 @@ bool BrancheIterator::operator++() {
 	}
 
 	// Essaie d'avancer dans l'arbre
-
 	pos = _pos.top();
 	size = _size.top();
 

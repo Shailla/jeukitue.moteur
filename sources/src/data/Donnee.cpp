@@ -5,10 +5,11 @@
  *      Author: vgdj7997
  */
 
+#include <iostream>
 #include <stdexcept>
 
 #include "data/MarqueurDistant.h"
-
+#include "util/CollectionsUtils.h"
 #include "data/Branche.h"
 #include "data/Valeur.h"
 
@@ -45,7 +46,10 @@ MarqueurDistant* Donnee::getMarqueur(DistantTreeProxy* distant) {
 		marqueur = _marqueurs.at(distant);
 	}
 	catch(out_of_range& exception) {
-		marqueur = NULL;
+		marqueur = 0;
+		cout << endl << "ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh MARQUEUR INTROUVABLE" << flush;
+//		cout << endl << "==> " << JktUtils::CollectionsUtils::toString(((Valeur*)this)->getValeurFullId()) << flush;
+		cout << endl << "==> " << ((Valeur*)this)->getValeurName() << flush;
 	}
 
 	return marqueur;

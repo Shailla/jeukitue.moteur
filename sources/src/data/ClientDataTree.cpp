@@ -101,27 +101,27 @@ void ClientDataTree::diffuseChangementsToServer(void) {
 void ClientDataTree::collecteChangements(vector<Changement*>& changements) {
 	BrancheIterator it = getRoot().begin(0);
 
-	Donnee* donnee;
 	Branche* branche;
-	Valeur* valeur;
 	MarqueurDistant* marqueur;
 	Changement* changement;
 
 	while(++it) {
-		donnee = *it;
-		marqueur = donnee->getMarqueur(0);
+		branche = *it;
 
-		branche = dynamic_cast<Branche*>(_serverTreeProxy);
-		changement = NULL;
+		// NOUVELLE BRANCHE : branche présente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
+		if(branche->getBrancheId() < 0) {
+			changement = new AddBrancheFromClientChangement(branche->getParentBrancheIdOrTmpId(), branche->getBrancheTmpId(), branche->getRevision(), branche->getBrancheName());
 
-		if(branche) {
-			// NOUVELLE BRANCHE : branche présente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
-			if(branche->getBrancheId() < 0) {
-				changement = new AddBrancheFromClientChangement(branche->getParentBrancheIdOrTmpId(), branche->getBrancheTmpId(), branche->getRevision(), branche->getBrancheName());
-			}
+			marqueur = branche->getMarqueur(0);
+			changement->update(marqueur);
+			changements.push_back(changement);
 		}
-		else {
-			valeur = (Valeur*)(donnee);
+
+		vector<Valeur*>& valeurs = branche->getValeurs(0);
+
+		for(Valeur* valeur : valeurs) {
+			changement = 0;
+			marqueur = valeur->getMarqueur(0);
 
 			// NOUVELLE VALEUR : valeur présente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
 			if(valeur->getValeurId() < 0) {
@@ -132,11 +132,11 @@ void ClientDataTree::collecteChangements(vector<Changement*>& changements) {
 			else if(valeur->getRevision() > marqueur->getConfirmedRevision()) {
 				changement = new UpdateValeurFromClientChangement(valeur->getBrancheIdOrTmpId(), valeur->getValeurId(), valeur->getRevision(), valeur->getValeurData());
 			}
-		}
 
-		if(changement) {
-			changement->update(marqueur);
-			changements.push_back(changement);
+			if(changement) {
+				changement->update(marqueur);
+				changements.push_back(changement);
+			}
 		}
 	}
 }

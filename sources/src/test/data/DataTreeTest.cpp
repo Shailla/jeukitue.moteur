@@ -249,6 +249,8 @@ void DataTreeTest::clientTests() {
 	{
 		Branche* branche0 = client0Tree.getBranche(0, branche0ServerFullId);
 
+		cout << endl << "a:" << branche0->getMarqueur(0) << flush;
+
 		ASSERT_EQUAL(branche0ServerName, branche0->getBrancheName(), "Le nom de la branche 0 est incorrect");
 		ASSERT_EQUAL(0, branche0->getRevision(), "La révision initiale d'une branche devrait être nulle");
 	}
@@ -262,6 +264,8 @@ void DataTreeTest::clientTests() {
 	{
 		ValeurString* valeurString = (ValeurString*)client0Tree.getValeur(0, branche0ServerFullId, valeurStringServerId);
 
+		cout << endl << "A:" << valeurString->getMarqueur(0) << flush;
+
 		ASSERT_EQUAL(valeurStringServerName, valeurString->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurString->getRevision(), "La révision initiale d'une valeur devrait être nulle");
 		ASSERT_EQUAL(valeurStringServerValue, valeurString->getValeur(), "La valeur de la valeur est fausse");
@@ -271,6 +275,8 @@ void DataTreeTest::clientTests() {
 	{
 		ValeurInt* valeurInt = (ValeurInt*)client0Tree.getValeur(0, branche0ServerFullId, valeurIntServerId);
 
+		cout << endl << "B:" << valeurInt->getMarqueur(0) << flush;
+
 		ASSERT_EQUAL(valeurIntServerName, valeurInt->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurInt->getRevision(), "La révision initiale d'une valeur devrait être nulle");
 		ASSERT_EQUAL(valeurIntServerValue, valeurInt->getValeur(), "La valeur de la valeur est fausse");
@@ -279,6 +285,8 @@ void DataTreeTest::clientTests() {
 	// Valeur float
 	{
 		ValeurFloat* valeurFloat = (ValeurFloat*)client0Tree.getValeur(0, branche0ServerFullId, valeurFloatServerId);
+
+		cout << endl << "C:" << valeurFloat->getMarqueur(0);
 
 		ASSERT_EQUAL(valeurFloatServerName, valeurFloat->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurFloat->getRevision(), "La révision initiale d'une valeur devrait être nulle");

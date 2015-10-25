@@ -22,13 +22,16 @@ class ClientDataTree : public DataTree {
 	Uint32 _updateClientToServer;
 
 	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
-	void initDonneeAndServeurMarqueur(Donnee* donnee);
+	MarqueurDistant* initDonneeAndServeurMarqueur(Donnee* donnee);
 public:
 	ClientDataTree(const std::string& clientName, Interlocutor2* serverInterlocutor);
 	virtual ~ClientDataTree();
 
 	const string& getClientName() const;
 	Branche* getBrancheByTmpId(const vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
+
+	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException) override;
+	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) override;
 
 	/* *****************************************************
 	 * Serveur local actions

@@ -32,6 +32,10 @@ public:
 	Branche* createPrivateBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
 
 	Valeur* createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur) override;
+
+	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException) override;
+
+	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) override;
 };
 
 #endif /* CLIENTDATATREE_H_ */

@@ -49,7 +49,13 @@ MarqueurDistant* Donnee::getMarqueur(DistantTreeProxy* distant) {
 		marqueur = 0;
 		cout << endl << "ahhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh MARQUEUR INTROUVABLE" << flush;
 //		cout << endl << "==> " << JktUtils::CollectionsUtils::toString(((Valeur*)this)->getValeurFullId()) << flush;
-		cout << endl << "==> " << ((Valeur*)this)->getValeurName() << flush;
+
+		if(dynamic_cast<Branche*>(this)) {
+			cout << endl << "==> BR " << ((Branche*)this)->getBrancheName() << flush;
+		}
+		else {
+			cout << endl << "==> VL " << ((Valeur*)this)->getValeurName() << flush;
+		}
 	}
 
 	return marqueur;

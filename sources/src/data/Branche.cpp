@@ -460,7 +460,7 @@ Valeur* Branche::createValeurForServeur(DistantTreeProxy* distant, UPDATE_MODE u
 	return newValeur;
 }
 
-const Valeur* Branche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur) {
+Valeur* Branche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur) {
 	Valeur* newValeur = getValeurByIdOrTmpId(distant, valeurId);
 
 	if(newValeur) {

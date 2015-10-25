@@ -54,6 +54,46 @@ Branche* LocalDataTree::createPrivateBranche(const vector<int>& parentBrancheId,
 	return branche;
 }
 
+Branche* LocalDataTree::getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException) {
+	vector<int>::const_iterator iter;
+
+	Branche* branche = &getRoot();
+
+	for(iter = brancheId.begin() ; (iter != brancheId.end() && branche != NULL) ; iter++) {
+		int id = *iter;
+		branche = branche->getSubBrancheByIdOrDistantTmpId(0, id);
+	}
+
+	if(branche == NULL) {
+		throw NotExistingBrancheException("LocalDataTree::getBrancheFromDistant");
+	}
+
+	return branche;
+}
+
+Valeur* LocalDataTree::getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
+	vector<int>::const_iterator iter;
+
+	Branche* branche = &getRoot();
+
+	if(brancheId.size() > 0) {
+		for(iter = brancheId.begin() ; (iter != brancheId.end() && branche != NULL) ; iter++) {
+			branche = branche->getSubBrancheByIdOrDistantTmpId(0, *iter);
+		}
+
+		if(branche == NULL) {
+			throw NotExistingBrancheException("LocalDataTree::getValeurFromDistant 1");
+		}
+	}
+
+	Valeur* valeur = branche->getValeurByIdOrTmpId(0, valeurId);
+
+	if(!valeur) {
+		throw NotExistingValeurException("LocalDataTree::getValeurFromDistant 2");
+	}
+
+	return valeur;
+}
 
 Valeur* LocalDataTree::createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const vector<int>& parentBrancheId, const string& valeurName, const AnyData valeur) {
 	Branche* parentBranche = getBrancheFromDistant(0, parentBrancheId);

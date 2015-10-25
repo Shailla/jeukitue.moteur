@@ -26,14 +26,14 @@ using namespace JktUtils;
 namespace JktTest {
 
 DataTreeTest::DataTreeTest() :
-						Test("DataTreeTest"),
-						interlocutorClient0(SDL_CreateCond(), SDL_CreateMutex()),
-						interlocutorClient1(SDL_CreateCond(), SDL_CreateMutex()),
-						serverTree(),
-						client0Tree("client-0", &interlocutorClient0),
-						client1Tree("client-1", &interlocutorClient1),
-						distantClient0(0),
-						distantClient1(0){
+								Test("DataTreeTest"),
+								interlocutorClient0(SDL_CreateCond(), SDL_CreateMutex()),
+								interlocutorClient1(SDL_CreateCond(), SDL_CreateMutex()),
+								serverTree(),
+								client0Tree("client-0", &interlocutorClient0),
+								client1Tree("client-1", &interlocutorClient1),
+								distantClient0(0),
+								distantClient1(0){
 }
 
 DataTreeTest::~DataTreeTest() {
@@ -241,15 +241,22 @@ void DataTreeTest::clientTests() {
 	// Vérifie que le serveur et client-1 ont exactement le même arbre
 	ASSERT_EQUAL(((AbstractBranche&)(serverTree.getRoot())).print(distantClient0, 0, false), ((AbstractBranche&)(client0Tree.getRoot())).print(0, 0, false), "Les abres client-0 et serveur devraient être identiques");
 
+	{
+		ostringstream arbre;
+		arbre << endl << "ARBRE CLIENT 0 :";
+		client0Tree.getRoot().print(arbre, 0, true, 0);
+		log(arbre, __LINE__);
+	}
+
 
 	/* ****************************************************************************
 	 * Client : Vérifie la branche 0
 	 * ***************************************************************************/
 
 	{
-		Branche* branche0 = client0Tree.getBranche(0, branche0ServerFullId);
+		Branche* branche0 = client0Tree.getBranche(client0Tree.getDistantServer(), branche0ServerFullId);
 
-		cout << endl << "a:" << branche0->getMarqueur(0) << flush;
+		cout << endl << "a:" << branche0->getMarqueur(client0Tree.getDistantServer()) << flush;
 
 		ASSERT_EQUAL(branche0ServerName, branche0->getBrancheName(), "Le nom de la branche 0 est incorrect");
 		ASSERT_EQUAL(0, branche0->getRevision(), "La révision initiale d'une branche devrait être nulle");
@@ -262,9 +269,9 @@ void DataTreeTest::clientTests() {
 
 	// Valeur string
 	{
-		ValeurString* valeurString = (ValeurString*)client0Tree.getValeur(0, branche0ServerFullId, valeurStringServerId);
+		ValeurString* valeurString = (ValeurString*)client0Tree.getValeur(client0Tree.getDistantServer(), branche0ServerFullId, valeurStringServerId);
 
-		cout << endl << "A:" << valeurString->getMarqueur(0) << flush;
+		cout << endl << "A:" << valeurString->getMarqueur(client0Tree.getDistantServer()) << flush;
 
 		ASSERT_EQUAL(valeurStringServerName, valeurString->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurString->getRevision(), "La révision initiale d'une valeur devrait être nulle");
@@ -273,9 +280,9 @@ void DataTreeTest::clientTests() {
 
 	// Valeur int
 	{
-		ValeurInt* valeurInt = (ValeurInt*)client0Tree.getValeur(0, branche0ServerFullId, valeurIntServerId);
+		ValeurInt* valeurInt = (ValeurInt*)client0Tree.getValeur(client0Tree.getDistantServer(), branche0ServerFullId, valeurIntServerId);
 
-		cout << endl << "B:" << valeurInt->getMarqueur(0) << flush;
+		cout << endl << "B:" << valeurInt->getMarqueur(client0Tree.getDistantServer()) << flush;
 
 		ASSERT_EQUAL(valeurIntServerName, valeurInt->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurInt->getRevision(), "La révision initiale d'une valeur devrait être nulle");
@@ -284,9 +291,9 @@ void DataTreeTest::clientTests() {
 
 	// Valeur float
 	{
-		ValeurFloat* valeurFloat = (ValeurFloat*)client0Tree.getValeur(0, branche0ServerFullId, valeurFloatServerId);
+		ValeurFloat* valeurFloat = (ValeurFloat*)client0Tree.getValeur(client0Tree.getDistantServer(), branche0ServerFullId, valeurFloatServerId);
 
-		cout << endl << "C:" << valeurFloat->getMarqueur(0);
+		cout << endl << "C:" << valeurFloat->getMarqueur(client0Tree.getDistantServer());
 
 		ASSERT_EQUAL(valeurFloatServerName, valeurFloat->getValeurName(), "Le nom de la valeur string est incorrect");
 		ASSERT_EQUAL(0, valeurFloat->getRevision(), "La révision initiale d'une valeur devrait être nulle");

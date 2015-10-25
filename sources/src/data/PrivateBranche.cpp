@@ -365,7 +365,7 @@ Valeur* PrivateBranche::createValeurForServeur(DistantTreeProxy* distant, UPDATE
 	return newValeur;
 }
 
-const Valeur* PrivateBranche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur) {
+Valeur* PrivateBranche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur) {
 	if(!distant) {
 		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
 	}

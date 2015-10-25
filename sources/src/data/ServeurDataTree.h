@@ -20,6 +20,9 @@ class ServeurDataTree : public DataTree {
 	Donnee* initDonneeAndMarqueurFromDistant(DistantTreeProxy* distant, Donnee* valeur, int donneeClientTmpId);
 	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
 
+	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException);
+	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
+
 	/* ****************************************************
 	 * Distant actions
 	 * ***************************************************/

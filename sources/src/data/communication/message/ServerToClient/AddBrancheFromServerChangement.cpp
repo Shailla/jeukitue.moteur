@@ -31,6 +31,7 @@ AddBrancheFromServerChangement::AddBrancheFromServerChangement(const vector<int>
 void AddBrancheFromServerChangement::update(MarqueurDistant* marqueur) {
 	// Met à jour l'état des données
 	marqueur->setSentRevision(marqueur->getDonnee()->getRevision());
+	marqueur->setConfirmedRevision(marqueur->getDonnee()->getRevision());
 }
 
 void AddBrancheFromServerChangement::serialize(ostringstream& out) const {

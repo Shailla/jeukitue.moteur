@@ -52,7 +52,7 @@ public:
 	// Fonctions membres
 	/* ************************************************************************ */
 
-	DistantPrivateBranche& getDistant(DistantTreeProxy* distant);
+	DistantPrivateBranche* getDistant(DistantTreeProxy* distant);
 	map<DistantTreeProxy*, DistantPrivateBranche>& getDistants();
 
 	Branche* getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException);

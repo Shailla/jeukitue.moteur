@@ -29,9 +29,6 @@ using namespace std;
 using namespace JktUtils;
 
 PrivateBranche::PrivateBranche(AbstractBranche* parent, int brancheId, const string& brancheName, DONNEE_TYPE brancheType, int revision, int brancheTmpId) : Branche(parent, brancheId, brancheName, brancheType, revision, brancheTmpId) {
-
-	// Crée une branche vide fictive pour bouchonner les requêtes sur distant nulle
-	_distants[0] = DistantPrivateBranche();
 }
 
 PrivateBranche::~PrivateBranche() {
@@ -44,10 +41,15 @@ map<DistantTreeProxy*, PrivateBranche::DistantPrivateBranche>& PrivateBranche::g
 PrivateBranche::DistantPrivateBranche* PrivateBranche::getDistant(DistantTreeProxy* distant) {
 	DistantPrivateBranche* dpb = NULL;
 
-	try {
-		dpb = &_distants.at(distant);
+	if(distant) {
+		try {
+			dpb = &_distants.at(distant);
+		}
+		catch(out_of_range& exception) {
+			dpb = NULL;
+		}
 	}
-	catch(out_of_range& exception) {
+	else {
 		dpb = NULL;
 	}
 
@@ -465,58 +467,60 @@ void PrivateBranche::print(ostringstream& out, DistantTreeProxy* distant, bool d
 	std::map<DistantTreeProxy*, DistantPrivateBranche>::iterator itDt;
 
 	for(itDt = _distants.begin() ; itDt != _distants.end() ; itDt++) {
-		if(!distant || itDt->first == distant) {
-			// Affiche le distant uniquement si celui-ci n'a pas été explicitement spécifié
-			if(!distant) {
-				out << endl << "\t" << "[[ Distant '" << itDt->first->getInterlocutor()->getName() <<"' ]]";
-			}
-
-			// Affiche les valeurs de la branche de manière ordonnée
-			vector<Valeur*>& valeurs = getDistant(itDt->first)->_valeurs;
-
-			sort(valeurs.begin(), valeurs.end(), Valeur::highestId);
-
-			vector<Valeur*>::iterator valIt;
-
-			for(valIt = valeurs.begin() ; valIt != valeurs.end() ; ++valIt) {
-				Valeur* valeur = *valIt;
-
-				out << endl;
-
-				switch(valeur->getDonneeType()) {
-				case DONNEE_DEFAULT:
-					out << ".err_d";	// Une donnée ne devrait jamais être de ce type, elle est créée avec pour recevoir automatiquement son vrai type
-					break;
-				case DONNEE_PUBLIC:
-					out << ".pub";
-					break;
-				case DONNEE_PRIVATE:
-					out << ".pri";
-					break;
-				case DONNEE_PRIVATE_SUB:
-					out << ".prs";
-					break;
-				case DONNEE_LOCAL:
-					out << ".loc";
-					break;
-				default:
-					out << ".err";
-					break;
+		if(itDt->first) {	// Ignore le distant bouchon, voir dans le constructeur de PrivateBranche
+			if(!distant || itDt->first == distant) {
+				// Affiche le distant uniquement si celui-ci n'a pas été explicitement spécifié
+				if(!distant) {
+					out << endl << "\t" << "[[ Distant '" << itDt->first->getInterlocutor()->getName() <<"' ]]";
 				}
 
-				out << "\t";
+				// Affiche les valeurs de la branche de manière ordonnée
+				vector<Valeur*>& valeurs = getDistant(itDt->first)->_valeurs;
 
-				for(i = 0 ; i < indentation+1 ; i++) {
-					out << ".";
+				sort(valeurs.begin(), valeurs.end(), Valeur::highestId);
+
+				vector<Valeur*>::iterator valIt;
+
+				for(valIt = valeurs.begin() ; valIt != valeurs.end() ; ++valIt) {
+					Valeur* valeur = *valIt;
+
+					out << endl;
+
+					switch(valeur->getDonneeType()) {
+					case DONNEE_DEFAULT:
+						out << ".err_d";	// Une donnée ne devrait jamais être de ce type, elle est créée avec pour recevoir automatiquement son vrai type
+						break;
+					case DONNEE_PUBLIC:
+						out << ".pub";
+						break;
+					case DONNEE_PRIVATE:
+						out << ".pri";
+						break;
+					case DONNEE_PRIVATE_SUB:
+						out << ".prs";
+						break;
+					case DONNEE_LOCAL:
+						out << ".loc";
+						break;
+					default:
+						out << ".err";
+						break;
+					}
+
+					out << "\t";
+
+					for(i = 0 ; i < indentation+1 ; i++) {
+						out << ".";
+					}
+
+					out << ". [id=" << valeur->getValeurId();
+
+					if(details) {
+						out << " tmpId=" << valeur->getValeurTmpId();
+					}
+
+					out << " rv=" << valeur->getRevision() << "] '" << valeur->getValeurName() << "' <" << valeur->toString() << ">";
 				}
-
-				out << ". [id=" << valeur->getValeurId();
-
-				if(details) {
-					out << " tmpId=" << valeur->getValeurTmpId();
-				}
-
-				out << " rv=" << valeur->getRevision() << "] '" << valeur->getValeurName() << "' <" << valeur->toString() << ">";
 			}
 		}
 

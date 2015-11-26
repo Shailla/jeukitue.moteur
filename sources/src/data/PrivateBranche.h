@@ -54,6 +54,7 @@ public:
 
 	DistantPrivateBranche* getDistant(DistantTreeProxy* distant);
 	map<DistantTreeProxy*, DistantPrivateBranche>& getDistants();
+	DistantPrivateBranche* addDistant(DistantTreeProxy* distant);
 
 	Branche* getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException);
 	Branche* getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException);
@@ -62,7 +63,7 @@ public:
 
 	Branche* getSubBrancheByName(DistantTreeProxy* distant, const string& brancheName) override;
 	Branche* getSubBrancheByIdOrTmpId(DistantTreeProxy* distant, int brancheId) override;
-	std::vector<Branche*>& getSubBranches(DistantTreeProxy* distant) override;
+	std::vector<Branche*>* getSubBranches(DistantTreeProxy* distant) override;
 
 	std::vector<Valeur*>& getValeurs(DistantTreeProxy* distant);
 	Valeur* getValeurByIdOrTmpId(DistantTreeProxy* distant, int valeurId) override;

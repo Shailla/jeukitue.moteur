@@ -18,6 +18,7 @@ class ServeurDataTree : public DataTree {
 	std::vector<DistantTreeProxy*> _clients;
 
 	Donnee* initDonneeAndMarqueurFromDistant(DistantTreeProxy* distant, Donnee* valeur, int donneeClientTmpId);
+	void addDistantToPrivateBranches(DistantTreeProxy* distant, Branche* branche);
 	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
 
 	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException);

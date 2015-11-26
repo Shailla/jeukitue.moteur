@@ -38,6 +38,13 @@ map<DistantTreeProxy*, PrivateBranche::DistantPrivateBranche>& PrivateBranche::g
 	return _distants;
 }
 
+PrivateBranche::DistantPrivateBranche* PrivateBranche::addDistant(DistantTreeProxy* distant) {
+	DistantPrivateBranche var;
+	_distants[distant] = var;
+
+	return &_distants[distant];
+}
+
 PrivateBranche::DistantPrivateBranche* PrivateBranche::getDistant(DistantTreeProxy* distant) {
 	DistantPrivateBranche* dpb = NULL;
 
@@ -415,8 +422,10 @@ Valeur* PrivateBranche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateM
 	return newValeur;
 }
 
-vector<Branche*>& PrivateBranche::getSubBranches(DistantTreeProxy* distant) {
-	return (vector<Branche*>&)getDistant(distant)->_subBranches;
+vector<Branche*>* PrivateBranche::getSubBranches(DistantTreeProxy* distant) {
+	PrivateBranche::DistantPrivateBranche* dd = getDistant(distant);
+
+	return dd?(&dd->_subBranches):0;
 }
 
 vector<Valeur*>& PrivateBranche::getValeurs(DistantTreeProxy* distant) {

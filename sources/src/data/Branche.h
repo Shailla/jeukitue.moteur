@@ -91,7 +91,7 @@ public:
 
 	virtual Branche* getSubBrancheByName(DistantTreeProxy* distant, const string& brancheName);
 	virtual Branche* getSubBrancheByIdOrTmpId(DistantTreeProxy* distant, int brancheId);
-	virtual std::vector<Branche*>& getSubBranches(DistantTreeProxy* distant);
+	virtual std::vector<Branche*>* getSubBranches(DistantTreeProxy* distant);
 
 	virtual std::vector<Valeur*>& getValeurs(DistantTreeProxy* distant);
 	virtual Valeur* getValeurByIdOrTmpId(DistantTreeProxy* distant, int valeurId);

@@ -179,10 +179,12 @@ Donnee* ServeurDataTree::initDonneeAndMarqueurFromDistant(DistantTreeProxy* clie
 }
 
 DistantTreeProxy* ServeurDataTree::addDistant(Interlocutor2* interlocutor) {
-	LOGINFO(("AJOUT D'UN DISTANT : '%s'", interlocutor->getName().c_str()));
+	LOGINFO(("Ajout d'un distant sur l'arbre serveur : '%s'", interlocutor->getName().c_str()));
 
 	// Init the marqueurs
 	DistantTreeProxy* distant = new DistantTreeProxy(interlocutor);
+
+	addDistantToPrivateBranches(distant, &getRoot());
 	initVid(distant);
 	initDistantBranche(distant, &getRoot());
 
@@ -211,6 +213,24 @@ const vector<DistantTreeProxy*>& ServeurDataTree::getDistants() {
 	return _clients;
 }
 
+void ServeurDataTree::addDistantToPrivateBranches(DistantTreeProxy* distant, Branche* branche) {
+	if(dynamic_cast<PrivateBranche*>(branche)) {
+		PrivateBranche* pr = static_cast<PrivateBranche*>(branche);
+		pr->addDistant(distant);
+	}
+	else {
+		// Init sub-branches
+		{
+			vector<Branche*>* subBranches = branche->getSubBranches(0);
+			vector<Branche*>::iterator itBr;
+
+			for(itBr = subBranches->begin() ; itBr != subBranches->end() ; itBr++) {
+				addDistantToPrivateBranches(distant, *itBr);
+			}
+		}
+	}
+}
+
 void ServeurDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* branche) {
 	MarqueurDistant* marqueur = distant->addMarqueur(branche, 0);
 
@@ -226,10 +246,10 @@ void ServeurDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bra
 		for(dt = pr->getDistants().begin() ; dt != pr->getDistants().end() ; dt++) {
 			// Init sub-branches
 			{
-				vector<Branche*>& subBranches = pr->getSubBranches(dt->first);
+				vector<Branche*>* subBranches = pr->getSubBranches(dt->first);
 				vector<Branche*>::iterator itBr;
 
-				for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
+				for(itBr = subBranches->begin() ; itBr != subBranches->end() ; itBr++) {
 					initDistantBranche(distant, *itBr);
 				}
 			}
@@ -248,10 +268,10 @@ void ServeurDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bra
 	else {
 		// Init sub-branches
 		{
-			vector<Branche*>& subBranches = branche->getSubBranches(0);
+			vector<Branche*>* subBranches = branche->getSubBranches(0);
 			vector<Branche*>::iterator itBr;
 
-			for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
+			for(itBr = subBranches->begin() ; itBr != subBranches->end() ; itBr++) {
 				initDistantBranche(distant, *itBr);
 			}
 		}

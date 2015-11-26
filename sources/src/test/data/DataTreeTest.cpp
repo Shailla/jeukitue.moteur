@@ -202,7 +202,8 @@ void DataTreeTest::iteratorTest() {
 
 	while(++it) {
 		ostringstream msg;
-		msg << endl << "==> " << CollectionsUtils::toString((*it)->getBrancheFullId()) << flush;
+		Branche* br = *it;
+		msg << endl << "==> " << CollectionsUtils::toString(br->getBrancheFullId()) << flush;
 		log(msg.str(), __LINE__);
 	}
 }

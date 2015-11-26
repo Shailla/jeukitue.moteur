@@ -49,8 +49,8 @@ bool BrancheIterator::operator++() {
 	int pos, size;
 
 	if(_br.empty()) {
-		vector<Branche*>& subBranches = _origin->getSubBranches(_distant);
-		push(_origin, 0, subBranches.size());
+		vector<Branche*>* subBranches = _origin->getSubBranches(_distant);
+		push(_origin, 0, subBranches->size());
 
 		return true;
 	}
@@ -62,10 +62,16 @@ bool BrancheIterator::operator++() {
 	if(pos < size) {
 		// Avance
 		br = _br.top();
-		vector<Branche*>& subBranches = br->getSubBranches(_distant);
+		vector<Branche*>* subBranches = br->getSubBranches(_distant);
 
-		Branche* subBranche = subBranches[pos];
-		push(subBranche, 0, subBranche->getSubBranches(_distant).size());
+		Branche* subBranche = subBranches->operator [](pos);
+
+		if(subBranche->getSubBranches(_distant)) {
+			push(subBranche, 0, subBranche->getSubBranches(_distant)->size());
+		}
+		else {
+			push(subBranche, 0, 0);		// Pas de sous-branches
+		}
 
 		return true;
 	}
@@ -82,10 +88,10 @@ bool BrancheIterator::operator++() {
 			push(br, pos+1, size);
 
 			// Et avance
-			vector<Branche*>& subBranches = br->getSubBranches(_distant);
+			vector<Branche*>* subBranches = br->getSubBranches(_distant);
 
-			Branche* subBranche = subBranches[pos+1];
-			push(subBranche, 0, subBranche->getSubBranches(_distant).size());
+			Branche* subBranche = subBranches->operator [](pos+1);
+			push(subBranche, 0, subBranche->getSubBranches(_distant)->size());
 
 			return true;
 		}
@@ -510,8 +516,8 @@ Valeur* Branche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, in
 	return newValeur;
 }
 
-vector<Branche*>& Branche::getSubBranches(DistantTreeProxy* distant) {
-	return _subBranches;
+vector<Branche*>* Branche::getSubBranches(DistantTreeProxy* distant) {
+	return &_subBranches;
 }
 
 vector<Valeur*>& Branche::getValeurs(DistantTreeProxy* distant) {

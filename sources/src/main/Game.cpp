@@ -292,10 +292,10 @@ void CGame::AfficheDirigeables() {
 	try {
 		Branche* dirigeablesBr = dataTree->getBranche(0, dirigeablesBrPath);
 
-		vector<Branche*>& subBranches = dirigeablesBr->getSubBranches(0);
+		vector<Branche*>* subBranches = dirigeablesBr->getSubBranches(0);
 		vector<Branche*>::const_iterator itBr;
 
-		for(itBr = subBranches.begin() ; itBr != subBranches.end() ; itBr++) {
+		for(itBr = subBranches->begin() ; itBr != subBranches->end() ; itBr++) {
 			Dirigeable::Affiche(*itBr);
 		}
 	}

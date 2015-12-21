@@ -299,6 +299,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 
 						MarqueurDistant* marqueur = valeur->getMarqueur(_serverTreeProxy);
 						chgt->update(marqueur);
+						marqueur->setConfirmedRevision(chgt->getRevision());
 
 						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
 					}

@@ -347,8 +347,7 @@ void DataTreeTest::clientTests() {
 		ASSERT_EQUAL(newValeurServeurFloatValue, valeurFloat->getValeur(), "La valeur de la valeur est fausse ou  n'a pas été mise à jour sur le client 0");
 	}
 
-	log("Envoi de la confirmation par le client", __LINE__);
-	client0Tree.diffuseChangementsToServer();
+	log("Réception par le serveur des confirmations générées par le client", __LINE__);
 	echangeDonneesClientServeur(__LINE__, interlocutorClient0);
 	serverTree.receiveChangementsFromClients();
 

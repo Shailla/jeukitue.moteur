@@ -26,14 +26,14 @@ using namespace JktUtils;
 namespace JktTest {
 
 DataTreeTest::DataTreeTest() :
-								Test("DataTreeTest"),
-								interlocutorClient0(SDL_CreateCond(), SDL_CreateMutex()),
-								interlocutorClient1(SDL_CreateCond(), SDL_CreateMutex()),
-								serverTree(),
-								client0Tree("client-0", &interlocutorClient0),
-								client1Tree("client-1", &interlocutorClient1),
-								distantClient0(0),
-								distantClient1(0){
+										Test("DataTreeTest"),
+										interlocutorClient0(SDL_CreateCond(), SDL_CreateMutex()),
+										interlocutorClient1(SDL_CreateCond(), SDL_CreateMutex()),
+										serverTree(),
+										client0Tree("client-0", &interlocutorClient0),
+										client1Tree("client-1", &interlocutorClient1),
+										distantClient0(0),
+										distantClient1(0){
 }
 
 DataTreeTest::~DataTreeTest() {
@@ -224,9 +224,13 @@ void DataTreeTest::clientTests() {
 
 	// Connexion à l'arbre serveur
 	distantClient0 = serverTree.addDistant(&interlocutorClient0);
+
+	// Pour les tests, désactivation des délais de mise à jour
 	distantClient0->getControl().setUpdateClientToServerDelay(0);
 	distantClient0->getControl().setUpdateServerToClientDelay(0);
 
+	client0Tree.getDistantServer()->getControl().setUpdateClientToServerDelay(0);
+	client0Tree.getDistantServer()->getControl().setUpdateServerToClientDelay(0);
 
 	/* ****************************************************************************
 	 * Client : Synchronisation et échange des données du serveur vers le client
@@ -348,6 +352,21 @@ void DataTreeTest::clientTests() {
 	client0Tree.diffuseChangementsToServer();
 	echangeDonneesClientServeur(__LINE__, interlocutorClient0);
 	serverTree.receiveChangementsFromClients();
+
+	{
+		ostringstream arbre;
+		arbre << "ARBRE SERVER :";
+		serverTree.getRoot().print(arbre, 0, true, 0);
+		log(arbre, __LINE__);
+	}
+
+
+	{
+		ostringstream arbre;
+		arbre << endl << "ARBRE CLIENT 0 :";
+		client0Tree.getRoot().print(arbre, 0, true, 0);
+		log(arbre, __LINE__);
+	}
 
 	// Vérifie si client et serveur sont synchronisés, plus aucun message ne devrait être à échanger entre eux
 	checkSynchronisationClientServeur(__LINE__, client0Tree);
@@ -824,24 +843,28 @@ void DataTreeTest::echangeDonneesClientServeur(int line, Interlocutor2& client) 
 void DataTreeTest::checkSynchronisationClientServeur(int line, ClientDataTree& clientTree) {
 	log("VERIFICATION DE LA SYNCHRONISATION CLIENT SERVEUR avec " + clientTree.getClientName(), line);
 
+	log("  -------> DIFFUSE CHANGEMENTS TO CLIENTS", line);
 	serverTree.diffuseChangementsToClients();
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataReceived(), "countDataReceived 1: Il ne devrait rester aucun message à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataToSend(), "countDataToSend 1: Il ne devrait rester aucun message à envoyer");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countTechnicalMessagesReceived(), "countTechnicalMessagesReceived 1: Il ne devrait rester aucun message technique à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countTechnicalMessagesToSend(), "countTechnicalMessagesToSend 1: Il ne devrait rester aucun message technique à envoyer");
 
+	log("  -------> RECEIVE CHANGEMENTS FROM CLIENTS", line);
 	serverTree.receiveChangementsFromClients();
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataReceived(), "countDataReceived 2: Il ne devrait rester aucun message à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataToSend(), "countDataToSend 2: Il ne devrait rester aucun message à envoyer");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countTechnicalMessagesReceived(), "countTechnicalMessagesReceived 2: Il ne devrait rester aucun message technique à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countTechnicalMessagesToSend(), "countTechnicalMessagesToSend 2: Il ne devrait rester aucun message technique à envoyer");
 
+	log("  -------> DIFFUSE CHANGEMENTS TO SERVER", line);
 	clientTree.diffuseChangementsToServer();
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataReceived(), "countDataReceived 3: Il ne devrait rester aucun message à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataToSend(), "countDataToSend 3: Il ne devrait rester aucun message à envoyer");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countTechnicalMessagesReceived(), "countTechnicalMessagesReceived 3: Il ne devrait rester aucun message technique à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countTechnicalMessagesToSend(), "countTechnicalMessagesToSend 3: Il ne devrait rester aucun message technique à envoyer");
 
+	log("  -------> RECEIVE CHANGEMENTS FROM SERVER", line);
 	clientTree.receiveChangementsFromServer();
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataReceived(), "countDataReceived 4: Il ne devrait rester aucun message à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataToSend(), "countDataToSend 4: Il ne devrait rester aucun message à envoyer");

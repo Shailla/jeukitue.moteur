@@ -241,10 +241,27 @@ Branche* Branche::createSubBrancheForClient(const string& brancheName, int revis
 	// Alloue une référence pour la nouvelle branche
 	int tmpRef = -_brancheTmpRefGenerator.genRef();		// On démarre à -1
 
+	// Vérifie si la branche n'existe pas déjà
+	bool brancheExisting = true;
+
+	try {
+		_subBranchesByName.at(brancheName);
+	}
+	catch(out_of_range& exception) {
+		brancheExisting = false;
+	}
+
+	if(brancheExisting) {
+		stringstream message;
+		message << "La branche nommée '" << brancheName << "' de parent " << CollectionsUtils::toString(getBrancheFullId()) << " existe déjà";
+		throw AlreadyExistingBrancheException(message.str());
+	}
+
 	// Crée la nouvelle branche
 	Branche* newBranche = new Branche(this, -1, brancheName, getDonneeType(), revision, tmpRef);
 	_subBranchesByTmpId[tmpRef] = newBranche;		// Moins 1 pour éviter les collisions avec les ID non temporaires
 	_subBranches.push_back(newBranche);
+	_subBranchesByName[brancheName] = newBranche;
 
 	return newBranche;
 }

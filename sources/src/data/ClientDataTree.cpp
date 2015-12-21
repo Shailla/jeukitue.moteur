@@ -30,6 +30,7 @@ using namespace std;
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
 #include "util/CollectionsUtils.h"
+#include "data/DataTreeUtils.h"
 #include "data/DistantTreeProxy.h"
 
 #include "data/ClientDataTree.h"
@@ -39,7 +40,24 @@ using namespace JktUtils;
 ClientDataTree::ClientDataTree(const std::string& clientName, Interlocutor2* serverInterlocutor) : DataTree(TREE_CLIENT) {
 	_clientName = clientName;
 	_serverTreeProxy = new DistantTreeProxy(serverInterlocutor);
-	_updateClientToServer = SDL_GetTicks();;
+	_updateClientToServer = SDL_GetTicks();
+
+	/********************************************************************/
+	/* Branche des VID (Very Important Data) de l'arbre de données 		*/
+	/********************************************************************/
+
+	// Branche racine
+	vector<int> rootBrancheId;
+
+	// Branche principale des VID
+	Branche* rootBranche = getBranche(_serverTreeProxy, rootBrancheId);
+	Branche* vidBranche = rootBranche->addSubBranche(_serverTreeProxy, 1, DONNEE_TYPE::DONNEE_DEFAULT, DataTreeUtils::TREE_VID_BRANCHE_NAME, 0);
+
+	// Branche de contrôle de l'arbre de données
+	vidBranche->addSubBranche(_serverTreeProxy, 1, DONNEE_TYPE::DONNEE_PRIVATE, DataTreeUtils::TREE_CONTROL_BRANCHE_NAME, 0);
+//	createPrivateBranche(vidBranche->getBrancheFullId(), DataTreeUtils::TREE_CONTROL_BRANCHE_NAME);
+
+	DistantTreeControl::initVid(this, _serverTreeProxy);
 }
 
 ClientDataTree::~ClientDataTree() {
@@ -53,7 +71,7 @@ void ClientDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bran
 }
 
 Branche* ClientDataTree::createBranche(DistantTreeProxy* distant, const std::vector<int>& parentBrancheId, const std::string& brancheName) {
-	Branche* parentBranche = getBranche(_serverTreeProxy, parentBrancheId);
+	Branche* parentBranche = getBranche(distant, parentBrancheId);
 	Branche* branche = parentBranche->createSubBrancheForClient(brancheName, 0);
 	initDonneeAndServeurMarqueur(branche);
 

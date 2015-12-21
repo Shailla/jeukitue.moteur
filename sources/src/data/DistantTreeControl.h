@@ -25,6 +25,7 @@ public:
 	DistantTreeControl(DistantTreeProxy* distant);
 	virtual ~DistantTreeControl();
 
+	static void initVid(DataTree* tree, DistantTreeProxy* distant);
 	void create(Branche* branche);
 	void attach(Branche* branche);
 

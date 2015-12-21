@@ -15,6 +15,7 @@ using namespace std;
 #include "data/Branche.h"
 #include "data/ValeurInt.h"
 #include "main/Cfg.h"
+#include "data/DataTreeUtils.h"
 
 #include "data/DistantTreeControl.h"
 
@@ -28,6 +29,22 @@ DistantTreeControl::DistantTreeControl(DistantTreeProxy* distant) {
 }
 
 DistantTreeControl::~DistantTreeControl() {
+}
+
+/**
+ * Formatte un arbre de données vierge en créant les branches et hiérarchies suivantes :
+ * [1]			"vid"
+ * [1,1]		  "tree-control"
+ * [1,1,1]		    "tree-state" int
+ * [1,1,1]		    "tree-update-delay" int
+ */
+void DistantTreeControl::initVid(DataTree *tree, DistantTreeProxy* distant) {
+	vector<string> treeControlPath;
+	treeControlPath.push_back(DataTreeUtils::TREE_VID_BRANCHE_NAME);
+	treeControlPath.push_back(DataTreeUtils::TREE_CONTROL_BRANCHE_NAME);
+	PrivateBranche* treeControlBr = (PrivateBranche*)tree->getBranche(distant, treeControlPath);
+
+	distant->getControl().create(treeControlBr);
 }
 
 void DistantTreeControl::create(Branche* branche) {

@@ -185,28 +185,12 @@ DistantTreeProxy* ServeurDataTree::addDistant(Interlocutor2* interlocutor) {
 	DistantTreeProxy* distant = new DistantTreeProxy(interlocutor);
 
 	addDistantToPrivateBranches(distant, &getRoot());
-	initVid(distant);
+	DistantTreeControl::initVid(this, distant);
 	initDistantBranche(distant, &getRoot());
 
 	_clients.push_back(distant);
 
 	return distant;
-}
-
-/**
- * Formatte un arbre de données vierge en créant les branches et hiérarchies suivantes :
- * [1]			"vid"
- * [1,1]		  "tree-control"
- * [1,1,1]		    "tree-state" int
- * [1,1,1]		    "tree-update-delay" int
- */
-void ServeurDataTree::initVid(DistantTreeProxy* distant) {
-	vector<string> treeControlPath;
-	treeControlPath.push_back(DataTreeUtils::TREE_VID_BRANCHE_NAME);
-	treeControlPath.push_back(DataTreeUtils::TREE_CONTROL_BRANCHE_NAME);
-	PrivateBranche* treeControlBr = (PrivateBranche*)getBranche(distant, treeControlPath);
-
-	distant->getControl().create(treeControlBr);
 }
 
 const vector<DistantTreeProxy*>& ServeurDataTree::getDistants() {

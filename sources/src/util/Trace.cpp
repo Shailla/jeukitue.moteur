@@ -68,35 +68,45 @@ Trace::Trace() {
 	m_Mutex = SDL_CreateMutex();
 	SDL_LockMutex( m_Mutex );
 
-	string name;
-	stringstream nomFichier;
-	int numeroFichier = -1, num;
+	// Nom du fichier de log courrant
+	stringstream logFile;
+	logFile << TRACE_FOLDER << CURRENT_FICHIER_TRACE;
 
-	char chemin[] = "./log/";
+	// Si un fichier de traces existe déjà, alors renomme-le puis tente à nouveau de l'ouvrir
+	if( ifstream( logFile.str().c_str()) ) {
+		// Recherche un index d'ancien fichier de traces disponible
+		CFindFolder folder( TRACE_FOLDER, PREFIX_FICHIER_TRACE, EXT_FICHIER_TRACE );
 
-	CFindFolder folder( chemin, NOM_FICHIER_TRACE, EXT_FICHIER_TRACE );
+		int numeroFichier = -1, num;
+		string filename;
 
-	while(folder.findNext(name)) {
-		if(name.size() >= strlen(EXT_FICHIER_TRACE)) {
-			name = string( name.begin()+strlen(NOM_FICHIER_TRACE), name.end()-strlen(EXT_FICHIER_TRACE) );	// Extraction du numéro du fichier trace
+		while(folder.findNext(filename)) {
+			if(filename.size() >= strlen(EXT_FICHIER_TRACE)) {
+				filename = string( filename.begin()+strlen(PREFIX_FICHIER_TRACE), filename.end()-strlen(EXT_FICHIER_TRACE) );	// Extraction du numéro du fichier trace
 
-			if( name == "0" ) {
-				if( numeroFichier < 0 )
-					numeroFichier = 0;
-			}
-			else {
-				num = atoi( name.c_str() );
-				if( num > numeroFichier )
-					numeroFichier = num;
+				if( filename == "0" ) {
+					if( numeroFichier < 0 )
+						numeroFichier = 0;
+				}
+				else {
+					num = atoi( filename.c_str() );
+					if( num > numeroFichier )
+						numeroFichier = num;
+				}
 			}
 		}
+
+		numeroFichier++;	// Numéro nouveau fichier = plus grand numéro d'ancien fichier + 1
+
+		stringstream newName;
+		newName << TRACE_FOLDER << PREFIX_FICHIER_TRACE << numeroFichier << EXT_FICHIER_TRACE;
+
+		// Renomme ancien fichier courant
+		rename(logFile.str().c_str(), newName.str().c_str());
 	}
 
-	numeroFichier++;	// Numéro nouveau fichier = plus grand numéro d'ancien fichier + 1
-
-	// Ouverture du fichier de trace
-	nomFichier << "./log/" << NOM_FICHIER_TRACE << numeroFichier << EXT_FICHIER_TRACE;
-	m_Fichier.open( nomFichier.str().c_str() );
+	// Ouvre le fichier de log courant
+	m_Fichier.open( logFile.str().c_str() );
 
 	m_Instance = this;
 
@@ -209,77 +219,77 @@ void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFic
 			}
 			else {
 				switch( txt[i] ) {
-					case 'd':
-					{
-						int a = va_arg( vl, int );
-						ligne << a;
-						break;
-					}
-					case 'l':
-					{
-						int a = va_arg( vl, int );
-						ligne << a;
-						break;
-					}
-					case 'b':
-					{
+				case 'd':
+				{
+					int a = va_arg( vl, int );
+					ligne << a;
+					break;
+				}
+				case 'l':
+				{
+					int a = va_arg( vl, int );
+					ligne << a;
+					break;
+				}
+				case 'b':
+				{
 #ifdef VS
-						bool a = va_arg( vl, bool );
+					bool a = va_arg( vl, bool );
 #else
-						int a = va_arg( vl, int );
+					int a = va_arg( vl, int );
 #endif
-						if( a )
-							ligne << "true";
-						else
-							ligne << "false";
-						break;
-					}
-					case 'f':
-					{
+					if( a )
+						ligne << "true";
+					else
+						ligne << "false";
+					break;
+				}
+				case 'f':
+				{
 #ifdef VS
-						float a = va_arg( vl, float );
+					float a = va_arg( vl, float );
 #else
-						double a = va_arg( vl, double );
+					double a = va_arg( vl, double );
 #endif
-						ligne <<  a;
-						break;
-					}
-					case 'x':
-					{
-						void *a = va_arg( vl, void* );
-						ligne <<  a;
-						break;
-					}
-					case 's':
-					{
-						char *a = va_arg( vl, char* );
-						ligne <<  a;
-						break;
-					}
-					case 'S':
-					{
-						cerr << endl << "Erreur TRACE.CPP : NE PAS PASSER DE STRING PAR '...'" << endl;
-						//string a = va_arg( vl, string );
-						//ligne5 <<  a;
-						break;
-					}
-					case '%':
-					{
-						ligne << '%';
-						break;
-					}
-					case 'T':	// Trace-t-on le pointeur de l'instance dans laquelle on est ?
-					{
-						void *a = va_arg( vl, void* );
-						THIS = a;
-						bTHIS = true;
-						break;
-					}
-					default:
-					{
-						ligne << "???";
-						break;
-					}
+					ligne <<  a;
+					break;
+				}
+				case 'x':
+				{
+					void *a = va_arg( vl, void* );
+					ligne <<  a;
+					break;
+				}
+				case 's':
+				{
+					char *a = va_arg( vl, char* );
+					ligne <<  a;
+					break;
+				}
+				case 'S':
+				{
+					cerr << endl << "Erreur TRACE.CPP : NE PAS PASSER DE STRING PAR '...'" << endl;
+					//string a = va_arg( vl, string );
+					//ligne5 <<  a;
+					break;
+				}
+				case '%':
+				{
+					ligne << '%';
+					break;
+				}
+				case 'T':	// Trace-t-on le pointeur de l'instance dans laquelle on est ?
+				{
+					void *a = va_arg( vl, void* );
+					THIS = a;
+					bTHIS = true;
+					break;
+				}
+				default:
+				{
+					ligne << "???";
+					break;
+				}
 				}
 				prec = false;
 			}

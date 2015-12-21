@@ -17,20 +17,20 @@ void logTime(const char* msg, Uint32& time);
 
 /********************************************************************************
 *  If you don't want to compile with the trace system activated,
-*  so undefine TRACE_ACTIVE
+*  so undefine all TRACE_{level}_ACTIVE
 ********************************************************************************/
 
 #define TRACE_DEBUG_ACTIVE
-#undef TRACE_DEBUG_ACTIVE
+//#undef TRACE_DEBUG_ACTIVE
 
 #define TRACE_INFO_ACTIVE
-#undef TRACE_INFO_ACTIVE
+//#undef TRACE_INFO_ACTIVE
 
 #define TRACE_WARN_ACTIVE
-#undef TRACE_WARN_ACTIVE
+//#undef TRACE_WARN_ACTIVE
 
 #define TRACE_ERROR_ACTIVE
-#undef TRACE_ERROR_ACTIVE
+//#undef TRACE_ERROR_ACTIVE
 
 enum TraceLevel {
 	TRACE_LEVEL_DEBUG = 1,
@@ -69,7 +69,9 @@ enum TraceType {
 	#define LOGERROR(x)
 #endif
 
-#define NOM_FICHIER_TRACE		"jkt."
+#define TRACE_FOLDER			"./log/"
+#define CURRENT_FICHIER_TRACE	"jkt.current.log"
+#define PREFIX_FICHIER_TRACE	"jkt."
 #define EXT_FICHIER_TRACE		".log"
 #define LEVEL_TRACE				2
 #define FICHIER_SOURCE_BASE		"\\src\\"

@@ -59,7 +59,7 @@ class CPlayer {
 	JktMoteur::CMap *m_pSkin;	// Gueule du joueur
 
 public :
-	JktNet::CSPA spa;		// spa associé au proxy-joueur
+	JktNet::CSPA* _spa;		// spa associé au proxy-joueur
 
 	void Tir();
 	void RefreshProjectils();
@@ -67,6 +67,9 @@ public :
 		// Conctructeurs / destructeurs
 	CPlayer();		// Crée un joueur de vitesse, position et orientaions nuls
 	~CPlayer();
+
+	bool openInClientMode(const IPaddress &address);				// Ouverture en mode client
+	void close();
 
 		// Fonctions spatiales (vitesse, position, ...) et accesseurs
 	void setPosition(float x, float y, float z);		// change la position du joueur

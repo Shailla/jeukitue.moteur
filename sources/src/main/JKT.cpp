@@ -1348,8 +1348,8 @@ void executeJktRequests() {
 		CPlayer* erwin = localeGameDto->getErwin();
 
 		if(erwin != NULL) {
-			Game.Erwin(erwin);									// Indique que 'erwin' est le joueur principal
 			Game.addPlayer(erwin);		// Ajoute le joueur principal à la liste des joueurs
+			Game.Erwin(erwin);			// Indique que 'erwin' est le joueur principal
 		}
 
 		for(vector<CPlayer*>::iterator iter = localeGameDto->getPlayers().begin() ; iter != localeGameDto->getPlayers().end() ; ++iter) {
@@ -1520,9 +1520,9 @@ void executeJktRequests() {
 
 		CPlayer* erwin = serverGameDto->getErwin();
 
-		if(erwin != NULL) {
-			Game.Erwin(erwin);									// Indique que 'erwin' est le joueur principal
-			Game.addPlayer(erwin);		// Ajoute le joueur principal à la liste des joueurs
+		if(erwin) {
+			Game.addPlayer(erwin);		// Ajoute Erwin à la liste des joueurs
+			Game.Erwin(erwin);			// Indique qu'Erwin est le joueur principal
 		}
 
 		for(vector<CPlayer*>::iterator iter = serverGameDto->getPlayers().begin() ; iter != serverGameDto->getPlayers().end() ; ++iter) {
@@ -1545,15 +1545,11 @@ void executeJktRequests() {
 
 		JktNet::CServer *server = Game.getServer();
 		server->nomMAP = serverGameDto->getMapName();					// Informe le serveur sur le nom de la MAP lancée
-		Game.createPlayerList( server->maxPlayers );
 		server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
 		Game.setModeServer();						// Jeu en mode jeu local
 		server->bGame = true;						// Indique qu'une partie est en cours
 
 		delete serverGameDto;
-
-		cout << "\nFINI";
-		cout << flush;
 
 		Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
 	}

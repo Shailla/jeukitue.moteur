@@ -56,6 +56,8 @@ bool CPlayer::_contourVisibility = false;
 Icone* CPlayer::_weaponsChoice = NULL;
 
 CPlayer::CPlayer() {
+	_spa = 0;
+
 	m_ArmeActif = 0;		// Pas d'arme active
 	m_NbrArmes = 3;			// Nombre d'armes
 
@@ -98,6 +100,17 @@ CPlayer::CPlayer() {
 			_weaponsChoice = NULL;
 		}
 	}
+}
+
+bool CPlayer::openInClientMode(const IPaddress &address) {				// Ouverture en mode client
+	_spa = new JktNet::CSPA();
+	return _spa->openInClientMode(address);
+}
+
+void CPlayer::close() {				// Ouverture en mode client
+	if(_spa)
+		delete _spa;
+	_spa = 0;
 }
 
 void CPlayer::AfficheIconesArmes() {

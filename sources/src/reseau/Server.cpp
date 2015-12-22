@@ -40,7 +40,7 @@ namespace JktNet
 
 CServer::CServer()
 {
-LOGDEBUG(("CServer::CServer() begin%T", this ));
+	LOGDEBUG(("CServer::CServer() begin%T", this ));
 	maxPlayers = 10;					// 10 joueurs maxi pas défaut
 	m_uNbrPlayers = 0;					// Aucun joueur
 	nom = "ServerJKT";					// Nom de serveur par défaut
@@ -52,14 +52,14 @@ LOGDEBUG(("CServer::CServer() begin%T", this ));
 
 	_serverUdpInterlocutor = 0;
 
-LOGDEBUG(("CServer::CServer() end%T", this ));
+	LOGDEBUG(("CServer::CServer() end%T", this ));
 }
 
 CServer::~CServer() {
 }
 
 void CServer::disconnect() {
-LOGDEBUG(("CServer::~CServer() begin%T", this ));
+	LOGDEBUG(("CServer::~CServer() begin%T", this ));
 	SDLNet_FreeSocketSet( socketSet );		// Libère le socket set du serveur
 	socketSet = 0;
 
@@ -67,7 +67,7 @@ LOGDEBUG(("CServer::~CServer() begin%T", this ));
 		_serverUdpInterlocutor->close();
 
 	delete _serverUdpInterlocutor;
-LOGDEBUG(("CServer::~CServer() end%T", this ));
+	LOGDEBUG(("CServer::~CServer() end%T", this ));
 }
 
 void CServer::setStatut( StatutServer statut )
@@ -77,7 +77,7 @@ StatutServer CServer::getStatut()
 {	return m_Statut;		}
 
 int CServer::AjoutePlayer( CPlayer *player ) {
-LOGDEBUG(("CServer::AjoutePlayer(player=%x)%T", player, this ));
+	LOGDEBUG(("CServer::AjoutePlayer(player=%x)%T", player, this ));
 
 	int indexPlayer;
 	if( m_uNbrPlayers<this->maxPlayers ) {
@@ -89,7 +89,7 @@ LOGDEBUG(("CServer::AjoutePlayer(player=%x)%T", player, this ));
 		indexPlayer = -1;
 	}
 
-LOGDEBUG(("CServer::AjoutePlayer() -> indexPlayer=%d end%T", indexPlayer, this ));
+	LOGDEBUG(("CServer::AjoutePlayer() -> indexPlayer=%d end%T", indexPlayer, this ));
 	return indexPlayer;
 }
 
@@ -110,7 +110,7 @@ void CServer::decodeServerUDP( CSPA *spa ) {
 			SDLNet_UDP_Unbind( spa->getSocket(), spa->getPacketOut()->channel );
 			break;
 
-   		case CLIENT_PING:	// Un client a envoyé un ping
+		case CLIENT_PING:	// Un client a envoyé un ping
 			switchPing( spa, code2 );
 			SDLNet_UDP_Unbind( spa->getSocket(), spa->getPacketOut()->channel );
 			break;
@@ -130,17 +130,19 @@ void CServer::decodeServerUDP( CSPA *spa ) {
 void CServer::decodeProxyPlayer( CPlayer *player ) {
 	Uint16 code1, code2;
 
-	if( player->spa.recoit() ) {	// Si des paquets ont été reçus
-		player->spa.init();
-		player->spa.readCode( code1, code2 );
-		switch( code1 ) {
-		case CLIENT_RECAP:		// Réception d'une récapitulation de partie
-			switchRecapServer( player, code2 );
-			break;
+	if(player->_spa) {
+		if( player->_spa->recoit() ) {	// Si des paquets ont été reçus
+			player->_spa->init();
+			player->_spa->readCode( code1, code2 );
+			switch( code1 ) {
+			case CLIENT_RECAP:		// Réception d'une récapitulation de partie
+				switchRecapServer( player, code2 );
+				break;
 
-		default:
-			LOGWARN(("Reception d'un paquet PROXYPLAYER inconnu"));
-			break;
+			default:
+				LOGWARN(("Reception d'un paquet PROXYPLAYER inconnu"));
+				break;
+			}
 		}
 	}
 }
@@ -159,48 +161,49 @@ bool CServer::acceptPlayer( CSPA *spa ) {
 	player->init();
 
 	// Ouverture d'un lien SPA et création du joueur
-	result = player->spa.openInClientMode( spa->getPacketIn()->address );
+	result = player->openInClientMode( spa->getPacketIn()->address );
 
 	if( result ) {
-		if( SDLNet_UDP_AddSocket( socketSet, player->spa.getSocket() )==-1 ) {
-LOGDEBUG(("CServer::acceptPlayer() : %s%T", SDLNet_GetError(), this ));
+		if( SDLNet_UDP_AddSocket( socketSet, player->_spa->getSocket() )==-1 ) {
+			LOGDEBUG(("CServer::acceptPlayer() : %s%T", SDLNet_GetError(), this ));
 			LOGERROR(("SDLNet_AddSocket : ", SDLNet_GetError()));
 
-			player->spa.close();
-
+			player->close();
 			delete player;
 
 			result = false;
 		}
 	}
 
-	int IDPlayer = AjoutePlayer( player );	// Ajoute le joueur pour de bon et identifie-le
-	// TODO Gérer le cas où IDPlayer vaut -1, lorsque l'ajout du joueur a échoué
-	Game.Erwin( player );					// Place le nouveau joueur comme joueur principal
+	if(result) {
+		int IDPlayer = AjoutePlayer( player );	// Ajoute le joueur pour de bon et identifie-le
+		// TODO Gérer le cas où IDPlayer vaut -1, lorsque l'ajout du joueur a échoué
+		Game.Erwin( player );					// Place le nouveau joueur comme joueur principal
 
 
-	/* /////////////////////////////////////////////////////////////////////////////////
-	// Dis au client qu'il est accepté dans le jeu et donne-lui les infos de la partie
-	////////////////////////////////////////////////////////////////////////////////////*/
+		/* /////////////////////////////////////////////////////////////////////////////////
+		// Dis au client qu'il est accepté dans le jeu et donne-lui les infos de la partie
+		////////////////////////////////////////////////////////////////////////////////////*/
 
-	player->spa.init();
-	player->spa.addCode( SERVER_JTG, SERVER_ACK );		// Acquitte la jonction du joueur à la partie
-	player->spa.add16( (Uint16)IDPlayer );				// Envoie son identifiant au nouveau proxy-joueur
-	player->spa.add( nomMAP );							// Envoie le nom de la MAP en cours
-	player->spa.add16( (Uint16)maxPlayers );			// Envoie le nombre max de joueurs sur la MAP
-	player->spa.add16( (Uint16)this->m_uNbrPlayers );	// Envoie le nombre de joueurs en cours
+		player->_spa->init();
+		player->_spa->addCode( SERVER_JTG, SERVER_ACK );		// Acquitte la jonction du joueur à la partie
+		player->_spa->add16( (Uint16)IDPlayer );				// Envoie son identifiant au nouveau proxy-joueur
+		player->_spa->add( nomMAP );							// Envoie le nom de la MAP en cours
+		player->_spa->add16( (Uint16)maxPlayers );			// Envoie le nombre max de joueurs sur la MAP
+		player->_spa->add16( (Uint16)this->m_uNbrPlayers );	// Envoie le nombre de joueurs en cours
 
-	// Envoie les infos concernant chaque joueur
-	int curseur = -1;
+		// Envoie les infos concernant chaque joueur
+		int curseur = -1;
 
-	while((player2 = Game.nextPlayer(curseur))) {
-		player->spa.add16( (Uint16)curseur );			// Envoie l'identifiant de ce proxy-joueur
-		player->spa.add( player2->nom() );	// Envoie son nom
+		while((player2 = Game.nextPlayer(curseur))) {
+			player->_spa->add16( (Uint16)curseur );			// Envoie l'identifiant de ce proxy-joueur
+			player->_spa->add( player2->nom() );	// Envoie son nom
 
-		player->spa.addRecapFromServer( *player2 );
+			player->_spa->addRecapFromServer( *player2 );
+		}
+
+		player->_spa->send();
 	}
-
-	player->spa.send();
 
 	return result;	// OK
 }
@@ -210,7 +213,7 @@ void CServer::switchRecapServer( CPlayer *player, Uint16 code2 ) {
 
 	switch( code2 ) {
 	case CLIENT_NULL:
-		flags = player->spa.read16();
+		flags = player->_spa->read16();
 
 		player->getClavier()->m_fAvance = 0.0f;
 		player->getClavier()->m_fDroite = 0.0f;
@@ -220,23 +223,23 @@ void CServer::switchRecapServer( CPlayer *player, Uint16 code2 ) {
 			player->getClavier()->m_bIndic = true;	// Indique la présence d'une requête
 
 			if( flags&0x0010 ) {	// Y a-t-il une requête de mouvement en avant
-				player->getClavier()->m_fAvance = player->spa.readf();
+				player->getClavier()->m_fAvance = player->_spa->readf();
 			}
 
 			if( flags&0x0100 ) {	// Y a-t-il une requête de mouvement à droite
-				player->getClavier()->m_fDroite = player->spa.readf();
+				player->getClavier()->m_fDroite = player->_spa->readf();
 			}
 
 			if( flags&0x1000 ) {	// Y a-t-il une requête de mouvement vers le haut
-				player->getClavier()->m_fMonte = player->spa.readf();
+				player->getClavier()->m_fMonte = player->_spa->readf();
 			}
 		}
 		else {
 			player->getClavier()->m_bIndic = false;
 		}
 
-		player->Phi( player->spa.readf() );
-		player->Teta( player->spa.readf() );
+		player->Phi( player->_spa->readf() );
+		player->Teta( player->_spa->readf() );
 
 		break;
 
@@ -247,7 +250,7 @@ void CServer::switchRecapServer( CPlayer *player, Uint16 code2 ) {
 }
 
 void CServer::switchInfo( CSPA *spa, Uint16 code2 ) {	// Réception d'une demande d'info serveur
-LOGDEBUG(("CServer::switchInfo(spa=%x,code2=%d) begin%T", spa, code2, this ));
+	LOGDEBUG(("CServer::switchInfo(spa=%x,code2=%d) begin%T", spa, code2, this ));
 	switch( code2 ) {
 	case CLIENT_NULL:
 		LOGINFO(("Server says : Reception d'une demande d'info serveur"));
@@ -270,16 +273,16 @@ LOGDEBUG(("CServer::switchInfo(spa=%x,code2=%d) begin%T", spa, code2, this ));
 		break;
 
 	default:
-LOGDEBUG(("CServer::switchInfo() : Packet inconnu%T", this ));
+		LOGDEBUG(("CServer::switchInfo() : Packet inconnu%T", this ));
 		LOGINFO(("Reception d'un paquet inconnu"));
 		break;
 	}
-LOGDEBUG(("CServer::switchInfo() end%T", this ));
+	LOGDEBUG(("CServer::switchInfo() end%T", this ));
 }
 
 void CServer::switchPing( CSPA *spa, Uint16 code2 )	// Réception d'une demande de ping
 {
-LOGDEBUG(("CServer::switchPing(spa=%x,code2=%d) begin%T", spa, code2, this ));
+	LOGDEBUG(("CServer::switchPing(spa=%x,code2=%d) begin%T", spa, code2, this ));
 	switch( code2 ) {
 	case CLIENT_NULL:
 		if( spa->getPacketIn()->len==8 ) {
@@ -291,8 +294,8 @@ LOGDEBUG(("CServer::switchPing(spa=%x,code2=%d) begin%T", spa, code2, this ));
 				LOGERROR(("Reponse ping impossible"));
 			}
 			else {
-LOGDEBUG(("CServer::switchPing() : Envoi reponse ping%T", this ));
-					// Envoie de la réponse au ping
+				LOGDEBUG(("CServer::switchPing() : Envoi reponse ping%T", this ));
+				// Envoie de la réponse au ping
 				Uint32 time;
 				LOGINFO(("Server says : Emmission de la reponse au ping"));
 				time = spa->read32();
@@ -309,12 +312,12 @@ LOGDEBUG(("CServer::switchPing() : Envoi reponse ping%T", this ));
 		LOGWARN(("Reception d'un paquet inconnu"));
 		break;
 	}
-LOGDEBUG(("CServer::switchPing() end%T", this ));
+	LOGDEBUG(("CServer::switchPing() end%T", this ));
 }
 
 void CServer::switchJTG( CSPA *spa, Uint16 code2 )	// Réception d'une demande de JTG
 {
-LOGDEBUG(("CServer::switchJTG(spa=%x,code2=%d) begin%T", spa, code2, this ));
+	LOGDEBUG(("CServer::switchJTG(spa=%x,code2=%d) begin%T", spa, code2, this ));
 	switch( code2 )
 	{
 	case CLIENT_NULL:
@@ -324,13 +327,13 @@ LOGDEBUG(("CServer::switchJTG(spa=%x,code2=%d) begin%T", spa, code2, this ));
 			spa->getPacketOut()->channel = SDLNet_UDP_Bind( spa->getSocket(), -1, &spa->getPacketIn()->address );
 
 			if( spa->getPacketOut()->channel==-1 ) {
-LOGDEBUG(("CServer::switchJTG() SDLNet_UDP_Bind : %s%T", SDLNet_GetError(), this );
+				LOGDEBUG(("CServer::switchJTG() SDLNet_UDP_Bind : %s%T", SDLNet_GetError(), this );
 				LOGERROR(("SDLNet_UDP_Bind : %s", SDLNet_GetError())));
 				LOGERROR(("Reponse ping impossible"));
 			}
 			else {
-LOGDEBUG(("CServer::switchJTG() : Pas de partie en cours%T", this ));
-					// Envoie d'une erreur signalant qu'il n'y a pas de partie en cours
+				LOGDEBUG(("CServer::switchJTG() : Pas de partie en cours%T", this ));
+				// Envoie d'une erreur signalant qu'il n'y a pas de partie en cours
 				LOGINFO(("Demande refusee, pas de partie en cours"));
 				spa->init();
 				spa->addCode( SERVER_JTG, SERVER_ERROR );
@@ -344,12 +347,12 @@ LOGDEBUG(("CServer::switchJTG() : Pas de partie en cours%T", this ));
 		{
 			spa->getPacketOut()->channel = SDLNet_UDP_Bind( spa->getSocket(), -1, &spa->getPacketIn()->address );
 			if( spa->getPacketOut()->channel==-1 ) {
-LOGDEBUG(("CServer::switchJTG() SDLNet_UDP_Bind : %s%T", SDLNet_GetError(), this ));
+				LOGDEBUG(("CServer::switchJTG() SDLNet_UDP_Bind : %s%T", SDLNet_GetError(), this ));
 				LOGERROR(("SDLNet_UDP_Bind : %s", SDLNet_GetError()));
 				LOGERROR(("Reponse ping impossible"));
 			}
 			else {
-LOGDEBUG(("CServer::switchJTG() : Serveur sature%T", this ));
+				LOGDEBUG(("CServer::switchJTG() : Serveur sature%T", this ));
 				LOGINFO(("Serveur saturé"));
 				spa->init();
 				spa->addCode( SERVER_JTG, SERVER_ERROR );
@@ -366,11 +369,11 @@ LOGDEBUG(("CServer::switchJTG() : Serveur sature%T", this ));
 			LOGERROR((" Demande infructueuse"));
 		break;
 	default:
-LOGDEBUG(("CServer::switchJTG() : Packet inconnu%T", this ));
+		LOGDEBUG(("CServer::switchJTG() : Packet inconnu%T", this ));
 		LOGERROR(("Reception d'un paquet inconnu 3"));
 		break;
 	}
-LOGDEBUG(("CServer::switchJTG() end%T", this ));
+	LOGDEBUG(("CServer::switchJTG() end%T", this ));
 }
 
 NotConnectedInterlocutor2* CServer::connect(Uint16 port, Uint16 portTree) {
@@ -384,7 +387,7 @@ NotConnectedInterlocutor2* CServer::connect(Uint16 port, Uint16 portTree) {
 	LOGINFO(("Ouverture d'un serveur sur port %d et portTree %d", port, portTree));
 
 	if( !spaMaitre.openInServerMode( port ) ) {
-LOGDEBUG(("CServer::ouvre() : %s %T", SDLNet_GetError(), this ));
+		LOGDEBUG(("CServer::ouvre() : %s %T", SDLNet_GetError(), this ));
 		result = false;
 	}
 
@@ -392,7 +395,7 @@ LOGDEBUG(("CServer::ouvre() : %s %T", SDLNet_GetError(), this ));
 		socketSet = SDLNet_AllocSocketSet( 20 );	// Nombre maxi de sockets à écouter
 
 		if( !socketSet ) {
-LOGDEBUG(("CServer::ouvre() : %s %T", SDLNet_GetError(), this ));
+			LOGDEBUG(("CServer::ouvre() : %s %T", SDLNet_GetError(), this ));
 			LOGERROR(("SDLNet_AllocSocketSet : %s", SDLNet_GetError()));
 
 			spaMaitre.close();
@@ -403,7 +406,7 @@ LOGDEBUG(("CServer::ouvre() : %s %T", SDLNet_GetError(), this ));
 
 	if(result) {
 		if( SDLNet_UDP_AddSocket( socketSet, spaMaitre.getSocket() )==-1 ) {
-LOGDEBUG(("CServer::ouvre() : %s %T", SDLNet_GetError(), this ));
+			LOGDEBUG(("CServer::ouvre() : %s %T", SDLNet_GetError(), this ));
 			disconnect();
 
 			result = false;
@@ -420,7 +423,7 @@ LOGDEBUG(("CServer::ouvre() : %s %T", SDLNet_GetError(), this ));
 		notConnectedServerInterlocutor = _serverUdpInterlocutor->connect();
 	}
 
-LOGDEBUG(("CServer::ouvre() -> %b end%T", result, this));
+	LOGDEBUG(("CServer::ouvre() -> %b end%T", result, this));
 	return notConnectedServerInterlocutor;	// Ouverture serveur réussie
 }
 
@@ -429,19 +432,21 @@ void CServer::emet() {
 	int curseur = -1, curseur2;
 
 	while((player = Game.nextPlayer(curseur))) {	// Envoie à chaque client-joueur
-		player->spa.init();
-		player->spa.addCode( SERVER_RECAP, SERVER_NULL );		// Code de récapitulation
-		player->spa.add16( (Uint16)nbrPlayers() );				// Envoie le nombre de joueur
+		if(player->_spa) {
+			player->_spa->init();
+			player->_spa->addCode( SERVER_RECAP, SERVER_NULL );		// Code de récapitulation
+			player->_spa->add16( (Uint16)nbrPlayers() );				// Envoie le nombre de joueur
 
 			// Envoie les infos concernant chaque joueur
-		curseur2 = -1;
+			curseur2 = -1;
 
-		while((player2 = Game.nextPlayer(curseur2))) {
-			player->spa.add16( (Uint16)curseur2 );			// Envoie l'identifiant de ce proxy-joueur
-			player->spa.addRecapFromServer( *player2 );
+			while((player2 = Game.nextPlayer(curseur2))) {
+				player->_spa->add16( (Uint16)curseur2 );			// Envoie l'identifiant de ce proxy-joueur
+				player->_spa->addRecapFromServer( *player2 );
+			}
+
+			player->_spa->send();
 		}
-
-		player->spa.send();
 	}
 }
 

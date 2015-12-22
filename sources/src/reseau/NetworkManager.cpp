@@ -3,7 +3,7 @@
 #include <set>
 #include <map>
 #ifdef WIN32
-	#include <windows.h>
+#include <windows.h>
 #endif
 
 using namespace std;
@@ -56,7 +56,7 @@ NetworkManager::~NetworkManager() {
 }
 
 void NetworkManager::setOn( bool on ) {
-LOGDEBUG(("CReseau::setOn(on=%b)%T", on, this));
+	LOGDEBUG(("CReseau::setOn(on=%b)%T", on, this));
 	_on = on;
 }
 
@@ -65,7 +65,7 @@ bool NetworkManager::getOn() {
 }
 
 NotConnectedInterlocutor2* NetworkManager::ouvreServer(Uint16 serverPort, Uint16 serverTreePort) {
-LOGDEBUG(("CReseau::ouvreServer() begin%T", this));
+	LOGDEBUG(("CReseau::ouvreServer() begin%T", this));
 	bool result = false;
 
 	if(_client) {
@@ -92,12 +92,12 @@ LOGDEBUG(("CReseau::ouvreServer() begin%T", this));
 		result = false;
 	}
 
-LOGDEBUG(("CReseau::ouvreServer() -> %b end%T", result, this));
+	LOGDEBUG(("CReseau::ouvreServer() -> %b end%T", result, this));
 	return notConnectedServerInterlocutor;
 }
 
 void NetworkManager::fermeServer() {
-LOGDEBUG(("CReseau::fermeServer()%T", this));
+	LOGDEBUG(("CReseau::fermeServer()%T", this));
 	LOGINFO(("Fermeture du serveur UDP"));
 
 	if( _server )
@@ -110,7 +110,7 @@ LOGDEBUG(("CReseau::fermeServer()%T", this));
 }
 
 Interlocutor2* NetworkManager::ouvreClient(const string& serverIp, Uint16 serverPort, Uint16 serverTreePort) {
-LOGDEBUG(("CReseau::ouvreClient() begin%T", this));
+	LOGDEBUG(("CReseau::ouvreClient() begin%T", this));
 
 	bool result = false;
 
@@ -139,12 +139,12 @@ LOGDEBUG(("CReseau::ouvreClient() begin%T", this));
 		result = false;
 	}
 
-LOGDEBUG(("CReseau::ouvreClient() -> %b end%T", result, this));
+	LOGDEBUG(("CReseau::ouvreClient() -> %b end%T", result, this));
 	return interlocutor;
 }
 
 void NetworkManager::fermeClient() {
-LOGDEBUG(("CReseau::fermeClient()%T", this));
+	LOGDEBUG(("CReseau::fermeClient()%T", this));
 	LOGINFO(("Deconnexion du serveur"));
 
 	if( _client )
@@ -173,9 +173,11 @@ void NetworkManager::recoitServer() {
 		CPlayer *player;
 
 		while( (player = Game.nextPlayer(curseur)) && numReady ) {	// S'il reste de l'activité sur un socket et des proxy joueurs à voir
-			if( SDLNet_SocketReady( player->spa.getSocket() ) ) {	// S'il y a de l'activité sur ce socket
-				_server->decodeProxyPlayer( player );
-				numReady--;
+			if(player->_spa) {
+				if( SDLNet_SocketReady( player->_spa->getSocket() ) ) {	// S'il y a de l'activité sur ce socket
+					_server->decodeProxyPlayer( player );
+					numReady--;
+				}
 			}
 		}
 	}

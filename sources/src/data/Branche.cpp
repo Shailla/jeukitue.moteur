@@ -91,7 +91,13 @@ bool BrancheIterator::operator++() {
 			vector<Branche*>* subBranches = br->getSubBranches(_distant);
 
 			Branche* subBranche = subBranches->operator [](pos+1);
-			push(subBranche, 0, subBranche->getSubBranches(_distant)->size());
+
+			if(subBranche->getSubBranches(_distant)) {
+				push(subBranche, 0, subBranche->getSubBranches(_distant)->size());
+			}
+			else {
+				push(subBranche, 0, 0);		// Pas de sous-branches
+			}
 
 			return true;
 		}

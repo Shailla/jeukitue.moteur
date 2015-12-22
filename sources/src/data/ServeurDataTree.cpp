@@ -114,9 +114,15 @@ Branche* ServeurDataTree::addBrancheFromDistant(const vector<int>& parentBranche
 PrivateBranche* ServeurDataTree::addPrivateBrancheFromDistant(const vector<int>& parentBrancheId, const string& brancheName, int brancheClientTmpId, int revision, DistantTreeProxy* distant) {
 	Branche* parentBranche = getBrancheFromDistant(distant, parentBrancheId);
 
-	AbstractBranche* branche = parentBranche->createSubBrancheForServer(distant, brancheName, DONNEE_PRIVATE, revision);
+	PrivateBranche* privateBranche = (PrivateBranche*)parentBranche->createSubBrancheForServer(distant, brancheName, DONNEE_PRIVATE, revision);
 
-	return (PrivateBranche*)initDonneeAndMarqueurFromDistant(distant, branche, brancheClientTmpId);
+	for(DistantTreeProxy* client : _clients) {
+		privateBranche->addDistant(client);
+	}
+
+	initDonneeAndMarqueurFromDistant(distant, privateBranche, brancheClientTmpId);
+
+	return privateBranche;
 }
 
 Valeur* ServeurDataTree::createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const vector<int>& parentBrancheId, const string& valeurName, const AnyData valeur) {
@@ -327,7 +333,7 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 }
 
 void ServeurDataTree::collecteChangements(vector<Changement*>& changements, DistantTreeProxy* distant) {
-	BrancheIterator it = getRoot().begin(0);
+	BrancheIterator it = getRoot().begin(distant);
 
 	Branche* branche;
 	Changement* changement;

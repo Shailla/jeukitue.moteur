@@ -752,6 +752,7 @@ void DataTreeTest::privateTreeTest() {
 	catch(NotExistingBrancheException& exception) {
 		// All right
 	}
+
 	try {
 		ASSERT_EQUAL(DONNEE_PRIVATE_SUB, client1Tree.getValeur(0, privClient0Value->getBrancheId(), privClient0Value->getValeurId())->getDonneeType(), "La branche devrait être sub-privée côté client comme côté serveur");
 		ASSERT_TRUE(false, "This value shouldn't exist on client 1 but only on client 0");
@@ -844,28 +845,24 @@ void DataTreeTest::echangeDonneesClientServeur(int line, Interlocutor2& client) 
 void DataTreeTest::checkSynchronisationClientServeur(int line, ClientDataTree& clientTree) {
 	log("VERIFICATION DE LA SYNCHRONISATION CLIENT SERVEUR avec " + clientTree.getClientName(), line);
 
-	log("  -------> DIFFUSE CHANGEMENTS TO CLIENTS", line);
 	serverTree.diffuseChangementsToClients();
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataReceived(), "countDataReceived 1: Il ne devrait rester aucun message à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataToSend(), "countDataToSend 1: Il ne devrait rester aucun message à envoyer");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countTechnicalMessagesReceived(), "countTechnicalMessagesReceived 1: Il ne devrait rester aucun message technique à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countTechnicalMessagesToSend(), "countTechnicalMessagesToSend 1: Il ne devrait rester aucun message technique à envoyer");
 
-	log("  -------> RECEIVE CHANGEMENTS FROM CLIENTS", line);
 	serverTree.receiveChangementsFromClients();
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataReceived(), "countDataReceived 2: Il ne devrait rester aucun message à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataToSend(), "countDataToSend 2: Il ne devrait rester aucun message à envoyer");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countTechnicalMessagesReceived(), "countTechnicalMessagesReceived 2: Il ne devrait rester aucun message technique à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countTechnicalMessagesToSend(), "countTechnicalMessagesToSend 2: Il ne devrait rester aucun message technique à envoyer");
 
-	log("  -------> DIFFUSE CHANGEMENTS TO SERVER", line);
 	clientTree.diffuseChangementsToServer();
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataReceived(), "countDataReceived 3: Il ne devrait rester aucun message à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataToSend(), "countDataToSend 3: Il ne devrait rester aucun message à envoyer");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countTechnicalMessagesReceived(), "countTechnicalMessagesReceived 3: Il ne devrait rester aucun message technique à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countTechnicalMessagesToSend(), "countTechnicalMessagesToSend 3: Il ne devrait rester aucun message technique à envoyer");
 
-	log("  -------> RECEIVE CHANGEMENTS FROM SERVER", line);
 	clientTree.receiveChangementsFromServer();
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataReceived(), "countDataReceived 4: Il ne devrait rester aucun message à recevoir");
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countDataToSend(), "countDataToSend 4: Il ne devrait rester aucun message à envoyer");

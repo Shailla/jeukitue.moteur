@@ -190,7 +190,7 @@ void DataTreeTest::serverTests() {
 	{
 		ostringstream arbre;
 		arbre << "ARBRE SERVER :";
-		serverTree.getRoot().print(arbre, 0, true, 0);
+		serverTree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 

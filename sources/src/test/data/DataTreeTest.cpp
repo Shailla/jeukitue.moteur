@@ -190,7 +190,6 @@ void DataTreeTest::serverTests() {
 	{
 		ostringstream arbre;
 		arbre << "ARBRE SERVER :";
-		serverTree.getRoot().print(arbre, 0, true, 0);
 		log(arbre, __LINE__);
 	}
 
@@ -244,12 +243,12 @@ void DataTreeTest::clientTests() {
 	client0Tree.receiveChangementsFromServer();
 
 	// Vérifie que le serveur et client-1 ont exactement le même arbre
-	ASSERT_EQUAL(((AbstractBranche&)(serverTree.getRoot())).print(distantClient0, 0, false), ((AbstractBranche&)(client0Tree.getRoot())).print(0, 0, false), "Les abres client-0 et serveur devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)(serverTree.getRoot())).print(distantClient0, false, false, 0), ((AbstractBranche&)(client0Tree.getRoot())).print(0, false, false, 0), "Les abres client-0 et serveur devraient être identiques");
 
 	{
 		ostringstream arbre;
 		arbre << endl << "ARBRE CLIENT 0 :";
-		client0Tree.getRoot().print(arbre, 0, true, 0);
+		client0Tree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 
@@ -356,7 +355,7 @@ void DataTreeTest::clientTests() {
 	{
 		ostringstream arbre;
 		arbre << "ARBRE SERVER :";
-		serverTree.getRoot().print(arbre, 0, true, 0);
+		serverTree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 
@@ -364,7 +363,7 @@ void DataTreeTest::clientTests() {
 	{
 		ostringstream arbre;
 		arbre << endl << "ARBRE CLIENT 0 :";
-		client0Tree.getRoot().print(arbre, 0, true, 0);
+		client0Tree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 
@@ -372,7 +371,7 @@ void DataTreeTest::clientTests() {
 	checkSynchronisationClientServeur(__LINE__, client0Tree);
 
 	// Vérifie que le serveur et client-1 ont exactement le même arbre
-	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(distantClient0, 0, false), ((AbstractBranche&)client0Tree.getRoot()).print(0, 0, false), "Les abres client-0 et serveur devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(distantClient0, false, false, 0), ((AbstractBranche&)client0Tree.getRoot()).print(0, false, false, 0), "Les abres client-0 et serveur devraient être identiques");
 
 
 	/* ****************************************************************************
@@ -405,7 +404,7 @@ void DataTreeTest::clientTests() {
 	{
 		ostringstream arbre;
 		arbre << endl << "ARBRE CLIENT 0 :";
-		client0Tree.getRoot().print(arbre, 0, true, 0);
+		client0Tree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 
@@ -449,7 +448,7 @@ void DataTreeTest::clientTests() {
 	{
 		ostringstream arbre;
 		arbre << "ARBRE SERVER :";
-		serverTree.getRoot().print(arbre, 0, true, 0);
+		serverTree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 
@@ -537,7 +536,7 @@ void DataTreeTest::clientTests() {
 	checkSynchronisationClientServeur(__LINE__, client0Tree);
 
 	// Vérifie que le serveur et client-0 ont exactement le même arbre
-	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(0, 0, false), ((AbstractBranche&)client0Tree.getRoot()).print(0, 0, false), "Les abres client-0 et serveur devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(distantClient0, false, false, 0), ((AbstractBranche&)client0Tree.getRoot()).print(0, false, false, 0), "Les abres client-0 et serveur devraient être identiques");
 }
 
 void DataTreeTest::multiClientsTests() {
@@ -567,7 +566,7 @@ void DataTreeTest::multiClientsTests() {
 	checkSynchronisationClientServeur(__LINE__, client1Tree);
 
 	// Vérifie que le serveur et client-1 ont exactement le même arbre
-	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(0, 0, false), ((AbstractBranche&)client1Tree.getRoot()).print(0, 0, false), "Les abres client-1 et serveur devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(distantClient1, false, false, 0), ((AbstractBranche&)client1Tree.getRoot()).print(0, false, false, 0), "Les abres client-1 et serveur devraient être identiques");
 
 	// Les arbres doivent désormais être stabilisés
 	checkSynchronisationClientServeur(__LINE__, client0Tree);
@@ -611,13 +610,14 @@ void DataTreeTest::multiClientsTests() {
 	checkSynchronisationClientServeur(__LINE__, client1Tree);
 
 	// Test l'égalité des 3 arbres
-	ASSERT_EQUAL(((AbstractBranche&)client1Tree.getRoot()).print(0, 0, false), ((AbstractBranche&)client0Tree.getRoot()).print(0, 0, false), "Les abres client-1 et serveur devraient être identiques");
-	ASSERT_EQUAL(((AbstractBranche&)client1Tree.getRoot()).print(0, 0, false), ((AbstractBranche&)serverTree.getRoot()).print(0, 0, false), "Les abres client-1 et client-0 devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(distantClient1, false, false, 0), ((AbstractBranche&)client1Tree.getRoot()).print(0, false, false, 0), "Les abres serveur et client-1 devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(distantClient0, false, false, 0), ((AbstractBranche&)client0Tree.getRoot()).print(0, false, false, 0), "Les abres serveur et client-0 devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)client0Tree.getRoot()).print(0, false, true, 0), ((AbstractBranche&)client1Tree.getRoot()).print(0, false, true, 0), "Les abres client-0 et client-1 devraient être identiques");
 
 	{
 		ostringstream arbre;
 		arbre << "ARBRE SERVER :";
-		serverTree.getRoot().print(arbre, 0, true, 0);
+		serverTree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 
@@ -669,13 +669,14 @@ void DataTreeTest::multiClientsTests() {
 	checkSynchronisationClientServeur(__LINE__, client1Tree);
 
 	// Test l'égalité des 3 arbres
-	ASSERT_EQUAL(((AbstractBranche&)client1Tree.getRoot()).print(0, 0, false), ((AbstractBranche&)client0Tree.getRoot()).print(0, 0, false), "Les abres client-1 et client-0 devraient être identiques");
-	ASSERT_EQUAL(((AbstractBranche&)client1Tree.getRoot()).print(0, 0, false), ((AbstractBranche&)serverTree.getRoot()).print(0, 0, false), "Les abres client-1 et serveur devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(distantClient1, false, false, 0), ((AbstractBranche&)client1Tree.getRoot()).print(0, false, false, 0), "Les abres serveur et client-1 devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)serverTree.getRoot()).print(distantClient0, false, false, 0), ((AbstractBranche&)client0Tree.getRoot()).print(0, false, false, 0), "Les abres serveur et client-0 devraient être identiques");
+	ASSERT_EQUAL(((AbstractBranche&)client0Tree.getRoot()).print(0, false, true, 0), ((AbstractBranche&)client1Tree.getRoot()).print(0, false, true, 0), "Les abres client-0 et client-1 devraient être identiques");
 
 	{
 		ostringstream arbre;
 		arbre << "ARBRE SERVER :";
-		serverTree.getRoot().print(arbre, 0, true, 0);
+		serverTree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 }
@@ -698,7 +699,7 @@ void DataTreeTest::privateTreeTest() {
 	{
 		ostringstream arbre;
 		arbre << "ARBRE SERVER :";
-		serverTree.getRoot().print(arbre, 0, true, 0);
+		serverTree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 
@@ -726,14 +727,14 @@ void DataTreeTest::privateTreeTest() {
 	{
 		ostringstream arbre;
 		arbre << "ARBRE CLIENT 0 :";
-		client0Tree.getRoot().print(arbre, 0, true, 0);
+		client0Tree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 
 	{
 		ostringstream arbre;
 		arbre << "ARBRE CLIENT 1 :";
-		client1Tree.getRoot().print(arbre, 0, true, 0);
+		client1Tree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 
@@ -773,7 +774,7 @@ void DataTreeTest::privateTreeTest() {
 	{
 		ostringstream arbre;
 		arbre << "ARBRE SERVER :";
-		serverTree.getRoot().print(arbre, 0, true, 0);
+		serverTree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 
@@ -801,14 +802,14 @@ void DataTreeTest::privateTreeTest() {
 	{
 		ostringstream arbre;
 		arbre << "ARBRE CLIENT 0 :";
-		client0Tree.getRoot().print(arbre, 0, true, 0);
+		client0Tree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 
 	{
 		ostringstream arbre;
 		arbre << "ARBRE CLIENT 1 :";
-		client1Tree.getRoot().print(arbre, 0, true, 0);
+		client1Tree.getRoot().print(arbre, 0, true, false, 0);
 		log(arbre, __LINE__);
 	}
 

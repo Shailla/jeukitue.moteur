@@ -117,9 +117,10 @@ public:
 	 * Affiche le sous-arbre et ses données et caractéristiques partagées avec les autres arbres.
 	 * Si details=false seules les informations partagées sont affichées, donc 2 arbres synchronisés
 	 * et stabilisés généreront exactement le même affichage avec cette méthode.
-	 * Si details=true alors plus de caractérisques sont affichées.
+	 * Si tmpId=true alors les identifiants temporaires sont affichés.
+	 * Si publicOnly=true alors les données privées ne sont affichées.
 	 */
-	virtual void print(std::ostringstream& out, DistantTreeProxy* distant, bool details, int indentation) override;
+	virtual void print(std::ostringstream& out, DistantTreeProxy* distant, bool tmpId, bool publicOnly, int indentation) override;
 
 	static bool highestId(const Branche* left, const Branche* right);
 };

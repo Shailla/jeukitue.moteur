@@ -119,9 +119,9 @@ vector<int> AbstractBranche::getBrancheFullId() const {
 	return id;
 }
 
-string AbstractBranche::print(DistantTreeProxy* distant, int indentation, bool details) {
+string AbstractBranche::print(DistantTreeProxy* distant, bool details, bool publicOnly, int indentation) {
 	ostringstream out;
-	print(out, distant, details, indentation);
+	print(out, distant, details, publicOnly, indentation);
 
 	return out.str();
 }

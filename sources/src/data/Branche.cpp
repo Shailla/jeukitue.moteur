@@ -541,7 +541,7 @@ vector<Valeur*>& Branche::getValeurs(DistantTreeProxy* distant) {
 	return _valeurs;
 }
 
-void Branche::print(ostringstream& out, DistantTreeProxy* distant, bool details, int indentation) {
+void Branche::print(ostringstream& out, DistantTreeProxy* distant, bool tmpId, bool publicOnly, int indentation) {
 	int i;
 
 	// Affiche la branche
@@ -575,65 +575,67 @@ void Branche::print(ostringstream& out, DistantTreeProxy* distant, bool details,
 	}
 
 	out << "+ [id=" << _brancheId;
-	if(details) {
+	if(tmpId) {
 		out << " tmpId=" << _brancheTmpId;
 	}
 	out << " rv=" << getRevision() << "]";
 
 	out << " '" << _brancheName << "'";
 
-	// Affiche les valeurs de la branche de manière ordonnée
-	vector<Valeur*> valeurs = _valeurs;
-	sort(valeurs.begin(), valeurs.end(), Valeur::highestId);
+	if(!publicOnly || getDonneeType() != DONNEE_PRIVATE) {
+		// Affiche les valeurs de la branche de manière ordonnée
+		vector<Valeur*> valeurs = _valeurs;
+		sort(valeurs.begin(), valeurs.end(), Valeur::highestId);
 
-	for(Valeur* valeur : valeurs) {
-		out << endl;
+		for(Valeur* valeur : valeurs) {
+			out << endl;
 
-		switch(valeur->getDonneeType()) {
-		case DONNEE_DEFAULT:
-			out << ".err_d";	// Une donnée ne devrait jamais être de ce type, elle est créée avec pour recevoir automatiquement son vrai type
-			break;
-		case DONNEE_PUBLIC:
-			out << ".pub";
-			break;
-		case DONNEE_PRIVATE:
-			out << ".pri";
-			break;
-		case DONNEE_PRIVATE_SUB:
-			out << ".prs";
-			break;
-		case DONNEE_LOCAL:
-			out << ".loc";
-			break;
-		default:
-			out << ".err";
-			break;
+			switch(valeur->getDonneeType()) {
+			case DONNEE_DEFAULT:
+				out << ".err_d";	// Une donnée ne devrait jamais être de ce type, elle est créée avec pour recevoir automatiquement son vrai type
+				break;
+			case DONNEE_PUBLIC:
+				out << ".pub";
+				break;
+			case DONNEE_PRIVATE:
+				out << ".pri";
+				break;
+			case DONNEE_PRIVATE_SUB:
+				out << ".prs";
+				break;
+			case DONNEE_LOCAL:
+				out << ".loc";
+				break;
+			default:
+				out << ".err";
+				break;
+			}
+
+			out << "\t";
+
+			for(i = 0 ; i < indentation+1 ; i++) {
+				out << ".";
+			}
+
+			out << ". [id=" << valeur->getValeurId();
+			if(tmpId) {
+				out << " tmpId=" << valeur->getValeurTmpId();
+			}
+
+			out << " rv=" << valeur->getRevision() << "]";
+
+			out << " '" << valeur->getValeurName() << "'";
+
+			out << " <" << valeur->toString() << ">";
 		}
 
-		out << "\t";
+		// Affiche les branches de la branche
+		vector<Branche*> branches = _subBranches;
+		sort(branches.begin(), branches.end(), Branche::highestId);
 
-		for(i = 0 ; i < indentation+1 ; i++) {
-			out << ".";
+		for(Branche* br : branches) {
+			br->print(out, distant, tmpId, publicOnly, indentation+1);
 		}
-
-		out << ". [id=" << valeur->getValeurId();
-		if(details) {
-			out << " tmpId=" << valeur->getValeurTmpId();
-		}
-
-		out << " rv=" << valeur->getRevision() << "]";
-
-		out << " '" << valeur->getValeurName() << "'";
-
-		out << " <" << valeur->toString() << ">";
-	}
-
-	// Affiche les branches de la branche
-	vector<Branche*> branches = _subBranches;
-	sort(branches.begin(), branches.end(), Branche::highestId);
-
-	for(Branche* br : branches) {
-		br->print(out, distant, details, indentation+1);
 	}
 }
 

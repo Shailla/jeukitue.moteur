@@ -432,7 +432,7 @@ vector<Valeur*>& PrivateBranche::getValeurs(DistantTreeProxy* distant) {
 	return getDistant(distant)->_valeurs;
 }
 
-void PrivateBranche::print(ostringstream& out, DistantTreeProxy* distant, bool details, int indentation) {
+void PrivateBranche::print(ostringstream& out, DistantTreeProxy* distant, bool tmpId, bool publicOnly, int indentation) {
 	int i;
 
 	out << endl;
@@ -467,81 +467,83 @@ void PrivateBranche::print(ostringstream& out, DistantTreeProxy* distant, bool d
 
 	out << "+ [id=" << _brancheId;
 
-	if(details) {
+	if(tmpId) {
 		out << " tmpId=" << _brancheTmpId;
 	}
 
 	out << " rv=" << getRevision() << "] '" << _brancheName << "'";
 
-	std::map<DistantTreeProxy*, DistantPrivateBranche>::iterator itDt;
+	if(!publicOnly) {
+		std::map<DistantTreeProxy*, DistantPrivateBranche>::iterator itDt;
 
-	for(itDt = _distants.begin() ; itDt != _distants.end() ; itDt++) {
-		if(itDt->first) {	// Ignore le distant bouchon, voir dans le constructeur de PrivateBranche
-			if(!distant || itDt->first == distant) {
-				// Affiche le distant uniquement si celui-ci n'a pas été explicitement spécifié
-				if(!distant) {
-					out << endl << "\t" << "[[ Distant '" << itDt->first->getInterlocutor()->getName() <<"' ]]";
-				}
-
-				// Affiche les valeurs de la branche de manière ordonnée
-				vector<Valeur*>& valeurs = getDistant(itDt->first)->_valeurs;
-
-				sort(valeurs.begin(), valeurs.end(), Valeur::highestId);
-
-				vector<Valeur*>::iterator valIt;
-
-				for(valIt = valeurs.begin() ; valIt != valeurs.end() ; ++valIt) {
-					Valeur* valeur = *valIt;
-
-					out << endl;
-
-					switch(valeur->getDonneeType()) {
-					case DONNEE_DEFAULT:
-						out << ".err_d";	// Une donnée ne devrait jamais être de ce type, elle est créée avec pour recevoir automatiquement son vrai type
-						break;
-					case DONNEE_PUBLIC:
-						out << ".pub";
-						break;
-					case DONNEE_PRIVATE:
-						out << ".pri";
-						break;
-					case DONNEE_PRIVATE_SUB:
-						out << ".prs";
-						break;
-					case DONNEE_LOCAL:
-						out << ".loc";
-						break;
-					default:
-						out << ".err";
-						break;
+		for(itDt = _distants.begin() ; itDt != _distants.end() ; itDt++) {
+			if(itDt->first) {	// Ignore le distant bouchon, voir dans le constructeur de PrivateBranche
+				if(!distant || itDt->first == distant) {
+					// Affiche le distant uniquement si celui-ci n'a pas été explicitement spécifié
+					if(!distant) {
+						out << endl << "\t" << "[[ Distant '" << itDt->first->getInterlocutor()->getName() <<"' ]]";
 					}
 
-					out << "\t";
+					// Affiche les valeurs de la branche de manière ordonnée
+					vector<Valeur*>& valeurs = getDistant(itDt->first)->_valeurs;
 
-					for(i = 0 ; i < indentation+1 ; i++) {
-						out << ".";
+					sort(valeurs.begin(), valeurs.end(), Valeur::highestId);
+
+					vector<Valeur*>::iterator valIt;
+
+					for(valIt = valeurs.begin() ; valIt != valeurs.end() ; ++valIt) {
+						Valeur* valeur = *valIt;
+
+						out << endl;
+
+						switch(valeur->getDonneeType()) {
+						case DONNEE_DEFAULT:
+							out << ".err_d";	// Une donnée ne devrait jamais être de ce type, elle est créée avec pour recevoir automatiquement son vrai type
+							break;
+						case DONNEE_PUBLIC:
+							out << ".pub";
+							break;
+						case DONNEE_PRIVATE:
+							out << ".pri";
+							break;
+						case DONNEE_PRIVATE_SUB:
+							out << ".prs";
+							break;
+						case DONNEE_LOCAL:
+							out << ".loc";
+							break;
+						default:
+							out << ".err";
+							break;
+						}
+
+						out << "\t";
+
+						for(i = 0 ; i < indentation+1 ; i++) {
+							out << ".";
+						}
+
+						out << ". [id=" << valeur->getValeurId();
+
+						if(tmpId) {
+							out << " tmpId=" << valeur->getValeurTmpId();
+						}
+
+						out << " rv=" << valeur->getRevision() << "] '" << valeur->getValeurName() << "' <" << valeur->toString() << ">";
 					}
-
-					out << ". [id=" << valeur->getValeurId();
-
-					if(details) {
-						out << " tmpId=" << valeur->getValeurTmpId();
-					}
-
-					out << " rv=" << valeur->getRevision() << "] '" << valeur->getValeurName() << "' <" << valeur->toString() << ">";
 				}
 			}
-		}
 
-		// Affiche les branches de la branche
-		vector<Branche*>& branches = getDistant(itDt->first)->_subBranches;
-		sort(branches.begin(), branches.end(), Branche::highestId);
+			// Affiche les branches de la branche
+			vector<Branche*>& branches = getDistant(itDt->first)->_subBranches;
+			sort(branches.begin(), branches.end(), Branche::highestId);
 
-		vector<Branche*>::iterator brIt;
+			vector<Branche*>::iterator brIt;
 
-		for(brIt = branches.begin() ; brIt != branches.end() ; ++brIt) {
-			Branche* branche = *brIt;
-			branche->print(out, distant, details, indentation+1);
+			for(brIt = branches.begin() ; brIt != branches.end() ; ++brIt) {
+				Branche* branche = *brIt;
+				branche->print(out, distant, tmpId, publicOnly, indentation+1);
+			}
 		}
 	}
 }

@@ -25,8 +25,8 @@ PlayersView::PlayersView(const AG_EventFn controllerCallback)
 	// Liste des données
 	_playersTable = AG_TableNew(m_window, AG_TABLE_EXPAND);
 	AG_TableAddCol(_playersTable, "Nom", "<XXXXXXXXXXXXXXXXXX>", NULL);
-	AG_TableAddCol(_playersTable, "IP", "<XXXXXXXXXXXXXXX>", NULL);
-	AG_TableAddCol(_playersTable, "Port", "<XXXXX>", NULL);
+	AG_TableAddCol(_playersTable, "IP in", "<XXXXXXXXXXXXXXXXXXXXX>", NULL);
+	AG_TableAddCol(_playersTable, "IP out", "<XXXXXXXXXXXXXXXXXXXXX>", NULL);
 
 	AG_SeparatorNewHoriz(m_window);
 
@@ -61,7 +61,12 @@ void PlayersView::refreshList() {
 	CPlayer* player;
 
 	while((player = Game.nextPlayer(curseur))) {
-		AG_TableAddRow(_playersTable, "%s:%s:%s:", player->nom().c_str(), "xxx.xxx.xxx.xxx", "xxxxx");
+		if(player->_spa) {
+			AG_TableAddRow(_playersTable, "%s:%s:%s:", player->nom().c_str(), player->_spa->iPInToString().c_str(), player->_spa->iPOutToString().c_str());
+		}
+		else {
+			AG_TableAddRow(_playersTable, "%s:%s:%s:", player->nom().c_str(), "-", "-");
+		}
 	}
 
 	AG_TableEnd(_playersTable);

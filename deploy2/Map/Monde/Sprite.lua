@@ -1,6 +1,12 @@
 ﻿
 mapDataTree = 0
-nbrSprites = 50
+nbrSprites = 3
+espaceXmin = 0
+espaceXmax = 2
+espaceYmin = 0
+espaceYmax = 2
+espaceZmin = 0.5
+espaceZmax = 2.5
 vitessesX = {}
 vitessesY = {}
 vitessesZ = {}
@@ -29,7 +35,7 @@ function onLoad()
 		traceId("ID DIRIGEABLE", dirigeablesBrId);
 		
 		for index = 1, nbrSprites do
-			createSprite(dirigeablesBrId, index);
+			initSprites(dirigeablesBrId, index);
 		end
 			
 		subscribeEvents("refresh");
@@ -38,7 +44,7 @@ function onLoad()
 	end
 end
 
-function createSprite(dirigeablesBrId, index)
+function initSprites(dirigeablesBrId, index)
 	monSpriteBrId = mapDataTree:createBranche(dirigeablesBrId, "monSprite"..index);
 	
 	-- Position du sprite
@@ -74,9 +80,9 @@ function createSprite(dirigeablesBrId, index)
 	nextVitY:setValue(0.005+index*0.05*math.random());
 	nextVitZ:setValue(0.005+index*0.05*math.random());
 
-	posX:setValue(2*math.random());
-	posY:setValue(2*math.random());
-	posZ:setValue(0.5+2*math.random());	
+	posX:setValue(espaceXmin+(espaceXmax-espaceXmin)*math.random());
+	posY:setValue(espaceYmin+(espaceYmax-espaceYmin)*math.random());
+	posZ:setValue(espaceZmin+(espaceZmax-espaceZmin)*math.random());	
 	
 	colorR:setValue(math.random());
 	colorG:setValue(math.random());
@@ -158,26 +164,26 @@ function updateVitPos(index)
 	change = false
 	
 	-- Change la vitesse du sprite
-	if (posX:getValue() < 0 and vitX:getValue() < 0) then
+	if (posX:getValue() < espaceXmin and vitX:getValue() < 0) then
 		vitX:setValue(nextVitX:getValue());
 		change = true
-	elseif (posX:getValue() > 2 and vitX:getValue() > 0) then
+	elseif (posX:getValue() > espaceXmax and vitX:getValue() > 0) then
 		vitX:setValue(-nextVitX:getValue());
 		change = true
 	end
 	
-	if (posY:getValue() < 0 and vitY:getValue() < 0) then
+	if (posY:getValue() < espaceYmin and vitY:getValue() < 0) then
 		vitY:setValue(nextVitY:getValue());
 		change = true
-	elseif (posY:getValue() > 2 and vitY:getValue() > 0) then
+	elseif (posY:getValue() > espaceYmax and vitY:getValue() > 0) then
 		vitY:setValue(-nextVitY:getValue());
 		change = true
 	end
 
-	if (posZ:getValue() < 0.5 and vitZ:getValue() < 0) then
+	if (posZ:getValue() < espaceZmin and vitZ:getValue() < 0) then
 		vitZ:setValue(nextVitZ:getValue());
 		change = true
-	elseif (posZ:getValue() > 2.5 and vitZ:getValue() > 0) then
+	elseif (posZ:getValue() > espaceZmax and vitZ:getValue() > 0) then
 		vitZ:setValue(-nextVitZ:getValue());
 		change = true
 	end

@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <algorithm>
 
+#include "util/Trace.h"
 #include "ressource/RessourceConstantes.h"
 #include "util/FindFolder.h"
 #include "RessourcesLoader.h"
@@ -24,16 +25,16 @@ int RessourcesLoader::nbrElements = 9;
 const char* RessourcesLoader::elementsNamesAndFolders[] =
 {
 	"@Fond",	"./Ressources/Images/Fonds",		// Images de fond
-	"@Fonte",	"./Ressources/Images/Fontes",	// Polices / fontes
-	"@Icone",	"./Ressources/Images/Icones",	// Icones des menus
-	"@Texture",	"./Ressources/Images/Textures",	// Images de textures par défaut
+	"@Fonte",	"./Ressources/Images/Fontes",		// Polices / fontes
+	"@Icone",	"./Ressources/Images/Icones",		// Icones des menus
+	"@Texture",	"./Ressources/Images/Textures",		// Images de textures par défaut
 
 	"@Joueur",	"./Ressources/Maps/Joueurs",		// Maps des joueurs par défaut
-	"@Arme",	"./Ressources/Maps/Armes",		// Map des armes par défaut
+	"@Arme",	"./Ressources/Maps/Armes",			// Map des armes par défaut
 
-	"@Bruit",	"./Ressources/Sons/Bruits",		// Bruits par défaut des Map
+	"@Bruit",	"./Ressources/Sons/Bruits",			// Bruits par défaut des Map
 	"@Jingle",	"./Ressources/Sons/Jingles",		// Jingles des menus
-	"@Musique",	"./Ressources/Sons/Musiques",	// Musiques par défaut
+	"@Musique",	"./Ressources/Sons/Musiques",		// Musiques par défaut
 };
 
 bool RessourcesLoader::getFileRessource(const string& rep, string& file) {
@@ -85,19 +86,18 @@ bool RessourcesLoader::getFileRessource(string& file) {
 			for(int i=0; i<nbrElements; i++) {
 				if(!resourceType.compare(elementsNamesAndFolders[i*2 + 0])) {
 					file.replace(0, nbr, elementsNamesAndFolders[i*2 + 1]);
-
-					cout << endl << "La ressource '" << before << "' est '" << file << "'";
+					LOGERROR(("La ressource '%s' est '%s')", before.c_str(), file.c_str()));
 					bTrouve = true;
 					break;
 				}
 			}
 
 			if(!bTrouve) {
-				std::cerr << endl << __FILE__ << ":" << __LINE__ << " Ressource de type inconnu : '" << before << "' (type identifie '" << resourceType << "'";
+				LOGERROR(("Ressource de type inconnu '%s' (type identifié '%s')", before.c_str(), resourceType.c_str()));
 			}
 		}
 		else {
-			std::cerr << endl << __FILE__ << ":" << __LINE__ << " Format de ressource non pris en compte : '" << before << "'";
+			LOGERROR(("Format de ressource non pris en compte : '%s'", before.c_str()));
 		}
 	}
 

@@ -10,6 +10,9 @@ JktException::JktException(const char* clazz) {
 JktException::JktException(const char* clazz, const string& message):_clazz(clazz),_message(message) {
 }
 
+JktException::JktException(const char* clazz, const stringstream& message):_clazz(clazz),_message(message.str()) {
+}
+
 JktException::~JktException(void) {
 }
 

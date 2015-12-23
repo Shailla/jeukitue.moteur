@@ -71,6 +71,10 @@ public:
 	static const char* Y;
 	static const char* Z;
 	static const char* TYPE;
+	static const char* PARTICULES_ENGINES;
+	static const char* NEIGE;
+	static const char* NBR_PARTICULES;
+	static const char* DIMENSION;
 
 	// Boîte à outils XML
 	static void throwCorruptedMapFileException(const char* expected, const char* value) throw(JktUtils::CErreur);

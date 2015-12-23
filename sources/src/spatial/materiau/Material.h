@@ -39,6 +39,7 @@ public:
 	MAT_TYPE Type() const;	// Retourne le type de matériau (simple, tree, ...)
 
 	virtual void initGL() {};	// Lit le fichier de texture associé au matériau
+	virtual void freeGL() {};	// Lit le fichier de texture associé au matériau
 	virtual bool LitFichier(CIfstreamMap &fichier);
 	virtual bool Lit(TiXmlElement* el, string &repertoire);
 	virtual bool SaveFichierMap(std::ofstream &fichier);

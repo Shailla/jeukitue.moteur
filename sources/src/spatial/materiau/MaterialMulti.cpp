@@ -53,10 +53,17 @@ CMaterialMulti::~CMaterialMulti() {
 }
 
 void CMaterialMulti::initGL() {
-	cout << "\nLecture des fichiers de texture multiple (ref. " << getRef() << ")";
+	cout << endl << "Lecture des fichiers de texture multiple (ref. " << getRef() << ")";
 
 	for(int i=0 ; i<NbrTex() ; i++)
 		m_TabMat[i]->initGL();
+}
+
+void CMaterialMulti::freeGL()  {
+	cout << endl << "Libération des fichiers de texture multiple (ref. " << getRef() << ")";
+
+	for(int i=0 ; i<NbrTex() ; i++)
+		m_TabMat[i]->freeGL();
 }
 
 bool CMaterialMulti::LitFichier(CIfstreamMap &fichier) {
@@ -162,7 +169,7 @@ bool CMaterialMulti::Lit(TiXmlElement* element, string& repertoire) {
 	// Référence
 	double ref;
 	if(!element->Attribute(Xml::REF, &ref))
-		throw CErreur(0, "Fichier map corrompu : Reference materiau");
+		throw CErreur("Fichier map corrompu : Reference materiau");
 
 	m_Ref = (unsigned int)ref;
 
@@ -174,12 +181,12 @@ bool CMaterialMulti::Lit(TiXmlElement* element, string& repertoire) {
 	TiXmlElement* elSma = element->FirstChildElement(Xml::SOUSMATERIAUX);
 
 	if(!elSma)
-		throw CErreur(0, "Fichier map corrompu : Sous-materiaux");
+		throw CErreur("Fichier map corrompu : Sous-materiaux");
 
 	// Nombre de sous-matériaux
 	double nbrSSMat;
 	if(!elSma->Attribute(Xml::NBR, &nbrSSMat))
-		throw CErreur(0, "Fichier map corrompu : Nombre de sous-materiaux");
+		throw CErreur("Fichier map corrompu : Nombre de sous-materiaux");
 
 	m_NbrTex = (int)nbrSSMat;
 
@@ -192,7 +199,7 @@ bool CMaterialMulti::Lit(TiXmlElement* element, string& repertoire) {
 		el->Attribute(Xml::REF);
 
 		if(i >= NbrTex())
-			throw CErreur(0, "Fichier map corrompu : Reference sous-materiau");
+			throw CErreur("Fichier map corrompu : Reference sous-materiau");
 
 		CMaterial* mat = CMaterialMaker::Lit(el, repertoire);
 		m_TabMat[i++] = mat;

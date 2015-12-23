@@ -58,13 +58,17 @@ void CMaterialTexture::initGL() throw(JktUtils::CErreur) {
 	_texture = litFichierTexture(m_FichierTexture, 1.0f, pixels);
 }
 
+void CMaterialTexture::freeGL() {
+	// TODO
+}
+
 bool CMaterialTexture::Lit(TiXmlElement* element, string &repertoire)
 {
 	double ref;
 
 	// Référence
 	if(!element->Attribute(Xml::REF, &ref))
-		throw CErreur(0, "Fichier map corrompu : Reference materiau");
+		throw CErreur("Fichier map corrompu : Reference materiau");
 
 	m_Ref = (unsigned int)ref;
 
@@ -76,7 +80,7 @@ bool CMaterialTexture::Lit(TiXmlElement* element, string &repertoire)
 		// Fichier de texture
 	TiXmlElement* elFic = element->FirstChildElement(Xml::FICHIER);
 	if(!elFic)
-		throw CErreur(0, "Fichier map corrompu : Nom de fichier de texture");
+		throw CErreur("Fichier map corrompu : Nom de fichier de texture");
 
 	m_FichierTexture = elFic->Attribute(Xml::NOM);
 	RessourcesLoader::getFileRessource(repertoire, m_FichierTexture);

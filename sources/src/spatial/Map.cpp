@@ -5,7 +5,7 @@
 #include <map>
 #include <vector>
 #ifdef WIN32
-	#include <windows.h>
+#include <windows.h>
 #endif
 #include <GL/gl.h>
 
@@ -21,6 +21,9 @@ class CGame;
 #include "util/Erreur.h"
 #include "main/Fabrique.h"
 #include "util/Tableau.cpp"
+#include "spatial/Particule.h"
+#include "spatial/MoteurParticules.h"
+#include "spatial/MoteurParticulesNeige.h"
 #include "spatial/materiau/Material.h"
 #include "spatial/materiau/MaterialMaker.h"
 #include "spatial/IfstreamMap.h"
@@ -59,7 +62,7 @@ namespace JktMoteur
 const char* CMap::identifier = "Map";
 
 CMap::CMap(CMap* parent) : CGeo(parent) {
-LOGDEBUG(("CMap::CMap() begin%T", this ));
+	LOGDEBUG(("CMap::CMap() begin%T", this ));
 	m_bSelection = false;
 	m_Selection = 0;
 	_isGlActivated = false;
@@ -67,7 +70,7 @@ LOGDEBUG(("CMap::CMap() begin%T", this ));
 }
 
 CMap::CMap(CMap* parent, const string& nomFichier) throw(JktUtils::CErreur) : CGeo(parent) {
-LOGDEBUG(("CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str(), this ));
+	LOGDEBUG(("CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str(), this ));
 	if( !Lit(nomFichier) ) {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur à la lecture du fichier MAP : " << nomFichier;
 	}
@@ -81,11 +84,11 @@ LOGDEBUG(("CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str(), this ));
 	_isPluginsActivated = false;
 
 	Init();
-LOGDEBUG(("CMap::CMap() end%T", this ));
+	LOGDEBUG(("CMap::CMap() end%T", this ));
 }
 
 CMap::~CMap() {
-LOGDEBUG(("CMap::~CMap() begin%T", this ));
+	LOGDEBUG(("CMap::~CMap() begin%T", this ));
 
 	// Destruction des objets géo
 	vector<CGeo*>::iterator iterGeo;
@@ -111,7 +114,7 @@ LOGDEBUG(("CMap::~CMap() begin%T", this ));
 
 	m_TabLight.clear();
 
-LOGDEBUG(("CMap::~CMap() end%T", this ));
+	LOGDEBUG(("CMap::~CMap() end%T", this ));
 }
 
 const char* CMap::toString() {
@@ -135,6 +138,7 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 
 	glEnableClientState( GL_VERTEX_ARRAY );
 
+	// Affichage des dirigeables
 	vector<Dirigeable*>::iterator iterDirigeable;
 
 	for(iterDirigeable=_dirigeables.begin() ; iterDirigeable!=_dirigeables.end() ; iterDirigeable++) {
@@ -142,6 +146,20 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 
 	}
 
+	// Affichage des moteurs de particules
+	for(CMoteurParticules* engine : _particulesEngines) {
+		glEnable( GL_BLEND );
+		glDepthMask( GL_FALSE );
+		glBlendFunc( GL_SRC_ALPHA, GL_ONE );
+
+		engine->Affiche();	// Le moteur de particules affiche toutes ses particules
+
+		glDisable( GL_BLEND );
+		glDepthMask( GL_TRUE );
+	}
+
+
+	// Affichage des objets
 	vector<CGeo*>::iterator iterGeo;
 
 	if(m_bSelection) {
@@ -264,6 +282,10 @@ void CMap::add(EntryPoint entryPoint) {
 	_entryPoints.push_back(entryPoint);
 }
 
+void CMap::add(CMoteurParticules* engine) {
+	_particulesEngines.push_back(engine);
+}
+
 vector<EntryPoint>& CMap::getEntryPointsList() {
 	return _entryPoints;
 }
@@ -304,7 +326,7 @@ float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 }
 
 void CMap::EchangeXY() {
-LOGDEBUG(("CMap::EchangeXY()%T", this ));
+	LOGDEBUG(("CMap::EchangeXY()%T", this ));
 
 	// Entry points
 	vector<EntryPoint>::iterator iterEntry;
@@ -323,7 +345,7 @@ LOGDEBUG(("CMap::EchangeXY()%T", this ));
 }
 
 void CMap::EchangeXZ() {
-LOGDEBUG(("CMap::EchangeXZ()%T", this ));
+	LOGDEBUG(("CMap::EchangeXZ()%T", this ));
 
 	// Entry points
 	vector<EntryPoint>::iterator iterEntry;
@@ -342,7 +364,7 @@ LOGDEBUG(("CMap::EchangeXZ()%T", this ));
 }
 
 void CMap::EchangeYZ() {
-LOGDEBUG(("CMap::EchangeYZ()%T", this ));
+	LOGDEBUG(("CMap::EchangeYZ()%T", this ));
 
 	// Entry points
 	vector<EntryPoint>::iterator iterEntry;
@@ -361,7 +383,7 @@ LOGDEBUG(("CMap::EchangeYZ()%T", this ));
 }
 
 void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
-LOGDEBUG(("CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scaleX, scaleY, scaleZ, this ));
+	LOGDEBUG(("CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scaleX, scaleY, scaleZ, this ));
 
 	if(scaleX!=1.0 || scaleY!=1.0 || scaleZ!=1.0) {
 		// Entry points
@@ -382,7 +404,7 @@ LOGDEBUG(("CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scaleX, scaleY, scaleZ
 }
 
 void CMap::translate(float x, float y, float z) {
-LOGDEBUG(("CMap::translate(x=%f,y=%f,z=%f)%T", x, y, z, this ));
+	LOGDEBUG(("CMap::translate(x=%f,y=%f,z=%f)%T", x, y, z, this ));
 
 	if(x!=0.0 || y!=0.0 || z!=0.0) {
 		// Entry points
@@ -437,7 +459,7 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 		// Element de map
 		TiXmlElement* elMap = document.FirstChildElement(Xml::MAP);
 		if(!elMap)
-			throw CErreur(0,"Fichier map corrompu");
+			throw CErreur("Fichier map corrompu");
 
 		// Lecture des plugins de la Map
 		{
@@ -470,7 +492,7 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 					const char* subMapName = el->Attribute(Xml::NOM);	// Lecture nom de la Map à importer
 
 					if(!subMapName)
-						throw CErreur(0, "Fichier Map corrompu : Nom de la sous-Map a importer manquant");
+						throw CErreur("Fichier Map corrompu : Nom de la sous-Map a importer manquant");
 
 					// Lecture de la translation à appliquer à la Map
 					float translation[3];
@@ -521,6 +543,45 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 						map.add(*entry);
 						delete entry;
 					}
+				}
+			}
+		}
+
+		// Lecture des moteurs de particules
+		{
+			TiXmlElement* elEntry = elMap->FirstChildElement(Xml::PARTICULES_ENGINES);
+
+			if(elEntry) {
+				for(TiXmlElement* el=elEntry->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
+					if(strcmp(Xml::NEIGE, el->Value())) {
+						Xml::throwCorruptedMapFileException(Xml::NEIGE, el->Value());
+					}
+
+					// Lecture du nombre de particules à afficher
+					int nbrParticules;
+
+					if(!el->Attribute(Xml::NBR_PARTICULES, &nbrParticules))		// Lecture nom de la Map à importer
+						throw CErreur("Fichier Map corrompu : Nombre de particules du moteur manquant");
+
+					// Lecture de la position du moteur de neige
+					float position[3];
+					if(!Xml::Lit3fv(el, Xml::POSITION, Xml::X, Xml::Y, Xml::Z, position)) {
+						position[0] = 0.0;
+						position[1] = 0.0;
+						position[2] = 0.0;
+					}
+
+					// Lecture des dimensions du moteur de neige
+					float dimension[3];
+					if(!Xml::Lit3fv(el, Xml::DIMENSION, Xml::X, Xml::Y, Xml::Z, dimension)) {
+						dimension[0] = 0.0;
+						dimension[1] = 0.0;
+						dimension[2] = 0.0;
+					}
+
+					CV3D posMoteurParticulesNeige(position[0], position[1], position[2]);
+					CV3D tailleMoteurParticulesNeige(dimension[0], dimension[1], dimension[2]);
+					map.add(new CMoteurParticulesNeige(nbrParticules, posMoteurParticulesNeige, tailleMoteurParticulesNeige));
 				}
 			}
 		}
@@ -610,40 +671,46 @@ void CMap::freePlugins() {
 
 void CMap::initGL() {
 	// Letcure des fichiers de texture
-	vector<CMaterial*>::iterator iterMat;
-
-	for( iterMat=m_TabMaterial.begin() ; iterMat!=m_TabMaterial.end() ; iterMat++ ) {
-		CMaterial* material = *iterMat;
+	for(CMaterial* material : m_TabMaterial) {
 		material->initGL();
 	}
 
 	// Initialisation des object géométriques dans le contexte OpenGL
-	vector<CGeo*>::iterator iterGeo;
-
-	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++) {
-		CGeo* geo = (*iterGeo);
+	for(CGeo* geo : m_TabGeo) {
 		geo->initGL();
+	}
+
+	// Letcure des moteurs de particules
+	for(CMoteurParticules *engine : _particulesEngines) {
+		engine->initGL();
 	}
 
 	_isGlActivated = true;	// Indique que les éléments OpenGL de la MAP ont bien été initialisés
 }
 
 void CMap::freeGL() {
-	// Initialisation des object géométriques dans le contexte OpenGL
-	vector<CGeo*>::iterator iterGeo;
+	// Letcure des moteurs de particules
+	for(CMoteurParticules *engine : _particulesEngines) {
+		engine->freeGL();
+	}
 
-	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++) {
-		CGeo* geo = (*iterGeo);
+	// Initialisation des object géométriques dans le contexte OpenGL
+	for(CGeo* geo : m_TabGeo) {
 		geo->freeGL();
+	}
+
+	// Letcure des fichiers de texture
+	for(CMaterial* material : m_TabMaterial) {
+		material->freeGL();
 	}
 
 	_isGlActivated = false;
 }
 
 bool CMap::Save(const string nomFichier) {
-LOGDEBUG(("CMap::Save() %T", this ));
+	LOGDEBUG(("CMap::Save() %T", this ));
 
-		// CREATION DES FICHIERS
+	// CREATION DES FICHIERS
 	string nomFichierMap = "./map/" + nomFichier + ".map.xml";
 
 	// Initialisation du doc XML
@@ -698,7 +765,7 @@ LOGDEBUG(("CMap::Save() %T", this ));
 
 	cout << endl << "Sauvegarde du fichier MAP Ok !!";
 
-LOGDEBUG(("CMap::SaveFichierMap() Sauvegarde du fichier MAP Ok%T", this ));
+	LOGDEBUG(("CMap::SaveFichierMap() Sauvegarde du fichier MAP Ok%T", this ));
 	return true;
 }
 
@@ -738,17 +805,17 @@ void CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int t
 				int y2 = y1 + tailleY/nbrY;
 
 				glBegin(GL_QUADS);
-					glTexCoord2f(0.0f, 0.0f);
-					glVertex2i(x1, 	y1);
+				glTexCoord2f(0.0f, 0.0f);
+				glVertex2i(x1, 	y1);
 
-					glTexCoord2f(1.0f, 0.0f);
-					glVertex2i(x2, 	y1);
+				glTexCoord2f(1.0f, 0.0f);
+				glVertex2i(x2, 	y1);
 
-					glTexCoord2f(1.0f, 1.0f);
-					glVertex2i(x2, 	y2);
+				glTexCoord2f(1.0f, 1.0f);
+				glVertex2i(x2, 	y2);
 
-					glTexCoord2f(0.0f, 1.0f);
-					glVertex2i(x1, 	y2);
+				glTexCoord2f(0.0f, 1.0f);
+				glVertex2i(x1, 	y2);
 				glEnd();
 
 				glDisable(GL_TEXTURE_2D);
@@ -756,10 +823,10 @@ void CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int t
 				glLineWidth(2);
 
 				glBegin(GL_LINE_LOOP);
-					glVertex2i(x1, 	y1);
-					glVertex2i(x2, 	y1);
-					glVertex2i(x2, 	y2);
-					glVertex2i(x1, 	y2);
+				glVertex2i(x1, 	y1);
+				glVertex2i(x2, 	y1);
+				glVertex2i(x2, 	y2);
+				glVertex2i(x1, 	y2);
 				glEnd();
 
 				if(++posX >= nbrX) {

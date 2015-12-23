@@ -489,19 +489,19 @@ bool CSimpleGeo::Lit(TiXmlElement* element)
 	// Nom
 	const char* nom = element->Attribute(Xml::NOM);
 	if(!nom)
-		throw CErreur(0, "Fichier Map corrompu CSimpleGeo 1");
+		throw CErreur("Fichier Map corrompu CSimpleGeo 1");
 	setName(nom);
 
 	// Type
 	const char* type = element->Attribute(Xml::TYPE);
 	if(!type)
-		throw CErreur(0, "Fichier Map corrompu CSimpleGeo 2");
+		throw CErreur("Fichier Map corrompu CSimpleGeo 2");
 	if(strcmp(type, Xml::SIMPLE))
-		throw CErreur(0, "Fichier Map corrompu CSimpleGeo 3");
+		throw CErreur("Fichier Map corrompu CSimpleGeo 3");
 
 	// Référence
 	if(!element->Attribute(Xml::REF, &ref))
-		throw CErreur(0, "Fichier Map corrompu CSimpleGeo 4");
+		throw CErreur("Fichier Map corrompu CSimpleGeo 4");
 	m_Reference = (unsigned int)ref;
 
 	// Solidité

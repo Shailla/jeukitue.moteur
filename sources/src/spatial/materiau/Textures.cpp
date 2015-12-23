@@ -39,7 +39,7 @@ Uint8* litFichierImage(const string &nomFichier, float alpha) throw(CErreur) {
 	if(image == 0) {
 		string erreur;
 		erreur = "\nErreur : Echec d'ouverture d'image de texture : " + fichier;
-		throw CErreur(0, erreur);
+		throw CErreur(erreur);
 	}
 
 	SDL_LockSurface(image);

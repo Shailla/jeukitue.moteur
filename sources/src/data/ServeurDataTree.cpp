@@ -199,7 +199,7 @@ DistantTreeProxy* ServeurDataTree::addDistant(Interlocutor2* interlocutor) {
 	return distant;
 }
 
-const vector<DistantTreeProxy*>& ServeurDataTree::getDistants() {
+vector<DistantTreeProxy*>& ServeurDataTree::getDistants() {
 	return _clients;
 }
 
@@ -280,21 +280,17 @@ void ServeurDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* bra
 
 void ServeurDataTree::diffuseChangementsToClients(void) {
 	try {
-		vector<DistantTreeProxy*>::const_iterator clientIter;
 		vector<Changement*> changements;
 
 		Uint32 now = SDL_GetTicks();
 
-		DistantTreeProxy* client;
 		Interlocutor2* interlocutor;
 		vector<Changement*>::iterator itCh;
 
 		Uint32 time;
 		saveTime(time);
 
-		for(clientIter = getDistants().begin() ; clientIter != getDistants().end() ; clientIter++) {
-			client = *clientIter;
-
+		for(DistantTreeProxy* client : getDistants()) {
 			if(now - client->getUpdateServerToClientTime() >= (Uint32)client->getControl().getUpdateServerToClientDelay()) {
 				client->setUpdateServerToClientTime(now);
 

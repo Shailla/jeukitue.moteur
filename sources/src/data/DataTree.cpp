@@ -41,8 +41,7 @@ Branche* DataTree::getBranche(DistantTreeProxy* distant, const vector<string>& b
 	Branche* branche = &_root;
 
 	for(iter = branchePath.begin() ; (iter != branchePath.end() && branche != NULL) ; iter++) {
-		string name = *iter;
-		branche = branche->getSubBrancheByName(distant, name);
+		branche = branche->getSubBrancheByName(distant, *iter);
 	}
 
 	if(branche == NULL) {

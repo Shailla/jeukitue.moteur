@@ -25,7 +25,7 @@ CMaterial* CMaterialMaker::Lit(TiXmlElement* el, string &repertoire)
 		erreur += "' attendu, '";
 		erreur += el->Value();
 		erreur += "' recu";
-		throw CErreur(0, erreur.c_str());
+		throw CErreur(erreur);
 	}
 
 	CMaterial* mat = NULL;
@@ -38,7 +38,7 @@ CMaterial* CMaterialMaker::Lit(TiXmlElement* el, string &repertoire)
 	else if(!strcmp(Xml::MULTI, type))
 		mat = new CMaterialMulti();
 	else
-		throw CErreur(0, "Fichier map corrompu");
+		throw CErreur("Fichier map corrompu");
 
 	mat->Lit(el, repertoire);
 

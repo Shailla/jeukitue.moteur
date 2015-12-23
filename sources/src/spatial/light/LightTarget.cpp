@@ -55,15 +55,15 @@ bool CLightTarget::Lit(TiXmlElement* element)
 
 	// Référence
 	if(!element->Attribute(Xml::REF, &ref))
-		throw CErreur(0, "Fichier Map corrompu : Lumiere ref");
+		throw CErreur("Fichier Map corrompu : Lumiere ref");
 	m_refLight = (int)ref;
 
 	// Type
 	type = element->Attribute(Xml::TYPE);
 	if(!type)
-		throw CErreur(0, "Fichier Map corrompu : Type lumiere manquant");
+		throw CErreur("Fichier Map corrompu : Type lumiere manquant");
 	if(strcmp(Xml::TARGET, type))
-		throw CErreur(0, "Fichier Map corrompu : Type incompatible");
+		throw CErreur("Fichier Map corrompu : Type incompatible");
 
 	// Couleurs
 	Xml::LitCouleur3fv(element, Xml::AMBIANTE, m_ColorAmbient);

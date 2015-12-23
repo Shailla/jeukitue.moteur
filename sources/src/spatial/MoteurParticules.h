@@ -14,7 +14,9 @@ public:
 	CMoteurParticules(void);
 	virtual ~CMoteurParticules(void);
 
-		// Fonctions membres
+	virtual void initGL() = 0;								// Initialisation de l'objet géométrique
+	virtual void freeGL() = 0;								// Libération des ressources de l'objet dans le contexte OpenGL
+
 	virtual void Affiche() = 0;		// Affiche l'ensemble des particules
 };
 

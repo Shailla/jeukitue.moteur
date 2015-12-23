@@ -224,7 +224,7 @@ void CTextureMaterialGeo::setOffsetMateriau(int offset)
 int CTextureMaterialGeo::getOffsetMateriau() throw(CErreur)
 {
 	if(m_OffsetMateriaux < 0) {
-		throw CErreur(0,"Tentative d'accès à m_OffsetMateriau sans initialisation");
+		throw CErreur("Tentative d'accès à m_OffsetMateriau sans initialisation");
 	}
 
 	return m_OffsetMateriaux;
@@ -240,7 +240,7 @@ void CTextureMaterialGeo::setMaterial(int ref)
 		stringstream txt;
 		txt << "Erreur (CTextureMaterialGeo::setMaterial) : Materiau introuvable 1, réf=";
 		txt << nbrMat;
-		throw CErreur(0, txt.str().c_str());
+		throw CErreur(txt);
 	}
 
 	CMaterialTexture *mat = (CMaterialTexture*)getMap()->m_TabMaterial[ nbrMat ];
@@ -250,7 +250,7 @@ void CTextureMaterialGeo::setMaterial(int ref)
 		stringstream txt;
 		txt << "Erreur (CTextureMaterialGeo::setMaterial) : Materiau introuvable 2, réf=";
 		txt << nbrMat;
-		throw CErreur(0, txt.str().c_str());
+		throw CErreur(txt);
 	}
 
 	m_Material = mat;
@@ -415,21 +415,21 @@ bool CTextureMaterialGeo::Lit(TiXmlElement* element) {
 	// Nom
 	const char* nom = element->Attribute(Xml::NOM);
 	if(!nom)
-		throw CErreur(0, "Fichier Map corrompu CTextureMaterialGeo 1");
+		throw CErreur("Fichier Map corrompu CTextureMaterialGeo 1");
 	setName(nom);
 
 	// Type
 	const char* type = element->Attribute(Xml::TYPE);
 	if(!type)
-		throw CErreur(0, "Fichier Map corrompu CTextureMaterialGeo 2");
+		throw CErreur("Fichier Map corrompu CTextureMaterialGeo 2");
 
 	if(strcmp(type, Xml::TEXTURE)) {
-		throw CErreur(0, "Fichier Map corrompu CTextureMaterialGeo 3");
+		throw CErreur("Fichier Map corrompu CTextureMaterialGeo 3");
 	}
 
 	// Référence
 	if(!element->Attribute(Xml::REF, &ref))
-		throw CErreur(0, "Fichier Map corrompu CTextureMaterialGeo 4");
+		throw CErreur("Fichier Map corrompu CTextureMaterialGeo 4");
 	m_Reference = (unsigned int)ref;
 
 	// Materiau

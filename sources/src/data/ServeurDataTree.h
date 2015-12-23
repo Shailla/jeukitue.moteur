@@ -60,7 +60,7 @@ public:
 	 * ***************************************************/
 
 	DistantTreeProxy* addDistant(Interlocutor2* interlocutor);
-	const std::vector<DistantTreeProxy*>& getDistants();
+	std::vector<DistantTreeProxy*>& getDistants();
 
 public:
 

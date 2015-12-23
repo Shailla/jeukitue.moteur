@@ -9,28 +9,10 @@ using namespace std;
 namespace JktUtils
 {
 
-CErreur::CErreur(int code, const string &msg) {
-	_code = code;
-	_msg = msg;
+CErreur::CErreur(const stringstream &message) : JktException("CErreur", message) {
 }
 
-string CErreur::toString() const {
-	string txt = "[";
-
-	// Code
-	txt += "code='";
-	txt += _code;
-	txt += "'";
-
-	// Message
-	if(_msg.length() > 0) {
-		txt += ", msg='";
-		txt += _msg + "'";
-	}
-
-	txt += "]";
-
-	return txt;
+CErreur::CErreur(const string &message) : JktException("CErreur", message) {
 }
 
 }	// JktUtils

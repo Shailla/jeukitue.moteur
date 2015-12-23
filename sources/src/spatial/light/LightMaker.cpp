@@ -20,7 +20,7 @@ CLight* CLightMaker::Lit(TiXmlElement* element)
 	else if(!strcmp(Xml::TARGET, type))
 		light = new CLightTarget();
 	else
-		throw JktUtils::CErreur(0, "Fichier Map corrompu : Lumiere de type inconnu");
+		throw JktUtils::CErreur("Fichier Map corrompu : Lumiere de type inconnu");
 
 	light->Lit(element);
 

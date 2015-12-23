@@ -1,21 +1,19 @@
 #ifndef __JKT__ERREUR_H
 #define __JKT__ERREUR_H
 
+#include <sstream>
 #include <string>
+
+#include "exception/JktException.h"
 
 namespace JktUtils
 {
 
-class CErreur		// Classe pour l'émission d'erreurs par exception
+class CErreur : public JktException		// Classe pour l'émission d'erreurs par exception
 {
 public:
-	std::string _msg;	// Message d'erreur
-	int _code;			// Code de l'erreur
-
-		// Constructeur
-	CErreur(const int code, const std::string &msg);
-
-	std::string toString() const;
+	CErreur(const std::stringstream &message);
+	CErreur(const std::string &message);
 };
 
 }	// JktUtils

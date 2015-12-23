@@ -148,6 +148,7 @@ void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloT
 	if(clientIt == _clientsOfServer.end()) {
 		Interlocutor2* clientInterlocutor = new Interlocutor2(_sendingCondition, _sendingMutex);
 		ClientOfServer* client = new ClientOfServer(address, clientInterlocutor);
+		clientInterlocutor->setName("interlocutorCstName");
 
 		client->setConnexionStatus(TechnicalInterlocutor::CONNECTED);
 		_clientsOfServer[address] = client;

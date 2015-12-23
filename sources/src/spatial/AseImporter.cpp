@@ -39,7 +39,7 @@ bool AseImporter::supprimeRepertoire(const string& repName)
 			texte << "Erreur deleteOnlyFiles(" << fichier << "," << repName << ")";
 			LOGDEBUG((texte.str().c_str() ));
 			cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-			throw CErreur(0, texte.str());
+			throw CErreur(texte);
 		}
 	}
 
@@ -70,7 +70,7 @@ bool AseImporter::supprimeRepertoire(const string& repName)
 				texte << "Erreur delDirectory(" << var << ")" << endl;
 				LOGDEBUG((texte.str().c_str() ));
 				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(0, texte.str());
+				throw CErreur(texte);
 			}
 
 			if(!CFindFolder::chmod( var.c_str(), true, true)) {
@@ -78,7 +78,7 @@ bool AseImporter::supprimeRepertoire(const string& repName)
 				texte << "Erreur CFindFolder::chmod(" << repName << ")" << endl;
 				LOGDEBUG((texte.str().c_str() ));
 				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(0, texte.str());
+				throw CErreur(texte);
 			}
 
 			if( CFindFolder::rmdir( var.c_str() ) ) {
@@ -86,7 +86,7 @@ bool AseImporter::supprimeRepertoire(const string& repName)
 				texte << "Erreur CFindFolder::rmdir( " << var << ")";
 				LOGDEBUG((texte.str().c_str() ));
 				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(0, texte.str());
+				throw CErreur(texte);
 			}
 		}
 	}
@@ -110,7 +110,7 @@ bool AseImporter::delDirectory(const string &path) {
 			texte << "Erreur deleteOnlyFiles(" << fichier << "," << path << ")";
 			LOGDEBUG((texte.str().c_str() ));
 			cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-			throw CErreur(0, texte.str());
+			throw CErreur(texte);
 		}
 	}
 
@@ -142,7 +142,7 @@ bool AseImporter::delDirectory(const string &path) {
 				texte << "Erreur delDirectory(" << var << ")";
 				LOGDEBUG((texte.str().c_str() ));
 				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(0, texte.str());
+				throw CErreur(texte);
 			}
 
 			if(!CFindFolder::chmod( var.c_str(), true, true )) {
@@ -150,7 +150,7 @@ bool AseImporter::delDirectory(const string &path) {
 				texte << endl << "MOpenASE::delDirectory(" << path << ")" << endl;
 				LOGDEBUG((texte.str().c_str() ));
 				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(0, texte.str());
+				throw CErreur(texte);
 			}
 
 			if(CFindFolder::rmdir(var.c_str())) {
@@ -158,7 +158,7 @@ bool AseImporter::delDirectory(const string &path) {
 				texte << "\nErreur _rmdir : " << var;
 				LOGDEBUG((texte.str().c_str() ));
 				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(0, texte.str());
+				throw CErreur(texte);
 			}
 		}
 	}
@@ -179,7 +179,7 @@ bool AseImporter::deleteOnlyFiles(string &fichier, const string& path )
 				texte << "Erreur remove(" << var << ")";
 				LOGDEBUG((texte.str().c_str() ));
 				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(0, texte.str());
+				throw CErreur(texte);
 			}
 		}
 	}
@@ -219,7 +219,7 @@ int AseImporter::importAse(void* arg)
 		{
 			LOGDEBUG(("Erreur : Lecture du fichier ASE impossible ou fichier corrompu 1" ));
 			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Lecture du fichier ASE impossible ou fichier corrompu 1";
-			throw CErreur(0, "Erreur : Lecture du fichier ASE impossible ou fichier corrompu 1");
+			throw CErreur("Erreur : Lecture du fichier ASE impossible ou fichier corrompu 1");
 		}
 
 		console->addMsg("Ajustement dimensions / orientation...");
@@ -244,7 +244,7 @@ int AseImporter::importAse(void* arg)
 				{
 					LOGDEBUG(("Erreur a la copie d'un fichier de texture" ));
 					cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur a la copie d'un fichier de texture";
-					throw CErreur(0, "Erreur a la copie d'un fichier de texture");
+					throw CErreur("Erreur a la copie d'un fichier de texture");
 				}
 			}
 			else if( mat->Type()==CMaterial::MAT_TYPE_MULTI )
@@ -258,7 +258,7 @@ int AseImporter::importAse(void* arg)
 						{
 							LOGDEBUG(("Erreur a la copie d'un fichier de texture" ));
 							cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur a la copie d'un fichier de texture";
-							throw CErreur(0, "Erreur a la copie d'un fichier de texture");
+							throw CErreur("Erreur a la copie d'un fichier de texture");
 						}
 					}
 				}
@@ -277,7 +277,7 @@ int AseImporter::importAse(void* arg)
 		}
 
 		stringstream consoleMsg;
-		consoleMsg << "Erreur : " << erreur.toString();
+		consoleMsg << "Erreur : " << erreur.what();
 		console->addMsg(consoleMsg.str());
 
 		console->addMsg("Import interrompu.");
@@ -316,7 +316,7 @@ bool AseImporter::copieTexture( CMaterialTexture *mat,
 		texte << "\nErreur : Echec d'ouverture du fichier de texture (" << nom << ")";
 		LOGDEBUG((texte.str().c_str() ));
 		cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str().c_str();
-		throw CErreur(0, texte.str());
+		throw CErreur(texte);
 	}
 		// Récupération du nom du fichier sans son chemin
 	index = nom.find_last_of( "/" );		// Recherche du dernier slach
@@ -338,7 +338,7 @@ bool AseImporter::copieTexture( CMaterialTexture *mat,
 		texte << "Erreur : Echec de creation du fichier de texture ( " << nom << " )";
 		LOGDEBUG((texte.str().c_str() ));
 		cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str().c_str();
-		throw CErreur(0, texte.str());
+		throw CErreur(texte);
 	}
 
 		// Copie du fichier proprement dite
@@ -351,7 +351,7 @@ bool AseImporter::copieTexture( CMaterialTexture *mat,
 		texte << "Echec de copie du fichier de texture (" << nom << ")";
 		LOGDEBUG((texte.str().c_str() ));
 		cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str().c_str();
-		throw CErreur(0, texte.str());
+		throw CErreur(texte);
 	}
 
 LOGDEBUG(("copieTexture() Ok" ));

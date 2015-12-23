@@ -24,8 +24,12 @@ const char* Xml::LOAD = "Load";
 // Imports
 const char* Xml::IMPORT = "Import";
 
-// Points d'entrée joeurs
-const char* Xml::ENTRYPOINT = "EntryPoint";
+// Objets
+const char* Xml::ENTRYPOINT = "EntryPoint";		// Points d'entrée des joueurs
+
+const char* Xml::PARTICULES_ENGINES = "ParticulesEngines";
+const char* Xml::NEIGE = "Neige";					// Moteur de particules de neige
+const char* Xml::NBR_PARTICULES = "NbrParticules";	// Nombre de particules à afficher dans le moteur de neige
 
 // Opérations
 const char* Xml::SCALE = "Scale";
@@ -66,7 +70,9 @@ const char* Xml::OMNI = "Omni";
 const char* Xml::TARGET = "Target";
 
 // Spatial
+const char* Xml::DIMENSION = "Dimension";
 const char* Xml::DIRECTION = "Direction";
+const char* Xml::POSITION = "Position";
 const char* Xml::X = "X";
 const char* Xml::Y = "Y";
 const char* Xml::Z = "Z";
@@ -76,7 +82,6 @@ const char* Xml::V = "V";
 // Couleur
 const char* Xml::AMBIANTE = "Ambiante";
 const char* Xml::DIFFUSE = "Diffuse";
-const char* Xml::POSITION = "Position";
 const char* Xml::SPECULAR = "Specular";
 
 const char* Xml::R = "R";
@@ -100,7 +105,7 @@ void Xml::throwCorruptedMapFileException(const char* expected, const char* value
 	erreur += "' attendu, mais '";
 	erreur += value;
 	erreur += "' trouve";
-	throw CErreur(0, erreur);
+	throw CErreur(erreur);
 }
 
 void Xml::SaveElement(TiXmlElement* element, const char* name, float valeur) {
@@ -142,19 +147,19 @@ bool Xml::Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char*
 	double x1, x2, x3;
 
 	if(!el)
-		throw CErreur(0, "Fichier map corrompu : Lit3fv ");
+		throw CErreur("Fichier map corrompu : Lit3fv ");
 
 	TiXmlElement *elLig = el->FirstChildElement(name);
 
 	if(elLig) {
 		if(!elLig->Attribute(X1, &x1))
-			throw CErreur(0, "Xml::LitCouleur3fv> Fichier map corrompu : Lit3fv X1");
+			throw CErreur("Xml::LitCouleur3fv> Fichier map corrompu : Lit3fv X1");
 
 		if(!elLig->Attribute(X2, &x2))
-			throw CErreur(0, "Xml::LitCouleur3fv>Fichier map corrompu : Lit3fv X2");
+			throw CErreur("Xml::LitCouleur3fv>Fichier map corrompu : Lit3fv X2");
 
 		if(!elLig->Attribute(X3, &x3))
-			throw CErreur(0, "Xml::LitCouleur3fv>Fichier map corrompu : Lit3fv X3");
+			throw CErreur("Xml::LitCouleur3fv>Fichier map corrompu : Lit3fv X3");
 
 		valeur[0] = (float)x1;
 		valeur[1] = (float)x2;
@@ -184,10 +189,10 @@ unsigned int Xml::LitMaterialRef(TiXmlElement* el) {
 	TiXmlElement* elMat = el->FirstChildElement(Xml::MATERIAU);
 
 	if(!elMat)
-		throw CErreur(0, "Fichier Map corrompu : LitMaterialRef 1");
+		throw CErreur("Fichier Map corrompu : LitMaterialRef 1");
 
 	if(!elMat->Attribute(Xml::REF, &ref))
-		throw CErreur(0, "Fichier Map corrompu : LitMaterialRef 2");
+		throw CErreur("Fichier Map corrompu : LitMaterialRef 2");
 
 	return (unsigned int)ref;
 }
@@ -197,10 +202,10 @@ double Xml::LitValeur(TiXmlElement* el, const char* name) {
 	TiXmlElement* elVal = el->FirstChildElement(name);
 
 	if(!elVal)
-		throw CErreur(0, "Fichier Map corrompu : LitValeur 1");
+		throw CErreur("Fichier Map corrompu : LitValeur 1");
 
 	if(!elVal->Attribute(Xml::VALEUR, &valeur))
-		throw CErreur(0, "Fichier Map corrompu : LitValeur 2");
+		throw CErreur("Fichier Map corrompu : LitValeur 2");
 
 	return valeur;
 }
@@ -210,19 +215,19 @@ bool Xml::LitSolidite(TiXmlElement* el) {
 	bool solidite;
 
 	if(!elSol)
-		throw CErreur(0, "Fichier Map corrompu : solidite");
+		throw CErreur("Fichier Map corrompu : solidite");
 
 	const char* sol = elSol->Attribute(Xml::VALEUR);
 
 	if(!sol)
-		throw CErreur(0, "Fichier Map corrompu : solidite");
+		throw CErreur("Fichier Map corrompu : solidite");
 
 	if(!strcmp(sol, Xml::VRAI))
 		solidite = true;
 	else if(!strcmp(sol, Xml::FAUX))
 		solidite = false;
 	else
-		throw CErreur(0, "Fichier Map corrompu : solidite");
+		throw CErreur("Fichier Map corrompu : solidite");
 
 	return solidite;
 }

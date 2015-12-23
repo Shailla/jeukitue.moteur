@@ -410,8 +410,10 @@ void Controller::executeAction(AG_Event *event) {
 					AseImporter::lanceImportAse(aseName, console);
 				}
 				catch(CErreur& erreur) {
+					LOGWARN(("Echec d'import ASE : %s", erreur.what()));
+
 					stringstream texte;
-					texte << "Echec d'import ASE : " << erreur.toString();
+					texte << "Echec d'import ASE : " << erreur.what();
 					AG_TextMsg(AG_MSG_ERROR, texte.str().c_str());
 				}
 			}
@@ -436,8 +438,10 @@ void Controller::executeAction(AG_Event *event) {
 				AseImporter::lanceImportAse(aseName, console);
 			}
 			catch(CErreur &erreur) {
+				LOGWARN(("Echec d'import ASE : %s", erreur.what()));
+
 				stringstream texte;
-				texte << "Echec d'import ASE : " << erreur.toString();
+				texte << "Echec d'import ASE : " << erreur.what();
 				AG_TextMsg(AG_MSG_ERROR, texte.str().c_str());
 			}
 		}

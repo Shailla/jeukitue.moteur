@@ -25,25 +25,27 @@ class CPorte;
 class CNavette;
 class CGeoObject;
 class EntryPoint;
+class CMoteurParticules;
 
 class CMap : CGeo {
 	static const char* identifier;
 	string tostring;
 
-	string _filename;						// Nom du fichier de la Map (par exemple "Monde.map.xml")
-	string _binariesDirectory;				// Répertoires des binaires de la Map (textures, plugins, ...)
+	string _filename;								// Nom du fichier de la Map (par exemple "Monde.map.xml")
+	string _binariesDirectory;						// Répertoires des binaires de la Map (textures, plugins, ...)
 	vector<Dirigeable*> _dirigeables;
-	vector<CGeo*> m_TabGeo;					// Liste des objets géométriques
-	vector<CMouve*> m_TabMouve;				// Liste des objets nécessitant une actualisation (portes,...)
-	vector<EntryPoint> _entryPoints;		// Liste des points d'entrée des joueurs sur la Map
-	vector<CLight*> m_TabLight;				// Liste des lumières
-	vector<string> _plugins;				// Liste des plugins de la Map
+	vector<CGeo*> m_TabGeo;							// Liste des objets géométriques
+	vector<CMouve*> m_TabMouve;						// Liste des objets nécessitant une actualisation (portes,...)
+	vector<EntryPoint> _entryPoints;				// Liste des points d'entrée des joueurs sur la Map
+	vector<CMoteurParticules*> _particulesEngines;	// Liste des moteurs de particules de la Map
+	vector<CLight*> m_TabLight;						// Liste des lumières
+	vector<string> _plugins;						// Liste des plugins de la Map
 
-	int m_Selection;						// Object géo sélectionné
-	bool m_bSelection;						// Indique si le mode sélection est actif ou non
+	int m_Selection;								// Object géo sélectionné
+	bool m_bSelection;								// Indique si le mode sélection est actif ou non
 
-	bool _isGlActivated;					// Indique si les éléments OpenGL de la MAP ont été initialisés
-	bool _isPluginsActivated;				// Indique si les plugins de la MAP ont été initialisés
+	bool _isGlActivated;							// Indique si les éléments OpenGL de la MAP ont été initialisés
+	bool _isPluginsActivated;						// Indique si les plugins de la MAP ont été initialisés
 
 	void afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
 public:
@@ -93,12 +95,12 @@ public:
 	void afficheToutesTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex);
 
 	void add(Dirigeable* dirigeable);
-	void add(CGeo *geo);			// Ajoute un GeoObject à la map
-	void add(CMaterial *mat);		// Ajoute un matériau à la map
-	void add(CLight *light);		// Ajoute une lumière à la map
-
-	void add(CPorte *porte);		// Ajoute une porte à la map
-	void add(CNavette *navette);	// Ajoute une navette à la map
+	void add(CGeo *geo);					// Ajoute un GeoObject à la map
+	void add(CMaterial *mat);				// Ajoute un matériau à la map
+	void add(CLight *light);				// Ajoute une lumière à la map
+	void add(CPorte *porte);				// Ajoute une porte à la map
+	void add(CNavette *navette);			// Ajoute une navette à la map
+	void add(CMoteurParticules* engine);	// Ajoute un moteur de particules à la map
 
 	// Transformations
 	void EchangeXY();										// Echange les coordonnées X et Y des objets géo du map

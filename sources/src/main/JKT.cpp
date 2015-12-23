@@ -104,9 +104,6 @@ class CGame;
 #include "main/RequeteProcess.h"
 #include "main/Game.h"
 #include "util/V3D.h"
-#include "spatial/Particule.h"
-#include "spatial/MoteurParticules.h"
-#include "spatial/MoteurParticulesNeige.h"
 #include "reseau/NetworkManager.h"
 #include "reseau/enumReseau.h"
 #include "menu/Controller.h"
@@ -192,7 +189,6 @@ float delta = 0.0;
 extern CFocus *pFocus;				// Gestion du focus
 extern bool Aide;					// Indique que le menu d'aide est actif
 
-CMoteurParticules* moteurParticulesNeige;
 unsigned int frpsTimer = 0, frpTimer = 0;
 
 CMachin *machin;	// Pour tester le son 3D
@@ -591,16 +587,6 @@ void display() {		// Fonction principale d'affichage
 
 		if( Game.Erwin() )
 			updateSon3D();	// Positionne le joueur et les objets bruyants dans l'espace sonore
-
-		// AFFICHAGE DES PARTICULES
-		glEnable( GL_BLEND );
-		glDepthMask( GL_FALSE );
-		glBlendFunc( GL_SRC_ALPHA, GL_ONE );
-
-		moteurParticulesNeige->Affiche();	// Le moteur de particules affiche toutes ses particules
-
-		glDisable( GL_BLEND );
-		glDepthMask( GL_TRUE );
 	}
 
 
@@ -1638,7 +1624,7 @@ void boucle() {
 					ServeurDataTree* serverDataTree = Game.getServerDataTree();
 
 					if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
-						DistantTreeProxy* distant = serverDataTree->addDistant(newInterlocutor);
+						serverDataTree->addDistant(newInterlocutor);
 					}
 				}
 			}
@@ -1812,13 +1798,6 @@ int main(int argc, char** argv) {
 	// Initialisation de la classe CRocket, réfléchir oû mettre cette initialisation
 	if( !CRocket::INIT_CLASSE() )
 		return 1;	// Erreur fatale si CRocket ne peut être initialisée
-
-
-	// Mise en place du moteur de particules pour la neige, réfléchir où mettre ça
-	CV3D posMoteurParticulesNeige( -2.35f, 1.5f, 0.0f );
-//	CV3D tailleMoteurParticulesNeige(3.0f, 3.0f, 3.0f);
-	CV3D tailleMoteurParticulesNeige(3.0f, 3.0f, 3.0f);
-	moteurParticulesNeige = new CMoteurParticulesNeige(10000, posMoteurParticulesNeige, tailleMoteurParticulesNeige);
 
 	// Délai d'attente aprés l'intro du jeu, je sais plus à quoi il sert
 	SDL_Delay( 1000 );

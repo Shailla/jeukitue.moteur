@@ -100,7 +100,7 @@ ifstreamWork& ifstreamWork::operator>>( string &mot )
 			{
 				string erreur;
 				erreur = "\nErreur : #include " + nomInclude + " -> Impossible";
-				throw JktUtils::CErreur( 0, erreur );
+				throw JktUtils::CErreur(erreur );
 			}
 
 			if( !(next->operator >>( mot )) )

@@ -62,56 +62,56 @@ void CPointNavette::LitFichierPoint( CIfstreamMap &fichier )
 		string erreur( "\nFin de fichier prematuree (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
-		throw CErreur( 0, erreur );
+		throw CErreur(erreur);
 	}
 	if( mot!="Vitesse" )
 	{
 		string erreur( "\nFichier corrompu (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
-		throw CErreur( 0, erreur );
+		throw CErreur(erreur);
 	}
 	if( !( fichier>>m_Vitesse ) )
 	{
 		string erreur( "\nFin de fichier prematuree (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
-		throw CErreur( 0, erreur );
+		throw CErreur(erreur);
 	}
 	if( !( fichier>>mot ) )		// Lecture de la distance parcourue par la navette lors de son ouverture
 	{
 		string erreur( "\nFin de fichier prematuree (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
-		throw CErreur( 0, erreur );
+		throw CErreur(erreur);
 	}
 	if( mot!="Position" )
 	{
 		string erreur( "\nFichier corrompu (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
-		throw CErreur( 0, erreur );
+		throw CErreur(erreur);
 	}
 	if( !( fichier>>m_Position.X ) )
 	{
 		string erreur( "\nFin de fichier prematuree (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
-		throw CErreur( 0, erreur );
+		throw CErreur(erreur);
 	}
 	if( !( fichier>>m_Position.Y ) )
 	{
 		string erreur( "\nFin de fichier prematuree (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
-		throw CErreur( 0, erreur );
+		throw CErreur(erreur);
 	}
 	if( !( fichier>>m_Position.Z ) )
 	{
 		string erreur( "\nFin de fichier prematuree (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
-		throw CErreur( 0, erreur );
+		throw CErreur(erreur);
 	}
 }
 

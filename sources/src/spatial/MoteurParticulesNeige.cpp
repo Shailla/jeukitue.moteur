@@ -24,6 +24,36 @@ namespace JktMoteur
 #define CSTE_K	1.0f
 #define TAILLE_TEX 0.04f		// Dimension de la texture carrée de la particule
 
+CMoteurParticulesNeige::CMoteurParticulesNeige(unsigned int nbrParticules, CV3D position, CV3D taille)
+	:CMoteurParticules()
+{
+LOGDEBUG(("CMoteurParticulesNeige::CMoteurParticulesNeige(pos_centre,nbr=%u) begin%T", nbrParticules, this ));
+	_centre = position;
+	_taille = taille;
+	_nbrParticules = nbrParticules;
+	_particules = new CParticule[nbrParticules];	// Liste des particules du moteur
+
+	_lastTempsNew = SDL_GetTicks();
+	_vitesse.X = _vitesse.Y = _vitesse.Z = 0.0f;
+
+	for(unsigned int i=0 ; i<nbrParticules ; i++)	{	// Initialisation des particules
+		_particules[i].position = getRandomParticulePosition();
+		_particules[i].vitesse = _vitesse;
+		_particules[i].duree2vie = 10000;
+
+		_particules[i].acceleration.X = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
+		_particules[i].acceleration.Y = -0.0001f - 0.0005f * ((float)rand() / (float)RAND_MAX);
+		_particules[i].acceleration.Z = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
+		_particules[i].visible = true;
+		_particules[i].date2naissance = _lastTempsNew - ((float)rand() / (float)RAND_MAX)*10000;
+	}
+LOGDEBUG(("CMoteurParticulesNeige::CMoteurParticulesNeige() end%T", this ));
+}
+
+CMoteurParticulesNeige::~CMoteurParticulesNeige() {
+	delete[] _particules;
+}
+
 CV3D CMoteurParticulesNeige::getRandomParticulePosition() {
 	CV3D randomPosition;
 	randomPosition.X = _centre.X + (_taille.X * (((float)rand() / (float)RAND_MAX) - 0.5f));
@@ -33,30 +63,12 @@ CV3D CMoteurParticulesNeige::getRandomParticulePosition() {
 	return randomPosition;
 }
 
-CMoteurParticulesNeige::CMoteurParticulesNeige(unsigned int nbr, CV3D position, CV3D taille)
-	:CMoteurParticules()
-{
-LOGDEBUG(("CMoteurParticulesNeige::CMoteurParticulesNeige(pos_centre,nbr=%u) begin%T", nbr, this ));
-	nbrParticules = nbr;		// Nombre de particules du moteur
-	_centre = position;
-	_taille = taille;
-	ListeParticules = new CParticule[nbr];	// Liste des particules du moteur
-	GenereTextureParticule();	// Génère la texture affichée pour les particules
-	lastTempsNew = SDL_GetTicks();
-	_vitesse.X = _vitesse.Y = _vitesse.Z = 0.0f;
+void CMoteurParticulesNeige::initGL() {
+	GenereTextureParticule();
+}
 
-	for(unsigned int i=0 ; i<nbr ; i++)	{	// Initialisation des particules
-		ListeParticules[i].position = getRandomParticulePosition();
-		ListeParticules[i].vitesse = _vitesse;
-		ListeParticules[i].duree2vie = 10000;
-
-		ListeParticules[i].acceleration.X = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
-		ListeParticules[i].acceleration.Y = -0.0001f - 0.0005f * ((float)rand() / (float)RAND_MAX);
-		ListeParticules[i].acceleration.Z = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
-		ListeParticules[i].visible = true;
-		ListeParticules[i].date2naissance = lastTempsNew - ((float)rand() / (float)RAND_MAX)*10000;
-	}
-LOGDEBUG(("CMoteurParticulesNeige::CMoteurParticulesNeige() end%T", this ));
+void CMoteurParticulesNeige::freeGL() {
+	glDeleteTextures(1, &_texName);
 }
 
 void CMoteurParticulesNeige::GenereTextureParticule() {
@@ -84,20 +96,20 @@ LOGDEBUG(("CMoteurParticulesNeige::GenereTextureParticule() begin%T", this ));
 		}
 	}
 
-	glGenTextures(1, &texName);
-	glBindTexture(GL_TEXTURE_2D, texName);
+	glGenTextures(1, &_texName);
+	glBindTexture(GL_TEXTURE_2D, _texName);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 
 	delete[] pixels;
 
-LOGDEBUG(("CMoteurParticulesNeige::GenereTextureParticule() Texture neige : %d end%T", texName, this ));
+LOGDEBUG(("CMoteurParticulesNeige::GenereTextureParticule() Texture neige : %d end%T", _texName, this ));
 }
 
 void CMoteurParticulesNeige::Affiche() {
 	CV3D Var, accRND;
-	CParticule *particule;
+	CParticule* particule;
 
 	// Calcul du plan orthogonal à l'axe de la vue
 	GLfloat mat[16];
@@ -107,14 +119,17 @@ void CMoteurParticulesNeige::Affiche() {
 	CV3D a, b, c, d;
 
 	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texName);
+	glBindTexture(GL_TEXTURE_2D, _texName);
 
 	unsigned int now = SDL_GetTicks();
 
 	glBegin(GL_QUADS);
 
-	for(unsigned int i=0 ; i<nbrParticules ; i++) {
-		particule = &ListeParticules[i];
+	for(unsigned int i=0 ; i<_nbrParticules ; i++) {
+		particule = &_particules[i];
+
+		cout << particule->position.Y;
+		cout << particule->visible;
 
 		if( (particule->position.Y>-0.205f) && particule->visible ) {
 			particule->Calcule();		// Calcule les paramètres
@@ -126,9 +141,9 @@ void CMoteurParticulesNeige::Affiche() {
 		{
 			particule->visible = false;
 
-			if(now-lastTempsNew > 5)	// Temps min séparant la renaissance de 2 particules
+			if(now-_lastTempsNew > 5)	// Temps min séparant la renaissance de 2 particules
 			{
-				lastTempsNew = now;	// Date la dernière renaissance de particule
+				_lastTempsNew = now;	// Date la dernière renaissance de particule
 
 				CV3D posRND;
 				posRND.X = 3.0f*((float)rand()/(float)RAND_MAX-0.5f);

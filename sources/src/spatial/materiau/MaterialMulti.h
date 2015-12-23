@@ -23,7 +23,8 @@ public:
 	~CMaterialMulti();
 
 		// Fonctions membres
-	void initGL();
+	void initGL() override;
+	void freeGL() override;
 	void NbrTex(int nbr);		// Renseigne le nombre de sous-matériaux
 	int NbrTex();				// Renvoie le nombre de sous-matériaux
 	CMaterial* getMat(int i);	// Renvoie le sous-matériau d'index i

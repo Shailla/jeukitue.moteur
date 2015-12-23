@@ -128,7 +128,7 @@ LOGDEBUG(("CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(), thi
 		_map = new JktMoteur::CMap(0, nomFichierMap);
 	}
 	catch(JktUtils::CErreur& erreur) {
-		cerr << endl << __FILE__ << ":" << __LINE__ <<  " " << erreur.toString() << endl;
+		LOGERROR(("Echec d'ouverture de la Map '%s' : %s", nomFichierMap.c_str(), erreur.what()));
 		result = false;
 	}
 

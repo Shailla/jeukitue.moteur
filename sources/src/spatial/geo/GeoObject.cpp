@@ -592,7 +592,7 @@ void CGeoObject::translate( float x, float y, float z ) {
 int CGeoObject::getOffsetMateriau() throw(CErreur)
 {
 	if(m_OffsetMateriau < 0) {
-		throw CErreur(0,"m_OffsetMateriau non initialisé");
+		throw CErreur("m_OffsetMateriau non initialisé");
 	}
 
 	return m_OffsetMateriau;

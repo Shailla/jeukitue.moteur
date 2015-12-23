@@ -101,7 +101,7 @@ CIfstreamMap& CIfstreamMap::operator >>( string &mot )
 			{
 				string erreur;
 				erreur = "\nErreur : #include " + nomInclude + " -> Impossible";
-				throw CErreur( 0, erreur );
+				throw CErreur(erreur );
 			}
 
 			if( !(next->operator >>( mot )) )

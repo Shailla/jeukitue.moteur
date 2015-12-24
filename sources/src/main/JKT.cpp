@@ -1283,17 +1283,21 @@ void executeJktRequests() {
 	{
 		Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
 
+
+		/* *****************************************
+		 * Fermeture Map courante
+		 * ****************************************/
+
 		// Fermeture de la MAP courante et destruction des joueurs
-		CMap* currentMap = Game.getMap();
-		if(currentMap) {
-			currentMap->freePlugins();
-			currentMap->freeGL();
-			Game.changeActiveMap(NULL);
-		}
+		Game.quitCurrentMap();
 
-		Game.Erwin(NULL);
-
+		Game.Erwin(0);
 		Game.deletePlayers();
+
+
+		/* *****************************************
+		 * Ouverture Map serveur
+		 * ****************************************/
 
 		Game.setModeLocal();
 
@@ -1381,6 +1385,21 @@ void executeJktRequests() {
 	{
 		Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
 
+		/* *****************************************
+		 * Fermeture Map courante
+		 * ****************************************/
+//		La fermeture de la Map courante est actuellement faite dans Client.cpp, voir SERVEUR_ACK / JKT_STATUT_CLIENT_DEMJTG
+//		// Fermeture de la MAP courante et destruction des joueurs
+//		Game.quitCurrentMap();
+//
+//		Game.Erwin(NULL);
+//		Game.deletePlayers();
+
+
+		/* *****************************************
+		 * Ouverture Map client
+		 * ****************************************/
+
 		// Connexion du client
 		Game.setModeClient();
 
@@ -1457,16 +1476,21 @@ void executeJktRequests() {
 	{
 		Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
 
+
+		/* *****************************************
+		 * Fermeture Map courante
+		 * ****************************************/
+
 		// Fermeture de la MAP courante et destruction des joueurs
-		CMap* currentMap = Game.getMap();
-		if(currentMap) {
-			currentMap->freeGL();
-			Game.changeActiveMap(NULL);
-		}
+		Game.quitCurrentMap();
 
-		Game.Erwin(NULL);
-
+		Game.Erwin(0);
 		Game.deletePlayers();
+
+
+		/* *****************************************
+		 * Ouverture Map serveur
+		 * ****************************************/
 
 		// Création de l'arbre des données du serveur
 		Game.setModeServer();

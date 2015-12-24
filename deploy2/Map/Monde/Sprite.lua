@@ -26,7 +26,7 @@ nextColorsB = {}
 function onLoad()
 	log("Version Lua A : " .. _VERSION)
 	
-	if (isModeServer() or isModeLocal()) then
+	if (isGameModeServer() or isGameModeLocal()) then
 		log("Jeu en mode serveur ou local => initialisation des sprites");
 		
 		mapDataTree = getDataTree();
@@ -194,7 +194,7 @@ function updateVitPos(index)
 		colorG:setValue(nextColorG:getValue());
 		colorB:setValue(nextColorB:getValue());
 
-		if (isModeServer() or isModeLocal()) then		
+		if (isGameModeServer() or isGameModeLocal()) then		
 			-- Calcule les prochaines vitesses et couleurs
 			nextVitX:setValue(0.001+0.05*math.random());
 			nextVitY:setValue(0.001+0.05*math.random());

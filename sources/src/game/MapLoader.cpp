@@ -242,12 +242,10 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 		player->Skin(pMapJoueur);
 		player->setCri( cri1.c_str() );					// Cri du joueur
 		player->init();
-
-		// TODO l'initialisation du spa des player n'est pas faite, est-elle nécessaire ?
 	}
 
 	console->println(ConsoleView::COT_INFO, "Partie chargee");
-	LOGINFO(("Partie chargee"));
+	LOGINFO(("Partie chargée"));
 
 	Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_OUVERTURE);
 
@@ -321,8 +319,6 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 		erwin->setCri( cri1.c_str() );				// Cri du joueur
 		erwin->nom("ERWIN");
 		erwin->init();								// Initialise certaines données
-
-		// TODO initialiser le spa d'Erwin pour éviter un bug : erwin->spa.open(ip);
 
 		gameDto->setErwin(erwin);
 	}

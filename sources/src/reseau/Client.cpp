@@ -391,13 +391,12 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 
 					case SERVER_ACK:	// Acceptation recue du serveur pour joindre la partie
 						if( getStatut()==JKT_STATUT_CLIENT_DEMJTG ) {
-							LOGDEBUG(("CClient::decodeNonConnecte() : Reponse JTG%T", this));
-							cout << endl << "Acceptation recue du serveur pour joindre la partie";
+							LOGINFO(("Acceptation recue du serveur pour joindre la partie"));
 
 
-							/* *************************************************************
-							 * Sortie de la partie en cours
-							 * ************************************************************/
+							/* *****************************************
+							 * Fermeture Map courante
+							 * ****************************************/
 
 							// Quitte la MAP en cours
 							Game.quitCurrentMap();
@@ -427,12 +426,13 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 							Game.createPlayerList(_spaMaitre.read16());	// Nombre max de joueurs sur le serveur
 							nbrPlayers( _spaMaitre.read16() );			// Nombre de joeurs sur le serveur
 
-							cout << endl;
-							cout << endl << "Identifiant :\t\t" << IDpersonnel;
-							cout << endl << "Nom de la MAP en cours :\t\t" << nomMAP;
-							cout << endl << "Nombre de joueurs maxi :\t\t" << Game.getMaxPlayers();
-							cout << endl << "Nombre de joueurs sur le serveur :\t" << m_uNbrPlayers;
-							cout << endl;
+							stringstream logInfoServer;
+							logInfoServer << "Informations serveur sur la Map en cours :";
+							logInfoServer << endl << "\tMap en cours :\t\t\t\t" << nomMAP;
+							logInfoServer << endl << "\tNombre maxi de joueurs :\t\t" << Game.getMaxPlayers();
+							logInfoServer << endl << "\tNombre de joueurs dans la Map :\t" << m_uNbrPlayers;
+							logInfoServer << endl << "\tVotre identifiant :\t\t\t\t" << IDpersonnel;
+							LOGINFO((logInfoServer));
 
 
 							/* *************************************************************
@@ -461,24 +461,32 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 							// Affichage des infos des joueurs
 							int curseur = -1;
 							float pos[3];
+							stringstream logPlayers;
+							logPlayers << "Joueurs de la partie :";
 
 							while((player = Game.nextPlayer(curseur))) {
-								cout << endl << curseur;
+								logPlayers << endl << "\t" << curseur;
 
 								if( curseur==IDpersonnel )	// S'il s'agit du joueur de cet ordinateur
-									cout << " *";
+									logPlayers << " *";
 
-								cout << "\t" << player->nom();
+								logPlayers << "\t" << player->nom();
 								player->getPosition( pos );
-								cout << "\t" << pos[0] << ";" << pos[1] << ";" << pos[2];
+								logPlayers << "\t" << pos[0] << ";" << pos[1] << ";" << pos[2];
 							}
+
+							LOGINFO((logPlayers));
 
 
 							/* *************************************************************
 							 * Attribution du joueur principal
 							 * ************************************************************/
 
-							Game.Erwin(Game.getPlayer(IDpersonnel));
+							CPlayer* erwin = Game.getPlayer(IDpersonnel);
+							if(!erwin) {
+								LOGERROR(("Joueur Erwin introuvable"));
+							}
+							Game.Erwin(erwin);
 
 
 							/* *************************************************************

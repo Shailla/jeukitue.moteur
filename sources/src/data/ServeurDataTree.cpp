@@ -302,7 +302,6 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 				// Emission des changements
 				if(changements.size()) {
 					for(itCh = changements.begin() ; itCh != changements.end() ; ++itCh) {
-						cout << endl << "serveur to '" << interlocutor->getName().c_str() << "' : '" << (*itCh)->toString().c_str() << "'" ;
 						LOGINFO(("serveur to '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str()));
 					}
 

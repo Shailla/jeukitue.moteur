@@ -80,7 +80,7 @@ int CServer::AjoutePlayer( CPlayer *player ) {
 	LOGDEBUG(("CServer::AjoutePlayer(player=%x)%T", player, this ));
 
 	int indexPlayer;
-	if( m_uNbrPlayers<this->maxPlayers ) {
+	if( m_uNbrPlayers < this->maxPlayers ) {
 		m_uNbrPlayers++;		// Incrémente le nbr de joueurs sur le serveur
 
 		indexPlayer = Game.addPlayer(player);	// Ajoute le joueur à la liste
@@ -150,58 +150,61 @@ void CServer::decodeProxyPlayer( CPlayer *player ) {
 bool CServer::acceptPlayer( CSPA *spa ) {
 	TRACEMETHOD();
 	bool result = true;
-	char nomNewPlayer[50];
-	CPlayer *player, *player2;
 
-	player = new CPlayer();								// Crée le réceptacle du nouveau joueur
-	player->changeAction( gravitePlayer );				// Associe au joueur une fonction de gravité
-	player->changeContact( JktMoteur::contactPlayer );	// Associe une fonction de gestion des contacts avec la map
-	spa->readChar( nomNewPlayer );						// Récupère le nom du nouveau joueur
-	player->nom( nomNewPlayer );						// Enregistre le nom du nouveau joueur
-	player->init();
+	char nomNewPlayer[50];
+	spa->readChar( nomNewPlayer );							// Récupère le nom du nouveau joueur
+
+
+	CPlayer* newPlayer = new CPlayer();						// Crée le réceptacle du nouveau joueur
+	newPlayer->changeAction( gravitePlayer );				// Associe au joueur une fonction de gravité
+	newPlayer->changeContact( JktMoteur::contactPlayer );	// Associe une fonction de gestion des contacts avec la map
+	newPlayer->nom( nomNewPlayer );							// Enregistre le nom du nouveau joueur
+	newPlayer->init();
 
 	// Ouverture d'un lien SPA et création du joueur
-	result = player->openInClientMode( spa->getPacketIn()->address );
+	result = newPlayer->openInClientMode( spa->getPacketIn()->address );
 
 	if( result ) {
-		if( SDLNet_UDP_AddSocket( socketSet, player->_spa->getSocket() )==-1 ) {
-			LOGDEBUG(("CServer::acceptPlayer() : %s%T", SDLNet_GetError(), this ));
+		if( SDLNet_UDP_AddSocket( socketSet, newPlayer->_spa->getSocket() )==-1 ) {
 			LOGERROR(("SDLNet_AddSocket : ", SDLNet_GetError()));
 
-			player->close();
-			delete player;
+			newPlayer->close();
+			delete newPlayer;
 
 			result = false;
 		}
 	}
 
 	if(result) {
-		int IDPlayer = AjoutePlayer( player );	// Ajoute le joueur pour de bon et identifie-le
+		int IDPlayer = AjoutePlayer( newPlayer );	// Ajoute le joueur pour de bon et identifie-le
 		// TODO Gérer le cas où IDPlayer vaut -1, lorsque l'ajout du joueur a échoué
 
+		LOGINFO(("Création du nouveau joueur %d:%s", IDPlayer, nomNewPlayer));
 
 		/* /////////////////////////////////////////////////////////////////////////////////
 		// Dis au client qu'il est accepté dans le jeu et donne-lui les infos de la partie
-		////////////////////////////////////////////////////////////////////////////////////*/
+		// /////////////////////////////////////////////////////////////////////////////////*/
 
-		player->_spa->init();
-		player->_spa->addCode( SERVER_JTG, SERVER_ACK );		// Acquitte la jonction du joueur à la partie
-		player->_spa->add16( (Uint16)IDPlayer );				// Envoie son identifiant au nouveau proxy-joueur
-		player->_spa->add( nomMAP );							// Envoie le nom de la MAP en cours
-		player->_spa->add16( (Uint16)maxPlayers );			// Envoie le nombre max de joueurs sur la MAP
-		player->_spa->add16( (Uint16)this->m_uNbrPlayers );	// Envoie le nombre de joueurs en cours
+		newPlayer->_spa->init();
+		newPlayer->_spa->addCode( SERVER_JTG, SERVER_ACK );		// Acquitte la jonction du joueur à la partie
+		newPlayer->_spa->add16( (Uint16)IDPlayer );				// Envoie son identifiant au nouveau proxy-joueur
+		newPlayer->_spa->add( nomMAP );							// Envoie le nom de la MAP en cours
+		newPlayer->_spa->add16( (Uint16)Game.getMaxPlayers() );			// Envoie le nombre max de joueurs sur la MAP
+		newPlayer->_spa->add16( (Uint16)Game.getNbrPlayers() );	// Envoie le nombre de joueurs en cours
 
 		// Envoie les infos concernant chaque joueur
 		int curseur = -1;
 
-		while((player2 = Game.nextPlayer(curseur))) {
-			player->_spa->add16( (Uint16)curseur );			// Envoie l'identifiant de ce proxy-joueur
-			player->_spa->add( player2->nom() );	// Envoie son nom
+		CPlayer* varPlayer;
 
-			player->_spa->addRecapFromServer( *player2 );
+		while((varPlayer = Game.nextPlayer(curseur))) {
+			newPlayer->_spa->add16( (Uint16)curseur );			// Envoie l'identifiant de ce proxy-joueur
+			newPlayer->_spa->add( varPlayer->nom() );			// Envoie son nom
+
+			newPlayer->_spa->addRecapFromServer( *varPlayer );
 		}
 
-		player->_spa->send();
+		newPlayer->_spa->send();
 	}
 
 	return result;	// OK

@@ -337,6 +337,8 @@ CPlayer *CGame::Erwin() {
 }
 
 void CGame::quitCurrentMap() {
+	LOGINFO(("Fermeture de la Map courante"));
+
 	CMap* currentMap = getMap();
 
 	if(currentMap) {
@@ -347,6 +349,8 @@ void CGame::quitCurrentMap() {
 }
 
 void CGame::deletePlayers() {
+	LOGINFO(("Suppression des joueurs"));
+
 	if(_pTabIndexPlayer) {
 		CPlayer *player;
 		int playerIndex = -1;
@@ -362,6 +366,13 @@ void CGame::deletePlayers() {
 }
 
 void CGame::Erwin(CPlayer *erwin) {
+	if(erwin) {
+		LOGINFO(("Changement de joueur Erwin"));
+	}
+	else {
+		LOGINFO(("Annulation du joueur Erwin"));
+	}
+
 	_erwin = erwin;
 }
 

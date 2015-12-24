@@ -178,7 +178,6 @@ bool CServer::acceptPlayer( CSPA *spa ) {
 	if(result) {
 		int IDPlayer = AjoutePlayer( player );	// Ajoute le joueur pour de bon et identifie-le
 		// TODO Gérer le cas où IDPlayer vaut -1, lorsque l'ajout du joueur a échoué
-		Game.Erwin( player );					// Place le nouveau joueur comme joueur principal
 
 
 		/* /////////////////////////////////////////////////////////////////////////////////

@@ -64,6 +64,58 @@ void Donnees::error(const char *txt, ... ) {
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_ERROR, TRACE_NORMAL, _line, _sourceFile, txt, vl );
 }
 
+void Donnees::debug(const string& txt, ... ) {
+	va_list vl;
+	va_start(vl, txt.c_str());
+	Trace::instance().print(TraceLevel::TRACE_LEVEL_DEBUG, TRACE_NORMAL, _line, _sourceFile, txt.c_str(), vl );
+}
+
+void Donnees::info(const string& txt, ... ) {
+	va_list vl;
+	va_start(vl, txt.c_str());
+	Trace::instance().print(TraceLevel::TRACE_LEVEL_INFO, TRACE_NORMAL, _line, _sourceFile, txt.c_str(), vl );
+}
+
+void Donnees::warn(const string& txt, ... ) {
+	va_list vl;
+	va_start(vl, txt.c_str());
+	Trace::instance().print(TraceLevel::TRACE_LEVEL_WARN, TRACE_NORMAL, _line, _sourceFile, txt.c_str(), vl );
+}
+
+void Donnees::error(const string& txt, ... ) {
+	va_list vl;
+	va_start(vl, txt.c_str());
+	Trace::instance().print(TraceLevel::TRACE_LEVEL_ERROR, TRACE_NORMAL, _line, _sourceFile, txt.c_str(), vl );
+}
+
+void Donnees::debug(const stringstream& txt, ... ) {
+	va_list vl;
+	va_start(vl, txt.str().c_str());
+	Trace::instance().print(TraceLevel::TRACE_LEVEL_DEBUG, TRACE_NORMAL, _line, _sourceFile, txt.str().c_str(), vl );
+}
+
+void Donnees::info(const stringstream& txt, ... ) {
+	va_list vl;
+	va_start(vl, txt.str().c_str());
+	Trace::instance().print(TraceLevel::TRACE_LEVEL_INFO, TRACE_NORMAL, _line, _sourceFile, txt.str().c_str(), vl );
+}
+
+void Donnees::warn(const stringstream& txt, ... ) {
+	va_list vl;
+	va_start(vl, txt.str().c_str());
+	Trace::instance().print(TraceLevel::TRACE_LEVEL_WARN, TRACE_NORMAL, _line, _sourceFile, txt.str().c_str(), vl );
+}
+
+void Donnees::error(const stringstream& txt, ... ) {
+	va_list vl;
+	va_start(vl, txt.str().c_str());
+	Trace::instance().print(TraceLevel::TRACE_LEVEL_ERROR, TRACE_NORMAL, _line, _sourceFile, txt.str().c_str(), vl );
+}
+
+
+
+
+
 Trace::Trace() {
 	m_Mutex = SDL_CreateMutex();
 	SDL_LockMutex( m_Mutex );

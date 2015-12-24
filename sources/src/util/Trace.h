@@ -7,6 +7,8 @@
 #include <fstream>
 #include <sstream>
 
+using namespace std;
+
 #include "SDL.h"
 #include "SDL_thread.h"
 
@@ -88,14 +90,24 @@ public:
 	void info(const char *txt, ... );
 	void warn(const char *txt, ... );
 	void error(const char *txt, ... );
+
+	void debug(const string& txt, ... );
+	void info(const string& txt, ... );
+	void warn(const string& txt, ... );
+	void error(const string& txt, ... );
+
+	void debug(const stringstream& txt, ... );
+	void info(const stringstream& txt, ... );
+	void warn(const stringstream& txt, ... );
+	void error(const stringstream& txt, ... );
 };
 
-std::ofstream mFichier();
+ofstream mFichier();
 
 class Trace 
 {
 	static Trace *m_Instance;
-	std::ofstream m_Fichier;
+	ofstream m_Fichier;
 	SDL_mutex *m_Mutex;
 
 		// Constructor / destructor

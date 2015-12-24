@@ -70,7 +70,7 @@ void UtilsTest::stringUtilsTest() {
 	ASSERT_EQUAL("Coucou", faefwR, "'findAndEraseFirstWord' KO");
 
 	string faefs = "   \"  Coucou \"        \"comment\"    \"tu    vas \" ";
-	string faefsR = StringUtils::findAndEraseFirstString(faefs);
+	string faefsR = StringUtils::findAndEraseFirstString(faefs, StringUtils::isGuillemet);
 	ASSERT_EQUAL("        \"comment\"    \"tu    vas \" ", faefs, "'findAndEraseFirstString' KO");
 	ASSERT_EQUAL("  Coucou ", faefsR, "'findAndEraseFirstString' KO");
 
@@ -86,6 +86,25 @@ void UtilsTest::stringUtilsTest() {
 	ASSERT_EQUAL(" comment tu ", split[3], "'split' KO");
 	ASSERT_EQUAL(" vas ", split[4], "'split' KO");
 	ASSERT_EQUAL(" ", split[5], "'split' KO");
+
+	// -----------------------------------------------------
+	log("Test - 'StringUtils::splitOnce'", __LINE__);
+	string sodR, sofR;
+	StringUtils::splitOnce("var=value=1", StringUtils::isEqual, sodR, sofR);
+	ASSERT_EQUAL("var", sodR, "'splitOnce' KO");
+	ASSERT_EQUAL("value=1", sofR, "'splitOnce' KO");
+
+	StringUtils::splitOnce("var=", StringUtils::isEqual, sodR, sofR);
+	ASSERT_EQUAL("var", sodR, "'splitOnce' KO");
+	ASSERT_EQUAL("", sofR, "'splitOnce' KO");
+
+	StringUtils::splitOnce("=value", StringUtils::isEqual, sodR, sofR);
+	ASSERT_EQUAL("", sodR, "'splitOnce' KO");
+	ASSERT_EQUAL("value", sofR, "'splitOnce' KO");
+
+	StringUtils::splitOnce("xxx", StringUtils::isEqual, sodR, sofR);
+	ASSERT_EQUAL("", sodR, "'splitOnce' KO");
+	ASSERT_EQUAL("", sofR, "'splitOnce' KO");
 
 	// -----------------------------------------------------
 	log("Test - 'StringUtils::splitBySpaces'", __LINE__);

@@ -4,6 +4,7 @@
 #define __JKT__UTILS_TRACE_H
 
 #include <string>
+#include <vector>
 #include <fstream>
 #include <sstream>
 
@@ -106,9 +107,12 @@ ofstream mFichier();
 
 class Trace 
 {
-	static Trace *m_Instance;
-	ofstream m_Fichier;
-	SDL_mutex *m_Mutex;
+	static Trace *_Instance;
+	ofstream _Fichier;
+	SDL_mutex *_Mutex;
+
+	// Option de log
+	vector<string> _excludeFiles;
 
 		// Constructor / destructor
 	Trace();

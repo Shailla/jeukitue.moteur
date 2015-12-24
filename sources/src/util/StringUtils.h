@@ -22,13 +22,16 @@ public:
 	static void toChars(const std::string& str, char* out, unsigned int maxLength);
 	static bool isBlank(const std::string& str);
 
+	static std::string findAndEraseFirstWord(std::string& s, int (isSeparator)(int));
 	static std::string findAndEraseFirstWord(std::string& s);
+	static std::string findAndEraseFirstString(std::string& s, int (isSeparator)(int));
 	static std::string findAndEraseFirstString(std::string& s);
 	static std::string findFirstWord(const std::string& s);
 
 	static std::vector<std::string> splitByCarriageReturns(const std::string& s);
 	static std::vector<std::string> splitBySpaces(const std::string& s);
 	static std::vector<std::string> split(const std::string& s, int (isSeparator)(int));
+	static void splitOnce(const std::string& s, int (isSeparator)(int), std::string& debutRes, std::string& finRes);
 
 	// trim from start
 	static void ltrim(std::string& s);
@@ -41,6 +44,8 @@ public:
 
 	static int isCarriageReturn(int c);
 	static int isGuillemet(int c);
+	static int isComma(int c);
+	static int isEqual(int c);
 };
 
 } /* namespace JktUtils */

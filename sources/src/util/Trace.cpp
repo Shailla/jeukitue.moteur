@@ -2,17 +2,20 @@
 #include <fstream>
 #include <string>
 #include <stdarg.h>
+#include <map>
 
 #include "SDL.h"
 #include "SDL_thread.h"
 
 #include "FindFolder.h"
+#include "StringUtils.h"
 
 #include "Trace.h"
 
 using namespace std;
+using namespace JktUtils;
 
-Trace* Trace::m_Instance = NULL;
+Trace* Trace::_Instance = NULL;
 
 void saveTime(Uint32& time) {
 	time = SDL_GetTicks();
@@ -66,49 +69,49 @@ void Donnees::error(const char *txt, ... ) {
 
 void Donnees::debug(const string& txt, ... ) {
 	va_list vl;
-	va_start(vl, txt.c_str());
+	va_start(vl, txt);
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_DEBUG, TRACE_NORMAL, _line, _sourceFile, txt.c_str(), vl );
 }
 
 void Donnees::info(const string& txt, ... ) {
 	va_list vl;
-	va_start(vl, txt.c_str());
+	va_start(vl, txt);
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_INFO, TRACE_NORMAL, _line, _sourceFile, txt.c_str(), vl );
 }
 
 void Donnees::warn(const string& txt, ... ) {
 	va_list vl;
-	va_start(vl, txt.c_str());
+	va_start(vl, txt);
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_WARN, TRACE_NORMAL, _line, _sourceFile, txt.c_str(), vl );
 }
 
 void Donnees::error(const string& txt, ... ) {
 	va_list vl;
-	va_start(vl, txt.c_str());
+	va_start(vl, txt);
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_ERROR, TRACE_NORMAL, _line, _sourceFile, txt.c_str(), vl );
 }
 
 void Donnees::debug(const stringstream& txt, ... ) {
 	va_list vl;
-	va_start(vl, txt.str().c_str());
+	va_start(vl, txt);
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_DEBUG, TRACE_NORMAL, _line, _sourceFile, txt.str().c_str(), vl );
 }
 
 void Donnees::info(const stringstream& txt, ... ) {
 	va_list vl;
-	va_start(vl, txt.str().c_str());
+	va_start(vl, txt);
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_INFO, TRACE_NORMAL, _line, _sourceFile, txt.str().c_str(), vl );
 }
 
 void Donnees::warn(const stringstream& txt, ... ) {
 	va_list vl;
-	va_start(vl, txt.str().c_str());
+	va_start(vl, txt);
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_WARN, TRACE_NORMAL, _line, _sourceFile, txt.str().c_str(), vl );
 }
 
 void Donnees::error(const stringstream& txt, ... ) {
 	va_list vl;
-	va_start(vl, txt.str().c_str());
+	va_start(vl, txt);
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_ERROR, TRACE_NORMAL, _line, _sourceFile, txt.str().c_str(), vl );
 }
 
@@ -117,8 +120,52 @@ void Donnees::error(const stringstream& txt, ... ) {
 
 
 Trace::Trace() {
-	m_Mutex = SDL_CreateMutex();
-	SDL_LockMutex( m_Mutex );
+	_Mutex = SDL_CreateMutex();
+	SDL_LockMutex( _Mutex );
+
+	/* ***********************************************
+	 * Lecture de la politique de log
+	 * **********************************************/
+
+	ifstream logConfig("log.ini");
+
+	if(!logConfig) {
+		cerr << endl << "Echec d'ouverture du fichier log.ini";
+	}
+
+	map<string, string> config;
+
+	if(logConfig) {
+        string line, key;
+
+        // Lit les clé et valeurs dans le fichier de configuration des log
+        while(getline(logConfig, line)) {
+        	string key, value;
+        	StringUtils::splitOnce(line, StringUtils::isEqual, key, value);
+
+        	StringUtils::trim(key);
+        	StringUtils::trim(value);
+
+        	config[key] = value;
+        }
+
+		logConfig.close();
+
+		// Fichier à exclure des log
+		string var = config["logger.file.exclude"];
+
+		if(var.length() > 0) {
+			_excludeFiles = StringUtils::split(var, StringUtils::isComma);
+
+			for(string& file : _excludeFiles) {
+				StringUtils::trim(file);
+			}
+		}
+	}
+
+	/* ***********************************************
+	 * Création du fichier de log
+	 * **********************************************/
 
 	// Nom du fichier de log courrant
 	stringstream logFile;
@@ -158,39 +205,54 @@ Trace::Trace() {
 	}
 
 	// Ouvre le fichier de log courant
-	m_Fichier.open( logFile.str().c_str() );
+	_Fichier.open( logFile.str().c_str() );
 
-	m_Instance = this;
+	_Instance = this;
 
-	SDL_UnlockMutex(m_Mutex);
+	SDL_UnlockMutex(_Mutex);
 }
 
 Trace::~Trace() {
-	SDL_LockMutex( m_Mutex );
+	SDL_LockMutex( _Mutex );
 
-	cout << endl << "FIN DES TRACES" << endl;
+	cout << endl << "FIN DES TRACES" << flush << endl;
 
-	m_Fichier.flush();
+	_Fichier.flush();
+	_Fichier.close();
 
-	m_Fichier.close();
+	_Instance = 0;
 
-	m_Instance = 0;
-
-	SDL_DestroyMutex( m_Mutex );
+	SDL_DestroyMutex( _Mutex );
 }
 
 Trace &Trace::instance() {
-	if( !m_Instance )
-		m_Instance = new Trace();
+	if( !_Instance )
+		_Instance = new Trace();
 
-	return *m_Instance;
+	return *_Instance;
 }
 
 void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFichier, const char *txt, va_list &vl) {
-	SDL_LockMutex( m_Mutex );
+	SDL_LockMutex( _Mutex );
 
-	if( (level >= LEVEL_TRACE) || (LEVEL_TRACE ==-1) )	// Si on ne veut pas cette trace-là alors sors
-	{
+	bool youHaveToLog = (LEVEL_TRACE == -1) || (level >= LEVEL_TRACE);	// Si on ne veut pas cette trace-là alors sors
+	string nomCourtFichier;
+
+	// Vérifie si le fichier n'est pas exclu des log
+	if(youHaveToLog) {
+		nomCourtFichier = nomFichier;
+		size_t pos = nomCourtFichier.find(FICHIER_SOURCE_BASE);
+		nomCourtFichier.replace(0, pos + sizeof(FICHIER_SOURCE_BASE)-1, "");
+
+		for(const string& var : _excludeFiles) {
+			if(var == nomCourtFichier) {
+				youHaveToLog = false;
+				break;
+			}
+		}
+	}
+
+	if(youHaveToLog) {
 		bool prec = false;	// Indique que le caractère précédent était un %
 		void *THIS = 0;
 		bool bTHIS = false;
@@ -237,12 +299,8 @@ void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFic
 		ligne << var1.str();
 
 		// Fichier source et ligne
-		string varFichier = nomFichier;
-		size_t pos = varFichier.find(FICHIER_SOURCE_BASE);
-		varFichier.replace(0, pos + sizeof(FICHIER_SOURCE_BASE)-1, "");
-
 		stringstream var2;
-		var2 << varFichier << "(" << line << ")";
+		var2 << nomCourtFichier << "(" << line << ")";
 
 		ligne.width(40);
 		ligne.setf( ios_base::left, ios_base::adjustfield );
@@ -349,10 +407,10 @@ void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFic
 
 		ligne << endl << flush;
 
-		m_Fichier << ligne.str() << flush;
+		_Fichier << ligne.str() << flush;
 
 		va_end( vl );
 	}
 
-	SDL_UnlockMutex(m_Mutex);
+	SDL_UnlockMutex(_Mutex);
 }

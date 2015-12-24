@@ -62,12 +62,16 @@ bool StringUtils::isBlank(const string& s) {
 }
 
 string StringUtils::findAndEraseFirstWord(string& s) {
+	return findAndEraseFirstWord(s, isspace);
+}
+
+string StringUtils::findAndEraseFirstWord(string& s, int separator(int)) {
 	string result;
 
-	string::iterator debutMot = find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)));
+	string::iterator debutMot = find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(separator)));
 
 	if(debutMot != s.end()) {
-		string::iterator finMot = find_if(debutMot, s.end(), ptr_fun<int, int>(isspace));
+		string::iterator finMot = find_if(debutMot, s.end(), ptr_fun<int, int>(separator));
 		result = string(debutMot, finMot);
 
 		// Erase the first word
@@ -81,15 +85,27 @@ int StringUtils::isGuillemet(int c) {
 	return c == '"';
 }
 
+int StringUtils::isEqual(int c) {
+	return c == '=';
+}
+
 int StringUtils::isCarriageReturn(int c) {
 	return c == '\n';
 }
 
+int StringUtils::isComma(int c) {
+	return c == ',';
+}
+
 string StringUtils::findAndEraseFirstString(string& s) {
+	return findAndEraseFirstString(s);
+}
+
+string StringUtils::findAndEraseFirstString(string& s, int (isSeparator)(int)) {
 	string result;
 
-	string::iterator debutString = find_if(s.begin(), s.end(), ptr_fun<int, int>(isGuillemet));
-	string::iterator finString = find_if(debutString + 2, s.end(), ptr_fun<int, int>(isGuillemet));
+	string::iterator debutString = find_if(s.begin(), s.end(), ptr_fun<int, int>(isSeparator));
+	string::iterator finString = find_if(debutString + 2, s.end(), ptr_fun<int, int>(isSeparator));
 
 	if(finString < s.end() && debutString + 1 < finString) {
 		result = string(debutString + 1, finString);
@@ -139,6 +155,20 @@ vector<string> StringUtils::split(const string& s, int (isSeparator)(int)) {
 
 	return result;
 }
+
+void StringUtils::splitOnce(const string& s, int (isSeparator)(int), string& debutRes, string& finRes) {
+	string::const_iterator middle = find_if(s.begin(), s.end(), ptr_fun<int, int>(isSeparator));
+
+	if(middle != s.end()) {
+		debutRes = string(s.begin(), middle);
+		finRes = string(middle+1, s.end());
+	}
+	else {
+		debutRes = "";
+		finRes = "";
+	}
+}
+
 
 // trim from start
 void StringUtils::ltrim(string& s) {

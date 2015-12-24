@@ -83,7 +83,6 @@ NotConnectedInterlocutor2* NetworkManager::ouvreServer(Uint16 serverPort, Uint16
 	NotConnectedInterlocutor2* notConnectedServerInterlocutor = _server->connect(serverPort, serverTreePort);
 
 	if(notConnectedServerInterlocutor) {
-		Game.setModeServer();
 		_server->setStatut( JKT_STATUT_SERVER_READY );
 		_on = true;			// Indique que le réseau est actif
 		result = true;
@@ -129,12 +128,10 @@ Interlocutor2* NetworkManager::ouvreClient(const string& serverIp, Uint16 server
 	Interlocutor2* interlocutor = _client->connect(serverIp, serverPort, serverTreePort);
 
 	if(interlocutor) {
-		Game.setModeClient();
 		_on = true;		// Signale que le réseau est prêt
 		result = true;
 	}
 	else {
-		Game.setModeNull();
 		_on = true;		// Signale que le réseau n'est pas prêt
 		result = false;
 	}

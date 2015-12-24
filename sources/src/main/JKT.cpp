@@ -1295,6 +1295,8 @@ void executeJktRequests() {
 
 		Game.deletePlayers();
 
+		Game.setModeLocal();
+
 		LocalDataTree* dataTree = new LocalDataTree();
 		DataTreeUtils::formatGameServerDataTree(dataTree);
 		Game.setLocalDataTree(dataTree);
@@ -1355,7 +1357,6 @@ void executeJktRequests() {
 		// Lancement du jeu en mode local
 		Aide = false;
 		pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
-		Game.setModeLocal();						// Jeu en mode jeu local
 		Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_AUCUNE);
 
 		cout << "\nFINI";
@@ -1381,9 +1382,12 @@ void executeJktRequests() {
 		Fabrique::getAgarView()->showMenuView(Viewer::CONSOLE_VIEW);	// Affichage de la console
 
 		// Connexion du client
+		Game.setModeClient();
+
 		Interlocutor2* clientInterlocutor = _networkManager->ouvreClient(Config.Reseau.getIpServer(), Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree());
 
 		if(!clientInterlocutor) {
+			Game.setModeNull();
 			Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_AUCUNE);
 			AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du client au serveur");
 		}
@@ -1427,7 +1431,6 @@ void executeJktRequests() {
 		JktNet::CClient *client = Game.getClient();
 		client->nomMAP = clientGameDto->getMapName();			// Informe le serveur sur le nom de la MAP lancée
 		client->setStatut( JktNet::JKT_STATUT_CLIENT_PLAY );
-		Game.setModeClient();						// Jeu en mode jeu local
 
 		delete clientGameDto;
 
@@ -1466,9 +1469,12 @@ void executeJktRequests() {
 		Game.deletePlayers();
 
 		// Création de l'arbre des données du serveur
+		Game.setModeServer();
+
 		_notConnectedServerInterlocutor = _networkManager->ouvreServer(Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree());
 
 		if(!_notConnectedServerInterlocutor) {
+			Game.setModeNull();
 			Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
 			AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du serveur");
 		}
@@ -1532,7 +1538,6 @@ void executeJktRequests() {
 		JktNet::CServer *server = Game.getServer();
 		server->nomMAP = serverGameDto->getMapName();					// Informe le serveur sur le nom de la MAP lancée
 		server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
-		Game.setModeServer();						// Jeu en mode jeu local
 		server->bGame = true;						// Indique qu'une partie est en cours
 
 		delete serverGameDto;

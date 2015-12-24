@@ -210,9 +210,9 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	lua_register(L, "getAvailableAudioOutputs", &PluginConfigurationProxy::getAvailableAudioOutputs);
 	lua_register(L, "getConfigurationParameter", &PluginConfigurationProxy::getConfigurationParameter);
 	lua_register(L, "setConfigurationParameter", &PluginConfigurationProxy::setConfigurationParameter);
-	lua_register(L, "isModeClient", &PluginConfigurationProxy::isModeClient);
-	lua_register(L, "isModeLocal", &PluginConfigurationProxy::isModeLocal);
-	lua_register(L, "isModeServer", &PluginConfigurationProxy::isModeServer);
+	lua_register(L, "isGameModeClient", &PluginConfigurationProxy::isModeClient);
+	lua_register(L, "isGameModeLocal", &PluginConfigurationProxy::isModeLocal);
+	lua_register(L, "isGameModeServer", &PluginConfigurationProxy::isModeServer);
 	lua_register(L, "getConstant", &PluginConfigurationProxy::getConstant);
 	lua_register(L, "initAudio", &PluginConfigurationProxy::initAudio);
 

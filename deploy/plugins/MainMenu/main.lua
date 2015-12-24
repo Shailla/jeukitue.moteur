@@ -88,7 +88,7 @@ function eventManager(event)
 		
 		if source == sceneButton then
 			window:hide();
-			pushEvent(1016);	-- Show main menu
+			pushEvent(1016);
 			
 		elseif source == multiButton then
 			window:hide();

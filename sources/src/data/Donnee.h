@@ -43,8 +43,8 @@ class Donnee {
 	 * Revision number of the data, incremented each time the data changes.
 	 */
 	int _revision;
-	std::map<DistantTreeProxy*, MarqueurDistant*> _marqueurs;
-	DONNEE_TYPE _donneeType;
+	public:std::map<DistantTreeProxy*, MarqueurDistant*> _marqueurs;
+	private:DONNEE_TYPE _donneeType;
 	UPDATE_MODE _updateMode;
 
 protected:

@@ -58,6 +58,7 @@ ClientDataTree::ClientDataTree(const std::string& clientName, Interlocutor2* ser
 //	createPrivateBranche(vidBranche->getBrancheFullId(), DataTreeUtils::TREE_CONTROL_BRANCHE_NAME);
 
 	DistantTreeControl::initVid(this, _serverTreeProxy);
+	initDistantBranche(_serverTreeProxy, &getRoot());
 }
 
 ClientDataTree::~ClientDataTree() {
@@ -67,18 +68,72 @@ const string& ClientDataTree::getClientName() const {
 	return _clientName;
 }
 
-void ClientDataTree::initDistantBranche(DistantTreeProxy* distant, Branche* branche) {
+void ClientDataTree::initDistantBranche(DistantTreeProxy* ignored, Branche* branche) {
+	MarqueurDistant* marqueur = _serverTreeProxy->addMarqueur(branche, 0);
+
+	if(branche == &getRoot()) {	// Do not add the root branche to the distants, because it's a default existing element
+		marqueur->setSentRevision(0);
+		marqueur->setConfirmedRevision(0);
+	}
+
+	if(dynamic_cast<PrivateBranche*>(branche)) {
+		PrivateBranche* pr = static_cast<PrivateBranche*>(branche);
+		map<DistantTreeProxy*, PrivateBranche::DistantPrivateBranche>::iterator dt;
+
+		for(dt = pr->getDistants().begin() ; dt != pr->getDistants().end() ; dt++) {
+			// Init sub-branches
+			{
+				vector<Branche*>* subBranches = pr->getSubBranches(dt->first);
+				vector<Branche*>::iterator itBr;
+
+				for(itBr = subBranches->begin() ; itBr != subBranches->end() ; itBr++) {
+					initDistantBranche(_serverTreeProxy, *itBr);
+				}
+			}
+
+			// Init values
+			{
+				vector<Valeur*>& valeurs = pr->getValeurs(dt->first);
+				vector<Valeur*>::iterator iterVl;
+
+				for(iterVl = valeurs.begin() ; iterVl != valeurs.end() ; iterVl++) {
+					_serverTreeProxy->addMarqueur(*iterVl, 0);
+				}
+			}
+		}
+	}
+	else {
+		// Init sub-branches
+		{
+			vector<Branche*>* subBranches = branche->getSubBranches(_serverTreeProxy);
+			vector<Branche*>::iterator itBr;
+
+			for(itBr = subBranches->begin() ; itBr != subBranches->end() ; itBr++) {
+				initDistantBranche(_serverTreeProxy, *itBr);
+			}
+		}
+
+		// Init values
+		{
+			vector<Valeur*>& valeurs = branche->getValeurs(_serverTreeProxy);
+			vector<Valeur*>::iterator iterVl;
+
+			for(iterVl = valeurs.begin() ; iterVl != valeurs.end() ; iterVl++) {
+				_serverTreeProxy->addMarqueur(*iterVl, 0);
+			}
+		}
+	}
 }
 
-Branche* ClientDataTree::createBranche(DistantTreeProxy* distant, const std::vector<int>& parentBrancheId, const std::string& brancheName) {
-	Branche* parentBranche = getBranche(distant, parentBrancheId);
+Branche* ClientDataTree::createBranche(DistantTreeProxy* ignored, const std::vector<int>& parentBrancheId, const std::string& brancheName) {
+	Branche* parentBranche = getBranche(_serverTreeProxy, parentBrancheId);
 	Branche* branche = parentBranche->createSubBrancheForClient(brancheName, 0);
 	initDonneeAndServeurMarqueur(branche);
 
 	return branche;
 }
 
-Branche* ClientDataTree::getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException) {
+Branche* ClientDataTree::getBrancheFromDistant(DistantTreeProxy* ignored, const vector<int>& brancheId) throw(NotExistingBrancheException) {
 	vector<int>::const_iterator iter;
 
 	Branche* branche = &getRoot();
@@ -95,7 +150,7 @@ Branche* ClientDataTree::getBrancheFromDistant(DistantTreeProxy* distant, const 
 	return branche;
 }
 
-Valeur* ClientDataTree::getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
+Valeur* ClientDataTree::getValeurFromDistant(DistantTreeProxy* ignored, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
 	vector<int>::const_iterator iter;
 
 	Branche* branche = &getRoot();
@@ -127,7 +182,7 @@ Branche* ClientDataTree::createPrivateBranche(const std::vector<int>& parentBran
 	return branche;
 }
 
-Valeur* ClientDataTree::createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const AnyData value) {
+Valeur* ClientDataTree::createValeur(DistantTreeProxy* ignored, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const AnyData value) {
 	Branche* parentBranche = getBranche(_serverTreeProxy, parentBrancheId);
 	Valeur* valeur = parentBranche->createValeurForClient(updateMode, valeurName, 0, value);
 	initDonneeAndServeurMarqueur(valeur);

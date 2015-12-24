@@ -21,7 +21,7 @@ class ClientDataTree : public DataTree {
 
 	Uint32 _updateClientToServer;
 
-	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
+	void initDistantBranche(DistantTreeProxy* ignored, Branche* branche);
 	MarqueurDistant* initDonneeAndServeurMarqueur(Donnee* donnee);
 public:
 	ClientDataTree(const std::string& clientName, Interlocutor2* serverInterlocutor);
@@ -30,18 +30,18 @@ public:
 	const string& getClientName() const;
 	Branche* getBrancheByTmpId(const vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
 
-	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException) override;
-	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) override;
+	Branche* getBrancheFromDistant(DistantTreeProxy* ignored, const vector<int>& brancheId) throw(NotExistingBrancheException) override;
+	Valeur* getValeurFromDistant(DistantTreeProxy* ignored, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) override;
 
 	/* *****************************************************
 	 * Serveur local actions
 	 * ****************************************************/
 
 	// Gestion branches et valeurs avec coordonnées vectorielles
-	Branche* createBranche(DistantTreeProxy* distant, const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
+	Branche* createBranche(DistantTreeProxy* ignored, const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
 	Branche* createPrivateBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
 
-	Valeur* createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur) override;
+	Valeur* createValeur(DistantTreeProxy* ignored, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur) override;
 
 
 	/* ****************************************************

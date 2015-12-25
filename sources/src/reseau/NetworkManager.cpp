@@ -169,25 +169,23 @@ void NetworkManager::recoitServer() {
 			_server->spaMaitre.recoit();
 
 			if(!player) {
-				LOGINFO(("Joueur inconnu %", JktUtils::IpUtils::translateAddress(inAddress).c_str()));
-
 				Uint16 code1, code2;
 				_server->spaMaitre.init();
 				_server->spaMaitre.readCode(code1, code2);
 
 				if(code1 == GLOBAL_JETON) {
-					LOGINFO(("Joueur avec un jeton %d", code2));
 					player = _server->getPlayerByJeton(code2);
 
 					if(player) {
 						_server->registerPlayerByAddress(inAddress, player);
+						LOGINFO(("Joueur '%s' enregistré grâce à son jeton %d à l'adresse %s", player->nom().c_str(), code2, JktUtils::IpUtils::translateAddress(inAddress).c_str()));
 					}
 					else {
-						LOGINFO(("Jeton inconnu %d", code2));
+						LOGWARN(("Message de joueur avec jeton %d inconnu de l'adresse %s", code2, JktUtils::IpUtils::translateAddress(inAddress).c_str()));
 					}
 				}
 				else {
-					LOGINFO(("Pas de jeton"));
+					LOGWARN(("Message de joueur inconnu sans jeton de l'adresse %s", JktUtils::IpUtils::translateAddress(inAddress).c_str()));
 				}
 			}
 
@@ -198,18 +196,6 @@ void NetworkManager::recoitServer() {
 				_server->decodeServerUDP( &_server->spaMaitre );
 			}
 		}
-
-//		int curseur = -1;
-//		CPlayer *player;
-//
-//		while( (player = Game.nextPlayer(curseur)) && numReady ) {			// S'il reste de l'activité sur un socket et des proxy joueurs à voir
-//			if(player->_spa) {
-//				if( SDLNet_SocketReady( player->_spa->getSocket() ) ) {		// S'il y a de l'activité sur ce socket
-//					_server->decodeProxyPlayer( player );
-//					numReady--;
-//				}
-//			}
-//		}
 	}
 }
 

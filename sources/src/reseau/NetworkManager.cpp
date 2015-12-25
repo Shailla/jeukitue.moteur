@@ -16,6 +16,7 @@ class CGame;
 #include "util/Trace.h"
 #include "util/TraceMethod.h"
 #include "util/Erreur.h"
+#include "util/IpUtils.h"
 #include "util/V3D.h"
 #include "main/Cfg.h"
 #include "reseau/SPA.h"
@@ -29,8 +30,6 @@ class CGame;
 #include "reseau/NetworkManager.h"
 
 extern CGame Game;
-
-void JktMoteur::contactPlayer(CPlayer *player, float *normal, float distanceW);
 
 namespace JktNet
 {
@@ -92,6 +91,7 @@ NotConnectedInterlocutor2* NetworkManager::ouvreServer(Uint16 serverPort, Uint16
 	}
 
 	LOGDEBUG(("CReseau::ouvreServer() -> %b end%T", result, this));
+
 	return notConnectedServerInterlocutor;
 }
 
@@ -162,21 +162,54 @@ void NetworkManager::recoitServer() {
 	}
 	else if( numReady ) {
 		if( SDLNet_SocketReady( _server->spaMaitre.getSocket() ) ) {
-			_server->decodeServerUDP( &_server->spaMaitre );
-			numReady--;
-		}
+			IPaddress inAddress = _server->spaMaitre.getPacketIn()->address;
 
-		int curseur = -1;
-		CPlayer *player;
+			CPlayer* player = _server->getPlayerByAddress(inAddress);
 
-		while( (player = Game.nextPlayer(curseur)) && numReady ) {	// S'il reste de l'activité sur un socket et des proxy joueurs à voir
-			if(player->_spa) {
-				if( SDLNet_SocketReady( player->_spa->getSocket() ) ) {	// S'il y a de l'activité sur ce socket
-					_server->decodeProxyPlayer( player );
-					numReady--;
+			_server->spaMaitre.recoit();
+
+			if(!player) {
+				LOGINFO(("Joueur inconnu %", JktUtils::IpUtils::translateAddress(inAddress).c_str()));
+
+				Uint16 code1, code2;
+				_server->spaMaitre.init();
+				_server->spaMaitre.readCode(code1, code2);
+
+				if(code1 == GLOBAL_JETON) {
+					LOGINFO(("Joueur avec un jeton %d", code2));
+					player = _server->getPlayerByJeton(code2);
+
+					if(player) {
+						_server->registerPlayerByAddress(inAddress, player);
+					}
+					else {
+						LOGINFO(("Jeton inconnu %d", code2));
+					}
+				}
+				else {
+					LOGINFO(("Pas de jeton"));
 				}
 			}
+
+			if(player) {
+				_server->decodeProxyPlayer(player, &_server->spaMaitre);
+			}
+			else {
+				_server->decodeServerUDP( &_server->spaMaitre );
+			}
 		}
+
+//		int curseur = -1;
+//		CPlayer *player;
+//
+//		while( (player = Game.nextPlayer(curseur)) && numReady ) {			// S'il reste de l'activité sur un socket et des proxy joueurs à voir
+//			if(player->_spa) {
+//				if( SDLNet_SocketReady( player->_spa->getSocket() ) ) {		// S'il y a de l'activité sur ce socket
+//					_server->decodeProxyPlayer( player );
+//					numReady--;
+//				}
+//			}
+//		}
 	}
 }
 

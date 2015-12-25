@@ -13,6 +13,8 @@
 #include "SDL.h"
 #include "SDL_net.h"
 
+bool operator < (const IPaddress& adr1, const IPaddress& adr2);
+
 namespace JktUtils {
 
 class IpUtils {

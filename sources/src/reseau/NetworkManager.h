@@ -47,9 +47,7 @@ public:
 
 	NotConnectedInterlocutor2* ouvreServer(Uint16 serverPort, Uint16 serverTreePort);	// Connecte le serveur
 	void fermeServer();							// Déconnecte le serveur
-
 	void recoitServer();						// Recoit tous les paquets
-
 
 	/* ********************************************************
 	 * Gestion réseau pour le client

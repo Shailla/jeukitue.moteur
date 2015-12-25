@@ -59,8 +59,10 @@ class CPlayer {
 	JktMoteur::CMap *m_pSkin;	// Gueule du joueur
 
 public :
+	// Réseau
 	JktNet::CSPA* _spa;		// spa associé au proxy-joueur
 
+	// Armes
 	void Tir();
 	void RefreshProjectils();
 

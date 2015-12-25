@@ -6,14 +6,27 @@ namespace JktNet
 {
 
 enum enteteServer {
-	SERVER_NULL = 0,
-	SERVER_ACK,					// Acquisition
-	SERVER_INFO,				// Demande les informations du serveur
-	SERVER_ERROR,				// Erreur
-	SERVER_PING,				// Ping
-	SERVER_VERSION,				// Version du programme
-	SERVER_JTG,					// Demande à joindre la partie acive sur le serveur
-	SERVER_RECAP				// Récapitulation de partie
+	// Entêtes généraux
+	GLOBAL_NULL = 0,
+	GLOBAL_JETON,
+
+	// Entêtes serveur
+	SERVER_ACK,			// Acquisition
+	SERVER_INFO,		// Demande les informations du serveur
+	SERVER_ERROR,		// Erreur
+	SERVER_PING,		// Ping
+	SERVER_VERSION,		// Version du programme
+	SERVER_JTG,			// Demande à joindre la partie acive sur le serveur
+	SERVER_RECAP,		// Récapitulation de partie
+
+	// Entête client
+	CLIENT_ACK,			// Acquisition
+	CLIENT_INFO,		// Demande les informations du serveur
+	CLIENT_ERROR,		// Erreur
+	CLIENT_PING,		// Ping
+	CLIENT_VERSION,		// Version du programme
+	CLIENT_JTG,			// Demande à joindre la partie acive sur le serveur
+	CLIENT_RECAP,		// Récapitulation de partie
 };
 
 enum errorUDP {
@@ -27,18 +40,6 @@ enum StatutServer {			// Etats du serveur
 	JKT_STATUT_SERVER_INIT,			// Indique que le serveur est en cours d'initialisation
 	JKT_STATUT_SERVER_READY,		// Indique que le serveur est prêt (donc connecté)
 	JKT_STATUT_SERVER_PLAY,			// Une partie est en cours sur le serveur
-};
-
-
-enum enteteClient {
-	CLIENT_NULL = 0,
-	CLIENT_ACK,			// Acquisition
-	CLIENT_INFO,		// Demande les informations du serveur
-	CLIENT_ERROR,		// Erreur
-	CLIENT_PING,		// Ping
-	CLIENT_VERSION,		// Version du programme
-	CLIENT_JTG,			// Demande à joindre la partie acive sur le serveur
-	CLIENT_RECAP,		// Récapitulation de partie
 };
 
 enum StatutClient {		// Etats du client

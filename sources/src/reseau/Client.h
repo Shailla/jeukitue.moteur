@@ -43,6 +43,8 @@ public:
 	CSPA _spaMaitre;
 	StatutClient _statut;				// Etat du client (demande de connexion envoyée, connecté, ...)
 	int IDpersonnel;					// Identifiant du joueur (sur ce PC)
+	Uint16 _jeton;
+
 	string nomMAP;						// Nom de la MAP en cours
 
 		// Constructeurs/destructeurs

@@ -26,15 +26,6 @@ using namespace std;
 
 using namespace JktUtils;
 
-bool operator < (const IPaddress& adr1, const IPaddress& adr2) {
-	if(adr1.host != adr2.host) {
-		return adr1.port < adr2.port;
-	}
-	else {
-		return adr1.host < adr2.host;
-	}
-}
-
 ServerUdpInterlocutor::ServerUdpInterlocutor(const string& name, Uint16 localPort) : TechnicalInterlocutor(name, localPort), _clientsOfServer() {
 	_notConnectedInterlocutor = NULL;
 	_distantIp = "";

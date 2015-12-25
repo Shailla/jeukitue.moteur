@@ -5,6 +5,7 @@
 
 using namespace std;
 
+#include "util/IpUtils.h"
 #include "main/Fabrique.h"
 #include "util/Erreur.h"
 #include "util/V3D.h"
@@ -97,8 +98,10 @@ void CClient::decodeError( Uint16 code2 ) {
 }
 
 void CClient::decodeRecap( Uint16 code2 ) {
+	LOGDEBUG(("decodeRecap recu"));
+
 	switch( code2 ) {
-	case SERVER_NULL:
+	case GLOBAL_NULL:
 		if( _statut==JKT_STATUT_CLIENT_PLAY ) {
 			Uint16 var1;
 			var1 = _spaMaitre.read16();	// Réception du nombre de joueurs
@@ -135,7 +138,7 @@ void CClient::decodeRecap( Uint16 code2 ) {
 Interlocutor2* CClient::connect(const string& remAddress, Uint16 remPort, Uint16 remPortTree) {
 	disconnect();
 
-	cout << endl << " Ouverture client : " << remAddress << " port=" << remPort << " portArbre=" << remPortTree;
+	LOGINFO((" Ouverture client : remoteAddress=%s port=%d portArbre=%d", remAddress.c_str(), remPort, remPortTree));
 
 	bool result = true;		// Indique si au fur de la fonction si tout s'est bien passé
 	Interlocutor2* interlocutor;
@@ -159,6 +162,7 @@ Interlocutor2* CClient::connect(const string& remAddress, Uint16 remPort, Uint16
 			result = false;
 		}
 	}
+
 
 	/* ***********************************************************************
 	 * Ouverture d'un client moderne
@@ -204,7 +208,7 @@ bool CClient::sendNotConnectedRequestInfoToServer(const string& destinationAddre
 		m_InfoServer.Ready( false );	// Indique l'attente d'actualisation de ces infos
 
 		_spaMaitre.init();
-		_spaMaitre.addCode( CLIENT_INFO, CLIENT_NULL );
+		_spaMaitre.addCode( CLIENT_INFO, GLOBAL_NULL );
 
 		cout << endl << "Sending info request to server '" << destinationAddress << ":" << destinationPort << "'";
 		result = _spaMaitre.send(destination);
@@ -234,7 +238,7 @@ bool CClient::sendNotConnectedRequestPingToServer(const string& destinationAddre
 		m_timePingClientServer = SDL_GetTicks();	// Temps à l'envoie du ping
 
 		_spaMaitre.init();
-		_spaMaitre.addCode( CLIENT_PING, CLIENT_NULL );
+		_spaMaitre.addCode( CLIENT_PING, GLOBAL_NULL );
 		_spaMaitre.add32( m_timePingClientServer );
 
 		cout << endl << "Sending ping request to server '" << destinationAddress << ":" << destinationPort << "'";
@@ -252,13 +256,13 @@ bool CClient::sendNotConnectedRequestPingToServer(const string& destinationAddre
 }
 
 void CClient::sendConnectedRequestJoinTheGame(const string& nomPlayer) {
-	setStatut( JKT_STATUT_CLIENT_DEMJTG );	// Statut, demande de "Join The Game" envoyée
+	setStatut( JKT_STATUT_CLIENT_DEMJTG );			// Statut, demande de "Join The Game" envoyée
 
 	_spaMaitre.init();
-	_spaMaitre.addCode( CLIENT_JTG, CLIENT_NULL );	// Envoie la demande à joindre la partie
-	_spaMaitre.add( nomPlayer );	// Envoie nom du joueur qui veut s'y joindre
+	_spaMaitre.addCode( CLIENT_JTG, GLOBAL_NULL );	// Envoie la demande à joindre la partie
+	_spaMaitre.add( nomPlayer );					// Envoie nom du joueur qui veut s'y joindre
 
-	setStatut( JKT_STATUT_CLIENT_DEMJTG );	// Statut, demande de "Join The Game" envoyée,
+	setStatut( JKT_STATUT_CLIENT_DEMJTG );			// Statut, demande de "Join The Game" envoyée,
 	// en attente de réponse du serveur
 
 	if( !_spaMaitre.send() ) {
@@ -422,6 +426,8 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 							Game.setStatutClient( JKT_STATUT_CLIENT_OUV );	// Indique l'ouverture en cours
 
 							IDpersonnel = _spaMaitre.read16();			// Lecture de l'identifiant du joueur
+
+							_jeton = _spaMaitre.read16();			// Lecture du jeton du joueur
 							_spaMaitre.readString( nomMAP );			// Nom de la MAP en cours sur le serveur
 							Game.createPlayerList(_spaMaitre.read16());	// Nombre max de joueurs sur le serveur
 							nbrPlayers( _spaMaitre.read16() );			// Nombre de joeurs sur le serveur
@@ -432,14 +438,15 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 							logInfoServer << endl << "\tNombre maxi de joueurs :\t\t" << Game.getMaxPlayers();
 							logInfoServer << endl << "\tNombre de joueurs dans la Map :\t" << m_uNbrPlayers;
 							logInfoServer << endl << "\tVotre identifiant :\t\t\t\t" << IDpersonnel;
+							logInfoServer << endl << "\tVotre jeton :\t\t\t\t\t" << _jeton;
 							LOGINFO((logInfoServer));
 
 
 							/* *************************************************************
-							 * Construction de la nouvelle liste de joueurs
+							 * Construction liste des joueurs
 							 * ************************************************************/
 
-							// Import de la nouvelle liste de joueurs
+							// Import de la liste des joueurs
 							CPlayer *player;
 
 							for( unsigned int i=0 ; i<m_uNbrPlayers ; i++) {
@@ -547,13 +554,14 @@ void CClient::emet( CPlayer &player ) {
 	CClavier *clavier = player.getClavier();
 
 	_spaMaitre.init();
-	_spaMaitre.addCode( CLIENT_RECAP, CLIENT_NULL );		// Code de récapitulation
+	_spaMaitre.addCode( GLOBAL_JETON, _jeton );			// Jeton : permet au serveur de reconnaitre le joueur à partir de son IP/Port si ce n'est pas déjà fait
+	_spaMaitre.addCode( CLIENT_RECAP, GLOBAL_NULL );		// Code de récapitulation
 
 	// Déplacements
 	Uint16 flags = 0;
 
 	if( clavier->m_bIndic ) {
-		flags |= 0x0001;	// Indique qu'il y a des requetes clavier à prendre en compte
+		flags |= 0x0001;		// Indique qu'il y a des requetes clavier à prendre en compte
 
 		if( clavier->m_fAvance!=0.0f ) {
 			flags |= 0x0010;	// Indique la présence d'une requête de mouvement vers l'avant

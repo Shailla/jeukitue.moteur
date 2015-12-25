@@ -18,6 +18,7 @@
 
 class Interlocutor2 {
 	std::string _name;
+
 	std::queue<JktUtils::Bytes*> _dataReceived;
 	std::queue<JktUtils::Bytes*> _technicalMessagesReceived;
 	std::queue<JktUtils::Bytes*> _dataToSend;
@@ -36,12 +37,17 @@ public:
 
 	void setCondIntelligence(SDL_cond* condIntelligence);
 
+	// Technical messages
 	void pushTechnicalMessageToSend(JktUtils::Bytes* bytes);
 	JktUtils::Bytes* popTechnicalMessageToSend();
 
 	void pushTechnicalMessageReceived(JktUtils::Bytes* bytes);
 	JktUtils::Bytes* popTechnicalMessageReceived();
 
+	int countTechnicalMessagesReceived(void);
+	int countTechnicalMessagesToSend(void);
+
+	// Data messages
 	void pushDataReceived(JktUtils::Bytes* bytes);
 	JktUtils::Bytes* popDataReceived();
 
@@ -50,8 +56,6 @@ public:
 	JktUtils::Bytes* popDataToSend();
 
 	int countDataReceived(void);
-	int countTechnicalMessagesReceived(void);
-	int countTechnicalMessagesToSend(void);
 	int countDataToSend(void);
 };
 

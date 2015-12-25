@@ -11,6 +11,15 @@ using namespace std;
 
 #include "util/IpUtils.h"
 
+bool operator < (const IPaddress& adr1, const IPaddress& adr2) {
+	if(adr1.host == adr2.host) {
+		return adr1.port < adr2.port;
+	}
+	else {
+		return adr1.host < adr2.host;
+	}
+}
+
 namespace JktUtils {
 
 IpUtils::IpUtils() {

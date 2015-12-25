@@ -126,7 +126,7 @@ Branche::~Branche() {
 }
 
 Branche* Branche::getSubBrancheByName(DistantTreeProxy* distant, const string& brancheName) {
-	Branche* branche = NULL;
+	Branche* branche = 0;
 
 	try {
 		branche = _subBranchesByName.at(brancheName);

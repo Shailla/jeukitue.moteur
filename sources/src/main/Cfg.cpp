@@ -308,15 +308,15 @@ void CCfg::Ecrit() {
 	string nomFichierEntier = "./" + nomFichierConfig + ".ini";
 	ofstream fichier( nomFichierEntier.c_str() );
 
-	fichier << "\n-------------------------GENERAL-------------------------\n";
+	fichier << "\n-------------------------GENERAL-------------------------";
 	fichier << endl << CST_GEN_PLAY_INTRO << "\t\t" << General._playIntro;
 
-	fichier << "\n\n\n-------------------------VIDEO-------------------------\n";
+	fichier << "\n\n-------------------------VIDEO-------------------------";
 	fichier << endl << CST_VID_DISPLAY_POS << "\t\t" << Display.position;
 	fichier << endl << CST_VID_DISPLAY_SIZE << "\t\t" << Display.X << "\t" << Display.Y;
 	fichier << endl << CST_VID_FULLSCREEN << "\t" << Display.Fullscreen();
 
-	fichier << "\n\n\n-------------------------AUDIO-------------------------\n";
+	fichier << "\n\n-------------------------AUDIO-------------------------";
 	fichier << endl << CST_AUD_OUTPUT << "\t\t" << Audio.m_Output << "\t(" << resolveOutput(Audio.m_Output) << ")";
 	fichier << endl << CST_AUD_MIXER << "\t\t\t" << Audio.m_Mixer << "\t(" << resolveMixer(Audio.m_Mixer) << ")";
 	fichier << endl << CST_AUD_DRIVER << "\t\t" << Audio.m_Driver << "\t(" << resolveDriver(Audio.m_Driver) << ")";
@@ -328,7 +328,7 @@ void CCfg::Ecrit() {
 		fichier << endl << CST_AUD_DRIVERRECORD << "\t" << Audio.m_DriverRecord << "\t(Pas de driver d'acquisition)";
 	}
 
-	fichier << "\n\n\n-----------------------COMMANDES-----------------------\n";
+	fichier << "\n\n-----------------------COMMANDES-----------------------";
 	fichier << endl << CST_COM_AVANCER << "\t\t\t" << Commandes.Avancer.key << "\t" << Commandes.Avancer.mouse << "\t(" << Commandes.resolve(Commandes.Avancer) << ")";
 	fichier << endl << CST_COM_RECULER << "\t\t\t" << Commandes.Reculer.key << "\t" << Commandes.Reculer.mouse << "\t(" << Commandes.resolve(Commandes.Reculer) << ")";
 	fichier << endl << CST_COM_GAUCHE << "\t\t\t\t" << Commandes.Gauche.key << "\t" << Commandes.Gauche.mouse << "\t(" << Commandes.resolve(Commandes.Gauche) << ")";
@@ -339,38 +339,37 @@ void CCfg::Ecrit() {
 	fichier << endl << CST_COM_SELECTWEAPONUP << "\t\t" << Commandes.SelectWeaponUp.key << "\t" << Commandes.SelectWeaponUp.mouse << "\t(" << Commandes.resolve(Commandes.SelectWeaponUp) << ")";
 	fichier << endl << CST_COM_SELECTWEAPONDOWN << "\t" << Commandes.SelectWeaponDown.key << "\t" << Commandes.SelectWeaponDown.mouse << "\t(" << Commandes.resolve(Commandes.SelectWeaponDown) << ")";
 
-	fichier << "\n\n\n--------------------CENTRALISATEUR---------------------\n";
+	fichier << "\n\n--------------------CENTRALISATEUR---------------------";
 	fichier << endl << CST_CEN_IP << "\t\t" << Centralisateur.m_IpServer;
 	fichier << endl << CST_CEN_PORT << "\t\t" << Centralisateur.m_Port;
 
-	fichier << "\n\n\n------------------------RESEAU-------------------------\n";
+	fichier << "\n\n------------------------RESEAU-------------------------";
 	fichier << endl << CST_NET_IP << "\t\t\t" << Reseau._IpServer;
 	fichier << endl << CST_NET_PORT << "\t\t\t" << Reseau._Port;
 	fichier << endl << CST_NET_PORTTREE << "\t\t" << Reseau._portTree;
 	fichier << endl << CST_TREE_UPDATE_CLIENTTOSERVER_DELAY << "\t\t" << Reseau._treeUpdateClientToServerDelay;
 	fichier << endl << CST_TREE_UPDATE_SERVERTOCLIENT_DELAY << "\t\t" << Reseau._treeUpdateServerToClientDelay;
 
-	fichier << "\n\n\n------------------------JOUEUR-------------------------\n";
+	fichier << "\n\n------------------------JOUEUR-------------------------";
 	fichier << endl << CST_JOU_NOM << "\t\t\t\t\t" << Joueur.nom;
 	fichier << endl << CST_JOU_MAPNOM << "\t\t\t\t" << Joueur.mapName;
 	fichier << endl << CST_JOU_OUTLINEVISIBILITY << "\t" << Joueur.outlineVisibility;
 	fichier << endl << CST_JOU_SKINVISIBILITY << "\t\t" << Joueur.skinVisibility;
 
-	fichier << "\n\n\n------------------------PLUGIN-------------------------\n";
-	vector<string>::iterator iter;
-	fichier << CST_PLU_ACT_BEGIN << endl;
-	for(iter = Plugin._defaultPluging.begin() ; iter != Plugin._defaultPluging.end() ; iter++) {
-		fichier << *iter << endl;
+	fichier << "\n\n------------------------PLUGIN-------------------------";
+	fichier << endl << CST_PLU_ACT_BEGIN << endl;
+	for(string& plugin : Plugin._defaultPluging) {
+		fichier << "\t" << plugin << endl;
 	}
 	fichier << CST_PLU_ACT_END;
 
-	fichier << "\n\n\n------------------------DEBUG-------------------------\n";
+	fichier << "\n\n------------------------DEBUG-------------------------";
 	fichier << endl << CST_DEB_SONPERFORMANCES << "\t\t" << Debug.bSonPerformances;
 	fichier << endl << CST_DEB_SONSPECTRE << "\t\t\t" << Debug.bSonSpectre;
 	fichier << endl << CST_DEB_AFFICHEFICHIER << "\t\t" << Debug.bAfficheFichier;
 	fichier << endl << CST_DEB_AFFICHENORMAUX << "\t\t" << Debug.bAfficheNormaux;
 
-	fichier << "\n\n\n------------------------FIN-------------------------\n";
+	fichier << "\n\n------------------------FIN-------------------------\n";
 
 	fichier.close();
 }

@@ -5,6 +5,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <fstream>
 #include <sstream>
 
@@ -76,7 +77,6 @@ enum TraceType {
 #define CURRENT_FICHIER_TRACE	"jkt.current.log"
 #define PREFIX_FICHIER_TRACE	"jkt."
 #define EXT_FICHIER_TRACE		".log"
-#define LEVEL_TRACE				2
 #define FICHIER_SOURCE_BASE		"\\src\\"
 
 class Donnees
@@ -112,11 +112,19 @@ class Trace
 	SDL_mutex *_Mutex;
 
 	// Option de log
-	vector<string> _excludeFiles;
+	TraceLevel _loggerLevel;	// Niveau de log minimum
+
+	vector<string> _excludeDebugFiles;
+	vector<string> _excludeInfoFiles;
+	vector<string> _excludeWarnFiles;
+	vector<string> _excludeErrorFiles;
 
 		// Constructor / destructor
 	Trace();
 	~Trace();
+
+	void loadConfigKey(map<string, string>& keys, const char* key, string& value);
+	void loadConfigKeyCommaSeparated(map<string, string>& keys, const char* key, vector<string>& value);
 
 public:
 	static Trace& instance();

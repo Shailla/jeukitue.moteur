@@ -115,9 +115,27 @@ void Donnees::error(const stringstream& txt, ... ) {
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_ERROR, TRACE_NORMAL, _line, _sourceFile, txt.str().c_str(), vl );
 }
 
+void Trace::loadConfigKey(map<string, string>& config, const char* key, string& value) {
+	// Fichier à exclure des log
+	string var = config[key];
 
+	if(var.length() > 0) {
+		value = var;
+	}
+}
 
+void Trace::loadConfigKeyCommaSeparated(map<string, string>& config, const char* key, vector<string>& value) {
+	// Fichier à exclure des log
+	string var = config[key];
 
+	if(var.length() > 0) {
+		value = StringUtils::split(var, StringUtils::isComma);
+
+		for(string& file : value) {
+			StringUtils::trim(file);
+		}
+	}
+}
 
 Trace::Trace() {
 	_Mutex = SDL_CreateMutex();
@@ -151,16 +169,16 @@ Trace::Trace() {
 
 		logConfig.close();
 
+		// Niveau minimum de log
+		string var;
+		loadConfigKey(config, "logger.level", var);
+		_loggerLevel = (TraceLevel)atoi(var.c_str());
+
 		// Fichier à exclure des log
-		string var = config["logger.file.exclude"];
-
-		if(var.length() > 0) {
-			_excludeFiles = StringUtils::split(var, StringUtils::isComma);
-
-			for(string& file : _excludeFiles) {
-				StringUtils::trim(file);
-			}
-		}
+		loadConfigKeyCommaSeparated(config, "logger.file.exclude.debug", _excludeDebugFiles);
+		loadConfigKeyCommaSeparated(config, "logger.file.exclude.info", _excludeInfoFiles);
+		loadConfigKeyCommaSeparated(config, "logger.file.exclude.warn", _excludeWarnFiles);
+		loadConfigKeyCommaSeparated(config, "logger.file.exclude.error", _excludeErrorFiles);
 	}
 
 	/* ***********************************************
@@ -235,7 +253,7 @@ Trace &Trace::instance() {
 void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFichier, const char *txt, va_list &vl) {
 	SDL_LockMutex( _Mutex );
 
-	bool youHaveToLog = (LEVEL_TRACE == -1) || (level >= LEVEL_TRACE);	// Si on ne veut pas cette trace-là alors sors
+	bool youHaveToLog = (level >= _loggerLevel);	// Si on ne veut pas cette trace-là alors sors
 	string nomCourtFichier;
 
 	// Vérifie si le fichier n'est pas exclu des log
@@ -244,10 +262,32 @@ void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFic
 		size_t pos = nomCourtFichier.find(FICHIER_SOURCE_BASE);
 		nomCourtFichier.replace(0, pos + sizeof(FICHIER_SOURCE_BASE)-1, "");
 
-		for(const string& var : _excludeFiles) {
-			if(var == nomCourtFichier) {
-				youHaveToLog = false;
-				break;
+		vector<string>* excludeFiles;
+
+		switch(level) {
+		case TraceLevel::TRACE_LEVEL_DEBUG:
+			excludeFiles = &_excludeDebugFiles;
+			break;
+		case TraceLevel::TRACE_LEVEL_INFO:
+			excludeFiles = &_excludeInfoFiles;
+			break;
+		case TraceLevel::TRACE_LEVEL_WARN:
+			excludeFiles = &_excludeWarnFiles;
+			break;
+		case TraceLevel::TRACE_LEVEL_ERROR:
+			excludeFiles = &_excludeErrorFiles;
+			break;
+		default:
+			excludeFiles = 0;
+			break;
+		}
+
+		if(excludeFiles) {
+			for(const string& var : *excludeFiles) {
+				if(var == nomCourtFichier) {
+					youHaveToLog = false;
+					break;
+				}
 			}
 		}
 	}

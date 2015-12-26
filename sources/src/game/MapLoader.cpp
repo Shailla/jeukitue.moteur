@@ -89,7 +89,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		LOGINFO(("Scaling du skin"));
-		pMapJoueur->Scale( -0.6f, 0.6f, 0.6f );
+		pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
 
 		// Création du joueur
 		console->println(ConsoleView::COT_INFO, "Creation du joueur principal...");
@@ -100,7 +100,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		erwin->changeContact(contactPlayer);		// Associe une fonction de gestion des contacts avec la map
 		erwin->Skin(pMapJoueur);
 		erwin->setCri( cri1.c_str() );				// Cri du joueur
-		erwin->nom("ERWIN");
+		erwin->nom("Erwin");
 		erwin->init();								// Initialise certaines données
 		gameDto->setErwin(erwin);
 	}
@@ -118,7 +118,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		pMapJoueurJulien->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		LOGINFO(("Scaling du skin"));
-		pMapJoueurJulien->Scale( -0.6f, 0.6f, 0.6f );
+		pMapJoueurJulien->Scale(-0.6f, 0.6f, 0.6f);
 
 		// Création d'un second joueur
 		console->println(ConsoleView::COT_INFO, "Creation du second joueur...");
@@ -130,7 +130,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		julien->changeContact(contactPlayer);		// Associe une fonction pour les contacts avec la map
 		julien->Skin( pMapJoueurJulien );
 		julien->setCri( cri1.c_str() );
-		julien->nom( "JULIEN" );
+		julien->nom( "Julien" );
 		julien->init();
 		gameDto->getPlayers().push_back(julien);				// Ajoute le joueur à la liste des joueurs
 	}
@@ -151,7 +151,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		LOGINFO(("Scaling du skin"));
-		pMapJoueur->Scale( -0.6f, 0.6f, 0.6f );
+		pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
 
 		// Création d'un troisième joueur
 		console->println(ConsoleView::COT_INFO, "Creation du troisieme joueur...");
@@ -163,7 +163,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		sprite->changeContact(contactSprite);		// Associe une fonction pour les contacts avec la map
 		sprite->Skin( pMapJoueur );
 		sprite->setCri( cri2.c_str() );
-		sprite->nom( "SPRITE" );
+		sprite->nom( "Sprite" );
 		sprite->init();
 		gameDto->getPlayers().push_back(sprite);				// Ajoute le joueur à la liste des joueurs
 	}
@@ -222,7 +222,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 	console->println(ConsoleView::COT_INFO, "Scaling du skin");
 	LOGINFO(("Scaling du skin"));
-	pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
+	pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
 
 
 	/***************************************
@@ -306,7 +306,7 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		LOGINFO(("Scaling du skin"));
-		pMapJoueur->Scale( -0.03f, 0.03f, 0.03f );
+		pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
 
 		// Création du joueur
 		console->println(ConsoleView::COT_INFO, "Creation du joueur principal...");
@@ -317,7 +317,7 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 		erwin->changeContact(contactPlayer);		// Associe une fonction de gestion des contacts avec la map
 		erwin->Skin(pMapJoueur);
 		erwin->setCri( cri1.c_str() );				// Cri du joueur
-		erwin->nom("ERWIN");
+		erwin->nom("Erwin");
 		erwin->init();								// Initialise certaines données
 
 		gameDto->setErwin(erwin);

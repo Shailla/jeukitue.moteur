@@ -96,7 +96,7 @@ LOGDEBUG(("CFocus::ChangePlayOrConsoleFocus()%T", this));
 	if( focus_actif_handle_key_down == play_handle_key_down ) {
 		SetMenuAgarFocus();	
 	}
-	else if(focus_actif_handle_key_down == menu_agar_handle_key_down) {
+	else {
 		SetPlayFocus();
 	}
 }

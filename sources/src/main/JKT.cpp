@@ -275,92 +275,82 @@ void updateSon3D()
 	glPopMatrix();
 }
 
-void afficheInfo( Uint32 tempsDisplay )
-{
+void afficheInfo( Uint32 tempsDisplay ) {
 	myfont.Begin();
 
 	// Affiche le mode de jeu (rien, local, client ou serveur)
 	string str;
-	string str2;
 
-	str = "Jeu en mode : ";
-	if( Game.isModeNull() )
-	{
-		str += "NULL";
-		str2 = "";
+	str = "Mode de jeu : ";
+	if( Game.isModeNull() ) {
+		str += "aucun";
 	}
-	else if( Game.isModeLocal() )
-	{	str += "LOCAL";
-	str2 = "";
+	else if( Game.isModeLocal() ) {
+		str += "local";
 	}
-	else if( Game.isModeClient() )
-	{
-		str += "CLIENT";
+	else if( Game.isModeClient() ) {
+		str += "client";
+
 		switch( Game.getStatutClient() )
 		{
 		case JKT_STATUT_CLIENT_INIT:
-			str2 = "Etat : Initialisation en cours";
+			str += " (initialisation)";
 			break;
 		case JKT_STATUT_CLIENT_READY:
-			str2 = "Etat : Client ready";
+			str += " (ready)";
 			break;
 		case JKT_STATUT_CLIENT_DEMJTG:
-			str2 = "Etat : Demande de JTG envoyée";
+			str += " (demande de JTG envoyée)";
 			break;
 		case JKT_STATUT_CLIENT_OUV:
-			str2 = "Etat : Ouverture de la MAP en cours";
+			str += " (ouverture de la MAP)";
 			break;
 		case JKT_STATUT_CLIENT_PLAY:
-			str2 = "Etat : Jeu en cours";
+			str += " (jeu en cours)";
 			break;
 		default:
 			break;
 		}
 	}
-	else if( Game.isModeServer() )
-	{
-		str += "SERVEUR";
+	else if( Game.isModeServer() ) {
+		str += "serveur";
 		switch( Game.getStatutServer() )
 		{
 		case JKT_STATUT_SERVER_INIT:
-			str2 = "Etat : Initialisation en cours";
+			str += " (initialisation)";
 			break;
 		case JKT_STATUT_SERVER_READY:
-			str2 = "Etat : Serveur ready";
+			str += " (ready)";
 			break;
 		case JKT_STATUT_SERVER_PLAY:
-			str2 = "Etat : Partie en cours";
+			str += " (jeu en cours)";
 			break;
 		default:
 			break;
 		}
 	}
 
-	myfont.DrawString( str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f );
-	myfont.DrawString( str2, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 35.0f );
-
 	int pos = 0;
+
+	myfont.DrawString(str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
+
+
 	char cou[70];
 
 	// Affiche le mode du jeu
 	if(Game.getMap() && Game.getMap()->IsSelectionMode()) {
 		sprintf( cou, "Selection : %s", Game.getMap()->getSelectedName());
 		str = cou;
-		myfont.DrawString( cou, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
+		myfont.DrawString( cou, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
 	}
 
-	if(Game.Erwin()) {
-		CPlayer *erwin = Game.Erwin();
+	CPlayer *erwin = Game.Erwin();
 
+	if(erwin) {
 		// Affiche le Teta du joueur principal
-		sprintf( cou, "Tete : %.5d", (int)erwin->Teta() );
+		sprintf( cou, "Teta Phi : %.3d %.3d", (int)erwin->Teta(), (int)erwin->Phi());
 		str = cou;
-		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
-
-		// Affiche le Phi du joueur principal
-		sprintf( cou, "Phi : %.5d", (int)erwin->Phi() );
-		str = cou;
-		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
+		myfont.DrawString( str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
 
 		// Affiche la position du joueur principal
 		float position[3];
@@ -368,7 +358,7 @@ void afficheInfo( Uint32 tempsDisplay )
 
 		sprintf( cou, "Position : %0.4f %0.4f %0.4f", position[0], position[1], position[2] );
 		str = cou;
-		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
+		myfont.DrawString( str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
 	}
 
 	if(Config.Debug.bSonPerformances) {
@@ -973,33 +963,11 @@ void play_handle_key_down( SDL_Event *event ) {
 
 		case SDLK_F3 :
 		{
-			string trace1 = "Derniere erreur FMOD : ";
-			trace1 += FMOD_ErrorString(FSOUND_GetError());
-
-			string trace2 = "Derniere erreur SDL : ";
-			trace2 += SDL_GetError();
-
-			string trace3 = "Derniere erreur SDL_Net : ";
-			trace3 += SDLNet_GetError();
-
-			string trace4 = "Derniere erreur openGL : ";
-			trace4 += (char*)gluErrorString( glGetError() );
-
-			string trace5 = "Derniere erreur Agar : ";
-			trace5 += AG_GetError();
-
-			LOGDEBUG((trace1.c_str()));
-			LOGDEBUG((trace2.c_str()));
-			LOGDEBUG((trace3.c_str()));
-			LOGDEBUG((trace4.c_str()));
-			LOGDEBUG((trace5.c_str()));
-
-			cerr << endl << __FILE__ << ":" << __LINE__;
-			cerr << trace1 << endl;
-			cerr << trace2 << endl;
-			cerr << trace3 << endl;
-			cerr << trace4 << endl;
-			cerr << trace5 << endl;
+			LOGINFO(("Derniere erreur FMOD : %s", FMOD_ErrorString(FSOUND_GetError())));
+			LOGINFO(("Derniere erreur SDL : %s", SDL_GetError()));
+			LOGINFO(("Derniere erreur SDL_Net : %s", SDLNet_GetError()));
+			LOGINFO(("Derniere erreur openGL : %s", (char*)gluErrorString( glGetError() )));
+			LOGINFO(("Derniere erreur Agar : %s", AG_GetError()));
 		}
 		break;
 

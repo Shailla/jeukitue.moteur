@@ -84,6 +84,8 @@ const char* CCfg::CST_JOU_SKINVISIBILITY =		"joueur.skinVisibility";
 const char* CCfg::CST_PLU_ACT_BEGIN =			"plugin.activate.begin";
 const char* CCfg::CST_PLU_ACT_END =				"plugin.activate.end";
 
+const char* CCfg::CST_WEB_HTML_PORT =			"web.html.server.port";
+
 const char* CCfg::CST_DEB_SONPERFORMANCES =		"debug.sonPerformances";
 const char* CCfg::CST_DEB_SONSPECTRE =			"debug.sonSpectre";
 const char* CCfg::CST_DEB_AFFICHEFICHIER =		"debug.afficheFichier";
@@ -247,7 +249,6 @@ void CCfg::Lit() {
 		fichier >> Reseau._treeUpdateServerToClientDelay;
 
 
-
 		/* ***************************************
 		 * Joueur
 		 * **************************************/
@@ -263,6 +264,7 @@ void CCfg::Lit() {
 
 		do fichier >> mot;	while( mot!=CST_JOU_SKINVISIBILITY );
 		fichier >> Joueur.skinVisibility;
+
 
 		/* ***************************************
 		 * Plugin
@@ -280,6 +282,15 @@ void CCfg::Lit() {
 			}
 		}
 		while(true);
+
+
+		/* ***************************************
+		 * Web
+		 * **************************************/
+
+		do fichier >> mot;	while( mot!=CST_WEB_HTML_PORT );
+		fichier >> Web._htmlServerPort;
+
 
 		/* ***************************************
 		 * Debug
@@ -362,6 +373,9 @@ void CCfg::Ecrit() {
 		fichier << "\t" << plugin << endl;
 	}
 	fichier << CST_PLU_ACT_END;
+
+	fichier << "\n\n-------------------------WEB---------------------------";
+	fichier << endl << CST_WEB_HTML_PORT << "\t\t" << Web._htmlServerPort;
 
 	fichier << "\n\n------------------------DEBUG-------------------------";
 	fichier << endl << CST_DEB_SONPERFORMANCES << "\t\t" << Debug.bSonPerformances;

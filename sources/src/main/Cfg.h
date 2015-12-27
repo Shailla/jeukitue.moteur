@@ -60,6 +60,8 @@ class CCfg {
 	static const char* CST_PLU_ACT_BEGIN;
 	static const char* CST_PLU_ACT_END;
 
+	static const char* CST_WEB_HTML_PORT;
+
 	static const char* CST_DEB_SONPERFORMANCES;
 	static const char* CST_DEB_SONSPECTRE;
 	static const char* CST_DEB_AFFICHEFICHIER;
@@ -183,6 +185,16 @@ private:
 		bool axesMeterVisibility;	// Indique si les axes d'un mètre de côté servant à calibrer les dimensions de la scène sont visibles ou non
 	};
 
+	class CWeb {		// Configuration du moteur de plugin
+		friend class CCfg;
+	protected:
+		Uint16 _htmlServerPort;
+	public:
+
+		void setHtmlServerPort(Uint16 htmlServerPort)		{ _htmlServerPort = htmlServerPort;		}
+		Uint16 getHtmlServerPort()							{ return _htmlServerPort;				}
+	};
+
 	string nomFichierConfig;
 
 public:
@@ -195,6 +207,7 @@ public:
 	CJoueur Joueur;					// Informations sur le joueur principal (nom,...)
 	CPlugin Plugin;					// Configuration du moteur de plugins
 	CDebug Debug;					// Paramètres servant au débuggage
+	CWeb Web;						// Paramètres du serveur web
 		
 	CCfg();
 

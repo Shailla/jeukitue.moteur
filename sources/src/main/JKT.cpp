@@ -75,6 +75,7 @@ class CGame;
 #include "spatial/objet/Dirigeable.h"
 #include "spatial/Mouve.h"
 #include "spatial/geo/GeoObject.h"
+#include "reseau/web/HtmlServer.h"
 #include "Rocket.h"
 #include "Laser.h"
 #include "spatial/objet/Porte.h"
@@ -1742,6 +1743,9 @@ int main(int argc, char** argv) {
 	Config.Ecrit();			// Enregistre les éventuelles modifications de la configuration
 
 	srand(SDL_GetTicks());		// Initialisation de la fonction rand() pour les nombres aléatoires
+
+	HtmlServer htmlServer(Config.Web.getHtmlServerPort());
+	htmlServer.open();
 
 	_grahicObjectsToInitializeMutex = SDL_CreateMutex();
 	_grahicObjectsToDestructMutex = SDL_CreateMutex();

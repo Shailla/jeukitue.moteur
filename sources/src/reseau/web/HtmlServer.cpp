@@ -46,11 +46,6 @@ int HtmlServer::run(void* thiz) {
 }
 
 void HtmlServer::start() {
-	char buffer[1024];
-
-	for(int i=0 ; i<1024 ; i++)
-		buffer[i] = 0;
-
 	// Creation de la socket serveur
 	IPaddress adresse;
 
@@ -73,6 +68,12 @@ void HtmlServer::start() {
 		while(clientSocket == 0)
 			clientSocket = SDLNet_TCP_Accept(serveurSocket);
 
+		char request[1024];
+
+		int requestSize = SDLNet_TCP_Recv(clientSocket, request, 1024); 				// Reception parametres connection du client
+		request[requestSize] = 0;
+		LOGINFO(("HTTP requête reçue : %s", request));
+
 		// Recherche du contenu
 		string content = getPage("index.html");
 
@@ -86,10 +87,9 @@ void HtmlServer::start() {
 		response << content;
 		string responseStr = response.str();
 
+		// Envoi réponse
 		LOGINFO(("HTTP response : %s", responseStr.c_str()));
 
-		// Envoi réponse
-		SDLNet_TCP_Recv(clientSocket, buffer, 1024); 							// Reception parametres connection du client
 		SDLNet_TCP_Send(clientSocket, responseStr.c_str(), responseStr.size()+1); 		// Envoi du contenu de la page au client
 		SDLNet_TCP_Close(clientSocket);
 	}

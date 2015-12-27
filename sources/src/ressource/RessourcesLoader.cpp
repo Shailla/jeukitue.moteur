@@ -86,7 +86,7 @@ bool RessourcesLoader::getFileRessource(string& file) {
 			for(int i=0; i<nbrElements; i++) {
 				if(!resourceType.compare(elementsNamesAndFolders[i*2 + 0])) {
 					file.replace(0, nbr, elementsNamesAndFolders[i*2 + 1]);
-					LOGERROR(("La ressource '%s' est '%s')", before.c_str(), file.c_str()));
+					LOGDEBUG(("La ressource '%s' est '%s')", before.c_str(), file.c_str()));
 					bTrouve = true;
 					break;
 				}

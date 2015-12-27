@@ -17,12 +17,22 @@ class HtmlServer {
 	static const char* WEB_STATIC_RESOURCES_DIR;
 	static const char* HTTP_RETURN;
 	static const char* HTTP_HEAD;
-	static const char* HTTP_RESPONSE_OK;
+	static const char* HTTP_RESPONSE_200;
+	static const char* HTTP_RESPONSE_404;
+	static const char* HTTP_RESPONSE_500;
 	static const char* HTTP_CONTENT_HTML;
 	static const char* HTTP_CONTENT_LENGTH;
 
+	static const char* HTTP_INTERNAL_ERROR_CONTENT;
+
+	enum HTTP_EXCEPTION {
+		RESOURCE_NOT_FOUND_EXCEPTION = 1
+	};
+
 	Uint16 _port;
 	std::map<string, string> _pages;
+
+	string buildResponse(const string& content, const string& status);
 public:
 	HtmlServer(int port);
 	virtual ~HtmlServer();
@@ -32,7 +42,7 @@ public:
 	static int run(void* arg);
 
 	void start();
-	string getPage(string url);
+	string getPage(const string& url) throw(int);
 };
 
 }	// JktNet

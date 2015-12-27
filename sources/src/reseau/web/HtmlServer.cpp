@@ -99,7 +99,7 @@ void HtmlServer::start() {
 			case RESOURCE_NOT_FOUND_EXCEPTION:
 				content = getPage("resource_not_found.html");
 				response = buildResponse(content, HTTP_RESPONSE_404);
-				LOGWARN(("Endpoint introuvable : '%s'", endpoint));
+				LOGWARN(("Endpoint introuvable : '%s'", endpoint.c_str()));
 				break;
 			default:
 				response = buildResponse(HTTP_INTERNAL_ERROR_CONTENT, HTTP_RESPONSE_500);

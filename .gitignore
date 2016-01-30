@@ -18,3 +18,8 @@ deploy2/*.dll
 deploy/Images/
 save-*.map.xml
 deploy/Images/photo.bmp
+deploy/web/css/
+deploy/web/js/
+deploy/web/json/
+deploy/web/html/
+deploy/web/image/

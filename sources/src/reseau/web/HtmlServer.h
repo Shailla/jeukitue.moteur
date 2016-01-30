@@ -13,14 +13,36 @@
 namespace JktNet
 {
 
+class WebResource {
+public:
+	string _file;
+	string _contentType;
+	string _content;
+
+	WebResource();
+	WebResource(const string& file, const string& contentType, const string& content);
+};
+
 class HtmlServer {
 	static const char* WEB_STATIC_RESOURCES_DIR;
+	static const char* WEB_STATIC_JSON_DIR;
+
+	static const char* WEB_CSS_DIR;
+	static const char* WEB_IMAGE_DIR;
+	static const char* WEB_HTML_DIR;
+	static const char* WEB_JS_DIR;
+	static const char* WEB_JSON_DIR;
+
 	static const char* HTTP_RETURN;
 	static const char* HTTP_HEAD;
 	static const char* HTTP_RESPONSE_200;
 	static const char* HTTP_RESPONSE_404;
 	static const char* HTTP_RESPONSE_500;
-	static const char* HTTP_CONTENT_HTML;
+	static const char* HTTP_CONTENT_TYPE_HTML;
+	static const char* HTTP_CONTENT_TYPE_CSS;
+	static const char* HTTP_CONTENT_TYPE_IMAGE;
+	static const char* HTTP_CONTENT_TYPE_JS;
+	static const char* HTTP_CONTENT_TYPE_JSON;
 	static const char* HTTP_CONTENT_LENGTH;
 
 	static const char* HTTP_INTERNAL_ERROR_CONTENT;
@@ -30,9 +52,12 @@ class HtmlServer {
 	};
 
 	Uint16 _port;
-	std::map<string, string> _pages;
+	std::map<string, WebResource> _resources;
 
-	string buildResponse(const string& content, const string& status);
+	void collecteDir(const string& dirname, const string& endpoint, const string& contentType);
+
+	string buildResponse(const string& content, const string& contentType, const string& status);
+	string buildResponse(const WebResource* resource, const string& status);
 public:
 	HtmlServer(int port);
 	virtual ~HtmlServer();
@@ -42,7 +67,8 @@ public:
 	static int run(void* arg);
 
 	void start();
-	string getPage(const string& url) throw(int);
+
+	WebResource* getResource(const string& endpoint) throw(int);
 };
 
 }	// JktNet

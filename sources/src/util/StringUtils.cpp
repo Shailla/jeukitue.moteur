@@ -89,6 +89,10 @@ int StringUtils::isEqual(int c) {
 	return c == '=';
 }
 
+int StringUtils::isSlash(int c) {
+	return c == '/';
+}
+
 int StringUtils::isCarriageReturn(int c) {
 	return c == '\n';
 }

@@ -283,9 +283,7 @@ bool CFindFolder::isFolder(const string& directory) {
 
 #ifdef VS
 	struct __stat64 buf;
-	int result;
-
-	result = _stat64( dir, &buf );
+	int result = _stat64( dir, &buf );
 
 	/* Check if statistics are valid: */
 	if( result != 0 )
@@ -294,9 +292,7 @@ bool CFindFolder::isFolder(const string& directory) {
 	return (buf.st_mode & _S_IFDIR)!=0;
 #else
 	struct stat buf;
-	int result;
-
-	result = stat( dir, &buf );
+	int result = stat( dir, &buf );
 
 	if( result == -1 )
 		cerr << endl << __FILE__ << ":" << __LINE__ << " CFindFolder::isFolder(" << dir << ") Problem getting information";

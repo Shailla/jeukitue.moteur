@@ -46,6 +46,7 @@ public:
 	static int isGuillemet(int c);
 	static int isComma(int c);
 	static int isEqual(int c);
+	static int isSlash(int c);
 };
 
 } /* namespace JktUtils */

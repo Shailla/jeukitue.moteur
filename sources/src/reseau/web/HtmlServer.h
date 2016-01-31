@@ -17,10 +17,11 @@ class WebResource {
 public:
 	string _file;
 	string _contentType;
-	string _content;
+	char* _content;
 
 	WebResource();
-	WebResource(const string& file, const string& contentType, const string& content);
+	WebResource(const string& file, const string& contentType, char* content);
+	~WebResource();
 };
 
 class HtmlServer {

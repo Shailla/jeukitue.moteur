@@ -8,6 +8,8 @@
 #include <sstream>
 #include <fstream>
 #include <dirent.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -42,14 +44,20 @@ const char* HtmlServer::HTTP_CONTENT_TYPE_JSON = 	"Content-type: application/jso
 const char* HtmlServer::HTTP_CONTENT_LENGTH = 		"Content-Length: ";
 
 WebResource::WebResource() {
+	_content = 0;
 }
 
-WebResource::WebResource(const string& file, const string& contentType, const string& content) {
+WebResource::WebResource(const string& file, const string& contentType, char* content) {
 	_file = file;
 	_contentType = contentType;
 	_content = content;
 }
 
+WebResource::~WebResource() {
+	if(_content) {
+		free(_content);
+	}
+}
 
 // Contenu en dur en dernier recours (erreur interne) pour éviter de cumuler une erreur interne avec une ressource introuvable
 const char* HtmlServer::HTTP_INTERNAL_ERROR_CONTENT = "<html><center><h1>JKT Power</h1><font size=5 color=red>Erreur interne</font></center></html>";
@@ -90,22 +98,44 @@ void HtmlServer::collecteDir(const string& dirname, const string& endpoint, cons
 				collecteDir(resFile, resEndpoint, contentType);
 			}
 			else {
-				LOGINFO(("Chargement ressource Web : endpoint:'%s' file:'%s'", resEndpoint.c_str(), resFile.c_str()));
+				try {
+					LOGINFO(("Chargement ressource Web : endpoint:'%s' file:'%s'", resEndpoint.c_str(), resFile.c_str()));
 
-				ifstream pageFile(resFile);
-				stringstream content;
+					FILE* pFile = fopen(resFile.c_str(), "rb");
 
-				if(pageFile) {
-					// Chargement du contenu du fichier
-					content << pageFile.rdbuf();
-					pageFile.close();
+					if (pFile==NULL) {
+						LOGERROR(("Echec d'ouverture du fichier : '%s'", resFile.c_str()));
+						throw (int)1;
+					}
+
+					// Lecture taille du fichier
+					fseek (pFile , 0 , SEEK_END);
+					size_t fileSize = ftell (pFile);
+					rewind (pFile);
+
+					// allocate memory to contain the whole file:
+					char* content = (char*) malloc (sizeof(char)*fileSize);
+					if(content == NULL) {
+						LOGERROR(("Echec d'allocation mémoire pour le fichier : '%s'", resFile.c_str()));
+						throw (int)1;
+					}
+
+					// copy the file into the buffer:
+					size_t result = fread(content, 1, fileSize, pFile);
+
+					if (result != fileSize) {
+						LOGERROR(("Echec de lecture du fichier : '%s'", resFile.c_str()));
+						throw (int)1;
+					}
+
+					fclose (pFile);
 
 					// Enregistrement en cache
-					WebResource res(resFile, contentType, content.str());
+					WebResource res(resFile, contentType, content);
 					_resources[resEndpoint] = res;
 				}
-				else {
-					LOGERROR(("Fichier introuvable : %s", resFile.c_str()));
+				catch(int& exception) {
+					LOGERROR(("Echec de chargement du fichier : '%s'", resFile.c_str()));
 				}
 			}
 		}
@@ -231,7 +261,7 @@ string HtmlServer::buildResponse(const WebResource* resource, const string& stat
 	// Entête de réponse
 	response << HTTP_HEAD << " " << status << HTTP_RETURN;
 	response << resource->_contentType << HTTP_RETURN;
-	response << HTTP_CONTENT_LENGTH << resource->_content.size() << HTTP_RETURN;
+	response << HTTP_CONTENT_LENGTH << sizeof(resource->_content) << HTTP_RETURN;
 	response << HTTP_RETURN;
 
 	response << resource->_content;

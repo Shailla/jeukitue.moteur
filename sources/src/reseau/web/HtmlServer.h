@@ -13,15 +13,22 @@
 namespace JktNet
 {
 
+class WebService;
+
 class WebResource {
-public:
 	string _file;
 	string _contentType;
-	char* _content;
-
+	void* _content;
+	long _contentSize;
+public:
 	WebResource();
-	WebResource(const string& file, const string& contentType, char* content);
+	WebResource(const string& file, const string& contentType);
 	~WebResource();
+
+	void load();
+	string getContentType();
+	void* getContent();
+	long getContentSize();
 };
 
 class HtmlServer {
@@ -34,6 +41,23 @@ class HtmlServer {
 	static const char* WEB_JS_DIR;
 	static const char* WEB_JSON_DIR;
 
+	static const char* HTTP_INTERNAL_ERROR_CONTENT;
+
+	enum HTTP_EXCEPTION {
+		RESOURCE_NOT_FOUND_EXCEPTION = 1
+	};
+
+	Uint16 _port;
+	std::map<string, WebResource*> _resources;
+	std::map<string, WebService*> _services;
+
+	void collecteDir(const string& dirname, const string& endpoint, const string& contentType);
+
+	string buildStringResponse(const string& content, const string& contentType, const string& status);
+	string buildResponseHeader(const string& contentType, long contentSize, const string& status);
+
+	void* buildResponse();
+public:
 	static const char* HTTP_RETURN;
 	static const char* HTTP_HEAD;
 	static const char* HTTP_RESPONSE_200;
@@ -46,20 +70,6 @@ class HtmlServer {
 	static const char* HTTP_CONTENT_TYPE_JSON;
 	static const char* HTTP_CONTENT_LENGTH;
 
-	static const char* HTTP_INTERNAL_ERROR_CONTENT;
-
-	enum HTTP_EXCEPTION {
-		RESOURCE_NOT_FOUND_EXCEPTION = 1
-	};
-
-	Uint16 _port;
-	std::map<string, WebResource> _resources;
-
-	void collecteDir(const string& dirname, const string& endpoint, const string& contentType);
-
-	string buildResponse(const string& content, const string& contentType, const string& status);
-	string buildResponse(const WebResource* resource, const string& status);
-public:
 	HtmlServer(int port);
 	virtual ~HtmlServer();
 
@@ -69,6 +79,7 @@ public:
 
 	void start();
 
+	WebService* getService(const string& endpoint);
 	WebResource* getResource(const string& endpoint) throw(int);
 };
 

@@ -33,7 +33,7 @@ public:
 	 * @param position position du centre du moteur de particules dans le scène OpenGL
 	 * @param taille vecteur dimension du parallélépipède dans lequel sont affichées les particules
 	 */
-	CMoteurParticulesNeige(unsigned int nbrParticules, CV3D position, CV3D taille);
+	CMoteurParticulesNeige(unsigned int nbrParticules, const CV3D& position, const CV3D& taille);
 	~CMoteurParticulesNeige();
 
 	// Fonctions d'intialisation et libération

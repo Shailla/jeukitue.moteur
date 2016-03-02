@@ -19,10 +19,9 @@ public:
 	UdpCommunicationTest();
 	virtual ~UdpCommunicationTest();
 
-	std::string getName();
-	std::string getDescription();
+	std::string getDescription() override;
 
-	void test();
+	void test() override;
 };
 
 } /* namespace JktUtils */

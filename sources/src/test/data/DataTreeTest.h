@@ -133,10 +133,9 @@ public:
 	DataTreeTest();
 	virtual ~DataTreeTest();
 
-	std::string getName();
-	std::string getDescription();
+	std::string getDescription() override;
 
-	void test();
+	void test() override;
 
 private:
 	void logDataTreeElementId(const string dataTreeElementName, const vector<int>& dataTreeElementId);

@@ -24,7 +24,7 @@ namespace JktMoteur
 #define CSTE_K	1.0f
 #define TAILLE_TEX 0.04f		// Dimension de la texture carrée de la particule
 
-CMoteurParticulesNeige::CMoteurParticulesNeige(unsigned int nbrParticules, CV3D position, CV3D taille)
+CMoteurParticulesNeige::CMoteurParticulesNeige(unsigned int nbrParticules, const CV3D& position, const CV3D& taille)
 	:CMoteurParticules()
 {
 LOGDEBUG(("CMoteurParticulesNeige::CMoteurParticulesNeige(pos_centre,nbr=%u) begin%T", nbrParticules, this ));
@@ -127,9 +127,6 @@ void CMoteurParticulesNeige::Affiche() {
 
 	for(unsigned int i=0 ; i<_nbrParticules ; i++) {
 		particule = &_particules[i];
-
-		cout << particule->position.Y;
-		cout << particule->visible;
 
 		if( (particule->position.Y>-0.205f) && particule->visible ) {
 			particule->Calcule();		// Calcule les paramètres

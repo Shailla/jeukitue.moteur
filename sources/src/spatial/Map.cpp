@@ -21,9 +21,9 @@ class CGame;
 #include "util/Erreur.h"
 #include "main/Fabrique.h"
 #include "util/Tableau.cpp"
-#include "spatial/Particule.h"
-#include "spatial/MoteurParticules.h"
-#include "spatial/MoteurParticulesNeige.h"
+#include <spatial/moteur/neige/simple/Particule.h>
+#include <spatial/moteur/MoteurParticules.h>
+#include <spatial/moteur/neige/simple/MoteurParticulesNeige.h>
 #include "spatial/materiau/Material.h"
 #include "spatial/materiau/MaterialMaker.h"
 #include "spatial/IfstreamMap.h"
@@ -152,7 +152,7 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 		glDepthMask( GL_FALSE );
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE );
 
-		engine->Affiche();	// Le moteur de particules affiche toutes ses particules
+		engine->affiche();	// Le moteur de particules affiche toutes ses particules
 
 		glDisable( GL_BLEND );
 		glDepthMask( GL_TRUE );

@@ -1,0 +1,28 @@
+﻿.center {
+	/*opacity: 0.4;*/
+	background-image:url(fond.jpg);
+}
+.tiles {
+	border-collapse: separate;
+	border-spacing: 40px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+.tiles td  {
+    width: 100px;
+	height: 100px;
+	padding: 10px;
+	background-color: #00FF00;
+	border: 1px solid #000000;
+	border-radius: 25px;
+	box-shadow: 6px 10px 6px #00AA00;
+}
+.tiles td:hover, .tiles td:active {
+    background-color: #FFFF00;
+	box-shadow: 3px 5px 3px #AAAA00;
+}
+.tiles td a {
+	display:inline-block;
+	vertical-align: middle;
+}

@@ -27,7 +27,11 @@ public:
 
 	void load();
 	string getContentType();
+
+	/** Get of the web resource, content is cached at first read */
 	void* getContent();
+
+	/** Get size of the web resource, content is cached at first read */
 	long getContentSize();
 };
 

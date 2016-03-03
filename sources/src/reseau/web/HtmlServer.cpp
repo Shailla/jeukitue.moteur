@@ -218,7 +218,7 @@ void HtmlServer::start() {
 	void* content;
 	string contentType;
 	string status;
-	void* response;
+	char* response;
 	long responseSize;
 
 	while(1) {
@@ -275,9 +275,9 @@ void HtmlServer::start() {
 			header = buildResponseHeader(contentType, contentSize, status);
 
 			responseSize = header.size() + contentSize;
-			response = malloc(responseSize);
-			header.copy((char*)response, header.size());
-			memcpy(response + header.size(), content, contentSize);
+			response = (char*)malloc(responseSize);
+			header.copy(response, header.size());
+			memcpy(response + (size_t)header.size(), content, contentSize);
 		}
 		catch(int exception) {
 			switch(exception) {
@@ -289,7 +289,7 @@ void HtmlServer::start() {
 
 				responseSize = header.size() + resource->getContentSize();
 				response = (char*)malloc(responseSize);
-				header.copy((char*)response, header.size());
+				header.copy(response, header.size());
 				memcpy(response + header.size(), resource->getContent(), resource->getContentSize());
 
 				break;
@@ -298,7 +298,7 @@ void HtmlServer::start() {
 				string str = buildStringResponse(HTTP_INTERNAL_ERROR_CONTENT, HTTP_CONTENT_TYPE_HTML, HTTP_RESPONSE_500);
 				responseSize = str.size();
 				response = (char*)malloc(responseSize);
-				str.copy((char*)response, responseSize);
+				str.copy(response, responseSize);
 				break;
 			}
 		}
@@ -307,14 +307,14 @@ void HtmlServer::start() {
 			string str = buildStringResponse(HTTP_INTERNAL_ERROR_CONTENT, HTTP_CONTENT_TYPE_HTML, HTTP_RESPONSE_500);
 			responseSize = str.size();
 			response = (char*)malloc(responseSize);
-			str.copy((char*)response, responseSize);
+			str.copy(response, responseSize);
 		}
 		catch(...) {
 			LOGERROR(("Erreur interne inconnue sur '%s'", endpoint.c_str()));
 			string str = buildStringResponse(HTTP_INTERNAL_ERROR_CONTENT, HTTP_CONTENT_TYPE_HTML, HTTP_RESPONSE_500);
 			responseSize = str.size();
 			response = (char*)malloc(responseSize);
-			str.copy((char*)response, responseSize);
+			str.copy(response, responseSize);
 		}
 
 		// Envoi réponse

@@ -8,6 +8,10 @@ deploy/stderr.txt
 deploy/stdout.txt
 deploy/jkt.exe
 deploy/libjkt.dll.a
+deploy/Images/
+deploy/Images/photo.bmp
+deploy/web/*
+deploy2/web/*
 deploy2/**/*.log
 deploy2/Debug-g++/*
 deploy2/stderr.txt
@@ -15,11 +19,4 @@ deploy2/stdout.txt
 deploy2/jkt.exe
 deploy2/libjkt.dll.a
 deploy2/*.dll
-deploy/Images/
 save-*.map.xml
-deploy/Images/photo.bmp
-deploy/web/css/
-deploy/web/js/
-deploy/web/json/
-deploy/web/html/
-deploy/web/image/

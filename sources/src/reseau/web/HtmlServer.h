@@ -10,6 +10,8 @@
 
 #include <map>
 
+#include "SDL.h"
+
 namespace JktNet
 {
 

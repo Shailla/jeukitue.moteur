@@ -5,14 +5,14 @@
  *      Author: VGDJ7997
  */
 
-#include "main/Player.h"
-#include "main/Game.h"
+#include <stdlib.h>
+
 #include "reseau/web/json/JsonObject.h"
 #include "reseau/web/HtmlServer.h"
+#include "service/PlayersService.h"
+#include "service/dto/PlayerInformationDto.h"
 
 #include "reseau/web/service/PlayersWebService.h"
-
-extern CGame Game;
 
 namespace JktNet {
 
@@ -26,12 +26,12 @@ WebServiceResult PlayersWebService::execute(const std::string& endpoint, const s
 	JsonObject root;
 	JsonList& players = root.addList("players");
 
-	CPlayer* player;
-	int curseur = -1;
+	vector<PlayerInformationDto> dtos;
+	PlayersService::getPlayers(dtos);
 
-	while((player = Game.nextPlayer(curseur))) {
+	for(PlayerInformationDto dto : dtos) {
 		JsonObject& jsonPlayer = players.addObject();
-		jsonPlayer.addString("name", player->nom());
+		jsonPlayer.addString("name", dto.getName());
 	}
 
 	string json = root.toString();

@@ -36,6 +36,7 @@ CClient::CClient() {
 	m_timePingClientServer = 0;
 	IDpersonnel = 0;
 	_clientUdpInterlocutor = 0;
+	_jeton = 0;
 
 	_spaMaitre.openInServerMode(0);
 }

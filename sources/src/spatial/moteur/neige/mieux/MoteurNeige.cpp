@@ -169,8 +169,8 @@ void MoteurNeige::Refresh(CGame *game) {
 
 			flocon._position += flocon._vitesse;		// Vitesse relative + vitesse absolue
 
-			if(flocon._position.Y <= 0.0f) {
-				flocon._position.Y = 0.0f;
+			if(flocon._position.Y <= _centre.Y - (_taille.Y / 2)) {
+				flocon._position.Y = _centre.Y - (_taille.Y / 2);
 				flocon.changeState(Flocon::FloconState::ON_THE_GROUND);
 				_floconsOnGround.push(&flocon);
 			}

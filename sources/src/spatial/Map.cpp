@@ -63,7 +63,8 @@ namespace JktMoteur
 const char* CMap::identifier = "Map";
 
 CMap::CMap(CMap* parent) : CGeo(parent) {
-	LOGDEBUG(("CMap::CMap() begin%T", this ));
+	LOGDEBUG(("CMap::CMap(*parent) %T", this ));
+
 	m_bSelection = false;
 	m_Selection = 0;
 	_isGlActivated = false;
@@ -71,12 +72,13 @@ CMap::CMap(CMap* parent) : CGeo(parent) {
 }
 
 CMap::CMap(CMap* parent, const string& nomFichier) throw(JktUtils::CErreur) : CGeo(parent) {
-	LOGDEBUG(("CMap::CMap(nomFichier=%s) begin%T", nomFichier.c_str(), this ));
+	LOGDEBUG(("CMap::CMap(*parent,nomFichier=%s)%T", nomFichier.c_str(), this ));
+
 	if( !Lit(nomFichier) ) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur à la lecture du fichier MAP : " << nomFichier;
+		LOGERROR(("Erreur de lecture de la Map ''", nomFichier.c_str() ));
 	}
 	else {
-		cout << endl << "Fichier MAP lu : " << nomFichier;
+		LOGINFO(("Fichier Map lu ''"));
 	}
 
 	m_bSelection = false;
@@ -85,11 +87,10 @@ CMap::CMap(CMap* parent, const string& nomFichier) throw(JktUtils::CErreur) : CG
 	_isPluginsActivated = false;
 
 	Init();
-	LOGDEBUG(("CMap::CMap() end%T", this ));
 }
 
 CMap::~CMap() {
-	LOGDEBUG(("CMap::~CMap() begin%T", this ));
+	LOGDEBUG(("CMap::~CMap() %T", this ));
 
 	// Destruction des objets géo
 	vector<CGeo*>::iterator iterGeo;
@@ -114,8 +115,6 @@ CMap::~CMap() {
 		delete *iterLight;
 
 	m_TabLight.clear();
-
-	LOGDEBUG(("CMap::~CMap() end%T", this ));
 }
 
 const char* CMap::toString() {
@@ -438,6 +437,8 @@ bool CMap::Save(TiXmlElement* element) {			// Sauve l'objet géo dans un fichier 
 }
 
 bool CMap::Lit(CMap& map, const string& mapName) {
+	LOGDEBUG(("Lecture fichier Map '%s'", mapName.c_str()));
+
 	// Répertoire et fichier de la Map
 	string partialFileName = mapName;
 	bool isResource = JktUtils::RessourcesLoader::getFileRessource(partialFileName);

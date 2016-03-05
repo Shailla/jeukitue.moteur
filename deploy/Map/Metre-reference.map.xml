@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Map>
+	<Geos>
+        <Geo Ref="7" Nom="Cube" Type="Simple">
+            <Solide Valeur="true" />
+            <Couleur R="1.0" G="0.0" B="0.0" />
+            <Sommets Nbr="8">
+                <S X="-0.5" Y="-0.5" Z="-0.5" />
+				<S X="0.5" Y="-0.5" Z="-0.5" />
+				<S X="0.5" Y="0.5" Z="-0.5" />
+				<S X="-0.5" Y="0.5" Z="-0.5" />
+                <S X="-0.5" Y="-0.5" Z="0.5" />
+				<S X="0.5" Y="-0.5" Z="0.5" />
+				<S X="0.5" Y="0.5" Z="0.5" />
+				<S X="-0.5" Y="0.5" Z="0.5" />
+            </Sommets>
+            <Faces Nbr="12">
+                <!-- Fond -->
+				<Sommet S1="0" S2="1" S3="2" />
+                <Sommet S1="0" S2="3" S3="2" />
+                <!-- Dessus -->
+				<Sommet S1="4" S2="5" S3="6" />
+                <Sommet S1="4" S2="7" S3="6" />
+				<!-- Devant -->
+                <Sommet S1="0" S2="1" S3="5" />
+                <Sommet S1="0" S2="4" S3="5" />
+				<!-- Derrière -->
+                <Sommet S1="3" S2="7" S3="6" />
+                <Sommet S1="3" S2="5" S3="6" />
+				<!-- Gauche -->
+                <Sommet S1="0" S2="3" S3="7" />
+                <Sommet S1="0" S2="4" S3="7" />
+                <!-- Droite -->
+				<Sommet S1="1" S2="2" S3="6" />
+                <Sommet S1="1" S2="5" S3="6" />
+            </Faces>
+        </Geo>
+	</Geos>
+</Map>

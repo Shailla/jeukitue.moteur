@@ -24,6 +24,7 @@ class CGame;
 #include <spatial/moteur/neige/simple/Particule.h>
 #include <spatial/moteur/MoteurParticules.h>
 #include <spatial/moteur/neige/simple/MoteurParticulesNeige.h>
+#include <spatial/moteur/neige/mieux/MoteurNeige.h>
 #include "spatial/materiau/Material.h"
 #include "spatial/materiau/MaterialMaker.h"
 #include "spatial/IfstreamMap.h"
@@ -581,7 +582,8 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 
 					CV3D posMoteurParticulesNeige(position[0], position[1], position[2]);
 					CV3D tailleMoteurParticulesNeige(dimension[0], dimension[1], dimension[2]);
-					map.add(new CMoteurParticulesNeige(nbrParticules, posMoteurParticulesNeige, tailleMoteurParticulesNeige));
+//					map.add(new CMoteurParticulesNeige(nbrParticules, posMoteurParticulesNeige, tailleMoteurParticulesNeige));
+					map.add(new MoteurNeige(nbrParticules, nbrParticules/3, posMoteurParticulesNeige, tailleMoteurParticulesNeige));
 				}
 			}
 		}

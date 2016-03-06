@@ -76,7 +76,6 @@ CPlayer::CPlayer() {
 	m_PosVue[1] = 0.1f;
 	m_PosVue[2] = 0.137f;
 
-	m_TetaVue = 0.0f;			// Orientation du point de vue par rapport au joueur
 	m_PhiVue = 0.0f;
 
 	m_pClavier = NULL;
@@ -452,18 +451,10 @@ float CPlayer::PhiVue() const {
 	return m_PhiVue;
 }
 
-float CPlayer::TetaVue() const {
-	return m_TetaVue;
-}
-
 void CPlayer::getPosVue(float vect[3]) const {
 	vect[0] = m_PosVue[0];
 	vect[1] = m_PosVue[1];
 	vect[2] = m_PosVue[2];
-}
-
-void CPlayer::TetaVue(float tetaVue) {
-	m_TetaVue = tetaVue;
 }
 
 void CPlayer::PhiVue( float phiVue ) {

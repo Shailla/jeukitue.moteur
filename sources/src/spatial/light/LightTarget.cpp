@@ -19,8 +19,6 @@ using namespace std;
 
 #include "spatial/light/LightTarget.h"
 
-extern float GLIGHTX, GLIGHTY, GLIGHTZ;
-
 namespace JktMoteur
 {
 
@@ -170,9 +168,9 @@ bool CLightTarget::Save(TiXmlElement* element)
 void CLightTarget::Active()
 {
 	float fff[4];
-	fff[0] = m_Position[0] + GLIGHTX;
-	fff[1] = m_Position[1] + GLIGHTY;
-	fff[2] = m_Position[2] + GLIGHTZ;
+	fff[0] = m_Position[0];
+	fff[1] = m_Position[1];
+	fff[2] = m_Position[2];
 	fff[3] = 1.0f;
 
 	glPushMatrix();

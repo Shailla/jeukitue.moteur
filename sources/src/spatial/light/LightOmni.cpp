@@ -16,8 +16,6 @@ using namespace std;
 
 #include "spatial/light/LightOmni.h"
 
-extern float GLIGHTX, GLIGHTY, GLIGHTZ;
-
 namespace JktMoteur
 {
 
@@ -93,9 +91,9 @@ bool CLightOmni::Save(TiXmlElement* element)
 void CLightOmni::Active()
 {
 	float fff[4];
-	fff[0] = m_Position[0] + GLIGHTX;
-	fff[1] = m_Position[1] + GLIGHTY;
-	fff[2] = m_Position[2] + GLIGHTZ;
+	fff[0] = m_Position[0];
+	fff[1] = m_Position[1];
+	fff[2] = m_Position[2];
 	fff[3] = 1.0f;
 
 	glPushMatrix();

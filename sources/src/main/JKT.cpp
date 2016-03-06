@@ -136,7 +136,6 @@ using namespace JktSon;
 
 NotConnectedInterlocutor2* _notConnectedServerInterlocutor = 0;
 
-float GLIGHTX, GLIGHTY, GLIGHTZ;
 GLFont myfont;
 
 CCfg Config;		// Contient la configuration du jeu
@@ -504,8 +503,6 @@ void display() {		// Fonction principale d'affichage
 
 			erwin->getPosition(vect);
 			glTranslatef(-vect[0], -vect[1], vect[2]);	// Placement du point de vue
-
-			glRotated(erwin->TetaVue(), 0.0,1.0, 0.0);	// Rotation par rapport à l'axe verticale
 		}
 
 		Game.AfficheDirigeables();
@@ -683,37 +680,6 @@ void chopeLesEvenements() {
 
 	if(Game.Erwin()) {
 		CPlayer *erwin = Game.Erwin();
-
-		if( keystate[SDLK_a] ) {
-			erwin->TetaVue( erwin->TetaVue() + 0.2f );
-
-			if( erwin->TetaVue() > 180.0f )
-				erwin->TetaVue( erwin->TetaVue() - 360.0f );
-		}
-
-		if( keystate[SDLK_y] )
-			GLIGHTX += 0.003f;
-
-		if( keystate[SDLK_u] )
-			GLIGHTY += 0.003f;
-
-		if( keystate[SDLK_i] )
-			GLIGHTZ += 0.003f;
-
-		if( keystate[SDLK_h] )
-			GLIGHTX -= 0.003f;
-
-		if( keystate[SDLK_j] )
-			GLIGHTY -= 0.003f;
-
-		if( keystate[SDLK_k] )
-			GLIGHTZ -= 0.003f;
-
-		if( keystate[SDLK_q] ) {
-			erwin->TetaVue( erwin->TetaVue() - 0.2f );
-			if( erwin->TetaVue() < -180.0f )
-				erwin->TetaVue( erwin->TetaVue() + 360.0f );
-		}
 
 		if( keystate[SDLK_w] ) {
 			erwin->PhiVue( erwin->PhiVue() + 0.2f );

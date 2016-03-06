@@ -50,7 +50,6 @@ class CPlayer {
 	float m_Phi;				// Orientation du joueur par rapport au plan horizontal
 
 	// POSITION ET ORIENTATION DU POINT DE VUE PAR RAPPORT AU JOUEUR
-	float m_TetaVue;
 	float m_PhiVue;
 	float m_PosVue[3];
 

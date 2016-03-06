@@ -482,7 +482,6 @@ void display() {		// Fonction principale d'affichage
 	 * *********************************************************/
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );					// Spécifie la couleur de vidage du tampon chromatique
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
 	gluPerspective( 60.0, Config.Display.X/Config.Display.Y, 0.01f, 100.0f );
@@ -500,8 +499,8 @@ void display() {		// Fonction principale d'affichage
 			glTranslatef(-vect[0], -vect[1], vect[2]);	// Placement du point de vue
 			glRotated(erwin->PhiVue(), 1.0, 0.0, 0.0);	// Rotation par rapport au plan horizontal
 
-			glRotated(erwin->Phi(), 1.0, 0.0, 0.0);	// Rotation par rapport au plan horizontal
-			glRotated(erwin->Teta(), 0.0,1.0, 0.0);	// Rotation par rapport à l'axe verticale
+			glRotated(erwin->Phi(), 1.0, 0.0, 0.0);		// Rotation par rapport au plan horizontal
+			glRotated(erwin->Teta(), 0.0, 1.0, 0.0);	// Rotation par rapport à l'axe verticale
 
 			erwin->getPosition(vect);
 			glTranslatef(-vect[0], -vect[1], vect[2]);	// Placement du point de vue
@@ -1784,11 +1783,10 @@ int main(int argc, char** argv) {
 		glGenTextures(1, &texFonte);
 
 		if( !myfont.Create(fonte.c_str(), texFonte) ) {
-			LOGDEBUG(("main() Echec ouverture texture de fonte (%s) : %d", fonte.c_str(), texFonte));
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec d'ouverture de la fonte : " << fonte << endl;
+			LOGERROR(("Echec ouverture texture de fonte (%s) : %d", fonte.c_str(), texFonte));
 		}
 		else {
-			LOGDEBUG(("main() Texture de fonte (%s) : %d", fonte.c_str(), texFonte));
+			LOGDEBUG(("Texture de fonte initialisée (%s) : %d", fonte.c_str(), texFonte));
 		}
 	}
 

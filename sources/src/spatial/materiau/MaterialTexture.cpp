@@ -80,6 +80,7 @@ bool CMaterialTexture::Lit(TiXmlElement* element, string &repertoire, MapLogger*
 
 		// Fichier de texture
 	TiXmlElement* elFic = element->FirstChildElement(Xml::FICHIER);
+
 	if(!elFic) {
 		mapLogger->logError("Fichier map corrompu : Nom de fichier de texture");
 		throw CErreur("Fichier map corrompu : Nom de fichier de texture");

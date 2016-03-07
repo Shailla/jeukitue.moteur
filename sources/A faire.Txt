@@ -23,8 +23,7 @@ Bugs connus :
 	
 -	La gestion des contacts avec la map marche mal, elle est à repenser et à refaire
 	
--	La sélection de certains paramètres audio dans Configuration->Audio->Drivers
-	provoque le plantage
+-	La sélection de certains paramètres audio dans Configuration->Audio->Drivers provoque le plantage
 	Solution : ? (peut-être prévoir un système de configuration de secours)
 	
 -	Le "Tir laser" ne connait pas la taille des personnages
@@ -75,3 +74,5 @@ Bugs Résolus :
 	comme ça)
 	Résolu : (4.9.3) Les fonction openGL de chargement de textures étaient exécutées dans un tread différent
 	(celui du timer en l'occurence) et openGL n'aime apparemment pas ça
+	
+	

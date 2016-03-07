@@ -919,7 +919,7 @@ void play_handle_key_down( SDL_Event *event ) {
 			LOGINFO(("Derniere erreur FMOD : %s", FMOD_ErrorString(FSOUND_GetError())));
 			LOGINFO(("Derniere erreur SDL : %s", SDL_GetError()));
 			LOGINFO(("Derniere erreur SDL_Net : %s", SDLNet_GetError()));
-			LOGINFO(("Derniere erreur openGL : %s", (char*)gluErrorString( glGetError() )));
+			LOGINFO(("Derniere erreur openGL : %s", (const char*)gluErrorString( glGetError() )));
 			LOGINFO(("Derniere erreur Agar : %s", AG_GetError()));
 		}
 		break;

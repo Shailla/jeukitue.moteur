@@ -264,8 +264,7 @@ CTextureMaterialGeo* CGeoMaker::makeTextureMaterialGeo(CMaterialTexture* mat)
 	return geo;
 }
 
-CMultiMaterialGeo* CGeoMaker::makeMultiMaterialGeo(CMaterialMulti* mat)
-{
+CMultiMaterialGeo* CGeoMaker::makeMultiMaterialGeo(CMaterialMulti* mat) {
 	map<int,int> canauxnumbers;
 
 	// Linéarise les sommets
@@ -925,8 +924,6 @@ CGeo* CGeoMaker::Lit(TiXmlElement* el, CMap* pMap)
 		geoMM->setOffsetMateriau(0);
 		geo = geoMM;
 		geo->Lit(el);
-
-		cout << endl << "Y EN A UN !!!!!!!!!!!!!!!!!!!!!!!! " << geo->getName();
 	}
 	else
 		throw JktUtils::CErreur("Fichier Map corrompu : Geo de type inconnu");

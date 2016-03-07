@@ -92,6 +92,10 @@ CMultiMaterialGeo::CMultiMaterialGeo(CMap* map)
 	maxX = maxY = maxZ = minX = minY = minZ = 0.0f;
 }
 
+CGeo* CMultiMaterialGeo::clone() {
+	return new CMultiMaterialGeo(*this);
+}
+
 void CMultiMaterialGeo::setVertex(int num, float *tab)
 {
 	if( m_TabVertex )	// Destruction de l'ancien tableau de sommets s'il existe
@@ -763,7 +767,7 @@ bool CMultiMaterialGeo::Contact( const float pos[3], float dist )
 }
 
 void CMultiMaterialGeo::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
-	float dist = 0.1f;	// Rayon de la sphère représentant le volume du joueur
+	float dist = player->getRayon();	// Rayon de la sphère représentant le volume du joueur
 	float distanceW;
 
 	if( m_bSolid )	// Si l'objet est solide

@@ -2,7 +2,9 @@
 #ifndef __JKT__MAP_H
 #define __JKT__MAP_H
 
+#include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -33,16 +35,21 @@ class CMap : CGeo {
 
 	string _filename;								// Nom du fichier de la Map (par exemple "Monde.map.xml")
 	string _binariesDirectory;						// Répertoires des binaires de la Map (textures, plugins, ...)
+
+	map<unsigned int, CGeo*> _geoDescriptions;
+
+	vector<CGeo*> _geos;							// Liste des objets géométriques
+	vector<CMouve*> _mouves;						// Liste des objets nécessitant une actualisation (portes,...)
 	vector<Dirigeable*> _dirigeables;
-	vector<CGeo*> m_TabGeo;							// Liste des objets géométriques
-	vector<CMouve*> m_TabMouve;						// Liste des objets nécessitant une actualisation (portes,...)
+	vector<CLight*> _lights;						// Liste des lumières
 	vector<EntryPoint> _entryPoints;				// Liste des points d'entrée des joueurs sur la Map
+
 	vector<CMoteurParticules*> _particulesEngines;	// Liste des moteurs de particules de la Map
-	vector<CLight*> m_TabLight;						// Liste des lumières
+
 	vector<string> _plugins;						// Liste des plugins de la Map
 
-	int m_Selection;								// Object géo sélectionné
-	bool m_bSelection;								// Indique si le mode sélection est actif ou non
+	int _Selection;								// Object géo sélectionné
+	bool _bSelection;								// Indique si le mode sélection est actif ou non
 
 	bool _isGlActivated;							// Indique si les éléments OpenGL de la MAP ont été initialisés
 	bool _isPluginsActivated;						// Indique si les plugins de la MAP ont été initialisés
@@ -55,6 +62,7 @@ public:
 	CMap(CMap* parent);
 	CMap(CMap* parent, const string& nomFichier) throw(JktUtils::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
 	~CMap();
+	CGeo* clone();
 
 	const char* toString();						// Description résumée de l'objet
 
@@ -93,6 +101,9 @@ public:
 	 * @param firstIndex numéro de la première texture à afficher
 	 */
 	void afficheToutesTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex);
+
+	void addDescription(unsigned int ref, CGeo* geo);
+	CGeo* getDescription(unsigned int ref);
 
 	void add(Dirigeable* dirigeable);
 	void add(CGeo *geo);					// Ajoute un GeoObject à la map

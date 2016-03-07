@@ -481,11 +481,13 @@ void display() {		// Fonction principale d'affichage
 	 * *********************************************************/
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );					// Spécifie la couleur de vidage du tampon chromatique
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
-	gluPerspective( 60.0, Config.Display.X/Config.Display.Y, 0.01f, 100.0f );
-	glEnable( GL_DEPTH_TEST );
+	gluPerspective( 90.0, Config.Display.X/Config.Display.Y, 0.01f, 50.0f );
+
 	glMatrixMode( GL_MODELVIEW );
+	glEnable( GL_DEPTH_TEST );
 	glLoadIdentity();
 
 	if(Game.getMap()) {		// Si il y a une map a afficher
@@ -496,7 +498,6 @@ void display() {		// Fonction principale d'affichage
 
 			erwin->getPosVue(vect);
 			glTranslatef(-vect[0], -vect[1], vect[2]);	// Placement du point de vue
-			glRotated(erwin->PhiVue(), 1.0, 0.0, 0.0);	// Rotation par rapport au plan horizontal
 
 			glRotated(erwin->Phi(), 1.0, 0.0, 0.0);		// Rotation par rapport au plan horizontal
 			glRotated(erwin->Teta(), 0.0, 1.0, 0.0);	// Rotation par rapport à l'axe verticale
@@ -680,20 +681,6 @@ void chopeLesEvenements() {
 
 	if(Game.Erwin()) {
 		CPlayer *erwin = Game.Erwin();
-
-		if( keystate[SDLK_w] ) {
-			erwin->PhiVue( erwin->PhiVue() + 0.2f );
-
-			if( erwin->PhiVue() > 180.0f )
-				erwin->PhiVue( erwin->PhiVue() - 360.0f );
-		}
-
-		if( keystate[SDLK_s] ) {
-			erwin->PhiVue( erwin->PhiVue() - 0.2f );
-
-			if( erwin->PhiVue() < -180.0f )
-				erwin->PhiVue( erwin->PhiVue() + 360.0f );
-		}
 
 		if( keystate[SDLK_e] ) {
 			float posVue[3];

@@ -27,16 +27,15 @@ namespace JktSon
 }
 
 class CPlayer {
-	static bool _contourVisibility; 		// Affiche ou non un ellipsoïde dessinant les contours physiques du joueur
 	static JktMoteur::Icone* _weaponsChoice;	// Textures de l'icone des armes
 
-	CClavier *m_pClavier;	//pointeur sur la class des requêtes clavier
+	CClavier *_pClavier;	//pointeur sur la class des requêtes clavier
 
 	//POINTEURS SUR LES FONCTIONS SPECIALES
 	void (*_actionFunc)(CPlayer *player);	//fonction périodique à réaliser (gravité par exemple)
 	void (*_contactFunc)(CPlayer *player, float *normal, float distanceW); //focntion agissant lors d'un contact avec la map
-	int m_ArmeActif;		// Numéro de l'arme actuellement active
-	int m_NbrArmes;			// Nombre d'armes
+	int _armeActif;							// Numéro de l'arme actuellement active
+	int _nbrArmes;							// Nombre d'armes
 
 	JktUtils::Tableau<CProjectil> TabProjectil;		// Liste des projectils de ce joueur
 
@@ -44,18 +43,17 @@ class CPlayer {
 	JktSon::CReqSon* ID_ReqCri;	// Requete son de cri du personnage
 
 	// POSITION, VITESSE ET ORIENTATION DU JOUEUR
-	float m_Position[3];		// Vecteur position du joueur
-	float m_Vitesse[3];			// Vecteur vitesse du joueur
-	float m_Teta;				// Orientation du joueur par rapport à la verticale
-	float m_Phi;				// Orientation du joueur par rapport au plan horizontal
+	float _position[3];			// Vecteur position du joueur
+	float _vitesse[3];			// Vecteur vitesse du joueur
+	float _teta;				// Orientation du joueur par rapport à la verticale
+	float _phi;					// Orientation du joueur par rapport au plan horizontal
 
-	// POSITION ET ORIENTATION DU POINT DE VUE PAR RAPPORT AU JOUEUR
-	float m_PhiVue;
-	float m_PosVue[3];
+	float _posVue[3];			// Position et orientation du point de vue par rapport au joueur
 
-	float m_Pente;	// Sert à calculer si le joueur glisse sur une pente de la map ou non
-	string m_Nom;							// Nom du perso
-	JktMoteur::CMap *m_pSkin;	// Gueule du joueur
+	float _rayon;				// Rayon de la sphère englobant le joueur pour la gestion des contacts
+	float _pente;				// Sert à calculer si le joueur glisse sur une pente de la map ou non
+	string _nom;				// Nom du perso
+	JktMoteur::CMap *_pSkin;	// Gueule du joueur
 
 public :
 	// Réseau
@@ -79,6 +77,7 @@ public :
 	void setVitesse(const float vit[3]);				// Change la vitesse du joueur
 	void getPosition(float pos[3]) const;				// renvoie le pointeur sur la position du joueur
 	void choiceOneEntryPoint();							// Choisi un point d'entrée sur la Map
+	float getRayon() const;
 	void changeVitesse(float vx, float vy, float vz);	// change la vitesse du joueur
 	void getVitesse(float vit[3]) const;				// renvoie le pointeur sur la vitesse du joueur
 	float Phi() const;

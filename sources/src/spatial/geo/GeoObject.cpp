@@ -788,7 +788,7 @@ bool CGeoObject::Contact( const float pos[3], float dist )
 }
 
 void CGeoObject::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
-	float dist = 0.1f;	// Rayon de la sphère représentant le volume du joueur
+	float dist = player->getRayon();	// Rayon de la sphère représentant le volume du joueur
 	float distanceW;
 
 	if( m_bSolid )	// Si l'objet est solide

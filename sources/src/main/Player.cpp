@@ -48,44 +48,43 @@ extern CGame Game;
 
 #include "main/Player.h"
 
-#define DISTANCE_INTER_JOUEURS_ENTRY_POINT 0.8f
+#define DISTANCE_INTER_JOUEURS_ENTRY_POINT 5.0f
 const float Pi = 3.14159265f;
 
 
-bool CPlayer::_contourVisibility = false;
 Icone* CPlayer::_weaponsChoice = NULL;
 
 CPlayer::CPlayer() {
 	_spa = 0;
 
-	m_ArmeActif = 0;		// Pas d'arme active
-	m_NbrArmes = 3;			// Nombre d'armes
+	_armeActif = 0;			// Pas d'arme active
+	_nbrArmes = 3;			// Nombre d'armes
 
-	m_Position[0] = 0.0f;		// Position d'origine
-	m_Position[1] = 0.0f;
-	m_Position[2] = 0.0f;
+	_position[0] = 0.0f;	// Position d'origine
+	_position[1] = 0.0f;
+	_position[2] = 0.0f;
 
-	m_Vitesse[0] = 0.0f;		// Vitesse nulle
-	m_Vitesse[1] = 0.0f;
-	m_Vitesse[2] = 0.0f;
+	_vitesse[0] = 0.0f;		// Vitesse nulle
+	_vitesse[1] = 0.0f;
+	_vitesse[2] = 0.0f;
 
-	m_Teta = -90.0f;			// Orientation d'origine
-	m_Phi = 0.0;
+	_teta = -90.0f;			// Orientation d'origine
+	_phi = 0.0;
 
-	m_PosVue[0] = 0.0f;		// Position du point de vue par rapport au joueur
-	m_PosVue[1] = 0.1f;
-	m_PosVue[2] = 0.137f;
+	_posVue[0] = 0.0f;		// Position du point de vue par rapport au joueur
+	_posVue[1] = 0.1f;
+	_posVue[2] = 0.137f;
 
-	m_PhiVue = 0.0f;
+	_rayon = 0.85f;			// Le joueur mesure arbitrairement 1m70, son rayon la moitier
 
-	m_pClavier = NULL;
-	_actionFunc = NULL;			// Pas d'action périodique à réaliser
-	_contactFunc = NULL;		// Pas d'action à réaliser lors d'un contact avec la map
+	_pClavier = NULL;
+	_actionFunc = NULL;		// Pas d'action périodique à réaliser
+	_contactFunc = NULL;	// Pas d'action à réaliser lors d'un contact avec la map
 
-	m_pSkin = NULL;				// Pas de skin associé par défaut
+	_pSkin = NULL;			// Pas de skin associé par défaut
 
-	ID_Cri = NULL;				// Le cri du joueur n'a pas encore été chargé
-	ID_ReqCri = NULL;			// Y'a pas encore la requête sur le cri non plus
+	ID_Cri = NULL;			// Le cri du joueur n'a pas encore été chargé
+	ID_ReqCri = NULL;		// Y'a pas encore la requête sur le cri non plus
 
 	createClavier();		// Crée la classe qui gère les requêtes de mouvement, tir ...
 
@@ -106,7 +105,7 @@ bool CPlayer::openInClientMode(const IPaddress &address) {				// Ouverture en mo
 	return _spa->openInClientMode(address);
 }
 
-void CPlayer::close() {				// Ouverture en mode client
+void CPlayer::close() {			// Ouverture en mode client
 	if(_spa)
 		delete _spa;
 	_spa = 0;
@@ -117,7 +116,8 @@ void CPlayer::AfficheIconesArmes() {
 		float X = (float)Config.Display.X;
 		float Y = (float)Config.Display.Y/2;
 
-		_weaponsChoice->affiche(X-50.0f, X, Y-(m_NbrArmes*50/2), Y+(m_NbrArmes*50/2));
+		// Affiche les icônes des armes
+		_weaponsChoice->affiche(X-50.0f, X, Y-(_nbrArmes*50/2), Y+(_nbrArmes*50/2));
 
 		// Affichage du focus sur l'arme active
 		glDisable( GL_TEXTURE_2D );
@@ -128,49 +128,46 @@ void CPlayer::AfficheIconesArmes() {
 		glColor3f( 1.0f, 0.0f, 0.0f );
 
 		glBegin( GL_LINE_LOOP );
-			glVertex2f( X-50.0f,	Y - (m_NbrArmes*50/2) + 50	+ m_ArmeActif*50.0f	);
-			glVertex2f( X,			Y - (m_NbrArmes*50/2) + 50	+ m_ArmeActif*50.0f	);
-			glVertex2f( X,			Y - (m_NbrArmes*50/2) + 0	+ m_ArmeActif*50.0f	);
-			glVertex2f( X-50.0f,	Y - (m_NbrArmes*50/2) + 0	+ m_ArmeActif*50.0f	);
+			glVertex2f( X-50.0f,	Y - (_nbrArmes*50/2) + 50	+ _armeActif*50.0f	);
+			glVertex2f( X,			Y - (_nbrArmes*50/2) + 50	+ _armeActif*50.0f	);
+			glVertex2f( X,			Y - (_nbrArmes*50/2) + 0	+ _armeActif*50.0f	);
+			glVertex2f( X-50.0f,	Y - (_nbrArmes*50/2) + 0	+ _armeActif*50.0f	);
 		glEnd();
 	}
 }
 
-void CPlayer::ActiveArmeUp()	// Rends l'arme suivante active
-{
-	m_ArmeActif++;
-	if( m_ArmeActif >= m_NbrArmes )
-		m_ArmeActif = 0;
+void CPlayer::ActiveArmeUp() {	// Rends l'arme suivante active
+	_armeActif++;
+
+	if( _armeActif >= _nbrArmes )
+		_armeActif = 0;
 }
 
 /**
  * Active l'arme précédente de la liste des armes.
  */
 void CPlayer::ActiveArmeDown() {
-	m_ArmeActif--;
+	_armeActif--;
 
-	if( m_ArmeActif < 0 )
-		m_ArmeActif = m_NbrArmes-1;
+	if( _armeActif < 0 )
+		_armeActif = _nbrArmes-1;
 }
 
 CPlayer::~CPlayer() {
-	if( m_pClavier )
-	{
-		delete m_pClavier;
-		m_pClavier = 0;
+	if( _pClavier ) {
+		delete _pClavier;
+		_pClavier = 0;
 	}
 
-	if( ID_Cri )	// Destruction du cri du personnage
-	{
+	if( ID_Cri ) {	// Destruction du cri du personnage
 		DemonSons->Delete( ID_Cri );
 		ID_ReqCri = 0;
 		ID_Cri = 0;
 	}
 
-	if( m_pSkin )
-	{
-		delete m_pSkin;
-		m_pSkin = 0;
+	if( _pSkin ) {
+		delete _pSkin;
+		_pSkin = 0;
 	}
 }
 
@@ -183,15 +180,15 @@ void CPlayer::setCri(const char *nomFichier) {
 }
 
 CClavier *CPlayer::getClavier()
-{	return m_pClavier;	}
+{	return _pClavier;	}
 
 /**
  * Change la position du joueur.
  */
 void CPlayer::setPosition(float x, float y, float z) {
-	m_Position[0] = x;
-	m_Position[1] = y;
-	m_Position[2] = z;
+	_position[0] = x;
+	_position[1] = y;
+	_position[2] = z;
 }
 
 /**
@@ -241,12 +238,13 @@ void CPlayer::choiceOneEntryPoint() {
 			int choice = rand() % nbr;
 			setPosition((*(liste[choice])).getEntryPosition());	// alors choisi l'une d'elles au hasard
 			cout << endl << "LOIN : -" << choice << "-";
+			LOGINFO(("Choix d'un entry point éloigné des autres joueurs : %d", choice));
 		}
 		else {							// sinon prends-en une au hasard dans la liste
 			nbr = Game.getMap()->getEntryPointsList().size();
 			int choice = rand() % nbr;
 			setPosition(Game.getMap()->getEntryPointsList()[choice].getEntryPosition());
-			cout << endl << "AU PIF : -" << choice << "-";
+			LOGINFO(("Choix d'un entry point au hasard : %d", choice));
 		}
 	}
 	else {
@@ -259,56 +257,58 @@ void CPlayer::choiceOneEntryPoint() {
  * Change la position du joueur.
  */
 void CPlayer::setPosition(const CV3D& pos) {
-	m_Position[0] = pos.X;
-	m_Position[1] = pos.Y;
-	m_Position[2] = pos.Z;
-
-	cout << " POSITION " << pos.X << " " << pos.Y << " " << pos.Z;
+	_position[0] = pos.X;
+	_position[1] = pos.Y;
+	_position[2] = pos.Z;
 }
 
 /**
  * Change la position du joueur.
  */
 void CPlayer::setPosition(const float pos[3]) {
-	m_Position[0] = pos[0];
-	m_Position[1] = pos[1];
-	m_Position[2] = pos[2];
+	_position[0] = pos[0];
+	_position[1] = pos[1];
+	_position[2] = pos[2];
 }
 
 /**
  * Retourne la position du joueur.
  */
 void CPlayer::getPosition(float pos[3]) const {
-	pos[0] = m_Position[0];
-	pos[1] = m_Position[1];
-	pos[2] = m_Position[2];
+	pos[0] = _position[0];
+	pos[1] = _position[1];
+	pos[2] = _position[2];
 }
 
 /**
  * Change la vitesse du joueur.
  */
 void CPlayer::changeVitesse(float vx, float vy, float vz) {
-	m_Vitesse[0] = vx;
-	m_Vitesse[1] = vy;
-	m_Vitesse[2] = vz;
+	_vitesse[0] = vx;
+	_vitesse[1] = vy;
+	_vitesse[2] = vz;
+}
+
+float CPlayer::getRayon() const {
+	return _rayon;
 }
 
 /**
  * Retourne la vitesse du joueur.
  */
 void CPlayer::getVitesse(float vit[3]) const {
-	vit[0] = m_Vitesse[0];
-	vit[1] = m_Vitesse[1];
-	vit[2] = m_Vitesse[2];
+	vit[0] = _vitesse[0];
+	vit[1] = _vitesse[1];
+	vit[2] = _vitesse[2];
 }
 
 /**
  * Change la vitesse du joueur.
  */
 void CPlayer::setVitesse(const float vit[3]) {
-	m_Vitesse[0] = vit[0];
-	m_Vitesse[1] = vit[1];
-	m_Vitesse[2] = vit[2];
+	_vitesse[0] = vit[0];
+	_vitesse[1] = vit[1];
+	_vitesse[2] = vit[2];
 }
 
 void CPlayer::changeAction(void (*action)(CPlayer *player)) {
@@ -322,9 +322,9 @@ void CPlayer::changeContact(void (*contact)(CPlayer *player, float *normal, floa
 void CPlayer::Affiche() {
 	glPushMatrix();
 
-	glTranslatef(m_Position[0], m_Position[1], -m_Position[2]);
+	glTranslatef(_position[0], _position[1], -_position[2]);
 	glRotated(90.0f, 0.0f, 1.0f, 0.0f);
-	glRotated(-m_Teta, 0.0f, 1.0f, 0.0f); //Rotation par rapport à l'axe verticale
+	glRotated(-_teta, 0.0f, 1.0f, 0.0f); //Rotation par rapport à l'axe verticale
 
 	// Affiche un ellipsoïde qui trace les contours physiques du joueur si le jeu est configuré pour
 	if(Config.Joueur.outlineVisibility) {
@@ -335,8 +335,8 @@ void CPlayer::Affiche() {
 
 	// Affiche le skin du joueur s'il existe et si le jeu est configuré pour
 	if(Config.Joueur.skinVisibility)
-		if(m_pSkin)
-			m_pSkin->Affiche();
+		if(_pSkin)
+			_pSkin->Affiche();
 
 	glPopMatrix();
 }
@@ -366,7 +366,7 @@ void CPlayer::AfficheProjectils() {		// Affiche tous les projectils du joueur
 void CPlayer::Tir() {
 	CV3D Dir;
 
-	switch(m_ArmeActif) {
+	switch(_armeActif) {
 	// Si l'arme active est le laser, alors tire un laser
 	case 1:
 		TabProjectil.Ajoute(new CLaser(this));
@@ -412,20 +412,20 @@ void CPlayer::init() {
  * Initialise les éléments OpenGL du joueur.
  */
 void CPlayer::initGL() {
-	m_pSkin->initGL();
-	m_pSkin->initPlugins();
+	_pSkin->initGL();
+	_pSkin->initPlugins();
 }
 
 /**
  * Libère les éléments OpenGL du joueur.
  */
 void CPlayer::freeGL() {
-	m_pSkin->initPlugins();
-	m_pSkin->freeGL();
+	_pSkin->initPlugins();
+	_pSkin->freeGL();
 }
 
 void CPlayer::createClavier()
-{	m_pClavier = new CClavier();	}
+{	_pClavier = new CClavier();	}
 
 void CPlayer::exeActionFunc() {	// Exécute l'action périodique associée au joueur
 	if(_actionFunc) {
@@ -440,59 +440,51 @@ void CPlayer::exeContactFunc(float *normal, float distanceW) {	// Exécute foncti
 }
 
 float CPlayer::Phi() const {
-	return m_Phi;
+	return _phi;
 }
 
 float CPlayer::Teta() const {
-	return m_Teta;
-}
-
-float CPlayer::PhiVue() const {
-	return m_PhiVue;
+	return _teta;
 }
 
 void CPlayer::getPosVue(float vect[3]) const {
-	vect[0] = m_PosVue[0];
-	vect[1] = m_PosVue[1];
-	vect[2] = m_PosVue[2];
-}
-
-void CPlayer::PhiVue( float phiVue ) {
-	m_PhiVue = phiVue;
+	vect[0] = _posVue[0];
+	vect[1] = _posVue[1];
+	vect[2] = _posVue[2];
 }
 
 void CPlayer::setPosVue(const float posVue[3]) {
-	m_PosVue[0] = posVue[0];
-	m_PosVue[1] = posVue[1];
-	m_PosVue[2] = posVue[2];
+	_posVue[0] = posVue[0];
+	_posVue[1] = posVue[1];
+	_posVue[2] = posVue[2];
 }
 
 void CPlayer::Phi(float phi) {
-	m_Phi = phi;
+	_phi = phi;
 }
 
 void CPlayer::Teta(float teta) {
-	m_Teta = teta;
+	_teta = teta;
 }
 
 float CPlayer::Pente() const {
-	return m_Pente;
+	return _pente;
 }
 
 void CPlayer::Pente(float pente) {
-	m_Pente = pente;
+	_pente = pente;
 }
 
 void CPlayer::nom(const string &nom) {
-	m_Nom = nom;
+	_nom = nom;
 }
 
 string CPlayer::nom() const {
-	return m_Nom;
+	return _nom;
 }
 
 void CPlayer::Skin(JktMoteur::CMap *skin) {
-	m_pSkin = skin;
+	_pSkin = skin;
 }
 
 void CPlayer::deplace() {
@@ -549,21 +541,21 @@ void CPlayer::deplace() {
 
 void CPlayer::faitRequeteClavier() {
 	const float quantumVitesse = 0.003f;
-	float cosTeta = /*FastCos0(erwin->Teta/180.0f*Pi);*/	cosf(m_Teta/180.0f*Pi);
-	float sinTeta = /*FastSin0(erwin->Teta/180.0f*Pi);*/	sinf(m_Teta/180.0f*Pi);
+	float cosTeta = /*FastCos0(erwin->Teta/180.0f*Pi);*/	cosf(_teta/180.0f*Pi);
+	float sinTeta = /*FastSin0(erwin->Teta/180.0f*Pi);*/	sinf(_teta/180.0f*Pi);
 	float vect[3];
 
 	getVitesse( vect );
 
-	vect[1] += quantumVitesse*m_pClavier->m_fMonte;
+	vect[1] += quantumVitesse*_pClavier->m_fMonte;
 
-	vect[0] += cosTeta*quantumVitesse*m_pClavier->m_fDroite;
-	vect[2] -= sinTeta*quantumVitesse*m_pClavier->m_fDroite;
+	vect[0] += cosTeta*quantumVitesse*_pClavier->m_fDroite;
+	vect[2] -= sinTeta*quantumVitesse*_pClavier->m_fDroite;
 
-	vect[0] += sinTeta*quantumVitesse*m_pClavier->m_fAvance;
-	vect[2] += cosTeta*quantumVitesse*m_pClavier->m_fAvance;
+	vect[0] += sinTeta*quantumVitesse*_pClavier->m_fAvance;
+	vect[2] += cosTeta*quantumVitesse*_pClavier->m_fAvance;
 
 	setVitesse( vect );
 
-	m_pClavier->reset();	// Réinitialise les requêtes clavier du joueur
+	_pClavier->reset();	// Réinitialise les requêtes clavier du joueur
 }

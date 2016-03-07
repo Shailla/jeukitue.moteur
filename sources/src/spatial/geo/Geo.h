@@ -37,7 +37,9 @@ protected:
 public:
 	// Constructeurs / destructeur
 	CGeo(CMap *map);
+	CGeo(const CGeo& geo);
 	virtual ~CGeo();
+	virtual CGeo* clone() = 0;
 
 	// Gestion identiant, nom et référence
 	CMap *getMap();						// Navigabilité vers l'objet qui contient cet objet (la Map étant l'objet racine)

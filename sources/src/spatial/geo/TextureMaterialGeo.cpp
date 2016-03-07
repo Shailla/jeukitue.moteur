@@ -7,7 +7,7 @@
 #include <sstream>
 
 #ifdef WIN32
-	#include <windows.h>
+#include <windows.h>
 #endif
 #include <GL/GL.H>
 #include <GL/GLU.H>
@@ -47,13 +47,9 @@ class CNavette;
 
 const char* CTextureMaterialGeo::identifier = "TextureMaterialGeo";
 
-		//CONSTRUCTEURS
-CTextureMaterialGeo::CTextureMaterialGeo(CMap* map, const string& name,
-		CMaterialTexture* mat,
-		unsigned int nbrvertex, float* vertex, float* normals,
-		float* texvertex, bool solid)
-	:CGeo( map )
-{
+//CONSTRUCTEURS
+CTextureMaterialGeo::CTextureMaterialGeo(CMap* map, const string& name, CMaterialTexture* mat,
+		unsigned int nbrvertex, float* vertex, float* normals, float* texvertex, bool solid) : CGeo( map ) {
 	m_NumVertex = 0;
 	m_OffsetMateriaux = -1;
 	m_TabVectNormaux = 0;
@@ -69,9 +65,7 @@ CTextureMaterialGeo::CTextureMaterialGeo(CMap* map, const string& name,
 	m_TabTexVertex = texvertex;
 }
 
-CTextureMaterialGeo::CTextureMaterialGeo(CMap* map)
-	:CGeo( map )
-{
+CTextureMaterialGeo::CTextureMaterialGeo(CMap* map) : CGeo( map ) {
 	m_NumVertex = 0;
 	m_TabVertex = NULL;			// Pointeur sur le tableau de sommets
 	m_TabVectNormaux = NULL;
@@ -80,12 +74,54 @@ CTextureMaterialGeo::CTextureMaterialGeo(CMap* map)
 	m_OffsetMateriaux = -1;
 	m_TabTexVertex = NULL;
 	m_pNormalTriangle = NULL;		// Sera initialisé par Init()
-	maxX = maxY = maxZ = minX = minY = minZ = 0.0f;
+	_maxX = _maxY = _maxZ = _minX = _minY = _minZ = 0.0f;
 	m_Rayon = 0.0f;
 }
 
-void CTextureMaterialGeo::setVertex(int numVertex, float *tab)
-{
+CTextureMaterialGeo::CTextureMaterialGeo(const CTextureMaterialGeo& other) : CGeo( other ) {
+	tostring = other.tostring;
+
+	// Bulle
+	_minX = other._minX;
+	_minY = other._minY;
+	_minZ = other._minZ;
+	_maxX = other._maxX;
+	_maxY = other._maxY;
+	_maxZ = other._maxZ;
+
+	// Centre
+	m_Centre[0] = other.m_Centre[0];
+	m_Centre[1] = other.m_Centre[1];
+	m_Centre[2] = other.m_Centre[2];
+
+	// Rayon
+	m_Rayon = other.m_Rayon;
+
+	// Solidité
+	m_bSolid = other.m_bSolid;
+
+	// Nombres
+	m_NumVertex = other.m_NumVertex;
+
+	// Sommets
+	setVertex(other.m_NumVertex, other.m_TabVertex);
+
+	// Normales
+	m_pNormalTriangle = 0;
+
+	if(other.m_pNormalTriangle) {
+		m_pNormalTriangle = new float[ 3*m_NumVertex ];
+
+		for(int i=0 ; i<3*m_NumVertex ; i++) {
+			m_pNormalTriangle[i] = other.m_pNormalTriangle[i];
+		}
+	}
+}
+
+CGeo* CTextureMaterialGeo::clone() {
+	return new CTextureMaterialGeo(*this);
+}
+void CTextureMaterialGeo::setVertex(int numVertex, float *tab) {
 	if( m_TabVertex )	// Destruction de l'ancien tableau de sommets s'il existe
 		delete[] m_TabVertex;
 
@@ -186,7 +222,7 @@ void CTextureMaterialGeo::AfficheSelection(float r,float v,float b)
 	glVertexPointer(3, GL_FLOAT, 0, m_TabVertex);	//Initialisation du tableau de sommets
 	glDrawArrays(JKT_RenderMode, 0, m_NumVertex);
 
-		//AFFICHAGE DES VECTEURS NORMAUX
+	//AFFICHAGE DES VECTEURS NORMAUX
 	if( Config.Debug.bAfficheNormaux )
 		AfficheNormals();
 }
@@ -222,19 +258,19 @@ void CTextureMaterialGeo::setOffsetMateriau(int offset)
 }
 
 int CTextureMaterialGeo::getOffsetMateriau() throw(CErreur)
-{
+		{
 	if(m_OffsetMateriaux < 0) {
 		throw CErreur("Tentative d'accès à m_OffsetMateriau sans initialisation");
 	}
 
 	return m_OffsetMateriaux;
-}
+		}
 
 void CTextureMaterialGeo::setMaterial(int ref)
 {
 	int nbrMat = ref + getOffsetMateriau();	// Décalage de la référence matériau de l'offset demandé
 
-		// Vérification du type de matériau
+	// Vérification du type de matériau
 	if( nbrMat >= (int)getMap()->m_TabMaterial.size() )
 	{
 		stringstream txt;
@@ -258,40 +294,40 @@ void CTextureMaterialGeo::setMaterial(int ref)
 
 void CTextureMaterialGeo::MinMax()
 {
-	minX = maxX = m_TabVertex[ 0 ];
-	minY = maxY = m_TabVertex[ 1 ];
-	minZ = maxZ = m_TabVertex[ 2 ];
+	_minX = _maxX = m_TabVertex[ 0 ];
+	_minY = _maxY = m_TabVertex[ 1 ];
+	_minZ = _maxZ = m_TabVertex[ 2 ];
 
 	for( int i=1 ; i<m_NumVertex ; i++ )
 	{
-		if( m_TabVertex[3*i] < minX )		//récupération des coordonnées du pavé englobant
-			minX = m_TabVertex[3*i];		//l'objet géo
-		if( m_TabVertex[(3*i)+1] < minY )
-			minY = m_TabVertex[(3*i)+1];
-		if( m_TabVertex[(3*i)+2] < minZ )
-			minZ = m_TabVertex[(3*i)+2];
+		if( m_TabVertex[3*i] < _minX )		//récupération des coordonnées du pavé englobant
+			_minX = m_TabVertex[3*i];		//l'objet géo
+		if( m_TabVertex[(3*i)+1] < _minY )
+			_minY = m_TabVertex[(3*i)+1];
+		if( m_TabVertex[(3*i)+2] < _minZ )
+			_minZ = m_TabVertex[(3*i)+2];
 
-		if( m_TabVertex[3*i] > maxX )
-			maxX = m_TabVertex[3*i];
-		if( m_TabVertex[(3*i)+1] > maxY )
-			maxY = m_TabVertex[(3*i)+1];
-		if( m_TabVertex[(3*i)+2] > maxZ )
-			maxZ = m_TabVertex[(3*i)+2];
+		if( m_TabVertex[3*i] > _maxX )
+			_maxX = m_TabVertex[3*i];
+		if( m_TabVertex[(3*i)+1] > _maxY )
+			_maxY = m_TabVertex[(3*i)+1];
+		if( m_TabVertex[(3*i)+2] > _maxZ )
+			_maxZ = m_TabVertex[(3*i)+2];
 	}
 }
 
 void CTextureMaterialGeo::Bulle()
 {
 	float r0, r1, r2;
-		// Calcul du centre de la sphère à partir des valeurs min/max
-	m_Centre[0] = (minX+maxX)/2.0f;
-	m_Centre[1] = (minY+maxY)/2.0f;
-	m_Centre[2] = (minZ+maxZ)/2.0f;
+	// Calcul du centre de la sphère à partir des valeurs min/max
+	m_Centre[0] = (_minX+_maxX)/2.0f;
+	m_Centre[1] = (_minY+_maxY)/2.0f;
+	m_Centre[2] = (_minZ+_maxZ)/2.0f;
 
-		// Recherche du rayon de la sphère
-	r0 = fabsf( minX-maxX );
-	r1 = fabsf( minY-maxY );
-	r2 = fabsf( minZ-maxZ );
+	// Recherche du rayon de la sphère
+	r0 = fabsf( _minX-_maxX );
+	r1 = fabsf( _minY-_maxY );
+	r2 = fabsf( _minZ-_maxZ );
 
 	m_Rayon = sqrtf( (r0*r0) + (r1*r1) + (r2*r2) );
 }
@@ -307,23 +343,23 @@ void CTextureMaterialGeo::ConstruitBase()
 
 	for( int i=0; i<m_NumVertex; i=i+3 ) //pour chaque triangle de l'objet géo.
 	{
-			// X = vecteur coté AB
+		// X = vecteur coté AB
 		X[0] = m_TabVertex[ (3*i)+3 ] - m_TabVertex[ 3*i ];
 		X[1] = m_TabVertex[ (3*i)+4 ] - m_TabVertex[ 3*i+1 ];
 		X[2] = m_TabVertex[ (3*i)+5 ] - m_TabVertex[ 3*i+2 ];
 
-			// Y = vecteur coté AC
+		// Y = vecteur coté AC
 		Y[0] = m_TabVertex[ 3*i+6 ] - m_TabVertex[ 3*i ];
 		Y[1] = m_TabVertex[ 3*i+7 ] - m_TabVertex[ 3*i+1 ];
 		Y[2] = m_TabVertex[ 3*i+8 ] - m_TabVertex[ 3*i+2 ];
 
 		produitVectoriel(X, Y, &m_pNormalTriangle[3*i]);	// calcul du vecteur normal au plan
-															// du triangle
+		// du triangle
 		normalise( &m_pNormalTriangle[3*i] );		// normalise ce vecteur
 	}
 }
 
-		//DESTRUCTEUR
+//DESTRUCTEUR
 CTextureMaterialGeo::~CTextureMaterialGeo()
 {
 	if( m_TabVertex )
@@ -606,7 +642,7 @@ float CTextureMaterialGeo::testContactTriangle( unsigned int i, const float posP
 	float A[3], B[3], C[3], F[3], G[3], X[3], Y[3], Z[3];
 	float distanceW;
 
-		// Z = vecteur AP, P personnage
+	// Z = vecteur AP, P personnage
 	Z[0] =  posPlayer[0] - m_TabVertex[ 3*i+0 ];
 	Z[1] =  posPlayer[1] - m_TabVertex[ 3*i+1 ];
 	Z[2] = -posPlayer[2] - m_TabVertex[ 3*i+2 ];
@@ -624,7 +660,7 @@ float CTextureMaterialGeo::testContactTriangle( unsigned int i, const float posP
 
 	produitVectoriel( X, normal, A );
 	normalise( A );
-		// test position P / droite AB
+	// test position P / droite AB
 	if( produitScalaire(A, Z) >= dist )	// avant c'était 0.0
 		return 1000.0f;
 
@@ -634,31 +670,31 @@ float CTextureMaterialGeo::testContactTriangle( unsigned int i, const float posP
 
 	produitVectoriel(Y, normal, B);
 	normalise(B);
-		// test position P / droite AC
+	// test position P / droite AC
 	if( produitScalaire(B, Z) <= -dist )	// avant c'était 0.0
 		return 1000.0f;
 
-		// calcul de F = vecteur BC
+	// calcul de F = vecteur BC
 	F[0] = Y[0] - X[0];
 	F[1] = Y[1] - X[1];
 	F[2] = Y[2] - X[2];
 
-		// G = vecteur BP
+	// G = vecteur BP
 	G[0] = Z[0]-X[0];
 	G[1] = Z[1]-X[1];
 	G[2] = Z[2]-X[2];
 
 	produitVectoriel(F, normal, C);
 	normalise(C);
-		// test position P / droite BC
+	// test position P / droite BC
 	if( produitScalaire(C, G)>= dist )
 		return 1000.0f;
 
 	return distanceW;
 }
 
-	// Renvoie la distance entre le point de position 'pos' et le plus proche triangle de l'objet
-	// géo. N'effectue cette mesure que pour des distances inférieures à 'dist'
+// Renvoie la distance entre le point de position 'pos' et le plus proche triangle de l'objet
+// géo. N'effectue cette mesure que pour des distances inférieures à 'dist'
 bool CTextureMaterialGeo::Contact( const float pos[3], float dist )
 {
 	float distanceW;
@@ -676,7 +712,7 @@ bool CTextureMaterialGeo::Contact( const float pos[3], float dist )
 }
 
 void CTextureMaterialGeo::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
-	float dist = 0.1f;	// Rayon de la sphère représentant le volume du joueur
+	float dist = player->getRayon();	// Rayon de la sphère représentant le volume du joueur
 	float distanceW;
 
 	if( m_bSolid )	// Si l'objet est solide
@@ -694,12 +730,12 @@ bool CTextureMaterialGeo::TestContactPave( const float pos[3], float dist )
 	// Teste si le point qui a pour position 'pos' se trouve ou non à une distance inférieure à 'dist'
 	// du pavé englobant l'objet
 
-	if( pos[0] < maxX+dist )
-		if( pos[1] < maxY+dist )
-			if( -pos[2] < maxZ+dist )
-				if( pos[0] > minX-dist )
-					if( pos[1] > minY-dist )
-						if( -pos[2] > minZ-dist )
+	if( pos[0] < _maxX+dist )
+		if( pos[1] < _maxY+dist )
+			if( -pos[2] < _maxZ+dist )
+				if( pos[0] > _minX-dist )
+					if( pos[1] > _minY-dist )
+						if( -pos[2] > _minZ-dist )
 							return true;	// Le point 'pos' est à une distance inférieure
 
 	return false;	// Le point 'pos' se trouve à une distance supérieure
@@ -714,7 +750,7 @@ float CTextureMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist)
 	if( !m_bSolid )	// Si l'objet n'est pas solide, il ne peut être touché par le laser
 		return dist;	// => on sort en renvoyant 'dist'
 
-		// Vérifie si le laser passe à proxomité de l'objet géo
+	// Vérifie si le laser passe à proxomité de l'objet géo
 	CV3D CP;	// Vecteur allant du point origine du laser au centre de l'objet géo (=centre de la Bulle qui l'englobe)
 	CP.X = m_Centre[0] - pos[0];
 	CP.Y = m_Centre[1] - pos[1];
@@ -727,18 +763,18 @@ float CTextureMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist)
 	if( hCarre > rCarre )			// Si distance (laser-centre de la sphère) > rayon de la sphère
 		return dist;				// Alors le rayon laser ne touche pas l'objet
 
-		// Vérifie si le laser touche une face de la map
+	// Vérifie si le laser touche une face de la map
 	vertex = m_TabVertex;
 	for( int i=0; i<m_NumVertex; i=i+3) //pour chaque triangle de l'objet géo.
 	{
 		normal = &m_pNormalTriangle[3*i];
 
-			// vecteur AP, P personnage, A point du triangle
+		// vecteur AP, P personnage, A point du triangle
 		AP.X = pos[0]- vertex[ 3*i ];	//horizontal
 		AP.Y = pos[1]- vertex[ 3*i+1 ];	//vertical
 		AP.Z = -pos[2]-vertex[ 3*i+2 ];	//horizontal
 
-			// normale au triangle
+		// normale au triangle
 		N.X = normal[0];
 		N.Y = normal[1];
 		N.Z = normal[2];
@@ -769,7 +805,7 @@ float CTextureMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist)
 		if( (N^var)>0.0f )	// S'il passe du mauvais côté du second segment du triangle
 			continue;	// Passe au triangle suivant
 
-			// Ici on est passé du bon côté du second segment du triangle
+		// Ici on est passé du bon côté du second segment du triangle
 		U = AC - AB;
 		W = V - AB;
 

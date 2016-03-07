@@ -79,16 +79,18 @@ private:
 	void AfficheWithMaterialSimple( CMaterial *mat );
 	int getOffsetMateriau() throw(CErreur);
 public:
-	void EchangeXY();			// Echange les coordonnées X et Y de l'objet
-	void EchangeXZ();			// Echange les coordonnées X et Z de l'objet
-	void EchangeYZ();			// Echange les coordonnées Y et Z de l'objet
-	void Scale( float scaleX, float scaleY, float scaleZ );	// Homothétie pondérée selon X, Y et Z de l'objet
-	void translate( float x, float y, float z );			// Translation pondérée selon X, Y et Z de l'objet
-	void setMaterial(int matRef);					// Associe l'objet au matériau de référence matRef
-	void Color( float r, float g, float b );		// défini la couleur de l'objet
-	bool TestContactPave( const float pos[3], float dist );	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
-	void GereContactPlayer(float positionPlayer[3], CPlayer *player);
-	float GereLaserPlayer( float pos[3], CV3D &Dir, float dist);	// Voir la définition de la fonction
+	void EchangeXY() override;												// Echange les coordonnées X et Y de l'objet
+	void EchangeXZ() override;												// Echange les coordonnées X et Z de l'objet
+	void EchangeYZ() override;												// Echange les coordonnées Y et Z de l'objet
+	void Scale( float scaleX, float scaleY, float scaleZ ) override;		// Homothétie pondérée selon X, Y et Z de l'objet
+	void translate( float x, float y, float z ) override;					// Translation pondérée selon X, Y et Z de l'objet
+
+	void setMaterial(int matRef);											// Associe l'objet au matériau de référence matRef
+	void Color( float r, float g, float b );								// défini la couleur de l'objet
+
+	bool TestContactPave( const float pos[3], float dist );					// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
+	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;
+	float GereLaserPlayer( float pos[3], CV3D &Dir, float dist) override;	// Voir la définition de la fonction
 
 	void setVertex( float *tab, int num );		// Implémente les sommets
 	void setFaces( int *tab, int num );			// Implémente les indices de sommets
@@ -100,17 +102,17 @@ public:
 	//bool LitFichierGeoObject( CIfstreamMap &fichier );	// Lit un objet géo dans un fichier
 	//bool SaveNameType( ofstream &fichier );				// Sauve le nom du type d'objet géométrique
 	//bool SaveFichierMap( ofstream &fichier );			// Sauve l'objet géo dans un fichier Map
-	bool Save(TiXmlElement* element);
-	bool Lit(TiXmlElement* el) {return true;}
+	bool Save(TiXmlElement* element) override;
+	bool Lit(TiXmlElement* el) override {return true;}
 	void setOffsetMateriau( int offset );					// Décale la référence matériau de l'offset
 
-	bool Contact( const float pos[3], float dist );
+	bool Contact( const float pos[3], float dist ) override;
 
-	void Affiche();									// Affiche cet objet géo
-	void AfficheSelection(float r,float v,float b);	// Affiche l'objet en couleur unique
+	void Affiche() override;									// Affiche cet objet géo
+	void AfficheSelection(float r,float v,float b) override;	// Affiche l'objet en couleur unique
 
-	void Init();								// Initialisation de l'objet
-	const char* toString();
+	void Init() override;								// Initialisation de l'objet
+	const char* toString() override;
 };
 
 }	// JktMoteur

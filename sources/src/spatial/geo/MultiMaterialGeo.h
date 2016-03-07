@@ -56,6 +56,7 @@ public:
 	CMultiMaterialGeo(CMap* map, const string& name, CMaterialMulti* mat, unsigned int nbrfaces, float* vertex, float* normals, float* texvertex, std::map<int,int> &canauxnumbers, bool solid=true);
 	CMultiMaterialGeo(CMap *map);
 	~CMultiMaterialGeo();
+	CGeo* clone();
 	void Init();					// Initialisation de l'objet
 
 	float *m_TabVectNormaux;	// Pointeur sur le tableau des vecteurs normaux

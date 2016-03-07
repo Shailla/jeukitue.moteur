@@ -14,14 +14,18 @@ namespace JktMoteur
 {
 JktUtils::CGenRef CGeo::GENREF;
 
-CGeo::CGeo( CMap *map )
-{
+CGeo::CGeo( CMap *map ) {
 	pMap = map;
 	m_Reference = GENREF.genRef();	// Génère une référence pour l'objet
 }
 
-CGeo::~CGeo()
-{
+CGeo::CGeo(const CGeo& geo) {
+	pMap = geo.pMap;
+	_name = geo._name;
+	m_Reference = GENREF.genRef();	// Génère une référence pour l'objet
+}
+
+CGeo::~CGeo() {
 	GENREF.delRef(m_Reference);		// Libère la référence de l'objet
 }
 

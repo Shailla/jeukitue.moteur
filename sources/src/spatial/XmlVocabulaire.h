@@ -19,6 +19,8 @@ public:
 	static const char* LUMIERE;
 	static const char* GEOS;
 	static const char* GEO;
+	static const char* GEODESCRIPTION;
+	static const char* GEOINSTANCE;
 	static const char* FAUX;
 	static const char* VRAI;
 	static const char* VALEUR;
@@ -26,6 +28,7 @@ public:
 	static const char* INDEX2SOMMETS2TEXTURE;
 	static const char* SOMMETS2TEXTURE;
 	static const char* COULEUR;
+	static const char* DESCRIPTION;
 	static const char* FACES;
 	static const char* S;
 	static const char* S1;

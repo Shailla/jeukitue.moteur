@@ -65,8 +65,8 @@ const char* CMap::identifier = "Map";
 CMap::CMap(CMap* parent) : CGeo(parent) {
 	LOGDEBUG(("CMap::CMap(*parent) %T", this ));
 
-	m_bSelection = false;
-	m_Selection = 0;
+	_bSelection = false;
+	_Selection = 0;
 	_isGlActivated = false;
 	_isPluginsActivated = false;
 }
@@ -81,8 +81,8 @@ CMap::CMap(CMap* parent, const string& nomFichier) throw(JktUtils::CErreur) : CG
 		LOGINFO(("Fichier Map lu ''"));
 	}
 
-	m_bSelection = false;
-	m_Selection = 0;
+	_bSelection = false;
+	_Selection = 0;
 	_isGlActivated = false;
 	_isPluginsActivated = false;
 
@@ -94,11 +94,11 @@ CMap::~CMap() {
 
 	// Destruction des objets géo
 	vector<CGeo*>::iterator iterGeo;
-	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
+	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 		delete *iterGeo;
 
-	m_TabGeo.clear();
-	m_TabMouve.clear();
+	_geos.clear();
+	_mouves.clear();
 
 	// Destruction des matériaux
 	vector<CMaterial*>::iterator iterMat;
@@ -111,10 +111,14 @@ CMap::~CMap() {
 	// Destruction des lumières
 	vector<CLight*>::iterator iterLight;
 
-	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
+	for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
 		delete *iterLight;
 
-	m_TabLight.clear();
+	_lights.clear();
+}
+
+CGeo* CMap::clone() {
+	return new CMap(*this);
 }
 
 const char* CMap::toString() {
@@ -162,11 +166,11 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 	// Affichage des objets
 	vector<CGeo*>::iterator iterGeo;
 
-	if(m_bSelection) {
+	if(_bSelection) {
 		int i=0;
 
-		for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++) {
-			if(i != m_Selection)
+		for(iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++) {
+			if(i != _Selection)
 				(*iterGeo)->Affiche();			// Affichage de l'objet géo
 			else
 				(*iterGeo)->AfficheSelection(1.0f, 0.0f, 0.0f);
@@ -175,7 +179,7 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 		}
 	}
 	else {
-		for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ ) {
+		for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ ) {
 			(*iterGeo)->Affiche();			// Affichage de l'objet géo
 		}
 	}
@@ -197,11 +201,28 @@ void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objet
 
 	vector<CGeo*>::iterator iterGeo;
 
-	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++) {
+	for(iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++) {
 		(*iterGeo)->AfficheSelection(r, v, b);
 	}
 
 	glDisable( GL_VERTEX_ARRAY );
+}
+
+void CMap::addDescription(unsigned int ref, CGeo* geo) {
+	if(_geoDescriptions.find(ref) != _geoDescriptions.end()) {
+		LOGERROR(("Map corrompue, la référence est en doublon"));
+	}
+
+	_geoDescriptions[ref] = geo;
+}
+
+CGeo* CMap::getDescription(unsigned int ref) {
+	try {
+		return _geoDescriptions.at(ref);
+	}
+	catch(out_of_range& exception) {
+		return 0;
+	}
 }
 
 void CMap::add(Dirigeable* dirigeable) {
@@ -209,7 +230,7 @@ void CMap::add(Dirigeable* dirigeable) {
 }
 
 void CMap::add(CGeo* geo) {
-	m_TabGeo.push_back(geo);	// Ajoute geo à la liste des objets affichables
+	_geos.push_back(geo);	// Ajoute geo à la liste des objets affichables
 }
 
 void CMap::add(CMaterial *mat) {
@@ -217,39 +238,39 @@ void CMap::add(CMaterial *mat) {
 }
 
 void CMap::add(CLight *light) {
-	m_TabLight.push_back(light);	// Ajoute light à la liste des objets affichables
+	_lights.push_back(light);	// Ajoute light à la liste des objets affichables
 }
 
 void CMap::incrementeSelection() {
-	m_Selection++;
+	_Selection++;
 
-	if(m_Selection >= (int)m_TabGeo.size()) {
-		m_Selection = 0;
+	if(_Selection >= (int)_geos.size()) {
+		_Selection = 0;
 	}
 }
 
 void CMap::decrementeSelection() {
-	m_Selection--;
+	_Selection--;
 
-	if(m_Selection < 0) {
-		m_Selection = (int)m_TabGeo.size()-1;
+	if(_Selection < 0) {
+		_Selection = (int)_geos.size()-1;
 
-		if(m_Selection < 0)
-			m_Selection = 0;
+		if(_Selection < 0)
+			_Selection = 0;
 	}
 }
 
 void CMap::ChangeSelectionMode() {
-	m_bSelection = !m_bSelection;
-	m_Selection = 0;
+	_bSelection = !_bSelection;
+	_Selection = 0;
 }
 
 bool CMap::IsSelectionMode() {
-	return m_bSelection;
+	return _bSelection;
 }
 
 const char* CMap::getSelectedName() {
-	CGeo* geo = m_TabGeo[m_Selection];
+	CGeo* geo = _geos[_Selection];
 	return geo->toString();
 }
 
@@ -263,16 +284,16 @@ void CMap::merge(CMap& map) {
 	for(iterEntryPoint=map._entryPoints.begin() ; iterEntryPoint!=map._entryPoints.end() ; iterEntryPoint++)
 		_entryPoints.push_back(*iterEntryPoint);
 
-	for(iterGeo=map.m_TabGeo.begin() ; iterGeo!=map.m_TabGeo.end() ; iterGeo++) {
+	for(iterGeo=map._geos.begin() ; iterGeo!=map._geos.end() ; iterGeo++) {
 		(*iterGeo)->setMap(this);
-		m_TabGeo.push_back(*iterGeo);
+		_geos.push_back(*iterGeo);
 	}
 
-	for(iterMouve=map.m_TabMouve.begin() ; iterMouve!=map.m_TabMouve.end() ; iterMouve++)
-		m_TabMouve.push_back(*iterMouve);
+	for(iterMouve=map._mouves.begin() ; iterMouve!=map._mouves.end() ; iterMouve++)
+		_mouves.push_back(*iterMouve);
 
-	for(iterLight=map.m_TabLight.begin() ; iterLight!=map.m_TabLight.end() ; iterLight++)
-		m_TabLight.push_back(*iterLight);
+	for(iterLight=map._lights.begin() ; iterLight!=map._lights.end() ; iterLight++)
+		_lights.push_back(*iterLight);
 
 	for(iterMaterial=map.m_TabMaterial.begin() ; iterMaterial!=map.m_TabMaterial.end() ; iterMaterial++)
 		m_TabMaterial.push_back(*iterMaterial);
@@ -292,13 +313,13 @@ vector<EntryPoint>& CMap::getEntryPointsList() {
 
 void CMap::add( CPorte *porte ) {
 	// Une porte est avant tout un objet géo
-	m_TabGeo.push_back( porte );		// Ajoute porte à la liste des objets affichables
-	m_TabMouve.push_back( porte );		// Ajoute porte à la liste des objets à rafraichir
+	_geos.push_back( porte );		// Ajoute porte à la liste des objets affichables
+	_mouves.push_back( porte );		// Ajoute porte à la liste des objets à rafraichir
 }
 
 void CMap::add( CNavette *navette ) {		// Une navette est avant tout un objet géo
-	m_TabGeo.push_back( navette );		// Ajoute porte à la liste des objets affichables
-	m_TabMouve.push_back( navette );	// Ajoute porte à la liste des objets à rafraichir
+	_geos.push_back( navette );		// Ajoute porte à la liste des objets affichables
+	_mouves.push_back( navette );	// Ajoute porte à la liste des objets à rafraichir
 }
 
 void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
@@ -311,7 +332,7 @@ void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 
 	vector<CGeo*>::iterator iterGeo;
 
-	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++)
+	for(iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++)
 		(*iterGeo)->GereContactPlayer(positionPlayer, player);	// Gère les contacts entre l'objet géo et le joueur
 }
 
@@ -319,7 +340,7 @@ float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 	// Renvoie la distance du premier point de contact entre un rayon laser parti du point 'pos'
 	// dans la direction 'Dir' si cette distance est inférieure à 'dist', renvoie 'dist' sinon
 	vector<CGeo*>::iterator iterGeo;
-	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
+	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 		dist = (*iterGeo)->GereLaserPlayer( pos, Dir, dist );
 
 	return dist;	// Renvoie la distance du premier contact trouvé entre le laser et une face d'objet géo
@@ -335,12 +356,12 @@ void CMap::EchangeXY() {
 
 	// Geo
 	vector<CGeo*>::iterator iterGeo;
-	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
+	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 		(*iterGeo)->EchangeXY();
 
 	// Lights
 	vector<CLight*>::iterator iterLight;
-	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
+	for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
 		(*iterLight)->EchangeXY();
 }
 
@@ -354,12 +375,12 @@ void CMap::EchangeXZ() {
 
 	// Geo
 	vector<CGeo*>::iterator iterGeo;
-	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
+	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 		(*iterGeo)->EchangeXZ();
 
 	// Lights
 	vector<CLight*>::iterator iterLight;
-	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
+	for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
 		(*iterLight)->EchangeXZ();
 }
 
@@ -373,12 +394,12 @@ void CMap::EchangeYZ() {
 
 	// Geo
 	vector<CGeo*>::iterator iterGeo;
-	for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
+	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 		(*iterGeo)->EchangeYZ();
 
 	// Lights
 	vector<CLight*>::iterator iterLight;
-	for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
+	for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
 		(*iterLight)->EchangeYZ();
 }
 
@@ -393,12 +414,12 @@ void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
 
 		// Geo
 		vector<CGeo*>::iterator iterGeo;
-		for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
+		for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 			(*iterGeo)->Scale( scaleX, scaleY, scaleZ );
 
 		// Lights
 		vector<CLight*>::iterator iterLight;
-		for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
+		for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
 			(*iterLight)->Scale( scaleX, scaleY, scaleZ );
 	}
 }
@@ -414,12 +435,12 @@ void CMap::translate(float x, float y, float z) {
 
 		// Geo
 		vector<CGeo*>::iterator iterGeo;
-		for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
+		for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 			(*iterGeo)->translate(x, y, z);
 
 		// Lights
 		vector<CLight*>::iterator iterLight;
-		for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
+		for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
 			(*iterLight)->translate(x, y, z);
 	}
 }
@@ -460,8 +481,10 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 	if(document.LoadFile()) {
 		// Element de map
 		TiXmlElement* elMap = document.FirstChildElement(Xml::MAP);
-		if(!elMap)
+		if(!elMap) {
+			LOGERROR(("Fichier map corrompu"));
 			throw CErreur("Fichier map corrompu");
+		}
 
 		// Lecture des plugins de la Map
 		{
@@ -493,8 +516,10 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 
 					const char* subMapName = el->Attribute(Xml::NOM);	// Lecture nom de la Map à importer
 
-					if(!subMapName)
+					if(!subMapName) {
+						LOGERROR(("Fichier Map corrompu : Nom de la sous-Map a importer manquant"));
 						throw CErreur("Fichier Map corrompu : Nom de la sous-Map a importer manquant");
+					}
 
 					// Lecture de la translation à appliquer à la Map
 					float translation[3];
@@ -521,9 +546,9 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 
 					// Fusion des Map
 					map.merge(subMap);
-					subMap.m_TabGeo.clear();
-					subMap.m_TabMouve.clear();
-					subMap.m_TabLight.clear();
+					subMap._geos.clear();
+					subMap._mouves.clear();
+					subMap._lights.clear();
 					subMap.m_TabMaterial.clear();
 				}
 			}
@@ -562,8 +587,10 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 					// Lecture du nombre de particules à afficher
 					int nbrParticules;
 
-					if(!el->Attribute(Xml::NBR_PARTICULES, &nbrParticules))		// Lecture nom de la Map à importer
+					if(!el->Attribute(Xml::NBR_PARTICULES, &nbrParticules)) {		// Lecture nom de la Map à importer
+						LOGERROR(("Fichier Map corrompu : Nombre de particules du moteur manquant"));
 						throw CErreur("Fichier Map corrompu : Nombre de particules du moteur manquant");
+					}
 
 					// Lecture de la position du moteur de neige
 					float position[3];
@@ -583,7 +610,7 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 
 					CV3D posMoteurParticulesNeige(position[0], position[1], position[2]);
 					CV3D tailleMoteurParticulesNeige(dimension[0], dimension[1], dimension[2]);
-//					map.add(new CMoteurParticulesNeige(nbrParticules, posMoteurParticulesNeige, tailleMoteurParticulesNeige));
+					//					map.add(new CMoteurParticulesNeige(nbrParticules, posMoteurParticulesNeige, tailleMoteurParticulesNeige));
 					map.add(new MoteurNeige(nbrParticules, nbrParticules/3, posMoteurParticulesNeige, tailleMoteurParticulesNeige));
 				}
 			}
@@ -626,22 +653,68 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 		TiXmlElement* elGeo = elMap->FirstChildElement(Xml::GEOS);
 
 		if(elGeo) {
+
 			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
-				if(strcmp(Xml::GEO, el->Value())) {
-					Xml::throwCorruptedMapFileException(Xml::GEO, el->Value());
+				// Descriptions d'objets géométriques
+				if(!strcmp(Xml::GEODESCRIPTION, el->Value())) {
+					CGeo* geo = CGeoMaker::Lit(el, &map);
+
+					if(geo) {
+						map.addDescription(geo->getReference(), geo);
+					}
 				}
+			}
 
-				CGeo* geo = CGeoMaker::Lit(el, &map);
+			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
+				// Objets géométriques réels
+				if(!strcmp(Xml::GEO, el->Value())) {
+					CGeo* geo = CGeoMaker::Lit(el, &map);
 
-				if(geo)
-					map.add(geo);
+					if(geo) {
+						map.add(geo);
+					}
+				}
+				// Objets géométriques réels
+				else if(!strcmp(Xml::GEOINSTANCE, el->Value())) {
+					double translation[3];
+					translation[0] = translation[1] = translation[2] = 0.0f;
+					int description = -1;
+
+					if(!el->Attribute(Xml::X, &translation[0])) {
+						LOGERROR(("Fichier Map corrompu"));
+						throw CErreur("Fichier Map corrompu");
+					}
+
+					if(!el->Attribute(Xml::Y, &translation[1])) {
+						LOGERROR(("Fichier Map corrompu"));
+						throw CErreur("Fichier Map corrompu");
+					}
+
+					if(!el->Attribute(Xml::Z, &translation[2])) {
+						LOGERROR(("Fichier Map corrompu"));
+						throw CErreur("Fichier Map corrompu");
+					}
+
+					if(!el->Attribute(Xml::DESCRIPTION, &description)) {
+						LOGERROR(("Fichier Map corrompu"));
+						throw CErreur("Fichier Map corrompu");
+					}
+
+					CGeo* geoDescription = map.getDescription(description);
+
+					if(geoDescription) {
+						CGeo* newGeo = geoDescription->clone();
+						newGeo->translate(translation[0], translation[1], translation[2]);
+						map.add(newGeo);
+					}
+				}
 			}
 		}
 
 		result = true;
 	}
 	else {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Ouverture impossible : " << map._filename;
+		LOGERROR(("Ouverture impossible '%s'", map._filename.c_str()));
 	}
 
 	return result;
@@ -651,7 +724,7 @@ void CMap::Init() throw(JktUtils::CErreur) {	// Initialisation de la CMap
 	// Initialisation des object géométriques
 	vector<CGeo*>::iterator iterGeo;
 
-	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++) {
+	for(iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++) {
 		CGeo* geo = (*iterGeo);
 		geo->Init();
 	}
@@ -679,7 +752,7 @@ void CMap::initGL() {
 	}
 
 	// Initialisation des object géométriques dans le contexte OpenGL
-	for(CGeo* geo : m_TabGeo) {
+	for(CGeo* geo : _geos) {
 		geo->initGL();
 	}
 
@@ -698,7 +771,7 @@ void CMap::freeGL() {
 	}
 
 	// Initialisation des object géométriques dans le contexte OpenGL
-	for(CGeo* geo : m_TabGeo) {
+	for(CGeo* geo : _geos) {
 		geo->freeGL();
 	}
 
@@ -750,7 +823,7 @@ bool CMap::Save(const string nomFichier) {
 		elMap->LinkEndChild(elLum);
 		vector<CLight*>::iterator iterLight;
 
-		for( iterLight=m_TabLight.begin() ; iterLight!=m_TabLight.end() ; iterLight++ )
+		for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
 			(*iterLight)->Save( elLum );
 	}
 
@@ -760,7 +833,7 @@ bool CMap::Save(const string nomFichier) {
 		elMap->LinkEndChild(elGeo);
 		vector<CGeo*>::iterator iterGeo;
 
-		for( iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++ )
+		for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 			(*iterGeo)->Save( elGeo );		// Sauvegarde des paramètres de l'objet
 	}
 
@@ -776,7 +849,7 @@ bool CMap::Contact(const float pos[3], const float dist) {
 	bool var = false;	// Pas de contact par défaut
 	vector<CGeo*>::iterator iterGeo;
 
-	for(iterGeo=m_TabGeo.begin() ; iterGeo!=m_TabGeo.end() ; iterGeo++) {
+	for(iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++) {
 		var = (*iterGeo)->Contact( pos, dist );
 
 		if(var)	// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
@@ -789,7 +862,7 @@ bool CMap::Contact(const float pos[3], const float dist) {
 void CMap::Refresh(CGame *game) {
 	vector<CMouve*>::iterator iterMouve;
 
-	for(iterMouve=m_TabMouve.begin() ; iterMouve!=m_TabMouve.end() ; iterMouve++)
+	for(iterMouve=_mouves.begin() ; iterMouve!=_mouves.end() ; iterMouve++)
 		(*iterMouve)->Refresh(game);
 
 	Fabrique::getPluginEngine()->sendRefreshEvent();
@@ -852,13 +925,13 @@ void CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int t
 			}
 		}
 		else {
-			cerr << endl << __FILE__ << ":" << __LINE__ << " CMap::afficheToutesTextures : Materiau de type inconnu";
+			LOGERROR((" CMap::afficheToutesTextures : Materiau de type inconnu"));
 		}
 	}
 }
 
 vector<CLight*>& CMap::getLights() {
-	return m_TabLight;
+	return _lights;
 }
 
 void CMap::afficheToutesTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex) {

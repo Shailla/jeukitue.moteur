@@ -21,24 +21,18 @@ namespace JktMoteur
 void contactPlayer(CPlayer *player, float *normal, float distanceW) {
 	float vitesse[3];
 	player->getVitesse( vitesse );
-	float caca = -(vitesse[0]*normal[0])
-			-(vitesse[1]*normal[1])
-			+(vitesse[2]*normal[2]);
+	float caca = -(vitesse[0]*normal[0]) - (vitesse[1]*normal[1]) + (vitesse[2]*normal[2]);
 
-	if( distanceW > 0.0 )	//vérifie si le joueur
-	{						//s'approche ou s'éloigne
-		if( caca > 0.0)		//de la surface du triangle
-		{
-			vitesse[0] += caca*normal[0]; //rend le vecteur vitesse du joueur parallèle
-			vitesse[1] += caca*normal[1];	//à la surface du triangle
+	if( distanceW > 0.0 ) {		// Vérifie si le joueur s'approche ou s'éloigne de la surface du triangle
+		if( caca > 0.0) {
+			vitesse[0] += caca*normal[0]; 	// Rend le vecteur vitesse du joueur parallèle à la surface du triangle
+			vitesse[1] += caca*normal[1];
 			vitesse[2] -= caca*normal[2];
 		}
 	}
-	else					//vérifie si le joueur
-	{						//s'approche ou s'éloigne
-		if( caca < 0.0)		//de la surface du triangle
-		{
-			vitesse[0] += caca*normal[0]; //rend le vecteur vitesse du joueur parallèle
+	else {						// Vérifie si le joueur s'approche ou s'éloigne de la surface du triangle
+		if( caca < 0.0) {
+			vitesse[0] += caca*normal[0]; 	// Rend le vecteur vitesse du joueur parallèle
 			vitesse[1] += caca*normal[1];	//à la surface du triangle
 			vitesse[2] -= caca*normal[2];
 		}
@@ -46,8 +40,7 @@ void contactPlayer(CPlayer *player, float *normal, float distanceW) {
 
 	player->setVitesse( vitesse );
 
-	if( (fabsf(normal[1]))>player->Pente() )	//Cherche la pente la plus horizontale subie par le joueur
-	{
+	if( (fabsf(normal[1]))>player->Pente() ) {	//Cherche la pente la plus horizontale subie par le joueur
 		player->Pente( normal[1] );	//Donne la pente du triangle en contact /rapport à l'horizontale
 	}
 }

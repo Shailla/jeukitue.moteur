@@ -25,6 +25,11 @@ const char* Xml::LOAD = "Load";
 const char* Xml::IMPORT = "Import";
 
 // Objets
+const char* Xml::GEO = "Geo";
+const char* Xml::GEODESCRIPTION = "GeoDescription";
+const char* Xml::GEOINSTANCE = "GeoInstance";
+const char* Xml::LUMIERE = "Lumiere";
+const char* Xml::MATERIAU = "Materiau";
 const char* Xml::ENTRYPOINT = "EntryPoint";		// Points d'entrée des joueurs
 
 const char* Xml::PARTICULES_ENGINES = "ParticulesEngines";
@@ -36,7 +41,6 @@ const char* Xml::SCALE = "Scale";
 const char* Xml::TRANSLATE = "Translate";
 
 // Géo
-const char* Xml::GEO = "Geo";
 const char* Xml::SOLIDE = "Solide";
 const char* Xml::INDEX2SOMMETS2TEXTURE = "IndexDeSommetsDeTexture";
 const char* Xml::SOMMETS2TEXTURE = "SommetsDeTexture";
@@ -52,7 +56,6 @@ const char* Xml::SIMPLEMATERIAL = "SimpleMaterial";
 const char* Xml::NBRFACES = "NbrFaces";
 
 // Matériaux
-const char* Xml::MATERIAU = "Materiau";
 const char* Xml::MULTI = "Multi";
 const char* Xml::SIMPLE = "Simple";
 const char* Xml::SOUSMATERIAU = "SousMateriau";
@@ -65,7 +68,6 @@ const char* Xml::MULTITEXVERTEX = "MultiTexVertex";
 
 // Lumières
 const char* Xml::FALLOFF = "FallOff";
-const char* Xml::LUMIERE = "Lumiere";
 const char* Xml::OMNI = "Omni";
 const char* Xml::TARGET = "Target";
 
@@ -90,6 +92,7 @@ const char* Xml::B = "B";
 
 // Divers
 const char* Xml::COULEUR = "Couleur";
+const char* Xml::DESCRIPTION = "Description";
 const char* Xml::FAUX = "false";
 const char* Xml::FICHIER = "Fichier";
 const char* Xml::NBR = "Nbr";

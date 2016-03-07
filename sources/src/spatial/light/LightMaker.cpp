@@ -10,7 +10,7 @@
 namespace JktMoteur
 {
 
-CLight* CLightMaker::Lit(TiXmlElement* element)
+CLight* CLightMaker::Lit(TiXmlElement* element, MapLogger* mapLogger)
 {
 	const char* type = element->Attribute(Xml::TYPE);
 	CLight* light;
@@ -22,7 +22,7 @@ CLight* CLightMaker::Lit(TiXmlElement* element)
 	else
 		throw JktUtils::CErreur("Fichier Map corrompu : Lumiere de type inconnu");
 
-	light->Lit(element);
+	light->Lit(element, mapLogger);
 
 	return light;
 }

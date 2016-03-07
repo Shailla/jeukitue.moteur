@@ -445,7 +445,7 @@ void CTextureMaterialGeo::translate(float x, float y, float z) {
 	}
 }
 
-bool CTextureMaterialGeo::Lit(TiXmlElement* element) {
+bool CTextureMaterialGeo::Lit(TiXmlElement* element, MapLogger* mapLogger) {
 	double ref;
 
 	// Nom

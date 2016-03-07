@@ -98,7 +98,7 @@ public:
 	static float* LitVecteursNormaux(TiXmlElement* element, int& nbr);
 	static map<int,int>* LitSousMateriaux(TiXmlElement* el);
 
-	static CGeo* Lit(TiXmlElement* el, CMap* pMap);
+	static CGeo* Lit(TiXmlElement* el, CMap* pMap, MapLogger* mapLogger);
 	CGeo* makeNewGeoInstance();	// Crée une instance de l'objet géométrique
 								// optimisé correspondant
 private:

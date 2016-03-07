@@ -11,6 +11,8 @@ using namespace std;
 #include "util/V3D.h"
 #include "util/GenRef.h"
 
+#include "spatial/MapLogger.h"
+
 /************************************************************************/
 /*																		*/
 /*			Cette classe est une interface,								*/
@@ -59,7 +61,7 @@ public:
 	virtual void AfficheSelection(float r,float v,float b) = 0;	// Affiche l'objet géométrique en couleur unique
 
 	// Sérialisation
-	virtual bool Lit(TiXmlElement* el) = 0;
+	virtual bool Lit(TiXmlElement* el, MapLogger* mapLogger) = 0;
 	virtual bool Save(TiXmlElement* element) = 0;		// Sauve l'objet géo dans un fichier Map
 
 	// Transformations 3D

@@ -470,7 +470,7 @@ void CMultiMaterialGeo::translate( float x, float y, float z ) {
 	}
 }
 
-bool CMultiMaterialGeo::Lit(TiXmlElement* el)
+bool CMultiMaterialGeo::Lit(TiXmlElement* el, MapLogger* mapLogger)
 {
 	double ref;
 

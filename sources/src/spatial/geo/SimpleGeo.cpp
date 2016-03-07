@@ -520,7 +520,7 @@ void CSimpleGeo::Color( float r, float g, float b ) {
 	return true;
 }*/
 
-bool CSimpleGeo::Lit(TiXmlElement* element)
+bool CSimpleGeo::Lit(TiXmlElement* element, MapLogger* mapLogger)
 {
 	double ref;
 

@@ -35,7 +35,6 @@ PluginContext::PluginContext(lua_State* luaState, const string& pluginName, cons
 		LOGERROR(("Cannot open log file '%s'", pluginLogFile.c_str()));
 	}
 
-
 	_subscribedRefreshEvents = false;
 
 	_dispatchEventMutex = SDL_CreateMutex();

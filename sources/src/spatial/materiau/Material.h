@@ -9,6 +9,8 @@ using namespace std;
 
 #include "tinyxml.h"
 
+#include "spatial/MapLogger.h"
+
 namespace JktMoteur
 {
 
@@ -41,7 +43,7 @@ public:
 	virtual void initGL() {};	// Lit le fichier de texture associé au matériau
 	virtual void freeGL() {};	// Lit le fichier de texture associé au matériau
 	virtual bool LitFichier(CIfstreamMap &fichier);
-	virtual bool Lit(TiXmlElement* el, string &repertoire);
+	virtual bool Lit(TiXmlElement* el, string &repertoire, MapLogger* mapLogger);
 	virtual bool SaveFichierMap(std::ofstream &fichier);
 	virtual bool Save(TiXmlElement* element);
 	virtual void Active();

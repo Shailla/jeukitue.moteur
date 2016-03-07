@@ -14,20 +14,21 @@ using namespace JktUtils;
 namespace JktMoteur
 {
 
-EntryPoint* EntryPointMaker::Lit(TiXmlElement* el)
-{
-	if(strcmp(el->Value(), Xml::ENTRYPOINT))
-	{
+EntryPoint* EntryPointMaker::Lit(TiXmlElement* el, MapLogger* mapLogger) {
+	if(strcmp(el->Value(), Xml::ENTRYPOINT)) {
 		string erreur = "Fichier map corrompu : '";
 		erreur += Xml::ENTRYPOINT;
 		erreur += "' attendu, '";
 		erreur += el->Value();
 		erreur += "' recu";
+
+		mapLogger->logError(erreur);
+
 		throw CErreur(erreur);
 	}
 
 	EntryPoint* entry = new EntryPoint();
-	entry->Lit(el);
+	entry->Lit(el, mapLogger);
 
 	return entry;
 }

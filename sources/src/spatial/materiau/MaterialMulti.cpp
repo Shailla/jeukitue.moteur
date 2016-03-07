@@ -165,7 +165,7 @@ bool CMaterialMulti::SaveFichierMap(ofstream &fichier) {
 	return true;
 }
 
-bool CMaterialMulti::Lit(TiXmlElement* element, string& repertoire) {
+bool CMaterialMulti::Lit(TiXmlElement* element, string& repertoire, MapLogger* mapLogger) {
 	// Référence
 	double ref;
 	if(!element->Attribute(Xml::REF, &ref))
@@ -180,13 +180,18 @@ bool CMaterialMulti::Lit(TiXmlElement* element, string& repertoire) {
 
 	TiXmlElement* elSma = element->FirstChildElement(Xml::SOUSMATERIAUX);
 
-	if(!elSma)
+	if(!elSma) {
+		mapLogger->logError("Fichier map corrompu : Sous-materiaux");
 		throw CErreur("Fichier map corrompu : Sous-materiaux");
+	}
+
 
 	// Nombre de sous-matériaux
 	double nbrSSMat;
-	if(!elSma->Attribute(Xml::NBR, &nbrSSMat))
+	if(!elSma->Attribute(Xml::NBR, &nbrSSMat)) {
+		mapLogger->logError("Fichier map corrompu : Nombre de sous-materiaux");
 		throw CErreur("Fichier map corrompu : Nombre de sous-materiaux");
+	}
 
 	m_NbrTex = (int)nbrSSMat;
 
@@ -198,10 +203,12 @@ bool CMaterialMulti::Lit(TiXmlElement* element, string& repertoire) {
 		el->Value();
 		el->Attribute(Xml::REF);
 
-		if(i >= NbrTex())
+		if(i >= NbrTex()) {
+			mapLogger->logError("Fichier map corrompu : Reference sous-materiau");
 			throw CErreur("Fichier map corrompu : Reference sous-materiau");
+		}
 
-		CMaterial* mat = CMaterialMaker::Lit(el, repertoire);
+		CMaterial* mat = CMaterialMaker::Lit(el, repertoire, mapLogger);
 		m_TabMat[i++] = mat;
 	}
 

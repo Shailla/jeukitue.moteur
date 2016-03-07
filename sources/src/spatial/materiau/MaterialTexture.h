@@ -28,12 +28,12 @@ public:
 		// Fonctions membres
 	void initGL() throw(JktUtils::CErreur) override; // Lit le fichier de texture associé au matériau
 	void freeGL() override;
-	bool Lit(TiXmlElement* el, string &repertoire);
-	bool LitFichier(CIfstreamMap &fichier);
-	bool SaveFichierMap(std::ofstream &fichier);
-	bool Save(TiXmlElement* element);
-	void Active();
-	void Desactive();
+	bool Lit(TiXmlElement* el, string &repertoire, MapLogger* mapLogger) override;
+	bool LitFichier(CIfstreamMap &fichier) override;
+	bool SaveFichierMap(std::ofstream &fichier) override;
+	bool Save(TiXmlElement* element) override;
+	void Active() override;
+	void Desactive() override;
 };
 
 }	// JktMoteur

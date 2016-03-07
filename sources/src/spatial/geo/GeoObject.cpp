@@ -622,15 +622,13 @@ void CGeoObject::setMaterial(int matRef)
 	}
 }
 
-void CGeoObject::Color( float r, float g, float b )
-{
+void CGeoObject::Color( float r, float g, float b ) {
 	m_Color[0] = r;
 	m_Color[1] = g;
 	m_Color[2] = b;
 }
 
-bool CGeoObject::Save(TiXmlElement* element)
-{
+bool CGeoObject::Save(TiXmlElement* element) {
 	int i=0;
 
 		// Sauve les données générales
@@ -644,8 +642,7 @@ bool CGeoObject::Save(TiXmlElement* element)
 	CGeoMaker::SaveSolidite(elGeo, m_bSolid);
 
 		// Présence matériau
-	if(m_bMaterialTexture)
-	{
+	if(m_bMaterialTexture) {
 		TiXmlElement* elMat = new TiXmlElement("Materiau");
 		elMat->SetAttribute("Ref", m_MaterialTexture);
 		elGeo->LinkEndChild(elMat);

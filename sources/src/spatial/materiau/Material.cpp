@@ -84,7 +84,7 @@ bool CMaterial::LitFichier(CIfstreamMap &fichier) {
 	return true;
 }
 
-bool CMaterial::Lit(TiXmlElement* el, string &repertoire) {
+bool CMaterial::Lit(TiXmlElement* el, string &repertoire, MapLogger* mapLogger) {
 	double ref;
 
 	// Référence

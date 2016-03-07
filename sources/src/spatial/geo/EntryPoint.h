@@ -11,6 +11,7 @@
 #include "tinyxml.h"
 
 #include "util/V3D.h"
+#include "spatial/MapLogger.h"
 
 namespace JktMoteur {
 
@@ -22,8 +23,8 @@ public:
 	virtual ~EntryPoint();
 
 	// Méthodes de sérialisation
-	bool Lit(TiXmlElement* element);				// Lit le point d'entrée joueur d'un fichier Map format XML
-	bool Save(TiXmlElement* element);				// Lit le point d'entrée joueur dans un fichier Map format XML
+	bool Lit(TiXmlElement* element, MapLogger* mapLogger);		// Lit le point d'entrée joueur d'un fichier Map format XML
+	bool Save(TiXmlElement* element);							// Lit le point d'entrée joueur dans un fichier Map format XML
 
 	// Méthodes de manipulation géométrique
 	void EchangeXY();										// Echange les coordonnées X et Y de l'objet

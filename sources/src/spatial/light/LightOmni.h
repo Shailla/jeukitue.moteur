@@ -17,7 +17,7 @@ public:
 	CLightOmni();
 	~CLightOmni();
 
-	bool Lit(TiXmlElement* element);
+	bool Lit(TiXmlElement* element, MapLogger* mapLogger);
 	bool LitFichier(CIfstreamMap &fichier);
 	bool SaveFichierMap(std::ofstream &fichier);
 	bool Save(TiXmlElement* element);

@@ -81,7 +81,7 @@ public:
 
 	// Sérialisation
 	bool Save(TiXmlElement* element);
-	bool Lit(TiXmlElement* el);
+	bool Lit(TiXmlElement* el, MapLogger* mapLogger);
 
 	// Gestion des contacts
 	bool Contact( const float pos[3], float dist );

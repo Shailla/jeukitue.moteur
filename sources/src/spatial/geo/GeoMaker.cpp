@@ -898,35 +898,37 @@ void CGeoMaker::SaveMateriau(TiXmlElement* element, unsigned int refMat)
 	element->LinkEndChild(elMat);
 }
 
-CGeo* CGeoMaker::Lit(TiXmlElement* el, CMap* pMap)
+CGeo* CGeoMaker::Lit(TiXmlElement* el, CMap* pMap, MapLogger* mapLogger)
 {
 	const char* type = el->Attribute(Xml::TYPE);
 	CGeo* geo = 0;
 
 	if(!strcmp(Xml::SIMPLE, type)) {
 		geo = new CSimpleGeo(pMap);
-		geo->Lit(el);
+		geo->Lit(el, mapLogger);
 	}
 	else if(!strcmp(Xml::SIMPLEMATERIAL, type)) {
 		CSimpleMaterialGeo* geoSM = new CSimpleMaterialGeo(pMap);
 		geoSM->setOffsetMateriau(0);
 		geo = geoSM;
-		geo->Lit(el);
+		geo->Lit(el, mapLogger);
 	}
 	else if(!strcmp(Xml::TEXTURE, type)) {
 		CTextureMaterialGeo* geoTM = new CTextureMaterialGeo(pMap);
 		geoTM->setOffsetMateriau(0);
 		geo = geoTM;
-		geo->Lit(el);
+		geo->Lit(el, mapLogger);
 	}
 	else if(!strcmp(Xml::MULTI, type)) {
 		CMultiMaterialGeo* geoMM = new CMultiMaterialGeo(pMap);
 		geoMM->setOffsetMateriau(0);
 		geo = geoMM;
-		geo->Lit(el);
+		geo->Lit(el, mapLogger);
 	}
-	else
+	else {
+		mapLogger->logError("Fichier Map corrompu : Geo de type inconnu");
 		throw JktUtils::CErreur("Fichier Map corrompu : Geo de type inconnu");
+	}
 
 	return geo;
 }

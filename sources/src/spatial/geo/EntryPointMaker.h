@@ -13,7 +13,7 @@ namespace JktMoteur
 class EntryPointMaker
 {
 public:
-	static EntryPoint* Lit(TiXmlElement* el);
+	static EntryPoint* Lit(TiXmlElement* el, MapLogger* mapLogger);
 };
 
 }

@@ -83,7 +83,7 @@ public:
 	//bool SaveNameType(ofstream &fichier);				// Sauve le nom du type d'objet géométrique
 	//bool SaveFichierMap(ofstream &fichier);			// Sauve l'objet géo dans un fichier Map
 	bool Save(TiXmlElement* element) override;
-	bool Lit(TiXmlElement* element) override;
+	bool Lit(TiXmlElement* element, MapLogger* mapLogger) override;
 
 	bool Contact( const float pos[3], float dist ) override;
 

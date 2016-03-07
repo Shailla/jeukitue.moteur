@@ -11,7 +11,7 @@ class CLight;
 class CLightMaker
 {
 public:
-	static CLight* Lit(TiXmlElement* element);
+	static CLight* Lit(TiXmlElement* element, MapLogger* mapLogger);
 };
 
 }

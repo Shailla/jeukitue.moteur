@@ -119,22 +119,29 @@ void CLightOmni::Active()
 	glLightfv( m_refLight, GL_SPECULAR, m_ColorSpecular );
 }
 
-bool CLightOmni::Lit(TiXmlElement* element)
-{
+bool CLightOmni::Lit(TiXmlElement* element, MapLogger* mapLogger) {
 	double ref;
 	const char* type;
 
 	// Référence
-	if(!element->Attribute(Xml::REF, &ref))
+	if(!element->Attribute(Xml::REF, &ref)) {
+		mapLogger->logError("Fichier Map corrompu : Lumiere ref");
 		throw CErreur("Fichier Map corrompu : Lumiere ref");
+	}
+
 	m_refLight = (int)ref;
 
 	// Type
 	type = element->Attribute(Xml::TYPE);
-	if(!type)
+	if(!type) {
+		mapLogger->logError("Fichier Map corrompu : Type lumiere manquant");
 		throw CErreur("Fichier Map corrompu : Type lumiere manquant");
-	if(strcmp(Xml::OMNI, type))
+	}
+
+	if(strcmp(Xml::OMNI, type)) {
+		mapLogger->logError("Fichier Map corrompu : Type incompatible");
 		throw CErreur("Fichier Map corrompu : Type incompatible");
+	}
 
 	// Couleurs
 	Xml::LitCouleur3fv(element, Xml::AMBIANTE, m_ColorAmbient);

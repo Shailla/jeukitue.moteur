@@ -27,59 +27,47 @@ bool CLight::m_bLight5 = false;
 bool CLight::m_bLight6 = false;
 bool CLight::m_bLight7 = false;
 
-int CLight::takeLight()
-{
-	if( !m_bLight0 )
-	{
+int CLight::takeLight() {
+	if( !m_bLight0 ) {
 		m_bLight0 = true;
 		return GL_LIGHT0;
 	}
-	else if( !m_bLight1 )
-	{
+	else if( !m_bLight1 ) {
 		m_bLight1 = true;
 		return GL_LIGHT1;
 	}
-	else if( !m_bLight2 )
-	{
+	else if( !m_bLight2 ) {
 		m_bLight2 = true;
 		return GL_LIGHT2;
 	}
-	else if( !m_bLight3 )
-	{
+	else if( !m_bLight3 ) {
 		m_bLight3 = true;
 		return GL_LIGHT3;
 	}
-	else if( !m_bLight4 )
-	{
+	else if( !m_bLight4 ) {
 		m_bLight4 = true;
 		return GL_LIGHT4;
 	}
-	else if( !m_bLight5 )
-	{
+	else if( !m_bLight5 ) {
 		m_bLight5 = true;
 		return GL_LIGHT5;
 	}
-	else if( !m_bLight6 )
-	{
+	else if( !m_bLight6 ) {
 		m_bLight6 = true;
 		return GL_LIGHT6;
 	}
-	else if( !m_bLight7 )
-	{
+	else if( !m_bLight7 ) {
 		m_bLight7 = true;
 		return GL_LIGHT7;
 	}
-	else
-	{
+	else {
 		LOGDEBUG(("Clight::findFreeLight() : Aucune lumiere n'est disponible" ));
 		return 0;
 	}
 }
 
-void CLight::freeLight( int ref )
-{
-	switch( ref )
-	{
+void CLight::freeLight( int ref ) {
+	switch( ref ) {
 	case GL_LIGHT0:
 		m_bLight0 = false;
 		break;
@@ -107,8 +95,7 @@ void CLight::freeLight( int ref )
 	}
 }
 
-CLight::CLight()
-{
+CLight::CLight() {
 	m_ColorAmbient[0] = 0.0f;		m_ColorAmbient[1] = 0.0f;		m_ColorAmbient[2] = 0.0f;		m_ColorAmbient[3] = 1.0f;
 	m_ColorDiffuse[0] = 0.0f;		m_ColorDiffuse[1] = 0.0f;		m_ColorDiffuse[2] = 0.0f;		m_ColorDiffuse[3] = 1.0f;
 	m_ColorSpecular[0] = 0.0f;		m_ColorSpecular[1] = 0.0f;		m_ColorSpecular[2] = 0.0f;		m_ColorSpecular[3] = 1.0f;
@@ -118,8 +105,7 @@ CLight::CLight()
 	m_refLight = 0;
 }
 
-CLight::~CLight()
-{
+CLight::~CLight() {
 }
 
 void CLight::EchangeXY()		// Echange les coordonnées X et Y de l'objet

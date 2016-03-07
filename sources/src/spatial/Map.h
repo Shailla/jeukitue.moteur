@@ -12,7 +12,7 @@ using namespace std;
 #include "util/Erreur.h"
 #include "util/V3D.h"
 #include "spatial/geo/Geo.h"
-
+#include "spatial/MapLogger.h"
 class CGame;
 class CPlayer;
 
@@ -36,7 +36,7 @@ class CMap : CGeo {
 	string _filename;								// Nom du fichier de la Map (par exemple "Monde.map.xml")
 	string _binariesDirectory;						// Répertoires des binaires de la Map (textures, plugins, ...)
 
-	map<unsigned int, CGeo*> _geoDescriptions;
+	map<int, CGeo*> _geoDescriptions;
 
 	vector<CGeo*> _geos;							// Liste des objets géométriques
 	vector<CMouve*> _mouves;						// Liste des objets nécessitant une actualisation (portes,...)
@@ -54,6 +54,8 @@ class CMap : CGeo {
 	bool _isGlActivated;							// Indique si les éléments OpenGL de la MAP ont été initialisés
 	bool _isPluginsActivated;						// Indique si les plugins de la MAP ont été initialisés
 
+	CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(JktUtils::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
+
 	void afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
 public:
 	vector<CMaterial*> m_TabMaterial;		// Liste des matériaux A VOIR : devrait être membre privé
@@ -67,9 +69,9 @@ public:
 	const char* toString();						// Description résumée de l'objet
 
 	// Sérialisation
-	static bool Lit(CMap& map, const string &mapName);
-	bool Lit(const string &nomFichier);
-	bool Lit(TiXmlElement* el);
+	static bool Lit(CMap& map, const string &mapName, MapLogger* mapLogger);
+	bool Lit(const string &nomFichier, MapLogger* mapLogger);
+	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
 	bool Save(TiXmlElement* element);			// Sauve l'objet géo dans un fichier Map
 
 	void Init() throw(JktUtils::CErreur);	// Initialisation de la CMap
@@ -102,8 +104,8 @@ public:
 	 */
 	void afficheToutesTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex);
 
-	void addDescription(unsigned int ref, CGeo* geo);
-	CGeo* getDescription(unsigned int ref);
+	void addDescription(int ref, CGeo* geo, MapLogger* mapLogger);
+	CGeo* getDescription(int ref);
 
 	void add(Dirigeable* dirigeable);
 	void add(CGeo *geo);					// Ajoute un GeoObject à la map

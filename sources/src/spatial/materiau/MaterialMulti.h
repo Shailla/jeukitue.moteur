@@ -28,10 +28,10 @@ public:
 	void NbrTex(int nbr);		// Renseigne le nombre de sous-matériaux
 	int NbrTex();				// Renvoie le nombre de sous-matériaux
 	CMaterial* getMat(int i);	// Renvoie le sous-matériau d'index i
-	bool LitFichier(CIfstreamMap &fichier);
-	bool SaveFichierMap(std::ofstream &fichier);
-	bool Save(TiXmlElement* element);
-	bool Lit(TiXmlElement* element, std::string& repertoire);
+	bool LitFichier(CIfstreamMap &fichier) override;
+	bool SaveFichierMap(std::ofstream &fichier) override;
+	bool Save(TiXmlElement* element) override;
+	bool Lit(TiXmlElement* element, std::string& repertoire, MapLogger* mapLogger) override;
 	const char* toString();
 };
 

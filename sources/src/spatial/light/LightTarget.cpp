@@ -46,22 +46,28 @@ void CLightTarget::SetDirection( float direction[3] ) {
 	m_Direction[ 3 ] = 1.0f;
 }
 
-bool CLightTarget::Lit(TiXmlElement* element)
-{
+bool CLightTarget::Lit(TiXmlElement* element, MapLogger* mapLogger) {
 	double ref;
 	const char* type;
 
 	// Référence
-	if(!element->Attribute(Xml::REF, &ref))
+	if(!element->Attribute(Xml::REF, &ref)) {
+		mapLogger->logError("Fichier Map corrompu : Lumiere ref");
 		throw CErreur("Fichier Map corrompu : Lumiere ref");
+	}
 	m_refLight = (int)ref;
 
 	// Type
 	type = element->Attribute(Xml::TYPE);
-	if(!type)
+	if(!type) {
+		mapLogger->logError("Fichier Map corrompu : Type lumiere manquant");
 		throw CErreur("Fichier Map corrompu : Type lumiere manquant");
-	if(strcmp(Xml::TARGET, type))
+	}
+
+	if(strcmp(Xml::TARGET, type)) {
+		mapLogger->logError("Fichier Map corrompu : Type incompatible");
 		throw CErreur("Fichier Map corrompu : Type incompatible");
+	}
 
 	// Couleurs
 	Xml::LitCouleur3fv(element, Xml::AMBIANTE, m_ColorAmbient);

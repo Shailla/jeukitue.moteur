@@ -15,7 +15,7 @@ namespace JktMoteur
 class CMaterialMaker
 {
 public:
-	static CMaterial* Lit(TiXmlElement* el, string &repertoire);
+	static CMaterial* Lit(TiXmlElement* el, string &repertoire, MapLogger* mapLogger);
 };
 
 }

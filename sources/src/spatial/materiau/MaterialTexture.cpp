@@ -62,13 +62,14 @@ void CMaterialTexture::freeGL() {
 	// TODO
 }
 
-bool CMaterialTexture::Lit(TiXmlElement* element, string &repertoire)
-{
+bool CMaterialTexture::Lit(TiXmlElement* element, string &repertoire, MapLogger* mapLogger) {
 	double ref;
 
 	// Référence
-	if(!element->Attribute(Xml::REF, &ref))
+	if(!element->Attribute(Xml::REF, &ref)) {
+		mapLogger->logError("Fichier map corrompu : Reference materiau");
 		throw CErreur("Fichier map corrompu : Reference materiau");
+	}
 
 	m_Ref = (unsigned int)ref;
 
@@ -79,8 +80,10 @@ bool CMaterialTexture::Lit(TiXmlElement* element, string &repertoire)
 
 		// Fichier de texture
 	TiXmlElement* elFic = element->FirstChildElement(Xml::FICHIER);
-	if(!elFic)
+	if(!elFic) {
+		mapLogger->logError("Fichier map corrompu : Nom de fichier de texture");
 		throw CErreur("Fichier map corrompu : Nom de fichier de texture");
+	}
 
 	m_FichierTexture = elFic->Attribute(Xml::NOM);
 	RessourcesLoader::getFileRessource(repertoire, m_FichierTexture);
@@ -88,8 +91,7 @@ bool CMaterialTexture::Lit(TiXmlElement* element, string &repertoire)
 	return true;
 }
 
-bool CMaterialTexture::LitFichier( CIfstreamMap &fichier )
-{
+bool CMaterialTexture::LitFichier( CIfstreamMap &fichier ) {
 	string mot;
 	fichier >> mot;
 	if( mot!="Reference" )

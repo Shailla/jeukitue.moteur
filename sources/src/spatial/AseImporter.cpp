@@ -212,7 +212,7 @@ int AseImporter::importAse(void* arg)
 	try {
 		console->addMsg("Lancement import ASE...");
 
-		pMapASE = new CMap(0);		// Crée une classe pour recevoir les données de la map
+		pMapASE = new CMap(0, 0);		// Crée une classe pour recevoir les données de la map
 
 			// Conversion fichier ASE -> fichier Map
 		if(	!CFichierASE::LitFichierASE(aseFileName, pMapASE, Config.Debug.bAfficheFichier))	// Lit le fichier ASE de la map

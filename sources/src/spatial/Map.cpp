@@ -52,7 +52,7 @@ class CGame;
 #include "spatial/geo/GeoMaker.h"
 #include "spatial/geo/EntryPointMaker.h"
 #include "ressource/RessourcesLoader.h"
-
+#include "spatial/MapLogger.h"
 #include "spatial/Map.h"
 
 using namespace JktUtils;
@@ -74,7 +74,25 @@ CMap::CMap(CMap* parent) : CGeo(parent) {
 CMap::CMap(CMap* parent, const string& nomFichier) throw(JktUtils::CErreur) : CGeo(parent) {
 	LOGDEBUG(("CMap::CMap(*parent,nomFichier=%s)%T", nomFichier.c_str(), this ));
 
-	if( !Lit(nomFichier) ) {
+	if( !Lit(nomFichier, 0) ) {
+		LOGERROR(("Erreur de lecture de la Map ''", nomFichier.c_str() ));
+	}
+	else {
+		LOGINFO(("Fichier Map lu ''"));
+	}
+
+	_bSelection = false;
+	_Selection = 0;
+	_isGlActivated = false;
+	_isPluginsActivated = false;
+
+	Init();
+}
+
+CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(JktUtils::CErreur) : CGeo(parent) {
+	LOGDEBUG(("CMap::CMap(*parent,nomFichier=%s)%T", nomFichier.c_str(), this ));
+
+	if( !Lit(nomFichier, mapLogger) ) {
 		LOGERROR(("Erreur de lecture de la Map ''", nomFichier.c_str() ));
 	}
 	else {
@@ -90,8 +108,6 @@ CMap::CMap(CMap* parent, const string& nomFichier) throw(JktUtils::CErreur) : CG
 }
 
 CMap::~CMap() {
-	LOGDEBUG(("CMap::~CMap() %T", this ));
-
 	// Destruction des objets géo
 	vector<CGeo*>::iterator iterGeo;
 	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
@@ -208,15 +224,15 @@ void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objet
 	glDisable( GL_VERTEX_ARRAY );
 }
 
-void CMap::addDescription(unsigned int ref, CGeo* geo) {
+void CMap::addDescription(int ref, CGeo* geo, MapLogger* mapLogger) {
 	if(_geoDescriptions.find(ref) != _geoDescriptions.end()) {
-		LOGERROR(("Map corrompue, la référence est en doublon"));
+		mapLogger->logError("Map corrompue, la référence est en doublon");
 	}
 
 	_geoDescriptions[ref] = geo;
 }
 
-CGeo* CMap::getDescription(unsigned int ref) {
+CGeo* CMap::getDescription(int ref) {
 	try {
 		return _geoDescriptions.at(ref);
 	}
@@ -445,11 +461,11 @@ void CMap::translate(float x, float y, float z) {
 	}
 }
 
-bool CMap::Lit(const string &nomFichier) {
-	return Lit(*this, nomFichier);
+bool CMap::Lit(const string &nomFichier, MapLogger* mapLogger) {
+	return Lit(*this, nomFichier, mapLogger);
 }
 
-bool CMap::Lit(TiXmlElement* el) {
+bool CMap::Lit(TiXmlElement* el, MapLogger* mapLogger) {
 	return false;
 }
 
@@ -457,9 +473,7 @@ bool CMap::Save(TiXmlElement* element) {			// Sauve l'objet géo dans un fichier 
 	return false;
 }
 
-bool CMap::Lit(CMap& map, const string& mapName) {
-	LOGDEBUG(("Lecture fichier Map '%s'", mapName.c_str()));
-
+bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 	// Répertoire et fichier de la Map
 	string partialFileName = mapName;
 	bool isResource = JktUtils::RessourcesLoader::getFileRessource(partialFileName);
@@ -473,7 +487,15 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 	map._filename = partialFileName + ".map.xml";				// Chemin complet fichier Map XML
 	map._binariesDirectory = partialFileName + "\\";			// Chemin des fichier binaires de la Map
 
+	if(!mapLogger) {
+		mapLogger = new MapLogger(partialFileName);
+	}
+
 	// Lecture XML de la Map
+	stringstream msg;
+	msg << "Lecture fichier Map '" << mapName << "'";
+	mapLogger->logInfo(msg.str());
+
 	bool result = false;
 
 	TiXmlDocument document(map._filename.c_str());
@@ -482,7 +504,7 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 		// Element de map
 		TiXmlElement* elMap = document.FirstChildElement(Xml::MAP);
 		if(!elMap) {
-			LOGERROR(("Fichier map corrompu"));
+			mapLogger->logError("Fichier map corrompu");
 			throw CErreur("Fichier map corrompu");
 		}
 
@@ -517,12 +539,13 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 					const char* subMapName = el->Attribute(Xml::NOM);	// Lecture nom de la Map à importer
 
 					if(!subMapName) {
-						LOGERROR(("Fichier Map corrompu : Nom de la sous-Map a importer manquant"));
+						mapLogger->logError("Fichier Map corrompu : Nom de la sous-Map a importer manquant");
 						throw CErreur("Fichier Map corrompu : Nom de la sous-Map a importer manquant");
 					}
 
 					// Lecture de la translation à appliquer à la Map
 					float translation[3];
+
 					if(!Xml::Lit3fv(el, Xml::TRANSLATE, Xml::X, Xml::Y, Xml::Z, translation)) {
 						translation[0] = 0.0;
 						translation[1] = 0.0;
@@ -531,6 +554,7 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 
 					// Lecture du scaling à appliquer à la Map
 					float scaling[3];
+
 					if(!Xml::Lit3fv(el, Xml::SCALE, Xml::X, Xml::Y, Xml::Z, scaling)) {
 						scaling[0] = 1.0;
 						scaling[1] = 1.0;
@@ -539,7 +563,7 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 
 					// Lecture de la Map
 					CMap subMap(0);
-					Lit(subMap, string(subMapName));
+					Lit(subMap, string(subMapName), mapLogger);
 
 					subMap.translate(translation[0], translation[1], translation[2]);
 					subMap.Scale(scaling[0], scaling[1], scaling[2]);
@@ -564,7 +588,7 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 						Xml::throwCorruptedMapFileException(Xml::ENTRYPOINT, el->Value());
 					}
 
-					EntryPoint* entry = EntryPointMaker::Lit(el);
+					EntryPoint* entry = EntryPointMaker::Lit(el, mapLogger);
 
 					if(entry) {
 						map.add(*entry);
@@ -588,12 +612,13 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 					int nbrParticules;
 
 					if(!el->Attribute(Xml::NBR_PARTICULES, &nbrParticules)) {		// Lecture nom de la Map à importer
-						LOGERROR(("Fichier Map corrompu : Nombre de particules du moteur manquant"));
+						mapLogger->logError("Fichier Map corrompu : Nombre de particules du moteur manquant");
 						throw CErreur("Fichier Map corrompu : Nombre de particules du moteur manquant");
 					}
 
 					// Lecture de la position du moteur de neige
 					float position[3];
+
 					if(!Xml::Lit3fv(el, Xml::POSITION, Xml::X, Xml::Y, Xml::Z, position)) {
 						position[0] = 0.0;
 						position[1] = 0.0;
@@ -602,6 +627,7 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 
 					// Lecture des dimensions du moteur de neige
 					float dimension[3];
+
 					if(!Xml::Lit3fv(el, Xml::DIMENSION, Xml::X, Xml::Y, Xml::Z, dimension)) {
 						dimension[0] = 0.0;
 						dimension[1] = 0.0;
@@ -625,10 +651,14 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 					Xml::throwCorruptedMapFileException(Xml::MATERIAU, el->Value());
 				}
 
-				CMaterial* mat = CMaterialMaker::Lit(el, map._binariesDirectory);
+				CMaterial* mat = CMaterialMaker::Lit(el, map._binariesDirectory, mapLogger);
 
-				if(mat)
+				if(mat) {
 					map.add(mat);
+				}
+				else {
+					mapLogger->logError("Matériau corrompu ?");
+				}
 			}
 		}
 
@@ -636,16 +666,19 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 		TiXmlElement* elLight = elMap->FirstChildElement(Xml::LUMIERES);
 
 		if(elLight) {
-			for(TiXmlElement* el=elLight->FirstChildElement(); el!=0; el=el->NextSiblingElement())
-			{
+			for(TiXmlElement* el=elLight->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 				if(strcmp(Xml::LUMIERE, el->Value())) {
 					Xml::throwCorruptedMapFileException(Xml::LUMIERE, el->Value());
 				}
 
-				CLight* lum = CLightMaker::Lit(el);
+				CLight* lum = CLightMaker::Lit(el, mapLogger);
 
-				if(lum)
+				if(lum) {
 					map.add(lum);
+				}
+				else {
+					mapLogger->logError("Lumière corrompue ?");
+				}
 			}
 		}
 
@@ -657,10 +690,13 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 				// Descriptions d'objets géométriques
 				if(!strcmp(Xml::GEODESCRIPTION, el->Value())) {
-					CGeo* geo = CGeoMaker::Lit(el, &map);
+					CGeo* geo = CGeoMaker::Lit(el, &map, mapLogger);
 
 					if(geo) {
-						map.addDescription(geo->getReference(), geo);
+						map.addDescription(geo->getReference(), geo, mapLogger);
+					}
+					else {
+						mapLogger->logError("Géo description corrompue ?");
 					}
 				}
 			}
@@ -668,10 +704,13 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 				// Objets géométriques réels
 				if(!strcmp(Xml::GEO, el->Value())) {
-					CGeo* geo = CGeoMaker::Lit(el, &map);
+					CGeo* geo = CGeoMaker::Lit(el, &map, mapLogger);
 
 					if(geo) {
 						map.add(geo);
+					}
+					else {
+						mapLogger->logError("Géo corrompue ?");
 					}
 				}
 				// Objets géométriques réels
@@ -681,22 +720,22 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 					int description = -1;
 
 					if(!el->Attribute(Xml::X, &translation[0])) {
-						LOGERROR(("Fichier Map corrompu"));
+						mapLogger->logError("Fichier Map corrompu");
 						throw CErreur("Fichier Map corrompu");
 					}
 
 					if(!el->Attribute(Xml::Y, &translation[1])) {
-						LOGERROR(("Fichier Map corrompu"));
+						mapLogger->logError("Fichier Map corrompu");
 						throw CErreur("Fichier Map corrompu");
 					}
 
 					if(!el->Attribute(Xml::Z, &translation[2])) {
-						LOGERROR(("Fichier Map corrompu"));
+						mapLogger->logError("Fichier Map corrompu");
 						throw CErreur("Fichier Map corrompu");
 					}
 
 					if(!el->Attribute(Xml::DESCRIPTION, &description)) {
-						LOGERROR(("Fichier Map corrompu"));
+						mapLogger->logError("Fichier Map corrompu");
 						throw CErreur("Fichier Map corrompu");
 					}
 
@@ -707,6 +746,9 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 						newGeo->translate(translation[0], translation[1], translation[2]);
 						map.add(newGeo);
 					}
+					else {
+						mapLogger->logError("Géo description introuvable");
+					}
 				}
 			}
 		}
@@ -714,7 +756,9 @@ bool CMap::Lit(CMap& map, const string& mapName) {
 		result = true;
 	}
 	else {
-		LOGERROR(("Ouverture impossible '%s'", map._filename.c_str()));
+		stringstream msg;
+		msg << "Ouverture impossible '" << map._filename << "'";
+		mapLogger->logError(msg.str());
 	}
 
 	return result;
@@ -784,8 +828,6 @@ void CMap::freeGL() {
 }
 
 bool CMap::Save(const string nomFichier) {
-	LOGDEBUG(("CMap::Save() %T", this ));
-
 	// CREATION DES FICHIERS
 	string nomFichierMap = "./map/" + nomFichier + ".map.xml";
 

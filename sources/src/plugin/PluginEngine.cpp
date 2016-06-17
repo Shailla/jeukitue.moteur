@@ -5,6 +5,8 @@
  *      Author: Erwin
  */
 
+#include <time.h>
+
 #include "util/Trace.h"
 #include "plugin/lua/proxy/PluginEventProxy.h"
 #include "plugin/lua/proxy/cfg/PluginConfigurationProxy.h"

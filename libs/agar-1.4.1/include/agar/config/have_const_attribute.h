@@ -1,3 +1,0 @@
-#ifndef HAVE_CONST_ATTRIBUTE
-#define HAVE_CONST_ATTRIBUTE "yes"
-#endif

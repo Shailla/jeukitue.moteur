@@ -23,7 +23,7 @@
 #include "data/DistantTreeProxy.h"
 
 class PrivateBranche : public Branche {
-
+public:
 	class DistantPrivateBranche {
 	public:
 		std::vector<Branche*> _subBranches;
@@ -43,7 +43,6 @@ class PrivateBranche : public Branche {
 
 	std::map<DistantTreeProxy*, DistantPrivateBranche> _distants;
 
-public:
 	PrivateBranche(AbstractBranche* parent, int brancheId, const std::string& brancheName, DONNEE_TYPE brancheType, int revision, int tmpId);
 	virtual ~PrivateBranche();
 

@@ -1,8 +1,0 @@
-
-This module follows the standard installation procedure for Perl extensions:
-
-perl Makefile.PL
-make
-make test	# optional but recommended
-make install	# run as superuser
-

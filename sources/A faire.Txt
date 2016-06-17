@@ -2,8 +2,8 @@
 "scene"
 "plage" affiche les vertex en noir, comme s'il les affiche avec les lumières actives mais toutes éteintes
 
-Idées ou choses à faire :
-
+Idées ou choses à faire : 
+ 
 -	Ecrire un destructeur pour les classes CMenu parce que les retour de menu sont gérés
 	un peu à l'arrache, chacun des menu efface un peu n'importe quel item ou machin à sa sortie
 

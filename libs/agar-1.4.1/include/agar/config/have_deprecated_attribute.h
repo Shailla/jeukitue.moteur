@@ -1,3 +1,0 @@
-#ifndef HAVE_DEPRECATED_ATTRIBUTE
-#define HAVE_DEPRECATED_ATTRIBUTE "yes"
-#endif

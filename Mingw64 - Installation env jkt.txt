@@ -1,0 +1,52 @@
+
+----------------------------------------------------------------------
+- Installer l'environnement de développement avec MinGW 64 MSYS 2
+----------------------------------------------------------------------
+
+* Installer MinGW 64
+ - Télécharger "msys2-x86_64-20160205.exe" ici "http://msys2.github.io/"
+ - Ouvrir la console MSYS (la suite se fait dedans)
+ - Tout mettre à jour, procédure prise ici "http://msys2.github.io/". En résumé :
+   - pacman -Sy pacman
+   - pacman -Syuu
+   - Fermer la consoler MSYS
+ - Mettre à jour les cibles des raccourcis Windows dans le menu Démarrer :
+   - MinGW-w64 Win32 Shell : C:\msys64\msys2_shell.cmd -mingw32
+   - MinGW-w64 Win64 Shell : C:\msys64\msys2_shell.cmd -mingw64
+   - MSYS2 Shell : C:\msys64\msys2_shell.cmd -msys
+ - Ouvrir une nouvelle console MSYS
+ - Exécuter à nouveau "pacman -Syuu"
+ - Installer les utilitaires "pacman -S perl tar make mingw-w64-x86_64-toolchain"
+ - Installer les lib (dont SDL 1.2) "pacman -S mingw-w64-x86_64-freetype mingw-w64-x86_64-SDL mingw-w64-x86_64-SDL_net mingw-w64-x86_64-SDL_image mingw-w64-x86_64-libpng mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-freeglut"
+ - Mettre Mingw64 dans le path : path=%path%;C:\msys64\mingw64\bin 
+
+* Installer la lib Agar
+ - Télécharger la lib Agar "agar-1.5.0.tar.gz" depuis ici "http://libagar.org/download.html"
+ - Décompresser la lib dans un répertoire quelconque
+ - Ouvrir la console Mingw64 (la suite se fait dedans)
+ - ./configure --host=x86_64-w64-mingw32 --prefix=/mingw64 --enable-debug --with-{freetype,sdl,png,jpeg,gl}=/mingw64 
+ - Lancer "make depend all"
+ - Lancer "make install"
+ - Les includes d'Agar sont dans C:\msys64\mingw64\include\[agar\agar], il faut les copier dans le répertoire au-dessus pour ne plus avoir [agar/agar]/**.h mais juste [agar]/**.h
+
+* Installer la lib ZipArchive (procédure à retester)
+ - Dans D:\jkt\git\moteur\libs\zipArchive-4.2.1\ZipArchive
+ - Modifier le fichier "makefile.mingw" et mettre "prefix = /mingw64"
+ - Dans la console Mingw64, lancer "make -f makefile.mingw"
+ - Dans la console Mingw64, lancer "make install -f makefile.mingw"
+ 
+* Installer la lib Lua (procédure à retester)
+ - Dans D:\jkt\git\moteur\libs\lua-5.2.2
+ - Modifier le fichier "Makefile", mettre "PLAT= mingw"
+ - Dans la console Mingw64, lancer "make"
+ - Dans la console Mingw64, lancer "make install"
+ 
+4. Installer / configurer CMake
+4.1.	Télécharger et installer la dernière version de CMake
+4.2.	Lancer CMake depuis la console MSYS
+4.3.	Dans "Where is the source code:", mettre le répertoire des sources du moteur "git/moteur/sources"
+4.4.	Dans "Where to build the binaries:", mettre le répertoire du projet Eclipse "git/moteur/project/EclipseCDT4-MinGW-Makefiles"
+4.5.	Cliquer sur "Configure" tant que certains points restent en rouge
+		Dans CMAKE_BUILD_TYPE, mettre Debug
+		Dans CMAKE_ECLIPSE_VERSION, choisir la version plus élevée
+4.5.	Cliquer sur "Generate"

@@ -11,7 +11,7 @@
 #endif
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include "glext.h"
+#include <GL/glext.h>
 #include "main/Extensions.h"
 
 using namespace std;

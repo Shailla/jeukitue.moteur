@@ -20,6 +20,7 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 #include <cmath>
 #include <sstream>
 #include <vector>
+#include <time.h>
 
 #ifdef WIN32
 #include <windows.h>

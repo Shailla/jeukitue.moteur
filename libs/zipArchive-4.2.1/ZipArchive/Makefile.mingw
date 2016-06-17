@@ -40,7 +40,7 @@ INCLUDES += -Ibzip2
 endif
 
 #prefix = /usr
-prefix = 
+prefix = /mingw64
 
 libdir = ${prefix}/lib
 includedir = ${prefix}/include

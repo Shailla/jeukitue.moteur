@@ -15,7 +15,7 @@
 
 #include "SDL.h"
 #include "GL/gl.h"
-#include "glext.h"
+#include "GL/glext.h"
 
 using namespace std;
 

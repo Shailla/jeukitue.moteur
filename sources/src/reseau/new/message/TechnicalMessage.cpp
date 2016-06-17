@@ -38,7 +38,7 @@ TechnicalMessage* TechnicalMessage::traduct(JktUtils::Bytes* bytes) {
 	int size = bytes->size();
 
 	if(size >= 2) {
-		int code = SDLNet_Read16(data);
+		int code = SDLNet_Read16((void*)data);
 
 		switch(code) {
 		case TechnicalMessage::C2S_HELLO:
@@ -47,7 +47,7 @@ TechnicalMessage* TechnicalMessage::traduct(JktUtils::Bytes* bytes) {
 
 		case TechnicalMessage::S2C_CONNECTION_ACCEPTED:
 			if(size >=4) {
-				int port = SDLNet_Read16(data);
+				int port = SDLNet_Read16((void*)data);
 				msg = new S2CConnectionAcceptedTechnicalMessage(port);
 			}
 			break;

@@ -1,3 +1,0 @@
-#ifndef HAVE_PACKED_ATTRIBUTE
-#define HAVE_PACKED_ATTRIBUTE "yes"
-#endif

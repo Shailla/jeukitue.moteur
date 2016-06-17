@@ -1,1 +1,0 @@
-#undef HAVE_IEEE754

@@ -1,1 +1,0 @@
--L/usr/local/lib -lmingw32 -lSDLmain -lSDL -mwindows

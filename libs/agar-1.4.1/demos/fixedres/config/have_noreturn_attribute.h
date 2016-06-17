@@ -1,3 +1,0 @@
-#ifndef HAVE_NORETURN_ATTRIBUTE
-#define HAVE_NORETURN_ATTRIBUTE "yes"
-#endif

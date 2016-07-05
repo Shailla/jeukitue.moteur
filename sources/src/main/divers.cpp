@@ -16,7 +16,7 @@ using namespace std;
 #include "fmod_errors.h"
 #include "SDL_image.h"
 #include "SDL_net.h"
-#include "glfont2.h"
+#include "main/glfont2.h"
 using namespace glfont;
 
 #include "ressource/RessourcesLoader.h"
@@ -129,22 +129,27 @@ CSon* sonHurlement;		// Son hurlement du sauveur de la planète
 
 
 void load_Intro( int width, int height ) {
-LOGDEBUG(("load_Intro(width=%d,height=%d)", width, height));
-	string bruitChariot = "@Bruit\\chariot.wav";		// Chargement de la fonte de caractères
+	LOGDEBUG(("load_Intro(width=%d,height=%d)", width, height));
+
+	// Son retour chariot machine à écrire
+	string bruitChariot = "@Bruit\\chariot.wav";
 	JktUtils::RessourcesLoader::getFileRessource(bruitChariot);
-	sonChariot = DemonSons->CreateSon( bruitChariot.c_str() );		// Son retour chariot machine à écrire
+	sonChariot = DemonSons->CreateSon( bruitChariot.c_str() );
 
-	string bruitTouche = "@Bruit\\touche.wav";		// Chargement de la fonte de caractères
+	// Son frappe d'une touche clavier
+	string bruitTouche = "@Bruit\\touche.wav";
 	JktUtils::RessourcesLoader::getFileRessource(bruitTouche);
-	sonTouche = DemonSons->CreateSon( bruitTouche.c_str() );		// Son frappe d'une touche clavier
+	sonTouche = DemonSons->CreateSon( bruitTouche.c_str() );
 
-	string bruitEspace = "@Bruit\\espace.wav";		// Chargement de la fonte de caractères
+	// Son frappe de la touche espace clavier
+	string bruitEspace = "@Bruit\\espace.wav";
 	JktUtils::RessourcesLoader::getFileRessource(bruitEspace);
-	sonEspace = DemonSons->CreateSon( bruitEspace.c_str() );		// Son frappe de la touche espace clavier
+	sonEspace = DemonSons->CreateSon( bruitEspace.c_str() );
 
-	string bruitHurlement = "@Bruit\\hurlement.wav";		// Chargement de la fonte de caractères
+	// Son hurlement du sauveur de la planète
+	string bruitHurlement = "@Bruit\\hurlement.wav";
 	JktUtils::RessourcesLoader::getFileRessource(bruitHurlement);
-	sonHurlement = DemonSons->CreateSon( bruitHurlement.c_str() );	// Son hurlement du sauveur de la planète
+	sonHurlement = DemonSons->CreateSon( bruitHurlement.c_str() );
 
 	load_IntroSub( width, height );
 
@@ -156,11 +161,13 @@ LOGDEBUG(("load_Intro(width=%d,height=%d)", width, height));
 
 
 void load_IntroSub(const int width, const int height ) {
-LOGDEBUG(("load_IntroSub(width=%d,height=%d)", width, height));
+	LOGDEBUG(("load_IntroSub(width=%d,height=%d)", width, height));
+
+	// Chargement de la fonte de caractères
 	GLFont fonteIntro;
 	unsigned int texFonteIntro;
 
-	string fileFonteIntro = "@Fonte\\FonteIntro.glf";	// Chargement de la fonte de caractères
+	string fileFonteIntro = "@Fonte\\FonteIntro.glf";
 	JktUtils::RessourcesLoader::getFileRessource(fileFonteIntro);
 
 	string str1 = "Nous sommes en 2056.\n\nLa surface de la Terre n'est plus qu'un ocean d'acide.\nLa loi a laisse sa place a celle du plus fort et tout se regle\ndesormais lors de combats sans gland.\n\n      Voici le seul homme qui peut encore sauver la planete... ";
@@ -181,8 +188,7 @@ LOGDEBUG(("load_IntroSub(width=%d,height=%d)", width, height));
 	Uint8 *image2 = new Uint8[width*height*3];
 
 	SDL_LockSurface( image1 );
-	gluScaleImage( GL_RGB, image1->w, image1->h, GL_UNSIGNED_BYTE, image1->pixels,
-		width, height, GL_UNSIGNED_BYTE, image2 );
+	gluScaleImage( GL_RGB, image1->w, image1->h, GL_UNSIGNED_BYTE, image1->pixels, width, height, GL_UNSIGNED_BYTE, image2 );
 	SDL_UnlockSurface( image1 );
 	SDL_FreeSurface( image1 );
 

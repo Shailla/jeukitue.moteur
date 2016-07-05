@@ -29,6 +29,7 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 #endif
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <GL/glut.h>
 #include <agar/config/have_opengl.h>
 #include <agar/config/have_sdl.h>
 #include <agar/core.h>
@@ -49,7 +50,7 @@ using namespace std;
 #include "SDL_net.h"
 #include "fmod.h"
 #include "fmod_errors.h"	/* optional */
-#include "glfont2.h"
+#include "main/glfont2.h"
 #include "tinyxml.h"
 #include "util/XmlHelper.h"
 using namespace glfont;
@@ -336,95 +337,95 @@ void afficheInfo( Uint32 tempsDisplay ) {
 	myfont.DrawString(str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
 
 
-	char cou[70];
-
-	// Affiche le mode du jeu
-	if(Game.getMap() && Game.getMap()->IsSelectionMode()) {
-		sprintf( cou, "Selection : %s", Game.getMap()->getSelectedName());
-		str = cou;
-		myfont.DrawString( cou, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
-	}
-
-	CPlayer *erwin = Game.Erwin();
-
-	if(erwin) {
-		// Affiche le Teta du joueur principal
-		sprintf( cou, "Teta Phi : %.3d %.3d", (int)erwin->Teta(), (int)erwin->Phi());
-		str = cou;
-		myfont.DrawString( str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
-
-		// Affiche la position du joueur principal
-		float position[3];
-		erwin->getPosition( position );
-
-		sprintf( cou, "Position : %0.4f %0.4f %0.4f", position[0], position[1], position[2] );
-		str = cou;
-		myfont.DrawString( str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
-	}
-
-	if(Config.Debug.bSonPerformances) {
-		unsigned int currentalloced, maxalloced;
-		sprintf( cou, "Son, usage CPU : %.4f %%", FSOUND_GetCPUUsage() );
-		str = cou;
-		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
-
-		FSOUND_GetMemoryStats( &currentalloced, &maxalloced );
-
-		sprintf( cou, "Son, memory allocated : %.5u ko", currentalloced/1024 );
-		str = cou;
-		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
-
-		sprintf( cou, "Son, max memory allocated : %.5u ko", maxalloced/1024 );
-		str = cou;
-		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
-	}
-
-	if(Config.Debug.bSonSpectre) {
-		int NBR_RAIES_SPECTRE = 512;
-		float *spectre = FSOUND_DSP_GetSpectrum();
-
-		glDisable( GL_TEXTURE_2D );
-		glDepthMask( GL_FALSE );
-		glDisable( GL_DEPTH_TEST );
-		glEnable( GL_BLEND );
-
-		float gauche = (float)Config.Display.X - 130;
-		float bas = (float)10;
-		float largeur = 120;
-		float hauteur = 120;
-		float haut = bas + hauteur;
-		float droite = gauche + largeur;
-
-		glBegin( GL_QUADS );
-
-		glColor4f( 1.0f, 1.0f, 0.0f, 0.35f );
-		glVertex2f( gauche, bas );
-		glVertex2f( gauche, haut );
-		glVertex2f( droite, haut );
-		glVertex2f( droite, bas );
-
-		glEnd();
-
-		glDisable( GL_BLEND );
-
-		glBegin( GL_QUADS );
-
-		for(int i=0 ; i < NBR_RAIES_SPECTRE ; i++) {
-			glColor3f( 0.0f, 1.0f, 0.0f );
-			glVertex2f( gauche + i*(largeur/(float)NBR_RAIES_SPECTRE), bas );
-			glVertex2f( gauche + (i+1)*(largeur/(float)NBR_RAIES_SPECTRE), bas );
-
-			glColor3f( 1.0f, 0.0f, 0.0f );
-			glVertex2f( gauche + (i+1)*(largeur/(float)NBR_RAIES_SPECTRE), bas + hauteur*spectre[i] );
-			glVertex2f( gauche + i*(largeur/(float)NBR_RAIES_SPECTRE), bas + hauteur*spectre[i] );
-		}
-
-		glEnd();
-
-		glEnable( GL_TEXTURE_2D );
-		glDepthMask( GL_TRUE );
-		glEnable( GL_DEPTH_TEST );
-	}
+//	char cou[70];
+//
+//	// Affiche le mode du jeu
+//	if(Game.getMap() && Game.getMap()->IsSelectionMode()) {
+//		sprintf( cou, "Selection : %s", Game.getMap()->getSelectedName());
+//		str = cou;
+//		myfont.DrawString( cou, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
+//	}
+//
+//	CPlayer *erwin = Game.Erwin();
+//
+//	if(erwin) {
+//		// Affiche le Teta du joueur principal
+//		sprintf( cou, "Teta Phi : %.3d %.3d", (int)erwin->Teta(), (int)erwin->Phi());
+//		str = cou;
+//		myfont.DrawString( str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
+//
+//		// Affiche la position du joueur principal
+//		float position[3];
+//		erwin->getPosition( position );
+//
+//		sprintf( cou, "Position : %0.4f %0.4f %0.4f", position[0], position[1], position[2] );
+//		str = cou;
+//		myfont.DrawString( str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
+//	}
+//
+//	if(Config.Debug.bSonPerformances) {
+//		unsigned int currentalloced, maxalloced;
+//		sprintf( cou, "Son, usage CPU : %.4f %%", FSOUND_GetCPUUsage() );
+//		str = cou;
+//		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
+//
+//		FSOUND_GetMemoryStats( &currentalloced, &maxalloced );
+//
+//		sprintf( cou, "Son, memory allocated : %.5u ko", currentalloced/1024 );
+//		str = cou;
+//		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
+//
+//		sprintf( cou, "Son, max memory allocated : %.5u ko", maxalloced/1024 );
+//		str = cou;
+//		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
+//	}
+//
+//	if(Config.Debug.bSonSpectre) {
+//		int NBR_RAIES_SPECTRE = 512;
+//		float *spectre = FSOUND_DSP_GetSpectrum();
+//
+//		glDisable( GL_TEXTURE_2D );
+//		glDepthMask( GL_FALSE );
+//		glDisable( GL_DEPTH_TEST );
+//		glEnable( GL_BLEND );
+//
+//		float gauche = (float)Config.Display.X - 130;
+//		float bas = (float)10;
+//		float largeur = 120;
+//		float hauteur = 120;
+//		float haut = bas + hauteur;
+//		float droite = gauche + largeur;
+//
+//		glBegin( GL_QUADS );
+//
+//		glColor4f( 1.0f, 1.0f, 0.0f, 0.35f );
+//		glVertex2f( gauche, bas );
+//		glVertex2f( gauche, haut );
+//		glVertex2f( droite, haut );
+//		glVertex2f( droite, bas );
+//
+//		glEnd();
+//
+//		glDisable( GL_BLEND );
+//
+//		glBegin( GL_QUADS );
+//
+//		for(int i=0 ; i < NBR_RAIES_SPECTRE ; i++) {
+//			glColor3f( 0.0f, 1.0f, 0.0f );
+//			glVertex2f( gauche + i*(largeur/(float)NBR_RAIES_SPECTRE), bas );
+//			glVertex2f( gauche + (i+1)*(largeur/(float)NBR_RAIES_SPECTRE), bas );
+//
+//			glColor3f( 1.0f, 0.0f, 0.0f );
+//			glVertex2f( gauche + (i+1)*(largeur/(float)NBR_RAIES_SPECTRE), bas + hauteur*spectre[i] );
+//			glVertex2f( gauche + i*(largeur/(float)NBR_RAIES_SPECTRE), bas + hauteur*spectre[i] );
+//		}
+//
+//		glEnd();
+//
+//		glEnable( GL_TEXTURE_2D );
+//		glDepthMask( GL_TRUE );
+//		glEnable( GL_DEPTH_TEST );
+//	}
 }
 
 void drawSmallQuad(const int x, const int y) {

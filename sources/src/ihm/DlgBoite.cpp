@@ -7,7 +7,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "SDL.h"
-#include "glfont2.h"
+#include "main/glfont2.h"
 
 using namespace std;
 

@@ -19,7 +19,7 @@ using namespace std;
 #include <GL/gl.h>
 
 //glFont header
-#include "glfont2.h"
+#include "main/glfont2.h"
 using namespace glfont;
 
 //*******************************************************************

@@ -1,5 +1,5 @@
-"plageOmni"
-"scene"
+"plageOmni" 
+"scene" 
 "plage" affiche les vertex en noir, comme s'il les affiche avec les lumières actives mais toutes éteintes
 
 Idées ou choses à faire : 

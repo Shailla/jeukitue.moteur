@@ -29,8 +29,10 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 #endif
 #include <GL/gl.h>
 #include <GL/glu.h>
+
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
+
 #include <agar/config/have_opengl.h>
 #include <agar/config/have_sdl.h>
 #include <agar/core.h>
@@ -158,7 +160,6 @@ int numMainPlayer = 0;	// Numéro du joueur principal dans la MAP (identifie le j
 
 bool Aide = false;
 
-extern SDL_Surface* screen;
 extern JktSon::CDemonSons *DemonSons;	// Requêtes des sons
 
 Uint32 tempsTimer = 0;		// Temps pris par la fonction 'timer'
@@ -339,6 +340,11 @@ void afficheInfo( Uint32 tempsDisplay ) {
 
 
 
+//	int surface = AG_WidgetMapSurface(0, AG_TextRender("Coucou ma grosse caille"));
+//
+//	AG_WidgetBlitSurface(NULL, surface, 200, 200);
+
+
 
 	glBindTexture(GL_TEXTURE_2D, fonteTex);
 
@@ -359,7 +365,6 @@ void afficheInfo( Uint32 tempsDisplay ) {
 	glTexCoord2f(0.0, 0.0);
 	glVertex3f(100.0, 300.0, 0.0);
 	glEnd();
-
 
 
 
@@ -1005,16 +1010,6 @@ void play_handle_key_down( SDL_Event *event ) {
 			}
 			break;
 
-		case SDLK_ESCAPE:
-		{
-			pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
-
-			AG_Event event;
-			AG_EventArgs(&event, "%i", Controller::Action::ShowMenuAction);
-			Controller::executeAction(&event);
-		}
-		break;
-
 		case SDLK_F2:
 			lanceMenuPrinc( 0 );
 			break;
@@ -1033,24 +1028,10 @@ void play_handle_key_down( SDL_Event *event ) {
 }
 
 static void process_events(void) {
-	//	AG_DriverEvent dev;
-	//	do {
-	//		/* Retrieve the next queued event. */
-	//		if (AG_GetNextEvent(NULL, &dev) == 1) {
-	//			if (AG_ProcessEvent(NULL, &dev) == -1)
-	//				break;
-	//		}
-	//	} while (AG_PendingEvents(NULL) > 0);
-	//
-	//	AG_WindowProcessQueued();
-
-
 	SDL_Event sdlevent;
 	AG_DriverEvent dev;
 
 	while( SDL_PollEvent( &sdlevent ) ) {
-
-		LOGINFO(("0"));
 
 		/* ****************************************** */
 		/* Gestion événements prioritaires            */
@@ -1065,18 +1046,18 @@ static void process_events(void) {
 		case SDL_KEYDOWN:
 			if(sdlevent.key.keysym.sym == SDLK_ESCAPE) {
 				if(pFocus->isPlayFocus()) {
-					pFocus->SetMenuAgarFocus();
-
 					AG_Event event;
 					AG_EventArgs(&event, "%i", Controller::Action::ShowMenuAction);
 					Controller::executeAction(&event);
+
+					pFocus->SetMenuAgarFocus();
 				}
 				else {
-					pFocus->SetPlayFocus();
-
 					AG_Event event;
 					AG_EventArgs(&event, "%i", Controller::Action::HideMenuAction);
 					Controller::executeAction(&event);
+
+					pFocus->SetPlayFocus();
 				}
 			}
 			break;
@@ -1085,7 +1066,6 @@ static void process_events(void) {
 			break;
 		}
 
-		LOGINFO(("1"));
 
 		/* ****************************************** */
 		/* Gestion événements du jeu                  */
@@ -1093,7 +1073,6 @@ static void process_events(void) {
 
 		pFocus->ExecFocus( &sdlevent );
 
-		LOGINFO(("2"));
 
 		/* ****************************************** */
 		/* Gestion événements menu Agar               */
@@ -1101,8 +1080,6 @@ static void process_events(void) {
 
 		AG_SDL_TranslateEvent(agDriverSw, &sdlevent, &dev);
 		AG_ProcessEvent(NULL, &dev);
-
-		LOGINFO(("3"));
 	}
 
 	AG_WindowProcessQueued();

@@ -28,57 +28,73 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 :View(controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE|AG_WINDOW_MAXIMIZED);
-    AG_WindowSetCaption(m_window, "Commandes");
+	AG_WindowSetCaption(m_window, "Commandes");
 
-    // Box Des commandes
+	// Box Des commandes
 	AG_Box* _boxCommandes = AG_BoxNewVert(m_window, AG_BOX_EXPAND);
 
-	// Initialise la la liste des commandes
+
+	/* ********************************************* */
+	/* Commandes de déplacement                      */
+	/* ********************************************* */
+
+	AG_LabelNew(_boxCommandes, 0, " ");	// Saute une ligne
+	AG_LabelNew(_boxCommandes, 0, "Deplacements");
+
 	addCommande(AGOBJECT(_boxCommandes), AVANCER, 				"Avancer",			"");
 	addCommande(AGOBJECT(_boxCommandes), RECULER, 				"Reculer", 			"");
 	addCommande(AGOBJECT(_boxCommandes), GAUCHE,  				"Gauche", 			"");
 	addCommande(AGOBJECT(_boxCommandes), DROITE,  				"Droite", 			"");
+	addCommande(AGOBJECT(_boxCommandes), MONTER,				"Monter", 			"");
+
+
+	/* ********************************************* */
+	/* Commandes des armes                           */
+	/* ********************************************* */
+
+	AG_LabelNew(_boxCommandes, 0, " ");	// Saute une ligne
+	AG_LabelNew(_boxCommandes, 0, "Armes");
 	addCommande(AGOBJECT(_boxCommandes), TIR1,    				"Tir 1", 			"");
 	addCommande(AGOBJECT(_boxCommandes), TIR2,    				"Tir 2", 			"");
-	addCommande(AGOBJECT(_boxCommandes), MONTER,				"Monter", 			"");
 	addCommande(AGOBJECT(_boxCommandes), SELECT_WEAPON_UP,		"Arme suivante", 	"");
 	addCommande(AGOBJECT(_boxCommandes), SELECT_WEAPON_DOWN,	"Arme precedente", 	"");
 
-    AG_SeparatorNewHoriz(m_window);
-	
+
+	AG_SeparatorNewHoriz(m_window);
+
 	// Bouton retour
 	AG_Box* box = AG_BoxNewHoriz(m_window, 0);
 	AG_ExpandHoriz(box);
 	AG_ButtonNewFn(box, 0, "Retour", m_controllerCallback, "%i", Controller::ShowConfigurationMenuAction);
-    
+
 	// Bouton appliquer
 	AG_ButtonNewFn(box, 0, "Appliquer", m_controllerCallback, "%i", Controller::ShowConfigurationVideoViewAction);
 
-//	AG_WindowSetGeometryMax(m_window);
+	//	AG_WindowSetGeometryMax(m_window);
 	AG_WindowShow(m_window);
 
-    hide();
+	hide();
 }
 
 ConfigurationCommandesView::~ConfigurationCommandesView(void) {
 }
 
 void ConfigurationCommandesView::addCommande(AG_Object* parent, const COMMANDE_ID commandId, const char* commandeLabel, const char* commandName) {
-    AG_Box* boxHoriz = AG_BoxNewHoriz(parent, AG_BOX_HFILL | AG_BOX_HOMOGENOUS | AG_BOX_FRAME);
+	AG_Box* boxHoriz = AG_BoxNewHoriz(parent, AG_BOX_HFILL | AG_BOX_HOMOGENOUS | AG_BOX_FRAME);
 
-    // Description de la commande
-    AG_Label* description = AG_LabelNew(boxHoriz, 0, commandeLabel);
-    AG_LabelJustify(description, AG_TEXT_RIGHT);
-    AG_Expand(description);
+	// Description de la commande
+	AG_Label* description = AG_LabelNew(boxHoriz, 0, commandeLabel);
+	AG_LabelJustify(description, AG_TEXT_RIGHT);
+	AG_Expand(description);
 
-    // Action
-   	AG_Button* action = AG_ButtonNewFn(boxHoriz, 0, "Changer", m_controllerCallback, "%i,%i", Controller::WaitUserCommandChoice, commandId);
-   	AG_Expand(action);
-   	_buttons[commandId] = action;
+	// Action
+	AG_Button* action = AG_ButtonNewFn(boxHoriz, 0, "Changer", m_controllerCallback, "%i,%i", Controller::WaitUserCommandChoice, commandId);
+	AG_Expand(action);
+	_buttons[commandId] = action;
 
-    // Nom technique de la commande (touche du clavier par exemple)
+	// Nom technique de la commande (touche du clavier par exemple)
 	AG_Label* commande = AG_LabelNew(boxHoriz, 0, commandName);
-	AG_LabelJustify(commande, AG_TEXT_LEFT);
+	AG_LabelJustify(commande, AG_TEXT_CENTER);
 	AG_Expand(commande);
 	_labels[commandId] = commande;
 }

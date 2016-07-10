@@ -4,16 +4,43 @@ cmake_policy(SET CMP0015 NEW)
 #Configuration du projet
 project(JeuKiTue)
 set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(EXECUTABLE_OUTPUT_PATH ../../deploy/${CMAKE_BUILD_TYPE}-g++)
 set(CMAKE_CXX_FLAGS "-ggdb -Wall -Wno-unknown-pragmas -std=gnu++0x -fpermissive")
 
-find_package(FREETYPE REQUIRED)
+find_package(OpenGL REQUIRED)
+find_package(LUA REQUIRED)
+find_package(JPEG REQUIRED)
+find_package(PNG REQUIRED)
+find_package(FreeType REQUIRED)
 find_package(SDL REQUIRED)
 find_package(SDL_net REQUIRED)
 find_package(SDL_image REQUIRED)
 
+
+MESSAGE( STATUS "INCLUDES")
+MESSAGE( STATUS "OpenGL & GLU:   " ${OPENGL_INCLUDE_DIR} )
+MESSAGE( STATUS "LUA:            " ${LUA_INCLUDE_DIR} )
+MESSAGE( STATUS "JPEG:           " ${JPEG_INCLUDE_DIR} )
+MESSAGE( STATUS "PNG:            " ${PNG_INCLUDE_DIR} )
+MESSAGE( STATUS "FreeType:       " ${FREETYPE_INCLUDE_DIRS} )
+MESSAGE( STATUS "SDL:            " ${SDL_INCLUDE_DIR})
+MESSAGE( STATUS "SDL_Net:        " ${SDL_IMAGE_INCLUDE_DIR} )
+MESSAGE( STATUS "SDL_Image:      " ${SDL_NET_INCLUDE_DIR} )
+
+MESSAGE( STATUS "LIBRARIES")
+MESSAGE( STATUS "OpenGL & GLU:   " ${OPENGL_LIBRARY} )
+MESSAGE( STATUS "LUA:            " ${LUA_LIBRARIES} )
+MESSAGE( STATUS "JPEG:           " ${JPEG_LIBRARIES} )
+MESSAGE( STATUS "PNG:            " ${PNG_LIBRARIES} )
+MESSAGE( STATUS "FreeType:       " ${FREETYPE_LIBRARY} )
+MESSAGE( STATUS "SDL:            " ${SDL_LIBRARY} )
+MESSAGE( STATUS "SDL_Net         " ${SDL_NET_LIBRARY} )
+MESSAGE( STATUS "SDL_Image       " ${SDL_IMAGE_LIBRARY} )
+
 include_directories("src")
+include_directories(${OPENGL_INCLUDE_DIR})
 include_directories(${FREETYPE_INCLUDE_DIRS})
 include_directories(${SDL_INCLUDE_DIR})
 include_directories(${SDL_NET_INCLUDE_DIR})
@@ -56,5 +83,5 @@ target_link_libraries(
 	ag_core ag_gui ag_dev
 	${SDL_IMAGE_LIBRARY} ${SDL_NET_LIBRARY} ${SDL_LIBRARY}
 	fmod64vc
-	Iphlpapi ziparch mingw32 winmm ${FREETYPE_LIBRARY} glu32 opengl32 ws2_32 pthread lua jpeg png dxguid
+	Iphlpapi ziparch mingw32 winmm ${FREETYPE_LIBRARIES} ${OPENGL_LIBRARIES} ws2_32 pthread ${LUA_LIBRARIES} ${JPEG_LIBRARIES} ${PNG_LIBRARIES} dxguid
 )

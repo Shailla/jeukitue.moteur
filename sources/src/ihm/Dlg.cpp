@@ -1,4 +1,5 @@
 
+#include "util/Trace.h"
 
 #include "Dlg.h"
 
@@ -31,10 +32,11 @@ void CDlg::menu_handle_key_down(SDL_Event *event)
 		pMenuActif->handle_key_down( event );
 }
 
-void CDlg::afficheMenuActif()
-{
-	if( pMenuActif )
+void CDlg::afficheMenuActif() {
+	if( pMenuActif ) {
+		LOGINFO(("YOOOOOOOOOOOOOO"));
 		pMenuActif->go();
+	}
 }
 
 CDlg::CDlg(void)

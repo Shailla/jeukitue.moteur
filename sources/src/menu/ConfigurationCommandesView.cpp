@@ -27,15 +27,11 @@ int ConfigurationCommandesView::_commandToWait = 0;
 ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
-	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
+	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE|AG_WINDOW_MAXIMIZED);
     AG_WindowSetCaption(m_window, "Commandes");
 
     // Box Des commandes
-    AG_Scrollview* scroll = AG_ScrollviewNew(m_window, AG_SCROLLVIEW_NOPAN_X);
-    AG_Expand(scroll);
-
-	_boxCommandes = AG_BoxNewVert(scroll, 0);
-	AG_Expand(_boxCommandes);
+	AG_Box* _boxCommandes = AG_BoxNewVert(m_window, AG_BOX_EXPAND);
 
 	// Initialise la la liste des commandes
 	addCommande(AGOBJECT(_boxCommandes), AVANCER, 				"Avancer",			"");
@@ -58,7 +54,7 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 	// Bouton appliquer
 	AG_ButtonNewFn(box, 0, "Appliquer", m_controllerCallback, "%i", Controller::ShowConfigurationVideoViewAction);
 
-    AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 50, 50);
+//	AG_WindowSetGeometryMax(m_window);
 	AG_WindowShow(m_window);
 
     hide();
@@ -68,26 +64,23 @@ ConfigurationCommandesView::~ConfigurationCommandesView(void) {
 }
 
 void ConfigurationCommandesView::addCommande(AG_Object* parent, const COMMANDE_ID commandId, const char* commandeLabel, const char* commandName) {
-    AG_Box* boxHoriz = AG_BoxNewHoriz(parent, 0);
-    AG_BoxSetHomogenous(boxHoriz, 1);
-    AG_ExpandHoriz(boxHoriz);
+    AG_Box* boxHoriz = AG_BoxNewHoriz(parent, AG_BOX_HFILL | AG_BOX_HOMOGENOUS | AG_BOX_FRAME);
 
     // Description de la commande
-    AG_Box* boxLabel = AG_BoxNewVert(boxHoriz, 0);
-    AG_Expand(boxLabel);
-    AG_LabelNew(boxLabel, 0, commandeLabel);
+    AG_Label* description = AG_LabelNew(boxHoriz, 0, commandeLabel);
+    AG_LabelJustify(description, AG_TEXT_RIGHT);
+    AG_Expand(description);
 
     // Action
-    AG_Box* boxAction = AG_BoxNewVert(boxHoriz, 0);
-    AG_Expand(boxAction);
-   	AG_Button* button = AG_ButtonNewFn(boxAction, 0, "Changer", m_controllerCallback, "%i,%i", Controller::WaitUserCommandChoice, commandId);
-   	_buttons[commandId] = button;
+   	AG_Button* action = AG_ButtonNewFn(boxHoriz, 0, "Changer", m_controllerCallback, "%i,%i", Controller::WaitUserCommandChoice, commandId);
+   	AG_Expand(action);
+   	_buttons[commandId] = action;
 
     // Nom technique de la commande (touche du clavier par exemple)
-    AG_Box* boxCommande = AG_BoxNewVert(boxHoriz, 0);
-    AG_Expand(boxCommande);
-	AG_Label* label = AG_LabelNew(boxCommande, 0, commandName);
-	_labels[commandId] = label;
+	AG_Label* commande = AG_LabelNew(boxHoriz, 0, commandName);
+	AG_LabelJustify(commande, AG_TEXT_LEFT);
+	AG_Expand(commande);
+	_labels[commandId] = commande;
 }
 
 void ConfigurationCommandesView::show(void) {

@@ -777,8 +777,7 @@ void CCfg::CDisplay::InitSDL() {
 	//	_putenv("SDL_VIDEODRIVER=directx");	// A FAIRE A FAIRE A FAIRE : code compatible Linux
 #endif
 
-	if( SDL_Init( SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_NOPARACHUTE ) < 0 )	// First, initialize SDL's video subsystem
-	{
+	if( SDL_Init( SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_NOPARACHUTE ) < 0 ) {	// First, initialize SDL's video subsystem
 		LOGERROR(("Video initialization failed : %s", SDLNet_GetError()));
 		exit( 1 );
 	}
@@ -902,6 +901,9 @@ void CCfg::CDisplay::InitSDL() {
 
 	LOGINFO(("Video memory : %d Mo", info->video_mem/1024));
 
+	// Purge les événements SDL, si on ne le fait pas deux fenêtres du jeu s'affichent et les événements sont mal gérés
+	SDL_PumpEvents();
+
 	LOGDEBUG(("init_SDL(config) end"));
 }
 
@@ -977,8 +979,16 @@ void CCfg::CDisplay::InitAgar() {
 
 	LOGINFO(("Available drivers : %s", drvNames));
 
-	AG_Driver *driver = (AG_Driver *)agDriverSw;
-	LOGINFO(("Driver Agar actif : %s", driver->_inherit.name));
+	LOGINFO(("Driver Agar actif :"));
+	AG_Driver* driver = (AG_Driver *)agDriverSw;
+	LOGINFO((" - Identification : %s", driver->_inherit.name));
+	LOGINFO((" - Compatibilité OpenGL   : %d", AG_UsingGL(driver)));
+	LOGINFO((" - Compatibilité SDL      : %d", AG_UsingSDL(driver)));
+
+	unsigned int x, y;
+	AG_GetDisplaySize(driver, &x, &y);
+	LOGINFO((" - Available display size : %d * %d", x, y));
+
 }
 
 bool CCfg::CDisplay::chargeGLExtension(const char* ext, string& extensions) {

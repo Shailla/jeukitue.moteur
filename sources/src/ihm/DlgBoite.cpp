@@ -158,7 +158,7 @@ void CBouton::afficheTexte()
 	else
 		glColor3f( 0.0f, 0.0f, 0.0f );
 
-	myfont.DrawStringCentre( txt, TAILLEFONT, TAILLE_BOUTON_X/2, TAILLE_BOUTON_Y/2 );
+	myfont.DrawStringCentre(txt, TAILLEFONT, TAILLE_BOUTON_X/2, TAILLE_BOUTON_Y/2);
 }
 
 bool CDlgBoite::INIT_CLASSE()

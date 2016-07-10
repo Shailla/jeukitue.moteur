@@ -75,10 +75,10 @@ CMap::CMap(CMap* parent, const string& nomFichier) throw(JktUtils::CErreur) : CG
 	LOGDEBUG(("CMap::CMap(*parent,nomFichier=%s)%T", nomFichier.c_str(), this ));
 
 	if( !Lit(nomFichier, 0) ) {
-		LOGERROR(("Erreur de lecture de la Map ''", nomFichier.c_str() ));
+		LOGERROR(("Erreur de lecture de la Map '%s'", nomFichier.c_str()));
 	}
 	else {
-		LOGINFO(("Fichier Map lu ''"));
+		LOGINFO(("Fichier Map lu '%s'", nomFichier.c_str()));
 	}
 
 	_bSelection = false;
@@ -93,10 +93,10 @@ CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(J
 	LOGDEBUG(("CMap::CMap(*parent,nomFichier=%s)%T", nomFichier.c_str(), this ));
 
 	if( !Lit(nomFichier, mapLogger) ) {
-		LOGERROR(("Erreur de lecture de la Map ''", nomFichier.c_str() ));
+		LOGERROR(("Erreur de lecture de la Map '%s'", nomFichier.c_str()));
 	}
 	else {
-		LOGINFO(("Fichier Map lu ''"));
+		LOGINFO(("Fichier Map lu '%s'", nomFichier.c_str()));
 	}
 
 	_bSelection = false;

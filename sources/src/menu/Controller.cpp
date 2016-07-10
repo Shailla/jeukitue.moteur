@@ -77,12 +77,14 @@ Controller::Controller(Viewer* agarView, JktPlugin::PluginEngine* pluginEngine) 
 Controller::~Controller(void) {
 }
 
-void Controller::executeAction(AG_Event *event) {
+void Controller::executeAction(AG_Event* event) {
+	LOGINFO((" ==> UNE ACTION"));
+
 	SDL_LockMutex(_controllerMutex);
 
 	int action = AG_INT(1);
 
-	cout << endl << "ACTION CONTROLLER : " << action << endl << flush;
+	LOGINFO((" ==> ACTION %d", action));
 
 	if(action >= 10000) {	// Au delà de 10000 il s'agit d'une action d'un plugin, on la redispatche à tous les plugins
 		PluginActionEvent evt((Controller::Action)action);
@@ -92,6 +94,8 @@ void Controller::executeAction(AG_Event *event) {
 		switch(action) {
 		case HideMenuAction:
 		{
+			LOGINFO((" ==> action controller %d (HideMenuAction)", action));
+
 			_agarView->hideAllMenuViews();
 
 			PluginActionEvent evt(Controller::Action::HideMenuAction);
@@ -101,6 +105,7 @@ void Controller::executeAction(AG_Event *event) {
 
 		case ShowConfigurationMenuAction:
 		{
+			LOGINFO((" ==> action controller %d (ShowConfigurationMenuAction)", action));
 			_agarView->hideAllMenuViews();
 
 			PluginActionEvent evt(Controller::Action::ShowConfigurationMenuAction);
@@ -110,6 +115,7 @@ void Controller::executeAction(AG_Event *event) {
 
 		case ShowMenuAction:
 		{
+			LOGINFO((" ==> action controller %d (ShowMenuAction)", action));
 			_agarView->hideAllMenuViews();
 
 			PluginActionEvent evt(Controller::Action::ShowMenuAction);
@@ -118,35 +124,44 @@ void Controller::executeAction(AG_Event *event) {
 		break;
 
 		case ShowMultijoueursMenuAction:
+			LOGINFO((" ==> action controller %d (ShowMultijoueursMenuAction)", action));
 			_agarView->showMenuView(Viewer::MULTIJOUEURS_VIEW);
 			break;
 
 		case ShowMultijoueursClientMenuAction:
+			LOGINFO((" ==> action controller %d (ShowMultijoueursClientMenuAction)", action));
 			_agarView->showMenuView(Viewer::MULTIJOUEURS_CLIENT_VIEW);
 			break;
 
 		case QuitGameAction:
+			LOGINFO((" ==> action controller %d (QuitGameAction)", action));
 			Game.Quit();
 			break;
 
 		case ShowConfigurationVideoViewAction:
+			LOGINFO((" ==> action controller %d (ShowConfigurationVideoViewAction)", action));
 			_agarView->showMenuView(Viewer::CONFIGURATION_VIDEO_VIEW);
 			break;
 
 		case ShowConfigurationReseauViewAction:
+			LOGINFO((" ==> action controller %d (ShowConfigurationReseauViewAction)", action));
 			_agarView->showMenuView(Viewer::CONFIGURATION_RESEAU_VIEW);
 			break;
 
 		case ShowConfigurationJoueurViewAction:
+			LOGINFO((" ==> action controller %d (ShowConfigurationJoueurViewAction)", action));
 			_agarView->showMenuView(Viewer::CONFIGURATION_JOUEUR_VIEW);
 			break;
 
 		case ShowConfigurationCommandesViewAction:
+			LOGINFO((" ==> action controller %d (ShowConfigurationCommandesViewAction)", action));
 			_agarView->showMenuView(Viewer::CONFIGURATION_COMMANDES_VIEW);
 			break;
 
 		case showConfigurationAdvancedViewAction:
 			{
+				LOGINFO((" ==> action controller %d (showConfigurationAdvancedViewAction)", action));
+
 				_agarView->hideAllMenuViews();
 
 				PluginActionEvent evt(Controller::Action::showConfigurationAdvancedViewAction);
@@ -156,6 +171,8 @@ void Controller::executeAction(AG_Event *event) {
 
 		case WaitUserCommandChoice:
 		{
+			LOGINFO((" ==> action controller %d (WaitUserCommandChoice)", action));
+
 			int commandId = AG_INT(2);
 
 			ConfigurationCommandesView::beginWaitUserCommandChoice(commandId);
@@ -167,6 +184,8 @@ void Controller::executeAction(AG_Event *event) {
 
 		case ShowCentralisateurViewAction:
 		{
+			LOGINFO((" ==> action controller %d (ShowCentralisateurViewAction)", action));
+
 			Centralisateur* centralisateur = Fabrique::getCentralisateur();
 			centralisateur->connecter((char*)Config.Joueur.nom.c_str(), (char*)Config.Centralisateur.getIp().c_str(), Config.Centralisateur.getPort());
 			centralisateur->sendSignalement();
@@ -176,12 +195,15 @@ void Controller::executeAction(AG_Event *event) {
 		break;
 
 		case ShowMenuConfigCentralisateurAction:
+			LOGINFO((" ==> action controller %d (ShowMenuConfigCentralisateurAction)", action));
 			_agarView->showMenuView(Viewer::CONFIG_CENTRALISATEUR_VIEW);
 			break;
 
 			// Envoi d'un message de chat sur le serveur centralisateur
 		case SendGlobalChatTextAction:
 		{
+			LOGINFO((" ==> action controller %d (SendGlobalChatTextAction)", action));
+
 			CentralisateurView* view = (CentralisateurView*)_agarView->getView(Viewer::CENTRALISATEUR_VIEW);
 			const char* textToSend = view->getTextToSend();
 			Centralisateur* centralisateur = Fabrique::getCentralisateur();
@@ -191,30 +213,37 @@ void Controller::executeAction(AG_Event *event) {
 		break;
 
 		case ShowMenuOpenSceneAction:
+			LOGINFO((" ==> action controller %d (ShowMenuOpenSceneAction)", action));
 			_agarView->showMenuView(Viewer::OPEN_SCENE_VIEW);
 			break;
 
 		case ShowPluginsManagementViewAction:
+			LOGINFO((" ==> action controller %d (ShowPluginsManagementViewAction)", action));
 			_agarView->showMenuView(Viewer::PLUGINS_MANAGEMENT_VIEW);
 			break;
 
 		case ShowOpenAseViewAction:
+			LOGINFO((" ==> action controller %d (ShowOpenAseViewAction)", action));
 			_agarView->showMenuView(Viewer::OPEN_SCENE_ASE_VIEW);
 			break;
 
 			// Ouvre l'écran de choix d'une Map en mode de jeu local
 		case ShowOpenMapViewAction:
+			LOGINFO((" ==> action controller %d (ShowOpenMapViewAction)", action));
 			_agarView->showMenuView(Viewer::OPEN_SCENE_MAP_VIEW);
 			break;
 
 			// Ecran de choix d'une Map à lancer en mode serveur
 		case ShowLanceServeurViewAction:
+			LOGINFO((" ==> action controller %d (ShowLanceServeurViewAction)", action));
 			_agarView->showMenuView(Viewer::LANCE_SERVEUR_VIEW);
 			break;
 
 			// Ouvere une MAP en mode serveur
 		case LanceServeurMapAction:
 		{
+			LOGINFO((" ==> action controller %d (LanceServeurMapAction)", action));
+
 			// Récupération du nom de la Map à ouvrir
 			int mapNumber = AG_INT(2);
 			LanceServeurView* view = (LanceServeurView*)_agarView->getView(Viewer::LANCE_SERVEUR_VIEW);
@@ -230,6 +259,8 @@ void Controller::executeAction(AG_Event *event) {
 		// Ouverture d'une Map en mode de jeu local
 		case OpenMapAction:
 		{
+			LOGINFO((" ==> action controller %d (OpenMapAction)", action));
+
 			// Récupération du nom de la Map à ouvrir
 			int mapNumber = AG_INT(2);
 			OpenSceneMapView* view = (OpenSceneMapView*)_agarView->getView(Viewer::OPEN_SCENE_MAP_VIEW);
@@ -244,6 +275,8 @@ void Controller::executeAction(AG_Event *event) {
 
 		case RejoindrePartieServerAction:
 		{
+			LOGINFO((" ==> action controller %d (RejoindrePartieServerAction)", action));
+
 			CClient* client = _networkManager->getClient();
 
 			if(client) {
@@ -257,6 +290,8 @@ void Controller::executeAction(AG_Event *event) {
 
 		case InfoServerAction:
 		{
+			LOGINFO((" ==> action controller %d (InfoServerAction)", action));
+
 			MultijoueursClientView* view = (MultijoueursClientView*)_agarView->getView(Viewer::MULTIJOUEURS_CLIENT_VIEW);
 			view->setServerName("");
 			view->setActiveMap("");
@@ -273,6 +308,8 @@ void Controller::executeAction(AG_Event *event) {
 
 		case PingServerAction:
 		{
+			LOGINFO((" ==> action controller %d (PingServerAction)", action));
+
 			MultijoueursClientView* view = (MultijoueursClientView*)_agarView->getView(Viewer::MULTIJOUEURS_CLIENT_VIEW);
 			view->setPing(-1);
 			CClient* client = _networkManager->getClient();
@@ -288,6 +325,8 @@ void Controller::executeAction(AG_Event *event) {
 
 		case ConnectClientAction:
 		{
+			LOGINFO((" ==> action controller %d (ConnectClientAction)", action));
+
 			if( !_networkManager->ouvreClient(Config.Reseau.getIpServer(), Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree()) ) {
 				_networkManager->setOn( false );		// Signale que le réseau ne peut pas être utilisé
 				AG_TextMsg(AG_MSG_ERROR, "Echec de connexion au serveur");
@@ -297,6 +336,8 @@ void Controller::executeAction(AG_Event *event) {
 
 		case DeconnectClientAction:
 		{
+			LOGINFO((" ==> action controller %d (DeconnectClientAction)", action));
+
 			_networkManager->fermeClient();
 		}
 		break;
@@ -304,6 +345,8 @@ void Controller::executeAction(AG_Event *event) {
 		// Activation d'un plugin
 		case PluginActivateAction:
 		{
+			LOGINFO((" ==> action controller %d (PluginActivateAction)", action));
+
 			// Récupération du nom de la Map à ouvrir
 			int pluginNumber = AG_INT(2);
 			PluginsManagementView* view = (PluginsManagementView*)_agarView->getView(Viewer::PLUGINS_MANAGEMENT_VIEW);
@@ -319,6 +362,8 @@ void Controller::executeAction(AG_Event *event) {
 		// Désactivation d'un plugin
 		case PluginDeactivateAction:
 		{
+			LOGINFO((" ==> action controller %d (PluginDeactivateAction)", action));
+
 			// Récupération du nom de la Map à ouvrir
 			int pluginNumber = AG_INT(2);
 			PluginsManagementView* view = (PluginsManagementView*)_agarView->getView(Viewer::PLUGINS_MANAGEMENT_VIEW);
@@ -334,6 +379,8 @@ void Controller::executeAction(AG_Event *event) {
 		// Menu de configuration d'Agar
 		case ShowAgarConfigurationViewAction:
 		{
+			LOGINFO((" ==> action controller %d (ShowAgarConfigurationViewAction)", action));
+
 			DEV_ConfigShow();
 		}
 		break;
@@ -341,6 +388,8 @@ void Controller::executeAction(AG_Event *event) {
 		// Affiche le menu de debug
 		case ShowDebugViewAction:
 		{
+			LOGINFO((" ==> action controller %d (ShowDebugViewAction)", action));
+
 			_agarView->showMenuView(Viewer::DEBUG_MENU_VIEW);
 		}
 		break;
@@ -348,6 +397,8 @@ void Controller::executeAction(AG_Event *event) {
 		// Affiche les données de la MAP courante sous forme d'un arbre
 		case ShowMapTreeViewAction:
 		{
+			LOGINFO((" ==> action controller %d (ShowMapTreeViewAction)", action));
+
 			_agarView->showMenuView(Viewer::MAP_TREE_VIEW);
 		}
 		break;
@@ -355,18 +406,24 @@ void Controller::executeAction(AG_Event *event) {
 		// Affiche les données de la MAP courante sous forme d'un arbre
 		case ShowDataTreeViewAction:
 		{
+			LOGINFO((" ==> action controller %d (ShowDataTreeViewAction)", action));
+
 			_agarView->showMenuView(Viewer::DATA_TREE_VIEW);
 		}
 		break;
 
 		case ShowPlayersListViewAction:
 		{
+			LOGINFO((" ==> action controller %d (ShowPlayersListViewAction)", action));
+
 			_agarView->showMenuView(Viewer::PLAYERS_LIST_VIEW);
 		}
 		break;
 
 		case ShowNetworkConnectionsViewAction:
 		{
+			LOGINFO((" ==> action controller %d (ShowNetworkConnectionsViewAction)", action));
+
 			_agarView->showMenuView(Viewer::NETWORK_CONNECTIONS_VIEW);
 		}
 		break;
@@ -374,6 +431,8 @@ void Controller::executeAction(AG_Event *event) {
 		// Affiche la denière erreur OpenGL dans une popup
 		case ShowLastOpenGlErrorViewAction:
 		{
+			LOGINFO((" ==> action controller %d (ShowLastOpenGlErrorViewAction)", action));
+
 			stringstream openGlError;
 			openGlError << "Deniere erreur OpenGL : '" << gluErrorString(glGetError()) << "'";
 			cerr << endl << __FILE__ << ":" << __LINE__ << " " << openGlError.str();
@@ -384,6 +443,8 @@ void Controller::executeAction(AG_Event *event) {
 		// Import d'un fichier ASE
 		case ImportAseAction:
 		{
+			LOGINFO((" ==> action controller %d (ImportAseAction)", action));
+
 			// Récupération du nom de la Map à ouvrir
 			int aseNumber = AG_INT(2);
 			OpenSceneASEView* view = (OpenSceneASEView*)_agarView->getView(Viewer::OPEN_SCENE_ASE_VIEW);
@@ -422,6 +483,8 @@ void Controller::executeAction(AG_Event *event) {
 
 		case OpenSceneASEEcraseRepOuiAction:
 		{
+			LOGINFO((" ==> action controller %d (OpenSceneASEEcraseRepOuiAction)", action));
+
 			OpenSceneASEEcraseRepView* view = (OpenSceneASEEcraseRepView*)_agarView->getView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
 
 			try {
@@ -449,6 +512,8 @@ void Controller::executeAction(AG_Event *event) {
 
 		case OpenSceneASEEcraseRepNonAction:
 		{
+			LOGINFO((" ==> action controller %d (OpenSceneASEEcraseRepNonAction)", action));
+
 			PluginActionEvent evt(Controller::Action::ShowMenuAction);
 			_pluginEngine->dispatchEvent(evt);
 
@@ -458,6 +523,8 @@ void Controller::executeAction(AG_Event *event) {
 
 		case SaveConfigJoueurAction:
 		{
+			LOGINFO((" ==> action controller %d (SaveConfigJoueurAction)", action));
+
 			ConfigurationJoueurView* view = (ConfigurationJoueurView*)_agarView->getView(Viewer::CONFIGURATION_JOUEUR_VIEW);
 			Config.Joueur.nom = view->getJoueurName();
 			Config.Joueur.mapName = view->getJoueurMapName();
@@ -467,6 +534,8 @@ void Controller::executeAction(AG_Event *event) {
 
 		case SaveConfigReseauAction:
 		{
+			LOGINFO((" ==> action controller %d (SaveConfigReseauAction)", action));
+
 			ConfigurationReseauView* view = (ConfigurationReseauView*)_agarView->getView(Viewer::CONFIGURATION_RESEAU_VIEW);
 			Config.Reseau.setIpServer(view->getIpServeur());
 			Config.Reseau.setPort(view->getPort());
@@ -481,6 +550,8 @@ void Controller::executeAction(AG_Event *event) {
 		// Mise à jour de la configuration du centralisateur
 		case SaveConfigCentralisateurAction:
 		{
+			LOGINFO((" ==> action controller %d (SaveConfigCentralisateurAction)", action));
+
 			ConfigCentralisateurView* view = (ConfigCentralisateurView*)_agarView->getView(Viewer::CONFIG_CENTRALISATEUR_VIEW);
 			Config.Centralisateur.setIp(view->getAdresse());
 			Config.Centralisateur.setPort(view->getPort());
@@ -493,6 +564,8 @@ void Controller::executeAction(AG_Event *event) {
 		// Mise à jour de la page des fichiers téléchargeables par le jeu
 		case ReloadDownloadFilesAction:
 		{
+			LOGINFO((" ==> action controller %d (ReloadDownloadFilesAction)", action));
+
 			try {
 				Centralisateur* centralisateur = Fabrique::getCentralisateur();
 				vector<DownloadFileItem> items = centralisateur->askDownloadFileList(4635);
@@ -509,6 +582,8 @@ void Controller::executeAction(AG_Event *event) {
 		// Mise à jour de la page des fichiers téléchargeables par le jeu
 		case DownloadOneFileAction:
 		{
+			LOGINFO((" ==> action controller %d (DownloadOneFileAction)", action));
+
 			long downloadId = AG_LONG(2);
 
 			try {
@@ -529,17 +604,22 @@ void Controller::executeAction(AG_Event *event) {
 		// Demande de rafraichissement de la vue passée en paramètre
 		case Refresh:
 		{
+			LOGINFO((" ==> action controller %d (Refresh)", action));
+
 			View* view = (View*)AG_PTR(2);
 			view->refresh();
 		}
 		break;
 
 		case QuitAction:
+			LOGINFO((" ==> action controller %d (QuitAction)", action));
 			quit_game("Quit game user action", 0);
 			break;
 
 		case ExecuteUserCommandeAction:
 		{
+			LOGINFO((" ==> action controller %d (ExecuteUserCommandeAction)", action));
+
 			ConsoleView* view = (ConsoleView*)_agarView->getView(Viewer::CONSOLE_VIEW);
 			string commande = view->getCommandAndClearCommandLine();
 
@@ -551,8 +631,7 @@ void Controller::executeAction(AG_Event *event) {
 		}
 
 		default:
-			LOGDEBUG(("Unknown action : %d!", action));
-			AG_TextMsg(AG_MSG_WARNING, "Action inconnue : %d!", action);
+			LOGERROR((" ==> unknown action %d! ", action));
 			break;
 		}
 	}

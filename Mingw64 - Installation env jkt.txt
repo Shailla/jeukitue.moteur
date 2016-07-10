@@ -21,25 +21,33 @@
  - Mettre Mingw64 dans le path : path=%path%;C:\msys64\mingw64\bin 
 
 * Installer la lib Agar
- - Télécharger la lib Agar "agar-1.5.0.tar.gz" depuis ici "http://libagar.org/download.html"
+ - Télécharger la lib Agar "agar-1.5.0.tar.gz" depuis ici "http://libagar.org/download.html" ou utilisez git\moteur\libs\agar-1.5.0
  - Décompresser la lib dans un répertoire quelconque
- - Ouvrir la console Mingw64 (la suite se fait dedans)
+ - Ouvrir la console Mingw64 dans ce répertoire (la suite se fait dedans)
  - ./configure --host=x86_64-w64-mingw32 --prefix=/mingw64 --enable-debug --with-{freetype,sdl,png,jpeg,gl}=/mingw64 
  - Lancer "make depend all"
  - Lancer "make install"
  - Les includes d'Agar sont dans C:\msys64\mingw64\include\[agar\agar], il faut les copier dans le répertoire au-dessus pour ne plus avoir [agar/agar]/**.h mais juste [agar]/**.h
 
+PROBLEME :
+La compilation d'Agar ne marche pas pour ag_gui, je sais pas pourquoi...
+Il faut récupérer sur http://libagar.org/download.html "agar-1.5.0-mingw32-x86_64.zip" et mettre les lib "ag_gui*.a" dans "C:\msys64\mingw64\lib"
+ 
+ 
 * Installer la lib ZipArchive (procédure à retester)
- - Dans D:\jkt\git\moteur\libs\zipArchive-4.2.1\ZipArchive
+ - Dans git\moteur\libs\zipArchive-4.2.1\ZipArchive
  - Modifier le fichier "makefile.mingw" et mettre "prefix = /mingw64"
  - Dans la console Mingw64, lancer "make -f makefile.mingw"
  - Dans la console Mingw64, lancer "make install -f makefile.mingw"
  
 * Installer la lib Lua (procédure à retester)
- - Dans D:\jkt\git\moteur\libs\lua-5.2.2
+ - Dans git\moteur\libs\lua-5.2.2
  - Modifier le fichier "Makefile", mettre "PLAT= mingw"
  - Dans la console Mingw64, lancer "make"
  - Dans la console Mingw64, lancer "make install"
+
+ 
+ 
  
 4. Installer / configurer CMake
 4.1.	Télécharger et installer la dernière version de CMake

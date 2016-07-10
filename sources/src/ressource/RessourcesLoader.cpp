@@ -14,9 +14,7 @@ using namespace std;
 
 const char* MAP_DIRECTORY =			"./Map/";						// Répertoire des MAP de jeu
 const char* PLAYER_MAP_DIRECTORY =	"./Ressources/Maps/Joueurs/";	// Répertoire des scripts des plugins
-
 const char* PLUGINS_DIRECTORY =		"./plugins/";					// Répertoire des MAP de jeu
-
 const char* TEMPORARY_DIRECTORY =	"./Tmp/";						// Répertoire temporaire de travail
 
 namespace JktUtils

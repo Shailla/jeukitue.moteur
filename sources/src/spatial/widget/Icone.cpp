@@ -15,6 +15,8 @@
 
 using namespace std;
 
+#include "util/Trace.h"
+
 #include "spatial/widget/Icone.h"
 
 namespace JktMoteur {
@@ -42,7 +44,7 @@ void Icone::initializeGraphicObject(void) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _largeur, _hauteur, 0, GL_RGBA, GL_UNSIGNED_BYTE, _pixels);
 
-	cout << endl << "Icone initialisee avec l'image '" << _nomFichier << "' sous la reference OpenGL " << _glTexName;
+	LOGINFO(("Icone initialisee avec l'image '%s' sous la reference OpenGL %d", _nomFichier.c_str(), _glTexName));
 }
 
 void Icone::destructGraphicObject(void) {

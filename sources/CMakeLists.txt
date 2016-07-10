@@ -6,21 +6,24 @@ project(JeuKiTue)
 set(CMAKE_BUILD_TYPE Debug)
 
 set(EXECUTABLE_OUTPUT_PATH ../../deploy/${CMAKE_BUILD_TYPE}-g++)
-#set(CMAKE_CXX_FLAGS "-static-libgcc -static-libstdc++ -ggdb -Wall -Wno-unknown-pragmas -std=gnu++0x -fpermissive")
 set(CMAKE_CXX_FLAGS "-ggdb -Wall -Wno-unknown-pragmas -std=gnu++0x -fpermissive")
 
+find_package(FREETYPE REQUIRED)
 find_package(SDL REQUIRED)
 find_package(SDL_net REQUIRED)
+find_package(SDL_image REQUIRED)
 
 include_directories("src")
+include_directories(${FREETYPE_INCLUDE_DIRS})
 include_directories(${SDL_INCLUDE_DIR})
 include_directories(${SDL_NET_INCLUDE_DIR})
+include_directories(${SDL_IMAGE_INCLUDE_DIR})
 include_directories("../libs/tinyxml_2_6_1")
 include_directories("../libs/fmodapi375win/api/inc")
 
 link_directories("../libs/fmodapi375win/api/lib")
 
-# Sélection des fichiers source
+# Selection des fichiers source
 file( 
 	GLOB_RECURSE SOURCE_FILES
 	src/*.cpp
@@ -33,15 +36,15 @@ file(
 
 file(
 	GLOB LIB_AGAR_SRC
-	D:/jkt/moteur/libs/agar-trunk/core/*.c
-	D:/jkt/moteur/libs/agar-trunk/dev/*.c
-	D:/jkt/moteur/libs/agar-trunk/math/*.c
-	D:/jkt/moteur/libs/agar-trunk/gui/*.c
+	../libs/agar-1.5.0/core/*.c
+	../libs/agar-1.5.0/dev/*.c
+	../libs/agar-1.5.0/math/*.c
+	../libs/agar-1.5.0/gui/*.c
 )
 
 set_source_files_properties(${LIB_AGAR_SRC} PROPERTIES HEADER_FILE_ONLY TRUE)
 
-# Configuration de l'ex�cutable
+# Configuration de l'executable
 add_executable(
 	jkt
 	${SOURCE_FILES}
@@ -50,6 +53,8 @@ add_executable(
 
 target_link_libraries(
 	jkt
-	ag_core
-	ag_gui ag_dev ${SDL_LIBRARY} Iphlpapi SDL_image ziparch mingw32 winmm freetype freeglut glu32 opengl32 ws2_32 fmod64vc pthread lua jpeg png dxguid ${SDL_NET_LIBRARY}
+	ag_core ag_gui ag_dev
+	${SDL_IMAGE_LIBRARY} ${SDL_NET_LIBRARY} ${SDL_LIBRARY}
+	fmod64vc
+	Iphlpapi ziparch mingw32 winmm ${FREETYPE_LIBRARY} glu32 opengl32 ws2_32 pthread lua jpeg png dxguid
 )

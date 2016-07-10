@@ -22,6 +22,6 @@ void View::show(void) {
 }
 
 void View::hide(void) {
-    AG_WindowHide(m_window);
-    AG_WidgetUnfocus(m_window);
+	AG_WindowHide(m_window);
+	AG_WidgetUnfocus(m_window);
 }

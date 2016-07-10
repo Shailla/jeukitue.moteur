@@ -97,8 +97,6 @@ Texture* litFichierTexture(const string &nomFichier, float alpha, Uint8* pixels)
 
 	Texture* texture = new Texture(nomFichier, isAlphaActive, (GLsizei) hauteur, (GLsizei)largeur, pixels);
 
-	cout << endl << "INIT A " << nomFichier;
-
 	addGraphicObjectToInitialize(texture);
 
 	return texture;
@@ -114,8 +112,6 @@ Icone* litFichierIcone(const string &nomFichier, float alpha, Uint8* pixels) {
 	else {
 		isAlphaActive = false;
 	}
-
-	cout << endl << "INIT B " << nomFichier;
 
 	Icone* icone = new Icone(nomFichier, isAlphaActive, (GLsizei) hauteur, (GLsizei)largeur, pixels);
 

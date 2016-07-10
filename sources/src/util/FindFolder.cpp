@@ -19,8 +19,6 @@
 	#include <dirent.h>
 #endif
 
-using namespace std;
-
 #include "FindFolder.h"
 
 // Pour rechercher c:/rep/fich*.map on aura par exemple :

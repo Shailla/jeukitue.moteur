@@ -28,7 +28,6 @@ class ConfigurationCommandesView : public View {
 	static bool _waitingCommandUserChoice;
 	static int _commandToWait;
 
-	AG_Box* _boxCommandes;
 	std::map<COMMANDE_ID, AG_Button*> _buttons;
 	std::map<COMMANDE_ID, AG_Label*> _labels;
 

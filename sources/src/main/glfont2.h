@@ -152,7 +152,7 @@ public:
 		T c;
 		GLFontChar *glfont_char;
 		float width;
-		
+
 			// Calcul la largeur jusqu'à avoir une largeur égale à 'size'
 		inter = 0;		// Position du dernier caractère sauvé dans lignes
 		width = 0.0F;	// Largeur courante de la ligne
@@ -194,7 +194,7 @@ public:
 
 		if( i-inter>0 )	// S'il reste des caractères mais que ceux-ci n'ont pas été pris en compte
 		{				// car leur longueur est inférieure à 'size', alors prends les
-				
+
 				// Ignore le premier caractère de la ligne si c'est un espace
 			if( (text[inter] == ' ') && ( inter + 1 <= i ) )
 				inter++;

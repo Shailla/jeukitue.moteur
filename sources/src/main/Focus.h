@@ -9,7 +9,6 @@ class CFocus
 {
 	void (*play_handle_key_down)( SDL_Event *event );			// Handle en cours de jeu
 	void (*menu_handle_key_down)( SDL_Event *event );			// Handle pour le menu
-	void (*menu_agar_handle_key_down)(SDL_Event *event);		// Handle pour le menu Agar
 
 	/**
 	 * Intercepteur d'événements.
@@ -22,7 +21,7 @@ class CFocus
 	void (*focus_actif_handle_key_down)( SDL_Event *event );	// Handle pour le focus actif
 
 public:
-	CFocus(void (*play)(SDL_Event *event), void (*menu)(SDL_Event *event), void (*menuAgar)(SDL_Event *event) );
+	CFocus(void (*play)(SDL_Event *event), void (*menu)(SDL_Event *event));
 
 	/**
 	 * Place un intercepteur sur la pile de consommation des événements.
@@ -34,6 +33,8 @@ public:
 
 	/** Supprimer l'intercepteur de la pile de consommation des événements. */
 	void removeEventInterceptor();
+
+	bool isPlayFocus();
 
 	void SetPlayFocus();												// Place le focus sur le jeu
 	void SetMenuFocus();												// Place le focus sur le menu

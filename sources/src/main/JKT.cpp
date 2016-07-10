@@ -29,7 +29,8 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 #endif
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <GL/glut.h>
+#include <freetype2/ft2build.h>
+#include FT_FREETYPE_H
 #include <agar/config/have_opengl.h>
 #include <agar/config/have_sdl.h>
 #include <agar/core.h>
@@ -138,6 +139,7 @@ using namespace JktSon;
 
 NotConnectedInterlocutor2* _notConnectedServerInterlocutor = 0;
 
+GLuint fonteTex;
 GLFont myfont;
 
 CCfg Config;		// Contient la configuration du jeu
@@ -156,6 +158,7 @@ int numMainPlayer = 0;	// Numéro du joueur principal dans la MAP (identifie le j
 
 bool Aide = false;
 
+extern SDL_Surface* screen;
 extern JktSon::CDemonSons *DemonSons;	// Requêtes des sons
 
 Uint32 tempsTimer = 0;		// Temps pris par la fonction 'timer'
@@ -211,9 +214,7 @@ void gravitePlayer(CPlayer *player)	// Fonction implémentant la gravité
  * Initialise les menu du jeu, affiche le menu principal et place le focus dessus.
  */
 void initMenu(void) {
-	pFocus = new CFocus(play_handle_key_down,
-			CDlg::menu_handle_key_down,
-			menu_agar_handle_key_down);
+	pFocus = new CFocus(play_handle_key_down, CDlg::menu_handle_key_down);
 	pFocus->SetPlayFocus();
 	Aide = false;
 
@@ -337,95 +338,131 @@ void afficheInfo( Uint32 tempsDisplay ) {
 	myfont.DrawString(str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
 
 
-//	char cou[70];
-//
-//	// Affiche le mode du jeu
-//	if(Game.getMap() && Game.getMap()->IsSelectionMode()) {
-//		sprintf( cou, "Selection : %s", Game.getMap()->getSelectedName());
-//		str = cou;
-//		myfont.DrawString( cou, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
-//	}
-//
-//	CPlayer *erwin = Game.Erwin();
-//
-//	if(erwin) {
-//		// Affiche le Teta du joueur principal
-//		sprintf( cou, "Teta Phi : %.3d %.3d", (int)erwin->Teta(), (int)erwin->Phi());
-//		str = cou;
-//		myfont.DrawString( str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
-//
-//		// Affiche la position du joueur principal
-//		float position[3];
-//		erwin->getPosition( position );
-//
-//		sprintf( cou, "Position : %0.4f %0.4f %0.4f", position[0], position[1], position[2] );
-//		str = cou;
-//		myfont.DrawString( str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
-//	}
-//
-//	if(Config.Debug.bSonPerformances) {
-//		unsigned int currentalloced, maxalloced;
-//		sprintf( cou, "Son, usage CPU : %.4f %%", FSOUND_GetCPUUsage() );
-//		str = cou;
-//		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
-//
-//		FSOUND_GetMemoryStats( &currentalloced, &maxalloced );
-//
-//		sprintf( cou, "Son, memory allocated : %.5u ko", currentalloced/1024 );
-//		str = cou;
-//		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
-//
-//		sprintf( cou, "Son, max memory allocated : %.5u ko", maxalloced/1024 );
-//		str = cou;
-//		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
-//	}
-//
-//	if(Config.Debug.bSonSpectre) {
-//		int NBR_RAIES_SPECTRE = 512;
-//		float *spectre = FSOUND_DSP_GetSpectrum();
-//
-//		glDisable( GL_TEXTURE_2D );
-//		glDepthMask( GL_FALSE );
-//		glDisable( GL_DEPTH_TEST );
-//		glEnable( GL_BLEND );
-//
-//		float gauche = (float)Config.Display.X - 130;
-//		float bas = (float)10;
-//		float largeur = 120;
-//		float hauteur = 120;
-//		float haut = bas + hauteur;
-//		float droite = gauche + largeur;
-//
-//		glBegin( GL_QUADS );
-//
-//		glColor4f( 1.0f, 1.0f, 0.0f, 0.35f );
-//		glVertex2f( gauche, bas );
-//		glVertex2f( gauche, haut );
-//		glVertex2f( droite, haut );
-//		glVertex2f( droite, bas );
-//
-//		glEnd();
-//
-//		glDisable( GL_BLEND );
-//
-//		glBegin( GL_QUADS );
-//
-//		for(int i=0 ; i < NBR_RAIES_SPECTRE ; i++) {
-//			glColor3f( 0.0f, 1.0f, 0.0f );
-//			glVertex2f( gauche + i*(largeur/(float)NBR_RAIES_SPECTRE), bas );
-//			glVertex2f( gauche + (i+1)*(largeur/(float)NBR_RAIES_SPECTRE), bas );
-//
-//			glColor3f( 1.0f, 0.0f, 0.0f );
-//			glVertex2f( gauche + (i+1)*(largeur/(float)NBR_RAIES_SPECTRE), bas + hauteur*spectre[i] );
-//			glVertex2f( gauche + i*(largeur/(float)NBR_RAIES_SPECTRE), bas + hauteur*spectre[i] );
-//		}
-//
-//		glEnd();
-//
-//		glEnable( GL_TEXTURE_2D );
-//		glDepthMask( GL_TRUE );
-//		glEnable( GL_DEPTH_TEST );
-//	}
+
+
+	glBindTexture(GL_TEXTURE_2D, fonteTex);
+
+	glEnable( GL_TEXTURE_2D );
+
+	glColor3f( 1.0f, 1.0f, 1.0f );
+
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 1.0);
+	glVertex3f(100.0, 200.0, 0.0);
+
+	glTexCoord2f(1.0, 1.0);
+	glVertex3f(200.0, 200.0, 0.0);
+
+	glTexCoord2f(1.0, 0.0);
+	glVertex3f(200.0, 300.0, 0.0);
+
+	glTexCoord2f(0.0, 0.0);
+	glVertex3f(100.0, 300.0, 0.0);
+	glEnd();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	char cou[70];
+
+	// Affiche le mode du jeu
+	if(Game.getMap() && Game.getMap()->IsSelectionMode()) {
+		sprintf( cou, "Selection : %s", Game.getMap()->getSelectedName());
+		str = cou;
+		myfont.DrawString( cou, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
+	}
+
+	CPlayer *erwin = Game.Erwin();
+
+	if(erwin) {
+		// Affiche le Teta du joueur principal
+		sprintf( cou, "Teta Phi : %.3d %.3d", (int)erwin->Teta(), (int)erwin->Phi());
+		str = cou;
+		myfont.DrawString( str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
+
+		// Affiche la position du joueur principal
+		float position[3];
+		erwin->getPosition( position );
+
+		sprintf( cou, "Position : %0.4f %0.4f %0.4f", position[0], position[1], position[2] );
+		str = cou;
+		myfont.DrawString( str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
+	}
+
+	if(Config.Debug.bSonPerformances) {
+		unsigned int currentalloced, maxalloced;
+		sprintf( cou, "Son, usage CPU : %.4f %%", FSOUND_GetCPUUsage() );
+		str = cou;
+		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
+
+		FSOUND_GetMemoryStats( &currentalloced, &maxalloced );
+
+		sprintf( cou, "Son, memory allocated : %.5u ko", currentalloced/1024 );
+		str = cou;
+		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
+
+		sprintf( cou, "Son, max memory allocated : %.5u ko", maxalloced/1024 );
+		str = cou;
+		myfont.DrawString( str, TAILLEFONT, 20.0f, pos++*15.0f+20.0f );
+	}
+
+	if(Config.Debug.bSonSpectre) {
+		int NBR_RAIES_SPECTRE = 512;
+		float *spectre = FSOUND_DSP_GetSpectrum();
+
+		glDisable( GL_TEXTURE_2D );
+		glDepthMask( GL_FALSE );
+		glDisable( GL_DEPTH_TEST );
+		glEnable( GL_BLEND );
+
+		float gauche = (float)Config.Display.X - 130;
+		float bas = (float)10;
+		float largeur = 120;
+		float hauteur = 120;
+		float haut = bas + hauteur;
+		float droite = gauche + largeur;
+
+		glBegin( GL_QUADS );
+
+		glColor4f( 1.0f, 1.0f, 0.0f, 0.35f );
+		glVertex2f( gauche, bas );
+		glVertex2f( gauche, haut );
+		glVertex2f( droite, haut );
+		glVertex2f( droite, bas );
+
+		glEnd();
+
+		glDisable( GL_BLEND );
+
+		glBegin( GL_QUADS );
+
+		for(int i=0 ; i < NBR_RAIES_SPECTRE ; i++) {
+			glColor3f( 0.0f, 1.0f, 0.0f );
+			glVertex2f( gauche + i*(largeur/(float)NBR_RAIES_SPECTRE), bas );
+			glVertex2f( gauche + (i+1)*(largeur/(float)NBR_RAIES_SPECTRE), bas );
+
+			glColor3f( 1.0f, 0.0f, 0.0f );
+			glVertex2f( gauche + (i+1)*(largeur/(float)NBR_RAIES_SPECTRE), bas + hauteur*spectre[i] );
+			glVertex2f( gauche + i*(largeur/(float)NBR_RAIES_SPECTRE), bas + hauteur*spectre[i] );
+		}
+
+		glEnd();
+
+		glEnable( GL_TEXTURE_2D );
+		glDepthMask( GL_TRUE );
+		glEnable( GL_DEPTH_TEST );
+	}
 }
 
 void drawSmallQuad(const int x, const int y) {
@@ -776,66 +813,10 @@ void chopeLesEvenements() {
 			balle->changeAction( gravitePlayer );	// associe au projectile une fonction de gravité
 			balle->changeContact( contactSprite );	// associe une fonction pour les contacts avec la map
 
-//			Game._pTabIndexPlayer->Ajoute(balle);			// ajoute le projectile à la liste des joueurs
+			//			Game._pTabIndexPlayer->Ajoute(balle);			// ajoute le projectile à la liste des joueurs
 			Game.addPlayer(balle);			// ajoute le projectile à la liste des joueurs
 		}
 	}
-}
-
-void menu_agar_handle_key_down(SDL_Event *sdlEvent) {
-//	cout << endl << " -> AGAR";
-//	string evDesc;
-//	CCfg::resolve(sdlEvent, evDesc);
-//	cout << " -> {" << evDesc << "}";
-
-	if(sdlEvent->type == SDL_KEYDOWN && sdlEvent->key.keysym.sym == SDLK_ESCAPE) {
-		pFocus->SetPlayFocus();
-
-		AG_Event event;
-		AG_EventArgs(&event, "%i", Controller::Action::HideMenuAction);
-		Controller::executeAction(&event);
-	}
-	else {
-		switch (sdlEvent->type) {
-
-		case SDL_MOUSEBUTTONDOWN:
-		{
-			AG_DriverEvent agarEvent;
-			AG_SDL_TranslateEvent(agDriverSw, sdlEvent, &agarEvent);
-			AG_ProcessEvent((AG_Driver *)agDriverSw, &agarEvent);
-			break;
-		}
-		case SDL_MOUSEBUTTONUP:
-		{
-			AG_DriverEvent agarEvent;
-			AG_SDL_TranslateEvent(agDriverSw, sdlEvent, &agarEvent);
-			AG_ProcessEvent((AG_Driver *)agDriverSw, &agarEvent);
-			break;
-		}
-		case SDL_MOUSEMOTION:
-		case SDL_KEYDOWN:
-		case SDL_KEYUP:
-		case SDL_VIDEORESIZE:
-		case SDL_VIDEOEXPOSE:
-		case SDL_QUIT:
-		{
-			AG_DriverEvent agarEvent;
-			AG_SDL_TranslateEvent(agDriverSw, sdlEvent, &agarEvent);
-			AG_ProcessEvent((AG_Driver *)agDriverSw, &agarEvent);
-			break;
-		}
-		default:
-			// Event ignored by Agar
-			//			cout << endl << " Ignored by agar";
-			break;
-		}
-	}
-
-//	AG_DriverEvent dev;
-//
-//	while(AG_GetNextEvent(NULL, &dev) > 0) {
-//	    AG_ProcessEvent(NULL, &dev);
-//	}
 }
 
 void play_handle_key_down( SDL_Event *event ) {
@@ -890,8 +871,7 @@ void play_handle_key_down( SDL_Event *event ) {
 		}
 		break;
 
-	case SDL_KEYDOWN:
-	{
+	case SDL_KEYDOWN: {
 		SDLKey keyDown = event->key.keysym.sym;
 
 		if( erwin ) {
@@ -916,8 +896,7 @@ void play_handle_key_down( SDL_Event *event ) {
 			Aide = true;
 			break;
 
-		case SDLK_F3 :
-		{
+		case SDLK_F3 : {
 			LOGINFO(("Derniere erreur FMOD : %s", FMOD_ErrorString(FSOUND_GetError())));
 			LOGINFO(("Derniere erreur SDL : %s", SDL_GetError()));
 			LOGINFO(("Derniere erreur SDL_Net : %s", SDLNet_GetError()));
@@ -1054,19 +1033,79 @@ void play_handle_key_down( SDL_Event *event ) {
 }
 
 static void process_events(void) {
-	SDL_Event event;
+	//	AG_DriverEvent dev;
+	//	do {
+	//		/* Retrieve the next queued event. */
+	//		if (AG_GetNextEvent(NULL, &dev) == 1) {
+	//			if (AG_ProcessEvent(NULL, &dev) == -1)
+	//				break;
+	//		}
+	//	} while (AG_PendingEvents(NULL) > 0);
+	//
+	//	AG_WindowProcessQueued();
 
-	while( SDL_PollEvent( &event ) ) {
-		switch( event.type ) {
+
+	SDL_Event sdlevent;
+	AG_DriverEvent dev;
+
+	while( SDL_PollEvent( &sdlevent ) ) {
+
+		LOGINFO(("0"));
+
+		/* ****************************************** */
+		/* Gestion événements prioritaires            */
+		/* ****************************************** */
+
+		switch( sdlevent.type ) {
 		case SDL_QUIT:
 			quit_game("SDL quit event", 0 );
 			break;
 
+			// Bascule entre le menu Agar et le jeu
+		case SDL_KEYDOWN:
+			if(sdlevent.key.keysym.sym == SDLK_ESCAPE) {
+				if(pFocus->isPlayFocus()) {
+					pFocus->SetMenuAgarFocus();
+
+					AG_Event event;
+					AG_EventArgs(&event, "%i", Controller::Action::ShowMenuAction);
+					Controller::executeAction(&event);
+				}
+				else {
+					pFocus->SetPlayFocus();
+
+					AG_Event event;
+					AG_EventArgs(&event, "%i", Controller::Action::HideMenuAction);
+					Controller::executeAction(&event);
+				}
+			}
+			break;
+
 		default:
-			pFocus->ExecFocus( &event );
 			break;
 		}
+
+		LOGINFO(("1"));
+
+		/* ****************************************** */
+		/* Gestion événements du jeu                  */
+		/* ****************************************** */
+
+		pFocus->ExecFocus( &sdlevent );
+
+		LOGINFO(("2"));
+
+		/* ****************************************** */
+		/* Gestion événements menu Agar               */
+		/* ****************************************** */
+
+		AG_SDL_TranslateEvent(agDriverSw, &sdlevent, &dev);
+		AG_ProcessEvent(NULL, &dev);
+
+		LOGINFO(("3"));
 	}
+
+	AG_WindowProcessQueued();
 }
 
 bool deprecatedOpenMAP(const void *nomFichier) {
@@ -1311,12 +1350,12 @@ void executeJktRequests() {
 		/* *****************************************
 		 * Fermeture Map courante
 		 * ****************************************/
-//		La fermeture de la Map courante est actuellement faite dans Client.cpp, voir SERVEUR_ACK / JKT_STATUT_CLIENT_DEMJTG
-//		// Fermeture de la MAP courante et destruction des joueurs
-//		Game.quitCurrentMap();
-//
-//		Game.Erwin(NULL);
-//		Game.deletePlayers();
+		//		La fermeture de la Map courante est actuellement faite dans Client.cpp, voir SERVEUR_ACK / JKT_STATUT_CLIENT_DEMJTG
+		//		// Fermeture de la MAP courante et destruction des joueurs
+		//		Game.quitCurrentMap();
+		//
+		//		Game.Erwin(NULL);
+		//		Game.deletePlayers();
 
 
 		/* *****************************************
@@ -1336,7 +1375,7 @@ void executeJktRequests() {
 		else {
 			// Création de l'arbre des données du client
 			ClientDataTree* dataTree = new ClientDataTree(string("jkt"), clientInterlocutor);
-//			DataTreeUtils::formatGameDataTree(dataTree);
+			//			DataTreeUtils::formatGameDataTree(dataTree);
 			Game.setClientDataTree(dataTree);
 
 			// Lancement ouverture MAP demandée
@@ -1650,7 +1689,6 @@ void boucle() {
 			// Dessine la scène 3D et les menus
 			display();
 
-			SDL_PumpEvents();	// Collecte les événements
 			process_events();	// vérifie les événements
 		}
 	}
@@ -1663,7 +1701,7 @@ void boucle() {
 }
 
 int main(int argc, char** argv) {
-//	LOGDEBUG(("main(argc=%d,argv=%x)", argc, argv);
+	//	LOGDEBUG(("main(argc=%d,argv=%x)", argc, argv);
 
 	if(argc > 1) {
 		// Exécution des tests unitaires
@@ -1687,7 +1725,7 @@ int main(int argc, char** argv) {
 	Config.NommeConfig( nomFichierConfig );	// Nomme le fichier de configuration
 	Config.Lit();							// Lit le fichier de configuration
 
-	cout << "\n\tRESUME DE L'INITIALISATION VIDEO";
+	LOGINFO(("RESUME DE L'INITIALISATION VIDEO"));
 	Config.Display.Init();	// Initialisation SDL, OpenGL et Agar
 
 	Config.Reseau.Init();	// Initialisation du réseau
@@ -1695,6 +1733,9 @@ int main(int argc, char** argv) {
 
 	Config.Audio.Init();	// Initialisation audio
 	Config.Ecrit();			// Enregistre les éventuelles modifications de la configuration
+
+	// Purge les événements SDL, si on ne le fait pas deux fenêtres du jeu s'affichent et les événements sont mal gérés
+	SDL_PumpEvents();
 
 	srand(SDL_GetTicks());		// Initialisation de la fonction rand() pour les nombres aléatoires
 
@@ -1704,7 +1745,7 @@ int main(int argc, char** argv) {
 	_grahicObjectsToInitializeMutex = SDL_CreateMutex();
 	_grahicObjectsToDestructMutex = SDL_CreateMutex();
 
-	cout << "\n\tINFO DIVERSES";
+	LOGINFO(("INFO DIVERSES"));
 
 	// Info réseau
 	IPaddress ipaddress;
@@ -1712,12 +1753,12 @@ int main(int argc, char** argv) {
 		const char *host = SDLNet_ResolveIP( &ipaddress );
 
 		if(host)
-			cout << endl << "Nom et adresse de la machine locale : " << host << " / " << IpUtils::translateAddress(ipaddress);
+			LOGINFO(("Nom et adresse de la machine locale : %s / %s", host, IpUtils::translateAddress(ipaddress).c_str()));
 		else
-			cout << endl << "Nom de la machine locale : <Inconnu>" << " / " << IpUtils::translateAddress(ipaddress);
+			LOGWARN(("Nom de la machine locale : <Inconnu> / %s",IpUtils::translateAddress(ipaddress).c_str()));
 	}
 	else {
-		cout << endl << "Echec de resolution du nom de la machine locale";
+		LOGERROR(("Echec de resolution du nom de la machine locale"));
 	}
 
 	Fabrique::construct();
@@ -1730,20 +1771,86 @@ int main(int argc, char** argv) {
 		load_Intro( Config.Display.X, Config.Display.Y );	// Affiche l'introduction du jeu
 	}
 
-	// Initialisation pour les menus et boîtes de dialogue
-	{
-		string fonte = "@Fonte\\Fonte.glf";		// Chargement de la fonte de caractères
-		JktUtils::RessourcesLoader::getFileRessource(fonte);
-		unsigned int texFonte;
-		glGenTextures(1, &texFonte);
 
-		if( !myfont.Create(fonte.c_str(), texFonte) ) {
-			LOGERROR(("Echec ouverture texture de fonte (%s) : %d", fonte.c_str(), texFonte));
-		}
-		else {
-			LOGDEBUG(("Texture de fonte initialisée (%s) : %d", fonte.c_str(), texFonte));
-		}
+
+
+
+
+
+
+
+
+
+
+
+	FT_Library ft;
+
+	if(FT_Init_FreeType(&ft)) {
+		LOGERROR(("Librairie FreeType introuvable"));
 	}
+	else {
+		LOGINFO(("Librairie FreeType initialisée"));
+	}
+
+	FT_Face face;
+
+	string fonte = "@Fonte\\Fragmentcore.otf";		// Chargement de la fonte de caractères
+	JktUtils::RessourcesLoader::getFileRessource(fonte);
+
+	if(FT_New_Face(ft, fonte.c_str(), 0, &face)) {
+		LOGERROR(("Echec d'ouverture de la fonte : %s", fonte.c_str()));
+	}
+	else {
+		LOGINFO(("Fonte chargée : %s", fonte.c_str()));
+	}
+
+	FT_Set_Pixel_Sizes(face, 0, 48);
+
+	if(FT_Load_Char(face, 'k', FT_LOAD_RENDER)) {
+		LOGERROR(("Echec de lecture de X"));
+	}
+	else {
+		LOGINFO(("X lu"));
+	}
+
+	glGenTextures(1, &fonteTex);
+	glBindTexture(GL_TEXTURE_2D, fonteTex);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+	FT_GlyphSlot g = face->glyph;
+
+	glTexImage2D(	GL_TEXTURE_2D,
+			0,
+			GL_RGB,
+			g->bitmap.width,
+			g->bitmap.rows,
+			0,
+			GL_LUMINANCE_ALPHA,
+			GL_UNSIGNED_BYTE,
+			g->bitmap.buffer);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	// Initialisation de la classe CDlgBoite pour l'IHM
 	if( !CDlgBoite::INIT_CLASSE() )

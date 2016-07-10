@@ -3,6 +3,8 @@
 
 using namespace std;
 
+#include "util/Trace.h"
+
 #include "main/Fabrique.h"
 
 using namespace JktPlugin;
@@ -32,7 +34,7 @@ Centralisateur* Fabrique::getCentralisateur() {
 Viewer* Fabrique::getAgarView() {
 
 	if(!_agarView) {
-		cerr << endl << "ACCES PREMATURE A UN ELEMENT DE LA FABRIQUE" << endl << flush;
+		LOGERROR(("ACCES PREMATURE A UN ELEMENT DE LA FABRIQUE"));
 		exit(1);
 	}
 
@@ -41,7 +43,7 @@ Viewer* Fabrique::getAgarView() {
 
 Controller* Fabrique::getAgarController() {
 	if(!_agarController) {
-		cerr << endl << "ACCES PREMATURE A UN ELEMENT DE LA FABRIQUE" << endl << flush;
+		LOGERROR(("ACCES PREMATURE A UN ELEMENT DE LA FABRIQUE"));
 		exit(1);
 	}
 
@@ -50,7 +52,7 @@ Controller* Fabrique::getAgarController() {
 
 PluginEngine* Fabrique::getPluginEngine() {
 	if(!_pluginEngine) {
-		cerr << endl << "ACCES PREMATURE A UN ELEMENT DE LA FABRIQUE" << endl << flush;
+		LOGERROR(("ACCES PREMATURE A UN ELEMENT DE LA FABRIQUE"));
 		exit(1);
 	}
 
@@ -59,7 +61,7 @@ PluginEngine* Fabrique::getPluginEngine() {
 
 CommandeInterpreter* Fabrique::getCommandeInterpreter() {
 	if(!_commandeInterpreter) {
-		cerr << endl << "ACCES PREMATURE A UN ELEMENT DE LA FABRIQUE" << endl << flush;
+		LOGERROR(("ACCES PREMATURE A UN ELEMENT DE LA FABRIQUE"));
 		exit(1);
 	}
 

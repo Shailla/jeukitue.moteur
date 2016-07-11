@@ -6,7 +6,7 @@
 	#include <io.h>
 	#include <direct.h>
 #endif
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <GL/glu.h>
 
 using namespace std;

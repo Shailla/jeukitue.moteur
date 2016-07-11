@@ -27,7 +27,7 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 #include <io.h>
 #include <direct.h>
 #endif
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <GL/glu.h>
 #include <agar/config/have_opengl.h>
 #include <agar/config/have_sdl.h>

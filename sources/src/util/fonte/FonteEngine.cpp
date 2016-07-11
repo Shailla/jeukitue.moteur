@@ -4,13 +4,10 @@
  *  Created on: 11 juil. 2016
  *      Author: Erwin
  */
-#ifdef WIN32
-	#include <windows.h>
-#endif
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glext.h>
-#include "main/Extensions.h"
+
+#include <algorithm>
+
+#include <GL/glew.h>
 
 #include "util/Trace.h"
 
@@ -36,6 +33,10 @@ void FonteEngine::init() {
 void FonteEngine::loadFonte(const string& fonte) {
 	FT_Face face;
 
+	/* ************************************** */
+	/* Charge la fonte                        */
+	/* ************************************** */
+
 	if(FT_New_Face(*_ft, fonte.c_str(), 0, &face)) {
 		LOGERROR(("Echec d'ouverture de la fonte : %s", fonte.c_str()));
 	}
@@ -52,6 +53,38 @@ void FonteEngine::loadFonte(const string& fonte) {
 		LOGINFO(("X lu"));
 	}
 
+
+	/* ***************************************** */
+	/* Calcule la dimension de la texture atlas  */
+	/* ***************************************** */
+
+	FT_GlyphSlot g = face->glyph;
+	int atlasWidth = 0;
+	int atlasHeight = 0;
+
+	for(int i = 32; i < 128; i++) {
+	  if(FT_Load_Char(face, i, FT_LOAD_RENDER)) {
+	    fprintf(stderr, "Loading character %c failed!\n", i);
+	    continue;
+	  }
+
+	  atlasWidth += g->bitmap.width;
+	  atlasHeight = std::max(atlasHeight, (int)g->bitmap.rows);
+	}
+
+
+	/* ***************************************** */
+	/* Crée la texture d'atlas                   */
+	/* ***************************************** */
+
+	glActiveTexture(GL_TEXTURE0);
+	glGenTextures(1, &_fonteTex);
+	glBindTexture(GL_TEXTURE_2D, _fonteTex);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, atlasWidth, atlasHeight, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0);
+
+
 	// Création de la texture de la fonte
 	glGenTextures(1, &_fonteTex);
 	glBindTexture(GL_TEXTURE_2D, _fonteTex);
@@ -62,8 +95,6 @@ void FonteEngine::loadFonte(const string& fonte) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-
-	FT_GlyphSlot g = face->glyph;
 
 	glTexImage2D(	GL_TEXTURE_2D,
 			0,

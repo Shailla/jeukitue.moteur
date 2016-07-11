@@ -2,6 +2,8 @@
 #include <string>
 #include <fstream>
 
+#include <GL/glew.h>
+
 #include <agar/config/have_opengl.h>
 #include <agar/config/have_sdl.h>
 #include <agar/core.h>
@@ -10,21 +12,14 @@
 
 using namespace std;
 
-#ifdef WIN32
-#include <windows.h>
-#include <io.h>
-#include <direct.h>
-#endif
 #include <SDL.h>
 #include <SDL_net.h>
 #include <SDL_image.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
+
 
 #include "fmod.h"
 #include "fmod_errors.h"
 
-#include "main/Extensions.h"
 #include "main/divers.h"
 #include "util/StringUtils.h"
 #include "util/Trace.h"
@@ -39,12 +34,6 @@ int bpp, flags;
 AG_Window* agarWindows;
 
 SDL_Surface *screen;
-
-PFNGLBINDBUFFERARBPROC glBindBuffer;
-PFNGLGENBUFFERSARBPROC glGenBuffers;
-PFNGLBUFFERDATAARBPROC glBufferData;
-PFNGLDELETEBUFFERSARBPROC glDeleteBuffers;
-
 
 const char* CCfg::CST_GEN_PLAY_INTRO = 			"general.playIntro";
 
@@ -911,49 +900,28 @@ void CCfg::CDisplay::InitOpenGL() {
 	LOGDEBUG(("setup_opengl(width=%d,height=%d) begin", X, Y));
 
 	// Informations openGL
-	LOGINFO(("Version openGL : ", glGetString(GL_VERSION)));
-	LOGINFO(("Modele de la carte graphique : ", glGetString(GL_RENDERER)));
-	LOGINFO(("Fabricant de la carte graphique : ", glGetString(GL_VENDOR)));
-	LOGINFO(("Extensions openGL disponibles : ", glGetString(GL_EXTENSIONS)));
-	LOGINFO(("Version GLU : ", gluGetString(GLU_VERSION)));
+	LOGINFO(("Version openGL : %s", glGetString(GL_VERSION)));
+	LOGINFO(("Version GLU : %s", gluGetString(GLU_VERSION)));
+	LOGINFO(("Version GLEW : %s", glewGetString(GLEW_VERSION)));
+	LOGINFO(("Version GLSL supportés : %s", glGetString(GL_SHADING_LANGUAGE_VERSION)));
+	LOGINFO(("Extensions openGL disponibles : %s", glGetString(GL_EXTENSIONS)));
+	LOGINFO(("Modele de la carte graphique : %s", glGetString(GL_RENDERER)));
+	LOGINFO(("Fabricant de la carte graphique : %s", glGetString(GL_VENDOR)));
+
+
+
+	if(glewInit() != GLEW_OK) {
+		LOGINFO(("Echec d'initialisation de GLEW"));
+		exit(1);
+	}
+
+	glewInit();
 
 	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );					// Spécifie la couleur de vidage du tampon chromatique
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	glShadeModel( GL_SMOOTH );								// Mode dégradé pour le remplissage des polynomes
 	glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
 	glViewport( 0, 0, X, Y );
-
-	// Récupération de la liste des extensions
-	std::string extensions = reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS));
-
-	// Chargement des extensions
-	if(!chargeGLExtension("GL_ARB_vertex_buffer_object",extensions))
-		exit(1);
-
-	glGenBuffers = (PFNGLGENBUFFERSARBPROC)SDL_GL_GetProcAddress("glGenBuffersARB");
-	glBindBuffer = (PFNGLBINDBUFFERARBPROC)SDL_GL_GetProcAddress("glBindBufferARB");
-	glBufferData = (PFNGLBUFFERDATAARBPROC)SDL_GL_GetProcAddress("glBufferDataARB");
-	glDeleteBuffers = (PFNGLDELETEBUFFERSARBPROC)SDL_GL_GetProcAddress("glDeleteBuffersARB");
-
-	if(!glGenBuffers) {
-		LOGERROR(("OpenGL extension 'glGenBuffersARB' not available"));
-		exit(1);
-	}
-
-	if(!glBindBuffer) {
-		LOGERROR(("OpenGL extension 'glBindBufferARB' not available"));
-		exit(1);
-	}
-
-	if(!glBufferData) {
-		LOGERROR(("OpenGL extension 'glBufferDataARB' not available"));
-		exit(1);
-	}
-
-	if(!glDeleteBuffers) {
-		LOGERROR(("OpenGL extension 'glDeleteBuffersARB' not available"));
-		exit(1);
-	}
 
 	LOGINFO(("Erreur OpenGL : %s", gluErrorString(glGetError())));
 
@@ -989,18 +957,6 @@ void CCfg::CDisplay::InitAgar() {
 	AG_GetDisplaySize(driver, &x, &y);
 	LOGINFO((" - Available display size : %d * %d", x, y));
 
-}
-
-bool CCfg::CDisplay::chargeGLExtension(const char* ext, string& extensions) {
-	// Recherche de l'extension qui nous intéresse : GL_ARB_texture_compression
-	if (extensions.find(ext) != std::string::npos) {
-		LOGINFO(("Extension OpenGL supportée : %s", ext));
-		return true;
-	}
-	else {
-		LOGINFO(("Extension OpenGL non-supportée : "));
-		return false;
-	}
 }
 
 void CCfg::CDisplay::ChangeVideoSize(int x, int y) {

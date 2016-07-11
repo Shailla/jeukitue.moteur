@@ -115,7 +115,6 @@ private:
 		void InitSDL();
 		void InitOpenGL();
         void InitAgar();
-		bool chargeGLExtension(const char* ext, string& extensions);
 	public :
 		string position;
 		int X;

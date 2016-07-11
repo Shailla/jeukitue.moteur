@@ -9,7 +9,7 @@
 #ifdef WIN32
 	#include <windows.h>
 #endif
-#include <GL/GL.H>
+#include <GL/glew.h>
 #include <GL/GLU.H>
 
 using namespace std;

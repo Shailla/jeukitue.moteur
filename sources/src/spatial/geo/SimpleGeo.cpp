@@ -9,9 +9,10 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
-#include <GL/GL.H>
-#include <GL/GLU.H>
-#include "main/Extensions.h"
+#define GL_GLEXT_PROTOTYPES
+#include <GL/glew.h>
+#include <GL/glu.h>
+#include <GL/glext.h>
 
 using namespace std;
 

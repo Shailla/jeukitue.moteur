@@ -6,13 +6,7 @@
 #include <map>
 #include <sstream>
 
-#ifdef WIN32
-	#include <windows.h>
-#endif
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glext.h>
-#include "main/Extensions.h"
+#include <GL/glew.h>
 
 using namespace std;
 

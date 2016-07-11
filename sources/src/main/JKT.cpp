@@ -29,10 +29,6 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 #endif
 #include <GL/gl.h>
 #include <GL/glu.h>
-
-#include <freetype2/ft2build.h>
-#include FT_FREETYPE_H
-
 #include <agar/config/have_opengl.h>
 #include <agar/config/have_sdl.h>
 #include <agar/core.h>
@@ -68,6 +64,7 @@ using namespace glfont;
 #include "util/TableauIndex.cpp"		//Liste Indexée
 #include "util/FindFolder.h"
 #include "util/Erreur.h"
+#include "util/fonte/FonteEngine.h"
 #include "ressource/RessourcesLoader.h"
 
 class CGame;
@@ -141,7 +138,7 @@ using namespace JktSon;
 
 NotConnectedInterlocutor2* _notConnectedServerInterlocutor = 0;
 
-GLuint fonteTex;
+FonteEngine* fonteEngine;
 GLFont myfont;
 
 CCfg Config;		// Contient la configuration du jeu
@@ -340,41 +337,7 @@ void afficheInfo( Uint32 tempsDisplay ) {
 
 
 
-//	int surface = AG_WidgetMapSurface(0, AG_TextRender("Coucou ma grosse caille"));
-//
-//	AG_WidgetBlitSurface(NULL, surface, 200, 200);
-
-
-
-	glBindTexture(GL_TEXTURE_2D, fonteTex);
-
-	glEnable( GL_TEXTURE_2D );
-
-	glColor3f( 1.0f, 1.0f, 1.0f );
-
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0, 1.0);
-	glVertex3f(100.0, 200.0, 0.0);
-
-	glTexCoord2f(1.0, 1.0);
-	glVertex3f(200.0, 200.0, 0.0);
-
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(200.0, 300.0, 0.0);
-
-	glTexCoord2f(0.0, 0.0);
-	glVertex3f(100.0, 300.0, 0.0);
-	glEnd();
-
-
-
-
-
-
-
-
-
-
+	fonteEngine->affiche();
 
 
 
@@ -1758,75 +1721,14 @@ int main(int argc, char** argv) {
 
 
 
+	fonteEngine = new FonteEngine();
+	fonteEngine->init();
 
-
-	FT_Library ft;
-
-	if(FT_Init_FreeType(&ft)) {
-		LOGERROR(("Librairie FreeType introuvable"));
-	}
-	else {
-		LOGINFO(("Librairie FreeType initialisée"));
-	}
-
-	FT_Face face;
-
+	// Lecture fonte
 	string fonte = "@Fonte\\Fragmentcore.otf";		// Chargement de la fonte de caractères
 	JktUtils::RessourcesLoader::getFileRessource(fonte);
 
-	if(FT_New_Face(ft, fonte.c_str(), 0, &face)) {
-		LOGERROR(("Echec d'ouverture de la fonte : %s", fonte.c_str()));
-	}
-	else {
-		LOGINFO(("Fonte chargée : %s", fonte.c_str()));
-	}
-
-	FT_Set_Pixel_Sizes(face, 0, 48);
-
-	if(FT_Load_Char(face, 'k', FT_LOAD_RENDER)) {
-		LOGERROR(("Echec de lecture de X"));
-	}
-	else {
-		LOGINFO(("X lu"));
-	}
-
-	glGenTextures(1, &fonteTex);
-	glBindTexture(GL_TEXTURE_2D, fonteTex);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
-	FT_GlyphSlot g = face->glyph;
-
-	glTexImage2D(	GL_TEXTURE_2D,
-			0,
-			GL_RGB,
-			g->bitmap.width,
-			g->bitmap.rows,
-			0,
-			GL_LUMINANCE_ALPHA,
-			GL_UNSIGNED_BYTE,
-			g->bitmap.buffer);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	fonteEngine->loadFonte(fonte);
 
 
 	// Initialisation de la classe CDlgBoite pour l'IHM

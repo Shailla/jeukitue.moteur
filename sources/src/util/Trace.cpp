@@ -369,6 +369,12 @@ void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFic
 			}
 			else {
 				switch( txt[i] ) {
+				case 'c':
+				{
+					char a = va_arg( vl, int );
+					ligne << a;
+					break;
+				}
 				case 'd':
 				{
 					int a = va_arg( vl, int );
@@ -377,7 +383,7 @@ void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFic
 				}
 				case 'l':
 				{
-					int a = va_arg( vl, int );
+					long a = va_arg( vl, long );
 					ligne << a;
 					break;
 				}

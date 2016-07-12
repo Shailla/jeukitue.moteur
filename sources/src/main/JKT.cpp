@@ -335,13 +335,6 @@ void afficheInfo( Uint32 tempsDisplay ) {
 
 	myfont.DrawString(str, TAILLEFONT, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f);
 
-
-
-	fonteEngine->drawString("Coucou ma grosse caille !!!", 100, 100, 300, 300);
-
-
-
-
 	char cou[70];
 
 	// Affiche le mode du jeu
@@ -613,6 +606,10 @@ void display() {		// Fonction principale d'affichage
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor3f(1.0, 1.0, 1.0 );
+
+	fonteEngine->drawString("Coucou ma grosse caille !!!", 100, 100, 300, 300);
+	fonteEngine->drawString("Coucou ma grosse caille !!!", 400, 400, 300, 300);
+	fonteEngine->drawString("Coucou ma grosse caille !!!", 700, 500, 300, 300);
 
 	afficheInfo(SDL_GetTicks()-temps);	// Affiche les infos texte en avant plan
 

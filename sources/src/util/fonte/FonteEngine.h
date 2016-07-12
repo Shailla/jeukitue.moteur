@@ -19,26 +19,19 @@ class FonteEngine {
 	GLuint _fonteTex;
 	int _atlasWidth, _atlasHeight;
 
-	struct point {
-		GLfloat x;
-		GLfloat y;
-		GLfloat s;
-		GLfloat t;
-	};
-
 	struct {
-		float ax;	// advance.x
-		float ay;	// advance.y
+		int x;			// Position de la lettre dans la texture atlas
+		int y;			// Position de la lettre dans la texture atlas
 
-		float bw;	// bitmap.width;
-		float bh;	// bitmap.height;
+		int width;		// Dimensions de la lettre dans la texture atlas
+		int height;		// Dimensions de la lettre dans la texture atlas
 
-		float bl;	// bitmap_left;
-		float bt;	// bitmap_top;
+		int position_x;	// Position de ce caractère par rapport au curseur
+		int position_y;	// Position de ce caractère par rapport au curseur
 
-		float tx;	// x offset of glyph in texture coordinates
-		float ty;	// y offset of glyph in texture coordinates
-	} lettre[128];		// character information
+		int avance_x;	// Mouvements pour la prochaine lettre
+		int avance_y;	// Mouvements pour la prochaine lettre
+	} lettres[128];
 
 public:
 	FonteEngine();

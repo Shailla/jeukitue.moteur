@@ -19,6 +19,8 @@
 FonteEngine::FonteEngine() {
 	_ft = new FT_Library();
 	_fonteTex = -1;
+	_atlasWidth = 0;
+	_atlasHeight = 0;
 }
 
 FonteEngine::~FonteEngine() {
@@ -34,42 +36,44 @@ void FonteEngine::init() {
 }
 
 void FonteEngine::drawString(const char *text, float x, float y, float sx, float sy) {
-	struct point {
-		GLfloat x;
-		GLfloat y;
-		GLfloat s;
-		GLfloat t;
-	} coords[6 * strlen(text)];
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, _fonteTex);
 
-	int n = 0;
+	glBegin(GL_QUADS);
 
-	for(const char* txtIndex = text; *txtIndex; txtIndex++) {
-		int p = *txtIndex;
-		float x2 =  x + lettre[p].bl * sx;
-		float y2 = -y - lettre[p].bt * sy;
-		float w = lettre[p].bw * sx;
-		float h = lettre[p].bh * sy;
+	int tx1, tx2, ty1, ty2;
 
-		/* Advance the cursor to the start of the next character */
-		x += lettre[p].ax * sx;
-		y += lettre[p].ay * sy;
+	for(int i=0 ; text[i] ; i++) {
+		char lettre = text[i];
 
-		/* Skip glyphs that have no pixels */
-		if(!w || !h)
-			continue;
+		tx1 = lettres[(int)lettre].x;
+		tx2 = lettres[(int)lettre].x + lettres[(int)lettre].width;
+		ty1 = lettres[(int)lettre].y;
+		ty2 = lettres[(int)lettre].y + lettres[(int)lettre].height;
 
-		coords[n++] = (point){x2,     -y2    , lettre[p].tx,                                            0};
-		coords[n++] = (point){x2 + w, -y2    , lettre[p].tx + lettre[p].bw / _atlasWidth,   0};
-		coords[n++] = (point){x2,     -y2 - h, lettre[p].tx,                                          lettre[p].bh / _atlasHeight}; //remember: each glyph occupies a different amount of vertical space
-		coords[n++] = (point){x2 + w, -y2    , lettre[p].tx + lettre[p].bw / _atlasWidth,   0};
-		coords[n++] = (point){x2,     -y2 - h, lettre[p].tx,                                          lettre[p].bh / _atlasHeight};
-		coords[n++] = (point){x2 + w, -y2 - h, lettre[p].tx + lettre[p].bw / _atlasWidth, lettre[p].bh / _atlasHeight};
+		LOGINFO(("Lettre %c %d %d %d %d", lettre, tx1, tx2, ty1, ty2));
+
+//		glTexCoord2f( 0, 0 );
+		glTexCoord2i( tx1, ty1 );
+		glVertex3f( x,		y, 		0.0 );
+
+//		glTexCoord2f( 1.0, 0 );
+		glTexCoord2i( tx2, ty1 );
+		glVertex3f( x+sx, 	y, 		0.0 );
+
+//		glTexCoord2f( 1.0, 1.0 );
+		glTexCoord2i( tx2, ty2 );
+		glVertex3f( x+sx, 	y+sy, 	0.0 );
+
+//		glTexCoord2f( 0, 1.0 );
+		glTexCoord2i( tx1, ty2 );
+		glVertex3f( x, 		y+sy, 	0.0 );
 	}
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof coords, coords, GL_DYNAMIC_DRAW);
-	glDrawArrays(GL_TRIANGLES, 0, n);
-}
+	glEnd();
 
+	glDisable( GL_TEXTURE_2D );
+}
 
 void FonteEngine::loadFonte(const string& fonte, int height) {
 	FT_Face face;
@@ -89,37 +93,48 @@ void FonteEngine::loadFonte(const string& fonte, int height) {
 
 	FT_GlyphSlot g = face->glyph;
 
-	int roww = 0;
-	int rowh = 0;
+	int rowWidth = 0;
+	int rowHeight = 0;
+
 	_atlasWidth = 0;
 	_atlasHeight = 0;
 
-	memset(lettre, 0, sizeof lettre);
+	memset(lettres, 0, sizeof(lettres));
 
-	/* Find minimum size for a texture holding all visible ASCII characters */
+	/* *********************************************** */
+	/* Calcule la taille minimale de la texture atlas  */
+	/* *********************************************** */
+
 	for (int i = 32; i < 128; i++) {
 		if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
-			fprintf(stderr, "Loading character %c failed!\n", i);
+			LOGINFO(("Loading character %d failed!", i));
 			continue;
 		}
-		if (roww + g->bitmap.width + 1 >= MAXWIDTH) {
-			_atlasWidth = std::max(_atlasWidth, roww);
-			_atlasHeight += rowh;
-			roww = 0;
-			rowh = 0;
+
+		if (rowWidth + g->bitmap.width + 1 >= MAXWIDTH) {	// Si on est au bout de la ligne on passe à la suivante
+			_atlasWidth = std::max(_atlasWidth, rowWidth);
+			_atlasHeight += rowHeight;
+
+			rowWidth = 0;
+			rowHeight = 0;
 		}
-		roww += g->bitmap.width + 1;
-		rowh = std::max(rowh, (int)g->bitmap.rows);
+
+		rowWidth += g->bitmap.width + 1;
+		rowHeight = std::max(rowHeight, (int)g->bitmap.rows);
 	}
 
-	_atlasWidth = std::max(_atlasWidth, roww);
-	_atlasHeight += rowh;
+	// Taille de la texture atlas
+	_atlasWidth = std::max(_atlasWidth, rowWidth);
+	_atlasHeight += rowHeight;
+
+
+	/* *********************************************** */
+	/* Crée la texture atlas                           */
+	/* *********************************************** */
 
 	/* Create a texture that will be used to hold all ASCII glyphs */
-	glActiveTexture(GL_TEXTURE0);
 	glGenTextures(1, &_fonteTex);
 	glBindTexture(GL_TEXTURE_2D, _fonteTex);
-	//	glUniform1i(uniform_tex, 0);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, _atlasWidth, _atlasHeight, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0);
 
@@ -134,41 +149,49 @@ void FonteEngine::loadFonte(const string& fonte, int height) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	/* Paste all glyph bitmaps into the texture, remembering the offset */
-	int ox = 0;
-	int oy = 0;
+
+	/* *********************************************** */
+	/* Remplie la texture atlas                        */
+	/* *********************************************** */
+
 	int nbrCharacters = 0;
-	rowh = 0;
+	int x = 0;
+	int y = 0;
+	rowHeight = 0;
 
 	for (int i = 32; i < 128; i++) {
 		if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
-			fprintf(stderr, "Loading character %c failed!\n", i);
+			LOGINFO(("Loading character %d failed!", i));
 			continue;
 		}
 
 		nbrCharacters++;
 
-		if (ox + g->bitmap.width + 1 >= MAXWIDTH) {
-			oy += rowh;
-			rowh = 0;
-			ox = 0;
+		if (x + g->bitmap.width + 1 >= MAXWIDTH) {
+			x = 0;
+			y += rowHeight;
 		}
 
-		glTexSubImage2D(GL_TEXTURE_2D, 0, ox, oy, g->bitmap.width, g->bitmap.rows, GL_ALPHA, GL_UNSIGNED_BYTE, g->bitmap.buffer);
-		lettre[i].ax = g->advance.x >> 6;
-		lettre[i].ay = g->advance.y >> 6;
+		// Position de la lettre dans la texture atlas
+		lettres[i].x = x;
+		lettres[i].y = y;
 
-		lettre[i].bw = g->bitmap.width;
-		lettre[i].bh = g->bitmap.rows;
+		// Dimensions de la lettre dans la texture atlas
+		lettres[i].width = g->bitmap.width;
+		lettres[i].height = g->bitmap.rows;
 
-		lettre[i].bl = g->bitmap_left;
-		lettre[i].bt = g->bitmap_top;
+		// Position de ce caractère par rapport au curseur
+		lettres[i].position_x = g->bitmap_left;
+		lettres[i].position_y = g->bitmap_top;
 
-		lettre[i].tx = ox / (float)_atlasWidth;
-		lettre[i].ty = oy / (float)_atlasHeight;
+		// Mouvements pour la prochaine lettre
+		lettres[i].avance_x = g->advance.x;
+		lettres[i].avance_y = g->advance.y;
 
-		rowh = std::max(rowh, (int)g->bitmap.rows);
-		ox += g->bitmap.width + 1;
+		glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, g->bitmap.width, g->bitmap.rows, GL_ALPHA, GL_UNSIGNED_BYTE, g->bitmap.buffer);
+
+		rowHeight = std::max(rowHeight, (int)g->bitmap.rows);
+		x += g->bitmap.width + 1;
 	}
 
 	LOGINFO(("Generated a %dx%d (%d kb) atlas texture with %d characters", _atlasWidth, _atlasHeight, _atlasWidth * _atlasHeight / 1024, nbrCharacters));

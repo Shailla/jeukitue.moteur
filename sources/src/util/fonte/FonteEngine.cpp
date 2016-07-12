@@ -13,6 +13,9 @@
 
 #include "util/fonte/FonteEngine.h"
 
+// Maximum texture width
+#define MAXWIDTH 1024
+
 FonteEngine::FonteEngine() {
 	_ft = new FT_Library();
 	_fonteTex = -1;
@@ -30,7 +33,45 @@ void FonteEngine::init() {
 	}
 }
 
-void FonteEngine::loadFonte(const string& fonte) {
+void FonteEngine::drawString(const char *text, float x, float y, float sx, float sy) {
+	struct point {
+		GLfloat x;
+		GLfloat y;
+		GLfloat s;
+		GLfloat t;
+	} coords[6 * strlen(text)];
+
+	int n = 0;
+
+	for(const char* txtIndex = text; *txtIndex; txtIndex++) {
+		int p = *txtIndex;
+		float x2 =  x + lettre[p].bl * sx;
+		float y2 = -y - lettre[p].bt * sy;
+		float w = lettre[p].bw * sx;
+		float h = lettre[p].bh * sy;
+
+		/* Advance the cursor to the start of the next character */
+		x += lettre[p].ax * sx;
+		y += lettre[p].ay * sy;
+
+		/* Skip glyphs that have no pixels */
+		if(!w || !h)
+			continue;
+
+		coords[n++] = (point){x2,     -y2    , lettre[p].tx,                                            0};
+		coords[n++] = (point){x2 + w, -y2    , lettre[p].tx + lettre[p].bw / _atlasWidth,   0};
+		coords[n++] = (point){x2,     -y2 - h, lettre[p].tx,                                          lettre[p].bh / _atlasHeight}; //remember: each glyph occupies a different amount of vertical space
+		coords[n++] = (point){x2 + w, -y2    , lettre[p].tx + lettre[p].bw / _atlasWidth,   0};
+		coords[n++] = (point){x2,     -y2 - h, lettre[p].tx,                                          lettre[p].bh / _atlasHeight};
+		coords[n++] = (point){x2 + w, -y2 - h, lettre[p].tx + lettre[p].bw / _atlasWidth, lettre[p].bh / _atlasHeight};
+	}
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof coords, coords, GL_DYNAMIC_DRAW);
+	glDrawArrays(GL_TRIANGLES, 0, n);
+}
+
+
+void FonteEngine::loadFonte(const string& fonte, int height) {
 	FT_Face face;
 
 	/* ************************************** */
@@ -44,87 +85,91 @@ void FonteEngine::loadFonte(const string& fonte) {
 		LOGINFO(("Fonte chargée : %s", fonte.c_str()));
 	}
 
-	FT_Set_Pixel_Sizes(face, 0, 48);
-
-	if(FT_Load_Char(face, 'k', FT_LOAD_RENDER)) {
-		LOGERROR(("Echec de lecture de X"));
-	}
-	else {
-		LOGINFO(("X lu"));
-	}
-
-
-	/* ***************************************** */
-	/* Calcule la dimension de la texture atlas  */
-	/* ***************************************** */
+	FT_Set_Pixel_Sizes(face, 0, height);
 
 	FT_GlyphSlot g = face->glyph;
-	int atlasWidth = 0;
-	int atlasHeight = 0;
 
-	for(int i = 32; i < 128; i++) {
-	  if(FT_Load_Char(face, i, FT_LOAD_RENDER)) {
-	    fprintf(stderr, "Loading character %c failed!\n", i);
-	    continue;
-	  }
+	int roww = 0;
+	int rowh = 0;
+	_atlasWidth = 0;
+	_atlasHeight = 0;
 
-	  atlasWidth += g->bitmap.width;
-	  atlasHeight = std::max(atlasHeight, (int)g->bitmap.rows);
+	memset(lettre, 0, sizeof lettre);
+
+	/* Find minimum size for a texture holding all visible ASCII characters */
+	for (int i = 32; i < 128; i++) {
+		if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
+			fprintf(stderr, "Loading character %c failed!\n", i);
+			continue;
+		}
+		if (roww + g->bitmap.width + 1 >= MAXWIDTH) {
+			_atlasWidth = std::max(_atlasWidth, roww);
+			_atlasHeight += rowh;
+			roww = 0;
+			rowh = 0;
+		}
+		roww += g->bitmap.width + 1;
+		rowh = std::max(rowh, (int)g->bitmap.rows);
 	}
 
+	_atlasWidth = std::max(_atlasWidth, roww);
+	_atlasHeight += rowh;
 
-	/* ***************************************** */
-	/* Crée la texture d'atlas                   */
-	/* ***************************************** */
-
+	/* Create a texture that will be used to hold all ASCII glyphs */
 	glActiveTexture(GL_TEXTURE0);
 	glGenTextures(1, &_fonteTex);
 	glBindTexture(GL_TEXTURE_2D, _fonteTex);
+	//	glUniform1i(uniform_tex, 0);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, _atlasWidth, _atlasHeight, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0);
+
+	/* We require 1 byte alignment when uploading texture data */
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, atlasWidth, atlasHeight, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0);
-
-
-	// Création de la texture de la fonte
-	glGenTextures(1, &_fonteTex);
-	glBindTexture(GL_TEXTURE_2D, _fonteTex);
-
+	/* Clamping to edges is important to prevent artifacts when scaling */
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+	/* Linear filtering usually looks best for text */
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+	/* Paste all glyph bitmaps into the texture, remembering the offset */
+	int ox = 0;
+	int oy = 0;
+	int nbrCharacters = 0;
+	rowh = 0;
 
-	glTexImage2D(	GL_TEXTURE_2D,
-			0,
-			GL_RGB,
-			g->bitmap.width,
-			g->bitmap.rows,
-			0,
-			GL_LUMINANCE_ALPHA,
-			GL_UNSIGNED_BYTE,
-			g->bitmap.buffer);
-}
+	for (int i = 32; i < 128; i++) {
+		if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
+			fprintf(stderr, "Loading character %c failed!\n", i);
+			continue;
+		}
 
-void FonteEngine::affiche() {
-	glBindTexture(GL_TEXTURE_2D, _fonteTex);
+		nbrCharacters++;
 
-	glEnable( GL_TEXTURE_2D );
+		if (ox + g->bitmap.width + 1 >= MAXWIDTH) {
+			oy += rowh;
+			rowh = 0;
+			ox = 0;
+		}
 
-	glColor3f( 1.0f, 1.0f, 1.0f );
+		glTexSubImage2D(GL_TEXTURE_2D, 0, ox, oy, g->bitmap.width, g->bitmap.rows, GL_ALPHA, GL_UNSIGNED_BYTE, g->bitmap.buffer);
+		lettre[i].ax = g->advance.x >> 6;
+		lettre[i].ay = g->advance.y >> 6;
 
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0, 1.0);
-	glVertex3f(100.0, 200.0, 0.0);
+		lettre[i].bw = g->bitmap.width;
+		lettre[i].bh = g->bitmap.rows;
 
-	glTexCoord2f(1.0, 1.0);
-	glVertex3f(200.0, 200.0, 0.0);
+		lettre[i].bl = g->bitmap_left;
+		lettre[i].bt = g->bitmap_top;
 
-	glTexCoord2f(1.0, 0.0);
-	glVertex3f(200.0, 300.0, 0.0);
+		lettre[i].tx = ox / (float)_atlasWidth;
+		lettre[i].ty = oy / (float)_atlasHeight;
 
-	glTexCoord2f(0.0, 0.0);
-	glVertex3f(100.0, 300.0, 0.0);
-	glEnd();
+		rowh = std::max(rowh, (int)g->bitmap.rows);
+		ox += g->bitmap.width + 1;
+	}
+
+	LOGINFO(("Generated a %dx%d (%d kb) atlas texture with %d characters", _atlasWidth, _atlasHeight, _atlasWidth * _atlasHeight / 1024, nbrCharacters));
 }

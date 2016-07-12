@@ -337,7 +337,7 @@ void afficheInfo( Uint32 tempsDisplay ) {
 
 
 
-	fonteEngine->affiche();
+	fonteEngine->drawString("Coucou ma grosse caille !!!", 100, 100, 300, 300);
 
 
 
@@ -1728,7 +1728,7 @@ int main(int argc, char** argv) {
 	string fonte = "@Fonte\\Fragmentcore.otf";		// Chargement de la fonte de caractères
 	JktUtils::RessourcesLoader::getFileRessource(fonte);
 
-	fonteEngine->loadFonte(fonte);
+	fonteEngine->loadFonte(fonte, 48);
 
 
 	// Initialisation de la classe CDlgBoite pour l'IHM

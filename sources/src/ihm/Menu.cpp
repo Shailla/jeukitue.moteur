@@ -10,10 +10,9 @@
 #include <GL/glew.h>
 #include <GL/glu.h>
 #include "SDL.h"
-#include "main/glfont2.h"
+#include "util/fonte/Fonte.h"
 
 using namespace std;
-using namespace glfont;
 
 class CGame;
 #include "util/Trace.h"
@@ -29,7 +28,7 @@ using namespace JktMenu;
 
 extern CFocus *pFocus;
 extern bool Aide;
-extern GLFont myfont;
+extern Fonte* fonte;
 extern CCfg Config;
 
 namespace JktMenu
@@ -107,11 +106,9 @@ LOGDEBUG(("CMenu::~CMenu() titre=%s%T", titre, this));
 	del_ItemsRem();
 }
 
-void CMenu::afficheTitre()
-{
-	float top_color[] = { 1.0f, 1.0f, 0.0f };
-	float bottom_color[] = { 1.0f, 0.0f, 0.8f };
-	myfont.DrawString( titre, TAILLEFONT, 280+CORX, 360+CORY, top_color, bottom_color );
+void CMenu::afficheTitre() {
+	float color[] = { 1.0f, 0.0f, 0.8f };
+	fonte->drawString( titre, 280+CORX, 360+CORY, 200.0f, color);
 }
 
 void CMenu::afficheItems()
@@ -178,7 +175,7 @@ void CMenu::afficheItems()
 		else
 			glColor3f( 1.0, 1.0, 1.0 );		// Couleur blanche par défaut
 
-		myfont.DrawString( items[i+ajust], TAILLEFONT, float(260+CORX), float(300+CORY-(i*20)) );
+		fonte->drawString(items[i+ajust], float(260+CORX), float(300+CORY-(i*20)), 200.0f);
 		i++;
 	}
 }
@@ -199,7 +196,7 @@ void CMenu::afficheItemsDroits()
 				glColor3f( 1.0, 1.0, 1.0 );		// Couleur rouge si focussé
 
 			if( items_droits[i+ajust] )
-				myfont.DrawString( items_droits[i+ajust], TAILLEFONT, float(430+CORX), float(300+CORY-(i*20)) );
+				fonte->drawString( items_droits[i+ajust], float(430+CORX), float(300+CORY-(i*20)), 200.0f);
 			i++;
 		}
 	}
@@ -212,7 +209,7 @@ void CMenu::afficheItemsRem()
 			// Affichage de la remarque associée à l'item focussé
 		glColor3f( 0.5f, 0.5f, 0.5f );
 		if( items_rem[choixY] )
-			myfont.DrawString( items_rem[choixY], TAILLEFONT, 100, 50+CORY );
+			fonte->drawString( items_rem[choixY], 100, 50+CORY, 200.0f);
 	}
 }
 

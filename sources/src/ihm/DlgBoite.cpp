@@ -7,7 +7,7 @@
 #include <GL/glew.h>
 #include <GL/glu.h>
 #include "SDL.h"
-#include "main/glfont2.h"
+#include "util/fonte/Fonte.h"
 
 using namespace std;
 
@@ -19,13 +19,12 @@ using namespace std;
 
 #include "ihm/DlgBoite.h"
 
-using namespace glfont;
 using namespace JktMenu;
 using namespace JktUtils;
 
 extern CCfg Config;
 extern bool Aide;
-extern GLFont myfont;
+extern Fonte* fonte;
 extern CFocus *pFocus;
 
 namespace JktMenu
@@ -150,7 +149,6 @@ void CBouton::afficheTexte()
 	glEnable( GL_TEXTURE_2D );
 	glEnable( GL_BLEND );
 
-	myfont.Begin();
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	if( m_bFocus )
@@ -158,7 +156,7 @@ void CBouton::afficheTexte()
 	else
 		glColor3f( 0.0f, 0.0f, 0.0f );
 
-	myfont.DrawStringCentre(txt, TAILLEFONT, TAILLE_BOUTON_X/2, TAILLE_BOUTON_Y/2);
+//	fonte->drawStringCentre(txt, TAILLE_BOUTON_X/2, TAILLE_BOUTON_Y/2, 200.0f);
 }
 
 bool CDlgBoite::INIT_CLASSE()
@@ -197,7 +195,7 @@ LOGDEBUG(("CDlgBoite::CDlgBoite(titre=%x,txt=%s,fct_retour=%x,type=%d)%T", titre
 	m_Titre = new char[ strlen( titre ) + 1 ];
 	strcpy( m_Titre, titre );
 
-	myfont.GetStringOfSize( string(txt), TAILLEFONT, TAILLEBX-60.f, m_Texte,15 );
+//	myfont.GetStringOfSize( string(txt), TAILLEFONT, TAILLEBX-60.f, m_Texte,15 );
 
 	m_FonctionRetour = fct_retour;
 
@@ -212,7 +210,7 @@ CDlgBoite::CDlgBoite( const char *titre, const char *txt, PF fct_retour, CBouton
 	m_Titre = new char[ strlen( titre ) + 1 ];
 	strcpy( m_Titre, titre );
 
-	myfont.GetStringOfSize( string(txt), TAILLEFONT, TAILLEBX-60.f, m_Texte, 15 );
+//	myfont.GetStringOfSize( string(txt), TAILLEFONT, TAILLEBX-60.f, m_Texte, 15 );
 
 	m_FonctionRetour = fct_retour;
 
@@ -312,11 +310,10 @@ void CDlgBoite::afficheTitre()
 	glEnable( GL_TEXTURE_2D );
 	glEnable( GL_BLEND );
 
-	myfont.Begin();
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	glColor3f( 0.0f, 0.0f, 0.0f );
-	myfont.DrawString( m_Titre, TAILLEFONT, CORX + 20, CORY + TAILLEBY - 8 );
+	fonte->drawString(m_Titre, CORX + 20, CORY + TAILLEBY - 8, 200.0f);
 }
 
 void CDlgBoite::afficheTexte()
@@ -324,12 +321,11 @@ void CDlgBoite::afficheTexte()
 	glEnable( GL_TEXTURE_2D );
 	glEnable( GL_BLEND );
 
-	myfont.Begin();
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	glColor3f( 0.0f, 0.0f, 0.0f );
 	for( unsigned int i=0 ; i<m_Texte.size() ; i++ )
-		myfont.DrawString( m_Texte[i], TAILLEFONT, CORX + 50, CORY + TAILLEBY - 50 - i*20.0f );
+		fonte->drawString(m_Texte[i], CORX + 50, CORY + TAILLEBY - 50 - i*20.0f, 200.0f);
 }
 
 void CDlgBoite::afficheBouton()
@@ -339,10 +335,8 @@ void CDlgBoite::afficheBouton()
 	glDepthMask( GL_FALSE );
 	glDisable( GL_DEPTH_TEST );
 
-	for( int j=1 ; j<4 ; j++ )
-	{
-		switch( j )
-		{
+	for( int j=1 ; j<4 ; j++ ) {
+		switch( j ) {
 		case 1:
 			glPushMatrix();
 				glTranslatef( CORX + 15.0f, CORY + 10.0f, 0.0f );

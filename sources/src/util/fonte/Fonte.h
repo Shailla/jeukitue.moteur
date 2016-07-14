@@ -8,12 +8,16 @@
 #ifndef SRC_UTIL_FONTE_FONTE_H_
 #define SRC_UTIL_FONTE_FONTE_H_
 
+#include <string>
+
 #include <GL/gl.h>
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
 
 class Fonte {
-	GLuint _fonteTex;		// Texture atlas de la fonte
+	FT_Library _ft;
+
+	int _fonteTex;		// Texture atlas de la fonte
 
 	float _atlasWidth;		// Largeur de la texture atlas en pixels
 	float _atlasHeight;		// Hauteur de la texture atlas en pixels
@@ -36,8 +40,10 @@ class Fonte {
 	} lettres[128];
 
 public:
-	Fonte(FT_Face& face);
+	Fonte();
 	virtual ~Fonte();
+
+	void load(const std::string& fonte, int height);
 
 	void drawString(const std::string& text, float x, float y, float scalar, float color[]);
 	void drawString(const std::string& text, float x, float y, float scalar);

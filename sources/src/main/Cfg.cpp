@@ -850,11 +850,13 @@ void CCfg::CDisplay::InitSDL() {
 	}
 	else {
 		/* Print valid modes */
-		LOGINFO(("Modes video disponibles : "));
+		stringstream str;
 
 		for( int i=0 ; modes[i] ; ++i ) {
-			LOGINFO(("[%d * %d]", modes[i]->w, modes[i]->h));
+			str << "[" << modes[i]->w << "*" << modes[i]->h << "] ";
 		}
+
+		LOGINFO(("Modes video disponibles : %s", str.str().c_str()));
 	}
 
 	if( !SDL_VideoModeOK(X, Y, bpp, flags) ) {

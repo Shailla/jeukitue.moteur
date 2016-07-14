@@ -14,7 +14,6 @@ Viewer* Fabrique::_agarView = 0;
 Controller* Fabrique::_agarController = 0;
 PluginEngine* Fabrique::_pluginEngine = 0;
 CommandeInterpreter* Fabrique::_commandeInterpreter = 0;
-FonteEngine* Fabrique::_fonteEngine = 0;
 
 void Fabrique::construct(void) {
     UdpController* udpController = new UdpController();
@@ -26,8 +25,6 @@ void Fabrique::construct(void) {
 
     _agarController = new Controller(_agarView, _pluginEngine);
     _commandeInterpreter = new CommandeInterpreter(_agarView);
-
-    _fonteEngine = new FonteEngine();
 }
 
 Centralisateur* Fabrique::getCentralisateur() {
@@ -69,13 +66,4 @@ CommandeInterpreter* Fabrique::getCommandeInterpreter() {
 	}
 
     return _commandeInterpreter;
-}
-
-FonteEngine* Fabrique::getFonteEngine() {
-	if(!_fonteEngine) {
-		LOGERROR(("ACCES PREMATURE A UN ELEMENT DE LA FABRIQUE"));
-		exit(1);
-	}
-
-    return _fonteEngine;
 }

@@ -27,8 +27,7 @@ CMaterial::CMaterial() {
 	m_Specular[0] = 0.0f;	m_Specular[1] = 0.0f;	m_Specular[2] = 0.0f;	m_Specular[3] = 1.0f;
 }
 
-CMaterial::~CMaterial()
-{
+CMaterial::~CMaterial() {
 }
 
 CMaterial::MAT_TYPE CMaterial::Type() const

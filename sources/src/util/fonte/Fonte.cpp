@@ -20,9 +20,37 @@ using namespace std;
 // Maximum texture width
 #define MAXWIDTH 1024
 
-Fonte::Fonte(FT_Face& face) {
+Fonte::Fonte() :_ft() {
 	_atlasWidth = 0;
 	_atlasHeight = 0;
+	_fonteTex = -1;
+
+	if(FT_Init_FreeType(&_ft)) {
+		LOGERROR(("Librairie FreeType introuvable"));
+	}
+	else {
+		LOGINFO(("Librairie FreeType initialisée"));
+	}
+}
+
+void Fonte::load(const string& fonte, int height) {
+	FT_Face face;
+
+	/* ************************************** */
+	/* Charge la fonte                        */
+	/* ************************************** */
+
+	if(FT_New_Face(_ft, fonte.c_str(), 0, &face)) {
+		LOGERROR(("Echec d'ouverture de la fonte : %s", fonte.c_str()));
+		return;
+	}
+	else {
+		LOGINFO(("Fonte chargée : %s", fonte.c_str()));
+	}
+
+	FT_Set_Pixel_Sizes(face, 0, height);
+
+
 
 	memset(lettres, 0, sizeof(lettres));
 
@@ -38,7 +66,6 @@ Fonte::Fonte(FT_Face& face) {
 
 	for (int i = 32; i < 128; i++) {
 		if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
-			LOGINFO(("Loading character %d failed!", i));
 			continue;
 		}
 
@@ -123,8 +150,6 @@ Fonte::Fonte(FT_Face& face) {
 		lettres[i]._afterX = float(g->advance.x >> 6) / _atlasWidth;
 		lettres[i]._afterY = float(g->advance.y >> 6) / _atlasHeight;
 
-		LOGINFO(("xxx %c %f %f %f %f %f %f", i, lettres[i]._texLeft, lettres[i]._texBottom, lettres[i]._texRight, lettres[i]._texTop, lettres[i]._texWidth, lettres[i]._texHeight));
-
 		glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, g->bitmap.width, g->bitmap.rows, GL_ALPHA, GL_UNSIGNED_BYTE, g->bitmap.buffer);
 
 		rowHeight = std::max(rowHeight, (int)g->bitmap.rows);
@@ -135,6 +160,9 @@ Fonte::Fonte(FT_Face& face) {
 }
 
 Fonte::~Fonte() {
+	if(_fonteTex != -1) {
+		glDeleteTextures(1, &_fonteTex);
+	}
 }
 
 void Fonte::drawString(const string& text, float x, float y, float scalar, float color[]) {
@@ -144,6 +172,10 @@ void Fonte::drawString(const string& text, float x, float y, float scalar, float
 
 void Fonte::drawString(const string& text, float x, float y, float scalar) {
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	glBindTexture(GL_TEXTURE_2D, _fonteTex);
 
 	glBegin(GL_QUADS);

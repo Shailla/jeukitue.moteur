@@ -6,7 +6,6 @@
 #include "centralisateur/Centralisateur.h"
 #include "plugin/PluginEngine.h"
 #include "script/CommandeInterpreter.h"
-#include "util/fonte/FonteEngine.h"
 
 class Fabrique
 {
@@ -15,7 +14,6 @@ class Fabrique
     static Controller* _agarController;
     static JktPlugin::PluginEngine* _pluginEngine;
     static CommandeInterpreter* _commandeInterpreter;
-    static FonteEngine* _fonteEngine;
 public:
     static void construct(void);
 
@@ -24,7 +22,6 @@ public:
     static Centralisateur* getCentralisateur();
     static JktPlugin::PluginEngine* getPluginEngine();
     static CommandeInterpreter* getCommandeInterpreter();
-    static FonteEngine* getFonteEngine();
 };
 
 #endif

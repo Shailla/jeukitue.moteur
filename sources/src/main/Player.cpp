@@ -15,7 +15,6 @@ using namespace std;
 
 #include "fmod.h"
 #include "SDL.h"
-#include "main/glfont2.h"
 
 class CGame;
 

@@ -49,10 +49,8 @@ using namespace std;
 #include "SDL_net.h"
 #include "fmod.h"
 #include "fmod_errors.h"	/* optional */
-#include "main/glfont2.h"
 #include "tinyxml.h"
 #include "util/XmlHelper.h"
-using namespace glfont;
 
 #include "util/GenRef.h"
 #include "util/IpUtils.h"
@@ -64,7 +62,7 @@ using namespace glfont;
 #include "util/TableauIndex.cpp"		//Liste Indexée
 #include "util/FindFolder.h"
 #include "util/Erreur.h"
-#include "util/fonte/FonteEngine.h"
+#include "util/fonte/Fonte.h"
 #include "ressource/RessourcesLoader.h"
 
 class CGame;
@@ -138,7 +136,7 @@ using namespace JktSon;
 
 NotConnectedInterlocutor2* _notConnectedServerInterlocutor = 0;
 
-Fonte* fonte;
+Fonte fonte;
 
 CCfg Config;		// Contient la configuration du jeu
 CGame Game;			// Contient toutes les données vivantes du jeu
@@ -330,7 +328,7 @@ void afficheInfo( Uint32 tempsDisplay ) {
 
 	float pos = 0;
 
-	fonte->drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, 200.0f);
+	fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, 200.0f);
 
 	char cou[70];
 
@@ -338,7 +336,7 @@ void afficheInfo( Uint32 tempsDisplay ) {
 	if(Game.getMap() && Game.getMap()->IsSelectionMode()) {
 		sprintf( cou, "Selection : %s", Game.getMap()->getSelectedName());
 		str = cou;
-		fonte->drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, 200.0f);
+		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, 200.0f);
 	}
 
 	CPlayer *erwin = Game.Erwin();
@@ -347,7 +345,7 @@ void afficheInfo( Uint32 tempsDisplay ) {
 		// Affiche le Teta du joueur principal
 		sprintf( cou, "Teta Phi : %.3d %.3d", (int)erwin->Teta(), (int)erwin->Phi());
 		str = cou;
-		fonte->drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, 200.0f);
+		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, 200.0f);
 
 		// Affiche la position du joueur principal
 		float position[3];
@@ -355,24 +353,24 @@ void afficheInfo( Uint32 tempsDisplay ) {
 
 		sprintf( cou, "Position : %0.4f %0.4f %0.4f", position[0], position[1], position[2] );
 		str = cou;
-		fonte->drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, 200.0f);
+		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, 200.0f);
 	}
 
 	if(Config.Debug.bSonPerformances) {
 		unsigned int currentalloced, maxalloced;
 		sprintf( cou, "Son, usage CPU : %.4f %%", FSOUND_GetCPUUsage() );
 		str = cou;
-		fonte->drawString(str, 20.0f, pos++*15.0f+20.0f, 200.0f);
+		fonte.drawString(str, 20.0f, pos++*15.0f+20.0f, 200.0f);
 
 		FSOUND_GetMemoryStats( &currentalloced, &maxalloced );
 
 		sprintf( cou, "Son, memory allocated : %.5u ko", currentalloced/1024);
 		str = cou;
-		fonte->drawString( str, 20.0f, pos++*15.0f+20.0f, 200.0f);
+		fonte.drawString( str, 20.0f, pos++*15.0f+20.0f, 200.0f);
 
 		sprintf( cou, "Son, max memory allocated : %.5u ko", maxalloced/1024 );
 		str = cou;
-		fonte->drawString(str, 20.0f, pos++*15.0f+20.0f, 200.0f);
+		fonte.drawString(str, 20.0f, pos++*15.0f+20.0f, 200.0f);
 	}
 
 	if(Config.Debug.bSonSpectre) {
@@ -604,7 +602,7 @@ void display() {		// Fonction principale d'affichage
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor3f(1.0, 1.0, 1.0 );
 
-	fonte->drawString("Coucou ma grosse caille !!!", 100.0f, 300.0f, 200.0f);
+	fonte.drawString("Coucou ma grosse caille !!!", 100.0f, 300.0f, 200.0f);
 
 	afficheInfo(SDL_GetTicks()-temps);	// Affiche les infos texte en avant plan
 
@@ -1707,7 +1705,7 @@ int main(int argc, char** argv) {
 	string fonteFile = "@Fonte\\Mermaid1001.ttf";		// Chargement de la fonte de caractères
 	JktUtils::RessourcesLoader::getFileRessource(fonteFile);
 
-	fonte = Fabrique::getFonteEngine()->loadFonte(fonteFile, 192);
+	fonte.load(fonteFile, 192);
 
 
 	// Initialisation de la classe CDlgBoite pour l'IHM

@@ -6,6 +6,7 @@
 #include <GL/glu.h>
 #include <string>
 #include <vector>
+#include <iostream>
 #include <cmath>
 
 using namespace std;
@@ -16,8 +17,7 @@ using namespace std;
 #include "fmod_errors.h"
 #include "SDL_image.h"
 #include "SDL_net.h"
-#include "main/glfont2.h"
-using namespace glfont;
+#include "util/fonte/Fonte.h"
 
 #include "ressource/RessourcesLoader.h"
 #include "util/Trace.h"
@@ -35,61 +35,52 @@ extern JktSon::CDemonSons *DemonSons;
 
 void quit_game(const char* txt, int code)	// Quitte proprement le jeu
 {
-LOGDEBUG(("quit_game(code=%d,txt=%s)", code, txt));
+LOGINFO(("quit_game(code=%d,txt=%s)", code, txt));
 	cerr << endl << __FILE__ << ":" << __LINE__ << " Quit game with code and message : " << code << " - '" << txt << "'" << flush;
 	exit( code );
 }
 
 void quit_game(const string& txt, int code)	// Quitte proprement le jeu
 {
-LOGDEBUG(("quit_game(code=%d,txt=%s)", code, txt.c_str()));
+LOGINFO(("quit_game(code=%d,txt=%s)", code, txt.c_str()));
 	cerr << endl << __FILE__ << ":" << __LINE__ << " Quit game with code and message : " << code << " - '" << txt << "'" << flush;
 	exit( code );
 }
 
 void quit_JKT() {
-LOGDEBUG(("quit_JKT()"));
-	string trace1 = "Derniere erreur FMOD : ";
-	trace1 += FMOD_ErrorString(FSOUND_GetError());
+	LOGINFO(("quit_JKT()"));
 
-	string trace2 = "Derniere erreur SDL : ";
-	trace2 += SDL_GetError();
+	string trace = "Denière erreurs des librairies :";
 
-	string trace3 = "Derniere erreur SDL_Net : ";
-	trace3 += SDLNet_GetError();
+	trace = "\n - FMOD : ";
+	trace += FMOD_ErrorString(FSOUND_GetError());
 
-	string trace4 = "Derniere erreur openGL : ";
-	trace4 += (char*)gluErrorString(glGetError());
+	trace = "\n - SDL : ";
+	trace += SDL_GetError();
 
-	string trace5 = "Derniere erreur Agar : ";
+	trace = "\n - SDL_Net : ";
+	trace += SDLNet_GetError();
+
+	trace = "\n - openGL : ";
+	trace += (char*)gluErrorString(glGetError());
+
+	trace = "\n - Agar : ";
 	const char* agarError = AG_GetError();
 
 	if(agarError != NULL) {
-		trace5 += agarError;
+		trace += agarError;
 	}
 	else {
-		trace5 += "Aucune";
+		trace += "Aucune";
 	}
 
-LOGDEBUG((trace1.c_str()));
-LOGDEBUG((trace2.c_str()));
-LOGDEBUG((trace3.c_str()));
-LOGDEBUG((trace4.c_str()));
-LOGDEBUG((trace5.c_str()));
+	LOGINFO((trace.c_str()));
 
-	cerr << endl << __FILE__ << ":" << __LINE__;
-	cerr << endl << trace1;
-	cerr << endl << trace2 << endl;
-	cerr << endl << trace3 << endl;
-	cerr << endl << trace4 << endl;
-	cerr << endl << trace5 << endl;
-	cerr.flush();
+	cerr << endl << __FILE__ << ":" << __LINE__ << endl << trace << flush;
 
 	FSOUND_Close();		// Fermeture d'FMOD
 	SDLNet_Quit();		// Fermeture d'SDL_Net
 	SDL_Quit();			// Fermeture de SDL
-
-	LOGERROR(("Erreur OpenGL : %s", gluErrorString(glGetError())));
 }
 
 bool checkEventsForIntro(void)		// Vérifie si 'escape' ou le bouton souris ont été frappés
@@ -151,12 +142,12 @@ void load_Intro( int width, int height ) {
 	JktUtils::RessourcesLoader::getFileRessource(bruitHurlement);
 	sonHurlement = DemonSons->CreateSon( bruitHurlement.c_str() );
 
-	load_IntroSub( width, height );
+	load_IntroSub( width, height);
 
-	DemonSons->Delete( sonChariot );	// Son retour chariot machine à écrire
-	DemonSons->Delete( sonTouche );		// Son frappe d'une touche clavier
-	DemonSons->Delete( sonEspace );		// Son frappe de la touche espace clavier
-	DemonSons->Delete( sonHurlement );	// Son hurlement du sauveur de la planète
+	DemonSons->Delete(sonChariot);		// Son retour chariot machine à écrire
+	DemonSons->Delete(sonTouche);		// Son frappe d'une touche clavier
+	DemonSons->Delete(sonEspace);		// Son frappe de la touche espace clavier
+	DemonSons->Delete(sonHurlement);	// Son hurlement du sauveur de la planète
 }
 
 
@@ -164,11 +155,11 @@ void load_IntroSub(const int width, const int height ) {
 	LOGDEBUG(("load_IntroSub(width=%d,height=%d)", width, height));
 
 	// Chargement de la fonte de caractères
-	GLFont fonteIntro;
-	unsigned int texFonteIntro;
-
-	string fileFonteIntro = "@Fonte\\FonteIntro.glf";
+	string fileFonteIntro = "@Fonte\\Mermaid1001.ttf";
 	JktUtils::RessourcesLoader::getFileRessource(fileFonteIntro);
+
+	Fonte fonteIntro;
+	fonteIntro.load(fileFonteIntro, 192);
 
 	string str1 = "Nous sommes en 2056.\n\nLa surface de la Terre n'est plus qu'un ocean d'acide.\nLa loi a laisse sa place a celle du plus fort et tout se regle\ndesormais lors de combats sans gland.\n\n      Voici le seul homme qui peut encore sauver la planete... ";
 	string str2 = "Alors, vous l'avez compris...\n   On est vraiment dans la merde !";
@@ -192,16 +183,6 @@ void load_IntroSub(const int width, const int height ) {
 	SDL_UnlockSurface( image1 );
 	SDL_FreeSurface( image1 );
 
-	glGenTextures( 1, &texFonteIntro );
-
-	if( !fonteIntro.Create( fileFonteIntro, texFonteIntro ) ) {
-		LOGDEBUG(("loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro));
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Echec d'ouverture de la fonte : " << fileFonteIntro << endl;
-	}
-	else {
-		LOGDEBUG(("loadSubIntro() Texture de fonte (%s) : %d", fileFonteIntro.c_str(), texFonteIntro));
-	}
-
 	glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
 	gluOrtho2D(0.0, width, 0.0, height );
@@ -212,7 +193,6 @@ void load_IntroSub(const int width, const int height ) {
 	glEnable(GL_TEXTURE_2D);
 	glDisable( GL_DEPTH_TEST );
 
-	fonteIntro.Begin();
 	vector< string >::const_iterator iter;
 	float vertical;
 	char lettre;
@@ -224,6 +204,7 @@ void load_IntroSub(const int width, const int height ) {
 	 * ***********************************************/
 
 	glColor3f( 1.0, 1.0, 1.0 );
+
 	for( unsigned int i=0 ; i<str1.length() ; i++ ) {
 		lettre = str1[ i ];
 
@@ -250,7 +231,7 @@ void load_IntroSub(const int width, const int height ) {
 			// Affichage du texte
 		vertical = height - 20.0f;
 		for( iter=lignes.begin() ; iter!=lignes.end() ; iter++ ) {	// Affiche chaque ligne du texte
-			fonteIntro.DrawString( *iter, 1.2f, 20.0f, vertical );
+			fonteIntro.drawString(*iter, 20.0f, vertical, 150.0f);
 			vertical -= 25.0f;
 		}
 
@@ -258,14 +239,13 @@ void load_IntroSub(const int width, const int height ) {
 		SDL_Delay( (unsigned int)( 60.0f * ((float)rand()/(float)RAND_MAX) ) );	// Petite attente entre deux lettres consécutives
 
 		if( checkEventsForIntro() ) {	// Vérifie si l'utilisateur veut sortir de l'intro
-			glDeleteTextures( 1, &texFonteIntro );	// Destruction de la texture de fonte
 			delete image2;
 			return;
 		}
 	}
 
 		// Attends un petit instant à la fin de l'affichage du texte complet
-	SDL_Delay( 400 );
+	SDL_Delay( 1500 );
 	lignes.clear();	// Efface tout le texte
 
 
@@ -295,7 +275,6 @@ void load_IntroSub(const int width, const int height ) {
 		SDL_Delay( 100 );
 
 		if( checkEventsForIntro() ) {	// Vérifie si l'utilisateur veut sortir de l'intro
-			glDeleteTextures( 1, &texFonteIntro );	// Destruction de la texture de fonte
 			return;
 		}
 	}
@@ -306,7 +285,6 @@ void load_IntroSub(const int width, const int height ) {
 	 * lettre par lettre (genre machine à écrire)
 	 * ***********************************************/
 		
-	fonteIntro.Begin();
 	glColor3f( 1.0, 1.0, 1.0 );
 
 	for(unsigned int i=0 ; i<str2.length() ; i++) {
@@ -336,7 +314,7 @@ void load_IntroSub(const int width, const int height ) {
 
 		for( iter=lignes.begin() ; iter!=lignes.end() ; iter++ )	// Affiche chaque ligne
 		{
-			fonteIntro.DrawString( *iter, 1.2f, 20.0f, vertical );
+			fonteIntro.drawString(*iter, 20.0f, vertical, 150.0f);
 			vertical -= 45.0f;
 		}
 
@@ -344,17 +322,9 @@ void load_IntroSub(const int width, const int height ) {
 		SDL_Delay( 75 + (unsigned int)( 60.0f * ((float)rand()/(float)RAND_MAX) ) );	// Petite attente entre deux lettres consécutives
 
 		if( checkEventsForIntro() )	{	// Vérifie si l'utilisateur veut sortir de l'intro
-			glDeleteTextures( 1, &texFonteIntro );	// Destruction de la texture de fonte
 			return;
 		}
 	}
 
 	SDL_Delay( 1000 );
-
-
-	/* *******************************
-	 * Destruction des ressources
-	 * *******************************/
-
-	glDeleteTextures( 1, &texFonteIntro );	// Destruction de la texture de fonte
 }

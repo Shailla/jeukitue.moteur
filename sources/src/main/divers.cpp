@@ -161,9 +161,9 @@ void load_IntroSub(const int width, const int height ) {
 	Fonte fonteIntro;
 	fonteIntro.load(fileFonteIntro, 192);
 
-	string str1 = "Nous sommes en 2056.\n\nLa surface de la Terre n'est plus qu'un ocean d'acide.\nLa loi a laisse sa place a celle du plus fort et tout se regle\ndesormais lors de combats sans gland.\n\n      Voici le seul homme qui peut encore sauver la planete... ";
-	string str2 = "Alors, vous l'avez compris...\n   On est vraiment dans la merde !";
-	vector< string > lignes;		// Lignes séparées par un retour chariot
+	wstring str1 = L"Nous sommes en 2056.\n\nLa surface de la Terre n'est plus qu'un oc\351an d'acide.\nLa loi a laiss\351 sa place a celle du plus fort et tout se r\232gle\nd\351sormais lors de combats sans gland.\n\n      Voici le seul homme qui peut encore sauver la plan\232te... ";
+	wstring str2 = L"Alors, vous l'avez compris...\n   On est vraiment dans la merde !";
+	vector< wstring > lignes;		// Lignes séparées par un retour chariot
 
 	srand( SDL_GetTicks() );	// Initialisation de la fonction rand() pour les nombres aléatoires
 
@@ -193,9 +193,9 @@ void load_IntroSub(const int width, const int height ) {
 	glEnable(GL_TEXTURE_2D);
 	glDisable( GL_DEPTH_TEST );
 
-	vector< string >::const_iterator iter;
+	vector< wstring >::const_iterator iter;
 	float vertical;
-	char lettre;
+	wchar_t lettre;
 
 
 	/* ***********************************************
@@ -211,11 +211,11 @@ void load_IntroSub(const int width, const int height ) {
 		glClear( GL_COLOR_BUFFER_BIT );
 
 		if( i==0 )
-			lignes.push_back( "" );
+			lignes.push_back( L"" );
 
 		if( (lettre=='\n') ) {	// Si on a affaire à un passage à la ligne
 			DemonSons->Play( sonChariot );	// Envoie le son retour chariot
-			lignes.push_back( "" );			// Et passe à la ligne
+			lignes.push_back( L"" );			// Et passe à la ligne
 			SDL_Delay( 700 );
 		}
 		else {
@@ -293,11 +293,11 @@ void load_IntroSub(const int width, const int height ) {
 		glClear( GL_COLOR_BUFFER_BIT );
 
 		if( i==0 )
-			lignes.push_back( "" );
+			lignes.push_back( L"" );
 
 		if( (lettre=='\n') ) {
 			DemonSons->Play( sonChariot );
-			lignes.push_back( "" );
+			lignes.push_back( L"" );
 			SDL_Delay( 700 );
 		}
 		else {

@@ -17,9 +17,6 @@ using namespace std;
 
 #include "util/fonte/Fonte.h"
 
-// Maximum texture width
-#define MAXWIDTH 1024
-
 Fonte::Fonte() :_ft() {
 	_atlasWidth = 0;
 	_atlasHeight = 0;
@@ -64,10 +61,15 @@ void Fonte::load(const string& fonte, int height) {
 	/* Calcule la taille minimale de la texture atlas  */
 	/* *********************************************** */
 
-	for (int i = 32; i < 128; i++) {
+	int chars[MAXASCIICHAR];
+
+	for (int i = 32; i < MAXASCIICHAR; i++) {
 		if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
+			chars[i] = -1;
 			continue;
 		}
+
+		chars[i] = i;
 
 		if (rowWidth + g->bitmap.width + 1 >= MAXWIDTH) {	// Si on est au bout de la ligne on passe à la suivante
 			_atlasWidth = std::max((int)_atlasWidth, rowWidth);
@@ -80,6 +82,17 @@ void Fonte::load(const string& fonte, int height) {
 		rowWidth += g->bitmap.width + 1;
 		rowHeight = std::max(rowHeight, (int)g->bitmap.rows);
 	}
+
+	stringstream msg;
+
+	for(int i = 32 ; i<MAXASCIICHAR ; i++) {
+		if(chars[i] != -1) {
+			msg << " " << i << ":" << (char)i;
+		}
+	}
+
+	LOGINFO(("LISTE des caractères dans la fonte : %s", msg.str().c_str()));
+
 
 	// Taille de la texture atlas
 	_atlasWidth = std::max((int)_atlasWidth, rowWidth);
@@ -117,7 +130,7 @@ void Fonte::load(const string& fonte, int height) {
 	float y = 0;
 	rowHeight = 0;
 
-	for (int i = 32; i < 128; i++) {
+	for (int i = 32; i < MAXASCIICHAR; i++) {
 		if (FT_Load_Char(face, i, FT_LOAD_RENDER)) {
 			LOGINFO(("Loading character %d failed!", i));
 			continue;
@@ -181,9 +194,63 @@ void Fonte::drawString(const string& text, float x, float y, float scalar) {
 	glBegin(GL_QUADS);
 
 	float tx1, tx2, ty1, ty2, width, height, deltaX, deltaY;
+	int lettre;
 
 	for(int i=0 ; text[i] ; i++) {
-		int lettre = text[i];
+		lettre = text[i];
+
+		tx1 = lettres[lettre]._texLeft;
+		tx2 = lettres[lettre]._texRight;
+		ty1 = lettres[lettre]._texBottom;
+		ty2 = lettres[lettre]._texTop;
+
+		width = lettres[lettre]._texWidth * scalar;
+		height = lettres[lettre]._texHeight * scalar;
+
+		deltaX = lettres[lettre]._deltaX * scalar;
+		deltaY = lettres[lettre]._deltaY * scalar;
+
+		glTexCoord2f( tx1, ty2 );
+		glVertex3f( x + deltaX,				y + deltaY - height,	0.0 );
+
+		glTexCoord2f( tx2, ty2 );
+		glVertex3f( x + deltaX + width, 	y + deltaY - height,	0.0 );
+
+		glTexCoord2f( tx2, ty1 );
+		glVertex3f( x + deltaX + width, 	y + deltaY,				0.0 );
+
+		glTexCoord2f( tx1, ty1 );
+		glVertex3f( x + deltaX, 			y + deltaY,				0.0 );
+
+		x += lettres[lettre]._afterX * scalar;
+		y += lettres[lettre]._afterY * scalar;
+	}
+
+	glEnd();
+
+	glDisable( GL_TEXTURE_2D );
+}
+
+void Fonte::drawString(const wstring& text, float x, float y, float scalar, float color[]) {
+	glColor3f(color[0], color[1], color[2]);
+	drawString(text, x, y, scalar);
+}
+
+void Fonte::drawString(const wstring& text, float x, float y, float scalar) {
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glBindTexture(GL_TEXTURE_2D, _fonteTex);
+
+	glBegin(GL_QUADS);
+
+	float tx1, tx2, ty1, ty2, width, height, deltaX, deltaY;
+	int lettre;
+
+	for(int i=0 ; text[i] ; i++) {
+		lettre = text[i];
 
 		tx1 = lettres[lettre]._texLeft;
 		tx2 = lettres[lettre]._texRight;

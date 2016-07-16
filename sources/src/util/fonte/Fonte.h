@@ -14,6 +14,12 @@
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
 
+// Maximum texture width
+#define MAXWIDTH 1024
+
+// Plus grand charactère ASCII inclus dans l'atlas
+#define MAXASCIICHAR 255
+
 class Fonte {
 	FT_Library _ft;
 
@@ -37,7 +43,7 @@ class Fonte {
 
 		float _afterX;		// Mouvements pour la prochaine lettre
 		float _afterY;		// Mouvements pour la prochaine lettre
-	} lettres[128];
+	} lettres[MAXASCIICHAR];
 
 public:
 	Fonte();
@@ -46,7 +52,10 @@ public:
 	void load(const std::string& fonte, int height);
 
 	void drawString(const std::string& text, float x, float y, float scalar, float color[]);
+	void drawString(const std::wstring& text, float x, float y, float scalar, float color[]);
+
 	void drawString(const std::string& text, float x, float y, float scalar);
+	void drawString(const std::wstring& text, float x, float y, float scalar);
 };
 
 #endif /* SRC_UTIL_FONTE_FONTE_H_ */

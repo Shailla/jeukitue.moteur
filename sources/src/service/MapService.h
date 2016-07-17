@@ -13,21 +13,19 @@
 #include "service/dto/AseFileInformationDto.h"
 #include "service/dto/MapInformationDto.h"
 
-using namespace std;
-
 /**
  * Service class providing access to MAP information.
  */
 class MapService {
-public:
 	MapService();
+public:
 	virtual ~MapService();
 
 	/** Read the list of the ASE files in the ASE directory. */
-	static void loadAseDirectoryContent(vector<AseFileInformationDto>& content);
+	static void loadAseDirectoryContent(std::vector<AseFileInformationDto>& content);
 
 	/** Read the list of the MAP files in the ASE directory. */
-	static void loadMapDirectoryContent(vector<MapInformationDto>& content);
+	static void loadMapDirectoryContent(std::vector<MapInformationDto>& content);
 };
 
 #endif /* MAPSERVICE_H_ */

@@ -9,8 +9,6 @@
 #include <fstream>
 #include <sstream>
 
-using namespace std;
-
 #include "SDL.h"
 #include "SDL_thread.h"
 
@@ -92,39 +90,39 @@ public:
 	void warn(const char *txt, ... );
 	void error(const char *txt, ... );
 
-	void debug(const string& txt, ... );
-	void info(const string& txt, ... );
-	void warn(const string& txt, ... );
-	void error(const string& txt, ... );
+	void debug(const std::string& txt, ... );
+	void info(const std::string& txt, ... );
+	void warn(const std::string& txt, ... );
+	void error(const std::string& txt, ... );
 
-	void debug(const stringstream& txt, ... );
-	void info(const stringstream& txt, ... );
-	void warn(const stringstream& txt, ... );
-	void error(const stringstream& txt, ... );
+	void debug(const std::stringstream& txt, ... );
+	void info(const std::stringstream& txt, ... );
+	void warn(const std::stringstream& txt, ... );
+	void error(const std::stringstream& txt, ... );
 };
 
-ofstream mFichier();
+std::ofstream mFichier();
 
 class Trace 
 {
 	static Trace *_Instance;
-	ofstream _Fichier;
+	std::ofstream _Fichier;
 	SDL_mutex *_Mutex;
 
 	// Option de log
 	TraceLevel _loggerLevel;	// Niveau de log minimum
 
-	vector<string> _excludeDebugFiles;
-	vector<string> _excludeInfoFiles;
-	vector<string> _excludeWarnFiles;
-	vector<string> _excludeErrorFiles;
+	std::vector<std::string> _excludeDebugFiles;
+	std::vector<std::string> _excludeInfoFiles;
+	std::vector<std::string> _excludeWarnFiles;
+	std::vector<std::string> _excludeErrorFiles;
 
 		// Constructor / destructor
 	Trace();
 	~Trace();
 
-	void loadConfigKey(map<string, string>& keys, const char* key, string& value);
-	void loadConfigKeyCommaSeparated(map<string, string>& keys, const char* key, vector<string>& value);
+	void loadConfigKey(std::map<std::string, std::string>& keys, const char* key, std::string& value);
+	void loadConfigKeyCommaSeparated(std::map<std::string, std::string>& keys, const char* key, std::vector<std::string>& value);
 
 public:
 	static Trace& instance();

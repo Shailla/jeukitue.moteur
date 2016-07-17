@@ -134,6 +134,15 @@ string StringUtils::findFirstWord(const string& s) {
 	return result;
 }
 
+bool StringUtils::isFinishedWith(const string& txt, const string& comp) {
+	if( txt.size() >= comp.size() && string( txt.end()-comp.size(), txt.end() ) == comp ) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
 vector<string> StringUtils::splitByCarriageReturns(const string& s) {
 	return split(s, isCarriageReturn);
 }

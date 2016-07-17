@@ -12,7 +12,12 @@
 
 using namespace std;
 
+const char* ASE_DIRECTORY =			"./ase/";						// Répertoire des MAP de jeu
+const char* ASE_EXTENSION =			".ASE";
+
 const char* MAP_DIRECTORY =			"./Map/";						// Répertoire des MAP de jeu
+const char* MAP_EXTENSION =			".map.xml";
+
 const char* PLAYER_MAP_DIRECTORY =	"./Ressources/Maps/Joueurs/";	// Répertoire des scripts des plugins
 const char* PLUGINS_DIRECTORY =		"./plugins/";					// Répertoire des MAP de jeu
 const char* TEMPORARY_DIRECTORY =	"./Tmp/";						// Répertoire temporaire de travail
@@ -20,10 +25,10 @@ const char* TEMPORARY_DIRECTORY =	"./Tmp/";						// Répertoire temporaire de tra
 namespace JktUtils
 {
 int RessourcesLoader::nbrElements = 9;
-const char* RessourcesLoader::elementsNamesAndFolders[] =
-{
+const char* RessourcesLoader::elementsNamesAndFolders[] = {
+	"@Fonte",	"./Ressources/Fontes",				// Polices / fontes
+
 	"@Fond",	"./Ressources/Images/Fonds",		// Images de fond
-	"@Fonte",	"./Ressources/Images/Fontes",		// Polices / fontes
 	"@Icone",	"./Ressources/Images/Icones",		// Icones des menus
 	"@Texture",	"./Ressources/Images/Textures",		// Images de textures par défaut
 

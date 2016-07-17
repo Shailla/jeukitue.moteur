@@ -9,11 +9,13 @@
 
 #include "menu/View.h"
 
+class MapInformationDto;
+
 class OpenSceneMapView : public View
 {
 	AG_Scrollview* _scrollview;
 	std::vector<AG_Button*> _mapButtons;
-	std::vector<std::string> _mapNames;
+	std::vector<MapInformationDto> _maps;
 public:
 	OpenSceneMapView(const AG_EventFn controllerCallback);
 	~OpenSceneMapView(void);

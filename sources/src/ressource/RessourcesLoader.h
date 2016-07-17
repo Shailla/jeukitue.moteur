@@ -3,7 +3,16 @@
 
 #include <string>
 #include <vector>
-using namespace std;
+
+extern const char* ASE_DIRECTORY;			// Répertoire des MAP de jeu
+extern const char* ASE_EXTENSION;
+
+extern const char* MAP_DIRECTORY;			// Répertoire des MAP de jeu
+extern const char* MAP_EXTENSION;
+
+extern const char* PLAYER_MAP_DIRECTORY;	// Répertoire des scripts des plugins
+extern const char* PLUGINS_DIRECTORY;		// Répertoire des MAP de jeu
+extern const char* TEMPORARY_DIRECTORY;	// Répertoire temporaire de travail
 
 namespace JktUtils
 {
@@ -14,10 +23,10 @@ class RessourcesLoader
 	static const char *elementsNamesAndFolders[];
 
 public:
-	static bool getFileRessource(string& file);
-	static bool getFileRessource(const string& rep, string& file);
-	static vector<string> getMaps(void);
-	static vector<string> getPlayerMaps(void);
+	static bool getFileRessource(std::string& file);
+	static bool getFileRessource(const std::string& rep, std::string& file);
+	static std::vector<std::string> getMaps(void);
+	static std::vector<std::string> getPlayerMaps(void);
 };
 
 }

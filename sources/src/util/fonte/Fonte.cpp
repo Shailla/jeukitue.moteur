@@ -91,8 +91,6 @@ void Fonte::load(const string& fonte, int height) {
 		}
 	}
 
-	LOGINFO(("LISTE des caractères dans la fonte : %s", msg.str().c_str()));
-
 
 	// Taille de la texture atlas
 	_atlasWidth = std::max((int)_atlasWidth, rowWidth);

@@ -5,7 +5,8 @@ using namespace std;
 #include <agar/core.h>
 #include <agar/gui.h>
 
-#include "util/FindFolder.h"
+#include "service/MapService.h"
+#include "service/dto/AseFileInformationDto.h"
 #include "menu/View.h"
 #include "menu/Controller.h"
 #include "menu/Viewer.h"
@@ -52,15 +53,13 @@ void OpenSceneASEView::show(void)
 	_aseNames.clear();
 
     // Création d'un bouton pour chaque Map disponible
-    string aseName;
-	CFindFolder folder( "./ASE/", 0, ".ASE" );
-	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
-	folder.reset();
-
 	int mapNumber = 0;
-	while( folder.findNext( aseName ) )
-	{
-		aseName.erase( aseName.find_last_of( "." ) );
+
+	vector<AseFileInformationDto> content;
+	MapService::loadAseDirectoryContent(content);
+
+	for(AseFileInformationDto dto : content) {
+		string aseName = dto.getAseFileMinimalName();
 
 		AG_Button* button = AG_ButtonNewFn(_scrollview,
 										   0,
@@ -68,7 +67,7 @@ void OpenSceneASEView::show(void)
 										   m_controllerCallback,
 										   "%i,%i",
 										   Controller::ImportAseAction,
-										   mapNumber++);		
+										   mapNumber++);
 		_aseButtons.push_back(button);
 		_aseNames.push_back(aseName);
 	}

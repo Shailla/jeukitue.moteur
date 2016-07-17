@@ -5,12 +5,19 @@
  *      Author: Erwin
  */
 
-#include "service/dto/AseFileInformationDto.h"
-#include "util/FindFolder.h"
+#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
+#include "boost/filesystem/fstream.hpp"
+#include <iostream>                        // for std::cout
+using namespace boost::filesystem;
+
+#include "util/Trace.h"
+#include "util/StringUtils.h"
+#include "ressource/RessourceConstantes.h"
 
 #include "service/MapService.h"
+#include "service/dto/AseFileInformationDto.h"
 
-extern const char* MAP_DIRECTORY;
+using namespace std;
 
 MapService::MapService() {
 }
@@ -19,39 +26,59 @@ MapService::~MapService() {
 }
 
 void MapService::loadAseDirectoryContent(vector<AseFileInformationDto>& content) {
+	path asePath(ASE_DIRECTORY);
 
-	CFindFolder folder( "./ASE/", 0, ".ASE" );
-	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
-	folder.reset();
+	if(!exists(asePath)) {
+		LOGERROR(("Le répertoire %s n'existe pas", ASE_DIRECTORY));
+		return;
+	}
 
-	string aseFileFullName;
+	directory_iterator end_itr; // default construction yields past-the-end
 
-	while(folder.findNext(aseFileFullName))
-	{
-		AseFileInformationDto dto;
+	for ( directory_iterator itr( asePath ); itr != end_itr; ++itr ) {
+		if ( is_directory( *itr ) ) {
+			// Ignore directories
+		}
+		else if ( itr->path().extension() == ASE_EXTENSION ) {
+			AseFileInformationDto dto;
 
-		dto.setAseFileFullName(aseFileFullName);													// Full ASE file name
-		dto.setAseFileMinimalName(aseFileFullName.erase( aseFileFullName.find_last_of( "." ) ));	// ASE file name without the extension
+			string aseFileFullName = itr->path().filename().string();
 
-		content.push_back(dto);
+			dto.setAseFileFullName(aseFileFullName);													// Full ASE file name
+			dto.setAseFileMinimalName( string(aseFileFullName.begin(), aseFileFullName.end() - strlen(ASE_EXTENSION)) );	// ASE file name without the extension
+
+			content.push_back(dto);
+		}
 	}
 }
 
 void MapService::loadMapDirectoryContent(vector<MapInformationDto>& content) {
+	path mapPath(MAP_DIRECTORY);
 
-	CFindFolder folder( MAP_DIRECTORY, 0, ".map.xml" );
-	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
-	folder.reset();
+	if(!exists(mapPath)) {
+		LOGERROR(("Le répertoire %s n'existe pas", MAP_DIRECTORY));
+		return;
+	}
 
-	string mapFileFullName;
+	directory_iterator end_itr; // default construction yields past-the-end
 
-	while(folder.findNext(mapFileFullName)) {
-		MapInformationDto dto;
+	for ( directory_iterator itr( mapPath ); itr != end_itr; ++itr ) {
+		if ( is_directory( *itr ) ) {
+			// Ignore directories
+		}
+		else {
+			string filename = itr->path().string();
 
-		dto.setMapFileFullName(mapFileFullName);													// Full ASE file name
+			if( JktUtils::StringUtils::isFinishedWith(filename, MAP_EXTENSION) ) {
+				MapInformationDto dto;
 
-		dto.setMapFileMinimalName(mapFileFullName.erase(mapFileFullName.find_last_of(".")).erase(mapFileFullName.find_last_of(".")));	// ASE file name without the extension
+				string mapFileFullName = itr->path().filename().string();
 
-		content.push_back(dto);
+				dto.setMapFileFullName(mapFileFullName);													// Full MAP file name
+				dto.setMapFileMinimalName(string(mapFileFullName.begin(), mapFileFullName.end() - strlen(MAP_EXTENSION)));	// MAP file name without the extension
+
+				content.push_back(dto);
+			}
+		}
 	}
 }

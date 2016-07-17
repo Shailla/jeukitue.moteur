@@ -9,6 +9,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(EXECUTABLE_OUTPUT_PATH ../../deploy/${CMAKE_BUILD_TYPE}-g++)
 set(CMAKE_CXX_FLAGS "-ggdb -Wall -Wno-unknown-pragmas -std=gnu++0x -fpermissive")
  
+find_package(Boost REQUIRED COMPONENTS filesystem) 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(LUA REQUIRED)
@@ -19,8 +20,8 @@ find_package(SDL REQUIRED)
 find_package(SDL_net REQUIRED)
 find_package(SDL_image REQUIRED)
 
-
 MESSAGE( STATUS "INCLUDES")
+MESSAGE( STATUS " Boost:          " ${Boost_INCLUDE_DIRS} )
 MESSAGE( STATUS " OpenGL & GLU:   " ${OPENGL_INCLUDE_DIR} )
 MESSAGE( STATUS " GLEW:           " ${GLEW_INCLUDE_DIRS} )
 MESSAGE( STATUS " LUA:            " ${LUA_INCLUDE_DIR} )
@@ -32,6 +33,7 @@ MESSAGE( STATUS " SDL_Net:        " ${SDL_IMAGE_INCLUDE_DIR} )
 MESSAGE( STATUS " SDL_Image:      " ${SDL_NET_INCLUDE_DIR} )
 
 MESSAGE( STATUS "LIBRARIES")
+MESSAGE( STATUS " Boost:          " ${Boost_LIBRARIES} )
 MESSAGE( STATUS " OpenGL & GLU:   " ${OPENGL_LIBRARY} )
 MESSAGE( STATUS " GLEW:           " ${GLEW_LIBRARIES} )
 MESSAGE( STATUS " LUA:            " ${LUA_LIBRARIES} )
@@ -43,6 +45,7 @@ MESSAGE( STATUS " SDL_Net         " ${SDL_NET_LIBRARY} )
 MESSAGE( STATUS " SDL_Image       " ${SDL_IMAGE_LIBRARY} )
 
 include_directories("src")
+include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${TREADS_INCLUDE_DIR})
 include_directories(${OPENGL_INCLUDE_DIR})
 include_directories(${GLEW_INCLUDE_DIR})
@@ -58,7 +61,7 @@ include_directories("../libs/fmodapi375win/api/inc")
 
 link_directories("../libs/fmodapi375win/api/lib")
 
-# Selection des fichiers source
+# Selection des fichiers source 
 file( 
 	GLOB_RECURSE SOURCE_FILES
 	src/*.cpp
@@ -91,5 +94,5 @@ target_link_libraries(
 	ag_core ag_gui ag_dev
 	${SDL_IMAGE_LIBRARY} ${SDL_NET_LIBRARY} ${SDL_LIBRARY}
 	fmod64vc
-	Iphlpapi ziparch mingw32 winmm ${FREETYPE_LIBRARIES} ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ws2_32 pthread ${LUA_LIBRARIES} ${JPEG_LIBRARIES} ${PNG_LIBRARIES} dxguid
+	Iphlpapi ziparch mingw32 winmm ${FREETYPE_LIBRARIES} ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${Boost_LIBRARIES} ws2_32 pthread ${LUA_LIBRARIES} ${JPEG_LIBRARIES} ${PNG_LIBRARIES} dxguid
 )

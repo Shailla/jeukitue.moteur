@@ -86,8 +86,7 @@ LOGDEBUG(("lanceMenuOpenMAP(var=%x)", var));
 	nbrFichier = 0;
 	folder.reset();
 
-	while( folder.findNext( name ) )
-	{
+	while( folder.findNext( name ) ) {
 		name.erase( name.find_last_of( "." ) );
 		name.erase( name.find_last_of( "." ) );
 		liste_suivant_open_MAP[nbrFichier] = suivantMAP;

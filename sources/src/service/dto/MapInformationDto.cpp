@@ -7,6 +7,8 @@
 
 #include "service/dto/MapInformationDto.h"
 
+using namespace std;
+
 MapInformationDto::MapInformationDto() {
 }
 

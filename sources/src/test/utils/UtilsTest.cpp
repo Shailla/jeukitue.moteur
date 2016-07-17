@@ -76,6 +76,14 @@ void UtilsTest::stringUtilsTest() {
 
 	ASSERT_EQUAL("hello", StringUtils::findFirstWord("   hello  you, how are you   "), "'findAndEraseFirstWord' KO");
 
+
+	// -----------------------------------------------------
+	log("Test - 'StringUtils::is...'", __LINE__);
+
+	ASSERT_EQUAL(true, StringUtils::isFinishedWith("abcdefghijkl", "jkl"), "'isFinishedWith' KO");
+	ASSERT_EQUAL(false, StringUtils::isFinishedWith("abc", "jkl"), "'isFinishedWith' KO");
+	ASSERT_EQUAL(false, StringUtils::isFinishedWith("abcdefghijklm", "jkl"), "'isFinishedWith' KO");
+
 	// -----------------------------------------------------
 	log("Test - 'StringUtils::split'", __LINE__);
 	vector<string> split = StringUtils::split(" \"Coucou\"  \" comment tu \"\" vas \" ", StringUtils::isGuillemet);

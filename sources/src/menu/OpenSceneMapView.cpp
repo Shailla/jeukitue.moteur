@@ -11,7 +11,8 @@ using namespace std;
 #include "menu/View.h"
 #include "menu/Controller.h"
 #include "menu/Viewer.h"
-#include "ressource/RessourcesLoader.h"
+#include "service/dto/MapInformationDto.h"
+#include "service/MapService.h"
 
 #include "menu/OpenSceneMapView.h"
 
@@ -54,18 +55,18 @@ void OpenSceneMapView::show(void) {
 	}
 
 	_mapButtons.clear();
-	_mapNames.clear();
+	_maps.clear();
 
     // Création d'un bouton pour chaque Map disponible
-	_mapNames = JktUtils::RessourcesLoader::getMaps();
+	MapService::loadMapDirectoryContent(_maps);
 
-	vector<string>::iterator iterMap = _mapNames.begin();
+	vector<MapInformationDto>::iterator iterMap = _maps.begin();
 	int mapNumber = 0;
 
-	while(iterMap < _mapNames.end()) {
-		string mapName = *iterMap;
+	while(iterMap < _maps.end()) {
+		MapInformationDto map = *iterMap;
 
-		AG_Button* button = AG_ButtonNewFn(_scrollview, 0, mapName.c_str(), m_controllerCallback, "%i,%i", Controller::OpenMapAction, mapNumber++);
+		AG_Button* button = AG_ButtonNewFn(_scrollview, 0, map.getMapFileMinimalName().c_str(), m_controllerCallback, "%i,%i", Controller::OpenMapAction, mapNumber++);
 		_mapButtons.push_back(button);
 
 		iterMap++;
@@ -77,5 +78,6 @@ void OpenSceneMapView::show(void) {
 }
 
 string OpenSceneMapView::getMapName(const int mapNumber) {
-	return _mapNames.at(mapNumber);
+	MapInformationDto map = _maps.at(mapNumber);
+	return map.getMapFileMinimalName();
 }

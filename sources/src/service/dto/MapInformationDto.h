@@ -10,25 +10,23 @@
 
 #include <string>
 
-using namespace std;
-
 /**
  * AseFileInformationDto is a DTO to contain general information about a MAP (name, number of players, ...).
  */
 class MapInformationDto {
-	string _mapFileFullName;
-	string _mapFileMinimalName;
+	std::string _mapFileFullName;
+	std::string _mapFileMinimalName;
 public:
 	MapInformationDto();
 	virtual ~MapInformationDto();
 
 	// Setters
-	void setMapFileFullName(const string& aseFileFullName);
-	void setMapFileMinimalName(const string& aseFileMinimalName);
+	void setMapFileFullName(const std::string& aseFileFullName);
+	void setMapFileMinimalName(const std::string& aseFileMinimalName);
 
 	// Getters
-	string getMapFileFullName();
-	string getMapFileMinimalName();
+	std::string getMapFileFullName();
+	std::string getMapFileMinimalName();
 };
 
 #endif /* MAPINFORMATIONDTO_H_ */

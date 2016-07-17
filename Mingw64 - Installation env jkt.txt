@@ -17,7 +17,7 @@
  - Ouvrir une nouvelle console MSYS
  - Exécuter à nouveau "pacman -Syuu"
  - Installer les utilitaires "pacman -S perl tar make mingw-w64-x86_64-toolchain"
- - Installer les lib (dont SDL 1.2) "pacman -S mingw-w64-x86_64-freetype mingw-w64-x86_64-SDL mingw-w64-x86_64-SDL_net mingw-w64-x86_64-SDL_image mingw-w64-x86_64-libpng mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-glew"
+ - Installer les lib (dont SDL 1.2) "pacman -S mingw-w64-x86_64-freetype mingw-w64-x86_64-SDL mingw-w64-x86_64-SDL_net mingw-w64-x86_64-SDL_image mingw-w64-x86_64-libpng mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-glew mingw-w64-x86_64-boost"
  - Mettre Mingw64 dans le path : path=%path%;C:\msys64\mingw64\bin 
 
 * Installer la lib Agar

@@ -7,6 +7,8 @@
 
 #include "service/dto/AseFileInformationDto.h"
 
+using namespace std;
+
 AseFileInformationDto::AseFileInformationDto() {
 }
 

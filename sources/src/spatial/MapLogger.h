@@ -11,22 +11,20 @@
 #include <fstream>
 #include <string>
 
-using namespace std;
-
 namespace JktMoteur {
 
 class MapLogger {
 	static const char* LOG_INFO_PREFIX;
 	static const char* LOG_ERROR_PREFIX;
 
-	ofstream _logFile;
+	std::ofstream _logFile;
 
 public:
-	MapLogger(const string& mapFile);
+	MapLogger(const std::string& mapFile);
 	virtual ~MapLogger();
 
-	void logInfo(const string& trace);
-	void logError(const string& trace);
+	void logInfo(const std::string& trace);
+	void logError(const std::string& trace);
 };
 
 } /* namespace JktNet */

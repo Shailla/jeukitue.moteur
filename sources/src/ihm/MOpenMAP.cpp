@@ -9,16 +9,20 @@
 #ifdef WIN32
 	#include <io.h>
 #endif
+#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
+#include "boost/filesystem/fstream.hpp"                       // for std::cout
+
+using namespace boost::filesystem;
 using namespace std;
 
-#include "util/FindFolder.h"
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
 #include "main/Game.h"
 #include "main/Focus.h"
 #include "util/Trace.h"
 #include "ihm/MMenuPrinc.h"
-
+#include "service/dto/MapInformationDto.h"
+#include "service/MapService.h"
 #include "MOpenScene.h"
 
 #include "MOpenMAP.h"
@@ -68,27 +72,25 @@ void suivantMAP(void *arg)
 void lanceMenuOpenMAP(void *var)
 {
 LOGDEBUG(("lanceMenuOpenMAP(var=%x)", var));
-	int nbrFichier = 0;		// Nombre de fichiers ASE à prendre en compte
-
 	PF *liste_suivant_open_MAP;
 	char **item_menu_open_MAP;
 	void **liste_argument_open_MAP;
 
 	string name;
 
-	CFindFolder folder( "./Map/", 0, ".map.xml" );
-	nbrFichier = folder.nbr();
+	vector<MapInformationDto> content;
+	MapService::loadMapDirectoryContent(content);
+
+	int nbrFichier = content.size();	// Nombre de fichiers Map à prendre en compte
+
 
 	liste_suivant_open_MAP = new PF[ nbrFichier ];
 	liste_argument_open_MAP = new void*[ nbrFichier ];
 	item_menu_open_MAP = new char*[ nbrFichier ];
-
 	nbrFichier = 0;
-	folder.reset();
 
-	while( folder.findNext( name ) ) {
-		name.erase( name.find_last_of( "." ) );
-		name.erase( name.find_last_of( "." ) );
+	for(MapInformationDto dto : content) {
+		name = dto.getMapFileMinimalName();
 		liste_suivant_open_MAP[nbrFichier] = suivantMAP;
 		item_menu_open_MAP[nbrFichier] = new char[name.size()+1];
 		liste_argument_open_MAP[nbrFichier] = new char[name.size()+1];

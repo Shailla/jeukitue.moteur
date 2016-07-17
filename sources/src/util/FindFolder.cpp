@@ -19,6 +19,10 @@
 	#include <dirent.h>
 #endif
 
+#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
+#include "boost/filesystem/fstream.hpp"
+using namespace boost::filesystem;
+
 #include "FindFolder.h"
 
 // Pour rechercher c:/rep/fich*.map on aura par exemple :
@@ -338,11 +342,6 @@ bool CFindFolder::chmod( char const *path, bool read, bool write )
 #endif
 }
 
-int CFindFolder::mkdir( const char *dir )
-{
-#ifdef WIN32
-	return _mkdir( dir );
-#elif defined(__linux__)
-	return ::mkdir( dir, S_IREAD | S_IWRITE );
-#endif
+int CFindFolder::mkdir(const char *dir) {
+	return create_directory(dir);
 }

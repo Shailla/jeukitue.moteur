@@ -15,7 +15,7 @@ using namespace boost::filesystem;
 #include "ressource/RessourceConstantes.h"
 
 #include "service/MapService.h"
-#include "service/dto/AseFileInformationDto.h"
+#include <service/dto/AseInformationDto.h>
 
 using namespace std;
 
@@ -25,7 +25,7 @@ MapService::MapService() {
 MapService::~MapService() {
 }
 
-void MapService::loadAseDirectoryContent(vector<AseFileInformationDto>& content) {
+void MapService::loadAseDirectoryContent(vector<AseInformationDto>& content) {
 	path asePath(ASE_DIRECTORY);
 
 	if(!exists(asePath)) {
@@ -40,7 +40,7 @@ void MapService::loadAseDirectoryContent(vector<AseFileInformationDto>& content)
 			// Ignore directories
 		}
 		else if ( itr->path().extension() == ASE_EXTENSION ) {
-			AseFileInformationDto dto;
+			AseInformationDto dto;
 
 			string aseFileFullName = itr->path().filename().string();
 

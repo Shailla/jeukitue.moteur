@@ -10,6 +10,9 @@
 	#include <io.h>
 	#include <direct.h>
 #endif
+#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
+#include "boost/filesystem/fstream.hpp"                       // for std::cout
+using namespace boost::filesystem;
 
 using namespace std;
 
@@ -28,7 +31,8 @@ using namespace std;
 #include "main/Cfg.h"
 #include "spatial/FichierASE.h"
 #include "ihm/MMenuPrinc.h"
-
+#include "service/MapService.h"
+#include <service/dto/AseInformationDto.h>
 #include "MOpenScene.h"
 
 #include "ihm/MOpenASE.h"
@@ -78,8 +82,8 @@ bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep )
 	LOGDEBUG(("copieTexture(mat=%x,pMapASE=%x,nomRep=%s)", mat, pMapASE, nomRep.c_str() ));
 	LOGDEBUG(("copieTexture() Fichier de texture=%s", mat->m_FichierTexture.c_str() ));
 
-	fstream from;	// Fichier source pour la copie du fichier de texture
-	fstream to;		// Fichier destination pour la copie du fichier de texture
+	std::fstream from;	// Fichier source pour la copie du fichier de texture
+	std::fstream to;		// Fichier destination pour la copie du fichier de texture
 
 	string& nom = mat->m_FichierTexture;
 	cout << "\nCopie du fichier de texture : " << nom << " (materiau ref " << mat->getRef() << ")";
@@ -183,76 +187,6 @@ void retourEcraserRep( void *arg )
 	lanceMenuOpenScene( 0 );
 }
 
-bool deleteOnlyFiles(string &fichier, const string &path) {
-	string var;
-
-	if((fichier!="..") && (fichier!=".")) {		// Si ni "..", ni "."
-		var = path + fichier;
-		if( !CFindFolder::isFolder(var) ) {		// Si ce n'est pas un répertoire (=>fichier)
-			cout << "\nDeleting file : " << var;
-
-			if(remove(var.c_str()))
-				return false;
-		}
-	}
-
-	return true;
-}
-
-bool delDirectory(const string &path) {
-	cout << "\n\nPATH\t : " << path;
-	string var;
-//	struct _finddata_t fileinfo;
-//	intptr_t hFile;
-	string fichier;
-
-	CFindFolder folder(path.c_str(), 0, 0);
-
-	while(folder.findNext(fichier)) {
-		if(!deleteOnlyFiles(fichier, path))
-			return false;
-	}
-
-		// Effacement de tous les fichiers du répertoire
-/*	var = path + "*.*";
-	hFile = _findfirst( var.c_str(), &fileinfo );
-	if( hFile!=-1L )
-	{
-		if( !deleteOnlyFiles( fileinfo, path ) )
-			return false;
-
-		while( _findnext( hFile, &fileinfo )!=-1L )
-		{
-			if( !deleteOnlyFiles( fileinfo, path ) )
-				return false;
-		}
-	}*/
-
-	folder.reset();
-
-	while( folder.findNext(fichier) )
-	{
-		if( (fichier!="..") && (fichier!=".") )	// Si ni "..", ni "."
-		{
-			var = path + fichier;
-			var += '/';
-
-			if( !delDirectory( var ) )
-				return false;
-
-			if( !CFindFolder::chmod( var.c_str(), true, true ) )
-				cerr << endl << __FILE__ << ":" << __LINE__ << " MOpenASE::delDirectory(" << path << ")" << endl;
-
-			if( CFindFolder::rmdir( var.c_str() ) ) {
-				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur _rmdir : " << var;
-				return false;
-			}
-		}
-	}
-
-	return true;
-}
-
 void yesEcraseRep(void *arg) {
 	string var;
 	string path = string("./Map/").append((char*)arg).append("/");
@@ -260,7 +194,7 @@ void yesEcraseRep(void *arg) {
 	delete BoiteEcraseRep;
 	CDlg::SetMenuActif( BoiteConvertASE );
 
-	if(!delDirectory(path)) {	// Efface récursivement tout ce qui se trouve dans le répertoire path
+	if(!remove_all(path)) {	// Efface récursivement tout ce qui se trouve dans le répertoire path
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Au moins une entree ne peut etre supprimee";
 		erreur( "Au moins une entree ne peut etre supprime" );
 	}
@@ -312,12 +246,12 @@ int threadConvertASE_1(void *arg)
 
 	pMapASE->Save(nomFichierASE);
 
-	if( CFindFolder::mkdir( nomRep.c_str() )!=0 )	// Création du répertoire pour les textures
-	{		// Si un répertoire existe déjà, demande s'il faut l'écraser
+	if( CFindFolder::mkdir( nomRep.c_str() )!=0 ) {		// Création du répertoire pour les textures
+		// Si un répertoire existe déjà, demande s'il faut l'écraser
 		ecraserRepOuiNon( arg );
 	}
-	else
-	{		// Sinon passe immédiatement à l'étape 2 de la conversion
+	else {
+		// Sinon passe immédiatement à l'étape 2 de la conversion
 		SDL_CreateThread( threadConvertASE_2, arg );
 	}
 
@@ -369,8 +303,7 @@ int threadConvertASE_2( void *arg )
 	return 0;
 }
 
-void suivantASE(void *arg)
-{
+void suivantASE(void *arg) {
 	SDL_CreateThread( threadConvertASE_1, arg );
 }
 
@@ -378,38 +311,24 @@ void lanceMenuConvertASE(void *var)
 {
 LOGDEBUG(("lanceMenuConvertASE(var=%x)", var));
 	cout << "\nEst-ce que t'es là";
-//	struct _finddata_t fileinfo;
-//	intptr_t hFile;
-	int nbrFichier = 0;		// Nombre de fichiers ASE à prendre en compte
 	string name;
 
 	PF *liste_suivant_open_ASE;
 	char **item_menu_open_ASE;
 	void **liste_argument_open_ASE;
 
-	CFindFolder folder( "./ASE/", 0, ".ASE" );
-	nbrFichier = folder.nbr();
+	vector<AseInformationDto> content;
+	MapService::loadAseDirectoryContent(content);
 
-//	hFile = _findfirst( "./ASE/*.ASE", &fileinfo );
-//	if( hFile!=-1L )
-//	{
-//		nbrFichier = 1;
-//		while( _findnext( hFile, &fileinfo )!=-1L )
-//			nbrFichier++;
-//	}
-//
-//	_findclose( hFile );
+	int nbrFichier = content.size();	// Nombre de fichiers ASE à prendre en compte
 
 	liste_suivant_open_ASE = new PF[ nbrFichier ];
 	liste_argument_open_ASE = new void*[ nbrFichier ];
 	item_menu_open_ASE = new char*[ nbrFichier ];
-
 	nbrFichier = 0;
-	folder.reset();
 
-	while( folder.findNext(name) )
-	{
-		name.erase( name.find_last_of( "." ) );
+	for(AseInformationDto dto : content) {
+		name = dto.getAseFileMinimalName();
 		liste_suivant_open_ASE[nbrFichier] = suivantASE;
 
 		item_menu_open_ASE[nbrFichier] = new char[name.size()+1];
@@ -418,35 +337,9 @@ LOGDEBUG(("lanceMenuConvertASE(var=%x)", var));
 		strcpy( (char*)(liste_argument_open_ASE[nbrFichier]), name.c_str() );
 		nbrFichier++;
 	}
-//	hFile = _findfirst( "./ASE/*.ASE", &fileinfo );
-//	if( hFile!=-1L )
-//	{
-//		name = fileinfo.name;
-//		name.erase( name.find_last_of( "." ) );
-//		liste_suivant_open_ASE[nbrFichier] = suivantASE;
-//
-//		item_menu_open_ASE[nbrFichier] = new char[name.size()+1];
-//		liste_argument_open_ASE[nbrFichier] = new char[name.size()+1];
-//		strcpy( item_menu_open_ASE[nbrFichier], name.c_str() );
-//		strcpy( (char*)(liste_argument_open_ASE[nbrFichier]), name.c_str() );
-//		nbrFichier++;
-//		while( _findnext( hFile, &fileinfo )!=-1L )
-//		{
-//			name = fileinfo.name;
-//			name.erase( name.find_last_of( "." ) );
-//
-//			liste_suivant_open_ASE[nbrFichier] = suivantASE;
-//
-//			item_menu_open_ASE[nbrFichier] = new char[name.size()+1];
-//			liste_argument_open_ASE[nbrFichier] = new char[name.size()+1];
-//			strcpy( item_menu_open_ASE[nbrFichier], name.c_str() );
-//			strcpy( (char*)liste_argument_open_ASE[nbrFichier], name.c_str() );
-//			nbrFichier++;
-//		}
-//	}
 
 	MenuOpenASE = new CMenu( "Convertir une Scene ASE", (const char**)item_menu_open_ASE, nbrFichier,
-						liste_suivant_open_ASE, retourASE, liste_argument_open_ASE );
+			liste_suivant_open_ASE, retourASE, liste_argument_open_ASE );
 
 	delete[] liste_suivant_open_ASE;
 	delete[] liste_argument_open_ASE;

@@ -6,7 +6,7 @@ using namespace std;
 #include <agar/gui.h>
 
 #include "service/MapService.h"
-#include "service/dto/AseFileInformationDto.h"
+#include <service/dto/AseInformationDto.h>
 #include "menu/View.h"
 #include "menu/Controller.h"
 #include "menu/Viewer.h"
@@ -55,10 +55,10 @@ void OpenSceneASEView::show(void)
     // Création d'un bouton pour chaque Map disponible
 	int mapNumber = 0;
 
-	vector<AseFileInformationDto> content;
+	vector<AseInformationDto> content;
 	MapService::loadAseDirectoryContent(content);
 
-	for(AseFileInformationDto dto : content) {
+	for(AseInformationDto dto : content) {
 		string aseName = dto.getAseFileMinimalName();
 
 		AG_Button* button = AG_ButtonNewFn(_scrollview,

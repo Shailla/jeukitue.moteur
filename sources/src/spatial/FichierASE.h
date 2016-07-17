@@ -3,16 +3,14 @@
 
 #include <string>
 
-using namespace std;
-
 namespace JktMoteur
 {
 
-class CFichierASE : private ifstream
+class CFichierASE : private std::ifstream
 {
 	std::ofstream m_Trace;
 	bool m_bAffiche;
-	static const basic_string <char>::size_type npos = (basic_string <char>::size_type)-1;
+	static const std::basic_string <char>::size_type npos = (std::basic_string <char>::size_type)-1;
 
 	class FACES
 	{
@@ -57,11 +55,11 @@ class CFichierASE : private ifstream
 
 
 	bool operator!();
-	ofstream& trace();	// Référence au fichier de trace de la lecture du fichier
+	std::ofstream& trace();	// Référence au fichier de trace de la lecture du fichier
 
 	CFichierASE& find(const char *txt, int line);		// Trouve le texte 'txt' dans le fichier
-	void findAccoladeDebut(int line);				// Trouve le prochain guillemet ouvrant du fichier
-	void findAccoladeFin(int line);				// Trouve le prochain guillemet ouvrant du fichier
+	void findAccoladeDebut(int line);					// Trouve le prochain guillemet ouvrant du fichier
+	void findAccoladeFin(int line);						// Trouve le prochain guillemet ouvrant du fichier
 
 	void get( string &mot, int line );
 	void get( float &val, int line );
@@ -71,10 +69,10 @@ class CFichierASE : private ifstream
 	void get( char &ch, int line );
 
 	CFichierASE& isNext(const char *txt, int line);
-	bool isGet(string &mot, int line);
+	bool isGet(std::string &mot, int line);
 
 public:
-	static bool LitFichierASE( const string nomFichier, CMap *pMap, bool bAffiche );
+	static bool LitFichierASE(const std::string nomFichier, CMap *pMap, bool bAffiche );
 };
 
 }	//namespace JktMoteur

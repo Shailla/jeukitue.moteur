@@ -8,9 +8,9 @@
 #ifndef MAPSERVICE_H_
 #define MAPSERVICE_H_
 
+#include <service/dto/AseInformationDto.h>
 #include <vector>
 
-#include "service/dto/AseFileInformationDto.h"
 #include "service/dto/MapInformationDto.h"
 
 /**
@@ -22,7 +22,7 @@ public:
 	virtual ~MapService();
 
 	/** Read the list of the ASE files in the ASE directory. */
-	static void loadAseDirectoryContent(std::vector<AseFileInformationDto>& content);
+	static void loadAseDirectoryContent(std::vector<AseInformationDto>& content);
 
 	/** Read the list of the MAP files in the ASE directory. */
 	static void loadMapDirectoryContent(std::vector<MapInformationDto>& content);

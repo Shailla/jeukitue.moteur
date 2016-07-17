@@ -9,6 +9,8 @@
 
 #include "spatial/MapLogger.h"
 
+using namespace std;
+
 namespace JktMoteur {
 
 const char* MapLogger::LOG_INFO_PREFIX = 		"INFO   : ";

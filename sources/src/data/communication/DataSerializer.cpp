@@ -52,7 +52,11 @@ void DataSerializer::fromStream(vector<Changement*>& changements, istringstream&
 			try {
 				StreamUtils::read(in, messageType);
 			}
-			catch(istringstream::failure& finDuFlux) {
+// TODO Catching ios_base::failure doesn't work with current MinGW version, workaround is to catch std::exception
+//			catch(ios_base::failure& finDuFlux) {
+//				throw StreamUtils::EndOfStreamException();
+//			}
+			catch(std::exception& ex) {
 				throw StreamUtils::EndOfStreamException();
 			}
 

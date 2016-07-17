@@ -38,24 +38,27 @@ class Fonte {
 		float _texWidth;	// Dimensions de la lettre dans la texture atlas
 		float _texHeight;	// Dimensions de la lettre dans la texture atlas
 
-		float _deltaX;		// Position de ce caractère par rapport au curseur
-		float _deltaY;		// Position de ce caractère par rapport au curseur
+		float _width;		// Width to draw when no scalar is applied
+		float _height;		// Height to draw when no scalar is applied
+
+		float _offsetX;		// Position de ce caractère par rapport au curseur
+		float _offsetY;		// Position de ce caractère par rapport au curseur
 
 		float _afterX;		// Mouvements pour la prochaine lettre
 		float _afterY;		// Mouvements pour la prochaine lettre
 	} lettres[MAXASCIICHAR];
 
 public:
+	enum JUSTIFY {JUSTIFY_LEFT = 0, JUSTIFY_CENTER, JUSTIFY_RIGHT};
+
 	Fonte();
 	virtual ~Fonte();
 
 	void load(const std::string& fonte, int height);
 
-	void drawString(const std::string& text, float x, float y, float scalar, float color[]);
-	void drawString(const std::wstring& text, float x, float y, float scalar, float color[]);
-
-	void drawString(const std::string& text, float x, float y, float scalar);
-	void drawString(const std::wstring& text, float x, float y, float scalar);
+	void drawString(const std::string& text, float x, float y, float scalar, JUSTIFY justify = JUSTIFY_LEFT);
+	void drawString(const std::string& text, float x, float y, float scalar, float color[], JUSTIFY justify = JUSTIFY_LEFT);
+	void getStringSize(const std::string& text, float scalar, float& stringWidth, float& stringHeight) const;
 };
 
 #endif /* SRC_UTIL_FONTE_FONTE_H_ */

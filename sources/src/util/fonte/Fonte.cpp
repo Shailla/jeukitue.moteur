@@ -144,6 +144,11 @@ void Fonte::load(const string& fonte, int height) {
 			rowHeight = 0;
 		}
 
+
+		/* ************************************************ */
+		/* Coordonnées relatives à l'atlas                  */
+		/* ************************************************ */
+
 		// Position de la lettre dans la texture atlas
 		lettres[i]._texLeft = x / _atlasWidth;
 		lettres[i]._texBottom = y / _atlasHeight;
@@ -155,13 +160,21 @@ void Fonte::load(const string& fonte, int height) {
 		lettres[i]._texWidth = float(g->bitmap.width) / _atlasWidth;
 		lettres[i]._texHeight = float(g->bitmap.rows) / _atlasHeight;
 
+
+		/* ************************************************ */
+		/* Coordonnées relatives à l'écran d'affichage      */
+		/* ************************************************ */
+
+		lettres[i]._width = float(g->bitmap.width);
+		lettres[i]._height = float(g->bitmap.rows);
+
 		// Position de ce caractère par rapport au curseur
-		lettres[i]._deltaX = float(g->bitmap_left) / _atlasWidth;
-		lettres[i]._deltaY = float(g->bitmap_top) / _atlasHeight;
+		lettres[i]._offsetX = float(g->bitmap_left);
+		lettres[i]._offsetY = float(g->bitmap_top);
 
 		// Mouvements pour la prochaine lettre
-		lettres[i]._afterX = float(g->advance.x >> 6) / _atlasWidth;
-		lettres[i]._afterY = float(g->advance.y >> 6) / _atlasHeight;
+		lettres[i]._afterX = float(g->advance.x >> 6);
+		lettres[i]._afterY = float(g->advance.y >> 6);
 
 		glTexSubImage2D(GL_TEXTURE_2D, 0, x, y, g->bitmap.width, g->bitmap.rows, GL_ALPHA, GL_UNSIGNED_BYTE, g->bitmap.buffer);
 
@@ -178,49 +191,67 @@ Fonte::~Fonte() {
 	}
 }
 
-void Fonte::drawString(const string& text, float x, float y, float scalar, float color[]) {
-	glColor3f(color[0], color[1], color[2]);
-	drawString(text, x, y, scalar);
+void Fonte::drawString(const string& text, float x, float y, float scalar, float color[], JUSTIFY justify) {
+	glColor3fv(color);
+	drawString(text, x, y, scalar, justify);
 }
 
-void Fonte::drawString(const string& text, float x, float y, float scalar) {
+void Fonte::drawString(const string& text, float x, float y, float scalar, JUSTIFY justify) {
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	glBindTexture(GL_TEXTURE_2D, _fonteTex);
+
+	// Justification du texte
+	float stringWidth, stringHeight;
+	getStringSize(text, scalar, stringWidth, stringHeight);
+
+	switch(justify) {
+	case JUSTIFY_LEFT:	// Nothing to do
+		break;
+	case  JUSTIFY_CENTER:
+		x -= stringWidth/2.0f;
+		break;
+	case  JUSTIFY_RIGHT:
+		x -= stringWidth;
+		break;
+	default:
+		// Will behave like justify left
+		break;
+	}
+
+	// Affichage du texte
+	float tx1, tx2, ty1, ty2, width, height, offsetX, offsetY;
+	int lettre;
 
 	glBegin(GL_QUADS);
 
-	float tx1, tx2, ty1, ty2, width, height, deltaX, deltaY;
-	int lettre;
-
 	for(int i=0 ; text[i] ; i++) {
-		lettre = text[i];
+		lettre = (unsigned char)text[i];
 
 		tx1 = lettres[lettre]._texLeft;
 		tx2 = lettres[lettre]._texRight;
 		ty1 = lettres[lettre]._texBottom;
 		ty2 = lettres[lettre]._texTop;
 
-		width = lettres[lettre]._texWidth * scalar;
-		height = lettres[lettre]._texHeight * scalar;
+		width = lettres[lettre]._width * scalar;
+		height = lettres[lettre]._height * scalar;
 
-		deltaX = lettres[lettre]._deltaX * scalar;
-		deltaY = lettres[lettre]._deltaY * scalar;
+		offsetX = lettres[lettre]._offsetX * scalar;
+		offsetY = lettres[lettre]._offsetY * scalar;
 
 		glTexCoord2f( tx1, ty2 );
-		glVertex3f( x + deltaX,				y + deltaY - height,	0.0 );
+		glVertex3f( x + offsetX,			y + offsetY - height,	0.0 );
 
 		glTexCoord2f( tx2, ty2 );
-		glVertex3f( x + deltaX + width, 	y + deltaY - height,	0.0 );
+		glVertex3f( x + offsetX + width, 	y + offsetY - height,	0.0 );
 
 		glTexCoord2f( tx2, ty1 );
-		glVertex3f( x + deltaX + width, 	y + deltaY,				0.0 );
+		glVertex3f( x + offsetX + width, 	y + offsetY,				0.0 );
 
 		glTexCoord2f( tx1, ty1 );
-		glVertex3f( x + deltaX, 			y + deltaY,				0.0 );
+		glVertex3f( x + offsetX, 			y + offsetY,				0.0 );
 
 		x += lettres[lettre]._afterX * scalar;
 		y += lettres[lettre]._afterY * scalar;
@@ -231,55 +262,21 @@ void Fonte::drawString(const string& text, float x, float y, float scalar) {
 	glDisable( GL_TEXTURE_2D );
 }
 
-void Fonte::drawString(const wstring& text, float x, float y, float scalar, float color[]) {
-	glColor3f(color[0], color[1], color[2]);
-	drawString(text, x, y, scalar);
-}
-
-void Fonte::drawString(const wstring& text, float x, float y, float scalar) {
-	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_BLEND);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	glBindTexture(GL_TEXTURE_2D, _fonteTex);
-
-	glBegin(GL_QUADS);
-
-	float tx1, tx2, ty1, ty2, width, height, deltaX, deltaY;
+void Fonte::getStringSize(const string& text, float scalar, float& stringWidth, float& stringHeight) const {
+	float x = 0.0f;
+	float y = 0.0f;
+	float height = 0.0f;
 	int lettre;
 
 	for(int i=0 ; text[i] ; i++) {
-		lettre = text[i];
+		lettre = (unsigned char)text[i];
 
-		tx1 = lettres[lettre]._texLeft;
-		tx2 = lettres[lettre]._texRight;
-		ty1 = lettres[lettre]._texBottom;
-		ty2 = lettres[lettre]._texTop;
-
-		width = lettres[lettre]._texWidth * scalar;
-		height = lettres[lettre]._texHeight * scalar;
-
-		deltaX = lettres[lettre]._deltaX * scalar;
-		deltaY = lettres[lettre]._deltaY * scalar;
-
-		glTexCoord2f( tx1, ty2 );
-		glVertex3f( x + deltaX,				y + deltaY - height,	0.0 );
-
-		glTexCoord2f( tx2, ty2 );
-		glVertex3f( x + deltaX + width, 	y + deltaY - height,	0.0 );
-
-		glTexCoord2f( tx2, ty1 );
-		glVertex3f( x + deltaX + width, 	y + deltaY,				0.0 );
-
-		glTexCoord2f( tx1, ty1 );
-		glVertex3f( x + deltaX, 			y + deltaY,				0.0 );
+		height = std::max(height, lettres[lettre]._height * scalar);
 
 		x += lettres[lettre]._afterX * scalar;
 		y += lettres[lettre]._afterY * scalar;
 	}
 
-	glEnd();
-
-	glDisable( GL_TEXTURE_2D );
+	stringWidth = x + lettres[lettre]._width * scalar;	// On oublie pas la largeur de la dernière lettre
+	stringHeight = height;
 }

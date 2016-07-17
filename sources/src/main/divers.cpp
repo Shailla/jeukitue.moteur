@@ -151,7 +151,7 @@ void load_Intro( int width, int height ) {
 }
 
 
-void load_IntroSub(const int width, const int height ) {
+void load_IntroSub(const int width, const int height) {
 	LOGDEBUG(("load_IntroSub(width=%d,height=%d)", width, height));
 
 	// Chargement de la fonte de caractères
@@ -159,11 +159,11 @@ void load_IntroSub(const int width, const int height ) {
 	JktUtils::RessourcesLoader::getFileRessource(fileFonteIntro);
 
 	Fonte fonteIntro;
-	fonteIntro.load(fileFonteIntro, 192);
+	fonteIntro.load(fileFonteIntro, 24);
 
-	wstring str1 = L"Nous sommes en 2056.\n\nLa surface de la Terre n'est plus qu'un oc\351an d'acide.\nLa loi a laiss\351 sa place a celle du plus fort et tout se r\232gle\nd\351sormais lors de combats sans gland.\n\n      Voici le seul homme qui peut encore sauver la plan\232te... ";
-	wstring str2 = L"Alors, vous l'avez compris...\n   On est vraiment dans la merde !";
-	vector< wstring > lignes;		// Lignes séparées par un retour chariot
+	string str1 = "Nous sommes en 2056.\n\nLa surface de la Terre n'est plus qu'un oc\351an d'acide.\nLa loi a laiss\351 sa place a celle du plus fort et tout se r\350gle\nd\351sormais lors de combats sans gland.\n\n      Voici le seul homme qui peut encore sauver la plan\350te... ";
+	string str2 = "Alors, vous l'avez compris...\n   On est vraiment dans la merde !";
+	vector< string > lignes;		// Lignes séparées par un retour chariot
 
 	srand( SDL_GetTicks() );	// Initialisation de la fonction rand() pour les nombres aléatoires
 
@@ -193,7 +193,7 @@ void load_IntroSub(const int width, const int height ) {
 	glEnable(GL_TEXTURE_2D);
 	glDisable( GL_DEPTH_TEST );
 
-	vector< wstring >::const_iterator iter;
+	vector< string >::const_iterator iter;
 	float vertical;
 	wchar_t lettre;
 
@@ -211,11 +211,11 @@ void load_IntroSub(const int width, const int height ) {
 		glClear( GL_COLOR_BUFFER_BIT );
 
 		if( i==0 )
-			lignes.push_back( L"" );
+			lignes.push_back( "" );
 
 		if( (lettre=='\n') ) {	// Si on a affaire à un passage à la ligne
 			DemonSons->Play( sonChariot );	// Envoie le son retour chariot
-			lignes.push_back( L"" );			// Et passe à la ligne
+			lignes.push_back( "" );			// Et passe à la ligne
 			SDL_Delay( 700 );
 		}
 		else {
@@ -228,10 +228,10 @@ void load_IntroSub(const int width, const int height ) {
 			*lignes.rbegin() += lettre ; // Ajoute la lettre à la fin de la dernière ligne
 		}
 
-			// Affichage du texte
+		// Affichage du texte
 		vertical = height - 20.0f;
 		for( iter=lignes.begin() ; iter!=lignes.end() ; iter++ ) {	// Affiche chaque ligne du texte
-			fonteIntro.drawString(*iter, 20.0f, vertical, 150.0f);
+			fonteIntro.drawString(*iter, 20.0f, vertical, 1.0f);
 			vertical -= 25.0f;
 		}
 
@@ -244,7 +244,7 @@ void load_IntroSub(const int width, const int height ) {
 		}
 	}
 
-		// Attends un petit instant à la fin de l'affichage du texte complet
+	// Attends un petit instant à la fin de l'affichage du texte complet
 	SDL_Delay( 1500 );
 	lignes.clear();	// Efface tout le texte
 
@@ -271,7 +271,7 @@ void load_IntroSub(const int width, const int height ) {
 	SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
 	SDL_Delay( 4000 );
 
-	for( int i=0 ; i<35 ; i++ ) {		// Laisse quelques instants l'image affichée
+	for( int i=0 ; i<20 ; i++ ) {		// Laisse quelques instants l'image affichée
 		SDL_Delay( 100 );
 
 		if( checkEventsForIntro() ) {	// Vérifie si l'utilisateur veut sortir de l'intro
@@ -293,11 +293,11 @@ void load_IntroSub(const int width, const int height ) {
 		glClear( GL_COLOR_BUFFER_BIT );
 
 		if( i==0 )
-			lignes.push_back( L"" );
+			lignes.push_back( "" );
 
 		if( (lettre=='\n') ) {
 			DemonSons->Play( sonChariot );
-			lignes.push_back( L"" );
+			lignes.push_back( "" );
 			SDL_Delay( 700 );
 		}
 		else {
@@ -314,7 +314,7 @@ void load_IntroSub(const int width, const int height ) {
 
 		for( iter=lignes.begin() ; iter!=lignes.end() ; iter++ )	// Affiche chaque ligne
 		{
-			fonteIntro.drawString(*iter, 20.0f, vertical, 150.0f);
+			fonteIntro.drawString(*iter, 20.0f, vertical, 1.0f);
 			vertical -= 45.0f;
 		}
 

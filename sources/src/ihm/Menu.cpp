@@ -108,7 +108,7 @@ LOGDEBUG(("CMenu::~CMenu() titre=%s%T", titre, this));
 
 void CMenu::afficheTitre() {
 	float color[] = { 1.0f, 0.0f, 0.8f };
-	fonte->drawString( titre, 280+CORX, 360+CORY, 200.0f, color);
+	fonte->drawString( titre, 280+CORX, 360+CORY, 1.0f, color);
 }
 
 void CMenu::afficheItems()
@@ -175,7 +175,7 @@ void CMenu::afficheItems()
 		else
 			glColor3f( 1.0, 1.0, 1.0 );		// Couleur blanche par défaut
 
-		fonte->drawString(items[i+ajust], float(260+CORX), float(300+CORY-(i*20)), 200.0f);
+		fonte->drawString(items[i+ajust], float(260+CORX), float(300+CORY-(i*20)), 1.0f);
 		i++;
 	}
 }
@@ -196,7 +196,7 @@ void CMenu::afficheItemsDroits()
 				glColor3f( 1.0, 1.0, 1.0 );		// Couleur rouge si focussé
 
 			if( items_droits[i+ajust] )
-				fonte->drawString( items_droits[i+ajust], float(430+CORX), float(300+CORY-(i*20)), 200.0f);
+				fonte->drawString( items_droits[i+ajust], float(430+CORX), float(300+CORY-(i*20)), 1.0f);
 			i++;
 		}
 	}
@@ -209,7 +209,7 @@ void CMenu::afficheItemsRem()
 			// Affichage de la remarque associée à l'item focussé
 		glColor3f( 0.5f, 0.5f, 0.5f );
 		if( items_rem[choixY] )
-			fonte->drawString( items_rem[choixY], 100, 50+CORY, 200.0f);
+			fonte->drawString( items_rem[choixY], 100, 50+CORY, 1.0f);
 	}
 }
 

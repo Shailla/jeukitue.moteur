@@ -49,7 +49,7 @@ CBouton::CBouton()
 {
 	m_bFocus = false;
 	m_bActif = false;
-	txt = 0;
+	_txt = "";
 	m_FctGo = NULL;
 	m_Arg = NULL;
 }
@@ -63,24 +63,20 @@ CBouton::CBouton(const char *txt, PF fct_go, void *arg)
 
 void CBouton::operator =(CBouton &but)
 {
-	if( txt )
-		delete txt;
+	_txt = but._txt;
 
 	m_Arg = but.m_Arg;
 	m_FctGo = but.m_FctGo;
 
-	txt = new char[ strlen( but.txt ) + 1 ];
-	strcpy( txt, but.txt );
 	m_bFocus = but.m_bFocus;
 	m_bActif = but.m_bActif;
 }
 
-void CBouton::ExecFctGo()
-{
-	if( m_FctGo )
+void CBouton::ExecFctGo() {
+	if( m_FctGo ) {
 		m_FctGo( m_Arg );
-	else
-	{
+	}
+	else {
 		pFocus->SetPlayFocus();
 		Aide = false;
 	}
@@ -89,15 +85,9 @@ void CBouton::ExecFctGo()
 void CBouton::focus( bool indic )
 {	m_bFocus = indic;	}
 
-void CBouton::put( const char *t )
-{
+void CBouton::put( const char *t ) {
 	m_bActif = true;
-
-	if( txt )
-		delete[] txt;
-
-	txt = new char[ strlen( t ) + 1 ];
-	strcpy( txt, t );
+	_txt = t;
 }
 
 void CBouton::affiche()
@@ -156,7 +146,7 @@ void CBouton::afficheTexte()
 	else
 		glColor3f( 0.0f, 0.0f, 0.0f );
 
-//	fonte->drawStringCentre(txt, TAILLE_BOUTON_X/2, TAILLE_BOUTON_Y/2, 200.0f);
+	fonte->drawString(_txt, TAILLE_BOUTON_X/2.0f, TAILLE_BOUTON_Y/2.0f, 1.0f, Fonte::JUSTIFY_CENTER);
 }
 
 bool CDlgBoite::INIT_CLASSE()
@@ -195,8 +185,6 @@ LOGDEBUG(("CDlgBoite::CDlgBoite(titre=%x,txt=%s,fct_retour=%x,type=%d)%T", titre
 	m_Titre = new char[ strlen( titre ) + 1 ];
 	strcpy( m_Titre, titre );
 
-//	myfont.GetStringOfSize( string(txt), TAILLEFONT, TAILLEBX-60.f, m_Texte,15 );
-
 	m_FonctionRetour = fct_retour;
 
 	m_Focus = 0;
@@ -209,8 +197,6 @@ CDlgBoite::CDlgBoite( const char *titre, const char *txt, PF fct_retour, CBouton
 
 	m_Titre = new char[ strlen( titre ) + 1 ];
 	strcpy( m_Titre, titre );
-
-//	myfont.GetStringOfSize( string(txt), TAILLEFONT, TAILLEBX-60.f, m_Texte, 15 );
 
 	m_FonctionRetour = fct_retour;
 
@@ -269,7 +255,7 @@ void CDlgBoite::afficheCadre()
 	glDepthMask( GL_FALSE );
 	glDisable( GL_DEPTH_TEST );
 
-		// Affiche le fond de la boîte en mode GL_QUADS, puis les contours en mode GL_LINE_LOOP
+	// Affiche le fond de la boîte en mode GL_QUADS, puis les contours en mode GL_LINE_LOOP
 	for( int i=0 ; i<2 ; i++ )
 	{
 		if( i==0 )
@@ -285,7 +271,7 @@ void CDlgBoite::afficheCadre()
 		}
 
 		glBegin( rend );
-				// Affichage du cadre à proprement dit
+			// Affichage du cadre à proprement dit
 			glVertex2f( CORX + TAILLEBX,	CORY + TAILLEBY	);
 			glVertex2f( CORX + TAILLEBX,	CORY			);
 			glVertex2f( CORX,				CORY			);
@@ -293,7 +279,7 @@ void CDlgBoite::afficheCadre()
 		glEnd();
 	}
 
-		// Affiche la barre de titre de la boîte de dialogue
+	// Affiche la barre de titre de la boîte de dialogue
 	glBegin( GL_QUADS );
 			glVertex2f( CORX + TAILLEBX,	CORY + TAILLEBY			);
 			glVertex2f( CORX + TAILLEBX,	CORY + TAILLEBY - 30	);
@@ -313,7 +299,7 @@ void CDlgBoite::afficheTitre()
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	glColor3f( 0.0f, 0.0f, 0.0f );
-	fonte->drawString(m_Titre, CORX + 20, CORY + TAILLEBY - 8, 200.0f);
+	fonte->drawString(m_Titre, CORX + 20, CORY + TAILLEBY - 8, 1.0f);
 }
 
 void CDlgBoite::afficheTexte()
@@ -325,7 +311,7 @@ void CDlgBoite::afficheTexte()
 
 	glColor3f( 0.0f, 0.0f, 0.0f );
 	for( unsigned int i=0 ; i<m_Texte.size() ; i++ )
-		fonte->drawString(m_Texte[i], CORX + 50, CORY + TAILLEBY - 50 - i*20.0f, 200.0f);
+		fonte->drawString(m_Texte[i], CORX + 50, CORY + TAILLEBY - 50 - i*20.0f, 1.0f);
 }
 
 void CDlgBoite::afficheBouton()
@@ -511,35 +497,25 @@ void CDlgBoite::KeyDown(SDL_Event *event) {
 	}
 }
 
-void CDlgBoite::MouseBoutonDown( SDL_Event *event )
-{
-	if( event->button.button==SDL_BUTTON_RIGHT )
-	{
-		if( m_FonctionRetour )
-		{
+void CDlgBoite::MouseBoutonDown( SDL_Event *event ) {
+	if( event->button.button==SDL_BUTTON_RIGHT ) {
+		if( m_FonctionRetour ) {
 			m_FonctionRetour( 0 );
 		}
-		else
-		{
+		else {
 			pFocus->SetPlayFocus();
 			Aide = false;
 		}
 	}
-	else if( event->button.button==SDL_BUTTON_LEFT )
-	{
+	else if( event->button.button==SDL_BUTTON_LEFT ) {
 		int x = event->button.x;
 		int y = Config.Display.Y - event->button.y;
 
-		if( x >= CORX + 245 )
-		{
-			if( x <= CORX + 245 + 90 )
-			{
-				if( y >= CORY + 10 )
-				{
-					if( y <= CORY + 10 +20 )
-					{
-						if( m_Bouton3.m_bActif )
-						{
+		if( x >= CORX + 245 ) {
+			if( x <= CORX + 245 + 90 ) {
+				if( y >= CORY + 10 ) {
+					if( y <= CORY + 10 +20 ) {
+						if( m_Bouton3.m_bActif ) {
 							m_Focus = 3;
 							m_Bouton3.ExecFctGo();
 						}
@@ -547,16 +523,11 @@ void CDlgBoite::MouseBoutonDown( SDL_Event *event )
 				}
 			}
 		}
-		else if( x >= CORX + 130 )
-		{
-			if( x <= CORX + 130 + 90 )
-			{
-				if( y >= CORY + 10 )
-				{
-					if( y <= CORY + 10 +20 )
-					{
-						if( m_Bouton2.m_bActif )
-						{
+		else if( x >= CORX + 130 ) {
+			if( x <= CORX + 130 + 90 ) {
+				if( y >= CORY + 10 ) {
+					if( y <= CORY + 10 +20 ) {
+						if( m_Bouton2.m_bActif ) {
 							m_Focus = 2;
 							m_Bouton2.ExecFctGo();
 						}
@@ -564,16 +535,11 @@ void CDlgBoite::MouseBoutonDown( SDL_Event *event )
 				}
 			}
 		}
-		else if( x >= CORX + 15 )
-		{
-			if( x <= CORX + 15 + 90 )
-			{
-				if( y >= CORY + 10 )
-				{
-					if( y <= CORY + 10 +20 )
-					{
-						if( m_Bouton1.m_bActif )
-						{
+		else if( x >= CORX + 15 ) {
+			if( x <= CORX + 15 + 90 ) {
+				if( y >= CORY + 10 ) {
+					if( y <= CORY + 10 +20 ) {
+						if( m_Bouton1.m_bActif ) {
 							m_Focus = 1;
 							m_Bouton1.ExecFctGo();
 						}
@@ -588,8 +554,7 @@ void CDlgBoite::MouseBoutonDown( SDL_Event *event )
 
 void CDlgBoite::handle_key_down( SDL_Event *event )
 {
-	switch( event->type )
-	{
+	switch( event->type ) {
 	case SDL_MOUSEBUTTONDOWN:
 		MouseBoutonDown( event );
 		break;

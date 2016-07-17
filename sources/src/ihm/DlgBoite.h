@@ -21,7 +21,7 @@ class CBouton
 {
 public:
 	bool m_bActif;
-	char *txt;
+	string _txt;
 	void *m_Arg;			// Argument à transmettre à la fonction appelée lors de l'appui du bouton
 	bool m_bFocus;			// Indique si le bouton est focussé
 	PF m_FctGo;

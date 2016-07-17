@@ -137,6 +137,7 @@ using namespace JktSon;
 NotConnectedInterlocutor2* _notConnectedServerInterlocutor = 0;
 
 Fonte fonte;
+#define INFOFONTESCALAR 0.3f
 
 CCfg Config;		// Contient la configuration du jeu
 CGame Game;			// Contient toutes les données vivantes du jeu
@@ -328,7 +329,7 @@ void afficheInfo( Uint32 tempsDisplay ) {
 
 	float pos = 0;
 
-	fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, 100.0f);
+	fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 
 	char cou[70];
 
@@ -336,7 +337,7 @@ void afficheInfo( Uint32 tempsDisplay ) {
 	if(Game.getMap() && Game.getMap()->IsSelectionMode()) {
 		sprintf( cou, "Selection : %s", Game.getMap()->getSelectedName());
 		str = cou;
-		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, 100.0f);
+		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 	}
 
 	CPlayer *erwin = Game.Erwin();
@@ -345,7 +346,7 @@ void afficheInfo( Uint32 tempsDisplay ) {
 		// Affiche le Teta du joueur principal
 		sprintf( cou, "Teta Phi : %.3d %.3d", (int)erwin->Teta(), (int)erwin->Phi());
 		str = cou;
-		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, 100.0f);
+		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 
 		// Affiche la position du joueur principal
 		float position[3];
@@ -353,24 +354,24 @@ void afficheInfo( Uint32 tempsDisplay ) {
 
 		sprintf( cou, "Position : %0.4f %0.4f %0.4f", position[0], position[1], position[2] );
 		str = cou;
-		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, 100.0f);
+		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 	}
 
 	if(Config.Debug.bSonPerformances) {
 		unsigned int currentalloced, maxalloced;
 		sprintf( cou, "Son, usage CPU : %.4f %%", FSOUND_GetCPUUsage() );
 		str = cou;
-		fonte.drawString(str, 20.0f, pos++*15.0f+20.0f, 100.0f);
+		fonte.drawString(str, 20.0f, pos++*15.0f+20.0f, INFOFONTESCALAR);
 
 		FSOUND_GetMemoryStats( &currentalloced, &maxalloced );
 
 		sprintf( cou, "Son, memory allocated : %.5u ko", currentalloced/1024);
 		str = cou;
-		fonte.drawString( str, 20.0f, pos++*15.0f+20.0f, 100.0f);
+		fonte.drawString( str, 20.0f, pos++*15.0f+20.0f, INFOFONTESCALAR);
 
 		sprintf( cou, "Son, max memory allocated : %.5u ko", maxalloced/1024 );
 		str = cou;
-		fonte.drawString(str, 20.0f, pos++*15.0f+20.0f, 100.0f);
+		fonte.drawString(str, 20.0f, pos++*15.0f+20.0f, INFOFONTESCALAR);
 	}
 
 	if(Config.Debug.bSonSpectre) {
@@ -1703,7 +1704,7 @@ int main(int argc, char** argv) {
 	string fonteFile = "@Fonte\\Mermaid1001.ttf";		// Chargement de la fonte de caractères
 	JktUtils::RessourcesLoader::getFileRessource(fonteFile);
 
-	fonte.load(fonteFile, 192);
+	fonte.load(fonteFile, 48);
 
 
 	// Initialisation de la classe CDlgBoite pour l'IHM

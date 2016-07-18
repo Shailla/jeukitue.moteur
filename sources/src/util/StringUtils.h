@@ -28,7 +28,8 @@ public:
 	static std::string findAndEraseFirstString(std::string& s);
 	static std::string findFirstWord(const std::string& s);
 
-	static bool isFinishedWith(const std::string& txt, const std::string& comp);
+	static bool isFinishingWith(const std::string& txt, const std::string& suffix);
+	static bool isBeginingWith(const std::string& txt, const std::string& prefix);
 
 	static std::vector<std::string> splitByCarriageReturns(const std::string& s);
 	static std::vector<std::string> splitBySpaces(const std::string& s);

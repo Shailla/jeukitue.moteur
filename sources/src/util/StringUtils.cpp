@@ -134,8 +134,17 @@ string StringUtils::findFirstWord(const string& s) {
 	return result;
 }
 
-bool StringUtils::isFinishedWith(const string& txt, const string& comp) {
-	if( txt.size() >= comp.size() && string( txt.end()-comp.size(), txt.end() ) == comp ) {
+bool StringUtils::isFinishingWith(const string& txt, const string& suffix) {
+	if( txt.size() >= suffix.size() && string( txt.end()-suffix.size(), txt.end() ) == suffix ) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool StringUtils::isBeginingWith(const string& txt, const string& prefix) {
+	if( txt.size() >= prefix.size() && string( txt.begin(), txt.begin() + prefix.size() ) == prefix ) {
 		return true;
 	}
 	else {

@@ -8,6 +8,8 @@ using namespace std;
 #include <agar/core.h>
 #include <agar/gui.h>
 
+#include "service/dto/MapInformationDto.h"
+#include "service/MapService.h"
 #include "util/FindFolder.h"
 #include "menu/View.h"
 #include "menu/Controller.h"
@@ -44,8 +46,7 @@ LanceServeurView::LanceServeurView(const AG_EventFn controllerCallback)
 LanceServeurView::~LanceServeurView(void) {
 }
 
-void LanceServeurView::show(void)
-{
+void LanceServeurView::show(void) {
 	// Supprime les map trouvées précédemment
 	vector<AG_Button*>::iterator iter = _mapButtons.begin();
 	
@@ -59,16 +60,13 @@ void LanceServeurView::show(void)
 
     // Création d'un bouton pour chaque Map disponible
     string mapName;
-	CFindFolder folder( "./Map/", 0, ".map.xml" );
-	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
-	folder.reset();
-
 	int mapNumber = 0;
-	while( folder.findNext( mapName ) )
-	{
-		mapName.erase( mapName.find_last_of( "." ) );
-		mapName.erase( mapName.find_last_of( "." ) );
+	
+	vector<MapInformationDto> content;
+	MapService::loadMapDirectoryContent(content);
 
+	for(MapInformationDto& dto : content) {
+		mapName = dto.getMapFileMinimalName();
 		AG_Button* button = AG_ButtonNewFn(_scrollview,
 										   0,
 										   mapName.c_str(),
@@ -86,7 +84,6 @@ void LanceServeurView::show(void)
 	View::show();
 }
 
-string LanceServeurView::getMapName(const int mapNumber)
-{
+string LanceServeurView::getMapName(const int mapNumber) {
 	return _mapNames.at(mapNumber);
 }

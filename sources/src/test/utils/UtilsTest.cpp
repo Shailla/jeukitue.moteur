@@ -80,9 +80,13 @@ void UtilsTest::stringUtilsTest() {
 	// -----------------------------------------------------
 	log("Test - 'StringUtils::is...'", __LINE__);
 
-	ASSERT_EQUAL(true, StringUtils::isFinishedWith("abcdefghijkl", "jkl"), "'isFinishedWith' KO");
-	ASSERT_EQUAL(false, StringUtils::isFinishedWith("abc", "jkl"), "'isFinishedWith' KO");
-	ASSERT_EQUAL(false, StringUtils::isFinishedWith("abcdefghijklm", "jkl"), "'isFinishedWith' KO");
+	ASSERT_EQUAL(true, StringUtils::isFinishingWith("abcdefghijkl", "jkl"), "'isFinishingWith' KO");
+	ASSERT_EQUAL(false, StringUtils::isFinishingWith("abc", "jkl"), "'isFinishingWith' KO");
+	ASSERT_EQUAL(false, StringUtils::isFinishingWith("abcdefghijklm", "jkl"), "'isFinishingWith' KO");
+
+	ASSERT_EQUAL(true, StringUtils::isBeginingWith("abcdefghijkl", "abcde"), "'isBeginingWith' KO");
+	ASSERT_EQUAL(false, StringUtils::isBeginingWith("abc", "jkl"), "'isBeginingWith' KO");
+	ASSERT_EQUAL(false, StringUtils::isBeginingWith("abcdefghijklm", "klm"), "'isBeginingWith' KO");
 
 	// -----------------------------------------------------
 	log("Test - 'StringUtils::split'", __LINE__);

@@ -53,7 +53,7 @@ void MapService::loadAseDirectoryContent(vector<AseInformationDto>& content) {
 	}
 }
 
-void MapService::loadMapDirectoryContent(vector<MapInformationDto>& content) {
+void MapService::loadPlayerMapDirectoryContent(vector<MapInformationDto>& content) {
 	path mapPath(PLAYER_MAP_DIRECTORY);
 
 	if(!exists(mapPath)) {
@@ -70,7 +70,7 @@ void MapService::loadMapDirectoryContent(vector<MapInformationDto>& content) {
 		else {
 			string filename = itr->path().string();
 
-			if( JktUtils::StringUtils::isFinishedWith(filename, MAP_EXTENSION) ) {
+			if( JktUtils::StringUtils::isFinishingWith(filename, MAP_EXTENSION) ) {
 				MapInformationDto dto;
 
 				string mapFileFullName = itr->path().filename().string();
@@ -84,7 +84,7 @@ void MapService::loadMapDirectoryContent(vector<MapInformationDto>& content) {
 	}
 }
 
-void MapService::loadPlayerMapDirectoryContent(vector<MapInformationDto>& content) {
+void MapService::loadMapDirectoryContent(vector<MapInformationDto>& content) {
 	path mapPath(MAP_DIRECTORY);
 
 	if(!exists(mapPath)) {
@@ -101,7 +101,7 @@ void MapService::loadPlayerMapDirectoryContent(vector<MapInformationDto>& conten
 		else {
 			string filename = itr->path().string();
 
-			if( JktUtils::StringUtils::isFinishedWith(filename, MAP_EXTENSION) ) {
+			if( JktUtils::StringUtils::isFinishingWith(filename, MAP_EXTENSION) ) {
 				MapInformationDto dto;
 
 				string mapFileFullName = itr->path().filename().string();

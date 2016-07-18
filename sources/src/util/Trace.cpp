@@ -4,6 +4,11 @@
 #include <stdarg.h>
 #include <map>
 
+#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
+#include "boost/filesystem/fstream.hpp"
+
+using namespace boost::filesystem;
+
 #include "SDL.h"
 #include "SDL_thread.h"
 
@@ -91,25 +96,25 @@ void Donnees::error(const string& txt, ... ) {
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_ERROR, TRACE_NORMAL, _line, _sourceFile, txt.c_str(), vl );
 }
 
-void Donnees::debug(const stringstream& txt, ... ) {
+void Donnees::debug(const std::stringstream& txt, ... ) {
 	va_list vl;
 	va_start(vl, txt);
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_DEBUG, TRACE_NORMAL, _line, _sourceFile, txt.str().c_str(), vl );
 }
 
-void Donnees::info(const stringstream& txt, ... ) {
+void Donnees::info(const std::stringstream& txt, ... ) {
 	va_list vl;
 	va_start(vl, txt);
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_INFO, TRACE_NORMAL, _line, _sourceFile, txt.str().c_str(), vl );
 }
 
-void Donnees::warn(const stringstream& txt, ... ) {
+void Donnees::warn(const std::stringstream& txt, ... ) {
 	va_list vl;
 	va_start(vl, txt);
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_WARN, TRACE_NORMAL, _line, _sourceFile, txt.str().c_str(), vl );
 }
 
-void Donnees::error(const stringstream& txt, ... ) {
+void Donnees::error(const std::stringstream& txt, ... ) {
 	va_list vl;
 	va_start(vl, txt);
 	Trace::instance().print(TraceLevel::TRACE_LEVEL_ERROR, TRACE_NORMAL, _line, _sourceFile, txt.str().c_str(), vl );
@@ -145,7 +150,7 @@ Trace::Trace() {
 	 * Lecture de la politique de log
 	 * **********************************************/
 
-	ifstream logConfig("log.ini");
+	std::ifstream logConfig("log.ini");
 
 	if(!logConfig) {
 		cerr << endl << "Echec d'ouverture du fichier log.ini";
@@ -154,18 +159,18 @@ Trace::Trace() {
 	map<string, string> config;
 
 	if(logConfig) {
-        string line, key;
+		string line, key;
 
-        // Lit les clé et valeurs dans le fichier de configuration des log
-        while(getline(logConfig, line)) {
-        	string key, value;
-        	StringUtils::splitOnce(line, StringUtils::isEqual, key, value);
+		// Lit les clé et valeurs dans le fichier de configuration des log
+		while(getline(logConfig, line)) {
+			string key, value;
+			StringUtils::splitOnce(line, StringUtils::isEqual, key, value);
 
-        	StringUtils::trim(key);
-        	StringUtils::trim(value);
+			StringUtils::trim(key);
+			StringUtils::trim(value);
 
-        	config[key] = value;
-        }
+			config[key] = value;
+		}
 
 		logConfig.close();
 
@@ -186,29 +191,41 @@ Trace::Trace() {
 	 * **********************************************/
 
 	// Nom du fichier de log courrant
-	stringstream logFile;
+	std::stringstream logFile;
 	logFile << TRACE_FOLDER << CURRENT_FICHIER_TRACE;
 
 	// Si un fichier de traces existe déjà, alors renomme-le puis tente à nouveau de l'ouvrir
-	if( ifstream( logFile.str().c_str()) ) {
+	if( std::ifstream( logFile.str().c_str()) ) {
+		path logPath(TRACE_FOLDER);
+
+		if(!exists(logPath)) {
+			cerr << endl << "Le répertoire '" << TRACE_FOLDER << "' n'existe pas";
+			return;
+		}
+
 		// Recherche un index d'ancien fichier de traces disponible
-		CFindFolder folder( TRACE_FOLDER, PREFIX_FICHIER_TRACE, EXT_FICHIER_TRACE );
-
 		int numeroFichier = -1, num;
-		string filename;
+		directory_iterator end_itr; // default construction yields past-the-end
 
-		while(folder.findNext(filename)) {
-			if(filename.size() >= strlen(EXT_FICHIER_TRACE)) {
-				filename = string( filename.begin()+strlen(PREFIX_FICHIER_TRACE), filename.end()-strlen(EXT_FICHIER_TRACE) );	// Extraction du numéro du fichier trace
+		for ( directory_iterator itr( logPath ); itr != end_itr; ++itr ) {
+			if ( is_directory( *itr ) ) {
+				// Ignore directories
+			}
+			else {
+				string filename = itr->path().filename().string();
 
-				if( filename == "0" ) {
-					if( numeroFichier < 0 )
-						numeroFichier = 0;
-				}
-				else {
-					num = atoi( filename.c_str() );
-					if( num > numeroFichier )
-						numeroFichier = num;
+				if( JktUtils::StringUtils::isBeginingWith(filename, PREFIX_FICHIER_TRACE) && JktUtils::StringUtils::isFinishingWith(filename, EXT_FICHIER_TRACE) ) {
+					filename = string( filename.begin()+strlen(PREFIX_FICHIER_TRACE), filename.end()-strlen(EXT_FICHIER_TRACE) );	// Extraction du numéro du fichier trace
+
+					if( filename == "0" ) {
+						if( numeroFichier < 0 )
+							numeroFichier = 0;
+					}
+					else {
+						num = atoi( filename.c_str() );
+						if( num > numeroFichier )
+							numeroFichier = num;
+					}
 				}
 			}
 		}
@@ -219,7 +236,7 @@ Trace::Trace() {
 		newName << TRACE_FOLDER << PREFIX_FICHIER_TRACE << numeroFichier << EXT_FICHIER_TRACE;
 
 		// Renomme ancien fichier courant
-		rename(logFile.str().c_str(), newName.str().c_str());
+		boost::filesystem::rename(logFile.str(), newName.str());
 	}
 
 	// Ouvre le fichier de log courant

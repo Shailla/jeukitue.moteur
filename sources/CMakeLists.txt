@@ -7,7 +7,7 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 set(EXECUTABLE_OUTPUT_PATH ../../deploy/${CMAKE_BUILD_TYPE}-g++)
-set(CMAKE_CXX_FLAGS "-ggdb -Wall -Wno-unknown-pragmas -std=gnu++0x -fpermissive")
+set(CMAKE_CXX_FLAGS "-ggdb -Wall -Wno-unknown-pragmas -std=c++11 -fpermissive")
  
 find_package(Boost REQUIRED COMPONENTS filesystem) 
 find_package(OpenGL REQUIRED)

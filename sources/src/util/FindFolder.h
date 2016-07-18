@@ -34,9 +34,8 @@ public:
 	void reset();			// Redémarre la recherche à zéro
 
 		// Interfaces inter-plateformes
-	static int rmdir(const char *dir);		// Destruction d'un répertoire
+	static bool rmdir(const string& dir);		// Destruction d'un répertoire
 	static bool isFolder(const string& directory);	// Vérifie si un élément est un répertoire
-	static bool chmod(char const *path, bool read, bool write);	// Change le mode d'un fichier
 	static int mkdir(const char*);
 };
 

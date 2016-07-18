@@ -5,9 +5,10 @@
  *      Author: Erwin
  */
 
+#include <iostream>                        // for std::cout
 #include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
 #include "boost/filesystem/fstream.hpp"
-#include <iostream>                        // for std::cout
+
 using namespace boost::filesystem;
 
 #include "util/Trace.h"
@@ -53,6 +54,37 @@ void MapService::loadAseDirectoryContent(vector<AseInformationDto>& content) {
 }
 
 void MapService::loadMapDirectoryContent(vector<MapInformationDto>& content) {
+	path mapPath(PLAYER_MAP_DIRECTORY);
+
+	if(!exists(mapPath)) {
+		LOGERROR(("Le répertoire %s n'existe pas", PLAYER_MAP_DIRECTORY));
+		return;
+	}
+
+	directory_iterator end_itr; // default construction yields past-the-end
+
+	for ( directory_iterator itr( mapPath ); itr != end_itr; ++itr ) {
+		if ( is_directory( *itr ) ) {
+			// Ignore directories
+		}
+		else {
+			string filename = itr->path().string();
+
+			if( JktUtils::StringUtils::isFinishedWith(filename, MAP_EXTENSION) ) {
+				MapInformationDto dto;
+
+				string mapFileFullName = itr->path().filename().string();
+
+				dto.setMapFileFullName(mapFileFullName);													// Full MAP file name
+				dto.setMapFileMinimalName(string(mapFileFullName.begin(), mapFileFullName.end() - strlen(MAP_EXTENSION)));	// MAP file name without the extension
+
+				content.push_back(dto);
+			}
+		}
+	}
+}
+
+void MapService::loadPlayerMapDirectoryContent(vector<MapInformationDto>& content) {
 	path mapPath(MAP_DIRECTORY);
 
 	if(!exists(mapPath)) {

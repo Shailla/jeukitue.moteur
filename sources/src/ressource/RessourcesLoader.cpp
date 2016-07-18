@@ -8,6 +8,8 @@
 #include "util/Trace.h"
 #include "ressource/RessourceConstantes.h"
 #include "util/FindFolder.h"
+#include "service/dto/MapInformationDto.h"
+#include "service/MapService.h"
 #include "RessourcesLoader.h"
 
 using namespace std;
@@ -109,35 +111,26 @@ bool RessourcesLoader::getFileRessource(string& file) {
 }
 
 vector<string> RessourcesLoader::getMaps() {
-	std::vector<std::string> mapNames;
-	string mapName;
-	CFindFolder folder( MAP_DIRECTORY, 0, ".map.xml" );
-	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
-	folder.reset();
+	vector<MapInformationDto> content;
+	MapService::loadMapDirectoryContent(content);
 
-	while(folder.findNext(mapName)) {
-		mapName.erase( mapName.find_last_of( "." ) );
-		mapName.erase( mapName.find_last_of( "." ) );
-		
-		mapNames.push_back(mapName);
+	std::vector<std::string> mapNames;
+
+	for(MapInformationDto& dto : content) {
+		mapNames.push_back(dto.getMapFileMinimalName());
 	}
 
 	return mapNames;
 }
 
 vector<string> RessourcesLoader::getPlayerMaps() {
-	std::vector<std::string> mapNames;
-	string mapName;
-	CFindFolder folder( PLAYER_MAP_DIRECTORY, 0, ".map.xml" );
-	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
-	folder.reset();
+	vector<MapInformationDto> content;
+	MapService::loadPlayerMapDirectoryContent(content);
 
-	while( folder.findNext( mapName ) )
-	{
-		mapName.erase( mapName.find_last_of( "." ) );
-		mapName.erase( mapName.find_last_of( "." ) );
-		
-		mapNames.push_back(mapName);
+	std::vector<std::string> mapNames;
+
+	for(MapInformationDto& dto : content) {
+		mapNames.push_back(dto.getMapFileMinimalName());
 	}
 
 	return mapNames;

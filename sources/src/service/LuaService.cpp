@@ -5,6 +5,13 @@
  *      Author: Erwin
  */
 
+#include <iostream>	// for std::cout
+#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
+#include "boost/filesystem/fstream.hpp"
+
+using namespace boost::filesystem;
+
+#include "util/Trace.h"
 #include "util/FindFolder.h"
 
 #include "service/LuaService.h"
@@ -22,15 +29,18 @@ LuaService::~LuaService() {
 }
 
 void LuaService::loadLuaDirectoryContent(vector<string>& content) {
-	CFindFolder folder(PLUGINS_DIRECTORY, 0, 0);
-	folder.nbr();   // TODO : Cette ligne ne sert à rien, mais lorsqu'elle n'est pas présente il y a un bug
-	folder.reset();
+	path pluginPath(PLUGINS_DIRECTORY);
 
-	string luaFileName;
+	if(!exists(pluginPath)) {
+		LOGERROR(("Le répertoire %s n'existe pas", PLUGINS_DIRECTORY));
+		return;
+	}
 
-	while(folder.findNext(luaFileName)) {
-		if((luaFileName!="..") && (luaFileName!=".") && CFindFolder::isFolder(string(PLUGINS_DIRECTORY).append(luaFileName))) {
-			content.push_back(luaFileName);
+	directory_iterator end_itr; // default construction yields past-the-end
+
+	for ( directory_iterator itr( pluginPath ); itr != end_itr; ++itr ) {
+		if ( is_directory( *itr ) ) {
+			content.push_back(itr->path().filename().string());
 		}
 	}
 }

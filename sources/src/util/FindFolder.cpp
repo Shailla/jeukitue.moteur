@@ -270,78 +270,20 @@ CFindFolder::~CFindFolder()
 #endif
 }
 
-// Interface pour la suppression d'un répertoire
-int CFindFolder::rmdir(const char *dir) {
-#ifdef WIN32
-	return _rmdir( dir );
-#elif defined(__linux__)
-	return ::rmdir( dir );
-#endif
-}
-
-	// Permet de savoir si un élément est un répertoire ou non
+// Est-ce un répertoire
 bool CFindFolder::isFolder(const string& directory) {
-	const char* dir = directory.c_str();
-
-#ifdef VS
-	struct __stat64 buf;
-	int result = _stat64( dir, &buf );
-
-	/* Check if statistics are valid: */
-	if( result != 0 )
-		cerr << endl << __FILE__ << ":" << __LINE__ << " CFindFolder::isFolder(" << dir << ") Problem getting information";
-
-	return (buf.st_mode & _S_IFDIR)!=0;
-#else
-	struct stat buf;
-	int result = stat( dir, &buf );
-
-	if( result == -1 )
-		cerr << endl << __FILE__ << ":" << __LINE__ << " CFindFolder::isFolder(" << dir << ") Problem getting information";
-
-	return (buf.st_mode & S_IFDIR)!=0;
-#endif
+path dir(directory);
+return is_directory(dir);
 }
 
-bool CFindFolder::chmod( char const *path, bool read, bool write )
-{
-#ifdef WIN32
-	int opt = 0;
-
-	if( read )
-	opt |= _S_IREAD;
-
-	if( write )
-		opt |= _S_IWRITE;
-
-	if( _chmod( path, opt  ) == -1 ) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " CFindFolder::chmod(" << path << ") Erreur _chmod" << endl;
-		return false;
-	}
-	else {
-		return true;
-	}
-#elif defined(__linux__)
-	mode_t opt = 0;
-
-	if( read )
-	opt |= S_IREAD;
-
-	if( write )
-		opt |= S_IWRITE;
-
-	if( ::chmod( path, opt  ) == -1 )
-	{
-		cerr << endl << __FILE__ << ":" << __LINE__ << " CFindFolder::chmod(" << path << ") Erreur _chmod" << endl;
-		return false;
-	}
-	else
-	{
-		return true;
-	}
-#endif
+// Supprimer un répertoire
+bool CFindFolder::rmdir(const string& dirToRemove) {
+	path dir(dirToRemove);
+	remove_all(dirToRemove);
+	return !exists(dir);
 }
 
+// Créer un répertoire
 int CFindFolder::mkdir(const char *dir) {
 	return create_directory(dir);
 }

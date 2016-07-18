@@ -25,8 +25,8 @@ public:
 	void setMapFileMinimalName(const std::string& aseFileMinimalName);
 
 	// Getters
-	std::string getMapFileFullName();
-	std::string getMapFileMinimalName();
+	std::string getMapFileFullName() const;
+	std::string getMapFileMinimalName() const;
 };
 
 #endif /* MAPINFORMATIONDTO_H_ */

@@ -27,11 +27,11 @@ void MapInformationDto::setMapFileMinimalName(const string& mapFileMinimalName) 
 
 
 // Getters
-string MapInformationDto::getMapFileFullName() {
+string MapInformationDto::getMapFileFullName() const {
 	return _mapFileFullName;
 }
 
-string MapInformationDto::getMapFileMinimalName() {
+string MapInformationDto::getMapFileMinimalName() const {
 	return _mapFileMinimalName;
 }
 

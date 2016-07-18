@@ -23,172 +23,13 @@ using namespace JktUtils;
 namespace JktMoteur
 {
 
-bool AseImporter::supprimeRepertoire(const string& repName)
-{
-	cout << "\n\nPATH\t : " << repName;
-	string var;
-//	struct _finddata_t fileinfo;
-//	intptr_t hFile;
-	string fichier;
+bool AseImporter::supprimeRepertoire(const string& repName) {
+	LOGINFO(("Suppression du répertoire : '%s'", repName.c_str()));
 
-	CFindFolder folder(repName.c_str(), 0, 0);
-
-	while(folder.findNext(fichier)) {
-		if(!deleteOnlyFiles( fichier, repName)) {
-			stringstream texte;
-			texte << "Erreur deleteOnlyFiles(" << fichier << "," << repName << ")";
-			LOGDEBUG((texte.str().c_str() ));
-			cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-			throw CErreur(texte);
-		}
-	}
-
-		// Effacement de tous les fichiers du répertoire
-/*	var = path + "*.*";
-	hFile = _findfirst( var.c_str(), &fileinfo );
-	if( hFile!=-1L )
-	{
-		if( !deleteOnlyFiles( fileinfo, path ) )
-			return false;
-
-		while( _findnext( hFile, &fileinfo )!=-1L )
-		{
-			if( !deleteOnlyFiles( fileinfo, path ) )
-				return false;
-		}
-	}*/
-
-	folder.reset();
-
-	while(folder.findNext(fichier)) {
-		if((fichier!="..") && (fichier!=".")) {	// Si ni "..", ni "."
-			var = repName + fichier;
-			var += '/';
-
-			if(!delDirectory(var)) {
-				stringstream texte;
-				texte << "Erreur delDirectory(" << var << ")" << endl;
-				LOGDEBUG((texte.str().c_str() ));
-				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(texte);
-			}
-
-			if(!CFindFolder::chmod( var.c_str(), true, true)) {
-				stringstream texte;
-				texte << "Erreur CFindFolder::chmod(" << repName << ")" << endl;
-				LOGDEBUG((texte.str().c_str() ));
-				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(texte);
-			}
-
-			if( CFindFolder::rmdir( var.c_str() ) ) {
-				stringstream texte;
-				texte << "Erreur CFindFolder::rmdir( " << var << ")";
-				LOGDEBUG((texte.str().c_str() ));
-				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(texte);
-			}
-		}
-	}
-
-	return true;
+	return CFindFolder::rmdir(repName.c_str());
 }
 
-bool AseImporter::delDirectory(const string &path) {
-	cout << "\n\nPATH\t : " << path;
-	string var;
-//	struct _finddata_t fileinfo;
-//	intptr_t hFile;
-	string fichier;
-
-	CFindFolder folder( path.c_str(), 0, 0 );
-	while( folder.findNext(fichier) )
-	{
-		if( !deleteOnlyFiles( fichier, path ) )
-		{
-			stringstream texte;
-			texte << "Erreur deleteOnlyFiles(" << fichier << "," << path << ")";
-			LOGDEBUG((texte.str().c_str() ));
-			cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-			throw CErreur(texte);
-		}
-	}
-
-		// Effacement de tous les fichiers du répertoire
-/*	var = path + "*.*";
-	hFile = _findfirst( var.c_str(), &fileinfo );
-	if( hFile!=-1L )
-	{
-		if( !deleteOnlyFiles( fileinfo, path ) )
-			return false;
-
-		while( _findnext( hFile, &fileinfo )!=-1L )
-		{
-			if( !deleteOnlyFiles( fileinfo, path ) )
-				return false;
-		}
-	}*/
-
-	folder.reset();
-	while( folder.findNext(fichier) )
-	{
-		if( (fichier!="..") && (fichier!=".") )	// Si ni "..", ni "."
-		{
-			var = path + fichier;
-			var += '/';
-
-			if(!delDirectory( var )) {
-				stringstream texte;
-				texte << "Erreur delDirectory(" << var << ")";
-				LOGDEBUG((texte.str().c_str() ));
-				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(texte);
-			}
-
-			if(!CFindFolder::chmod( var.c_str(), true, true )) {
-				stringstream texte;
-				texte << endl << "MOpenASE::delDirectory(" << path << ")" << endl;
-				LOGDEBUG((texte.str().c_str() ));
-				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(texte);
-			}
-
-			if(CFindFolder::rmdir(var.c_str())) {
-				stringstream texte;
-				texte << "\nErreur _rmdir : " << var;
-				LOGDEBUG((texte.str().c_str() ));
-				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(texte);
-			}
-		}
-	}
-
-	return true;
-}
-
-bool AseImporter::deleteOnlyFiles(string &fichier, const string& path )
-{
-	string var;
-	if( (fichier!="..") && (fichier!=".") )	{	// Si ni "..", ni "."
-		var = path + fichier;
-		if(!CFindFolder::isFolder(var))	{	// Si ce n'est pas un répertoire (=>fichier)
-			cout << "\nDeleting file : " << var;
-
-			if(remove( var.c_str())) {
-				stringstream texte;
-				texte << "Erreur remove(" << var << ")";
-				LOGDEBUG((texte.str().c_str() ));
-				cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str();
-				throw CErreur(texte);
-			}
-		}
-	}
-
-	return true;
-}
-
-void AseImporter::lanceImportAse(const string& aseFilename, ConsoleAvancementView* console) 
-{
+void AseImporter::lanceImportAse(const string& aseFilename, ConsoleAvancementView* console)  {
 	void** arg = new void*[2];
 
 	arg[0] = StringUtils::toChars(aseFilename);
@@ -197,8 +38,7 @@ void AseImporter::lanceImportAse(const string& aseFilename, ConsoleAvancementVie
 	SDL_CreateThread(importAse, arg);
 }
 
-int AseImporter::importAse(void* arg)
-{
+int AseImporter::importAse(void* arg) {
 	// Récupération et désallocation des paramètres du thread
 	string aseFileName = (char*)((void**)arg)[0];
 	ConsoleAvancementView* console = (ConsoleAvancementView*)((void**)arg)[1];

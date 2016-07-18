@@ -60,16 +60,11 @@ void OpenSceneMapView::show(void) {
     // Création d'un bouton pour chaque Map disponible
 	MapService::loadMapDirectoryContent(_maps);
 
-	vector<MapInformationDto>::iterator iterMap = _maps.begin();
 	int mapNumber = 0;
 
-	while(iterMap < _maps.end()) {
-		MapInformationDto map = *iterMap;
-
+	for(MapInformationDto& map : _maps) {
 		AG_Button* button = AG_ButtonNewFn(_scrollview, 0, map.getMapFileMinimalName().c_str(), m_controllerCallback, "%i,%i", Controller::OpenMapAction, mapNumber++);
 		_mapButtons.push_back(button);
-
-		iterMap++;
 	}
 
 	// Rafraichissement de la page

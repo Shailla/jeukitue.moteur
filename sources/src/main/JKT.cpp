@@ -882,7 +882,7 @@ void play_handle_key_down( SDL_Event *event ) {
 
 				time_t currentTime;
 				time(&currentTime);
-				ostringstream saveMapName;
+				std::ostringstream saveMapName;
 				saveMapName << "save-" << currentTime;
 				console->println(ConsoleView::COT_INFO, string("Enregistrement de la Map : ") + saveMapName.str());
 

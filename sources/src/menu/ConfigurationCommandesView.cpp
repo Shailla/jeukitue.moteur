@@ -9,6 +9,7 @@ using namespace std;
 #include <agar/core.h>
 #include <agar/gui.h>
 
+#include "util/Trace.h"
 #include "main/Focus.h"
 #include "main/Fabrique.h"
 #include "menu/Viewer.h"
@@ -21,12 +22,14 @@ using namespace std;
 extern CCfg Config;
 extern JktMenu::CFocus* pFocus;
 
-bool ConfigurationCommandesView::_waitingCommandUserChoice = false;
-int ConfigurationCommandesView::_commandToWait = 0;
+ConfigurationCommandesView* ConfigurationCommandesView::THIZ = 0;
 
-ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controllerCallback)
-:View(controllerCallback)
-{
+ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controllerCallback) : View(controllerCallback) {
+	THIZ = this;
+
+	_waitingCommandUserChoice = false;
+	_commandToWait = NONE;
+
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE|AG_WINDOW_MAXIMIZED);
 	AG_WindowSetCaption(m_window, "Commandes");
 
@@ -41,11 +44,11 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 	AG_LabelNew(_boxCommandes, 0, " ");	// Saute une ligne
 	AG_LabelNew(_boxCommandes, 0, "Deplacements");
 
-	addCommande(AGOBJECT(_boxCommandes), AVANCER, 				"Avancer",			"");
-	addCommande(AGOBJECT(_boxCommandes), RECULER, 				"Reculer", 			"");
-	addCommande(AGOBJECT(_boxCommandes), GAUCHE,  				"Gauche", 			"");
-	addCommande(AGOBJECT(_boxCommandes), DROITE,  				"Droite", 			"");
-	addCommande(AGOBJECT(_boxCommandes), MONTER,				"Monter", 			"");
+	addCommandeButton(AGOBJECT(_boxCommandes), AVANCER, 				"Avancer",			"");
+	addCommandeButton(AGOBJECT(_boxCommandes), RECULER, 				"Reculer", 			"");
+	addCommandeButton(AGOBJECT(_boxCommandes), GAUCHE,  				"Gauche", 			"");
+	addCommandeButton(AGOBJECT(_boxCommandes), DROITE,  				"Droite", 			"");
+	addCommandeButton(AGOBJECT(_boxCommandes), MONTER,				"Monter", 			"");
 
 
 	/* ********************************************* */
@@ -54,10 +57,10 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 
 	AG_LabelNew(_boxCommandes, 0, " ");	// Saute une ligne
 	AG_LabelNew(_boxCommandes, 0, "Armes");
-	addCommande(AGOBJECT(_boxCommandes), TIR1,    				"Tir 1", 			"");
-	addCommande(AGOBJECT(_boxCommandes), TIR2,    				"Tir 2", 			"");
-	addCommande(AGOBJECT(_boxCommandes), SELECT_WEAPON_UP,		"Arme suivante", 	"");
-	addCommande(AGOBJECT(_boxCommandes), SELECT_WEAPON_DOWN,	"Arme precedente", 	"");
+	addCommandeButton(AGOBJECT(_boxCommandes), TIR1,    				"Tir 1", 			"");
+	addCommandeButton(AGOBJECT(_boxCommandes), TIR2,    				"Tir 2", 			"");
+	addCommandeButton(AGOBJECT(_boxCommandes), SELECT_WEAPON_UP,		"Arme suivante", 	"");
+	addCommandeButton(AGOBJECT(_boxCommandes), SELECT_WEAPON_DOWN,	"Arme precedente", 	"");
 
 
 	AG_SeparatorNewHoriz(m_window);
@@ -79,7 +82,7 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 ConfigurationCommandesView::~ConfigurationCommandesView(void) {
 }
 
-void ConfigurationCommandesView::addCommande(AG_Object* parent, const COMMANDE_ID commandId, const char* commandeLabel, const char* commandName) {
+void ConfigurationCommandesView::addCommandeButton(AG_Object* parent, const COMMANDE_ID commandId, const char* commandeLabel, const char* commandName) {
 	AG_Box* boxHoriz = AG_BoxNewHoriz(parent, AG_BOX_HFILL | AG_BOX_HOMOGENOUS | AG_BOX_FRAME);
 
 	// Description de la commande
@@ -88,9 +91,9 @@ void ConfigurationCommandesView::addCommande(AG_Object* parent, const COMMANDE_I
 	AG_Expand(description);
 
 	// Action
-	AG_Button* action = AG_ButtonNewFn(boxHoriz, 0, "Changer", m_controllerCallback, "%i,%i", Controller::WaitUserCommandChoice, commandId);
-	AG_Expand(action);
-	_buttons[commandId] = action;
+	AG_Button* button = AG_ButtonNewFn(boxHoriz, 0, "Changer", m_controllerCallback, "%i,%i", Controller::WaitUserCommandChoice, commandId);
+	AG_Expand(button);
+	_buttons[commandId] = button;
 
 	// Nom technique de la commande (touche du clavier par exemple)
 	AG_Label* commande = AG_LabelNew(boxHoriz, 0, commandName);
@@ -108,30 +111,30 @@ void ConfigurationCommandesView::show(void) {
 }
 
 void ConfigurationCommandesView::refresh(void) {
-	updateCommande(AVANCER);
-	updateCommande(RECULER);
-	updateCommande(GAUCHE);
-	updateCommande(DROITE);
-	updateCommande(TIR1);
-	updateCommande(TIR2);
-	updateCommande(MONTER);
-	updateCommande(SELECT_WEAPON_UP);
-	updateCommande(SELECT_WEAPON_DOWN);
+	refreshCommandButton(AVANCER);
+	refreshCommandButton(RECULER);
+	refreshCommandButton(GAUCHE);
+	refreshCommandButton(DROITE);
+	refreshCommandButton(TIR1);
+	refreshCommandButton(TIR2);
+	refreshCommandButton(MONTER);
+	refreshCommandButton(SELECT_WEAPON_UP);
+	refreshCommandButton(SELECT_WEAPON_DOWN);
 }
 
-void ConfigurationCommandesView::updateCommande(COMMANDE_ID commandId) {
+int varrrrrrrrrrrrrrrr = 0;
+
+void ConfigurationCommandesView::refreshCommandButton(COMMANDE_ID commandId) {
 	// Mise à jour du bouton
 	AG_Button* button = _buttons[commandId];
 
 	if(_waitingCommandUserChoice && (_commandToWait == commandId)) {
-		AG_ButtonText(button, "Choix en cours");
-	}
-	else if(_waitingCommandUserChoice) {
-		AG_ButtonText(button, "-");
+		AG_ButtonTextS(button, "Choix en cours");
 	}
 	else {
-		AG_ButtonText(button, "Changer");
+		AG_ButtonTextS(button, "Changer");
 	}
+
 	AG_ExpandHoriz(button);
 
 	// Mise à jour du label
@@ -166,7 +169,7 @@ void ConfigurationCommandesView::updateCommande(COMMANDE_ID commandId) {
 		AG_LabelText(label, Config.Commandes.resolve(Config.Commandes.SelectWeaponDown));
 		break;
 	default:
-		cerr << endl << "Commande inconnue '" << commandId << "'";
+		LOGERROR(("Commande inconnue %d", _commandToWait));
 		break;
 	}
 
@@ -199,7 +202,7 @@ bool ConfigurationCommandesView::eventInterceptor(SDL_Event* event) {
 	}
 
 	if(commandAcquired) {
-		switch(_commandToWait) {
+		switch(THIZ->_commandToWait) {
 		case AVANCER:
 			setCommande(Config.Commandes.Avancer, key, mouse);
 			break;
@@ -227,13 +230,21 @@ bool ConfigurationCommandesView::eventInterceptor(SDL_Event* event) {
 		case SELECT_WEAPON_DOWN:
 			setCommande(Config.Commandes.SelectWeaponDown, key, mouse);
 			break;
+		case NONE:
+		default:
+			break;
 		}
 	}
 
 	if(commandAcquired || escapeAcquired) {
-		pFocus->removeEventInterceptor();
-		_waitingCommandUserChoice = false;
-		_commandToWait = 0;
+		// Mise à jour du bouton
+		AG_Button* button = THIZ->_buttons[THIZ->_commandToWait];
+		AG_ButtonTextS(button, "Changer");
+
+		// Met fin à l'interception des événements
+		pFocus->setEventInterceptor(0);
+		THIZ->_waitingCommandUserChoice = false;
+		THIZ->_commandToWait = NONE;
 	}
 
 	Viewer* viewer = Fabrique::getAgarView();
@@ -249,8 +260,12 @@ void ConfigurationCommandesView::setCommande(CCfg::CComID& commandeToUpdate, con
 }
 
 void ConfigurationCommandesView::beginWaitUserCommandChoice(int commandId) {
-	_commandToWait = commandId;
-	_waitingCommandUserChoice = true;
+	THIZ->_commandToWait = (COMMANDE_ID)commandId;
+	THIZ->_waitingCommandUserChoice = true;
+
+	// Mise à jour du bouton
+	AG_Button* button = THIZ->_buttons[THIZ->_commandToWait];
+	AG_ButtonTextS(button, "Choix en cours");
 
 	pFocus->setEventInterceptor(eventInterceptor);
 }

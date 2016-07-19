@@ -14,7 +14,8 @@
 
 class ConfigurationCommandesView : public View {
 	enum COMMANDE_ID {
-		AVANCER = 1,
+		NONE = 0,
+		AVANCER,
 		RECULER,
 		GAUCHE,
 		DROITE,
@@ -25,14 +26,16 @@ class ConfigurationCommandesView : public View {
 		SELECT_WEAPON_DOWN
 	};
 
-	static bool _waitingCommandUserChoice;
-	static int _commandToWait;
+	static ConfigurationCommandesView* THIZ;
 
 	std::map<COMMANDE_ID, AG_Button*> _buttons;
 	std::map<COMMANDE_ID, AG_Label*> _labels;
 
+	bool _waitingCommandUserChoice;
+	COMMANDE_ID _commandToWait;
+
 	static void setCommande(CCfg::CComID& commandeToUpdate, const SDLKey& key, const int& mouse);
-	void updateCommande(COMMANDE_ID commandId);
+	void refreshCommandButton(COMMANDE_ID commandId);
 
 public:
 	ConfigurationCommandesView(const AG_EventFn controllerCallback);
@@ -44,7 +47,7 @@ public:
 	static bool eventInterceptor(SDL_Event* event);
 	static void beginWaitUserCommandChoice(int commandId);
 
-	void addCommande(AG_Object* parent, const COMMANDE_ID commandId, const char* commandeLabel, const char* commandName);
+	void addCommandeButton(AG_Object* parent, const COMMANDE_ID commandId, const char* commandeLabel, const char* commandName);
 };
 
 #endif

@@ -31,9 +31,6 @@ public:
 	 */
 	void setEventInterceptor(bool (*eventInterceptor)(SDL_Event*));
 
-	/** Supprimer l'intercepteur de la pile de consommation des événements. */
-	void removeEventInterceptor();
-
 	bool isPlayFocus();
 
 	void SetPlayFocus();												// Place le focus sur le jeu

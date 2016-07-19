@@ -29,13 +29,6 @@ void CFocus::setEventInterceptor(bool (*eventInterceptor)(SDL_Event*)) {
 	_event_interceptor = eventInterceptor;
 }
 
-/**
- * Supprime l'intercepteur d'événements.
- */
-void CFocus::removeEventInterceptor() {
-	_event_interceptor = 0;
-}
-
 bool CFocus::isPlayFocus() {
 	return focus_actif_handle_key_down == play_handle_key_down;
 }
@@ -93,15 +86,8 @@ void CFocus::SwitchPlayOrConsoleFocus() {
  * Exécute la fonction de focus pour l'évênement 'event'
  */
 void CFocus::ExecFocus(SDL_Event *event) {
-	bool (*event_interceptor)(SDL_Event *event) = _event_interceptor;
-
-	if(focus_actif_handle_key_down) {
-		if(event_interceptor) {
-			if(!event_interceptor(event)) {
-				focus_actif_handle_key_down(event);
-			}
-		}
-		else {
+	if(!_event_interceptor || !_event_interceptor(event)) {	// S'il n'y a pas d'intercepteur ou que rien n'a été intercepté
+		if(focus_actif_handle_key_down) {
 			focus_actif_handle_key_down(event);
 		}
 	}

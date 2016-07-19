@@ -137,7 +137,6 @@ using namespace JktSon;
 NotConnectedInterlocutor2* _notConnectedServerInterlocutor = 0;
 
 Fonte fonte;
-#define INFOFONTESCALAR 0.3f
 
 CCfg Config;		// Contient la configuration du jeu
 CGame Game;			// Contient toutes les données vivantes du jeu
@@ -210,20 +209,19 @@ void gravitePlayer(CPlayer *player)	// Fonction implémentant la gravité
  * Initialise les menu du jeu, affiche le menu principal et place le focus dessus.
  */
 void initMenu(void) {
-	pFocus = new CFocus(play_handle_key_down, CDlg::menu_handle_key_down);
-	pFocus->SetPlayFocus();
 	Aide = false;
 
+	pFocus = new CFocus(play_handle_key_down, CDlg::menu_handle_key_down);
+
 	// Lancement de l'IHM, on entre dans le menu principal du jeu
-	pFocus->SetMenuAgarFocus();		// Place le focus sur le menu
+	pFocus->SetMenuAgarFocus();
 
 	AG_Event event;
 	AG_EventArgs(&event, "%i", Controller::Action::ShowMenuAction);
 	Controller::executeAction(&event);
 }
 
-void updateSon3D()
-{
+void updateSon3D() {
 	// TEST DU SON 3D
 	//	machin->vitesse.Z = 0.0f;
 	if( machin->position.Z>1.5f )
@@ -848,9 +846,11 @@ void play_handle_key_down( SDL_Event *event ) {
 
 		switch(keyDown) {
 		case SDLK_F1 :
-			pFocus->SetMenuFocus();		// Place le focus sur le menu
 			lanceMenuAide( 0 );
-			Aide = true;
+			break;
+
+		case SDLK_F2:
+			lanceMenuPrinc( 0 );
 			break;
 
 		case SDLK_F3 : {
@@ -862,8 +862,8 @@ void play_handle_key_down( SDL_Event *event ) {
 		}
 		break;
 
-		case SDLK_F4 :
-			lanceMenuMode( 0 );
+		case SDLK_F5:
+			pFocus->SwitchPlayOrConsoleFocus();		// Place le focus sur le menu
 			break;
 
 		case SDLK_g :		// Désactive / active la gravité
@@ -960,14 +960,6 @@ void play_handle_key_down( SDL_Event *event ) {
 				Game.Erwin(erwin);
 				((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setActivePlayerName(erwin->nom());
 			}
-			break;
-
-		case SDLK_F2:
-			lanceMenuPrinc( 0 );
-			break;
-
-		case SDLK_F5:
-			pFocus->SwitchPlayOrConsoleFocus();		// Place le focus sur le menu
 			break;
 
 		default:

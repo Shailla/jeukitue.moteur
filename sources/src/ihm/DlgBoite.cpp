@@ -24,7 +24,7 @@ using namespace JktUtils;
 
 extern CCfg Config;
 extern bool Aide;
-extern Fonte* fonte;
+extern Fonte fonte;
 extern CFocus *pFocus;
 
 namespace JktMenu
@@ -146,7 +146,7 @@ void CBouton::afficheTexte()
 	else
 		glColor3f( 0.0f, 0.0f, 0.0f );
 
-	fonte->drawString(_txt, TAILLE_BOUTON_X/2.0f, TAILLE_BOUTON_Y/2.0f, 1.0f, Fonte::JUSTIFY_CENTER);
+	fonte.drawString(_txt, TAILLE_BOUTON_X/2.0f, TAILLE_BOUTON_Y/2.0f, INFOFONTESCALAR, Fonte::JUSTIFY_CENTER);
 }
 
 bool CDlgBoite::INIT_CLASSE()
@@ -299,7 +299,7 @@ void CDlgBoite::afficheTitre()
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	glColor3f( 0.0f, 0.0f, 0.0f );
-	fonte->drawString(m_Titre, CORX + 20, CORY + TAILLEBY - 8, 1.0f);
+	fonte.drawString(m_Titre, CORX + 20, CORY + TAILLEBY - 8, INFOFONTESCALAR);
 }
 
 void CDlgBoite::afficheTexte()
@@ -311,7 +311,7 @@ void CDlgBoite::afficheTexte()
 
 	glColor3f( 0.0f, 0.0f, 0.0f );
 	for( unsigned int i=0 ; i<m_Texte.size() ; i++ )
-		fonte->drawString(m_Texte[i], CORX + 50, CORY + TAILLEBY - 50 - i*20.0f, 1.0f);
+		fonte.drawString(m_Texte[i], CORX + 50, CORY + TAILLEBY - 50 - i*20.0f, INFOFONTESCALAR);
 }
 
 void CDlgBoite::afficheBouton()

@@ -14,6 +14,8 @@
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
 
+#define INFOFONTESCALAR 0.3f
+
 // Maximum texture width
 #define MAXWIDTH 1024
 

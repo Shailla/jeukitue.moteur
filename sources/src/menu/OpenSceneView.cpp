@@ -9,7 +9,7 @@
 
 OpenSceneView::OpenSceneView(const AG_EventFn controllerCallback) : View(controllerCallback) {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
-    AG_WindowSetCaption(m_window, "Ouvrir une scene");
+    AG_WindowSetCaption(m_window, "Ouvrir une sc\u00e8ne");
 
 	m_buttonConvertirSceneASE = AG_ButtonNewFn(m_window, 0, "Importer une scene ASE", controllerCallback, "%i", Controller::ShowOpenAseViewAction);
     m_buttonOuvrirSceneMap = AG_ButtonNewFn(m_window, 0, "Ouvrir une scene Map", controllerCallback, "%i", Controller::ShowOpenMapViewAction);

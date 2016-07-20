@@ -19,16 +19,16 @@ ConfigurationVideoView::ConfigurationVideoView(const AG_EventFn controllerCallba
 :View(controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
-    AG_WindowSetCaption(m_window, "VidÃ©o");
+    AG_WindowSetCaption(m_window, "Vid\u00e9o");
 
 	// Résolution
-	_resoCombo = AG_ComboNew(m_window, 0, "Resolution");
+	_resoCombo = AG_ComboNew(m_window, 0, "R\u00e9solution");
 	AG_WidgetDisable(_resoCombo->tbox);
 	AG_ExpandHoriz(_resoCombo);
 	AG_ComboSizeHint(_resoCombo, "XXXX*XXXX", 10);
 
 	// Mode plein écran
-	AG_CheckboxNewInt(m_window, 0, "Plein ecran", &_fullScreen);
+	AG_CheckboxNewInt(m_window, 0, "Plein \u00e9cran", &_fullScreen);
 	
     AG_SeparatorNewHoriz(m_window);
 	

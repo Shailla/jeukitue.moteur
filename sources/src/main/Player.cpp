@@ -327,6 +327,7 @@ void CPlayer::Affiche() {
 
 	// Affiche un ellipsoïde qui trace les contours physiques du joueur si le jeu est configuré pour
 	if(Config.Joueur.outlineVisibility) {
+		glColor3f(0.57f, 0.43f, 0.85f);
 		GLUquadric* quadric = gluNewQuadric();
 		gluSphere(quadric, 0.1f, 16, 16);
 		gluDeleteQuadric(quadric);

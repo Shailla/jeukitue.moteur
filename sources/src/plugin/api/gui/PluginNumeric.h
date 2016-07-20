@@ -26,6 +26,10 @@ public:
 	PluginNumeric(AG_Widget* parent, const std::string& numericText, const std::string& numericUnite);
 	virtual ~PluginNumeric();
 
+	void expand();
+	void expandHoriz();
+	void expandVert();
+
 	float getValue();
 };
 

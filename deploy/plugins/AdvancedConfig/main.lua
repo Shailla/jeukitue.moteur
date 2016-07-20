@@ -38,8 +38,9 @@ function onLoad()
 	-- Onglet caméra
 	local tabCamera = notebook:addTab("Camera");
 	local boxCamera = tabCamera:addBoxVert();
-	boxCamera:addNumeric("...", "pixels");
-	boxCamera:addNumeric("...", "pixels");
+	boxCamera:addNumeric("Hauteur", "pixels");
+	boxCamera:addNumeric("Recul", "pixels");
+	boxCamera:addNumeric("Lateral", "pixels");
 
 	local drivers = getAvailableAudioDrivers();
 	log("Liste des drivers :");

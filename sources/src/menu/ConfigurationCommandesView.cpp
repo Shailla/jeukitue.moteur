@@ -49,7 +49,7 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 	addCommandeButton(AGOBJECT(_boxCommandes), GAUCHE,  				"Gauche", 					"");
 	addCommandeButton(AGOBJECT(_boxCommandes), DROITE,  				"Droite", 					"");
 	addCommandeButton(AGOBJECT(_boxCommandes), MONTER,					"Monter", 					"");
-	addCommandeButton(AGOBJECT(_boxCommandes), GRAVITY,					"Gravité on/off", 			"");
+	addCommandeButton(AGOBJECT(_boxCommandes), GRAVITY,					"Gravit\u00e9 on/off", 		"");
 
 
 	/* ********************************************* */
@@ -79,9 +79,6 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 	AG_Box* box = AG_BoxNewHoriz(m_window, 0);
 	AG_ExpandHoriz(box);
 	AG_ButtonNewFn(box, 0, "Retour", m_controllerCallback, "%i", Controller::ShowConfigurationMenuAction);
-
-	// Bouton appliquer
-	AG_ButtonNewFn(box, 0, "Appliquer", m_controllerCallback, "%i", Controller::ShowConfigurationVideoViewAction);
 
 	AG_WindowSetGeometryMax(m_window);
 	AG_WindowShow(m_window);

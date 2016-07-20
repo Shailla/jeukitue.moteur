@@ -982,7 +982,6 @@ void play_handle_key_down( SDL_Event *event ) {
 
 static void process_events(void) {
 	SDL_Event sdlevent;
-	AG_DriverEvent dev;
 
 	while( SDL_PollEvent( &sdlevent ) ) {
 
@@ -1025,14 +1024,6 @@ static void process_events(void) {
 		/* ****************************************** */
 
 		pFocus->ExecFocus( &sdlevent );
-
-
-		/* ****************************************** */
-		/* Gestion événements menu Agar               */
-		/* ****************************************** */
-
-		AG_SDL_TranslateEvent(agDriverSw, &sdlevent, &dev);
-		AG_ProcessEvent(NULL, &dev);
 	}
 
 	AG_WindowProcessQueued();

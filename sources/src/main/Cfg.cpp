@@ -352,8 +352,8 @@ void CCfg::Ecrit() {
 	fichier << endl << CST_COM_MONTER << "\t\t\t\t" 	<< Commandes.Monter.key << "\t" << Commandes.Monter.mouse << "\t(" << Commandes.resolve(Commandes.Monter) << ")";
 	fichier << endl << CST_COM_SELECTWEAPONUP << "\t\t" << Commandes.SelectWeaponUp.key << "\t" << Commandes.SelectWeaponUp.mouse << "\t(" << Commandes.resolve(Commandes.SelectWeaponUp) << ")";
 	fichier << endl << CST_COM_SELECTWEAPONDOWN << "\t" << Commandes.SelectWeaponDown.key << "\t" << Commandes.SelectWeaponDown.mouse << "\t(" << Commandes.resolve(Commandes.SelectWeaponDown) << ")";
-	fichier << endl << CST_COM_GRAVITY << "\t\t" 		<< Commandes.Gravity.key << "\t" << Commandes.Gravity.mouse << "\t(" << Commandes.resolve(Commandes.Gravity) << ")";
-	fichier << endl << CST_COM_TEXTURES << "\t" 		<< Commandes.Textures.key << "\t" << Commandes.Textures.mouse << "\t(" << Commandes.resolve(Commandes.Textures) << ")";
+	fichier << endl << CST_COM_GRAVITY << "\t\t\t" 		<< Commandes.Gravity.key << "\t" << Commandes.Gravity.mouse << "\t(" << Commandes.resolve(Commandes.Gravity) << ")";
+	fichier << endl << CST_COM_TEXTURES << "\t\t\t" 	<< Commandes.Textures.key << "\t" << Commandes.Textures.mouse << "\t(" << Commandes.resolve(Commandes.Textures) << ")";
 
 	fichier << "\n\n--------------------CENTRALISATEUR---------------------";
 	fichier << endl << CST_CEN_IP << "\t\t" << Centralisateur.m_IpServer;

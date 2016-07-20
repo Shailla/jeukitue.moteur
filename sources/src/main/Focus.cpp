@@ -4,6 +4,9 @@
 using namespace std;
 
 #include "SDL.h"
+#include <agar/core.h>
+#include <agar/gui.h>
+#include <agar/gui/sdl.h>
 
 #include "util/Trace.h"
 
@@ -90,6 +93,13 @@ void CFocus::ExecFocus(SDL_Event *event) {
 		if(focus_actif_handle_key_down) {
 			focus_actif_handle_key_down(event);
 		}
+
+		/* ****************************************** */
+		/* Gestion événements menu Agar               */
+		/* ****************************************** */
+		AG_DriverEvent dev;
+		AG_SDL_TranslateEvent(agDriverSw, event, &dev);
+		AG_ProcessEvent(NULL, &dev);
 	}
 }
 

@@ -31,7 +31,7 @@ PluginsManagementView::PluginsManagementView(const AG_EventFn controllerCallback
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
 	AG_WindowSetCaption(m_window, "Gestion des plugins");
 
-	_scrollview = AG_ScrollviewNew(m_window, AG_SCROLLVIEW_EXPAND | AG_SCROLLVIEW_NOPAN_X);
+	_boxVert = AG_BoxNewVert(m_window, AG_BOX_EXPAND);
 
     // Bouton retour
     AG_SeparatorNewHoriz(m_window);
@@ -71,36 +71,32 @@ void PluginsManagementView::show(void) {
 
 	while(iterPluginName < _pluginNames.end()) {
 		string pluginName = *iterPluginName;
-		AG_Box* box = AG_BoxNewHoriz(_scrollview, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
+		AG_Box* boxHoriz = AG_BoxNewHoriz(_boxVert, AG_BOX_HFILL | AG_BOX_HOMOGENOUS | AG_BOX_FRAME);
 
 		// Nom du plugin
-		AG_Box* boxPluginName = AG_BoxNewHoriz(box, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
-		AG_Label* label = AG_LabelNew(boxPluginName, 0, pluginName.c_str());
+		AG_Label* label = AG_LabelNew(boxHoriz, 0, pluginName.c_str());
 		AG_ExpandHoriz(label);
 
 		// Boutons associés au plugin ("Activer", "Désactiver", "Exécuter")
-		AG_Box* boxButtons = AG_BoxNewHoriz(box, AG_BOX_HOMOGENOUS | AG_BOX_EXPAND);
-		AG_ExpandHoriz(boxButtons);
-
-		AG_Button* buttonActivate = AG_ButtonNewFn(boxButtons,
-									   	   0,
-									   	   "Activer",
-									   	   m_controllerCallback,
-									   	   "%i,%i",
-									   	   Controller::PluginActivateAction,
-									   	   pluginNumber);
+		AG_Button* buttonActivate = AG_ButtonNewFn(boxHoriz,
+									   	   	   	   0,
+												   "Activer",
+												   m_controllerCallback,
+												   "%i,%i",
+												   Controller::PluginActivateAction,
+												   pluginNumber);
 		AG_ExpandHoriz(buttonActivate);
 
-		AG_Button* buttonDeactivate = AG_ButtonNewFn(boxButtons,
-									   	   0,
-									   	   "Desactiver",
-									   	   m_controllerCallback,
-									   	   "%i,%i",
-									   	   Controller::PluginDeactivateAction,
-									   	   pluginNumber);
+		AG_Button* buttonDeactivate = AG_ButtonNewFn(boxHoriz,
+									   	   	   0,
+											   "Desactiver",
+											   m_controllerCallback,
+											   "%i,%i",
+											   Controller::PluginDeactivateAction,
+											   pluginNumber);
 		AG_ExpandHoriz(buttonDeactivate);
 
-		_pluginBoxs.push_back(box);
+		_pluginBoxs.push_back(boxHoriz);
 
 		iterPluginName++;
 		pluginNumber++;

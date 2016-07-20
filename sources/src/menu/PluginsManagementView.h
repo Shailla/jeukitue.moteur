@@ -11,7 +11,7 @@
 
 class PluginsManagementView : public View
 {
-	AG_Scrollview* _scrollview;
+	AG_Box* _boxVert;
 	std::vector<AG_Box*> _pluginBoxs;
 	std::vector<std::string> _pluginNames;
 public:

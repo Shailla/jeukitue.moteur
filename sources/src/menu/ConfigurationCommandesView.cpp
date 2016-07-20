@@ -33,7 +33,7 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE|AG_WINDOW_MAXIMIZED);
 	AG_WindowSetCaption(m_window, "Commandes");
 
-	// Box Des commandes
+	// Box des commandes
 	AG_Box* _boxCommandes = AG_BoxNewVert(m_window, AG_BOX_EXPAND);
 
 

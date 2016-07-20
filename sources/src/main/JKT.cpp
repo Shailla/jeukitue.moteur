@@ -823,6 +823,15 @@ void play_handle_key_down( SDL_Event *event ) {
 			else if(mouseButtonDown == Config.Commandes.SelectWeaponDown.mouse) {
 				erwin->ActiveArmeDown();
 			}
+			// Désactive / active la gravité
+			else if(mouseButtonDown == Config.Commandes.Gravity.mouse) {
+				if( Game.getMap() )
+					Game.Gravite( !Game.Gravite() );
+			}
+			// Affiche / masque le damier des textures
+			else if(mouseButtonDown == Config.Commandes.Textures.mouse) {
+				JKT_AfficheToutesTextures = !JKT_AfficheToutesTextures;
+			}
 		}
 		break;
 
@@ -841,6 +850,15 @@ void play_handle_key_down( SDL_Event *event ) {
 			// Sélection arme précédente
 			else if(keyDown == Config.Commandes.SelectWeaponDown.key) {
 				erwin->ActiveArmeDown();
+			}
+			// Désactive / active la gravité
+			else if(keyDown == Config.Commandes.Gravity.key) {
+				if( Game.getMap() )
+					Game.Gravite( !Game.Gravite() );
+			}
+			// Affiche / masque le damier des textures
+			else if(keyDown == Config.Commandes.Textures.key) {
+				JKT_AfficheToutesTextures = !JKT_AfficheToutesTextures;
 			}
 		}
 
@@ -864,11 +882,6 @@ void play_handle_key_down( SDL_Event *event ) {
 
 		case SDLK_F5:
 			pFocus->SwitchPlayOrConsoleFocus();		// Place le focus sur le menu
-			break;
-
-		case SDLK_g :		// Désactive / active la gravité
-			if( Game.getMap() )
-				Game.Gravite( !Game.Gravite() );
 			break;
 
 		case SDLK_v :		// Annule la vitesse du joueur actif
@@ -919,10 +932,6 @@ void play_handle_key_down( SDL_Event *event ) {
 				JKT_RenderMode = GL_LINE_STRIP;
 			else
 				JKT_RenderMode = GL_TRIANGLES;
-			break;
-
-		case SDLK_t:		// Affiche les textures actives dans un damier
-			JKT_AfficheToutesTextures = !JKT_AfficheToutesTextures;
 			break;
 
 		case SDLK_o :		// Retour du joueur à la position d'origine avec vitesse nulle

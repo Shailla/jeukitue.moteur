@@ -23,7 +23,9 @@ class ConfigurationCommandesView : public View {
 		TIR2,
 		MONTER,
 		SELECT_WEAPON_UP,
-		SELECT_WEAPON_DOWN
+		SELECT_WEAPON_DOWN,
+		GRAVITY,
+		TEXTURES
 	};
 
 	static ConfigurationCommandesView* THIZ;

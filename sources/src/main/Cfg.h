@@ -40,6 +40,8 @@ class CCfg {
 	static const char* CST_COM_MONTER;
 	static const char* CST_COM_SELECTWEAPONUP;
 	static const char* CST_COM_SELECTWEAPONDOWN;
+	static const char* CST_COM_GRAVITY;
+	static const char* CST_COM_TEXTURES;
 
 	static const char* CST_CEN_IP;
 	static const char* CST_CEN_PORT;
@@ -106,6 +108,8 @@ private:
 		CComID Monter;				// Monter
 		CComID SelectWeaponUp;		// Sélectionner arme suivante
 		CComID SelectWeaponDown;	// Sélectionner arme précédente
+		CComID Gravity;				// Annuler / activer la gravité
+		CComID Textures;			// Afficher / masquer le damier des textures
 		const char* resolve(CComID com);					// Retourne la touche ou le bouton en texte
 	};
 

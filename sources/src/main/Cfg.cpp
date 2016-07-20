@@ -55,6 +55,8 @@ const char* CCfg::CST_COM_TIR2 =				"commande.tir2";
 const char* CCfg::CST_COM_MONTER =				"commande.monter";
 const char* CCfg::CST_COM_SELECTWEAPONUP =		"commande.selectWeaponUp";
 const char* CCfg::CST_COM_SELECTWEAPONDOWN =	"commande.selectWeaponDown";
+const char* CCfg::CST_COM_GRAVITY =				"commande.gravity";
+const char* CCfg::CST_COM_TEXTURES =			"commande.textures";
 
 const char* CCfg::CST_CEN_IP =					"centralisateur.ip";
 const char* CCfg::CST_CEN_PORT =				"centralisateur.port";
@@ -206,6 +208,18 @@ void CCfg::Lit() {
 		fichier >> crotte >> mot;
 		Commandes.SelectWeaponDown.mouse = crotte;
 
+		do fichier >> mot;	while( mot!=CST_COM_GRAVITY );
+		fichier >> crotte;
+		Commandes.Gravity.key = (SDLKey)crotte;
+		fichier >> crotte >> mot;
+		Commandes.Gravity.mouse = crotte;
+
+		do fichier >> mot;	while( mot!=CST_COM_TEXTURES );
+		fichier >> crotte;
+		Commandes.Textures.key = (SDLKey)crotte;
+		fichier >> crotte >> mot;
+		Commandes.Textures.mouse = crotte;
+
 
 		/* ***************************************
 		 * Centralisateur
@@ -329,15 +343,17 @@ void CCfg::Ecrit() {
 	}
 
 	fichier << "\n\n-----------------------COMMANDES-----------------------";
-	fichier << endl << CST_COM_AVANCER << "\t\t\t" << Commandes.Avancer.key << "\t" << Commandes.Avancer.mouse << "\t(" << Commandes.resolve(Commandes.Avancer) << ")";
-	fichier << endl << CST_COM_RECULER << "\t\t\t" << Commandes.Reculer.key << "\t" << Commandes.Reculer.mouse << "\t(" << Commandes.resolve(Commandes.Reculer) << ")";
-	fichier << endl << CST_COM_GAUCHE << "\t\t\t\t" << Commandes.Gauche.key << "\t" << Commandes.Gauche.mouse << "\t(" << Commandes.resolve(Commandes.Gauche) << ")";
-	fichier << endl << CST_COM_DROITE << "\t\t\t\t" << Commandes.Droite.key << "\t" << Commandes.Droite.mouse << "\t(" << Commandes.resolve(Commandes.Droite) << ")";
-	fichier << endl << CST_COM_TIR1 << "\t\t\t\t" << Commandes.Tir1.key << "\t" << Commandes.Tir1.mouse << "\t(" << Commandes.resolve(Commandes.Tir1) << ")";
-	fichier << endl << CST_COM_TIR2 << "\t\t\t\t" << Commandes.Tir2.key << "\t" << Commandes.Tir2.mouse << "\t(" << Commandes.resolve(Commandes.Tir2) << ")";
-	fichier << endl << CST_COM_MONTER << "\t\t\t\t" << Commandes.Monter.key << "\t" << Commandes.Monter.mouse << "\t(" << Commandes.resolve(Commandes.Monter) << ")";
+	fichier << endl << CST_COM_AVANCER << "\t\t\t" 		<< Commandes.Avancer.key << "\t" << Commandes.Avancer.mouse << "\t(" << Commandes.resolve(Commandes.Avancer) << ")";
+	fichier << endl << CST_COM_RECULER << "\t\t\t" 		<< Commandes.Reculer.key << "\t" << Commandes.Reculer.mouse << "\t(" << Commandes.resolve(Commandes.Reculer) << ")";
+	fichier << endl << CST_COM_GAUCHE << "\t\t\t\t" 	<< Commandes.Gauche.key << "\t" << Commandes.Gauche.mouse << "\t(" << Commandes.resolve(Commandes.Gauche) << ")";
+	fichier << endl << CST_COM_DROITE << "\t\t\t\t" 	<< Commandes.Droite.key << "\t" << Commandes.Droite.mouse << "\t(" << Commandes.resolve(Commandes.Droite) << ")";
+	fichier << endl << CST_COM_TIR1 << "\t\t\t\t" 		<< Commandes.Tir1.key << "\t" << Commandes.Tir1.mouse << "\t(" << Commandes.resolve(Commandes.Tir1) << ")";
+	fichier << endl << CST_COM_TIR2 << "\t\t\t\t" 		<< Commandes.Tir2.key << "\t" << Commandes.Tir2.mouse << "\t(" << Commandes.resolve(Commandes.Tir2) << ")";
+	fichier << endl << CST_COM_MONTER << "\t\t\t\t" 	<< Commandes.Monter.key << "\t" << Commandes.Monter.mouse << "\t(" << Commandes.resolve(Commandes.Monter) << ")";
 	fichier << endl << CST_COM_SELECTWEAPONUP << "\t\t" << Commandes.SelectWeaponUp.key << "\t" << Commandes.SelectWeaponUp.mouse << "\t(" << Commandes.resolve(Commandes.SelectWeaponUp) << ")";
 	fichier << endl << CST_COM_SELECTWEAPONDOWN << "\t" << Commandes.SelectWeaponDown.key << "\t" << Commandes.SelectWeaponDown.mouse << "\t(" << Commandes.resolve(Commandes.SelectWeaponDown) << ")";
+	fichier << endl << CST_COM_GRAVITY << "\t\t" 		<< Commandes.Gravity.key << "\t" << Commandes.Gravity.mouse << "\t(" << Commandes.resolve(Commandes.Gravity) << ")";
+	fichier << endl << CST_COM_TEXTURES << "\t" 		<< Commandes.Textures.key << "\t" << Commandes.Textures.mouse << "\t(" << Commandes.resolve(Commandes.Textures) << ")";
 
 	fichier << "\n\n--------------------CENTRALISATEUR---------------------";
 	fichier << endl << CST_CEN_IP << "\t\t" << Centralisateur.m_IpServer;

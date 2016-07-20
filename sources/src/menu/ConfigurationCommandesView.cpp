@@ -44,11 +44,12 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 	AG_LabelNew(_boxCommandes, 0, " ");	// Saute une ligne
 	AG_LabelNew(_boxCommandes, 0, "Deplacements");
 
-	addCommandeButton(AGOBJECT(_boxCommandes), AVANCER, 				"Avancer",			"");
-	addCommandeButton(AGOBJECT(_boxCommandes), RECULER, 				"Reculer", 			"");
-	addCommandeButton(AGOBJECT(_boxCommandes), GAUCHE,  				"Gauche", 			"");
-	addCommandeButton(AGOBJECT(_boxCommandes), DROITE,  				"Droite", 			"");
-	addCommandeButton(AGOBJECT(_boxCommandes), MONTER,				"Monter", 			"");
+	addCommandeButton(AGOBJECT(_boxCommandes), AVANCER, 				"Avancer",					"");
+	addCommandeButton(AGOBJECT(_boxCommandes), RECULER, 				"Reculer", 					"");
+	addCommandeButton(AGOBJECT(_boxCommandes), GAUCHE,  				"Gauche", 					"");
+	addCommandeButton(AGOBJECT(_boxCommandes), DROITE,  				"Droite", 					"");
+	addCommandeButton(AGOBJECT(_boxCommandes), MONTER,					"Monter", 					"");
+	addCommandeButton(AGOBJECT(_boxCommandes), GRAVITY,					"Gravité on/off", 			"");
 
 
 	/* ********************************************* */
@@ -57,10 +58,19 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 
 	AG_LabelNew(_boxCommandes, 0, " ");	// Saute une ligne
 	AG_LabelNew(_boxCommandes, 0, "Armes");
-	addCommandeButton(AGOBJECT(_boxCommandes), TIR1,    				"Tir 1", 			"");
-	addCommandeButton(AGOBJECT(_boxCommandes), TIR2,    				"Tir 2", 			"");
-	addCommandeButton(AGOBJECT(_boxCommandes), SELECT_WEAPON_UP,		"Arme suivante", 	"");
-	addCommandeButton(AGOBJECT(_boxCommandes), SELECT_WEAPON_DOWN,	"Arme precedente", 	"");
+	addCommandeButton(AGOBJECT(_boxCommandes), TIR1,    				"Tir 1", 					"");
+	addCommandeButton(AGOBJECT(_boxCommandes), TIR2,    				"Tir 2", 					"");
+	addCommandeButton(AGOBJECT(_boxCommandes), SELECT_WEAPON_UP,		"Arme suivante", 			"");
+	addCommandeButton(AGOBJECT(_boxCommandes), SELECT_WEAPON_DOWN,		"Arme precedente", 			"");
+
+
+	/* ********************************************* */
+	/* Commandes diverses                            */
+	/* ********************************************* */
+
+	AG_LabelNew(_boxCommandes, 0, " ");	// Saute une ligne
+	AG_LabelNew(_boxCommandes, 0, "Divers");
+	addCommandeButton(AGOBJECT(_boxCommandes), TEXTURES,				"Damier textures on/off", 	"");
 
 
 	AG_SeparatorNewHoriz(m_window);
@@ -73,7 +83,7 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 	// Bouton appliquer
 	AG_ButtonNewFn(box, 0, "Appliquer", m_controllerCallback, "%i", Controller::ShowConfigurationVideoViewAction);
 
-	//	AG_WindowSetGeometryMax(m_window);
+	AG_WindowSetGeometryMax(m_window);
 	AG_WindowShow(m_window);
 
 	hide();
@@ -120,6 +130,8 @@ void ConfigurationCommandesView::refresh(void) {
 	refreshCommandButton(MONTER);
 	refreshCommandButton(SELECT_WEAPON_UP);
 	refreshCommandButton(SELECT_WEAPON_DOWN);
+	refreshCommandButton(GRAVITY);
+	refreshCommandButton(TEXTURES);
 }
 
 int varrrrrrrrrrrrrrrr = 0;
@@ -167,6 +179,12 @@ void ConfigurationCommandesView::refreshCommandButton(COMMANDE_ID commandId) {
 		break;
 	case SELECT_WEAPON_DOWN:
 		AG_LabelText(label, Config.Commandes.resolve(Config.Commandes.SelectWeaponDown));
+		break;
+	case GRAVITY:
+		AG_LabelText(label, Config.Commandes.resolve(Config.Commandes.Gravity));
+		break;
+	case TEXTURES:
+		AG_LabelText(label, Config.Commandes.resolve(Config.Commandes.Textures));
 		break;
 	default:
 		LOGERROR(("Commande inconnue %d", _commandToWait));
@@ -229,6 +247,12 @@ bool ConfigurationCommandesView::eventInterceptor(SDL_Event* event) {
 			break;
 		case SELECT_WEAPON_DOWN:
 			setCommande(Config.Commandes.SelectWeaponDown, key, mouse);
+			break;
+		case GRAVITY:
+			setCommande(Config.Commandes.Gravity, key, mouse);
+			break;
+		case TEXTURES:
+			setCommande(Config.Commandes.Textures, key, mouse);
 			break;
 		case NONE:
 		default:

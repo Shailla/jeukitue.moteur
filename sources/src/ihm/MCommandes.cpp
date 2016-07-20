@@ -82,6 +82,8 @@ LOGDEBUG(("lanceMenuConfigCommandes(var=%x)", var));
 	MenuConfigCommandes.add_ItemsDroits( 6, Config.Commandes.resolve(Config.Commandes.Monter) );
 	MenuConfigCommandes.add_ItemsDroits( 6, Config.Commandes.resolve(Config.Commandes.SelectWeaponUp) );
 	MenuConfigCommandes.add_ItemsDroits( 6, Config.Commandes.resolve(Config.Commandes.SelectWeaponDown) );
+	MenuConfigCommandes.add_ItemsDroits( 6, Config.Commandes.resolve(Config.Commandes.Gravity) );
+	MenuConfigCommandes.add_ItemsDroits( 6, Config.Commandes.resolve(Config.Commandes.Textures) );
 
 	CDlg::SetMenuActif( &MenuConfigCommandes );
 }

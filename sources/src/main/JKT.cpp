@@ -381,10 +381,10 @@ void afficheInfo( Uint32 tempsDisplay ) {
 		glDisable( GL_DEPTH_TEST );
 		glEnable( GL_BLEND );
 
-		float gauche = (float)Config.Display.X - 130;
-		float bas = (float)10;
 		float largeur = 120;
 		float hauteur = 120;
+		float gauche = (float)Config.Display.X - largeur - 10;
+		float bas = (float)Config.Display.X - hauteur - 10;
 		float haut = bas + hauteur;
 		float droite = gauche + largeur;
 
@@ -523,7 +523,7 @@ void display() {		// Fonction principale d'affichage
 			glEnd();
 		}
 
-		// Dessine les axes dans la map	(sert au repérage pour la conception du jeu)
+		// Dessine une cube de 1 mètre de côté dans la map (sert au repérage pour la conception du jeu)
 		if(Config.Debug.cubicMeterVisibility) {
 			glPushMatrix();
 			glTranslatef(0.0f, 0.0f, -0.5f);
@@ -585,23 +585,27 @@ void display() {		// Fonction principale d'affichage
 	glDisable( GL_BLEND );
 	glDisable( GL_DEPTH_TEST );
 
+	// Affichage du damier des textures
 	if(JKT_AfficheToutesTextures)
 		Game.afficheToutesTextures(0, 0, Config.Display.X, Config.Display.Y);
 
+	// Affichage du viseur
 	if(Game.Erwin()) {
 		Game.Erwin()->AfficheIconesArmes();
 		Game.afficheViseur(Config.Display.X/2, Config.Display.Y/2);
 		glDepthMask( GL_TRUE );
 	}
 
+	// Affichage des infos (mode de jeu, FPS, ...)
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor3f(1.0, 1.0, 1.0 );
 
-	afficheInfo(SDL_GetTicks()-temps);	// Affiche les infos texte en avant plan
+	afficheInfo(SDL_GetTicks()-temps);
 
+	// Affichage du vieux système de menus
 	if( Aide )
 		CDlg::afficheMenuActif();
 
@@ -614,8 +618,8 @@ void display() {		// Fonction principale d'affichage
 	glLoadIdentity();
 
 
-	/******************************************
-	   Dessin des menus Agar
+	/*****************************************
+	   Affichage des menus Agar
 	 *****************************************/
 
 	glEnable( GL_TEXTURE_2D );
@@ -630,14 +634,14 @@ void display() {		// Fonction principale d'affichage
 	glDisable( GL_BLEND );
 
 
-	/*******************************************************
+	/******************************************************
 	  Echange des buffers graphique -> affiche à l'écran.
 	 ******************************************************/
 
 	SDL_GL_SwapBuffers();
 
 
-	/* *****************************************************
+	/* ****************************************************
 	 * Initialisation et destruction des objets graphiques
 	 * ****************************************************/
 

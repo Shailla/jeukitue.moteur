@@ -18,6 +18,8 @@ using namespace std;
 
 class CGame;
 
+#include "main/Fabrique.h"
+#include "util/GLUtils.h"
 #include "util/math_vectoriel.h"
 #include "util/Trace.h"
 #include "util/V3D.h"
@@ -326,18 +328,17 @@ void CPlayer::Affiche() {
 	glRotated(-_teta, 0.0f, 1.0f, 0.0f); //Rotation par rapport à l'axe verticale
 
 	// Affiche le skin du joueur s'il existe et si le jeu est configuré pour
-	if(Config.Joueur.skinVisibility)
-		if(_pSkin)
-			_pSkin->Affiche();
+	if(Config.Joueur.skinVisibility && _pSkin)
+		_pSkin->Affiche();
 
 	// Affiche un ellipsoïde qui trace les contours physiques du joueur si le jeu est configuré pour
 	if(Config.Joueur.outlineVisibility) {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		glColor4f(0.57f, 0.43f, 0.85f, 0.5f);
-		GLUquadric* quadric = gluNewQuadric();
-		gluSphere(quadric, 0.1f, 16, 16);
-		gluDeleteQuadric(quadric);
+		Fabrique::getGlUtils()->drawSphere(0.1f, 16, 16);
+
 		glDisable(GL_BLEND);
 	}
 

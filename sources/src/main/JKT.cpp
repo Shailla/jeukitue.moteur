@@ -500,13 +500,12 @@ void display() {		// Fonction principale d'affichage
 			glTranslatef(-vect[0], -vect[1], vect[2]);	// Placement du point de vue
 		}
 
-		Game.AfficheDirigeables();
-		Game.AffichePlayers();		// Affiche tous les joueurs
-
 		glEnable(GL_DEPTH_TEST);
 
-		Game.getMap()->Affiche();	// Affichage de la map
-		Game.AfficheProjectils();
+		Game.getMap()->Affiche();		// Affichage de la map
+		Game.AfficheProjectils();		// Affichage des projectiles
+		Game.AfficheDirigeables();		// Affichage des dirigeables
+		Game.AffichePlayers();			// Affiche des joueurs
 
 		// Dessine les axes dans la map	(sert au repérage pour la conception du jeu)
 		if(Config.Debug.axesMeterVisibility) {

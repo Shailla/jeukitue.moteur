@@ -679,48 +679,6 @@ void chopeLesEvenements() {
 	if(Game.Erwin()) {
 		CPlayer *erwin = Game.Erwin();
 
-		if( keystate[SDLK_e] ) {
-			float posVue[3];
-			erwin->getPosVue(posVue);
-			posVue[0] += 0.003f;
-			erwin->setPosVue(posVue);
-		}
-
-		if( keystate[SDLK_d] ) {
-			float posVue[3];
-			erwin->getPosVue(posVue);
-			posVue[0] -= 0.003f;
-			erwin->setPosVue(posVue);
-		}
-
-		if( keystate[SDLK_r] ) {
-			float posVue[3];
-			erwin->getPosVue(posVue);
-			posVue[1] += 0.003f;
-			erwin->setPosVue(posVue);
-		}
-
-		if( keystate[SDLK_f] ) {
-			float posVue[3];
-			erwin->getPosVue(posVue);
-			posVue[1] -= 0.003f;
-			erwin->setPosVue(posVue);
-		}
-
-		if( keystate[SDLK_t] ) {
-			float posVue[3];
-			erwin->getPosVue(posVue);
-			posVue[2] += 0.003f;
-			erwin->setPosVue(posVue);
-		}
-
-		if( keystate[SDLK_g] ) {
-			float posVue[3];
-			erwin->getPosVue(posVue);
-			posVue[2] -= 0.003f;
-			erwin->setPosVue(posVue);
-		}
-
 		if ( keystate[Config.Commandes.Gauche.key]||(mouse&SDL_BUTTON(Config.Commandes.Gauche.mouse)) )	{	//gauche
 			erwin->getClavier()->m_fDroite = -1.0;
 			erwin->getClavier()->m_bIndic = true;
@@ -739,6 +697,48 @@ void chopeLesEvenements() {
 		if( keystate[Config.Commandes.Droite.key]||(mouse&SDL_BUTTON(Config.Commandes.Droite.mouse)) ) {	// Droite
 			erwin->getClavier()->m_fDroite = 1.0;
 			erwin->getClavier()->m_bIndic = true;
+		}
+
+		if ( keystate[Config.Commandes.CameraMonter.key]||(mouse&SDL_BUTTON(Config.Commandes.CameraMonter.mouse)) )	{	//gauche
+			float posVue[3];
+			erwin->getPosVue(posVue);
+			posVue[1] += 0.003f;
+			erwin->setPosVue(posVue);
+		}
+
+		if ( keystate[Config.Commandes.CameraDescendre.key]||(mouse&SDL_BUTTON(Config.Commandes.CameraDescendre.mouse)) )	{	//gauche
+			float posVue[3];
+			erwin->getPosVue(posVue);
+			posVue[1] -= 0.003f;
+			erwin->setPosVue(posVue);
+		}
+
+		if ( keystate[Config.Commandes.CameraDroite.key]||(mouse&SDL_BUTTON(Config.Commandes.CameraDroite.mouse)) )	{	//gauche
+			float posVue[3];
+			erwin->getPosVue(posVue);
+			posVue[0] += 0.003f;
+			erwin->setPosVue(posVue);
+		}
+
+		if ( keystate[Config.Commandes.CameraGauche.key]||(mouse&SDL_BUTTON(Config.Commandes.CameraGauche.mouse)) )	{	//gauche
+			float posVue[3];
+			erwin->getPosVue(posVue);
+			posVue[0] -= 0.003f;
+			erwin->setPosVue(posVue);
+		}
+
+		if ( keystate[Config.Commandes.CameraReculer.key]||(mouse&SDL_BUTTON(Config.Commandes.CameraReculer.mouse)) )	{	//gauche
+			float posVue[3];
+			erwin->getPosVue(posVue);
+			posVue[2] -= 0.003f;
+			erwin->setPosVue(posVue);
+		}
+
+		if ( keystate[Config.Commandes.CameraAvancer.key]||(mouse&SDL_BUTTON(Config.Commandes.CameraAvancer.mouse)) )	{	//gauche
+			float posVue[3];
+			erwin->getPosVue(posVue);
+			posVue[2] += 0.003f;
+			erwin->setPosVue(posVue);
 		}
 
 		if( keystate[Config.Commandes.Tir1.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir1.mouse)) ) {	// Tire avec l'arme sélectionnée

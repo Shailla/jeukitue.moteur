@@ -50,6 +50,14 @@ const char* CCfg::CST_COM_AVANCER =				"commande.avancer";
 const char* CCfg::CST_COM_RECULER =				"commande.reculer";
 const char* CCfg::CST_COM_GAUCHE =				"commande.gauche";
 const char* CCfg::CST_COM_DROITE =				"commande.droite";
+const char* CCfg::CST_COM_CAMERA_MONTER =		"commande.cameraMonter";
+const char* CCfg::CST_COM_CAMERA_DESCENDRE =	"commande.cameraDescendre";
+const char* CCfg::CST_COM_CAMERA_DROITE =		"commande.cameraDroite";
+const char* CCfg::CST_COM_CAMERA_GAUCHE =		"commande.cameraGauche";
+const char* CCfg::CST_COM_CAMERA_RECULER =		"commande.cameraReculer";
+const char* CCfg::CST_COM_CAMERA_AVANCER =		"commande.cameraAvancer";
+
+
 const char* CCfg::CST_COM_TIR1 =				"commande.tir1";
 const char* CCfg::CST_COM_TIR2 =				"commande.tir2";
 const char* CCfg::CST_COM_MONTER =				"commande.monter";
@@ -178,6 +186,42 @@ void CCfg::Lit() {
 		Commandes.Droite.key = (SDLKey)crotte;
 		fichier >> crotte >> mot;
 		Commandes.Droite.mouse = crotte;
+
+		do fichier >> mot;	while( mot!=CST_COM_CAMERA_MONTER );
+		fichier >> crotte;
+		Commandes.CameraMonter.key = (SDLKey)crotte;
+		fichier >> crotte >> mot;
+		Commandes.CameraMonter.mouse = crotte;
+
+		do fichier >> mot;	while( mot!=CST_COM_CAMERA_DESCENDRE );
+		fichier >> crotte;
+		Commandes.CameraDescendre.key = (SDLKey)crotte;
+		fichier >> crotte >> mot;
+		Commandes.CameraDescendre.mouse = crotte;
+
+		do fichier >> mot;	while( mot!=CST_COM_CAMERA_DROITE );
+		fichier >> crotte;
+		Commandes.CameraDroite.key = (SDLKey)crotte;
+		fichier >> crotte >> mot;
+		Commandes.CameraDroite.mouse = crotte;
+
+		do fichier >> mot;	while( mot!=CST_COM_CAMERA_GAUCHE );
+		fichier >> crotte;
+		Commandes.CameraGauche.key = (SDLKey)crotte;
+		fichier >> crotte >> mot;
+		Commandes.CameraGauche.mouse = crotte;
+
+		do fichier >> mot;	while( mot!=CST_COM_CAMERA_RECULER );
+		fichier >> crotte;
+		Commandes.CameraReculer.key = (SDLKey)crotte;
+		fichier >> crotte >> mot;
+		Commandes.CameraReculer.mouse = crotte;
+
+		do fichier >> mot;	while( mot!=CST_COM_CAMERA_AVANCER );
+		fichier >> crotte;
+		Commandes.CameraAvancer.key = (SDLKey)crotte;
+		fichier >> crotte >> mot;
+		Commandes.CameraAvancer.mouse = crotte;
 
 		do fichier >> mot;	while( mot!=CST_COM_TIR1 );
 		fichier >> crotte;
@@ -351,6 +395,15 @@ void CCfg::Ecrit() {
 	fichier << endl << CST_COM_RECULER << "\t\t\t" 		<< Commandes.Reculer.key << "\t" << Commandes.Reculer.mouse << "\t(" << Commandes.resolve(Commandes.Reculer) << ")";
 	fichier << endl << CST_COM_GAUCHE << "\t\t\t\t" 	<< Commandes.Gauche.key << "\t" << Commandes.Gauche.mouse << "\t(" << Commandes.resolve(Commandes.Gauche) << ")";
 	fichier << endl << CST_COM_DROITE << "\t\t\t\t" 	<< Commandes.Droite.key << "\t" << Commandes.Droite.mouse << "\t(" << Commandes.resolve(Commandes.Droite) << ")";
+
+	fichier << endl << CST_COM_CAMERA_MONTER << "\t\t\t\t" 		<< Commandes.CameraMonter.key << "\t" << Commandes.CameraMonter.mouse << "\t(" << Commandes.resolve(Commandes.CameraMonter) << ")";
+	fichier << endl << CST_COM_CAMERA_DESCENDRE << "\t\t\t\t"	<< Commandes.CameraDescendre.key << "\t" << Commandes.CameraDescendre.mouse << "\t(" << Commandes.resolve(Commandes.CameraDescendre) << ")";
+	fichier << endl << CST_COM_CAMERA_DROITE << "\t\t\t\t" 		<< Commandes.CameraDroite.key << "\t" << Commandes.CameraDroite.mouse << "\t(" << Commandes.resolve(Commandes.CameraDroite) << ")";
+	fichier << endl << CST_COM_CAMERA_GAUCHE << "\t\t\t\t" 		<< Commandes.CameraGauche.key << "\t" << Commandes.CameraGauche.mouse << "\t(" << Commandes.resolve(Commandes.CameraGauche) << ")";
+	fichier << endl << CST_COM_CAMERA_RECULER << "\t\t\t\t" 	<< Commandes.CameraReculer.key << "\t" << Commandes.CameraReculer.mouse << "\t(" << Commandes.resolve(Commandes.CameraReculer) << ")";
+	fichier << endl << CST_COM_CAMERA_AVANCER << "\t\t\t\t" 	<< Commandes.CameraAvancer.key << "\t" << Commandes.CameraAvancer.mouse << "\t(" << Commandes.resolve(Commandes.CameraAvancer) << ")";
+
+
 	fichier << endl << CST_COM_TIR1 << "\t\t\t\t" 		<< Commandes.Tir1.key << "\t" << Commandes.Tir1.mouse << "\t(" << Commandes.resolve(Commandes.Tir1) << ")";
 	fichier << endl << CST_COM_TIR2 << "\t\t\t\t" 		<< Commandes.Tir2.key << "\t" << Commandes.Tir2.mouse << "\t(" << Commandes.resolve(Commandes.Tir2) << ")";
 	fichier << endl << CST_COM_MONTER << "\t\t\t\t" 	<< Commandes.Monter.key << "\t" << Commandes.Monter.mouse << "\t(" << Commandes.resolve(Commandes.Monter) << ")";

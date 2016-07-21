@@ -35,6 +35,13 @@ class CCfg {
 	static const char* CST_COM_RECULER;
 	static const char* CST_COM_GAUCHE;
 	static const char* CST_COM_DROITE;
+	static const char* CST_COM_CAMERA_MONTER;
+	static const char* CST_COM_CAMERA_DESCENDRE;
+	static const char* CST_COM_CAMERA_DROITE;
+	static const char* CST_COM_CAMERA_GAUCHE;
+	static const char* CST_COM_CAMERA_RECULER;
+	static const char* CST_COM_CAMERA_AVANCER;
+
 	static const char* CST_COM_TIR1;
 	static const char* CST_COM_TIR2;
 	static const char* CST_COM_MONTER;
@@ -104,6 +111,12 @@ private:
 		CComID Reculer;				// Reculer
 		CComID Gauche;				// Aller à gauche
 		CComID Droite;				// Aller à droite
+		CComID CameraMonter;		// Monter la caméra
+		CComID CameraDescendre;		// Descendre la caméra
+		CComID CameraDroite;		// Déplacer à droite la caméra
+		CComID CameraGauche;		// Déplacer à gauche la caméra
+		CComID CameraReculer;		// Reculer la caméra
+		CComID CameraAvancer;		// Avancer la caméra
 		CComID Tir1;				// Tir primaire
 		CComID Tir2;				// Tir secondaire
 		CComID Monter;				// Monter

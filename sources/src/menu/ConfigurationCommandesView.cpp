@@ -34,7 +34,8 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 	AG_WindowSetCaption(m_window, "Commandes");
 
 	// Box des commandes
-	AG_Box* _boxCommandes = AG_BoxNewVert(m_window, AG_BOX_EXPAND);
+	AG_Scrollview* _scroll = AG_ScrollviewNew(m_window, AG_SCROLLVIEW_EXPAND);
+	AG_Box* _boxCommandes = AG_BoxNewVert(_scroll, AG_BOX_EXPAND);
 
 
 	/* ********************************************* */
@@ -50,6 +51,20 @@ ConfigurationCommandesView::ConfigurationCommandesView(const AG_EventFn controll
 	addCommandeButton(AGOBJECT(_boxCommandes), DROITE,  				"Droite", 					"");
 	addCommandeButton(AGOBJECT(_boxCommandes), MONTER,					"Monter", 					"");
 	addCommandeButton(AGOBJECT(_boxCommandes), GRAVITY,					"Gravit\u00e9 on/off", 		"");
+
+
+	/* ********************************************* */
+	/* Commandes des armes                           */
+	/* ********************************************* */
+
+	AG_LabelNew(_boxCommandes, 0, " ");	// Saute une ligne
+	AG_LabelNew(_boxCommandes, 0, "Cam\u00e9ra");
+	addCommandeButton(AGOBJECT(_boxCommandes), CAMERA_MONTER,    		"Monter", 					"");
+	addCommandeButton(AGOBJECT(_boxCommandes), CAMERA_DESCENDRE,   		"Descendre",				"");
+	addCommandeButton(AGOBJECT(_boxCommandes), CAMERA_DROITE,    		"Droite", 					"");
+	addCommandeButton(AGOBJECT(_boxCommandes), CAMERA_GAUCHE,    		"Gauche", 					"");
+	addCommandeButton(AGOBJECT(_boxCommandes), CAMERA_RECULER,    		"Reculer", 					"");
+	addCommandeButton(AGOBJECT(_boxCommandes), CAMERA_AVANCER,    		"Avancer", 					"");
 
 
 	/* ********************************************* */
@@ -122,6 +137,12 @@ void ConfigurationCommandesView::refresh(void) {
 	refreshCommandButton(RECULER);
 	refreshCommandButton(GAUCHE);
 	refreshCommandButton(DROITE);
+	refreshCommandButton(CAMERA_MONTER);
+	refreshCommandButton(CAMERA_DESCENDRE);
+	refreshCommandButton(CAMERA_DROITE);
+	refreshCommandButton(CAMERA_GAUCHE);
+	refreshCommandButton(CAMERA_RECULER);
+	refreshCommandButton(CAMERA_AVANCER);
 	refreshCommandButton(TIR1);
 	refreshCommandButton(TIR2);
 	refreshCommandButton(MONTER);
@@ -161,6 +182,24 @@ void ConfigurationCommandesView::refreshCommandButton(COMMANDE_ID commandId) {
 		break;
 	case DROITE:
 		AG_LabelText(label, Config.Commandes.resolve(Config.Commandes.Droite));
+		break;
+	case CAMERA_MONTER:
+		AG_LabelText(label, Config.Commandes.resolve(Config.Commandes.CameraMonter));
+		break;
+	case CAMERA_DESCENDRE:
+		AG_LabelText(label, Config.Commandes.resolve(Config.Commandes.CameraDescendre));
+		break;
+	case CAMERA_DROITE:
+		AG_LabelText(label, Config.Commandes.resolve(Config.Commandes.CameraDroite));
+		break;
+	case CAMERA_GAUCHE:
+		AG_LabelText(label, Config.Commandes.resolve(Config.Commandes.CameraGauche));
+		break;
+	case CAMERA_RECULER:
+		AG_LabelText(label, Config.Commandes.resolve(Config.Commandes.CameraReculer));
+		break;
+	case CAMERA_AVANCER:
+		AG_LabelText(label, Config.Commandes.resolve(Config.Commandes.CameraAvancer));
 		break;
 	case TIR1:
 		AG_LabelText(label, Config.Commandes.resolve(Config.Commandes.Tir1));
@@ -229,6 +268,24 @@ bool ConfigurationCommandesView::eventInterceptor(SDL_Event* event) {
 			break;
 		case DROITE:
 			setCommande(Config.Commandes.Droite, key, mouse);
+			break;
+		case CAMERA_MONTER:
+			setCommande(Config.Commandes.CameraMonter, key, mouse);
+			break;
+		case CAMERA_DESCENDRE:
+			setCommande(Config.Commandes.CameraDescendre, key, mouse);
+			break;
+		case CAMERA_DROITE:
+			setCommande(Config.Commandes.CameraDroite, key, mouse);
+			break;
+		case CAMERA_GAUCHE:
+			setCommande(Config.Commandes.CameraGauche, key, mouse);
+			break;
+		case CAMERA_RECULER:
+			setCommande(Config.Commandes.CameraReculer, key, mouse);
+			break;
+		case CAMERA_AVANCER:
+			setCommande(Config.Commandes.CameraAvancer, key, mouse);
 			break;
 		case TIR1:
 			setCommande(Config.Commandes.Tir1, key, mouse);

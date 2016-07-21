@@ -50,7 +50,7 @@ class CPlayer {
 
 	float _posVue[3];			// Position et orientation du point de vue par rapport au joueur
 
-	float _rayon;				// Rayon de la sphère englobant le joueur pour la gestion des contacts
+	float _rayonSolidbox;				// Rayon de la sphère englobant le joueur pour la gestion des contacts
 	float _pente;				// Sert à calculer si le joueur glisse sur une pente de la map ou non
 	string _nom;				// Nom du perso
 	JktMoteur::CMap *_pSkin;	// Gueule du joueur

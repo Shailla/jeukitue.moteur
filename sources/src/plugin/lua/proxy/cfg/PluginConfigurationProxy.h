@@ -25,7 +25,8 @@ class PluginConfigurationProxy {
 	static const char* CFG_PARAM_OUTPUT;
 
 	static const char* CFG_PARAM_SKIN_VISIBILITY;
-	static const char* CFG_PARAM_PLAYER_OUTLINE_VISIBILITY;
+	static const char* CFG_PARAM_PLAYER_HITBOX_VISIBILITY;
+	static const char* CFG_PARAM_PLAYER_SOLIDBOX_VISIBILITY;
 	static const char* CFG_PARAM_CUBIC_METER_VISIBILITY;
 	static const char* CFG_PARAM_AXES_METER_VISIBILITY;
 

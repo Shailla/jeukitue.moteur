@@ -33,7 +33,8 @@ const char* PluginConfigurationProxy::CFG_PARAM_AUDIO_MIXER = "AUDIO_MIXER";				
 const char* PluginConfigurationProxy::CFG_PARAM_OUTPUT = "AUDIO_OUTPUT";									// Paramètre de type nombre
 
 const char* PluginConfigurationProxy::CFG_PARAM_SKIN_VISIBILITY = "SKIN_VISIBILITY";						// Paramètre de type booléen
-const char* PluginConfigurationProxy::CFG_PARAM_PLAYER_OUTLINE_VISIBILITY = "PLAYER_OUTLINE_VISIBILITY";	// Paramètre de type booléen
+const char* PluginConfigurationProxy::CFG_PARAM_PLAYER_HITBOX_VISIBILITY = "PLAYER_HITBOX_VISIBILITY";		// Paramètre de type booléen
+const char* PluginConfigurationProxy::CFG_PARAM_PLAYER_SOLIDBOX_VISIBILITY = "PLAYER_SOLIDBOX_VISIBILITY";	// Paramètre de type booléen
 const char* PluginConfigurationProxy::CFG_PARAM_CUBIC_METER_VISIBILITY = "CUBIC_METER_VISIBILITY";			// Paramètre de type booléen
 const char* PluginConfigurationProxy::CFG_PARAM_AXES_METER_VISIBILITY = "AXES_METER_VISIBILITY";			// Paramètre de type booléen
 
@@ -159,8 +160,12 @@ int PluginConfigurationProxy::getConfigurationParameter(lua_State* L) {
 			lua_pushboolean(L, Config.Joueur.skinVisibility);
 			return 1;
 		}
-		else if(paramName.compare(CFG_PARAM_PLAYER_OUTLINE_VISIBILITY) == 0) {
-			lua_pushboolean(L, Config.Joueur.outlineVisibility);
+		else if(paramName.compare(CFG_PARAM_PLAYER_HITBOX_VISIBILITY) == 0) {
+			lua_pushboolean(L, Config.Joueur.hitboxVisibility);
+			return 1;
+		}
+		else if(paramName.compare(CFG_PARAM_PLAYER_SOLIDBOX_VISIBILITY) == 0) {
+			lua_pushboolean(L, Config.Joueur.solidboxVisibility);
 			return 1;
 		}
 		else if(paramName.compare(CFG_PARAM_CUBIC_METER_VISIBILITY) == 0) {
@@ -294,9 +299,13 @@ int PluginConfigurationProxy::setConfigurationParameter(lua_State* L) {
 			bool value = lua_toboolean(L, 2);
 			Config.Joueur.skinVisibility = value;
 		}
-		else if(paramName.compare(CFG_PARAM_PLAYER_OUTLINE_VISIBILITY) == 0) {
+		else if(paramName.compare(CFG_PARAM_PLAYER_HITBOX_VISIBILITY) == 0) {
 			bool value = lua_toboolean(L, 2);
-			Config.Joueur.outlineVisibility = value;
+			Config.Joueur.hitboxVisibility = value;
+		}
+		else if(paramName.compare(CFG_PARAM_PLAYER_SOLIDBOX_VISIBILITY) == 0) {
+			bool value = lua_toboolean(L, 2);
+			Config.Joueur.solidboxVisibility = value;
 		}
 		else if(paramName.compare(CFG_PARAM_CUBIC_METER_VISIBILITY) == 0) {
 			bool value = lua_toboolean(L, 2);

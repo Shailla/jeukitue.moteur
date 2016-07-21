@@ -2,7 +2,8 @@
 -- Variables globales
 window = 0
 checkboxSkinJoueurVisibility = 0;
-checkboxOutlineJoueurVisibility = 0;
+checkboxHitboxJoueurVisibility = 0;
+checkboxSolidboxJoueurVisibility = 0;
 checkboxAxesMeterVisibility = 0;
 checkboxCubicMeterVisibility = 0;
 
@@ -16,7 +17,7 @@ function onLoad()
 	-- Ouverture fenêtre
 	window = Window();
 	window:setTitle("Configuration avancee");
-	window:setSize(200, 200);
+	window:setSize(400, 400);
 	window:setPosition(0, 0);
 	local notebook = window:addNotebook();
 
@@ -24,7 +25,8 @@ function onLoad()
 	local tabJoueur = notebook:addTab("Joueur");
 	local boxJoueur = tabJoueur:addBoxVert();
 	checkboxSkinJoueurVisibility = boxJoueur:addCheckbox("Voir le skin du joueur");
-	checkboxOutlineJoueurVisibility = boxJoueur:addCheckbox("Voir les contours solides des joueurs");
+	checkboxHitboxJoueurVisibility = boxJoueur:addCheckbox("Voir la hit box des joueurs");
+	checkboxSolidboxJoueurVisibility = boxJoueur:addCheckbox("Voir les contours solides des joueurs");
 	checkboxAxesMeterVisibility = boxJoueur:addCheckbox("Voir les axes");
 	checkboxCubicMeterVisibility = boxJoueur:addCheckbox("Voir un cube d'un metre");
 	
@@ -54,7 +56,8 @@ end
 -- Lit la configuration joueur par défaut
 function loadJoueurConfiguration()
 	checkboxSkinJoueurVisibility:setValue(getConfigurationParameter("SKIN_VISIBILITY"));
-	checkboxOutlineJoueurVisibility:setValue(getConfigurationParameter("PLAYER_OUTLINE_VISIBILITY"));
+	checkboxHitboxJoueurVisibility:setValue(getConfigurationParameter("PLAYER_HITBOX_VISIBILITY"));
+	checkboxSolidboxJoueurVisibility:setValue(getConfigurationParameter("PLAYER_SOLIDBOX_VISIBILITY"));
 	checkboxAxesMeterVisibility:setValue(getConfigurationParameter("CUBIC_METER_VISIBILITY"));
 	checkboxCubicMeterVisibility:setValue(getConfigurationParameter("AXES_METER_VISIBILITY"));
 end
@@ -62,7 +65,8 @@ end
 -- Enregistre la configuration joueur
 function appliqueJoueurConfiguration()
 	setConfigurationParameter("SKIN_VISIBILITY", checkboxSkinJoueurVisibility:getValue());
-	setConfigurationParameter("PLAYER_OUTLINE_VISIBILITY", checkboxOutlineJoueurVisibility:getValue());
+	setConfigurationParameter("PLAYER_HITBOX_VISIBILITY", checkboxHitboxJoueurVisibility:getValue());
+	setConfigurationParameter("PLAYER_SOLIDBOX_VISIBILITY", checkboxSolidboxJoueurVisibility:getValue());
 	setConfigurationParameter("CUBIC_METER_VISIBILITY", checkboxAxesMeterVisibility:getValue());
 	setConfigurationParameter("AXES_METER_VISIBILITY", checkboxCubicMeterVisibility:getValue());
 end

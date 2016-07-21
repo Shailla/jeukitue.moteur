@@ -69,8 +69,9 @@ const char* CCfg::CST_TREE_UPDATE_SERVERTOCLIENT_DELAY =	"reseau.tree.update.ser
 
 const char* CCfg::CST_JOU_NOM =					"joueur.nom";
 const char* CCfg::CST_JOU_MAPNOM =				"joueur.mapNom";
-const char* CCfg::CST_JOU_OUTLINEVISIBILITY =	"joueur.outlineVisibility";
-const char* CCfg::CST_JOU_SKINVISIBILITY =		"joueur.skinVisibility";
+const char* CCfg::CST_JOU_HITBOX_VISIBILITY =	"joueur.hitboxVisibility";
+const char* CCfg::CST_JOU_SOLIDBOX_VISIBILITY =	"joueur.solidboxVisibility";
+const char* CCfg::CST_JOU_SKIN_VISIBILITY =		"joueur.skinVisibility";
 
 const char* CCfg::CST_PLU_ACT_BEGIN =			"plugin.activate.begin";
 const char* CCfg::CST_PLU_ACT_END =				"plugin.activate.end";
@@ -262,10 +263,13 @@ void CCfg::Lit() {
 		do fichier >> mot;	while( mot!=CST_JOU_MAPNOM );
 		fichier >> Joueur.mapName;
 
-		do fichier >> mot;	while( mot!=CST_JOU_OUTLINEVISIBILITY );
-		fichier >> Joueur.outlineVisibility;
+		do fichier >> mot;	while( mot!=CST_JOU_HITBOX_VISIBILITY );
+		fichier >> Joueur.hitboxVisibility;
 
-		do fichier >> mot;	while( mot!=CST_JOU_SKINVISIBILITY );
+		do fichier >> mot;	while( mot!=CST_JOU_SOLIDBOX_VISIBILITY );
+		fichier >> Joueur.solidboxVisibility;
+
+		do fichier >> mot;	while( mot!=CST_JOU_SKIN_VISIBILITY );
 		fichier >> Joueur.skinVisibility;
 
 
@@ -369,8 +373,9 @@ void CCfg::Ecrit() {
 	fichier << "\n\n------------------------JOUEUR-------------------------";
 	fichier << endl << CST_JOU_NOM << "\t\t\t\t\t" << Joueur.nom;
 	fichier << endl << CST_JOU_MAPNOM << "\t\t\t\t" << Joueur.mapName;
-	fichier << endl << CST_JOU_OUTLINEVISIBILITY << "\t" << Joueur.outlineVisibility;
-	fichier << endl << CST_JOU_SKINVISIBILITY << "\t\t" << Joueur.skinVisibility;
+	fichier << endl << CST_JOU_HITBOX_VISIBILITY << "\t\t" << Joueur.hitboxVisibility;
+	fichier << endl << CST_JOU_SOLIDBOX_VISIBILITY << "\t" << Joueur.solidboxVisibility;
+	fichier << endl << CST_JOU_SKIN_VISIBILITY << "\t\t" << Joueur.skinVisibility;
 
 	fichier << "\n\n------------------------PLUGIN-------------------------";
 	fichier << endl << CST_PLU_ACT_BEGIN << endl;

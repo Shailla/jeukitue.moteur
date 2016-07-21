@@ -76,7 +76,7 @@ CPlayer::CPlayer() {
 	_posVue[1] = 0.1f;
 	_posVue[2] = 0.137f;
 
-	_rayon = 0.85f;			// Le joueur mesure arbitrairement 1m70, son rayon la moitier
+	_rayonSolidbox = 0.85f;	// Rayon de la sphère qui représente le joueur dans la amp. Le joueur mesure arbitrairement 1m70, son rayon la moitier
 
 	_pClavier = NULL;
 	_actionFunc = NULL;		// Pas d'action périodique à réaliser
@@ -291,7 +291,7 @@ void CPlayer::changeVitesse(float vx, float vy, float vz) {
 }
 
 float CPlayer::getRayon() const {
-	return _rayon;
+	return _rayonSolidbox;
 }
 
 /**
@@ -331,13 +331,24 @@ void CPlayer::Affiche() {
 	if(Config.Joueur.skinVisibility && _pSkin)
 		_pSkin->Affiche();
 
-	// Affiche un ellipsoïde qui trace les contours physiques du joueur si le jeu est configuré pour
-	if(Config.Joueur.outlineVisibility) {
+	// Affiche un ellipsoïde qui trace les contours de la hitbox du joueur si le jeu est configuré pour
+	if(Config.Joueur.hitboxVisibility) {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		glColor4f(0.57f, 0.43f, 0.85f, 0.5f);
+		glColor4f(0.57f, 0.43f, 0.85f, 0.7f);
 		Fabrique::getGlUtils()->drawSphere(0.1f, 16, 16);
+
+		glDisable(GL_BLEND);
+	}
+
+	// Affiche un ellipsoïde qui trace les contours physiques du joueur si le jeu est configuré pour
+	if(Config.Joueur.solidboxVisibility) {
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		glColor4f(0.33f, 1.0f, 0.0f, 0.7f);
+		Fabrique::getGlUtils()->drawSphere(_rayonSolidbox, 16, 16);
 
 		glDisable(GL_BLEND);
 	}

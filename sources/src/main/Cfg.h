@@ -56,8 +56,9 @@ class CCfg {
 
 	static const char* CST_JOU_NOM;
 	static const char* CST_JOU_MAPNOM;
-	static const char* CST_JOU_OUTLINEVISIBILITY;
-	static const char* CST_JOU_SKINVISIBILITY;
+	static const char* CST_JOU_HITBOX_VISIBILITY;
+	static const char* CST_JOU_SOLIDBOX_VISIBILITY;
+	static const char* CST_JOU_SKIN_VISIBILITY;
 
 	static const char* CST_PLU_ACT_BEGIN;
 	static const char* CST_PLU_ACT_END;
@@ -170,7 +171,8 @@ private:
 		string nom;					// Nom du joueur
 		string mapName;				// Nom de la map réprésentant le skin du joueur
 		bool skinVisibility;		// Indique si le joueur (son skin) est affiché ou non
-		bool outlineVisibility;		// Indique si les contours physiques du joueur (ellipsoïde qui l'entoure) est visible
+		bool hitboxVisibility;		// Indique si la zone de frappe des joueurs est visible
+		bool solidboxVisibility;	// Indique si le contours physiques du joueur (ellipsoïde qui l'entoure) est visible
 	};
 
 	class CPlugin {		// Configuration du moteur de plugin

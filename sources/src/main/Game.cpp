@@ -477,19 +477,18 @@ void CGame::faitTousPlayerGravite() {
 }
 
 void CGame::timer() {
-	if( _gravite )				// Si la gravité est active
-		faitTousPlayerGravite();
+	if(_map) {
+		if( _gravite )					// Si la gravité est active
+			faitTousPlayerGravite();
 
-	if(_map)
-		Refresh();					// Rafraichi les classes qui ont besoin de l'être (celles de type CMouve et CProjectil)
+		Refresh();						// Rafraichi les classes qui ont besoin de l'être (celles de type CMouve et CProjectil)
 
-	faitTousRequetesClavier();		// Exécute les requêtes clavier sur tous les joueurs
+		faitTousRequetesClavier();		// Exécute les requêtes clavier sur tous les joueurs
 
+		GereContactPlayers();			// Gère tous les contacts entre la map et les joueurs
 
-	if(_map)
-		GereContactPlayers();		// Gère tous les contacts entre la map et les joueurs
-
-	deplaceTousPlayer();			// Déplace tous les joueurs de leurs vitesses
+		deplaceTousPlayer();			// Déplace tous les joueurs de leurs vitesses
+	}
 }
 
 void CGame::Gravite(bool gravite) {

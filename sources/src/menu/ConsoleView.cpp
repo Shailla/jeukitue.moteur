@@ -22,7 +22,7 @@ Uint32 aaa;
 ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
-	m_window = AG_WindowNew(AG_WINDOW_PLAIN|AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
+	m_window = AG_WindowNew(AG_WINDOW_PLAIN | AG_WINDOW_NOBUTTONS | AG_WINDOW_NOBACKGROUND | AG_WINDOW_NOMOVE);
 
 	AG_MutexInit(&_agMutex);
 

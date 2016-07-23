@@ -2,6 +2,11 @@
 
 using namespace std;
 
+#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
+#include "boost/filesystem/fstream.hpp"
+
+using namespace boost::filesystem;
+
 #include <agar/core.h>
 #include <agar/gui.h>
 
@@ -12,9 +17,7 @@ using namespace std;
 
 #include "menu/OpenSceneASEEcraseRepView.h"
 
-OpenSceneASEEcraseRepView::OpenSceneASEEcraseRepView(const AG_EventFn controllerCallback)
-:View(controllerCallback)
-{
+OpenSceneASEEcraseRepView::OpenSceneASEEcraseRepView(const AG_EventFn controllerCallback) :View(controllerCallback) {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
 	AG_WindowSetCaption(m_window, "Importer une scene ASE");
 
@@ -29,26 +32,13 @@ OpenSceneASEEcraseRepView::OpenSceneASEEcraseRepView(const AG_EventFn controller
 	AG_WindowShow(m_window);
     hide();
 }
-OpenSceneASEEcraseRepView::~OpenSceneASEEcraseRepView(void)
-{
+OpenSceneASEEcraseRepView::~OpenSceneASEEcraseRepView(void) {
 }
 
-void OpenSceneASEEcraseRepView::setAseName(const string& aseName)
-{
+void OpenSceneASEEcraseRepView::setAseName(const string& aseName) {
 	_aseName = aseName;
 }
 
-string OpenSceneASEEcraseRepView::getAseName() const
-{
+string OpenSceneASEEcraseRepView::getAseName() const {
 	return _aseName;
-}
-
-void OpenSceneASEEcraseRepView::setRepName(const string& repName)
-{
-	_repName = repName;
-}
-
-string OpenSceneASEEcraseRepView::getRepName() const
-{
-	return _repName;
 }

@@ -17,9 +17,7 @@ extern const char* TEMPORARY_DIRECTORY;	// Répertoire temporaire de travail
 namespace JktUtils
 {
 
-class RessourcesLoader
-{
-	static int nbrElements;
+class RessourcesLoader {
 	static const char *elementsNamesAndFolders[];
 
 public:
@@ -31,4 +29,4 @@ public:
 
 }
 
-#endif
+#endif // __JKT__RESSOURCESLOADER_H

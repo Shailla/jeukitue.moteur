@@ -9,8 +9,7 @@
 namespace JktUtils
 {
 
-class CErreur : public JktException		// Classe pour l'émission d'erreurs par exception
-{
+class CErreur : public JktException {		// Classe pour l'émission d'erreurs par exception
 public:
 	CErreur(const std::stringstream &message);
 	CErreur(const std::string &message);

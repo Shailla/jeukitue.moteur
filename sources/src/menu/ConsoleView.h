@@ -30,7 +30,7 @@ public:
 	enum ConsoleOutputType {
 		COT_ECHO,				// To echo the user commande line
 		COT_CHAT,				// Chat message
-		COT_COMMAND_ERROR,		// Command execution error message
+		COT_ERROR,		// Command execution error message
 		COT_COMMAND_RESULT,		// Command execution result message
 		COT_INFO				// Info message
 	};

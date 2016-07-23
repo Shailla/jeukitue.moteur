@@ -83,7 +83,7 @@ void CommandeInterpreter::printErrLn(const std::string& msg, bool userOutput) {
 		vector<string>::iterator it;
 
 		for(it = lines.begin() ; it != lines.end() ; it++) {
-			console->println(ConsoleView::COT_COMMAND_ERROR, *it);
+			console->println(ConsoleView::COT_ERROR, *it);
 		}
 	}
 }

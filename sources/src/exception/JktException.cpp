@@ -16,6 +16,10 @@ JktException::JktException(const char* clazz, const stringstream& message):_claz
 JktException::~JktException(void) {
 }
 
+const char* JktException::getMessage() const {
+	return _message.c_str();
+}
+
 const char* JktException::what() const throw() {
 	return (_clazz + ": " + _message).c_str();
 }

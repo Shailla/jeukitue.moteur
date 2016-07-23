@@ -10,6 +10,7 @@
 #include "util/FindFolder.h"
 #include "service/dto/MapInformationDto.h"
 #include "service/MapService.h"
+
 #include "RessourcesLoader.h"
 
 using namespace std;
@@ -26,8 +27,11 @@ const char* TEMPORARY_DIRECTORY =	"./Tmp/";						// Répertoire temporaire de tra
 
 namespace JktUtils
 {
-int RessourcesLoader::nbrElements = 9;
+
 const char* RessourcesLoader::elementsNamesAndFolders[] = {
+	"@Ase",		"./ase",							// Répertoire des fichiers ASE importables
+	"@Map",		"./map",							// Répertoire des Map
+
 	"@Fonte",	"./Ressources/Fontes",				// Polices / fontes
 
 	"@Fond",	"./Ressources/Images/Fonds",		// Images de fond
@@ -40,6 +44,7 @@ const char* RessourcesLoader::elementsNamesAndFolders[] = {
 	"@Bruit",	"./Ressources/Sons/Bruits",			// Bruits par défaut des Map
 	"@Jingle",	"./Ressources/Sons/Jingles",		// Jingles des menus
 	"@Musique",	"./Ressources/Sons/Musiques",		// Musiques par défaut
+	NULL
 };
 
 bool RessourcesLoader::getFileRessource(const string& rep, string& file) {
@@ -88,7 +93,7 @@ bool RessourcesLoader::getFileRessource(string& file) {
 		if(nbr != string::npos) {
 			string resourceType = file.substr(0, nbr);
 
-			for(int i=0; i<nbrElements; i++) {
+			for(int i=0; elementsNamesAndFolders[i*2 + 0] != 0 ; i++) {
 				if(!resourceType.compare(elementsNamesAndFolders[i*2 + 0])) {
 					file.replace(0, nbr, elementsNamesAndFolders[i*2 + 1]);
 					LOGDEBUG(("La ressource '%s' est '%s')", before.c_str(), file.c_str()));
@@ -98,11 +103,13 @@ bool RessourcesLoader::getFileRessource(string& file) {
 			}
 
 			if(!bTrouve) {
-				LOGERROR(("Ressource de type inconnu '%s' (type identifié '%s')", before.c_str(), resourceType.c_str()));
+				// TODO Est-ce vraiment un warning ?
+				LOGWARN(("Ressource de type inconnu '%s' (type identifié '%s')", before.c_str(), resourceType.c_str()));
 			}
 		}
 		else {
-			LOGERROR(("Format de ressource non pris en compte : '%s'", before.c_str()));
+			// TODO Est-ce vraiment un warning ?
+			LOGWARN(("Format de ressource non pris en compte : '%s'", before.c_str()));
 		}
 	}
 

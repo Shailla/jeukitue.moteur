@@ -4,9 +4,10 @@
 
 #include <string>
 
-using namespace std;
+#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
+#include "boost/filesystem/fstream.hpp"
 
-class ConsoleAvancementView;
+class ConsoleView;
 
 namespace JktMoteur
 {
@@ -14,14 +15,12 @@ namespace JktMoteur
 class CMaterialTexture;
 class CMap;
 
-class AseImporter
-{
+class AseImporter {
 	static int importAse(void* arg);
-	static void copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep, ConsoleAvancementView* console );
+	static void copieTexture(const std::string& fromFile, CMap *pMapASE, const boost::filesystem::path& mapDir, ConsoleView* console ) throw(CErreur);
 	
 public:
-	static bool supprimeRepertoire(const string& repName);
-	static void lanceImportAse(const string& aseFilename, ConsoleAvancementView* console);
+	static void lanceImportAse(const std::string& aseFilename, ConsoleView* console);
 };
 
 }	// JktMoteur

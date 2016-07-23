@@ -139,7 +139,7 @@ void ConsoleView::println(ConsoleOutputType type, const string& texte) {
 		str << "msg> ";
 		lineColor = &couleur_violet;
 		break;
-	case COT_COMMAND_ERROR:
+	case COT_ERROR:
 		str << "err> ";
 		lineColor = &couleur_rouge;
 		break;
@@ -148,7 +148,7 @@ void ConsoleView::println(ConsoleOutputType type, const string& texte) {
 		lineColor = &couleur_vert;
 		break;
 	default:
-		str << "?> ";
+		str << "> ";
 		lineColor = &couleur_blanc;
 		break;
 	}

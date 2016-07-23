@@ -9,6 +9,10 @@ using namespace std;
 #include <GL/glew.h>
 #include <GL/glu.h>
 
+#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
+#include "boost/filesystem/fstream.hpp"
+using namespace boost::filesystem;
+
 #include <agar/core.h>
 #include <agar/gui.h>
 #include <agar/dev.h>
@@ -21,7 +25,6 @@ using namespace std;
 #include "menu/PluginsManagementView.h"
 #include "menu/OpenSceneASEView.h"
 #include "menu/OpenSceneASEEcraseRepView.h"
-#include "menu/ConsoleAvancementView.h"
 #include "menu/ConfigurationJoueurView.h"
 #include "menu/ConfigurationReseauView.h"
 #include "menu/LanceServeurView.h"
@@ -144,13 +147,13 @@ void Controller::executeAction(AG_Event* event) {
 			break;
 
 		case showConfigurationAdvancedViewAction:
-			{
-				_agarView->hideAllMenuViews();
+		{
+			_agarView->hideAllMenuViews();
 
-				PluginActionEvent evt(Controller::Action::showConfigurationAdvancedViewAction);
-				_pluginEngine->dispatchEvent(evt);
-			}
-			break;
+			PluginActionEvent evt(Controller::Action::showConfigurationAdvancedViewAction);
+			_pluginEngine->dispatchEvent(evt);
+		}
+		break;
 
 		case WaitUserCommandChoice:
 		{
@@ -386,32 +389,20 @@ void Controller::executeAction(AG_Event* event) {
 			string aseName = view->getAseName(aseNumber);
 
 			// Ouverture de la Map
-			string nomRep = "./Map/" + aseName + "/";
+			path mapDir(string("./Map/") + aseName + "/");
 
-			if(CFindFolder::mkdir(nomRep.c_str()) != 0)	{	// Création du répertoire pour les textures
-				// Si un répertoire existe déjà, demande s'il faut l'écraser
+			if(exists(mapDir)) {
+				// Si le répertoire existe déjà, demande si on peut le supprimer
 				OpenSceneASEEcraseRepView* view = (OpenSceneASEEcraseRepView*)_agarView->getView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
-				view->setRepName(nomRep);	// Nom du répertoire du fichier Ase
 				view->setAseName(aseName);	// Nom du fichier Ase
 
 				_agarView->showMenuView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
 			}
 			else {
-				try {
-					ConsoleAvancementView* console = (ConsoleAvancementView*)_agarView->getView(Viewer::CONSOLE_AVANCEMENT_VIEW);
-					console->init("Import fichier ASE");
-					_agarView->showMenuView(Viewer::CONSOLE_AVANCEMENT_VIEW);
+				ConsoleView* console = (ConsoleView*)_agarView->getView(Viewer::CONSOLE_VIEW);
 
-					// Import du fichier ASE
-					AseImporter::lanceImportAse(aseName, console);
-				}
-				catch(CErreur& erreur) {
-					LOGWARN(("Echec d'import ASE : %s", erreur.what()));
-
-					stringstream texte;
-					texte << "Echec d'import ASE : " << erreur.what();
-					AG_TextMsg(AG_MSG_ERROR, texte.str().c_str());
-				}
+				// Import du fichier ASE
+				AseImporter::lanceImportAse(aseName, console);
 			}
 		}
 		break;
@@ -420,35 +411,25 @@ void Controller::executeAction(AG_Event* event) {
 		{
 			OpenSceneASEEcraseRepView* view = (OpenSceneASEEcraseRepView*)_agarView->getView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
 
-			try {
-				// Suppression du répertoire
-				string repName = view->getRepName();
-				AseImporter::supprimeRepertoire(repName);
+			// Suppression du répertoire
+			ConsoleView* console = (ConsoleView*)_agarView->getView(Viewer::CONSOLE_VIEW);
 
-				// Import du fichier ASE
-				ConsoleAvancementView* console = (ConsoleAvancementView*)_agarView->getView(Viewer::CONSOLE_AVANCEMENT_VIEW);
-				console->init("Import fichier ASE");
-				_agarView->showMenuView(Viewer::CONSOLE_AVANCEMENT_VIEW);
+			// Import du fichier ASE
+			string aseName = view->getAseName();
+			AseImporter::lanceImportAse(aseName, console);
 
-				string aseName = view->getAseName();
-				AseImporter::lanceImportAse(aseName, console);
-			}
-			catch(CErreur &erreur) {
-				LOGWARN(("Echec d'import ASE : %s", erreur.what()));
-
-				stringstream texte;
-				texte << "Echec d'import ASE : " << erreur.what();
-				AG_TextMsg(AG_MSG_ERROR, texte.str().c_str());
-			}
+			_agarView->hideView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
 		}
 		break;
 
 		case OpenSceneASEEcraseRepNonAction:
 		{
+			_agarView->hideView(Viewer::OPEN_SCENE_ASE_ECRASE_REP_VIEW);
+
 			PluginActionEvent evt(Controller::Action::ShowMenuAction);
 			_pluginEngine->dispatchEvent(evt);
 
-			AG_TextMsg(AG_MSG_INFO, "Import annule");
+			AG_TextMsg(AG_MSG_INFO, "Import annul\u00e9");
 		}
 		break;
 

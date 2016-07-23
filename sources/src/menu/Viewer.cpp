@@ -15,7 +15,6 @@ using namespace std;
 #include "menu/OpenSceneASEView.h"
 #include "menu/OpenSceneMapView.h"
 #include "menu/OpenSceneASEEcraseRepView.h"
-#include "menu/ConsoleAvancementView.h"
 #include "menu/LanceServeurView.h"
 #include "menu/ConfigurationCommandesView.h"
 #include "menu/ConfigurationVideoView.h"
@@ -41,7 +40,6 @@ Viewer::Viewer(AG_EventFn controllerCallback) {
 	addMenuView(OPEN_SCENE_ASE_VIEW, new OpenSceneASEView(controllerCallback));
 	addMenuView(OPEN_SCENE_MAP_VIEW, new OpenSceneMapView(controllerCallback));
 	addMenuView(OPEN_SCENE_ASE_ECRASE_REP_VIEW, new OpenSceneASEEcraseRepView(controllerCallback));
-	addMenuView(CONSOLE_AVANCEMENT_VIEW, new ConsoleAvancementView(controllerCallback));
 	addMenuView(LANCE_SERVEUR_VIEW, new LanceServeurView(controllerCallback));
 	addMenuView(CONFIGURATION_COMMANDES_VIEW, new ConfigurationCommandesView(controllerCallback));
 	addMenuView(CONFIGURATION_VIDEO_VIEW, new ConfigurationVideoView(controllerCallback));

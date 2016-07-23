@@ -14,6 +14,7 @@ public:
     JktException(const char* clazz, const std::stringstream& message);
     ~JktException(void);
 
+    const char* getMessage() const;
     const char* what() const throw();
 };
 

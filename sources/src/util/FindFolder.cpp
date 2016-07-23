@@ -24,14 +24,7 @@ bool CFindFolder::isFolder(const string& directory) {
 	return is_directory(dir);
 }
 
-// Supprimer un répertoire
-bool CFindFolder::rmdir(const string& dirToRemove) {
-	path dir(dirToRemove);
-	remove_all(dirToRemove);
-	return !exists(dir);
-}
-
 // Créer un répertoire
-int CFindFolder::mkdir(const char *dir) {
+int CFindFolder::mkdir(const string& dir) {
 	return create_directory(dir);
 }

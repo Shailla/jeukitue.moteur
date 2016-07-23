@@ -21,6 +21,7 @@ public:
 
 	void init(const char* caption);
 	void addMsg(const string& msg);
+	void addMsgError(const string& msg);
 	void enableOkButton();
 };
 

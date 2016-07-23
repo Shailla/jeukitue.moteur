@@ -17,7 +17,7 @@ class CMap;
 class AseImporter
 {
 	static int importAse(void* arg);
-	static bool copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep, ConsoleAvancementView* console );
+	static void copieTexture( CMaterialTexture *mat, CMap *pMapASE, string &nomRep, ConsoleAvancementView* console );
 	
 public:
 	static bool supprimeRepertoire(const string& repName);

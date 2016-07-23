@@ -54,108 +54,88 @@ int AseImporter::importAse(void* arg) {
 
 		pMapASE = new CMap(0);		// Crée une classe pour recevoir les données de la map
 
-			// Conversion fichier ASE -> fichier Map
-		if(	!CFichierASE::LitFichierASE(aseFileName, pMapASE, Config.Debug.bAfficheFichier))	// Lit le fichier ASE de la map
-		{
-			LOGDEBUG(("Erreur : Lecture du fichier ASE impossible ou fichier corrompu 1" ));
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Lecture du fichier ASE impossible ou fichier corrompu 1";
-			throw CErreur("Erreur : Lecture du fichier ASE impossible ou fichier corrompu 1");
+		// Conversion fichier ASE -> fichier Map
+		if(	!CFichierASE::LitFichierASE(aseFileName, pMapASE, Config.Debug.bAfficheFichier)) {
+			LOGINFO(("Erreur : Lecture du fichier ASE impossible ou fichier corrompu 1" ));
+			throw CErreur("Lecture du fichier ASE impossible ou fichier corrompu");
 		}
 
 		console->addMsg("Ajustement dimensions / orientation...");
 		pMapASE->EchangeYZ();						// Inversion des coordonnées Y et Z
 		pMapASE->Scale( -1.0f, 1.0f, 1.0f );
 
-			// Transfert des fichiers de texture dans le répertoire du fichier Map
+		// Transfert des fichiers de texture dans le répertoire du fichier Map
 		string nomRep = string("./Map/") + aseFileName;
 
-		console->addMsg("Enregistrement...");
+		console->addMsg("Enregistrement fichier Map...");
 		pMapASE->Save(aseFileName.c_str());
 
 		CMaterial *mat;
 		vector<CMaterial*>::iterator iter;
-		for( iter=pMapASE->m_TabMaterial.begin() ; iter!=pMapASE->m_TabMaterial.end() ; iter++ )
-		{
+
+		for( iter=pMapASE->m_TabMaterial.begin() ; iter!=pMapASE->m_TabMaterial.end() ; iter++ ) {
 			mat = *iter;
-			if( mat->Type()==CMaterial::MAT_TYPE_TEXTURE )
-			{
+
+			if( mat->Type()==CMaterial::MAT_TYPE_TEXTURE ) {
 				CMaterialTexture *matRef = (CMaterialTexture*)mat;
-				if( !copieTexture( matRef, pMapASE, nomRep, console ) )
-				{
-					LOGDEBUG(("Erreur a la copie d'un fichier de texture" ));
-					cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur a la copie d'un fichier de texture";
-					throw CErreur("Erreur a la copie d'un fichier de texture");
-				}
+				copieTexture(matRef, pMapASE, nomRep, console);
 			}
-			else if( mat->Type()==CMaterial::MAT_TYPE_MULTI )
-			{
+			else if( mat->Type()==CMaterial::MAT_TYPE_MULTI ) {
 				CMaterialMulti *matMulti = (CMaterialMulti *)mat;
-				for( int i=0 ; i<matMulti->NbrTex() ; i++ )
-				{
-					if( matMulti->m_TabMat[i]->Type()==CMaterial::MAT_TYPE_TEXTURE )
-					{
-						if( !copieTexture( (CMaterialTexture*)matMulti->m_TabMat[i], pMapASE, nomRep, console ) )
-						{
-							LOGDEBUG(("Erreur a la copie d'un fichier de texture" ));
-							cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur a la copie d'un fichier de texture";
-							throw CErreur("Erreur a la copie d'un fichier de texture");
-						}
+
+				for( int i=0 ; i<matMulti->NbrTex() ; i++ ) {
+					if( matMulti->m_TabMat[i]->Type()==CMaterial::MAT_TYPE_TEXTURE ) {
+						copieTexture((CMaterialTexture*)matMulti->m_TabMat[i], pMapASE, nomRep, console);
 					}
 				}
 			}
 		}
 
-		console->addMsg("Liberation des ressources...");
+		console->addMsg("Lib\u00e9ration des ressources...");
 		delete pMapASE;
-		console->addMsg("Import ASE termine.");
+		console->addMsg("Import termin\u00e9.");
 		console->enableOkButton();
 	}
-	catch(CErreur& erreur)
-	{
+	catch(CErreur& erreur) {
+		stringstream consoleMsg;
+		consoleMsg << "Echec de l'import : " << erreur.what();
+		console->addMsgError(consoleMsg.str());
+
 		if(pMapASE != NULL) {
 			delete pMapASE;
 		}
 
-		stringstream consoleMsg;
-		consoleMsg << "Erreur : " << erreur.what();
-		console->addMsg(consoleMsg.str());
-
-		console->addMsg("Import interrompu.");
+		console->enableOkButton();
 	}
 
 	return 0;
 }
 
-bool AseImporter::copieTexture( CMaterialTexture *mat,
+void AseImporter::copieTexture( CMaterialTexture *mat,
 								CMap *pMapASE,
 								string &nomRep,
-								ConsoleAvancementView* console)
-{
+								ConsoleAvancementView* console) {
 	basic_string <char>::size_type index, npos = (basic_string <char>::size_type)-1;
 	char ch;
 
-	LOGDEBUG(("copieTexture(mat=%x,pMapASE=%x,nomRep=%s)",
-	mat, pMapASE, nomRep.c_str() ));
-	LOGDEBUG(("copieTexture() Fichier de texture=%s",
-	mat->m_FichierTexture.c_str() ));
+	LOGDEBUG(("copieTexture(mat=%x,pMapASE=%x,nomRep=%s)",	mat, pMapASE, nomRep.c_str() ));
+	LOGDEBUG(("copieTexture() Fichier de texture=%s", mat->m_FichierTexture.c_str() ));
 
 	fstream from;	// Fichier source pour la copie du fichier de texture
 	fstream to;		// Fichier destination pour la copie du fichier de texture
 
 	string& nom = mat->m_FichierTexture;
-	cout << "\nCopie du fichier de texture : " << nom << " (materiau ref " << mat->getRef() << ")";
 
 	stringstream consoleTexte;
 	consoleTexte << "Enregistrement texture '" << nom << "'...";
 	console->addMsg(consoleTexte.str());
 
 	from.open( nom.c_str(), ios_base::binary|ios_base::in );	// Ouvre le fichier texture d'origine
-	if( from.fail() )
-	{
+
+	if( from.fail() ) {
 		stringstream texte;
-		texte << "\nErreur : Echec d'ouverture du fichier de texture (" << nom << ")";
-		LOGDEBUG((texte.str().c_str() ));
-		cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str().c_str();
+		texte << "Echec d'ouverture du fichier de texture '" << nom << "'";
+		LOGINFO((texte.str().c_str() ));
 		throw CErreur(texte);
 	}
 		// Récupération du nom du fichier sans son chemin
@@ -172,12 +152,10 @@ bool AseImporter::copieTexture( CMaterialTexture *mat,
 	nom = nomRep + "/" + nom;
 
 	to.open( nom.c_str(), ios_base::binary|ios_base::out );	// Ouvre fichier destination texture
-	if( to.fail() )
-	{
+	if( to.fail() ) {
 		stringstream texte;
-		texte << "Erreur : Echec de creation du fichier de texture ( " << nom << " )";
-		LOGDEBUG((texte.str().c_str() ));
-		cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str().c_str();
+		texte << "Echec de cr\u00e9ation du fichier de texture '" << nom << "'";
+		LOGINFO((texte.str().c_str() ));
 		throw CErreur(texte);
 	}
 
@@ -188,15 +166,10 @@ bool AseImporter::copieTexture( CMaterialTexture *mat,
 		// Vérifie si la copie s'est bien passé
 	if( !from.eof() ) {
 		stringstream texte;
-		texte << "Echec de copie du fichier de texture (" << nom << ")";
-		LOGDEBUG((texte.str().c_str() ));
-		cerr << endl << __FILE__ << ":" << __LINE__ << " " << texte.str().c_str();
+		texte << "Echec de copie du fichier de texture '" << nom << "'";
+		LOGINFO((texte.str().c_str() ));
 		throw CErreur(texte);
 	}
-
-LOGDEBUG(("copieTexture() Ok" ));
-
-	return true;
 }
 
 }	// JktMoteur

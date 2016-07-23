@@ -35,8 +35,7 @@ OpenSceneASEView::OpenSceneASEView(const AG_EventFn controllerCallback)
 }
 
 
-OpenSceneASEView::~OpenSceneASEView(void)
-{
+OpenSceneASEView::~OpenSceneASEView(void) {
 }
 
 void OpenSceneASEView::show(void)
@@ -78,7 +77,6 @@ void OpenSceneASEView::show(void)
 	View::show();
 }
 
-string OpenSceneASEView::getAseName(const int aseNumber)
-{
+string OpenSceneASEView::getAseName(const int aseNumber) {
 	return _aseNames.at(aseNumber);
 }

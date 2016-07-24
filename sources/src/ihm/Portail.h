@@ -1,6 +1,6 @@
 
 
-namespace JktMenu
+namespace jkt
 {
 
 void afficheMenu();						// Affiche l'aide du jeu

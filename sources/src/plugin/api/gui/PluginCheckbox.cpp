@@ -9,7 +9,7 @@
 
 using namespace std;
 
-namespace JktPlugin {
+namespace jkt {
 
 PluginCheckbox::PluginCheckbox(AG_Widget* parent, const string& checkboxText) {
 	_checkbox = AG_CheckboxNewInt(parent, AG_RADIO_HFILL, checkboxText.c_str(), &_value);
@@ -26,4 +26,4 @@ void PluginCheckbox::setValue(const bool value) {
 	_value = value;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

@@ -19,7 +19,7 @@ using namespace std;
 
 #include "spatial/widget/Icone.h"
 
-namespace JktMoteur {
+namespace jkt {
 
 Icone::Icone(const string& nomFichier, bool alpha, int hauteur, int largeur, Uint8* pixels) {
 	_nomFichier = nomFichier;
@@ -77,4 +77,4 @@ void Icone::affiche(float left, float right, float down, float up) {
 	glEnd();
 }
 
-} /* namespace JktMoteur */
+} /* namespace jkt */

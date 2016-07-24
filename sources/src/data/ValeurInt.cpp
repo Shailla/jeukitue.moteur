@@ -15,7 +15,7 @@ using namespace std;
 
 #include "data/ValeurInt.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 ValeurInt::ValeurInt(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, UPDATE_MODE updateMode, int tmpId, int revision, int valeur) : Valeur(parent, valeurId, valeurName, valeurType, updateMode, tmpId, revision) {
 	_valeur = valeur;
@@ -29,7 +29,7 @@ int ValeurInt::getValeur() const {
 }
 
 AnyData ValeurInt::getValeurData() const {
-	return JktUtils::AnyData(_valeur);
+	return jkt::AnyData(_valeur);
 }
 
 void ValeurInt::setValeur(int revision, int valeur) {
@@ -42,7 +42,7 @@ void ValeurInt::updateValeur(int valeur) {
 	update();
 }
 
-void ValeurInt::setValeur(int revision, const JktUtils::AnyData& data) {
+void ValeurInt::setValeur(int revision, const jkt::AnyData& data) {
 	if(data.isInt()) {
 		setRevision(revision);
 		_valeur = data.getValueInt();

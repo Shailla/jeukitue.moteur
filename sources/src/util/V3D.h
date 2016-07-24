@@ -2,7 +2,7 @@
 #ifndef __JKT__V3D_H
 #define __JKT__V3D_H
 
-namespace JktUtils
+namespace jkt
 {
 
 class CV3D

@@ -15,7 +15,7 @@ using namespace std;
 
 #include "plugin/lua/proxy/gui/PluginBoxProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 const char PluginBoxProxy::className[] = "Box";
 
@@ -61,4 +61,4 @@ int PluginBoxProxy::push(lua_State* L) {
 	return Lunar<PluginBoxProxy>::push(L, this);
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

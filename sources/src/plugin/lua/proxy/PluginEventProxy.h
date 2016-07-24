@@ -21,7 +21,7 @@ extern "C" {
 #include "plugin/PluginWidgetEvent.h"
 #include "plugin/lua/proxy/LunarProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginEventProxy : public LunarProxy {
 public:
@@ -51,6 +51,6 @@ public:
 	int getActionId(lua_State* L);
 };
 
-} /* namespace JktTest */
+} /* namespace jkt */
 
 #endif /* PLUGINEVENTPROXY_H_ */

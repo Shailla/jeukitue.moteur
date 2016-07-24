@@ -12,7 +12,7 @@
 
 #include "util/types/Data.h"
 
-namespace JktUtils {
+namespace jkt {
 
 class StringData : public Data {
 	std::string _value;

@@ -11,7 +11,7 @@
 #include "reseau/web/json/JsonString.h"
 #include "reseau/web/json/JsonObject.h"
 
-namespace JktNet {
+namespace jkt {
 
 JsonList::JsonList() {
 }
@@ -58,4 +58,4 @@ void JsonList::toJson(stringstream& buffer) {
 	buffer << "]";
 }
 
-} /* namespace JktNet */
+} /* namespace jkt */

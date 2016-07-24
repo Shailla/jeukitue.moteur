@@ -13,7 +13,7 @@ class Fabrique
     static Centralisateur* _centralisateur;
     static Viewer* _agarView;
     static Controller* _agarController;
-    static JktPlugin::PluginEngine* _pluginEngine;
+    static jkt::PluginEngine* _pluginEngine;
     static CommandeInterpreter* _commandeInterpreter;
     static GLUtils* _glUtils;
 public:
@@ -22,7 +22,7 @@ public:
     static Viewer* getAgarView();
     static Controller* getAgarController();
     static Centralisateur* getCentralisateur();
-    static JktPlugin::PluginEngine* getPluginEngine();
+    static jkt::PluginEngine* getPluginEngine();
     static CommandeInterpreter* getCommandeInterpreter();
     static GLUtils* getGlUtils();
 };

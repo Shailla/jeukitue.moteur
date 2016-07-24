@@ -82,7 +82,7 @@ void ConfigurationJoueurView::show(void) {
 	// MAP disponibles
 	AG_TlistClear(_playerMapCombo->list);
 
-	std::vector<string> mapNames = JktUtils::RessourcesLoader::getPlayerMaps();
+	std::vector<string> mapNames = jkt::RessourcesLoader::getPlayerMaps();
 
 	std::vector<string>::iterator iter = mapNames.begin();
 

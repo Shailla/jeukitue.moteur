@@ -31,11 +31,11 @@ extern int JKT_RenderMode;
 
 #include "spatial/geo/MultiMaterialGeo.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 extern CCfg Config;
 
-namespace JktMoteur
+namespace jkt
 {
 class CGeoObject;
 class CPorte;

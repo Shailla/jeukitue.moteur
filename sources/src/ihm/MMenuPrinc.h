@@ -2,7 +2,7 @@
 #ifndef __JKT__MENU_PRINC_H
 #define __JKT__MENU_PRINC_H
 
-namespace JktMenu
+namespace jkt
 {
 
 void lanceMenuPrinc(void *var);

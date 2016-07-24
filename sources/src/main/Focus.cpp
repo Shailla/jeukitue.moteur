@@ -12,7 +12,7 @@ using namespace std;
 
 #include "Focus.h"
 
-namespace JktMenu
+namespace jkt
 {
 
 CFocus::CFocus(	void (*play)(SDL_Event *event), void (*menu)(SDL_Event *event)) {

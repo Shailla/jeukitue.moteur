@@ -11,7 +11,7 @@
 
 using namespace std;
 
-namespace JktMoteur {
+namespace jkt {
 
 const char* MapLogger::LOG_INFO_PREFIX = 		"INFO   : ";
 const char* MapLogger::LOG_ERROR_PREFIX = 		"ERROR  : ";
@@ -45,4 +45,4 @@ MapLogger::~MapLogger() {
 	_logFile.close();
 }
 
-} /* namespace JktNet */
+} /* namespace jkt */

@@ -20,7 +20,7 @@ using namespace std;
 
 extern const char* PLUGINS_DIRECTORY;
 
-namespace JktService {
+namespace jkt {
 
 LuaService::LuaService() {
 }
@@ -45,4 +45,4 @@ void LuaService::loadLuaDirectoryContent(vector<string>& content) {
 	}
 }
 
-} /* Namespace JktService */
+} /* namespace jkt */

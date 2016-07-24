@@ -15,7 +15,7 @@ using namespace std;
 
 #include "plugin/lua/proxy/gui/PluginWindowProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 const char PluginWindowProxy::className[] = "Window";
 
@@ -131,4 +131,4 @@ int PluginWindowProxy::hide(lua_State* L) {
 	return 0;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

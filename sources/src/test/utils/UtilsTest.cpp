@@ -15,9 +15,9 @@
 #include "test/utils/UtilsTest.h"
 
 using namespace std;
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktTest {
+namespace jkt {
 
 UtilsTest::UtilsTest() : Test("UtilsTest") {
 }

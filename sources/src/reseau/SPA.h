@@ -13,7 +13,7 @@ using namespace std;
 
 class CPlayer;
 
-namespace JktNet
+namespace jkt
 {
 
 class CSPA

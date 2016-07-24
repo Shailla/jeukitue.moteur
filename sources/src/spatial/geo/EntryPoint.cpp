@@ -10,9 +10,9 @@
 
 #include "spatial/geo/EntryPoint.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktMoteur {
+namespace jkt {
 
 EntryPoint::EntryPoint() {
 }
@@ -93,4 +93,4 @@ void EntryPoint::translate(float x, float y, float z) {
 	_entryPosition.Z += z;
 }
 
-} /* namespace JktMoteur */
+} /* namespace jkt */

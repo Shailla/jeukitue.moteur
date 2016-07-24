@@ -15,7 +15,7 @@
 
 #include "plugin/PluginContext.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginCheckbox {
 	friend class PluginRadioButtonProxy;
@@ -30,5 +30,5 @@ public:
 	void setValue(const bool value);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINCHECKBOX_H_ */

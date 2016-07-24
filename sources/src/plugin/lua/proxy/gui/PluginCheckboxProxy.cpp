@@ -14,7 +14,7 @@ using namespace std;
 
 #include "plugin/lua/proxy/gui/PluginCheckboxProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 const char PluginCheckboxProxy::className[] = "Checkbox";
 
@@ -60,4 +60,4 @@ int PluginCheckboxProxy::setValue(lua_State* L) {
 	return 0;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

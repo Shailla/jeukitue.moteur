@@ -15,7 +15,7 @@
 #include "menu/CentralisateurView.h"
 
 using namespace std;
-using namespace JktNet;
+using namespace jkt;
 
 CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
 :View(controllerCallback)

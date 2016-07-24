@@ -37,10 +37,10 @@ void Centralisateur::sendMessageChat(const std::string& message, const std::stri
 
 vector<DownloadFileItem> Centralisateur::askDownloadFileList(const int port) throw(CentralisateurTcpException)
 {
-    return JktNet::TcpConnector::askDownloadFileList(port);
+    return jkt::TcpConnector::askDownloadFileList(port);
 }
 
 void Centralisateur::downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) throw(CentralisateurTcpException)
 {
-    JktNet::TcpConnector::downloadOneFile(port, downloadId, progressView);
+    jkt::TcpConnector::downloadOneFile(port, downloadId, progressView);
 }

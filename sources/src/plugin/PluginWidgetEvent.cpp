@@ -7,7 +7,7 @@
 
 #include <plugin/PluginWidgetEvent.h>
 
-namespace JktPlugin {
+namespace jkt {
 
 PluginWidgetEvent::PluginWidgetEvent(LunarProxy* source) {
 	_source = source;
@@ -20,4 +20,4 @@ LunarProxy* PluginWidgetEvent::getSource() {
 	return _source;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

@@ -18,7 +18,7 @@ using namespace std;
 
 #include "script/commandes/Commande.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 Commande::Commande(CommandeInterpreter* interpreter) {
 	_interpreter = interpreter;

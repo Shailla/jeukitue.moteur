@@ -4,9 +4,9 @@
 
 #include "util/V3D.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktMoteur
+namespace jkt
 {
 
 class Flocon {
@@ -17,11 +17,11 @@ public:
 	};
 
 	/** Position actuelle de la particule. */
-	JktUtils::CV3D _position;
+	jkt::CV3D _position;
 	/** Vitesse actuelle de la particule. */
-	JktUtils::CV3D _vitesse;
+	jkt::CV3D _vitesse;
 	/** Accélération actuelle de la particule. */
-	JktUtils::CV3D _acceleration;
+	jkt::CV3D _acceleration;
 
 	FloconState _state;
 

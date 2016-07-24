@@ -33,7 +33,7 @@ class ServeurDataTree : public DataTree {
 
 	Branche* addBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, DistantTreeProxy* distant);
 	PrivateBranche* addPrivateBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, DistantTreeProxy* distant);
-	Valeur* addValeurFromDistant(const vector<int>& parentBrancheId, UPDATE_MODE updateMode, const std::string& valeurName, int valeurTmpId, int revision, const JktUtils::AnyData valeur, DistantTreeProxy* distant);
+	Valeur* addValeurFromDistant(const vector<int>& parentBrancheId, UPDATE_MODE updateMode, const std::string& valeurName, int valeurTmpId, int revision, const jkt::AnyData valeur, DistantTreeProxy* distant);
 
 public:
 	ServeurDataTree();
@@ -45,14 +45,14 @@ public:
 	 * ****************************************************/
 
 	// Gestion branches et valeurs par référence
-	void updateValeur(Valeur* valeur, const JktUtils::AnyData value);
+	void updateValeur(Valeur* valeur, const jkt::AnyData value);
 
 	// Gestion branches et valeurs avec coordonnées vectorielles
 	Branche* createBranche(DistantTreeProxy* distant, const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
 	Branche* createPrivateBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName);
 
-	Valeur* createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur) override;
-	Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const JktUtils::AnyData value);
+	Valeur* createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const jkt::AnyData valeur) override;
+	Valeur* updateValeur(const std::vector<int>& brancheId, int valeurId, const jkt::AnyData value);
 
 
 	/* ****************************************************

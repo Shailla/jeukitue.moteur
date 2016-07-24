@@ -24,9 +24,9 @@ public:
 	class ReadStreamError {
 	};
 
-	static JktUtils::AnyData readData(std::istringstream& in);
-	static void write(std::ostringstream& out, const JktUtils::AnyData& data);
-	static void writeHumanReadable(std::ostringstream& out, const JktUtils::AnyData& data);
+	static jkt::AnyData readData(std::istringstream& in);
+	static void write(std::ostringstream& out, const jkt::AnyData& data);
+	static void writeHumanReadable(std::ostringstream& out, const jkt::AnyData& data);
 
 	static void read(std::istringstream& in, float& data);
 	static void write(std::ostringstream& out, const float& data);

@@ -20,9 +20,9 @@ using namespace std;
 
 #include "spatial/materiau/Textures.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktMoteur
+namespace jkt
 {
 
 Uint8* litFichierImage(const string &nomFichier, float alpha) throw(CErreur) {
@@ -33,7 +33,7 @@ Uint8* litFichierImage(const string &nomFichier, float alpha) throw(CErreur) {
 	SDL_Surface *image;
 
 	string fichier = nomFichier;
-	JktUtils::RessourcesLoader::getFileRessource(fichier);
+	jkt::RessourcesLoader::getFileRessource(fichier);
 
 	image = IMG_Load(fichier.c_str());		// Lit le fichier image de la texture
 	if(image == 0) {

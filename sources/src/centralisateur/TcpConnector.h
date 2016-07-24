@@ -11,7 +11,7 @@ using namespace std;
 #include "centralisateur/data/DownloadFileItem.h"
 #include "menu/ProgressBarView.h"
 
-namespace JktNet
+namespace jkt
 {
 
 class TcpConnector

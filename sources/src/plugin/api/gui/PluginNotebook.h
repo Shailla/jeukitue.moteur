@@ -15,7 +15,7 @@
 
 #include "plugin/PluginContext.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginTab;
 
@@ -29,5 +29,5 @@ public:
 	PluginTab* addTab(const std::string& tabTitle);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINNOTEBOOK_H_ */

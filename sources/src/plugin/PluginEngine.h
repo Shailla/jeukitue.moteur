@@ -21,7 +21,7 @@ extern "C" {
 
 #include "plugin/PluginContext.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginEngine {
 	static const std::string PLUGIN_MAIN_FILENAME;
@@ -57,5 +57,5 @@ public:
 	void sendRefreshEvent();
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINENGINE_H_ */

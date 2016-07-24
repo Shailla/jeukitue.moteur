@@ -17,7 +17,7 @@
 
 using namespace std;
 
-namespace JktPlugin {
+namespace jkt {
 
 PluginPanel::PluginPanel() {
 
@@ -80,4 +80,4 @@ void PluginPanel::expandVert() {
 	AG_ExpandVert(getParent());
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

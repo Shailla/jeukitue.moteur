@@ -24,7 +24,7 @@ extern "C" {
 #include "plugin/PluginWidgetEvent.h"
 #include "plugin/PluginActionEvent.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginContext {
 	static const char* LOG_USER_PREFIX;
@@ -59,5 +59,5 @@ public:
 	bool isSubscribedRefreshEvents() const;
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINCONTEXT_H_ */

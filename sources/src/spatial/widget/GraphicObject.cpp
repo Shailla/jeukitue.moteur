@@ -7,7 +7,7 @@
 
 #include "spatial/widget/GraphicObject.h"
 
-namespace JktMoteur {
+namespace jkt {
 
 GraphicObject::GraphicObject() {
 }
@@ -15,4 +15,4 @@ GraphicObject::GraphicObject() {
 GraphicObject::~GraphicObject() {
 }
 
-} /* namespace JktMoteur */
+} /* namespace jkt */

@@ -8,9 +8,9 @@ using namespace std;
 
 #include "util/Tableau.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktMoteur
+namespace jkt
 {
 class CMaterial;
 

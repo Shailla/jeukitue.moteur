@@ -7,7 +7,7 @@
 
 #include "reseau/web/json/JsonString.h"
 
-namespace JktNet {
+namespace jkt {
 
 JsonString::JsonString(const string& value) {
 	_value = value;
@@ -20,4 +20,4 @@ void JsonString::toJson(stringstream& buffer) {
 	buffer << "\"" << _value << "\"";
 }
 
-} /* namespace JktNet */
+} /* namespace jkt */

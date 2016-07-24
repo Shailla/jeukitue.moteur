@@ -9,7 +9,7 @@ using namespace std;
 #include "spatial/materiau/Material.h"
 #include "util/Erreur.h"
 
-namespace JktMoteur
+namespace jkt
 {
 class Texture;
 
@@ -26,7 +26,7 @@ public:
 	~CMaterialTexture();
 
 		// Fonctions membres
-	void initGL() throw(JktUtils::CErreur) override; // Lit le fichier de texture associé au matériau
+	void initGL() throw(jkt::CErreur) override; // Lit le fichier de texture associé au matériau
 	void freeGL() override;
 	bool Lit(TiXmlElement* el, string &repertoire, MapLogger* mapLogger) override;
 	bool LitFichier(CIfstreamMap &fichier) override;

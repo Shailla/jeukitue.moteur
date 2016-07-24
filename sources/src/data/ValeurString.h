@@ -22,10 +22,10 @@ public:
 	virtual ~ValeurString();
 
 	const std::string& getValeur() const;
-	JktUtils::AnyData getValeurData() const;
+	jkt::AnyData getValeurData() const;
 
 	void setValeur(int revision, const std::string& valeur);
-	void setValeur(int revision, const JktUtils::AnyData& data);
+	void setValeur(int revision, const jkt::AnyData& data);
 
 	void updateValeur(const std::string& valeur);
 

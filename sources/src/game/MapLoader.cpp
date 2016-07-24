@@ -20,7 +20,7 @@
 #include "spatial/Map.h"
 #include "spatial/contact.h"
 
-using namespace JktMoteur;
+using namespace jkt;
 
 extern CGame Game;
 extern CCfg Config;		// Contient la configuration du jeu
@@ -65,13 +65,13 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 	LOGINFO(("Lecture du premier cri..."));
 
 	string cri1 = "@Bruit\\cri_1.wav";
-	JktUtils::RessourcesLoader::getFileRessource(cri1);
+	jkt::RessourcesLoader::getFileRessource(cri1);
 
 	console->println(ConsoleView::COT_INFO, "Lecture du second cri...");
 	LOGINFO(("Lecture du second cri..."));
 
 	string cri2 = "@Bruit\\cri_1.wav";
-	JktUtils::RessourcesLoader::getFileRessource(cri2);
+	jkt::RessourcesLoader::getFileRessource(cri2);
 
 
 	/***************************************
@@ -209,7 +209,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	LOGINFO(("Lecture du cri..."));
 
 	string cri1 = "@Bruit\\cri_1.wav";
-	JktUtils::RessourcesLoader::getFileRessource(cri1);
+	jkt::RessourcesLoader::getFileRessource(cri1);
 
 	// Chargement du skin
 	string mapJoueur;
@@ -288,7 +288,7 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 	LOGINFO(("Lecture du cri..."));
 
 	string cri1 = "@Bruit\\cri_1.wav";
-	JktUtils::RessourcesLoader::getFileRessource(cri1);
+	jkt::RessourcesLoader::getFileRessource(cri1);
 
 
 	/***************************************

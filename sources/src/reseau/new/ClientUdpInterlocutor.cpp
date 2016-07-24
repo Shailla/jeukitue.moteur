@@ -17,7 +17,7 @@ using namespace std;
 #include "util/types/Bytes.h"
 #include "util/IpUtils.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 #include "reseau/new/message/TechnicalMessage.h"
 #include "reseau/new/message/S2CConnectionAcceptedTechnicalMessage.h"
@@ -201,7 +201,7 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 			firstExecution = false;
 		}
 
-		JktUtils::Bytes* msg;
+		jkt::Bytes* msg;
 
 		TechnicalMessage* lastConnectionMsg = NULL;
 
@@ -271,7 +271,7 @@ void ClientUdpInterlocutor::sendingProcess() {
 		else {
 			firstExecution = false;
 		}
-		JktUtils::Bytes* data;
+		jkt::Bytes* data;
 
 		// Envoi les messages techniques si on n'est pas arrêté, sinon purge les
 		while((data = _interlocutor->popTechnicalMessageToSend()))  {

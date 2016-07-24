@@ -17,7 +17,7 @@ using namespace std;
 #include "script/commandes/dataCommandes/AddDataCommande.h"
 #include "script/commandes/dataCommandes/UpdateDataCommande.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 DataCommande::DataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 	registerSubCommande("add", new AddDataCommande(interpreter));

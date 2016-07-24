@@ -8,7 +8,7 @@
 #include "util/StreamUtils.h"
 #include "util/types/FloatData.h"
 
-namespace JktUtils {
+namespace jkt {
 
 FloatData::FloatData(float value) {
 	_value = value;

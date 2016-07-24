@@ -6,7 +6,7 @@ using namespace std;
 
 #include "V3D.h"
 
-namespace JktUtils
+namespace jkt
 {
 
 CV3D::CV3D()

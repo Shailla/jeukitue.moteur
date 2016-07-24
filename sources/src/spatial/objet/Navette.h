@@ -11,7 +11,7 @@ using namespace std;
 
 class CGame;
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CMap;
@@ -22,7 +22,7 @@ class CPointNavette
 public:
 	static const char* identifier;
 	float m_Vitesse;	// Vitesse de la navette à partir de ce point
-	JktUtils::CV3D m_Position;	// Position de ce point du trajet de la navette
+	jkt::CV3D m_Position;	// Position de ce point du trajet de la navette
 
 	CPointNavette( const CPointNavette& pp );
 	CPointNavette();
@@ -37,12 +37,12 @@ public:
 class CNavette:public CGeoObject, public CMouve
 {
 	vector<CPointNavette> m_ListePoints;	// Liste des points sur le trajet de la navette
-	JktUtils::CV3D m_Direction;	// Direction courante de la navette
+	jkt::CV3D m_Direction;	// Direction courante de la navette
 	int m_Point;		// Point du trajet à utiliser
 	float m_distPoints;	// Distance entre les deux points courants
 	float m_Vitesse;	// Vitesse courante de la navette
 	float m_Deplacement;	// Déplacement relatif courant de la navette
-	JktUtils::CV3D m_Position;	// Position courante de la navette à partir du point courant intermédiaire
+	jkt::CV3D m_Position;	// Position courante de la navette à partir du point courant intermédiaire
 
 	int prochainPoint( int i );	// Prends le prochain point du trajet et calcule les paramètres
 
@@ -64,7 +64,7 @@ public:
 	//bool SaveFichierMap( ofstream &fichier );			// Sauve l'objet géo dans un fichier Map
 	bool Save(TiXmlElement* element);
 
-	float GereLaserPlayer(float pos[3], JktUtils::CV3D &Dir, float dist);
+	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist);
 	void GereContactPlayer(float positionPlayer[3], CPlayer *player);
 };
 

@@ -11,7 +11,7 @@
 
 using namespace std;
 
-namespace JktPlugin {
+namespace jkt {
 
 PluginLabel::PluginLabel(AG_Widget* parent, const string& labelText) {
 	_label = AG_LabelNew(parent, 0, labelText.c_str());
@@ -32,4 +32,4 @@ void PluginLabel::expandVert() {
 	AG_ExpandVert(_label);
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

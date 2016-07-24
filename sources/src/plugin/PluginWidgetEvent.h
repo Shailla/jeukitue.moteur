@@ -8,7 +8,7 @@
 #ifndef PLUGINWIDGETEVENT_H_
 #define PLUGINWIDGETEVENT_H_
 
-namespace JktPlugin {
+namespace jkt {
 
 class LunarProxy;
 
@@ -22,6 +22,6 @@ public:
 	LunarProxy* getSource();
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 
 #endif /* PLUGINWIDGETEVENT_H_ */

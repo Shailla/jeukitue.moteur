@@ -30,10 +30,10 @@ protected:
 	int _brancheTmpId;
 	std::string _brancheName;
 
-	JktUtils::CGenRef _brancheTmpRefGenerator;
-	JktUtils::CGenRef _brancheRefGenerator;
-	JktUtils::CGenRef _valeurRefGenerator;
-	JktUtils::CGenRef _valeurTmpRefGenerator;
+	jkt::CGenRef _brancheTmpRefGenerator;
+	jkt::CGenRef _brancheRefGenerator;
+	jkt::CGenRef _valeurRefGenerator;
+	jkt::CGenRef _valeurTmpRefGenerator;
 
 public:
 	AbstractBranche(DataTree* dataTree, int brancheId, const std::string& brancheName, DONNEE_TYPE brancheType, int revision, int brancheTmpId);

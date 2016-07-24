@@ -17,14 +17,14 @@ using namespace std;
 
 #include "ihm/MAudio.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 extern CCfg Config;
 
 #include "fmod.h"
 #include "MAudioDrivers.h"
 
-namespace JktMenu
+namespace jkt
 {
 void lanceOutput1(void *arg);
 void lanceOutput2(void *arg);

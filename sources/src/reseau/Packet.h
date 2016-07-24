@@ -12,7 +12,7 @@
 
 #include "SDL_net.h"
 
-namespace JktNet
+namespace jkt
 {
 
 class Packet {
@@ -56,5 +56,5 @@ public:
 	void readString(std::string &mot);
 };
 
-} /* namespace JktUtils */
+} /* namespace jkt */
 #endif /* PACKET_H_ */

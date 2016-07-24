@@ -16,13 +16,13 @@ using namespace std;
 
 #include "spatial/widget/GraphicObject.h"
 
-namespace JktUtils {
+namespace jkt {
 class CV3D;
 }
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktMoteur {
+namespace jkt {
 
 /**
  * Icone affichage avec OpenGL.
@@ -77,5 +77,5 @@ public:
 	void afficheQuad(const CV3D& a, const CV3D& b, const CV3D& c, const CV3D& d);
 };
 
-} /* namespace JktMoteur */
+} /* namespace jkt */
 #endif /* ICONE_H_ */

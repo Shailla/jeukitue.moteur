@@ -34,11 +34,11 @@ class CGame;
 
 #include "spatial/geo/GeoMaker.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 class CCfg;
 
-namespace JktMoteur
+namespace jkt
 {
 
 		//Constructeurs / Destructeur
@@ -927,7 +927,7 @@ CGeo* CGeoMaker::Lit(TiXmlElement* el, CMap* pMap, MapLogger* mapLogger)
 	}
 	else {
 		mapLogger->logError("Fichier Map corrompu : Geo de type inconnu");
-		throw JktUtils::CErreur("Fichier Map corrompu : Geo de type inconnu");
+		throw jkt::CErreur("Fichier Map corrompu : Geo de type inconnu");
 	}
 
 	return geo;

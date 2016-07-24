@@ -14,7 +14,7 @@
 
 using namespace std;
 
-namespace JktService {
+namespace jkt {
 
 /**
  * Service class providing access to MAP information.
@@ -28,6 +28,6 @@ public:
 	static VersionsDto loadVersions();
 };
 
-} /* namespace JktService */
+} /* namespace jkt */
 
 #endif /* MAPSERVICE_H_ */

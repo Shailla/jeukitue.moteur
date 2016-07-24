@@ -14,7 +14,7 @@ extern const char* PLAYER_MAP_DIRECTORY;	// Répertoire des scripts des plugins
 extern const char* PLUGINS_DIRECTORY;		// Répertoire des MAP de jeu
 extern const char* TEMPORARY_DIRECTORY;	// Répertoire temporaire de travail
 
-namespace JktUtils
+namespace jkt
 {
 
 class RessourcesLoader {

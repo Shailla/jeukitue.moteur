@@ -7,7 +7,7 @@
 
 #include <reseau/web/service/WebService.h>
 
-namespace JktNet {
+namespace jkt {
 
 WebService::WebService() {
 }
@@ -15,4 +15,4 @@ WebService::WebService() {
 WebService::~WebService() {
 }
 
-} /* namespace JktNet */
+} /* namespace jkt */

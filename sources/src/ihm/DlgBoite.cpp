@@ -19,15 +19,15 @@ using namespace std;
 
 #include "ihm/DlgBoite.h"
 
-using namespace JktMenu;
-using namespace JktUtils;
+using namespace jkt;
+using namespace jkt;
 
 extern CCfg Config;
 extern bool Aide;
 extern Fonte fonte;
 extern CFocus *pFocus;
 
-namespace JktMenu
+namespace jkt
 {
 
 #define TAILLEFONT 0.5f
@@ -156,15 +156,15 @@ LOGDEBUG(("CDlgBoite::INIT_CLASSE()" ));
 	if( !m_B_INIT_CLASSE ) {
 		// Lecture des sons et images des styles de boites de dialogue
 		try {
-			Uint8* pixelsErreur = JktMoteur::litFichierImage("@Icone/Erreur.bmp", -1.0f);
-			Uint8* pixelsConfirm = JktMoteur::litFichierImage("@Icone/Confirm.bmp", -1.0f);
-			Uint8* pixelsInfo = JktMoteur::litFichierImage("@Icone/Info.bmp", -1.0f);
-			Uint8* pixelsEnCours = JktMoteur::litFichierImage("@Icone/EnCours.bmp", -1.0f);
+			Uint8* pixelsErreur = jkt::litFichierImage("@Icone/Erreur.bmp", -1.0f);
+			Uint8* pixelsConfirm = jkt::litFichierImage("@Icone/Confirm.bmp", -1.0f);
+			Uint8* pixelsInfo = jkt::litFichierImage("@Icone/Info.bmp", -1.0f);
+			Uint8* pixelsEnCours = jkt::litFichierImage("@Icone/EnCours.bmp", -1.0f);
 
-			_iconeErreur = JktMoteur::litFichierIcone("@Icone/Erreur.bmp", -1.0f, pixelsErreur);
-			_iconeConfirm = JktMoteur::litFichierIcone("@Icone/Confirm.bmp", -1.0f, pixelsConfirm);
-			_iconeInfo = JktMoteur::litFichierIcone("@Icone/Info.bmp", -1.0f, pixelsInfo);
-			_iconeEnCours = JktMoteur::litFichierIcone("@Icone/EnCours.bmp", -1.0f, pixelsEnCours);
+			_iconeErreur = jkt::litFichierIcone("@Icone/Erreur.bmp", -1.0f, pixelsErreur);
+			_iconeConfirm = jkt::litFichierIcone("@Icone/Confirm.bmp", -1.0f, pixelsConfirm);
+			_iconeInfo = jkt::litFichierIcone("@Icone/Info.bmp", -1.0f, pixelsInfo);
+			_iconeEnCours = jkt::litFichierIcone("@Icone/EnCours.bmp", -1.0f, pixelsEnCours);
 		}
 		catch(CErreur& erreur) {
 			return false;

@@ -56,10 +56,10 @@ class Branche : public AbstractBranche {
 	std::map<int, Valeur*> _valeursByTmpId;
 	std::map<string, Valeur*> _valeursByName;
 
-	JktUtils::CGenRef _brancheTmpRefGenerator;
-	JktUtils::CGenRef _brancheRefGenerator;
-	JktUtils::CGenRef _valeurRefGenerator;
-	JktUtils::CGenRef _valeurTmpRefGenerator;
+	jkt::CGenRef _brancheTmpRefGenerator;
+	jkt::CGenRef _brancheRefGenerator;
+	jkt::CGenRef _valeurRefGenerator;
+	jkt::CGenRef _valeurTmpRefGenerator;
 
 public:
 	/** Create a root branche */
@@ -82,7 +82,7 @@ public:
 	Branche* createSubBrancheForClient(const std::string& brancheName, int revision);
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant temporaire */
-	Valeur* createValeurForClient(UPDATE_MODE updateMode, const std::string& valeurName, int revision, const JktUtils::AnyData& valeur);
+	Valeur* createValeurForClient(UPDATE_MODE updateMode, const std::string& valeurName, int revision, const jkt::AnyData& valeur);
 	virtual Valeur* getValeurByName(DistantTreeProxy* distant, const string& valeurName);
 
 	/* ****************************************************** */
@@ -108,10 +108,10 @@ public:
 	virtual Branche* addSubBranche(DistantTreeProxy* distant, int brancheId, DONNEE_TYPE type, const std::string& brancheName, int brancheRevision);
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant */
-	virtual Valeur* createValeurForServeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::string& valeurName, int revision, const JktUtils::AnyData& valeur);
+	virtual Valeur* createValeurForServeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::string& valeurName, int revision, const jkt::AnyData& valeur);
 
 	/** Ajoute une valeur entière qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
-	virtual Valeur* addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const std::string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur);
+	virtual Valeur* addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const std::string& valeurName, int valeurRevision, const jkt::AnyData& valeur);
 
 	/**
 	 * Affiche le sous-arbre et ses données et caractéristiques partagées avec les autres arbres.

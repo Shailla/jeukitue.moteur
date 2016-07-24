@@ -29,9 +29,9 @@ using namespace std;
 
 #include "main/divers.h"
 
-using namespace JktSon;
+using namespace jkt;
 
-extern JktSon::CDemonSons *DemonSons;
+extern jkt::CDemonSons *DemonSons;
 
 void quit_game(const char* txt, int code)	// Quitte proprement le jeu
 {
@@ -124,22 +124,22 @@ void load_Intro( int width, int height ) {
 
 	// Son retour chariot machine à écrire
 	string bruitChariot = "@Bruit\\chariot.wav";
-	JktUtils::RessourcesLoader::getFileRessource(bruitChariot);
+	jkt::RessourcesLoader::getFileRessource(bruitChariot);
 	sonChariot = DemonSons->CreateSon( bruitChariot.c_str() );
 
 	// Son frappe d'une touche clavier
 	string bruitTouche = "@Bruit\\touche.wav";
-	JktUtils::RessourcesLoader::getFileRessource(bruitTouche);
+	jkt::RessourcesLoader::getFileRessource(bruitTouche);
 	sonTouche = DemonSons->CreateSon( bruitTouche.c_str() );
 
 	// Son frappe de la touche espace clavier
 	string bruitEspace = "@Bruit\\espace.wav";
-	JktUtils::RessourcesLoader::getFileRessource(bruitEspace);
+	jkt::RessourcesLoader::getFileRessource(bruitEspace);
 	sonEspace = DemonSons->CreateSon( bruitEspace.c_str() );
 
 	// Son hurlement du sauveur de la planète
 	string bruitHurlement = "@Bruit\\hurlement.wav";
-	JktUtils::RessourcesLoader::getFileRessource(bruitHurlement);
+	jkt::RessourcesLoader::getFileRessource(bruitHurlement);
 	sonHurlement = DemonSons->CreateSon( bruitHurlement.c_str() );
 
 	load_IntroSub( width, height);
@@ -156,7 +156,7 @@ void load_IntroSub(const int width, const int height) {
 
 	// Chargement de la fonte de caractères
 	string fileFonteIntro = "@Fonte\\Mermaid1001.ttf";
-	JktUtils::RessourcesLoader::getFileRessource(fileFonteIntro);
+	jkt::RessourcesLoader::getFileRessource(fileFonteIntro);
 
 	Fonte fonteIntro;
 	fonteIntro.load(fileFonteIntro, 24);
@@ -168,7 +168,7 @@ void load_IntroSub(const int width, const int height) {
 	srand( SDL_GetTicks() );	// Initialisation de la fonction rand() pour les nombres aléatoires
 
 	string introJKT = "@Fond\\intro_JKT2.jpg";
-	JktUtils::RessourcesLoader::getFileRessource(introJKT);
+	jkt::RessourcesLoader::getFileRessource(introJKT);
 	SDL_Surface *image1 = IMG_Load(introJKT.c_str());		// Lit le fichier image
 
 	if(image1 == 0) {

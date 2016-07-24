@@ -22,16 +22,16 @@ using namespace std;
 
 class CPlayer;
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CMap;
 class CIfstreamMap;
 
 class CGeo {
-	static JktUtils::CGenRef GENREF;
+	static jkt::CGenRef GENREF;
 	CMap *pMap;							// Navigabilité vers l'objet parent
 	string _name;						// Nom donné à au géo
 protected:

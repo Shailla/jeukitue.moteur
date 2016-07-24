@@ -10,7 +10,7 @@
 #include "util/StreamUtils.h"
 #include "util/exception/UnserializeException.h"
 
-namespace JktUtils {
+namespace jkt {
 
 AnyData::AnyData() {
 	_type = UNKNOWN_DATA_TYPE;

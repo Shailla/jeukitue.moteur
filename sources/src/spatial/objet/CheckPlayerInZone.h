@@ -11,7 +11,7 @@
 #include "spatial/Map.h"
 #include "spatial/geo/Geo.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CheckPlayerInZone : public CGeo {

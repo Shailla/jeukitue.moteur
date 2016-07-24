@@ -18,9 +18,9 @@
 #include "reseau/web/json/JsonList.h"
 
 using namespace std;
-using namespace JktNet;
+using namespace jkt;
 
-namespace JktTest {
+namespace jkt {
 
 JsonTest::JsonTest() : Test("JsonTest") {
 }

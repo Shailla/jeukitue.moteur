@@ -11,7 +11,7 @@
 #include <agar/core.h>
 #include <agar/gui.h>
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginGuiController {
 public:
@@ -22,5 +22,5 @@ public:
 	static void catchComboListEvent(AG_Event* event);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINGUICONTROLLER_H_ */

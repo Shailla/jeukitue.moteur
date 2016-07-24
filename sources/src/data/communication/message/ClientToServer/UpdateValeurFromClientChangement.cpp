@@ -19,7 +19,7 @@ UpdateValeurFromClientChangement::UpdateValeurFromClientChangement(istringstream
 	unserialize(in);
 }
 
-UpdateValeurFromClientChangement::UpdateValeurFromClientChangement(const vector<int>& parentBrancheId, int valeurId, int revision, JktUtils::AnyData valeur) : Changement("UpdateValFromClChgt", PRIORITY_UpdateValeurFromClientChangement, valeurId) {
+UpdateValeurFromClientChangement::UpdateValeurFromClientChangement(const vector<int>& parentBrancheId, int valeurId, int revision, jkt::AnyData valeur) : Changement("UpdateValFromClChgt", PRIORITY_UpdateValeurFromClientChangement, valeurId) {
 	_parentBrancheId = parentBrancheId;
 	_valeurId = valeurId;
 	_revision = revision;
@@ -84,7 +84,7 @@ int UpdateValeurFromClientChangement::getRevision() const {
 	return _revision;
 }
 
-JktUtils::AnyData UpdateValeurFromClientChangement::getValeur() const {
+jkt::AnyData UpdateValeurFromClientChangement::getValeur() const {
 	return _valeur;
 }
 

@@ -15,7 +15,7 @@
 
 #include "plugin/PluginContext.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginLabel {
 	AG_Label* _label;
@@ -29,5 +29,5 @@ public:
 	void expandVert();
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINLABEL_H_ */

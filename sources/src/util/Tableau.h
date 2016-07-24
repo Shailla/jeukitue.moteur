@@ -9,7 +9,7 @@
 //ou du dernier élément																//
 //////////////////////////////////////////////////////////////////////////////////////
 
-namespace JktUtils
+namespace jkt
 {
 
 template <class X> class Tableau {

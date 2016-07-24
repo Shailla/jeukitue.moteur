@@ -9,7 +9,7 @@
 
 using namespace std;
 
-namespace JktPlugin {
+namespace jkt {
 
 PluginNumeric::PluginNumeric(AG_Widget* parent, const string& numericText, const string& numericUnite) {
 	_numeric = AG_NumericalNewS(parent, AG_NUMERICAL_HFILL, numericUnite.c_str(), numericText.c_str());
@@ -35,4 +35,4 @@ void PluginNumeric::expandVert() {
 	AG_ExpandVert(_numeric);
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

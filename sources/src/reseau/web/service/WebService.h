@@ -10,7 +10,7 @@
 
 #include <string>
 
-namespace JktNet {
+namespace jkt {
 
 class WebServiceResult {
 public:
@@ -29,6 +29,6 @@ public:
 	virtual WebServiceResult execute(const std::string& endpoint, const std::string& method) = 0;
 };
 
-} /* namespace JktNet */
+} /* namespace jkt */
 
 #endif /* SRC_RESEAU_WEB_SERVICE_WEBSERVICE_H_ */

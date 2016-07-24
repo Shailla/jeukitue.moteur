@@ -19,7 +19,7 @@ extern "C" {
 #include "plugin/lua/proxy/LunarProxy.h"
 #include "plugin/api/gui/listener/SelectionChangedListener.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginContext;
 class PluginComboList;
@@ -54,5 +54,5 @@ public:
 	void selectionChangedEvent();
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINCOMBOLISTPROXY_H_ */

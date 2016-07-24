@@ -1,7 +1,7 @@
 
 #include <spatial/moteur/MoteurParticules.h>
 
-namespace JktMoteur
+namespace jkt
 {
 
 CMoteurParticules::CMoteurParticules()

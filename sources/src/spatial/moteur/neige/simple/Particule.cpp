@@ -6,7 +6,7 @@
 
 #include "spatial/moteur/neige/simple/Particule.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 CParticule::CParticule() {

@@ -18,7 +18,7 @@ HelpCommande::HelpCommande(CommandeInterpreter* interpreter) : Commande(interpre
 }
 
 void HelpCommande::executeIt(std::string ligne, bool userOutput) {
-	JktUtils::StringUtils::trim(ligne);
+	jkt::StringUtils::trim(ligne);
 
 	if(ligne.size() == 0) {
 		ostringstream ss;

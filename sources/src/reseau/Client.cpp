@@ -25,7 +25,7 @@ using namespace std;
 
 extern CGame Game;
 
-namespace JktNet
+namespace jkt
 {
 
 CClient::CClient() {

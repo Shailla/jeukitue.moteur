@@ -7,7 +7,7 @@
 
 #include "util/types/Bytes.h"
 
-namespace JktUtils {
+namespace jkt {
 
 using namespace std;
 
@@ -35,4 +35,4 @@ int Bytes::size() {
 	return _size;
 }
 
-} /* namespace JktUtils */
+} /* namespace jkt */

@@ -7,7 +7,7 @@
 
 #include "TableauIndex.h"
 
-namespace JktUtils
+namespace jkt
 {
 
 template<class X>

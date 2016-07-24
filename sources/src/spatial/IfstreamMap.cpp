@@ -12,7 +12,7 @@ using namespace std;
 
 #include "spatial/IfstreamMap.h"
 
-namespace JktMoteur
+namespace jkt
 {
 int CIfstreamMap::m_OffsetMateriaux = 0;
 

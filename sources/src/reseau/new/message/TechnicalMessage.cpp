@@ -10,7 +10,7 @@
 
 #include "util/types/Bytes.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 #include "reseau/new/message/C2SHelloTechnicalMessage.h"
 #include "reseau/new/message/C2SByeTechnicalMessage.h"
@@ -31,7 +31,7 @@ int TechnicalMessage::getCode() const {
 	return _code;
 }
 
-TechnicalMessage* TechnicalMessage::traduct(JktUtils::Bytes* bytes) {
+TechnicalMessage* TechnicalMessage::traduct(jkt::Bytes* bytes) {
 	TechnicalMessage* msg = 0;
 
 	const char* data = bytes->getBytes();

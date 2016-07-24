@@ -20,7 +20,7 @@ extern "C" {
 
 using namespace std;
 
-namespace JktPlugin {
+namespace jkt {
 
 enum LUA_PARAMETER_TYPES {
 	LUA_PARAM_BOOLEAN,	// Paramètre de type booléen
@@ -46,5 +46,5 @@ public:
 	static void pushIntArray(lua_State *L, const vector<int> array);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* LUAUTILS_H_ */

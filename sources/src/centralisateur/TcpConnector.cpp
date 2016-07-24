@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace JktNet
+namespace jkt
 {
 
 vector<DownloadFileItem> TcpConnector::askDownloadFileList(const int port) throw(CentralisateurTcpException)

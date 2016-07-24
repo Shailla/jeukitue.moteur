@@ -7,7 +7,7 @@
 
 #include "plugin/PluginActionEvent.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 PluginActionEvent::PluginActionEvent(Controller::Action actionId) {
 	_actionId = actionId;
@@ -20,4 +20,4 @@ Controller::Action PluginActionEvent::getActionId() const {
 	return _actionId;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

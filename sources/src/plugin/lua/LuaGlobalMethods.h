@@ -14,7 +14,7 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-namespace JktPlugin {
+namespace jkt {
 
 class LuaGlobalMethods {
 	static const char* REFRESH_EVENT_TYPE;
@@ -27,5 +27,5 @@ public:
 	static int subscribeEvents(lua_State* L);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* LUAGLOBALMETHODS_H_ */

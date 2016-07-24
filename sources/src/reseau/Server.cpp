@@ -30,13 +30,13 @@ using namespace std;
 #include "reseau/enumReseau.h"
 #include "reseau/Server.h"
 
-void JktMoteur::contactPlayer(CPlayer *player, float *normal, float distanceW);
+void jkt::contactPlayer(CPlayer *player, float *normal, float distanceW);
 void gravitePlayer(CPlayer *player);
 
 extern CGame Game;
 class CMap;
 
-namespace JktNet
+namespace jkt
 {
 
 CServer::CServer() {
@@ -163,7 +163,7 @@ bool CServer::acceptPlayer(CSPA *spa) {
 	// Création player
 	CPlayer* newPlayer = new CPlayer();						// Crée le réceptacle du nouveau joueur
 	newPlayer->changeAction( gravitePlayer );				// Associe au joueur une fonction de gravité
-	newPlayer->changeContact( JktMoteur::contactPlayer );	// Associe une fonction de gestion des contacts avec la map
+	newPlayer->changeContact( jkt::contactPlayer );	// Associe une fonction de gestion des contacts avec la map
 	newPlayer->nom( nomNewPlayer );							// Enregistre le nom du nouveau joueur
 	newPlayer->init();
 

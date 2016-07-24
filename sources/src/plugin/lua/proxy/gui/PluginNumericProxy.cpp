@@ -14,7 +14,7 @@ using namespace std;
 
 #include "plugin/lua/proxy/gui/PluginNumericProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 const char PluginNumericProxy::className[] = "Numeric";
 
@@ -55,4 +55,4 @@ int PluginNumericProxy::getValue(lua_State* L) {
 	return 1;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

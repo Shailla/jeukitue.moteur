@@ -18,7 +18,7 @@ using namespace std;
 #include "spatial/geo/Geo.h"
 #include "spatial/geo/GeoMaker.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CSimpleMaterialGeo : public CGeo {

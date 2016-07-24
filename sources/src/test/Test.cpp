@@ -16,7 +16,7 @@ using namespace std;
 
 #include "test/Test.h"
 
-namespace JktTest {
+namespace jkt {
 
 Test::Test(const string& testName) : _testName(testName) {
 }
@@ -122,4 +122,4 @@ void Test::log(const ostringstream& message, int line) {
 	LOGINFO((msg.str().c_str()));
 }
 
-} /* namespace JktTest */
+} /* namespace jkt */

@@ -18,7 +18,7 @@ using namespace std;
 
 #include "DemonSons.h"
 
-using namespace JktSon;
+using namespace jkt;
 
 CDemonSons::CDemonSons()
 {

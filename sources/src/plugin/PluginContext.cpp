@@ -14,7 +14,7 @@
 
 using namespace std;
 
-namespace JktPlugin {
+namespace jkt {
 
 const char* PluginContext::LOG_USER_PREFIX = 		"USER   : ";
 const char* PluginContext::LOG_INFO_PREFIX = 		"INFO   : ";
@@ -142,4 +142,4 @@ void PluginContext::subscribeRefreshEvents(const bool state) {
 	SDL_UnlockMutex(_dispatchEventMutex);
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

@@ -14,11 +14,11 @@ using namespace std;
 
 #include "ihm/MMenuPrinc.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 class CGame;
 
-namespace JktMenu
+namespace jkt
 {
 	/************************/
 	/*						*/

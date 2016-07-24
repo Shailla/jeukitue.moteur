@@ -15,7 +15,7 @@ using namespace std;
 
 #include "util/exception/UnserializeException.h"
 
-namespace JktUtils {
+namespace jkt {
 
 class AnyData {
 

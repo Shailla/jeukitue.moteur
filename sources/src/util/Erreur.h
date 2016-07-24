@@ -6,7 +6,7 @@
 
 #include "exception/JktException.h"
 
-namespace JktUtils
+namespace jkt
 {
 
 class CErreur : public JktException {		// Classe pour l'émission d'erreurs par exception

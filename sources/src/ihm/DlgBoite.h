@@ -10,9 +10,9 @@ using namespace std;
 
 #include "Dlg.h"
 
-using namespace JktMoteur;
+using namespace jkt;
 
-namespace JktMenu
+namespace jkt
 {
 
 typedef void (*PF)(void *);

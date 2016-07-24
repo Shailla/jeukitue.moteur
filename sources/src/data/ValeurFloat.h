@@ -24,10 +24,10 @@ public:
 	virtual ~ValeurFloat();
 
 	float getValeur() const;
-	JktUtils::AnyData getValeurData() const;
+	jkt::AnyData getValeurData() const;
 
 	void setValeur(int revision, float valeur);
-	void setValeur(int revision, const JktUtils::AnyData& data);
+	void setValeur(int revision, const jkt::AnyData& data);
 
 	void updateValeur(float valeur);
 

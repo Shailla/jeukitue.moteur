@@ -134,7 +134,7 @@ void CCfg::Lit() {
 
 		do fichier >> mot;	while( mot!=CST_VID_DISPLAY_POS );
 		fichier >> Display.position;
-		JktUtils::StringUtils::trim(Display.position);
+		jkt::StringUtils::trim(Display.position);
 
 		do fichier >> mot;	while( mot!=CST_VID_DISPLAY_SIZE );
 		fichier >> Display.X >> Display.Y;
@@ -849,7 +849,7 @@ void CCfg::CDisplay::InitSDL() {
 	SDL_WM_SetCaption( "JKT 2010", "C'est un jeu qui tue !!!" );	// Titre et icon de la fenêtre
 
 	string iconeFichier = "@Icone/Icone.bmp";
-	JktUtils::RessourcesLoader::getFileRessource(iconeFichier);
+	jkt::RessourcesLoader::getFileRessource(iconeFichier);
 	SDL_WM_SetIcon( IMG_Load( iconeFichier.c_str() ), 0 );
 
 

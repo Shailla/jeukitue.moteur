@@ -11,7 +11,7 @@
 #include <vector>
 #include <string>
 
-namespace JktService {
+namespace jkt {
 
 /**
  * Service class providing access to MAP information.
@@ -25,6 +25,6 @@ public:
 	static void loadLuaDirectoryContent(std::vector<std::string>& content);
 };
 
-} /* Namespace JktService */
+} /* namespace jkt */
 
 #endif /* MAPSERVICE_H_ */

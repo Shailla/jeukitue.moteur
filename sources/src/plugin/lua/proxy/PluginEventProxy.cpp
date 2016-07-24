@@ -9,7 +9,7 @@
 
 #include "plugin/lua/proxy/PluginEventProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 const char PluginEventProxy::className[] = "Event";
 
@@ -70,4 +70,4 @@ int PluginEventProxy::getSource(lua_State* L) {
 	return result;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

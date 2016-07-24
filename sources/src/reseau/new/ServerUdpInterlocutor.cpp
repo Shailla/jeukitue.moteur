@@ -24,7 +24,7 @@ using namespace std;
 
 #include "reseau/new/ServerUdpInterlocutor.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 ServerUdpInterlocutor::ServerUdpInterlocutor(const string& name, Uint16 localPort) : TechnicalInterlocutor(name, localPort), _clientsOfServer() {
 	_notConnectedInterlocutor = NULL;
@@ -218,7 +218,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 		{
 			SDL_LockMutex(_clientsOfServerMutex);
 
-			JktUtils::Bytes* msg;
+			jkt::Bytes* msg;
 
 			bool incrementIter = true;
 			map<IPaddress, ClientOfServer*>::iterator iter = _clientsOfServer.begin();
@@ -346,7 +346,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 		{
 			SDL_LockMutex(_clientsOfServerMutex);
 
-			JktUtils::Bytes* data;
+			jkt::Bytes* data;
 
 			map<IPaddress, ClientOfServer*>::iterator iter;
 
@@ -415,7 +415,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 				case TechnicalMessage::C2S_BYE:
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
-					_notConnectedInterlocutor->pushTechnicalMessageReceived(address, new JktUtils::Bytes(data, size));
+					_notConnectedInterlocutor->pushTechnicalMessageReceived(address, new jkt::Bytes(data, size));
 					break;
 				}
 			}
@@ -438,7 +438,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 					int offset = 2;
 					char* data = new char[size - offset];
 					memcpy(data, _packetIn->data + offset, size - offset);
-					client->getInterlocutor()->pushDataReceived(new JktUtils::Bytes(data, size - offset));
+					client->getInterlocutor()->pushDataReceived(new jkt::Bytes(data, size - offset));
 
 					stringstream message;
 					message << "Reception de donnees user from " << IpUtils::translateAddress(address);
@@ -450,7 +450,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 				{
 					char* data = new char[size];
 					memcpy(data, _packetIn->data, size);
-					client->getInterlocutor()->pushTechnicalMessageReceived(new JktUtils::Bytes(data, size));
+					client->getInterlocutor()->pushTechnicalMessageReceived(new jkt::Bytes(data, size));
 
 					stringstream message;
 					message << "Reception de donnees techniques from " << IpUtils::translateAddress(address);

@@ -8,7 +8,7 @@
 #include "util/StreamUtils.h"
 #include "util/types/IntData.h"
 
-namespace JktUtils {
+namespace jkt {
 
 IntData::IntData(int value) {
 	_value = value;

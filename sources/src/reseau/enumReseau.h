@@ -2,7 +2,7 @@
 #ifndef __JKT__ENUM_H
 #define __JKT__ENUM_H
 
-namespace JktNet
+namespace jkt
 {
 
 enum enteteServer {

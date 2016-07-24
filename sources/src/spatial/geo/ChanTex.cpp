@@ -4,7 +4,7 @@
 
 #include "ChanTex.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 CChanTex::CChanTex() {

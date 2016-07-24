@@ -41,18 +41,18 @@ public:
 
 	void setCondIntelligence(SDL_cond* condIntelligence);
 
-	void pushTechnicalMessageToSend(const IPaddress& address, JktUtils::Bytes* bytes);
-	void pushTechnicalMessageToSend(JktUtils::Bytes* bytes);
+	void pushTechnicalMessageToSend(const IPaddress& address, jkt::Bytes* bytes);
+	void pushTechnicalMessageToSend(jkt::Bytes* bytes);
 	DataAddress* popTechnicalMessageToSend();
 
-	void pushTechnicalMessageReceived(const IPaddress& address, JktUtils::Bytes* bytes);
+	void pushTechnicalMessageReceived(const IPaddress& address, jkt::Bytes* bytes);
 	DataAddress* popTechnicalMessageReceived();
 
-	void pushDataReceived(const IPaddress& address, JktUtils::Bytes* bytes);
+	void pushDataReceived(const IPaddress& address, jkt::Bytes* bytes);
 	DataAddress* popDataReceived();
 
 	void waitDataToSend(int timeout);
-	void pushDataToSend(const IPaddress& address, JktUtils::Bytes* bytes);
+	void pushDataToSend(const IPaddress& address, jkt::Bytes* bytes);
 	DataAddress* popDataToSend();
 
 

@@ -24,7 +24,7 @@ On a à nouveau 1 seul bloc : {0,1,2,3,4,5,6,7}
 #include <vector>
 #include <string>
 
-namespace JktUtils
+namespace jkt
 {
 class CGenRef
 {

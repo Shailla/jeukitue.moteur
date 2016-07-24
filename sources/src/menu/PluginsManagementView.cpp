@@ -18,7 +18,7 @@ using namespace std;
 
 #include "menu/PluginsManagementView.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 /*
     OpenSceneMapView affiche dans une scrollview la liste des map disponibles dans
@@ -63,7 +63,7 @@ void PluginsManagementView::show(void) {
 
     // Création d'un label et d'un bouton d'exécution pour chaque Map disponible
 	vector<string> pluginNames;
-	JktService::LuaService::loadLuaDirectoryContent(_pluginNames);
+	jkt::LuaService::loadLuaDirectoryContent(_pluginNames);
 
 	vector<string>::iterator iterPluginName = _pluginNames.begin();
 

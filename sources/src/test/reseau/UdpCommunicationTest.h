@@ -12,7 +12,7 @@
 
 #include "test/Test.h"
 
-namespace JktTest {
+namespace jkt {
 
 class UdpCommunicationTest : public Test {
 public:
@@ -24,5 +24,5 @@ public:
 	void test() override;
 };
 
-} /* namespace JktUtils */
+} /* namespace jkt */
 #endif /* UDPCOMMUNICATIONTEST_H_ */

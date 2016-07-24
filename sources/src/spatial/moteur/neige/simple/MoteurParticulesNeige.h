@@ -4,7 +4,7 @@
 #include <spatial/moteur/MoteurParticules.h>
 #include "util/V3D.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CMoteurParticulesNeige : public CMoteurParticules {
@@ -15,10 +15,10 @@ class CMoteurParticulesNeige : public CMoteurParticules {
 	unsigned _lastTempsNew;			// Date de la dernière création d'une particule
 
 	/** Position du centre du moteur de particules. */
-	JktUtils::CV3D _centre;
+	jkt::CV3D _centre;
 	/** Taille du moteur de particules. */
-	JktUtils::CV3D _taille;
-	JktUtils::CV3D _vitesse;
+	jkt::CV3D _taille;
+	jkt::CV3D _vitesse;
 
 	void GenereTextureParticule();
 

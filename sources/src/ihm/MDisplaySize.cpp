@@ -17,7 +17,7 @@ using namespace std;
 #include "util/Trace.h"
 #include "main/divers.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 class CGame;
 
@@ -25,7 +25,7 @@ extern CCfg Config;
 
 #include "ihm/MDisplaySize.h"
 
-namespace JktMenu
+namespace jkt
 {
 void lanceDisplaySizeChange(void*);
 void retourVideoSize(void *arg);

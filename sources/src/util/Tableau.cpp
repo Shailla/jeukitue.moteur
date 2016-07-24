@@ -9,7 +9,7 @@ using namespace std;
 
 #include "Tableau.h"
 
-namespace JktUtils
+namespace jkt
 {
 template<class X>	
 Tableau<X>::Tableau()

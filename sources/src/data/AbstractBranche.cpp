@@ -23,7 +23,7 @@ using namespace std;
 
 #include "data/AbstractBranche.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 AbstractBranche::AbstractBranche(DataTree* dataTree, int brancheId, const string& brancheName, DONNEE_TYPE brancheType, int revision, int brancheTmpId) : Donnee(dataTree, revision, brancheType, UPDATE_MODE::ANY) {
 	_parent = 0;

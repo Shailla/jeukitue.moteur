@@ -16,7 +16,7 @@ using namespace std;
 
 #include "spatial/widget/GraphicObject.h"
 
-namespace JktMoteur {
+namespace jkt {
 
 /**
  * Icone affichage avec OpenGL.
@@ -72,5 +72,5 @@ public:
 	void affiche(float left, float right, float down, float up);
 };
 
-} /* namespace JktMoteur */
+} /* namespace jkt */
 #endif /* ICONE_H_ */

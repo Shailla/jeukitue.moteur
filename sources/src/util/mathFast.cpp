@@ -1,7 +1,7 @@
 
 #include "mathFast.h"
 
-namespace JktUtils
+namespace jkt
 {
 
 float FastSin0 (float fAngle)

@@ -16,7 +16,7 @@ using namespace std;
 
 #include "util/StringUtils.h"
 
-namespace JktUtils {
+namespace jkt {
 
 StringUtils::StringUtils() {
 }
@@ -208,4 +208,4 @@ void StringUtils::trim(string& s) {
 	ltrim(s);
 }
 
-} /* namespace JktUtils */
+} /* namespace jkt */

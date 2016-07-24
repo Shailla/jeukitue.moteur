@@ -7,7 +7,7 @@
 
 #include "plugin/lua/proxy/LunarProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 LunarProxy::LunarProxy() {
 }
@@ -15,4 +15,4 @@ LunarProxy::LunarProxy() {
 LunarProxy::~LunarProxy() {
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

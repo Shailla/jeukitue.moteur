@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CFichierASE : private std::ifstream
@@ -75,6 +75,6 @@ public:
 	static bool LitFichierASE(const std::string nomFichier, CMap *pMap, bool bAffiche );
 };
 
-}	//namespace JktMoteur
+}	//namespace jkt
 
 #endif

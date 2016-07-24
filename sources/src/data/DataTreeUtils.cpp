@@ -47,7 +47,7 @@ void DataTreeUtils::formatGameServerDataTree(DataTree* dataTree) {
 
 	// Branche info de la Map
 	Branche* infoBranche = dataTree->createBranche(0, mapBranche->getBrancheFullId(), "info");
-	dataTree->createValeur(0, ANY, infoBranche->getBrancheFullId(), "mapName", JktUtils::AnyData(string("")));
+	dataTree->createValeur(0, ANY, infoBranche->getBrancheFullId(), "mapName", jkt::AnyData(string("")));
 
 	// Branche des dirigeables
 	Branche* spritesBranche = dataTree->createBranche(0, mapBranche->getBrancheFullId(), "sprites");

@@ -18,7 +18,7 @@ using namespace std;
 
 #include "MaterialMulti.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 CMaterialMulti::CMaterialMulti() : CMaterial() {

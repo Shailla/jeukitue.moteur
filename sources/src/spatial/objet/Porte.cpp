@@ -28,7 +28,7 @@ class CGame;
 
 #include "spatial/objet/Porte.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 const char* CPorte::identifier = "Porte";

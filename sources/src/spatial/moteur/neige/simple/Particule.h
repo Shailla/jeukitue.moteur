@@ -4,19 +4,19 @@
 
 #include "util/V3D.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CParticule {
 public:
 	/** Position actuelle de la particule. */
-	JktUtils::CV3D position;
+	jkt::CV3D position;
 	/** Vitesse actuelle de la particule. */
-	JktUtils::CV3D vitesse;
+	jkt::CV3D vitesse;
 	/** Accélération actuelle de la particule. */
-	JktUtils::CV3D acceleration;
+	jkt::CV3D acceleration;
 
 	/** Temps auquel la particule a été créée ou réinitialisée. */
 	unsigned int date2naissance;

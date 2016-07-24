@@ -10,7 +10,7 @@
 
 #include "menu/Controller.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginActionEvent {
 private:
@@ -23,6 +23,6 @@ public:
 	Controller::Action getActionId() const;
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 
 #endif /* PLUGINACTIONEVENT_H_ */

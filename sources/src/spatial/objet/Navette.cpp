@@ -27,7 +27,7 @@ class CGame;
 
 #include "Navette.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 const char* CNavette::identifier = "Navette";

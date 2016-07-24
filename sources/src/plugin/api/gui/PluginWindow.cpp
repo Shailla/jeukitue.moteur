@@ -7,7 +7,7 @@
 
 #include "plugin/api/gui/PluginWindow.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 PluginWindow::PluginWindow(PluginContext* pluginContext) {
 	_window = AG_WindowNew(AG_WINDOW_NOBUTTONS | AG_WINDOW_NOMOVE);
@@ -45,4 +45,4 @@ void PluginWindow::hide() {
 	AG_WidgetUnfocus(_window);
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

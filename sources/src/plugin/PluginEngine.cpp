@@ -30,7 +30,7 @@
 extern const char* PLUGINS_DIRECTORY;
 extern CCfg Config;
 
-namespace JktPlugin {
+namespace jkt {
 
 const string PluginEngine::PLUGIN_MAIN_FILENAME = "main";
 
@@ -455,4 +455,4 @@ void PluginEngine::deactivateGlobalPlugin(const string& pluginName) {
 	}
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

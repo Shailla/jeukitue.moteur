@@ -18,7 +18,7 @@ using namespace boost::filesystem;
 #include "Trace.h"
 
 using namespace std;
-using namespace JktUtils;
+using namespace jkt;
 
 Trace* Trace::_Instance = NULL;
 
@@ -214,7 +214,7 @@ Trace::Trace() {
 			else {
 				string filename = itr->path().filename().string();
 
-				if( JktUtils::StringUtils::isBeginingWith(filename, PREFIX_FICHIER_TRACE) && JktUtils::StringUtils::isFinishingWith(filename, EXT_FICHIER_TRACE) ) {
+				if( jkt::StringUtils::isBeginingWith(filename, PREFIX_FICHIER_TRACE) && jkt::StringUtils::isFinishingWith(filename, EXT_FICHIER_TRACE) ) {
 					filename = string( filename.begin()+strlen(PREFIX_FICHIER_TRACE), filename.end()-strlen(EXT_FICHIER_TRACE) );	// Extraction du numéro du fichier trace
 
 					if( filename == "0" ) {

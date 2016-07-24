@@ -16,7 +16,7 @@
 	- UDP_PING, UDP_ACK : Réponse à un ping
 */
 
-namespace JktNet
+namespace jkt
 {
 
 class CServer;

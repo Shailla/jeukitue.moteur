@@ -16,9 +16,9 @@ using namespace std;
 class CGame;
 class CPlayer;
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktMoteur {
+namespace jkt {
 class CLight;
 class Dirigeable;
 class CMouve;
@@ -54,7 +54,7 @@ class CMap : CGeo {
 	bool _isGlActivated;							// Indique si les éléments OpenGL de la MAP ont été initialisés
 	bool _isPluginsActivated;						// Indique si les plugins de la MAP ont été initialisés
 
-	CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(JktUtils::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
+	CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
 
 	void afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
 public:
@@ -62,7 +62,7 @@ public:
 
 		// Constructeurs / destructeur
 	CMap(CMap* parent);
-	CMap(CMap* parent, const string& nomFichier) throw(JktUtils::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
+	CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
 	~CMap();
 	CGeo* clone();
 
@@ -74,7 +74,7 @@ public:
 	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
 	bool Save(TiXmlElement* element);			// Sauve l'objet géo dans un fichier Map
 
-	void Init() throw(JktUtils::CErreur);	// Initialisation de la CMap
+	void Init() throw(jkt::CErreur);	// Initialisation de la CMap
 
 	// Gestion des plugins de la Map
 	void initPlugins();		// Chargement / exécution des plugins de la Map
@@ -131,7 +131,7 @@ public:
 	 * positionPlayer : position du jouer ou position calculé ce qui permet d'optimiser certains contacts quand un objet a bougé en considérant que c'est plutôt le
 	 */
 	void GereContactPlayer(float positionPlayer[3], CPlayer *player);								// Gère tous les contacts entre la map et les joueurs
-	float GereLaserPlayer(float pos[3], JktUtils::CV3D &Dir, float dist);	// Envoie d'un laser sur la map
+	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist);	// Envoie d'un laser sur la map
 
 	vector<CLight*>& getLights();
 

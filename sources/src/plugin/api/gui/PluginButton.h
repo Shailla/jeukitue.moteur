@@ -16,7 +16,7 @@
 #include "plugin/api/gui/listener/ButtonPressedListener.h"
 #include "plugin/PluginContext.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginButton {
 	AG_Button* _button;
@@ -32,5 +32,5 @@ public:
 	void expandVert();
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINBUTTON_H_ */

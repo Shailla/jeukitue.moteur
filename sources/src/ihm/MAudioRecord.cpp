@@ -19,7 +19,7 @@ using namespace std;
 
 #include "ihm/MAudio.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 extern CCfg Config;
 
@@ -30,7 +30,7 @@ extern CCfg Config;
 	/************************************************/
 #include "ihm/MAudioDrivers.h"
 
-namespace JktMenu
+namespace jkt
 {
 
 CMenu *MenuRecord;

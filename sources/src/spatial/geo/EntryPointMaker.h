@@ -7,7 +7,7 @@
 
 #include "spatial/geo/EntryPoint.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 class EntryPointMaker

@@ -13,7 +13,7 @@ using namespace std;
 
 #include "spatial/light/Light.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 int CLight::m_nbrLightActivated = 0;	// Nombre de lumières actuellement activées

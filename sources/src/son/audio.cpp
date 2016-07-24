@@ -21,7 +21,7 @@ using namespace std;
 
 #include "audio.h"
 
-using namespace JktSon;
+using namespace jkt;
 
 //char **remarquesDriver;
 CDemonSons *DemonSons;	// Requêtes des son à jouer

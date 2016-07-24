@@ -29,7 +29,7 @@ class CGame;
 
 #include "spatial/objet/Dirigeable.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 Dirigeable::Dirigeable() {

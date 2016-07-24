@@ -18,7 +18,7 @@ using namespace std;
 #include "spatial/moteur/neige/mieux/Flocon.h"
 #include "spatial/moteur/neige/mieux/MoteurNeige.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 #define CSTE_K	1.0f

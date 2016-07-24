@@ -12,7 +12,7 @@
 
 #include "SDL.h"
 
-namespace JktNet
+namespace jkt
 {
 
 class WebService;

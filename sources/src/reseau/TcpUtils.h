@@ -3,7 +3,7 @@
 
 #include "exception/centralisateur/CentralisateurTcpException.h"
 
-namespace JktNet
+namespace jkt
 {
 
 /**************************************************/

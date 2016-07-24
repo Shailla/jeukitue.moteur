@@ -13,7 +13,7 @@ using namespace std;
 
 #include "util/types/StringData.h"
 
-namespace JktUtils {
+namespace jkt {
 
 StringData::StringData(const char* value) {
 	_value = value;

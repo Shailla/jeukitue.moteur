@@ -10,7 +10,7 @@
 
 #include <reseau/web/json/JsonValue.h>
 
-namespace JktNet {
+namespace jkt {
 
 class JsonString : public JsonValue {
 	string _value;
@@ -21,6 +21,6 @@ public:
 	void toJson(std::stringstream& buffer) override;
 };
 
-} /* namespace JktNet */
+} /* namespace jkt */
 
 #endif /* SRC_RESEAU_WEB_JSON_JSONSTRING_H_ */

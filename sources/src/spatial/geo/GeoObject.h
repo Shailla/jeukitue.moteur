@@ -21,7 +21,7 @@ using namespace std;
 
 #include "spatial/geo/Geo.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CC3D;

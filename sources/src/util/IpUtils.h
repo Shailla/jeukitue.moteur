@@ -15,7 +15,7 @@
 
 bool operator < (const IPaddress& adr1, const IPaddress& adr2);
 
-namespace JktUtils {
+namespace jkt {
 
 class IpUtils {
 public:
@@ -26,5 +26,5 @@ public:
 	static std::string translateAddress(IPaddress address);
 };
 
-} /* namespace JktUtils */
+} /* namespace jkt */
 #endif /* IPUTILS_H_ */

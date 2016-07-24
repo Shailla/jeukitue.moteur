@@ -16,7 +16,7 @@ using namespace std;
 #include "Son.h"
 #include "ReqSon.h"
 
-using namespace JktSon;
+using namespace jkt;
 
 CReqSon::CReqSon( CSon *id )
 {

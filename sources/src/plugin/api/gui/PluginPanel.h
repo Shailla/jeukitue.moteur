@@ -13,7 +13,7 @@
 #include <agar/core.h>
 #include <agar/gui.h>
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginBox;
 class PluginButton;
@@ -52,5 +52,5 @@ public:
 	void expandVert();
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINPANEL_H_ */

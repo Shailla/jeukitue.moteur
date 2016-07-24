@@ -4,7 +4,7 @@
 
 #include "tinyxml.h"
 
-namespace JktMoteur
+namespace jkt
 {
 class CLight;
 

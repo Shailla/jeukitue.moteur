@@ -23,7 +23,7 @@ class CPorte;
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
 
-namespace JktMenu
+namespace jkt
 {
 
 void quit_JKTici(void *var)

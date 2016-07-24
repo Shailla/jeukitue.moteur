@@ -7,7 +7,7 @@
 
 #include "spatial/moteur/neige/mieux/Flocon.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 Flocon::Flocon() {

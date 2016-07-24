@@ -2,7 +2,7 @@
 #ifndef __JKT__REQSON_H
 #define __JKT__REQSON_H
 
-namespace JktSon {
+namespace jkt {
 
 class CSon;
 
@@ -52,5 +52,5 @@ public:
 	void SetPosition( float pos[3] );
 };
 
-}	// namespace JktSon
+}	// namespace jkt
 #endif

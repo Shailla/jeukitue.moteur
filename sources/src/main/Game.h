@@ -12,13 +12,13 @@
 #include "data/ServeurDataTree.h"
 #include "data/ClientDataTree.h"
 
-namespace JktNet
+namespace jkt
 {
 	class CClient ;
 	class CServer;
 }
 
-namespace  JktMoteur
+namespace  jkt
 {
 	class CMap;
 }
@@ -39,10 +39,10 @@ public:
 
 private:
 	CPlayer* _erwin;				// Pointeur sur le joueur actif
-	JktMoteur::CMap	*_map;			// Map en cours de jeu
+	jkt::CMap	*_map;			// Map en cours de jeu
 	ModePartie _mode;				// Mode de jeu (parie normale, client ou serveur)
 	bool _gravite;					// Indique si la gravité est active
-	JktUtils::CTableauIndex<CPlayer> *_pTabIndexPlayer;	// Liste indexée des joueurs
+	jkt::CTableauIndex<CPlayer> *_pTabIndexPlayer;	// Liste indexée des joueurs
 
 public:
 	LocalDataTree* _localDataTree;
@@ -65,9 +65,9 @@ public:
 	void Gravite(bool gravite);
 
 	// Gestion de la Map
-	JktMoteur::CMap *getMap();
-	void changeActiveMap(JktMoteur::CMap* map);
-	bool openMap( const string &nomFichierMap ) throw(JktUtils::CErreur);
+	jkt::CMap *getMap();
+	void changeActiveMap(jkt::CMap* map);
+	bool openMap( const string &nomFichierMap ) throw(jkt::CErreur);
 
 	// Gestion du mode
 	void setModeNull();					// Passe en mode "pas de jeu en cours"
@@ -77,15 +77,15 @@ public:
 
 	// Gestion du client
 	void setModeClient();									// Crée la classe Client pour un jeu en mode client
-	JktNet::CClient *getClient();							// Retourne le pointeur sur la classe CClient
-	void setStatutClient( JktNet::StatutClient statut );	// Renseigne le statut du client
-	JktNet::StatutClient getStatutClient();					// Donne le statut du client
+	jkt::CClient *getClient();							// Retourne le pointeur sur la classe CClient
+	void setStatutClient( jkt::StatutClient statut );	// Renseigne le statut du client
+	jkt::StatutClient getStatutClient();					// Donne le statut du client
 
 	// Gestion du serveur
 	void setModeServer();									// Crée la classe Server pour un jeu en mode serveur
-	JktNet::CServer *getServer();							// Retourne le pointeur sur la classe CServer
-	void setStatutServer( JktNet::StatutServer statut );	// Renseigne le statut du serveur
-	JktNet::StatutServer getStatutServer();					// Donne le statut du serveur
+	jkt::CServer *getServer();							// Retourne le pointeur sur la classe CServer
+	void setStatutServer( jkt::StatutServer statut );	// Renseigne le statut du serveur
+	jkt::StatutServer getStatutServer();					// Donne le statut du serveur
 
 	DataTree* getDataTree();
 

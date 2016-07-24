@@ -10,7 +10,7 @@
 
 #include "util/types/Data.h"
 
-namespace JktUtils {
+namespace jkt {
 
 class IntData : public Data {
 	int _value;

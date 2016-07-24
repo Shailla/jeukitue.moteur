@@ -19,7 +19,7 @@ extern "C" {
 #include "plugin/lua/proxy/LunarProxy.h"
 #include "plugin/api/gui/PluginCheckbox.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginCheckboxProxy : public LunarProxy {
 public:
@@ -39,5 +39,5 @@ public:
 	int setValue(lua_State* L);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINCHECKBOXPROXY_H_ */

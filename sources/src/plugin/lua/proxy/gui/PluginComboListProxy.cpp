@@ -15,7 +15,7 @@ using namespace std;
 
 #include "plugin/lua/proxy/gui/PluginComboListProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 const char PluginComboListProxy::className[] = "ComboList";
 
@@ -153,4 +153,4 @@ void PluginComboListProxy::selectionChangedEvent() {
 }
 
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

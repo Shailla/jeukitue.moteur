@@ -12,7 +12,7 @@
 #include <vector>
 #include <string>
 
-namespace JktUtils {
+namespace jkt {
 
 template<class T>
 bool contains(std::vector<T>& list, T element) {
@@ -29,5 +29,5 @@ public:
 
 
 
-} /* namespace JktUtils */
+} /* namespace jkt */
 #endif /* STRINGUTILS_H_ */

@@ -20,7 +20,7 @@ bool operator < (const IPaddress& adr1, const IPaddress& adr2) {
 	}
 }
 
-namespace JktUtils {
+namespace jkt {
 
 IpUtils::IpUtils() {
 }
@@ -46,4 +46,4 @@ string IpUtils::translateAddress(IPaddress address) {
 	return str.str();
 }
 
-} /* namespace JktUtils */
+} /* namespace jkt */

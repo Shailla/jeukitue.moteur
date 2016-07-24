@@ -7,7 +7,7 @@ using namespace std;
 
 #include "main/Fabrique.h"
 
-using namespace JktPlugin;
+using namespace jkt;
 
 Centralisateur* Fabrique::_centralisateur = 0;
 Viewer* Fabrique::_agarView = 0;

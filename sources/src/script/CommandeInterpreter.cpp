@@ -20,7 +20,7 @@ using namespace std;
 #include "script/commandes/EchoCommande.h"
 #include "script/commandes/HelpCommande.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 #include "script/CommandeInterpreter.h"
 

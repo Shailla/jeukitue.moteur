@@ -19,13 +19,13 @@ using namespace std;
 
 #include "ihm/MAudio.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 extern CCfg Config;
 #include "ihm/MAudioDrivers.h"
 extern char **remarquesDriver;
 
-namespace JktMenu
+namespace jkt
 {
 	/************************************************/
 	/*												*/

@@ -16,7 +16,7 @@ using namespace std;
 
 #include "spatial/light/LightOmni.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 CLightOmni::CLightOmni()

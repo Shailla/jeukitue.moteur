@@ -8,7 +8,7 @@
 #ifndef SELECTIONCHANGEDLISTENER_H_
 #define SELECTIONCHANGEDLISTENER_H_
 
-namespace JktPlugin {
+namespace jkt {
 
 class SelectionChangedListener {
 public:
@@ -17,5 +17,5 @@ public:
 	virtual void selectionChangedEvent() = 0;
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* SELECTIONCHANGEDLISTENER_H_ */

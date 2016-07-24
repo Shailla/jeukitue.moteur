@@ -14,7 +14,7 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-namespace JktPlugin {
+namespace jkt {
 
 class LunarProxy {
 public:
@@ -24,6 +24,6 @@ public:
 	virtual int push(lua_State* L) = 0;
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 
 #endif /* LUNARPROXY_H_ */

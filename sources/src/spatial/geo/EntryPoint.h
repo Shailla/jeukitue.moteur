@@ -13,10 +13,10 @@
 #include "util/V3D.h"
 #include "spatial/MapLogger.h"
 
-namespace JktMoteur {
+namespace jkt {
 
 class EntryPoint {
-	JktUtils::CV3D _entryPosition;	// Position du point d'entrée
+	jkt::CV3D _entryPosition;	// Position du point d'entrée
 public:
 	EntryPoint();
 	EntryPoint(const float entryPosition[3]);
@@ -33,8 +33,8 @@ public:
 	void Scale(float scaleX, float scaleY, float scaleZ);	// Homothétie pondérée selon X, Y et Z de l'objet
 	void translate(float x, float y, float z);				// Translation pondérée selon X, Y et Z de l'objet
 
-	JktUtils::CV3D getEntryPosition();
+	jkt::CV3D getEntryPosition();
 };
 
-} /* namespace JktLua */
+} /* namespace jkt */
 #endif /* ENTRYPOINT_H_ */

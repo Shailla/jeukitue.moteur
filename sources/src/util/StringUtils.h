@@ -11,7 +11,7 @@
 #include <vector>
 #include <string>
 
-namespace JktUtils {
+namespace jkt {
 
 class StringUtils {
 	StringUtils();
@@ -52,5 +52,5 @@ public:
 	static int isSlash(int c);
 };
 
-} /* namespace JktUtils */
+} /* namespace jkt */
 #endif /* STRINGUTILS_H_ */

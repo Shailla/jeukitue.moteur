@@ -70,7 +70,7 @@ void MapService::loadPlayerMapDirectoryContent(vector<MapInformationDto>& conten
 		else {
 			string filename = itr->path().string();
 
-			if( JktUtils::StringUtils::isFinishingWith(filename, MAP_EXTENSION) ) {
+			if( jkt::StringUtils::isFinishingWith(filename, MAP_EXTENSION) ) {
 				MapInformationDto dto;
 
 				string mapFileFullName = itr->path().filename().string();
@@ -101,7 +101,7 @@ void MapService::loadMapDirectoryContent(vector<MapInformationDto>& content) {
 		else {
 			string filename = itr->path().string();
 
-			if( JktUtils::StringUtils::isFinishingWith(filename, MAP_EXTENSION) ) {
+			if( jkt::StringUtils::isFinishingWith(filename, MAP_EXTENSION) ) {
 				MapInformationDto dto;
 
 				string mapFileFullName = itr->path().filename().string();

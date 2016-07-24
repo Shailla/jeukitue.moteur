@@ -15,7 +15,7 @@
 
 using namespace std;
 
-namespace JktTest {
+namespace jkt {
 
 class TestSuite {
 	vector<Test*> _tests;
@@ -29,5 +29,5 @@ public:
 	void launchTests();
 };
 
-} /* namespace JktTest */
+} /* namespace jkt */
 #endif /* TESTSUITE_H_ */

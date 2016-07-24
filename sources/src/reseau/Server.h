@@ -15,7 +15,7 @@ using namespace std;
 
 class CPlayer;
 
-namespace JktNet
+namespace jkt
 {
 
 class CServer {									// Contient les données courantes du serveur (nombre de joueur, partie en cours,...)

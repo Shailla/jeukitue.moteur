@@ -14,7 +14,7 @@
 class CGame;
 class CPlayer;
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CMap;

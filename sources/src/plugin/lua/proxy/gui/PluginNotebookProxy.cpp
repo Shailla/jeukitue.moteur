@@ -16,7 +16,7 @@ using namespace std;
 
 #include "plugin/lua/proxy/gui/PluginNotebookProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 const char PluginNotebookProxy::className[] = "Notebook";
 
@@ -60,4 +60,4 @@ int PluginNotebookProxy::addTab(lua_State* L) {
 	return 1;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

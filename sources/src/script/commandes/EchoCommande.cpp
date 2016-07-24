@@ -15,7 +15,7 @@ EchoCommande::EchoCommande(CommandeInterpreter* interpreter) : Commande(interpre
 }
 
 void EchoCommande::executeIt(std::string ligne, bool userOutput) {
-	JktUtils::StringUtils::trim(ligne);
+	jkt::StringUtils::trim(ligne);
 	printStdLn(ligne, userOutput);
 }
 

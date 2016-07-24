@@ -4,7 +4,7 @@
 
 #include "SDL.h"
 
-namespace JktMenu
+namespace jkt
 {
 
 class CDlg {

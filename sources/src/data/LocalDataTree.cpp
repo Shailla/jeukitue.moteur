@@ -26,7 +26,7 @@ using namespace std;
 
 #include "data/LocalDataTree.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 LocalDataTree::LocalDataTree() : DataTree(TREE_LOCAL) {
 }

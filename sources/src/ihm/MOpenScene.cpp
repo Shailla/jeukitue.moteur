@@ -15,7 +15,7 @@ using namespace std;
 
 #include "MMenuPrinc.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 class CMaterial;
 class CLight;
@@ -25,7 +25,7 @@ class CGeoObject;
 class CPorte;
 
 
-namespace JktMenu
+namespace jkt
 {
 	/************************/
 	/*						*/

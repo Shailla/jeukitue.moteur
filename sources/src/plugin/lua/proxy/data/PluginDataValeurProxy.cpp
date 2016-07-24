@@ -24,7 +24,7 @@ using namespace std;
 
 #include "plugin/lua/proxy/data/PluginDataValeurProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 const char PluginDataValeurProxy::className[] = "DataValeur";
 
@@ -109,4 +109,4 @@ int PluginDataValeurProxy::getBrancheId(lua_State *L) {
 	return 1;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

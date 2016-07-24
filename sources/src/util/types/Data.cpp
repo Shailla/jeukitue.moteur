@@ -12,7 +12,7 @@
 #include "util/StreamUtils.h"
 #include "util/exception/UnserializeException.h"
 
-namespace JktUtils {
+namespace jkt {
 
 Data::Data() {
 }

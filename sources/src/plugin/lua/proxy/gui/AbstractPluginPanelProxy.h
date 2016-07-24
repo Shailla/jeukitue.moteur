@@ -8,7 +8,7 @@
 #ifndef ABSTRACTPLUGINPANELPROXY_H_
 #define ABSTRACTPLUGINPANELPROXY_H_
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginPanel;
 class PluginContext;
@@ -44,5 +44,5 @@ public:
 	int expandVert(lua_State* L);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* ABSTRACTPLUGINPANELPROXY_H_ */

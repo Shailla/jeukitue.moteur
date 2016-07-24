@@ -20,7 +20,7 @@ using namespace std;
 #include "menu/ConfigurationCommandesView.h"
 
 extern CCfg Config;
-extern JktMenu::CFocus* pFocus;
+extern jkt::CFocus* pFocus;
 
 ConfigurationCommandesView* ConfigurationCommandesView::THIZ = 0;
 

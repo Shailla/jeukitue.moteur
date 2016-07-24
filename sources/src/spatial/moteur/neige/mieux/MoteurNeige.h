@@ -12,7 +12,7 @@ using namespace std;
 
 class CGame;
 
-namespace JktMoteur
+namespace jkt
 {
 
 class MoteurNeige : public CMoteurParticules {
@@ -22,9 +22,9 @@ class MoteurNeige : public CMoteurParticules {
 	queue<Flocon*> _floconsOnGround;	// Liste des flocons actuellement au sol
 	unsigned int _texName;				// Texture du flocon
 
-	JktUtils::CV3D _centre;
-	JktUtils::CV3D _taille;
-	JktUtils::CV3D _vitesse;
+	jkt::CV3D _centre;
+	jkt::CV3D _taille;
+	jkt::CV3D _vitesse;
 
 	void GenereTextureParticule();
 

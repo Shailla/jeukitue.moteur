@@ -19,7 +19,7 @@
 
 #include "test/Test.h"
 
-namespace JktTest {
+namespace jkt {
 
 class DataTreeTest : public Test {
 	Interlocutor2 interlocutorClient0;
@@ -147,6 +147,6 @@ private:
 	void privateTreeTest();
 };
 
-} /* namespace JktTest */
+} /* namespace jkt */
 
 #endif /* DATATREETEST_H_ */

@@ -5,7 +5,7 @@
 
 #include "util/Erreur.h"
 
-namespace JktMoteur
+namespace jkt
 {
 class Icone;
 class Texture;
@@ -16,7 +16,7 @@ class Texture;
  * nomFichier : Chemin complet du fichier de l'image.
  * alpha : Valeur de la transparence comprise entre 0.0 et 1.0. L'alpha est désactivé si alpha < 0.
  */
-Uint8* litFichierImage(const std::string &nomFichier, float alpha) throw(JktUtils::CErreur);
+Uint8* litFichierImage(const std::string &nomFichier, float alpha) throw(jkt::CErreur);
 
 /**
  * Crée une texture affichable dans OpenGL à partir des données d'une image.
@@ -36,7 +36,7 @@ Texture* litFichierTexture(const std::string &nomFichier, float alpha, Uint8* pi
  */
 Icone* litFichierIcone(const std::string &nomFichier, float alpha, Uint8* pixels);
 
-Uint32 getPixel(SDL_Surface *surface, int x, int y) throw(JktUtils::CErreur);
+Uint32 getPixel(SDL_Surface *surface, int x, int y) throw(jkt::CErreur);
 
 }	// JktMoteur
 

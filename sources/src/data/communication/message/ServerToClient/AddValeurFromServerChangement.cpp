@@ -20,7 +20,7 @@ AddValeurFromServerChangement::AddValeurFromServerChangement(istringstream& in) 
 	unserialize(in);
 }
 
-AddValeurFromServerChangement::AddValeurFromServerChangement(const vector<int>& parentBrancheId, int valeurId, UPDATE_MODE updateMode, int revision, const string& valeurName, JktUtils::AnyData valeur) : Changement("AddValFromSrvChgt", PRIORITY_AddValeurFromServerChangement, valeurId) {
+AddValeurFromServerChangement::AddValeurFromServerChangement(const vector<int>& parentBrancheId, int valeurId, UPDATE_MODE updateMode, int revision, const string& valeurName, jkt::AnyData valeur) : Changement("AddValFromSrvChgt", PRIORITY_AddValeurFromServerChangement, valeurId) {
 	_parentBrancheId = parentBrancheId;
 	_valeurId = valeurId;
 	_updateMode = updateMode;
@@ -100,7 +100,7 @@ int AddValeurFromServerChangement::getRevision() const {
 	return _revision;
 }
 
-const JktUtils::AnyData AddValeurFromServerChangement::getValeur() const {
+const jkt::AnyData AddValeurFromServerChangement::getValeur() const {
 	return _valeur;
 }
 

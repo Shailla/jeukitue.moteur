@@ -7,7 +7,7 @@
 #include "menu/View.h"
 
 class Viewer;
-namespace JktMoteur {
+namespace jkt {
 	class CMaterial;
 	class CLight;
 }
@@ -19,8 +19,8 @@ class MapTreeView : public View
 
     AG_Button* _buttonRetour;
 
-    void showOneMaterial(AG_TreetblRow* parentRow, const JktMoteur::CMaterial* mat, const int depth, int& rowId);
-    void showOneLight(AG_TreetblRow* parentRow, const JktMoteur::CLight* mat, const int depth, int& rowId);
+    void showOneMaterial(AG_TreetblRow* parentRow, const jkt::CMaterial* mat, const int depth, int& rowId);
+    void showOneLight(AG_TreetblRow* parentRow, const jkt::CLight* mat, const int depth, int& rowId);
     AG_TreetblRow* addFloat4TabToTree(AG_Treetbl* tree, AG_TreetblRow* parentRow, const int id, const int depth, const char* name, const float value[4]);
 
 public:

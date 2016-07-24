@@ -35,10 +35,10 @@ public:
 		std::map<int, Valeur*> _valeursById;
 		std::map<int, Valeur*> _valeursByTmpId;
 
-		JktUtils::CGenRef _brancheTmpRefGenerator;
-		JktUtils::CGenRef _brancheRefGenerator;
-		JktUtils::CGenRef _valeurRefGenerator;
-		JktUtils::CGenRef _valeurTmpRefGenerator;
+		jkt::CGenRef _brancheTmpRefGenerator;
+		jkt::CGenRef _brancheRefGenerator;
+		jkt::CGenRef _valeurRefGenerator;
+		jkt::CGenRef _valeurTmpRefGenerator;
 	};
 
 	std::map<DistantTreeProxy*, DistantPrivateBranche> _distants;
@@ -82,13 +82,13 @@ public:
 	Branche* addSubBranche(DistantTreeProxy* distant, int brancheId, DONNEE_TYPE type, const std::string& brancheName, int brancheRevision) override;
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant temporaire */
-	Valeur* createValeurForClient(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::string& valeurName, int revision, const JktUtils::AnyData& valeur);
+	Valeur* createValeurForClient(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::string& valeurName, int revision, const jkt::AnyData& valeur);
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant */
-	Valeur* createValeurForServeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::string& valeurName, int revision, const JktUtils::AnyData& valeur) override;
+	Valeur* createValeurForServeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::string& valeurName, int revision, const jkt::AnyData& valeur) override;
 
 	/** Ajoute une valeur entière qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
-	Valeur* addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const std::string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur) override;
+	Valeur* addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const std::string& valeurName, int valeurRevision, const jkt::AnyData& valeur) override;
 
 	/**
 	 * Affiche le sous-arbre et ses données et caractéristiques partagées avec les autres arbres.

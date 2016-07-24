@@ -33,7 +33,7 @@ using namespace std;
 
 #include "data/ServeurDataTree.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 ServeurDataTree::ServeurDataTree() : DataTree(TREE_SERVER) {
 	// Branche racine
@@ -312,7 +312,7 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 						delete *itCh;
 					}
 
-					interlocutor->pushDataToSend(new JktUtils::Bytes(out.str()));
+					interlocutor->pushDataToSend(new jkt::Bytes(out.str()));
 
 					changements.clear();
 				}
@@ -421,7 +421,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 		for(it = _clients.begin() ; it != _clients.end() ; it++) {
 			DistantTreeProxy* distant = *it;
 			Interlocutor2* interlocutor = distant->getInterlocutor();
-			JktUtils::Bytes* data;
+			jkt::Bytes* data;
 
 			while((data = interlocutor->popDataReceived())) {
 				vector<Changement*> changements;
@@ -547,7 +547,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 						delete *itCh;
 					}
 
-					interlocutor->pushDataToSend(new JktUtils::Bytes(out.str()));
+					interlocutor->pushDataToSend(new jkt::Bytes(out.str()));
 				}
 			}
 		}

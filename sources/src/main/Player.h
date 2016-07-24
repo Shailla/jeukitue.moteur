@@ -14,20 +14,20 @@ class CRequete;
 class CProjectil;
 class CClavier;
 
-namespace JktMoteur
+namespace jkt
 {
 	class CMap;
 	class Icone;
 }
 
-namespace JktSon
+namespace jkt
 {
 	class CSon;
 	class CReqSon;
 }
 
 class CPlayer {
-	static JktMoteur::Icone* _weaponsChoice;	// Textures de l'icone des armes
+	static jkt::Icone* _weaponsChoice;	// Textures de l'icone des armes
 
 	CClavier *_pClavier;	//pointeur sur la class des requêtes clavier
 
@@ -37,10 +37,10 @@ class CPlayer {
 	int _armeActif;							// Numéro de l'arme actuellement active
 	int _nbrArmes;							// Nombre d'armes
 
-	JktUtils::Tableau<CProjectil> TabProjectil;		// Liste des projectils de ce joueur
+	jkt::Tableau<CProjectil> TabProjectil;		// Liste des projectils de ce joueur
 
-	JktSon::CSon* ID_Cri;
-	JktSon::CReqSon* ID_ReqCri;	// Requete son de cri du personnage
+	jkt::CSon* ID_Cri;
+	jkt::CReqSon* ID_ReqCri;	// Requete son de cri du personnage
 
 	// POSITION, VITESSE ET ORIENTATION DU JOUEUR
 	float _position[3];			// Vecteur position du joueur
@@ -53,11 +53,11 @@ class CPlayer {
 	float _rayonSolidbox;				// Rayon de la sphère englobant le joueur pour la gestion des contacts
 	float _pente;				// Sert à calculer si le joueur glisse sur une pente de la map ou non
 	string _nom;				// Nom du perso
-	JktMoteur::CMap *_pSkin;	// Gueule du joueur
+	jkt::CMap *_pSkin;	// Gueule du joueur
 
 public :
 	// Réseau
-	JktNet::CSPA* _spa;		// spa associé au proxy-joueur
+	jkt::CSPA* _spa;		// spa associé au proxy-joueur
 
 	// Armes
 	void Tir();
@@ -73,7 +73,7 @@ public :
 		// Fonctions spatiales (vitesse, position, ...) et accesseurs
 	void setPosition(float x, float y, float z);		// change la position du joueur
 	void setPosition(const float position[3]);		// change la position du joueur
-	void setPosition(const JktUtils::CV3D& pos );				// change la position du joueur
+	void setPosition(const jkt::CV3D& pos );				// change la position du joueur
 	void setVitesse(const float vit[3]);				// Change la vitesse du joueur
 	void getPosition(float pos[3]) const;				// renvoie le pointeur sur la position du joueur
 	void choiceOneEntryPoint();							// Choisi un point d'entrée sur la Map
@@ -94,7 +94,7 @@ public :
 	void Pente( float pente );
 	void nom( const string &nom );
 	string nom() const;
-	void Skin( JktMoteur::CMap *skin );
+	void Skin( jkt::CMap *skin );
 	void setCri( const char *nomFichier );					// Indique le son du cri du joueur
 
 private:

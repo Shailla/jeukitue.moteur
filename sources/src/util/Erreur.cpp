@@ -6,7 +6,7 @@ using namespace std;
 #include "Erreur.h"
 
 
-namespace JktUtils
+namespace jkt
 {
 
 CErreur::CErreur(const stringstream &message) : JktException("CErreur", message) {

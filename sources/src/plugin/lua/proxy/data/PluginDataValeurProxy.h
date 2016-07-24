@@ -16,7 +16,7 @@ extern "C" {
 
 class Valeur;
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginDataValeurProxy {
 	Valeur* _valeur;
@@ -34,5 +34,5 @@ public:
 	int getValeurFullId(lua_State *L);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINDATAVALEURPROXY_H_ */

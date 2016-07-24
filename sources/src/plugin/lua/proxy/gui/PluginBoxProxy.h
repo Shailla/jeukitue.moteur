@@ -20,7 +20,7 @@ extern "C" {
 #include "plugin/api/gui/PluginBox.h"
 #include "plugin/lua/proxy/gui/AbstractPluginPanelProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginBoxProxy : public LunarProxy, public AbstractPluginPanelProxy {
 public:
@@ -38,5 +38,5 @@ public:
 	int push(lua_State* L);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINBOXPROXY_H_ */

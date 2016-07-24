@@ -17,14 +17,14 @@ using namespace std;
 
 #include "ihm/MAudioDrivers.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 extern CCfg Config;
 
 #include "ihm/MAudio.h"
 #include "son/audio.h"
 
-namespace JktMenu
+namespace jkt
 {
 void lanceMenuConfigAudioDriversOutput(void *arg);
 void lanceMenuConfigAudioDriversDriver(void *arg);

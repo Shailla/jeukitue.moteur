@@ -14,7 +14,7 @@
 #include "reseau/web/json/JsonPair.h"
 #include "reseau/web/json/JsonList.h"
 
-namespace JktNet {
+namespace jkt {
 
 class JsonString;
 class JsonList;
@@ -32,6 +32,6 @@ public:
 	void toJson(std::stringstream& buffer) override;
 };
 
-} /* namespace JktNet */
+} /* namespace jkt */
 
 #endif /* SRC_RESEAU_WEB_JSON_JSONSTRING_H_ */

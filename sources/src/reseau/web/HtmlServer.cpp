@@ -24,7 +24,7 @@ using namespace std;
 
 #include "reseau/web/HtmlServer.h"
 
-namespace JktNet
+namespace jkt
 {
 
 const char* HtmlServer::WEB_CSS_DIR =		"./web/css";
@@ -236,9 +236,9 @@ void HtmlServer::start() {
 		string request = buffer;
 		LOGDEBUG(("HTTP requête reçue : '%s'", request.c_str()));
 
-		method = JktUtils::StringUtils::findAndEraseFirstWord(request);
-		endpoint = JktUtils::StringUtils::findAndEraseFirstWord(request);
-		protocol = JktUtils::StringUtils::findAndEraseFirstWord(request);
+		method = jkt::StringUtils::findAndEraseFirstWord(request);
+		endpoint = jkt::StringUtils::findAndEraseFirstWord(request);
+		protocol = jkt::StringUtils::findAndEraseFirstWord(request);
 		LOGDEBUG((" - Méthode : '%s'", method.c_str()));
 		LOGDEBUG((" - Ressource demandée : '%s'", endpoint.c_str()));
 		LOGDEBUG((" - Protocol : '%s'", protocol.c_str()));

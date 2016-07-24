@@ -17,10 +17,10 @@
 #include "test/reseau/UdpCommunicationTest.h"
 
 using namespace std;
-using namespace JktNet;
-using namespace JktUtils;
+using namespace jkt;
+using namespace jkt;
 
-namespace JktTest {
+namespace jkt {
 
 UdpCommunicationTest::UdpCommunicationTest() : Test("UdpCommunicationTest") {
 }
@@ -61,7 +61,7 @@ void UdpCommunicationTest::test() {
 
 	log("Monte un serveur", __LINE__);
 
-	JktNet::NetworkManager serverNM;
+	jkt::NetworkManager serverNM;
 	NotConnectedInterlocutor2* serverInterlocutor = serverNM.ouvreServer(serverPort, serverTreePort);
 
 	ASSERT_NOT_NULL(serverInterlocutor, "");
@@ -73,7 +73,7 @@ void UdpCommunicationTest::test() {
 	log("Monte un client", __LINE__);
 
 	// Monte un client vers ce serveur
-	JktNet::NetworkManager* clientNM = new NetworkManager();
+	jkt::NetworkManager* clientNM = new NetworkManager();
 	Interlocutor2* clientInterlocutor = clientNM->ouvreClient("127.0.0.1", serverPort, serverTreePort);
 
 	ASSERT_NOT_NULL(clientInterlocutor, "");

@@ -17,7 +17,7 @@ using namespace std;
 
 #include "plugin/lua/proxy/gui/PluginLabelProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 const char PluginLabelProxy::className[] = "Label";
 
@@ -82,4 +82,4 @@ int PluginLabelProxy::expandVert(lua_State* L) {
 	return 0;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

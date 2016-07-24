@@ -40,7 +40,7 @@ const string& Interlocutor2::getName() const {
 	return _name;
 }
 
-void Interlocutor2::pushTechnicalMessageReceived(JktUtils::Bytes* bytes) {
+void Interlocutor2::pushTechnicalMessageReceived(jkt::Bytes* bytes) {
 	SDL_LockMutex(_mutexDataReceived);
 
 	if(bytes) {
@@ -51,7 +51,7 @@ void Interlocutor2::pushTechnicalMessageReceived(JktUtils::Bytes* bytes) {
 	SDL_CondSignal(_condIntelligence);
 }
 
-void Interlocutor2::pushDataReceived(JktUtils::Bytes* bytes) {
+void Interlocutor2::pushDataReceived(jkt::Bytes* bytes) {
 	SDL_LockMutex(_mutexDataReceived);
 
 	if(bytes) {
@@ -61,8 +61,8 @@ void Interlocutor2::pushDataReceived(JktUtils::Bytes* bytes) {
 	SDL_UnlockMutex(_mutexDataReceived);
 }
 
-JktUtils::Bytes* Interlocutor2::popTechnicalMessageReceived(void) {
-	JktUtils::Bytes* result;
+jkt::Bytes* Interlocutor2::popTechnicalMessageReceived(void) {
+	jkt::Bytes* result;
 
 	SDL_LockMutex(_mutexDataReceived);
 
@@ -79,8 +79,8 @@ JktUtils::Bytes* Interlocutor2::popTechnicalMessageReceived(void) {
 	return result;
 }
 
-JktUtils::Bytes* Interlocutor2::popDataReceived(void) {
-	JktUtils::Bytes* result;
+jkt::Bytes* Interlocutor2::popDataReceived(void) {
+	jkt::Bytes* result;
 
 	SDL_LockMutex(_mutexDataReceived);
 
@@ -103,7 +103,7 @@ void Interlocutor2::waitDataToSend(int timeout) {
 	SDL_UnlockMutex(_mutexDataToSend);
 }
 
-void Interlocutor2::pushTechnicalMessageToSend(JktUtils::Bytes* bytes) {
+void Interlocutor2::pushTechnicalMessageToSend(jkt::Bytes* bytes) {
 	SDL_LockMutex(_mutexDataToSend);
 
 	if(bytes) {
@@ -114,7 +114,7 @@ void Interlocutor2::pushTechnicalMessageToSend(JktUtils::Bytes* bytes) {
 	SDL_CondSignal(_condDataToSend);	// If we are waiting data to send, stop waiting
 }
 
-void Interlocutor2::pushDataToSend(JktUtils::Bytes* bytes) {
+void Interlocutor2::pushDataToSend(jkt::Bytes* bytes) {
 	SDL_LockMutex(_mutexDataToSend);
 
 	if(bytes) {
@@ -125,8 +125,8 @@ void Interlocutor2::pushDataToSend(JktUtils::Bytes* bytes) {
 	SDL_CondSignal(_condDataToSend);	// If we are waiting data to send, stop waiting
 }
 
-JktUtils::Bytes* Interlocutor2::popTechnicalMessageToSend(void) {
-	JktUtils::Bytes* result;
+jkt::Bytes* Interlocutor2::popTechnicalMessageToSend(void) {
+	jkt::Bytes* result;
 
 	SDL_LockMutex(_mutexDataToSend);
 
@@ -143,8 +143,8 @@ JktUtils::Bytes* Interlocutor2::popTechnicalMessageToSend(void) {
 	return result;
 }
 
-JktUtils::Bytes* Interlocutor2::popDataToSend(void) {
-	JktUtils::Bytes* result;
+jkt::Bytes* Interlocutor2::popDataToSend(void) {
+	jkt::Bytes* result;
 
 	SDL_LockMutex(_mutexDataToSend);
 

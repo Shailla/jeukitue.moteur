@@ -11,7 +11,7 @@
 
 using namespace std;
 
-namespace JktPlugin {
+namespace jkt {
 
 PluginButton::PluginButton(AG_Widget* parent, const string& buttonText, ButtonPressedListener* buttonPressedListener) {
 	_button = AG_ButtonNewFn(parent, 0, buttonText.c_str(), &PluginGuiController::catchButtonEvent, "%p", this);
@@ -37,4 +37,4 @@ void PluginButton::expandVert() {
 	AG_ExpandVert(_button);
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

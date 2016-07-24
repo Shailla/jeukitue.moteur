@@ -16,17 +16,17 @@
 class DataAddress {
 
 	IPaddress _address;
-	JktUtils::Bytes* _bytes;
+	jkt::Bytes* _bytes;
 
 public:
 	DataAddress(char* data, int size);
-	DataAddress(JktUtils::Bytes* bytes);
+	DataAddress(jkt::Bytes* bytes);
 	DataAddress(const IPaddress& address, char* data, int size);
-	DataAddress(const IPaddress& address, JktUtils::Bytes* bytes);
+	DataAddress(const IPaddress& address, jkt::Bytes* bytes);
 	virtual ~DataAddress();
 
 	const IPaddress& getAddress() const;
-	JktUtils::Bytes* getBytes();
+	jkt::Bytes* getBytes();
 };
 
 #endif /* DATAADDRESS_H_ */

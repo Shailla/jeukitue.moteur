@@ -80,7 +80,7 @@ public:
 	static const char* DIMENSION;
 
 	// Boîte à outils XML
-	static void throwCorruptedMapFileException(const char* expected, const char* value) throw(JktUtils::CErreur);
+	static void throwCorruptedMapFileException(const char* expected, const char* value) throw(jkt::CErreur);
 	static void SaveElement(TiXmlElement* element, const char* name, float valeur);
 	static void SaveElement(TiXmlElement* element, const char* name, int valeur);
 	static void SaveAttribut(TiXmlElement* element, const char* name, float valeur);

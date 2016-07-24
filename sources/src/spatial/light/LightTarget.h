@@ -5,7 +5,7 @@
 
 #include "spatial/light/Light.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CLightTarget : public CLight

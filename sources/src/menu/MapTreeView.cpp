@@ -18,7 +18,7 @@
 
 #include "menu/MapTreeView.h"
 
-using namespace JktMoteur;
+using namespace jkt;
 
 extern CGame Game;
 

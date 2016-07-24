@@ -15,7 +15,7 @@ using namespace std;
 
 #include "util/CollectionsUtils.h"
 
-namespace JktUtils {
+namespace jkt {
 
 CollectionsUtils::CollectionsUtils() {
 }
@@ -46,4 +46,4 @@ string CollectionsUtils::toString(const vector<int>& data) {
 }
 
 
-} /* namespace JktUtils */
+} /* namespace jkt */

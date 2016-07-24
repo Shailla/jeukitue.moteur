@@ -10,7 +10,7 @@
 
 #include "util/types/Data.h"
 
-namespace JktUtils {
+namespace jkt {
 
 class FloatData : public Data {
 	float _value;

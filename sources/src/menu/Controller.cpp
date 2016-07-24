@@ -57,20 +57,20 @@ using namespace boost::filesystem;
 
 #include "menu/Controller.h"
 
-using namespace JktMenu;
-using namespace JktMoteur;
-using namespace JktPlugin;
-using namespace JktNet;
+using namespace jkt;
+using namespace jkt;
+using namespace jkt;
+using namespace jkt;
 
 extern CGame Game;
 extern CCfg Config;
 extern NetworkManager* _networkManager;
 
 Viewer* Controller::_agarView;
-JktPlugin::PluginEngine* Controller::_pluginEngine;
+jkt::PluginEngine* Controller::_pluginEngine;
 SDL_mutex* Controller::_controllerMutex;
 
-Controller::Controller(Viewer* agarView, JktPlugin::PluginEngine* pluginEngine) {
+Controller::Controller(Viewer* agarView, jkt::PluginEngine* pluginEngine) {
 	_agarView = agarView;
 	_pluginEngine = pluginEngine;
 
@@ -517,7 +517,7 @@ void Controller::executeAction(AG_Event* event) {
 			ConsoleView* view = (ConsoleView*)_agarView->getView(Viewer::CONSOLE_VIEW);
 			string commande = view->getCommandAndClearCommandLine();
 
-			if(!JktUtils::StringUtils::isBlank(commande)) {
+			if(!jkt::StringUtils::isBlank(commande)) {
 				Fabrique::getCommandeInterpreter()->interpreteCommande(commande, true);
 			}
 

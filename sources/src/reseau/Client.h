@@ -11,7 +11,7 @@
 
 class CPlayer;
 
-namespace JktNet
+namespace jkt
 {
 
 class CClient {

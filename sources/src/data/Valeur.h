@@ -34,8 +34,8 @@ public:
 	int getValeurTmpId() const;
 	int getValeurId() const;
 	void setValeurId(int valeurId);
-	virtual void setValeur(int revision, const JktUtils::AnyData& data) = 0;
-	virtual JktUtils::AnyData getValeurData() const = 0;
+	virtual void setValeur(int revision, const jkt::AnyData& data) = 0;
+	virtual jkt::AnyData getValeurData() const = 0;
 	virtual std::string toString() const = 0;
 	static bool highestId(const Valeur* left, const Valeur* right);
 };

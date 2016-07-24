@@ -17,12 +17,12 @@ using namespace std;
 
 #include "ihm/MAudio.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 #include "ihm/MConfiguration.h"
 
 
-namespace JktMenu
+namespace jkt
 {
 
 void lanceMenuConfigAudioDrivers(void*);

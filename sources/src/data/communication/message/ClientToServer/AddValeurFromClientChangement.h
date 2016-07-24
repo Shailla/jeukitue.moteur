@@ -21,13 +21,13 @@ class AddValeurFromClientChangement: public Changement {
 	int _valeurTmpId;
 	string _valeurName;
 	int _revision;
-	JktUtils::AnyData _valeur;
+	jkt::AnyData _valeur;
 
 	void unserialize(std::istringstream& in);
 
 public:
 	AddValeurFromClientChangement(std::istringstream& in);
-	AddValeurFromClientChangement(const std::vector<int>& brancheId, int valeurTmpId, int revision, const string& valeurName, JktUtils::AnyData valeur);
+	AddValeurFromClientChangement(const std::vector<int>& brancheId, int valeurTmpId, int revision, const string& valeurName, jkt::AnyData valeur);
 	~AddValeurFromClientChangement();
 
 	void update(MarqueurDistant* marqueur);
@@ -44,7 +44,7 @@ public:
 	UPDATE_MODE getUpdateMode() const;
 	const string& getValeurName() const;
 	int getRevision() const;
-	JktUtils::AnyData getValeur() const;
+	jkt::AnyData getValeur() const;
 	int getRootDistance() const;
 };
 

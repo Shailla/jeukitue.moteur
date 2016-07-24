@@ -37,9 +37,9 @@ extern int JKT_RenderMode;
 
 #include "SimpleGeo.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktMoteur
+namespace jkt
 {
 class CGeoObject;
 class CPorte;

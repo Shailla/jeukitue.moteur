@@ -161,13 +161,13 @@ void ConsoleView::println(ConsoleOutputType type, const string& texte) {
 
 void ConsoleView::setMapOuverteName(const std::string& mapName) {
 	AG_MutexLock(&_agMutex);
-	JktUtils::StringUtils::toChars(mapName, _mapOuverteName, sizeof(_mapOuverteName));
+	jkt::StringUtils::toChars(mapName, _mapOuverteName, sizeof(_mapOuverteName));
 	AG_MutexUnlock(&_agMutex);
 }
 
 void ConsoleView::setActivePlayerName(const std::string& activePlayerName) {
 	AG_MutexLock(&_agMutex);
-	JktUtils::StringUtils::toChars(activePlayerName, _activePlayerName, sizeof(_activePlayerName));
+	jkt::StringUtils::toChars(activePlayerName, _activePlayerName, sizeof(_activePlayerName));
 	AG_MutexUnlock(&_agMutex);
 }
 

@@ -14,7 +14,7 @@ using namespace std;
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 class CMaterial;
 class CLight;
@@ -44,7 +44,7 @@ class CPorte;
 extern CFocus *pFocus;
 extern bool Aide;
 
-namespace JktMenu
+namespace jkt
 {
 	/****************/
 	/*				*/

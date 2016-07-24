@@ -35,7 +35,7 @@ using namespace std;
 
 #include "data/ClientDataTree.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 ClientDataTree::ClientDataTree(const std::string& clientName, Interlocutor2* serverInterlocutor) : DataTree(TREE_CLIENT) {
 	_clientName = clientName;
@@ -290,7 +290,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 		Interlocutor2* interlocutor = _serverTreeProxy->getInterlocutor();
 
 		// Récupération des données du serveur
-		JktUtils::Bytes* fromServer;
+		jkt::Bytes* fromServer;
 
 		while((fromServer = interlocutor->popDataReceived())) {
 			vector<Changement*> changements;

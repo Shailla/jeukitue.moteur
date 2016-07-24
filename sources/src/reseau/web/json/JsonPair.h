@@ -13,7 +13,7 @@
 
 #include "reseau/web/json/JsonValue.h"
 
-namespace JktNet {
+namespace jkt {
 
 class JsonString;
 class JsonObject;
@@ -30,6 +30,6 @@ public:
 	std::string toJson();
 };
 
-} /* namespace JktNet */
+} /* namespace jkt */
 
 #endif /* SRC_RESEAU_WEB_JSON_JSONPAIR_H_ */

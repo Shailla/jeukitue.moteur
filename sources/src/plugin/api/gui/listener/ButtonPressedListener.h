@@ -8,7 +8,7 @@
 #ifndef BUTTONPRESSEDLISTENER_H_
 #define BUTTONPRESSEDLISTENER_H_
 
-namespace JktPlugin {
+namespace jkt {
 
 class ButtonPressedListener {
 public:
@@ -17,5 +17,5 @@ public:
 	virtual void buttonPressedEvent() = 0;
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* BUTTONPRESSEDLISTENER_H_ */

@@ -20,7 +20,7 @@ using namespace std;
 
 #include "ReqSon.h"
 #include "DemonSons.h"
-using namespace JktSon;
+using namespace jkt;
 CSon::CSon( CDemonSons* p,const char *name )
 {
 LOGDEBUG(("CSon::CSon(nom=%s,...)%T", name, this ));

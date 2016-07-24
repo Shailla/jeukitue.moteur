@@ -37,8 +37,8 @@ using namespace std;
 
 #include "ihm/MOpenASE.h"
 
-using namespace JktMenu;
-using namespace JktMoteur;
+using namespace jkt;
+using namespace jkt;
 
 bool deprecatedOpenMAP( const void *arg );
 
@@ -46,9 +46,9 @@ extern CGame Game;
 extern CFocus *pFocus;
 extern bool Aide;
 extern CCfg Config;
-JktMoteur::CMap *pMapASE;
+jkt::CMap *pMapASE;
 
-namespace JktMenu
+namespace jkt
 {
 
 	/************************/

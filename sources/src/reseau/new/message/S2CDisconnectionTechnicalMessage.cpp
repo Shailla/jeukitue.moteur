@@ -10,7 +10,7 @@
 
 #include "reseau/new/message/S2CDisconnectionTechnicalMessage.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 S2DisconnectionTechnicalMessage::S2DisconnectionTechnicalMessage() : TechnicalMessage(S2C_DISCONNECTION) {
 }
@@ -18,9 +18,9 @@ S2DisconnectionTechnicalMessage::S2DisconnectionTechnicalMessage() : TechnicalMe
 S2DisconnectionTechnicalMessage::~S2DisconnectionTechnicalMessage() {
 }
 
-JktUtils::Bytes* S2DisconnectionTechnicalMessage::toBytes() {
+jkt::Bytes* S2DisconnectionTechnicalMessage::toBytes() {
 	char* msg = new char[2];
 	SDLNet_Write16(getCode(), msg);
 
-	return new JktUtils::Bytes(msg, 2);
+	return new jkt::Bytes(msg, 2);
 }

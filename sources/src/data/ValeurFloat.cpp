@@ -15,7 +15,7 @@ using namespace std;
 
 #include "data/ValeurFloat.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 ValeurFloat::ValeurFloat(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, UPDATE_MODE updateMode, int tmpId, int revision, float valeur) : Valeur(parent, valeurId, valeurName, valeurType, updateMode, tmpId, revision) {
 	_valeur = valeur;
@@ -29,7 +29,7 @@ float ValeurFloat::getValeur() const {
 }
 
 AnyData ValeurFloat::getValeurData() const {
-	return JktUtils::AnyData(_valeur);
+	return jkt::AnyData(_valeur);
 }
 
 void ValeurFloat::setValeur(int revision, float valeur) {
@@ -42,7 +42,7 @@ void ValeurFloat::updateValeur(float valeur) {
 	update();
 }
 
-void ValeurFloat::setValeur(int revision, const JktUtils::AnyData& data) {
+void ValeurFloat::setValeur(int revision, const jkt::AnyData& data) {
 	if(data.isFloat()) {
 		setRevision(revision);
 		_valeur = data.getValueFloat();

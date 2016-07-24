@@ -15,7 +15,7 @@
 
 #include "plugin/api/gui/PluginPanel.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginTab : public PluginPanel{
 	friend class PluginTabProxy;
@@ -29,5 +29,5 @@ public:
 protected:
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINTAB_H_ */

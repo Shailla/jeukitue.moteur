@@ -41,7 +41,7 @@ public:
 	Branche* createBranche(DistantTreeProxy* ignored, const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
 	Branche* createPrivateBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
 
-	Valeur* createValeur(DistantTreeProxy* ignored, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur) override;
+	Valeur* createValeur(DistantTreeProxy* ignored, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const jkt::AnyData valeur) override;
 
 
 	/* ****************************************************

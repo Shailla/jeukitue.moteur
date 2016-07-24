@@ -14,7 +14,7 @@ using namespace std;
 #include "main/Player.h"
 #include "main/Statistics.h"
 
-namespace JktNet
+namespace jkt
 {
 
 int CSPA::m_BytesRec = 0;	// Nombre d'octets pour le comptage du débit en réception

@@ -4,7 +4,7 @@
 
 class CGame;
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CMouve

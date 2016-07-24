@@ -18,7 +18,7 @@ extern "C" {
 
 #include "plugin/lua/proxy/LunarProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginContext;
 class PluginNotebook;
@@ -43,5 +43,5 @@ public:
 	int addTab(lua_State* L);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINNOTEBOOKPROXY_H_ */

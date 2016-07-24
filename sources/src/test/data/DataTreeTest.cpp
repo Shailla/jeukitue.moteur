@@ -21,9 +21,9 @@ using namespace std;
 
 #include "test/data/DataTreeTest.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktTest {
+namespace jkt {
 
 DataTreeTest::DataTreeTest() :
 										Test("DataTreeTest"),
@@ -828,7 +828,7 @@ void DataTreeTest::privateTreeTest() {
 }
 
 void DataTreeTest::echangeDonneesClientServeur(int line, Interlocutor2& client) {
-	JktUtils::Bytes* data;
+	jkt::Bytes* data;
 	int count = 0;
 
 
@@ -870,4 +870,4 @@ void DataTreeTest::checkSynchronisationClientServeur(int line, ClientDataTree& c
 	assertEqual(__FILE__, line, 0, clientTree.getDistantServer()->getInterlocutor()->countTechnicalMessagesToSend(), "countTechnicalMessagesToSend 4: Il ne devrait rester aucun message technique à envoyer");
 }
 
-} /* namespace JktTest */
+} /* namespace jkt */

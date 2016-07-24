@@ -19,7 +19,7 @@ using namespace std;
 
 #include "spatial/light/LightTarget.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 CLightTarget::CLightTarget(void) {

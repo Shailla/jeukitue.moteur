@@ -9,7 +9,7 @@
 
 class ConsoleView;
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CMaterialTexture;

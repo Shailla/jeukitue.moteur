@@ -13,15 +13,15 @@ using namespace std;
 
 #include "util/StreamUtils.h"
 
-JktUtils::AnyData StreamUtils::readData(istringstream& in) {
-	return JktUtils::AnyData(in);
+jkt::AnyData StreamUtils::readData(istringstream& in) {
+	return jkt::AnyData(in);
 }
 
-void StreamUtils::write(ostringstream& out, const JktUtils::AnyData& data) {
+void StreamUtils::write(ostringstream& out, const jkt::AnyData& data) {
 	data.serialize(out);
 }
 
-void StreamUtils::writeHumanReadable(ostringstream& out, const JktUtils::AnyData& data) {
+void StreamUtils::writeHumanReadable(ostringstream& out, const jkt::AnyData& data) {
 	data.toString(out);
 }
 

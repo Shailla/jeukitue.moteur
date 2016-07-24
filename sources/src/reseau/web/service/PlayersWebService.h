@@ -10,7 +10,7 @@
 
 #include "reseau/web/service/WebService.h"
 
-namespace JktNet {
+namespace jkt {
 
 class PlayersWebService : public WebService {
 public:
@@ -20,6 +20,6 @@ public:
 	WebServiceResult execute(const std::string& endpoint, const std::string& method);
 };
 
-} /* namespace JktNet */
+} /* namespace jkt */
 
 #endif /* SRC_RESEAU_WEB_SERVICE_PLAYERSWEBSERVICE_H_ */

@@ -17,7 +17,7 @@ public:
 	S2CConnectionRefusedTechnicalMessage();
 	virtual ~S2CConnectionRefusedTechnicalMessage();
 
-	JktUtils::Bytes* toBytes();
+	jkt::Bytes* toBytes();
 };
 
 #endif /* S2CCONNECTIONREFUSEDTECHNICALMESSAGE_H_ */

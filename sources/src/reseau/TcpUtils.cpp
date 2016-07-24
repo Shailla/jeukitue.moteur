@@ -4,7 +4,7 @@
 
 #include "reseau/TcpUtils.h"
 
-namespace JktNet
+namespace jkt
 {
 
 int CTcpUtils::loadInteger(const TCPsocket socket) throw(CentralisateurTcpException)

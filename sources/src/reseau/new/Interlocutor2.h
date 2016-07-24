@@ -19,10 +19,10 @@
 class Interlocutor2 {
 	std::string _name;
 
-	std::queue<JktUtils::Bytes*> _dataReceived;
-	std::queue<JktUtils::Bytes*> _technicalMessagesReceived;
-	std::queue<JktUtils::Bytes*> _dataToSend;
-	std::queue<JktUtils::Bytes*> _technicalMessagesToSend;
+	std::queue<jkt::Bytes*> _dataReceived;
+	std::queue<jkt::Bytes*> _technicalMessagesReceived;
+	std::queue<jkt::Bytes*> _dataToSend;
+	std::queue<jkt::Bytes*> _technicalMessagesToSend;
 	SDL_mutex* _mutexDataReceived;
 	SDL_mutex* _mutexDataToSend;
 	SDL_cond* _condDataToSend;
@@ -38,22 +38,22 @@ public:
 	void setCondIntelligence(SDL_cond* condIntelligence);
 
 	// Technical messages
-	void pushTechnicalMessageToSend(JktUtils::Bytes* bytes);
-	JktUtils::Bytes* popTechnicalMessageToSend();
+	void pushTechnicalMessageToSend(jkt::Bytes* bytes);
+	jkt::Bytes* popTechnicalMessageToSend();
 
-	void pushTechnicalMessageReceived(JktUtils::Bytes* bytes);
-	JktUtils::Bytes* popTechnicalMessageReceived();
+	void pushTechnicalMessageReceived(jkt::Bytes* bytes);
+	jkt::Bytes* popTechnicalMessageReceived();
 
 	int countTechnicalMessagesReceived(void);
 	int countTechnicalMessagesToSend(void);
 
 	// Data messages
-	void pushDataReceived(JktUtils::Bytes* bytes);
-	JktUtils::Bytes* popDataReceived();
+	void pushDataReceived(jkt::Bytes* bytes);
+	jkt::Bytes* popDataReceived();
 
 	void waitDataToSend(int timeout);
-	void pushDataToSend(JktUtils::Bytes* bytes);
-	JktUtils::Bytes* popDataToSend();
+	void pushDataToSend(jkt::Bytes* bytes);
+	jkt::Bytes* popDataToSend();
 
 	int countDataReceived(void);
 	int countDataToSend(void);

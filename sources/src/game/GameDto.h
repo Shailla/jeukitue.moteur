@@ -14,7 +14,7 @@
 #include "spatial/Map.h"
 
 using namespace std;
-using namespace JktMoteur;
+using namespace jkt;
 
 class GameDto {
 	string _mapName;

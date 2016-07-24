@@ -120,11 +120,7 @@ class CGame;
 
 #include "test/TestSuite.h"
 
-using namespace JktMenu;
-using namespace JktNet;
-using namespace JktMoteur;
-using namespace JktUtils;
-using namespace JktSon;
+using namespace jkt;
 
 #include "util/GenRef.h"
 
@@ -150,7 +146,7 @@ int numMainPlayer = 0;	// Numéro du joueur principal dans la MAP (identifie le j
 
 bool Aide = false;
 
-extern JktSon::CDemonSons *DemonSons;	// Requêtes des sons
+extern jkt::CDemonSons *DemonSons;	// Requêtes des sons
 
 Uint32 tempsTimer = 0;		// Temps pris par la fonction 'timer'
 Uint32 tempsDisplay = 0;	// Temps pris par la fonction 'display'
@@ -1069,10 +1065,10 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 
 	// Récupération des ressources de cris des personnages
 	string cri1 = "@Bruit\\cri_1.wav";
-	JktUtils::RessourcesLoader::getFileRessource(cri1);
+	jkt::RessourcesLoader::getFileRessource(cri1);
 
 	string cri2 = "@Bruit\\cri_1.wav";
-	JktUtils::RessourcesLoader::getFileRessource(cri2);
+	jkt::RessourcesLoader::getFileRessource(cri2);
 
 
 	/***********************************
@@ -1329,9 +1325,9 @@ void executeJktRequests() {
 		Aide = false;
 		pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
 
-		JktNet::CClient *client = Game.getClient();
+		jkt::CClient *client = Game.getClient();
 		client->nomMAP = clientGameDto->getMapName();			// Informe le serveur sur le nom de la MAP lancée
-		client->setStatut( JktNet::JKT_STATUT_CLIENT_PLAY );
+		client->setStatut( jkt::JKT_STATUT_CLIENT_PLAY );
 
 		delete clientGameDto;
 
@@ -1441,9 +1437,9 @@ void executeJktRequests() {
 		Aide = false;
 		pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
 
-		JktNet::CServer *server = Game.getServer();
+		jkt::CServer *server = Game.getServer();
 		server->nomMAP = serverGameDto->getMapName();					// Informe le serveur sur le nom de la MAP lancée
-		server->setStatut( JktNet::JKT_STATUT_SERVER_PLAY );
+		server->setStatut( jkt::JKT_STATUT_SERVER_PLAY );
 		server->bGame = true;						// Indique qu'une partie est en cours
 
 		delete serverGameDto;
@@ -1627,7 +1623,7 @@ int main(int argc, char** argv) {
 		// Exécution des tests unitaires
 		if(string("test") == argv[1]) {
 			cout << endl << "MODE TEST" << endl;
-			JktTest::TestSuite* testSuite = new JktTest::TestSuite();
+			jkt::TestSuite* testSuite = new jkt::TestSuite();
 
 			testSuite->init();
 			testSuite->launchTests();
@@ -1693,7 +1689,7 @@ int main(int argc, char** argv) {
 
 	// Lecture fonte
 	string fonteFile = "@Fonte\\Mermaid1001.ttf";		// Chargement de la fonte de caractères
-	JktUtils::RessourcesLoader::getFileRessource(fonteFile);
+	jkt::RessourcesLoader::getFileRessource(fonteFile);
 
 	fonte.load(fonteFile, 48);
 
@@ -1712,7 +1708,7 @@ int main(int argc, char** argv) {
 	// Création d'un haut parleur qui se déplace pour tester le son 3D
 	machin = new CMachin();
 	string fichierSon3D = "@Musique\\drumloop.wav";
-	JktUtils::RessourcesLoader::getFileRessource(fichierSon3D);
+	jkt::RessourcesLoader::getFileRessource(fichierSon3D);
 	CSon3D *son3D = DemonSons->CreateSon3D( fichierSon3D.c_str() );
 	CReqSon *reqSon = DemonSons->PlayID( (CSon*)son3D, true );
 	reqSon->Boucle( true );

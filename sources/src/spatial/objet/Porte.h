@@ -8,14 +8,14 @@
 class CGame;
 class CPlayer;
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CMap;
 class CIstreamMap;
 
 class CPorte : public CGeoObject, public CMouve {
-	JktUtils::CV3D m_Position;		// Position de la porte
+	jkt::CV3D m_Position;		// Position de la porte
 	float m_fMarge;					// Distance parcourue par la porte lors de son ouverture
 	float m_fOuverture;				// Ouverture courante de la porte ( 0.0f <= m_fOuverture <= m_fMarge )
 	float m_fVitesse;				// Vitesse d'ouverture de la porte (en unité float/milliseconde)
@@ -39,7 +39,7 @@ public:
 	bool Save(TiXmlElement* element);
 
 	void GereContactPlayer(float positionPlayer[3], CPlayer *player );
-	float GereLaserPlayer( float pos[3], JktUtils::CV3D &Dir, float dist );
+	float GereLaserPlayer( float pos[3], jkt::CV3D &Dir, float dist );
 };
 
 }	// JktMoteur

@@ -2,7 +2,7 @@
 #ifndef __JKT__MATH_VECTORIEL_H
 #define __JKT__MATH_VECTORIEL_H
 
-namespace JktUtils
+namespace jkt
 {
 
 float produitScalaire(const float *A, const float *B);

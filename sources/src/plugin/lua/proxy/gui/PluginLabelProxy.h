@@ -18,7 +18,7 @@ extern "C" {
 
 #include "plugin/lua/proxy/LunarProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginContext;
 class PluginLabel;
@@ -45,5 +45,5 @@ public:
 	int expandVert(lua_State* L);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINLABELPROXY_H_ */

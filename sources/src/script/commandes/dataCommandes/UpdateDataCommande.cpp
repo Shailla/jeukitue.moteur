@@ -20,7 +20,7 @@ using namespace std;
 
 #include "script/commandes/dataCommandes/UpdateDataCommande.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 extern CGame Game;
 

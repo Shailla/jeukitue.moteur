@@ -13,13 +13,13 @@
 
 #include "ihm/MMenuPrinc.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 extern CFocus *pFocus;
 extern bool Aide;
 extern CGame Game;
 
-namespace JktMenu
+namespace jkt
 {
 extern CMenu MenuPrinc2;
 

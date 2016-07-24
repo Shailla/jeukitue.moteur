@@ -24,14 +24,14 @@ class CGame;
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 extern CFocus *pFocus;
 extern bool Aide;
 extern Fonte fonte;
 extern CCfg Config;
 
-namespace JktMenu
+namespace jkt
 {
 
 #define TAILLEFONT 0.8f

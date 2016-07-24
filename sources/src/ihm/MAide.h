@@ -2,7 +2,7 @@
 #ifndef __JKT__MENU_AIDE_H
 #define __JKT__MENU_AIDE_H
 
-namespace JktMenu
+namespace jkt
 {
 
 void lanceMenuAide(void *var);

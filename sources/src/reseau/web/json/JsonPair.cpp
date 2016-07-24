@@ -9,7 +9,7 @@
 
 using namespace std;
 
-namespace JktNet {
+namespace jkt {
 
 JsonPair::JsonPair(const string& name, JsonValue* value) {
 	_name = name;
@@ -33,4 +33,4 @@ string JsonPair::toJson() {
 	return str.str();
 }
 
-} /* namespace JktNet */
+} /* namespace jkt */

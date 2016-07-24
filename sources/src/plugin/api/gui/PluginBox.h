@@ -15,7 +15,7 @@
 
 #include "plugin/api/gui/PluginPanel.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginBox : public PluginPanel{
 	friend class PluginBoxProxy;
@@ -28,5 +28,5 @@ public:
 	AG_Widget* getParent();
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINBOX_H_ */

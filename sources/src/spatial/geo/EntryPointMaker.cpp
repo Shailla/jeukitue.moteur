@@ -9,9 +9,9 @@ using namespace std;
 
 #include "spatial/geo/EntryPointMaker.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktMoteur
+namespace jkt
 {
 
 EntryPoint* EntryPointMaker::Lit(TiXmlElement* el, MapLogger* mapLogger) {
@@ -33,5 +33,5 @@ EntryPoint* EntryPointMaker::Lit(TiXmlElement* el, MapLogger* mapLogger) {
 	return entry;
 }
 
-} /* namespace JktMoteur */
+} /* namespace jkt */
 

@@ -23,7 +23,7 @@ using namespace std;
 
 #include "spatial/materiau/MaterialTexture.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 CMaterialTexture::CMaterialTexture()
@@ -52,7 +52,7 @@ CMaterialTexture::~CMaterialTexture()
 {
 }
 
-void CMaterialTexture::initGL() throw(JktUtils::CErreur) {
+void CMaterialTexture::initGL() throw(jkt::CErreur) {
 	RessourcesLoader::getFileRessource(m_FichierTexture);
 	Uint8* pixels = litFichierImage(m_FichierTexture, 1.0f);
 	_texture = litFichierTexture(m_FichierTexture, 1.0f, pixels);

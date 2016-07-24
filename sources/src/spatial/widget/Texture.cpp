@@ -18,7 +18,7 @@ using namespace std;
 #include "util/Trace.h"
 #include "spatial/widget/Texture.h"
 
-namespace JktMoteur {
+namespace jkt {
 
 Texture::Texture(const string& nomFichier, bool alpha, int hauteur, int largeur, Uint8* pixels) {
 	_nomFichier = nomFichier;
@@ -79,4 +79,4 @@ void Texture::afficheQuad(const CV3D& a, const CV3D& b, const CV3D& c, const CV3
 	glDisable(GL_BLEND);
 }
 
-} /* namespace JktMoteur */
+} /* namespace jkt */

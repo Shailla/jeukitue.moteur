@@ -8,7 +8,7 @@
 
 using namespace std;
 
-namespace JktSon {
+namespace jkt {
 
 class CReqSon;
 class CDemonSons;
@@ -59,5 +59,5 @@ public:
 	CReqSon *PlayID( bool pause=false );
 };
 
-}	// namespace JktSon
+}	// namespace jkt
 #endif

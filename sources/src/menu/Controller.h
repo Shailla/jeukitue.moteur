@@ -10,7 +10,7 @@
 
 #include "Viewer.h"
 
-namespace JktPlugin {
+namespace jkt {
 	class PluginEngine;
 }
 
@@ -75,10 +75,10 @@ public:
 	};
 
     static Viewer* _agarView;
-    static JktPlugin::PluginEngine* _pluginEngine;
+    static jkt::PluginEngine* _pluginEngine;
     static SDL_mutex* _controllerMutex;
 
-    Controller(Viewer* agarView, JktPlugin::PluginEngine* pluginEngine);
+    Controller(Viewer* agarView, jkt::PluginEngine* pluginEngine);
     ~Controller(void);
 
     static void executeAction(AG_Event *event);

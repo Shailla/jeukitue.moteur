@@ -27,7 +27,7 @@ const char* PLAYER_MAP_DIRECTORY =	"./Ressources/Maps/Joueurs/";	// Répertoire M
 const char* PLUGINS_DIRECTORY =		"./plugins/";					// Répertoire des plugins
 const char* TEMPORARY_DIRECTORY =	"./Tmp/";						// Répertoire temporaire de travail
 
-namespace JktUtils
+namespace jkt
 {
 
 const char* RessourcesLoader::elementsNamesAndFolders[] = {

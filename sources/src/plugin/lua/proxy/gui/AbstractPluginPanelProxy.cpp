@@ -17,7 +17,7 @@
 
 #include "plugin/lua/proxy/gui/AbstractPluginPanelProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 AbstractPluginPanelProxy::AbstractPluginPanelProxy(lua_State* luaState) {
 	_pluginContext = NULL;
@@ -213,4 +213,4 @@ int AbstractPluginPanelProxy::expandVert(lua_State* L) {
 	return 1;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

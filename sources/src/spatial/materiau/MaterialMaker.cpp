@@ -9,9 +9,9 @@ using namespace std;
 #include "spatial/materiau/MaterialMulti.h"
 #include "spatial/materiau/MaterialMaker.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktMoteur
+namespace jkt
 {
 
 CMaterial* CMaterialMaker::Lit(TiXmlElement* el, string &repertoire, MapLogger* mapLogger) {

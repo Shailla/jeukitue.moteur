@@ -8,7 +8,7 @@
 #ifndef GRAPHICOBJECT_H_
 #define GRAPHICOBJECT_H_
 
-namespace JktMoteur {
+namespace jkt {
 
 class GraphicObject {
 public:
@@ -22,5 +22,5 @@ public:
 	virtual void destructGraphicObject(void) = 0;
 };
 
-} /* namespace JktMoteur */
+} /* namespace jkt */
 #endif /* GRAPHICOBJECT_H_ */

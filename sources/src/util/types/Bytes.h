@@ -10,7 +10,7 @@
 
 #include <string>
 
-namespace JktUtils {
+namespace jkt {
 
 class Bytes {
 	char* _bytes;
@@ -25,5 +25,5 @@ public:
 	int size();
 };
 
-} /* namespace JktUtils */
+} /* namespace jkt */
 #endif /* BYTES_H_ */

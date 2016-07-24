@@ -16,7 +16,7 @@
 #include "plugin/api/gui/listener/SelectionChangedListener.h"
 #include "plugin/PluginContext.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginComboList {
 	SelectionChangedListener* _selectionChangedListener;
@@ -41,5 +41,5 @@ public:
 	void expandVert();
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINCOMBOLIST_H_ */

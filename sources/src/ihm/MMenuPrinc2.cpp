@@ -14,7 +14,7 @@ using namespace std;
 
 #include "ihm/MMenuPrinc2.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 class CMaterial;
 class CLight;
@@ -25,7 +25,7 @@ class CPorte;
 
 extern CGame Game;
 
-namespace JktMenu
+namespace jkt
 {
 
 void quit_JKTici( void *var );

@@ -24,7 +24,7 @@ using namespace std;
 
 extern CGame Game;			// Contient toutes les données vivantes du jeu
 
-namespace JktPlugin {
+namespace jkt {
 
 const char PluginDataTreeProxy::className[] = "DataTree";
 
@@ -97,7 +97,7 @@ int PluginDataTreeProxy::createValeur(lua_State *L) {
 
 	const string valeurName = lua_tostring(L, index++);
 
-	JktUtils::AnyData data;
+	jkt::AnyData data;
 
 	if(valeurType == "int") {
 		data.update((int)0);
@@ -150,4 +150,4 @@ int PluginDataTreeProxy::createBranche(lua_State *L) {
 	return 1;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

@@ -21,7 +21,7 @@ using namespace std;
 
 extern CCfg Config;		// Contient la configuration du jeu
 
-namespace JktTest {
+namespace jkt {
 
 TestSuite::TestSuite() {
 	_tests.push_back(new UtilsTest());
@@ -105,4 +105,4 @@ void TestSuite::launchTests() {
 	cout << endl;
 }
 
-} /* namespace JktTest */
+} /* namespace jkt */

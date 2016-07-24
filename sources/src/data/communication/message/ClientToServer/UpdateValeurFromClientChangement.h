@@ -19,13 +19,13 @@ class UpdateValeurFromClientChangement: public Changement {
 	std::vector<int> _parentBrancheId;
 	int _valeurId;
 	int _revision;
-	JktUtils::AnyData _valeur;
+	jkt::AnyData _valeur;
 
 	void unserialize(std::istringstream& in);
 
 public:
 	UpdateValeurFromClientChangement(std::istringstream& in);
-	UpdateValeurFromClientChangement(const std::vector<int>& brancheId, int valeurId, int revision, JktUtils::AnyData valeur);
+	UpdateValeurFromClientChangement(const std::vector<int>& brancheId, int valeurId, int revision, jkt::AnyData valeur);
 	~UpdateValeurFromClientChangement();
 
 	void update(MarqueurDistant* marqueur);
@@ -40,7 +40,7 @@ public:
 	const std::vector<int>& getParentBrancheId() const;
 	int getValeurId() const;
 	int getRevision() const;
-	JktUtils::AnyData getValeur() const;
+	jkt::AnyData getValeur() const;
 	int getRootDistance() const;
 };
 

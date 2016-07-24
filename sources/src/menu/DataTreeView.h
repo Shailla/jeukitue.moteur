@@ -13,7 +13,7 @@
 
 class Viewer;
 
-namespace JktMoteur {
+namespace jkt {
 	class CMaterial;
 	class CLight;
 }

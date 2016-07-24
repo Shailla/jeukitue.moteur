@@ -15,7 +15,7 @@ using namespace std;
 
 #include "data/ValeurString.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 ValeurString::ValeurString(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, UPDATE_MODE updateMode, int tmpId, int revision, const std::string& valeur) : Valeur(parent, valeurId, valeurName,  valeurType, updateMode, tmpId, revision) {
 	_valeur = valeur;
@@ -29,7 +29,7 @@ const std::string& ValeurString::getValeur() const {
 }
 
 AnyData ValeurString::getValeurData() const {
-	return JktUtils::AnyData(_valeur);
+	return jkt::AnyData(_valeur);
 }
 
 void ValeurString::setValeur(int revision, const std::string& valeur) {
@@ -42,7 +42,7 @@ void ValeurString::updateValeur(const std::string& valeur) {
 	update();
 }
 
-void ValeurString::setValeur(int revision, const JktUtils::AnyData& data) {
+void ValeurString::setValeur(int revision, const jkt::AnyData& data) {
 	if(data.isString()) {
 		setRevision(revision);
 		_valeur = data.getValueString();

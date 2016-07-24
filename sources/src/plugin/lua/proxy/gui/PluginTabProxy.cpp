@@ -16,7 +16,7 @@ using namespace std;
 
 #include "plugin/lua/proxy/gui/PluginTabProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 const char PluginTabProxy::className[] = "Tab";
 
@@ -65,4 +65,4 @@ int PluginTabProxy::push(lua_State* L) {
 	return Lunar<PluginTabProxy>::push(L, this);
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

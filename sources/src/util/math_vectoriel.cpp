@@ -4,7 +4,7 @@
 
 #include "math_vectoriel.h"
 
-namespace JktUtils
+namespace jkt
 {
 
 float produitScalaire(const float *A, const float *B)

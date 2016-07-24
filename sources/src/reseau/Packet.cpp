@@ -9,7 +9,7 @@
 
 using namespace std;
 
-namespace JktNet
+namespace jkt
 {
 
 Packet::Packet() {
@@ -171,4 +171,4 @@ void Packet::readString( string &mot ) {
 	_positionRead += (unsigned int)mot.length() + 1;
 }
 
-} /* namespace JktUtils */
+} /* namespace jkt */

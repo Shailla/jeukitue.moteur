@@ -8,7 +8,7 @@
 
 #include "spatial/MapLogger.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CIfstreamMap;

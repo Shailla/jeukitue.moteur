@@ -15,7 +15,7 @@ using namespace std;
 
 #include "spatial/materiau/Material.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 CMaterial::CMaterial() {

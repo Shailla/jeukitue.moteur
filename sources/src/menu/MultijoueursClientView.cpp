@@ -12,7 +12,7 @@
 #include "menu/MultijoueursClientView.h"
 
 using namespace std;
-using namespace JktNet;
+using namespace jkt;
 
 MultijoueursClientView::MultijoueursClientView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
@@ -78,13 +78,13 @@ void MultijoueursClientView::hide() {
 
 void MultijoueursClientView::setServerName(const std::string& serverName) {
 	AG_MutexLock(&_agMutex);
-	JktUtils::StringUtils::toChars(serverName, _serverName, 40);
+	jkt::StringUtils::toChars(serverName, _serverName, 40);
 	AG_MutexUnlock(&_agMutex);
 }
 
 void MultijoueursClientView::setActiveMap(const std::string& activeMap) {
 	AG_MutexLock(&_agMutex);
-	JktUtils::StringUtils::toChars(activeMap, _activeMap, 40);
+	jkt::StringUtils::toChars(activeMap, _activeMap, 40);
 	AG_MutexUnlock(&_agMutex);
 }
 

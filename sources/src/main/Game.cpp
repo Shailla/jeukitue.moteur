@@ -33,8 +33,8 @@ class CGame;
 #include "reseau/enumReseau.h"
 #include "main/Game.h"
 
-using namespace JktNet;
-using namespace JktMoteur;
+using namespace jkt;
+using namespace jkt;
 
 extern NetworkManager* _networkManager;
 
@@ -67,12 +67,12 @@ bool CGame::isModeNull() {
 	return _mode == JKT_MODE_PARTIE_NULL;
 }
 
-void CGame::setStatutClient( JktNet::StatutClient statut ) {
+void CGame::setStatutClient( jkt::StatutClient statut ) {
 	_networkManager->getClient()->setStatut( statut );
 }
 
-JktNet::StatutClient CGame::getStatutClient() {
-	JktNet::StatutClient statut;
+jkt::StatutClient CGame::getStatutClient() {
+	jkt::StatutClient statut;
 	if( _mode==JKT_MODE_PARTIE_CLIENT )
 		statut = _networkManager->getClient()->getStatut();
 	else
@@ -116,7 +116,7 @@ CPlayer* CGame::nextPlayer(int& pos) {
 	}
 }
 
-bool CGame::openMap(const string &nomFichierMap) throw(JktUtils::CErreur) {
+bool CGame::openMap(const string &nomFichierMap) throw(jkt::CErreur) {
 LOGDEBUG(("CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(), this));
 
 	bool result = true;
@@ -125,9 +125,9 @@ LOGDEBUG(("CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(), thi
 		delete _map;
 
 	try {
-		_map = new JktMoteur::CMap(0, nomFichierMap);
+		_map = new jkt::CMap(0, nomFichierMap);
 	}
-	catch(JktUtils::CErreur& erreur) {
+	catch(jkt::CErreur& erreur) {
 		LOGERROR(("Echec d'ouverture de la Map '%s' : %s", nomFichierMap.c_str(), erreur.what()));
 		result = false;
 	}
@@ -136,19 +136,19 @@ LOGDEBUG(("CGame::openMap() -> %b end%T", result, this));
 	return result;
 }
 
-void CGame::changeActiveMap(JktMoteur::CMap* map) {
+void CGame::changeActiveMap(jkt::CMap* map) {
 	if( _map )
 		delete _map;
 
 	_map = map;
 }
 
-void CGame::setStatutServer(JktNet::StatutServer statut) {
+void CGame::setStatutServer(jkt::StatutServer statut) {
 	if( _mode==JKT_MODE_PARTIE_SERVER )
 		_networkManager->getServer()->setStatut( statut );
 }
 
-JktNet::StatutServer CGame::getStatutServer() {
+jkt::StatutServer CGame::getStatutServer() {
 	if( _mode==JKT_MODE_PARTIE_SERVER )
 		return _networkManager->getServer()->getStatut();
 	else
@@ -245,10 +245,10 @@ void CGame::setModeServer() {
 	_mode = JKT_MODE_PARTIE_SERVER;
 }
 
-JktNet::CClient *CGame::getClient()
+jkt::CClient *CGame::getClient()
 {	return _networkManager->getClient();		}
 
-JktNet::CServer *CGame::getServer()
+jkt::CServer *CGame::getServer()
 {	return _networkManager->getServer();		}
 
 void CGame::Refresh() {
@@ -376,7 +376,7 @@ void CGame::Erwin(CPlayer *erwin) {
 	_erwin = erwin;
 }
 
-JktMoteur::CMap *CGame::getMap() {
+jkt::CMap *CGame::getMap() {
 	return _map;
 }
 

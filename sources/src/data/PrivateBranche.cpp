@@ -26,7 +26,7 @@ using namespace std;
 
 #include "data/PrivateBranche.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 PrivateBranche::PrivateBranche(AbstractBranche* parent, int brancheId, const string& brancheName, DONNEE_TYPE brancheType, int revision, int brancheTmpId) : Branche(parent, brancheId, brancheName, brancheType, revision, brancheTmpId) {
 }
@@ -386,7 +386,7 @@ Valeur* PrivateBranche::createValeurForServeur(DistantTreeProxy* distant, UPDATE
 	return newValeur;
 }
 
-Valeur* PrivateBranche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur) {
+Valeur* PrivateBranche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const string& valeurName, int valeurRevision, const jkt::AnyData& valeur) {
 	if(!distant) {
 		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
 	}

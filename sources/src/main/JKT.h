@@ -5,7 +5,7 @@
 #include <map>
 
 class CPlayer;
-namespace JktMoteur {
+namespace jkt {
 	class GraphicObject;
 }
 
@@ -19,8 +19,8 @@ unsigned int timer(unsigned int nbr, void *fct);	//focntion qui s'exécute périod
 void play_handle_key_down( SDL_Event* event );
 Uint32 getPixel(SDL_Surface *surface, int x, int y);
 
-void addGraphicObjectToInitialize(JktMoteur::GraphicObject* graphicObject);
-void addGraphicObjectToDestruct(JktMoteur::GraphicObject* graphicObject);
+void addGraphicObjectToInitialize(jkt::GraphicObject* graphicObject);
+void addGraphicObjectToDestruct(jkt::GraphicObject* graphicObject);
 
 #endif /* __JKT__JKT_H */
 

@@ -14,7 +14,7 @@
 
 #include "reseau/web/service/PlayersWebService.h"
 
-namespace JktNet {
+namespace jkt {
 
 PlayersWebService::PlayersWebService() {
 }
@@ -46,4 +46,4 @@ WebServiceResult PlayersWebService::execute(const std::string& endpoint, const s
 	return result;
 }
 
-} /* namespace JktNet */
+} /* namespace jkt */

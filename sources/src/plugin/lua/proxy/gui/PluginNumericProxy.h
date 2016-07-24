@@ -19,7 +19,7 @@ extern "C" {
 #include "plugin/lua/proxy/LunarProxy.h"
 #include "plugin/api/gui/PluginNumeric.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginNumericProxy : public LunarProxy {
 public:
@@ -38,5 +38,5 @@ public:
 	int getValue(lua_State* L);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINNUMERICPROXY_H_ */

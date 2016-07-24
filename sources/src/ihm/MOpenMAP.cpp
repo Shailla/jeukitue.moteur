@@ -27,7 +27,7 @@ using namespace std;
 
 #include "MOpenMAP.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 class CMaterial;
 class CLight;
@@ -42,7 +42,7 @@ extern CGame Game;
 extern CFocus *pFocus;
 extern bool Aide;
 
-namespace JktMenu
+namespace jkt
 {
 
 	/************************/

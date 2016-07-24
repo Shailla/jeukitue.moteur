@@ -12,7 +12,7 @@
 
 using namespace std;
 
-namespace JktService {
+namespace jkt {
 
 class VersionsDto {
 	string _openGlVersion;
@@ -29,5 +29,5 @@ public:
 	string getAgarVersion() const;
 };
 
-} /* namespace JktService */
+} /* namespace jkt */
 #endif /* VERSIONSDTO_H_ */

@@ -8,7 +8,7 @@
 #ifndef ADVANCEDCONFIGURATIONDTO_H_
 #define ADVANCEDCONFIGURATIONDTO_H_
 
-namespace JktService {
+namespace jkt {
 
 class AdvancedConfigurationDto {
 	bool _isPlayeurOutlineVisible;
@@ -30,5 +30,5 @@ public:
 	void setPlayerCameraHeight(const float playerCameraHeight);
 };
 
-} /* namespace JktService */
+} /* namespace jkt */
 #endif /* ADVANCEDCONFIGURATIONDTO_H_ */

@@ -25,7 +25,7 @@ using namespace std;
 extern CCfg Config;		// Contient la configuration du jeu
 extern CGame Game;
 
-namespace JktPlugin {
+namespace jkt {
 
 const char* PluginConfigurationProxy::CFG_PARAM_AUDIO_DRIVER = "AUDIO_DRIVER";								// Paramètre de type nombre
 const char* PluginConfigurationProxy::CFG_PARAM_AUDIO_RECORD_DRIVER = "AUDIO_RECORD_DRIVER";				// Paramètre de type nombre
@@ -240,22 +240,22 @@ int PluginConfigurationProxy::getConstant(lua_State* L) {
 			return 1;
 		}
 		else if(cstName.compare(CST_OPENGL_VERSION) == 0) {
-			JktService::VersionsDto versions = JktService::InformationService::loadVersions();
+			jkt::VersionsDto versions = jkt::InformationService::loadVersions();
 			lua_pushstring(L, versions.getOpenGlVersion().c_str());
 			return 1;
 		}
 		else if(cstName.compare(CST_GLU_VERSION) == 0) {
-			JktService::VersionsDto versions = JktService::InformationService::loadVersions();
+			jkt::VersionsDto versions = jkt::InformationService::loadVersions();
 			lua_pushstring(L, versions.getGluVersion().c_str());
 			return 1;
 		}
 		else if(cstName.compare(CST_FMOD_VERSION) == 0) {
-			JktService::VersionsDto versions = JktService::InformationService::loadVersions();
+			jkt::VersionsDto versions = jkt::InformationService::loadVersions();
 			lua_pushstring(L, versions.getFmodVersion().c_str());
 			return 1;
 		}
 		else if(cstName.compare(CST_AGAR_VERSION) == 0) {
-			JktService::VersionsDto versions = JktService::InformationService::loadVersions();
+			jkt::VersionsDto versions = jkt::InformationService::loadVersions();
 			lua_pushstring(L, versions.getAgarVersion().c_str());
 			return 1;
 		}
@@ -349,4 +349,4 @@ int PluginConfigurationProxy::initAudio(lua_State* L) {
 	return 0;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

@@ -2,7 +2,7 @@
 #ifndef __JKT__FOCUS_H
 #define __JKT__FOCUS_H
 
-namespace JktMenu
+namespace jkt
 {
 
 class CFocus

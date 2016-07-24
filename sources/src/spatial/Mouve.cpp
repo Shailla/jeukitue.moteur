@@ -3,7 +3,7 @@ class CGame;
 
 #include "spatial/Mouve.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 CMouve::CMouve(void)

@@ -16,7 +16,7 @@ using namespace std;
 
 #include "ihm/MMenuPrinc.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 class CGame;
 
@@ -24,7 +24,7 @@ extern CCfg Config;
 
 #include "ihm/MConfiguration.h"
 
-namespace JktMenu
+namespace jkt
 {
 void actu_menu_config_debug_SonPerformances( void *arg );
 void actu_menu_config_debug_SonSpectre( void *arg );

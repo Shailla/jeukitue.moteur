@@ -8,7 +8,7 @@
 
 #include "spatial/materiau/Material.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CMaterialMulti:public CMaterial

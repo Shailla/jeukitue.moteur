@@ -17,7 +17,7 @@ using namespace std;
 
 #include "plugin/lua/proxy/gui/PluginButtonProxy.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 const char PluginButtonProxy::className[] = "Button";
 
@@ -87,4 +87,4 @@ int PluginButtonProxy::expandVert(lua_State* L) {
 	return 0;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

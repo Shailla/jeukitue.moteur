@@ -42,7 +42,7 @@ const string& NotConnectedInterlocutor2::getName() const {
 	return _name;
 }
 
-void NotConnectedInterlocutor2::pushTechnicalMessageReceived(const IPaddress& address, JktUtils::Bytes* bytes) {
+void NotConnectedInterlocutor2::pushTechnicalMessageReceived(const IPaddress& address, jkt::Bytes* bytes) {
 	SDL_LockMutex(_mutexDataReceived);
 
 	if(bytes) {
@@ -54,7 +54,7 @@ void NotConnectedInterlocutor2::pushTechnicalMessageReceived(const IPaddress& ad
 	SDL_CondSignal(_condIntelligence);
 }
 
-void NotConnectedInterlocutor2::pushDataReceived(const IPaddress& address, JktUtils::Bytes* bytes) {
+void NotConnectedInterlocutor2::pushDataReceived(const IPaddress& address, jkt::Bytes* bytes) {
 	SDL_LockMutex(_mutexDataReceived);
 
 	if(bytes) {
@@ -107,7 +107,7 @@ void NotConnectedInterlocutor2::waitDataToSend(int timeout) {
 	SDL_UnlockMutex(_mutexDataToSend);
 }
 
-void NotConnectedInterlocutor2::pushTechnicalMessageToSend(JktUtils::Bytes* bytes) {
+void NotConnectedInterlocutor2::pushTechnicalMessageToSend(jkt::Bytes* bytes) {
 	SDL_LockMutex(_mutexDataToSend);
 
 	if(bytes) {
@@ -120,7 +120,7 @@ void NotConnectedInterlocutor2::pushTechnicalMessageToSend(JktUtils::Bytes* byte
 }
 
 
-void NotConnectedInterlocutor2::pushTechnicalMessageToSend(const IPaddress& address, JktUtils::Bytes* bytes) {
+void NotConnectedInterlocutor2::pushTechnicalMessageToSend(const IPaddress& address, jkt::Bytes* bytes) {
 	SDL_LockMutex(_mutexDataToSend);
 
 	if(bytes) {
@@ -132,7 +132,7 @@ void NotConnectedInterlocutor2::pushTechnicalMessageToSend(const IPaddress& addr
 	SDL_CondSignal(_condDataToSend);	// If we are waiting data to send, stop waiting
 }
 
-void NotConnectedInterlocutor2::pushDataToSend(const IPaddress& address, JktUtils::Bytes* bytes) {
+void NotConnectedInterlocutor2::pushDataToSend(const IPaddress& address, jkt::Bytes* bytes) {
 	SDL_LockMutex(_mutexDataToSend);
 
 	if(bytes) {

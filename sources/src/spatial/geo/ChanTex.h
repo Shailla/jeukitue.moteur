@@ -2,7 +2,7 @@
 #ifndef __JKT__CHANTEX_H
 #define __JKT__CHANTEX_H
 
-namespace JktMoteur 
+namespace jkt 
 {
 
 class CChanTex

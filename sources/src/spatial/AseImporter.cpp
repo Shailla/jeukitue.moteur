@@ -25,9 +25,9 @@ using namespace boost::filesystem;
 
 extern CCfg Config;
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktMoteur
+namespace jkt
 {
 
 void AseImporter::lanceImportAse(const string& aseFilename, ConsoleView* console)  {
@@ -120,7 +120,7 @@ int AseImporter::importAse(void* arg) {
 				CMaterialTexture *matRef = (CMaterialTexture*)mat;
 
 				texture = matRef->m_FichierTexture;
-				JktUtils::RessourcesLoader::getFileRessource(texture);
+				jkt::RessourcesLoader::getFileRessource(texture);
 				texturesToCopy.insert(texture);
 			}
 			else if( mat->Type()==CMaterial::MAT_TYPE_MULTI ) {
@@ -129,7 +129,7 @@ int AseImporter::importAse(void* arg) {
 				for( int i=0 ; i<matMulti->NbrTex() ; i++ ) {
 					if( matMulti->m_TabMat[i]->Type()==CMaterial::MAT_TYPE_TEXTURE ) {
 						texture = ((CMaterialTexture*)matMulti->m_TabMat[i])->m_FichierTexture;
-						JktUtils::RessourcesLoader::getFileRessource(texture);
+						jkt::RessourcesLoader::getFileRessource(texture);
 						texturesToCopy.insert(texture);
 					}
 				}

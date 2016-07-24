@@ -14,7 +14,7 @@
 
 using namespace std;
 
-namespace JktNet {
+namespace jkt {
 
 class JsonValue {
 public:
@@ -25,6 +25,6 @@ public:
 	std::string toString();
 };
 
-} /* namespace JktNet */
+} /* namespace jkt */
 
 #endif /* SRC_RESEAU_WEB_JSON_JSONVALUE_H_ */

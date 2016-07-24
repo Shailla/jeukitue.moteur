@@ -21,7 +21,7 @@ extern "C" {
 
 #include "plugin/api/gui/PluginWindow.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginContext;
 
@@ -50,5 +50,5 @@ public:
 	int setPosition(lua_State* L);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINWINDOWPROXY_H_ */

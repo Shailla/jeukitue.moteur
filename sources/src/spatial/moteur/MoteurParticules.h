@@ -1,7 +1,7 @@
 #ifndef __JKT__MOTEURPARTICULES_H
 #define __JKT__MOTEURPARTICULES_H
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CMoteurParticules {

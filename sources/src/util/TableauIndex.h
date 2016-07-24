@@ -2,7 +2,7 @@
 #ifndef __JKT__TABLEAUINDEX_H
 #define __JKT__TABLEAUINDEX_H
 
-namespace JktUtils
+namespace jkt
 {
 
 template <class X> class CTableauIndex

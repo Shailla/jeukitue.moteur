@@ -12,7 +12,7 @@
 
 #include "util/exception/UnserializeException.h"
 
-namespace JktUtils {
+namespace jkt {
 
 class Data {
 

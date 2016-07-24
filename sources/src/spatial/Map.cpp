@@ -55,9 +55,9 @@ class CGame;
 #include "spatial/MapLogger.h"
 #include "spatial/Map.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
-namespace JktMoteur
+namespace jkt
 {
 
 const char* CMap::identifier = "Map";
@@ -71,7 +71,7 @@ CMap::CMap(CMap* parent) : CGeo(parent) {
 	_isPluginsActivated = false;
 }
 
-CMap::CMap(CMap* parent, const string& nomFichier) throw(JktUtils::CErreur) : CGeo(parent) {
+CMap::CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur) : CGeo(parent) {
 	LOGDEBUG(("CMap::CMap(*parent,nomFichier=%s)%T", nomFichier.c_str(), this ));
 
 	if( !Lit(nomFichier, 0) ) {
@@ -89,7 +89,7 @@ CMap::CMap(CMap* parent, const string& nomFichier) throw(JktUtils::CErreur) : CG
 	Init();
 }
 
-CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(JktUtils::CErreur) : CGeo(parent) {
+CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur) : CGeo(parent) {
 	LOGDEBUG(("CMap::CMap(*parent,nomFichier=%s)%T", nomFichier.c_str(), this ));
 
 	if( !Lit(nomFichier, mapLogger) ) {
@@ -476,7 +476,7 @@ bool CMap::Save(TiXmlElement* element) {			// Sauve l'objet géo dans un fichier 
 bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 	// Répertoire et fichier de la Map
 	string partialFileName = mapName;
-	bool isResource = JktUtils::RessourcesLoader::getFileRessource(partialFileName);
+	bool isResource = jkt::RessourcesLoader::getFileRessource(partialFileName);
 
 	// Si le fichier Map n'est pas une resource alors c'est une map classique
 	if(!isResource) {
@@ -764,7 +764,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 	return result;
 }
 
-void CMap::Init() throw(JktUtils::CErreur) {	// Initialisation de la CMap
+void CMap::Init() throw(jkt::CErreur) {	// Initialisation de la CMap
 	// Initialisation des object géométriques
 	vector<CGeo*>::iterator iterGeo;
 

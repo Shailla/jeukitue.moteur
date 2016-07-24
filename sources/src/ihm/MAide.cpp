@@ -19,13 +19,13 @@ using namespace std;
 
 #include "ihm/MAide.h"
 
-using namespace JktMenu;
+using namespace jkt;
 
 extern CFocus *pFocus;
 extern bool Aide;
 
 
-namespace JktMenu
+namespace jkt
 {
 
 	/****************/

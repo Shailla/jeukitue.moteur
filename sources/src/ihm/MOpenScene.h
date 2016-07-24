@@ -2,7 +2,7 @@
 #ifndef __JKT__MENU_OPEN_SCENE_H
 #define __JKT__MENU_OPEN_SCENE_H
 
-namespace JktMenu
+namespace jkt
 {
 
 void lanceMenuOpenScene(void *var);

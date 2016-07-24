@@ -16,7 +16,7 @@
 #define ASSERT_NOT_NULL(var, message) assertNotNull(__FILE__, __LINE__, var, message)
 #define ASSERT_EQUAL(expected, var, message) assertEqual(__FILE__, __LINE__, expected, var, message)
 
-namespace JktTest {
+namespace jkt {
 
 class TestError {
 public:
@@ -69,5 +69,5 @@ public:
 	void log(const std::ostringstream& message, int line);
 };
 
-} /* namespace JktTest */
+} /* namespace jkt */
 #endif /* TEST_H_ */

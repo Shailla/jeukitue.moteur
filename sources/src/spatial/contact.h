@@ -4,7 +4,7 @@
 
 #include "util/TableauIndex.cpp"
 
-namespace JktMoteur
+namespace jkt
 {
 
 void contactPlayer(CPlayer *player, float *normal, float distanceW);

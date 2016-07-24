@@ -19,7 +19,7 @@ AddValeurFromClientChangement::AddValeurFromClientChangement(istringstream& in) 
 	unserialize(in);
 }
 
-AddValeurFromClientChangement::AddValeurFromClientChangement(const vector<int>& parentBrancheId, int valeurTmpId, int revision, const string& valeurName, JktUtils::AnyData valeur) : Changement("AddValFromClChgt", PRIORITY_AddValeurFromClientChangement, valeurTmpId) {
+AddValeurFromClientChangement::AddValeurFromClientChangement(const vector<int>& parentBrancheId, int valeurTmpId, int revision, const string& valeurName, jkt::AnyData valeur) : Changement("AddValFromClChgt", PRIORITY_AddValeurFromClientChangement, valeurTmpId) {
 	_parentBrancheId = parentBrancheId;
 	_valeurTmpId = valeurTmpId;
 	_revision = revision;
@@ -98,7 +98,7 @@ int AddValeurFromClientChangement::getRevision() const {
 	return _revision;
 }
 
-JktUtils::AnyData AddValeurFromClientChangement::getValeur() const {
+jkt::AnyData AddValeurFromClientChangement::getValeur() const {
 	return _valeur;
 }
 

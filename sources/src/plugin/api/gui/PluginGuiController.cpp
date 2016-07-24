@@ -10,7 +10,7 @@
 
 #include "plugin/api/gui/PluginGuiController.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 PluginGuiController::PluginGuiController() {
 }
@@ -28,4 +28,4 @@ void PluginGuiController::catchComboListEvent(AG_Event* event) {
 	pluginComboList->selectionChangedEvent(event);
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

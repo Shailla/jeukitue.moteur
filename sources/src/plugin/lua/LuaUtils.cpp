@@ -15,7 +15,7 @@ using namespace std;
 
 #include "plugin/lua/LuaUtils.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 LuaUtils::LuaUtils() {
 }
@@ -175,4 +175,4 @@ bool LuaUtils::isCheckLuaParametersTypes(lua_State* L, const char* FILE, const c
 	return true;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

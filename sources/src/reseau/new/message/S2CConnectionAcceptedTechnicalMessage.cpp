@@ -10,7 +10,7 @@
 
 #include "util/types/Bytes.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 #include "reseau/new/message/S2CConnectionAcceptedTechnicalMessage.h"
 

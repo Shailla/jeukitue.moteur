@@ -11,7 +11,7 @@
 #include <fstream>
 #include <string>
 
-namespace JktMoteur {
+namespace jkt {
 
 class MapLogger {
 	static const char* LOG_INFO_PREFIX;
@@ -27,6 +27,6 @@ public:
 	void logError(const std::string& trace);
 };
 
-} /* namespace JktNet */
+} /* namespace jkt */
 
 #endif /* SRC_SPATIAL_MAPLOGGER_H_ */

@@ -7,7 +7,7 @@
 
 #include "service/dto/AdvancedConfigurationDto.h"
 
-namespace JktService {
+namespace jkt {
 
 AdvancedConfigurationDto::AdvancedConfigurationDto() {
 	_playerCameraHeight = 0.0f;
@@ -42,4 +42,4 @@ void AdvancedConfigurationDto::setPlayerCameraHeight(const float playerCameraHei
 	_playerCameraHeight = playerCameraHeight;
 }
 
-} /* namespace JktService */
+} /* namespace jkt */

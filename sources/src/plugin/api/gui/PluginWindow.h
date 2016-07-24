@@ -14,7 +14,7 @@
 #include "plugin/api/gui/PluginPanel.h"
 #include "plugin/PluginContext.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginWindow : public PluginPanel {
 	friend class PluginWindowProxy;
@@ -37,5 +37,5 @@ protected:
 	void setSize(const int w, const int h);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINWINDOW_H_ */

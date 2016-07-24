@@ -19,7 +19,7 @@ using namespace std;
 
 #include "service/InformationService.h"
 
-namespace JktService {
+namespace jkt {
 
 InformationService::InformationService() {
 }
@@ -44,4 +44,4 @@ VersionsDto InformationService::loadVersions() {
 			);
 }
 
-} /* namespace JktService*/
+} /* namespace jkt */

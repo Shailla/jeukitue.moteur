@@ -12,7 +12,7 @@
 
 #include "test/Test.h"
 
-namespace JktTest {
+namespace jkt {
 
 class UtilsTest : public Test {
 	void stringUtilsTest();
@@ -28,5 +28,5 @@ public:
 	void test();
 };
 
-} /* namespace JktUtils */
+} /* namespace jkt */
 #endif /* UTILSTEST_H_ */

@@ -14,7 +14,7 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginConfigurationProxy {
 	PluginConfigurationProxy() {}		// Singleton
@@ -62,5 +62,5 @@ public:
 	static int initAudio(lua_State* L);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINCONFIGURATIONPROXY_H_ */

@@ -12,7 +12,7 @@
 
 using namespace std;
 
-namespace JktNet {
+namespace jkt {
 
 JsonValue::JsonValue() {
 }
@@ -26,4 +26,4 @@ string JsonValue::toString() {
 	return str.str();
 }
 
-} /* namespace JktNet */
+} /* namespace jkt */

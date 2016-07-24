@@ -24,7 +24,7 @@ using namespace std;
 #include "data/Branche.h"
 #include "data/PrivateBranche.h"
 
-using namespace JktUtils;
+using namespace jkt;
 
 
 BrancheIterator::BrancheIterator(Branche* origin, DistantTreeProxy* distant) {
@@ -489,7 +489,7 @@ Valeur* Branche::createValeurForServeur(DistantTreeProxy* distant, UPDATE_MODE u
 	return newValeur;
 }
 
-Valeur* Branche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const string& valeurName, int valeurRevision, const JktUtils::AnyData& valeur) {
+Valeur* Branche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const string& valeurName, int valeurRevision, const jkt::AnyData& valeur) {
 	Valeur* newValeur = getValeurByIdOrTmpId(distant, valeurId);
 
 	if(newValeur) {

@@ -7,7 +7,7 @@
 
 #include "service/dto/VersionsDto.h"
 
-namespace JktService {
+namespace jkt {
 
 VersionsDto::VersionsDto(const string& openGlVersion, const string& gluVersion, const string& fmodVersion, const string& agarVersion) {
 	_openGlVersion = openGlVersion;
@@ -35,4 +35,4 @@ string VersionsDto::getOpenGlVersion() const {
 	return _openGlVersion;
 }
 
-} /* namespace JktService */
+} /* namespace jkt */

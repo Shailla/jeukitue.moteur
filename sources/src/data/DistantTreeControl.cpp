@@ -48,15 +48,15 @@ void DistantTreeControl::initVid(DataTree *tree, DistantTreeProxy* distant) {
 }
 
 void DistantTreeControl::create(Branche* branche) {
-	_state = (ValeurInt*)branche->createValeurForServeur(_distant, ANY, "tree-state", 0, JktUtils::AnyData(TREE_STATE::STATE_NOT_READY));
-	_updateClientToServerDelay = (ValeurInt*)branche->createValeurForServeur(_distant, ANY, "tree-update-clientToServer-delay", 0, JktUtils::AnyData(Config.Reseau.getTreeUpdateClientToServerDelay()));
-	_updateServerToClientDelay = (ValeurInt*)branche->createValeurForServeur(_distant, ANY, "tree-update-serverToClient-delay", 0, JktUtils::AnyData(Config.Reseau.getTreeUpdateServerToClientDelay()));
+	_state = (ValeurInt*)branche->createValeurForServeur(_distant, ANY, "tree-state", 0, jkt::AnyData(TREE_STATE::STATE_NOT_READY));
+	_updateClientToServerDelay = (ValeurInt*)branche->createValeurForServeur(_distant, ANY, "tree-update-clientToServer-delay", 0, jkt::AnyData(Config.Reseau.getTreeUpdateClientToServerDelay()));
+	_updateServerToClientDelay = (ValeurInt*)branche->createValeurForServeur(_distant, ANY, "tree-update-serverToClient-delay", 0, jkt::AnyData(Config.Reseau.getTreeUpdateServerToClientDelay()));
 }
 
 void DistantTreeControl::attach(Branche* branche) {
 	_state = (ValeurInt*)branche->getValeurByName(0, "tree-state");
-	_updateClientToServerDelay = (ValeurInt*)branche->createValeurForServeur(_distant, ANY, "tree-update-clientToServer-delay", 0, JktUtils::AnyData(Config.Reseau.getTreeUpdateClientToServerDelay()));
-	_updateServerToClientDelay = (ValeurInt*)branche->createValeurForServeur(_distant, ANY, "tree-update-serverToClient-delay", 0, JktUtils::AnyData(Config.Reseau.getTreeUpdateServerToClientDelay()));
+	_updateClientToServerDelay = (ValeurInt*)branche->createValeurForServeur(_distant, ANY, "tree-update-clientToServer-delay", 0, jkt::AnyData(Config.Reseau.getTreeUpdateClientToServerDelay()));
+	_updateServerToClientDelay = (ValeurInt*)branche->createValeurForServeur(_distant, ANY, "tree-update-serverToClient-delay", 0, jkt::AnyData(Config.Reseau.getTreeUpdateServerToClientDelay()));
 }
 
 TREE_STATE DistantTreeControl::getState() {

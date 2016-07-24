@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace JktPlugin {
+namespace jkt {
 
 PluginComboList::PluginComboList(AG_Widget* parent, const string& title, SelectionChangedListener* selectionChangedListener) {
 	_selectionChangedListener = selectionChangedListener;
@@ -59,4 +59,4 @@ void PluginComboList::expandVert() {
 	AG_ExpandVert(_combo);
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

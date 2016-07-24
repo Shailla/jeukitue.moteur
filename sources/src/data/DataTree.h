@@ -40,7 +40,7 @@ public:
 	virtual Branche* createBranche(DistantTreeProxy* distant, const std::vector<int>& parentBrancheId, const std::string& brancheName) = 0;
 	virtual Branche* createPrivateBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) = 0;
 
-	virtual Valeur* createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const JktUtils::AnyData valeur) = 0;
+	virtual Valeur* createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const jkt::AnyData valeur) = 0;
 
 
 	/* *********************************

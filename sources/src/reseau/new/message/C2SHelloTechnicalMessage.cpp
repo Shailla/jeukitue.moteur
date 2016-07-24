@@ -16,9 +16,9 @@ C2SHelloTechnicalMessage::C2SHelloTechnicalMessage() : TechnicalMessage(C2S_HELL
 C2SHelloTechnicalMessage::~C2SHelloTechnicalMessage() {
 }
 
-JktUtils::Bytes* C2SHelloTechnicalMessage::toBytes() {
+jkt::Bytes* C2SHelloTechnicalMessage::toBytes() {
 	char* msg = new char[2];
 	SDLNet_Write16(getCode(), msg);
 
-	return new JktUtils::Bytes(msg, 2);
+	return new jkt::Bytes(msg, 2);
 }

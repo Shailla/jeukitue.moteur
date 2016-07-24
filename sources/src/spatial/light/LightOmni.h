@@ -8,7 +8,7 @@
 
 #include "spatial/light/Light.h"
 
-namespace JktMoteur
+namespace jkt
 {
 
 class CLightOmni : public CLight

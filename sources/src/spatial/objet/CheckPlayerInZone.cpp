@@ -8,7 +8,7 @@
 
 #include "spatial/objet/CheckPlayerInZone.h"
 
-namespace JktMoteur {
+namespace jkt {
 
 CheckPlayerInZone::CheckPlayerInZone(CMap *map) : CGeo(map) {
 }

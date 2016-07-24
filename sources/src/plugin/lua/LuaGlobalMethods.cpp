@@ -11,7 +11,7 @@
 #include "main/Fabrique.h"
 #include "plugin/lua/LuaGlobalMethods.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 const char* LuaGlobalMethods::REFRESH_EVENT_TYPE = "refresh";
 
@@ -83,4 +83,4 @@ int LuaGlobalMethods::subscribeEvents(lua_State* L) {
 	return 0;
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

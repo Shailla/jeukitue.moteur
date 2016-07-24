@@ -15,7 +15,7 @@
 
 #include "plugin/PluginContext.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginNumeric {
 	friend class PluginRadioButtonProxy;
@@ -33,5 +33,5 @@ public:
 	float getValue();
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINNUMERIC_H_ */

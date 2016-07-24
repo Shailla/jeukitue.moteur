@@ -19,7 +19,7 @@ extern "C" {
 #include "plugin/lua/proxy/LunarProxy.h"
 #include "plugin/api/gui/listener/ButtonPressedListener.h"
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginContext;
 class PluginButton;
@@ -47,5 +47,5 @@ public:
 	int expandVert(lua_State* L);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINBUTTONPROXY_H_ */

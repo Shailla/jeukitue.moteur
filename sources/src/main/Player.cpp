@@ -40,9 +40,9 @@ class CGame;
 #include "main/Game.h"
 #include "reseau/SPA.h"
 
-using namespace JktSon;
-using namespace JktUtils;
-using namespace JktMoteur;
+using namespace jkt;
+using namespace jkt;
+using namespace jkt;
 
 extern CCfg Config;
 extern CDemonSons *DemonSons;
@@ -88,8 +88,8 @@ CPlayer::CPlayer() {
 
 	if(_weaponsChoice == NULL) {
 		try {
-			Uint8* pixelsWeaponsChoice = JktMoteur::litFichierImage("@Icone/Armes.bmp", 0.75f);
-			_weaponsChoice = JktMoteur::litFichierIcone("@Icone/Armes.bmp", 0.75f, pixelsWeaponsChoice);
+			Uint8* pixelsWeaponsChoice = jkt::litFichierImage("@Icone/Armes.bmp", 0.75f);
+			_weaponsChoice = jkt::litFichierIcone("@Icone/Armes.bmp", 0.75f, pixelsWeaponsChoice);
 		}
 		catch(CErreur& erreur) {
 			LOGDEBUG(("CPlayer::CPlayer() Echec de lecture de texture d'icone des armes%T", this));
@@ -99,7 +99,7 @@ CPlayer::CPlayer() {
 }
 
 bool CPlayer::openInClientMode(const IPaddress &address) {				// Ouverture en mode client
-	_spa = new JktNet::CSPA();
+	_spa = new jkt::CSPA();
 	return _spa->openInClientMode(address);
 }
 
@@ -495,7 +495,7 @@ string CPlayer::nom() const {
 	return _nom;
 }
 
-void CPlayer::Skin(JktMoteur::CMap *skin) {
+void CPlayer::Skin(jkt::CMap *skin) {
 	_pSkin = skin;
 }
 

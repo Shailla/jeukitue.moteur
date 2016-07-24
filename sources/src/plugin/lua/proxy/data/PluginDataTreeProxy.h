@@ -16,7 +16,7 @@ extern "C" {
 
 class DataTree;
 
-namespace JktPlugin {
+namespace jkt {
 
 class PluginDataTreeProxy {
 	DataTree* _dataTree;
@@ -37,5 +37,5 @@ public:
 	int createValeur(lua_State *L);
 };
 
-} /* namespace JktPlugin */
+} /* namespace jkt */
 #endif /* PLUGINDATATREEPROXY_H_ */

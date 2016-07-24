@@ -10,9 +10,9 @@ using namespace std;
 
 #include "spatial/geo/Geo.h"
 
-namespace JktMoteur
+namespace jkt
 {
-JktUtils::CGenRef CGeo::GENREF;
+jkt::CGenRef CGeo::GENREF;
 
 CGeo::CGeo( CMap *map ) {
 	pMap = map;

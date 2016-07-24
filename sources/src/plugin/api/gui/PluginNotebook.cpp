@@ -11,7 +11,7 @@
 
 using namespace std;
 
-namespace JktPlugin {
+namespace jkt {
 
 PluginNotebook::PluginNotebook(AG_Widget* parent) {
 	_notebook = AG_NotebookNew(parent, 0);
@@ -26,4 +26,4 @@ PluginTab* PluginNotebook::addTab(const string& tabTitle) {
 PluginNotebook::~PluginNotebook() {
 }
 
-} /* namespace JktPlugin */
+} /* namespace jkt */

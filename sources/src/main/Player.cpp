@@ -18,6 +18,7 @@ using namespace std;
 
 class CGame;
 
+#include "Constantes.h"
 #include "main/Fabrique.h"
 #include "util/GLUtils.h"
 #include "util/math_vectoriel.h"
@@ -48,10 +49,6 @@ extern CDemonSons *DemonSons;
 extern CGame Game;
 
 #include "main/Player.h"
-
-#define DISTANCE_INTER_JOUEURS_ENTRY_POINT 5.0f
-const float Pi = 3.14159265f;
-
 
 Icone* CPlayer::_weaponsChoice = NULL;
 
@@ -503,18 +500,17 @@ void CPlayer::Skin(JktMoteur::CMap *skin) {
 }
 
 void CPlayer::deplace() {
-	const float quantumVitesse = 0.003f;
 	float norm;
 	float vect[3];
 
 	if( fabsf(Pente())>0.707f ) {	// Si la pente est inférieure à 45°
-		if( (fabsf(getClavier()->m_fDroite)<quantumVitesse/(5.f)) && (fabsf(getClavier()->m_fAvance)<quantumVitesse/(5.f)) )
+		if( (fabsf(getClavier()->m_fDroite)<QUANTUM_VITESSE_PLAYER/(5.f)) && (fabsf(getClavier()->m_fAvance)<QUANTUM_VITESSE_PLAYER/(5.f)) )
 				// S'il n'y a pas de requête de déplacement=>ralenti le joueur
 		{
 			getVitesse( vect );
 
-			if(norme(vect) > quantumVitesse/2) {
-				float var = 1 - ( quantumVitesse/(2*norme( vect )) );
+			if(norme(vect) > QUANTUM_VITESSE_PLAYER/2) {
+				float var = 1 - ( QUANTUM_VITESSE_PLAYER/(2*norme( vect )) );
 
 				vect[0] = vect[0]*var;
 				vect[1] = vect[1]*var;
@@ -543,11 +539,11 @@ void CPlayer::deplace() {
 	if(fabsf(Pente()) > 0.707f) {	//Si la pente est inférieure à 45°=>limite la vitesse
 		norm = norme( vitesse );
 
-		if(norm > 10.0*quantumVitesse) {	//Limitation de la norme de la vitesse du joueur à 10 fois quantumVitesse
+		if(norm > MAX_VITESSE_PLAYER) {	//Limitation de la vitesse du joueur
 			normalise( vitesse );
-			vitesse[0] = vitesse[0]*10.0f*quantumVitesse;
-			vitesse[1] = vitesse[1]*10.0f*quantumVitesse;
-			vitesse[2] = vitesse[2]*10.0f*quantumVitesse;
+			vitesse[0] = vitesse[0]*MAX_VITESSE_PLAYER;
+			vitesse[1] = vitesse[1]*MAX_VITESSE_PLAYER;
+			vitesse[2] = vitesse[2]*MAX_VITESSE_PLAYER;
 
 			setVitesse( vitesse );
 		}
@@ -555,20 +551,19 @@ void CPlayer::deplace() {
 }
 
 void CPlayer::faitRequeteClavier() {
-	const float quantumVitesse = 0.003f;
 	float cosTeta = /*FastCos0(erwin->Teta/180.0f*Pi);*/	cosf(_teta/180.0f*Pi);
 	float sinTeta = /*FastSin0(erwin->Teta/180.0f*Pi);*/	sinf(_teta/180.0f*Pi);
 	float vect[3];
 
 	getVitesse( vect );
 
-	vect[1] += quantumVitesse*_pClavier->m_fMonte;
+	vect[1] += QUANTUM_VITESSE_PLAYER*_pClavier->m_fMonte;
 
-	vect[0] += cosTeta*quantumVitesse*_pClavier->m_fDroite;
-	vect[2] -= sinTeta*quantumVitesse*_pClavier->m_fDroite;
+	vect[0] += cosTeta*QUANTUM_VITESSE_PLAYER*_pClavier->m_fDroite;
+	vect[2] -= sinTeta*QUANTUM_VITESSE_PLAYER*_pClavier->m_fDroite;
 
-	vect[0] += sinTeta*quantumVitesse*_pClavier->m_fAvance;
-	vect[2] += cosTeta*quantumVitesse*_pClavier->m_fAvance;
+	vect[0] += sinTeta*QUANTUM_VITESSE_PLAYER*_pClavier->m_fAvance;
+	vect[2] += cosTeta*QUANTUM_VITESSE_PLAYER*_pClavier->m_fAvance;
 
 	setVitesse( vect );
 

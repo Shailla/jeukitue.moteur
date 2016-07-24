@@ -87,7 +87,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 
 		CMap *pMapJoueur = new CMap(0, mapJoueur);
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
-		console->println(ConsoleView::COT_INFO, "Scaling du skin");
+		console->println(ConsoleView::COT_INFO, "Scaling du skin...");
 		LOGINFO(("Scaling du skin"));
 		pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
 
@@ -116,7 +116,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 
 		CMap *pMapJoueurJulien = new CMap(0, "@Joueur\\joueurTex");
 		pMapJoueurJulien->EchangeXZ();					// Ajuste les coordonnées
-		console->println(ConsoleView::COT_INFO, "Scaling du skin");
+		console->println(ConsoleView::COT_INFO, "Scaling du skin...");
 		LOGINFO(("Scaling du skin"));
 		pMapJoueurJulien->Scale(-0.6f, 0.6f, 0.6f);
 
@@ -149,7 +149,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 
 		CMap *pMapJoueur = new CMap(0, mapJoueur);
 		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
-		console->println(ConsoleView::COT_INFO, "Scaling du skin");
+		console->println(ConsoleView::COT_INFO, "Scaling du skin...");
 		LOGINFO(("Scaling du skin"));
 		pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
 
@@ -168,7 +168,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		gameDto->getPlayers().push_back(sprite);				// Ajoute le joueur à la liste des joueurs
 	}
 
-	console->println(ConsoleView::COT_INFO, "Map lue");
+	console->println(ConsoleView::COT_COMMAND_RESULT, "Map lue.");
 	LOGINFO(("Map lue"));
 
 	Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_OUVERTURE);

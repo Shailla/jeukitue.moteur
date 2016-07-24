@@ -39,11 +39,7 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 
 using namespace std;
 
-#define Pi				3.14159265f			//nombre pi pour les calculs
-#define quantumVitesse	0.003f				//pas d'augmentation de la vitesse du joueur (accélération discrête)
-#define DELAY_TIMER		10					// Temps entre 2 calculs de scènes (en ms)
-#define TAILLEFONT		0.7f				// Taille des fontes
-
+#include "Constantes.h"
 #include "SDL.h"
 #include "SDL_image.h"
 #include "SDL_net.h"
@@ -57,8 +53,8 @@ using namespace std;
 #include "util/math_vectoriel.h"		//Fonctions de calculs vectoriels
 #include "util/V3D.h"
 #include "util/mathFast.h"
-#include "util/Trace.h"				// Gestion du fichier de traces
-#include "util/Tableau.cpp"			//Liste chaînée
+#include "util/Trace.h"					// Gestion du fichier de traces
+#include "util/Tableau.cpp"				//Liste chaînée
 #include "util/TableauIndex.cpp"		//Liste Indexée
 #include "util/FindFolder.h"
 #include "util/Erreur.h"
@@ -200,7 +196,7 @@ void gravitePlayer(CPlayer *player)	// Fonction implémentant la gravité
 	float vect[3];
 	player->getVitesse( vect );
 
-	vect[1] -= 0.5*quantumVitesse; // Ajout de gravité au joueur
+	vect[1] -= 0.5*QUANTUM_VITESSE_PLAYER; // Ajout de gravité au joueur
 
 	player->setVitesse( vect );
 }
@@ -764,9 +760,9 @@ void chopeLesEvenements() {
 			balle->setPosition( vect[0], vect[1], vect[2]);		// positionne le projectile sur la map
 
 			erwin->getVitesse( vect );
-			balle->changeVitesse( sinTeta*cosPhi*10*quantumVitesse + vect[0],
-					sinPhi*10*quantumVitesse + vect[1],
-					cosTeta*cosPhi*10*quantumVitesse + vect[2]);
+			balle->changeVitesse( 	sinTeta*cosPhi*10*QUANTUM_VITESSE_PLAYER + vect[0],
+									sinPhi*10*QUANTUM_VITESSE_PLAYER + vect[1],
+									cosTeta*cosPhi*10*QUANTUM_VITESSE_PLAYER + vect[2]);
 
 			balle->changeAction( gravitePlayer );	// associe au projectile une fonction de gravité
 			balle->changeContact( contactSprite );	// associe une fonction pour les contacts avec la map

@@ -7,8 +7,7 @@ using namespace std;
 
 class CDeleteWithGame;
 
-class CDeleteWithGame
-{
+class CDeleteWithGame {
 
 public:
 		// Constructeur/destructeur

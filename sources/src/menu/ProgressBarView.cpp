@@ -10,9 +10,7 @@
 
 #include "menu/ProgressBarView.h"
 
-ProgressBarView::ProgressBarView(const AG_EventFn controllerCallback)
-:View(controllerCallback)
-{
+ProgressBarView::ProgressBarView(const AG_EventFn controllerCallback) : View(controllerCallback) {
     m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS | AG_WINDOW_NOMOVE | AG_WINDOW_NORESIZE | AG_WINDOW_MODAL);
     AG_WindowSetCaption(m_window, "Avancement");
 

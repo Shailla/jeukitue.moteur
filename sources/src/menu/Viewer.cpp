@@ -27,6 +27,7 @@ using namespace std;
 #include "menu/MapTreeView.h"
 #include "menu/DataTreeView.h"
 #include "menu/PlayersView.h"
+#include "menu/QuestsView.h"
 #include "menu/NetworkConnectionsView.h"
 
 Viewer::Viewer(AG_EventFn controllerCallback) {
@@ -51,7 +52,12 @@ Viewer::Viewer(AG_EventFn controllerCallback) {
 	addMenuView(DATA_TREE_VIEW, new DataTreeView(controllerCallback));
 	addMenuView(PLAYERS_LIST_VIEW, new PlayersView(controllerCallback));
 	addMenuView(NETWORK_CONNECTIONS_VIEW, new NetworkConnectionsView(controllerCallback));
+
+	// Console
 	addSimpleView(CONSOLE_VIEW, new ConsoleView(controllerCallback));
+
+	// Fenêtre des quêtes
+	addSimpleView(QUESTS_VIEW, new QuestsView(controllerCallback));
 }
 
 void Viewer::addMenuView(VIEWS viewId, View* view) {

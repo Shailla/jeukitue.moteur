@@ -48,7 +48,7 @@ class CMap : CGeo {
 
 	vector<string> _plugins;						// Liste des plugins de la Map
 
-	int _Selection;								// Object géo sélectionné
+	int _Selection;									// Object géo sélectionné
 	bool _bSelection;								// Indique si le mode sélection est actif ou non
 
 	bool _isGlActivated;							// Indique si les éléments OpenGL de la MAP ont été initialisés

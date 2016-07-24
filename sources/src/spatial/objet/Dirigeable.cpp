@@ -38,9 +38,6 @@ Dirigeable::Dirigeable() {
 Dirigeable::~Dirigeable(void) {
 }
 
-void Dirigeable::Init() {			// Initialisation de l'objet géométrique
-}
-
 void Dirigeable::Affiche() {		// Fonction d'affichage de la porte
 }
 

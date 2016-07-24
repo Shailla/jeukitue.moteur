@@ -26,7 +26,6 @@ public:
 	Dirigeable();
 	~Dirigeable();
 
-	void Init();					// Initialisation de l'objet géométrique
 	void Affiche();					// Fonction d'affichage de l'objet géométrique
 	static void Affiche(Branche* branche);
 	void Refresh(CGame *game);		// Rafraichissement des données, position, vitesse, ... de l'objet

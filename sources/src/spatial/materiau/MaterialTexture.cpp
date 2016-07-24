@@ -128,12 +128,34 @@ bool CMaterialTexture::LitFichier( CIfstreamMap &fichier ) {
 	return true;
 }
 
-bool CMaterialTexture::SaveFichierMap( ofstream &fichier )
-{
+bool CMaterialTexture::SaveFichierMap( ofstream &fichier ) {
+	// Le fichier de texture a été transféré dans le répertoire de la Map
+	// Ce répertoire est représenté par le caractère '$' dans une Map
+	// Trouve le dernier séparateur ('/' ou '\') et remplace ce qui précède par '$'
+	// Exemple : /Chateau/Brique.jpg devient $Brique.jpg
 	string fichierTexture = m_FichierTexture;
-	int nbr = (int)fichierTexture.find_last_of('\\');
-	fichierTexture.replace(0,nbr,"$");
 
+	size_t backSlashPos = (int)fichierTexture.find_last_of('\\');
+	size_t slashPos = (int)fichierTexture.find_last_of('/');
+
+	size_t dollarPos;
+
+	if(slashPos < fichierTexture.size() && backSlashPos < fichierTexture.size()) {
+		dollarPos = (slashPos > backSlashPos)? slashPos : backSlashPos;
+	}
+	else if(slashPos < fichierTexture.size()) {
+		dollarPos = slashPos;
+	}
+	else if(backSlashPos < fichierTexture.size()) {
+		dollarPos = backSlashPos;
+	}
+	else {
+		dollarPos = 0;
+	}
+
+	fichierTexture.replace(0, dollarPos, "$");
+
+	// Enregistre dans le fichier
 	fichier << "\n\tFichierDeTexture\t" << fichierTexture;
 	fichier << "\n\tAmbient\t\t" << m_Ambient[0] << "\t" << m_Ambient[1] << "\t" << m_Ambient[2];
 	fichier << "\n\tDiffuse\t\t" << m_Diffuse[0] << "\t" << m_Diffuse[1] << "\t" << m_Diffuse[2];
@@ -142,23 +164,46 @@ bool CMaterialTexture::SaveFichierMap( ofstream &fichier )
 	return true;
 }
 
-bool CMaterialTexture::Save(TiXmlElement* element)
-{
+bool CMaterialTexture::Save(TiXmlElement* element) {
 	// Nom, référence...
 	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAU);
 	elMat->SetAttribute(Xml::TYPE, Xml::TEXTURE);
 	elMat->SetAttribute(Xml::REF, getRef());
 	element->LinkEndChild(elMat);
 
-		// Couleurs de matériau
+	// Couleurs de matériau
 	CGeoMaker::SaveCouleur3fv(elMat, Xml::AMBIANTE, m_Ambient);
 	CGeoMaker::SaveCouleur3fv(elMat, Xml::DIFFUSE, m_Diffuse);
 	CGeoMaker::SaveCouleur3fv(elMat, Xml::SPECULAR, m_Specular);
 
-		// Fichier de texture
+	// Fichier de texture
 	string fichierTexture = m_FichierTexture;
-	int nbr = (int)fichierTexture.find_last_of('\\');
-	fichierTexture.replace(0,nbr,"$");
+
+	// Le fichier de texture a été transféré dans le répertoire de la Map
+	// Ce répertoire est représenté par le caractère '$' dans une Map
+	// Trouve le dernier séparateur ('/' ou '\') et remplace ce qui précède par '$'
+	// Exemple : /Chateau/Brique.jpg devient $Brique.jpg
+	size_t backSlashPos = (int)fichierTexture.find_last_of('\\');
+	size_t slashPos = (int)fichierTexture.find_last_of('/');
+
+	size_t dollarPos;
+
+	if(slashPos < fichierTexture.size() && backSlashPos < fichierTexture.size()) {
+		dollarPos = (slashPos > backSlashPos)? slashPos : backSlashPos;
+	}
+	else if(slashPos < fichierTexture.size()) {
+		dollarPos = slashPos;
+	}
+	else if(backSlashPos < fichierTexture.size()) {
+		dollarPos = backSlashPos;
+	}
+	else {
+		dollarPos = 0;
+	}
+
+	fichierTexture.replace(0, dollarPos, "$");
+
+	// Enregistre dans le fichier XML
 	TiXmlElement* elFic = new TiXmlElement(Xml::FICHIER);
 	elFic->SetAttribute(Xml::NOM, fichierTexture.c_str());
 	elMat->LinkEndChild(elFic);

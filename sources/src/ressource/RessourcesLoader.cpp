@@ -15,14 +15,16 @@
 
 using namespace std;
 
+const char* MAP_ALIAS =				"$";							// Représente le répertoire de la Map courante dans une ressource
+
 const char* ASE_DIRECTORY =			"./ase/";						// Répertoire des MAP de jeu
 const char* ASE_EXTENSION =			".ASE";
 
 const char* MAP_DIRECTORY =			"./Map/";						// Répertoire des MAP de jeu
 const char* MAP_EXTENSION =			".map.xml";
 
-const char* PLAYER_MAP_DIRECTORY =	"./Ressources/Maps/Joueurs/";	// Répertoire des scripts des plugins
-const char* PLUGINS_DIRECTORY =		"./plugins/";					// Répertoire des MAP de jeu
+const char* PLAYER_MAP_DIRECTORY =	"./Ressources/Maps/Joueurs/";	// Répertoire Map des skins de joueur
+const char* PLUGINS_DIRECTORY =		"./plugins/";					// Répertoire des plugins
 const char* TEMPORARY_DIRECTORY =	"./Tmp/";						// Répertoire temporaire de travail
 
 namespace JktUtils
@@ -50,7 +52,7 @@ const char* RessourcesLoader::elementsNamesAndFolders[] = {
 bool RessourcesLoader::getFileRessource(const string& rep, string& file) {
 	if(!getFileRessource(file)) {	// Cherche s'il correspond à une ressource par défaut
 									// Sinon, cherche s'il correspond à une ressource du répertoire
-		if((int)file.find_first_of('$') == 0) {
+		if((int)file.find_first_of( MAP_ALIAS ) == 0) {
 			int nbr1 = (int)file.find_first_of('\\');
 			int nbr2 = (int)file.find_first_of('/');
 			int nbr;

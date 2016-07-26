@@ -83,4 +83,23 @@ int LuaGlobalMethods::subscribeEvents(lua_State* L) {
 	return 0;
 }
 
+/**
+ * Crée une zone virtuelle, quand le joueur passe dedans un événement est déclenché et les plugins sont notifiés
+ */
+int LuaGlobalMethods::createPlayerZoneDetector(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 7, LUA_PARAM_STRING, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER)) {
+		string detectorId = lua_tostring(L, 1);
+		double xMin = lua_tonumber(L, -1);
+		double xMax = lua_tonumber(L, -1);
+		double yMin = lua_tonumber(L, -1);
+		double yMax = lua_tonumber(L, -1);
+		double zMin = lua_tonumber(L, -1);
+		double zMax = lua_tonumber(L, -1);
+
+
+	}
+
+	return 0;
+}
+
 } /* namespace jkt */

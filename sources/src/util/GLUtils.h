@@ -18,6 +18,7 @@ public:
 	virtual ~GLUtils();
 
 	void drawSphere(float radius, int slices, int stacks);
+	void drawCube(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax);
 };
 
 #endif /* SRC_UTIL_GLUTILS_H_ */

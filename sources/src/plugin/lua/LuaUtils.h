@@ -8,6 +8,7 @@
 #ifndef LUAUTILS_H_
 #define LUAUTILS_H_
 
+#include <string>
 #include <vector>
 
 extern "C" {
@@ -40,10 +41,10 @@ public:
 
 	static bool isCheckLuaParametersTypes(lua_State* L, const char* FILE, const char* FUNCTION, int expectedParamNbr, ...);
 
-	static void readStringArray(lua_State *L, vector<string>& array, int& index);
-	static void readIntArray(lua_State *L, vector<int>& array, int& index);
-	static void pushIntArray(lua_State *L, const vector<int> array, int oneMoreValue);
-	static void pushIntArray(lua_State *L, const vector<int> array);
+	static void readStringArray(lua_State *L, std::vector<std::string>& array, int& index);
+	static void readIntArray(lua_State *L, std::vector<int>& array, int& index);
+	static void pushIntArray(lua_State *L, const std::vector<int> array, int oneMoreValue);
+	static void pushIntArray(lua_State *L, const std::vector<int> array);
 };
 
 } /* namespace jkt */

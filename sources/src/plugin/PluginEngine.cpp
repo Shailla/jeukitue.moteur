@@ -5,6 +5,7 @@
  *      Author: Erwin
  */
 
+#include <plugin/lua/proxy/PluginPlayerZoneDetectorProxy.h>
 #include <time.h>
 
 #include "util/Trace.h"
@@ -203,6 +204,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	lua_register(L, "log", &LuaGlobalMethods::log);
 	lua_register(L, "pushEvent", &LuaGlobalMethods::pushEvent);
 	lua_register(L, "subscribeEvents", &LuaGlobalMethods::subscribeEvents);
+	lua_register(L, "createPlayerZoneDetector", &LuaGlobalMethods::createPlayerZoneDetector);
 
 	// Fonctions pour la configuration
 	lua_register(L, "saveConfiguration", &PluginConfigurationProxy::saveConfiguration);
@@ -236,6 +238,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	Lunar<PluginWindowProxy>::Register(L);
 	Lunar<PluginDataTreeProxy>::Register(L);
 	Lunar<PluginDataValeurProxy>::Register(L);
+	Lunar<PluginPlayerZoneDetectorProxy>::Register(L);
 
 
 	/* ******************************************************************************

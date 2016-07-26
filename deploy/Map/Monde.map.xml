@@ -2,6 +2,7 @@
 <Map>
 	<Plugins>
 		<Load Nom="Sprite" />
+		<Load Nom="DetectPlayer" />
 	</Plugins>	
 	<ParticulesEngines>
 		<Neige NbrParticules="1000">

@@ -25,8 +25,7 @@ using namespace std;
 namespace jkt
 {
 
-class CSimpleGeo:public CGeo
-{
+class CSimpleGeo:public CGeo {
 	friend class GeoMaker;
 	string tostring;
 

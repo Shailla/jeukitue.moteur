@@ -45,6 +45,7 @@ class CGame;
 #include "spatial/geo/GeoObject.h"
 #include "spatial/objet/Porte.h"
 #include "spatial/objet/Navette.h"
+#include "spatial/objet/CheckPlayerInZone.h"
 #include "son/DemonSons.h"
 #include "reseau/SPA.h"
 #include "main/Player.h"
@@ -331,6 +332,10 @@ void CMap::add( CPorte *porte ) {
 	// Une porte est avant tout un objet géo
 	_geos.push_back( porte );		// Ajoute porte à la liste des objets affichables
 	_mouves.push_back( porte );		// Ajoute porte à la liste des objets à rafraichir
+}
+
+void CMap::add(CheckPlayerInZone* detector) {
+	_geos.push_back(detector);
 }
 
 void CMap::add( CNavette *navette ) {		// Une navette est avant tout un objet géo
@@ -906,8 +911,6 @@ void CMap::Refresh(CGame *game) {
 
 	for(iterMouve=_mouves.begin() ; iterMouve!=_mouves.end() ; iterMouve++)
 		(*iterMouve)->Refresh(game);
-
-	Fabrique::getPluginEngine()->sendRefreshEvent();
 }
 
 void CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index) {

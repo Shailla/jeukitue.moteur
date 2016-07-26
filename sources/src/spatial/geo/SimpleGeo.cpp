@@ -48,10 +48,7 @@ class CNavette;
 const char* CSimpleGeo::identifier = "SimpleGeo";
 
 //CONSTRUCTEURS
-CSimpleGeo::CSimpleGeo(CMap* map, const string& name, unsigned int nbrVertex, float* vertex,
-		unsigned int nbrFaces, int* faces, float* color, bool solid)
-:CGeo( map )
-{
+CSimpleGeo::CSimpleGeo(CMap* map, const string& name, unsigned int nbrVertex, float* vertex, unsigned int nbrFaces, int* faces, float* color, bool solid) : CGeo( map ) {
 	setName(name);	// Nom de l'objet
 
 	_color[0] = color[0];			// Couleur de l'objet
@@ -521,8 +518,7 @@ void CSimpleGeo::Color( float r, float g, float b ) {
 	return true;
 }*/
 
-bool CSimpleGeo::Lit(TiXmlElement* element, MapLogger* mapLogger)
-{
+bool CSimpleGeo::Lit(TiXmlElement* element, MapLogger* mapLogger) {
 	double ref;
 
 	// Nom
@@ -558,8 +554,7 @@ bool CSimpleGeo::Lit(TiXmlElement* element, MapLogger* mapLogger)
 	return true;
 }
 
-bool CSimpleGeo::Save(TiXmlElement* element)
-{
+bool CSimpleGeo::Save(TiXmlElement* element) {
 	// Sauve les données générales
 	TiXmlElement* elGeo = new TiXmlElement(Xml::GEO);
 	elGeo->SetAttribute(Xml::REF, getReference());

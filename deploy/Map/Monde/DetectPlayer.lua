@@ -2,7 +2,8 @@
 function onLoad()
 	log("Version Lua A : " .. _VERSION)
 	
-	createPlayerZoneDetector("idCoucou", 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+	detector = createPlayerZoneDetector("idCoucou", 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+	detector:setVisibility(true);
 end
 
 function eventManager(event)

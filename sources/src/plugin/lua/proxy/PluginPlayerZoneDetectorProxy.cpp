@@ -29,6 +29,10 @@ PluginPlayerZoneDetectorProxy::PluginPlayerZoneDetectorProxy(CheckPlayerInZone* 
 PluginPlayerZoneDetectorProxy::~PluginPlayerZoneDetectorProxy() {
 }
 
+int PluginPlayerZoneDetectorProxy::push(lua_State* L) {
+	return Lunar<PluginPlayerZoneDetectorProxy>::push(L, this);
+}
+
 int PluginPlayerZoneDetectorProxy::setVisibility(lua_State *L) {
 	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_BOOLEAN);
 
@@ -36,6 +40,10 @@ int PluginPlayerZoneDetectorProxy::setVisibility(lua_State *L) {
 	int index = 1;
 
 	bool visibility = lua_toboolean(L, index++);
+
+	if(_playerZoneDetector) {
+		_playerZoneDetector->setVisibility(visibility);
+	}
 
 	return 1;
 }

@@ -16,11 +16,12 @@ extern "C" {
 
 #include "lunar.h"
 
+#include "plugin/lua/proxy/LunarProxy.h"
 #include "spatial/objet/CheckPlayerInZone.h"
 
 namespace jkt {
 
-class PluginPlayerZoneDetectorProxy {
+class PluginPlayerZoneDetectorProxy : public LunarProxy {
 	CheckPlayerInZone* _playerZoneDetector;
 
 public:
@@ -30,6 +31,8 @@ public:
 	PluginPlayerZoneDetectorProxy(lua_State* L);
 	PluginPlayerZoneDetectorProxy(CheckPlayerInZone* playerZoneDetector);
 	virtual ~PluginPlayerZoneDetectorProxy();
+
+	int push(lua_State* L);
 
 	int setVisibility(lua_State *L);
 };

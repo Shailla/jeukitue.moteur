@@ -16,6 +16,7 @@ class CGame;
 
 #include "util/Erreur.h"
 #include "util/V3D.h"
+#include "main/Fabrique.h"
 #include "util/Tableau.cpp"
 #include "util/TableauIndex.cpp"
 #include "son/DemonSons.h"
@@ -252,10 +253,12 @@ jkt::CServer *CGame::getServer()
 {	return _networkManager->getServer();		}
 
 void CGame::Refresh() {
-		// Rafraichissement de la map
+	Fabrique::getPluginEngine()->sendRefreshEvent();
+
+	// Rafraichissement de la map
 	_map->Refresh( this );
 
-		// Rafraichissement des projectils des joueurs
+	// Rafraichissement des projectils des joueurs
 	CPlayer *player;
 	int curseur = -1;
 

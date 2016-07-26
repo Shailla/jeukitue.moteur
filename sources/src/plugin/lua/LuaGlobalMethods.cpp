@@ -5,11 +5,18 @@
  *      Author: Erwin
  */
 
+#include "main/Fabrique.h"
+#include "spatial/objet/CheckPlayerInZone.h"
+#include "spatial/Map.h"
+#include "main/Game.h"
 #include "menu/Controller.h"
+#include "plugin/lua/proxy/PluginPlayerZoneDetectorProxy.h"
 #include "plugin/PluginEngine.h"
 #include "plugin/lua/LuaUtils.h"
-#include "main/Fabrique.h"
+
 #include "plugin/lua/LuaGlobalMethods.h"
+
+extern CGame Game;
 
 namespace jkt {
 
@@ -89,14 +96,19 @@ int LuaGlobalMethods::subscribeEvents(lua_State* L) {
 int LuaGlobalMethods::createPlayerZoneDetector(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 7, LUA_PARAM_STRING, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER)) {
 		string detectorId = lua_tostring(L, 1);
-		double xMin = lua_tonumber(L, -1);
-		double xMax = lua_tonumber(L, -1);
-		double yMin = lua_tonumber(L, -1);
-		double yMax = lua_tonumber(L, -1);
-		double zMin = lua_tonumber(L, -1);
-		double zMax = lua_tonumber(L, -1);
+		float xMin = lua_tonumber(L, -1);
+		float xMax = lua_tonumber(L, -1);
+		float yMin = lua_tonumber(L, -1);
+		float yMax = lua_tonumber(L, -1);
+		float zMin = lua_tonumber(L, -1);
+		float zMax = lua_tonumber(L, -1);
 
+		CMap* map = Game.getMap();
+		CheckPlayerInZone* detector = new CheckPlayerInZone(map, detectorId, xMin, xMax, yMin, yMax, zMin, zMax);
+		map->add(detector);
 
+		PluginPlayerZoneDetectorProxy* detectorProxy = new PluginPlayerZoneDetectorProxy(detector);
+		return Lunar<PluginPlayerZoneDetectorProxy>::push(L, detectorProxy);
 	}
 
 	return 0;

@@ -28,6 +28,7 @@ class CNavette;
 class CGeoObject;
 class EntryPoint;
 class CMoteurParticules;
+class CheckPlayerInZone;
 
 class CMap : CGeo {
 	static const char* identifier;
@@ -112,6 +113,7 @@ public:
 	void add(CMaterial *mat);				// Ajoute un matériau à la map
 	void add(CLight *light);				// Ajoute une lumière à la map
 	void add(CPorte *porte);				// Ajoute une porte à la map
+	void add(CheckPlayerInZone* detector);
 	void add(CNavette *navette);			// Ajoute une navette à la map
 	void add(CMoteurParticules* engine);	// Ajoute un moteur de particules à la map
 

@@ -5,9 +5,9 @@
  *      Author: Erwin
  */
 
+#include <plugin/lua/proxy/map/PluginPlayerZoneDetectorProxy.h>
 #include "plugin/lua/LuaUtils.h"
 
-#include "plugin/lua/proxy/PluginPlayerZoneDetectorProxy.h"
 
 namespace jkt {
 

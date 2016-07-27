@@ -5,7 +5,6 @@
  *      Author: Erwin
  */
 
-#include <plugin/lua/proxy/PluginPlayerZoneDetectorProxy.h>
 #include <time.h>
 
 #include "util/Trace.h"
@@ -22,6 +21,8 @@
 #include "plugin/lua/proxy/gui/PluginNumericProxy.h"
 #include "plugin/lua/proxy/gui/PluginTabProxy.h"
 #include "plugin/lua/proxy/gui/PluginWindowProxy.h"
+#include "plugin/lua/proxy/map/PluginMapProxy.h"
+#include "plugin/lua/proxy/map/PluginPlayerZoneDetectorProxy.h"
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/lua/LuaGlobalMethods.h"
 #include "main/Cfg.h"
@@ -204,7 +205,6 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	lua_register(L, "log", &LuaGlobalMethods::log);
 	lua_register(L, "pushEvent", &LuaGlobalMethods::pushEvent);
 	lua_register(L, "subscribeEvents", &LuaGlobalMethods::subscribeEvents);
-	lua_register(L, "createPlayerZoneDetector", &LuaGlobalMethods::createPlayerZoneDetector);
 
 	// Fonctions pour la configuration
 	lua_register(L, "saveConfiguration", &PluginConfigurationProxy::saveConfiguration);
@@ -219,6 +219,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	lua_register(L, "isGameModeServer", &PluginConfigurationProxy::isModeServer);
 	lua_register(L, "getConstant", &PluginConfigurationProxy::getConstant);
 	lua_register(L, "initAudio", &PluginConfigurationProxy::initAudio);
+//	lua_register(L, "getMap", &PluginConfigurationProxy::getMap);
 
 	// Fonctions d'accès aux données
 	lua_register(L, "getDataTree", &PluginDataTreeProxy::getDataTree);
@@ -238,6 +239,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	Lunar<PluginWindowProxy>::Register(L);
 	Lunar<PluginDataTreeProxy>::Register(L);
 	Lunar<PluginDataValeurProxy>::Register(L);
+	Lunar<PluginMapProxy>::Register(L);
 	Lunar<PluginPlayerZoneDetectorProxy>::Register(L);
 
 
@@ -296,7 +298,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 
 
 	/* *******************************************************************************
-	 * Exécution de la méthode d'initialisation du plugin ("onLoad")
+	 * Vérification de la présence de la méthode d'initialisation du plugin ("onLoad")
 	 * ******************************************************************************/
 
 	pluginContext->logInfo("Recherche de la fonction onLoad du script...");
@@ -351,7 +353,7 @@ void PluginEngine::activateGlobalPlugin(const string& pluginName) {
 
 		pluginContext->logInfo("Plugin initialisé");
 
-		// Exécution de la méthode d'init du plugin
+		// Exécution de la méthode d'init du plugin (onLoad)
 		pluginContext->logInfo("Exécution du plugin");
 
 		int status = lua_pcall(L, 0, 0, 0);
@@ -369,7 +371,7 @@ void PluginEngine::activateGlobalPlugin(const string& pluginName) {
 /**
  * Activate the plugin.
  */
-void PluginEngine::activateMapPlugin(const string& pluginName, const string pluginDirectory) {
+void PluginEngine::activateMapPlugin(const string& pluginName, CMap* map, const string pluginDirectory) {
 	PluginContext* pluginContext = getMapPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
@@ -393,9 +395,11 @@ void PluginEngine::activateMapPlugin(const string& pluginName, const string plug
 		_nameMapPlugin[pluginName] = pluginContext;
 		_luaMapContext[L] = pluginContext;
 
+		pluginContext->logInfo("Injection de la Map");
+
 		pluginContext->logInfo("Plugin de Map initialisé");
 
-		// Exécution de la méthode d'init du plugin
+		// Exécution de la méthode d'init du plugin (onLoad)
 		pluginContext->logInfo("Exécution du plugin de Map");
 
 		int status = lua_pcall(L, 0, 0, 0);

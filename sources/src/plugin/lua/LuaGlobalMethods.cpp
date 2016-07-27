@@ -5,18 +5,13 @@
  *      Author: Erwin
  */
 
+#include "util/Trace.h"
 #include "main/Fabrique.h"
-#include "spatial/objet/CheckPlayerInZone.h"
-#include "spatial/Map.h"
-#include "main/Game.h"
 #include "menu/Controller.h"
-#include "plugin/lua/proxy/PluginPlayerZoneDetectorProxy.h"
 #include "plugin/PluginEngine.h"
 #include "plugin/lua/LuaUtils.h"
 
 #include "plugin/lua/LuaGlobalMethods.h"
-
-extern CGame Game;
 
 namespace jkt {
 
@@ -31,15 +26,19 @@ LuaGlobalMethods::~LuaGlobalMethods() {
 int LuaGlobalMethods::log(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
 		PluginContext* pluginContext = Fabrique::getPluginEngine()->getGlobalPluginContext(L);
+		string msg = lua_tostring(L, 1);
 
-		if(pluginContext) {
-			pluginContext->logUser(lua_tostring(L, 1));
+		if(pluginContext) {		// Recherche dans les plugins globaux
+			pluginContext->logUser(msg);
 		}
-		else {
+		else {					// Sinon recherche dans les plugins de la Map
 			pluginContext = Fabrique::getPluginEngine()->getMapPluginContext(L);
 
 			if(pluginContext) {
-				pluginContext->logUser(lua_tostring(L, 1));
+				pluginContext->logUser(msg);
+			}
+			else {
+				LOGERROR(("Contexte de plugin introuvable"));
 			}
 		}
 	}
@@ -85,30 +84,6 @@ int LuaGlobalMethods::subscribeEvents(lua_State* L) {
 		else {
 			pluginContext->logError("Unknown event subscription type : '" + type + "'");
 		}
-	}
-
-	return 0;
-}
-
-/**
- * Crée une zone virtuelle, quand le joueur passe dedans un événement est déclenché et les plugins sont notifiés
- */
-int LuaGlobalMethods::createPlayerZoneDetector(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 7, LUA_PARAM_STRING, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER)) {
-		string detectorId = lua_tostring(L, 1);
-		float xMin = lua_tonumber(L, -1);
-		float xMax = lua_tonumber(L, -1);
-		float yMin = lua_tonumber(L, -1);
-		float yMax = lua_tonumber(L, -1);
-		float zMin = lua_tonumber(L, -1);
-		float zMax = lua_tonumber(L, -1);
-
-		CMap* map = Game.getMap();
-		CheckPlayerInZone* detector = new CheckPlayerInZone(map, detectorId, xMin, xMax, yMin, yMax, zMin, zMax);
-		map->add(detector);
-
-		PluginPlayerZoneDetectorProxy* detectorProxy = new PluginPlayerZoneDetectorProxy(detector);
-		return Lunar<PluginPlayerZoneDetectorProxy>::push(L, detectorProxy);
 	}
 
 	return 0;

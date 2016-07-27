@@ -24,7 +24,7 @@ nextColorsG = {}
 nextColorsB = {}
 
 function onLoad()
-	log("Version Lua A : " .. _VERSION)
+	log("Version Lua : " .. _VERSION)
 	
 	if (isGameModeServer() or isGameModeLocal()) then
 		log("Jeu en mode serveur ou local => initialisation des sprites");

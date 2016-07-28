@@ -85,7 +85,7 @@ void Controller::executeAction(AG_Event* event) {
 
 	int action = AG_INT(1);
 
-	if(action >= 10000) {	// Au delà de 10000 il s'agit d'une action d'un plugin, on la redispatche à tous les plugins
+	if(action >= 10000) {	// Au delà de 10000 il s'agit d'une action générée  par un plugin, on la redispatche à tous les plugins
 		PluginActionEvent evt((Controller::Action)action);
 		_pluginEngine->dispatchEvent(evt);
 	}
@@ -96,6 +96,20 @@ void Controller::executeAction(AG_Event* event) {
 			_agarView->hideAllMenuViews();
 
 			PluginActionEvent evt(Controller::Action::HideMenuAction);
+			_pluginEngine->dispatchEvent(evt);
+		}
+		break;
+
+		case PlayerZoneDetectorActivated:
+		{
+			PluginActionEvent evt(Controller::Action::PlayerZoneDetectorActivated);
+			_pluginEngine->dispatchEvent(evt);
+		}
+		break;
+
+		case PlayerZoneDetectorUnactivated:
+		{
+			PluginActionEvent evt(Controller::Action::PlayerZoneDetectorUnactivated);
 			_pluginEngine->dispatchEvent(evt);
 		}
 		break;
@@ -146,11 +160,11 @@ void Controller::executeAction(AG_Event* event) {
 			_agarView->showMenuView(Viewer::CONFIGURATION_COMMANDES_VIEW);
 			break;
 
-		case showConfigurationAdvancedViewAction:
+		case ShowConfigurationAdvancedViewAction:
 		{
 			_agarView->hideAllMenuViews();
 
-			PluginActionEvent evt(Controller::Action::showConfigurationAdvancedViewAction);
+			PluginActionEvent evt(Controller::Action::ShowConfigurationAdvancedViewAction);
 			_pluginEngine->dispatchEvent(evt);
 		}
 		break;

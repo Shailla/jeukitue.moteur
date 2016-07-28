@@ -5,8 +5,13 @@
  *      Author: Erwin
  */
 
+#include <agar/core.h>
+#include <agar/gui.h>
+#include <agar/dev.h>
+
 #include "main/Fabrique.h"
 #include "util/GLUtils.h"
+#include "menu/Controller.h"
 
 #include "spatial/objet/CheckPlayerInZone.h"
 
@@ -18,6 +23,7 @@ CheckPlayerInZone::CheckPlayerInZone(CMap* map, const string& id, float zoneDete
 	_id = id;
 
 	_isVisible = false;
+	_playerInZone = false;
 
 	_zoneDetectionXmin = zoneDetectionXmin;
 	_zoneDetectionXmax = zoneDetectionXmax;
@@ -31,6 +37,7 @@ CheckPlayerInZone::CheckPlayerInZone(CMap* map, const CheckPlayerInZone& other) 
 	_id = other._id;
 
 	_isVisible = other._isVisible;
+	_playerInZone = other._playerInZone;
 
 	_zoneDetectionXmin = other._zoneDetectionXmin;
 	_zoneDetectionXmax = other._zoneDetectionXmax;
@@ -49,7 +56,7 @@ CGeo* CheckPlayerInZone::clone() {
 
 void CheckPlayerInZone::Affiche() {
 	if(_isVisible) {
-		Fabrique::getGlUtils()->drawCube(_zoneDetectionXmin, _zoneDetectionXmax, _zoneDetectionYmin, _zoneDetectionYmax, _zoneDetectionZmin, _zoneDetectionXmax);
+		Fabrique::getGlUtils()->drawCube(_zoneDetectionXmin, _zoneDetectionXmax, _zoneDetectionYmin, _zoneDetectionYmax, _zoneDetectionZmin, _zoneDetectionZmax);
 	}
 }
 
@@ -59,13 +66,34 @@ void CheckPlayerInZone::AfficheSelection(float r,float v,float b) {
 }
 
 void CheckPlayerInZone::GereContactPlayer(float positionPlayer[3], CPlayer *) {
+	bool playerInZone = false;
+
 	if(_zoneDetectionXmin < positionPlayer[0] && positionPlayer[0] < _zoneDetectionXmax) {
-		if(_zoneDetectionYmin < positionPlayer[1] && positionPlayer[0] < _zoneDetectionYmax) {
-			if(_zoneDetectionZmin < positionPlayer[2] && positionPlayer[0] < _zoneDetectionZmax) {
-// TODO Générer un événement vers les plugin avec_ id comme identifiant
+		if(_zoneDetectionYmin < positionPlayer[1] && positionPlayer[1] < _zoneDetectionYmax) {
+			if(_zoneDetectionZmin < positionPlayer[2] && positionPlayer[2] < _zoneDetectionZmax) {
+				playerInZone = true;
 			}
 		}
 	}
+
+	bool playerEnteringInZone = !_playerInZone && playerInZone;
+	bool playerGoingOutOfZone = _playerInZone && !playerInZone;
+	_playerInZone = playerInZone;
+
+	if(playerEnteringInZone) {		// Si joueur n'était pas dans la zone ET joueur est maintenant dans la zone
+		AG_Event event;
+		AG_EventArgs(&event, "%i", Controller::Action::PlayerZoneDetectorActivated);
+		Controller::executeAction(&event);
+	}
+	else if(playerGoingOutOfZone) {	// Si joueur était dans la zone ET joueur n'y est pas maintenant
+		AG_Event event;
+		AG_EventArgs(&event, "%i", Controller::Action::PlayerZoneDetectorUnactivated);
+		Controller::executeAction(&event);
+	}
+}
+
+bool CheckPlayerInZone::isPlayerInZone() const {
+	return _playerInZone;
 }
 
 float CheckPlayerInZone::GereLaserPlayer( float pos[3], CV3D &Dir, float dist) {

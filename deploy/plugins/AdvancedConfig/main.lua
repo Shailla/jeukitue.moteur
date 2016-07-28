@@ -58,8 +58,8 @@ function loadJoueurConfiguration()
 	checkboxSkinJoueurVisibility:setValue(getConfigurationParameter("SKIN_VISIBILITY"));
 	checkboxHitboxJoueurVisibility:setValue(getConfigurationParameter("PLAYER_HITBOX_VISIBILITY"));
 	checkboxSolidboxJoueurVisibility:setValue(getConfigurationParameter("PLAYER_SOLIDBOX_VISIBILITY"));
-	checkboxAxesMeterVisibility:setValue(getConfigurationParameter("CUBIC_METER_VISIBILITY"));
-	checkboxCubicMeterVisibility:setValue(getConfigurationParameter("AXES_METER_VISIBILITY"));
+	checkboxAxesMeterVisibility:setValue(getConfigurationParameter("AXES_METER_VISIBILITY"));
+	checkboxCubicMeterVisibility:setValue(getConfigurationParameter("CUBIC_METER_VISIBILITY"));
 end
 
 -- Enregistre la configuration joueur
@@ -67,8 +67,8 @@ function appliqueJoueurConfiguration()
 	setConfigurationParameter("SKIN_VISIBILITY", checkboxSkinJoueurVisibility:getValue());
 	setConfigurationParameter("PLAYER_HITBOX_VISIBILITY", checkboxHitboxJoueurVisibility:getValue());
 	setConfigurationParameter("PLAYER_SOLIDBOX_VISIBILITY", checkboxSolidboxJoueurVisibility:getValue());
-	setConfigurationParameter("CUBIC_METER_VISIBILITY", checkboxAxesMeterVisibility:getValue());
-	setConfigurationParameter("AXES_METER_VISIBILITY", checkboxCubicMeterVisibility:getValue());
+	setConfigurationParameter("AXES_METER_VISIBILITY", checkboxAxesMeterVisibility:getValue());
+	setConfigurationParameter("CUBIC_METER_VISIBILITY", checkboxCubicMeterVisibility:getValue());
 end
 
 function eventManager(event)

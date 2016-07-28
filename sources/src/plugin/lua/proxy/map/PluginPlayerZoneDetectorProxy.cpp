@@ -46,4 +46,13 @@ int PluginPlayerZoneDetectorProxy::setVisibility(lua_State *L) {
 	return 0;
 }
 
+int PluginPlayerZoneDetectorProxy::isPlayerInZone(lua_State *L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
+		lua_pushboolean(L, _playerZoneDetector->isPlayerInZone());
+		return 1;
+	}
+
+	return 0;
+}
+
 } /* namespace jkt */

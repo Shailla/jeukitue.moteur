@@ -24,6 +24,9 @@ class CheckPlayerInZone : public CGeo {
 	// Permet d'activer l'affichage dans la Map de la zone de détection (à fin de debug essentiellement)
 	bool _isVisible;
 
+	// Indique que le joueur est actuellement détecté dans la zone
+	bool _playerInZone;
+
 	// Zone dans laquelle un joueur déclenche la détection
 	float _zoneDetectionXmin;
 	float _zoneDetectionXmax;
@@ -59,6 +62,8 @@ public:
 	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;		// Voir la définition de la fonction
 
 	void setVisibility(bool isVisible);
+	bool isPlayerInZone() const;
+
 	const char* toString();
 };
 

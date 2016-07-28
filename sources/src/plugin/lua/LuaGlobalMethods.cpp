@@ -10,6 +10,7 @@
 #include "menu/Controller.h"
 #include "plugin/PluginEngine.h"
 #include "plugin/lua/LuaUtils.h"
+#include "menu/ConsoleView.h"
 
 #include "plugin/lua/LuaGlobalMethods.h"
 
@@ -88,5 +89,21 @@ int LuaGlobalMethods::subscribeEvents(lua_State* L) {
 
 	return 0;
 }
+
+/**
+ */
+int LuaGlobalMethods::logConsoleInfo(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
+		const string msg = lua_tostring(L, 1);
+
+		ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
+		console->println(ConsoleView::ConsoleOutputType::COT_INFO, msg);
+
+		return 0;
+	}
+
+	return 0;
+}
+
 
 } /* namespace jkt */

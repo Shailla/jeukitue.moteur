@@ -35,6 +35,7 @@ public:
 	int push(lua_State* L);
 
 	int setVisibility(lua_State *L);
+	int isPlayerInZone(lua_State *L);
 };
 
 } /* namespace jkt */

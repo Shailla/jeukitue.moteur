@@ -202,9 +202,10 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	// Initialisation des fonctions dans Lua
 	pluginContext->logInfo("Initialisation des fonctions Lua...");
 
-	lua_register(L, "log", &LuaGlobalMethods::log);
 	lua_register(L, "pushEvent", &LuaGlobalMethods::pushEvent);
 	lua_register(L, "subscribeEvents", &LuaGlobalMethods::subscribeEvents);
+	lua_register(L, "log", &LuaGlobalMethods::log);
+	lua_register(L, "logConsoleInfo", &LuaGlobalMethods::logConsoleInfo);
 
 	// Fonctions pour la configuration
 	lua_register(L, "saveConfiguration", &PluginConfigurationProxy::saveConfiguration);

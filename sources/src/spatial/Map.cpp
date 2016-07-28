@@ -783,7 +783,7 @@ void CMap::initPlugins() {
 	vector<string>::iterator it;
 
 	for(it = _plugins.begin() ; it != _plugins.end() ; it++) {
-		Fabrique::getPluginEngine()->activateMapPlugin(*it, this, _binariesDirectory);
+		Fabrique::getPluginEngine()->activateMapPlugin(this, *it, _binariesDirectory);
 	}
 
 	_isPluginsActivated = true;	// Indique que les éléments OpenGL de la MAP ont bien été initialisés

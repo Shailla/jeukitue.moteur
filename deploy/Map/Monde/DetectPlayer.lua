@@ -2,7 +2,7 @@
 function onLoad()
 	log("Version Lua A : " .. _VERSION)
 	
-	detector = createPlayerZoneDetector("idCoucou", 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+	detector = Map:createPlayerZoneDetector("idCoucou", 2.0, 3.0, 0.0, 1.0, 0.0, 1.0);
 	detector:setVisibility(true);
 end
 

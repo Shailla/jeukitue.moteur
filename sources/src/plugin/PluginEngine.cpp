@@ -219,7 +219,6 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	lua_register(L, "isGameModeServer", &PluginConfigurationProxy::isModeServer);
 	lua_register(L, "getConstant", &PluginConfigurationProxy::getConstant);
 	lua_register(L, "initAudio", &PluginConfigurationProxy::initAudio);
-//	lua_register(L, "getMap", &PluginConfigurationProxy::getMap);
 
 	// Fonctions d'accès aux données
 	lua_register(L, "getDataTree", &PluginDataTreeProxy::getDataTree);
@@ -371,7 +370,7 @@ void PluginEngine::activateGlobalPlugin(const string& pluginName) {
 /**
  * Activate the plugin.
  */
-void PluginEngine::activateMapPlugin(const string& pluginName, CMap* map, const string pluginDirectory) {
+void PluginEngine::activateMapPlugin(CMap* map, const string& pluginName, const string pluginDirectory) {
 	PluginContext* pluginContext = getMapPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
@@ -396,6 +395,11 @@ void PluginEngine::activateMapPlugin(const string& pluginName, CMap* map, const 
 		_luaMapContext[L] = pluginContext;
 
 		pluginContext->logInfo("Injection de la Map");
+
+
+		PluginMapProxy* mapProxy = new PluginMapProxy(map);
+		Lunar<PluginMapProxy>::push(L, mapProxy);
+		lua_setglobal(L, "Map");
 
 		pluginContext->logInfo("Plugin de Map initialisé");
 

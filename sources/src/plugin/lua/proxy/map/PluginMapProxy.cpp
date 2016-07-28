@@ -43,19 +43,27 @@ int PluginMapProxy::push(lua_State* L) {
 int PluginMapProxy::createPlayerZoneDetector(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 7, LUA_PARAM_STRING, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER)) {
 		string detectorId = lua_tostring(L, 1);
-		float xMin = lua_tonumber(L, 1);
-		float xMax = lua_tonumber(L, 1);
-		float yMin = lua_tonumber(L, 1);
-		float yMax = lua_tonumber(L, 1);
-		float zMin = lua_tonumber(L, 1);
-		float zMax = lua_tonumber(L, 1);
+		float x1 = lua_tonumber(L, 2);
+		float x2 = lua_tonumber(L, 3);
+		float y1 = lua_tonumber(L, 4);
+		float y2 = lua_tonumber(L, 5);
+		float z1 = lua_tonumber(L, 6);
+		float z2 = lua_tonumber(L, 7);
+
+		float xMin = (x1>x2)?x2:x1;
+		float xMax = (x1>x2)?x1:x2;
+		float yMin = (y1>y2)?y2:y1;
+		float yMax = (y1>y2)?y1:y2;
+		float zMin = (z1>z2)?z2:z1;
+		float zMax = (z1>z2)?z1:z2;
 
 		if(_map) {
 			CheckPlayerInZone* detector = new CheckPlayerInZone(_map, detectorId, xMin, xMax, yMin, yMax, zMin, zMax);
 			_map->add(detector);
 
 			PluginPlayerZoneDetectorProxy* detectorProxy = new PluginPlayerZoneDetectorProxy(detector);
-			return Lunar<PluginPlayerZoneDetectorProxy>::push(L, detectorProxy);
+			Lunar<PluginPlayerZoneDetectorProxy>::push(L, detectorProxy);
+			return 1;
 		}
 		else {
 			Fabrique::getPluginEngine()->getPluginContext(L)->logScriptError("Pas de Map active");

@@ -5,9 +5,9 @@
  *      Author: Erwin
  */
 
-#include <plugin/lua/proxy/map/PluginPlayerZoneDetectorProxy.h>
 #include "plugin/lua/LuaUtils.h"
 
+#include "plugin/lua/proxy/map/PluginPlayerZoneDetectorProxy.h"
 
 namespace jkt {
 
@@ -37,15 +37,13 @@ int PluginPlayerZoneDetectorProxy::setVisibility(lua_State *L) {
 	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_BOOLEAN);
 
 	// Get input values
-	int index = 1;
-
-	bool visibility = lua_toboolean(L, index++);
+	bool visibility = lua_toboolean(L, 1);
 
 	if(_playerZoneDetector) {
 		_playerZoneDetector->setVisibility(visibility);
 	}
 
-	return 1;
+	return 0;
 }
 
 } /* namespace jkt */

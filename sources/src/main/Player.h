@@ -18,10 +18,6 @@ namespace jkt
 {
 	class CMap;
 	class Icone;
-}
-
-namespace jkt
-{
 	class CSon;
 	class CReqSon;
 }
@@ -50,7 +46,7 @@ class CPlayer {
 
 	float _posVue[3];			// Position et orientation du point de vue par rapport au joueur
 
-	float _rayonSolidbox;				// Rayon de la sphère englobant le joueur pour la gestion des contacts
+	float _rayonSolidbox;		// Rayon de la sphère englobant le joueur pour la gestion des contacts
 	float _pente;				// Sert à calculer si le joueur glisse sur une pente de la map ou non
 	string _nom;				// Nom du perso
 	jkt::CMap *_pSkin;	// Gueule du joueur
@@ -109,8 +105,8 @@ public:
 	void exeContactFunc( float *normal, float distanceW);	// Exécute fonction gestion contacts avec joueur
 	void Affiche();				// Fonction d'affichage du joueur
 
-	void ActiveArmeUp();		// Rends l'arme suivante active
-	void ActiveArmeDown();		// Rends l'arme précédente active
+	void armeUp();				// Rends l'arme suivante active
+	void armeDown();			// Rends l'arme précédente active
 	void AfficheIconesArmes();
 	int ArmeActif();			// Renvoi le numéro de l'arme active
 	void AfficheProjectils();	// Affiche les projectils lancés par ce joueur

@@ -25,8 +25,8 @@ extern int JKT_RenderMode;
 #include "spatial/materiau/Material.h"
 #include "spatial/IfstreamMap.h"
 #include "spatial/geo/GeoMaker.h"
-#include "spatial/geo/Geo.h"
-#include "spatial/Mouve.h"
+#include <spatial/basic/Geometrical.h>
+#include <spatial/basic/Refreshable.h>
 #include "spatial/materiau/MaterialTexture.h"
 #include "spatial/materiau/MaterialMulti.h"
 #include "spatial/geo/ChanTex.h"
@@ -55,7 +55,7 @@ class CNavette;
 const char* CGeoObject::identifier = "GeoObject";
 
 		//CONSTRUCTEURS
-CGeoObject::CGeoObject(CMap *map, unsigned int nbrVertex, unsigned int nbrFaces) : CGeo(map) {
+CGeoObject::CGeoObject(CMap *map, unsigned int nbrVertex, unsigned int nbrFaces) : MapObject(map) {
 	m_Color[0] = 1.0;	//Couleur blanche par défaut
 	m_Color[1] = 1.0;
 	m_Color[2] = 1.0;
@@ -81,9 +81,7 @@ CGeoObject::CGeoObject(CMap *map, unsigned int nbrVertex, unsigned int nbrFaces)
 	maxX = maxY = maxZ = minX = minY = minZ = 0.0f;
 }
 
-CGeoObject::CGeoObject( CMap *map )
-	:CGeo( map )
-{
+CGeoObject::CGeoObject(CMap *map) : MapObject(map) {
 	m_Color[0] = 1.0;	//Couleur blanche par défaut
 	m_Color[1] = 1.0;
 	m_Color[2] = 1.0;
@@ -110,8 +108,7 @@ CGeoObject::CGeoObject( CMap *map )
 	maxX = maxY = maxZ = minX = minY = minZ = 0.0f;
 }
 
-void CGeoObject::setVertex( float *tab, int num )
-{
+void CGeoObject::setVertex( float *tab, int num ) {
 	if( m_TabVertex )	// Destruction de l'ancien tableau de sommets s'il existe
 		delete[] m_TabVertex;
 
@@ -124,8 +121,7 @@ void CGeoObject::setVertex( float *tab, int num )
 			m_TabVertex[ (i*3)+j ] = tab[ (i*3)+j ];
 }
 
-void CGeoObject::setFaces( int *tab, int num )
-{
+void CGeoObject::setFaces( int *tab, int num ) {
 	if( m_TabFaces )	// Destruction de l'ancien tableau d'indices de sommets s'il existe
 		delete[] m_TabFaces;
 
@@ -165,8 +161,7 @@ void CGeoObject::setNormalVertex( float *tab )
 	}
 }
 
-void CGeoObject::AfficheWithMaterialSimple(CMaterial *mat)
-{
+void CGeoObject::AfficheWithMaterialSimple(CMaterial *mat) {
 	glDisable(GL_TEXTURE_2D);
 
 	vector<CLight*>& tabLight = getMap()->getLights();
@@ -700,16 +695,14 @@ bool CGeoObject::Save(TiXmlElement* element) {
 	return true;
 }
 
-void CGeoObject::Init()
-{
+void CGeoObject::init() throw(CErreur) {
 	MinMax();			// Mesure les minimums et maximums de l'objet géo
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
 	ConstruitBase();	// Construit la table des vecteurs normaux
 }
 
 
-float CGeoObject::testContactTriangle( unsigned int i, const float posPlayer[3], float dist )
-{		// Test s'il y a contact entre un point P et le i° triangle de l'objet géo
+float CGeoObject::testContactTriangle( unsigned int i, const float posPlayer[3], float dist ) {		// Test s'il y a contact entre un point P et le i° triangle de l'objet géo
 	int *indices = &m_TabFaces[3*i];
 	float *normal = &m_pNormalTriangle[3*i];
 	float A[3], B[3], C[3], F[3], G[3], X[3], Y[3], Z[3];

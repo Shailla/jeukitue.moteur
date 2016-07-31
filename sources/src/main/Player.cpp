@@ -134,7 +134,7 @@ void CPlayer::AfficheIconesArmes() {
 	}
 }
 
-void CPlayer::ActiveArmeUp() {	// Rends l'arme suivante active
+void CPlayer::armeUp() {	// Rends l'arme suivante active
 	_armeActif++;
 
 	if( _armeActif >= _nbrArmes )
@@ -144,7 +144,7 @@ void CPlayer::ActiveArmeUp() {	// Rends l'arme suivante active
 /**
  * Active l'arme précédente de la liste des armes.
  */
-void CPlayer::ActiveArmeDown() {
+void CPlayer::armeDown() {
 	_armeActif--;
 
 	if( _armeActif < 0 )

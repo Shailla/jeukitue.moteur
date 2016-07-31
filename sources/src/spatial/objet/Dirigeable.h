@@ -7,7 +7,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
-#include "spatial/Mouve.h"
+#include "spatial/basic/MapObject.h"
 
 #include "data/ValeurFloat.h"
 
@@ -20,15 +20,23 @@ namespace jkt
 class CMap;
 class CIstreamMap;
 
-class Dirigeable : public CMouve {
+class Dirigeable : public MapObject {
 
 public:
-	Dirigeable();
+	Dirigeable(CMap* map);
+	Dirigeable(const Dirigeable& other);
 	~Dirigeable();
 
-	void Affiche();					// Fonction d'affichage de l'objet géométrique
+	void Affiche() override;							// Fonction d'affichage de l'objet géométrique
+	void AfficheSelection(float r, float g, float b) override;							// Fonction d'affichage de l'objet géométrique
 	static void Affiche(Branche* branche);
-	void Refresh(CGame *game);		// Rafraichissement des données, position, vitesse, ... de l'objet
+	void refresh(CGame *game) override;		// Rafraichissement des données, position, vitesse, ... de l'objet
+	MapObject* clone() override;
+	void init() throw(CErreur);
+
+	// Sérialisation
+	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
+	bool Save(TiXmlElement* element) override;
 };
 
 }	// JktMoteur

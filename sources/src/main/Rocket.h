@@ -44,8 +44,8 @@ public:
 	CRocket( CPlayer *player );
 	~CRocket();
 
-	void Affiche();
-	bool Refresh();
+	void Affiche() override;
+	bool Refresh() override;
 };
 
 #endif

@@ -979,8 +979,8 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 	return pMaterial;
 }
 
-CGeo* CFichierASE::litGeomobject(CMap *pMap, unsigned int nbr) //Lit un objet géométrique dans le
-{										// fichier et le place en mémoire puis retourne son pointeur
+MapObject* CFichierASE::litGeomobject(CMap *pMap, unsigned int nbr) {		//Lit un objet géométrique dans le
+																			// fichier et le place en mémoire puis retourne son pointeur
 	unsigned int accolade = 0;
 	unsigned int numVertex=0, numFaces=0, numTexVertex=0, numTexFaces=0;
 	float *tabV;
@@ -1078,8 +1078,7 @@ CGeo* CFichierASE::litGeomobject(CMap *pMap, unsigned int nbr) //Lit un objet gé
 			accolade--;
 	}
 
-	while( accolade )	//Recherche le nombre de faces apres le mot "*MESH_NUMFACES"
-	{
+	while( accolade ) {		//Recherche le nombre de faces apres le mot "*MESH_NUMFACES"
 		get(mot, __LINE__);
 
 		if( mot=="*MESH_NUMFACES" ) {
@@ -1112,12 +1111,10 @@ CGeo* CFichierASE::litGeomobject(CMap *pMap, unsigned int nbr) //Lit un objet gé
 
 	accolade++;		//LitVertex et LitFaces ne comptent pas les accolades
 
-	while( accolade ) //Recherche la couleur de l'objet apres le mot "*WIREFRAME_COLOR"
-	{
+	while( accolade ) {		 //Recherche la couleur de l'objet apres le mot "*WIREFRAME_COLOR"
 		get(mot, __LINE__);
 
-		if( mot=="*WIREFRAME_COLOR" )	//Recherche l'éventuelle couleur de 'lobjet géo
-		{
+		if( mot=="*WIREFRAME_COLOR" ) {		//Recherche l'éventuelle couleur de 'lobjet géo
 			float r,g,b;
 			get(r, __LINE__);
 			get(g, __LINE__);
@@ -1129,12 +1126,10 @@ CGeo* CFichierASE::litGeomobject(CMap *pMap, unsigned int nbr) //Lit un objet gé
 				trace() << "\nLa couleur est " <<' '<<r<<' '<<g<<' '<<b<<  " dans l'objet géométrique " << nbr;
 
 		}
-		else if( mot=="*MESH_NUMTVERTEX" )		// Recherche les éventuels sommets de texture
-		{
+		else if( mot=="*MESH_NUMTVERTEX" ) {		// Recherche les éventuels sommets de texture
 			get(numTexVertex, __LINE__);
 
-			if( numTexVertex )
-			{
+			if( numTexVertex ) {
 //				pGeoObject->m_bMaterialTexture = true;
 					// A FAIRE : Utiliser le canal 0 et voir si TabTex peut recevoir
 					// un élément nouveau en TabTex[1] comme ci-dessous
@@ -1151,14 +1146,11 @@ CGeo* CFichierASE::litGeomobject(CMap *pMap, unsigned int nbr) //Lit un objet gé
 				accolade++; //LitTexVertex ne compte pas les accolades
 			}
 		}
-		else if( mot=="*MESH_NUMTVFACES" )		//Recherche les éventuels index de sommets de texture
-		{
+		else if( mot=="*MESH_NUMTVFACES" ) {		//Recherche les éventuels index de sommets de texture
 			get(numTexFaces, __LINE__);
 
-			if( numTexFaces )
-			{
-				if( pGeoMaker->m_TabChanTex.size()==0 )
-				{
+			if( numTexFaces ) {
+				if( pGeoMaker->m_TabChanTex.size()==0 ) {
 					trace() << "\nErreur (fichier::geomobject) : Fichier ASE corrompu";
 					throw (int)CFichierASE::JKT_ERREUR_FICHIER_INVALIDE;	// Fin de fichier prématurée
 				}
@@ -1173,8 +1165,7 @@ CGeo* CFichierASE::litGeomobject(CMap *pMap, unsigned int nbr) //Lit un objet gé
 				accolade++;		//LitTexFaces ne compte pas les accolades
 			}
 		}
-		else if( mot=="*MESH_MAPPINGCHANNEL" )
-		{
+		else if( mot=="*MESH_MAPPINGCHANNEL" ) {
 			int canal, numTVertex, numTFaces, var;
 			float vertex1, vertex2, vertex3;
 			int face1, face2, face3;
@@ -1199,8 +1190,7 @@ CGeo* CFichierASE::litGeomobject(CMap *pMap, unsigned int nbr) //Lit un objet gé
 				// Lecture des sommets de texture
 			float* texvertex = new float[ 2*numTVertex ];
 
-			for( int i=0 ; i<numTVertex ; i++ )
-			{
+			for( int i=0 ; i<numTVertex ; i++ ) {
 				get(mot, __LINE__);
 				get(var, __LINE__);
 				get(vertex1, __LINE__);
@@ -1229,8 +1219,8 @@ CGeo* CFichierASE::litGeomobject(CMap *pMap, unsigned int nbr) //Lit un objet gé
 				trace() << "\nINDEX DU CANAL DE TEXTURE " << canal;
 
 			int* texfaces = new int[ 3*numTFaces ];
-			for( int i=0 ; i<numTFaces ; i++ )	// Lecture des index de texture
-			{
+
+			for( int i=0 ; i<numTFaces ; i++ ) {	// Lecture des index de texture
 				get(mot,__LINE__);
 				get(mot,__LINE__);
 				get(face1,__LINE__);
@@ -1252,15 +1242,13 @@ CGeo* CFichierASE::litGeomobject(CMap *pMap, unsigned int nbr) //Lit un objet gé
 			get(mot,__LINE__);	// On passe les 2 accolades fermantes
 			get(mot,__LINE__);	// On passe les 2 accolades fermantes
 		}
-		else if( mot=="*MESH_NORMALS" )		//Recherche les vecteurs normaux
-		{
+		else if( mot=="*MESH_NORMALS" ) {		//Recherche les vecteurs normaux
 			float *tab = LitNormaux( numFaces, row );	// Lecture des vecteurs normaux aux sommets
 			pGeoMaker->setNormals(numFaces*9, tab);
 
 			accolade++;
 		}
-		else if( mot=="*MATERIAL_REF" )		//Recherche l'éventuelle référence à un matériau
-		{
+		else if( mot=="*MATERIAL_REF" ) {		//Recherche l'éventuelle référence à un matériau
 			unsigned int matRef;
 			get(matRef,__LINE__);
 			pGeoMaker->setMaterialRef( matRef );	// Associe l'objet au matériau
@@ -1268,8 +1256,8 @@ CGeo* CFichierASE::litGeomobject(CMap *pMap, unsigned int nbr) //Lit un objet gé
 			if( m_bAffiche )
 				trace() << "\nReference au matériau " << matRef << " dans l'objet geometrique " << nbr;
 
-			if( numTexFaces )	// S'il y a des coordonnées de texture
-			{					// associe l'objet au matériau, sinon ignore le matériau
+			if( numTexFaces ) {	// S'il y a des coordonnées de texture
+								// associe l'objet au matériau, sinon ignore le matériau
 				pGeoMaker->setSubMat( Faces->texRef );
 				Faces->texRef = 0;
 			}
@@ -1282,7 +1270,7 @@ CGeo* CFichierASE::litGeomobject(CMap *pMap, unsigned int nbr) //Lit un objet gé
 	}
 
 	pGeoMaker->setOffsetMateriau(0);	// Mode lecture de fichier ASE
-	CGeo* geo = pGeoMaker->makeNewGeoInstance();
+	MapObject* geo = pGeoMaker->makeNewGeoInstance();
 
 	if(Faces)
 		delete Faces;
@@ -1304,10 +1292,10 @@ void CFichierASE::LitGroupe(const string &nomFichier, CMap *pMap, unsigned int &
 
 	while(isGet(mot, __LINE__)) {
 		if(mot == "*GEOMOBJECT") {		// Recherche des objets géométriques
-			CGeo *pGeo = litGeomobject(pMap, nbr_GeoObject + 1);
+			MapObject* object = litGeomobject(pMap, nbr_GeoObject + 1);
 
-			if(pGeo) {	// Si pas d'erreur mets le dans le tableau d'objets géo
-				pMap->add( pGeo );
+			if(object) {	// Si pas d'erreur mets le dans le tableau d'objets géo
+				pMap->add(object);
 				nbr_GeoObject++;
 			}
 			else {
@@ -1329,12 +1317,10 @@ void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap) {
 			LitGroupe(nomFichier, pMap, nbr_GeoObject);
 		}
 		else if(mot == "*GEOMOBJECT") {		// Recherche des objets géométriques
-			CGeo *pGeo;
+			MapObject* object = litGeomobject(pMap, nbr_GeoObject + 1);
 
-			pGeo = litGeomobject(pMap, nbr_GeoObject + 1);
-
-			if(pGeo) {	// Si pas d'erreur mets le dans le tableau d'objets géo
-				pMap->add( pGeo );
+			if(object) {	// Si pas d'erreur mets le dans le tableau d'objets géo
+				pMap->add( object );
 				nbr_GeoObject++;
 			}
 			else {

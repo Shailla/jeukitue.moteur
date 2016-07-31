@@ -25,8 +25,8 @@ extern int JKT_RenderMode;
 #include "util/math_vectoriel.h"
 #include "util/V3D.h"
 #include "spatial/IfstreamMap.h"
-#include "spatial/geo/Geo.h"
-#include "spatial/Mouve.h"
+#include <spatial/basic/Geometrical.h>
+#include <spatial/basic/Refreshable.h>
 #include "spatial/light/Light.h"
 #include "spatial/Map.h"
 #include "son/DemonSons.h"
@@ -48,7 +48,8 @@ class CNavette;
 const char* CSimpleGeo::identifier = "SimpleGeo";
 
 //CONSTRUCTEURS
-CSimpleGeo::CSimpleGeo(CMap* map, const string& name, unsigned int nbrVertex, float* vertex, unsigned int nbrFaces, int* faces, float* color, bool solid) : CGeo( map ) {
+CSimpleGeo::CSimpleGeo(CMap* map, const string& name, unsigned int nbrVertex, float* vertex, unsigned int nbrFaces,
+						int* faces, float* color, bool solid) : MapObject(map) {
 	setName(name);	// Nom de l'objet
 
 	_color[0] = color[0];			// Couleur de l'objet
@@ -69,7 +70,7 @@ CSimpleGeo::CSimpleGeo(CMap* map, const string& name, unsigned int nbrVertex, fl
 	_rayon = 0.0f;
 }
 
-CSimpleGeo::CSimpleGeo(CMap* map) : CGeo(map) {
+CSimpleGeo::CSimpleGeo(CMap* map) : MapObject(map) {
 	_color[0] = 1.0f;	// Couleur de l'objet
 	_color[1] = 1.0f;
 	_color[2] = 1.0f;
@@ -88,7 +89,7 @@ CSimpleGeo::CSimpleGeo(CMap* map) : CGeo(map) {
 	_rayon = 0.0f;
 }
 
-CSimpleGeo::CSimpleGeo(const CSimpleGeo& other) : CGeo(other) {
+CSimpleGeo::CSimpleGeo(const CSimpleGeo& other) : MapObject(other) {
 	tostring = other.tostring;
 
 	// Bulle
@@ -154,7 +155,7 @@ CSimpleGeo::~CSimpleGeo() {
 	}
 }
 
-CGeo* CSimpleGeo::clone() {
+MapObject* CSimpleGeo::clone() {
 	return new CSimpleGeo(*this);
 }
 
@@ -171,7 +172,7 @@ void CSimpleGeo::setVertex(int num, float *tab) {
 			m_TabVertex[ (i*3)+j ] = tab[ (i*3)+j ];
 }
 
-void CSimpleGeo::Init() {
+void CSimpleGeo::init() throw(CErreur) {
 	MinMax();			// Mesure les minimums et maximums de l'objet géo
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
 	ConstruitBase();	// Construit la table des vecteurs normaux
@@ -537,7 +538,7 @@ bool CSimpleGeo::Lit(TiXmlElement* element, MapLogger* mapLogger) {
 	// Référence
 	if(!element->Attribute(Xml::REF, &ref))
 		throw CErreur("Fichier Map corrompu CSimpleGeo 4");
-	m_Reference = (unsigned int)ref;
+	_reference = (unsigned int)ref;
 
 	// Solidité
 	_bSolid = Xml::LitSolidite(element);

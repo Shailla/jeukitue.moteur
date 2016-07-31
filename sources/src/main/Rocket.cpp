@@ -186,10 +186,10 @@ bool CRocket::Refresh() {
 		break;
 
 	case ROCKET_STATE_EXPLOSION:		// La rocket est en train d'exploser
-		m_Taille += 0.002f;	// La taille de la rocket augmente pour simuler l'explosion
+		m_Taille += 0.002f;				// La taille de la rocket augmente pour simuler l'explosion
 
 		if( m_Taille > 0.1f )
-			vie = false;	// Destruction de CRocket (fin de vie de la rocket)
+			vie = false;				// Destruction de CRocket (fin de vie de la rocket)
 		break;
 
 	default:

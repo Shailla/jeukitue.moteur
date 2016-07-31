@@ -6,11 +6,9 @@
 
 #include "main/Projectil.h"
 
-CProjectil::CProjectil( CPlayer *player )
-{
+CProjectil::CProjectil( CPlayer *player ) {
 	m_Player = player;
 }
 
-CProjectil::~CProjectil()
-{
+CProjectil::~CProjectil() {
 }

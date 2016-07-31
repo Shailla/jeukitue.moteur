@@ -34,9 +34,9 @@ class CGame;
 #include "spatial/light/LightOmni.h"
 #include "spatial/light/LightTarget.h"
 #include "spatial/light/LightMaker.h"
-#include "spatial/Mouve.h"
+#include <spatial/basic/Refreshable.h>
 #include "spatial/objet/Dirigeable.h"
-#include "spatial/geo/Geo.h"
+#include <spatial/basic/Geometrical.h>
 #include "spatial/geo/EntryPoint.h"
 #include "spatial/geo/SimpleGeo.h"
 #include "spatial/geo/SimpleMaterialGeo.h"
@@ -63,7 +63,7 @@ namespace jkt
 
 const char* CMap::identifier = "Map";
 
-CMap::CMap(CMap* parent) : CGeo(parent) {
+CMap::CMap(CMap* parent) : MapObject(parent) {
 	LOGDEBUG(("CMap::CMap(*parent) %T", this ));
 
 	_bSelection = false;
@@ -72,7 +72,7 @@ CMap::CMap(CMap* parent) : CGeo(parent) {
 	_isPluginsActivated = false;
 }
 
-CMap::CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur) : CGeo(parent) {
+CMap::CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur) : MapObject(parent) {
 	LOGDEBUG(("CMap::CMap(*parent,nomFichier=%s)%T", nomFichier.c_str(), this ));
 
 	if( !Lit(nomFichier, 0) ) {
@@ -87,10 +87,10 @@ CMap::CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur) : CGeo(pa
 	_isGlActivated = false;
 	_isPluginsActivated = false;
 
-	Init();
+	init();
 }
 
-CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur) : CGeo(parent) {
+CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur) : MapObject(parent) {
 	LOGDEBUG(("CMap::CMap(*parent,nomFichier=%s)%T", nomFichier.c_str(), this ));
 
 	if( !Lit(nomFichier, mapLogger) ) {
@@ -105,12 +105,12 @@ CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(j
 	_isGlActivated = false;
 	_isPluginsActivated = false;
 
-	Init();
+	init();
 }
 
 CMap::~CMap() {
 	// Destruction des objets géo
-	vector<CGeo*>::iterator iterGeo;
+	vector<Geometrical*>::iterator iterGeo;
 	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 		delete *iterGeo;
 
@@ -134,7 +134,7 @@ CMap::~CMap() {
 	_lights.clear();
 }
 
-CGeo* CMap::clone() {
+MapObject* CMap::clone() {
 	return new CMap(*this);
 }
 
@@ -159,14 +159,6 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 
 	glEnableClientState( GL_VERTEX_ARRAY );
 
-	// Affichage des dirigeables
-	vector<Dirigeable*>::iterator iterDirigeable;
-
-	for(iterDirigeable=_dirigeables.begin() ; iterDirigeable!=_dirigeables.end() ; iterDirigeable++) {
-		(*iterDirigeable)->Affiche();			// Affichage de l'objet géo
-
-	}
-
 	// Affichage des moteurs de particules
 	for(CMoteurParticules* engine : _particulesEngines) {
 		glEnable( GL_BLEND );
@@ -181,23 +173,23 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 
 
 	// Affichage des objets
-	vector<CGeo*>::iterator iterGeo;
+	vector<Drawable*>::iterator iter;
 
 	if(_bSelection) {
 		int i=0;
 
-		for(iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++) {
+		for(iter = _drawables.begin() ; iter != _drawables.end() ; iter++) {
 			if(i != _Selection)
-				(*iterGeo)->Affiche();			// Affichage de l'objet géo
+				(*iter)->Affiche();			// Affichage de l'objet géo
 			else
-				(*iterGeo)->AfficheSelection(1.0f, 0.0f, 0.0f);
+				(*iter)->AfficheSelection(1.0f, 0.0f, 0.0f);
 
 			i++;
 		}
 	}
 	else {
-		for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ ) {
-			(*iterGeo)->Affiche();			// Affichage de l'objet géo
+		for( iter = _drawables.begin() ; iter != _drawables.end() ; iter++ ) {
+			(*iter)->Affiche();			// Affichage de l'objet géo
 		}
 	}
 
@@ -216,16 +208,16 @@ void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objet
 
 	glEnableClientState( GL_VERTEX_ARRAY );
 
-	vector<CGeo*>::iterator iterGeo;
+	vector<Drawable*>::iterator iter;
 
-	for(iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++) {
-		(*iterGeo)->AfficheSelection(r, v, b);
+	for(iter=_drawables.begin() ; iter!=_drawables.end() ; iter++) {
+		(*iter)->AfficheSelection(r, v, b);
 	}
 
 	glDisable( GL_VERTEX_ARRAY );
 }
 
-void CMap::addDescription(int ref, CGeo* geo, MapLogger* mapLogger) {
+void CMap::addDescription(int ref, MapObject* geo, MapLogger* mapLogger) {
 	if(_geoDescriptions.find(ref) != _geoDescriptions.end()) {
 		mapLogger->logError("Map corrompue, la référence est en doublon");
 	}
@@ -233,29 +225,13 @@ void CMap::addDescription(int ref, CGeo* geo, MapLogger* mapLogger) {
 	_geoDescriptions[ref] = geo;
 }
 
-CGeo* CMap::getDescription(int ref) {
+MapObject* CMap::getDescription(int ref) {
 	try {
 		return _geoDescriptions.at(ref);
 	}
 	catch(out_of_range& exception) {
 		return 0;
 	}
-}
-
-void CMap::add(Dirigeable* dirigeable) {
-	_dirigeables.push_back(dirigeable);	// Ajoute geo à la liste des objets affichables
-}
-
-void CMap::add(CGeo* geo) {
-	_geos.push_back(geo);	// Ajoute geo à la liste des objets affichables
-}
-
-void CMap::add(CMaterial *mat) {
-	m_TabMaterial.push_back(mat);	// Ajoute mat à la liste des objets affichables
-}
-
-void CMap::add(CLight *light) {
-	_lights.push_back(light);	// Ajoute light à la liste des objets affichables
 }
 
 void CMap::incrementeSelection() {
@@ -287,33 +263,61 @@ bool CMap::IsSelectionMode() {
 }
 
 const char* CMap::getSelectedName() {
-	CGeo* geo = _geos[_Selection];
-	return geo->toString();
+	Object* object = _objects[_Selection];
+	return object->toString();
 }
 
 void CMap::merge(CMap& map) {
-	vector<EntryPoint>::iterator iterEntryPoint;
-	vector<CGeo*>::iterator iterGeo;
-	vector<CMouve*>::iterator iterMouve;
+	// Objets de la Map
+	vector<MapObject*>::iterator iterObject;
+	vector<Geometrical*>::iterator iterGeo;
+	vector<Refreshable*>::iterator iterRefresh;
+	vector<SolidAndTargettable*>::iterator iterSolid;
+	vector<Drawable*>::iterator iterDrawable;
+
+	// Caractéristiques de la Map
 	vector<CLight*>::iterator iterLight;
 	vector<CMaterial*>::iterator iterMaterial;
+	vector<EntryPoint>::iterator iterEntryPoint;
 
-	for(iterEntryPoint=map._entryPoints.begin() ; iterEntryPoint!=map._entryPoints.end() ; iterEntryPoint++)
-		_entryPoints.push_back(*iterEntryPoint);
+	// Objets de la Map
+	for(iterObject=map._objects.begin() ; iterObject!=map._objects.end() ; iterObject++) {
+		(*iterObject)->setMap(this);
+		_objects.push_back(*iterObject);
+	}
 
 	for(iterGeo=map._geos.begin() ; iterGeo!=map._geos.end() ; iterGeo++) {
-		(*iterGeo)->setMap(this);
 		_geos.push_back(*iterGeo);
 	}
 
-	for(iterMouve=map._mouves.begin() ; iterMouve!=map._mouves.end() ; iterMouve++)
-		_mouves.push_back(*iterMouve);
+	for(iterRefresh=map._mouves.begin() ; iterRefresh!=map._mouves.end() ; iterRefresh++) {
+		_mouves.push_back(*iterRefresh);
+	}
 
-	for(iterLight=map._lights.begin() ; iterLight!=map._lights.end() ; iterLight++)
+	for(iterSolid=map._solidAndTargettables.begin() ; iterSolid!=map._solidAndTargettables.end() ; iterSolid++) {
+		_solidAndTargettables.push_back(*iterSolid);
+	}
+
+	for(iterDrawable = map._drawables.begin() ; iterDrawable != map._drawables.end() ; iterDrawable++) {
+		_drawables.push_back(*iterDrawable);
+	}
+
+	// Caractéristiques de la Map
+	for(iterLight=map._lights.begin() ; iterLight!=map._lights.end() ; iterLight++) {
 		_lights.push_back(*iterLight);
+	}
 
-	for(iterMaterial=map.m_TabMaterial.begin() ; iterMaterial!=map.m_TabMaterial.end() ; iterMaterial++)
+	for(iterMaterial=map.m_TabMaterial.begin() ; iterMaterial!=map.m_TabMaterial.end() ; iterMaterial++) {
 		m_TabMaterial.push_back(*iterMaterial);
+	}
+
+	for(iterEntryPoint=map._entryPoints.begin() ; iterEntryPoint!=map._entryPoints.end() ; iterEntryPoint++) {
+		_entryPoints.push_back(*iterEntryPoint);
+	}
+}
+
+vector<EntryPoint>& CMap::getEntryPointsList() {
+	return _entryPoints;
 }
 
 void CMap::add(EntryPoint entryPoint) {
@@ -324,23 +328,45 @@ void CMap::add(CMoteurParticules* engine) {
 	_particulesEngines.push_back(engine);
 }
 
-vector<EntryPoint>& CMap::getEntryPointsList() {
-	return _entryPoints;
+void CMap::add(Dirigeable* dirigeable) {
+	_objects.push_back(dirigeable);
+	_drawables.push_back(dirigeable);
+	_mouves.push_back(dirigeable);
+	_geos.push_back(dirigeable);
 }
 
-void CMap::add( CPorte *porte ) {
-	// Une porte est avant tout un objet géo
-	_geos.push_back( porte );		// Ajoute porte à la liste des objets affichables
-	_mouves.push_back( porte );		// Ajoute porte à la liste des objets à rafraichir
+void CMap::add(MapObject* object) {
+	_objects.push_back(object);
+	_geos.push_back(object);
+	_drawables.push_back(object);
+	_solidAndTargettables.push_back(object);
+}
+
+void CMap::add(CMaterial *mat) {
+	m_TabMaterial.push_back(mat);	// Ajoute mat à la liste des objets affichables
+}
+
+void CMap::add(CLight *light) {
+	_lights.push_back(light);	// Ajoute light à la liste des objets affichables
+	_geos.push_back(light);	// Ajoute light à la liste des objets affichables
+}
+
+void CMap::add(CPorte *porte) {
+	_objects.push_back(porte);
+	_geos.push_back(porte);
+	_mouves.push_back(porte);
+	_drawables.push_back(porte);
 }
 
 void CMap::add(CheckPlayerInZone* detector) {
 	_geos.push_back(detector);
 }
 
-void CMap::add( CNavette *navette ) {		// Une navette est avant tout un objet géo
-	_geos.push_back( navette );		// Ajoute porte à la liste des objets affichables
-	_mouves.push_back( navette );	// Ajoute porte à la liste des objets à rafraichir
+void CMap::add(CNavette *navette) {		// Une navette est avant tout un objet géo
+	_geos.push_back(navette);
+	_mouves.push_back(navette);
+	_drawables.push_back(navette);
+	_objects.push_back(navette);
 }
 
 void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
@@ -351,18 +377,19 @@ void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 		positionPlayer = positionPlayerDefault;
 	}
 
-	vector<CGeo*>::iterator iterGeo;
+	vector<SolidAndTargettable*>::iterator iter;
 
-	for(iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++)
-		(*iterGeo)->GereContactPlayer(positionPlayer, player);	// Gère les contacts entre l'objet géo et le joueur
+	for(iter=_solidAndTargettables.begin() ; iter!=_solidAndTargettables.end() ; iter++)
+		(*iter)->GereContactPlayer(positionPlayer, player);	// Gère les contacts entre l'objet géo et le joueur
 }
 
 float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 	// Renvoie la distance du premier point de contact entre un rayon laser parti du point 'pos'
 	// dans la direction 'Dir' si cette distance est inférieure à 'dist', renvoie 'dist' sinon
-	vector<CGeo*>::iterator iterGeo;
-	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
-		dist = (*iterGeo)->GereLaserPlayer( pos, Dir, dist );
+	vector<SolidAndTargettable*>::iterator iter;
+
+	for(iter=_solidAndTargettables.begin() ; iter!=_solidAndTargettables.end() ; iter++)
+		dist = (*iter)->GereLaserPlayer( pos, Dir, dist );
 
 	return dist;	// Renvoie la distance du premier contact trouvé entre le laser et une face d'objet géo
 }
@@ -376,7 +403,7 @@ void CMap::EchangeXY() {
 		(*iterEntry).EchangeXY();
 
 	// Geo
-	vector<CGeo*>::iterator iterGeo;
+	vector<Geometrical*>::iterator iterGeo;
 	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 		(*iterGeo)->EchangeXY();
 
@@ -395,7 +422,7 @@ void CMap::EchangeXZ() {
 		(*iterEntry).EchangeXZ();
 
 	// Geo
-	vector<CGeo*>::iterator iterGeo;
+	vector<Geometrical*>::iterator iterGeo;
 	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 		(*iterGeo)->EchangeXZ();
 
@@ -414,7 +441,7 @@ void CMap::EchangeYZ() {
 		(*iterEntry).EchangeYZ();
 
 	// Geo
-	vector<CGeo*>::iterator iterGeo;
+	vector<Geometrical*>::iterator iterGeo;
 	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 		(*iterGeo)->EchangeYZ();
 
@@ -434,7 +461,7 @@ void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
 			(*iterEntry).Scale(scaleX, scaleY, scaleZ);
 
 		// Geo
-		vector<CGeo*>::iterator iterGeo;
+		vector<Geometrical*>::iterator iterGeo;
 		for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 			(*iterGeo)->Scale( scaleX, scaleY, scaleZ );
 
@@ -451,16 +478,19 @@ void CMap::translate(float x, float y, float z) {
 	if(x!=0.0 || y!=0.0 || z!=0.0) {
 		// Entry points
 		vector<EntryPoint>::iterator iterEntry;
+
 		for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
 			(*iterEntry).translate(x, y, z);
 
 		// Geo
-		vector<CGeo*>::iterator iterGeo;
+		vector<Geometrical*>::iterator iterGeo;
+
 		for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 			(*iterGeo)->translate(x, y, z);
 
 		// Lights
 		vector<CLight*>::iterator iterLight;
+
 		for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
 			(*iterLight)->translate(x, y, z);
 	}
@@ -695,7 +725,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 				// Descriptions d'objets géométriques
 				if(!strcmp(Xml::GEODESCRIPTION, el->Value())) {
-					CGeo* geo = CGeoMaker::Lit(el, &map, mapLogger);
+					MapObject* geo = CGeoMaker::Lit(el, &map, mapLogger);
 
 					if(geo) {
 						map.addDescription(geo->getReference(), geo, mapLogger);
@@ -709,10 +739,10 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 				// Objets géométriques réels
 				if(!strcmp(Xml::GEO, el->Value())) {
-					CGeo* geo = CGeoMaker::Lit(el, &map, mapLogger);
+					MapObject* object = CGeoMaker::Lit(el, &map, mapLogger);
 
-					if(geo) {
-						map.add(geo);
+					if(object) {
+						map.add(object);
 					}
 					else {
 						mapLogger->logError("Géo corrompue ?");
@@ -744,12 +774,12 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						throw CErreur("Fichier Map corrompu");
 					}
 
-					CGeo* geoDescription = map.getDescription(description);
+					MapObject* object = map.getDescription(description);
 
-					if(geoDescription) {
-						CGeo* newGeo = geoDescription->clone();
-						newGeo->translate(translation[0], translation[1], translation[2]);
-						map.add(newGeo);
+					if(object) {
+						MapObject* clone = object->clone();
+						clone->translate(translation[0], translation[1], translation[2]);
+						map.add(clone);
 					}
 					else {
 						mapLogger->logError("Géo description introuvable");
@@ -769,13 +799,13 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 	return result;
 }
 
-void CMap::Init() throw(jkt::CErreur) {	// Initialisation de la CMap
+void CMap::init() throw(jkt::CErreur) {	// Initialisation de la CMap
 	// Initialisation des object géométriques
-	vector<CGeo*>::iterator iterGeo;
+	vector<MapObject*>::iterator iterObject;
 
-	for(iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++) {
-		CGeo* geo = (*iterGeo);
-		geo->Init();
+	for(iterObject = _objects.begin() ; iterObject != _objects.end() ; iterObject++) {
+		MapObject* object = (*iterObject);
+		object->init();
 	}
 }
 
@@ -801,8 +831,8 @@ void CMap::initGL() {
 	}
 
 	// Initialisation des object géométriques dans le contexte OpenGL
-	for(CGeo* geo : _geos) {
-		geo->initGL();
+	for(Drawable* drawable : _drawables) {
+		drawable->initGL();
 	}
 
 	// Letcure des moteurs de particules
@@ -820,8 +850,8 @@ void CMap::freeGL() {
 	}
 
 	// Initialisation des object géométriques dans le contexte OpenGL
-	for(CGeo* geo : _geos) {
-		geo->freeGL();
+	for(Drawable* drawable : _drawables) {
+		drawable->freeGL();
 	}
 
 	// Letcure des fichiers de texture
@@ -878,10 +908,10 @@ bool CMap::Save(const string nomFichier) {
 	{
 		TiXmlElement *elGeo = new TiXmlElement(Xml::GEOS);
 		elMap->LinkEndChild(elGeo);
-		vector<CGeo*>::iterator iterGeo;
+		vector<MapObject*>::iterator iterObject;
 
-		for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
-			(*iterGeo)->Save( elGeo );		// Sauvegarde des paramètres de l'objet
+		for(iterObject = _objects.begin() ; iterObject != _objects.end() ; iterObject++)
+			(*iterObject)->Save( elGeo );		// Sauvegarde des paramètres de l'objet
 	}
 
 	document.SaveFile(nomFichierMap.c_str());
@@ -894,10 +924,10 @@ bool CMap::Save(const string nomFichier) {
 
 bool CMap::Contact(const float pos[3], const float dist) {
 	bool var = false;	// Pas de contact par défaut
-	vector<CGeo*>::iterator iterGeo;
+	vector<SolidAndTargettable*>::iterator iter;
 
-	for(iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++) {
-		var = (*iterGeo)->Contact( pos, dist );
+	for(iter = _solidAndTargettables.begin() ; iter != _solidAndTargettables.end() ; iter++) {
+		var = (*iter)->Contact( pos, dist );
 
 		if(var)	// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
 			break;
@@ -907,10 +937,10 @@ bool CMap::Contact(const float pos[3], const float dist) {
 }
 
 void CMap::Refresh(CGame *game) {
-	vector<CMouve*>::iterator iterMouve;
+	vector<Refreshable*>::iterator iterMouve;
 
 	for(iterMouve=_mouves.begin() ; iterMouve!=_mouves.end() ; iterMouve++)
-		(*iterMouve)->Refresh(game);
+		(*iterMouve)->refresh(game);
 }
 
 void CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index) {

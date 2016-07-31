@@ -368,7 +368,7 @@ void CGame::deletePlayers() {
 	}
 }
 
-void CGame::Erwin(CPlayer *erwin) {
+void CGame::setErwin(CPlayer *erwin) {
 	if(erwin) {
 		LOGINFO(("Changement de joueur Erwin"));
 	}
@@ -457,11 +457,7 @@ LOGDEBUG(("CGame::addPlayer() -> indexPlayer=%d end%T", index, this ));
 }
 
 int CGame::addPlayer(CPlayer *player) {
-LOGDEBUG(("CGame::AjoutePlayer(player=%x)%T", player, this ));
-
 	int indexPlayer = _pTabIndexPlayer->Ajoute( player );
-
-LOGDEBUG(("CGame::AjoutePlayer() -> indexPlayer=%d end%T", indexPlayer, this ));
 
 	return indexPlayer;
 }
@@ -494,10 +490,10 @@ void CGame::timer() {
 	}
 }
 
-void CGame::Gravite(bool gravite) {
+void CGame::setGravite(bool gravite) {
 	_gravite = gravite;
 }
 
-bool CGame::Gravite() const {
+bool CGame::getGravite() const {
 	return _gravite;
 }

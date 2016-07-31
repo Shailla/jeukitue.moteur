@@ -3,9 +3,7 @@
 
 #include <vector>
 
-using namespace std;
-
-#include "spatial/Mouve.h"
+#include "spatial/basic/Refreshable.h"
 
 #include "util/V3D.h"
 
@@ -34,8 +32,7 @@ public:
 	void SavePoint(TiXmlElement* element);
 };
 
-class CNavette:public CGeoObject, public CMouve
-{
+class CNavette : public CGeoObject {
 	vector<CPointNavette> m_ListePoints;	// Liste des points sur le trajet de la navette
 	jkt::CV3D m_Direction;	// Direction courante de la navette
 	int m_Point;		// Point du trajet à utiliser
@@ -49,23 +46,18 @@ class CNavette:public CGeoObject, public CMouve
 public:
 	static const char* identifier;
 
-	CNavette( CMap *map );
+	CNavette(CMap *map);
 	~CNavette();
 
-	void Init();					// Initialisation de l'objet géométrique
+	void init() throw(CErreur) override;					// Initialisation de l'objet géométrique
 
-	void Affiche();					// Fonction d'affichage de l'objet géométrique
-	void Refresh( CGame *game );	// Rafraichissement des données, position, vitesse, ... de l'objet
+	void Affiche() override;					// Fonction d'affichage de l'objet géométrique
+	void refresh( CGame *game ) override;	// Rafraichissement des données, position, vitesse, ... de l'objet
 
-	bool Lit(TiXmlElement* el) {return true;}
-	//bool LitFichier( CIfstreamMap &fichier );		// Lit un objet géo dans un fichier Map
-	//void LitFichierNavette( CIfstreamMap &fichier );	// Lit un objet géo dans un fichier Map
-	//bool SaveNameType( ofstream &fichier );				// Sauve le nom du type d'objet dans le fichier
-	//bool SaveFichierMap( ofstream &fichier );			// Sauve l'objet géo dans un fichier Map
-	bool Save(TiXmlElement* element);
+	bool Save(TiXmlElement* element) override;
 
-	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist);
-	void GereContactPlayer(float positionPlayer[3], CPlayer *player);
+	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;
+	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;
 };
 
 }	// JktMoteur

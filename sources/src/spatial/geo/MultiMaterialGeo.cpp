@@ -20,8 +20,8 @@ extern int JKT_RenderMode;
 #include "util/V3D.h"
 #include "spatial/IfstreamMap.h"
 #include "spatial/geo/TexVertexList.h"
-#include "spatial/geo/Geo.h"
-#include "spatial/Mouve.h"
+#include <spatial/basic/Geometrical.h>
+#include <spatial/basic/Refreshable.h>
 #include "spatial/light/Light.h"
 #include "spatial/Map.h"
 #include "main/Player.h"
@@ -44,12 +44,8 @@ class CNavette;
 const char* CMultiMaterialGeo::identifier = "MultiMaterialGeo";
 
 		//CONSTRUCTEURS
-CMultiMaterialGeo::CMultiMaterialGeo(CMap* map, const string& name,
-		CMaterialMulti* mat, unsigned int nbrVertex, float* vertex,
-		float* normals,	float* texvertex, std::map<int,int> &canauxnumbers,
-		bool solid)
-	:CGeo( map )
-{
+CMultiMaterialGeo::CMultiMaterialGeo(CMap* map, const string& name, CMaterialMulti* mat, unsigned int nbrVertex, float* vertex,
+		float* normals,	float* texvertex, std::map<int,int> &canauxnumbers, bool solid) : MapObject(map) {
 	m_NumVertex = 0;
 	m_OffsetMateriaux = -1;				// Inicateur non-initialisé (-1)
 	m_TabVectNormaux = NULL;
@@ -70,9 +66,7 @@ CMultiMaterialGeo::CMultiMaterialGeo(CMap* map, const string& name,
 		cout << endl << m_TabVertex[p];
 }
 
-CMultiMaterialGeo::CMultiMaterialGeo(CMap* map)
-	:CGeo( map )
-{
+CMultiMaterialGeo::CMultiMaterialGeo(CMap* map) : MapObject(map) {
 	m_NumVertex = 0;
 	m_TabVertex = NULL;			// Pointeur sur le tableau de sommets
 	m_TabVectNormaux = NULL;
@@ -86,7 +80,7 @@ CMultiMaterialGeo::CMultiMaterialGeo(CMap* map)
 	maxX = maxY = maxZ = minX = minY = minZ = 0.0f;
 }
 
-CGeo* CMultiMaterialGeo::clone() {
+MapObject* CMultiMaterialGeo::clone() {
 	return new CMultiMaterialGeo(*this);
 }
 
@@ -99,23 +93,20 @@ void CMultiMaterialGeo::setVertex(int num, float *tab)
 	m_TabVertex = tab;
 }
 
-void CMultiMaterialGeo::setTexVertex(float *tab)
-{
+void CMultiMaterialGeo::setTexVertex(float *tab) {
 	if( m_TabTexVertex )	// Destruction de l'ancien tableau de sommets s'il existe
 		delete[] m_TabTexVertex;
 
 	m_TabTexVertex = tab;
 }
 
-void CMultiMaterialGeo::Init()
-{
+void CMultiMaterialGeo::init() throw(CErreur) {
 	MinMax();			// Mesure les minimums et maximums de l'objet géo
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
 	ConstruitBase();	// Construit la table des vecteurs normaux
 }
 
-void CMultiMaterialGeo::initGL()
-{
+void CMultiMaterialGeo::initGL() {
 	glGenBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 
 	// Sommets
@@ -131,13 +122,11 @@ void CMultiMaterialGeo::initGL()
 	glBufferData(GL_ARRAY_BUFFER, m_NumVertex*2*sizeof(float), m_TabTexVertex, GL_STATIC_DRAW);
 }
 
-void CMultiMaterialGeo::freeGL()
-{
+void CMultiMaterialGeo::freeGL() {
 	glDeleteBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 }
 
-void CMultiMaterialGeo::setNormalVertex(float *tab)
-{
+void CMultiMaterialGeo::setNormalVertex(float *tab) {
 	if(m_TabVectNormaux) {
 		delete[] m_TabVectNormaux;
 	}
@@ -145,8 +134,7 @@ void CMultiMaterialGeo::setNormalVertex(float *tab)
 	m_TabVectNormaux = tab;
 }
 
-void CMultiMaterialGeo::Affiche()
-{
+void CMultiMaterialGeo::Affiche() {
 	glLineWidth( 1 );
 
 	// Attachement VBO sommets
@@ -178,16 +166,13 @@ void CMultiMaterialGeo::Affiche()
 		CMaterial::MAT_TYPE type = material->Type();
 
 		// Initialisations de l'affichage en fonction du matériau
-		if(type == CMaterial::MAT_TYPE_TEXTURE)
-		{
+		if(type == CMaterial::MAT_TYPE_TEXTURE) {
 			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		}
-		else if(type == CMaterial::MAT_TYPE_SIMPLE)
-		{
+		else if(type == CMaterial::MAT_TYPE_SIMPLE) {
 			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		}
-		else
-		{
+		else {
 			cout << endl << "MultiMaterialGeo> Materiau inconnu";
 		}
 
@@ -209,8 +194,7 @@ void CMultiMaterialGeo::Affiche()
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }
 
-const char* CMultiMaterialGeo::toString()
-{
+const char* CMultiMaterialGeo::toString() {
 	ostringstream ttt;
 	ttt << identifier << " Nom=" << getName() << " Mat=";
 
@@ -222,8 +206,7 @@ const char* CMultiMaterialGeo::toString()
 	return tostring.c_str();
 }
 
-void CMultiMaterialGeo::AfficheSelection(float r,float v,float b)
-{
+void CMultiMaterialGeo::AfficheSelection(float r,float v,float b) {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 
@@ -264,13 +247,11 @@ void CMultiMaterialGeo::AfficheNormals() {
 	}
 }
 
-void CMultiMaterialGeo::setOffsetMateriau(int offset)
-{
+void CMultiMaterialGeo::setOffsetMateriau(int offset) {
 	m_OffsetMateriaux = offset;
 }
 
-int CMultiMaterialGeo::getOffsetMateriau() throw(CErreur)
-{
+int CMultiMaterialGeo::getOffsetMateriau() throw(CErreur) {
 	if(m_OffsetMateriaux < 0) {
 		throw CErreur("Tentative d'accès à m_OffsetMateriau sans initialisation");
 	}
@@ -278,13 +259,11 @@ int CMultiMaterialGeo::getOffsetMateriau() throw(CErreur)
 	return m_OffsetMateriaux;
 }
 
-void CMultiMaterialGeo::setMaterial(int ref)
-{
+void CMultiMaterialGeo::setMaterial(int ref) {
 	int nbrMat = ref + getOffsetMateriau();	// Décalage de la référence matériau de l'offset demandé
 
 		// Vérification du type de matériau
-	if( nbrMat >= (int)getMap()->m_TabMaterial.size() )
-	{
+	if( nbrMat >= (int)getMap()->m_TabMaterial.size() ) {
 		stringstream txt;
 		txt << "Erreur (CMultiMaterial::setMaterial) : Materiau introuvable 1, réf=";
 		txt << nbrMat;
@@ -293,8 +272,7 @@ void CMultiMaterialGeo::setMaterial(int ref)
 
 	CMaterialMulti *mat = (CMaterialMulti*)getMap()->m_TabMaterial[ nbrMat ];
 
-	if( mat == 0 )
-	{
+	if( mat == 0 ) {
 		stringstream txt;
 		txt << "Erreur (CMultiMaterial::setMaterial) : Materiau introuvable 2, réf=";
 		txt << nbrMat;
@@ -304,14 +282,12 @@ void CMultiMaterialGeo::setMaterial(int ref)
 	m_Material = mat;
 }
 
-void CMultiMaterialGeo::MinMax()
-{
+void CMultiMaterialGeo::MinMax() {
 	minX = maxX = m_TabVertex[ 0 ];
 	minY = maxY = m_TabVertex[ 1 ];
 	minZ = maxZ = m_TabVertex[ 2 ];
 
-	for( int i=1 ; i<m_NumVertex ; i++ )
-	{
+	for( int i=1 ; i<m_NumVertex ; i++ ) {
 		if( m_TabVertex[3*i] < minX )		//récupération des coordonnées du pavé englobant
 			minX = m_TabVertex[3*i];		//l'objet géo
 		if( m_TabVertex[(3*i)+1] < minY )
@@ -328,8 +304,7 @@ void CMultiMaterialGeo::MinMax()
 	}
 }
 
-void CMultiMaterialGeo::Bulle()
-{
+void CMultiMaterialGeo::Bulle() {
 	float r0, r1, r2;
 		// Calcul du centre de la sphère à partir des valeurs min/max
 	m_Centre[0] = (minX+maxX)/2.0f;
@@ -344,8 +319,7 @@ void CMultiMaterialGeo::Bulle()
 	m_Rayon = sqrtf( (r0*r0) + (r1*r1) + (r2*r2) );
 }
 
-void CMultiMaterialGeo::ConstruitBase()
-{
+void CMultiMaterialGeo::ConstruitBase() {
 	float X[3], Y[3];
 
 	if( m_pNormalTriangle )
@@ -484,7 +458,7 @@ bool CMultiMaterialGeo::Lit(TiXmlElement* el, MapLogger* mapLogger)
 	// Référence
 	if(!el->Attribute(Xml::REF, &ref))
 		throw CErreur("Fichier Map corrompu CMultiMaterialGeo 4");
-	m_Reference = (unsigned int)ref;
+	_reference = (unsigned int)ref;
 
 	// Materiau
 	unsigned int refMat = Xml::LitMaterialRef(el);

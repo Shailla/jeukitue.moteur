@@ -61,8 +61,8 @@ public:
 	bool isModeClient();	// Indique si une partie réseau client est en cours
 	bool isModeServer();	// Indique si une partie serveur est en cours
 	void Quit();			// Passe en mode aucun jeu en cours
-	bool Gravite() const;	// Indique si la gravité est active
-	void Gravite(bool gravite);
+	bool getGravite() const;	// Indique si la gravité est active
+	void setGravite(bool gravite);
 
 	// Gestion de la Map
 	jkt::CMap *getMap();
@@ -105,7 +105,7 @@ public:
 
 	// Gestion du joueur principal (actif)
 	CPlayer* Erwin();								// Renvoie le joueur principal
-	void Erwin(CPlayer *erwin);					// Set le joueur principal
+	void setErwin(CPlayer *erwin);					// Set le joueur principal
 
 	// Gestion des joueurs
 	void deletePlayers();								// Détruit tous les joueurs

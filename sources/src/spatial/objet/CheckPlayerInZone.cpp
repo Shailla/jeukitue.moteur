@@ -19,7 +19,7 @@ namespace jkt {
 
 const char* CheckPlayerInZone::identifier = "PlayerDetector";
 
-CheckPlayerInZone::CheckPlayerInZone(CMap* map, const string& id, float zoneDetectionXmin, float zoneDetectionXmax, float zoneDetectionYmin, float zoneDetectionYmax, float zoneDetectionZmin, float zoneDetectionZmax) : CGeo(map) {
+CheckPlayerInZone::CheckPlayerInZone(CMap* map, const string& id, float zoneDetectionXmin, float zoneDetectionXmax, float zoneDetectionYmin, float zoneDetectionYmax, float zoneDetectionZmin, float zoneDetectionZmax) : MapObject(map) {
 	_id = id;
 
 	_isVisible = false;
@@ -33,7 +33,7 @@ CheckPlayerInZone::CheckPlayerInZone(CMap* map, const string& id, float zoneDete
 	_zoneDetectionZmax = zoneDetectionZmax;
 }
 
-CheckPlayerInZone::CheckPlayerInZone(CMap* map, const CheckPlayerInZone& other) : CGeo(map) {
+CheckPlayerInZone::CheckPlayerInZone(CMap* map, const CheckPlayerInZone& other) : MapObject(map) {
 	_id = other._id;
 
 	_isVisible = other._isVisible;
@@ -50,7 +50,7 @@ CheckPlayerInZone::CheckPlayerInZone(CMap* map, const CheckPlayerInZone& other) 
 CheckPlayerInZone::~CheckPlayerInZone() {
 }
 
-CGeo* CheckPlayerInZone::clone() {
+MapObject* CheckPlayerInZone::clone() {
 	return new CheckPlayerInZone(*this);
 }
 
@@ -109,7 +109,7 @@ const char* CheckPlayerInZone::toString() {
 	return tostring.c_str();
 }
 
-void CheckPlayerInZone::Init() {
+void CheckPlayerInZone::init() throw(CErreur) {
 }
 
 void CheckPlayerInZone::initGL() {

@@ -16,13 +16,13 @@
 using namespace std;
 
 #include "spatial/geo/ChanTex.h"
-#include "spatial/geo/Geo.h"
+#include "spatial/basic/MapObject.h"
 #include "spatial/geo/GeoMaker.h"
 
 namespace jkt
 {
 
-class CMultiMaterialGeo:public CGeo {
+class CMultiMaterialGeo : public MapObject {
 	static const char* identifier;
 	int m_OffsetMateriaux;			// Sert lors de la lecture des références matériaux
 	string tostring;
@@ -56,17 +56,17 @@ public:
 	CMultiMaterialGeo(CMap* map, const string& name, CMaterialMulti* mat, unsigned int nbrfaces, float* vertex, float* normals, float* texvertex, std::map<int,int> &canauxnumbers, bool solid=true);
 	CMultiMaterialGeo(CMap *map);
 	~CMultiMaterialGeo();
-	CGeo* clone();
-	void Init();					// Initialisation de l'objet
+	MapObject* clone() override;
+	void init() throw(CErreur) override;					// Initialisation de l'objet
 
 	float *m_TabVectNormaux;	// Pointeur sur le tableau des vecteurs normaux
 
 	// Transformations
-	void EchangeXY();			// Echange les coordonnées X et Y de l'objet
-	void EchangeXZ();			// Echange les coordonnées X et Z de l'objet
-	void EchangeYZ();			// Echange les coordonnées Y et Z de l'objet
-	void Scale(float scaleX, float scaleY, float scaleZ);	// Homothétie pondérée selon X, Y et Z de l'objet
-	void translate(float x, float y, float z);				// Translation pondérée selon X, Y et Z de l'objet
+	void EchangeXY() override;										// Echange les coordonnées X et Y de l'objet
+	void EchangeXZ() override;										// Echange les coordonnées X et Z de l'objet
+	void EchangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
+	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
+	void translate(float x, float y, float z) override;				// Translation pondérée selon X, Y et Z de l'objet
 
 	void setMaterial(int matRef);	// Associe l'objet au matériau de référence matRef
 	void setNormalVertex(float *tab);			// Implémente les normales aux sommets
@@ -76,20 +76,20 @@ public:
 	void setOffsetMateriau(int offset);			// Décale la référence matériau de l'offset
 
 	// Affichage
-	void Affiche();									// Affiche cet objet géo
-	void AfficheSelection(float r,float v,float b);	// Affiche l'objet en couleur unique
+	void Affiche() override;									// Affiche cet objet géo
+	void AfficheSelection(float r,float v,float b) override;	// Affiche l'objet en couleur unique
 
 	// Sérialisation
-	bool Save(TiXmlElement* element);
-	bool Lit(TiXmlElement* el, MapLogger* mapLogger);
+	bool Save(TiXmlElement* element) override;
+	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
 
 	// Gestion des contacts
-	bool Contact( const float pos[3], float dist );
-	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
-	void GereContactPlayer(float positionPlayer[3], CPlayer *player);
-	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist);	// Voir la définition de la fonction
+	bool Contact( const float pos[3], float dist ) override;
+	bool TestContactPave(const float pos[3], float dist);					// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
+	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;
+	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;	// Voir la définition de la fonction
 
-	const char* toString();
+	const char* toString() override;
 };
 
 }	// JktMoteur

@@ -67,9 +67,9 @@ class CGame;
 #include "main/Cfg.h"
 #include "spatial/materiau/Material.h"
 #include "spatial/IfstreamMap.h"
-#include "spatial/geo/Geo.h"				//Paramètres des objets géométriques
+#include <spatial/basic/Geometrical.h>				//Paramètres des objets géométriques
 #include "spatial/objet/Dirigeable.h"
-#include "spatial/Mouve.h"
+#include <spatial/basic/Refreshable.h>
 #include "spatial/geo/GeoObject.h"
 #include "reseau/web/HtmlServer.h"
 #include "Rocket.h"
@@ -812,16 +812,16 @@ void play_handle_key_down( SDL_Event *event ) {
 			}
 			// Sélection arme suivante
 			else if(mouseButtonDown == Config.Commandes.SelectWeaponUp.mouse) {
-				erwin->ActiveArmeUp();
+				erwin->armeUp();
 			}
 			// Sélection arme précédente
 			else if(mouseButtonDown == Config.Commandes.SelectWeaponDown.mouse) {
-				erwin->ActiveArmeDown();
+				erwin->armeDown();
 			}
 			// Désactive / active la gravité
 			else if(mouseButtonDown == Config.Commandes.Gravity.mouse) {
 				if( Game.getMap() )
-					Game.Gravite( !Game.Gravite() );
+					Game.setGravite( !Game.getGravite() );
 			}
 			// Affiche / masque le damier des textures
 			else if(mouseButtonDown == Config.Commandes.Textures.mouse) {
@@ -840,16 +840,16 @@ void play_handle_key_down( SDL_Event *event ) {
 			}
 			// Sélection arme suivante
 			else if(keyDown == Config.Commandes.SelectWeaponUp.key) {
-				erwin->ActiveArmeUp();
+				erwin->armeUp();
 			}
 			// Sélection arme précédente
 			else if(keyDown == Config.Commandes.SelectWeaponDown.key) {
-				erwin->ActiveArmeDown();
+				erwin->armeDown();
 			}
 			// Désactive / active la gravité
 			else if(keyDown == Config.Commandes.Gravity.key) {
 				if( Game.getMap() )
-					Game.Gravite( !Game.Gravite() );
+					Game.setGravite( !Game.getGravite() );
 			}
 			// Affiche / masque le damier des textures
 			else if(keyDown == Config.Commandes.Textures.key) {
@@ -961,7 +961,7 @@ void play_handle_key_down( SDL_Event *event ) {
 				}
 
 				// Sélectionne le joueur en tant que joueur principal
-				Game.Erwin(erwin);
+				Game.setErwin(erwin);
 				((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setActivePlayerName(erwin->nom());
 			}
 			break;
@@ -1085,7 +1085,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	erwin->init();								// Initialise certaines données
 	erwin->choiceOneEntryPoint();
 	Game.addPlayer(erwin);	// Ajoute le joueur principal à la liste des joueurs
-	Game.Erwin(erwin);						// Indique que 'erwin' est le joueur principal
+	Game.setErwin(erwin);						// Indique que 'erwin' est le joueur principal
 
 	// Création d'un second joueur
 	CPlayer *julien;
@@ -1169,7 +1169,7 @@ void executeJktRequests() {
 		// Fermeture de la MAP courante et destruction des joueurs
 		Game.quitCurrentMap();
 
-		Game.Erwin(0);
+		Game.setErwin(0);
 		Game.deletePlayers();
 
 
@@ -1209,7 +1209,7 @@ void executeJktRequests() {
 		map->initPlugins();
 		Game.changeActiveMap(map);
 
-		Dirigeable* dirigeable = new Dirigeable();
+		Dirigeable* dirigeable = new Dirigeable(map);
 		map->add(dirigeable);
 
 		// Définition des joueurs
@@ -1219,7 +1219,7 @@ void executeJktRequests() {
 
 		if(erwin != NULL) {
 			Game.addPlayer(erwin);		// Ajoute le joueur principal à la liste des joueurs
-			Game.Erwin(erwin);			// Indique que 'erwin' est le joueur principal
+			Game.setErwin(erwin);			// Indique que 'erwin' est le joueur principal
 		}
 
 		for(vector<CPlayer*>::iterator iter = localeGameDto->getPlayers().begin() ; iter != localeGameDto->getPlayers().end() ; ++iter) {
@@ -1362,7 +1362,7 @@ void executeJktRequests() {
 		// Fermeture de la MAP courante et destruction des joueurs
 		Game.quitCurrentMap();
 
-		Game.Erwin(0);
+		Game.setErwin(0);
 		Game.deletePlayers();
 
 
@@ -1416,7 +1416,7 @@ void executeJktRequests() {
 
 		if(erwin) {
 			Game.addPlayer(erwin);		// Ajoute Erwin à la liste des joueurs
-			Game.Erwin(erwin);			// Indique qu'Erwin est le joueur principal
+			Game.setErwin(erwin);			// Indique qu'Erwin est le joueur principal
 		}
 
 		for(vector<CPlayer*>::iterator iter = serverGameDto->getPlayers().begin() ; iter != serverGameDto->getPlayers().end() ; ++iter) {

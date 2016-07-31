@@ -407,7 +407,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 							Game.quitCurrentMap();
 
 							// Supprime les joueurs
-							Game.Erwin(0);
+							Game.setErwin(0);
 							Game.deletePlayers();
 
 
@@ -494,7 +494,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 							if(!erwin) {
 								LOGERROR(("Joueur Erwin introuvable"));
 							}
-							Game.Erwin(erwin);
+							Game.setErwin(erwin);
 
 
 							/* *************************************************************

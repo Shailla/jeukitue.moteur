@@ -10,12 +10,13 @@
 
 #include <string>
 
-#include "spatial/geo/Geo.h"
+#include "util/V3D.h"
+#include "spatial/basic/MapObject.h"
 
 namespace jkt
 {
 
-class CheckPlayerInZone : public CGeo {
+class CheckPlayerInZone : public MapObject {
 	std::string tostring;
 
 	// Identifiant du check, permet à un plugin par exemple de savoir quel check a été activé
@@ -40,9 +41,9 @@ public:
 	CheckPlayerInZone(CMap* map, const std::string& id, float zoneDetectionXmin, float zoneDetectionXmax, float zoneDetectionYmin, float zoneDetectionYmax, float zoneDetectionZmin, float zoneDetectionZmax);
 	CheckPlayerInZone(CMap* map, const CheckPlayerInZone& other);
 	virtual ~CheckPlayerInZone();
-	CGeo* clone() override;
+	MapObject* clone() override;
 
-	void Init() override;								// Initialisation de l'objet
+	void init() throw(CErreur) override;								// Initialisation de l'objet
 	void initGL() override;
 	void freeGL() override;
 

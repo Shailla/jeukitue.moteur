@@ -17,8 +17,9 @@ using namespace std;
 #include "tinyxml.h"
 
 #include "util/Erreur.h"
+#include "spatial/MapLogger.h"
 
-#include "spatial/geo/Geo.h"
+#include "spatial/basic/MapObject.h"
 
 namespace jkt
 {
@@ -98,8 +99,8 @@ public:
 	static float* LitVecteursNormaux(TiXmlElement* element, int& nbr);
 	static map<int,int>* LitSousMateriaux(TiXmlElement* el);
 
-	static CGeo* Lit(TiXmlElement* el, CMap* pMap, MapLogger* mapLogger);
-	CGeo* makeNewGeoInstance();	// Crée une instance de l'objet géométrique
+	static MapObject* Lit(TiXmlElement* el, CMap* pMap, MapLogger* mapLogger);
+	MapObject* makeNewGeoInstance();	// Crée une instance de l'objet géométrique
 								// optimisé correspondant
 private:
 	CSimpleGeo* makeSimpleGeo();

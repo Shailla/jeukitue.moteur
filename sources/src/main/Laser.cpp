@@ -30,19 +30,15 @@ using namespace jkt;
 
 extern CGame Game;
 
-CLaser::CLaser( CPlayer *player )
-	:CProjectil( player )
-{
+CLaser::CLaser( CPlayer *player ) : CProjectil( player ) {
 	m_TimeStart = SDL_GetTicks();
 	m_Delta = 0.0f;
 }
 
-CLaser::~CLaser()
-{
+CLaser::~CLaser() {
 }
 
-void CLaser::Affiche()
-{
+void CLaser::Affiche() {
 	float che = 0.01f;
 	float vect[3];
 
@@ -87,8 +83,7 @@ void CLaser::Affiche()
 	glPopMatrix();
 }
 
-bool CLaser::Refresh()
-{
+bool CLaser::Refresh() {
 	CV3D Dir, EH;			// Vecteur direction du laser du joueur concerné
 	float pos[3], pos2[3];	// Position du joueur concerné
 	float distance;
@@ -109,7 +104,7 @@ bool CLaser::Refresh()
 	DirVerif = Dir;
 	distance = Game.getMap()->GereLaserPlayer( pos, Dir, distance );	// Gère le laser de 'player' avec la map
 
-		// Vérifie si un joueur a été touché
+	// Vérifie si un joueur a été touché
 	playerTouche = 0;	// Pas de joueur touché par le laser trouvé
 	int curseur = -1;
 	CPlayer *player;
@@ -122,14 +117,13 @@ bool CLaser::Refresh()
 			EH.Z = -pos2[2] + pos[2];
 
 			float var = EH^Dir;
-			if( var >=0.0f )	// Si le laser va dans le sens du joueur
-			{
-				if( var < distance )	// Si le laser n'est pas arrêté par un objet avant
-				{						// d'atteindre le joueur
+
+			if( var >=0.0f ) {	// Si le laser va dans le sens du joueur
+				if( var < distance ) {	// Si le laser n'est pas arrêté par un objet avant
+										// d'atteindre le joueur
 					float hcarre = (EH^EH) - (var*var);
 
-					if( hcarre<0.007f )	// Si la distance entre le laser et l'autre joueur < 0.007
-					{
+					if( hcarre<0.007f ) {	// Si la distance entre le laser et l'autre joueur < 0.007
 						distance = var;
 						playerTouche = player;	// Se souvient quel joeur est touché
 					}

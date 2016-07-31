@@ -18,14 +18,13 @@ using namespace std;
 #include "tinyxml.h"
 
 #include "spatial/geo/ChanTex.h"
-#include "spatial/geo/Geo.h"
+#include "spatial/basic/MapObject.h"
 #include "spatial/geo/GeoMaker.h"
 
 namespace jkt
 {
 
-class CTextureMaterialGeo:public CGeo
-{
+class CTextureMaterialGeo : public MapObject {
 	int m_OffsetMateriaux;		// Sert lors de la lecture des références matériaux
 	string tostring;
 	CMaterialTexture* m_Material;	// Matériau multiple associé
@@ -63,9 +62,9 @@ public:
 	CTextureMaterialGeo(CMap *map);
 	CTextureMaterialGeo(const CTextureMaterialGeo& geo);
 	~CTextureMaterialGeo();
-	CGeo* clone() override;
+	MapObject* clone() override;
 
-	void Init() override;				// Initialisation de l'objet
+	void init() throw(CErreur) override;				// Initialisation de l'objet
 	void initGL() override;
 	void freeGL() override;
 

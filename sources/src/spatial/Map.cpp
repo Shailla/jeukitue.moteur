@@ -278,7 +278,7 @@ void CMap::merge(CMap& map) {
 	// Caractéristiques de la Map
 	vector<CLight*>::iterator iterLight;
 	vector<CMaterial*>::iterator iterMaterial;
-	vector<EntryPoint>::iterator iterEntryPoint;
+	vector<EntryPoint*>::iterator iterEntryPoint;
 
 	// Objets de la Map
 	for(iterObject=map._objects.begin() ; iterObject!=map._objects.end() ; iterObject++) {
@@ -311,16 +311,17 @@ void CMap::merge(CMap& map) {
 		m_TabMaterial.push_back(*iterMaterial);
 	}
 
-	for(iterEntryPoint=map._entryPoints.begin() ; iterEntryPoint!=map._entryPoints.end() ; iterEntryPoint++) {
+	for(iterEntryPoint = map._entryPoints.begin() ; iterEntryPoint != map._entryPoints.end() ; iterEntryPoint++) {
 		_entryPoints.push_back(*iterEntryPoint);
 	}
 }
 
-vector<EntryPoint>& CMap::getEntryPointsList() {
+vector<EntryPoint*>& CMap::getEntryPointsList() {
 	return _entryPoints;
 }
 
-void CMap::add(EntryPoint entryPoint) {
+void CMap::add(EntryPoint* entryPoint) {
+	_geos.push_back(entryPoint);
 	_entryPoints.push_back(entryPoint);
 }
 
@@ -398,9 +399,9 @@ void CMap::EchangeXY() {
 	LOGDEBUG(("CMap::EchangeXY()%T", this ));
 
 	// Entry points
-	vector<EntryPoint>::iterator iterEntry;
-	for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
-		(*iterEntry).EchangeXY();
+	vector<EntryPoint*>::iterator iterEntry;
+	for( iterEntry = _entryPoints.begin() ; iterEntry != _entryPoints.end() ; iterEntry++ )
+		(*iterEntry)->EchangeXY();
 
 	// Geo
 	vector<Geometrical*>::iterator iterGeo;
@@ -417,9 +418,9 @@ void CMap::EchangeXZ() {
 	LOGDEBUG(("CMap::EchangeXZ()%T", this ));
 
 	// Entry points
-	vector<EntryPoint>::iterator iterEntry;
+	vector<EntryPoint*>::iterator iterEntry;
 	for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
-		(*iterEntry).EchangeXZ();
+		(*iterEntry)->EchangeXZ();
 
 	// Geo
 	vector<Geometrical*>::iterator iterGeo;
@@ -436,9 +437,9 @@ void CMap::EchangeYZ() {
 	LOGDEBUG(("CMap::EchangeYZ()%T", this ));
 
 	// Entry points
-	vector<EntryPoint>::iterator iterEntry;
+	vector<EntryPoint*>::iterator iterEntry;
 	for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
-		(*iterEntry).EchangeYZ();
+		(*iterEntry)->EchangeYZ();
 
 	// Geo
 	vector<Geometrical*>::iterator iterGeo;
@@ -456,17 +457,20 @@ void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
 
 	if(scaleX!=1.0 || scaleY!=1.0 || scaleZ!=1.0) {
 		// Entry points
-		vector<EntryPoint>::iterator iterEntry;
+		vector<EntryPoint*>::iterator iterEntry;
+
 		for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
-			(*iterEntry).Scale(scaleX, scaleY, scaleZ);
+			(*iterEntry)->Scale(scaleX, scaleY, scaleZ);
 
 		// Geo
 		vector<Geometrical*>::iterator iterGeo;
+
 		for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
 			(*iterGeo)->Scale( scaleX, scaleY, scaleZ );
 
 		// Lights
 		vector<CLight*>::iterator iterLight;
+
 		for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
 			(*iterLight)->Scale( scaleX, scaleY, scaleZ );
 	}
@@ -477,10 +481,10 @@ void CMap::translate(float x, float y, float z) {
 
 	if(x!=0.0 || y!=0.0 || z!=0.0) {
 		// Entry points
-		vector<EntryPoint>::iterator iterEntry;
+		vector<EntryPoint*>::iterator iterEntry;
 
 		for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
-			(*iterEntry).translate(x, y, z);
+			(*iterEntry)->translate(x, y, z);
 
 		// Geo
 		vector<Geometrical*>::iterator iterGeo;
@@ -623,11 +627,10 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						Xml::throwCorruptedMapFileException(Xml::ENTRYPOINT, el->Value());
 					}
 
-					EntryPoint* entry = EntryPointMaker::Lit(el, mapLogger);
+					EntryPoint* entry = EntryPointMaker::Lit(&map, el, mapLogger);
 
 					if(entry) {
-						map.add(*entry);
-						delete entry;
+						map.add(entry);
 					}
 				}
 			}
@@ -878,10 +881,10 @@ bool CMap::Save(const string nomFichier) {
 	{
 		TiXmlElement *elEntryPoint = new TiXmlElement(Xml::ENTRYPOINTS);
 		elMap->LinkEndChild(elEntryPoint);
-		vector<EntryPoint>::iterator iterEntryPoint;
+		vector<EntryPoint*>::iterator iterEntryPoint;
 
 		for( iterEntryPoint=_entryPoints.begin() ; iterEntryPoint!=_entryPoints.end() ; iterEntryPoint++ )
-			(*iterEntryPoint).Save( elEntryPoint );		// Sauvegarde des paramètres de l'objet
+			(*iterEntryPoint)->Save( elEntryPoint );		// Sauvegarde des paramètres de l'objet
 	}
 
 	// Sauvegarde des materiaux

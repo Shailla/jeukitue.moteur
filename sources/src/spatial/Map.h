@@ -51,7 +51,7 @@ class CMap : MapObject {
 
 	// Lumières et autres caractéristiques de la Map
 	vector<CLight*> _lights;							// Lumières
-	vector<EntryPoint> _entryPoints;					// Points d'entrée des joueurs sur la Map
+	vector<EntryPoint*> _entryPoints;					// Points d'entrée des joueurs sur la Map
 
 	// Objets complexes de la Map
 	vector<CMoteurParticules*> _particulesEngines;	// Liste des moteurs de particules de la Map
@@ -154,8 +154,8 @@ public:
 	bool IsSelectionMode();
 
 	// Points d'entrée des personnages joueurs
-	void add(EntryPoint entryPoint);
-	vector<EntryPoint>& getEntryPointsList();
+	void add(EntryPoint* entryPoint);
+	vector<EntryPoint*>& getEntryPointsList();
 };
 
 }	// JktMoteur

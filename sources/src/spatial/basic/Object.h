@@ -36,7 +36,7 @@ public:
 	Object(CMap* map);
 	Object(const Object& other);
 	virtual ~Object();
-	virtual void init() throw(CErreur) = 0;
+	virtual void init() throw(CErreur);
 
 	// Parent
 	CMap* getMap();

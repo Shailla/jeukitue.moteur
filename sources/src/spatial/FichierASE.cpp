@@ -261,7 +261,7 @@ CFichierASE::FACES *CFichierASE::LitFaces(unsigned int num) {
 	return faces;
 }
 
-EntryPoint* CFichierASE::litEntryPoint() {
+EntryPoint* CFichierASE::litEntryPoint(CMap* map) {
 	trace() << "\n\tEntryPoint";
 	EntryPoint *entryPoint = NULL;
 	string mot;
@@ -283,11 +283,10 @@ EntryPoint* CFichierASE::litEntryPoint() {
 	bPosition = true;
 
 	if(bPosition) {
-		entryPoint = new EntryPoint(position);
+		entryPoint = new EntryPoint(map, position);
 	}
 
-	if( m_bAffiche )
-	{
+	if( m_bAffiche ) {
 		trace() << "\n\tPosition du point d'entree : ";
 		trace() << position[0] << ' ' << position[1] << ' ' << position[2];
 	}
@@ -496,12 +495,13 @@ CLight* CFichierASE::lightList()
 	return pLight;
 }
 
-EntryPoint* CFichierASE::litHelper() {
+EntryPoint* CFichierASE::litHelper(CMap* map) {
 	string mot;
 
 	findAccoladeDebut(__LINE__);
 
 	EntryPoint *entryPoint = NULL;
+
 	if( m_bAffiche )
 		trace() << "\nLECTURE D'UN HELPER";
 
@@ -518,7 +518,7 @@ EntryPoint* CFichierASE::litHelper() {
 
 	// Les helpers de type point dont le nom commence par EntryPoint définissent les points d'entrée de la Map
 	if(helperClass == "PointHelper" && nodeName.compare(0, strlen("EntryPoint") - 1, "EntryPoint")) {
-		entryPoint = litEntryPoint();
+		entryPoint = litEntryPoint(map);
 	}
 	else {		// Ignore le helper car il n'est pas d'un type reconnu par JKT
 		findAccoladeDebut(__LINE__);
@@ -1366,10 +1366,10 @@ void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap) {
 			}
 		}
 		else if(mot == "*HELPEROBJECT") {
-			EntryPoint* entryPoint = litHelper();
+			EntryPoint* entryPoint = litHelper(pMap);
 
 			if(entryPoint != NULL) {
-				pMap->add(*entryPoint);
+				pMap->add(entryPoint);
 			}
 		}
 	}

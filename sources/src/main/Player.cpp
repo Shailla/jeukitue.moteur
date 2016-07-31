@@ -199,8 +199,8 @@ void CPlayer::choiceOneEntryPoint() {
 		float pos[3];
 		int curseur;
 		CV3D distance;
-		vector< vector<EntryPoint>::iterator > liste;
-		vector<EntryPoint>::iterator iterEntry;
+		vector< vector<EntryPoint*>::iterator > liste;
+		vector<EntryPoint*>::iterator iterEntry;
 		vector<CPlayer*>::iterator iterPlayer;
 
 			// Fait la liste des points d'entrée se trouvant à une distance supérieure
@@ -211,7 +211,7 @@ void CPlayer::choiceOneEntryPoint() {
 
 			while((player = Game.nextPlayer(curseur))) {
 				if( player != this ) {	// Si le joueur en question n'est pas le joueur actuel
-					distance = (*iterEntry).getEntryPosition();
+					distance = (*iterEntry)->getEntryPosition();
 					player->getPosition(pos);
 					distance -= pos;
 
@@ -234,14 +234,13 @@ void CPlayer::choiceOneEntryPoint() {
 
 		if(nbr) {	// S'il y a des entrées à une distance convenable de tout joueur
 			int choice = rand() % nbr;
-			setPosition((*(liste[choice])).getEntryPosition());	// alors choisi l'une d'elles au hasard
-			cout << endl << "LOIN : -" << choice << "-";
+			setPosition((*(liste[choice]))->getEntryPosition());	// alors choisi l'une d'elles au hasard
 			LOGINFO(("Choix d'un entry point éloigné des autres joueurs : %d", choice));
 		}
 		else {							// sinon prends-en une au hasard dans la liste
 			nbr = Game.getMap()->getEntryPointsList().size();
 			int choice = rand() % nbr;
-			setPosition(Game.getMap()->getEntryPointsList()[choice].getEntryPosition());
+			setPosition(Game.getMap()->getEntryPointsList()[choice]->getEntryPosition());
 			LOGINFO(("Choix d'un entry point au hasard : %d", choice));
 		}
 	}

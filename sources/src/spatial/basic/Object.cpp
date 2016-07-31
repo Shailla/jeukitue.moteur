@@ -28,6 +28,9 @@ Object::~Object() {
 	GENREF.delRef(_reference);		// Libère la référence de l'objet
 }
 
+void Object::init() throw(CErreur) {
+}
+
 unsigned int Object::getReference() const {
 	return _reference;
 }

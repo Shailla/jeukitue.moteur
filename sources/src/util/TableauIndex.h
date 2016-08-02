@@ -5,7 +5,7 @@
 namespace jkt
 {
 
-template <class X> class CTableauIndex
+template <class X> class TableauIndex
 {
 private:
 	int m_Max;		// Nombre de places dans ce tableau
@@ -14,12 +14,12 @@ private:
 
 		// Constructeurs/destructeur
 public:
-	CTableauIndex(int nbr);			// Crée un tableau indexé pouvant contenir nbr objets
-	~CTableauIndex();				// Détruit le tableau (ne détruis pas les éléments par contre)
+	TableauIndex(int nbr);			// Crée un tableau indexé pouvant contenir nbr objets
+	~TableauIndex();				// Détruit le tableau (ne détruis pas les éléments par contre)
 
 	int getMax();					// Retourne le nombre de places disponibles dans le tableau
 	int getNbr();					// Retourne le nombre d'éléments actuellement présents dans le tableau
-	bool Ajoute(int pos,X *objet);	// Ajoute un élément à la pos° position du tableau
+	bool Ajoute(int pos, X* objet);	// Ajoute un élément à la pos° position du tableau
 	int Ajoute(X *objet);			// Ajoute l'élément à la première place de libre
 	bool Supprime(int pos);			// Supprime du tableau le pos° élément
 	X* operator[](int pos);			// Retourne un pointeur sur l'élément indexé 'pos'

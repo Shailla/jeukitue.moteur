@@ -94,7 +94,7 @@ void CGame::createPlayerList(int size) {
 		delete _pTabIndexPlayer;
 	}
 
-	_pTabIndexPlayer = new CTableauIndex<CPlayer>(size);
+	_pTabIndexPlayer = new TableauIndex<CPlayer>(size);
 
 	LOGINFO(("Set player list in game :"));
 

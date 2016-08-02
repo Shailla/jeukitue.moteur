@@ -11,7 +11,7 @@ namespace jkt
 {
 
 template<class X>
-CTableauIndex<X>::CTableauIndex(int nbr) {
+TableauIndex<X>::TableauIndex(int nbr) {
 	m_Max = nbr;					// Nombre d'objets dans le tableau
 	m_Nbr = 0;						// Aucun élément dans le tableau actuellement
 	m_XTableau = new X*[ nbr ];		// Création du tableau
@@ -21,13 +21,13 @@ CTableauIndex<X>::CTableauIndex(int nbr) {
 }
 
 template<class X>
-CTableauIndex<X>::~CTableauIndex() {
+TableauIndex<X>::~TableauIndex() {
 	delete m_XTableau;		// Destruction du tableau
 }
 
 
 template<class X>
-bool CTableauIndex<X>::Ajoute(int id, X *objet) {	// Ajoute le pos° élément du tableau
+bool TableauIndex<X>::Ajoute(int id, X *objet) {	// Ajoute le pos° élément du tableau
 													// s'il n'existe pas encore
 	if(objet && 0 <= id && id < m_Max) {			// Vérifie qu'il n'y a pas dépassement du tableau
 		if( !(m_XTableau[id]) ) {		// Vérifie que la case indexée par 'pos' est vide
@@ -41,7 +41,7 @@ bool CTableauIndex<X>::Ajoute(int id, X *objet) {	// Ajoute le pos° élément du t
 }
 
 template<class X>
-int CTableauIndex<X>::Ajoute(X *objet) {	// Ajoute l'élément à la première place de libre
+int TableauIndex<X>::Ajoute(X *objet) {	// Ajoute l'élément à la première place de libre
 	int id = 0;
 
 	while(m_XTableau[id] && (id < m_Max))
@@ -57,7 +57,7 @@ int CTableauIndex<X>::Ajoute(X *objet) {	// Ajoute l'élément à la première place
 }
 
 template<class X>
-bool CTableauIndex<X>::Supprime(int id) {		// Supprime l'élément du tableau
+bool TableauIndex<X>::Supprime(int id) {		// Supprime l'élément du tableau
 	if(0 <= id && id < m_Max) {		// S'il n'y a pas de dépassement
 		m_XTableau[id] = 0;
 		m_Nbr--;			// Décompte le nouvel élément
@@ -68,7 +68,7 @@ bool CTableauIndex<X>::Supprime(int id) {		// Supprime l'élément du tableau
 }
 
 template<class X>
-X *CTableauIndex<X>::operator[](int id)		// Retourne le pointeur sur l'élément indexé 'pos'
+X *TableauIndex<X>::operator[](int id)		// Retourne le pointeur sur l'élément indexé 'pos'
 {
 	if(0 <= id && id < m_Max) {
 		return m_XTableau[id];
@@ -80,16 +80,16 @@ X *CTableauIndex<X>::operator[](int id)		// Retourne le pointeur sur l'élément i
 
 template<class X>
 inline
-int CTableauIndex<X>::getMax()
+int TableauIndex<X>::getMax()
 {	return m_Max;		}
 
 template<class X>
 inline
-int CTableauIndex<X>::getNbr()
+int TableauIndex<X>::getNbr()
 {	return m_Nbr;		}
 
 template<class X>
-int CTableauIndex<X>::IndexSuivant(int id) {
+int TableauIndex<X>::IndexSuivant(int id) {
 	if(id < 0) {			// Initialisation d'un index
 		id = -1;
 	}
@@ -112,7 +112,7 @@ int CTableauIndex<X>::IndexSuivant(int id) {
 }
 
 template<class X>
-bool CTableauIndex<X>::Suivant(int &id) {
+bool TableauIndex<X>::Suivant(int &id) {
 	id = IndexSuivant(id);
 
 	return id >= 0;

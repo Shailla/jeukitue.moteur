@@ -49,7 +49,7 @@ void TableauTest::TableauIndexTest() {
 
 	// -----------------------------------------------------
 	log("Test - 'TableauIndex'", __LINE__);
-	CTableauIndex<string> tab(5);
+	TableauIndex<string> tab(5);
 
 	ASSERT_EQUAL(5, tab.getMax(), "KO, le tableau devrait avoir une contenance de 5");
 	ASSERT_EQUAL(0, tab.getNbr(), "KO, le tableau devrait être vide");
@@ -116,7 +116,7 @@ void TableauTest::TableauIndexTest() {
 	ASSERT_FALSE(tab.Ajoute(3, &deux), "KO");
 
 	// Parcours des éléments
-	CTableauIndex<int> tabInt(5);
+	TableauIndex<int> tabInt(5);
 	int var;
 	int curseur = -1;
 

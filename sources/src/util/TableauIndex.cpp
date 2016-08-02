@@ -16,7 +16,7 @@ CTableauIndex<X>::CTableauIndex(int nbr) {
 	m_Nbr = 0;						// Aucun élément dans le tableau actuellement
 	m_XTableau = new X*[ nbr ];		// Création du tableau
 
-	for(int i=0 ; i < nbr ; i++)	// Mise à zéro des éléments du tableau
+	for(int i=0 ; i < m_Max ; i++)	// Mise à zéro des éléments du tableau
 		m_XTableau[i] = 0;
 }
 
@@ -27,11 +27,11 @@ CTableauIndex<X>::~CTableauIndex() {
 
 
 template<class X>
-bool CTableauIndex<X>::Ajoute(int pos, X *objet) {	// Ajoute le pos° élément du tableau
+bool CTableauIndex<X>::Ajoute(int id, X *objet) {	// Ajoute le pos° élément du tableau
 													// s'il n'existe pas encore
-	if(objet && pos < m_Max) {			// Vérifie qu'il n'y a pas dépassement du tableau
-		if( !(m_XTableau[pos]) ) {		// Vérifie que la case indexée par 'pos' est vide
-			m_XTableau[pos] = objet;
+	if(objet && 0 <= id && id < m_Max) {			// Vérifie qu'il n'y a pas dépassement du tableau
+		if( !(m_XTableau[id]) ) {		// Vérifie que la case indexée par 'pos' est vide
+			m_XTableau[id] = objet;
 			m_Nbr++;			// Compte le nouvel élément
 			return true;		// L'élément a été ajouté
 		}
@@ -57,24 +57,25 @@ int CTableauIndex<X>::Ajoute(X *objet) {	// Ajoute l'élément à la première place
 }
 
 template<class X>
-bool CTableauIndex<X>::Supprime(int id) {		// Supprime le pos° élément du tableau
-	if(id < m_Max) {		// S'il n'y a pas de dépassement
+bool CTableauIndex<X>::Supprime(int id) {		// Supprime l'élément du tableau
+	if(0 <= id && id < m_Max) {		// S'il n'y a pas de dépassement
 		m_XTableau[id] = 0;
 		m_Nbr--;			// Décompte le nouvel élément
 		return true;		// L'élément a été supprimé du tableau
 	}
 
-	return false;					// Lélément n'a pas été supprimé
+	return false;		// Aucun élément n'a pas été supprimé
 }
 
 template<class X>
 X *CTableauIndex<X>::operator[](int id)		// Retourne le pointeur sur l'élément indexé 'pos'
 {
-#ifdef _DEBUG
-	if( pos > m_Max )
-		std::cerr << std::endl << __FILE__ << ":" << __LINE__ << "Erreur : acces 'CTableauIndex' dors limite";
-#endif
-	return m_XTableau[id];
+	if(0 <= id && id < m_Max) {
+		return m_XTableau[id];
+	}
+	else {
+		return 0;
+	}
 }
 
 template<class X>
@@ -96,7 +97,7 @@ int CTableauIndex<X>::IndexSuivant(int id) {
 	if(id < m_Max - 1) {	// Incrément d'un index
 		id++;
 
-		while((id<m_Max) && (m_XTableau[id]==NULL))		// Cherche l'élément après la position 'id'
+		while((id < m_Max) && (m_XTableau[id] == 0))		// Cherche l'élément après la position 'id'
 			id++;
 	}
 	else {					// Fin d'un index

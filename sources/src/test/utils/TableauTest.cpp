@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <string>
-#include <vector>
+#include <set>
 
 #include "util/CollectionsUtils.h"
 #include "util/StringUtils.h"
@@ -40,16 +40,112 @@ void TableauTest::test() {
 }
 
 void TableauTest::TableauIndexTest() {
+	string un = "Un";
+	string deux = "Deux";
+	string trois = "Trois";
+	string quatre = "Quatre";
+	string cinq = "Cinq";
+	string six = "Six";
+
 	// -----------------------------------------------------
 	log("Test - 'TableauIndex'", __LINE__);
-//	CTableauIndex<string> tab(5);
-//	tab.Ajoute("Un");
-//	tab.Ajoute("Deux");
-//	tab.Ajoute("Trois");
-//	tab.Ajoute("Quatre");
-//	tab.Ajoute("Cinq");
-//	tab.Ajoute("Six");
+	CTableauIndex<string> tab(5);
 
+	ASSERT_EQUAL(5, tab.getMax(), "KO, le tableau devrait avoir une contenance de 5");
+	ASSERT_EQUAL(0, tab.getNbr(), "KO, le tableau devrait être vide");
+
+	// Ajout d'éléments
+	int id1 = tab.Ajoute(&un);
+	int id2 = tab.Ajoute(&deux);
+	int id3 = tab.Ajoute(&trois);
+	int id4 = tab.Ajoute(&quatre);
+	int id5 = tab.Ajoute(&cinq);
+	int id6 = tab.Ajoute(&six);
+
+	ASSERT_TRUE(id1 >= 0, "KO");
+	ASSERT_TRUE(id2 >= 0, "KO");
+	ASSERT_TRUE(id3 >= 0, "KO");
+	ASSERT_TRUE(id4 >= 0, "KO");
+	ASSERT_TRUE(id5 >= 0, "KO");
+
+	ASSERT_EQUAL(-1, id6, "KO, tableau size should be exceeding");
+	ASSERT_EQUAL(5, tab.getNbr(), "KO, le tableau devrait contenir 5 éléments");
+
+	ASSERT_FALSE(tab.Supprime(-1), "KO, remove out of bound should return false");
+	ASSERT_FALSE(tab.Supprime(-1), "KO, remove out of bound should return false");
+
+	set<int> unicIds;
+	unicIds.insert(id1);
+	unicIds.insert(id2);
+	unicIds.insert(id3);
+	unicIds.insert(id4);
+	unicIds.insert(id5);
+	ASSERT_EQUAL(5, unicIds.size(), "KO, chaque identifiant devrait être unique");
+
+	ASSERT_EQUAL(un, *tab[id1], "KO");
+	ASSERT_EQUAL(deux, *tab[id2], "KO");
+	ASSERT_EQUAL(trois, *tab[id3], "KO");
+	ASSERT_EQUAL(quatre, *tab[id4], "KO");
+	ASSERT_EQUAL(cinq, *tab[id5], "KO");
+
+	ASSERT_EQUAL(0, tab[-1], "KO, hors limite du tableau il doit répondre 0");
+	ASSERT_EQUAL(0, tab[5], "KO, hors limite du tableau il doit répondre 0");
+
+	// On vide le tableau élément par élément
+	ASSERT_TRUE(tab.Supprime(id1), "KO");
+	ASSERT_TRUE(tab.Supprime(id2), "KO");
+	ASSERT_TRUE(tab.Supprime(id3), "KO");
+	ASSERT_TRUE(tab.Supprime(id4), "KO");
+	ASSERT_TRUE(tab.Supprime(id5), "KO");
+
+	ASSERT_EQUAL(0, tab.getNbr(), "KO, le tableau devrait être vide");
+
+	// Ajout d'éléments à une position
+	ASSERT_TRUE(tab.Ajoute(1, &cinq), "KO");
+	ASSERT_TRUE(tab.Ajoute(4, &trois), "KO");
+	ASSERT_TRUE(tab.Ajoute(3, &un), "KO");
+
+	ASSERT_EQUAL(0, 	tab[0], 	"KO, hors limite du tableau il doit répondre 0");
+	ASSERT_EQUAL(cinq, 	*tab[1], 	"KO");
+	ASSERT_EQUAL(0, 	tab[2], 	"KO, hors limite du tableau il doit répondre 0");
+	ASSERT_EQUAL(un, 	*tab[3], 	"KO");
+	ASSERT_EQUAL(trois,	*tab[4], 	"KO");
+	ASSERT_EQUAL(0, 	tab[5], 	"KO, hors limite du tableau il doit répondre 0");
+
+	// Ajout d'élément sur une position déjà prise
+	ASSERT_FALSE(tab.Ajoute(3, &deux), "KO");
+
+	// Parcours des éléments
+	CTableauIndex<int> tabInt(5);
+	int var;
+	int curseur = -1;
+
+	int a=10, b=20, c=30;
+
+	tabInt.Ajoute(1, &a);
+	tabInt.Ajoute(3, &b);
+	tabInt.Ajoute(4, &c);
+
+	// Premier élément
+	ASSERT_EQUAL(1, tab.IndexSuivant(curseur), "KO");
+	ASSERT_TRUE(tab.Suivant(curseur), "KO");
+	var = *tabInt[curseur];
+	ASSERT_EQUAL(10, var, "KO");
+
+	// Second élément
+	ASSERT_EQUAL(3, tab.IndexSuivant(curseur), "KO");
+	ASSERT_TRUE(tab.Suivant(curseur), "KO");
+	var = *tabInt[curseur];
+	ASSERT_EQUAL(20, var, "KO");
+
+	// Second élément
+	ASSERT_EQUAL(4, tab.IndexSuivant(curseur), "KO");
+	ASSERT_TRUE(tab.Suivant(curseur), "KO");
+	var = *tabInt[curseur];
+	ASSERT_EQUAL(30, var, "KO");
+
+	ASSERT_EQUAL(-1, tab.IndexSuivant(curseur), "KO");
+	ASSERT_FALSE(tab.Suivant(curseur), "KO, end of tableau should be attempted");
 }
 
 } // JktTest

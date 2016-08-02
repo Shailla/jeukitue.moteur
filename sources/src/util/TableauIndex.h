@@ -19,7 +19,7 @@ public:
 
 	int getMax();					// Retourne le nombre de places disponibles dans le tableau
 	int getNbr();					// Retourne le nombre d'éléments actuellement présents dans le tableau
-	bool Ajoute(int pos, X *objet);	// Ajoute un élément à la pos° position du tableau
+	bool Ajoute(int pos,X *objet);	// Ajoute un élément à la pos° position du tableau
 	int Ajoute(X *objet);			// Ajoute l'élément à la première place de libre
 	bool Supprime(int pos);			// Supprime du tableau le pos° élément
 	X* operator[](int pos);			// Retourne un pointeur sur l'élément indexé 'pos'

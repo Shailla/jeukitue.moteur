@@ -49,18 +49,18 @@ void TableauTest::TableauIndexTest() {
 
 	// -----------------------------------------------------
 	log("Test - 'TableauIndex'", __LINE__);
-	TableauIndex<string> tab(5);
+	TableauIndex<string> tab(5, false);
 
 	ASSERT_EQUAL(5, tab.getMax(), "KO, le tableau devrait avoir une contenance de 5");
 	ASSERT_EQUAL(0, tab.getNbr(), "KO, le tableau devrait être vide");
 
 	// Ajout d'éléments
-	int id1 = tab.Ajoute(&un);
-	int id2 = tab.Ajoute(&deux);
-	int id3 = tab.Ajoute(&trois);
-	int id4 = tab.Ajoute(&quatre);
-	int id5 = tab.Ajoute(&cinq);
-	int id6 = tab.Ajoute(&six);
+	int id1 = tab.add(&un);
+	int id2 = tab.add(&deux);
+	int id3 = tab.add(&trois);
+	int id4 = tab.add(&quatre);
+	int id5 = tab.add(&cinq);
+	int id6 = tab.add(&six);
 
 	ASSERT_TRUE(id1 >= 0, "KO");
 	ASSERT_TRUE(id2 >= 0, "KO");
@@ -101,9 +101,9 @@ void TableauTest::TableauIndexTest() {
 	ASSERT_EQUAL(0, tab.getNbr(), "KO, le tableau devrait être vide");
 
 	// Ajout d'éléments à une position
-	ASSERT_TRUE(tab.Ajoute(1, &cinq), "KO");
-	ASSERT_TRUE(tab.Ajoute(4, &trois), "KO");
-	ASSERT_TRUE(tab.Ajoute(3, &un), "KO");
+	ASSERT_TRUE(tab.add(1, &cinq), "KO");
+	ASSERT_TRUE(tab.add(4, &trois), "KO");
+	ASSERT_TRUE(tab.add(3, &un), "KO");
 
 	ASSERT_EQUAL(0, 	tab[0], 	"KO, hors limite du tableau il doit répondre 0");
 	ASSERT_EQUAL(cinq, 	*tab[1], 	"KO");
@@ -113,18 +113,18 @@ void TableauTest::TableauIndexTest() {
 	ASSERT_EQUAL(0, 	tab[5], 	"KO, hors limite du tableau il doit répondre 0");
 
 	// Ajout d'élément sur une position déjà prise
-	ASSERT_FALSE(tab.Ajoute(3, &deux), "KO");
+	ASSERT_FALSE(tab.add(3, &deux), "KO");
 
 	// Parcours des éléments
-	TableauIndex<int> tabInt(5);
+	TableauIndex<int> tabInt(5, false);
 	int var;
 	int curseur = -1;
 
 	int a=10, b=20, c=30;
 
-	tabInt.Ajoute(1, &a);
-	tabInt.Ajoute(3, &b);
-	tabInt.Ajoute(4, &c);
+	tabInt.add(1, &a);
+	tabInt.add(3, &b);
+	tabInt.add(4, &c);
 
 	// Premier élément
 	ASSERT_EQUAL(1, tab.IndexSuivant(curseur), "KO");
@@ -146,6 +146,10 @@ void TableauTest::TableauIndexTest() {
 
 	ASSERT_EQUAL(-1, tab.IndexSuivant(curseur), "KO");
 	ASSERT_FALSE(tab.Suivant(curseur), "KO, end of tableau should be attempted");
+
+	tabInt.clear();
+	ASSERT_EQUAL(0, tabInt.getMax(), "KO");
+	ASSERT_EQUAL(0, tabInt.getNbr(), "KO");
 }
 
 } // JktTest

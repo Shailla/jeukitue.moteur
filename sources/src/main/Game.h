@@ -37,7 +37,7 @@ private:
 	jkt::CMap	*_map;								// Map en cours de jeu
 	ModePartie _mode;								// Mode de jeu (parie normale, client ou serveur)
 	bool _gravite;									// Indique si la gravité est active
-	jkt::TableauIndex<CPlayer> *_pTabIndexPlayer;	// Liste indexée des joueurs
+	jkt::TableauIndex<CPlayer> _players;	// Liste indexée des joueurs
 
 public:
 	LocalDataTree* _localDataTree;
@@ -118,7 +118,7 @@ public:
 	 */
 	int addPlayer(CPlayer *player);
 	bool addPlayer(int index, CPlayer *player);
-	CPlayer* getPlayer(int index);
+	CPlayer* getPlayer(int id);
 
 private:
 	void refresh();					// Rafraichi les classe qui en ont besoin

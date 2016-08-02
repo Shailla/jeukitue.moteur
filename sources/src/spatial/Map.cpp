@@ -110,26 +110,21 @@ CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(j
 
 CMap::~CMap() {
 	// Destruction des objets géo
-	vector<Geometrical*>::iterator iterGeo;
-	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
-		delete *iterGeo;
+	for(Geometrical* geo : _geos)
+		delete geo;
 
 	_geos.clear();
 	_refreshables.clear();
 
 	// Destruction des matériaux
-	vector<CMaterial*>::iterator iterMat;
-
-	for( iterMat=m_TabMaterial.begin() ; iterMat!=m_TabMaterial.end() ; iterMat++ )
-		delete *iterMat;
+	for(CMaterial* mat : m_TabMaterial)
+		delete mat;
 
 	m_TabMaterial.clear();
 
 	// Destruction des lumières
-	vector<CLight*>::iterator iterLight;
-
-	for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
-		delete *iterLight;
+	for(CLight* light : _lights)
+		delete light;
 
 	_lights.clear();
 }
@@ -173,23 +168,21 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 
 
 	// Affichage des objets
-	vector<Drawable*>::iterator iter;
-
 	if(_bSelection) {
 		int i=0;
 
-		for(iter = _drawables.begin() ; iter != _drawables.end() ; iter++) {
+		for(Drawable* drawable : _drawables) {
 			if(i != _Selection)
-				(*iter)->Affiche();			// Affichage de l'objet géo
+				drawable->Affiche();			// Affichage de l'objet géo
 			else
-				(*iter)->AfficheSelection(1.0f, 0.0f, 0.0f);
+				drawable->AfficheSelection(1.0f, 0.0f, 0.0f);
 
 			i++;
 		}
 	}
 	else {
-		for( iter = _drawables.begin() ; iter != _drawables.end() ; iter++ ) {
-			(*iter)->Affiche();			// Affichage de l'objet géo
+		for(Drawable* drawable : _drawables) {
+			drawable->Affiche();			// Affichage de l'objet géo
 		}
 	}
 
@@ -208,10 +201,8 @@ void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objet
 
 	glEnableClientState( GL_VERTEX_ARRAY );
 
-	vector<Drawable*>::iterator iter;
-
-	for(iter=_drawables.begin() ; iter!=_drawables.end() ; iter++) {
-		(*iter)->AfficheSelection(r, v, b);
+	for(Drawable* drawable : _drawables) {
+		drawable->AfficheSelection(r, v, b);
 	}
 
 	glDisable( GL_VERTEX_ARRAY );
@@ -269,50 +260,43 @@ const char* CMap::getSelectedName() {
 
 void CMap::merge(CMap& map) {
 	// Objets de la Map
-	vector<MapObject*>::iterator iterObject;
-	vector<Geometrical*>::iterator iterGeo;
-	vector<Refreshable*>::iterator iterRefresh;
-	vector<SolidAndTargettable*>::iterator iterSolid;
-	vector<Drawable*>::iterator iterDrawable;
+	for(MapObject* object : map._objects) {
+		object->setMap(this);
+		_objects.push_back(object);
+	}
 
-	// Caractéristiques de la Map
+	for(Geometrical* geo : map._geos) {
+		_geos.push_back(geo);
+	}
+
+	for(Refreshable* refreshable : map._refreshables) {
+		_refreshables.push_back(refreshable);
+	}
+
+	for(SolidAndTargettable* solid : map._solidAndTargettables) {
+		_solidAndTargettables.push_back(solid);
+	}
+
+	for(Drawable* drawable : map._drawables) {
+		_drawables.push_back(drawable);
+	}
+
 	vector<CLight*>::iterator iterLight;
 	vector<CMaterial*>::iterator iterMaterial;
 	vector<EntryPoint*>::iterator iterEntryPoint;
 
-	// Objets de la Map
-	for(iterObject=map._objects.begin() ; iterObject!=map._objects.end() ; iterObject++) {
-		(*iterObject)->setMap(this);
-		_objects.push_back(*iterObject);
-	}
-
-	for(iterGeo=map._geos.begin() ; iterGeo!=map._geos.end() ; iterGeo++) {
-		_geos.push_back(*iterGeo);
-	}
-
-	for(iterRefresh=map._refreshables.begin() ; iterRefresh!=map._refreshables.end() ; iterRefresh++) {
-		_refreshables.push_back(*iterRefresh);
-	}
-
-	for(iterSolid=map._solidAndTargettables.begin() ; iterSolid!=map._solidAndTargettables.end() ; iterSolid++) {
-		_solidAndTargettables.push_back(*iterSolid);
-	}
-
-	for(iterDrawable = map._drawables.begin() ; iterDrawable != map._drawables.end() ; iterDrawable++) {
-		_drawables.push_back(*iterDrawable);
-	}
 
 	// Caractéristiques de la Map
-	for(iterLight=map._lights.begin() ; iterLight!=map._lights.end() ; iterLight++) {
-		_lights.push_back(*iterLight);
+	for(CLight* light : map._lights) {
+		_lights.push_back(light);
 	}
 
-	for(iterMaterial=map.m_TabMaterial.begin() ; iterMaterial!=map.m_TabMaterial.end() ; iterMaterial++) {
-		m_TabMaterial.push_back(*iterMaterial);
+	for(CMaterial* mat : map.m_TabMaterial) {
+		m_TabMaterial.push_back(mat);
 	}
 
-	for(iterEntryPoint = map._entryPoints.begin() ; iterEntryPoint != map._entryPoints.end() ; iterEntryPoint++) {
-		_entryPoints.push_back(*iterEntryPoint);
+	for(EntryPoint* entry : map._entryPoints) {
+		_entryPoints.push_back(entry);
 	}
 }
 
@@ -380,19 +364,18 @@ void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 		positionPlayer = positionPlayerDefault;
 	}
 
-	vector<SolidAndTargettable*>::iterator iter;
-
-	for(iter=_solidAndTargettables.begin() ; iter!=_solidAndTargettables.end() ; iter++)
-		(*iter)->GereContactPlayer(positionPlayer, player);	// Gère les contacts entre l'objet géo et le joueur
+	for(SolidAndTargettable* solid : _solidAndTargettables) {
+		solid->GereContactPlayer(positionPlayer, player);	// Gère les contacts entre l'objet géo et le joueur
+	}
 }
 
 float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 	// Renvoie la distance du premier point de contact entre un rayon laser parti du point 'pos'
 	// dans la direction 'Dir' si cette distance est inférieure à 'dist', renvoie 'dist' sinon
-	vector<SolidAndTargettable*>::iterator iter;
 
-	for(iter=_solidAndTargettables.begin() ; iter!=_solidAndTargettables.end() ; iter++)
-		dist = (*iter)->GereLaserPlayer( pos, Dir, dist );
+	for(SolidAndTargettable* solid : _solidAndTargettables) {
+		dist = solid->GereLaserPlayer( pos, Dir, dist );
+	}
 
 	return dist;	// Renvoie la distance du premier contact trouvé entre le laser et une face d'objet géo
 }
@@ -401,57 +384,48 @@ void CMap::EchangeXY() {
 	LOGDEBUG(("CMap::EchangeXY()%T", this ));
 
 	// Entry points
-	vector<EntryPoint*>::iterator iterEntry;
-	for( iterEntry = _entryPoints.begin() ; iterEntry != _entryPoints.end() ; iterEntry++ )
-		(*iterEntry)->EchangeXY();
+	for(EntryPoint* entry : _entryPoints)
+		entry->EchangeXY();
 
 	// Geo
-	vector<Geometrical*>::iterator iterGeo;
-	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
-		(*iterGeo)->EchangeXY();
+	for(Geometrical* geo : _geos)
+		geo->EchangeXY();
 
 	// Lights
-	vector<CLight*>::iterator iterLight;
-	for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
-		(*iterLight)->EchangeXY();
+	for(CLight* light : _lights)
+		light->EchangeXY();
 }
 
 void CMap::EchangeXZ() {
 	LOGDEBUG(("CMap::EchangeXZ()%T", this ));
 
 	// Entry points
-	vector<EntryPoint*>::iterator iterEntry;
-	for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
-		(*iterEntry)->EchangeXZ();
+	for(EntryPoint* entry : _entryPoints)
+		entry->EchangeXZ();
 
 	// Geo
-	vector<Geometrical*>::iterator iterGeo;
-	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
-		(*iterGeo)->EchangeXZ();
+	for(Geometrical* geo : _geos)
+		geo->EchangeXZ();
 
 	// Lights
-	vector<CLight*>::iterator iterLight;
-	for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
-		(*iterLight)->EchangeXZ();
+	for(CLight* light : _lights)
+		light->EchangeXZ();
 }
 
 void CMap::EchangeYZ() {
 	LOGDEBUG(("CMap::EchangeYZ()%T", this ));
 
 	// Entry points
-	vector<EntryPoint*>::iterator iterEntry;
-	for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
-		(*iterEntry)->EchangeYZ();
+	for(EntryPoint* entry : _entryPoints)
+		entry->EchangeYZ();
 
 	// Geo
-	vector<Geometrical*>::iterator iterGeo;
-	for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
-		(*iterGeo)->EchangeYZ();
+	for(Geometrical* geo : _geos)
+		geo->EchangeYZ();
 
 	// Lights
-	vector<CLight*>::iterator iterLight;
-	for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
-		(*iterLight)->EchangeYZ();
+	for(CLight* light : _lights)
+		light->EchangeYZ();
 }
 
 void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
@@ -459,22 +433,16 @@ void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
 
 	if(scaleX!=1.0 || scaleY!=1.0 || scaleZ!=1.0) {
 		// Entry points
-		vector<EntryPoint*>::iterator iterEntry;
-
-		for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
-			(*iterEntry)->Scale(scaleX, scaleY, scaleZ);
+		for(EntryPoint* entry : _entryPoints)
+			entry->Scale(scaleX, scaleY, scaleZ);
 
 		// Geo
-		vector<Geometrical*>::iterator iterGeo;
-
-		for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
-			(*iterGeo)->Scale( scaleX, scaleY, scaleZ );
+		for(Geometrical* geo : _geos)
+			geo->Scale( scaleX, scaleY, scaleZ );
 
 		// Lights
-		vector<CLight*>::iterator iterLight;
-
-		for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
-			(*iterLight)->Scale( scaleX, scaleY, scaleZ );
+		for(CLight* light : _lights)
+			light->Scale( scaleX, scaleY, scaleZ );
 	}
 }
 
@@ -483,22 +451,16 @@ void CMap::translate(float x, float y, float z) {
 
 	if(x!=0.0 || y!=0.0 || z!=0.0) {
 		// Entry points
-		vector<EntryPoint*>::iterator iterEntry;
-
-		for( iterEntry=_entryPoints.begin() ; iterEntry!=_entryPoints.end() ; iterEntry++ )
-			(*iterEntry)->translate(x, y, z);
+		for(EntryPoint* entry : _entryPoints)
+			entry->translate(x, y, z);
 
 		// Geo
-		vector<Geometrical*>::iterator iterGeo;
-
-		for( iterGeo=_geos.begin() ; iterGeo!=_geos.end() ; iterGeo++ )
-			(*iterGeo)->translate(x, y, z);
+		for(Geometrical* geo : _geos)
+			geo->translate(x, y, z);
 
 		// Lights
-		vector<CLight*>::iterator iterLight;
-
-		for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
-			(*iterLight)->translate(x, y, z);
+		for(CLight* light : _lights)
+			light->translate(x, y, z);
 	}
 }
 

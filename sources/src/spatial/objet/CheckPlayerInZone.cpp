@@ -24,18 +24,20 @@ namespace jkt {
 const char* CheckPlayerInZone::identifier = "PlayerDetector";
 
 CheckPlayerInZone::CheckPlayerInZone(	CMap* map, const string& id, float zoneDetectionXmin, float zoneDetectionXmax, float zoneDetectionYmin,
-		float zoneDetectionYmax, float zoneDetectionZmin, float zoneDetectionZmax) : Object(map) {
+										float zoneDetectionYmax, float zoneDetectionZmin, float zoneDetectionZmax) : Object(map) {
 	_id = id;
 
 	_isVisible = false;
 	_playerInZone = false;
 
-	_zoneDetectionXmin = zoneDetectionXmin;
-	_zoneDetectionXmax = zoneDetectionXmax;
-	_zoneDetectionYmin = zoneDetectionYmin;
-	_zoneDetectionYmax = zoneDetectionYmax;
-	_zoneDetectionZmin = zoneDetectionZmin;
-	_zoneDetectionZmax = zoneDetectionZmax;
+	_zoneDetectionXmin = (zoneDetectionXmin <= zoneDetectionXmax) ? zoneDetectionXmin : zoneDetectionXmax;
+	_zoneDetectionXmax = (zoneDetectionXmin >= zoneDetectionXmax) ? zoneDetectionXmin : zoneDetectionXmax;
+
+	_zoneDetectionYmin = (zoneDetectionYmin <= zoneDetectionYmax) ? zoneDetectionYmin : zoneDetectionYmax;
+	_zoneDetectionYmax = (zoneDetectionYmin >= zoneDetectionYmax) ? zoneDetectionYmin : zoneDetectionYmax;
+
+	_zoneDetectionZmin = (zoneDetectionZmin <= zoneDetectionZmax) ? zoneDetectionZmin : zoneDetectionZmax;
+	_zoneDetectionZmax = (zoneDetectionZmin >= zoneDetectionZmax) ? zoneDetectionZmin : zoneDetectionZmax;
 }
 
 CheckPlayerInZone::CheckPlayerInZone(CMap* map, const CheckPlayerInZone& other) : Object(map) {
@@ -210,8 +212,10 @@ void CheckPlayerInZone::EchangeYZ() {	// Echange les axes X et Y de l'objet
 void CheckPlayerInZone::Scale( float scaleX, float scaleY, float scaleZ ) {
 	_zoneDetectionXmin *= scaleX;
 	_zoneDetectionXmax *= scaleX;
+
 	_zoneDetectionYmin *= scaleY;
 	_zoneDetectionYmax *= scaleY;
+
 	_zoneDetectionZmin *= scaleZ;
 	_zoneDetectionZmax *= scaleZ;
 }
@@ -219,8 +223,10 @@ void CheckPlayerInZone::Scale( float scaleX, float scaleY, float scaleZ ) {
 void CheckPlayerInZone::translate( float x, float y, float z ) {
 	_zoneDetectionXmin += x;
 	_zoneDetectionXmax += x;
+
 	_zoneDetectionYmin += y;
 	_zoneDetectionYmax += y;
+
 	_zoneDetectionZmin += z;
 	_zoneDetectionZmax += z;
 }

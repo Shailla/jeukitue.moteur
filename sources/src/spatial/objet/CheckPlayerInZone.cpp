@@ -69,7 +69,7 @@ bool CheckPlayerInZone::checkPositionInZone(float position[3]) {
 
 	if(_zoneDetectionXmin < position[0] && position[0] < _zoneDetectionXmax) {
 		if(_zoneDetectionYmin < position[1] && position[1] < _zoneDetectionYmax) {
-			if(_zoneDetectionZmin < position[2] && position[2] < _zoneDetectionZmax) {
+			if(_zoneDetectionZmin < -position[2] && -position[2] < _zoneDetectionZmax) {
 				playerInZone = true;
 			}
 		}
@@ -125,6 +125,11 @@ void CheckPlayerInZone::endRefresh() {
 
 void CheckPlayerInZone::Affiche() {
 	if(_isVisible) {
+		glEnable( GL_BLEND );
+		glBlendFunc( GL_SRC_ALPHA, GL_ONE );
+
+		glColor4f(0.0f, 0.2f, 1.0f, 0.4f);
+
 		Fabrique::getGlUtils()->drawCube(_zoneDetectionXmin, _zoneDetectionXmax, _zoneDetectionYmin, _zoneDetectionYmax, _zoneDetectionZmin, _zoneDetectionZmax);
 	}
 }

@@ -782,7 +782,7 @@ void CGeoObject::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	float distanceW;
 
 	if( m_bSolid )	// Si l'objet est solide
-		if( TestContactPave( positionPlayer, 0.05f+dist ) )	// Teste proximité 'joueur / l'objet géo'
+		if( TestContactPave( positionPlayer, dist ) )	// Teste proximité 'joueur / l'objet géo'
 			for( int i=0; i<m_NumFaces; i++) {		//pour chaque triangle de l'objet géo.
 				distanceW = testContactTriangle( i, positionPlayer, dist );
 

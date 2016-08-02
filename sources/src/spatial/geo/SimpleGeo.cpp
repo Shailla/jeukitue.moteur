@@ -659,7 +659,7 @@ void CSimpleGeo::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	float distanceW;
 
 	if( _bSolid )	// Si l'objet est solide
-		if( TestContactPave( positionPlayer, 0.05f+dist ) )	// Teste proximité 'joueur / l'objet géo'
+		if( TestContactPave( positionPlayer, dist ) )	// Teste proximité 'joueur / l'objet géo'
 			for( int i=0; i<_numFaces; i++) {		//pour chaque triangle de l'objet géo.
 				distanceW = testContactTriangle(i, positionPlayer, dist);
 
@@ -683,8 +683,7 @@ bool CSimpleGeo::TestContactPave(const float pos[3], float dist) {
 	return false;	// Le point 'pos' se trouve à une distance supérieure
 }
 
-float CSimpleGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist)
-{
+float CSimpleGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
 	float distanceVar;
 	float *vertex, *normal;
 	int *indices;

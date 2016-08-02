@@ -226,9 +226,10 @@ void CMultiMaterialGeo::AfficheSelection(float r,float v,float b) {
 void CMultiMaterialGeo::AfficheNormals() {
 	float pos[3], bout[ 3 ];
 	float facteur = 0.05f;
-	if( m_TabVectNormaux )
-	{
+
+	if( m_TabVectNormaux ) {
 		glBegin( GL_LINES );
+
 		for( int i=0; i < m_NumVertex ; i++ ) //dessine toutes les faces de la map
 		{
 			glColor3f( 1.0f, 0.0f, 0.0f );
@@ -236,13 +237,14 @@ void CMultiMaterialGeo::AfficheNormals() {
 			pos[ 1 ] = m_TabVertex[ i*3 + 1 ];
 			pos[ 2 ] = m_TabVertex[ i*3 + 2 ];
 
-			bout[ 0 ] = (m_TabVectNormaux[ (9*i)+0   ]*facteur) + pos[ 0 ];
+			bout[ 0 ] = (m_TabVectNormaux[ (9*i)+0 ]*facteur) + pos[ 0 ];
 			bout[ 1 ] = (m_TabVectNormaux[ (9*i)+1 ]*facteur) + pos[ 1 ];
 			bout[ 2 ] = (m_TabVectNormaux[ (9*i)+2 ]*facteur) + pos[ 2 ];
 
 			glVertex3fv( pos );
 			glVertex3fv( bout );
 		}
+
 		glEnd();
 	}
 }
@@ -739,7 +741,7 @@ void CMultiMaterialGeo::GereContactPlayer(float positionPlayer[3], CPlayer *play
 	float distanceW;
 
 	if( m_bSolid )	// Si l'objet est solide
-		if( TestContactPave( positionPlayer, 0.05f+dist ) )	// Teste proximité 'joueur / l'objet géo'
+		if( TestContactPave( positionPlayer, dist ) )	// Teste proximité 'joueur / l'objet géo'
 			for( int i=0; i<m_NumVertex; i=i+3)		//pour chaque triangle de l'objet géo.
 			{
 				distanceW = testContactTriangle( i, positionPlayer, dist );

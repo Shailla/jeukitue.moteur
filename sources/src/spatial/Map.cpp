@@ -115,7 +115,7 @@ CMap::~CMap() {
 		delete *iterGeo;
 
 	_geos.clear();
-	_mouves.clear();
+	_refreshables.clear();
 
 	// Destruction des matériaux
 	vector<CMaterial*>::iterator iterMat;
@@ -290,8 +290,8 @@ void CMap::merge(CMap& map) {
 		_geos.push_back(*iterGeo);
 	}
 
-	for(iterRefresh=map._mouves.begin() ; iterRefresh!=map._mouves.end() ; iterRefresh++) {
-		_mouves.push_back(*iterRefresh);
+	for(iterRefresh=map._refreshables.begin() ; iterRefresh!=map._refreshables.end() ; iterRefresh++) {
+		_refreshables.push_back(*iterRefresh);
 	}
 
 	for(iterSolid=map._solidAndTargettables.begin() ; iterSolid!=map._solidAndTargettables.end() ; iterSolid++) {
@@ -332,7 +332,7 @@ void CMap::add(CMoteurParticules* engine) {
 void CMap::add(Dirigeable* dirigeable) {
 	_objects.push_back(dirigeable);
 	_drawables.push_back(dirigeable);
-	_mouves.push_back(dirigeable);
+	_refreshables.push_back(dirigeable);
 	_geos.push_back(dirigeable);
 }
 
@@ -355,17 +355,19 @@ void CMap::add(CLight *light) {
 void CMap::add(CPorte *porte) {
 	_objects.push_back(porte);
 	_geos.push_back(porte);
-	_mouves.push_back(porte);
+	_refreshables.push_back(porte);
 	_drawables.push_back(porte);
 }
 
 void CMap::add(CheckPlayerInZone* detector) {
 	_geos.push_back(detector);
+	_refreshables.push_back(detector);
+	_drawables.push_back(detector);
 }
 
 void CMap::add(CNavette *navette) {		// Une navette est avant tout un objet géo
 	_geos.push_back(navette);
-	_mouves.push_back(navette);
+	_refreshables.push_back(navette);
 	_drawables.push_back(navette);
 	_objects.push_back(navette);
 }
@@ -610,7 +612,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					// Fusion des Map
 					map.merge(subMap);
 					subMap._geos.clear();
-					subMap._mouves.clear();
+					subMap._refreshables.clear();
 					subMap._lights.clear();
 					subMap.m_TabMaterial.clear();
 				}
@@ -939,26 +941,35 @@ bool CMap::Contact(const float pos[3], const float dist) {
 	return var;
 }
 
-void CMap::Refresh(CGame *game) {
-	vector<Refreshable*>::iterator iterMouve;
+void CMap::refresh(CGame *game) {
+	vector<Refreshable*>::iterator iter;
 
-	for(iterMouve=_mouves.begin() ; iterMouve!=_mouves.end() ; iterMouve++)
-		(*iterMouve)->refresh(game);
+	for(iter = _refreshables.begin() ; iter != _refreshables.end() ; iter++)
+		(*iter)->refresh(game);
 }
 
-void CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index) {
-	if(index < firstIndex + (nbrX * nbrY)) {
-		if(material->Type() == CMaterial::MAT_TYPE_TEXTURE) {
-			if(index > firstIndex) {
-				CMaterialTexture *matTexture = (CMaterialTexture*)material;
-				matTexture->Active();
+bool CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndexOfPage, int& posX, int& posY, int& indexOfPages) {
+	bool again = true;
 
-				int x1 = x + posX*tailleX/nbrX;
-				int x2 = x1 + tailleX/nbrX;
-				int y1 = y + posY*tailleY/nbrY;
-				int y2 = y1 + tailleY/nbrY;
+	// Si on n'a pas dépassé l'index de la dernière texture de la page active du damier on s'arrête là
+	if(indexOfPages >= firstIndexOfPage + (nbrX * nbrY)) {
+		again = false;
+	}
+	else if(material->Type() == CMaterial::MAT_TYPE_TEXTURE) {
+		// On compte une texture à afficher de plus (affichée ou non sur la page active du damier)
+		indexOfPages++;
 
-				glBegin(GL_QUADS);
+		// Si la texture est sur la page active du damier on l'affiche
+		if(indexOfPages > firstIndexOfPage) {
+			CMaterialTexture *matTexture = (CMaterialTexture*)material;
+			matTexture->Active();
+
+			int x1 = x + posX*tailleX/nbrX;
+			int x2 = x1 + tailleX/nbrX;
+			int y1 = y + posY*tailleY/nbrY;
+			int y2 = y1 + tailleY/nbrY;
+
+			glBegin(GL_QUADS);
 				glTexCoord2f(0.0f, 0.0f);
 				glVertex2i(x1, 	y1);
 
@@ -970,58 +981,70 @@ void CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int t
 
 				glTexCoord2f(0.0f, 1.0f);
 				glVertex2i(x1, 	y2);
-				glEnd();
+			glEnd();
 
-				glDisable(GL_TEXTURE_2D);
-				glColor3f(1.0f, 1.0f, 1.0f);
-				glLineWidth(2);
+			glDisable(GL_TEXTURE_2D);
 
-				glBegin(GL_LINE_LOOP);
+			glColor3f(1.0f, 1.0f, 1.0f);
+			glLineWidth(2);
+
+			glBegin(GL_LINE_LOOP);
 				glVertex2i(x1, 	y1);
 				glVertex2i(x2, 	y1);
 				glVertex2i(x2, 	y2);
 				glVertex2i(x1, 	y2);
-				glEnd();
+			glEnd();
 
-				if(++posX >= nbrX) {
-					posX = 0;
-					posY++;
-				}
+			// Colonne suivante
+			posX++;
+
+			// Si on est au bout d'une ligne alors change de ligne
+			if(posX >= nbrX) {
+				posX = 0;
+				posY++;
 			}
-
-			index++;
-		}
-		else if( material->Type() == CMaterial::MAT_TYPE_SIMPLE ) {
-		}
-		else if( material->Type() == CMaterial::MAT_TYPE_MULTI ) {
-			// Initialisation pour la texture
-			CMaterialMulti *matMulti = (CMaterialMulti*)material;
-
-			for(int i=0 ; i<matMulti->NbrTex() ; i++) {
-				CMaterial* sousMat = matMulti->getMat(i);
-				afficheMaterial(sousMat, x, y, tailleX, tailleY, nbrX, nbrY, firstIndex, posX, posY, index);
-			}
-		}
-		else {
-			LOGERROR((" CMap::afficheToutesTextures : Materiau de type inconnu"));
 		}
 	}
+	else if( material->Type() == CMaterial::MAT_TYPE_SIMPLE ) {
+	}
+	else if( material->Type() == CMaterial::MAT_TYPE_MULTI ) {
+		// Initialisation pour la texture
+		CMaterialMulti *matMulti = (CMaterialMulti*)material;
+
+		for(int i = 0 ; i < matMulti->NbrTex() && again ; i++) {
+			CMaterial* sousMat = matMulti->getMat(i);
+			again = afficheMaterial(sousMat, x, y, tailleX, tailleY, nbrX, nbrY, firstIndexOfPage, posX, posY, indexOfPages);
+		}
+	}
+	else {
+		LOGERROR((" CMap::afficheToutesTextures : Materiau de type inconnu"));
+	}
+
+	return again;
 }
 
 vector<CLight*>& CMap::getLights() {
 	return _lights;
 }
 
-void CMap::afficheToutesTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex) {
+int CMap::afficheDamierTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int page) {
 	int posX = 0;
 	int posY = 0;
-	int index = firstIndex;
-	vector<CMaterial*>::iterator iter;
 
-	for(iter=m_TabMaterial.begin() ; iter!=m_TabMaterial.end() ; iter++) {
-		CMaterial* material = *iter;
-		afficheMaterial(material, x, y, tailleX, tailleY, nbrX, nbrY, firstIndex, posX, posY, index);
+	int firstIndex = (page - 1) * nbrX * nbrY;
+	int index = 0;
+
+	vector<CMaterial*>::iterator iter;
+	bool again = true;
+
+	// On balaie toutes les textures, on affiche que celles qui sont sur la page active du damier
+	for(iter = m_TabMaterial.begin() ; iter != m_TabMaterial.end() && again ; iter++) {
+		again = afficheMaterial(*iter, x, y, tailleX, tailleY, nbrX, nbrY, firstIndex, posX, posY, index);
 	}
+
+	// Retourne le numéro de la page ou 0 si la page affichée ne contient aucune texture
+	// Si index > firstIndex ça veut dire qu'on a affiché au moins une texture sur la page de damier active
+	return (index > firstIndex) ? page : 0;
 }
 
 }	// JktMoteur

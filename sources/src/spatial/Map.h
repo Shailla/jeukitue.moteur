@@ -47,7 +47,7 @@ class CMap : MapObject {
 	vector<Geometrical*> _geos;							// Liste des objets géométriques
 	vector<SolidAndTargettable*> _solidAndTargettables;	// Liste des objets géométriques
 	vector<Drawable*> _drawables;						// Liste des objets à afficher
-	vector<Refreshable*> _mouves;						// Liste des objets nécessitant une actualisation (portes,...)
+	vector<Refreshable*> _refreshables;					// Liste des objets nécessitant une actualisation (portes,...)
 
 	// Lumières et autres caractéristiques de la Map
 	vector<CLight*> _lights;							// Lumières
@@ -66,7 +66,7 @@ class CMap : MapObject {
 
 	CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
 
-	void afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
+	bool afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
 public:
 	vector<CMaterial*> m_TabMaterial;		// Liste des matériaux A VOIR : devrait être membre privé
 
@@ -78,28 +78,29 @@ public:
 
 	const char* toString();						// Description résumée de l'objet
 
-	// Sérialisation
+	// Object
+	void init() throw(jkt::CErreur) override;	// Initialisation de la CMap
 	static bool Lit(CMap& map, const string &mapName, MapLogger* mapLogger);
 	bool Lit(const string &nomFichier, MapLogger* mapLogger);
 	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
 	bool Save(TiXmlElement* element) override;			// Sauve l'objet géo dans un fichier Map
 
-	void init() throw(jkt::CErreur) override;	// Initialisation de la CMap
-
 	// Gestion des plugins de la Map
 	void initPlugins();		// Chargement / exécution des plugins de la Map
 	void freePlugins();		// Libération des plugins de la Map
 
-	// Gestion de objets OpenGL de la Map
+	// Drawable
 	void initGL() override;		// Initialisation du contexte OpenGL
 	void freeGL() override;		// Libération du contexte OpenGL
 
-	bool Save(const string nomFichier);	// Sauvegarde du CMap dans un fichier *.map.xml
-
-	// Affichage
 	void Affiche() override;											// Affiche l'ensemble des éléments 3D de cette Map
 	void AfficheSelection(float r,float v,float b) override;			// Affiche l'objet géométrique en couleur unique
-	void Refresh( CGame *game );							// Rafraichissement des classes listées dans m_TabMouve
+
+	bool Save(const string nomFichier);	// Sauvegarde du CMap dans un fichier *.map.xml
+
+	// Refreshable
+
+	void refresh(CGame *game) override;									// Rafraichissement des classes listées dans m_TabMouve
 
 	/**
 	 * Affiche toutes les textures de la MAP dans un rectangle dont le coin bas gauche est en (x,y) et les dimensions sont (tailleX, tailleY).
@@ -110,9 +111,10 @@ public:
 	 * @param tailleY taille verticale du rectangle dans lequel les texture vont être affichées
 	 * @param nbrX nombre de textures sur une ligne
 	 * @param nbrY nombre de textures sur une colonne
-	 * @param firstIndex numéro de la première texture à afficher
+	 * @param page numéro de la page  de texures à afficher (sur une page on affiche nbrX*nbrY textures)
+	 * @return numéro de la page de texture affichée ou 0 si on a dépassé la dernière page
 	 */
-	void afficheToutesTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex);
+	int afficheDamierTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int page);
 
 	void addDescription(int ref, MapObject* geo, MapLogger* mapLogger);
 	MapObject* getDescription(int ref);
@@ -126,14 +128,14 @@ public:
 	void add(CMaterial *mat);				// Ajoute un matériau à la map
 	void add(CheckPlayerInZone* detector);
 
-	// Transformations
+	// Geometrical
 	void EchangeXY() override;										// Echange les coordonnées X et Y des objets géo du map
 	void EchangeXZ() override;										// Echange les coordonnées X et Z des objets géo du map
 	void EchangeYZ() override;										// Echange les coordonnées Y et Z des objets géo du map
 	void Scale(float scaleX, float sclaeY, float scaleZ) override;	// Homothétie la Map (coordonnées multipliées par scale)
 	void translate(float x, float y, float z) override;				// Translation de la Map selon x, y, z
-	/** Intègre tous les éléments d'une autre Map dans celle-ci. */
-	void merge(CMap& map);
+
+	void merge(CMap& map);											// Intègre tous les éléments d'une autre Map dans celle-ci
 
 	// Gestion des contacts
 	bool Contact(const float pos[3], const float dist) override;	// Indique s'il y a un triangle à une distance inférieure à 'dist' de la position 'pos'

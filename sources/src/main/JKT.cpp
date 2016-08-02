@@ -3,16 +3,11 @@
 /*//////////////////////////////////////////////////////////////////////////////////////////////
 					CHOSES A FAIRE
 
-Les fonctions de callback des players (gravité, contact, ...)ne sont pas
-implémentées proprement, il ne faudrait pas avoir besoin de leur fournir le pointeur
-sur le player (mais j'sais pas comment faire)
-
 Formaliser les vecteurs position et vitesse de manière à ce qu'il ne soit plus
 indispensable d'inverser parfois certaines de leurs composantes selon l'utilisation
 
 /*///////////////////////////////////////////////////////////////////////////////////////////////
 
-// A virer
 #include <string>
 #include <set>
 #include <iostream>
@@ -120,11 +115,11 @@ class CGame;
 
 #include "test/TestSuite.h"
 
-using namespace jkt;
-
 #include "util/GenRef.h"
 
 #include "jkt.h"
+
+using namespace jkt;
 
 NotConnectedInterlocutor2* _notConnectedServerInterlocutor = 0;
 
@@ -135,8 +130,11 @@ CGame Game;			// Contient toutes les données vivantes du jeu
 
 const char nomFichierJoueur[] = "@Joueur\\joueurTex";
 
-int JKT_RenderMode = GL_TRIANGLES;	// Rendu normal ou en mode filaire
-bool JKT_AfficheToutesTextures = false;
+int JKT_RenderMode = GL_TRIANGLES;		// Rendu normal ou en mode filaire
+
+int damierTextures_nbr_horiz = 5;	// Nombre de textures par page horizontalement
+int damierTextures_nbr_vert = 5;	// Nombre de textures par page horizontalement
+int damierTextures_page = 0;		// 0=on les affiche pas ; N=affichage la page N des textures
 
 string nomFichierConfig = "config";
 
@@ -146,7 +144,7 @@ int numMainPlayer = 0;	// Numéro du joueur principal dans la MAP (identifie le j
 
 bool Aide = false;
 
-extern jkt::CDemonSons *DemonSons;	// Requêtes des sons
+extern CDemonSons* DemonSons;	// Requêtes des sons
 
 Uint32 tempsTimer = 0;		// Temps pris par la fonction 'timer'
 Uint32 tempsDisplay = 0;	// Temps pris par la fonction 'display'
@@ -578,13 +576,14 @@ void display() {		// Fonction principale d'affichage
 	glDisable( GL_DEPTH_TEST );
 
 	// Affichage du damier des textures
-	if(JKT_AfficheToutesTextures)
-		Game.afficheToutesTextures(0, 0, Config.Display.X, Config.Display.Y);
+	if(damierTextures_page > 0) {
+		damierTextures_page = Game.afficheDamierTextures(0, 0, Config.Display.X, Config.Display.Y, damierTextures_page, damierTextures_nbr_horiz, damierTextures_nbr_vert);
+	}
 
 	// Affichage du viseur
 	if(Game.Erwin()) {
 		Game.Erwin()->AfficheIconesArmes();
-		Game.afficheViseur(Config.Display.X/2, Config.Display.Y/2);
+		Game.afficheViseur(Config.Display.X / 2, Config.Display.Y / 2);
 		glDepthMask( GL_TRUE );
 	}
 
@@ -825,7 +824,9 @@ void play_handle_key_down( SDL_Event *event ) {
 			}
 			// Affiche / masque le damier des textures
 			else if(mouseButtonDown == Config.Commandes.Textures.mouse) {
-				JKT_AfficheToutesTextures = !JKT_AfficheToutesTextures;
+				// Affichage la page suivante des textures du jeu
+				// Si la page dépasse le nombre max, l'affiche la remettra à 0
+				damierTextures_page++;
 			}
 		}
 		break;
@@ -853,7 +854,7 @@ void play_handle_key_down( SDL_Event *event ) {
 			}
 			// Affiche / masque le damier des textures
 			else if(keyDown == Config.Commandes.Textures.key) {
-				JKT_AfficheToutesTextures = !JKT_AfficheToutesTextures;
+				damierTextures_page++;
 			}
 		}
 
@@ -898,14 +899,14 @@ void play_handle_key_down( SDL_Event *event ) {
 			}
 			break;
 
-		case SDLK_KP_PLUS :
+		case SDLK_d:
 			if( Game.getMap() && Game.getMap()->IsSelectionMode() ) {
 				LOGINFO(("Selection du suivant"));
 				Game.getMap()->incrementeSelection();
 			}
 			break;
 
-		case SDLK_KP_MINUS :
+		case SDLK_q :
 			if( Game.getMap() && Game.getMap()->IsSelectionMode() ) {
 				LOGINFO(("Selection du precedent"));
 				Game.getMap()->decrementeSelection();
@@ -962,7 +963,7 @@ void play_handle_key_down( SDL_Event *event ) {
 
 				// Sélectionne le joueur en tant que joueur principal
 				Game.setErwin(erwin);
-				((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setActivePlayerName(erwin->nom());
+				((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setActivePlayerName(erwin->getName());
 			}
 			break;
 
@@ -1081,7 +1082,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	erwin->changeContact( contactPlayer );		// Associe une fonction de gestion des contacts avec la map
 	erwin->Skin( pMapJoueur );
 	erwin->setCri( cri1.c_str() );				// Cri du joueur
-	erwin->nom( "ERWIN" );
+	erwin->setName( "ERWIN" );
 	erwin->init();								// Initialise certaines données
 	erwin->choiceOneEntryPoint();
 	Game.addPlayer(erwin);	// Ajoute le joueur principal à la liste des joueurs
@@ -1094,7 +1095,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	julien->changeContact( contactPlayer );		// Associe une fonction pour les contacts avec la map
 	julien->Skin( pMapJoueur2 );
 	julien->setCri( cri1.c_str() );
-	julien->nom( "JULIEN" );
+	julien->setName( "JULIEN" );
 	julien->init();
 	julien->choiceOneEntryPoint();
 	Game.addPlayer(julien);	// Ajoute le joueur à la liste des joueurs
@@ -1106,7 +1107,7 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	sprite->changeContact( contactSprite );		// Associe une fonction pour les contacts avec la map
 	sprite->Skin( pMapJoueur );
 	sprite->setCri( cri2.c_str() );
-	sprite->nom( "SPRITE" );
+	sprite->setName( "SPRITE" );
 	sprite->init();
 	sprite->choiceOneEntryPoint();
 	Game.addPlayer(sprite);	// Ajoute le joueur à la liste des joueurs

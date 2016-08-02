@@ -93,7 +93,7 @@ void PluginContext::logLuaError(const int status) {
 	}
 }
 
-void PluginContext::dispatchEvent(PluginWidgetEvent* event) {
+void PluginContext::dispatchEvent(PluginEventSource* event) {
 	SDL_LockMutex(_dispatchEventMutex);
 
 	PluginEventProxy* eventProxy = new PluginEventProxy(event);

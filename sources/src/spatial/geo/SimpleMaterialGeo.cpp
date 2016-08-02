@@ -211,10 +211,10 @@ void CSimpleMaterialGeo::Affiche() {
 
 const char* CSimpleMaterialGeo::toString() {
 	ostringstream ttt;
-	ttt << identifier << " Nom=" << getName() << " Mat=";
+	ttt << identifier << " nom='" << getName() << "'";
 
 	if(m_Material)
-		ttt << m_Material->toString();
+		ttt << " mat='" << m_Material->toString() << "'";
 
 	tostring = ttt.str();
 

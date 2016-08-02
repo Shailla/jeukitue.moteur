@@ -10,7 +10,7 @@
 using namespace std;
 
 #include "plugin/lua/LuaUtils.h"
-#include "plugin/PluginWidgetEvent.h"
+#include <plugin/PluginEventSource.h>
 #include "plugin/PluginContext.h"
 #include "plugin/PluginEngine.h"
 #include "plugin/api/gui/PluginLabel.h"

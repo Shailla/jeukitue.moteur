@@ -486,12 +486,12 @@ void CPlayer::Pente(float pente) {
 	_pente = pente;
 }
 
-void CPlayer::nom(const string &nom) {
-	_nom = nom;
+void CPlayer::setName(const string &name) {
+	_name = name;
 }
 
-string CPlayer::nom() const {
-	return _nom;
+string CPlayer::getName() const {
+	return _name;
 }
 
 void CPlayer::Skin(jkt::CMap *skin) {

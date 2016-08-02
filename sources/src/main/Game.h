@@ -16,18 +16,13 @@ namespace jkt
 {
 	class CClient ;
 	class CServer;
-}
-
-namespace  jkt
-{
 	class CMap;
 }
 
 class CPlayer;
 
-	// Cette classe est destinée à contenir toutes les paramètres vivants, c'est à dire
-	// toutes les données et variables de la partie en cours, du réseau...
-
+// Cette classe est destinée à contenir toutes les paramètres vivants, c'est à dire
+// toutes les données et variables de la partie en cours, du réseau...
 class CGame {
 public:
 	enum ModePartie {
@@ -38,10 +33,10 @@ public:
 	};
 
 private:
-	CPlayer* _erwin;				// Pointeur sur le joueur actif
-	jkt::CMap	*_map;			// Map en cours de jeu
-	ModePartie _mode;				// Mode de jeu (parie normale, client ou serveur)
-	bool _gravite;					// Indique si la gravité est active
+	CPlayer* _erwin;								// Pointeur sur le joueur actif
+	jkt::CMap	*_map;								// Map en cours de jeu
+	ModePartie _mode;								// Mode de jeu (parie normale, client ou serveur)
+	bool _gravite;									// Indique si la gravité est active
 	jkt::CTableauIndex<CPlayer> *_pTabIndexPlayer;	// Liste indexée des joueurs
 
 public:
@@ -70,22 +65,22 @@ public:
 	bool openMap( const string &nomFichierMap ) throw(jkt::CErreur);
 
 	// Gestion du mode
-	void setModeNull();					// Passe en mode "pas de jeu en cours"
+	void setModeNull();									// Passe en mode "pas de jeu en cours"
 
 	// Gestion du mode local
-	void setModeLocal();					// Passe en mode de jeu local
+	void setModeLocal();								// Passe en mode de jeu local
 
 	// Gestion du client
-	void setModeClient();									// Crée la classe Client pour un jeu en mode client
+	void setModeClient();								// Crée la classe Client pour un jeu en mode client
 	jkt::CClient *getClient();							// Retourne le pointeur sur la classe CClient
 	void setStatutClient( jkt::StatutClient statut );	// Renseigne le statut du client
-	jkt::StatutClient getStatutClient();					// Donne le statut du client
+	jkt::StatutClient getStatutClient();				// Donne le statut du client
 
 	// Gestion du serveur
-	void setModeServer();									// Crée la classe Server pour un jeu en mode serveur
+	void setModeServer();								// Crée la classe Server pour un jeu en mode serveur
 	jkt::CServer *getServer();							// Retourne le pointeur sur la classe CServer
 	void setStatutServer( jkt::StatutServer statut );	// Renseigne le statut du serveur
-	jkt::StatutServer getStatutServer();					// Donne le statut du serveur
+	jkt::StatutServer getStatutServer();				// Donne le statut du serveur
 
 	DataTree* getDataTree();
 
@@ -100,17 +95,17 @@ public:
 
 	// Gestion du jeu
 	void AfficheDirigeables();
-	void AffichePlayers();			// Affiche tous les joueurs
-	void AfficheProjectils();		// Affiche tous les projectils
+	void AffichePlayers();							// Affiche tous les joueurs
+	void AfficheProjectils();						// Affiche tous les projectils
 
 	// Gestion du joueur principal (actif)
 	CPlayer* Erwin();								// Renvoie le joueur principal
 	void setErwin(CPlayer *erwin);					// Set le joueur principal
 
 	// Gestion des joueurs
-	void deletePlayers();								// Détruit tous les joueurs
+	void deletePlayers();							// Détruit tous les joueurs
 
-	void createPlayerList(int size);	// Indique le nombre de joueurs de la partie
+	void createPlayerList(int size);				// Indique le nombre de joueurs de la partie
 	int getMaxPlayers() const;
 	int getNbrPlayers() const;
 
@@ -126,7 +121,7 @@ public:
 	CPlayer* getPlayer(int index);
 
 private:
-	void Refresh();					// Rafraichi les classe qui en ont besoin
+	void refresh();					// Rafraichi les classe qui en ont besoin
 	void deplaceTousPlayer();
 	void faitTousRequetesClavier();
 	void faitTousPlayerGravite();
@@ -136,7 +131,7 @@ public:
 	void quitCurrentMap();
 
 	// Fonctions d'affichage
-	void afficheToutesTextures(int x, int y, int tailleX, int tailleY) const;
+	int afficheDamierTextures(int x, int y, int tailleX, int tailleY, int page, int nbrHoriz, int nbrVert) const;
 	void afficheViseur(int x, int y) const;			// Affiche le joueur à la position voulue sur l'écran
 
 	void timer();

@@ -24,7 +24,7 @@ void PlayersService::getPlayers(vector<PlayerInformationDto>& players) {
 
 	while((player = Game.nextPlayer(curseur))) {
 		PlayerInformationDto dto;
-		dto.setName(player->nom());
+		dto.setName(player->getName());
 
 		players.push_back(dto);
 	}

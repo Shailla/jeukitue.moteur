@@ -25,7 +25,6 @@ class CPorte;
 #include "util/V3D.h"
 #include "util/Tableau.h"
 #include "spatial/IfstreamMap.h"
-#include "util/TableauIndex.h"
 #include "main/Projectil.h"
 #include "son/DemonSons.h"
 #include "reseau/SPA.h"

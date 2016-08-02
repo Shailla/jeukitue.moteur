@@ -30,20 +30,20 @@ CMaterial::CMaterial() {
 CMaterial::~CMaterial() {
 }
 
-CMaterial::MAT_TYPE CMaterial::Type() const
-{	return m_Type;	}
+CMaterial::MAT_TYPE CMaterial::Type() const {
+	return m_Type;
+}
 
 const char* CMaterial::toString() {
-	switch(m_Type)
-	{
+	switch(m_Type) {
 	case CMaterial::MAT_TYPE_MULTI:
-		tostring = "Multi";
+		tostring = "multi";
 		break;
 	case CMaterial::MAT_TYPE_SIMPLE:
-		tostring = "Simple";
+		tostring = "simple";
 		break;
 	case CMaterial::MAT_TYPE_TEXTURE:
-		tostring = "Texture";
+		tostring = "texture";
 		break;
 	default:
 		tostring = "???";
@@ -130,12 +130,10 @@ void CMaterial::Active() {
 	glMaterialf( GL_FRONT_AND_BACK, GL_SHININESS, 50.0f );
 }
 
-void CMaterial::Desactive()
-{
+void CMaterial::Desactive() {
 }
 
-unsigned int CMaterial::getRef() const	// Renvoie la référence du matériau
-{
+unsigned int CMaterial::getRef() const {	// Renvoie la référence du matériau
 	return m_Ref;
 }
 

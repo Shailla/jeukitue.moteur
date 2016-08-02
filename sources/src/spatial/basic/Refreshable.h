@@ -14,7 +14,9 @@ public:
 	Refreshable();
 	virtual ~Refreshable(void);
 
+	virtual void beginRefresh() = 0;
 	virtual void refresh( CGame *game ) = 0;
+	virtual void endRefresh() = 0;
 };
 
 }	// JktMoteur

@@ -26,7 +26,7 @@ PluginEventProxy::PluginEventProxy(const PluginActionEvent& event) {
 	_source = 0;
 }
 
-PluginEventProxy::PluginEventProxy(PluginWidgetEvent* event) {
+PluginEventProxy::PluginEventProxy(PluginEventSource* event) {
 	_type = WIDGET_EVENT;
 	_messageType = Controller::Action::Unknown;
 	_source = event->getSource();

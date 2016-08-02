@@ -132,7 +132,8 @@ function eventManager(event)
 	-- Action event
 	if type == 1 then
 		local actionId = event:getActionId();
-		if actionId == 1100 then
+		
+		if actionId == 1100 then	-- Refresh Map event
 			for index = 1, nbrSprites do
 				updateVitPos(index);
 			end

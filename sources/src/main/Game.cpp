@@ -35,7 +35,6 @@ class CGame;
 #include "main/Game.h"
 
 using namespace jkt;
-using namespace jkt;
 
 extern NetworkManager* _networkManager;
 
@@ -97,14 +96,13 @@ void CGame::createPlayerList(int size) {
 
 	_pTabIndexPlayer = new CTableauIndex<CPlayer>(size);
 
-	cout << endl << "setPlayerList";
+	LOGINFO(("Set player list in game :"));
 
 	int curseur = -1;
 
 	while(_pTabIndexPlayer->Suivant(curseur)) {
 		CPlayer* player = _pTabIndexPlayer->operator [](curseur);
-
-		cout << endl << "\t" << curseur << ":" << player;
+		LOGINFO(("ID=%d : '%s'", curseur, player->getName()));
 	}
 }
 
@@ -118,7 +116,7 @@ CPlayer* CGame::nextPlayer(int& pos) {
 }
 
 bool CGame::openMap(const string &nomFichierMap) throw(jkt::CErreur) {
-LOGDEBUG(("CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(), this));
+LOGDEBUG(("Opening Map '%s'", nomFichierMap.c_str()));
 
 	bool result = true;
 
@@ -133,7 +131,7 @@ LOGDEBUG(("CGame::openMap(nomFichierMap=%s) begin%T", nomFichierMap.c_str(), thi
 		result = false;
 	}
 
-LOGDEBUG(("CGame::openMap() -> %b end%T", result, this));
+LOGDEBUG(("Opening Map '%s'", nomFichierMap.c_str()));
 	return result;
 }
 
@@ -216,7 +214,7 @@ void CGame::Quit() {
 			CPlayer* player = (*_pTabIndexPlayer)[curseur];
 
 			if(player) {
-				cout << endl << "Destruction du joueur '" << player->nom() << "'" << flush;
+				cout << endl << "Destruction du joueur '" << player->getName() << "'" << flush;
 				delete player;
 			}
 		}
@@ -249,14 +247,15 @@ void CGame::setModeServer() {
 jkt::CClient *CGame::getClient()
 {	return _networkManager->getClient();		}
 
-jkt::CServer *CGame::getServer()
-{	return _networkManager->getServer();		}
+jkt::CServer *CGame::getServer() {
+	return _networkManager->getServer();
+}
 
-void CGame::Refresh() {
+void CGame::refresh() {
 	Fabrique::getPluginEngine()->sendRefreshEvent();
 
 	// Rafraichissement de la map
-	_map->Refresh( this );
+	_map->refresh(this);
 
 	// Rafraichissement des projectils des joueurs
 	CPlayer *player;
@@ -383,9 +382,13 @@ jkt::CMap *CGame::getMap() {
 	return _map;
 }
 
-void CGame::afficheToutesTextures(int x, int y, int tailleX, int tailleY) const {	// Affiche à l'écran toutes les textures de la Map
-	if(_map)
-		_map->afficheToutesTextures(x, y, tailleX, tailleY, 6, 6, 0);
+int CGame::afficheDamierTextures(int x, int y, int tailleX, int tailleY, int page, int nbrHoriz, int nbrVert) const {	// Affiche à l'écran toutes les textures de la Map
+	if(_map) {
+		return _map->afficheDamierTextures(x, y, tailleX, tailleY, nbrHoriz, nbrVert, page);
+	}
+	else {
+		return 0;	// Page 0 : pas d'affichage de damier des textures actif
+	}
 }
 
 void CGame::afficheViseur(int x, int y) const {
@@ -447,11 +450,7 @@ CPlayer* CGame::getPlayer(int index) {
 }
 
 bool CGame::addPlayer(int index, CPlayer *player) {
-LOGDEBUG(("CGame::addPlayer(player=%x)%T", player, this ));
-
 	bool result = _pTabIndexPlayer->Ajoute(index, player );
-
-LOGDEBUG(("CGame::addPlayer() -> indexPlayer=%d end%T", index, this ));
 
 	return result;
 }
@@ -480,12 +479,9 @@ void CGame::timer() {
 		if( _gravite )					// Si la gravité est active
 			faitTousPlayerGravite();
 
-		Refresh();						// Rafraichi les classes qui ont besoin de l'être (celles de type CMouve et CProjectil)
-
+		refresh();						// Rafraichi les classes qui ont besoin de l'être (celles de type CMouve et CProjectil)
 		faitTousRequetesClavier();		// Exécute les requêtes clavier sur tous les joueurs
-
 		GereContactPlayers();			// Gère tous les contacts entre la map et les joueurs
-
 		deplaceTousPlayer();			// Déplace tous les joueurs de leurs vitesses
 	}
 }

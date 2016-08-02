@@ -11,6 +11,7 @@
 
 #include "util/CollectionsUtils.h"
 #include "util/StringUtils.h"
+#include "util/TableauIndex.h"
 
 #include "test/utils/UtilsTest.h"
 
@@ -29,7 +30,7 @@ string UtilsTest::getDescription() {
 	string description;
 
 	description += "Tests réalisés :";
-	description += "\n - Test des classes et méthodes utilitaires";
+	description += "\n - Test des méthodes de StringUtils";
 
 	return description;
 }

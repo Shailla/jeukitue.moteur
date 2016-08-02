@@ -55,17 +55,19 @@ public:
 	 * Manipulation de l'évolution de l'objet
 	 * *******************************************/
 
+	virtual void beginRefresh() override;
 	virtual void refresh( CGame *game ) override;
+	virtual void endRefresh() override;
 
 
 	/* ********************************************
 	 * Affichage de l'objet
 	 * *******************************************/
 
-	virtual void Affiche() override;												// Affiche l'objet géométrique
-	virtual void AfficheSelection(float r,float v,float b) override;				// Affiche l'objet géométrique en couleur unique
-	virtual void initGL() override;												// Initialisation de l'objet géométrique
-	virtual void freeGL() override;												// Libération des ressources de l'objet dans le contexte OpenGL
+	virtual void Affiche() override;										// Affiche l'objet géométrique
+	virtual void AfficheSelection(float r,float v,float b) override;		// Affiche l'objet géométrique en couleur unique
+	virtual void initGL() override;											// Initialisation de l'objet géométrique
+	virtual void freeGL() override;											// Libération des ressources de l'objet dans le contexte OpenGL
 
 
 	/* ********************************************

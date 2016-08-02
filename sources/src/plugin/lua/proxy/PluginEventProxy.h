@@ -18,7 +18,7 @@ extern "C" {
 
 #include "menu/Controller.h"
 #include "plugin/PluginActionEvent.h"
-#include "plugin/PluginWidgetEvent.h"
+#include <plugin/PluginEventSource.h>
 #include "plugin/lua/proxy/LunarProxy.h"
 
 namespace jkt {
@@ -41,7 +41,7 @@ private:
 
 public:
 	PluginEventProxy(const PluginActionEvent& event);
-	PluginEventProxy(PluginWidgetEvent* event);
+	PluginEventProxy(PluginEventSource* event);
 	PluginEventProxy(lua_State* L);
 	~PluginEventProxy();
 

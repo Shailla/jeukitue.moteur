@@ -23,6 +23,7 @@
 #include "plugin/lua/proxy/gui/PluginWindowProxy.h"
 #include "plugin/lua/proxy/map/PluginMapProxy.h"
 #include "plugin/lua/proxy/map/PluginPlayerZoneDetectorProxy.h"
+#include "plugin/lua/proxy/game/PluginPlayerProxy.h"
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/lua/LuaGlobalMethods.h"
 #include "main/Cfg.h"
@@ -241,7 +242,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	Lunar<PluginDataValeurProxy>::Register(L);
 	Lunar<PluginMapProxy>::Register(L);
 	Lunar<PluginPlayerZoneDetectorProxy>::Register(L);
-
+	Lunar<PluginPlayerProxy>::Register(L);
 
 	/* ******************************************************************************
 	 * Chargement du fichier Lua du plugin

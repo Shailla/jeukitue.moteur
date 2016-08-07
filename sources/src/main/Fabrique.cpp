@@ -22,7 +22,7 @@ void Fabrique::construct(void) {
 
     // Agar initialization
     _pluginEngine = new PluginEngine();
-    _agarView = new Viewer(&Controller::executeAction);
+    _agarView = new Viewer(&Controller::executeAgarAction);
 
     _agarController = new Controller(_agarView, _pluginEngine);
     _commandeInterpreter = new CommandeInterpreter(_agarView);

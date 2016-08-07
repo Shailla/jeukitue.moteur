@@ -73,26 +73,18 @@ function onLoad()
 end
 
 function eventManager(event)
-	local type = event:getType();
+	local actionId = event:getActionId();
+	log("Event actionId=" .. actionId);
+	
+	if actionId == 1104 then		-- Show configuration menu
+		log("SHOW");
+		window:show();
 		
-	log("Event");
-		
-	-- Action event
-	if type == 1 then
-		local actionId = event:getActionId();
-		
-		log("Action event : "..actionId);
-		
-		if actionId == 1004 then		-- Show configuration menu
-			log("SHOW");
-			window:show();
-		elseif actionId == 1001 then	-- Hide menu
-			log("HIDE");
-			window:hide();
-		end
-		
-	-- Widget event
-	elseif type == 3 then	
+	elseif actionId == 1001 then	-- Hide menu
+		log("HIDE");
+		window:hide();
+
+	elseif actionId == 1004 then		-- Widget event
 		local source = event:getSource();
 
 		if source == backButton then
@@ -101,11 +93,11 @@ function eventManager(event)
 			
 		elseif source == joueurButton then
 			window:hide();
-			pushEvent(1007);
+			pushEvent(1107);
 		
 		elseif source == commandesButton then
 			window:hide();
-			pushEvent(1013);
+			pushEvent(1113);
 			
 		elseif source == audioButton then
 			window:hide();
@@ -113,27 +105,27 @@ function eventManager(event)
 			
 		elseif source == videoButton then
 			window:hide();
-			pushEvent(1008);
+			pushEvent(1108);
 			
 		elseif source == reseauButton then
 			window:hide();
-			pushEvent(1009);
+			pushEvent(1109);
 			
 		elseif source == centralisateurButton then
 			window:hide();
-			pushEvent(1010);
+			pushEvent(1110);
 			
 		elseif source == agarButton then
 			window:hide();
-			pushEvent(1012);
+			pushEvent(1112);
 		
 		elseif source == advancedConfigurationButton then
 			window:hide();
-			pushEvent(1019);
+			pushEvent(1119);
 		
 		elseif source == pluginsButton then
 			window:hide();
-			pushEvent(1011);
+			pushEvent(1111);
 			
 		-- Evênement non-pris en compte
 		else

@@ -98,6 +98,14 @@ CPlayer::CPlayer() {
 	}
 }
 
+void CPlayer::setId(int id) {
+	_id = id;
+}
+
+int CPlayer::getId() const {
+	return _id;
+}
+
 bool CPlayer::openInClientMode(const IPaddress &address) {				// Ouverture en mode client
 	_spa = new jkt::CSPA();
 	return _spa->openInClientMode(address);

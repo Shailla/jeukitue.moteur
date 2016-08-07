@@ -14,6 +14,7 @@
 #include "menu/Controller.h"
 #include "main/Game.h"
 #include "main/Player.h"
+#include "main/event/PlayerZoneEvent.h"
 
 #include "spatial/objet/CheckPlayerInZone.h"
 
@@ -103,15 +104,12 @@ void CheckPlayerInZone::refresh(CGame* game) {
 		wasBefore = _playersInZone.find(player) != _playersInZone.end();
 
 		if(isNow && !wasBefore) {		// Entering in zone ?
-			AG_Event event;
-			AG_EventArgs(&event, "%i", Controller::Action::PlayerZoneDetectorActivated);
-			Controller::executeAction(&event);
-
+			PlayerZoneEvent evt(Controller::Action::PlayerZoneDetectorActivated, player);
+			Controller::executeAction(evt);
 		}
 		else if(!isNow && wasBefore) {	// Outgoing of zone
-			AG_Event event;
-			AG_EventArgs(&event, "%i", Controller::Action::PlayerZoneDetectorUnactivated);
-			Controller::executeAction(&event);
+			PlayerZoneEvent evt(Controller::Action::PlayerZoneDetectorUnactivated, player);
+			Controller::executeAction(evt);
 		}
 	}
 

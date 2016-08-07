@@ -23,6 +23,8 @@ class CReqSon;
 }
 
 class CPlayer {
+	int _id;
+
 	static jkt::Icone* _weaponsChoice;	// Textures de l'icone des armes
 
 	CClavier *_pClavier;	//pointeur sur la class des requêtes clavier
@@ -56,8 +58,10 @@ class CPlayer {
 public :
 	// Conctructeurs / destructeurs
 	CPlayer();				// Crée un joueur de vitesse, position et orientaions nuls
-	~CPlayer();
+	virtual ~CPlayer();
 	void init();			// Initialise certaines données du joueur
+	void setId(int id);
+	int getId() const;
 
 	// Réseau
 	jkt::CSPA* _spa;		// spa associé au proxy-joueur

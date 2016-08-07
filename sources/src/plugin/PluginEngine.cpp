@@ -24,6 +24,7 @@
 #include "plugin/lua/proxy/map/PluginMapProxy.h"
 #include "plugin/lua/proxy/map/PluginPlayerZoneDetectorProxy.h"
 #include "plugin/lua/proxy/game/PluginPlayerProxy.h"
+#include "plugin/lua/proxy/game/PluginPlayerZoneEventProxy.h"
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/lua/LuaGlobalMethods.h"
 #include "main/Cfg.h"
@@ -44,8 +45,6 @@ PluginEngine::~PluginEngine() {
 }
 
 void PluginEngine::sendRefreshEvent() {
-	PluginActionEvent evt(Controller::Action::RefreshMap);
-
 	// Global plugins
 	{
 		std::map<std::string, PluginContext*>::iterator iter = _nameGlobalPlugin.begin();
@@ -54,7 +53,7 @@ void PluginEngine::sendRefreshEvent() {
 			PluginContext* context = iter->second;
 
 			if(context->isSubscribedRefreshEvents()) {
-				context->dispatchEvent(evt);
+				context->dispatchEvent(Controller::Action::RefreshMap);
 			}
 		}
 	}
@@ -67,19 +66,20 @@ void PluginEngine::sendRefreshEvent() {
 			PluginContext* context = iter->second;
 
 			if(context->isSubscribedRefreshEvents()) {
-				context->dispatchEvent(evt);
+				context->dispatchEvent(Controller::Action::RefreshMap);
 			}
 		}
 	}
 }
 
-void PluginEngine::dispatchEvent(const PluginActionEvent& event) {
+void PluginEngine::dispatchEvent(PluginEventProxy& plugEvent) {
 	// Global plugins dispatching
 	{
 		std::map<std::string, PluginContext*>::iterator iter = _nameGlobalPlugin.begin();
 
 		for( ; iter != _nameGlobalPlugin.end() ; iter++) {
-			iter->second->dispatchEvent(event);
+			PluginEventProxy* evt = new PluginEventProxy(plugEvent);
+			iter->second->dispatchEvent(evt);
 		}
 	}
 
@@ -88,7 +88,28 @@ void PluginEngine::dispatchEvent(const PluginActionEvent& event) {
 		std::map<std::string, PluginContext*>::iterator iter = _nameMapPlugin.begin();
 
 		for( ; iter != _nameMapPlugin.end() ; iter++) {
-			iter->second->dispatchEvent(event);
+			PluginEventProxy* evt = new PluginEventProxy(plugEvent);
+			iter->second->dispatchEvent(evt);
+		}
+	}
+}
+
+void PluginEngine::dispatchEvent(int actionId) {
+	// Global plugins dispatching
+	{
+		std::map<std::string, PluginContext*>::iterator iter = _nameGlobalPlugin.begin();
+
+		for( ; iter != _nameGlobalPlugin.end() ; iter++) {
+			iter->second->dispatchEvent(actionId);
+		}
+	}
+
+	// Map plugins dispatching
+	{
+		std::map<std::string, PluginContext*>::iterator iter = _nameMapPlugin.begin();
+
+		for( ; iter != _nameMapPlugin.end() ; iter++) {
+			iter->second->dispatchEvent(actionId);
 		}
 	}
 }
@@ -243,6 +264,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	Lunar<PluginMapProxy>::Register(L);
 	Lunar<PluginPlayerZoneDetectorProxy>::Register(L);
 	Lunar<PluginPlayerProxy>::Register(L);
+	Lunar<PluginPlayerZoneEventProxy>::Register(L);
 
 	/* ******************************************************************************
 	 * Chargement du fichier Lua du plugin

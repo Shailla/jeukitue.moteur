@@ -55,7 +55,8 @@ public:
 	PluginContext* getMapPluginContext(const std::string& pluginName);
 	PluginContext* getMapPluginContext(const lua_State* L);
 
-	void dispatchEvent(const PluginActionEvent& event);
+	void dispatchEvent(PluginEventProxy& plugEvent);
+	void dispatchEvent(int actionId);
 	void sendRefreshEvent();
 };
 

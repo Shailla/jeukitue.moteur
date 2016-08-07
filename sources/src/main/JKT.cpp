@@ -206,9 +206,7 @@ void initMenu(void) {
 	// Lancement de l'IHM, on entre dans le menu principal du jeu
 	pFocus->SetMenuAgarFocus();
 
-	AG_Event event;
-	AG_EventArgs(&event, "%i", Controller::Action::ShowMenuAction);
-	Controller::executeAction(&event);
+	Controller::executeAction(Controller::Action::ShowMenuAction);
 }
 
 void updateSon3D() {
@@ -762,7 +760,6 @@ void chopeLesEvenements() {
 			balle->changeAction( gravitePlayer );	// associe au projectile une fonction de gravité
 			balle->changeContact( contactSprite );	// associe une fonction pour les contacts avec la map
 
-			//			Game._pTabIndexPlayer->Ajoute(balle);			// ajoute le projectile à la liste des joueurs
 			Game.addPlayer(balle);			// ajoute le projectile à la liste des joueurs
 		}
 	}
@@ -994,16 +991,12 @@ static void process_events(void) {
 		case SDL_KEYDOWN:
 			if(sdlevent.key.keysym.sym == SDLK_ESCAPE) {
 				if(pFocus->isPlayFocus()) {
-					AG_Event event;
-					AG_EventArgs(&event, "%i", Controller::Action::ShowMenuAction);
-					Controller::executeAction(&event);
+					Controller::executeAction(Controller::Action::ShowMenuAction);
 
 					pFocus->SetMenuAgarFocus();
 				}
 				else {
-					AG_Event event;
-					AG_EventArgs(&event, "%i", Controller::Action::HideMenuAction);
-					Controller::executeAction(&event);
+					Controller::executeAction(Controller::Action::HideMenuAction);
 
 					pFocus->SetPlayFocus();
 				}

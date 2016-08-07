@@ -14,28 +14,28 @@ namespace jkt {
 const char PluginEventProxy::className[] = "Event";
 
 Lunar<PluginEventProxy>::RegType PluginEventProxy::methods[] = {
-		{"getSource", &PluginEventProxy::getSource},
-		{"getType", &PluginEventProxy::getType},
 		{"getActionId", &PluginEventProxy::getActionId},
+		{"getSource", &PluginEventProxy::getSource},
+		{"getInfo", &PluginEventProxy::getInfo},
 		{0}
 };
 
-PluginEventProxy::PluginEventProxy(const PluginActionEvent& event) {
-	_type = MESSAGE_EVENT;
-	_messageType = event.getActionId();
+PluginEventProxy::PluginEventProxy(int actionId) {
+	_actionId = actionId;
 	_source = 0;
+	_info = 0;
 }
 
-PluginEventProxy::PluginEventProxy(PluginEventSource* event) {
-	_type = WIDGET_EVENT;
-	_messageType = Controller::Action::Unknown;
-	_source = event->getSource();
+PluginEventProxy::PluginEventProxy(int actionId, LunarProxy* source, LunarProxy* info) {
+	_actionId = actionId;
+	_source = source;
+	_info = info;
 }
 
-PluginEventProxy::PluginEventProxy(lua_State* L) {
-	_type = UNKNOWN_EVENT;
-	_messageType = Controller::Action::Unknown;
+PluginEventProxy::PluginEventProxy(lua_State* L) {	// UNKNOWN_EVENT
+	_actionId = Controller::Action::Unknown;
 	_source = 0;
+	_info = 0;
 }
 
 PluginEventProxy::~PluginEventProxy() {
@@ -45,14 +45,8 @@ int PluginEventProxy::push(lua_State* L) {
 	return Lunar<PluginEventProxy>::push(L, this);
 }
 
-int PluginEventProxy::getType(lua_State* L) {
-	lua_pushnumber(L, _type);
-
-	return 1;
-}
-
 int PluginEventProxy::getActionId(lua_State* L) {
-	lua_pushnumber(L, _messageType);
+	lua_pushnumber(L, _actionId);
 
 	return 1;
 }
@@ -62,6 +56,23 @@ int PluginEventProxy::getSource(lua_State* L) {
 
 	if(_source) {
 		result = _source->push(L);
+	}
+	else {
+		result = 0;
+	}
+
+	return result;
+}
+
+void PluginEventProxy::setInfo(LunarProxy* info) {
+	_info = info;
+}
+
+int PluginEventProxy::getInfo(lua_State* L) {
+	int result;
+
+	if(_info) {
+		result = _info->push(L);
 	}
 	else {
 		result = 0;

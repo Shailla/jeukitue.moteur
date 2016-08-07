@@ -427,14 +427,20 @@ CPlayer* CGame::getPlayer(int id) {
 	return _players[id];
 }
 
-bool CGame::addPlayer(int index, CPlayer *player) {
-	bool result = _players.add(index, player );
+bool CGame::addPlayer(int id, CPlayer *player) {
+	bool result = _players.add(id, player );
+
+	if(result) {
+		player->setId(id);
+	}
 
 	return result;
 }
 
 int CGame::addPlayer(CPlayer *player) {
-	return _players.add( player );
+	int id = _players.add( player );
+	player->setId(id);
+	return id;
 }
 
 void CGame::faitTousPlayerGravite() {

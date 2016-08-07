@@ -93,11 +93,14 @@ void PluginContext::logLuaError(const int status) {
 	}
 }
 
-void PluginContext::dispatchEvent(PluginEventSource* event) {
+bool PluginContext::isSubscribedRefreshEvents() const {
+	return _subscribedRefreshEvents;
+}
+
+void PluginContext::dispatchWidgetEvent(LunarProxy* source) {
 	SDL_LockMutex(_dispatchEventMutex);
 
-	PluginEventProxy* eventProxy = new PluginEventProxy(event);
-	delete event;
+	PluginEventProxy* eventProxy = new PluginEventProxy(Controller::Action::Widget, source, 0);
 
 	lua_getglobal(_luaState, "eventManager");
 
@@ -112,14 +115,26 @@ void PluginContext::dispatchEvent(PluginEventSource* event) {
 	SDL_UnlockMutex(_dispatchEventMutex);
 }
 
-bool PluginContext::isSubscribedRefreshEvents() const {
-	return _subscribedRefreshEvents;
-}
-
-void PluginContext::dispatchEvent(const PluginActionEvent& event) {
+void PluginContext::dispatchEvent(int actionId) {
 	SDL_LockMutex(_dispatchEventMutex);
 
-	PluginEventProxy* eventProxy = new PluginEventProxy(event);
+	PluginEventProxy* eventProxy = new PluginEventProxy(actionId, 0, 0);
+
+	lua_getglobal(_luaState, "eventManager");
+
+	// on vérifie si la fonction existe bien
+	if (lua_isfunction(_luaState, -1)) {
+		Lunar<PluginEventProxy>::push(_luaState, eventProxy, true);
+
+		int status = lua_pcall(_luaState, 1, 0, 0);
+		logLuaError(status);
+	}
+
+	SDL_UnlockMutex(_dispatchEventMutex);
+}
+
+void PluginContext::dispatchEvent(PluginEventProxy* eventProxy) {
+	SDL_LockMutex(_dispatchEventMutex);
 
 	lua_getglobal(_luaState, "eventManager");
 

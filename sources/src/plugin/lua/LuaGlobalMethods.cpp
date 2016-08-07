@@ -62,9 +62,7 @@ int LuaGlobalMethods::pushEvent(lua_State* L) {
 			pluginContext->logError(message);
 		}
 		else {
-			AG_Event event;
-			AG_EventArgs(&event, "%i", pluginActionId);
-			Controller::executeAction(&event);
+			Controller::executeAction(pluginActionId);
 		}
 	}
 

@@ -72,21 +72,14 @@ function appliqueJoueurConfiguration()
 end
 
 function eventManager(event)
-	local type = event:getType();
-
-	-- Action event
-	if type == 1 then
-		local actionId = event:getActionId();
+	local actionId = event:getActionId();
+	log("Event actionId=" .. actionId);
+	
+	if actionId == 1119 then		-- Show advanced configuration window
+		log("SHOW");
+		window:show();
 		
-		log("Action event : "..actionId);
-		
-		if actionId == 1019 then		-- Show advanced configuration window
-			log("SHOW");
-			window:show();
-		end
-		
-	-- Widget event
-	elseif type == 3 then	
+	elseif actionId == 1004 then		-- Widget event
 		local source = event:getSource();
 
 		-- Enregistrement de la configuration du joueur

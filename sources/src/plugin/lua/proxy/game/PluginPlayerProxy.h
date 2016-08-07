@@ -16,19 +16,24 @@ extern "C" {
 
 #include "lunar.h"
 
+#include "main/Player.h"
+
 #include "plugin/lua/proxy/LunarProxy.h"
 
 namespace jkt {
 
 class PluginPlayerProxy : public LunarProxy {
+	CPlayer* _player;
 public:
 	static const char className[];
 	static Lunar<PluginPlayerProxy>::RegType methods[];
 
 public:
-	PluginPlayerProxy();
+	PluginPlayerProxy(CPlayer* player);
 	PluginPlayerProxy(lua_State* L);
 	virtual ~PluginPlayerProxy();
+
+	int getName(lua_State* L);
 
 	int push(lua_State* L);
 };

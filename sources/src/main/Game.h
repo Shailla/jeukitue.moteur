@@ -117,7 +117,7 @@ public:
 	 * @return index du joueur ou -1 si l'ajout a échoué
 	 */
 	int addPlayer(CPlayer *player);
-	bool addPlayer(int index, CPlayer *player);
+	bool addPlayer(int id, CPlayer *player);
 	CPlayer* getPlayer(int id);
 
 private:

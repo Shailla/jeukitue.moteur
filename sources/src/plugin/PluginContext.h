@@ -21,8 +21,7 @@ extern "C" {
 
 #include "lunar.h"
 
-#include <plugin/PluginEventSource.h>
-#include "plugin/PluginActionEvent.h"
+#include "plugin/lua/proxy/PluginEventProxy.h"
 
 namespace jkt {
 
@@ -53,8 +52,9 @@ public:
 	void logScriptError(const std::string& trace);
 	void logLuaError(const int status);
 
-	void dispatchEvent(PluginEventSource* event);
-	void dispatchEvent(const PluginActionEvent& event);
+	void dispatchWidgetEvent(LunarProxy* source);
+	void dispatchEvent(int actionId);
+	void dispatchEvent(PluginEventProxy* eventProxy);
 	void subscribeRefreshEvents(const bool state);
 	bool isSubscribedRefreshEvents() const;
 };

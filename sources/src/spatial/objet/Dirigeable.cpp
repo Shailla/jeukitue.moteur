@@ -32,10 +32,17 @@ class CGame;
 namespace jkt
 {
 
-Dirigeable::Dirigeable() {
+Dirigeable::Dirigeable(CMap* map) : MapObject(map) {
+}
+
+Dirigeable::Dirigeable(const Dirigeable& other) : MapObject(other) {
 }
 
 Dirigeable::~Dirigeable(void) {
+}
+
+void Dirigeable::AfficheSelection(float r, float g, float b) {		// Fonction d'affichage de la porte
+	Affiche();
 }
 
 void Dirigeable::Affiche() {		// Fonction d'affichage de la porte
@@ -61,7 +68,22 @@ void Dirigeable::Affiche(Branche* branche) {		// Fonction d'affichage de la port
 	glPopMatrix();
 }
 
-void Dirigeable::Refresh(CGame *game) {
+MapObject* Dirigeable::clone() {
+	return new Dirigeable(*this);
+}
+
+void Dirigeable::init() throw(CErreur) {
+}
+
+void Dirigeable::refresh(CGame *game) {
+}
+
+bool Dirigeable::Lit(TiXmlElement* el, MapLogger* mapLogger) {
+	return true;
+}
+
+bool Dirigeable::Save(TiXmlElement* element) {
+	return true;
 }
 
 }	// JktMoteur

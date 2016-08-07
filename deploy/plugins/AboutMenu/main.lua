@@ -55,24 +55,16 @@ function onLoad()
 end
 
 function eventManager(event)
-	local type = event:getType();
-		
-	log("Event");
-		
-	-- Action event
-	if type == 1 then
-		local actionId = event:getActionId();
-		
-		log("Action event : "..actionId);
-		
-		if actionId == 10001 then		-- Show about
-			window:show();
-		elseif actionId == 1001 then	-- Hide menu
-			window:hide();
-		end
-		
-	-- Widget event
-	elseif type == 3 then	
+	local actionId = event:getActionId();
+	log("Event actionId=" .. actionId);
+	
+	if actionId == 10001 then		-- Show about
+		window:show();
+
+	elseif actionId == 1001 then	-- Hide menu
+		window:hide();
+
+	elseif actionId == 1004 then		-- Widget event
 		local source = event:getSource();
 		
 		-- Enregistrement de la configuration du joueur

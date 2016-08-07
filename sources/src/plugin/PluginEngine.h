@@ -23,6 +23,8 @@ extern "C" {
 
 namespace jkt {
 
+class CMap;
+
 class PluginEngine {
 	static const std::string PLUGIN_MAIN_FILENAME;
 
@@ -48,12 +50,13 @@ public:
 	PluginContext* getGlobalPluginContext(const lua_State* L);
 
 	// Gestion des plugins de la Map active
-	void activateMapPlugin(const string& pluginName, const string pluginDirectory);
+	void activateMapPlugin(CMap* map, const string& pluginName, const string pluginDirectory);
 	void deactivateMapPlugins();
 	PluginContext* getMapPluginContext(const std::string& pluginName);
 	PluginContext* getMapPluginContext(const lua_State* L);
 
-	void dispatchEvent(const PluginActionEvent& event);
+	void dispatchEvent(PluginEventProxy& plugEvent);
+	void dispatchEvent(int actionId);
 	void sendRefreshEvent();
 };
 

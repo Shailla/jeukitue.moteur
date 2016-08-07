@@ -13,13 +13,12 @@
 #include <map>
 #include <fstream>
 
-using namespace std;
-
 #include "spatial/materiau/Material.h"
 #include "spatial/materiau/MaterialMulti.h"
 #include "spatial/materiau/MaterialTexture.h"
 
-#include "spatial/geo/Geo.h"
+#include "spatial/basic/MapObject.h"
+
 
 namespace jkt
 {
@@ -28,13 +27,14 @@ class CC3D;
 class CChanTex;
 class CMap;
 
-class CGeoObject : public CGeo {
+class CGeoObject : public MapObject {
 private:
 	int m_OffsetMateriau;		// Sert lors de la lecture des références matériaux
 	CMaterial::MAT_TYPE m_TypeMateriau;	// Type du matériau associé (standard, multi,...)
-	string tostring;
+	std::string tostring;
+
 protected:
-		// Paramètres d'initialisation
+	// Paramètres d'initialisation
 	float minX, minY, minZ, maxX, maxY, maxZ;	// Coordonnées du pavé englobant l'objet géo
 	float m_Color[3];		// Couleur de l'objet géo
 	bool m_bSolid;			// Indique si l'objet est solide ou non
@@ -59,7 +59,7 @@ public:
 	int *m_TabSubMat;			// Index des éventuels sous-matériau
 	float *m_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs préliminaires à la gestion des contacts)
 	float *m_TabVectNormaux;	// Pointeur sur le tableau des vecteurs normaux
-	map<int,CChanTex*> TabTex;	// Contient tous les canaux de texture
+	std::map<int,CChanTex*> TabTex;	// Contient tous les canaux de texture
 
 		//Constructeurs / Destructeur
 	CGeoObject( CMap *Map, unsigned int nbrVertex, unsigned int nbrFaces );
@@ -77,6 +77,7 @@ private:
 	void AfficheWithMaterialTexture(CMaterialTexture *mat, int canal);
 	void AfficheWithMaterialSimple( CMaterial *mat );
 	int getOffsetMateriau() throw(CErreur);
+
 public:
 	void EchangeXY() override;												// Echange les coordonnées X et Y de l'objet
 	void EchangeXZ() override;												// Echange les coordonnées X et Z de l'objet
@@ -96,11 +97,7 @@ public:
 	void setNormalVertex( float *tab );			// Implémente les normales aux sommets
 	void setSubMat( int *tab );					// Implémente les réf de sous matériau
 
-		// Fonctions pour l'interface CGeo
-	//bool LitFichier( CIfstreamMap &fichier );			// Lit un objet géo dans un fichier Map
-	//bool LitFichierGeoObject( CIfstreamMap &fichier );	// Lit un objet géo dans un fichier
-	//bool SaveNameType( ofstream &fichier );				// Sauve le nom du type d'objet géométrique
-	//bool SaveFichierMap( ofstream &fichier );			// Sauve l'objet géo dans un fichier Map
+	// Fonctions pour l'interface CGeo
 	bool Save(TiXmlElement* element) override;
 	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override {return true;}
 	void setOffsetMateriau( int offset );					// Décale la référence matériau de l'offset
@@ -110,7 +107,7 @@ public:
 	void Affiche() override;									// Affiche cet objet géo
 	void AfficheSelection(float r,float v,float b) override;	// Affiche l'objet en couleur unique
 
-	void Init() override;								// Initialisation de l'objet
+	void init() throw(CErreur) override;						// Initialisation de l'objet
 	const char* toString() override;
 };
 

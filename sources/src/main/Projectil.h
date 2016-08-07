@@ -13,8 +13,8 @@ public:
 	CProjectil( CPlayer *player );
 	virtual ~CProjectil();
 
-	virtual void Affiche()=0;	// Affichage du projectil
-	virtual bool Refresh()=0;	// Effectue les calculs et les tests nécessaires
+	virtual void Affiche() = 0;	// Affichage du projectil
+	virtual bool Refresh() = 0;	// Effectue les calculs et les tests nécessaires
 };
 
 #endif

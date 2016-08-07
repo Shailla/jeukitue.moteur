@@ -22,14 +22,12 @@ extern "C" {
 namespace jkt {
 
 class PluginCheckboxProxy : public LunarProxy {
+	PluginCheckbox* _pluginCheckbox;
+
 public:
 	static const char className[];
 	static Lunar<PluginCheckboxProxy>::RegType methods[];
 
-private:
-	PluginCheckbox* _pluginCheckbox;
-
-public:
 	PluginCheckboxProxy(lua_State* L);
 	PluginCheckboxProxy(PluginCheckbox* pluginCheckbox);
 	virtual ~PluginCheckboxProxy();

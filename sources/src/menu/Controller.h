@@ -7,8 +7,11 @@
 
 #include <agar/core.h>
 #include <agar/gui.h>
+#include <main/event/JktEvent.h>
 
 #include "Viewer.h"
+
+using namespace jkt;
 
 namespace jkt {
 	class PluginEngine;
@@ -55,22 +58,27 @@ public:
 		PLUGIN_BASE_ID							= 1000,		// All action higher than PLUGIN_BASE_ID is available for plugin usage
 		HideMenuAction 							= 1001,		// Hide the menu (action event recognized by the menu plugin as the action to hide the menu)
 		ShowMenuAction 							= 1002,		// Show the menu (action event recognized by the menu plugin as the action to show the menu)
-		ShowConfigurationMenuAction				= 1004,		// Show the configuration menu
-		ShowMultijoueursMenuAction				= 1005,		// Show the multiplayer configuration
-		ShowConfigurationJoueurViewAction		= 1007,		// Show player configuration
-		ShowConfigurationVideoViewAction		= 1008,		// Show video configuration
-		ShowConfigurationReseauViewAction		= 1009,		// Show network configuration
-		ShowMenuConfigCentralisateurAction		= 1010,		// Show centralisateur configuration
-		ShowPluginsManagementViewAction			= 1011,		// Show plugin configuration
-		ShowAgarConfigurationViewAction			= 1012,		// Show agar configuration
-		ShowConfigurationCommandesViewAction	= 1013,		// Show commandes configuration
-		ShowDebugViewAction						= 1014,		// Show the debug menu
-		ShowMultijoueursClientMenuAction		= 1015,		// Show the multiplayer menu
-		ShowMenuOpenSceneAction					= 1016,		// Show the open scene (MAP or ASE) menu
-		QuitGameAction							= 1017,		// Quit the current MAP
-		QuitAction								= 1018,		// Quit the game
-		showConfigurationAdvancedViewAction		= 1019,		// Advanced configuration window
-		RefreshMap								= 1100,		// Regular refresh event (to update a plugin 3D object position for instance)
+		RefreshMap								= 1003,		// Regular refresh event (to update a plugin 3D object position for instance)
+		Widget									= 1004,		// GUI Widget event (plugin button pressed for instance)
+
+		ShowConfigurationMenuAction				= 1104,		// Show the configuration menu
+		ShowMultijoueursMenuAction				= 1105,		// Show the multiplayer configuration
+		ShowConfigurationJoueurViewAction		= 1107,		// Show player configuration
+		ShowConfigurationVideoViewAction		= 1108,		// Show video configuration
+		ShowConfigurationReseauViewAction		= 1109,		// Show network configuration
+		ShowMenuConfigCentralisateurAction		= 1110,		// Show centralisateur configuration
+		ShowPluginsManagementViewAction			= 1111,		// Show plugin configuration
+		ShowAgarConfigurationViewAction			= 1112,		// Show agar configuration
+		ShowConfigurationCommandesViewAction	= 1113,		// Show commandes configuration
+		ShowDebugViewAction						= 1114,		// Show the debug menu
+		ShowMultijoueursClientMenuAction		= 1115,		// Show the multiplayer menu
+		ShowMenuOpenSceneAction					= 1116,		// Show the open scene (MAP or ASE) menu
+		QuitGameAction							= 1117,		// Quit the current MAP
+		QuitAction								= 1118,		// Quit the game
+		ShowConfigurationAdvancedViewAction		= 1119,		// Advanced configuration window
+		PlayerZoneDetectorActivated				= 1120,		// Le joueur entre dans une zone de détection
+		PlayerZoneDetectorUnactivated			= 1121		// Le joueur sort d'une zone de détection
+
 		// The actions created by the plugins should not be referenced in C++ code, their identifiers are higher than 10000
 	};
 
@@ -81,7 +89,9 @@ public:
     Controller(Viewer* agarView, jkt::PluginEngine* pluginEngine);
     ~Controller(void);
 
-    static void executeAction(AG_Event *event);
+    static void executeAction(int actionId);
+    static void executeAction(JktEvent& event);
+    static void executeAgarAction(AG_Event* event);
 };
 
 #endif

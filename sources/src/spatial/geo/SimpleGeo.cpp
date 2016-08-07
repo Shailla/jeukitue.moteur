@@ -25,8 +25,8 @@ extern int JKT_RenderMode;
 #include "util/math_vectoriel.h"
 #include "util/V3D.h"
 #include "spatial/IfstreamMap.h"
-#include "spatial/geo/Geo.h"
-#include "spatial/Mouve.h"
+#include <spatial/basic/Geometrical.h>
+#include <spatial/basic/Refreshable.h>
 #include "spatial/light/Light.h"
 #include "spatial/Map.h"
 #include "son/DemonSons.h"
@@ -48,10 +48,8 @@ class CNavette;
 const char* CSimpleGeo::identifier = "SimpleGeo";
 
 //CONSTRUCTEURS
-CSimpleGeo::CSimpleGeo(CMap* map, const string& name, unsigned int nbrVertex, float* vertex,
-		unsigned int nbrFaces, int* faces, float* color, bool solid)
-:CGeo( map )
-{
+CSimpleGeo::CSimpleGeo(CMap* map, const string& name, unsigned int nbrVertex, float* vertex, unsigned int nbrFaces,
+						int* faces, float* color, bool solid) : MapObject(map) {
 	setName(name);	// Nom de l'objet
 
 	_color[0] = color[0];			// Couleur de l'objet
@@ -72,7 +70,7 @@ CSimpleGeo::CSimpleGeo(CMap* map, const string& name, unsigned int nbrVertex, fl
 	_rayon = 0.0f;
 }
 
-CSimpleGeo::CSimpleGeo(CMap* map) : CGeo(map) {
+CSimpleGeo::CSimpleGeo(CMap* map) : MapObject(map) {
 	_color[0] = 1.0f;	// Couleur de l'objet
 	_color[1] = 1.0f;
 	_color[2] = 1.0f;
@@ -91,7 +89,7 @@ CSimpleGeo::CSimpleGeo(CMap* map) : CGeo(map) {
 	_rayon = 0.0f;
 }
 
-CSimpleGeo::CSimpleGeo(const CSimpleGeo& other) : CGeo(other) {
+CSimpleGeo::CSimpleGeo(const CSimpleGeo& other) : MapObject(other) {
 	tostring = other.tostring;
 
 	// Bulle
@@ -157,7 +155,7 @@ CSimpleGeo::~CSimpleGeo() {
 	}
 }
 
-CGeo* CSimpleGeo::clone() {
+MapObject* CSimpleGeo::clone() {
 	return new CSimpleGeo(*this);
 }
 
@@ -174,7 +172,7 @@ void CSimpleGeo::setVertex(int num, float *tab) {
 			m_TabVertex[ (i*3)+j ] = tab[ (i*3)+j ];
 }
 
-void CSimpleGeo::Init() {
+void CSimpleGeo::init() throw(CErreur) {
 	MinMax();			// Mesure les minimums et maximums de l'objet géo
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
 	ConstruitBase();	// Construit la table des vecteurs normaux
@@ -521,8 +519,7 @@ void CSimpleGeo::Color( float r, float g, float b ) {
 	return true;
 }*/
 
-bool CSimpleGeo::Lit(TiXmlElement* element, MapLogger* mapLogger)
-{
+bool CSimpleGeo::Lit(TiXmlElement* element, MapLogger* mapLogger) {
 	double ref;
 
 	// Nom
@@ -541,7 +538,7 @@ bool CSimpleGeo::Lit(TiXmlElement* element, MapLogger* mapLogger)
 	// Référence
 	if(!element->Attribute(Xml::REF, &ref))
 		throw CErreur("Fichier Map corrompu CSimpleGeo 4");
-	m_Reference = (unsigned int)ref;
+	_reference = (unsigned int)ref;
 
 	// Solidité
 	_bSolid = Xml::LitSolidite(element);
@@ -558,8 +555,7 @@ bool CSimpleGeo::Lit(TiXmlElement* element, MapLogger* mapLogger)
 	return true;
 }
 
-bool CSimpleGeo::Save(TiXmlElement* element)
-{
+bool CSimpleGeo::Save(TiXmlElement* element) {
 	// Sauve les données générales
 	TiXmlElement* elGeo = new TiXmlElement(Xml::GEO);
 	elGeo->SetAttribute(Xml::REF, getReference());
@@ -663,7 +659,7 @@ void CSimpleGeo::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	float distanceW;
 
 	if( _bSolid )	// Si l'objet est solide
-		if( TestContactPave( positionPlayer, 0.05f+dist ) )	// Teste proximité 'joueur / l'objet géo'
+		if( TestContactPave( positionPlayer, dist ) )	// Teste proximité 'joueur / l'objet géo'
 			for( int i=0; i<_numFaces; i++) {		//pour chaque triangle de l'objet géo.
 				distanceW = testContactTriangle(i, positionPlayer, dist);
 
@@ -687,8 +683,7 @@ bool CSimpleGeo::TestContactPave(const float pos[3], float dist) {
 	return false;	// Le point 'pos' se trouve à une distance supérieure
 }
 
-float CSimpleGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist)
-{
+float CSimpleGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
 	float distanceVar;
 	float *vertex, *normal;
 	int *indices;

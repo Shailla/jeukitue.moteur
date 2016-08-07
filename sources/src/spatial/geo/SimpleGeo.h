@@ -20,13 +20,13 @@ using namespace std;
 #endif
 #include <GL/GL.H>
 
-#include "spatial/geo/Geo.h"
+#include "util/Erreur.h"
+#include "spatial/basic/MapObject.h"
 
 namespace jkt
 {
 
-class CSimpleGeo:public CGeo
-{
+class CSimpleGeo : public MapObject {
 	friend class GeoMaker;
 	string tostring;
 
@@ -54,9 +54,9 @@ public:
 	CSimpleGeo(CMap *map);
 	CSimpleGeo(const CSimpleGeo& other);
 	~CSimpleGeo();
-	CGeo* clone() override;
+	MapObject* clone() override;
 
-	void Init() override;								// Initialisation de l'objet
+	void init() throw(CErreur) override;								// Initialisation de l'objet
 	void initGL() override;
 	void freeGL() override;
 

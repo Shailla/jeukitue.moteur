@@ -63,44 +63,35 @@ function onLoad()
 end
 
 function eventManager(event)
-	local type = event:getType();
-		
-	log("Event");
-		
-	-- Action event
-	if type == 1 then
-		local actionId = event:getActionId();
-		
-		log("Action event : "..actionId);
-		
-		if actionId == 1002 then		-- Show the window
-			--log("SHOW");
-			window:show();
-		elseif actionId == 1001 then	-- Hide the window
-			log("HIDE");
-			window:hide();
-		end
-		
-	-- Widget event
-	elseif type == 3 then
+	local actionId = event:getActionId();
+	log("Event actionId=" .. actionId);
+	
+	if actionId == 1002 then		-- ShowMenuAction
+		window:show();
+
+	elseif actionId == 1001 then	-- HideMenuAction
+		window:hide();
+			
+	elseif actionId == 1004 then		-- Widget event
 		log("Widget event");	
 		local source = event:getSource();
 		
 		if source == sceneButton then
+			log("Push event 1116");
 			window:hide();
-			pushEvent(1016);
+			pushEvent(1116);	-- ShowMenuOpenSceneAction
 			
 		elseif source == multiButton then
 			window:hide();
-			pushEvent(1005);
+			pushEvent(1105);	-- ShowMultijoueursMenuAction
 		
 		elseif source == configurationButton then
 			window:hide();
-			pushEvent(1004);
+			pushEvent(1104);	-- ShowConfigurationMenuAction
 			
 		elseif source == quitMapButton then
 			window:hide();
-			pushEvent(1017);
+			pushEvent(1117);	-- QuitGameAction
 			
 		elseif source == aboutButton then
 			window:hide();
@@ -108,18 +99,18 @@ function eventManager(event)
 			
 		elseif source == debugButton then
 			window:hide();
-			pushEvent(1014);
+			pushEvent(1114);	-- ShowDebugViewAction
 			
 		elseif source == quitButton then
 			window:hide();
-			pushEvent(1018);
+			pushEvent(1118);	-- QuitAction
 			
 		elseif source == backButton then
 			window:hide();
 			
 		-- Evênement non-pris en compte
 		else
-			log("Evenement ignoré ("..event:__tostring()..")");
+			log("Evenement ignoré (" .. event:__tostring() .. ")");
 		end
 	end
 end

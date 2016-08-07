@@ -407,7 +407,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 							Game.quitCurrentMap();
 
 							// Supprime les joueurs
-							Game.Erwin(0);
+							Game.setErwin(0);
 							Game.deletePlayers();
 
 
@@ -460,7 +460,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 								// Nom du joueur
 								string nom_p;
 								_spaMaitre.readString( nom_p );
-								player->nom(nom_p);
+								player->setName(nom_p);
 
 								// Lecture des position, vitesse, Phi et Teta du joueur
 								_spaMaitre.readRecapFromServer( *player );
@@ -478,7 +478,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 								if( curseur==IDpersonnel )	// S'il s'agit du joueur de cet ordinateur
 									logPlayers << " *";
 
-								logPlayers << "\t" << player->nom();
+								logPlayers << "\t" << player->getName();
 								player->getPosition( pos );
 								logPlayers << "\t" << pos[0] << ";" << pos[1] << ";" << pos[2];
 							}
@@ -494,7 +494,7 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 							if(!erwin) {
 								LOGERROR(("Joueur Erwin introuvable"));
 							}
-							Game.Erwin(erwin);
+							Game.setErwin(erwin);
 
 
 							/* *************************************************************

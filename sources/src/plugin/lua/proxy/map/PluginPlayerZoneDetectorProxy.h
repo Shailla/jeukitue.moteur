@@ -5,8 +5,8 @@
  *      Author: Erwin
  */
 
-#ifndef SRC_PLUGIN_LUA_PROXY_PLUGINPLAYERZONEDETECTORPROXY_H_
-#define SRC_PLUGIN_LUA_PROXY_PLUGINPLAYERZONEDETECTORPROXY_H_
+#ifndef SRC_PLUGIN_LUA_PROXY_MAP_PLUGINPLAYERZONEDETECTORPROXY_H_
+#define SRC_PLUGIN_LUA_PROXY_MAP_PLUGINPLAYERZONEDETECTORPROXY_H_
 
 extern "C" {
 #include "lua.h"
@@ -16,11 +16,12 @@ extern "C" {
 
 #include "lunar.h"
 
+#include "plugin/lua/proxy/LunarProxy.h"
 #include "spatial/objet/CheckPlayerInZone.h"
 
 namespace jkt {
 
-class PluginPlayerZoneDetectorProxy {
+class PluginPlayerZoneDetectorProxy : public LunarProxy {
 	CheckPlayerInZone* _playerZoneDetector;
 
 public:
@@ -31,9 +32,12 @@ public:
 	PluginPlayerZoneDetectorProxy(CheckPlayerInZone* playerZoneDetector);
 	virtual ~PluginPlayerZoneDetectorProxy();
 
+	int push(lua_State* L);
+
 	int setVisibility(lua_State *L);
+	int isPlayerInZone(lua_State *L);
 };
 
 } /* namespace jkt */
 
-#endif /* SRC_PLUGIN_LUA_PROXY_PLUGINPLAYERZONEDETECTORPROXY_H_ */
+#endif /* SRC_PLUGIN_LUA_PROXY_MAP_PLUGINPLAYERZONEDETECTORPROXY_H_ */

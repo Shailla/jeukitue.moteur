@@ -26,8 +26,7 @@ public:
 	static int pushEvent(lua_State* L);
 	static int subscribeEvents(lua_State* L);
 
-	// Crée une zone virtuelle, quand le joueur passe dedans un événement est déclenché et les plugins sont notifiés
-	static int createPlayerZoneDetector(lua_State* L);
+	static int logConsoleInfo(lua_State* L);
 };
 
 } /* namespace jkt */

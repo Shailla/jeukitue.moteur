@@ -24,7 +24,7 @@ nextColorsG = {}
 nextColorsB = {}
 
 function onLoad()
-	log("Version Lua A : " .. _VERSION)
+	log("Version Lua : " .. _VERSION)
 	
 	if (isGameModeServer() or isGameModeLocal()) then
 		log("Jeu en mode serveur ou local => initialisation des sprites");
@@ -127,15 +127,11 @@ function traceId(object, id)
 end
 
 function eventManager(event)
-	local type = event:getType();
-		
-	-- Action event
-	if type == 1 then
-		local actionId = event:getActionId();
-		if actionId == 1100 then
-			for index = 1, nbrSprites do
-				updateVitPos(index);
-			end
+	local actionId = event:getActionId();
+	
+	if actionId == 1003 then	-- Refresh Map event
+		for index = 1, nbrSprites do
+			updateVitPos(index);
 		end
 	end
 end

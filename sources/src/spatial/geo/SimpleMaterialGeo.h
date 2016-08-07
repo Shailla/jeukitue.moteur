@@ -15,13 +15,14 @@
 
 using namespace std;
 
-#include "spatial/geo/Geo.h"
 #include "spatial/geo/GeoMaker.h"
+#include "util/Erreur.h"
+#include "spatial/basic/MapObject.h"
 
 namespace jkt
 {
 
-class CSimpleMaterialGeo : public CGeo {
+class CSimpleMaterialGeo : public MapObject {
 	int m_OffsetMateriaux;		// Sert lors de la lecture des références matériaux
 	CMaterial* m_Material;		// Matériau utilisé
 	string tostring;
@@ -54,9 +55,9 @@ public:
 	CSimpleMaterialGeo(CMap *map);
 	CSimpleMaterialGeo(const CSimpleMaterialGeo& other);
 	~CSimpleMaterialGeo();
-	CGeo* clone() override;
+	MapObject* clone() override;
 
-	void Init() override;		// Initialisation de l'objet
+	void init() throw(CErreur) override;		// Initialisation de l'objet
 	void initGL() override;
 	void freeGL() override;
 

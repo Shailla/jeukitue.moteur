@@ -32,82 +32,76 @@ namespace jkt
 
 const char* CNavette::identifier = "Navette";
 
-CPointNavette::CPointNavette()
-{
+CPointNavette::CPointNavette() {
 	m_Vitesse = 0.0f;
 }
 
-CPointNavette::CPointNavette( const CPointNavette& pp )
-{
+CPointNavette::CPointNavette( const CPointNavette& pp ) {
 	m_Vitesse = pp.m_Vitesse;
 	m_Position = pp.m_Position;
 }
 
-CPointNavette::~CPointNavette()
-{
+CPointNavette::~CPointNavette() {
 }
 
-void CPointNavette::operator =( const CPointNavette &pp )
-{
+void CPointNavette::operator =( const CPointNavette &pp ) {
 	m_Vitesse = pp.m_Vitesse;
 	m_Position = pp.m_Position;
 }
 
-void CPointNavette::LitFichierPoint( CIfstreamMap &fichier )
-{
+void CPointNavette::LitFichierPoint( CIfstreamMap &fichier ) {
 	string mot;
 
-	if( !( fichier>>mot ) )		// Lecture de la distance parcourue par la navette lors de son ouverture
-	{
+	if( !( fichier>>mot ) ) {		// Lecture de la distance parcourue par la navette lors de son ouverture
 		string erreur( "\nFin de fichier prematuree (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
 		throw CErreur(erreur);
 	}
-	if( mot!="Vitesse" )
-	{
+
+	if( mot!="Vitesse" ) {
 		string erreur( "\nFichier corrompu (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
 		throw CErreur(erreur);
 	}
-	if( !( fichier>>m_Vitesse ) )
-	{
+
+	if( !( fichier>>m_Vitesse ) ) {
 		string erreur( "\nFin de fichier prematuree (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
 		throw CErreur(erreur);
 	}
-	if( !( fichier>>mot ) )		// Lecture de la distance parcourue par la navette lors de son ouverture
-	{
+
+	if( !( fichier>>mot ) ) {		// Lecture de la distance parcourue par la navette lors de son ouverture
 		string erreur( "\nFin de fichier prematuree (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
 		throw CErreur(erreur);
 	}
-	if( mot!="Position" )
-	{
+
+	if( mot!="Position" ) {
 		string erreur( "\nFichier corrompu (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
 		throw CErreur(erreur);
 	}
-	if( !( fichier>>m_Position.X ) )
-	{
+
+	if( !( fichier>>m_Position.X ) ) {
 		string erreur( "\nFin de fichier prematuree (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
 		throw CErreur(erreur);
 	}
-	if( !( fichier>>m_Position.Y ) )
-	{
+
+	if( !( fichier>>m_Position.Y ) ) {
 		string erreur( "\nFin de fichier prematuree (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
 		throw CErreur(erreur);
 	}
-	if( !( fichier>>m_Position.Z ) )
-	{
+
+	if( !( fichier>>m_Position.Z ) ) {
 		string erreur( "\nFin de fichier prematuree (" );
 		erreur += fichier.getFileFullName();
 		erreur += ") dans LitFichierNavette";
@@ -115,14 +109,12 @@ void CPointNavette::LitFichierPoint( CIfstreamMap &fichier )
 	}
 }
 
-void CPointNavette::SaveFichierPoint( ostream &fichier )
-{
+void CPointNavette::SaveFichierPoint( ostream &fichier ) {
 	fichier << "\n\tVitesse\t" << m_Vitesse;
 	fichier << "\n\tPosition\t" << m_Position.X << "\t" << m_Position.Y << "\t" << m_Position.Z << endl;
 }
 
-void CPointNavette::SavePoint(TiXmlElement* element)
-{
+void CPointNavette::SavePoint(TiXmlElement* element) {
 		// Sauve les données générales
 	TiXmlElement* elPoi = new TiXmlElement("Point");
 
@@ -137,26 +129,21 @@ void CPointNavette::SavePoint(TiXmlElement* element)
 	elPoi->LinkEndChild(elPos);
 }
 
-CNavette::CNavette( CMap *map )
-	:CGeoObject( map )
-{
+CNavette::CNavette(CMap *map) : CGeoObject(map) {
 	m_Point = -1;			// On a pas encore démarrer la navette
 	m_distPoints = 0.0f;
 	m_Vitesse = 0.0f;
 	m_Deplacement = 0.0f;
 }
 
-CNavette::~CNavette(void)
-{
+CNavette::~CNavette(void) {
 }
 
-void CNavette::Init()			// Initialisation de l'objet géométrique
-{
-	CGeoObject::Init();
+void CNavette::init() throw(CErreur) {			// Initialisation de l'objet géométrique
+	CGeoObject::init();
 }
 
-void CNavette::Affiche()		// Fonction d'affichage de la navette
-{
+void CNavette::Affiche() {		// Fonction d'affichage de la navette
 	glPushMatrix();
 
 	glTranslatef( m_Position.X, m_Position.Y, m_Position.Z );
@@ -166,78 +153,8 @@ void CNavette::Affiche()		// Fonction d'affichage de la navette
 	glPopMatrix();
 }
 
-/*void CNavette::LitFichierNavette( CIfstreamMap &fichier )		// Lit un objet géo dans un fichier Map
-{
-	string mot;
-	int nbrPoints=0;
-
-	if( !( fichier>>mot ) )		// Nombre de points dans le trajet de la navette
-	{
-		string erreur( "\nFin de fichier prematuree (" );
-		erreur += fichier.getFileFullName();
-		erreur += ") dans LitFichierNavette";
-		throw CErreur( 1, erreur );
-	}
-	if( mot!="NbrPoints" )
-	{
-		string erreur( "\nFichier corrompu (" );
-		erreur += fichier.getFileFullName();
-		erreur += ") dans LitFichierNavette";
-		throw CErreur( 2, erreur );
-	}
-	if( !( fichier>>nbrPoints ) )
-	{
-		string erreur( "\nFin de fichier prematuree (" );
-		erreur += fichier.getFileFullName();
-		erreur += ") dans LitFichierNavette";
-		throw CErreur( 3, erreur );
-	}
-	for( int i=0 ; i<nbrPoints ; i++ )
-	{
-		CPointNavette point;
-		point.LitFichierPoint( fichier );
-		m_ListePoints.push_back( point );
-	}
-}*/
-
-/*bool CNavette::LitFichier( CIfstreamMap &fichier )
-{
-	LitFichierNavette( fichier );
-
-	if( !CGeoObject::LitFichierGeoObject( fichier ) )
-	{
-		cerr << "\nErreur : Echec de lecture du fichier map associe a la navette (LitFichierGeoObject)";
-		return false;
-	}
-
-	return true;	// La lecture s'est bien passée
-}*/
-
-/*bool CNavette::SaveNameType( ofstream &fichier )
-{
-	fichier << "\n\nNavette\n";	// Cette classe est une Navette
-	return true;
-}*/
-
-/*bool CNavette::SaveFichierMap( ofstream &fichier )	// Sauve l'objet géo dans un fichier Map
-{
-	fichier << "\n\n\nNavette\n";						// Type objet navette
-
-	fichier << "\n\tNbrPoints\t" <<	(unsigned int)m_ListePoints.size();			// Marge de la navette lors de son ouverture
-
-	vector<CPointNavette>::iterator iter;
-	for( iter=m_ListePoints.begin() ; iter!=m_ListePoints.end() ; iter++ )
-		(*iter).SaveFichierPoint( fichier );
-
-	if( !CGeoObject::SaveFichierMap( fichier ) )
-		return false;		// La sauvegarde a echoue
-
-	return true;	// La sauvegarde a abouti
-}*/
-
-bool CNavette::Save(TiXmlElement* element)	// Sauve l'objet géo dans un fichier Map
-{
-			// Sauve les données générales
+bool CNavette::Save(TiXmlElement* element) {	// Sauve l'objet géo dans un fichier Map
+	// Sauve les données générales
 	TiXmlElement* elGeo = new TiXmlElement("Geo");
 	elGeo->SetAttribute("Ref", getReference());
 	elGeo->SetAttribute("Nom", getName());
@@ -256,10 +173,10 @@ bool CNavette::Save(TiXmlElement* element)	// Sauve l'objet géo dans un fichier 
 	return true;	// La sauvegarde a abouti
 }
 
-int CNavette::prochainPoint( int i )
-{
+int CNavette::prochainPoint(int i) {
 	CV3D ecart;
 	i++;
+
 	if( i<(int)m_ListePoints.size()-1 ) {
 			// Calcul du veteur vitesse da la navette entre les deux points
 		ecart = m_ListePoints[ i+1 ].m_Position - m_ListePoints[ i ].m_Position;
@@ -307,14 +224,13 @@ int CNavette::prochainPoint( int i )
 	return i;
 }
 
-void CNavette::Refresh( CGame *game )
-{
-	if( m_ListePoints.size() > 1 )
-	{
+void CNavette::refresh(CGame *game) {
+	if( m_ListePoints.size() > 1 ) {
 		if( m_Point == -1 )
 			m_Point = prochainPoint( m_Point );
 
 		m_Deplacement += m_Vitesse;
+
 		if( (m_Deplacement >= m_distPoints) || (-m_Deplacement >= m_distPoints) )
 			m_Point = prochainPoint( m_Point );
 
@@ -322,8 +238,7 @@ void CNavette::Refresh( CGame *game )
 	}
 }
 
-float CNavette::GereLaserPlayer( float pos[3], CV3D &Dir, float dist )
-{
+float CNavette::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 	float newPos[3];
 	newPos[0] = pos[0] - m_Position.X;
 	newPos[1] = pos[1] - m_Position.Y;
@@ -332,7 +247,7 @@ float CNavette::GereLaserPlayer( float pos[3], CV3D &Dir, float dist )
 	return CGeoObject::GereLaserPlayer( newPos, Dir, dist );
 }
 
-void CNavette::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
+void CNavette::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	float newPos[3];
 	newPos[0] = positionPlayer[0] - m_Position.X;
 	newPos[1] = positionPlayer[1] - m_Position.Y;

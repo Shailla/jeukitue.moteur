@@ -5,10 +5,13 @@
  *      Author: Erwin
  */
 
+#include "util/Trace.h"
+#include "main/Fabrique.h"
 #include "menu/Controller.h"
 #include "plugin/PluginEngine.h"
 #include "plugin/lua/LuaUtils.h"
-#include "main/Fabrique.h"
+#include "menu/ConsoleView.h"
+
 #include "plugin/lua/LuaGlobalMethods.h"
 
 namespace jkt {
@@ -24,15 +27,19 @@ LuaGlobalMethods::~LuaGlobalMethods() {
 int LuaGlobalMethods::log(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
 		PluginContext* pluginContext = Fabrique::getPluginEngine()->getGlobalPluginContext(L);
+		string msg = lua_tostring(L, 1);
 
-		if(pluginContext) {
-			pluginContext->logUser(lua_tostring(L, 1));
+		if(pluginContext) {		// Recherche dans les plugins globaux
+			pluginContext->logUser(msg);
 		}
-		else {
+		else {					// Sinon recherche dans les plugins de la Map
 			pluginContext = Fabrique::getPluginEngine()->getMapPluginContext(L);
 
 			if(pluginContext) {
-				pluginContext->logUser(lua_tostring(L, 1));
+				pluginContext->logUser(msg);
+			}
+			else {
+				LOGERROR(("Contexte de plugin introuvable"));
 			}
 		}
 	}
@@ -55,9 +62,7 @@ int LuaGlobalMethods::pushEvent(lua_State* L) {
 			pluginContext->logError(message);
 		}
 		else {
-			AG_Event event;
-			AG_EventArgs(&event, "%i", pluginActionId);
-			Controller::executeAction(&event);
+			Controller::executeAction(pluginActionId);
 		}
 	}
 
@@ -84,22 +89,19 @@ int LuaGlobalMethods::subscribeEvents(lua_State* L) {
 }
 
 /**
- * Crée une zone virtuelle, quand le joueur passe dedans un événement est déclenché et les plugins sont notifiés
  */
-int LuaGlobalMethods::createPlayerZoneDetector(lua_State* L) {
-	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 7, LUA_PARAM_STRING, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER, LUA_PARAM_NUMBER)) {
-		string detectorId = lua_tostring(L, 1);
-		double xMin = lua_tonumber(L, -1);
-		double xMax = lua_tonumber(L, -1);
-		double yMin = lua_tonumber(L, -1);
-		double yMax = lua_tonumber(L, -1);
-		double zMin = lua_tonumber(L, -1);
-		double zMax = lua_tonumber(L, -1);
+int LuaGlobalMethods::logConsoleInfo(lua_State* L) {
+	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 1, LUA_PARAM_STRING)) {
+		const string msg = lua_tostring(L, 1);
 
+		ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
+		console->println(ConsoleView::ConsoleOutputType::COT_INFO, msg);
 
+		return 0;
 	}
 
 	return 0;
 }
+
 
 } /* namespace jkt */

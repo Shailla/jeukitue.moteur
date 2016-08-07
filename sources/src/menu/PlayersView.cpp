@@ -62,10 +62,10 @@ void PlayersView::refreshList() {
 
 	while((player = Game.nextPlayer(curseur))) {
 		if(player->_spa) {
-			AG_TableAddRow(_playersTable, "%s:%s:%s:", player->nom().c_str(), player->_spa->iPInToString().c_str(), player->_spa->iPOutToString().c_str());
+			AG_TableAddRow(_playersTable, "%s:%s:%s:", player->getName().c_str(), player->_spa->iPInToString().c_str(), player->_spa->iPOutToString().c_str());
 		}
 		else {
-			AG_TableAddRow(_playersTable, "%s:%s:%s:", player->nom().c_str(), "-", "-");
+			AG_TableAddRow(_playersTable, "%s:%s:%s:", player->getName().c_str(), "-", "-");
 		}
 	}
 

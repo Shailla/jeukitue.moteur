@@ -25,8 +25,8 @@ extern int JKT_RenderMode;
 #include "util/math_vectoriel.h"
 #include "util/V3D.h"
 #include "spatial/IfstreamMap.h"
-#include "spatial/geo/Geo.h"
-#include "spatial/Mouve.h"
+#include <spatial/basic/Geometrical.h>
+#include <spatial/basic/Refreshable.h>
 #include "spatial/light/Light.h"
 #include "spatial/Map.h"
 #include "main/Player.h"
@@ -50,7 +50,7 @@ const char* CTextureMaterialGeo::identifier = "TextureMaterialGeo";
 
 //CONSTRUCTEURS
 CTextureMaterialGeo::CTextureMaterialGeo(CMap* map, const string& name, CMaterialTexture* mat,
-		unsigned int nbrvertex, float* vertex, float* normals, float* texvertex, bool solid) : CGeo( map ) {
+		unsigned int nbrvertex, float* vertex, float* normals, float* texvertex, bool solid) : MapObject(map) {
 	m_NumVertex = 0;
 	m_OffsetMateriaux = -1;
 	m_TabVectNormaux = 0;
@@ -66,7 +66,7 @@ CTextureMaterialGeo::CTextureMaterialGeo(CMap* map, const string& name, CMateria
 	m_TabTexVertex = texvertex;
 }
 
-CTextureMaterialGeo::CTextureMaterialGeo(CMap* map) : CGeo( map ) {
+CTextureMaterialGeo::CTextureMaterialGeo(CMap* map) : MapObject(map) {
 	m_NumVertex = 0;
 	m_TabVertex = NULL;			// Pointeur sur le tableau de sommets
 	m_TabVectNormaux = NULL;
@@ -79,7 +79,7 @@ CTextureMaterialGeo::CTextureMaterialGeo(CMap* map) : CGeo( map ) {
 	m_Rayon = 0.0f;
 }
 
-CTextureMaterialGeo::CTextureMaterialGeo(const CTextureMaterialGeo& other) : CGeo( other ) {
+CTextureMaterialGeo::CTextureMaterialGeo(const CTextureMaterialGeo& other) : MapObject(other) {
 	tostring = other.tostring;
 
 	// Bulle
@@ -119,7 +119,7 @@ CTextureMaterialGeo::CTextureMaterialGeo(const CTextureMaterialGeo& other) : CGe
 	}
 }
 
-CGeo* CTextureMaterialGeo::clone() {
+MapObject* CTextureMaterialGeo::clone() {
 	return new CTextureMaterialGeo(*this);
 }
 void CTextureMaterialGeo::setVertex(int numVertex, float *tab) {
@@ -130,7 +130,7 @@ void CTextureMaterialGeo::setVertex(int numVertex, float *tab) {
 	m_TabVertex = tab;
 }
 
-void CTextureMaterialGeo::Init()
+void CTextureMaterialGeo::init() throw(CErreur)
 {
 	MinMax();			// Mesure les minimums et maximums de l'objet géo
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
@@ -467,7 +467,7 @@ bool CTextureMaterialGeo::Lit(TiXmlElement* element, MapLogger* mapLogger) {
 	// Référence
 	if(!element->Attribute(Xml::REF, &ref))
 		throw CErreur("Fichier Map corrompu CTextureMaterialGeo 4");
-	m_Reference = (unsigned int)ref;
+	_reference = (unsigned int)ref;
 
 	// Materiau
 	unsigned int refMat = Xml::LitMaterialRef(element);
@@ -717,7 +717,7 @@ void CTextureMaterialGeo::GereContactPlayer(float positionPlayer[3], CPlayer *pl
 	float distanceW;
 
 	if( m_bSolid )	// Si l'objet est solide
-		if( TestContactPave( positionPlayer, 0.05f+dist ) )	// Teste proximité 'joueur / l'objet géo'
+		if( TestContactPave( positionPlayer, dist ) )	// Teste proximité 'joueur / l'objet géo'
 			for( int i=0; i<m_NumVertex; i=i+3) {		//pour chaque triangle de l'objet géo.
 				distanceW = testContactTriangle( i, positionPlayer, dist );
 

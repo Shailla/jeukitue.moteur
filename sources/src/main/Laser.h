@@ -12,8 +12,8 @@ public:
 	CLaser( CPlayer *player );
 	~CLaser();
 
-	void Affiche();
-	bool Refresh();
+	void Affiche() override;
+	bool Refresh() override;
 };
 
 #endif

@@ -34,12 +34,12 @@ class CFichierASE : private std::ifstream
 	CFichierASE(const std::string &nomFichier, CMap *pMap, bool bAffiche);
 	~CFichierASE();
 
-	EntryPoint* litEntryPoint();
+	EntryPoint* litEntryPoint(CMap* map);
 	CLight* litLightOmni();
 	CLight* litLightTarget();
 	FACES* LitFaces( unsigned int num );
 	CLight* lightList();
-	EntryPoint* litHelper();
+	EntryPoint* litHelper(CMap* map);
 	int* LitTexFaces(int num);
 	float* LitVertex(unsigned int num);
 	float* LitTexVertex(unsigned int num);
@@ -47,7 +47,7 @@ class CFichierASE : private std::ifstream
 	CMaterial* materiallist();
 	CMaterialMulti* materialMulti( unsigned int uRef );
 	CMaterial* materialStandard(unsigned int uRef);
-	CGeo* litGeomobject(CMap *pMap, unsigned int nbr);
+	MapObject* litGeomobject(CMap *pMap, unsigned int nbr);
 	void LitFichier(const string &nomFichier, CMap *pMap);
 	void LitGroupe(const string &nomFichier, CMap *pMap, unsigned int& nbr_GeoObject);
 

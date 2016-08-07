@@ -100,7 +100,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		erwin->changeContact(contactPlayer);		// Associe une fonction de gestion des contacts avec la map
 		erwin->Skin(pMapJoueur);
 		erwin->setCri( cri1.c_str() );				// Cri du joueur
-		erwin->nom("Erwin");
+		erwin->setName("Erwin");
 		erwin->init();								// Initialise certaines données
 		gameDto->setErwin(erwin);
 	}
@@ -130,7 +130,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		julien->changeContact(contactPlayer);		// Associe une fonction pour les contacts avec la map
 		julien->Skin( pMapJoueurJulien );
 		julien->setCri( cri1.c_str() );
-		julien->nom( "Julien" );
+		julien->setName( "Julien" );
 		julien->init();
 		gameDto->getPlayers().push_back(julien);				// Ajoute le joueur à la liste des joueurs
 	}
@@ -163,7 +163,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		sprite->changeContact(contactSprite);		// Associe une fonction pour les contacts avec la map
 		sprite->Skin( pMapJoueur );
 		sprite->setCri( cri2.c_str() );
-		sprite->nom( "Sprite" );
+		sprite->setName( "Sprite" );
 		sprite->init();
 		gameDto->getPlayers().push_back(sprite);				// Ajoute le joueur à la liste des joueurs
 	}
@@ -317,7 +317,7 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 		erwin->changeContact(contactPlayer);		// Associe une fonction de gestion des contacts avec la map
 		erwin->Skin(pMapJoueur);
 		erwin->setCri( cri1.c_str() );				// Cri du joueur
-		erwin->nom("Erwin");
+		erwin->setName("Erwin");
 		erwin->init();								// Initialise certaines données
 
 		gameDto->setErwin(erwin);

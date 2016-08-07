@@ -12,6 +12,7 @@ using namespace std;
 
 #include "main/Cfg.h"
 #include "exception/JktException.h"
+#include "test/utils/TableauTest.h"
 #include "test/utils/UtilsTest.h"
 #include "test/reseau/JsonTest.h"
 #include "test/reseau/UdpCommunicationTest.h"
@@ -24,10 +25,11 @@ extern CCfg Config;		// Contient la configuration du jeu
 namespace jkt {
 
 TestSuite::TestSuite() {
-	_tests.push_back(new UtilsTest());
-	_tests.push_back(new JsonTest());
-	_tests.push_back(new UdpCommunicationTest());
-	_tests.push_back(new DataTreeTest());
+	_tests.push_back(new TableauTest());
+//	_tests.push_back(new UtilsTest());
+//	_tests.push_back(new JsonTest());
+//	_tests.push_back(new UdpCommunicationTest());
+//	_tests.push_back(new DataTreeTest());
 }
 
 TestSuite::~TestSuite() {

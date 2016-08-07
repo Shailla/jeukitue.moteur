@@ -25,8 +25,8 @@ extern int JKT_RenderMode;
 #include "util/math_vectoriel.h"
 #include "util/V3D.h"
 #include "spatial/IfstreamMap.h"
-#include "spatial/geo/Geo.h"
-#include "spatial/Mouve.h"
+#include <spatial/basic/Geometrical.h>
+#include <spatial/basic/Refreshable.h>
 #include "spatial/light/Light.h"
 #include "spatial/Map.h"
 #include "main/Player.h"
@@ -50,9 +50,7 @@ const char* CSimpleMaterialGeo::identifier = "SimpleMaterialGeo";
 
 //CONSTRUCTEURS
 CSimpleMaterialGeo::CSimpleMaterialGeo(CMap* map, const string& name, CMaterial* mat,
-		unsigned int nbrVertex, float* vertex, float* normals, bool solid)
-:CGeo( map )
-{
+		unsigned int nbrVertex, float* vertex, float* normals, bool solid) : MapObject(map) {
 	m_OffsetMateriaux = -1;
 	m_TabVectNormaux = NULL;
 	m_pNormalTriangle = NULL;		// Sera initialisé par Init()
@@ -65,7 +63,7 @@ CSimpleMaterialGeo::CSimpleMaterialGeo(CMap* map, const string& name, CMaterial*
 	m_Material = mat;
 }
 
-CSimpleMaterialGeo::CSimpleMaterialGeo(CMap* map) : CGeo( map ) {
+CSimpleMaterialGeo::CSimpleMaterialGeo(CMap* map) : MapObject(map) {
 	m_NumVertex = 0;
 	m_TabVertex = NULL;			// Pointeur sur le tableau de sommets
 	m_TabVectNormaux = NULL;
@@ -81,7 +79,7 @@ CSimpleMaterialGeo::CSimpleMaterialGeo(CMap* map) : CGeo( map ) {
 	m_Rayon = 0.0f;
 }
 
-CSimpleMaterialGeo::CSimpleMaterialGeo(const CSimpleMaterialGeo& other) : CGeo(other) {
+CSimpleMaterialGeo::CSimpleMaterialGeo(const CSimpleMaterialGeo& other) : MapObject(other) {
 	tostring = other.tostring;
 
 	// Bulle
@@ -121,7 +119,7 @@ CSimpleMaterialGeo::CSimpleMaterialGeo(const CSimpleMaterialGeo& other) : CGeo(o
 	}
 }
 
-CGeo* CSimpleMaterialGeo::clone() {
+MapObject* CSimpleMaterialGeo::clone() {
 	return new CSimpleMaterialGeo(*this);
 }
 
@@ -133,7 +131,7 @@ void CSimpleMaterialGeo::setVertex(int num, float *tab) {
 	m_TabVertex = tab;
 }
 
-void CSimpleMaterialGeo::Init() {
+void CSimpleMaterialGeo::init() throw(CErreur) {
 	MinMax();			// Mesure les minimums et maximums de l'objet géo
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
 	ConstruitBase();	// Construit la table des vecteurs normaux
@@ -213,10 +211,10 @@ void CSimpleMaterialGeo::Affiche() {
 
 const char* CSimpleMaterialGeo::toString() {
 	ostringstream ttt;
-	ttt << identifier << " Nom=" << getName() << " Mat=";
+	ttt << identifier << " nom='" << getName() << "'";
 
 	if(m_Material)
-		ttt << m_Material->toString();
+		ttt << " mat='" << m_Material->toString() << "'";
 
 	tostring = ttt.str();
 
@@ -508,7 +506,7 @@ bool CSimpleMaterialGeo::Lit(TiXmlElement* element, MapLogger* mapLogger)
 	// Référence
 	if(!element->Attribute(Xml::REF, &ref))
 		throw CErreur("Fichier Map corrompu CSimpleMaterialGeo 4");
-	m_Reference = (unsigned int)ref;
+	_reference = (unsigned int)ref;
 
 	// Materiau
 	unsigned int refMat = Xml::LitMaterialRef(element);
@@ -733,7 +731,7 @@ void CSimpleMaterialGeo::GereContactPlayer(float positionPlayer[3], CPlayer *pla
 	float distanceW;
 
 	if( m_bSolid )	// Si l'objet est solide
-		if( TestContactPave( positionPlayer, 0.05f+dist ) )	// Teste proximité 'joueur / l'objet géo'
+		if( TestContactPave( positionPlayer, dist ) )	// Teste proximité 'joueur / l'objet géo'
 			for( int i=0; i<m_NumVertex; i=i+3)		//pour chaque triangle de l'objet géo.
 			{
 				distanceW = testContactTriangle( i, positionPlayer, dist );

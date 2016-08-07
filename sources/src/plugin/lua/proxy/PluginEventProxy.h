@@ -18,36 +18,30 @@ extern "C" {
 
 #include "menu/Controller.h"
 #include "plugin/PluginActionEvent.h"
-#include "plugin/PluginWidgetEvent.h"
 #include "plugin/lua/proxy/LunarProxy.h"
 
 namespace jkt {
 
 class PluginEventProxy : public LunarProxy {
 public:
-	enum PLUGIN_EVENT_TYPE {
-		UNKNOWN_EVENT = 0,
-		MESSAGE_EVENT = 1,
-		WIDGET_EVENT = 3
-	};
-
 	static const char className[];
 	static Lunar<PluginEventProxy>::RegType methods[];
 
 private:
-	PLUGIN_EVENT_TYPE _type;
-	Controller::Action _messageType;
+	int _actionId;			// Controller::Action
 	LunarProxy* _source;
+	LunarProxy* _info;
 
 public:
-	PluginEventProxy(const PluginActionEvent& event);
-	PluginEventProxy(PluginWidgetEvent* event);
+	PluginEventProxy(int actionId);
+	PluginEventProxy(int actionId, LunarProxy* source, LunarProxy* info);
 	PluginEventProxy(lua_State* L);
 	~PluginEventProxy();
 
 	int push(lua_State* L);
 	int getSource(lua_State* L);
-	int getType(lua_State* L);
+	void setInfo(LunarProxy* source);
+	int getInfo(lua_State* L);
 	int getActionId(lua_State* L);
 };
 

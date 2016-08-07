@@ -164,7 +164,7 @@ bool CServer::acceptPlayer(CSPA *spa) {
 	CPlayer* newPlayer = new CPlayer();						// Crée le réceptacle du nouveau joueur
 	newPlayer->changeAction( gravitePlayer );				// Associe au joueur une fonction de gravité
 	newPlayer->changeContact( jkt::contactPlayer );	// Associe une fonction de gestion des contacts avec la map
-	newPlayer->nom( nomNewPlayer );							// Enregistre le nom du nouveau joueur
+	newPlayer->setName( nomNewPlayer );							// Enregistre le nom du nouveau joueur
 	newPlayer->init();
 
 	// Ouverture lien SPA
@@ -215,7 +215,7 @@ bool CServer::acceptPlayer(CSPA *spa) {
 
 		while((varPlayer = Game.nextPlayer(curseur))) {
 			newPlayer->_spa->add16( (Uint16)curseur );			// Envoie l'identifiant de ce proxy-joueur
-			newPlayer->_spa->add( varPlayer->nom() );			// Envoie son nom
+			newPlayer->_spa->add( varPlayer->getName() );			// Envoie son nom
 
 			newPlayer->_spa->addRecapFromServer( *varPlayer );
 		}

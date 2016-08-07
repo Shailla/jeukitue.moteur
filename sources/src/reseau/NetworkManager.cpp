@@ -178,7 +178,7 @@ void NetworkManager::recoitServer() {
 
 					if(player) {
 						_server->registerPlayerByAddress(inAddress, player);
-						LOGINFO(("Joueur '%s' enregistré grâce à son jeton %d à l'adresse %s", player->nom().c_str(), code2, jkt::IpUtils::translateAddress(inAddress).c_str()));
+						LOGINFO(("Joueur '%s' enregistré grâce à son jeton %d à l'adresse %s", player->getName().c_str(), code2, jkt::IpUtils::translateAddress(inAddress).c_str()));
 					}
 					else {
 						LOGWARN(("Message de joueur avec jeton %d inconnu de l'adresse %s", code2, jkt::IpUtils::translateAddress(inAddress).c_str()));

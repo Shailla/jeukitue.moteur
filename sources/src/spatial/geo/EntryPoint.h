@@ -11,27 +11,28 @@
 #include "tinyxml.h"
 
 #include "util/V3D.h"
+#include "spatial/basic/Geometrical.h"
 #include "spatial/MapLogger.h"
 
 namespace jkt {
 
-class EntryPoint {
+class EntryPoint : public Object, public Geometrical {
 	jkt::CV3D _entryPosition;	// Position du point d'entrée
 public:
-	EntryPoint();
-	EntryPoint(const float entryPosition[3]);
+	EntryPoint(CMap* map);
+	EntryPoint(CMap* map, const float entryPosition[3]);
 	virtual ~EntryPoint();
 
 	// Méthodes de sérialisation
-	bool Lit(TiXmlElement* element, MapLogger* mapLogger);		// Lit le point d'entrée joueur d'un fichier Map format XML
-	bool Save(TiXmlElement* element);							// Lit le point d'entrée joueur dans un fichier Map format XML
+	bool Lit(TiXmlElement* element, MapLogger* mapLogger) override;		// Lit le point d'entrée joueur d'un fichier Map format XML
+	bool Save(TiXmlElement* element) override;							// Lit le point d'entrée joueur dans un fichier Map format XML
 
 	// Méthodes de manipulation géométrique
-	void EchangeXY();										// Echange les coordonnées X et Y de l'objet
-	void EchangeXZ();										// Echange les coordonnées X et Z de l'objet
-	void EchangeYZ();										// Echange les coordonnées Y et Z de l'objet
-	void Scale(float scaleX, float scaleY, float scaleZ);	// Homothétie pondérée selon X, Y et Z de l'objet
-	void translate(float x, float y, float z);				// Translation pondérée selon X, Y et Z de l'objet
+	void EchangeXY() override;										// Echange les coordonnées X et Y de l'objet
+	void EchangeXZ() override;										// Echange les coordonnées X et Z de l'objet
+	void EchangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
+	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
+	void translate(float x, float y, float z) override;				// Translation pondérée selon X, Y et Z de l'objet
 
 	jkt::CV3D getEntryPosition();
 };

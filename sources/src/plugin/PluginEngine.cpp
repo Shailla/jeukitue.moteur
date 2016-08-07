@@ -5,7 +5,6 @@
  *      Author: Erwin
  */
 
-#include <plugin/lua/proxy/PluginPlayerZoneDetectorProxy.h>
 #include <time.h>
 
 #include "util/Trace.h"
@@ -22,6 +21,10 @@
 #include "plugin/lua/proxy/gui/PluginNumericProxy.h"
 #include "plugin/lua/proxy/gui/PluginTabProxy.h"
 #include "plugin/lua/proxy/gui/PluginWindowProxy.h"
+#include "plugin/lua/proxy/map/PluginMapProxy.h"
+#include "plugin/lua/proxy/map/PluginPlayerZoneDetectorProxy.h"
+#include "plugin/lua/proxy/game/PluginPlayerProxy.h"
+#include "plugin/lua/proxy/game/PluginPlayerZoneEventProxy.h"
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/lua/LuaGlobalMethods.h"
 #include "main/Cfg.h"
@@ -42,8 +45,6 @@ PluginEngine::~PluginEngine() {
 }
 
 void PluginEngine::sendRefreshEvent() {
-	PluginActionEvent evt(Controller::Action::RefreshMap);
-
 	// Global plugins
 	{
 		std::map<std::string, PluginContext*>::iterator iter = _nameGlobalPlugin.begin();
@@ -52,7 +53,7 @@ void PluginEngine::sendRefreshEvent() {
 			PluginContext* context = iter->second;
 
 			if(context->isSubscribedRefreshEvents()) {
-				context->dispatchEvent(evt);
+				context->dispatchEvent(Controller::Action::RefreshMap);
 			}
 		}
 	}
@@ -65,19 +66,20 @@ void PluginEngine::sendRefreshEvent() {
 			PluginContext* context = iter->second;
 
 			if(context->isSubscribedRefreshEvents()) {
-				context->dispatchEvent(evt);
+				context->dispatchEvent(Controller::Action::RefreshMap);
 			}
 		}
 	}
 }
 
-void PluginEngine::dispatchEvent(const PluginActionEvent& event) {
+void PluginEngine::dispatchEvent(PluginEventProxy& plugEvent) {
 	// Global plugins dispatching
 	{
 		std::map<std::string, PluginContext*>::iterator iter = _nameGlobalPlugin.begin();
 
 		for( ; iter != _nameGlobalPlugin.end() ; iter++) {
-			iter->second->dispatchEvent(event);
+			PluginEventProxy* evt = new PluginEventProxy(plugEvent);
+			iter->second->dispatchEvent(evt);
 		}
 	}
 
@@ -86,7 +88,28 @@ void PluginEngine::dispatchEvent(const PluginActionEvent& event) {
 		std::map<std::string, PluginContext*>::iterator iter = _nameMapPlugin.begin();
 
 		for( ; iter != _nameMapPlugin.end() ; iter++) {
-			iter->second->dispatchEvent(event);
+			PluginEventProxy* evt = new PluginEventProxy(plugEvent);
+			iter->second->dispatchEvent(evt);
+		}
+	}
+}
+
+void PluginEngine::dispatchEvent(int actionId) {
+	// Global plugins dispatching
+	{
+		std::map<std::string, PluginContext*>::iterator iter = _nameGlobalPlugin.begin();
+
+		for( ; iter != _nameGlobalPlugin.end() ; iter++) {
+			iter->second->dispatchEvent(actionId);
+		}
+	}
+
+	// Map plugins dispatching
+	{
+		std::map<std::string, PluginContext*>::iterator iter = _nameMapPlugin.begin();
+
+		for( ; iter != _nameMapPlugin.end() ; iter++) {
+			iter->second->dispatchEvent(actionId);
 		}
 	}
 }
@@ -201,10 +224,10 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	// Initialisation des fonctions dans Lua
 	pluginContext->logInfo("Initialisation des fonctions Lua...");
 
-	lua_register(L, "log", &LuaGlobalMethods::log);
 	lua_register(L, "pushEvent", &LuaGlobalMethods::pushEvent);
 	lua_register(L, "subscribeEvents", &LuaGlobalMethods::subscribeEvents);
-	lua_register(L, "createPlayerZoneDetector", &LuaGlobalMethods::createPlayerZoneDetector);
+	lua_register(L, "log", &LuaGlobalMethods::log);
+	lua_register(L, "logConsoleInfo", &LuaGlobalMethods::logConsoleInfo);
 
 	// Fonctions pour la configuration
 	lua_register(L, "saveConfiguration", &PluginConfigurationProxy::saveConfiguration);
@@ -238,8 +261,10 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	Lunar<PluginWindowProxy>::Register(L);
 	Lunar<PluginDataTreeProxy>::Register(L);
 	Lunar<PluginDataValeurProxy>::Register(L);
+	Lunar<PluginMapProxy>::Register(L);
 	Lunar<PluginPlayerZoneDetectorProxy>::Register(L);
-
+	Lunar<PluginPlayerProxy>::Register(L);
+	Lunar<PluginPlayerZoneEventProxy>::Register(L);
 
 	/* ******************************************************************************
 	 * Chargement du fichier Lua du plugin
@@ -296,7 +321,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 
 
 	/* *******************************************************************************
-	 * Exécution de la méthode d'initialisation du plugin ("onLoad")
+	 * Vérification de la présence de la méthode d'initialisation du plugin ("onLoad")
 	 * ******************************************************************************/
 
 	pluginContext->logInfo("Recherche de la fonction onLoad du script...");
@@ -351,7 +376,7 @@ void PluginEngine::activateGlobalPlugin(const string& pluginName) {
 
 		pluginContext->logInfo("Plugin initialisé");
 
-		// Exécution de la méthode d'init du plugin
+		// Exécution de la méthode d'init du plugin (onLoad)
 		pluginContext->logInfo("Exécution du plugin");
 
 		int status = lua_pcall(L, 0, 0, 0);
@@ -369,7 +394,7 @@ void PluginEngine::activateGlobalPlugin(const string& pluginName) {
 /**
  * Activate the plugin.
  */
-void PluginEngine::activateMapPlugin(const string& pluginName, const string pluginDirectory) {
+void PluginEngine::activateMapPlugin(CMap* map, const string& pluginName, const string pluginDirectory) {
 	PluginContext* pluginContext = getMapPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
@@ -393,9 +418,16 @@ void PluginEngine::activateMapPlugin(const string& pluginName, const string plug
 		_nameMapPlugin[pluginName] = pluginContext;
 		_luaMapContext[L] = pluginContext;
 
+		pluginContext->logInfo("Injection de la Map");
+
+
+		PluginMapProxy* mapProxy = new PluginMapProxy(map);
+		Lunar<PluginMapProxy>::push(L, mapProxy);
+		lua_setglobal(L, "Map");
+
 		pluginContext->logInfo("Plugin de Map initialisé");
 
-		// Exécution de la méthode d'init du plugin
+		// Exécution de la méthode d'init du plugin (onLoad)
 		pluginContext->logInfo("Exécution du plugin de Map");
 
 		int status = lua_pcall(L, 0, 0, 0);

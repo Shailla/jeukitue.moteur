@@ -2,19 +2,19 @@
 function onLoad()
 	log("Version Lua A : " .. _VERSION)
 	
-	createPlayerZoneDetector("idCoucou", 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+	detector = Map:createPlayerZoneDetector("idCoucou", 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+	detector:setVisibility(true);
 end
 
 function eventManager(event)
-	local type = event:getType();
-		
-	-- Action event
-	if type == 1 then
-		local actionId = event:getActionId();
-		if actionId == 1100 then
-			for index = 1, nbrSprites do
-				updateVitPos(index);
-			end
-		end
+	local actionId = event:getActionId();
+	
+	if actionId == 1120 then		-- PlayerDetectorActivated : Le joueur entre dans une zone de détection
+		player = event:getInfo();
+		logConsoleInfo("Le joueur '" .. player:getPlayerId() .. "' entre dans la zone");
+	
+	elseif actionId == 1121 then	-- PlayerDetectorUnactivated : Le joueur sort d'une zone de détection
+		player = event:getInfo();
+		logConsoleInfo("Le joueur '" .. player:getPlayerId() .. "' sort de la zone");
 	end
 end

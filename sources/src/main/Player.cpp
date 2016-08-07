@@ -98,6 +98,14 @@ CPlayer::CPlayer() {
 	}
 }
 
+void CPlayer::setId(int id) {
+	_id = id;
+}
+
+int CPlayer::getId() const {
+	return _id;
+}
+
 bool CPlayer::openInClientMode(const IPaddress &address) {				// Ouverture en mode client
 	_spa = new jkt::CSPA();
 	return _spa->openInClientMode(address);
@@ -134,7 +142,7 @@ void CPlayer::AfficheIconesArmes() {
 	}
 }
 
-void CPlayer::ActiveArmeUp() {	// Rends l'arme suivante active
+void CPlayer::armeUp() {	// Rends l'arme suivante active
 	_armeActif++;
 
 	if( _armeActif >= _nbrArmes )
@@ -144,7 +152,7 @@ void CPlayer::ActiveArmeUp() {	// Rends l'arme suivante active
 /**
  * Active l'arme précédente de la liste des armes.
  */
-void CPlayer::ActiveArmeDown() {
+void CPlayer::armeDown() {
 	_armeActif--;
 
 	if( _armeActif < 0 )
@@ -199,8 +207,8 @@ void CPlayer::choiceOneEntryPoint() {
 		float pos[3];
 		int curseur;
 		CV3D distance;
-		vector< vector<EntryPoint>::iterator > liste;
-		vector<EntryPoint>::iterator iterEntry;
+		vector< vector<EntryPoint*>::iterator > liste;
+		vector<EntryPoint*>::iterator iterEntry;
 		vector<CPlayer*>::iterator iterPlayer;
 
 			// Fait la liste des points d'entrée se trouvant à une distance supérieure
@@ -211,7 +219,7 @@ void CPlayer::choiceOneEntryPoint() {
 
 			while((player = Game.nextPlayer(curseur))) {
 				if( player != this ) {	// Si le joueur en question n'est pas le joueur actuel
-					distance = (*iterEntry).getEntryPosition();
+					distance = (*iterEntry)->getEntryPosition();
 					player->getPosition(pos);
 					distance -= pos;
 
@@ -234,14 +242,13 @@ void CPlayer::choiceOneEntryPoint() {
 
 		if(nbr) {	// S'il y a des entrées à une distance convenable de tout joueur
 			int choice = rand() % nbr;
-			setPosition((*(liste[choice])).getEntryPosition());	// alors choisi l'une d'elles au hasard
-			cout << endl << "LOIN : -" << choice << "-";
+			setPosition((*(liste[choice]))->getEntryPosition());	// alors choisi l'une d'elles au hasard
 			LOGINFO(("Choix d'un entry point éloigné des autres joueurs : %d", choice));
 		}
 		else {							// sinon prends-en une au hasard dans la liste
 			nbr = Game.getMap()->getEntryPointsList().size();
 			int choice = rand() % nbr;
-			setPosition(Game.getMap()->getEntryPointsList()[choice].getEntryPosition());
+			setPosition(Game.getMap()->getEntryPointsList()[choice]->getEntryPosition());
 			LOGINFO(("Choix d'un entry point au hasard : %d", choice));
 		}
 	}
@@ -487,12 +494,12 @@ void CPlayer::Pente(float pente) {
 	_pente = pente;
 }
 
-void CPlayer::nom(const string &nom) {
-	_nom = nom;
+void CPlayer::setName(const string &name) {
+	_name = name;
 }
 
-string CPlayer::nom() const {
-	return _nom;
+string CPlayer::getName() const {
+	return _name;
 }
 
 void CPlayer::Skin(jkt::CMap *skin) {

@@ -10,7 +10,6 @@
 using namespace std;
 
 #include "plugin/lua/LuaUtils.h"
-#include "plugin/PluginWidgetEvent.h"
 #include "plugin/PluginContext.h"
 #include "plugin/PluginEngine.h"
 #include "plugin/api/gui/PluginButton.h"
@@ -46,8 +45,7 @@ int PluginButtonProxy::push(lua_State* L) {
 }
 
 void PluginButtonProxy::buttonPressedEvent() {
-	PluginWidgetEvent* event = new PluginWidgetEvent(this);
-	_pluginContext->dispatchEvent(event);
+	_pluginContext->dispatchWidgetEvent(this);
 }
 
 void PluginButtonProxy::setWrappedObject(PluginButton* pluginButton) {

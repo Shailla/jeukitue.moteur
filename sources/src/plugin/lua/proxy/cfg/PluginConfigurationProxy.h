@@ -60,6 +60,8 @@ public:
 	static int getConstant(lua_State* L);
 
 	static int initAudio(lua_State* L);
+
+	static int logConsoleInfo(lua_State* L);
 };
 
 } /* namespace jkt */

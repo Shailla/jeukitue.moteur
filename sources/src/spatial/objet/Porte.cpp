@@ -33,7 +33,7 @@ namespace jkt
 
 const char* CPorte::identifier = "Porte";
 
-CPorte::CPorte( CMap *map ) : CGeoObject( map ) {
+CPorte::CPorte( CMap *map ) : CGeoObject(map) {
 	m_fMarge = 0.0f;
 	m_fOuverture = 0.0f;
 	m_fVitesse = 0.0f;
@@ -43,8 +43,8 @@ CPorte::CPorte( CMap *map ) : CGeoObject( map ) {
 CPorte::~CPorte(void) {
 }
 
-void CPorte::Init() {			// Initialisation de l'objet géométrique
-	CGeoObject::Init();
+void CPorte::init() throw(CErreur) {			// Initialisation de l'objet géométrique
+	CGeoObject::init();
 	m_Position = m_Centre;
 }
 
@@ -97,7 +97,7 @@ void CPorte::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	CGeoObject::GereContactPlayer(newPos, player);
 }
 
-void CPorte::Refresh( CGame *game ) {
+void CPorte::refresh( CGame *game ) {
 	bool bOuvre = false;	// La porte ne bouge pas par défaut
 	CPlayer *player;
 	CV3D dist;

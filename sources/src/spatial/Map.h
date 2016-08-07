@@ -8,11 +8,14 @@
 
 using namespace std;
 
+#include "tinyxml.h"
+
 #include "util/Tableau.h"
 #include "util/Erreur.h"
 #include "util/V3D.h"
-#include "spatial/geo/Geo.h"
 #include "spatial/MapLogger.h"
+#include "spatial/basic/MapObject.h"
+
 class CGame;
 class CPlayer;
 
@@ -21,29 +24,36 @@ using namespace jkt;
 namespace jkt {
 class CLight;
 class Dirigeable;
-class CMouve;
+class Refreshable;
 class CMaterial;
 class CPorte;
 class CNavette;
 class CGeoObject;
 class EntryPoint;
 class CMoteurParticules;
+class CheckPlayerInZone;
 
-class CMap : CGeo {
+class CMap : MapObject {
 	static const char* identifier;
 	string tostring;
 
 	string _filename;								// Nom du fichier de la Map (par exemple "Monde.map.xml")
 	string _binariesDirectory;						// Répertoires des binaires de la Map (textures, plugins, ...)
 
-	map<int, CGeo*> _geoDescriptions;
+	map<int, MapObject*> _geoDescriptions;
 
-	vector<CGeo*> _geos;							// Liste des objets géométriques
-	vector<CMouve*> _mouves;						// Liste des objets nécessitant une actualisation (portes,...)
-	vector<Dirigeable*> _dirigeables;
-	vector<CLight*> _lights;						// Liste des lumières
-	vector<EntryPoint> _entryPoints;				// Liste des points d'entrée des joueurs sur la Map
+	// Objets de la Map
+	vector<MapObject*> _objects;						// Liste des objets géométriques
+	vector<Geometrical*> _geos;							// Liste des objets géométriques
+	vector<SolidAndTargettable*> _solidAndTargettables;	// Liste des objets géométriques
+	vector<Drawable*> _drawables;						// Liste des objets à afficher
+	vector<Refreshable*> _refreshables;					// Liste des objets nécessitant une actualisation (portes,...)
 
+	// Lumières et autres caractéristiques de la Map
+	vector<CLight*> _lights;							// Lumières
+	vector<EntryPoint*> _entryPoints;					// Points d'entrée des joueurs sur la Map
+
+	// Objets complexes de la Map
 	vector<CMoteurParticules*> _particulesEngines;	// Liste des moteurs de particules de la Map
 
 	vector<string> _plugins;						// Liste des plugins de la Map
@@ -56,7 +66,7 @@ class CMap : CGeo {
 
 	CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
 
-	void afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
+	bool afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
 public:
 	vector<CMaterial*> m_TabMaterial;		// Liste des matériaux A VOIR : devrait être membre privé
 
@@ -64,32 +74,33 @@ public:
 	CMap(CMap* parent);
 	CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
 	~CMap();
-	CGeo* clone();
+	MapObject* clone();
 
 	const char* toString();						// Description résumée de l'objet
 
-	// Sérialisation
+	// Object
+	void init() throw(jkt::CErreur) override;	// Initialisation de la CMap
 	static bool Lit(CMap& map, const string &mapName, MapLogger* mapLogger);
 	bool Lit(const string &nomFichier, MapLogger* mapLogger);
 	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
-	bool Save(TiXmlElement* element);			// Sauve l'objet géo dans un fichier Map
-
-	void Init() throw(jkt::CErreur);	// Initialisation de la CMap
+	bool Save(TiXmlElement* element) override;			// Sauve l'objet géo dans un fichier Map
 
 	// Gestion des plugins de la Map
 	void initPlugins();		// Chargement / exécution des plugins de la Map
 	void freePlugins();		// Libération des plugins de la Map
 
-	// Gestion de objets OpenGL de la Map
-	void initGL();		// Initialisation du contexte OpenGL
-	void freeGL();		// Libération du contexte OpenGL
+	// Drawable
+	void initGL() override;		// Initialisation du contexte OpenGL
+	void freeGL() override;		// Libération du contexte OpenGL
+
+	void Affiche() override;											// Affiche l'ensemble des éléments 3D de cette Map
+	void AfficheSelection(float r,float v,float b) override;			// Affiche l'objet géométrique en couleur unique
 
 	bool Save(const string nomFichier);	// Sauvegarde du CMap dans un fichier *.map.xml
 
-	// Affichage
-	void Affiche();											// Affiche l'ensemble des éléments 3D de cette Map
-	void AfficheSelection(float r,float v,float b);			// Affiche l'objet géométrique en couleur unique
-	void Refresh( CGame *game );							// Rafraichissement des classes listées dans m_TabMouve
+	// Refreshable
+
+	void refresh(CGame *game) override;									// Rafraichissement des classes listées dans m_TabMouve
 
 	/**
 	 * Affiche toutes les textures de la MAP dans un rectangle dont le coin bas gauche est en (x,y) et les dimensions sont (tailleX, tailleY).
@@ -100,38 +111,40 @@ public:
 	 * @param tailleY taille verticale du rectangle dans lequel les texture vont être affichées
 	 * @param nbrX nombre de textures sur une ligne
 	 * @param nbrY nombre de textures sur une colonne
-	 * @param firstIndex numéro de la première texture à afficher
+	 * @param page numéro de la page  de texures à afficher (sur une page on affiche nbrX*nbrY textures)
+	 * @return numéro de la page de texture affichée ou 0 si on a dépassé la dernière page
 	 */
-	void afficheToutesTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex);
+	int afficheDamierTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int page);
 
-	void addDescription(int ref, CGeo* geo, MapLogger* mapLogger);
-	CGeo* getDescription(int ref);
+	void addDescription(int ref, MapObject* geo, MapLogger* mapLogger);
+	MapObject* getDescription(int ref);
 
+	void add(MapObject* object);			// Ajoute un GeoObject à la map
 	void add(Dirigeable* dirigeable);
-	void add(CGeo *geo);					// Ajoute un GeoObject à la map
-	void add(CMaterial *mat);				// Ajoute un matériau à la map
-	void add(CLight *light);				// Ajoute une lumière à la map
 	void add(CPorte *porte);				// Ajoute une porte à la map
 	void add(CNavette *navette);			// Ajoute une navette à la map
 	void add(CMoteurParticules* engine);	// Ajoute un moteur de particules à la map
+	void add(CLight *light);				// Ajoute une lumière à la map
+	void add(CMaterial *mat);				// Ajoute un matériau à la map
+	void add(CheckPlayerInZone* detector);
 
-	// Transformations
-	void EchangeXY();										// Echange les coordonnées X et Y des objets géo du map
-	void EchangeXZ();										// Echange les coordonnées X et Z des objets géo du map
-	void EchangeYZ();										// Echange les coordonnées Y et Z des objets géo du map
-	void Scale(float scaleX, float sclaeY, float scaleZ);	// Homothétie la Map (coordonnées multipliées par scale)
-	void translate(float x, float y, float z);				// Translation de la Map selon x, y, z
-	/** Intègre tous les éléments d'une autre Map dans celle-ci. */
-	void merge(CMap& map);
+	// Geometrical
+	void EchangeXY() override;										// Echange les coordonnées X et Y des objets géo du map
+	void EchangeXZ() override;										// Echange les coordonnées X et Z des objets géo du map
+	void EchangeYZ() override;										// Echange les coordonnées Y et Z des objets géo du map
+	void Scale(float scaleX, float sclaeY, float scaleZ) override;	// Homothétie la Map (coordonnées multipliées par scale)
+	void translate(float x, float y, float z) override;				// Translation de la Map selon x, y, z
+
+	void merge(CMap& map);											// Intègre tous les éléments d'une autre Map dans celle-ci
 
 	// Gestion des contacts
-	bool Contact(const float pos[3], const float dist);	// Indique s'il y a un triangle à une distance inférieure à 'dist' de la position 'pos'
+	bool Contact(const float pos[3], const float dist) override;	// Indique s'il y a un triangle à une distance inférieure à 'dist' de la position 'pos'
 
 	/**
 	 * positionPlayer : position du jouer ou position calculé ce qui permet d'optimiser certains contacts quand un objet a bougé en considérant que c'est plutôt le
 	 */
-	void GereContactPlayer(float positionPlayer[3], CPlayer *player);								// Gère tous les contacts entre la map et les joueurs
-	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist);	// Envoie d'un laser sur la map
+	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;								// Gère tous les contacts entre la map et les joueurs
+	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;	// Envoie d'un laser sur la map
 
 	vector<CLight*>& getLights();
 
@@ -143,8 +156,8 @@ public:
 	bool IsSelectionMode();
 
 	// Points d'entrée des personnages joueurs
-	void add(EntryPoint entryPoint);
-	vector<EntryPoint>& getEntryPointsList();
+	void add(EntryPoint* entryPoint);
+	vector<EntryPoint*>& getEntryPointsList();
 };
 
 }	// JktMoteur

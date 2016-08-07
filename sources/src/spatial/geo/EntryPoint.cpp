@@ -14,11 +14,10 @@ using namespace jkt;
 
 namespace jkt {
 
-EntryPoint::EntryPoint() {
+EntryPoint::EntryPoint(CMap* map) : Object(map) {
 }
 
-EntryPoint::EntryPoint(const float entryPosition[3])
-:_entryPosition(entryPosition) {
+EntryPoint::EntryPoint(CMap* map, const float entryPosition[3]) : Object(map), _entryPosition(entryPosition) {
 }
 
 EntryPoint::~EntryPoint() {

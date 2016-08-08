@@ -1199,9 +1199,9 @@ void executeJktRequests() {
 
 		// Activation de la MAP ouverte
 		CMap* map = localeGameDto->getMap();
-		map->initGL();
-		map->initPlugins();
 		Game.changeActiveMap(map);
+		map->initPlugins();
+		map->initGL();
 
 		Dirigeable* dirigeable = new Dirigeable(map);
 		map->add(dirigeable);
@@ -1304,8 +1304,9 @@ void executeJktRequests() {
 	{
 		// Activation de la MAP ouverte
 		CMap* map = clientGameDto->getMap();
-		map->initGL();
 		Game.changeActiveMap(map);
+		map->initPlugins();
+		map->initGL();
 
 		// Activation de chacun des joueurs
 		CPlayer *player;
@@ -1400,8 +1401,10 @@ void executeJktRequests() {
 	{
 		// Activation de la MAP ouverte
 		CMap* map = serverGameDto->getMap();
-		map->initGL();
+
 		Game.changeActiveMap(map);
+		map->initPlugins();
+		map->initGL();
 
 		// Définition des joueurs
 		Game.createPlayerList(serverGameDto->getPlayersMaxNumber());

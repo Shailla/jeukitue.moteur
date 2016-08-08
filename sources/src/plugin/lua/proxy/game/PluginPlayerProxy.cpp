@@ -35,7 +35,6 @@ int PluginPlayerProxy::getName(lua_State* L) {
 	else {
 		return 0;
 	}
-
 }
 
 int PluginPlayerProxy::push(lua_State* L) {

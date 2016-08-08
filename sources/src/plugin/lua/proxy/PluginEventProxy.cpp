@@ -72,13 +72,11 @@ int PluginEventProxy::getInfo(lua_State* L) {
 	int result;
 
 	if(_info) {
-		result = _info->push(L);
+		return _info->push(L);
 	}
 	else {
-		result = 0;
+		return 0;
 	}
-
-	return result;
 }
 
 } /* namespace jkt */

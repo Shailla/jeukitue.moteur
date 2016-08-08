@@ -1,6 +1,6 @@
 ﻿
 mapDataTree = 0
-nbrSprites = 3
+nbrSprites = 20
 espaceXmin = 0
 espaceXmax = 2
 espaceYmin = 0
@@ -29,7 +29,8 @@ function onLoad()
 	if (isGameModeServer() or isGameModeLocal()) then
 		log("Jeu en mode serveur ou local => initialisation des sprites");
 		
-		mapDataTree = getDataTree();
+		game = getGame();
+		mapDataTree = game:getDataTree();
 
 		dirigeablesBrId = mapDataTree:getBranche( {"map", "sprites", "dirigeables"} );
 		traceId("ID DIRIGEABLE", dirigeablesBrId);

@@ -24,8 +24,6 @@ public:
 	static const char className[];
 	static Lunar<PluginDataTreeProxy>::RegType methods[];
 
-	static int getDataTree(lua_State *L);
-
 	PluginDataTreeProxy(DataTree* dataTree);
 	PluginDataTreeProxy(lua_State* L);
 

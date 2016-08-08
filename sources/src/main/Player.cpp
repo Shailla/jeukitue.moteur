@@ -431,15 +431,15 @@ void CPlayer::init() {
  * Initialise les éléments OpenGL du joueur.
  */
 void CPlayer::initGL() {
-	_pSkin->initGL();
 	_pSkin->initPlugins();
+	_pSkin->initGL();
 }
 
 /**
  * Libère les éléments OpenGL du joueur.
  */
 void CPlayer::freeGL() {
-	_pSkin->initPlugins();
+	_pSkin->freePlugins();
 	_pSkin->freeGL();
 }
 

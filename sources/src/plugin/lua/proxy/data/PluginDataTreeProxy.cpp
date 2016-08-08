@@ -44,17 +44,6 @@ PluginDataTreeProxy::PluginDataTreeProxy(lua_State* L) {
 }
 
 /**
- * .
- *    - Return 1 :
- */
-int PluginDataTreeProxy::getDataTree(lua_State *L) {
-	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0);
-
-	DataTree* dataTree = Game.getDataTree();
-	return Lunar<PluginDataTreeProxy>::push(L, new PluginDataTreeProxy(dataTree));
-}
-
-/**
  */
 int PluginDataTreeProxy::getBranche(lua_State *L) {
 //	LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 3, LUA_PARAM_ARRAY_INT, LUA_PARAM_STRING, LUA_PARAM_STRING);

@@ -24,6 +24,7 @@
 #include "plugin/lua/proxy/map/PluginMapProxy.h"
 #include "plugin/lua/proxy/map/PluginPlayerZoneDetectorProxy.h"
 #include "plugin/lua/proxy/game/PluginPlayerProxy.h"
+#include "plugin/lua/proxy/game/PluginGameProxy.h"
 #include "plugin/lua/proxy/game/PluginPlayerZoneEventProxy.h"
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/lua/LuaGlobalMethods.h"
@@ -243,8 +244,8 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	lua_register(L, "getConstant", &PluginConfigurationProxy::getConstant);
 	lua_register(L, "initAudio", &PluginConfigurationProxy::initAudio);
 
-	// Fonctions d'accès aux données
-	lua_register(L, "getDataTree", &PluginDataTreeProxy::getDataTree);
+	// Fonctions d'accès aux données de la partie
+	lua_register(L, "getGame", &PluginGameProxy::getGame);
 
 	// Initialisation des classes dans Lua
 	pluginContext->logInfo("Initialisation des classes Lua...");
@@ -259,9 +260,11 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	Lunar<PluginNotebookProxy>::Register(L);
 	Lunar<PluginTabProxy>::Register(L);
 	Lunar<PluginWindowProxy>::Register(L);
+
+	Lunar<PluginGameProxy>::Register(L);
+	Lunar<PluginMapProxy>::Register(L);
 	Lunar<PluginDataTreeProxy>::Register(L);
 	Lunar<PluginDataValeurProxy>::Register(L);
-	Lunar<PluginMapProxy>::Register(L);
 	Lunar<PluginPlayerZoneDetectorProxy>::Register(L);
 	Lunar<PluginPlayerProxy>::Register(L);
 	Lunar<PluginPlayerZoneEventProxy>::Register(L);
@@ -418,17 +421,8 @@ void PluginEngine::activateMapPlugin(CMap* map, const string& pluginName, const 
 		_nameMapPlugin[pluginName] = pluginContext;
 		_luaMapContext[L] = pluginContext;
 
-		pluginContext->logInfo("Injection de la Map");
-
-
-		PluginMapProxy* mapProxy = new PluginMapProxy(map);
-		Lunar<PluginMapProxy>::push(L, mapProxy);
-		lua_setglobal(L, "Map");
-
-		pluginContext->logInfo("Plugin de Map initialisé");
-
 		// Exécution de la méthode d'init du plugin (onLoad)
-		pluginContext->logInfo("Exécution du plugin de Map");
+		pluginContext->logInfo("Exécution du plugin de Map (onLoad)");
 
 		int status = lua_pcall(L, 0, 0, 0);
 

@@ -28,6 +28,7 @@ public:
 	static Lunar<PluginPlayerZoneEventProxy>::RegType methods[];
 
 	PluginPlayerZoneEventProxy(int playerId);
+	PluginPlayerZoneEventProxy(lua_State* L);
 	virtual ~PluginPlayerZoneEventProxy();
 
 	int getPlayerId(lua_State* L);

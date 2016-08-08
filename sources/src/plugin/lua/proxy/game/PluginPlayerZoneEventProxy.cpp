@@ -20,6 +20,10 @@ PluginPlayerZoneEventProxy::PluginPlayerZoneEventProxy(int playerId) {
 	_playerId = playerId;
 }
 
+PluginPlayerZoneEventProxy::PluginPlayerZoneEventProxy(lua_State* L) {
+	_playerId = -1;
+}
+
 PluginPlayerZoneEventProxy::~PluginPlayerZoneEventProxy() {
 }
 

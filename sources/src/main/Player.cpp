@@ -41,8 +41,6 @@ class CGame;
 #include "reseau/SPA.h"
 
 using namespace jkt;
-using namespace jkt;
-using namespace jkt;
 
 extern CCfg Config;
 extern CDemonSons *DemonSons;
@@ -73,7 +71,7 @@ CPlayer::CPlayer() {
 	_posVue[1] = 0.1f;
 	_posVue[2] = 0.137f;
 
-	_rayonSolidbox = 0.85f;	// Rayon de la sphère qui représente le joueur dans la amp. Le joueur mesure arbitrairement 1m70, son rayon la moitier
+	_rayonSolidbox = 0.30f;	// Rayon de la sphère qui représente le joueur dans la amp. Le joueur mesure arbitrairement 1m70, son rayon la moitier
 
 	_pClavier = NULL;
 	_actionFunc = NULL;		// Pas d'action périodique à réaliser

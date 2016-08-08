@@ -578,8 +578,9 @@ bool CSimpleGeo::Save(TiXmlElement* element) {
 	return true;
 }
 
-float CSimpleGeo::testContactTriangle( unsigned int i, const float posPlayer[3], float dist )
-{		// Test s'il y a contact entre un point P et le i° triangle de l'objet géo
+float CSimpleGeo::testContactTriangle(unsigned int i, const float posPlayer[3], float dist) {
+
+	// Teste s'il y a contact entre un point P et le i° triangle de l'objet géo
 	int *indices = &m_TabFaces[3*i];
 	float *normal = &_pNormalTriangle[3*i];
 	float A[3], B[3], C[3], F[3], G[3], X[3], Y[3], Z[3];
@@ -590,7 +591,9 @@ float CSimpleGeo::testContactTriangle( unsigned int i, const float posPlayer[3],
 	Z[1] =  posPlayer[1] - m_TabVertex[ (3*indices[0])+1 ];
 	Z[2] = -posPlayer[2] - m_TabVertex[ (3*indices[0])+2 ];
 
-	distanceW = produitScalaire(normal, Z); //distance entre le plan du triangle et le joueur
+	//distance entre le plan du triangle et le joueur
+	distanceW = produitScalaire(normal, Z);
+
 	if( distanceW >= dist )
 		return 1000.0f;		// Y'a pas contact
 

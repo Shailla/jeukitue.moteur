@@ -30,7 +30,8 @@ PluginPlayerZoneDetectorProxy::~PluginPlayerZoneDetectorProxy() {
 }
 
 int PluginPlayerZoneDetectorProxy::push(lua_State* L) {
-	return Lunar<PluginPlayerZoneDetectorProxy>::push(L, this);
+	Lunar<PluginPlayerZoneDetectorProxy>::push(L, this);
+	return 1;
 }
 
 int PluginPlayerZoneDetectorProxy::setVisibility(lua_State *L) {

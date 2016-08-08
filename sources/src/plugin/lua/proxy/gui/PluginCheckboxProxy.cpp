@@ -40,7 +40,8 @@ PluginCheckboxProxy::~PluginCheckboxProxy() {
 }
 
 int PluginCheckboxProxy::push(lua_State* L) {
-	return Lunar<PluginCheckboxProxy>::push(L, this);
+	Lunar<PluginCheckboxProxy>::push(L, this);
+	return 1;
 }
 
 int PluginCheckboxProxy::getValue(lua_State* L) {

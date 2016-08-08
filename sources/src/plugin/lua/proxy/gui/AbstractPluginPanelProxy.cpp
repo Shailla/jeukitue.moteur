@@ -48,9 +48,11 @@ int AbstractPluginPanelProxy::addNotebook(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
 		PluginNotebookProxy* notebookProxy = new PluginNotebookProxy(_pluginContext, _pluginPanel->addNotebook());
 		Lunar<PluginNotebookProxy>::push(L, notebookProxy);
+
+		return 1;
 	}
 
-	return 1;
+	return 0;
 }
 
 /**
@@ -63,9 +65,11 @@ int AbstractPluginPanelProxy::addCheckbox(lua_State* L) {
 		const char* checkboxText = lua_tostring(L, 1);
 		PluginCheckboxProxy* checkboxProxy = new PluginCheckboxProxy(_pluginPanel->addCheckbox(checkboxText));
 		Lunar<PluginCheckboxProxy>::push(L, checkboxProxy);
+
+		return 1;
 	}
 
-	return 1;
+	return 0;
 }
 
 /**
@@ -83,9 +87,10 @@ int AbstractPluginPanelProxy::addButton(lua_State* L) {
 		buttonProxy->setWrappedObject(pluginButton);
 
 		Lunar<PluginButtonProxy>::push(L, buttonProxy);
+		return 1;
 	}
 
-	return 1;
+	return 0;
 }
 
 /**
@@ -102,9 +107,10 @@ int AbstractPluginPanelProxy::addLabel(lua_State* L) {
 		labelProxy->setWrappedObject(pluginLabel);
 
 		Lunar<PluginLabelProxy>::push(L, labelProxy);
+		return 1;
 	}
 
-	return 1;
+	return 0;
 }
 
 /**
@@ -121,9 +127,11 @@ int AbstractPluginPanelProxy::addComboList(lua_State* L) {
 		comboProxy->setWrappedObject(pluginComboList);
 
 		Lunar<PluginComboListProxy>::push(L, comboProxy);
+
+		return 1;
 	}
 
-	return 1;
+	return 0;
 }
 
 /**
@@ -134,9 +142,11 @@ int AbstractPluginPanelProxy::addBoxHoriz(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
 		PluginBoxProxy* boxProxy = new PluginBoxProxy(_pluginContext, _pluginPanel->addBoxHoriz());
 		Lunar<PluginBoxProxy>::push(L, boxProxy);
+
+		return 1;
 	}
 
-	return 1;
+	return 0;
 }
 
 /**
@@ -147,9 +157,11 @@ int AbstractPluginPanelProxy::addBoxVert(lua_State* L) {
 	if(LuaUtils::isCheckLuaParametersTypes(L, __FILE__, __FUNCTION__, 0)) {
 		PluginBoxProxy* boxProxy = new PluginBoxProxy(_pluginContext, _pluginPanel->addBoxVert());
 		Lunar<PluginBoxProxy>::push(L, boxProxy);
+
+		return 1;
 	}
 
-	return 1;
+	return 0;
 }
 
 /**
@@ -175,9 +187,11 @@ int AbstractPluginPanelProxy::addNumeric(lua_State* L) {
 		const char* numericUnite = lua_tostring(L, 2);
 		PluginNumericProxy* numericProxy = new PluginNumericProxy(_pluginPanel->addNumeric(numericText, numericUnite));
 		Lunar<PluginNumericProxy>::push(L, numericProxy);
+
+		return 1;
 	}
 
-	return 1;
+	return 0;
 }
 
 /**

@@ -42,7 +42,8 @@ PluginEventProxy::~PluginEventProxy() {
 }
 
 int PluginEventProxy::push(lua_State* L) {
-	return Lunar<PluginEventProxy>::push(L, this);
+	Lunar<PluginEventProxy>::push(L, this);
+	return 1;
 }
 
 int PluginEventProxy::getActionId(lua_State* L) {
@@ -69,10 +70,9 @@ void PluginEventProxy::setInfo(LunarProxy* info) {
 }
 
 int PluginEventProxy::getInfo(lua_State* L) {
-	int result;
-
 	if(_info) {
-		return _info->push(L);
+		_info->push(L);
+		return 1;
 	}
 	else {
 		return 0;

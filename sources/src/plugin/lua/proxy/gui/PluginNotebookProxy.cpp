@@ -43,7 +43,8 @@ PluginNotebookProxy::~PluginNotebookProxy() {
 }
 
 int PluginNotebookProxy::push(lua_State* L) {
-	return Lunar<PluginNotebookProxy>::push(L, this);
+	Lunar<PluginNotebookProxy>::push(L, this);
+	return 1;
 }
 
 /**
@@ -55,9 +56,10 @@ int PluginNotebookProxy::addTab(lua_State* L) {
 		const string tabTitle = lua_tostring(L, 1);
 		PluginTabProxy* tabProxy = new PluginTabProxy(_pluginContext, _pluginNotebook->addTab(tabTitle));
 		Lunar<PluginTabProxy>::push(L, tabProxy);
+		return 1;
 	}
 
-	return 1;
+	return 0;
 }
 
 } /* namespace jkt */

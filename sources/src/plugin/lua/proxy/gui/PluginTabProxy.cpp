@@ -62,7 +62,8 @@ PluginTabProxy::~PluginTabProxy() {
 }
 
 int PluginTabProxy::push(lua_State* L) {
-	return Lunar<PluginTabProxy>::push(L, this);
+	Lunar<PluginTabProxy>::push(L, this);
+	return 1;
 }
 
 } /* namespace jkt */

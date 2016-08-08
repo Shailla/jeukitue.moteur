@@ -58,7 +58,8 @@ PluginBoxProxy::~PluginBoxProxy() {
 }
 
 int PluginBoxProxy::push(lua_State* L) {
-	return Lunar<PluginBoxProxy>::push(L, this);
+	Lunar<PluginBoxProxy>::push(L, this);
+	return 1;
 }
 
 } /* namespace jkt */

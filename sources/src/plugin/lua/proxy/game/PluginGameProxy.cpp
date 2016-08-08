@@ -43,7 +43,8 @@ PluginGameProxy::PluginGameProxy(lua_State* L) {
 }
 
 int PluginGameProxy::getGame(lua_State *L) {
-	return Lunar<PluginGameProxy>::push(L, new PluginGameProxy(&Game));
+	Lunar<PluginGameProxy>::push(L, new PluginGameProxy(&Game));
+	return 1;
 }
 
 /**
@@ -57,7 +58,8 @@ int PluginGameProxy::getDataTree(lua_State *L) {
 		DataTree* dataTree = _game->getDataTree();
 
 		if(dataTree) {
-			return Lunar<PluginDataTreeProxy>::push(L, new PluginDataTreeProxy(dataTree));
+			Lunar<PluginDataTreeProxy>::push(L, new PluginDataTreeProxy(dataTree));
+			return 1;
 		}
 	}
 
@@ -97,7 +99,8 @@ int PluginGameProxy::getMap(lua_State *L) {
 			CMap* map = _game->getMap();
 
 			if(map) {
-				return Lunar<PluginMapProxy>::push(L, new PluginMapProxy(map));
+				Lunar<PluginMapProxy>::push(L, new PluginMapProxy(map));
+				return 1;
 			}
 		}
 	}
@@ -106,7 +109,8 @@ int PluginGameProxy::getMap(lua_State *L) {
 }
 
 int PluginGameProxy::push(lua_State* L) {
-	return Lunar<PluginGameProxy>::push(L, this);
+	Lunar<PluginGameProxy>::push(L, this);
+	return 1;
 }
 
 } /* namespace jkt */

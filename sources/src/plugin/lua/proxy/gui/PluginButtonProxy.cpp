@@ -41,7 +41,8 @@ PluginButtonProxy::~PluginButtonProxy() {
 }
 
 int PluginButtonProxy::push(lua_State* L) {
-	return Lunar<PluginButtonProxy>::push(L, this);
+	Lunar<PluginButtonProxy>::push(L, this);
+	return 1;
 }
 
 void PluginButtonProxy::buttonPressedEvent() {

@@ -34,7 +34,8 @@ PluginMapProxy::~PluginMapProxy() {
 }
 
 int PluginMapProxy::push(lua_State* L) {
-	return Lunar<PluginMapProxy>::push(L, this);
+	Lunar<PluginMapProxy>::push(L, this);
+	return 1;
 }
 
 /**

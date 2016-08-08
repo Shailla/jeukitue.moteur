@@ -45,7 +45,8 @@ PluginComboListProxy::~PluginComboListProxy() {
 }
 
 int PluginComboListProxy::push(lua_State* L) {
-	return Lunar<PluginComboListProxy>::push(L, this);
+	Lunar<PluginComboListProxy>::push(L, this);
+	return 1;
 }
 
 void PluginComboListProxy::setWrappedObject(PluginComboList* pluginComboList) {

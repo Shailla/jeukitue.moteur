@@ -61,7 +61,8 @@ PluginWindowProxy::~PluginWindowProxy() {
 }
 
 int PluginWindowProxy::push(lua_State* L) {
-	return Lunar<PluginWindowProxy>::push(L, this);
+	Lunar<PluginWindowProxy>::push(L, this);
+	return 1;
 }
 
 /**

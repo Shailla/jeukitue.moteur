@@ -34,7 +34,8 @@ int PluginPlayerZoneEventProxy::getPlayerId(lua_State* L) {
 }
 
 int PluginPlayerZoneEventProxy::push(lua_State* L) {
-	return Lunar<PluginPlayerZoneEventProxy>::push(L, this);
+	Lunar<PluginPlayerZoneEventProxy>::push(L, this);
+	return 1;
 }
 
 } /* namespace jkt */

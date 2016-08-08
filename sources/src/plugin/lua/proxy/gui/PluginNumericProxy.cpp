@@ -39,7 +39,8 @@ PluginNumericProxy::~PluginNumericProxy() {
 }
 
 int PluginNumericProxy::push(lua_State* L) {
-	return Lunar<PluginNumericProxy>::push(L, this);
+	Lunar<PluginNumericProxy>::push(L, this);
+	return 1;
 }
 
 /**

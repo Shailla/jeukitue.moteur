@@ -41,7 +41,8 @@ PluginLabelProxy::~PluginLabelProxy() {
 }
 
 int PluginLabelProxy::push(lua_State* L) {
-	return Lunar<PluginLabelProxy>::push(L, this);
+	Lunar<PluginLabelProxy>::push(L, this);
+	return 1;
 }
 
 void PluginLabelProxy::setWrappedObject(PluginLabel* pluginLabel) {

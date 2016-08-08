@@ -38,7 +38,8 @@ int PluginPlayerProxy::getName(lua_State* L) {
 }
 
 int PluginPlayerProxy::push(lua_State* L) {
-	return Lunar<PluginPlayerProxy>::push(L, this);
+	Lunar<PluginPlayerProxy>::push(L, this);
+	return 1;
 }
 
 } /* namespace jkt */

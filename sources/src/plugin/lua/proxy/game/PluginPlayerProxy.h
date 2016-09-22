@@ -34,6 +34,7 @@ public:
 	virtual ~PluginPlayerProxy();
 
 	int getName(lua_State* L);
+	int setPosition(lua_State* L);
 
 	int push(lua_State* L);
 };

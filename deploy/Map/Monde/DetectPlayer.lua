@@ -6,7 +6,7 @@ function onLoad()
 	
 	game = getGame();
 	map = game:getMap();
-	detector = map:createPlayerZoneDetector("idCoucou", 0.0, 1.0, 0.0, 1.0, 0.0, 1.0);
+	detector = map:createPlayerZoneDetector("idCoucou", 0.0, 1.0, -1.0, 1.0, 0.0, 1.0);
 	detector:setVisibility(true);
 end
 
@@ -18,7 +18,8 @@ function eventManager(event)
 		playerId = info:getPlayerId();
 		player = game:getPlayer(playerId);
 		name = player:getName();
-		logConsoleInfo("Le joueur '" .. name .. "(" .. playerId .. ")' entre dans la zone");
+		logConsoleInfo("Le joueur '" .. name .. "(" .. playerId .. ")' entre dans la zone et se fait téléporter");
+		player:setPosition(50.0, 0.0, 0.0);
 	
 	elseif actionId == 1121 then	-- PlayerDetectorUnactivated : Le joueur sort d'une zone de détection
 		info = event:getInfo();

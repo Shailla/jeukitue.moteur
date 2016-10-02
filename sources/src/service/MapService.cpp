@@ -65,9 +65,6 @@ void MapService::loadPlayerMapDirectoryContent(vector<MapInformationDto>& conten
 
 	for ( directory_iterator itr( mapPath ); itr != end_itr; ++itr ) {
 		if ( is_directory( *itr ) ) {
-			// Ignore directories
-		}
-		else {
 			string filename = itr->path().string();
 
 			if( jkt::StringUtils::isFinishingWith(filename, MAP_EXTENSION) ) {
@@ -80,6 +77,9 @@ void MapService::loadPlayerMapDirectoryContent(vector<MapInformationDto>& conten
 
 				content.push_back(dto);
 			}
+		}
+		else {
+			// Ignore files
 		}
 	}
 }
@@ -88,7 +88,7 @@ void MapService::loadMapDirectoryContent(vector<MapInformationDto>& content) {
 	path mapPath(MAP_DIRECTORY);
 
 	if(!exists(mapPath)) {
-		LOGERROR(("Le répertoire %s n'existe pas", MAP_DIRECTORY));
+		LOGERROR(("Le répertoire '%s' n'existe pas", MAP_DIRECTORY));
 		return;
 	}
 
@@ -96,9 +96,6 @@ void MapService::loadMapDirectoryContent(vector<MapInformationDto>& content) {
 
 	for ( directory_iterator itr( mapPath ); itr != end_itr; ++itr ) {
 		if ( is_directory( *itr ) ) {
-			// Ignore directories
-		}
-		else {
 			string filename = itr->path().string();
 
 			if( jkt::StringUtils::isFinishingWith(filename, MAP_EXTENSION) ) {
@@ -111,6 +108,9 @@ void MapService::loadMapDirectoryContent(vector<MapInformationDto>& content) {
 
 				content.push_back(dto);
 			}
+		}
+		else {
+			// Ignore files
 		}
 	}
 }

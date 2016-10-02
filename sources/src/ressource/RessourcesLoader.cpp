@@ -21,7 +21,8 @@ const char* ASE_DIRECTORY =			"./ase/";						// Répertoire des MAP de jeu
 const char* ASE_EXTENSION =			".ASE";
 
 const char* MAP_DIRECTORY =			"./Map/";						// Répertoire des MAP de jeu
-const char* MAP_EXTENSION =			".map.xml";
+const char* MAP_EXTENSION =			".map";
+const char* MAP_FILE_EXTENSION =	".map.xml";
 
 const char* PLAYER_MAP_DIRECTORY =	"./Ressources/Maps/Joueurs/";	// Répertoire Map des skins de joueur
 const char* PLUGINS_DIRECTORY =		"./plugins/";					// Répertoire des plugins
@@ -31,21 +32,21 @@ namespace jkt
 {
 
 const char* RessourcesLoader::elementsNamesAndFolders[] = {
-	"@Ase",		"./ase",							// Répertoire des fichiers ASE importables
-	"@Map",		"./map",							// Répertoire des Map
+	"@Ase",		"./ase",						"",			"",				// Répertoire des fichiers ASE importables
+	"@Map",		"./map",						".map",		".map.xml",		// Répertoire des Map
 
-	"@Fonte",	"./Ressources/Fontes",				// Polices / fontes
+	"@Fonte",	"./Ressources/Fontes",			"",			"",				// Polices / fontes
 
-	"@Fond",	"./Ressources/Images/Fonds",		// Images de fond
-	"@Icone",	"./Ressources/Images/Icones",		// Icones des menus
-	"@Texture",	"./Ressources/Images/Textures",		// Images de textures par défaut
+	"@Fond",	"./Ressources/Images/Fonds",	"",			"",				// Images de fond
+	"@Icone",	"./Ressources/Images/Icones",	"",			"",				// Icones des menus
+	"@Texture",	"./Ressources/Images/Textures",	"",			"",				// Images de textures par défaut
 
-	"@Joueur",	"./Ressources/Maps/Joueurs",		// Maps des joueurs par défaut
-	"@Arme",	"./Ressources/Maps/Armes",			// Map des armes par défaut
+	"@Joueur",	"./Ressources/Maps/Joueurs",	".map",		".map.xml",				// Maps des joueurs par défaut
+	"@Arme",	"./Ressources/Maps/Armes",		".map",		".map.xml",				// Map des armes par défaut
 
-	"@Bruit",	"./Ressources/Sons/Bruits",			// Bruits par défaut des Map
-	"@Jingle",	"./Ressources/Sons/Jingles",		// Jingles des menus
-	"@Musique",	"./Ressources/Sons/Musiques",		// Musiques par défaut
+	"@Bruit",	"./Ressources/Sons/Bruits",		"",			"",				// Bruits par défaut des Map
+	"@Jingle",	"./Ressources/Sons/Jingles",	"",			"",				// Jingles des menus
+	"@Musique",	"./Ressources/Sons/Musiques",	"",			"",				// Musiques par défaut
 	NULL
 };
 
@@ -95,9 +96,9 @@ bool RessourcesLoader::getFileRessource(string& file) {
 		if(nbr != string::npos) {
 			string resourceType = file.substr(0, nbr);
 
-			for(int i=0; elementsNamesAndFolders[i*2 + 0] != 0 ; i++) {
-				if(!resourceType.compare(elementsNamesAndFolders[i*2 + 0])) {
-					file.replace(0, nbr, elementsNamesAndFolders[i*2 + 1]);
+			for(int i=0; elementsNamesAndFolders[i*4 + 0] != 0 ; i++) {
+				if(!resourceType.compare(elementsNamesAndFolders[i*4 + 0])) {
+					file.replace(0, nbr, elementsNamesAndFolders[i*4 + 1]);
 					LOGDEBUG(("La ressource '%s' est '%s')", before.c_str(), file.c_str()));
 					bTrouve = true;
 					break;
@@ -111,6 +112,52 @@ bool RessourcesLoader::getFileRessource(string& file) {
 		}
 		else {
 			// TODO Est-ce vraiment un warning ?
+			LOGWARN(("Format de ressource non pris en compte : '%s'", before.c_str()));
+		}
+	}
+
+	// Indique si une ressource a été trouvée
+	return bTrouve;
+}
+
+bool RessourcesLoader::getRessource(const string& ressource, string& directory, string& filename) {
+	// Récupération du premier élément du nom du fichier
+	// par exemple, dans --Ressource\Textures\... on récupère --Ressource
+	bool bTrouve = false;
+	string before = ressource;
+
+	// Remplace tous les antislash par des slash
+	replace(before.begin(), before.end(), '\\', '/');
+
+	if(before.find_first_of('@') == 0) {
+		size_t slash = before.find_first_of('/');
+
+		if(slash != string::npos) {
+			string resourceType = before.substr(0, slash);
+
+			for(int i=0; elementsNamesAndFolders[i*4 + 0] != 0 ; i++) {
+				if(!resourceType.compare(elementsNamesAndFolders[i*4 + 0])) {
+					directory = before;
+					directory.replace(0, slash, elementsNamesAndFolders[i*4 + 1]);		// Répertoire racine de la ressource
+					directory += elementsNamesAndFolders[i*4 + 2];						// Extension éventuelle du nom du répertoire de la ressource
+
+					filename = before;
+					filename.replace(0, slash+1, "");
+					filename += elementsNamesAndFolders[i*4 + 3];						// Extention de nom de fichier de la ressource
+
+					bTrouve = true;
+
+					LOGDEBUG(("La ressource '%s' est le fichier '%s' dans '%s')", before.c_str(), ressource.c_str(), filename.c_str(), directory.c_str()));
+
+					break;
+				}
+			}
+
+			if(!bTrouve) {
+				LOGWARN(("Ressource de type inconnu '%s' (type identifié '%s')", before.c_str(), resourceType.c_str()));
+			}
+		}
+		else {
 			LOGWARN(("Format de ressource non pris en compte : '%s'", before.c_str()));
 		}
 	}

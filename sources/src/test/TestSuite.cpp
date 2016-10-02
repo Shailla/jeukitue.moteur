@@ -14,6 +14,7 @@ using namespace std;
 #include "exception/JktException.h"
 #include "test/utils/TableauTest.h"
 #include "test/utils/UtilsTest.h"
+#include "test/utils/RessourcesLoaderTest.h"
 #include "test/reseau/JsonTest.h"
 #include "test/reseau/UdpCommunicationTest.h"
 #include "test/data/DataTreeTest.h"
@@ -26,10 +27,11 @@ namespace jkt {
 
 TestSuite::TestSuite() {
 	_tests.push_back(new TableauTest());
-//	_tests.push_back(new UtilsTest());
-//	_tests.push_back(new JsonTest());
-//	_tests.push_back(new UdpCommunicationTest());
-//	_tests.push_back(new DataTreeTest());
+	_tests.push_back(new UtilsTest());
+	_tests.push_back(new RessourcesLoaderTest());
+	_tests.push_back(new JsonTest());
+	_tests.push_back(new UdpCommunicationTest());
+	_tests.push_back(new DataTreeTest());
 }
 
 TestSuite::~TestSuite() {

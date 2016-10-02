@@ -3,11 +3,11 @@
 
 using namespace std;
 
-#ifdef WIN32
 #include <windows.h>
-#endif
 #include <GL/glew.h>
 #include <GL/glu.h>
+
+#include <shellapi.h>
 
 #include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
 #include "boost/filesystem/fstream.hpp"
@@ -212,7 +212,15 @@ void Controller::executeAction(JktEvent& event) {
 			quit_game("Quit game user action", 0);
 			break;
 
-			// Menu de configuration d'Agar
+		case OpenNavigator: {
+			stringstream url;
+			url << "http://localhost:" << (int)Config.Web.getHtmlServerPort() << "/index.html";
+			ShellExecute(NULL, NULL, url.str().c_str(), NULL, NULL, SW_SHOWNORMAL);
+			LOGINFO(("Opening in web browser : '%s'", url.str().c_str()));
+		}
+		break;
+
+		// Menu de configuration d'Agar
 		case ShowAgarConfigurationViewAction:
 			DEV_ConfigShow();
 			break;
@@ -266,6 +274,7 @@ void Controller::executeAgarAction(AG_Event* event) {
 		case ShowMultijoueursClientMenuAction:
 		case QuitGameAction:
 		case QuitAction:
+		case OpenNavigator:
 		case ShowConfigurationVideoViewAction:
 		case ShowConfigurationReseauViewAction:
 		case ShowConfigurationJoueurViewAction:

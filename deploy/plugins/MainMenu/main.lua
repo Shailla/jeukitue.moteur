@@ -9,6 +9,7 @@ window = 0
 sceneButton = 0
 multiButton = 0
 configurationButton = 0
+navigatorButton = 0
 aboutButton = 0
 debugButton = 0
 quitMapButton = 0
@@ -34,6 +35,9 @@ function onLoad()
 	
 	configurationButton = window:addButton("Configuration");
 	configurationButton:expandHoriz();
+
+	navigatorButton = window:addButton("Navigateur");
+	navigatorButton:expandHoriz();
 	
 	aboutButton = window:addButton("A propos");
 	aboutButton:expandHoriz();
@@ -92,6 +96,9 @@ function eventManager(event)
 		elseif source == quitMapButton then
 			window:hide();
 			pushEvent(1117);	-- QuitGameAction
+
+		elseif source == navigatorButton then
+			pushEvent(1122);
 			
 		elseif source == aboutButton then
 			window:hide();

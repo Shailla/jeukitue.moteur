@@ -273,7 +273,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	 * Chargement du fichier Lua du plugin
 	 * *****************************************************************************/
 
-	string pluginFile = string(pluginDirectory).append(pluginName).append(".lua");
+	string pluginFile = string(pluginDirectory).append("/").append(pluginName).append(".lua");
 	pluginContext->logInfo(string("Chargement du script '").append(pluginFile).append("'..."));
 
 	int status = luaL_loadfile(L, pluginFile.c_str());

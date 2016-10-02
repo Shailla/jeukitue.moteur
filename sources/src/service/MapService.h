@@ -24,10 +24,10 @@ public:
 	/** Read the list of the ASE files in the ASE directory. */
 	static void loadAseDirectoryContent(std::vector<AseInformationDto>& content);
 
-	/** Read the list of the MAP files in the ASE directory. */
+	/** Read the list of the MAPs in the ASE directory. */
 	static void loadMapDirectoryContent(std::vector<MapInformationDto>& content);
 
-	/** Read the list of the player MAP files in the ASE directory. */
+	/** Read the list of the player MAPs in the ASE directory. */
 	static void loadPlayerMapDirectoryContent(std::vector<MapInformationDto>& content);
 };
 

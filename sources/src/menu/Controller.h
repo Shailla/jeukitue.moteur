@@ -77,7 +77,8 @@ public:
 		QuitAction								= 1118,		// Quit the game
 		ShowConfigurationAdvancedViewAction		= 1119,		// Advanced configuration window
 		PlayerZoneDetectorActivated				= 1120,		// Le joueur entre dans une zone de détection
-		PlayerZoneDetectorUnactivated			= 1121		// Le joueur sort d'une zone de détection
+		PlayerZoneDetectorUnactivated			= 1121,		// Le joueur sort d'une zone de détection
+		OpenNavigator							= 1122		// Ouvre l'interface web dans le navigateur de l'OS
 
 		// The actions created by the plugins should not be referenced in C++ code, their identifiers are higher than 10000
 	};

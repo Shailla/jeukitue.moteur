@@ -115,32 +115,24 @@ function appliqueAudioConfiguration()
 end
 
 function eventManager(event)
-	local type = event:getType();
+	local actionId = event:getActionId();
+	log("Event actionId=" .. actionId);
+	
+	if actionId == 10000 then		-- Show configuration audio
+		log("SHOW");
+		window:show();
+
+	elseif actionId == 1001 then	-- Hide menu
+		log("HIDE");
+		window:hide();
 		
-	log("Event");
-		
-	-- Action event
-	if type == 1 then
-		local actionId = event:getActionId();
-		
-		log("Action event : "..actionId);
-		
-		if actionId == 10000 then		-- Show configuration audio
-			log("SHOW");
-			window:show();
-		elseif actionId == 1001 then	-- Hide menu
-			log("HIDE");
-			window:hide();
-		end
-		
-	-- Widget event
-	elseif type == 3 then	
+	elseif actionId == 1004 then		-- Widget event
 		local source = event:getSource();
 		
 		-- Enregistrement de la configuration du joueur
 		if source == backButton then
 			window:hide();
-			pushEvent(1004);	-- Show configuration menu action
+			pushEvent(1104);	-- Show configuration menu action
 		
 		-- Enregistrement de la configuration du joueur
 		elseif source == appliquerAudioButton then

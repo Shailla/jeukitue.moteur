@@ -7,7 +7,8 @@ extern const char* ASE_DIRECTORY;			// Répertoire des fichier ASE disponibles à 
 extern const char* ASE_EXTENSION;			// Extention d'un fichier ASE
 
 extern const char* MAP_DIRECTORY;			// Répertoire des MAP de jeu
-extern const char* MAP_EXTENSION;			// Extention d'un fichier Map
+extern const char* MAP_EXTENSION;			// Extention du répertoire archive d'une Map
+extern const char* MAP_FILE_EXTENSION;		// Extention d'un fichier Map
 
 extern const char* PLAYER_MAP_DIRECTORY;	// Répertoire des Map de skin de joueur
 extern const char* PLUGINS_DIRECTORY;		// Répertoire des plugin

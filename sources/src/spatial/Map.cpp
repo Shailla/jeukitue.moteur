@@ -478,25 +478,26 @@ bool CMap::Save(TiXmlElement* element) {			// Sauve l'objet géo dans un fichier 
 
 bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 	// Répertoire et fichier de la Map
-	string partialFileName = mapName;
-	bool isResource = jkt::RessourcesLoader::getFileRessource(partialFileName);
+	string mapDirectory, mapFilename;
+	bool isResource = jkt::RessourcesLoader::getRessource(mapName, mapDirectory, mapFilename);
 
 	// Si le fichier Map n'est pas une resource alors c'est une map classique
 	if(!isResource) {
-		partialFileName = ".\\map\\" + partialFileName;
+		mapDirectory = MAP_DIRECTORY + mapName + MAP_EXTENSION;
+		mapFilename = mapName + MAP_FILE_EXTENSION;
 	}
 
-	map.setName(mapName);										// Nom de la Map
-	map._filename = partialFileName + ".map.xml";				// Chemin complet fichier Map XML
-	map._binariesDirectory = partialFileName + "\\";			// Chemin des fichier binaires de la Map
+	map.setName(mapName);								// Nom de la Map
+	map._filename = mapDirectory + "/" + mapFilename;	// Chemin complet fichier Map XML
+	map._binariesDirectory = mapDirectory;				// Chemin des fichier binaires de la Map
 
 	if(!mapLogger) {
-		mapLogger = new MapLogger(partialFileName);
+		mapLogger = new MapLogger(mapDirectory + "/" + mapFilename);
 	}
 
 	// Lecture XML de la Map
 	stringstream msg;
-	msg << "Lecture fichier Map '" << mapName << "'";
+	msg << "Lecture fichier Map '" << map._filename << "'";
 	mapLogger->logInfo(msg.str());
 
 	bool result = false;

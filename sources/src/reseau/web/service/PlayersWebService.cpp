@@ -47,3 +47,4 @@ WebServiceResult PlayersWebService::execute(const std::string& endpoint, const s
 }
 
 } /* namespace jkt */
+

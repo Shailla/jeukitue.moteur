@@ -24,7 +24,7 @@ const char* PluginContext::LOG_ERROR_LUA_PREFIX = 	"ERREUR LUA : ";
 PluginContext::PluginContext(lua_State* luaState, const string& pluginName, const string& pluginsDirectory) : _pluginName(pluginName) {
 	_luaState = luaState;
 
-	string pluginLogFile = string(pluginsDirectory).append(pluginName).append(".log");
+	string pluginLogFile = string(pluginsDirectory).append("/").append(pluginName).append(".log");
 
 	_logFile.exceptions(std::ofstream::failbit|std::ofstream::badbit);
 

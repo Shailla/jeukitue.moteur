@@ -21,6 +21,7 @@ using namespace std;
 #include "util/FindFolder.h"
 #include "reseau/web/service/WebService.h"
 #include "reseau/web/service/PlayersWebService.h"
+#include "reseau/web/service/MapWebService.h"
 
 #include "reseau/web/HtmlServer.h"
 
@@ -138,6 +139,7 @@ HtmlServer::HtmlServer(int port) {
 	/* ************************************ */
 
 	_services["/service/players"] = new PlayersWebService();
+	_services["/service/maps"] = new MapWebService();
 
 
 	/* ************************************ */
@@ -220,6 +222,7 @@ void HtmlServer::start() {
 	string status;
 	char* response;
 	long responseSize;
+	bool found;
 
 	while(1) {
 		// Attente connexion client
@@ -245,31 +248,43 @@ void HtmlServer::start() {
 
 		// Recherche du contenu
 		try {
+			// Init
 			content = 0;
+			found = false;
 
 			// Search web service
-			WebService* service = getService(endpoint);
+			if(!found) {
+				WebService* service = getService(endpoint);
 
-			if(service) {
-				WebServiceResult result = service->execute(endpoint, method);
+				if(service) {
+					WebServiceResult result = service->execute(endpoint, method);
 
-				contentType = result._contentType;
-				contentSize = result._contentSize;
-				content = result._content;
-				status = result._status;
+					contentType = result._contentType;
+					contentSize = result._contentSize;
+					content = result._content;
+					status = result._status;
+
+					found = true;
+				}
 			}
-			else {
-				// Search static web resource
+
+			// Search static web resource
+			if(!found) {
 				resource = getResource(endpoint);	// Exception thrown if no resource found
 
-				if(!resource) {
-					throw (int)RESOURCE_NOT_FOUND_EXCEPTION;
-				}
+				if(resource) {
+					contentType = resource->getContentType();
+					contentSize = resource->getContentSize();
+					content = resource->getContent();
+					status = HTTP_RESPONSE_200;
 
-				contentType = resource->getContentType();
-				contentSize = resource->getContentSize();
-				content = resource->getContent();
-				status = HTTP_RESPONSE_200;
+					found = true;
+				}
+			}
+
+			// Nothing is found for the endpoint
+			if(!found) {
+				throw (int)RESOURCE_NOT_FOUND_EXCEPTION;
 			}
 
 			header = buildResponseHeader(contentType, contentSize, status);

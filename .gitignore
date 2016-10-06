@@ -20,3 +20,7 @@ deploy2/jkt.exe
 deploy2/libjkt.dll.a
 deploy2/*.dll
 save-*.map.xml
+sources_web/node_modules/
+sources_web/typings/
+sources_web2/node_modules/
+sources_web2/typings/

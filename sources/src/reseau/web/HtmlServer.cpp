@@ -138,8 +138,8 @@ HtmlServer::HtmlServer(int port) {
 	/* Déploiement des services web			*/
 	/* ************************************ */
 
-	_services["/service/players"] = new PlayersWebService();
-	_services["/service/maps"] = new MapWebService();
+	_services["/rest/players"] = new PlayersWebService();
+	_services["/rest/maps"] = new MapWebService();
 
 
 	/* ************************************ */

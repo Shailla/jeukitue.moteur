@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 
+#include "util/Trace.h"
 #include "reseau/web/json/JsonObject.h"
 #include "reseau/web/HtmlServer.h"
 #include "service/PlayersService.h"
@@ -35,6 +36,7 @@ WebServiceResult PlayersWebService::execute(const std::string& endpoint, const s
 	}
 
 	string json = root.toString();
+	LOGINFO(("REPONSE : '%s'", json.c_str()));
 
 	WebServiceResult result;
 	result._contentSize = json.size();

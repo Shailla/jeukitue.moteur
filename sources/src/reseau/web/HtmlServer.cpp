@@ -300,16 +300,26 @@ void HtmlServer::start() {
 				LOGWARN(("Endpoint introuvable : '%s'", endpoint.c_str()));
 
 				resource = getResource("/resource_not_found.html");
-				header = buildResponseHeader(resource->getContentType(), resource->getContentSize(), HTTP_RESPONSE_404);
 
-				responseSize = header.size() + resource->getContentSize();
-				response = (char*)malloc(responseSize);
-				header.copy(response, header.size());
-				memcpy(response + header.size(), resource->getContent(), resource->getContentSize());
+				if(resource) {
+					header = buildResponseHeader(resource->getContentType(), resource->getContentSize(), HTTP_RESPONSE_404);
+
+					responseSize = header.size() + resource->getContentSize();
+					response = (char*)malloc(responseSize);
+					header.copy(response, header.size());
+					memcpy(response + header.size(), resource->getContent(), resource->getContentSize());
+				}
+				else {
+					LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant) '%s' : %d", endpoint.c_str(), exception));
+					string str = buildStringResponse(HTTP_INTERNAL_ERROR_CONTENT, HTTP_CONTENT_TYPE_HTML, HTTP_RESPONSE_500);
+					responseSize = str.size();
+					response = (char*)malloc(responseSize);
+					str.copy(response, responseSize);
+				}
 
 				break;
 			default:
-				LOGERROR(("On ne devrait jamais être ici '%s' : %d", endpoint.c_str(), exception));
+				LOGERROR(("On ne devrait jamais être ici (erreur non-maîtrisée) '%s' : %d", endpoint.c_str(), exception));
 				string str = buildStringResponse(HTTP_INTERNAL_ERROR_CONTENT, HTTP_CONTENT_TYPE_HTML, HTTP_RESPONSE_500);
 				responseSize = str.size();
 				response = (char*)malloc(responseSize);
@@ -365,6 +375,7 @@ string HtmlServer::buildStringResponse(const string& content, const string& cont
 
 	// Entête de réponse
 	response << HTTP_HEAD << " " << status << HTTP_RETURN;
+	response << "Access-Control-Allow-Origin: *" << HTTP_RETURN;	// TODO A supprimer, sert juste aux tests avec nodejs
 	response << contentType << HTTP_RETURN;
 	response << HTTP_CONTENT_LENGTH << content.size() << HTTP_RETURN;
 	response << HTTP_RETURN;
@@ -379,6 +390,7 @@ string HtmlServer::buildResponseHeader(const string& contentType, long contentSi
 
 	// Entête de réponse
 	header << HTTP_HEAD << " " << status << HTTP_RETURN;
+	header << "Access-Control-Allow-Origin: *" << HTTP_RETURN;	// TODO A supprimer, sert juste aux tests avec nodejs
 	header << contentType << HTTP_RETURN;
 	header << HTTP_CONTENT_LENGTH << contentSize << HTTP_RETURN;
 	header << HTTP_RETURN;

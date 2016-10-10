@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Player } from './player';
 import { PlayerService } from './player.service';
@@ -20,6 +19,10 @@ export class PlayersComponent implements OnInit {
 	}
 	
 	getPlayers(): void {
-		this.playerService.getPlayers().then(players => this.players = players);
+		this.playerService.getPlayers().then(players => {
+														this.players = players;
+														console.log('Players JSON response : ', this.players);
+														}
+												  );
 	}
 }

@@ -24,3 +24,6 @@ sources_web_old/node_modules/
 sources_web_old/typings/
 sources_web/node_modules/
 sources_web/typings/
+sources_web/app/*.js
+sources_web/app/*.js.map
+sources_web/npm-debug.log.*

@@ -22,6 +22,7 @@ using namespace std;
 #include "reseau/web/service/WebService.h"
 #include "reseau/web/service/PlayersWebService.h"
 #include "reseau/web/service/MapWebService.h"
+#include "reseau/web/service/MapGrapheWebService.h"
 
 #include "reseau/web/HtmlServer.h"
 
@@ -140,6 +141,7 @@ HtmlServer::HtmlServer(int port) {
 
 	_services["/rest/players"] = new PlayersWebService();
 	_services["/rest/maps"] = new MapWebService();
+	_services["/rest/map-graphe"] = new MapGrapheWebService();
 
 
 	/* ************************************ */

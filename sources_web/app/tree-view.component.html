@@ -1,9 +1,9 @@
 <ul>
-    <li *ngFor="let item of items" class="{{ item.class }}">
+    <li *ngFor="let item of items" class="{{ item.type }}">
         <span><input type="checkbox" [checked]="item.checked" (click)="item.check()" /></span> 
         <span (click)="item.toggle()">{{ item.name }}</span>
         <div *ngIf="item.expanded">
-            <tree-view [items]="item.items"></tree-view>
+            <tree-view [items]="item.elements"></tree-view>
         </div>
     </li>
 </ul>

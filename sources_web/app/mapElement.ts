@@ -1,16 +1,16 @@
-export class TreeItem {
+export class MapElement {
 	name: string; 
-	items: Array<TreeItem>;
-    expanded:boolean;
-    checked:boolean;
-	class:string;
+	elements: Array<MapElement>;
+	type: string;
+    expanded: boolean;
+    checked: boolean;
 	
-    constructor(name,items) {
+    constructor(name, elements, type) {
         this.name = name;
-        this.items = items;
-        this.expanded = false;
+        this.elements = elements;
+        this.type = type;
+		this.expanded = false;
         this.checked = false;
-		this.class = "";
     }
 	
     toggle() {
@@ -24,7 +24,7 @@ export class TreeItem {
     }
 	
     checkRecursive(state) {
-        this.items.forEach(d => {
+        this.elements.forEach(d => {
             d.checked = state;
             d.checkRecursive(state);
         })

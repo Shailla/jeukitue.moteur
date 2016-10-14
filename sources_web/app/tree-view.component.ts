@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 
-import { TreeItem } 		from './treeItem';
+import { MapElement } 		from './mapElement';
 
 @Component({
 	selector: 'tree-view',
 	templateUrl: 'app/tree-view.component.html'
 })
 export class TreeViewComponent {
-	@Input() items: Array<TreeItem>;
+	@Input() items: Array<MapElement>;
 }

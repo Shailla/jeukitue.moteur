@@ -35,10 +35,10 @@ class CFichierASE : private std::ifstream
 	~CFichierASE();
 
 	EntryPoint* litEntryPoint(CMap* map);
-	CLight* litLightOmni();
-	CLight* litLightTarget();
+	CLight* litLightOmni(CMap* map);
+	CLight* litLightTarget(CMap* map);
 	FACES* LitFaces( unsigned int num );
-	CLight* lightList();
+	CLight* lightList(CMap* map);
 	EntryPoint* litHelper(CMap* map);
 	int* LitTexFaces(int num);
 	float* LitVertex(unsigned int num);

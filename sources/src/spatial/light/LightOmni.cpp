@@ -19,7 +19,7 @@ using namespace std;
 namespace jkt
 {
 
-CLightOmni::CLightOmni()
+CLightOmni::CLightOmni(CMap* map) : CLight(map)
 {
 }
 

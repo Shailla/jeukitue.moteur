@@ -14,7 +14,7 @@ namespace jkt
 class CLightOmni : public CLight
 {
 public:
-	CLightOmni();
+	CLightOmni(CMap* map);
 	~CLightOmni();
 
 	bool Lit(TiXmlElement* element, MapLogger* mapLogger);

@@ -356,6 +356,10 @@ void CMap::add(CNavette *navette) {		// Une navette est avant tout un objet géo
 	_objects.push_back(navette);
 }
 
+vector<MapObject*>& CMap::getMapObjects() {
+	return _objects;
+}
+
 void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	float positionPlayerDefault[3];
 

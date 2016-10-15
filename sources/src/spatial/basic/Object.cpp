@@ -16,8 +16,7 @@ Object::Object(CMap* map) {
 	_reference = GENREF.genRef();	// Génère une référence pour l'objet
 }
 
-Object::Object(const Object& other) {
-	_map = other._map;
+Object::Object(const Object& other) : Object(other._map) {
 	_reference = GENREF.genRef();	// Génère une référence pour l'objet
 	_name = other._name;
 	_name += "-copy";

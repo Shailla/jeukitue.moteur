@@ -14,7 +14,7 @@ class CLightTarget : public CLight
 	float m_fFallOff;
 
 public:
-	CLightTarget();
+	CLightTarget(CMap* map);
 	~CLightTarget();
 
 	bool Lit(TiXmlElement* element, MapLogger* mapLogger);

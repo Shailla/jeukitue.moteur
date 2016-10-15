@@ -147,6 +147,7 @@ public:
 	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;	// Envoie d'un laser sur la map
 
 	vector<CLight*>& getLights();
+	vector<MapObject*>& getMapObjects();
 
 	// Sélection
 	void incrementeSelection();	// Sélectionne l'objet géo suivant

@@ -13,6 +13,15 @@
 namespace jkt {
 
 class MapGrapheWebService : public WebService {
+	static string ID;
+	static string NAME;
+	static string TYPE;
+
+	static string MAP;
+	static string GEO;
+	static string LIGHT;
+	static string ENTRYPOINT;
+
 public:
 	MapGrapheWebService();
 	virtual ~MapGrapheWebService();

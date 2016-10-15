@@ -23,7 +23,7 @@ export class MapService {
 	}
 	
 	getMapsSlowly(): Promise<Map[]> {
-		return new Promise<Map[]>(resolve => setTimeout(resolve, 2000)) // delay 2 seconds
+		return new Promise<Map[]>(resolve => setTimeout(resolve, 1000)) // delay 2 seconds
 				.then(() => Promise.resolve(MAPS));
 	}
 	
@@ -35,7 +35,7 @@ export class MapService {
 	}
 	
 	getMapSlowly(): Promise<MapElement[]> {
-		return new Promise<MapElement[]>(resolve => setTimeout(resolve, 2000)) // delay 2 seconds
+		return new Promise<MapElement[]>(resolve => setTimeout(resolve, 1000)) // delay 2 seconds
 			.then(() => Promise.resolve(MAP));
 	}
 	

@@ -296,8 +296,7 @@ EntryPoint* CFichierASE::litEntryPoint(CMap* map) {
 	return entryPoint;
 }
 
-CLight* CFichierASE::litLightOmni()
-{
+CLight* CFichierASE::litLightOmni(CMap* map) {
 	CLightOmni *pLightOmni;
 	string mot;
 //	int accolade = 0;
@@ -359,8 +358,7 @@ CLight* CFichierASE::litLightOmni()
 	return pLightOmni;
 }
 
-CLight *CFichierASE::litLightTarget()
-{
+CLight *CFichierASE::litLightTarget(CMap* map) {
 	string mot;
 	float position[3], row[9], direction[3], color[4];
 	float falloff;
@@ -454,7 +452,7 @@ CLight *CFichierASE::litLightTarget()
 	return pLightTarget;
 }
 
-CLight* CFichierASE::lightList()
+CLight* CFichierASE::lightList(CMap* map)
 {
 	unsigned int accolade = 0;
 	bool bSuite = false;
@@ -474,11 +472,11 @@ CLight* CFichierASE::lightList()
 			get(mot,__LINE__);
 			if( mot == "Omni" )
 			{
-				pLight = litLightOmni();
+				pLight = litLightOmni(map);
 				bSuite = true;	// On peut passer à la suite de la lecture du fichier
 			}
 			else if( mot == "Target" ) {
-				pLight = litLightTarget();
+				pLight = litLightTarget(map);
 				bSuite = true;	// On peut passer à la suite de la lecture du fichier
 			}
 			else {
@@ -1330,7 +1328,7 @@ void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap) {
 		else if(mot == "*LIGHTOBJECT") {	// Recherche des lumières
 			CLight *pLight;
 
-			pLight = lightList();
+			pLight = lightList(pMap);
 
 			if(pLight) {	//Si pas d'erreur mets le dans le tableau d'objets géo
 				pMap->add( pLight );

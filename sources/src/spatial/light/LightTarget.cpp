@@ -22,7 +22,7 @@ using namespace std;
 namespace jkt
 {
 
-CLightTarget::CLightTarget(void) {
+CLightTarget::CLightTarget(CMap* map) : CLight(map) {
 	m_fFallOff = 0.0f;
 }
 

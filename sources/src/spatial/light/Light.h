@@ -7,6 +7,7 @@
 #include "tinyxml.h"
 
 #include "spatial/basic/Geometrical.h"
+#include "spatial/basic/Object.h"
 #include "spatial/MapLogger.h"
 
 namespace jkt
@@ -14,7 +15,7 @@ namespace jkt
 
 class CIfstreamMap;
 
-class CLight : public Geometrical {
+class CLight : public Object, public Geometrical {
 	static int m_nbrLightActivated;
 	static bool m_bLight0;
 	static bool m_bLight1;
@@ -54,14 +55,14 @@ protected:
 	void freeLight( int ref );	// Libère une lumière openGL réservée
 
 public :
-	CLight();
+	CLight(CMap* map);
 	virtual ~CLight();
 
 	// Méthodes de sérialisation
-	virtual bool Lit(TiXmlElement* element, MapLogger* mapLogger) = 0;				// Lit une light dans un fichier Map format XML
-	virtual bool LitFichier(CIfstreamMap &fichier) = 0;								// Lit une light dans un fichier Map
-	virtual bool SaveFichierMap(std::ofstream &fichier) = 0;						// Sauve la light dans un fichier Map
-	virtual bool Save(TiXmlElement* element) = 0;									// Sauve la light dans un fichier Map format XML
+	virtual bool Lit(TiXmlElement* element, MapLogger* mapLogger) = 0;		// Lit une light dans un fichier Map format XML
+	virtual bool LitFichier(CIfstreamMap &fichier) = 0;						// Lit une light dans un fichier Map
+	virtual bool SaveFichierMap(std::ofstream &fichier) = 0;				// Sauve la light dans un fichier Map
+	virtual bool Save(TiXmlElement* element) = 0;							// Sauve la light dans un fichier Map format XML
 
 	// Méthodes de manipulation géométrique
 	virtual void EchangeXY() override;										// Echange les coordonnées X et Y de l'objet

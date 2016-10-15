@@ -9,10 +9,24 @@
 
 #include "reseau/web/json/JsonObject.h"
 #include "reseau/web/HtmlServer.h"
+#include "main/Game.h"
+#include "spatial/Map.h"
+#include "spatial/geo/EntryPoint.h"
 
 #include "reseau/web/service/MapGrapheWebService.h"
 
+extern CGame Game;
+
 namespace jkt {
+
+string MapGrapheWebService::ID = "id";
+string MapGrapheWebService::NAME = "name";
+string MapGrapheWebService::TYPE = "type";
+
+string MapGrapheWebService::MAP = "map";
+string MapGrapheWebService::GEO = "geo";
+string MapGrapheWebService::LIGHT = "light";
+string MapGrapheWebService::ENTRYPOINT = "entryPoint";
 
 MapGrapheWebService::MapGrapheWebService() {
 }
@@ -24,33 +38,30 @@ WebServiceResult MapGrapheWebService::execute(const std::string& endpoint, const
 	JsonObject root;
 	JsonList& mapGraphe = root.addList("map-graphe");
 
-	JsonObject& jsonGeo1 = mapGraphe.addObject();
-	jsonGeo1.addString("type", "geo");
-	jsonGeo1.addString("name", "geo1");
+	CMap* map = Game.getMap();
 
-	JsonObject& jsonGeo2 = mapGraphe.addObject();
-	jsonGeo2.addString("type", "geo");
-	jsonGeo2.addString("name", "geo2");
+	if(map) {
+		for(CLight* light : map->getLights()) {
+			JsonObject& obj = mapGraphe.addObject();
+			obj.addString(TYPE, LIGHT);
+			obj.addString(ID, "TODO");
+			obj.addString(NAME, "lumiere");
+		}
 
-	JsonObject& jsonGeo3 = mapGraphe.addObject();
-	jsonGeo3.addString("type", "geo");
-	jsonGeo3.addString("name", "geo3");
+		for(MapObject* mObj : map->getMapObjects()) {
+			JsonObject& obj = mapGraphe.addObject();
+			obj.addString(TYPE, GEO);
+			obj.addString(ID, "TODO");
+			obj.addString(NAME, mObj->getName());
+		}
 
-	JsonObject& jsonLight1 = mapGraphe.addObject();
-	jsonLight1.addString("type", "light");
-	jsonLight1.addString("name", "light1");
-
-	JsonObject& jsonLight2 = mapGraphe.addObject();
-	jsonLight2.addString("type", "light");
-	jsonLight2.addString("name", "light3");
-
-	JsonObject& jsonEntryPoint1 = mapGraphe.addObject();
-	jsonEntryPoint1.addString("type", "entryPoint");
-	jsonEntryPoint1.addString("name", "entryPoint1");
-
-	JsonObject& jsonEntryPoint2 = mapGraphe.addObject();
-	jsonEntryPoint2.addString("type", "entryPoint");
-	jsonEntryPoint2.addString("name", "entryPoint2");
+		for(EntryPoint* ePt : map->getEntryPointsList()) {
+			JsonObject& obj = mapGraphe.addObject();
+			obj.addString(TYPE, ENTRYPOINT);
+			obj.addString(ID, "TODO");
+			obj.addString(NAME, ePt->getName());
+		}
+	}
 
 	string json = root.toString();
 

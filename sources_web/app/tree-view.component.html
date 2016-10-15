@@ -1,7 +1,17 @@
 <ul>
-    <li *ngFor="let item of items" class="{{ item.type }}">
+    <li *ngFor="let item of items" style="list-style-type: none;">
+		<!-- Expanded or collapsed or no sub elements -->
+		<span *ngIf="item.elements.length != 0 && item.expanded" (click)="item.toggle()"><img src="/images/ICO_Moins.gif"/></span>
+		<span *ngIf="item.elements.length != 0 && !item.expanded" (click)="item.toggle()"><img src="/images/ICO_Plus.gif"/></span>
+		<span *ngIf="item.elements.length == 0"><img src="/images/ICO_Empty.gif"/></span>
+		
+		<!-- Checkbox -->
         <span><input type="checkbox" [checked]="item.checked" (click)="item.check()" /></span> 
-        <span (click)="item.toggle()">{{ item.name }}</span>
+		
+		<!-- Icon and name -->
+		<span >&nbsp;<img class="{{ item.type }}" />&nbsp;{{ item.name }}</span>
+		
+		<!-- Sub elements -->
         <div *ngIf="item.expanded">
             <tree-view [items]="item.elements"></tree-view>
         </div>

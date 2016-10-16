@@ -678,7 +678,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					Xml::throwCorruptedMapFileException(Xml::LUMIERE, el->Value());
 				}
 
-				CLight* lum = CLightMaker::Lit(el, mapLogger);
+				CLight* lum = CLightMaker::Lit(el, mapLogger, map);
 
 				if(lum) {
 					map.add(lum);
@@ -700,7 +700,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					MapObject* geo = CGeoMaker::Lit(el, &map, mapLogger);
 
 					if(geo) {
-						map.addDescription(geo->getReference(), geo, mapLogger);
+						map.addDescription(geo->getId(), geo, mapLogger);
 					}
 					else {
 						mapLogger->logError("Géo description corrompue ?");

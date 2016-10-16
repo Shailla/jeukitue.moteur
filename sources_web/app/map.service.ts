@@ -11,7 +11,7 @@ import { MAP } 			from './mock-map';
 @Injectable()
 export class MapService {
 	private mapsServiceUrl = 'http://localhost:20000/rest/maps';
-	private mapServiceUrl = 'http://localhost:20000/rest/map';
+	private mapServiceUrl = 'http://localhost:20000/rest/map-graphe';
 	
 	constructor(private http: Http) {};
 
@@ -30,7 +30,7 @@ export class MapService {
 	getMap(): Promise<MapElement[]> {	
 		return this.http.get(this.mapServiceUrl)
 			.toPromise()
-			.then(response => response.json().map as MapElement[])
+			.then(response => response.json().mapGraphe as MapElement[])
 			.catch(this.handleError);
 	}
 	

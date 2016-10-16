@@ -9,7 +9,14 @@
         <span><input type="checkbox" [checked]="item.checked" (click)="item.check()" /></span> 
 		
 		<!-- Icon and name -->
-		<span >&nbsp;<img src="/images/ICON_{{ item.type }}_16px-16px.png" style="width: 16px; height: 16px;"/>&nbsp;{{ item.name }}</span>
+		<span >
+			&nbsp;
+			<img src="/images/ICON_{{ item.type }}_16px-16px.png" style="width: 16px; height: 16px;"/>
+			&nbsp;
+			({{ item.id }})
+			&nbsp;
+			{{ item.name }}
+		</span>
 		
 		<!-- Sub elements -->
         <div *ngIf="item.expanded">

@@ -12,6 +12,8 @@
 #include "main/Game.h"
 #include "spatial/Map.h"
 #include "spatial/geo/EntryPoint.h"
+#include "spatial/light/Light.h"
+
 
 #include "reseau/web/service/MapGrapheWebService.h"
 
@@ -36,7 +38,7 @@ MapGrapheWebService::~MapGrapheWebService() {
 
 WebServiceResult MapGrapheWebService::execute(const std::string& endpoint, const std::string& method) {
 	JsonObject root;
-	JsonList& mapGraphe = root.addList("map-graphe");
+	JsonList& mapGraphe = root.addList("mapGraphe");
 
 	CMap* map = Game.getMap();
 
@@ -44,22 +46,34 @@ WebServiceResult MapGrapheWebService::execute(const std::string& endpoint, const
 		for(CLight* light : map->getLights()) {
 			JsonObject& obj = mapGraphe.addObject();
 			obj.addString(TYPE, LIGHT);
-			obj.addString(ID, "TODO");
+			obj.addNumber(ID, light->getId());
 			obj.addString(NAME, "lumiere");
+
+			obj.addList("elements");
+			obj.addString("expanded", "false");
+			obj.addString("checked", "false");
 		}
 
 		for(MapObject* mObj : map->getMapObjects()) {
 			JsonObject& obj = mapGraphe.addObject();
 			obj.addString(TYPE, GEO);
-			obj.addString(ID, "TODO");
+			obj.addNumber(ID, mObj->getId());
 			obj.addString(NAME, mObj->getName());
+
+			obj.addList("elements");
+			obj.addString("expanded", "false");
+			obj.addString("checked", "false");
 		}
 
 		for(EntryPoint* ePt : map->getEntryPointsList()) {
 			JsonObject& obj = mapGraphe.addObject();
 			obj.addString(TYPE, ENTRYPOINT);
-			obj.addString(ID, "TODO");
+			obj.addNumber(ID, ePt->getId());
 			obj.addString(NAME, ePt->getName());
+
+			obj.addList("elements");
+			obj.addString("expanded", "false");
+			obj.addString("checked", "false");
 		}
 	}
 

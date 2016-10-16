@@ -9,6 +9,7 @@
 
 #include "reseau/web/json/JsonPair.h"
 #include "reseau/web/json/JsonString.h"
+#include "reseau/web/json/JsonNumber.h"
 #include "reseau/web/json/JsonList.h"
 
 
@@ -25,6 +26,21 @@ JsonObject::~JsonObject() {
 
 void JsonObject::addString(const string& name, const string& value) {
 	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonString(value));
+	_pairs.push_back(pair);
+}
+
+void JsonObject::addNumber(const string& name, const unsigned int& value) {
+	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
+	_pairs.push_back(pair);
+}
+
+void JsonObject::addNumber(const string& name, const int& value) {
+	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
+	_pairs.push_back(pair);
+}
+
+void JsonObject::addNumber(const string& name, const long& value) {
+	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
 	_pairs.push_back(pair);
 }
 

@@ -628,7 +628,7 @@ bool CGeoObject::Save(TiXmlElement* element) {
 
 		// Sauve les données générales
 	TiXmlElement* elGeo = new TiXmlElement("Geo");
-	elGeo->SetAttribute("Ref", getReference());
+	elGeo->SetAttribute("Ref", getId());
 	elGeo->SetAttribute("Nom", getName());
 	elGeo->SetAttribute("Type", "Simple material");
 	element->LinkEndChild(elGeo);

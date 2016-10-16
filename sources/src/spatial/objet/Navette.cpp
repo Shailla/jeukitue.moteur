@@ -156,7 +156,7 @@ void CNavette::Affiche() {		// Fonction d'affichage de la navette
 bool CNavette::Save(TiXmlElement* element) {	// Sauve l'objet géo dans un fichier Map
 	// Sauve les données générales
 	TiXmlElement* elGeo = new TiXmlElement("Geo");
-	elGeo->SetAttribute("Ref", getReference());
+	elGeo->SetAttribute("Ref", getId());
 	elGeo->SetAttribute("Nom", getName());
 	elGeo->SetAttribute("Type", "Navette");
 	element->LinkEndChild(elGeo);

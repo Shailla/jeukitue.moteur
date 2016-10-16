@@ -46,7 +46,7 @@ public:
 	void setName(const std::string &nom);		// Implémente le nom du géo
 	const char *getName();						// Renvoie le nom de l'objet
 	virtual const char* toString();				// Description résumée de l'objet
-	unsigned int getReference() const;
+	unsigned int getId() const;
 
 	// Sérialisation
 	virtual bool Lit(TiXmlElement* el, MapLogger* mapLogger) = 0;

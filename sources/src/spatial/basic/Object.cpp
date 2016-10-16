@@ -30,7 +30,7 @@ Object::~Object() {
 void Object::init() throw(CErreur) {
 }
 
-unsigned int Object::getReference() const {
+unsigned int Object::getId() const {
 	return _reference;
 }
 

@@ -348,7 +348,7 @@ CLight* CFichierASE::litLightOmni(CMap* map) {
 	if( bPosition && bColor )
 	{
 		trace() << endl << "Creation de lumiere omni";
-		pLightOmni = new CLightOmni();
+		pLightOmni = new CLightOmni(map);
 		pLightOmni->SetPosition( position );
 		pLightOmni->SetColor( color );
 	}
@@ -443,7 +443,7 @@ CLight *CFichierASE::litLightTarget(CMap* map) {
 	jkt::produitMatriciel(row, base, direction );
 
 		// Création et paramètrage de la lumière
-	CLightTarget *pLightTarget = new CLightTarget();
+	CLightTarget *pLightTarget = new CLightTarget(map);
 	pLightTarget->SetPosition( position );
 	pLightTarget->SetDirection( direction );
 	pLightTarget->SetColor( color );

@@ -16,7 +16,7 @@ export class GrapheMapComponent implements OnInit {
 	elements: MapElement[];
 	
 	constructor(private mapService: MapService) {
-		this.mapService.getMapSlowly().then(elements => this.elements = elements);
+		this.mapService.getMap().then(elements => this.elements = elements);
 	}
 	
 	ngOnInit(): void {

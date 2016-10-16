@@ -60,7 +60,7 @@ void CPorte::Affiche() {		// Fonction d'affichage de la porte
 bool CPorte::Save(TiXmlElement* element) {	// Sauve l'objet géo dans un fichier Map
 	// Sauve les données générales
 	TiXmlElement* elGeo = new TiXmlElement("Geo");
-	elGeo->SetAttribute("Ref", getReference());
+	elGeo->SetAttribute("Ref", getId());
 	elGeo->SetAttribute("Nom", getName());
 	elGeo->SetAttribute("Type", "Porte");
 	element->LinkEndChild(elGeo);

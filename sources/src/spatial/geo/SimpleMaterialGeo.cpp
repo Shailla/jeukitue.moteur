@@ -630,7 +630,7 @@ bool CSimpleMaterialGeo::Save(TiXmlElement* element)
 {
 	// Sauve les données générales
 	TiXmlElement* elGeo = new TiXmlElement(Xml::GEO);
-	elGeo->SetAttribute(Xml::REF, getReference());
+	elGeo->SetAttribute(Xml::REF, getId());
 	elGeo->SetAttribute(Xml::NOM, getName());
 	elGeo->SetAttribute(Xml::TYPE, Xml::SIMPLEMATERIAL);
 	element->LinkEndChild(elGeo);

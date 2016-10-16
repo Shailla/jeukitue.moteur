@@ -10,15 +10,15 @@
 namespace jkt
 {
 
-CLight* CLightMaker::Lit(TiXmlElement* element, MapLogger* mapLogger)
+CLight* CLightMaker::Lit(TiXmlElement* element, MapLogger* mapLogger, CMap& map)
 {
 	const char* type = element->Attribute(Xml::TYPE);
 	CLight* light;
 
 	if(!strcmp(Xml::OMNI, type))
-		light = new CLightOmni();
+		light = new CLightOmni(&map);
 	else if(!strcmp(Xml::TARGET, type))
-		light = new CLightTarget();
+		light = new CLightTarget(&map);
 	else
 		throw jkt::CErreur("Fichier Map corrompu : Lumiere de type inconnu");
 

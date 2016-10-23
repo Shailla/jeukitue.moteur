@@ -9,8 +9,11 @@
 #define SRC_RESEAU_WEB_SERVICE_MAPGRAPHEWEBSERVICE_H_
 
 #include "reseau/web/service/WebService.h"
+#include "reseau/web/json/JsonObject.h"
 
 namespace jkt {
+
+class CMap;
 
 class MapGrapheWebService : public WebService {
 	static string ID;
@@ -26,6 +29,7 @@ public:
 	MapGrapheWebService();
 	virtual ~MapGrapheWebService();
 
+	void jisonifyMap(CMap* map, JsonObject& mapGraphe);
 	WebServiceResult execute(const std::string& endpoint, const std::string& method);
 };
 

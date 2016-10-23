@@ -1,21 +1,11 @@
 export class MapElement {
 	type: string;
-	id: int; 
+	id: number; 
 	name: string; 
 	elements: Array<MapElement>;
 	
     expanded: boolean;
     checked: boolean;
-	
-    constructor(type, id, name) {
-        this.type = type;
-		this.id = id;
-		this.name = name;
-        this.elements = [];
-        
-		this.expanded = false;
-        this.checked = false;
-    }
 	
 	constructor(type, id, name, elements) {
         this.type = type;

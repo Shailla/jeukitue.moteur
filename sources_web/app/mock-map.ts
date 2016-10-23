@@ -17,3 +17,4 @@ let item1 = new MapElement(			"geo",		12,	"Item1",		[]							);
 let item2 = new MapElement(			"geo",		13,	"Item2",		[]							);
 
 export const MAP: MapElement[] = [parent1, parent2, item1, item2];
+

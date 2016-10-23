@@ -326,8 +326,6 @@ void Controller::executeAgarAction(AG_Event* event) {
 			OpenSceneMapView* view = (OpenSceneMapView*)_agarView->getView(Viewer::OPEN_SCENE_MAP_VIEW);
 			string mapName = view->getMapName(mapNumber);
 
-			cout << endl << "Ouverture de la Map '" << mapName << "'";
-
 			// Ouverture de la Map
 			Game.RequeteProcess.setOuvreMapLocal(mapName);
 		}

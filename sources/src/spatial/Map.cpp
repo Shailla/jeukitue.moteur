@@ -127,6 +127,13 @@ CMap::~CMap() {
 		delete light;
 
 	_lights.clear();
+
+	// Destruction des sous-Map
+	for(CMap *map : _subMaps) {
+		delete map;
+	}
+
+	_subMaps.clear();
 }
 
 MapObject* CMap::clone() {
@@ -187,6 +194,11 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 	}
 
 	glDisable( GL_VERTEX_ARRAY );
+
+	// Initialisation des sous-Map
+	for(CMap *map : _subMaps) {
+		map->Affiche();
+	}
 }
 
 void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objets géo de du MAP
@@ -206,6 +218,11 @@ void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objet
 	}
 
 	glDisable( GL_VERTEX_ARRAY );
+
+	// Initialisation des sous-Map
+	for(CMap *map : _subMaps) {
+		map->AfficheSelection(r, v, b);
+	}
 }
 
 void CMap::addDescription(int ref, MapObject* geo, MapLogger* mapLogger) {
@@ -286,22 +303,33 @@ void CMap::merge(CMap& map) {
 	vector<EntryPoint*>::iterator iterEntryPoint;
 
 
-	// Caractéristiques de la Map
+	// Merge des lumières
 	for(CLight* light : map._lights) {
 		_lights.push_back(light);
 	}
 
+	// Merge des matériaux
 	for(CMaterial* mat : map.m_TabMaterial) {
 		m_TabMaterial.push_back(mat);
 	}
 
+	// Merge des entry points
 	for(EntryPoint* entry : map._entryPoints) {
 		_entryPoints.push_back(entry);
+	}
+
+	// Merge des sous-map
+	for(CMap* mapVar : map._subMaps) {
+		_subMaps.push_back(mapVar);
 	}
 }
 
 vector<EntryPoint*>& CMap::getEntryPointsList() {
 	return _entryPoints;
+}
+
+void CMap::add(CMap* subMap) {
+	_subMaps.push_back(subMap);
 }
 
 void CMap::add(EntryPoint* entryPoint) {
@@ -371,6 +399,11 @@ void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	for(SolidAndTargettable* solid : _solidAndTargettables) {
 		solid->GereContactPlayer(positionPlayer, player);	// Gère les contacts entre l'objet géo et le joueur
 	}
+
+	// Initialisation des sous-Map
+	for(CMap *map : _subMaps) {
+		map->GereContactPlayer(positionPlayer, player);
+	}
 }
 
 float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
@@ -379,6 +412,11 @@ float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 
 	for(SolidAndTargettable* solid : _solidAndTargettables) {
 		dist = solid->GereLaserPlayer( pos, Dir, dist );
+	}
+
+	// Initialisation des sous-Map
+	for(CMap *map : _subMaps) {
+		map->GereLaserPlayer( pos, Dir, dist );
 	}
 
 	return dist;	// Renvoie la distance du premier contact trouvé entre le laser et une face d'objet géo
@@ -398,6 +436,10 @@ void CMap::EchangeXY() {
 	// Lights
 	for(CLight* light : _lights)
 		light->EchangeXY();
+
+	// Initialisation des sous-Map
+	for(CMap *map : _subMaps)
+		map->EchangeXY();
 }
 
 void CMap::EchangeXZ() {
@@ -414,6 +456,10 @@ void CMap::EchangeXZ() {
 	// Lights
 	for(CLight* light : _lights)
 		light->EchangeXZ();
+
+	// Initialisation des sous-Map
+	for(CMap *map : _subMaps)
+		map->EchangeXZ();
 }
 
 void CMap::EchangeYZ() {
@@ -430,6 +476,10 @@ void CMap::EchangeYZ() {
 	// Lights
 	for(CLight* light : _lights)
 		light->EchangeYZ();
+
+	// Initialisation des sous-Map
+	for(CMap *map : _subMaps)
+		map->EchangeYZ();
 }
 
 void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
@@ -448,6 +498,11 @@ void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
 		for(CLight* light : _lights)
 			light->Scale( scaleX, scaleY, scaleZ );
 	}
+
+	// Initialisation des sous-Map
+	for(CMap *map : _subMaps) {
+		map->Scale( scaleX, scaleY, scaleZ );
+	}
 }
 
 void CMap::translate(float x, float y, float z) {
@@ -465,6 +520,11 @@ void CMap::translate(float x, float y, float z) {
 		// Lights
 		for(CLight* light : _lights)
 			light->translate(x, y, z);
+	}
+
+	// Initialisation des sous-Map
+	for(CMap *map : _subMaps) {
+		map->translate(x, y, z);
 	}
 }
 
@@ -570,18 +630,14 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					}
 
 					// Lecture de la Map
-					CMap subMap(0);
-					Lit(subMap, string(subMapName), mapLogger);
+					CMap* subMap = new CMap(map);
+					Lit(*subMap, string(subMapName), mapLogger);
 
-					subMap.translate(translation[0], translation[1], translation[2]);
-					subMap.Scale(scaling[0], scaling[1], scaling[2]);
+					subMap->translate(translation[0], translation[1], translation[2]);
+					subMap->Scale(scaling[0], scaling[1], scaling[2]);
 
 					// Fusion des Map
-					map.merge(subMap);
-					subMap._geos.clear();
-					subMap._refreshables.clear();
-					subMap._lights.clear();
-					subMap.m_TabMaterial.clear();
+					map.add(subMap);
 				}
 			}
 		}
@@ -779,6 +835,11 @@ void CMap::init() throw(jkt::CErreur) {	// Initialisation de la CMap
 		MapObject* object = (*iterObject);
 		object->init();
 	}
+
+	// Initialisation des sous-Map
+	for(CMap *map : _subMaps) {
+		map->init();
+	}
 }
 
 void CMap::initPlugins() {
@@ -797,38 +858,48 @@ void CMap::freePlugins() {
 }
 
 void CMap::initGL() {
-	// Letcure des fichiers de texture
+	// Initialisation GL des fichiers de texture
 	for(CMaterial* material : m_TabMaterial) {
 		material->initGL();
 	}
 
-	// Initialisation des object géométriques dans le contexte OpenGL
+	// Initialisation GL des object géométriques dans le contexte OpenGL
 	for(Drawable* drawable : _drawables) {
 		drawable->initGL();
 	}
 
-	// Letcure des moteurs de particules
+	// Initialisation GL des moteurs de particules
 	for(CMoteurParticules *engine : _particulesEngines) {
 		engine->initGL();
+	}
+
+	// Initialisation GL des sous-Map
+	for(CMap *map : _subMaps) {
+		map->initGL();
 	}
 
 	_isGlActivated = true;	// Indique que les éléments OpenGL de la MAP ont bien été initialisés
 }
 
 void CMap::freeGL() {
-	// Letcure des moteurs de particules
+	// Libération GL des moteurs de particules
 	for(CMoteurParticules *engine : _particulesEngines) {
 		engine->freeGL();
 	}
 
-	// Initialisation des object géométriques dans le contexte OpenGL
+	// Libération GL des object géométriques dans le contexte OpenGL
 	for(Drawable* drawable : _drawables) {
 		drawable->freeGL();
 	}
 
-	// Letcure des fichiers de texture
+	// Libération GL des fichiers de texture
 	for(CMaterial* material : m_TabMaterial) {
 		material->freeGL();
+	}
+
+	// Libération GL des sous-Map
+	for(CMap *map : _subMaps) {
+		map->freeGL();
 	}
 
 	_isGlActivated = false;
@@ -903,6 +974,11 @@ bool CMap::Contact(const float pos[3], const float dist) {
 
 		if(var)	// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
 			break;
+	}
+
+	// Initialisation des sous-Map
+	for(CMap *map : _subMaps) {
+		map->Contact( pos, dist );
 	}
 
 	return var;
@@ -988,6 +1064,10 @@ bool CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int t
 	}
 
 	return again;
+}
+
+vector<CMap*>& CMap::getSubMaps() {
+	return _subMaps;
 }
 
 vector<CLight*>& CMap::getLights() {

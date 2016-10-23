@@ -36,45 +36,63 @@ MapGrapheWebService::MapGrapheWebService() {
 MapGrapheWebService::~MapGrapheWebService() {
 }
 
+void MapGrapheWebService::jisonifyMap(CMap* map, JsonObject& mapGraphe) {
+	mapGraphe.addString(TYPE, MAP);
+	mapGraphe.addNumber(ID, map->getId());
+	mapGraphe.addString(NAME, map->getName());
+
+	JsonList& elements = mapGraphe.addList("elements");
+
+	for(EntryPoint* ePt : map->getEntryPointsList()) {
+		JsonObject& obj = elements.addObject();
+		obj.addString(TYPE, ENTRYPOINT);
+		obj.addNumber(ID, ePt->getId());
+		obj.addString(NAME, ePt->getName());
+
+		obj.addList("elements");
+		obj.addString("expanded", "false");
+		obj.addString("checked", "false");
+	}
+
+	for(CLight* light : map->getLights()) {
+		JsonObject& obj = elements.addObject();
+		obj.addString(TYPE, LIGHT);
+		obj.addNumber(ID, light->getId());
+		obj.addString(NAME, "lumiere");
+
+		obj.addList("elements");
+		obj.addString("expanded", "false");
+		obj.addString("checked", "false");
+	}
+
+	for(MapObject* mObj : map->getMapObjects()) {
+		JsonObject& obj = elements.addObject();
+		obj.addString(TYPE, GEO);
+		obj.addNumber(ID, mObj->getId());
+		obj.addString(NAME, mObj->getName());
+
+		obj.addList("elements");
+		obj.addString("expanded", "false");
+		obj.addString("checked", "false");
+	}
+
+	for(CMap* subMap : map->getSubMaps()) {
+		JsonObject& obj = elements.addObject();
+		jisonifyMap(subMap, obj);
+	}
+
+	mapGraphe.addString("expanded", "false");
+	mapGraphe.addString("checked", "false");
+}
+
 WebServiceResult MapGrapheWebService::execute(const std::string& endpoint, const std::string& method) {
 	JsonObject root;
-	JsonList& mapGraphe = root.addList("mapGraphe");
+	JsonObject& mapElement = root.addObject("mapElement");
 
 	CMap* map = Game.getMap();
 
 	if(map) {
-		for(CLight* light : map->getLights()) {
-			JsonObject& obj = mapGraphe.addObject();
-			obj.addString(TYPE, LIGHT);
-			obj.addNumber(ID, light->getId());
-			obj.addString(NAME, "lumiere");
-
-			obj.addList("elements");
-			obj.addString("expanded", "false");
-			obj.addString("checked", "false");
-		}
-
-		for(MapObject* mObj : map->getMapObjects()) {
-			JsonObject& obj = mapGraphe.addObject();
-			obj.addString(TYPE, GEO);
-			obj.addNumber(ID, mObj->getId());
-			obj.addString(NAME, mObj->getName());
-
-			obj.addList("elements");
-			obj.addString("expanded", "false");
-			obj.addString("checked", "false");
-		}
-
-		for(EntryPoint* ePt : map->getEntryPointsList()) {
-			JsonObject& obj = mapGraphe.addObject();
-			obj.addString(TYPE, ENTRYPOINT);
-			obj.addNumber(ID, ePt->getId());
-			obj.addString(NAME, ePt->getName());
-
-			obj.addList("elements");
-			obj.addString("expanded", "false");
-			obj.addString("checked", "false");
-		}
+		jisonifyMap(map, mapElement);
 	}
 
 	string json = root.toString();

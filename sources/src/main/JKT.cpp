@@ -67,6 +67,7 @@ class CGame;
 #include <spatial/basic/Refreshable.h>
 #include "spatial/geo/GeoObject.h"
 #include "reseau/web/HtmlServer.h"
+#include "reseau/web/SoapServer.h"
 #include "Rocket.h"
 #include "Laser.h"
 #include "spatial/objet/Porte.h"
@@ -1654,6 +1655,9 @@ int main(int argc, char** argv) {
 
 	HtmlServer htmlServer(Config.Web.getHtmlServerPort());
 	htmlServer.open();
+
+	SoapServer soapServer();
+	soapServer.open(18888, 19999);
 
 	_grahicObjectsToInitializeMutex = SDL_CreateMutex();
 	_grahicObjectsToDestructMutex = SDL_CreateMutex();

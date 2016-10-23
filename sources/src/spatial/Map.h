@@ -33,12 +33,14 @@ class EntryPoint;
 class CMoteurParticules;
 class CheckPlayerInZone;
 
-class CMap : MapObject {
+class CMap : public MapObject {
 	static const char* identifier;
 	string tostring;
 
 	string _filename;								// Nom du fichier de la Map (par exemple "Monde.map.xml")
 	string _binariesDirectory;						// Répertoires des binaires de la Map (textures, plugins, ...)
+
+	vector<CMap*> _subMaps;
 
 	map<int, MapObject*> _geoDescriptions;
 
@@ -119,6 +121,9 @@ public:
 	void addDescription(int ref, MapObject* geo, MapLogger* mapLogger);
 	MapObject* getDescription(int ref);
 
+	void add(CMap* map);											// Intègre tous les éléments d'une autre Map dans celle-ci
+	void merge(CMap& map);											// Intègre tous les éléments d'une autre Map dans celle-ci
+
 	void add(MapObject* object);			// Ajoute un GeoObject à la map
 	void add(Dirigeable* dirigeable);
 	void add(CPorte *porte);				// Ajoute une porte à la map
@@ -135,8 +140,6 @@ public:
 	void Scale(float scaleX, float sclaeY, float scaleZ) override;	// Homothétie la Map (coordonnées multipliées par scale)
 	void translate(float x, float y, float z) override;				// Translation de la Map selon x, y, z
 
-	void merge(CMap& map);											// Intègre tous les éléments d'une autre Map dans celle-ci
-
 	// Gestion des contacts
 	bool Contact(const float pos[3], const float dist) override;	// Indique s'il y a un triangle à une distance inférieure à 'dist' de la position 'pos'
 
@@ -146,6 +149,7 @@ public:
 	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;								// Gère tous les contacts entre la map et les joueurs
 	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;	// Envoie d'un laser sur la map
 
+	vector<CMap*>& getSubMaps();
 	vector<CLight*>& getLights();
 	vector<MapObject*>& getMapObjects();
 

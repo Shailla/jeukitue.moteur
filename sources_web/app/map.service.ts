@@ -27,10 +27,10 @@ export class MapService {
 				.then(() => Promise.resolve(MAPS));
 	}
 	
-	getMap(): Promise<MapElement[]> {	
+	getMap(): Promise<MapElement> {	
 		return this.http.get(this.mapServiceUrl)
 			.toPromise()
-			.then(response => response.json().mapGraphe as MapElement[])
+			.then(response => response.json().mapElement as MapElement)
 			.catch(this.handleError);
 	}
 	
@@ -38,6 +38,7 @@ export class MapService {
 		return new Promise<MapElement[]>(resolve => setTimeout(resolve, 1000)) // delay 2 seconds
 			.then(() => Promise.resolve(MAP));
 	}
+
 	
 	private handleError(error: any): Promise<any> {
 		console.error('An error occurred', error);

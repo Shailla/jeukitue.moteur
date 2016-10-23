@@ -53,15 +53,11 @@ CMaterialMulti::~CMaterialMulti() {
 }
 
 void CMaterialMulti::initGL() {
-	cout << endl << "Lecture des fichiers de texture multiple (ref. " << getRef() << ")";
-
 	for(int i=0 ; i<NbrTex() ; i++)
 		m_TabMat[i]->initGL();
 }
 
 void CMaterialMulti::freeGL()  {
-	cout << endl << "Libération des fichiers de texture multiple (ref. " << getRef() << ")";
-
 	for(int i=0 ; i<NbrTex() ; i++)
 		m_TabMat[i]->freeGL();
 }

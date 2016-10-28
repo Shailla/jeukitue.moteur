@@ -11,23 +11,20 @@
 #include <map>
 
 #include "SDL.h"
+#include "SDL_net.h"
 
 namespace jkt
 {
 
 class SoapRequest {
 public:
-	long timeRequestSent;
-	long timeRequestAck;
+	long timeSyncRequestSent;
+	long timeSyncRequestResponse;
 
-	long timeResponse;
+	long timeCallbackResponse;
 
-	SoapRequest(long timeRequestSent) {
-		this->timeRequestSent = timeRequestSent;
-
-		timeRequestAck = 0;
-		timeResponse = 0;
-	}
+	SoapRequest(long timeRequestSent);
+	void serialize(ofstream& fichier);
 };
 
 
@@ -43,9 +40,11 @@ class SoapServer {
 
 	static const char* HTTP_INTERNAL_ERROR_CONTENT;
 
-	static const char* DEMANDE_SIGNATURE_1;
-	static const char* DEMANDE_SIGNATURE_2;
-	static const char* DEMANDE_SIGNATURE_3;
+	static const char* SIGNATURE_HEADER;
+	static const char* SIGNATURE_RESPONSE;
+
+	static const char* CALLBACK_HEADER;
+	static const char* CALLBACK_RESPONSE;
 
 	std::map<long, SoapRequest*> _requests;
 
@@ -53,11 +52,9 @@ class SoapServer {
 		RESOURCE_NOT_FOUND_EXCEPTION = 1
 	};
 
+	int _period;
 	Uint16 _portClient;
 	Uint16 _portServer;
-
-	string buildStringResponse(const string& content, const string& contentType, const string& status);
-	string buildResponseHeader(const string& contentType, long contentSize, const string& status);
 
 	void* buildResponse();
 
@@ -68,6 +65,7 @@ class SoapServer {
 	bool _activated;
 
 	long extractRequestId(string& response);
+	void start();
 
 public:
 	static const char* HTTP_RETURN;
@@ -85,8 +83,7 @@ public:
 	SoapServer();
 	virtual ~SoapServer();
 
-	void open(int portClient, int portServer);
-	void start();
+	void open(int period, int portClient, int portServer);
 	void stop();
 
 	static int runServer(void* arg);
@@ -98,6 +95,8 @@ public:
 	void startClientReceiver();
 
 	void addRequest(SoapRequest* request);
+	void traceSynchronousResponse(long requestId);
+	void traceCallback(long requestId);
 };
 
 }	// JktNet

@@ -17,6 +17,7 @@ using namespace std;
 #include "SDL_net.h"
 
 #include "util/StringUtils.h"
+#include "util/IpUtils.h"
 #include "util/Trace.h"
 #include "util/FindFolder.h"
 #include "reseau/web/service/WebService.h"
@@ -47,9 +48,25 @@ const char* SoapServer::HTTP_CONTENT_TYPE_JS = 		"Content-type: application/java
 const char* SoapServer::HTTP_CONTENT_TYPE_JSON = 	"Content-type: application/json; charset=utf-8";
 const char* SoapServer::HTTP_CONTENT_LENGTH = 		"Content-Length: ";
 
+SoapRequest::SoapRequest(long timeRequestSent) {
+	this->timeSyncRequestSent = timeRequestSent;
+
+	timeSyncRequestResponse = 0;
+	timeCallbackResponse = 0;
+}
+
+void SoapRequest::serialize(ofstream& fichier) {
+	stringstream ligne;
+	ligne << timeSyncRequestSent << "\t" << timeSyncRequestResponse << "\t" << timeCallbackResponse;
+
+	fichier << ligne.str() << "\n";
+}
+
+
 SoapServer::SoapServer() {
 	_activated = false;
 	_mutex = SDL_CreateMutex();
+	_period = 0;
 	_portClient = 0;
 	_portServer = 0;
 	_socketClient = 0;
@@ -59,16 +76,19 @@ SoapServer::SoapServer() {
 SoapServer::~SoapServer() {
 }
 
-void SoapServer::open(int portClient, int portServer) {
+void SoapServer::open(int period, int portClient, int portServer) {
+	_period = period;
 	_portClient = portClient;
 	_portServer = portServer;
 
 	// Open client socket
 	IPaddress adresseClient;
 
-	if(SDLNet_ResolveHost(&adresseClient,"localhost", _portClient)==-1) {
+	if(SDLNet_ResolveHost(&adresseClient,"mcoamea-ae-prp.dmz.cloud.mbs", _portClient)==-1) {
 		LOGERROR(("Resolve address error : %s", SDLNet_GetError()));
 	}
+
+	LOGINFO(("RESOLVE CLIENT '%s'", IpUtils::translateAddress(adresseClient).c_str()));
 
 	_socketClient = SDLNet_TCP_Open(&adresseClient);
 
@@ -89,15 +109,17 @@ void SoapServer::open(int portClient, int portServer) {
 	if(!_socketServer) {
 		LOGERROR(("Open TCP server failed : %s", SDLNet_GetError()));
 	}
+
+	_requests.clear();
+
+	start();
 }
 
 void SoapServer::start() {
 	stop();
 
-	SDL_Delay(200);
-
 	SDL_LockMutex(_mutex);
-	_activated = false;
+	_activated = true;
 	SDL_UnlockMutex(_mutex);
 
 	SDL_CreateThread(SoapServer::runServer, this);
@@ -109,35 +131,74 @@ void SoapServer::start() {
 }
 
 void SoapServer::stop() {
+	// Termine les threads
 	SDL_LockMutex(_mutex);
 	_activated = false;
 	SDL_UnlockMutex(_mutex);
+
+	// Laisse finir les trucs en cours
+	SDL_Delay(200);
+
+	ofstream fichier("soap.txt", ios::out | ios::trunc);  //déclaration du flux et ouverture du fichier
+
+	if(!fichier)
+		LOGERROR(("Erreur à l'ouverture en écriture du fichier des résultats SOAP!"));
+
+
+	for(pair<long, SoapRequest*> var : _requests) {
+		var.second->serialize(fichier);
+	}
+
+	fichier.flush();
+	fichier.close();
 }
 
 void SoapServer::startClientSender() {
 	long time;
 	int result;
-	long msisdn = 0;
+	long msisdn = 10000;
 
 	while(_activated) {
-		if(msisdn > 90000) {
-			msisdn = 0;
+		if(msisdn > 99999) {
+			msisdn = 10000;
 		}
 
+		// RequestID
 		time = SDL_GetTicks();
-		stringstream demande;
-		demande << DEMANDE_SIGNATURE_1 << "yy" << time << "zz" << DEMANDE_SIGNATURE_2 << "+2126000" << msisdn++ << DEMANDE_SIGNATURE_3;
+		stringstream requestId;
+		requestId << "yy" << time << "zz";
+
+		string demande = SIGNATURE_RESPONSE;
+		demande = demande.replace(demande.find("${ID}"), 5, requestId.str());
+
+		// MSISDN
+		stringstream numero;
+		numero << "+2126000" << msisdn++;
+		demande = demande.replace(demande.find("${MSISDN}"), 9, numero.str());
+
+
+		string header = SIGNATURE_HEADER;
+		stringstream size;
+		size << demande.length();
+		header = header.replace(header.find("${SIZE}"), 7, size.str());
+
+		demande = header + demande;
 
 		addRequest(new SoapRequest(time));
 
-		result = SDLNet_TCP_Send(_socketClient, demande.str().c_str(), demande.str().length());
-		SDL_Delay(1000);
+		LOGERROR(("Demande signature à envoyer '%s'", demande.c_str()));
+
+		result = SDLNet_TCP_Send(_socketClient, demande.c_str(), demande.length());
+
+		LOGERROR(("Demande signature envoyée"));
+
+		SDL_Delay(_period);
 	}
 }
 
 void SoapServer::addRequest(SoapRequest* request) {
 	SDL_LockMutex(_mutex);
-	_requests[request->timeRequestSent] = request;
+	_requests[request->timeSyncRequestSent] = request;
 	SDL_UnlockMutex(_mutex);
 }
 
@@ -145,16 +206,14 @@ void SoapServer::startClientReceiver() {
 	char buffer[1024];
 	int requestSize;
 	string response;
-	TCPsocket socket;
 
 	while(_activated) {
 		// Attente connexion client
-		socket = 0;
+		requestSize = 0;
 
-		while(socket == 0 && _activated)
-			socket = SDLNet_TCP_Accept(_socketClient);
+		while(requestSize == 0 && _activated)
+			requestSize = SDLNet_TCP_Recv(_socketClient, buffer, 1024); 	// Reception parametres connection du client
 
-		requestSize = SDLNet_TCP_Recv(socket, buffer, 1024); 	// Reception parametres connection du client
 		buffer[requestSize] = 0;
 
 		response = buffer;
@@ -162,16 +221,32 @@ void SoapServer::startClientReceiver() {
 
 		// Extract requestID
 		long requestId = extractRequestId(response);
+		traceSynchronousResponse(requestId);
 	}
+}
+
+void SoapServer::traceSynchronousResponse(long requestId) {
+	SoapRequest* request = _requests[requestId];
+	request->timeSyncRequestResponse = SDL_GetTicks();
+}
+
+void SoapServer::traceCallback(long requestId) {
+	SoapRequest* request = _requests[requestId];
+	request->timeCallbackResponse = SDL_GetTicks();
 }
 
 long SoapServer::extractRequestId(string& response) {
 	string var;
+	long requestId;
 
-	var = response.replace(response.find("yy"), response.find("yy")+2, "");
-	var = response.replace(response.find("zz")+1, string::npos, "");
-
-	long requestId = std::stol(var.c_str());
+	if(response.find("yy") != string::npos && response.find("zz") != string::npos) {
+		var = response.replace(response.find("yy"), 2, "");
+		var = response.replace(response.find("zz")+1, string::npos, "");
+		requestId = std::stol(var.c_str());
+	}
+	else {
+		requestId = 0;
+	}
 
 	return requestId;
 }
@@ -194,7 +269,7 @@ int SoapServer::runServer(void* thiz) {
 void SoapServer::startServer() {
 	TCPsocket clientSocket;
 	string status;
-	char* response;
+	string response;
 	int responseSize;
 	char buffer[1024];
 
@@ -208,54 +283,103 @@ void SoapServer::startServer() {
 		int requestSize = SDLNet_TCP_Recv(clientSocket, buffer, 1024); 	// Reception parametres connection du client
 		buffer[requestSize] = 0;
 
-		string request = buffer;
-		LOGINFO(("SOAP requête callback reçue : '%s'", request.c_str()));
+		string callback = buffer;
+		LOGINFO(("SOAP requête callback reçue : '%s'", callback.c_str()));
+
+		// Extract requestID
+		long requestId = extractRequestId(callback);
 
 
-		// Recherche du contenu
-		try {
-			status = status = HTTP_RESPONSE_200;
+		if(requestId) {
+			traceCallback(requestId);
+
+			response = CALLBACK_RESPONSE;
+			stringstream requestIdStr;
+			requestIdStr << requestId;
+			response = response.replace(response.find("${ID}"), 5, requestIdStr.str());
+
+			stringstream size;
+			size << response.length();
+			string header = CALLBACK_HEADER;
+			header = header.replace(header.find("${SIZE}"), 7, size.str());
+
+			response = header + response;
+
+			// Envoi réponse
+			SDLNet_TCP_Send(clientSocket, response.c_str(), response.length()); 		// Envoi du contenu de la page au client
+			SDLNet_TCP_Close(clientSocket);
 		}
-		catch(...) {
-			LOGERROR(("Erreur interne inconnue"));
+		else {
+			LOGERROR(("Pas de requestId"));
 		}
-
-		// Envoi réponse
-		SDLNet_TCP_Send(clientSocket, response, responseSize); 		// Envoi du contenu de la page au client
-		SDLNet_TCP_Close(clientSocket);
-
-		free(response);
 	}
 }
 
-const char* SoapServer::DEMANDE_SIGNATURE_1 = "<S:Envelope xmlns:S=\"http://www.w3.org/2003/05/soap-envelope\">"
-   "<S:Body>"
-   "   <ns7:MSS_Signature xmlns:ns4=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ns5=\"http://uri.etsi.org/TS102204/v1.1.2#\" xmlns:ns6=\"http://www.w3.org/2001/04/xmlenc#\" xmlns:ns7=\"http://www.orange.com/mobileconnect/mssp/wsdl\">"
-   "      <MSS_SignatureReq MessagingMode=\"asynchServerServer\" MajorVersion=\"1\" MinorVersion=\"1\">"
-   "         <ns5:AP_Info AP_ID=\"SP_DEFAULT\" AP_TransID=\"xxIDyy\" AP_PWD=\"Administrateur!\" AP_URL=\"http://localhost:8089/notify\" Instant=\"2015-04-13T11:53:15.384+02:00\"/>"
-   "         <ns5:MSSP_Info>"
-   "             <ns5:MSSP_ID>"
-   "                 <ns5:URI>test</ns5:URI>"
-   "             </ns5:MSSP_ID>"
-   "         </ns5:MSSP_Info>"
-   "         <ns5:MobileUser>"
-   "            <ns5:MSISDN>xxMSISDNyy</ns5:MSISDN>"
-   "         </ns5:MobileUser>"
-   "         <ns5:DataToBeSigned>test: Saisir votre code mobile connect a 4 chiffres</ns5:DataToBeSigned>"
-   "         <ns5:SignatureProfile>"
-   "            <ns5:mssURI>http://uri.gsma.com/mobileconnect/LoA2</ns5:mssURI>"
-   "         </ns5:SignatureProfile>"
-   "         <ns5:AdditionalServices>"
-   "            <ns5:Service>"
-   "               <ns5:Description>"
-   "                  <ns5:mssURI>http://mobileConnect/TS102204/v1.0.0#antiSpamCode</ns5:mssURI>"
-    "              </ns5:Description>"
-    "              <xs:Code>aBcde</xs:Code>"
-    "           </ns5:Service>"
-    "        </ns5:AdditionalServices>"
-    "     </MSS_SignatureReq>"
-    "  </ns7:MSS_Signature>"
-  " </S:Body>"
-"</S:Envelope>";
+const char* SoapServer::SIGNATURE_HEADER =
+		"POST /services/MSSSignatureService HTTP/1.1\r\n"
+		"Content-Type: application/soap+xml;charset=UTF-8;action=\"tns:MSS_Signature\"\r\n"
+		"Content-Length: ${SIZE}\r\n"
+		"Host: mcoamea-ae-prp.dmz.cloud.mbs\r\n"
+		"Connection: Keep-Alive\r\n"
+		"User-Agent: Apache-HttpClient/4.1.1 (java 1.5)\r\n"
+		"\r\n";
+
+const char* SoapServer::SIGNATURE_RESPONSE =
+		"<S:Envelope xmlns:S=\"http://www.w3.org/2003/05/soap-envelope\">\r\n"
+		"<S:Body>\r\n"
+		"   <ns7:MSS_Signature xmlns:ns4=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:xs=\"http://www.w3.org/2001/XMLSchema\" xmlns:ns5=\"http://uri.etsi.org/TS102204/v1.1.2#\" xmlns:ns6=\"http://www.w3.org/2001/04/xmlenc#\" xmlns:ns7=\"http://www.orange.com/mobileconnect/mssp/wsdl\">\r\n"
+		"      <MSS_SignatureReq MessagingMode=\"asynchServerServer\" MajorVersion=\"1\" MinorVersion=\"1\">\r\n"
+		"         <ns5:AP_Info AP_ID=\"SP_DEFAULT\" AP_TransID=\"${ID}\" AP_PWD=\"Administrateur!\" AP_URL=\"http://localhost:8089/notify\" Instant=\"2015-04-13T11:53:15.384+02:00\"/>\r\n"
+		"         <ns5:MSSP_Info>\r\n"
+		"             <ns5:MSSP_ID>\r\n"
+		"                 <ns5:URI>test</ns5:URI>\r\n"
+		"             </ns5:MSSP_ID>\r\n"
+		"         </ns5:MSSP_Info>\r\n"
+		"         <ns5:MobileUser>\r\n"
+		"            <ns5:MSISDN>${MSISDN}</ns5:MSISDN>\r\n"
+		"         </ns5:MobileUser>\r\n"
+		"         <ns5:DataToBeSigned>test: Saisir votre code mobile connect a 4 chiffres</ns5:DataToBeSigned>\r\n"
+		"         <ns5:SignatureProfile>\r\n"
+		"            <ns5:mssURI>http://uri.gsma.com/mobileconnect/LoA2</ns5:mssURI>\r\n"
+		"         </ns5:SignatureProfile>\r\n"
+		"         <ns5:AdditionalServices>\r\n"
+		"            <ns5:Service>\r\n"
+		"               <ns5:Description>\r\n"
+		"                  <ns5:mssURI>http://mobileConnect/TS102204/v1.0.0#antiSpamCode</ns5:mssURI>\r\n"
+		"              </ns5:Description>\r\n"
+		"              <xs:Code>aBcde</xs:Code>\r\n"
+		"           </ns5:Service>\r\n"
+		"        </ns5:AdditionalServices>\r\n"
+		"     </MSS_SignatureReq>\r\n"
+		"  </ns7:MSS_Signature>\r\n"
+		" </S:Body>\r\n"
+		"</S:Envelope>\r\n";
+
+const char* SoapServer::CALLBACK_HEADER =
+		"HTTP/1.1 200 OK\r\n"
+		"Date: Sun, 23 Oct 2016 16:22:16 GMT\r\n"
+		"Server: Apache\r\n"
+		"Content-Length: ${SIZE}\r\n"
+		"Content-Type: application/soap+xml;charset=UTF-8\r\n"
+		"Set-Cookie: MCOAMEA_AE=wasae01; path=/\r\n"
+		"\r\n";
+
+const char* SoapServer::CALLBACK_RESPONSE =
+		"<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" xmlns:wsdl=\"http://www.orange.com/mobileconnect/mssp/wsdl\" xmlns:v1=\"http://uri.etsi.org/TS102204/v1.1.2#\" xmlns:xd=\"http://www.w3.org/2000/09/xmldsig#\">\r\n"
+		"<soap:Header/>\r\n"
+		"<soap:Body>\r\n"
+		"   <wsdl:MSS_NotificationResponse>\r\n"
+		"      <MSS_ReceiptReq MajorVersion=\"1\" MinorVersion=\"1\" MSSP_TransID=\"${ID}\">\r\n"
+		"         <v1:AP_Info AP_ID=\"SP_DEFAULT\" AP_TransID=\"12345\" AP_PWD=\"spPassword\" AP_URL=\"http://ITL-5MQ1ZX1:8090/notify\"/>\r\n"
+		"         <v1:MSSP_Info Instant=\"1234567\">\r\n"
+		"            <v1:MSSP_ID>\r\n"
+		"            </v1:MSSP_ID>\r\n"
+		"         </v1:MSSP_Info>\r\n"
+		"         <v1:MobileUser>\r\n"
+		"         </v1:MobileUser>\r\n"
+		"      </MSS_ReceiptReq>\r\n"
+		"   </wsdl:MSS_NotificationResponse>\r\n"
+		"</soap:Body>\r\n"
+		"</soap:Envelope>\r\n";
 
 }	// JktNet

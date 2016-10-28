@@ -19,6 +19,7 @@ using namespace std;
 #include "script/commandes/DataCommande.h"
 #include "script/commandes/EchoCommande.h"
 #include "script/commandes/HelpCommande.h"
+#include "script/commandes/SoapCommande.h"
 
 using namespace jkt;
 
@@ -30,6 +31,7 @@ CommandeInterpreter::CommandeInterpreter(Viewer* viewer) {
 	_commandes["data"] = new DataCommande(this);
 	_commandes["echo"] = new EchoCommande(this);
 	_commandes["help"] = new HelpCommande(this);
+	_commandes["soap"] = new SoapCommande(this);
 }
 
 CommandeInterpreter::~CommandeInterpreter() {

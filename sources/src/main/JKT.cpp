@@ -128,6 +128,7 @@ Fonte fonte;
 
 CCfg Config;		// Contient la configuration du jeu
 CGame Game;			// Contient toutes les données vivantes du jeu
+SoapServer soapServer;
 
 const char nomFichierJoueur[] = "@Joueur\\joueurTex";
 
@@ -1655,9 +1656,6 @@ int main(int argc, char** argv) {
 
 	HtmlServer htmlServer(Config.Web.getHtmlServerPort());
 	htmlServer.open();
-
-	SoapServer soapServer();
-	soapServer.open(18888, 19999);
 
 	_grahicObjectsToInitializeMutex = SDL_CreateMutex();
 	_grahicObjectsToDestructMutex = SDL_CreateMutex();

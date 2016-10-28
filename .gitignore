@@ -27,3 +27,4 @@ sources_web/typings/
 sources_web/app/*.js
 sources_web/app/*.js.map
 sources_web/npm-debug.log.*
+project/Makefile-mingw/

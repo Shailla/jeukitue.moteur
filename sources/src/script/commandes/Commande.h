@@ -17,6 +17,7 @@ class CommandeInterpreter;
 
 class Commande {
 	friend class DataCommande;
+	friend class SoapCommande;
 	std::map<std::string, Commande*> _subCommandes;
 
 protected:

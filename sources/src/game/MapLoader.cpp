@@ -51,6 +51,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 
 	CMap* map = new CMap(0, mapName);
 	gameDto->setMap(map);
+	map->init();
 
 	// Création joueurs
 	gameDto->setPlayersMaxNumber(20);	// Indique que la partie peut contenir jusqu'à 20 joueurs
@@ -198,6 +199,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 
 	CMap* map = new CMap(0, mapName);
 	gameDto->setMap(map);
+	map->init();
 
 
 	/***************************************************
@@ -274,6 +276,7 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 
 	CMap* map = new CMap(0, mapName);
 	gameDto->setMap(map);
+	map->init();
 
 	// Création joueurs
 	gameDto->setPlayersMaxNumber(10);	// Indique que la partie peut contenir jusqu'à 10 joueurs

@@ -23,6 +23,8 @@ const char* Xml::LOAD = "Load";
 
 // Imports
 const char* Xml::IMPORT = "Import";
+const char* Xml::IMPORT_MODE_ADD = "add";
+const char* Xml::IMPORT_MODE_MERGE = "merge";
 
 // Objets
 const char* Xml::GEO = "Geo";
@@ -95,6 +97,7 @@ const char* Xml::COULEUR = "Couleur";
 const char* Xml::DESCRIPTION = "Description";
 const char* Xml::FAUX = "false";
 const char* Xml::FICHIER = "Fichier";
+const char* Xml::MODE = "Mode";
 const char* Xml::NBR = "Nbr";
 const char* Xml::NOM = "Nom";
 const char* Xml::REF = "Ref";

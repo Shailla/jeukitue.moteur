@@ -60,7 +60,7 @@ void MapTreeView::show(void) {
 
 		// Branche des matériaux
 		{
-			vector<CMaterial*>& materiaux = currentMap->m_TabMaterial;
+			vector<CMaterial*>& materiaux = currentMap->_materials;
 
 			ostringstream materiauxStr;
 			materiauxStr << materiaux.size() << " materiaux";

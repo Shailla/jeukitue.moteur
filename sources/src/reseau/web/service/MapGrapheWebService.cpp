@@ -76,9 +76,9 @@ void MapGrapheWebService::jisonifyMap(CMap* map, JsonObject& mapGraphe) {
 		obj.addString("checked", "false");
 	}
 
-	for(CMap* subMap : map->getSubMaps()) {
+	for(auto& subMap : map->getSubMaps()) {
 		JsonObject& obj = elements.addObject();
-		jisonifyMap(subMap, obj);
+		jisonifyMap(subMap.second, obj);
 	}
 
 	mapGraphe.addString("expanded", "false");

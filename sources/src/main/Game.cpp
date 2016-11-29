@@ -120,6 +120,7 @@ bool CGame::openMap(const string &nomFichierMap) throw(jkt::CErreur) {
 
 	try {
 		_map = new jkt::CMap(0, nomFichierMap);
+		_map->init();
 	}
 	catch(jkt::CErreur& erreur) {
 		LOGERROR(("Echec d'ouverture de la Map '%s' : %s", nomFichierMap.c_str(), erreur.what()));

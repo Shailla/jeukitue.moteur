@@ -243,7 +243,7 @@ int threadConvertASE_1(void *arg)
 
 		// Transfert des fichiers de texture dans le répertoire du fichier Map
 	string nomRep = "./Map/" + nomFichierASE;
-
+	pMapASE->init();
 	pMapASE->Save(nomFichierASE);
 
 	if( CFindFolder::mkdir( nomRep.c_str() )!=0 ) {		// Création du répertoire pour les textures
@@ -265,7 +265,7 @@ int threadConvertASE_2( void *arg )
 
 	CMaterial *mat;
 	vector<CMaterial*>::iterator iter;
-	for( iter=pMapASE->m_TabMaterial.begin() ; iter!=pMapASE->m_TabMaterial.end() ; iter++ )
+	for( iter=pMapASE->_materials.begin() ; iter!=pMapASE->_materials.end() ; iter++ )
 	{
 		mat = *iter;
 		if( mat->Type()==CMaterial::MAT_TYPE_TEXTURE )

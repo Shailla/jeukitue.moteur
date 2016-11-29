@@ -265,14 +265,14 @@ void CMultiMaterialGeo::setMaterial(int ref) {
 	int nbrMat = ref + getOffsetMateriau();	// Décalage de la référence matériau de l'offset demandé
 
 		// Vérification du type de matériau
-	if( nbrMat >= (int)getMap()->m_TabMaterial.size() ) {
+	if( nbrMat >= (int)getMap()->_materials.size() ) {
 		stringstream txt;
 		txt << "Erreur (CMultiMaterial::setMaterial) : Materiau introuvable 1, réf=";
 		txt << nbrMat;
 		throw CErreur(txt);
 	}
 
-	CMaterialMulti *mat = (CMaterialMulti*)getMap()->m_TabMaterial[ nbrMat ];
+	CMaterialMulti *mat = (CMaterialMulti*)getMap()->_materials[ nbrMat ];
 
 	if( mat == 0 ) {
 		stringstream txt;
@@ -460,7 +460,7 @@ bool CMultiMaterialGeo::Lit(TiXmlElement* el, MapLogger* mapLogger)
 	// Référence
 	if(!el->Attribute(Xml::REF, &ref))
 		throw CErreur("Fichier Map corrompu CMultiMaterialGeo 4");
-	_reference = (unsigned int)ref;
+	_reference = (int)ref;
 
 	// Materiau
 	unsigned int refMat = Xml::LitMaterialRef(el);

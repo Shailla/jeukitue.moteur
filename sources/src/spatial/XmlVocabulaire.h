@@ -12,6 +12,8 @@ public:
 	static const char* MAP;
 	static const char* IMPORTS;
 	static const char* IMPORT;
+	static const char* IMPORT_MODE_ADD;
+	static const char* IMPORT_MODE_MERGE;
 	static const char* ENTRYPOINTS;
 	static const char* ENTRYPOINT;
 	static const char* MATERIAUX;
@@ -57,6 +59,7 @@ public:
 	static const char* SOUSMATERIAUX;
 	static const char* NBRFACES;
 	static const char* SOUSMATERIAU;
+	static const char* MODE;
 	static const char* NBR;
 	static const char* FICHIER;
 	static const char* NOM;

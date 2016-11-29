@@ -56,6 +56,7 @@ LOGDEBUG(("CRocket::INIT_CLASSE()"));
 		}
 
 		_mapRocket = new jkt::CMap(0, "@Arme\\Missile");
+		_mapRocket->init();
 
 		m_B_INIT_CLASSE = true;	// Indique que l'initialisation a été faite
 	}

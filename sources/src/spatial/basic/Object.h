@@ -29,7 +29,8 @@ class Object {
 	CMap* _map;						// Navigabilité vers l'objet parent
 
 protected:
-	unsigned int _reference;
+	int _id;
+	int _reference;					// Secondary / external identifier, can be a doublon
 	std::string _tostring;
 
 public:

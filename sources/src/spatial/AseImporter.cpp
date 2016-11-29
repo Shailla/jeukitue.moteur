@@ -88,6 +88,8 @@ int AseImporter::importAse(void* arg) {
 		pMapASE->EchangeYZ();						// Inversion des coordonnées Y et Z
 		pMapASE->Scale( -1.0f, 1.0f, 1.0f );
 
+		pMapASE->init();
+
 		// Enregistre fichier Map
 		console->println(ConsoleView::ConsoleOutputType::COT_INFO, "Import ASE : Enregistrement fichier Map...");
 		pMapASE->Save(aseFileName.c_str());
@@ -113,7 +115,7 @@ int AseImporter::importAse(void* arg) {
 		std::set<string> texturesToCopy;
 		string texture;
 
-		for( iter=pMapASE->m_TabMaterial.begin() ; iter!=pMapASE->m_TabMaterial.end() ; iter++ ) {
+		for( iter=pMapASE->_materials.begin() ; iter!=pMapASE->_materials.end() ; iter++ ) {
 			mat = *iter;
 
 			if( mat->Type()==CMaterial::MAT_TYPE_TEXTURE ) {

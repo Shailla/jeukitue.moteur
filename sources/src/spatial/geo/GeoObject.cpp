@@ -600,11 +600,11 @@ void CGeoObject::setMaterial(int matRef)
 		// Vérification du type de matériau
 	CMap *map = getMap();
 
-	if( nbrMat >= (int)map->m_TabMaterial.size() ) {
+	if( nbrMat >= (int)map->_materials.size() ) {
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur (CGeoObject::setMaterial) : Materiau introuvable 1 " << nbrMat << endl;
 	}
 	else {
-		CMaterial *mat = map->m_TabMaterial[ nbrMat ];
+		CMaterial *mat = map->_materials[ nbrMat ];
 		if( mat != 0 ) {
 			m_bMaterialTexture = true;		// Indique la présence d'un matériau associé à l'objet
 			m_Material = mat;

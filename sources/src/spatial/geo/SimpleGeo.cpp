@@ -538,7 +538,7 @@ bool CSimpleGeo::Lit(TiXmlElement* element, MapLogger* mapLogger) {
 	// Référence
 	if(!element->Attribute(Xml::REF, &ref))
 		throw CErreur("Fichier Map corrompu CSimpleGeo 4");
-	_reference = (unsigned int)ref;
+	_reference = (int)ref;
 
 	// Solidité
 	_bSolid = Xml::LitSolidite(element);

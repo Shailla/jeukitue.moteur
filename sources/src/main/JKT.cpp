@@ -67,7 +67,6 @@ class CGame;
 #include <spatial/basic/Refreshable.h>
 #include "spatial/geo/GeoObject.h"
 #include "reseau/web/HtmlServer.h"
-#include "reseau/web/SoapServer.h"
 #include "Rocket.h"
 #include "Laser.h"
 #include "spatial/objet/Porte.h"
@@ -128,7 +127,6 @@ Fonte fonte;
 
 CCfg Config;		// Contient la configuration du jeu
 CGame Game;			// Contient toutes les données vivantes du jeu
-SoapServer soapServer;
 
 const char nomFichierJoueur[] = "@Joueur\\joueurTex";
 
@@ -1047,10 +1045,12 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	CMap *pMapJoueur = new CMap(0, mapJoueurPrincipal);
 	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
 	pMapJoueur->Scale( -0.06f, 0.06f, 0.06f );
+	pMapJoueur->init();
 
 	CMap *pMapJoueur2 = new CMap(0, nomFichierJoueur);
 	pMapJoueur2->EchangeXZ();					// Ajuste les coordonnées
 	pMapJoueur2->Scale( -0.06f, 0.06f, 0.06f );
+	pMapJoueur2->init();
 
 	cout << endl;
 

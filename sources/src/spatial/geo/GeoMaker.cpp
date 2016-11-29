@@ -185,14 +185,14 @@ MapObject* CGeoMaker::makeNewGeoInstance() {	// Crée une instance de l'objet géo
 		int nbrMat = m_MaterialRef + getOffsetMateriau();	// Décalage de la référence matériau de l'offset demandé
 
 			// Vérification du type de matériau
-		if( nbrMat >= (int)m_Map->m_TabMaterial.size() ) {
+		if( nbrMat >= (int)m_Map->_materials.size() ) {
 			stringstream txt;
 			txt << "Erreur (CGeoMaker::makeNewGeoInstance) : Materiau introuvable, réf=";
 			txt << nbrMat;
 			throw CErreur(txt);
 		}
 
-		CMaterial *mat = m_Map->m_TabMaterial[ nbrMat ];
+		CMaterial *mat = m_Map->_materials[ nbrMat ];
 
 		if(mat->Type() == CMaterial::MAT_TYPE_SIMPLE) {
 			geo = makeSimpleMaterialGeo((CMaterial*)mat);

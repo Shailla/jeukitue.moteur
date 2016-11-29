@@ -13,25 +13,27 @@ CGenRef Object::GENREF;
 
 Object::Object(CMap* map) {
 	_map = map;
-	_reference = GENREF.genRef();	// Génère une référence pour l'objet
+	_id = GENREF.genRef();	// Génère une référence pour l'objet
+	_reference = -1;
 }
 
 Object::Object(const Object& other) : Object(other._map) {
-	_reference = GENREF.genRef();	// Génère une référence pour l'objet
+	_id = GENREF.genRef();	// Génère une référence pour l'objet
+	_reference = -1;
 	_name = other._name;
 	_name += "-copy";
-	_name += _reference;
+	_name += _id;
 }
 
 Object::~Object() {
-	GENREF.delRef(_reference);		// Libère la référence de l'objet
+	GENREF.delRef(_id);		// Libère la référence de l'objet
 }
 
 void Object::init() throw(CErreur) {
 }
 
 unsigned int Object::getId() const {
-	return _reference;
+	return _id;
 }
 
 void Object::setName(const std::string &nom) {

@@ -38,129 +38,131 @@ class CMap : public MapObject {
 	string tostring;
 
 	string _filename;								// Nom du fichier de la Map (par exemple "Monde.map.xml")
-	string _binariesDirectory;						// Répertoires des binaires de la Map (textures, plugins, ...)
+	string _binariesDirectory;						// RÃ©pertoires des binaires de la Map (textures, plugins, ...)
 
-	vector<CMap*> _subMaps;
+	map<int, CMap*> _subMaps;
 
 	map<int, MapObject*> _geoDescriptions;
 
 	// Objets de la Map
-	vector<MapObject*> _objects;						// Liste des objets géométriques
-	vector<Geometrical*> _geos;							// Liste des objets géométriques
-	vector<SolidAndTargettable*> _solidAndTargettables;	// Liste des objets géométriques
-	vector<Drawable*> _drawables;						// Liste des objets à afficher
-	vector<Refreshable*> _refreshables;					// Liste des objets nécessitant une actualisation (portes,...)
+	vector<MapObject*> _objects;						// Liste des objets gÃ©omÃ©triques
+	vector<Geometrical*> _geos;							// Liste des objets gÃ©omÃ©triques
+	vector<SolidAndTargettable*> _solidAndTargettables;	// Liste des objets gÃ©omÃ©triques
+	vector<Drawable*> _drawables;						// Liste des objets Ã  afficher
+	vector<Refreshable*> _refreshables;					// Liste des objets nÃ©cessitant une actualisation (portes,...)
 
-	// Lumières et autres caractéristiques de la Map
-	vector<CLight*> _lights;							// Lumières
-	vector<EntryPoint*> _entryPoints;					// Points d'entrée des joueurs sur la Map
+	// LumiÃ¨res et autres caractÃ©ristiques de la Map
+	vector<CLight*> _lights;							// LumiÃ¨res
+	vector<EntryPoint*> _entryPoints;					// Points d'entrï¿½e des joueurs sur la Map
 
 	// Objets complexes de la Map
 	vector<CMoteurParticules*> _particulesEngines;	// Liste des moteurs de particules de la Map
 
 	vector<string> _plugins;						// Liste des plugins de la Map
 
-	int _Selection;									// Object géo sélectionné
-	bool _bSelection;								// Indique si le mode sélection est actif ou non
+	int _Selection;									// Object gÃ©o sÃ©lectionnÃ©
+	bool _bSelection;								// Indique si le mode sÃ©lection est actif ou non
 
-	bool _isGlActivated;							// Indique si les éléments OpenGL de la MAP ont été initialisés
-	bool _isPluginsActivated;						// Indique si les plugins de la MAP ont été initialisés
+	bool _isGlActivated;							// Indique si les Ã©lÃ©ments OpenGL de la MAP ont Ã©tÃ© initialisÃ©s
+	bool _isPluginsActivated;						// Indique si les plugins de la MAP ont Ã©tÃ© initialisÃ©s
 
 	CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
 
 	bool afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
 public:
-	vector<CMaterial*> m_TabMaterial;		// Liste des matériaux A VOIR : devrait être membre privé
+	vector<CMaterial*> _materials;		// Liste des matï¿½riaux A VOIR : devrait Ãªtre membre privÃ©
 
 		// Constructeurs / destructeur
 	CMap(CMap* parent);
 	CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
 	~CMap();
+
+	void clear();
 	MapObject* clone();
 
-	const char* toString();						// Description résumée de l'objet
+	const char* toString();						// Description rï¿½sumï¿½e de l'objet
 
 	// Object
 	void init() throw(jkt::CErreur) override;	// Initialisation de la CMap
 	static bool Lit(CMap& map, const string &mapName, MapLogger* mapLogger);
 	bool Lit(const string &nomFichier, MapLogger* mapLogger);
 	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
-	bool Save(TiXmlElement* element) override;			// Sauve l'objet géo dans un fichier Map
+	bool Save(TiXmlElement* element) override;			// Sauve l'objet gÃ©o dans un fichier Map
 
 	// Gestion des plugins de la Map
-	void initPlugins();		// Chargement / exécution des plugins de la Map
-	void freePlugins();		// Libération des plugins de la Map
+	void initPlugins();		// Chargement / exï¿½cution des plugins de la Map
+	void freePlugins();		// Libï¿½ration des plugins de la Map
 
 	// Drawable
 	void initGL() override;		// Initialisation du contexte OpenGL
-	void freeGL() override;		// Libération du contexte OpenGL
+	void freeGL() override;		// Libï¿½ration du contexte OpenGL
 
-	void Affiche() override;											// Affiche l'ensemble des éléments 3D de cette Map
-	void AfficheSelection(float r,float v,float b) override;			// Affiche l'objet géométrique en couleur unique
+	void Affiche() override;											// Affiche l'ensemble des Ã©lÃ©ments 3D de cette Map
+	void AfficheSelection(float r,float v,float b) override;			// Affiche l'objet gÃ©omÃ©trique en couleur unique
 
 	bool Save(const string nomFichier);	// Sauvegarde du CMap dans un fichier *.map.xml
 
 	// Refreshable
 
-	void refresh(CGame *game) override;									// Rafraichissement des classes listées dans m_TabMouve
+	void refresh(CGame *game) override;									// Rafraichissement des classes listï¿½es dans m_TabMouve
 
 	/**
 	 * Affiche toutes les textures de la MAP dans un rectangle dont le coin bas gauche est en (x,y) et les dimensions sont (tailleX, tailleY).
 	 *
-	 * @param x position horizontale du coin bas gauche du rectangle dans lequel les texture vont être affichées
-	 * @param y position verticale du coin bas gauche du rectangle dans lequel les texture vont être affichées
-	 * @param tailleX taille horizontale du rectangle dans lequel les texture vont être affichées
-	 * @param tailleY taille verticale du rectangle dans lequel les texture vont être affichées
+	 * @param x position horizontale du coin bas gauche du rectangle dans lequel les texture vont ï¿½tre affichï¿½es
+	 * @param y position verticale du coin bas gauche du rectangle dans lequel les texture vont ï¿½tre affichï¿½es
+	 * @param tailleX taille horizontale du rectangle dans lequel les texture vont ï¿½tre affichï¿½es
+	 * @param tailleY taille verticale du rectangle dans lequel les texture vont ï¿½tre affichï¿½es
 	 * @param nbrX nombre de textures sur une ligne
 	 * @param nbrY nombre de textures sur une colonne
-	 * @param page numéro de la page  de texures à afficher (sur une page on affiche nbrX*nbrY textures)
-	 * @return numéro de la page de texture affichée ou 0 si on a dépassé la dernière page
+	 * @param page numï¿½ro de la page  de texures ï¿½ afficher (sur une page on affiche nbrX*nbrY textures)
+	 * @return numï¿½ro de la page de texture affichï¿½e ou 0 si on a dï¿½passï¿½ la derniï¿½re page
 	 */
 	int afficheDamierTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int page);
 
 	void addDescription(int ref, MapObject* geo, MapLogger* mapLogger);
 	MapObject* getDescription(int ref);
 
-	void add(CMap* map);											// Intègre tous les éléments d'une autre Map dans celle-ci
-	void merge(CMap& map);											// Intègre tous les éléments d'une autre Map dans celle-ci
+	void add(CMap* map);										// IntÃ¨gre tous les Ã©lÃ©ments d'une autre Map dans celle-ci
+	void merge(int mapId, MapLogger* mapLogger = 0);			// IntÃ¨gre tous les Ã©lÃ©ments d'une autre Map dans celle-ci
 
-	void add(MapObject* object);			// Ajoute un GeoObject à la map
+	void add(MapObject* object);			// Ajoute un GeoObject Ã  la map
 	void add(Dirigeable* dirigeable);
-	void add(CPorte *porte);				// Ajoute une porte à la map
-	void add(CNavette *navette);			// Ajoute une navette à la map
-	void add(CMoteurParticules* engine);	// Ajoute un moteur de particules à la map
-	void add(CLight *light);				// Ajoute une lumière à la map
-	void add(CMaterial *mat);				// Ajoute un matériau à la map
+	void add(CPorte *porte);				// Ajoute une porte Ã  la map
+	void add(CNavette *navette);			// Ajoute une navette Ã  la map
+	void add(CMoteurParticules* engine);	// Ajoute un moteur de particules Ã  la map
+	void add(CLight *light);				// Ajoute une lumiÃ¨re Ã  la map
+	void add(CMaterial *mat);				// Ajoute un matÃ©riau Ã  la map
 	void add(CheckPlayerInZone* detector);
 
 	// Geometrical
-	void EchangeXY() override;										// Echange les coordonnées X et Y des objets géo du map
-	void EchangeXZ() override;										// Echange les coordonnées X et Z des objets géo du map
-	void EchangeYZ() override;										// Echange les coordonnées Y et Z des objets géo du map
-	void Scale(float scaleX, float sclaeY, float scaleZ) override;	// Homothétie la Map (coordonnées multipliées par scale)
+	void EchangeXY() override;										// Echange les coordonnÃ©es X et Y des objets gÃ©o du map
+	void EchangeXZ() override;										// Echange les coordonnÃ©es X et Z des objets gÃ©o du map
+	void EchangeYZ() override;										// Echange les coordonnÃ©es Y et Z des objets gÃ©o du map
+	void Scale(float scaleX, float sclaeY, float scaleZ) override;	// HomothÃ©tie la Map (coordonnÃ©es multipliÃ©es par scale)
 	void translate(float x, float y, float z) override;				// Translation de la Map selon x, y, z
 
 	// Gestion des contacts
-	bool Contact(const float pos[3], const float dist) override;	// Indique s'il y a un triangle à une distance inférieure à 'dist' de la position 'pos'
+	bool Contact(const float pos[3], const float dist) override;	// Indique s'il y a un triangle ï¿½ une distance infï¿½rieure ï¿½ 'dist' de la position 'pos'
 
 	/**
-	 * positionPlayer : position du jouer ou position calculé ce qui permet d'optimiser certains contacts quand un objet a bougé en considérant que c'est plutôt le
+	 * positionPlayer : position du jouer ou position calculï¿½ ce qui permet d'optimiser certains contacts quand un objet a bougï¿½ en considï¿½rant que c'est plutï¿½t le
 	 */
-	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;								// Gère tous les contacts entre la map et les joueurs
+	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;								// Gï¿½re tous les contacts entre la map et les joueurs
 	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;	// Envoie d'un laser sur la map
 
-	vector<CMap*>& getSubMaps();
+	map<int, CMap*>& getSubMaps();
 	vector<CLight*>& getLights();
 	vector<MapObject*>& getMapObjects();
 
-	// Sélection
-	void incrementeSelection();	// Sélectionne l'objet géo suivant
-	void decrementeSelection();	// Sélectionne l'objet géo précédent
+	// Sï¿½lection
+	void incrementeSelection();	// Sï¿½lectionne l'objet gÃ©o suivant
+	void decrementeSelection();	// Sï¿½lectionne l'objet gÃ©o prï¿½cï¿½dent
 	void ChangeSelectionMode();
 	const char* getSelectedName();
 	bool IsSelectionMode();
 
-	// Points d'entrée des personnages joueurs
+	// Points d'entrï¿½e des personnages joueurs
 	void add(EntryPoint* entryPoint);
 	vector<EntryPoint*>& getEntryPointsList();
 };

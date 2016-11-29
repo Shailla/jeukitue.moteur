@@ -1,4 +1,5 @@
 
+#include <algorithm>
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -86,8 +87,6 @@ CMap::CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur) : MapObje
 	_Selection = 0;
 	_isGlActivated = false;
 	_isPluginsActivated = false;
-
-	init();
 }
 
 CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur) : MapObject(parent) {
@@ -104,36 +103,41 @@ CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(j
 	_Selection = 0;
 	_isGlActivated = false;
 	_isPluginsActivated = false;
-
-	init();
 }
 
 CMap::~CMap() {
-	// Destruction des objets gÈo
+	// Destruction des objets g√©o
 	for(Geometrical* geo : _geos)
 		delete geo;
 
-	_geos.clear();
-	_refreshables.clear();
-
-	// Destruction des matÈriaux
-	for(CMaterial* mat : m_TabMaterial)
+	// Destruction des mat√©riaux
+	for(CMaterial* mat : _materials)
 		delete mat;
 
-	m_TabMaterial.clear();
-
-	// Destruction des lumiËres
+	// Destruction des lumi√®res
 	for(CLight* light : _lights)
 		delete light;
 
-	_lights.clear();
-
 	// Destruction des sous-Map
-	for(CMap *map : _subMaps) {
-		delete map;
+	for(auto& subMap : _subMaps) {
+		delete subMap.second;
 	}
 
+	clear();
+}
+
+void CMap::clear() {
 	_subMaps.clear();
+	_geoDescriptions.clear();
+	_objects.clear();
+	_geos.clear();
+	_solidAndTargettables.clear();
+	_drawables.clear();
+	_refreshables.clear();
+	_lights.clear();
+	_entryPoints.clear();
+	_particulesEngines.clear();
+	_materials.clear();
 }
 
 MapObject* CMap::clone() {
@@ -149,8 +153,8 @@ const char* CMap::toString() {
 	return tostring.c_str();
 }
 
-void CMap::Affiche() {	// Affiche tous les objets gÈo de du MAP
-	// Si nÈcessaire, initialise les ÈlÈments OpenGL de la MAP
+void CMap::Affiche() {	// Affiche tous les objets g√©o de du MAP
+	// Si n√©cessaire, initialise les √©l√©ments OpenGL de la MAP
 	if(!_isGlActivated) {
 		initGL();
 	}
@@ -180,7 +184,7 @@ void CMap::Affiche() {	// Affiche tous les objets gÈo de du MAP
 
 		for(Drawable* drawable : _drawables) {
 			if(i != _Selection)
-				drawable->Affiche();			// Affichage de l'objet gÈo
+				drawable->Affiche();			// Affichage de l'objet g√©o
 			else
 				drawable->AfficheSelection(1.0f, 0.0f, 0.0f);
 
@@ -189,20 +193,20 @@ void CMap::Affiche() {	// Affiche tous les objets gÈo de du MAP
 	}
 	else {
 		for(Drawable* drawable : _drawables) {
-			drawable->Affiche();			// Affichage de l'objet gÈo
+			drawable->Affiche();			// Affichage de l'objet g√©o
 		}
 	}
 
 	glDisable( GL_VERTEX_ARRAY );
 
 	// Initialisation des sous-Map
-	for(CMap *map : _subMaps) {
-		map->Affiche();
+	for(auto& subMap : _subMaps) {
+		subMap.second->Affiche();
 	}
 }
 
-void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objets gÈo de du MAP
-	// Si nÈcessaire, initialise les ÈlÈments OpenGL de la MAP
+void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objets g√©o de du MAP
+	// Si n√©cessaire, initialise les √©l√©ments OpenGL de la MAP
 	if(!_isGlActivated) {
 		initGL();
 	}
@@ -220,14 +224,14 @@ void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objet
 	glDisable( GL_VERTEX_ARRAY );
 
 	// Initialisation des sous-Map
-	for(CMap *map : _subMaps) {
-		map->AfficheSelection(r, v, b);
+	for(auto& subMap : _subMaps) {
+		subMap.second->AfficheSelection(r, v, b);
 	}
 }
 
 void CMap::addDescription(int ref, MapObject* geo, MapLogger* mapLogger) {
 	if(_geoDescriptions.find(ref) != _geoDescriptions.end()) {
-		mapLogger->logError("Map corrompue, la rÈfÈrence est en doublon");
+		mapLogger->logError("Map corrompue, la r√©f√©rence est en doublon");
 	}
 
 	_geoDescriptions[ref] = geo;
@@ -275,52 +279,68 @@ const char* CMap::getSelectedName() {
 	return object->toString();
 }
 
-void CMap::merge(CMap& map) {
-	// Objets de la Map
-	for(MapObject* object : map._objects) {
-		object->setMap(this);
-		_objects.push_back(object);
+void CMap::merge(int mapId, MapLogger* mapLogger) {
+	CMap* map = _subMaps.at(mapId);
+
+	if(map) {
+
+		// Objets de la Map
+		for(MapObject* object : map->_objects) {
+			object->setMap(this);
+			_objects.push_back(object);
+		}
+
+		for(Geometrical* geo : map->_geos) {
+			_geos.push_back(geo);
+		}
+
+		for(auto& geoDesc : map->_geoDescriptions) {
+			_geoDescriptions[geoDesc.first] = geoDesc.second;
+		}
+
+		for(Refreshable* refreshable : map->_refreshables) {
+			_refreshables.push_back(refreshable);
+		}
+
+		for(SolidAndTargettable* solid : map->_solidAndTargettables) {
+			_solidAndTargettables.push_back(solid);
+		}
+
+		for(Drawable* drawable : map->_drawables) {
+			_drawables.push_back(drawable);
+		}
+
+		// Merge des lumi√©res
+		for(CLight* light : map->_lights) {
+			_lights.push_back(light);
+		}
+
+		// Merge des mat√©riaux
+		for(CMaterial* mat : map->_materials) {
+			_materials.push_back(mat);
+		}
+
+		// Merge des entry points
+		for(EntryPoint* entry : map->_entryPoints) {
+			_entryPoints.push_back(entry);
+		}
+
+		// Merge des sous-map
+		for(auto& mapVar : map->_subMaps) {
+			_subMaps.insert(pair<int, CMap*>(mapVar.first, mapVar.second));
+		}
+
+		map->clear();
+		_subMaps.erase(mapId);
+		delete map;
 	}
-
-	for(Geometrical* geo : map._geos) {
-		_geos.push_back(geo);
-	}
-
-	for(Refreshable* refreshable : map._refreshables) {
-		_refreshables.push_back(refreshable);
-	}
-
-	for(SolidAndTargettable* solid : map._solidAndTargettables) {
-		_solidAndTargettables.push_back(solid);
-	}
-
-	for(Drawable* drawable : map._drawables) {
-		_drawables.push_back(drawable);
-	}
-
-	vector<CLight*>::iterator iterLight;
-	vector<CMaterial*>::iterator iterMaterial;
-	vector<EntryPoint*>::iterator iterEntryPoint;
-
-
-	// Merge des lumiËres
-	for(CLight* light : map._lights) {
-		_lights.push_back(light);
-	}
-
-	// Merge des matÈriaux
-	for(CMaterial* mat : map.m_TabMaterial) {
-		m_TabMaterial.push_back(mat);
-	}
-
-	// Merge des entry points
-	for(EntryPoint* entry : map._entryPoints) {
-		_entryPoints.push_back(entry);
-	}
-
-	// Merge des sous-map
-	for(CMap* mapVar : map._subMaps) {
-		_subMaps.push_back(mapVar);
+	else {
+		if(mapLogger) {
+			mapLogger->logError("Map √† merger introuvable");
+		}
+		else {
+			LOGWARN(("Map √† merger introuvable"));
+		}
 	}
 }
 
@@ -329,7 +349,12 @@ vector<EntryPoint*>& CMap::getEntryPointsList() {
 }
 
 void CMap::add(CMap* subMap) {
-	_subMaps.push_back(subMap);
+	if(subMap) {
+		_subMaps.insert(pair<int, CMap*>(subMap->getId(), subMap));
+	}
+	else {
+		LOGERROR(("Sub Map nulle"));
+	}
 }
 
 void CMap::add(EntryPoint* entryPoint) {
@@ -356,12 +381,12 @@ void CMap::add(MapObject* object) {
 }
 
 void CMap::add(CMaterial *mat) {
-	m_TabMaterial.push_back(mat);	// Ajoute mat ‡ la liste des objets affichables
+	_materials.push_back(mat);	// Ajoute mat √† la liste des objets affichables
 }
 
 void CMap::add(CLight *light) {
-	_lights.push_back(light);	// Ajoute light ‡ la liste des objets affichables
-	_geos.push_back(light);	// Ajoute light ‡ la liste des objets affichables
+	_lights.push_back(light);	// Ajoute light √† la liste des objets affichables
+	_geos.push_back(light);	// Ajoute light √† la liste des objets affichables
 }
 
 void CMap::add(CPorte *porte) {
@@ -377,7 +402,7 @@ void CMap::add(CheckPlayerInZone* detector) {
 	_drawables.push_back(detector);
 }
 
-void CMap::add(CNavette *navette) {		// Une navette est avant tout un objet gÈo
+void CMap::add(CNavette *navette) {		// Une navette est avant tout un objet g√©o
 	_geos.push_back(navette);
 	_refreshables.push_back(navette);
 	_drawables.push_back(navette);
@@ -397,29 +422,29 @@ void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	}
 
 	for(SolidAndTargettable* solid : _solidAndTargettables) {
-		solid->GereContactPlayer(positionPlayer, player);	// GËre les contacts entre l'objet gÈo et le joueur
+		solid->GereContactPlayer(positionPlayer, player);	// G√©re les contacts entre l'objet g√©o et le joueur
 	}
 
 	// Initialisation des sous-Map
-	for(CMap *map : _subMaps) {
-		map->GereContactPlayer(positionPlayer, player);
+	for(auto& subMap : _subMaps) {
+		subMap.second->GereContactPlayer(positionPlayer, player);
 	}
 }
 
 float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 	// Renvoie la distance du premier point de contact entre un rayon laser parti du point 'pos'
-	// dans la direction 'Dir' si cette distance est infÈrieure ‡ 'dist', renvoie 'dist' sinon
+	// dans la direction 'Dir' si cette distance est inf√©rieure √† 'dist', renvoie 'dist' sinon
 
 	for(SolidAndTargettable* solid : _solidAndTargettables) {
 		dist = solid->GereLaserPlayer( pos, Dir, dist );
 	}
 
 	// Initialisation des sous-Map
-	for(CMap *map : _subMaps) {
-		map->GereLaserPlayer( pos, Dir, dist );
+	for(auto& subMap : _subMaps) {
+		subMap.second->GereLaserPlayer( pos, Dir, dist );
 	}
 
-	return dist;	// Renvoie la distance du premier contact trouvÈ entre le laser et une face d'objet gÈo
+	return dist;	// Renvoie la distance du premier contact trouv√© entre le laser et une face d'objet g√©o
 }
 
 void CMap::EchangeXY() {
@@ -438,8 +463,8 @@ void CMap::EchangeXY() {
 		light->EchangeXY();
 
 	// Initialisation des sous-Map
-	for(CMap *map : _subMaps)
-		map->EchangeXY();
+	for(auto& subMap : _subMaps)
+		subMap.second->EchangeXY();
 }
 
 void CMap::EchangeXZ() {
@@ -458,8 +483,8 @@ void CMap::EchangeXZ() {
 		light->EchangeXZ();
 
 	// Initialisation des sous-Map
-	for(CMap *map : _subMaps)
-		map->EchangeXZ();
+	for(auto& subMap : _subMaps)
+		subMap.second->EchangeXZ();
 }
 
 void CMap::EchangeYZ() {
@@ -478,8 +503,8 @@ void CMap::EchangeYZ() {
 		light->EchangeYZ();
 
 	// Initialisation des sous-Map
-	for(CMap *map : _subMaps)
-		map->EchangeYZ();
+	for(auto& subMap : _subMaps)
+		subMap.second->EchangeYZ();
 }
 
 void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
@@ -500,13 +525,13 @@ void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
 	}
 
 	// Initialisation des sous-Map
-	for(CMap *map : _subMaps) {
-		map->Scale( scaleX, scaleY, scaleZ );
+	for(auto& subMap : _subMaps) {
+		subMap.second->Scale( scaleX, scaleY, scaleZ );
 	}
 }
 
 void CMap::translate(float x, float y, float z) {
-	LOGDEBUG(("CMap::translate(x=%f,y=%f,z=%f)%T", x, y, z, this ));
+	LOGINFO(("CMap::translate(x=%f,y=%f,z=%f)%T", x, y, z, this ));
 
 	if(x!=0.0 || y!=0.0 || z!=0.0) {
 		// Entry points
@@ -523,8 +548,8 @@ void CMap::translate(float x, float y, float z) {
 	}
 
 	// Initialisation des sous-Map
-	for(CMap *map : _subMaps) {
-		map->translate(x, y, z);
+	for(auto& subMap : _subMaps) {
+		subMap.second->translate(x, y, z);
 	}
 }
 
@@ -536,12 +561,12 @@ bool CMap::Lit(TiXmlElement* el, MapLogger* mapLogger) {
 	return false;
 }
 
-bool CMap::Save(TiXmlElement* element) {			// Sauve l'objet gÈo dans un fichier Map
+bool CMap::Save(TiXmlElement* element) {			// Sauve l'objet g√©o dans un fichier Map
 	return false;
 }
 
 bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
-	// RÈpertoire et fichier de la Map
+	// R√©pertoire et fichier de la Map
 	string mapDirectory, mapFilename;
 	bool isResource = jkt::RessourcesLoader::getRessource(mapName, mapDirectory, mapFilename);
 
@@ -586,7 +611,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						Xml::throwCorruptedMapFileException(Xml::LOAD, el->Value());
 					}
 
-					string pluginFilename = el->Attribute(Xml::NOM);	// Lecture nom de la Map ‡ importer
+					string pluginFilename = el->Attribute(Xml::NOM);	// Lecture nom de la Map √† importer
 					RessourcesLoader::getFileRessource(map._binariesDirectory, pluginFilename);
 					map._plugins.push_back(pluginFilename);
 				}
@@ -604,14 +629,15 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						Xml::throwCorruptedMapFileException(Xml::IMPORT, el->Value());
 					}
 
-					const char* subMapName = el->Attribute(Xml::NOM);	// Lecture nom de la Map ‡ importer
+					const char* importMode = el->Attribute(Xml::MODE);	// Lecture du mode d'import
+					const char* subMapName = el->Attribute(Xml::NOM);	// Lecture nom de la Map √† importer
 
 					if(!subMapName) {
 						mapLogger->logError("Fichier Map corrompu : Nom de la sous-Map a importer manquant");
 						throw CErreur("Fichier Map corrompu : Nom de la sous-Map a importer manquant");
 					}
 
-					// Lecture de la translation ‡ appliquer ‡ la Map
+					// Lecture de la translation √† appliquer √† la Map
 					float translation[3];
 
 					if(!Xml::Lit3fv(el, Xml::TRANSLATE, Xml::X, Xml::Y, Xml::Z, translation)) {
@@ -620,7 +646,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						translation[2] = 0.0;
 					}
 
-					// Lecture du scaling ‡ appliquer ‡ la Map
+					// Lecture du scaling √† appliquer √† la Map
 					float scaling[3];
 
 					if(!Xml::Lit3fv(el, Xml::SCALE, Xml::X, Xml::Y, Xml::Z, scaling)) {
@@ -637,12 +663,25 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					subMap->Scale(scaling[0], scaling[1], scaling[2]);
 
 					// Fusion des Map
-					map.add(subMap);
+					if(!strcmp(Xml::IMPORT_MODE_MERGE, importMode)) {
+						mapLogger->logInfo("Merge sous-Map");
+						map.add(subMap);
+						map.merge(subMap->getId());
+					}
+					else if(!strcmp(Xml::IMPORT_MODE_ADD, importMode)) {
+						mapLogger->logError("Add sous-Map");
+						map.add(subMap);
+					}
+					else {
+						mapLogger->logInfo("Merge sous-Map (default)");
+						map.add(subMap);
+						map.merge(subMap->getId());
+					}
 				}
 			}
 		}
 
-		// Lecture des point d'entrÈe des joueurs
+		// Lecture des point d'entr√©e des joueurs
 		{
 			TiXmlElement* elEntry = elMap->FirstChildElement(Xml::ENTRYPOINTS);
 
@@ -671,10 +710,10 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						Xml::throwCorruptedMapFileException(Xml::NEIGE, el->Value());
 					}
 
-					// Lecture du nombre de particules ‡ afficher
+					// Lecture du nombre de particules √† afficher
 					int nbrParticules;
 
-					if(!el->Attribute(Xml::NBR_PARTICULES, &nbrParticules)) {		// Lecture nom de la Map ‡ importer
+					if(!el->Attribute(Xml::NBR_PARTICULES, &nbrParticules)) {		// Lecture nom de la Map √† importer
 						mapLogger->logError("Fichier Map corrompu : Nombre de particules du moteur manquant");
 						throw CErreur("Fichier Map corrompu : Nombre de particules du moteur manquant");
 					}
@@ -705,7 +744,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 			}
 		}
 
-		// Lecture des matÈriaux
+		// Lecture des mat√©riaux
 		TiXmlElement* elMat = elMap->FirstChildElement(Xml::MATERIAUX);
 
 		if(elMat) {
@@ -720,12 +759,12 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					map.add(mat);
 				}
 				else {
-					mapLogger->logError("MatÈriau corrompu ?");
+					mapLogger->logError("Mat√©riau corrompu ?");
 				}
 			}
 		}
 
-		// Lecture des lumiËres
+		// Lecture des lumi√®res
 		TiXmlElement* elLight = elMap->FirstChildElement(Xml::LUMIERES);
 
 		if(elLight) {
@@ -740,18 +779,18 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					map.add(lum);
 				}
 				else {
-					mapLogger->logError("LumiËre corrompue ?");
+					mapLogger->logError("Lumi√®re corrompue ?");
 				}
 			}
 		}
 
-		// Lecture des objets gÈomÈtriques
+		// Lecture des objets g√©om√©triques
 		TiXmlElement* elGeo = elMap->FirstChildElement(Xml::GEOS);
 
 		if(elGeo) {
 
 			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
-				// Descriptions d'objets gÈomÈtriques
+				// Descriptions d'objets g√©om√©triques
 				if(!strcmp(Xml::GEODESCRIPTION, el->Value())) {
 					MapObject* geo = CGeoMaker::Lit(el, &map, mapLogger);
 
@@ -759,13 +798,13 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						map.addDescription(geo->getId(), geo, mapLogger);
 					}
 					else {
-						mapLogger->logError("GÈo description corrompue ?");
+						mapLogger->logError("G√©o description corrompue ?");
 					}
 				}
 			}
 
 			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
-				// Objets gÈomÈtriques rÈels
+				// Objets g√©om√©triques r√©els
 				if(!strcmp(Xml::GEO, el->Value())) {
 					MapObject* object = CGeoMaker::Lit(el, &map, mapLogger);
 
@@ -773,10 +812,10 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						map.add(object);
 					}
 					else {
-						mapLogger->logError("GÈo corrompue ?");
+						mapLogger->logError("G√©o corrompue ?");
 					}
 				}
-				// Objets gÈomÈtriques rÈels
+				// Objets g√©om√©triques r√©els
 				else if(!strcmp(Xml::GEOINSTANCE, el->Value())) {
 					double translation[3];
 					translation[0] = translation[1] = translation[2] = 0.0f;
@@ -810,11 +849,13 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						map.add(clone);
 					}
 					else {
-						mapLogger->logError("GÈo description introuvable");
+						mapLogger->logError("G√©o description introuvable");
 					}
 				}
 			}
 		}
+
+		map.init();
 
 		result = true;
 	}
@@ -828,7 +869,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 }
 
 void CMap::init() throw(jkt::CErreur) {	// Initialisation de la CMap
-	// Initialisation des object gÈomÈtriques
+	// Initialisation des object g√©om√©triques
 	vector<MapObject*>::iterator iterObject;
 
 	for(iterObject = _objects.begin() ; iterObject != _objects.end() ; iterObject++) {
@@ -837,8 +878,8 @@ void CMap::init() throw(jkt::CErreur) {	// Initialisation de la CMap
 	}
 
 	// Initialisation des sous-Map
-	for(CMap *map : _subMaps) {
-		map->init();
+	for(auto& subMap : _subMaps) {
+		subMap.second->init();
 	}
 }
 
@@ -849,21 +890,21 @@ void CMap::initPlugins() {
 		Fabrique::getPluginEngine()->activateMapPlugin(this, *it, _binariesDirectory);
 	}
 
-	_isPluginsActivated = true;	// Indique que les ÈlÈments OpenGL de la MAP ont bien ÈtÈ initialisÈs
+	_isPluginsActivated = true;	// Indique que les √©l√©ments OpenGL de la MAP ont bien √©t√© initialis√©s
 }
 
 void CMap::freePlugins() {
 	Fabrique::getPluginEngine()->deactivateMapPlugins();
-	_isPluginsActivated = false;			// Indique que les ÈlÈments OpenGL de la MAP ont bien ÈtÈ initialisÈs
+	_isPluginsActivated = false;			// Indique que les √©l√©ments OpenGL de la MAP ont bien √©t√© initialis√©s
 }
 
 void CMap::initGL() {
 	// Initialisation GL des fichiers de texture
-	for(CMaterial* material : m_TabMaterial) {
+	for(CMaterial* material : _materials) {
 		material->initGL();
 	}
 
-	// Initialisation GL des object gÈomÈtriques dans le contexte OpenGL
+	// Initialisation GL des object g√©om√©triques dans le contexte OpenGL
 	for(Drawable* drawable : _drawables) {
 		drawable->initGL();
 	}
@@ -874,32 +915,32 @@ void CMap::initGL() {
 	}
 
 	// Initialisation GL des sous-Map
-	for(CMap *map : _subMaps) {
-		map->initGL();
+	for(auto& subMap : _subMaps) {
+		subMap.second->initGL();
 	}
 
-	_isGlActivated = true;	// Indique que les ÈlÈments OpenGL de la MAP ont bien ÈtÈ initialisÈs
+	_isGlActivated = true;	// Indique que les √©l√©ments OpenGL de la MAP ont bien √©t√© initialis√©s
 }
 
 void CMap::freeGL() {
-	// LibÈration GL des moteurs de particules
+	// Lib√©ration GL des moteurs de particules
 	for(CMoteurParticules *engine : _particulesEngines) {
 		engine->freeGL();
 	}
 
-	// LibÈration GL des object gÈomÈtriques dans le contexte OpenGL
+	// Lib√©ration GL des object g√©om√©triques dans le contexte OpenGL
 	for(Drawable* drawable : _drawables) {
 		drawable->freeGL();
 	}
 
-	// LibÈration GL des fichiers de texture
-	for(CMaterial* material : m_TabMaterial) {
+	// Lib√©ration GL des fichiers de texture
+	for(CMaterial* material : _materials) {
 		material->freeGL();
 	}
 
-	// LibÈration GL des sous-Map
-	for(CMap *map : _subMaps) {
-		map->freeGL();
+	// Lib√©ration GL des sous-Map
+	for(auto& subMap : _subMaps) {
+		subMap.second->freeGL();
 	}
 
 	_isGlActivated = false;
@@ -917,14 +958,14 @@ bool CMap::Save(const string nomFichier) {
 	TiXmlElement *elMap = new TiXmlElement("Map");
 	document.LinkEndChild(elMap);
 
-	// Sauvegarde des points d'entrÈe des joueurs
+	// Sauvegarde des points d'entr√©e des joueurs
 	{
 		TiXmlElement *elEntryPoint = new TiXmlElement(Xml::ENTRYPOINTS);
 		elMap->LinkEndChild(elEntryPoint);
 		vector<EntryPoint*>::iterator iterEntryPoint;
 
 		for( iterEntryPoint=_entryPoints.begin() ; iterEntryPoint!=_entryPoints.end() ; iterEntryPoint++ )
-			(*iterEntryPoint)->Save( elEntryPoint );		// Sauvegarde des paramËtres de l'objet
+			(*iterEntryPoint)->Save( elEntryPoint );		// Sauvegarde des param√®tres de l'objet
 	}
 
 	// Sauvegarde des materiaux
@@ -933,8 +974,8 @@ bool CMap::Save(const string nomFichier) {
 		elMap->LinkEndChild(elMat);
 		vector<CMaterial*>::iterator iterMat;
 
-		for( iterMat=m_TabMaterial.begin() ; iterMat!=m_TabMaterial.end() ; iterMat++ )
-			(*iterMat)->Save(elMat);		// Sauvegarde du matÈriau
+		for( iterMat=_materials.begin() ; iterMat!=_materials.end() ; iterMat++ )
+			(*iterMat)->Save(elMat);		// Sauvegarde du mat√©riau
 	}
 
 	// Sauvegarde des lumieres
@@ -954,7 +995,7 @@ bool CMap::Save(const string nomFichier) {
 		vector<MapObject*>::iterator iterObject;
 
 		for(iterObject = _objects.begin() ; iterObject != _objects.end() ; iterObject++)
-			(*iterObject)->Save( elGeo );		// Sauvegarde des paramËtres de l'objet
+			(*iterObject)->Save( elGeo );		// Sauvegarde des param√®tres de l'objet
 	}
 
 	document.SaveFile(nomFichierMap.c_str());
@@ -966,19 +1007,24 @@ bool CMap::Save(const string nomFichier) {
 }
 
 bool CMap::Contact(const float pos[3], const float dist) {
-	bool var = false;	// Pas de contact par dÈfaut
+	bool var = false;	// Pas de contact par d√©faut
 	vector<SolidAndTargettable*>::iterator iter;
 
 	for(iter = _solidAndTargettables.begin() ; iter != _solidAndTargettables.end() ; iter++) {
 		var = (*iter)->Contact( pos, dist );
 
-		if(var)	// Si un triangle a ÈtÈ trouvÈ ‡ une distance infÈrieure ‡ 'dist' de la position 'pos'
+		if(var)	// Si un triangle a √©t√© trouv√© √† une distance inf√©rieure √† 'dist' de la position 'pos'
 			break;
 	}
 
 	// Initialisation des sous-Map
-	for(CMap *map : _subMaps) {
-		map->Contact( pos, dist );
+	if(!var) {
+		for(auto& subMap : _subMaps) {
+			var = subMap.second->Contact( pos, dist );
+
+			if(var)	// Si un triangle a √©t√© trouv√© √† une distance inf√©rieure √† 'dist' de la position 'pos'
+				break;
+		}
 	}
 
 	return var;
@@ -989,17 +1035,22 @@ void CMap::refresh(CGame *game) {
 
 	for(iter = _refreshables.begin() ; iter != _refreshables.end() ; iter++)
 		(*iter)->refresh(game);
+
+	// Initialisation des sous-Map
+	for(auto& subMap : _subMaps) {
+		subMap.second->refresh(game);
+	}
 }
 
 bool CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndexOfPage, int& posX, int& posY, int& indexOfPages) {
 	bool again = true;
 
-	// Si on n'a pas dÈpassÈ l'index de la derniËre texture de la page active du damier on s'arrÍte l‡
+	// Si on n'a pas d√©pass√© l'index de la derni√®re texture de la page active du damier on s'arr√™te l√†
 	if(indexOfPages >= firstIndexOfPage + (nbrX * nbrY)) {
 		again = false;
 	}
 	else if(material->Type() == CMaterial::MAT_TYPE_TEXTURE) {
-		// On compte une texture ‡ afficher de plus (affichÈe ou non sur la page active du damier)
+		// On compte une texture √† afficher de plus (affich√©e ou non sur la page active du damier)
 		indexOfPages++;
 
 		// Si la texture est sur la page active du damier on l'affiche
@@ -1013,17 +1064,17 @@ bool CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int t
 			int y2 = y1 + tailleY/nbrY;
 
 			glBegin(GL_QUADS);
-				glTexCoord2f(0.0f, 0.0f);
-				glVertex2i(x1, 	y1);
+			glTexCoord2f(0.0f, 0.0f);
+			glVertex2i(x1, 	y1);
 
-				glTexCoord2f(1.0f, 0.0f);
-				glVertex2i(x2, 	y1);
+			glTexCoord2f(1.0f, 0.0f);
+			glVertex2i(x2, 	y1);
 
-				glTexCoord2f(1.0f, 1.0f);
-				glVertex2i(x2, 	y2);
+			glTexCoord2f(1.0f, 1.0f);
+			glVertex2i(x2, 	y2);
 
-				glTexCoord2f(0.0f, 1.0f);
-				glVertex2i(x1, 	y2);
+			glTexCoord2f(0.0f, 1.0f);
+			glVertex2i(x1, 	y2);
 			glEnd();
 
 			glDisable(GL_TEXTURE_2D);
@@ -1032,10 +1083,10 @@ bool CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int t
 			glLineWidth(2);
 
 			glBegin(GL_LINE_LOOP);
-				glVertex2i(x1, 	y1);
-				glVertex2i(x2, 	y1);
-				glVertex2i(x2, 	y2);
-				glVertex2i(x1, 	y2);
+			glVertex2i(x1, 	y1);
+			glVertex2i(x2, 	y1);
+			glVertex2i(x2, 	y2);
+			glVertex2i(x1, 	y2);
 			glEnd();
 
 			// Colonne suivante
@@ -1066,7 +1117,7 @@ bool CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int t
 	return again;
 }
 
-vector<CMap*>& CMap::getSubMaps() {
+map<int, CMap*>& CMap::getSubMaps() {
 	return _subMaps;
 }
 
@@ -1085,12 +1136,12 @@ int CMap::afficheDamierTextures(int x, int y, int tailleX, int tailleY, int nbrX
 	bool again = true;
 
 	// On balaie toutes les textures, on affiche que celles qui sont sur la page active du damier
-	for(iter = m_TabMaterial.begin() ; iter != m_TabMaterial.end() && again ; iter++) {
+	for(iter = _materials.begin() ; iter != _materials.end() && again ; iter++) {
 		again = afficheMaterial(*iter, x, y, tailleX, tailleY, nbrX, nbrY, firstIndex, posX, posY, index);
 	}
 
-	// Retourne le numÈro de la page ou 0 si la page affichÈe ne contient aucune texture
-	// Si index > firstIndex Áa veut dire qu'on a affichÈ au moins une texture sur la page de damier active
+	// Retourne le num√©ro de la page ou 0 si la page affich√©e ne contient aucune texture
+	// Si index > firstIndex √ßa veut dire qu'on a affich√© au moins une texture sur la page de damier active
 	return (index > firstIndex) ? page : 0;
 }
 

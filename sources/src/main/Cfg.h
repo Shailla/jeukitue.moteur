@@ -76,6 +76,8 @@ class CCfg {
 	static const char* CST_DEB_SONSPECTRE;
 	static const char* CST_DEB_AFFICHEFICHIER;
 	static const char* CST_DEB_AFFICHENORMAUX;
+	static const char* CST_DEB_AXES_METER_VISIBILITY;
+	static const char* CST_DEB_CUBIC_METER_VISIBILITY;
 
 
 	class CGeneral {

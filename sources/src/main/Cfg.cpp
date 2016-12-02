@@ -58,38 +58,40 @@ const char* CCfg::CST_COM_CAMERA_RECULER =		"commande.cameraReculer";
 const char* CCfg::CST_COM_CAMERA_AVANCER =		"commande.cameraAvancer";
 
 
-const char* CCfg::CST_COM_TIR1 =				"commande.tir1";
-const char* CCfg::CST_COM_TIR2 =				"commande.tir2";
-const char* CCfg::CST_COM_MONTER =				"commande.monter";
-const char* CCfg::CST_COM_SELECTWEAPONUP =		"commande.selectWeaponUp";
-const char* CCfg::CST_COM_SELECTWEAPONDOWN =	"commande.selectWeaponDown";
-const char* CCfg::CST_COM_GRAVITY =				"commande.gravity";
-const char* CCfg::CST_COM_TEXTURES =			"commande.textures";
+const char* CCfg::CST_COM_TIR1 =					"commande.tir1";
+const char* CCfg::CST_COM_TIR2 =					"commande.tir2";
+const char* CCfg::CST_COM_MONTER =					"commande.monter";
+const char* CCfg::CST_COM_SELECTWEAPONUP =			"commande.selectWeaponUp";
+const char* CCfg::CST_COM_SELECTWEAPONDOWN =		"commande.selectWeaponDown";
+const char* CCfg::CST_COM_GRAVITY =					"commande.gravity";
+const char* CCfg::CST_COM_TEXTURES =				"commande.textures";
 
-const char* CCfg::CST_CEN_IP =					"centralisateur.ip";
-const char* CCfg::CST_CEN_PORT =				"centralisateur.port";
+const char* CCfg::CST_CEN_IP =						"centralisateur.ip";
+const char* CCfg::CST_CEN_PORT =					"centralisateur.port";
 
-const char* CCfg::CST_NET_IP =					"reseau.serveur.ip";
-const char* CCfg::CST_NET_PORT =				"reseau.serveur.port";
-const char* CCfg::CST_NET_PORTTREE =			"reseau.serveur.portTree";
+const char* CCfg::CST_NET_IP =						"reseau.serveur.ip";
+const char* CCfg::CST_NET_PORT =					"reseau.serveur.port";
+const char* CCfg::CST_NET_PORTTREE =				"reseau.serveur.portTree";
 const char* CCfg::CST_TREE_UPDATE_CLIENTTOSERVER_DELAY =	"reseau.tree.update.client-to-server.delay";
 const char* CCfg::CST_TREE_UPDATE_SERVERTOCLIENT_DELAY =	"reseau.tree.update.server-to-client.delay";
 
-const char* CCfg::CST_JOU_NOM =					"joueur.nom";
-const char* CCfg::CST_JOU_MAPNOM =				"joueur.mapNom";
-const char* CCfg::CST_JOU_HITBOX_VISIBILITY =	"joueur.hitboxVisibility";
-const char* CCfg::CST_JOU_SOLIDBOX_VISIBILITY =	"joueur.solidboxVisibility";
-const char* CCfg::CST_JOU_SKIN_VISIBILITY =		"joueur.skinVisibility";
+const char* CCfg::CST_JOU_NOM =						"joueur.nom";
+const char* CCfg::CST_JOU_MAPNOM =					"joueur.mapNom";
+const char* CCfg::CST_JOU_HITBOX_VISIBILITY =		"joueur.hitboxVisibility";
+const char* CCfg::CST_JOU_SOLIDBOX_VISIBILITY =		"joueur.solidboxVisibility";
+const char* CCfg::CST_JOU_SKIN_VISIBILITY =			"joueur.skinVisibility";
 
-const char* CCfg::CST_PLU_ACT_BEGIN =			"plugin.activate.begin";
-const char* CCfg::CST_PLU_ACT_END =				"plugin.activate.end";
+const char* CCfg::CST_PLU_ACT_BEGIN =				"plugin.activate.begin";
+const char* CCfg::CST_PLU_ACT_END =					"plugin.activate.end";
 
-const char* CCfg::CST_WEB_HTML_PORT =			"web.html.server.port";
+const char* CCfg::CST_WEB_HTML_PORT =				"web.html.server.port";
 
-const char* CCfg::CST_DEB_SONPERFORMANCES =		"debug.sonPerformances";
-const char* CCfg::CST_DEB_SONSPECTRE =			"debug.sonSpectre";
-const char* CCfg::CST_DEB_AFFICHEFICHIER =		"debug.afficheFichier";
-const char* CCfg::CST_DEB_AFFICHENORMAUX =		"debug.afficheNormaux";
+const char* CCfg::CST_DEB_SONPERFORMANCES =			"debug.sonPerformances";
+const char* CCfg::CST_DEB_SONSPECTRE =				"debug.sonSpectre";
+const char* CCfg::CST_DEB_AFFICHEFICHIER =			"debug.afficheFichier";
+const char* CCfg::CST_DEB_AFFICHENORMAUX =			"debug.afficheNormaux";
+const char* CCfg::CST_DEB_AXES_METER_VISIBILITY = 	"debug.afficheAxesMeter";
+const char* CCfg::CST_DEB_CUBIC_METER_VISIBILITY =	"debug.afficheCubeMeter";
 
 
 CCfg::CCfg()
@@ -359,6 +361,12 @@ void CCfg::Lit() {
 		do fichier >> mot;	while( mot!=CST_DEB_AFFICHENORMAUX );
 		fichier >> Debug.bAfficheNormaux;
 
+		do fichier >> mot;	while( mot!=CST_DEB_AXES_METER_VISIBILITY);
+		fichier >> Debug.axesMeterVisibility;
+
+		do fichier >> mot;	while( mot!=CST_DEB_CUBIC_METER_VISIBILITY);
+		fichier >> Debug.cubicMeterVisibility;
+
 		fichier.close();
 	}
 	catch(istringstream::failure& finDuFlux) {
@@ -445,6 +453,8 @@ void CCfg::Ecrit() {
 	fichier << endl << CST_DEB_SONSPECTRE << "\t\t\t" << Debug.bSonSpectre;
 	fichier << endl << CST_DEB_AFFICHEFICHIER << "\t\t" << Debug.bAfficheFichier;
 	fichier << endl << CST_DEB_AFFICHENORMAUX << "\t\t" << Debug.bAfficheNormaux;
+	fichier << endl << CST_DEB_AXES_METER_VISIBILITY << "\t\t" << Debug.axesMeterVisibility;
+	fichier << endl << CST_DEB_CUBIC_METER_VISIBILITY << "\t\t" << Debug.cubicMeterVisibility;
 
 	fichier << "\n\n------------------------FIN-------------------------\n";
 

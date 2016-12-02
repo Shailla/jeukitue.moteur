@@ -1,6 +1,6 @@
 
 #ifdef WIN32
-	#include <windows.h>
+#include <windows.h>
 #endif
 #include <GL/glew.h>
 #include <string>
@@ -27,14 +27,14 @@ namespace jkt
 {
 
 CMaterialTexture::CMaterialTexture()
-	:CMaterial()
+:CMaterial()
 {
 	m_Type = MAT_TYPE_TEXTURE;
 	_texture = NULL;
 }
 
 CMaterialTexture::CMaterialTexture( const CMaterial &mat ) {
-		// Copie des attributs de 'mat'
+	// Copie des attributs de 'mat'
 	m_Type = MAT_TYPE_TEXTURE;
 
 	m_Ambient[0] = mat.m_Ambient[0];	m_Ambient[1] = mat.m_Ambient[1];		m_Ambient[2] = mat.m_Ambient[2];
@@ -43,7 +43,7 @@ CMaterialTexture::CMaterialTexture( const CMaterial &mat ) {
 
 	m_Ref = mat.getRef();
 
-		// Construction des attributs de l'instance
+	// Construction des attributs de l'instance
 	m_Type = MAT_TYPE_TEXTURE;
 	_texture = NULL;
 }
@@ -53,9 +53,14 @@ CMaterialTexture::~CMaterialTexture()
 }
 
 void CMaterialTexture::initGL() throw(jkt::CErreur) {
-	RessourcesLoader::getFileRessource(m_FichierTexture);
-	Uint8* pixels = litFichierImage(m_FichierTexture, 1.0f);
-	_texture = litFichierTexture(m_FichierTexture, 1.0f, pixels);
+	try {
+		RessourcesLoader::getFileRessource(m_FichierTexture);
+		Uint8* pixels = litFichierImage(m_FichierTexture, 1.0f);
+		_texture = litFichierTexture(m_FichierTexture, 1.0f, pixels);
+	}
+	catch(CErreur& erreur) {
+		LOGWARN(("Echec de lecture de la texture '%s'", m_FichierTexture.c_str()));
+	}
 }
 
 void CMaterialTexture::freeGL() {
@@ -78,7 +83,7 @@ bool CMaterialTexture::Lit(TiXmlElement* element, string &repertoire, MapLogger*
 	Xml::LitCouleur3fv(element, Xml::DIFFUSE, m_Diffuse);
 	Xml::LitCouleur3fv(element, Xml::SPECULAR, m_Specular);
 
-		// Fichier de texture
+	// Fichier de texture
 	TiXmlElement* elFic = element->FirstChildElement(Xml::FICHIER);
 
 	if(!elFic) {
@@ -212,9 +217,11 @@ bool CMaterialTexture::Save(TiXmlElement* element) {
 }
 
 void CMaterialTexture::Active() {
-	glEnable(GL_TEXTURE_2D);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-	glBindTexture(GL_TEXTURE_2D, _texture->getGlTexName());
+	if(_texture) {
+		glEnable(GL_TEXTURE_2D);
+		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+		glBindTexture(GL_TEXTURE_2D, _texture->getGlTexName());
+	}
 }
 
 void CMaterialTexture::Desactive() {

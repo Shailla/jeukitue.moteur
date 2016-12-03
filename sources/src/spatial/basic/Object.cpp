@@ -12,12 +12,12 @@ namespace jkt {
 CGenRef Object::GENREF;
 
 Object::Object(CMap* map) {
-	_map = map;
+	_parent = map;
 	_id = GENREF.genRef();	// Génère une référence pour l'objet
 	_reference = -1;
 }
 
-Object::Object(const Object& other) : Object(other._map) {
+Object::Object(const Object& other) : Object(other._parent) {
 	_id = GENREF.genRef();	// Génère une référence pour l'objet
 	_reference = -1;
 	_name = other._name;
@@ -45,11 +45,11 @@ const char* Object::getName() {
 }
 
 CMap* Object::getMap() {
-	return _map;
+	return _parent;
 }
 
 void Object::setMap(CMap* map) {
-	_map = map;
+	_parent = map;
 }
 
 const char* Object::toString() {

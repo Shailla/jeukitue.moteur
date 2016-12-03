@@ -25,11 +25,11 @@ class CMap;
 class Object {
 	static jkt::CGenRef GENREF;
 
+	int _id;
 	std::string _name;				// Nom donné à au géo
-	CMap* _map;						// Navigabilité vers l'objet parent
+	CMap* _parent;						// Navigabilité vers l'objet parent
 
 protected:
-	int _id;
 	int _reference;					// Secondary / external identifier, can be a doublon
 	std::string _tostring;
 

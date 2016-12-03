@@ -1,6 +1,7 @@
 
 #include <algorithm>
 #include <string>
+#include <sstream>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -280,66 +281,68 @@ const char* CMap::getSelectedName() {
 }
 
 void CMap::merge(int mapId, MapLogger* mapLogger) {
-	CMap* map = _subMaps.at(mapId);
+	CMap* subMap = _subMaps.at(mapId);
 
-	if(map) {
-
+	if(subMap) {
 		// Objets de la Map
-		for(MapObject* object : map->_objects) {
+		for(MapObject* object : subMap->_objects) {
 			object->setMap(this);
 			_objects.push_back(object);
 		}
 
-		for(Geometrical* geo : map->_geos) {
+		for(Geometrical* geo : subMap->_geos) {
 			_geos.push_back(geo);
 		}
 
-		for(auto& geoDesc : map->_geoDescriptions) {
+		for(auto& geoDesc : subMap->_geoDescriptions) {
 			_geoDescriptions[geoDesc.first] = geoDesc.second;
 		}
 
-		for(Refreshable* refreshable : map->_refreshables) {
+		for(Refreshable* refreshable : subMap->_refreshables) {
 			_refreshables.push_back(refreshable);
 		}
 
-		for(SolidAndTargettable* solid : map->_solidAndTargettables) {
+		for(SolidAndTargettable* solid : subMap->_solidAndTargettables) {
 			_solidAndTargettables.push_back(solid);
 		}
 
-		for(Drawable* drawable : map->_drawables) {
+		for(Drawable* drawable : subMap->_drawables) {
 			_drawables.push_back(drawable);
 		}
 
 		// Merge des lumiéres
-		for(CLight* light : map->_lights) {
+		for(CLight* light : subMap->_lights) {
 			_lights.push_back(light);
 		}
 
 		// Merge des matériaux
-		for(CMaterial* mat : map->_materials) {
+		for(CMaterial* mat : subMap->_materials) {
 			_materials.push_back(mat);
 		}
 
 		// Merge des entry points
-		for(EntryPoint* entry : map->_entryPoints) {
+		for(EntryPoint* entry : subMap->_entryPoints) {
 			_entryPoints.push_back(entry);
 		}
 
-		// Merge des sous-map
-		for(auto& mapVar : map->_subMaps) {
+		// Merge des sous-subMap
+		for(auto& mapVar : subMap->_subMaps) {
 			_subMaps.insert(pair<int, CMap*>(mapVar.first, mapVar.second));
 		}
 
-		map->clear();
+		subMap->clear();
 		_subMaps.erase(mapId);
-		delete map;
+		delete subMap;
 	}
 	else {
+		stringstream msg;
+		msg << "Map à merger introuvable : " << mapId;
+
 		if(mapLogger) {
-			mapLogger->logError("Map à merger introuvable");
+			mapLogger->logError(msg.str());
 		}
 		else {
-			LOGWARN(("Map à merger introuvable"));
+			LOGWARN((msg.str()));
 		}
 	}
 }
@@ -535,16 +538,19 @@ void CMap::translate(float x, float y, float z) {
 
 	if(x!=0.0 || y!=0.0 || z!=0.0) {
 		// Entry points
-		for(EntryPoint* entry : _entryPoints)
+		for(EntryPoint* entry : _entryPoints) {
 			entry->translate(x, y, z);
+		}
 
 		// Geo
-		for(Geometrical* geo : _geos)
+		for(Geometrical* geo : _geos) {
 			geo->translate(x, y, z);
+		}
 
 		// Lights
-		for(CLight* light : _lights)
+		for(CLight* light : _lights) {
 			light->translate(x, y, z);
+		}
 	}
 
 	// Initialisation des sous-Map
@@ -656,24 +662,47 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					}
 
 					// Lecture de la Map
-					CMap* subMap = new CMap(map);
+					CMap* subMap = new CMap(&map);
+
 					Lit(*subMap, string(subMapName), mapLogger);
 
+					stringstream msg;
+					msg << "Translation " << subMap->getId() << " : " << translation[0] << " " << translation[1] << " " << translation[2];
+					mapLogger->logInfo(msg.str());
+
 					subMap->translate(translation[0], translation[1], translation[2]);
+
+					msg.clear();//clear any bits set
+					msg.str(std::string());
+					msg << "Scaling " << subMap->getId() << " : " << scaling[0] << " " << scaling[1] << " " << scaling[2];
+					mapLogger->logInfo(msg.str());
+
 					subMap->Scale(scaling[0], scaling[1], scaling[2]);
 
 					// Fusion des Map
-					if(!strcmp(Xml::IMPORT_MODE_MERGE, importMode)) {
-						mapLogger->logInfo("Merge sous-Map");
+					if(importMode && !strcmp(Xml::IMPORT_MODE_MERGE, importMode)) {
+						msg.clear();//clear any bits set
+						msg.str(std::string());
+						msg << "Merge sous-Map '" << subMap->getId() << "'";
+						mapLogger->logInfo(msg.str());
+
 						map.add(subMap);
 						map.merge(subMap->getId());
 					}
-					else if(!strcmp(Xml::IMPORT_MODE_ADD, importMode)) {
-						mapLogger->logError("Add sous-Map");
+					else if(importMode && !strcmp(Xml::IMPORT_MODE_ADD, importMode)) {
+						msg.clear();//clear any bits set
+						msg.str(std::string());
+						msg << "Add sous-Map '" << subMap->getId() << "'";
+
+						mapLogger->logInfo(msg.str());
 						map.add(subMap);
 					}
 					else {
-						mapLogger->logInfo("Merge sous-Map (default)");
+						msg.clear();//clear any bits set
+						msg.str(std::string());
+						msg << "Merge sous-Map (default) '" << subMap->getId() << "'";
+						mapLogger->logInfo(msg.str());
+
 						map.add(subMap);
 						map.merge(subMap->getId());
 					}

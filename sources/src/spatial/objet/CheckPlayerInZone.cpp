@@ -129,6 +129,8 @@ void CheckPlayerInZone::Affiche() {
 		glColor4f(0.0f, 0.2f, 1.0f, 0.4f);
 
 		Fabrique::getGlUtils()->drawCube(_zoneDetectionXmin, _zoneDetectionXmax, _zoneDetectionYmin, _zoneDetectionYmax, _zoneDetectionZmin, _zoneDetectionZmax);
+
+		glDisable( GL_BLEND );
 	}
 }
 

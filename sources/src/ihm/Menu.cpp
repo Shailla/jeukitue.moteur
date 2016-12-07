@@ -171,6 +171,9 @@ void CMenu::afficheItems() {
 		fonte.drawString(items[i+ajust], float(260+CORX), float(300+CORY-((i+1)*20)), INFOFONTESCALAR);
 		i++;
 	}
+
+	glDisable( GL_TEXTURE_2D );
+	glDisable( GL_BLEND );
 }
 
 void CMenu::afficheItemsDroits() {

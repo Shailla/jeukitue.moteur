@@ -192,6 +192,9 @@ void CMultiMaterialGeo::Affiche() {
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	if( Config.Debug.bAfficheNormaux )
+		AfficheNormals();
 }
 
 const char* CMultiMaterialGeo::toString() {
@@ -207,16 +210,32 @@ const char* CMultiMaterialGeo::toString() {
 }
 
 void CMultiMaterialGeo::AfficheSelection(float r,float v,float b) {
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING);
-
-	glColor3f(r,v,b);
-
 	glLineWidth( 1 );
 
-	glDisableClientState(GL_NORMAL_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, m_TabVertex);	//Initialisation du tableau de sommets
-	glDrawArrays(JKT_RenderMode, 0, m_NumVertex);
+	// Attachement VBO sommets
+	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_VERTEX]);
+	glVertexPointer(3, GL_FLOAT, 0, 0);
+
+	glColor3f(r, v, b);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	int start = 0;	// Index courant d'affichage de vertex
+
+	// Affiche pour chaque canal avec le matériau spécifié
+	map<int,int>::iterator iter = m_CanauxNumbers.begin();
+
+	for( ; iter!=m_CanauxNumbers.end() ; iter++ ) {			// Dessine toutes les faces de la map
+		int nbrFaces = iter->second;	// Nombre de faces concernées par ce canal
+
+		// Affichage
+		glDrawArrays(JKT_RenderMode, 3*start, 3*nbrFaces);
+
+		// Calcul de l'index courant d'affichage
+		start += nbrFaces;
+	}
+
+	glDisableClientState(GL_VERTEX_ARRAY);
 
 		//AFFICHAGE DES VECTEURS NORMAUX
 	if( Config.Debug.bAfficheNormaux )

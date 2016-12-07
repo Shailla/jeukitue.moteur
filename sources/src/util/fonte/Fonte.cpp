@@ -258,6 +258,7 @@ void Fonte::drawString(const string& text, float x, float y, float scalar, JUSTI
 	glEnd();
 
 	glDisable( GL_TEXTURE_2D );
+	glDisable( GL_BLEND );
 }
 
 void Fonte::getStringSize(const string& text, float scalar, float& stringWidth, float& stringHeight) const {

@@ -134,8 +134,7 @@ void CBouton::afficheCadre()
 	}
 }
 
-void CBouton::afficheTexte()
-{
+void CBouton::afficheTexte() {
 	glEnable( GL_TEXTURE_2D );
 	glEnable( GL_BLEND );
 
@@ -147,6 +146,9 @@ void CBouton::afficheTexte()
 		glColor3f( 0.0f, 0.0f, 0.0f );
 
 	fonte.drawString(_txt, TAILLE_BOUTON_X/2.0f, TAILLE_BOUTON_Y/2.0f, INFOFONTESCALAR, Fonte::JUSTIFY_CENTER);
+
+	glDisable( GL_TEXTURE_2D );
+	glDisable( GL_BLEND );
 }
 
 bool CDlgBoite::INIT_CLASSE()
@@ -286,9 +288,6 @@ void CDlgBoite::afficheCadre()
 			glVertex2f( CORX,				CORY + TAILLEBY - 30		);
 			glVertex2f( CORX,				CORY + TAILLEBY				);
 	glEnd();
-
-	glEnable( GL_TEXTURE_2D );
-	glEnable( GL_BLEND );
 }
 
 void CDlgBoite::afficheTitre()
@@ -300,6 +299,9 @@ void CDlgBoite::afficheTitre()
 
 	glColor3f( 0.0f, 0.0f, 0.0f );
 	fonte.drawString(m_Titre, CORX + 20, CORY + TAILLEBY - 8, INFOFONTESCALAR);
+
+	glDisable( GL_TEXTURE_2D );
+	glDisable( GL_BLEND );
 }
 
 void CDlgBoite::afficheTexte()
@@ -312,6 +314,9 @@ void CDlgBoite::afficheTexte()
 	glColor3f( 0.0f, 0.0f, 0.0f );
 	for( unsigned int i=0 ; i<m_Texte.size() ; i++ )
 		fonte.drawString(m_Texte[i], CORX + 50, CORY + TAILLEBY - 50 - i*20.0f, INFOFONTESCALAR);
+
+	glDisable( GL_TEXTURE_2D );
+	glDisable( GL_BLEND );
 }
 
 void CDlgBoite::afficheBouton()

@@ -53,7 +53,7 @@ class CMap : public MapObject {
 
 	// Lumières et autres caractéristiques de la Map
 	vector<CLight*> _lights;							// Lumières
-	vector<EntryPoint*> _entryPoints;					// Points d'entr�e des joueurs sur la Map
+	vector<EntryPoint*> _entryPoints;					// Points d'entrée des joueurs sur la Map
 
 	// Objets complexes de la Map
 	vector<CMoteurParticules*> _particulesEngines;	// Liste des moteurs de particules de la Map
@@ -63,14 +63,14 @@ class CMap : public MapObject {
 	int _Selection;									// Object géo sélectionné
 	bool _bSelection;								// Indique si le mode sélection est actif ou non
 
-	bool _isGlActivated;							// Indique si les éléments OpenGL de la MAP ont été initialisés
-	bool _isPluginsActivated;						// Indique si les plugins de la MAP ont été initialisés
+	bool _isGlInitialized;							// Indique si les éléments OpenGL de la MAP ont été initialisés
+	bool _isPluginsInitialized;						// Indique si les plugins de la MAP ont été initialisés
 
 	CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
 
 	bool afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
 public:
-	vector<CMaterial*> _materials;		// Liste des mat�riaux A VOIR : devrait être membre privé
+	vector<CMaterial*> _materials;		// Liste des matériaux A VOIR : devrait être membre privé
 
 		// Constructeurs / destructeur
 	CMap(CMap* parent);
@@ -80,7 +80,7 @@ public:
 	void clear();
 	MapObject* clone();
 
-	const char* toString();						// Description r�sum�e de l'objet
+	const char* toString();						// Description résumée de l'objet
 
 	// Object
 	void init() throw(jkt::CErreur) override;	// Initialisation de la CMap
@@ -90,12 +90,12 @@ public:
 	bool Save(TiXmlElement* element) override;			// Sauve l'objet géo dans un fichier Map
 
 	// Gestion des plugins de la Map
-	void initPlugins();		// Chargement / ex�cution des plugins de la Map
-	void freePlugins();		// Lib�ration des plugins de la Map
+	void initPlugins();		// Chargement / exécution des plugins de la Map
+	void freePlugins();		// Libération des plugins de la Map
 
 	// Drawable
 	void initGL() override;		// Initialisation du contexte OpenGL
-	void freeGL() override;		// Lib�ration du contexte OpenGL
+	void freeGL() override;		// Libération du contexte OpenGL
 
 	void Affiche() override;											// Affiche l'ensemble des éléments 3D de cette Map
 	void AfficheSelection(float r,float v,float b) override;			// Affiche l'objet géométrique en couleur unique
@@ -109,14 +109,14 @@ public:
 	/**
 	 * Affiche toutes les textures de la MAP dans un rectangle dont le coin bas gauche est en (x,y) et les dimensions sont (tailleX, tailleY).
 	 *
-	 * @param x position horizontale du coin bas gauche du rectangle dans lequel les texture vont �tre affich�es
-	 * @param y position verticale du coin bas gauche du rectangle dans lequel les texture vont �tre affich�es
-	 * @param tailleX taille horizontale du rectangle dans lequel les texture vont �tre affich�es
-	 * @param tailleY taille verticale du rectangle dans lequel les texture vont �tre affich�es
+	 * @param x position horizontale du coin bas gauche du rectangle dans lequel les texture vont être affichees
+	 * @param y position verticale du coin bas gauche du rectangle dans lequel les texture vont être affichees
+	 * @param tailleX taille horizontale du rectangle dans lequel les texture vont être affichees
+	 * @param tailleY taille verticale du rectangle dans lequel les texture vont être affichees
 	 * @param nbrX nombre de textures sur une ligne
 	 * @param nbrY nombre de textures sur une colonne
-	 * @param page num�ro de la page  de texures � afficher (sur une page on affiche nbrX*nbrY textures)
-	 * @return num�ro de la page de texture affich�e ou 0 si on a d�pass� la derni�re page
+	 * @param page numero de la page  de texures à afficher (sur une page on affiche nbrX*nbrY textures)
+	 * @return numero de la page de texture affichee ou 0 si on a depassé la dernière page
 	 */
 	int afficheDamierTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int page);
 
@@ -143,26 +143,26 @@ public:
 	void translate(float x, float y, float z) override;				// Translation de la Map selon x, y, z
 
 	// Gestion des contacts
-	bool Contact(const float pos[3], const float dist) override;	// Indique s'il y a un triangle � une distance inf�rieure � 'dist' de la position 'pos'
+	bool Contact(const float pos[3], const float dist) override;	// Indique s'il y a un triangle � une distance inférieure à 'dist' de la position 'pos'
 
 	/**
-	 * positionPlayer : position du jouer ou position calcul� ce qui permet d'optimiser certains contacts quand un objet a boug� en consid�rant que c'est plut�t le
+	 * positionPlayer : position du jouer ou position calculé ce qui permet d'optimiser certains contacts quand un objet a bougé en considérant que c'est plutôt le
 	 */
-	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;								// G�re tous les contacts entre la map et les joueurs
+	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;								// Gère tous les contacts entre la map et les joueurs
 	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;	// Envoie d'un laser sur la map
 
 	map<int, CMap*>& getSubMaps();
 	vector<CLight*>& getLights();
 	vector<MapObject*>& getMapObjects();
 
-	// S�lection
-	void incrementeSelection();	// S�lectionne l'objet géo suivant
-	void decrementeSelection();	// S�lectionne l'objet géo pr�c�dent
+	// Sélection
+	void incrementeSelection();	// Sélectionne l'objet géo suivant
+	void decrementeSelection();	// Sélectionne l'objet géo précédent
 	void ChangeSelectionMode();
 	const char* getSelectedName();
 	bool IsSelectionMode();
 
-	// Points d'entr�e des personnages joueurs
+	// Points d'entrée des personnages joueurs
 	void add(EntryPoint* entryPoint);
 	vector<EntryPoint*>& getEntryPointsList();
 };

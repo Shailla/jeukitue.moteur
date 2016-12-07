@@ -25,6 +25,8 @@ namespace jkt
 {
 
 class CTextureMaterialGeo : public MapObject {
+	bool _isGlInitialized;
+
 	int m_OffsetMateriaux;		// Sert lors de la lecture des références matériaux
 	string tostring;
 	CMaterialTexture* m_Material;	// Matériau multiple associé
@@ -42,8 +44,6 @@ class CTextureMaterialGeo : public MapObject {
 	enum {	VBO_VERTEX=0, VBO_NORMAUX, VBO_TEXVERTEX };
 	static const int VBO_BUFFER_SIZE = 3;
 	GLuint m_VboBufferNames[VBO_BUFFER_SIZE];
-	void initVBO();
-	void freeVBO();
 
 	void MinMax();			// Calcul les variables MinX,...,MaxZ de cet objet géométrique
 	void Bulle();			// Calcul les variables 'centre' et rayon

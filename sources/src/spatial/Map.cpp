@@ -70,8 +70,8 @@ CMap::CMap(CMap* parent) : MapObject(parent) {
 
 	_bSelection = false;
 	_Selection = 0;
-	_isGlActivated = false;
-	_isPluginsActivated = false;
+	_isGlInitialized = false;
+	_isPluginsInitialized = false;
 }
 
 CMap::CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur) : MapObject(parent) {
@@ -86,8 +86,8 @@ CMap::CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur) : MapObje
 
 	_bSelection = false;
 	_Selection = 0;
-	_isGlActivated = false;
-	_isPluginsActivated = false;
+	_isGlInitialized = false;
+	_isPluginsInitialized = false;
 }
 
 CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur) : MapObject(parent) {
@@ -102,8 +102,8 @@ CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(j
 
 	_bSelection = false;
 	_Selection = 0;
-	_isGlActivated = false;
-	_isPluginsActivated = false;
+	_isGlInitialized = false;
+	_isPluginsInitialized = false;
 }
 
 CMap::~CMap() {
@@ -156,11 +156,9 @@ const char* CMap::toString() {
 
 void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 	// Si nécessaire, initialise les éléments OpenGL de la MAP
-	if(!_isGlActivated) {
-		initGL();
-	}
+	initGL();
 
-	if(!_isPluginsActivated) {
+	if(!_isPluginsInitialized) {
 		initPlugins();
 	}
 
@@ -173,10 +171,10 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE );
 
 		engine->affiche();	// Le moteur de particules affiche toutes ses particules
-
-		glDisable( GL_BLEND );
-		glDepthMask( GL_TRUE );
 	}
+
+	glDisable( GL_BLEND );
+	glDepthMask( GL_TRUE );
 
 
 	// Affichage des objets
@@ -208,11 +206,11 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 
 void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objets géo de du MAP
 	// Si nécessaire, initialise les éléments OpenGL de la MAP
-	if(!_isGlActivated) {
+	if(!_isGlInitialized) {
 		initGL();
 	}
 
-	if(!_isPluginsActivated) {
+	if(!_isPluginsInitialized) {
 		initPlugins();
 	}
 
@@ -250,7 +248,7 @@ MapObject* CMap::getDescription(int ref) {
 void CMap::incrementeSelection() {
 	_Selection++;
 
-	if(_Selection >= (int)_geos.size()) {
+	if(_Selection >= (int)_drawables.size()) {
 		_Selection = 0;
 	}
 }
@@ -259,7 +257,7 @@ void CMap::decrementeSelection() {
 	_Selection--;
 
 	if(_Selection < 0) {
-		_Selection = (int)_geos.size()-1;
+		_Selection = (int)_drawables.size()-1;
 
 		if(_Selection < 0)
 			_Selection = 0;
@@ -276,8 +274,10 @@ bool CMap::IsSelectionMode() {
 }
 
 const char* CMap::getSelectedName() {
-	Object* object = _objects[_Selection];
-	return object->toString();
+	//	Object* object = _drawables[_Selection];
+	//	return object->toString();
+
+	return "";
 }
 
 void CMap::merge(int mapId, MapLogger* mapLogger) {
@@ -898,6 +898,8 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 }
 
 void CMap::init() throw(jkt::CErreur) {	// Initialisation de la CMap
+	LOGINFO(("Init Map %d", getId()));
+
 	// Initialisation des object géométriques
 	vector<MapObject*>::iterator iterObject;
 
@@ -919,36 +921,35 @@ void CMap::initPlugins() {
 		Fabrique::getPluginEngine()->activateMapPlugin(this, *it, _binariesDirectory);
 	}
 
-	_isPluginsActivated = true;	// Indique que les éléments OpenGL de la MAP ont bien été initialisés
+	_isPluginsInitialized = true;	// Indique que les éléments OpenGL de la MAP ont bien été initialisés
 }
 
 void CMap::freePlugins() {
 	Fabrique::getPluginEngine()->deactivateMapPlugins();
-	_isPluginsActivated = false;			// Indique que les éléments OpenGL de la MAP ont bien été initialisés
+	_isPluginsInitialized = false;			// Indique que les éléments OpenGL de la MAP ont bien été initialisés
 }
 
 void CMap::initGL() {
-	// Initialisation GL des fichiers de texture
-	for(CMaterial* material : _materials) {
-		material->initGL();
-	}
+	if(!_isGlInitialized) {
+		LOGINFO(("Init GL Map %d", getId()));
 
-	// Initialisation GL des object géométriques dans le contexte OpenGL
-	for(Drawable* drawable : _drawables) {
-		drawable->initGL();
-	}
+		// Initialisation GL des fichiers de texture
+		for(CMaterial* material : _materials) {
+			material->initGL();
+		}
 
-	// Initialisation GL des moteurs de particules
-	for(CMoteurParticules *engine : _particulesEngines) {
-		engine->initGL();
-	}
+		// Initialisation GL des object géométriques dans le contexte OpenGL
+		for(Drawable* drawable : _drawables) {
+			drawable->initGL();
+		}
 
-	// Initialisation GL des sous-Map
-	for(auto& subMap : _subMaps) {
-		subMap.second->initGL();
-	}
+		// Initialisation GL des moteurs de particules
+		for(CMoteurParticules *engine : _particulesEngines) {
+			engine->initGL();
+		}
 
-	_isGlActivated = true;	// Indique que les éléments OpenGL de la MAP ont bien été initialisés
+		_isGlInitialized = true;	// Indique que les éléments OpenGL de la MAP ont bien été initialisés
+	}
 }
 
 void CMap::freeGL() {
@@ -972,7 +973,7 @@ void CMap::freeGL() {
 		subMap.second->freeGL();
 	}
 
-	_isGlActivated = false;
+	_isGlInitialized = false;
 }
 
 bool CMap::Save(const string nomFichier) {

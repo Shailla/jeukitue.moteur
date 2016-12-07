@@ -39,6 +39,8 @@ extern int JKT_RenderMode;
 
 using namespace jkt;
 
+extern CCfg Config;
+
 namespace jkt
 {
 class CGeoObject;
@@ -238,16 +240,23 @@ const char* CSimpleGeo::toString() {
 }
 
 void CSimpleGeo::AfficheSelection(float r, float v, float b) {
-	glVertexPointer(3, GL_FLOAT, 0, m_TabVertex);	//Initialisation du tableau de sommets
-
-	glColor3f(r, v, b); // Définit la couleur de l'objet géo.
-
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 
+	glColor3f(r, v, b);
+
 	glLineWidth(1);
 
-	glDrawElements(JKT_RenderMode, 3*_numFaces, GL_UNSIGNED_INT, m_TabFaces);
+	// Attachement des VBO
+	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_VERTEX]);
+	glVertexPointer(3, GL_FLOAT, 0, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_VboBufferNames[VBO_FACES]);
+
+	// Affichage
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glDrawElements(JKT_RenderMode, 3*_numFaces, GL_UNSIGNED_INT, 0);
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void CSimpleGeo::MinMax() {

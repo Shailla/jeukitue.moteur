@@ -222,23 +222,25 @@ const char* CSimpleMaterialGeo::toString() {
 }
 
 void CSimpleMaterialGeo::AfficheSelection(float r,float v,float b) {
-	cout << "Start" << getName();
 	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING);
 
-	glColor3f(r,v,b);
+	glLineWidth(1);
 
-	glLineWidth( 1 );
+	glColor3f(r, v, b); // Définit la couleur de l'objet géo. sélectionné
 
-	glDisableClientState(GL_NORMAL_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, m_TabVertex);	//Initialisation du tableau de sommets
+	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_VERTEX]);
+	glVertexPointer(3, GL_FLOAT, 0, 0);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
 	glDrawArrays(JKT_RenderMode, 0, m_NumVertex);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+	m_Material->Desactive();
 
 	//AFFICHAGE DES VECTEURS NORMAUX
-	if( Config.Debug.bAfficheNormaux )
+	if(Config.Debug.bAfficheNormaux) {
 		AfficheNormals();
-
-	cout << "End" << getName();
+	}
 }
 
 void CSimpleMaterialGeo::AfficheNormals() {

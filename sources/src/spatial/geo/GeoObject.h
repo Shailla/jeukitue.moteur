@@ -78,6 +78,8 @@ private:
 	void AfficheWithMaterialSimple( CMaterial *mat );
 	int getOffsetMateriau() throw(CErreur);
 
+	void AfficheNormals();
+
 public:
 	void EchangeXY() override;												// Echange les coordonnées X et Y de l'objet
 	void EchangeXZ() override;												// Echange les coordonnées X et Z de l'objet

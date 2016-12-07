@@ -55,8 +55,8 @@
     </Geos>
 	
 	<Imports>
-		<Import Mode="merge" Nom="Hangards" />
-		<Import Mode="merge" Nom="Hangards">
+		<Import Mode="add" Nom="Hangards" />
+		<Import Mode="add" Nom="Hangards">
 			<Translate X="50.0" Y="0.0" Z="0.0" />
 			<Scale X="1.0" Y="1.0" Z="1.0" />
 		</Import>

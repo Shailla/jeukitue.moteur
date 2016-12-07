@@ -46,6 +46,10 @@ void Texture::initializeGraphicObject(void) {
 	LOGINFO(("Texture initialisee avec l'image '%s' sous la référence OpenGL '%d'", _nomFichier.c_str(), _glTexName));
 }
 
+const string& Texture::getFilename() const {
+	return _nomFichier;
+}
+
 void Texture::destructGraphicObject(void) {
 	// TODO Détruire la texture OpenGL
 }

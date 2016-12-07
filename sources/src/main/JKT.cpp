@@ -490,6 +490,7 @@ void display() {		// Fonction principale d'affichage
 
 		glEnable(GL_DEPTH_TEST);
 
+//		Game.getMap()->AfficheSelection(1.0f, 0.0f, 0.0f);		// Affichage de la map
 		Game.getMap()->Affiche();		// Affichage de la map
 		Game.AfficheProjectils();		// Affichage des projectiles
 		Game.AfficheDirigeables();		// Affichage des dirigeables

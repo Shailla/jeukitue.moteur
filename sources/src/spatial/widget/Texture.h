@@ -69,6 +69,8 @@ public:
 
 	unsigned int getGlTexName(void);
 
+	const string& getFilename() const;
+
 	/**
 	 * Affiche la texture dans un rectangle aux coordonnées indiquées.
 	 *

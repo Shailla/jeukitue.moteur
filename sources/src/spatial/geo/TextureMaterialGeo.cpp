@@ -20,6 +20,7 @@ class CGame;
 
 extern int JKT_RenderMode;
 
+#include "util/Trace.h"
 #include "spatial/XmlVocabulaire.h"
 #include "util/Tableau.cpp"
 #include "util/math_vectoriel.h"
@@ -64,6 +65,7 @@ CTextureMaterialGeo::CTextureMaterialGeo(CMap* map, const string& name, CMateria
 	m_bSolid = solid;				// Objet solide ou éthéreux
 	m_Material = mat;
 	m_TabTexVertex = texvertex;
+	_isGlInitialized = false;
 }
 
 CTextureMaterialGeo::CTextureMaterialGeo(CMap* map) : MapObject(map) {
@@ -77,6 +79,7 @@ CTextureMaterialGeo::CTextureMaterialGeo(CMap* map) : MapObject(map) {
 	m_pNormalTriangle = NULL;		// Sera initialisé par Init()
 	_maxX = _maxY = _maxZ = _minX = _minY = _minZ = 0.0f;
 	m_Rayon = 0.0f;
+	_isGlInitialized = false;
 }
 
 CTextureMaterialGeo::CTextureMaterialGeo(const CTextureMaterialGeo& other) : MapObject(other) {
@@ -117,6 +120,8 @@ CTextureMaterialGeo::CTextureMaterialGeo(const CTextureMaterialGeo& other) : Map
 			m_pNormalTriangle[i] = other.m_pNormalTriangle[i];
 		}
 	}
+
+	_isGlInitialized = false;
 }
 
 MapObject* CTextureMaterialGeo::clone() {
@@ -130,15 +135,13 @@ void CTextureMaterialGeo::setVertex(int numVertex, float *tab) {
 	m_TabVertex = tab;
 }
 
-void CTextureMaterialGeo::init() throw(CErreur)
-{
+void CTextureMaterialGeo::init() throw(CErreur) {
 	MinMax();			// Mesure les minimums et maximums de l'objet géo
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
 	ConstruitBase();	// Construit la table des vecteurs normaux
 }
 
-void CTextureMaterialGeo::initGL()
-{
+void CTextureMaterialGeo::initGL() {
 	glGenBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 
 	// Sommets
@@ -152,15 +155,16 @@ void CTextureMaterialGeo::initGL()
 	// Sommets de texture
 	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_TEXVERTEX]);
 	glBufferData(GL_ARRAY_BUFFER, m_NumVertex*2*sizeof(float), m_TabTexVertex, GL_STATIC_DRAW);
+
+	_isGlInitialized = true;
 }
 
-void CTextureMaterialGeo::freeGL()
-{
+void CTextureMaterialGeo::freeGL() {
+	LOGINFO(("JAMAIS"));
 	glDeleteBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 }
 
-void CTextureMaterialGeo::setNormalVertex(float *tab)
-{
+void CTextureMaterialGeo::setNormalVertex(float *tab) {
 	if(m_TabVectNormaux) {
 		delete[] m_TabVectNormaux;
 	}
@@ -168,8 +172,13 @@ void CTextureMaterialGeo::setNormalVertex(float *tab)
 	m_TabVectNormaux = tab;
 }
 
-void CTextureMaterialGeo::Affiche()
-{
+void CTextureMaterialGeo::Affiche() {
+	_isGlInitialized = true;
+
+	if(!_isGlInitialized) {
+		LOGERROR(("Affichage avant initialisation GL"));
+	}
+
 	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_VERTEX]);
 	glVertexPointer(3, GL_FLOAT, 0, 0);
 
@@ -180,6 +189,7 @@ void CTextureMaterialGeo::Affiche()
 	glTexCoordPointer(2, GL_FLOAT, 0, 0);
 
 	m_Material->Active();
+
 	glLineWidth( 1 );
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -195,6 +205,29 @@ void CTextureMaterialGeo::Affiche()
 	m_Material->Desactive();
 
 	glDisable( GL_TEXTURE_2D );
+
+	//AFFICHAGE DES VECTEURS NORMAUX
+	if( Config.Debug.bAfficheNormaux )
+		AfficheNormals();
+}
+
+void CTextureMaterialGeo::AfficheSelection(float r,float v,float b) {
+	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_VERTEX]);
+	glVertexPointer(3, GL_FLOAT, 0, 0);
+
+	glLineWidth( 1 );
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glColor3f(r, v, b); // Définit la couleur de l'objet géo. sélectionné
+
+	glDrawArrays(JKT_RenderMode, 0, m_NumVertex);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+	//AFFICHAGE DES VECTEURS NORMAUX
+	if( Config.Debug.bAfficheNormaux )
+		AfficheNormals();
 }
 
 const char* CTextureMaterialGeo::toString()
@@ -208,24 +241,6 @@ const char* CTextureMaterialGeo::toString()
 	tostring = ttt.str();
 
 	return tostring.c_str();
-}
-
-void CTextureMaterialGeo::AfficheSelection(float r,float v,float b)
-{
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING);
-
-	glColor3f(r,v,b);
-
-	glLineWidth( 1 );
-
-	glDisableClientState(GL_NORMAL_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, m_TabVertex);	//Initialisation du tableau de sommets
-	glDrawArrays(JKT_RenderMode, 0, m_NumVertex);
-
-	//AFFICHAGE DES VECTEURS NORMAUX
-	if( Config.Debug.bAfficheNormaux )
-		AfficheNormals();
 }
 
 void CTextureMaterialGeo::AfficheNormals() {
@@ -361,22 +376,20 @@ void CTextureMaterialGeo::ConstruitBase()
 }
 
 //DESTRUCTEUR
-CTextureMaterialGeo::~CTextureMaterialGeo()
-{
-	if( m_TabVertex )
-	{
+CTextureMaterialGeo::~CTextureMaterialGeo() {
+	LOGINFO(("JAMAIS"));
+
+	if( m_TabVertex ) {
 		delete[] m_TabVertex;
 		m_TabVertex = 0;
 	}
 
-	if( m_TabTexVertex )
-	{
+	if( m_TabTexVertex ) {
 		delete[] m_TabTexVertex;
 		m_TabTexVertex = 0;
 	}
 
-	if( m_pNormalTriangle )
-	{
+	if( m_pNormalTriangle ) LOGINFO(("JAMAIS"));{
 		delete[] m_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs préliminaires à la gestion des contacts)
 		m_pNormalTriangle = 0;
 	}

@@ -169,6 +169,7 @@ void CGeoObject::AfficheWithMaterialSimple(CMaterial *mat) {
 
 	if(tabLight.size()) {
 		glEnable( GL_LIGHTING );
+
 		for( iterLight=tabLight.begin() ; iterLight!=tabLight.end() ; iterLight++ )
 			(*iterLight)->Active();
 	}
@@ -249,18 +250,19 @@ void CGeoObject::AfficheWithMaterialSimple(CMaterial *mat) {
 			glEnd();
 		}
 	}
+
+	glDisable(GL_LIGHTING);
 }
 
 void CGeoObject::AfficheSelection(float r,float v,float b) {
-	glDisable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING);
-
-	glColor3f(r,v,b);
-
-	glLineWidth( 1 );
-
 	glVertexPointer( 3, GL_FLOAT, 0, m_TabVertex );	//Initialisation du tableau de sommets
-	glDrawElements(JKT_RenderMode,3*m_NumFaces,GL_UNSIGNED_INT,m_TabFaces);
+
+	glColor3f(r, v, b); // Définit la couleur de l'objet géo. sélectionné
+	glDrawElements(GL_TRIANGLES, 3*m_NumFaces, GL_UNSIGNED_INT, m_TabFaces);
+
+	//AFFICHAGE DES VECTEURS NORMAUX
+	if( Config.Debug.bAfficheNormaux )
+		AfficheNormals();
 }
 
 const char* CGeoObject::toString() {
@@ -349,8 +351,7 @@ void CGeoObject::AfficheWithMaterialMultiTexture(CMaterialMulti *mat)
 	glDisable( GL_TEXTURE_2D );
 }
 
-void CGeoObject::Affiche()
-{
+void CGeoObject::Affiche() {
 	glVertexPointer( 3, GL_FLOAT, 0, m_TabVertex );	//Initialisation du tableau de sommets
 
 	if( m_bMaterialTexture && m_Material )	// Y a-t-il un matériau associé
@@ -371,6 +372,35 @@ void CGeoObject::Affiche()
 		cout << endl << "Nothing : " << getName();
 		glColor3fv( m_Color ); // Définit la couleur de l'objet géo.
 		glDrawElements(GL_TRIANGLES, 3*m_NumFaces, GL_UNSIGNED_INT, m_TabFaces);
+	}
+
+	//AFFICHAGE DES VECTEURS NORMAUX
+	if( Config.Debug.bAfficheNormaux )
+		AfficheNormals();
+}
+
+void CGeoObject::AfficheNormals() {
+	float pos[3], bout[ 3 ];
+	float facteur = 0.05f;
+
+	if( m_TabVectNormaux ) {
+		glBegin( GL_LINES );
+
+		for( int i=0; i < m_NumVertex ; i++ ) //dessine toutes les faces de la map
+		{
+			glColor3f( 1.0f, 0.0f, 0.0f );
+			pos[ 0 ] = m_TabVertex[ i*3 ];
+			pos[ 1 ] = m_TabVertex[ i*3 + 1 ];
+			pos[ 2 ] = m_TabVertex[ i*3 + 2 ];
+
+			bout[ 0 ] = (m_TabVectNormaux[ (9*i)+0 ]*facteur) + pos[ 0 ];
+			bout[ 1 ] = (m_TabVectNormaux[ (9*i)+1 ]*facteur) + pos[ 1 ];
+			bout[ 2 ] = (m_TabVectNormaux[ (9*i)+2 ]*facteur) + pos[ 2 ];
+
+			glVertex3fv( pos );
+			glVertex3fv( bout );
+		}
+		glEnd();
 	}
 }
 

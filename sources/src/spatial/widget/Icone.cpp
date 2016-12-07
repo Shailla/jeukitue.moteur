@@ -75,6 +75,9 @@ void Icone::affiche(float left, float right, float down, float up) {
 		glTexCoord2f( 0.0f, 0.0f );
 		glVertex2f(left, down);
 	glEnd();
+
+	glDisable( GL_BLEND );
+	glDisable( GL_TEXTURE_2D );
 }
 
 } /* namespace jkt */

@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 import { Map } 			from './map';
 import { MapElement } 	from './mapElement';
 import { MAPS } 		from './mock-maps';
-import { MAP } 			from './mock-map';
+import { JSON_MAP }		from './mock-map';
 
 @Injectable()
 export class MapService {
@@ -26,17 +26,22 @@ export class MapService {
 		return new Promise<Map[]>(resolve => setTimeout(resolve, 1000)) // delay 2 seconds
 				.then(() => Promise.resolve(MAPS));
 	}
-	
+
 	getMap(): Promise<MapElement> {	
 		return this.http.get(this.mapServiceUrl)
 			.toPromise()
-			.then(response => response.json().mapElement as MapElement)
-			.catch(this.handleError);
+			.then(response => response.json())
+			.then(json => json.mapElement)
+			.then(mapElement => new MapElement().fromJson(mapElement))
+			.catch(this.handleError); 
 	}
 	
-	getMapSlowly(): Promise<MapElement[]> {
-		return new Promise<MapElement[]>(resolve => setTimeout(resolve, 1000)) // delay 2 seconds
-			.then(() => Promise.resolve(MAP));
+	getMapSlowly(): Promise<MapElement> {
+		return new Promise<MapElement>(resolve => setTimeout(resolve, 1000)) // delay 2 seconds
+			.then(() => Promise.resolve(JSON_MAP))
+			.then(json => json.mapElement)
+			.then(mapElement => new MapElement().fromJson(mapElement))
+			.catch(this.handleError);
 	}
 
 	

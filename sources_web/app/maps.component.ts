@@ -19,10 +19,9 @@ export class MapsComponent implements OnInit {
 	}
 	
 	getMaps(): void {
-		this.mapService.getMaps().then(maps => {
+		this.mapService.getMaps().then(maps => 	{
 														this.maps = maps;
 														console.log('Maps JSON response : ', this.maps);
-														}
-												  );
+												});
 	}
 }

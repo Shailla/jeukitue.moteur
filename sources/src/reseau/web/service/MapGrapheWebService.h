@@ -19,6 +19,7 @@ class MapGrapheWebService : public WebService {
 	static string ID;
 	static string NAME;
 	static string TYPE;
+	static string SELECTED;
 
 	static string MAP;
 	static string GEO;
@@ -30,7 +31,7 @@ public:
 	virtual ~MapGrapheWebService();
 
 	void jisonifyMap(CMap* map, JsonObject& mapGraphe);
-	WebServiceResult execute(const std::string& endpoint, const std::string& method);
+	WebServiceResult execute(const std::string& method, const std::string& serviceEndpoint, const std::string& params);
 };
 
 } /* namespace jkt */

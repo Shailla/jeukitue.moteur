@@ -69,7 +69,6 @@ CMap::CMap(CMap* parent) : MapObject(parent) {
 	LOGDEBUG(("CMap::CMap(*parent) %T", this ));
 
 	_bSelection = false;
-	_Selection = 0;
 	_isGlInitialized = false;
 	_isPluginsInitialized = false;
 }
@@ -85,7 +84,6 @@ CMap::CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur) : MapObje
 	}
 
 	_bSelection = false;
-	_Selection = 0;
 	_isGlInitialized = false;
 	_isPluginsInitialized = false;
 }
@@ -101,7 +99,6 @@ CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(j
 	}
 
 	_bSelection = false;
-	_Selection = 0;
 	_isGlInitialized = false;
 	_isPluginsInitialized = false;
 }
@@ -182,7 +179,7 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 		int i=0;
 
 		for(Drawable* drawable : _drawables) {
-			if(i != _Selection)
+			if(drawable->isSelected())
 				drawable->Affiche();			// Affichage de l'objet géo
 			else
 				drawable->AfficheSelection(1.0f, 0.0f, 0.0f);
@@ -245,39 +242,12 @@ MapObject* CMap::getDescription(int ref) {
 	}
 }
 
-void CMap::incrementeSelection() {
-	_Selection++;
-
-	if(_Selection >= (int)_drawables.size()) {
-		_Selection = 0;
-	}
-}
-
-void CMap::decrementeSelection() {
-	_Selection--;
-
-	if(_Selection < 0) {
-		_Selection = (int)_drawables.size()-1;
-
-		if(_Selection < 0)
-			_Selection = 0;
-	}
-}
-
 void CMap::ChangeSelectionMode() {
 	_bSelection = !_bSelection;
-	_Selection = 0;
 }
 
 bool CMap::IsSelectionMode() {
 	return _bSelection;
-}
-
-const char* CMap::getSelectedName() {
-	//	Object* object = _drawables[_Selection];
-	//	return object->toString();
-
-	return "";
 }
 
 void CMap::merge(int mapId, MapLogger* mapLogger) {

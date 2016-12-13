@@ -24,28 +24,28 @@ using namespace std;
 #include "reseau/web/service/MapWebService.h"
 #include "reseau/web/service/MapGrapheWebService.h"
 
-#include "reseau/web/HtmlServer.h"
+#include <reseau/web/HttpServer.h>
 
 namespace jkt
 {
 
-const char* HtmlServer::WEB_CSS_DIR =		"./web/css";
-const char* HtmlServer::WEB_HTML_DIR =		"./web/html";
-const char* HtmlServer::WEB_IMAGE_DIR =		"./web/image";
-const char* HtmlServer::WEB_JS_DIR =		"./web/js";
-const char* HtmlServer::WEB_JSON_DIR =		"./web/json";
+const char* HttpServer::WEB_CSS_DIR =		"./web/css";
+const char* HttpServer::WEB_HTML_DIR =		"./web/html";
+const char* HttpServer::WEB_IMAGE_DIR =		"./web/image";
+const char* HttpServer::WEB_JS_DIR =		"./web/js";
+const char* HttpServer::WEB_JSON_DIR =		"./web/json";
 
-const char* HtmlServer::HTTP_RETURN =				"\r\n";
-const char* HtmlServer::HTTP_HEAD = 				"HTTP/1.1";
-const char* HtmlServer::HTTP_RESPONSE_200 = 		"200 OK";
-const char* HtmlServer::HTTP_RESPONSE_404 = 		"404 NOT FOUND";
-const char* HtmlServer::HTTP_RESPONSE_500 = 		"500 INTERNAL ERROR";
-const char* HtmlServer::HTTP_CONTENT_TYPE_HTML = 	"Content-type: text/html; charset=utf-8";
-const char* HtmlServer::HTTP_CONTENT_TYPE_CSS = 	"Content-type: text/css; charset=utf-8";
-const char* HtmlServer::HTTP_CONTENT_TYPE_IMAGE = 	"Content-type: image";
-const char* HtmlServer::HTTP_CONTENT_TYPE_JS = 		"Content-type: application/javascript;";
-const char* HtmlServer::HTTP_CONTENT_TYPE_JSON = 	"Content-type: application/json; charset=utf-8";
-const char* HtmlServer::HTTP_CONTENT_LENGTH = 		"Content-Length: ";
+const char* HttpServer::HTTP_RETURN =				"\r\n";
+const char* HttpServer::HTTP_HEAD = 				"HTTP/1.1";
+const char* HttpServer::HTTP_RESPONSE_200 = 		"200 OK";
+const char* HttpServer::HTTP_RESPONSE_404 = 		"404 NOT FOUND";
+const char* HttpServer::HTTP_RESPONSE_500 = 		"500 INTERNAL ERROR";
+const char* HttpServer::HTTP_CONTENT_TYPE_HTML = 	"Content-type: text/html; charset=utf-8";
+const char* HttpServer::HTTP_CONTENT_TYPE_CSS = 	"Content-type: text/css; charset=utf-8";
+const char* HttpServer::HTTP_CONTENT_TYPE_IMAGE = 	"Content-type: image";
+const char* HttpServer::HTTP_CONTENT_TYPE_JS = 		"Content-type: application/javascript;";
+const char* HttpServer::HTTP_CONTENT_TYPE_JSON = 	"Content-type: application/json; charset=utf-8";
+const char* HttpServer::HTTP_CONTENT_LENGTH = 		"Content-Length: ";
 
 WebResource::WebResource() {
 	_content = 0;
@@ -129,9 +129,9 @@ void WebResource::load() {
 }
 
 // Contenu en dur en dernier recours (erreur interne) pour éviter de cumuler une erreur interne avec une ressource introuvable
-const char* HtmlServer::HTTP_INTERNAL_ERROR_CONTENT = "<html><center><h1>JKT Power</h1><font size=5 color=red>Erreur interne</font></center></html>";
+const char* HttpServer::HTTP_INTERNAL_ERROR_CONTENT = "<html><center><h1>JKT Power</h1><font size=5 color=red>Erreur interne</font></center></html>";
 
-HtmlServer::HtmlServer(int port) {
+HttpServer::HttpServer(int port) {
 	_port = port;
 
 
@@ -156,7 +156,7 @@ HtmlServer::HtmlServer(int port) {
 	collecteDir(WEB_IMAGE_DIR, "", HTTP_CONTENT_TYPE_IMAGE);		// Images
 }
 
-void HtmlServer::collecteDir(const string& dirname, const string& endpoint, const string& contentType) {
+void HttpServer::collecteDir(const string& dirname, const string& endpoint, const string& contentType) {
 	DIR* dir = opendir(dirname.c_str());
 	struct dirent* file;
 	bool isDir;
@@ -185,22 +185,22 @@ void HtmlServer::collecteDir(const string& dirname, const string& endpoint, cons
 	closedir(dir);
 }
 
-HtmlServer::~HtmlServer() {
+HttpServer::~HttpServer() {
 	for(std::pair<string, WebResource*> res : _resources) {
 		delete res.second;
 	}
 }
 
-void HtmlServer::open() {
-	SDL_CreateThread(HtmlServer::run, this);
+void HttpServer::open() {
+	SDL_CreateThread(HttpServer::run, this);
 }
 
-int HtmlServer::run(void* thiz) {
-	((HtmlServer*)thiz)->start();
+int HttpServer::run(void* thiz) {
+	((HttpServer*)thiz)->start();
 	return 0;
 }
 
-void HtmlServer::start() {
+void HttpServer::start() {
 	// Creation de la socket serveur
 	IPaddress adresse;
 
@@ -215,7 +215,7 @@ void HtmlServer::start() {
 	}
 
 	TCPsocket clientSocket;
-	string header, method, endpoint, protocol, path0;
+	string header, method, url, endpoint, params, protocol, path0;
 	vector<string> paths;
 	WebResource* resource;
 	long contentSize;
@@ -242,10 +242,23 @@ void HtmlServer::start() {
 		LOGDEBUG(("HTTP requête reçue : '%s'", request.c_str()));
 
 		method = jkt::StringUtils::findAndEraseFirstWord(request);
-		endpoint = jkt::StringUtils::findAndEraseFirstWord(request);
+		url = jkt::StringUtils::findAndEraseFirstWord(request);
 		protocol = jkt::StringUtils::findAndEraseFirstWord(request);
-		LOGDEBUG((" - Méthode : '%s'", method.c_str()));
-		LOGDEBUG((" - Ressource demandée : '%s'", endpoint.c_str()));
+
+		// Extrait les paramètres de la requête s'il y en a
+		size_t bp = url.find("?");
+		endpoint = url.substr(0, bp);
+
+		if(bp != string::npos) {
+			params = url.substr(bp+1);
+		}
+		else {
+			params = "";	// Pas de paramètres sur la requête
+		}
+
+		LOGDEBUG((" - Méthode :  '%s'", method.c_str()));
+		LOGDEBUG((" - Endpoint : '%s'", endpoint.c_str()));
+		LOGDEBUG((" - Param :    '%s'", params.c_str()));
 		LOGDEBUG((" - Protocol : '%s'", protocol.c_str()));
 
 		// Recherche du contenu
@@ -256,10 +269,11 @@ void HtmlServer::start() {
 
 			// Search web service
 			if(!found) {
-				WebService* service = getService(endpoint);
+				string baseEndpoint, serviceEndpoint;
+				WebService* service = getService(endpoint, baseEndpoint, serviceEndpoint);
 
 				if(service) {
-					WebServiceResult result = service->execute(endpoint, method);
+					WebServiceResult result = service->execute(method, endpoint, params);
 
 					contentType = result._contentType;
 					contentSize = result._contentSize;
@@ -354,16 +368,21 @@ void HtmlServer::start() {
 	}
 }
 
-WebService* HtmlServer::getService(const string& endpoint) {
-	try {
-		return _services.at(endpoint);
+WebService* HttpServer::getService(const string& fullEndpoint, string& baseEndpoint, string& serviceEndpoint) {
+
+	for(auto& iter : _services) {
+		if(StringUtils::isBeginingWith(fullEndpoint, iter.first)) {
+			baseEndpoint = iter.first;
+			serviceEndpoint = fullEndpoint.substr(baseEndpoint.size());
+
+			return iter.second;
+		}
 	}
-	catch(out_of_range& exception) {
-		return 0;
-	}
+
+	return 0;
 }
 
-WebResource* HtmlServer::getResource(const string& endpoint) throw(int) {
+WebResource* HttpServer::getResource(const string& endpoint) throw(int) {
 	try {
 		return _resources.at(endpoint);
 	}
@@ -372,7 +391,7 @@ WebResource* HtmlServer::getResource(const string& endpoint) throw(int) {
 	}
 }
 
-string HtmlServer::buildStringResponse(const string& content, const string& contentType, const string& status) {
+string HttpServer::buildStringResponse(const string& content, const string& contentType, const string& status) {
 	stringstream response;
 
 	// Entête de réponse
@@ -387,7 +406,7 @@ string HtmlServer::buildStringResponse(const string& content, const string& cont
 	return response.str();
 }
 
-string HtmlServer::buildResponseHeader(const string& contentType, long contentSize, const string& status) {
+string HttpServer::buildResponseHeader(const string& contentType, long contentSize, const string& status) {
 	stringstream header;
 
 	// Entête de réponse

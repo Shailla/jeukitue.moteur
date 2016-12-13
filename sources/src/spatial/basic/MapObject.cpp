@@ -74,10 +74,12 @@ void MapObject::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
 
 float MapObject::GereLaserPlayer(float pos[3], CV3D& Dir, float dist) {
 	LOGWARN(("Use of undefined method '%s'", __FUNCTION__));
+	return 0.0f;
 }
 
 bool MapObject::Contact(const float pos[3], float dist) {
 	LOGWARN(("Use of undefined method '%s'", __FUNCTION__));
+	return false;
 }
 
 } /* namespace jkt */

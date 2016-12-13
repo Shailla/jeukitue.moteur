@@ -1,13 +1,14 @@
 /*
- * HtmlServer.h
+ * HttpServer.h
  *
  *  Created on: 25 déc. 2015
  *      Author: VGDJ7997
  */
 
-#ifndef SRC_RESEAU_WEB_HTMLSERVER_H_
-#define SRC_RESEAU_WEB_HTMLSERVER_H_
+#ifndef SRC_RESEAU_WEB_HTTPSERVER_H_
+#define SRC_RESEAU_WEB_HTTPSERVER_H_
 
+#include <string>
 #include <map>
 
 #include "SDL.h"
@@ -18,17 +19,17 @@ namespace jkt
 class WebService;
 
 class WebResource {
-	string _file;
-	string _contentType;
+	std::string _file;
+	std::string _contentType;
 	void* _content;
 	long _contentSize;
 public:
 	WebResource();
-	WebResource(const string& file, const string& contentType);
+	WebResource(const std::string& file, const std::string& contentType);
 	~WebResource();
 
 	void load();
-	string getContentType();
+	std::string getContentType();
 
 	/** Get of the web resource, content is cached at first read */
 	void* getContent();
@@ -37,7 +38,7 @@ public:
 	long getContentSize();
 };
 
-class HtmlServer {
+class HttpServer {
 	static const char* WEB_STATIC_RESOURCES_DIR;
 	static const char* WEB_STATIC_JSON_DIR;
 
@@ -54,13 +55,13 @@ class HtmlServer {
 	};
 
 	Uint16 _port;
-	std::map<string, WebResource*> _resources;
-	std::map<string, WebService*> _services;
+	std::map<std::string, WebResource*> _resources;
+	std::map<std::string, WebService*> _services;
 
-	void collecteDir(const string& dirname, const string& endpoint, const string& contentType);
+	void collecteDir(const std::string& dirname, const std::string& endpoint, const std::string& contentType);
 
-	string buildStringResponse(const string& content, const string& contentType, const string& status);
-	string buildResponseHeader(const string& contentType, long contentSize, const string& status);
+	std::string buildStringResponse(const std::string& content, const std::string& contentType, const std::string& status);
+	std::string buildResponseHeader(const std::string& contentType, long contentSize, const std::string& status);
 
 	void* buildResponse();
 public:
@@ -76,8 +77,8 @@ public:
 	static const char* HTTP_CONTENT_TYPE_JSON;
 	static const char* HTTP_CONTENT_LENGTH;
 
-	HtmlServer(int port);
-	virtual ~HtmlServer();
+	HttpServer(int port);
+	virtual ~HttpServer();
 
 	void open();
 
@@ -85,10 +86,10 @@ public:
 
 	void start();
 
-	WebService* getService(const string& endpoint);
-	WebResource* getResource(const string& endpoint) throw(int);
+	WebService* getService(const std::string& fullEndpoint, std::string& baseEndpoint, std::string& serviceEndpoint);
+	WebResource* getResource(const std::string& endpoint) throw(int);
 };
 
 }	// JktNet
 
-#endif /* SRC_RESEAU_WEB_HTMLSERVER_H_ */
+#endif /* SRC_RESEAU_WEB_HTTPSERVER_H_ */

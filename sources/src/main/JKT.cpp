@@ -66,7 +66,7 @@ class CGame;
 #include "spatial/objet/Dirigeable.h"
 #include <spatial/basic/Refreshable.h>
 #include "spatial/geo/GeoObject.h"
-#include "reseau/web/HtmlServer.h"
+#include <reseau/web/HttpServer.h>
 #include "Rocket.h"
 #include "Laser.h"
 #include "spatial/objet/Porte.h"
@@ -318,13 +318,6 @@ void afficheInfo( Uint32 tempsDisplay ) {
 	fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 
 	char cou[70];
-
-	// Affiche le mode du jeu
-	if(Game.getMap() && Game.getMap()->IsSelectionMode()) {
-		sprintf( cou, "Selection : %s", Game.getMap()->getSelectedName());
-		str = cou;
-		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
-	}
 
 	CPlayer *erwin = Game.Erwin();
 
@@ -894,20 +887,6 @@ void play_handle_key_down( SDL_Event *event ) {
 				console->println(ConsoleView::COT_INFO, string("Enregistrement de la Map : ") + saveMapName.str());
 
 				Game.getMap()->Save(saveMapName.str());
-			}
-			break;
-
-		case SDLK_d:
-			if( Game.getMap() && Game.getMap()->IsSelectionMode() ) {
-				LOGINFO(("Selection du suivant"));
-				Game.getMap()->incrementeSelection();
-			}
-			break;
-
-		case SDLK_q :
-			if( Game.getMap() && Game.getMap()->IsSelectionMode() ) {
-				LOGINFO(("Selection du precedent"));
-				Game.getMap()->decrementeSelection();
 			}
 			break;
 
@@ -1655,7 +1634,7 @@ int main(int argc, char** argv) {
 
 	srand(SDL_GetTicks());		// Initialisation de la fonction rand() pour les nombres aléatoires
 
-	HtmlServer htmlServer(Config.Web.getHtmlServerPort());
+	HttpServer htmlServer(Config.Web.getHtmlServerPort());
 	htmlServer.open();
 
 	_grahicObjectsToInitializeMutex = SDL_CreateMutex();

@@ -5,10 +5,10 @@
  *      Author: VGDJ7997
  */
 
+#include <reseau/web/HttpServer.h>
 #include <stdlib.h>
 
 #include "reseau/web/json/JsonObject.h"
-#include "reseau/web/HtmlServer.h"
 #include "service/MapService.h"
 #include "service/dto/MapInformationDto.h"
 
@@ -22,7 +22,7 @@ MapWebService::MapWebService() {
 MapWebService::~MapWebService() {
 }
 
-WebServiceResult MapWebService::execute(const std::string& endpoint, const std::string& method) {
+WebServiceResult MapWebService::execute(const std::string& method, const std::string& serviceEndpoint, const std::string& params) {
 	JsonObject root;
 	JsonList& maps = root.addList("maps");
 
@@ -40,8 +40,8 @@ WebServiceResult MapWebService::execute(const std::string& endpoint, const std::
 	result._contentSize = json.size();
 	result._content = malloc(json.size());
 	json.copy((char*)result._content, json.size());
-	result._contentType = HtmlServer::HTTP_CONTENT_TYPE_JSON;
-	result._status = HtmlServer::HTTP_RESPONSE_200;
+	result._contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
+	result._status = HttpServer::HTTP_RESPONSE_200;
 
 	return result;
 }

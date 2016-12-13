@@ -15,6 +15,7 @@ export class MapService {
 	
 	constructor(private http: Http) {};
 
+	// Lecture des Maps disponibles dans le jeu	
 	getMaps(): Promise<Map[]> {	
 		return this.http.get(this.mapsServiceUrl)
 				.toPromise()
@@ -27,6 +28,7 @@ export class MapService {
 				.then(() => Promise.resolve(MAPS));
 	}
 
+	// Lecture de la Map en cours dans le jeu
 	getMap(): Promise<MapElement> {	
 		return this.http.get(this.mapServiceUrl)
 			.toPromise()

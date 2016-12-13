@@ -26,7 +26,7 @@ public:
 	WebService();
 	virtual ~WebService();
 
-	virtual WebServiceResult execute(const std::string& endpoint, const std::string& method) = 0;
+	virtual WebServiceResult execute(const std::string& method, const std::string& serviceEndpoint, const std::string& params) = 0;
 };
 
 } /* namespace jkt */

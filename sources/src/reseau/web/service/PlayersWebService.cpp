@@ -5,11 +5,11 @@
  *      Author: VGDJ7997
  */
 
+#include <reseau/web/HttpServer.h>
 #include <stdlib.h>
 
 #include "util/Trace.h"
 #include "reseau/web/json/JsonObject.h"
-#include "reseau/web/HtmlServer.h"
 #include "service/PlayersService.h"
 #include "service/dto/PlayerInformationDto.h"
 
@@ -23,7 +23,7 @@ PlayersWebService::PlayersWebService() {
 PlayersWebService::~PlayersWebService() {
 }
 
-WebServiceResult PlayersWebService::execute(const std::string& endpoint, const std::string& method) {
+WebServiceResult PlayersWebService::execute(const std::string& method, const std::string& serviceEndpoint, const std::string& params) {
 	JsonObject root;
 	JsonList& players = root.addList("players");
 
@@ -42,8 +42,8 @@ WebServiceResult PlayersWebService::execute(const std::string& endpoint, const s
 	result._contentSize = json.size();
 	result._content = malloc(json.size());
 	json.copy((char*)result._content, json.size());
-	result._contentType = HtmlServer::HTTP_CONTENT_TYPE_JSON;
-	result._status = HtmlServer::HTTP_RESPONSE_200;
+	result._contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
+	result._status = HttpServer::HTTP_RESPONSE_200;
 
 	return result;
 }

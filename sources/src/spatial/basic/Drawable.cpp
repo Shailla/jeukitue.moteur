@@ -10,12 +10,22 @@
 namespace jkt {
 
 Drawable::Drawable() {
+	_selected = false;
 }
 
 Drawable::Drawable(const Drawable& other) {
+	_selected = false;
 }
 
 Drawable::~Drawable() {
+}
+
+bool Drawable::isSelected() const {
+	return _selected;
+}
+
+void Drawable::select(bool selected) {
+	_selected = selected;
 }
 
 } /* namespace jkt */

@@ -5,10 +5,10 @@
  *      Author: VGDJ7997
  */
 
+#include <reseau/web/HttpServer.h>
 #include <stdlib.h>
 
 #include "reseau/web/json/JsonObject.h"
-#include "reseau/web/HtmlServer.h"
 #include "main/Game.h"
 #include "spatial/Map.h"
 #include "spatial/geo/EntryPoint.h"
@@ -24,6 +24,7 @@ namespace jkt {
 string MapGrapheWebService::ID = "id";
 string MapGrapheWebService::NAME = "name";
 string MapGrapheWebService::TYPE = "type";
+string MapGrapheWebService::SELECTED = "selected";
 
 string MapGrapheWebService::MAP = "map";
 string MapGrapheWebService::GEO = "geo";
@@ -40,6 +41,7 @@ void MapGrapheWebService::jisonifyMap(CMap* map, JsonObject& mapGraphe) {
 	mapGraphe.addString(TYPE, MAP);
 	mapGraphe.addNumber(ID, map->getId());
 	mapGraphe.addString(NAME, map->getName());
+	mapGraphe.addString(SELECTED, "false");			// TODO permettre de sélectionner une sous-Map la Map
 
 	JsonList& elements = mapGraphe.addList("elements");
 
@@ -48,10 +50,9 @@ void MapGrapheWebService::jisonifyMap(CMap* map, JsonObject& mapGraphe) {
 		obj.addString(TYPE, ENTRYPOINT);
 		obj.addNumber(ID, ePt->getId());
 		obj.addString(NAME, ePt->getName());
+		obj.addString(SELECTED, "false");		// TODO permettre de sélectionner un entry point dans la Map
 
 		obj.addList("elements");
-		obj.addString("expanded", "false");
-		obj.addString("checked", "false");
 	}
 
 	for(CLight* light : map->getLights()) {
@@ -59,10 +60,9 @@ void MapGrapheWebService::jisonifyMap(CMap* map, JsonObject& mapGraphe) {
 		obj.addString(TYPE, LIGHT);
 		obj.addNumber(ID, light->getId());
 		obj.addString(NAME, "lumiere");
+		obj.addString(SELECTED, "false");		// TODO permettre de sélectionner une lumière dans la Map
 
 		obj.addList("elements");
-		obj.addString("expanded", "false");
-		obj.addString("checked", "false");
 	}
 
 	for(MapObject* mObj : map->getMapObjects()) {
@@ -70,22 +70,18 @@ void MapGrapheWebService::jisonifyMap(CMap* map, JsonObject& mapGraphe) {
 		obj.addString(TYPE, GEO);
 		obj.addNumber(ID, mObj->getId());
 		obj.addString(NAME, mObj->getName());
+		obj.addString(SELECTED, mObj->isSelected()?"true":"false");
 
 		obj.addList("elements");
-		obj.addString("expanded", "false");
-		obj.addString("checked", "false");
 	}
 
 	for(auto& subMap : map->getSubMaps()) {
 		JsonObject& obj = elements.addObject();
 		jisonifyMap(subMap.second, obj);
 	}
-
-	mapGraphe.addString("expanded", "false");
-	mapGraphe.addString("checked", "false");
 }
 
-WebServiceResult MapGrapheWebService::execute(const std::string& endpoint, const std::string& method) {
+WebServiceResult MapGrapheWebService::execute(const std::string& method, const std::string& serviceEndpoint, const std::string& params) {
 	JsonObject root;
 	JsonObject& mapElement = root.addObject("mapElement");
 
@@ -101,8 +97,8 @@ WebServiceResult MapGrapheWebService::execute(const std::string& endpoint, const
 	result._contentSize = json.size();
 	result._content = malloc(json.size());
 	json.copy((char*)result._content, json.size());
-	result._contentType = HtmlServer::HTTP_CONTENT_TYPE_JSON;
-	result._status = HtmlServer::HTTP_RESPONSE_200;
+	result._contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
+	result._status = HttpServer::HTTP_RESPONSE_200;
 
 	return result;
 }

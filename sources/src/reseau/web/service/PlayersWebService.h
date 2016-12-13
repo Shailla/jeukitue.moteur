@@ -17,7 +17,7 @@ public:
 	PlayersWebService();
 	virtual ~PlayersWebService();
 
-	WebServiceResult execute(const std::string& endpoint, const std::string& method);
+	WebServiceResult execute(const std::string& method, const std::string& serviceEndpoint, const std::string& params);
 };
 
 } /* namespace jkt */

@@ -8,7 +8,9 @@ import {PLAYERS} from './mock-players';
 
 @Injectable()
 export class PlayerService {
-	private playersServiceUrl = 'http://localhost:20000/rest/players';
+	private playerServiceBaseUrl = 'http://localhost:20000/rest/player-service';
+	
+	private playersServiceUrl = this.playerServiceBaseUrl + '/players';		// Get players list in current Map
 	
 	constructor(private http: Http) {};
 

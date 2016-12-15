@@ -39,6 +39,16 @@ public:
 };
 
 class HttpServer {
+public:
+	enum HTTP_METHODS {
+		HTTP_UNKNOWN,
+		HTTP_GET,
+		HTTP_POST,
+		HTTP_PUT,
+		HTTP_PATCH,
+		HTTP_DELETE
+	};
+private:
 	static const char* WEB_STATIC_RESOURCES_DIR;
 	static const char* WEB_STATIC_JSON_DIR;
 
@@ -58,12 +68,14 @@ class HttpServer {
 	std::map<std::string, WebResource*> _resources;
 	std::map<std::string, WebService*> _services;
 
+	HTTP_METHODS resolveHttpMethod(const std::string& method);
 	void collecteDir(const std::string& dirname, const std::string& endpoint, const std::string& contentType);
 
 	std::string buildStringResponse(const std::string& content, const std::string& contentType, const std::string& status);
 	std::string buildResponseHeader(const std::string& contentType, long contentSize, const std::string& status);
 
 	void* buildResponse();
+
 public:
 	static const char* HTTP_RETURN;
 	static const char* HTTP_HEAD;
@@ -76,6 +88,12 @@ public:
 	static const char* HTTP_CONTENT_TYPE_JS;
 	static const char* HTTP_CONTENT_TYPE_JSON;
 	static const char* HTTP_CONTENT_LENGTH;
+
+	static const char* HTTP_METHOD_GET;
+	static const char* HTTP_METHOD_POST;
+	static const char* HTTP_METHOD_PUT;
+	static const char* HTTP_METHOD_PATCH;
+	static const char* HTTP_METHOD_DELETE;
 
 	HttpServer(int port);
 	virtual ~HttpServer();

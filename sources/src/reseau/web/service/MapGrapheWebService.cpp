@@ -5,15 +5,14 @@
  *      Author: VGDJ7997
  */
 
-#include <reseau/web/HttpServer.h>
 #include <stdlib.h>
 
+#include "reseau/web/HttpServer.h"
 #include "reseau/web/json/JsonObject.h"
 #include "main/Game.h"
 #include "spatial/Map.h"
 #include "spatial/geo/EntryPoint.h"
 #include "spatial/light/Light.h"
-
 
 #include "reseau/web/service/MapGrapheWebService.h"
 
@@ -81,7 +80,7 @@ void MapGrapheWebService::jisonifyMap(CMap* map, JsonObject& mapGraphe) {
 	}
 }
 
-WebServiceResult MapGrapheWebService::execute(const std::string& method, const std::string& serviceEndpoint, const std::string& params) {
+WebServiceResult MapGrapheWebService::execute(HttpServer::HTTP_METHODS method, const string& fullEndpoint, const string& baseEndpoint, const string& serviceEndpoint, const std::string& params) {
 	JsonObject root;
 	JsonObject& mapElement = root.addObject("mapElement");
 

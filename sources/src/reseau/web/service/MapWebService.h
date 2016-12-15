@@ -8,16 +8,35 @@
 #ifndef SRC_RESEAU_WEB_SERVICE_MAPWEBSERVICE_H_
 #define SRC_RESEAU_WEB_SERVICE_MAPWEBSERVICE_H_
 
+#include "reseau/web/json/JsonObject.h"
+
 #include "reseau/web/service/WebService.h"
 
 namespace jkt {
 
+class CMap;
+
 class MapWebService : public WebService {
+	static string ID;
+	static string NAME;
+	static string TYPE;
+	static string SELECTED;
+
+	static string MAP;
+	static string GEO;
+	static string LIGHT;
+	static string ENTRYPOINT;
+
+	WebServiceResult getMapList();
+	WebServiceResult getCurrentMap();
+
+	void jisonifyMap(CMap* map, JsonObject& mapGraphe);
+
 public:
 	MapWebService();
 	virtual ~MapWebService();
 
-	WebServiceResult execute(const std::string& method, const std::string& serviceEndpoint, const std::string& params);
+	WebServiceResult execute(HttpServer::HTTP_METHODS method, const std::string& fullEndpoint, const std::string& baseEndpoint, const std::string& serviceEndpoint, const std::string& params) override;
 };
 
 } /* namespace jkt */

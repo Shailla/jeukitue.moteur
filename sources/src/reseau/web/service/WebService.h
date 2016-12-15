@@ -10,6 +10,8 @@
 
 #include <string>
 
+#include "reseau/web/HttpServer.h"
+
 namespace jkt {
 
 class WebServiceResult {
@@ -26,7 +28,7 @@ public:
 	WebService();
 	virtual ~WebService();
 
-	virtual WebServiceResult execute(const std::string& method, const std::string& serviceEndpoint, const std::string& params) = 0;
+	virtual WebServiceResult execute(HttpServer::HTTP_METHODS method, const std::string& fullEndpoint, const std::string& baseEndpoint, const std::string& serviceEndpoint, const std::string& params) = 0;
 };
 
 } /* namespace jkt */

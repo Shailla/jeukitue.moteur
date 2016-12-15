@@ -10,8 +10,10 @@ import { JSON_MAP }		from './mock-map';
 
 @Injectable()
 export class MapService {
-	private mapsServiceUrl = 'http://localhost:20000/rest/maps';
-	private mapServiceUrl = 'http://localhost:20000/rest/map-graphe';
+	private mapServiceBaseUrl = 'http://localhost:20000/rest/map-service';
+	
+	private mapsServiceUrl = this.mapServiceBaseUrl + '/maps';		// Get available Maps
+	private mapServiceUrl = this.mapServiceBaseUrl + '/map';			// Get the current Map graph
 	
 	constructor(private http: Http) {};
 

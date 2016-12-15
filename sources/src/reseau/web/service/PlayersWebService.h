@@ -13,11 +13,13 @@
 namespace jkt {
 
 class PlayersWebService : public WebService {
+	WebServiceResult getPlayersInCurrentMap();
+
 public:
 	PlayersWebService();
 	virtual ~PlayersWebService();
 
-	WebServiceResult execute(const std::string& method, const std::string& serviceEndpoint, const std::string& params);
+	WebServiceResult execute(HttpServer::HTTP_METHODS method, const std::string& fullEndpoint, const std::string& baseEndpoint, const std::string& serviceEndpoint, const std::string& params) override;
 };
 
 } /* namespace jkt */

@@ -47,6 +47,12 @@ const char* HttpServer::HTTP_CONTENT_TYPE_JS = 		"Content-type: application/java
 const char* HttpServer::HTTP_CONTENT_TYPE_JSON = 	"Content-type: application/json; charset=utf-8";
 const char* HttpServer::HTTP_CONTENT_LENGTH = 		"Content-Length: ";
 
+const char* HttpServer::HTTP_METHOD_GET = 			"GET";
+const char* HttpServer::HTTP_METHOD_POST = 			"POST";
+const char* HttpServer::HTTP_METHOD_PUT = 			"PUT";
+const char* HttpServer::HTTP_METHOD_PATCH = 		"PATCH";
+const char* HttpServer::HTTP_METHOD_DELETE =		"DELETE";
+
 WebResource::WebResource() {
 	_content = 0;
 	_contentSize = 0;
@@ -139,9 +145,8 @@ HttpServer::HttpServer(int port) {
 	/* Déploiement des services web			*/
 	/* ************************************ */
 
-	_services["/rest/players"] = new PlayersWebService();
-	_services["/rest/maps"] = new MapWebService();
-	_services["/rest/map-graphe"] = new MapGrapheWebService();
+	_services["/rest/player-service/"] = new PlayersWebService();
+	_services["/rest/map-service/"] = new MapWebService();
 
 
 	/* ************************************ */
@@ -200,6 +205,27 @@ int HttpServer::run(void* thiz) {
 	return 0;
 }
 
+HttpServer::HTTP_METHODS HttpServer::resolveHttpMethod(const string& method) {
+	if(method == HTTP_METHOD_GET) {
+		return HTTP_METHODS::HTTP_GET;
+	}
+	else if(method == HTTP_METHOD_POST) {
+		return HTTP_METHODS::HTTP_POST;
+	}
+	else if(method == HTTP_METHOD_PUT) {
+		return HTTP_METHODS::HTTP_PUT;
+	}
+	else if(method == HTTP_METHOD_PATCH) {
+		return HTTP_METHODS::HTTP_PATCH;
+	}
+	else if(method == HTTP_METHOD_DELETE) {
+		return HTTP_METHODS::HTTP_DELETE;
+	}
+	else {
+		return HTTP_METHODS::HTTP_UNKNOWN;
+	}
+}
+
 void HttpServer::start() {
 	// Creation de la socket serveur
 	IPaddress adresse;
@@ -215,7 +241,7 @@ void HttpServer::start() {
 	}
 
 	TCPsocket clientSocket;
-	string header, method, url, endpoint, params, protocol, path0;
+	string header, methodStr, url, endpoint, params, protocol, path0;
 	vector<string> paths;
 	WebResource* resource;
 	long contentSize;
@@ -241,7 +267,10 @@ void HttpServer::start() {
 		string request = buffer;
 		LOGDEBUG(("HTTP requête reçue : '%s'", request.c_str()));
 
-		method = jkt::StringUtils::findAndEraseFirstWord(request);
+		methodStr = jkt::StringUtils::findAndEraseFirstWord(request);
+
+		HTTP_METHODS method = resolveHttpMethod(methodStr);
+
 		url = jkt::StringUtils::findAndEraseFirstWord(request);
 		protocol = jkt::StringUtils::findAndEraseFirstWord(request);
 
@@ -256,9 +285,9 @@ void HttpServer::start() {
 			params = "";	// Pas de paramètres sur la requête
 		}
 
-		LOGDEBUG((" - Méthode :  '%s'", method.c_str()));
+		LOGDEBUG((" - Méthode :  '%s (%d)'", methodStr.c_str(), (int)method));
 		LOGDEBUG((" - Endpoint : '%s'", endpoint.c_str()));
-		LOGDEBUG((" - Param :    '%s'", params.c_str()));
+		LOGDEBUG((" - Params:    '%s'", params.c_str()));
 		LOGDEBUG((" - Protocol : '%s'", protocol.c_str()));
 
 		// Recherche du contenu
@@ -273,7 +302,7 @@ void HttpServer::start() {
 				WebService* service = getService(endpoint, baseEndpoint, serviceEndpoint);
 
 				if(service) {
-					WebServiceResult result = service->execute(method, endpoint, params);
+					WebServiceResult result = service->execute(method, endpoint, baseEndpoint, serviceEndpoint, params);
 
 					contentType = result._contentType;
 					contentSize = result._contentSize;

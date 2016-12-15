@@ -23,7 +23,7 @@ PlayersWebService::PlayersWebService() {
 PlayersWebService::~PlayersWebService() {
 }
 
-WebServiceResult PlayersWebService::execute(const std::string& method, const std::string& serviceEndpoint, const std::string& params) {
+WebServiceResult PlayersWebService::getPlayersInCurrentMap() {
 	JsonObject root;
 	JsonList& players = root.addList("players");
 
@@ -46,6 +46,15 @@ WebServiceResult PlayersWebService::execute(const std::string& method, const std
 	result._status = HttpServer::HTTP_RESPONSE_200;
 
 	return result;
+}
+
+WebServiceResult PlayersWebService::execute(HttpServer::HTTP_METHODS method, const string& fullEndpoint, const string& baseEndpoint, const string& serviceEndpoint, const std::string& params) {
+	if(method == HttpServer::HTTP_METHODS::HTTP_GET && serviceEndpoint == "players") {
+		return getPlayersInCurrentMap();
+	}
+	else {
+		// TODO return unexisting requested service
+	}
 }
 
 } /* namespace jkt */

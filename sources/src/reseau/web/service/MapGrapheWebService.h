@@ -31,7 +31,7 @@ public:
 	virtual ~MapGrapheWebService();
 
 	void jisonifyMap(CMap* map, JsonObject& mapGraphe);
-	WebServiceResult execute(const std::string& method, const std::string& serviceEndpoint, const std::string& params);
+	WebServiceResult execute(HttpServer::HTTP_METHODS method, const std::string& fullEndpoint, const std::string& baseEndpoint, const std::string& serviceEndpoint, const std::string& params) override;
 };
 
 } /* namespace jkt */

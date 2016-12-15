@@ -60,10 +60,6 @@ private:
 
 	static const char* HTTP_INTERNAL_ERROR_CONTENT;
 
-	enum HTTP_EXCEPTION {
-		RESOURCE_NOT_FOUND_EXCEPTION = 1
-	};
-
 	Uint16 _port;
 	std::map<std::string, WebResource*> _resources;
 	std::map<std::string, WebService*> _services;
@@ -77,6 +73,11 @@ private:
 	void* buildResponse();
 
 public:
+	enum HTTP_EXCEPTION {
+		RESOURCE_NOT_FOUND_EXCEPTION = 1,
+		SERVICE_NOT_EXISTS = 2
+	};
+
 	static const char* HTTP_RETURN;
 	static const char* HTTP_HEAD;
 	static const char* HTTP_RESPONSE_200;

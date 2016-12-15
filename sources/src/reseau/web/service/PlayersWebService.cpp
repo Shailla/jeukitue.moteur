@@ -5,10 +5,11 @@
  *      Author: VGDJ7997
  */
 
-#include <reseau/web/HttpServer.h>
+
 #include <stdlib.h>
 
 #include "util/Trace.h"
+#include "reseau/web/HttpServer.h"
 #include "reseau/web/json/JsonObject.h"
 #include "service/PlayersService.h"
 #include "service/dto/PlayerInformationDto.h"
@@ -52,9 +53,8 @@ WebServiceResult PlayersWebService::execute(HttpServer::HTTP_METHODS method, con
 	if(method == HttpServer::HTTP_METHODS::HTTP_GET && serviceEndpoint == "players") {
 		return getPlayersInCurrentMap();
 	}
-	else {
-		// TODO return unexisting requested service
-	}
+
+	throw HttpServer::HTTP_EXCEPTION::SERVICE_NOT_EXISTS;
 }
 
 } /* namespace jkt */

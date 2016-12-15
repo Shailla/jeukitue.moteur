@@ -22,9 +22,8 @@ using namespace std;
 #include "reseau/web/service/WebService.h"
 #include "reseau/web/service/PlayersWebService.h"
 #include "reseau/web/service/MapWebService.h"
-#include "reseau/web/service/MapGrapheWebService.h"
 
-#include <reseau/web/HttpServer.h>
+#include "reseau/web/HttpServer.h"
 
 namespace jkt
 {
@@ -362,6 +361,27 @@ void HttpServer::start() {
 					str.copy(response, responseSize);
 				}
 
+				break;
+			case SERVICE_NOT_EXISTS:
+				LOGWARN(("Service introuvable : '%s'", endpoint.c_str()));
+
+				resource = getResource("/resource_not_found.html");
+
+				if(resource) {
+					header = buildResponseHeader(resource->getContentType(), resource->getContentSize(), HTTP_RESPONSE_404);
+
+					responseSize = header.size() + resource->getContentSize();
+					response = (char*)malloc(responseSize);
+					header.copy(response, header.size());
+					memcpy(response + header.size(), resource->getContent(), resource->getContentSize());
+				}
+				else {
+					LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant) '%s' : %d", endpoint.c_str(), exception));
+					string str = buildStringResponse(HTTP_INTERNAL_ERROR_CONTENT, HTTP_CONTENT_TYPE_HTML, HTTP_RESPONSE_500);
+					responseSize = str.size();
+					response = (char*)malloc(responseSize);
+					str.copy(response, responseSize);
+				}
 				break;
 			default:
 				LOGERROR(("On ne devrait jamais être ici (erreur non-maîtrisée) '%s' : %d", endpoint.c_str(), exception));

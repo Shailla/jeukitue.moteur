@@ -136,9 +136,8 @@ WebServiceResult MapWebService::execute(HttpServer::HTTP_METHODS method, const s
 	else if(method == HttpServer::HTTP_METHODS::HTTP_GET && serviceEndpoint == "map") {
 		return getCurrentMap();
 	}
-	else {
-		// TODO return unexisting requested service
-	}
+
+	throw HttpServer::HTTP_EXCEPTION::SERVICE_NOT_EXISTS;
 }
 
 } /* namespace jkt */

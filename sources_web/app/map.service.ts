@@ -13,7 +13,7 @@ export class MapService {
 	private mapServiceBaseUrl = 'http://localhost:20000/rest/map-service';
 	
 	private mapsServiceUrl = this.mapServiceBaseUrl + '/maps';		// Get available Maps
-	private mapServiceUrl = this.mapServiceBaseUrl + '/map';			// Get the current Map graph
+	private mapServiceUrl = this.mapServiceBaseUrl + '/map-graphe';			// Get the current Map graph
 	
 	constructor(private http: Http) {};
 

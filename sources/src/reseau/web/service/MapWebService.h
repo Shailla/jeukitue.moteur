@@ -8,6 +8,8 @@
 #ifndef SRC_RESEAU_WEB_SERVICE_MAPWEBSERVICE_H_
 #define SRC_RESEAU_WEB_SERVICE_MAPWEBSERVICE_H_
 
+#include <regex>
+
 #include "reseau/web/json/JsonObject.h"
 
 #include "reseau/web/service/WebService.h"
@@ -27,10 +29,13 @@ class MapWebService : public WebService {
 	static string LIGHT;
 	static string ENTRYPOINT;
 
-	WebServiceResult getMapList();
-	WebServiceResult getCurrentMap();
+	static std::regex RG_GET_ELEMENT_SERVICE;
 
-	void jisonifyMap(CMap* map, JsonObject& mapGraphe);
+	WebServiceResult getMapList();
+	WebServiceResult getCurrentMapGraphe();
+	WebServiceResult getElement();
+
+	void jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe);
 
 public:
 	MapWebService();

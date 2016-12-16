@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 
+#include "util/StringUtils.h"
 #include "reseau/web/HttpServer.h"
 #include "reseau/web/json/JsonObject.h"
 #include "service/MapService.h"
@@ -31,6 +32,8 @@ string MapWebService::MAP = "map";
 string MapWebService::GEO = "geo";
 string MapWebService::LIGHT = "light";
 string MapWebService::ENTRYPOINT = "entryPoint";
+
+std::regex MapWebService::RG_GET_ELEMENT_SERVICE("element/\\d+");
 
 MapWebService::MapWebService() {
 }
@@ -62,7 +65,7 @@ WebServiceResult MapWebService::getMapList() {
 	return result;
 }
 
-void MapWebService::jisonifyMap(CMap* map, JsonObject& mapGraphe) {
+void MapWebService::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 	mapGraphe.addString(TYPE, MAP);
 	mapGraphe.addNumber(ID, map->getId());
 	mapGraphe.addString(NAME, map->getName());
@@ -102,18 +105,18 @@ void MapWebService::jisonifyMap(CMap* map, JsonObject& mapGraphe) {
 
 	for(auto& subMap : map->getSubMaps()) {
 		JsonObject& obj = elements.addObject();
-		jisonifyMap(subMap.second, obj);
+		jisonifyMapGraphe(subMap.second, obj);
 	}
 }
 
-WebServiceResult MapWebService::getCurrentMap() {
+WebServiceResult MapWebService::getCurrentMapGraphe() {
 	JsonObject root;
 	JsonObject& mapElement = root.addObject("mapElement");
 
 	CMap* map = Game.getMap();
 
 	if(map) {
-		jisonifyMap(map, mapElement);
+		jisonifyMapGraphe(map, mapElement);
 	}
 
 	string json = root.toString();
@@ -128,13 +131,37 @@ WebServiceResult MapWebService::getCurrentMap() {
 	return result;
 }
 
+WebServiceResult MapWebService::getElement() {
+	JsonObject root;
+	JsonObject& mapElement = root.addObject("mapElement");
+
+	CMap* map = Game.getMap();
+
+	if(map) {
+		jisonifyMapGraphe(map, mapElement);
+	}
+
+	string json = root.toString();
+
+	WebServiceResult result;
+	result._contentSize = json.size();
+	result._content = malloc(json.size());
+	json.copy((char*)result._content, json.size());
+	result._contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
+	result._status = HttpServer::HTTP_RESPONSE_200;
+
+	return result;
+}
 
 WebServiceResult MapWebService::execute(HttpServer::HTTP_METHODS method, const string& fullEndpoint, const string& baseEndpoint, const string& serviceEndpoint, const std::string& params) {
 	if(method == HttpServer::HTTP_METHODS::HTTP_GET && serviceEndpoint == "maps") {
 		return getMapList();
 	}
-	else if(method == HttpServer::HTTP_METHODS::HTTP_GET && serviceEndpoint == "map") {
-		return getCurrentMap();
+	else if(method == HttpServer::HTTP_METHODS::HTTP_GET && serviceEndpoint == "map-graphe") {
+		return getCurrentMapGraphe();
+	}
+	else if(method == HttpServer::HTTP_METHODS::HTTP_GET && std::regex_match(serviceEndpoint, RG_GET_ELEMENT_SERVICE)) {
+		return getElement();
 	}
 
 	throw HttpServer::HTTP_EXCEPTION::SERVICE_NOT_EXISTS;

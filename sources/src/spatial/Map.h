@@ -119,8 +119,13 @@ public:
 	 */
 	int afficheDamierTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int page);
 
-	void addDescription(int ref, MapObject* geo, MapLogger* mapLogger);
-	MapObject* getDescription(int ref);
+	void addMapObject(int id, MapObject* geo, MapLogger* mapLogger);
+
+	/** Find the MapObject in all sub-maps */
+	MapObject* findMapObject(int id);
+
+	/** Find the MapObject in the current Map instance */
+	MapObject* getMapObject(int id);
 
 	void add(CMap* map);										// Intègre tous les éléments d'une autre Map dans celle-ci
 	void merge(int mapId, MapLogger* mapLogger = 0);			// Intègre tous les éléments d'une autre Map dans celle-ci

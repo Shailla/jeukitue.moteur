@@ -225,21 +225,41 @@ void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objet
 	}
 }
 
-void CMap::addDescription(int ref, MapObject* geo, MapLogger* mapLogger) {
-	if(_geoDescriptions.find(ref) != _geoDescriptions.end()) {
+void CMap::addMapObject(int id, MapObject* geo, MapLogger* mapLogger) {
+	if(_geoDescriptions.find(id) != _geoDescriptions.end()) {
 		mapLogger->logError("Map corrompue, la référence est en doublon");
 	}
 
-	_geoDescriptions[ref] = geo;
+	_geoDescriptions[id] = geo;
 }
 
-MapObject* CMap::getDescription(int ref) {
-	try {
-		return _geoDescriptions.at(ref);
+MapObject* CMap::getMapObject(int id) {
+	map<int, MapObject*>::iterator object = _geoDescriptions.find(id);
+
+	if(object != _geoDescriptions.end()) {
+		return object->second;
 	}
-	catch(out_of_range& exception) {
+	else {
 		return 0;
 	}
+}
+
+MapObject* CMap::findMapObject(int id) {
+	MapObject* object = getMapObject(id);
+
+	if(object) {
+		return object;
+	}
+
+	for(auto& subMap : _subMaps) {
+		object = subMap.second->getMapObject(id);
+
+		if(object) {
+			return object;
+		}
+	}
+
+	return 0;
 }
 
 void CMap::ChangeSelectionMode() {
@@ -794,7 +814,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					MapObject* geo = CGeoMaker::Lit(el, &map, mapLogger);
 
 					if(geo) {
-						map.addDescription(geo->getId(), geo, mapLogger);
+						map.addMapObject(geo->getId(), geo, mapLogger);
 					}
 					else {
 						mapLogger->logError("Géo description corrompue ?");
@@ -840,7 +860,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						throw CErreur("Fichier Map corrompu");
 					}
 
-					MapObject* object = map.getDescription(description);
+					MapObject* object = map.getMapObject(description);
 
 					if(object) {
 						MapObject* clone = object->clone();

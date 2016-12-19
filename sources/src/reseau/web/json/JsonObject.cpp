@@ -29,17 +29,22 @@ void JsonObject::addString(const string& name, const string& value) {
 	_pairs.push_back(pair);
 }
 
-void JsonObject::addNumber(const string& name, const unsigned int& value) {
+void JsonObject::addBoolean(const string& name, const bool value) {
+	JsonPair* pair = new JsonPair(name, value ? (JsonValue*)new JsonString("true") : (JsonValue*)new JsonString("false"));
+	_pairs.push_back(pair);
+}
+
+void JsonObject::addNumber(const string& name, const unsigned int value) {
 	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
 	_pairs.push_back(pair);
 }
 
-void JsonObject::addNumber(const string& name, const int& value) {
+void JsonObject::addNumber(const string& name, const int value) {
 	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
 	_pairs.push_back(pair);
 }
 
-void JsonObject::addNumber(const string& name, const long& value) {
+void JsonObject::addNumber(const string& name, const long value) {
 	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
 	_pairs.push_back(pair);
 }

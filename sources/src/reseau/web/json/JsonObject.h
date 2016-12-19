@@ -26,9 +26,10 @@ public:
 	virtual ~JsonObject();
 
 	void addString(const std::string& name, const std::string& value);
-	void addNumber(const std::string& name, const unsigned int& value);
-	void addNumber(const std::string& name, const int& value);
-	void addNumber(const std::string& name, const long& value);
+	void addBoolean(const std::string& name, const bool value);
+	void addNumber(const std::string& name, const unsigned int value);
+	void addNumber(const std::string& name, const int value);
+	void addNumber(const std::string& name, const long value);
 
 	JsonObject& addObject(const std::string& name);
 

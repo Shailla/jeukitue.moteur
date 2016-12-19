@@ -93,7 +93,7 @@ void MapWebService::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 		obj.addString(TYPE, GEO);
 		obj.addNumber(ID, mObj->getId());
 		obj.addString(NAME, mObj->getName());
-		obj.addString(SELECTED, mObj->isSelected()?"true":"false");
+		obj.addBoolean(SELECTED, mObj->isSelected());
 
 		obj.addList("elements");
 	}
@@ -110,8 +110,7 @@ WebServiceResult MapWebService::getCurrentMapGraphe() {
 
 	CMap* map = Game.getMap();
 
-	if(map) {
-		jisonifyMapGraphe(map, mapElement);
+	if(map) {		jisonifyMapGraphe(map, mapElement);;
 	}
 
 	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
@@ -122,12 +121,21 @@ WebServiceResult MapWebService::getElement(int elementId) {
 	JsonObject& mapElement = root.addObject("mapElement");
 
 	CMap* map = Game.getMap();
+	MapObject* object = map->findMapObject(elementId);
 
-	if(map) {
-		jisonifyMapGraphe(map, mapElement);
+	if(object) {
+		if(object) {
+			mapElement.addString(TYPE, ENTRYPOINT);
+			mapElement.addNumber(ID, object->getId());
+			mapElement.addString(NAME, object->getName());
+			mapElement.addBoolean(SELECTED, object->isSelected());
+		}
+
+		return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
 	}
-
-	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
+	else {
+		return WebServiceResult(root, HttpServer::HTTP_RESPONSE_404);
+	}
 }
 
 WebServiceResult MapWebService::execute(HttpServer::HTTP_METHODS method, const string& fullEndpoint, const string& baseEndpoint, const string& serviceEndpoint, const std::string& params) {

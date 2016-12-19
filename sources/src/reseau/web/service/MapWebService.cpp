@@ -6,8 +6,10 @@
  */
 
 #include <stdlib.h>
+#include <boost/lexical_cast.hpp>
 
 #include "util/StringUtils.h"
+#include "util/Trace.h"
 #include "reseau/web/HttpServer.h"
 #include "reseau/web/json/JsonObject.h"
 #include "service/MapService.h"
@@ -33,7 +35,9 @@ string MapWebService::GEO = "geo";
 string MapWebService::LIGHT = "light";
 string MapWebService::ENTRYPOINT = "entryPoint";
 
-std::regex MapWebService::RG_GET_ELEMENT_SERVICE("element/\\d+");
+std::regex MapWebService::RG_GET_MAPS("^maps$");
+std::regex MapWebService::RG_GET_MAP_GRAPHE("^map-graphe$");
+std::regex MapWebService::RG_GET_ELEMENT_SERVICE("^element/(\\d+)$");
 
 MapWebService::MapWebService() {
 }
@@ -53,16 +57,7 @@ WebServiceResult MapWebService::getMapList() {
 		jsonMap.addString("name", dto.getMapFileMinimalName());
 	}
 
-	string json = root.toString();
-
-	WebServiceResult result;
-	result._contentSize = json.size();
-	result._content = malloc(json.size());
-	json.copy((char*)result._content, json.size());
-	result._contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
-	result._status = HttpServer::HTTP_RESPONSE_200;
-
-	return result;
+	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
 }
 
 void MapWebService::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
@@ -119,19 +114,10 @@ WebServiceResult MapWebService::getCurrentMapGraphe() {
 		jisonifyMapGraphe(map, mapElement);
 	}
 
-	string json = root.toString();
-
-	WebServiceResult result;
-	result._contentSize = json.size();
-	result._content = malloc(json.size());
-	json.copy((char*)result._content, json.size());
-	result._contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
-	result._status = HttpServer::HTTP_RESPONSE_200;
-
-	return result;
+	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
 }
 
-WebServiceResult MapWebService::getElement() {
+WebServiceResult MapWebService::getElement(int elementId) {
 	JsonObject root;
 	JsonObject& mapElement = root.addObject("mapElement");
 
@@ -141,29 +127,26 @@ WebServiceResult MapWebService::getElement() {
 		jisonifyMapGraphe(map, mapElement);
 	}
 
-	string json = root.toString();
-
-	WebServiceResult result;
-	result._contentSize = json.size();
-	result._content = malloc(json.size());
-	json.copy((char*)result._content, json.size());
-	result._contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
-	result._status = HttpServer::HTTP_RESPONSE_200;
-
-	return result;
+	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
 }
 
 WebServiceResult MapWebService::execute(HttpServer::HTTP_METHODS method, const string& fullEndpoint, const string& baseEndpoint, const string& serviceEndpoint, const std::string& params) {
-	if(method == HttpServer::HTTP_METHODS::HTTP_GET && serviceEndpoint == "maps") {
+	smatch match;
+
+	if(method == HttpServer::HTTP_METHODS::HTTP_GET && regex_match(serviceEndpoint, RG_GET_MAPS)) {
 		return getMapList();
 	}
-	else if(method == HttpServer::HTTP_METHODS::HTTP_GET && serviceEndpoint == "map-graphe") {
+	else if(method == HttpServer::HTTP_METHODS::HTTP_GET && regex_match(serviceEndpoint, RG_GET_MAP_GRAPHE)) {
 		return getCurrentMapGraphe();
 	}
-	else if(method == HttpServer::HTTP_METHODS::HTTP_GET && std::regex_match(serviceEndpoint, RG_GET_ELEMENT_SERVICE)) {
-		return getElement();
+	else if(method == HttpServer::HTTP_METHODS::HTTP_GET && regex_search(serviceEndpoint, match, RG_GET_ELEMENT_SERVICE)) {
+		int elementId = boost::lexical_cast<int>(match[1]);
+		LOGINFO(("GET Element id='%d'", elementId));
+
+		return getElement(elementId);
 	}
 
+	// Service not found
 	throw HttpServer::HTTP_EXCEPTION::SERVICE_NOT_EXISTS;
 }
 

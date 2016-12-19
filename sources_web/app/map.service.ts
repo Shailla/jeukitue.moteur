@@ -31,7 +31,7 @@ export class MapService {
 	}
 
 	// Lecture de la Map en cours dans le jeu
-	getMap(): Promise<MapElement> {	
+	getMapGraphe(): Promise<MapElement> {	
 		return this.http.get(this.mapServiceUrl)
 			.toPromise()
 			.then(response => response.json())
@@ -40,7 +40,7 @@ export class MapService {
 			.catch(this.handleError); 
 	}
 	
-	getMapSlowly(): Promise<MapElement> {
+	getMapGrapheSlowly(): Promise<MapElement> {
 		return new Promise<MapElement>(resolve => setTimeout(resolve, 1000)) // delay 2 seconds
 			.then(() => Promise.resolve(JSON_MAP))
 			.then(json => json.mapElement)

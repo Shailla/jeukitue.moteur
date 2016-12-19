@@ -36,17 +36,7 @@ WebServiceResult PlayersWebService::getPlayersInCurrentMap() {
 		jsonPlayer.addString("name", dto.getName());
 	}
 
-	string json = root.toString();
-	LOGINFO(("REPONSE : '%s'", json.c_str()));
-
-	WebServiceResult result;
-	result._contentSize = json.size();
-	result._content = malloc(json.size());
-	json.copy((char*)result._content, json.size());
-	result._contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
-	result._status = HttpServer::HTTP_RESPONSE_200;
-
-	return result;
+	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
 }
 
 WebServiceResult PlayersWebService::execute(HttpServer::HTTP_METHODS method, const string& fullEndpoint, const string& baseEndpoint, const string& serviceEndpoint, const std::string& params) {
@@ -54,6 +44,7 @@ WebServiceResult PlayersWebService::execute(HttpServer::HTTP_METHODS method, con
 		return getPlayersInCurrentMap();
 	}
 
+	// Service not found
 	throw HttpServer::HTTP_EXCEPTION::SERVICE_NOT_EXISTS;
 }
 

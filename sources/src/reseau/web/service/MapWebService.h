@@ -29,11 +29,13 @@ class MapWebService : public WebService {
 	static string LIGHT;
 	static string ENTRYPOINT;
 
+	static std::regex RG_GET_MAPS;
+	static std::regex RG_GET_MAP_GRAPHE;
 	static std::regex RG_GET_ELEMENT_SERVICE;
 
 	WebServiceResult getMapList();
 	WebServiceResult getCurrentMapGraphe();
-	WebServiceResult getElement();
+	WebServiceResult getElement(int elementId);
 
 	void jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe);
 

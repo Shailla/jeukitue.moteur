@@ -10,12 +10,16 @@
 
 #include <string>
 
+#include "reseau/web/json/JsonObject.h"
 #include "reseau/web/HttpServer.h"
 
 namespace jkt {
 
 class WebServiceResult {
 public:
+	WebServiceResult();
+	WebServiceResult(JsonObject& root, const char* status);
+
 	std::string _status;
 	std::string _contentType;
 	void* _content;

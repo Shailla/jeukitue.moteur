@@ -7,8 +7,8 @@ import { DashboardComponent }   from './dashboard.component';
 import { PlayersComponent }   	from './players.component';
 import { MapsComponent }   		from './maps.component';
 import { GrapheMapComponent }   from './graphe-map.component';
-
 import { TreeViewComponent }	from './tree-view.component';
+import { MapElementDetail }		from './map-element-detail.component';
 
 import { MapService }			from './map.service';
 import { PlayerService }		from './player.service';
@@ -17,7 +17,7 @@ import { PlayerService }		from './player.service';
 @NgModule({
   imports:      [ BrowserModule, HttpModule, routing ],
 
-  declarations: [ DashboardComponent, PlayersComponent, MapsComponent, GrapheMapComponent, TreeViewComponent ],
+  declarations: [ DashboardComponent, PlayersComponent, MapsComponent, GrapheMapComponent, TreeViewComponent, MapElementDetail ],
   providers: 	[ MapService, PlayerService ],
   bootstrap:    [ DashboardComponent ]
 })

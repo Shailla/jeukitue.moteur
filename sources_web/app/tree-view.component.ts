@@ -1,11 +1,13 @@
 import { Component, Input } from '@angular/core';
 
-import { MapElement } 		from './mapElement';
+import { GrapheMapComponent } 		from './graphe-map.component';
+import { MapGrapheElement } 		from './MapGrapheElement';
 
 @Component({
 	selector: 'tree-view',
 	templateUrl: 'app/tree-view.component.html'
 })
 export class TreeViewComponent {
-	@Input() items: Array<MapElement>;
+	@Input() grapheMapComponent: GrapheMapComponent;
+	@Input() items: Array<MapGrapheElement>;
 }

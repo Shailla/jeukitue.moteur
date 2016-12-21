@@ -3,10 +3,10 @@ import { Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Map } 			from './map';
-import { MapElement } 	from './mapElement';
-import { MAPS } 		from './mock-maps';
-import { JSON_MAP }		from './mock-map';
+import { Map } 				from './map';
+import { MapGrapheElement } from './MapGrapheElement';
+import { MAPS } 			from './mock-maps';
+import { JSON_MAP }			from './mock-map';
 
 @Injectable()
 export class MapService {
@@ -31,20 +31,20 @@ export class MapService {
 	}
 
 	// Lecture de la Map en cours dans le jeu
-	getMapGraphe(): Promise<MapElement> {	
+	getMapGraphe(): Promise<MapGrapheElement> {	
 		return this.http.get(this.mapServiceUrl)
 			.toPromise()
 			.then(response => response.json())
 			.then(json => json.mapElement)
-			.then(mapElement => new MapElement().fromJson(mapElement))
+			.then(mapGrapheElement => new MapGrapheElement().fromJson(mapGrapheElement))
 			.catch(this.handleError); 
 	}
 	
-	getMapGrapheSlowly(): Promise<MapElement> {
-		return new Promise<MapElement>(resolve => setTimeout(resolve, 1000)) // delay 2 seconds
+	getMapGrapheSlowly(): Promise<MapGrapheElement> {
+		return new Promise<MapGrapheElement>(resolve => setTimeout(resolve, 1000)) // delay 2 seconds
 			.then(() => Promise.resolve(JSON_MAP))
 			.then(json => json.mapElement)
-			.then(mapElement => new MapElement().fromJson(mapElement))
+			.then(mapGrapheElement => new MapGrapheElement().fromJson(mapGrapheElement))
 			.catch(this.handleError);
 	}
 

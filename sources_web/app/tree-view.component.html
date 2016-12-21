@@ -15,12 +15,12 @@
 			&nbsp;
 			<span>({{ item.id }})</span>
 			&nbsp;
-			<span>{{ item.name }}</span>
+			<span (click)="grapheMapComponent.onSelectMapElement(item)">{{ item.name }}</span>
 		</span>
 		
 		<!-- Sub elements -->
         <div *ngIf="item.expanded">
-            <tree-view [items]="item.elements"></tree-view>
+            <tree-view [items]="item.elements" [grapheMapComponent]="grapheMapComponent"></tree-view>
         </div>
     </li>
 </ul>

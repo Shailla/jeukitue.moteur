@@ -245,6 +245,10 @@ MapObject* CMap::getMapObject(int id) {
 }
 
 MapObject* CMap::findMapObject(int id) {
+	if(getId() == id) {
+		return this;
+	}
+
 	MapObject* object = getMapObject(id);
 
 	if(object) {

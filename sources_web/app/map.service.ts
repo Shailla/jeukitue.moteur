@@ -1,9 +1,10 @@
-import { Injectable }    from '@angular/core';
-import { Http } from '@angular/http';
+import { Injectable }   from '@angular/core';
+import { Http } 		from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
 import { Map } 				from './map';
+import { MapElement } 		from './MapElement';
 import { MapGrapheElement } from './MapGrapheElement';
 import { MAPS } 			from './mock-maps';
 import { JSON_MAP }			from './mock-map';
@@ -12,8 +13,9 @@ import { JSON_MAP }			from './mock-map';
 export class MapService {
 	private mapServiceBaseUrl = 'http://localhost:20000/rest/map-service';
 	
-	private mapsServiceUrl = this.mapServiceBaseUrl + '/maps';		// Get available Maps
+	private mapsServiceUrl = this.mapServiceBaseUrl + '/maps';				// Get available Maps
 	private mapServiceUrl = this.mapServiceBaseUrl + '/map-graphe';			// Get the current Map graph
+	private mapElementServiceUrl = this.mapServiceBaseUrl + '/element';		// Get an element from current Map
 	
 	constructor(private http: Http) {};
 
@@ -48,6 +50,15 @@ export class MapService {
 			.catch(this.handleError);
 	}
 
+	// Lecture d'un élément de la Map en cours dans le jeu
+	getMapElement(mapElementId: number): Promise<MapGrapheElement> {	
+		return this.http.get(this.mapElementServiceUrl + "/" + mapElementId)
+			.toPromise()
+			.then(response => response.json())
+			.then(json => json.mapElement)
+			.then(mapElement => new MapElement().fromJson(mapElement))
+			.catch(this.handleError); 
+	}
 	
 	private handleError(error: any): Promise<any> {
 		console.error('An error occurred', error);

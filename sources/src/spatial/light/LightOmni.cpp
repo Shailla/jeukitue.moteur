@@ -19,16 +19,21 @@ using namespace std;
 namespace jkt
 {
 
-CLightOmni::CLightOmni(CMap* map) : CLight(map)
-{
+CLightOmni::CLightOmni(CMap* map) : CLight(map) {
 }
 
-CLightOmni::~CLightOmni()
-{
+CLightOmni::~CLightOmni() {
 }
 
-bool CLightOmni::LitFichier( CIfstreamMap &fichier )
-{
+MapObject* CLightOmni::clone() {
+	return new CLightOmni(*this);
+}
+
+void CLightOmni::init() throw(CErreur) {
+
+}
+
+bool CLightOmni::LitFichier( CIfstreamMap &fichier ) {
 	string mot;
 
 	fichier >> mot;

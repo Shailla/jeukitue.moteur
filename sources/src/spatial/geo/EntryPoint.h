@@ -11,17 +11,20 @@
 #include "tinyxml.h"
 
 #include "util/V3D.h"
-#include "spatial/basic/Geometrical.h"
+#include "spatial/basic/MapObject.h"
 #include "spatial/MapLogger.h"
 
 namespace jkt {
 
-class EntryPoint : public Object, public Geometrical {
+class EntryPoint : public MapObject {
 	jkt::CV3D _entryPosition;	// Position du point d'entrée
 public:
 	EntryPoint(CMap* map);
 	EntryPoint(CMap* map, const float entryPosition[3]);
 	virtual ~EntryPoint();
+
+	MapObject* clone() override;
+	void init() throw(CErreur) override;
 
 	// Méthodes de sérialisation
 	bool Lit(TiXmlElement* element, MapLogger* mapLogger) override;		// Lit le point d'entrée joueur d'un fichier Map format XML

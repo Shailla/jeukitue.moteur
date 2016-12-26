@@ -80,8 +80,7 @@ LOGDEBUG(("lanceMenuConfigDriversDriver(var=%x)", var));
 						(const char**)item_menu, nbrDriver,
 						liste_suivant, retourDriver, liste_argument );
 
-	for( int i=0 ; i<nbrDriver ; i++ )
-	{
+	for( int i=0 ; i<nbrDriver ; i++ ) {
 		MenuDriver->add_ItemsRem( i, remarquesDriver[i] );
 	}
 

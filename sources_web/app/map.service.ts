@@ -51,7 +51,7 @@ export class MapService {
 	}
 
 	// Lecture d'un élément de la Map en cours dans le jeu
-	getMapElement(mapElementId: number): Promise<MapGrapheElement> {	
+	getMapElement(mapElementId: number): Promise<MapElement> {	
 		return this.http.get(this.mapElementServiceUrl + "/" + mapElementId)
 			.toPromise()
 			.then(response => response.json())

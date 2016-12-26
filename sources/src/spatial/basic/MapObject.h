@@ -40,7 +40,7 @@ public:
 	 * *******************************************/
 
 	virtual MapObject* clone() = 0 ;
-	virtual void init() throw(CErreur) override = 0;
+	virtual void init() throw(CErreur) = 0;
 
 
 	/* ********************************************

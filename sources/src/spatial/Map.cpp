@@ -234,10 +234,10 @@ void CMap::addMapObject(int id, MapObject* geo, MapLogger* mapLogger) {
 }
 
 MapObject* CMap::getMapObject(int id) {
-	map<int, MapObject*>::iterator object = _geoDescriptions.find(id);
+	map<int, MapObject*>::iterator iter = _geoDescriptions.find(id);
 
-	if(object != _geoDescriptions.end()) {
-		return object->second;
+	if(iter != _geoDescriptions.end()) {
+		return iter->second;
 	}
 	else {
 		return 0;
@@ -256,7 +256,7 @@ MapObject* CMap::findMapObject(int id) {
 	}
 
 	for(auto& subMap : _subMaps) {
-		object = subMap.second->getMapObject(id);
+		object = subMap.second->findMapObject(id);
 
 		if(object) {
 			return object;
@@ -348,6 +348,7 @@ vector<EntryPoint*>& CMap::getEntryPointsList() {
 void CMap::add(CMap* subMap) {
 	if(subMap) {
 		_subMaps.insert(pair<int, CMap*>(subMap->getId(), subMap));
+		_geoDescriptions.insert(pair<int, MapObject*>(subMap->getId(), subMap));
 	}
 	else {
 		LOGERROR(("Sub Map nulle"));
@@ -357,6 +358,7 @@ void CMap::add(CMap* subMap) {
 void CMap::add(EntryPoint* entryPoint) {
 	_geos.push_back(entryPoint);
 	_entryPoints.push_back(entryPoint);
+	_geoDescriptions.insert(pair<int, MapObject*>(entryPoint->getId(), entryPoint));
 }
 
 void CMap::add(CMoteurParticules* engine) {
@@ -368,6 +370,7 @@ void CMap::add(Dirigeable* dirigeable) {
 	_drawables.push_back(dirigeable);
 	_refreshables.push_back(dirigeable);
 	_geos.push_back(dirigeable);
+	_geoDescriptions.insert(pair<int, MapObject*>(dirigeable->getId(), dirigeable));
 }
 
 void CMap::add(MapObject* object) {
@@ -375,6 +378,7 @@ void CMap::add(MapObject* object) {
 	_geos.push_back(object);
 	_drawables.push_back(object);
 	_solidAndTargettables.push_back(object);
+	_geoDescriptions.insert(pair<int, MapObject*>(object->getId(), object));
 }
 
 void CMap::add(CMaterial *mat) {
@@ -384,6 +388,7 @@ void CMap::add(CMaterial *mat) {
 void CMap::add(CLight *light) {
 	_lights.push_back(light);	// Ajoute light à la liste des objets affichables
 	_geos.push_back(light);	// Ajoute light à la liste des objets affichables
+	_geoDescriptions.insert(pair<int, MapObject*>(light->getId(), light));
 }
 
 void CMap::add(CPorte *porte) {
@@ -391,12 +396,14 @@ void CMap::add(CPorte *porte) {
 	_geos.push_back(porte);
 	_refreshables.push_back(porte);
 	_drawables.push_back(porte);
+	_geoDescriptions.insert(pair<int, MapObject*>(porte->getId(), porte));
 }
 
 void CMap::add(CheckPlayerInZone* detector) {
 	_geos.push_back(detector);
 	_refreshables.push_back(detector);
 	_drawables.push_back(detector);
+	_geoDescriptions.insert(pair<int, MapObject*>(detector->getId(), detector));
 }
 
 void CMap::add(CNavette *navette) {		// Une navette est avant tout un objet géo
@@ -404,6 +411,7 @@ void CMap::add(CNavette *navette) {		// Une navette est avant tout un objet géo
 	_refreshables.push_back(navette);
 	_drawables.push_back(navette);
 	_objects.push_back(navette);
+	_geoDescriptions.insert(pair<int, MapObject*>(navette->getId(), navette));
 }
 
 vector<MapObject*>& CMap::getMapObjects() {

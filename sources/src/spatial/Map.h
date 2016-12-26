@@ -45,14 +45,14 @@ class CMap : public MapObject {
 	map<int, MapObject*> _geoDescriptions;
 
 	// Objets de la Map
-	vector<MapObject*> _objects;						// Liste des objets g√©om√©triques
-	vector<Geometrical*> _geos;							// Liste des objets g√©om√©triques
-	vector<SolidAndTargettable*> _solidAndTargettables;	// Liste des objets g√©om√©triques
-	vector<Drawable*> _drawables;						// Liste des objets √† afficher
-	vector<Refreshable*> _refreshables;					// Liste des objets n√©cessitant une actualisation (portes,...)
+	vector<MapObject*> _objects;						// Liste des objets gÈomÈtriques
+	vector<Geometrical*> _geos;							// Liste des objets gÈomÈtriques
+	vector<SolidAndTargettable*> _solidAndTargettables;	// Liste des objets gÈomÈtriques
+	vector<Drawable*> _drawables;						// Liste des objets ‡ afficher
+	vector<Refreshable*> _refreshables;					// Liste des objets nÈcessitant une actualisation (portes,...)
 
 	// Lumi√®res et autres caract√©ristiques de la Map
-	vector<CLight*> _lights;							// Lumi√®res
+	vector<CLight*> _lights;							// LumiËres
 	vector<EntryPoint*> _entryPoints;					// Points d'entr√©e des joueurs sur la Map
 
 	// Objets complexes de la Map
@@ -60,10 +60,10 @@ class CMap : public MapObject {
 
 	vector<string> _plugins;						// Liste des plugins de la Map
 
-	bool _bSelection;								// Indique si le mode s√©lection est actif ou non
+	bool _bSelection;								// Indique si le mode sÈlection est actif ou non
 
-	bool _isGlInitialized;							// Indique si les √©l√©ments OpenGL de la MAP ont √©t√© initialis√©s
-	bool _isPluginsInitialized;						// Indique si les plugins de la MAP ont √©t√© initialis√©s
+	bool _isGlInitialized;							// Indique si les ÈlÈments OpenGL de la MAP ont ÈtÈ initialisÈs
+	bool _isPluginsInitialized;						// Indique si les plugins de la MAP ont √©t√© initialisÈs
 
 	CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
 

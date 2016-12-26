@@ -17,6 +17,9 @@ public:
 	CLightTarget(CMap* map);
 	~CLightTarget();
 
+	MapObject* clone() override;
+	void init() throw(CErreur) override;
+
 	bool Lit(TiXmlElement* element, MapLogger* mapLogger);
 	bool LitFichier(CIfstreamMap &fichier);
 	bool SaveFichierMap(std::ofstream &fichier);

@@ -14,13 +14,21 @@ using namespace jkt;
 
 namespace jkt {
 
-EntryPoint::EntryPoint(CMap* map) : Object(map) {
+EntryPoint::EntryPoint(CMap* map) : MapObject(map) {
 }
 
-EntryPoint::EntryPoint(CMap* map, const float entryPosition[3]) : Object(map), _entryPosition(entryPosition) {
+EntryPoint::EntryPoint(CMap* map, const float entryPosition[3]) : MapObject(map), _entryPosition(entryPosition) {
 }
 
 EntryPoint::~EntryPoint() {
+}
+
+MapObject* EntryPoint::clone() {
+	return new EntryPoint(*this);
+}
+
+void EntryPoint::init() throw(CErreur) {
+
 }
 
 CV3D EntryPoint::getEntryPosition() {

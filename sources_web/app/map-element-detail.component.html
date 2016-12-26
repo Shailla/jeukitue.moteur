@@ -1,1 +1,17 @@
-{{ mapElementId }} - {{ (mapElement$ | async)?.name }} -
+<div *ngIf="mapElement">
+	<div>
+		<label>ID : </label>
+		{{ (mapElement | async)?.id }}</div>
+	<div>
+		<label>Name : </label>
+		{{ (mapElement | async)?.name }}
+	</div>
+	<div>
+		<label>Type : </label>
+		{{ (mapElement | async)?.type }}
+	</div>
+	<div>
+		<label>Selected : </label>
+		{{ (mapElement | async)?.selected }}
+	</div>
+</div>

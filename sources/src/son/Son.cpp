@@ -89,21 +89,18 @@ CSon3D::CSon3D( CDemonSons* p,const char *nomFichierSon )	// Constructeur avec l
 LOGDEBUG(("CSon3D::CSon3D(nomFichierSon=%s,...)%T", nomFichierSon, this ));
 	m_Sample = FSOUND_Sample_Load( FSOUND_FREE, nomFichierSon, FSOUND_HW3D, 0, 0 );
 
-	if( m_Sample==0 )
-	{
+	if( m_Sample==0 ) {
 LOGDEBUG(("CSon3D::CSon3D() %s%T", nomFichierSon, this ));
 		cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur FMOD (" << nomFichierSon << ") :" << FMOD_ErrorString(FSOUND_GetError());
 		throw (int)1;	// Envoie d'une erreur de lecture de fichier
 	}
 }
 
-CSon3D::~CSon3D()
-{
+CSon3D::~CSon3D() {
 LOGDEBUG(("CSon3D::~CSon3D() nom=%s%T", nom.c_str(), this ));
 }
 
-CReqSon *CSonMono::PlayID( bool pause )
-{
+CReqSon *CSonMono::PlayID( bool pause ) {
 	CReqSonMono *req = new CReqSonMono( this );
 	m_TabReq.insert( req );
 	pDemon->m_TabReq.insert( pair<CReqSon*,CSon*>( req, this ) );
@@ -115,8 +112,7 @@ CReqSon *CSonMono::PlayID( bool pause )
 	return req;
 }
 
-CReqSon *CSonStereo::PlayID( bool pause )
-{
+CReqSon *CSonStereo::PlayID( bool pause ) {
 	CReqSonStereo *req = new CReqSonStereo( this );
 	m_TabReq.insert( req );
 	pDemon->m_TabReq.insert( pair<CReqSon*,CSon*>( req, this ) );

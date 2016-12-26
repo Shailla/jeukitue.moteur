@@ -11,15 +11,12 @@
 #include <set>
 
 #include "util/V3D.h"
-#include "spatial/basic/Object.h"
-#include "spatial/basic/Refreshable.h"
-#include "spatial/basic/Drawable.h"
-#include "spatial/basic/Geometrical.h"
+#include "spatial/basic/MapObject.h"
 
 namespace jkt
 {
 
-class CheckPlayerInZone : public Object, public Refreshable, public Drawable, public Geometrical {
+class CheckPlayerInZone : public MapObject {
 	// Identifiant du check, permet à un plugin par exemple de savoir quel check a été activé
 	std::string _id;
 
@@ -47,7 +44,7 @@ public:
 	CheckPlayerInZone(CMap* map, const CheckPlayerInZone& other);
 	virtual ~CheckPlayerInZone();
 
-	CheckPlayerInZone* clone() const;
+	MapObject* clone() override;
 
 	// Object
 	void init() throw(CErreur) override;								// Initialisation de l'objet

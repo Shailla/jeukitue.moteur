@@ -6,8 +6,7 @@
 
 #include "tinyxml.h"
 
-#include "spatial/basic/Geometrical.h"
-#include "spatial/basic/Object.h"
+#include "spatial/basic/MapObject.h"
 #include "spatial/MapLogger.h"
 
 namespace jkt
@@ -15,7 +14,7 @@ namespace jkt
 
 class CIfstreamMap;
 
-class CLight : public Object, public Geometrical {
+class CLight : public MapObject {
 	static int m_nbrLightActivated;
 	static bool m_bLight0;
 	static bool m_bLight1;

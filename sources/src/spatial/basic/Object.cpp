@@ -32,7 +32,7 @@ Object::~Object() {
 void Object::init() throw(CErreur) {
 }
 
-unsigned int Object::getId() const {
+int Object::getId() const {
 	return _id;
 }
 

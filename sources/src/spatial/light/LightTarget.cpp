@@ -29,6 +29,14 @@ CLightTarget::CLightTarget(CMap* map) : CLight(map) {
 CLightTarget::~CLightTarget(void) {
 }
 
+MapObject* CLightTarget::clone() {
+	return new CLightTarget(*this);
+}
+
+void CLightTarget::init() throw(CErreur) {
+
+}
+
 void CLightTarget::getDirection(float direction[3]) const {
 	direction[ 0 ] = m_Direction[ 0 ];
 	direction[ 1 ] = m_Direction[ 1 ];

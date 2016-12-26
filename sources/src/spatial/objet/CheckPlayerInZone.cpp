@@ -25,7 +25,7 @@ namespace jkt {
 const char* CheckPlayerInZone::identifier = "PlayerDetector";
 
 CheckPlayerInZone::CheckPlayerInZone(	CMap* map, const string& id, float zoneDetectionXmin, float zoneDetectionXmax, float zoneDetectionYmin,
-										float zoneDetectionYmax, float zoneDetectionZmin, float zoneDetectionZmax) : Object(map) {
+										float zoneDetectionYmax, float zoneDetectionZmin, float zoneDetectionZmax) : MapObject(map) {
 	_id = id;
 
 	_isVisible = false;
@@ -41,7 +41,7 @@ CheckPlayerInZone::CheckPlayerInZone(	CMap* map, const string& id, float zoneDet
 	_zoneDetectionZmax = (zoneDetectionZmin >= zoneDetectionZmax) ? zoneDetectionZmin : zoneDetectionZmax;
 }
 
-CheckPlayerInZone::CheckPlayerInZone(CMap* map, const CheckPlayerInZone& other) : Object(map) {
+CheckPlayerInZone::CheckPlayerInZone(CMap* map, const CheckPlayerInZone& other) : MapObject(map) {
 	_id = other._id;
 
 	_isVisible = other._isVisible;
@@ -58,7 +58,7 @@ CheckPlayerInZone::CheckPlayerInZone(CMap* map, const CheckPlayerInZone& other) 
 CheckPlayerInZone::~CheckPlayerInZone() {
 }
 
-CheckPlayerInZone* CheckPlayerInZone::clone() const {
+MapObject* CheckPlayerInZone::clone() {
 	return new CheckPlayerInZone(*this);
 }
 

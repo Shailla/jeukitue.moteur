@@ -26,12 +26,12 @@ extern CCfg Config;		// Contient la configuration du jeu
 namespace jkt {
 
 TestSuite::TestSuite() {
-	_tests.push_back(new TableauTest());
-	_tests.push_back(new UtilsTest());
-	_tests.push_back(new RessourcesLoaderTest());
+//	_tests.push_back(new TableauTest());
+//	_tests.push_back(new UtilsTest());
+//	_tests.push_back(new RessourcesLoaderTest());
 	_tests.push_back(new JsonTest());
-	_tests.push_back(new UdpCommunicationTest());
-	_tests.push_back(new DataTreeTest());
+//	_tests.push_back(new UdpCommunicationTest());
+//	_tests.push_back(new DataTreeTest());
 }
 
 TestSuite::~TestSuite() {
@@ -80,6 +80,11 @@ void TestSuite::launchTests() {
 		catch(std::exception& exception) {
 			_results.push_back(testName + " : KO (std::exception)");
 			cout << endl << endl << ">>>>>> " << nbr << " - TEST '" << testName << "' KO (std::exception : message = " << exception.what() << ") <<<<<<" << flush;
+			nbrKo++;
+		}
+		catch(std::string& exception) {
+			_results.push_back(testName + " : KO (std::string)");
+			cout << endl << endl << ">>>>>> " << nbr << " - TEST '" << testName << "' KO (std::string : message = " << exception << ") <<<<<<" << flush;
 			nbrKo++;
 		}
 		catch(...) {

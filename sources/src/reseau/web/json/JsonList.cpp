@@ -9,6 +9,7 @@
 
 #include "reseau/web/json/JsonPair.h"
 #include "reseau/web/json/JsonString.h"
+#include "reseau/web/json/JsonNumber.h"
 #include "reseau/web/json/JsonObject.h"
 
 namespace jkt {
@@ -22,8 +23,30 @@ JsonList::~JsonList() {
 	}
 }
 
+void JsonList::addValue(JsonValue* value) {
+	_values.push_back(value);
+}
+
 JsonString& JsonList::addString(const string& value) {
 	JsonString* var = new JsonString(value);
+	_values.push_back(var);
+	return *var;
+}
+
+JsonNumber& JsonList::addNumber(unsigned int value) {
+	JsonNumber* var = new JsonNumber(value);
+	_values.push_back(var);
+	return *var;
+}
+
+JsonNumber& JsonList::addNumber(int value) {
+	JsonNumber* var = new JsonNumber(value);
+	_values.push_back(var);
+	return *var;
+}
+
+JsonNumber& JsonList::addNumber(long value) {
+	JsonNumber* var = new JsonNumber(value);
 	_values.push_back(var);
 	return *var;
 }

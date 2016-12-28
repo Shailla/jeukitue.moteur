@@ -15,6 +15,8 @@
 namespace jkt {
 
 class JsonTest : public Test {
+	void toJson();
+	void fromJson();
 public:
 	JsonTest();
 	virtual ~JsonTest();

@@ -37,6 +37,11 @@ string JsonTest::getDescription() {
 }
 
 void JsonTest::test() {
+	toJson();
+	fromJson();
+}
+
+void JsonTest::toJson() {
 	// Empty JSON object
 	{
 		log("Empty JSON object", __LINE__);
@@ -91,5 +96,14 @@ void JsonTest::test() {
 	}
 }
 
+void JsonTest::fromJson() {
+	log("From Json test", __LINE__);
+
+	string json = "{\"object1\":{\"string01\":\"str01\",\"string02\":\"str02\",\"list\":[\"str11\",\"str12\",{\"string20\":\"str20\"}]}}";
+
+	JsonObject* object = JsonObject::fromJson(json);
+
+	ASSERT_EQUAL(json, object->toString(), "json => JsonObject => json should be identity operator");
+}
 
 } // JktTest

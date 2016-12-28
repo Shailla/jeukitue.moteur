@@ -16,7 +16,9 @@
 
 namespace jkt {
 
+class JsonValue;
 class JsonString;
+class JsonNumber;
 class JsonObject;
 
 class JsonList : public JsonValue {
@@ -25,7 +27,11 @@ public:
 	JsonList();
 	virtual ~JsonList();
 
+	void addValue(JsonValue* value);
 	JsonString& addString(const string& value);
+	JsonNumber& addNumber(unsigned int value);
+	JsonNumber& addNumber(int value);
+	JsonNumber& addNumber(long value);
 	JsonObject& addObject();
 	JsonList& addList();
 

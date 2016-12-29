@@ -19,7 +19,7 @@ public:
 	PlayersWebService();
 	virtual ~PlayersWebService();
 
-	WebServiceResult execute(HttpServer::HTTP_METHODS method, const std::string& fullEndpoint, const std::string& baseEndpoint, const std::string& serviceEndpoint, const std::string& params) override;
+	WebServiceResult execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) override;
 };
 
 } /* namespace jkt */

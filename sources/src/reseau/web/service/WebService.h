@@ -12,6 +12,7 @@
 
 #include "reseau/web/json/JsonObject.h"
 #include "reseau/web/HttpServer.h"
+#include "reseau/web/HttpRequest.h"
 
 namespace jkt {
 
@@ -32,7 +33,7 @@ public:
 	WebService();
 	virtual ~WebService();
 
-	virtual WebServiceResult execute(HttpServer::HTTP_METHODS method, const std::string& fullEndpoint, const std::string& baseEndpoint, const std::string& serviceEndpoint, const std::string& params) = 0;
+	virtual WebServiceResult execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) = 0;
 };
 
 } /* namespace jkt */

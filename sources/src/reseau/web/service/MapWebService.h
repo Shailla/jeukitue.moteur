@@ -32,10 +32,12 @@ class MapWebService : public WebService {
 	static std::regex RG_GET_MAPS;
 	static std::regex RG_GET_MAP_GRAPHE;
 	static std::regex RG_GET_ELEMENT_SERVICE;
+	static std::regex RG_UPDATE_ELEMENT_SERVICE;
 
 	WebServiceResult getMapList();
 	WebServiceResult getCurrentMapGraphe();
 	WebServiceResult getElement(int elementId);
+	WebServiceResult updateElement(HttpRequest& request, int elementId);
 
 	void jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe);
 
@@ -43,7 +45,7 @@ public:
 	MapWebService();
 	virtual ~MapWebService();
 
-	WebServiceResult execute(HttpServer::HTTP_METHODS method, const std::string& fullEndpoint, const std::string& baseEndpoint, const std::string& serviceEndpoint, const std::string& params) override;
+	WebServiceResult execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) override;
 };
 
 } /* namespace jkt */

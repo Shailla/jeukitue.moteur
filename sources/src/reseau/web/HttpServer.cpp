@@ -28,11 +28,11 @@ using namespace std;
 namespace jkt
 {
 
-const char* HttpServer::WEB_CSS_DIR =		"./web/css";
-const char* HttpServer::WEB_HTML_DIR =		"./web/html";
-const char* HttpServer::WEB_IMAGE_DIR =		"./web/image";
-const char* HttpServer::WEB_JS_DIR =		"./web/js";
-const char* HttpServer::WEB_JSON_DIR =		"./web/json";
+const char* HttpServer::WEB_CSS_DIR =				"./web/css";
+const char* HttpServer::WEB_HTML_DIR =				"./web/html";
+const char* HttpServer::WEB_IMAGE_DIR =				"./web/image";
+const char* HttpServer::WEB_JS_DIR =				"./web/js";
+const char* HttpServer::WEB_JSON_DIR =				"./web/json";
 
 const char* HttpServer::HTTP_RETURN =				"\r\n";
 const char* HttpServer::HTTP_HEAD = 				"HTTP/1.1";
@@ -250,6 +250,7 @@ void HttpServer::start() {
 	char* response;
 	long responseSize;
 	bool found;
+	char buffer[1024];
 
 	while(1) {
 		// Attente connexion client
@@ -258,36 +259,12 @@ void HttpServer::start() {
 		while(clientSocket == 0)
 			clientSocket = SDLNet_TCP_Accept(serveurSocket);
 
-		char buffer[1024];
-
 		int requestSize = SDLNet_TCP_Recv(clientSocket, buffer, 1024); 				// Reception parametres connection du client
-		buffer[requestSize] = 0;
 
-		string request = buffer;
-		LOGDEBUG(("HTTP requête reçue : '%s'", request.c_str()));
+		HttpRequest request(buffer, requestSize);
+		LOGDEBUG(("HTTP requête reçue : '%s'", request.toString().c_str()));
 
-		methodStr = jkt::StringUtils::findAndEraseFirstWord(request);
-
-		HTTP_METHODS method = resolveHttpMethod(methodStr);
-
-		url = jkt::StringUtils::findAndEraseFirstWord(request);
-		protocol = jkt::StringUtils::findAndEraseFirstWord(request);
-
-		// Extrait les paramètres de la requête s'il y en a
-		size_t bp = url.find("?");
-		endpoint = url.substr(0, bp);
-
-		if(bp != string::npos) {
-			params = url.substr(bp+1);
-		}
-		else {
-			params = "";	// Pas de paramètres sur la requête
-		}
-
-		LOGDEBUG((" - Méthode :  '%s (%d)'", methodStr.c_str(), (int)method));
-		LOGDEBUG((" - Endpoint : '%s'", endpoint.c_str()));
-		LOGDEBUG((" - Params:    '%s'", params.c_str()));
-		LOGDEBUG((" - Protocol : '%s'", protocol.c_str()));
+		// TODO
 
 		// Recherche du contenu
 		try {
@@ -298,10 +275,10 @@ void HttpServer::start() {
 			// Search web service
 			if(!found) {
 				string baseEndpoint, serviceEndpoint;
-				WebService* service = getService(endpoint, baseEndpoint, serviceEndpoint);
+				WebService* service = getService(request.getEndpoint(), baseEndpoint, serviceEndpoint);
 
 				if(service) {
-					WebServiceResult result = service->execute(method, endpoint, baseEndpoint, serviceEndpoint, params);
+					WebServiceResult result = service->execute(request, baseEndpoint, serviceEndpoint);
 
 					contentType = result._contentType;
 					contentSize = result._contentSize;
@@ -334,9 +311,10 @@ void HttpServer::start() {
 			header = buildResponseHeader(contentType, contentSize, status);
 
 			responseSize = header.size() + contentSize;
-			response = (char*)malloc(responseSize);
+			response = (char*)malloc(responseSize+1);
 			header.copy(response, header.size());
 			memcpy(response + (size_t)header.size(), content, contentSize);
+			response[responseSize] = '\0';
 		}
 		catch(int exception) {
 			switch(exception) {
@@ -349,16 +327,18 @@ void HttpServer::start() {
 					header = buildResponseHeader(resource->getContentType(), resource->getContentSize(), HTTP_RESPONSE_404);
 
 					responseSize = header.size() + resource->getContentSize();
-					response = (char*)malloc(responseSize);
+					response = (char*)malloc(responseSize+1);
 					header.copy(response, header.size());
 					memcpy(response + header.size(), resource->getContent(), resource->getContentSize());
+					response[responseSize] = '\0';
 				}
 				else {
 					LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant) '%s' : %d", endpoint.c_str(), exception));
 					string str = buildStringResponse(HTTP_INTERNAL_ERROR_CONTENT, HTTP_CONTENT_TYPE_HTML, HTTP_RESPONSE_500);
 					responseSize = str.size();
-					response = (char*)malloc(responseSize);
+					response = (char*)malloc(responseSize+1);
 					str.copy(response, responseSize);
+					response[responseSize] = '\0';
 				}
 
 				break;
@@ -371,24 +351,27 @@ void HttpServer::start() {
 					header = buildResponseHeader(resource->getContentType(), resource->getContentSize(), HTTP_RESPONSE_404);
 
 					responseSize = header.size() + resource->getContentSize();
-					response = (char*)malloc(responseSize);
+					response = (char*)malloc(responseSize+1);
 					header.copy(response, header.size());
 					memcpy(response + header.size(), resource->getContent(), resource->getContentSize());
+					response[responseSize] = '\0';
 				}
 				else {
 					LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant) '%s' : %d", endpoint.c_str(), exception));
 					string str = buildStringResponse(HTTP_INTERNAL_ERROR_CONTENT, HTTP_CONTENT_TYPE_HTML, HTTP_RESPONSE_500);
 					responseSize = str.size();
-					response = (char*)malloc(responseSize);
+					response = (char*)malloc(responseSize+1);
 					str.copy(response, responseSize);
+					response[responseSize] = '\0';
 				}
 				break;
 			default:
 				LOGERROR(("On ne devrait jamais être ici (erreur non-maîtrisée) '%s' : %d", endpoint.c_str(), exception));
 				string str = buildStringResponse(HTTP_INTERNAL_ERROR_CONTENT, HTTP_CONTENT_TYPE_HTML, HTTP_RESPONSE_500);
 				responseSize = str.size();
-				response = (char*)malloc(responseSize);
+				response = (char*)malloc(responseSize+1);
 				str.copy(response, responseSize);
+				response[responseSize] = '\0';
 				break;
 			}
 		}
@@ -396,15 +379,17 @@ void HttpServer::start() {
 			LOGERROR(("Erreur interne (exception standard) sur '%s' : '%s'", endpoint.c_str(), exception.what()));
 			string str = buildStringResponse(HTTP_INTERNAL_ERROR_CONTENT, HTTP_CONTENT_TYPE_HTML, HTTP_RESPONSE_500);
 			responseSize = str.size();
-			response = (char*)malloc(responseSize);
+			response = (char*)malloc(responseSize+1);
 			str.copy(response, responseSize);
+			response[responseSize] = '\0';
 		}
 		catch(...) {
 			LOGERROR(("Erreur interne inconnue sur '%s'", endpoint.c_str()));
 			string str = buildStringResponse(HTTP_INTERNAL_ERROR_CONTENT, HTTP_CONTENT_TYPE_HTML, HTTP_RESPONSE_500);
 			responseSize = str.size();
-			response = (char*)malloc(responseSize);
+			response = (char*)malloc(responseSize+1);
 			str.copy(response, responseSize);
+			response[responseSize] = '\0';
 		}
 
 		// Envoi réponse

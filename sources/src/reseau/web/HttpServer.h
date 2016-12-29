@@ -8,6 +8,7 @@
 #ifndef SRC_RESEAU_WEB_HTTPSERVER_H_
 #define SRC_RESEAU_WEB_HTTPSERVER_H_
 
+#include <regex>
 #include <string>
 #include <map>
 
@@ -64,7 +65,6 @@ private:
 	std::map<std::string, WebResource*> _resources;
 	std::map<std::string, WebService*> _services;
 
-	HTTP_METHODS resolveHttpMethod(const std::string& method);
 	void collecteDir(const std::string& dirname, const std::string& endpoint, const std::string& contentType);
 
 	std::string buildStringResponse(const std::string& content, const std::string& contentType, const std::string& status);
@@ -75,7 +75,8 @@ private:
 public:
 	enum HTTP_EXCEPTION {
 		RESOURCE_NOT_FOUND_EXCEPTION = 1,
-		SERVICE_NOT_EXISTS = 2
+		SERVICE_NOT_EXISTS = 2,
+		MALFORMED_HTTP_REQUEST = 3
 	};
 
 	static const char* HTTP_RETURN;
@@ -96,6 +97,8 @@ public:
 	static const char* HTTP_METHOD_PATCH;
 	static const char* HTTP_METHOD_DELETE;
 
+	static HTTP_METHODS resolveHttpMethod(const std::string& method);
+
 	HttpServer(int port);
 	virtual ~HttpServer();
 
@@ -109,6 +112,6 @@ public:
 	WebResource* getResource(const std::string& endpoint) throw(int);
 };
 
-}	// JktNet
+}	// jkt
 
 #endif /* SRC_RESEAU_WEB_HTTPSERVER_H_ */

@@ -39,8 +39,8 @@ WebServiceResult PlayersWebService::getPlayersInCurrentMap() {
 	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
 }
 
-WebServiceResult PlayersWebService::execute(HttpServer::HTTP_METHODS method, const string& fullEndpoint, const string& baseEndpoint, const string& serviceEndpoint, const std::string& params) {
-	if(method == HttpServer::HTTP_METHODS::HTTP_GET && serviceEndpoint == "players") {
+WebServiceResult PlayersWebService::execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) {
+	if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_GET && serviceEndpoint == "players") {
 		return getPlayersInCurrentMap();
 	}
 

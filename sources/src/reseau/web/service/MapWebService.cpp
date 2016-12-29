@@ -38,6 +38,7 @@ string MapWebService::ENTRYPOINT = "entryPoint";
 std::regex MapWebService::RG_GET_MAPS("^maps$");
 std::regex MapWebService::RG_GET_MAP_GRAPHE("^map-graphe$");
 std::regex MapWebService::RG_GET_ELEMENT_SERVICE("^element/(\\d+)$");
+std::regex MapWebService::RG_UPDATE_ELEMENT_SERVICE("^element/(\\d+)$");
 
 MapWebService::MapWebService() {
 }
@@ -121,37 +122,70 @@ WebServiceResult MapWebService::getElement(int elementId) {
 	JsonObject& mapElement = root.addObject("mapElement");
 
 	CMap* map = Game.getMap();
-	MapObject* object = map->findMapObject(elementId);
 
-	if(object) {
-		if(object) {
-			mapElement.addString(TYPE, ENTRYPOINT);
-			mapElement.addNumber(ID, object->getId());
-			mapElement.addString(NAME, object->getName());
-			mapElement.addBoolean(SELECTED, object->isSelected());
-		}
-
-		return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
-	}
-	else {
+	if(!map) {
 		return WebServiceResult(root, HttpServer::HTTP_RESPONSE_404);
 	}
+
+	MapObject* object = map->findMapObject(elementId);
+
+	if(!object) {
+		return WebServiceResult(root, HttpServer::HTTP_RESPONSE_404);
+	}
+
+	mapElement.addString(TYPE, ENTRYPOINT);
+	mapElement.addNumber(ID, object->getId());
+	mapElement.addString(NAME, object->getName());
+	mapElement.addBoolean(SELECTED, object->isSelected());
+
+	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
 }
 
-WebServiceResult MapWebService::execute(HttpServer::HTTP_METHODS method, const string& fullEndpoint, const string& baseEndpoint, const string& serviceEndpoint, const std::string& params) {
+WebServiceResult MapWebService::updateElement(HttpRequest& request, int elementId) {
+	CMap* map = Game.getMap();
+
+	if(!map) {
+		JsonObject root;
+		JsonObject& error = root.addObject("error");
+		error.addString("detail", "There is no active Map");
+		return WebServiceResult(root, HttpServer::HTTP_RESPONSE_404);
+	}
+
+	MapObject* object = map->findMapObject(elementId);
+
+	if(!object) {
+		JsonObject root;
+		JsonObject& error = root.addObject("error");
+		error.addString("detail", "Object not found in active Map");
+		return WebServiceResult(root, HttpServer::HTTP_RESPONSE_404);
+	}
+
+	JsonObject* newValues = request.getBodyJson();
+
+	JsonObject root;
+	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
+}
+
+WebServiceResult MapWebService::execute(HttpRequest& request, const string& baseEndpoint, const string& serviceEndpoint) {
 	smatch match;
 
-	if(method == HttpServer::HTTP_METHODS::HTTP_GET && regex_match(serviceEndpoint, RG_GET_MAPS)) {
+	if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_GET && regex_match(serviceEndpoint, RG_GET_MAPS)) {
 		return getMapList();
 	}
-	else if(method == HttpServer::HTTP_METHODS::HTTP_GET && regex_match(serviceEndpoint, RG_GET_MAP_GRAPHE)) {
+	else if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_GET && regex_match(serviceEndpoint, RG_GET_MAP_GRAPHE)) {
 		return getCurrentMapGraphe();
 	}
-	else if(method == HttpServer::HTTP_METHODS::HTTP_GET && regex_search(serviceEndpoint, match, RG_GET_ELEMENT_SERVICE)) {
+	else if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_GET && regex_search(serviceEndpoint, match, RG_GET_ELEMENT_SERVICE)) {
 		int elementId = boost::lexical_cast<int>(match[1]);
 		LOGINFO(("GET Element id='%d'", elementId));
 
 		return getElement(elementId);
+	}
+	else if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_PUT && regex_search(serviceEndpoint, match, RG_UPDATE_ELEMENT_SERVICE)) {
+		int elementId = boost::lexical_cast<int>(match[1]);
+		LOGINFO(("UPDATE Element id='%d'", elementId));
+
+		return updateElement(request, elementId);
 	}
 
 	// Service not found

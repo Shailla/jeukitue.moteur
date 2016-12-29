@@ -26,6 +26,9 @@ public:
 	JsonPair(const std::string& name, JsonValue* value);
 	virtual ~JsonPair();
 
+	const std::string& getName() const;
+	const JsonValue* getValue() const;
+
 	void toJson(std::stringstream& buffer);
 	std::string toJson();
 };

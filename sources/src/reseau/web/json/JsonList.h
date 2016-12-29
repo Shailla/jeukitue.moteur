@@ -32,8 +32,13 @@ public:
 	JsonNumber& addNumber(unsigned int value);
 	JsonNumber& addNumber(int value);
 	JsonNumber& addNumber(long value);
+	JsonBoolean& addBoolean(bool value);
 	JsonObject& addObject();
 	JsonList& addList();
+
+	JsonNumber* isJsonNumber() const override;
+	JsonString* isJsonString() const override;
+	JsonBoolean* isJsonBoolean() const override;
 
 	void toJson(std::stringstream& buffer) override;
 };

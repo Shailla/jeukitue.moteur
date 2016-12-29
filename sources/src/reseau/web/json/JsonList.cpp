@@ -10,6 +10,7 @@
 #include "reseau/web/json/JsonPair.h"
 #include "reseau/web/json/JsonString.h"
 #include "reseau/web/json/JsonNumber.h"
+#include "reseau/web/json/JsonBoolean.h"
 #include "reseau/web/json/JsonObject.h"
 
 namespace jkt {
@@ -51,6 +52,12 @@ JsonNumber& JsonList::addNumber(long value) {
 	return *var;
 }
 
+JsonBoolean& JsonList::addBoolean(bool value) {
+	JsonBoolean* var = new JsonBoolean(value);
+	_values.push_back(var);
+	return *var;
+}
+
 JsonObject& JsonList::addObject() {
 	JsonObject* var = new JsonObject();
 	_values.push_back(var);
@@ -61,6 +68,17 @@ JsonList& JsonList::addList() {
 	JsonList* var = new JsonList();
 	_values.push_back(var);
 	return *var;
+}
+
+JsonNumber* JsonList::isJsonNumber() const {
+	return 0;
+}
+JsonString* JsonList::isJsonString() const {
+	return 0;
+}
+
+JsonBoolean* JsonList::isJsonBoolean() const {
+	return 0;
 }
 
 void JsonList::toJson(stringstream& buffer) {

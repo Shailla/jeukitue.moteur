@@ -22,6 +22,14 @@ JsonPair::~JsonPair() {
 	}
 }
 
+const std::string& JsonPair::getName() const {
+	return _name;
+}
+
+const JsonValue* JsonPair::getValue() const {
+	return _value;
+}
+
 void JsonPair::toJson(stringstream& buffer) {
 	buffer << "\"" << _name << "\":";
 	_value->toJson(buffer);

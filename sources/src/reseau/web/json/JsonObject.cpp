@@ -9,12 +9,13 @@
 #include <iostream>
 #include <boost/lexical_cast.hpp>
 
-#include "reseau/web/json/JsonObject.h"
-
 #include "reseau/web/json/JsonPair.h"
+#include "reseau/web/json/JsonBoolean.h"
 #include "reseau/web/json/JsonString.h"
 #include "reseau/web/json/JsonNumber.h"
 #include "reseau/web/json/JsonList.h"
+
+#include "reseau/web/json/JsonObject.h"
 
 using namespace std;
 
@@ -25,7 +26,8 @@ regex JsonObject::REGEX_OBJECT_END("^\\s*\\}");
 regex JsonObject::REGEX_PAIR_KEY("^\\s*\\\"([^\\\"]+)\\\"\\s*\\:");
 regex JsonObject::REGEX_PAIR_SEPARATOR("^\\s*,\\s*");
 regex JsonObject::REGEX_STRING("^\\s*\\\"([^\\\"]+)\\\"");
-regex JsonObject::REGEX_NUMBER("^\\s*(\\d+)\\\"");
+regex JsonObject::REGEX_NUMBER("^\\s*(\\d+)");
+regex JsonObject::REGEX_BOOLEAN("^\\s*(true|false)");
 regex JsonObject::REGEX_LIST_BEGIN("^\\s*\\[");
 regex JsonObject::REGEX_LIST_END("^\\s*\\]");
 
@@ -39,16 +41,19 @@ JsonObject::~JsonObject() {
 }
 
 JsonObject* JsonObject::fromJson(const string& json) {
-	cout << endl << "DEBUT";
-
 	string var = json;
-	JsonObject* object = readObject(0, var);
-	cout << endl << "FIN" << flush;
 
-	return object;
+	unique_ptr<JsonObject> object = readObject(0, var);
+
+	if(object) {
+		return object.release();
+	}
+	else {
+		return 0;
+	}
 }
 
-JsonObject* JsonObject::readObject(int depth, string& json) {
+unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) {
 	smatch s;
 
 	// Object
@@ -59,12 +64,12 @@ JsonObject* JsonObject::readObject(int depth, string& json) {
 	if(result) {	// Si un objet a été trouvé
 		cout << endl << indent(depth) << "Object trouvé";
 
-		json = s.suffix();
+		json = s.suffix();	// Confirm object begin was read
 
-		JsonObject* object = new JsonObject();
+		unique_ptr<JsonObject> object(new JsonObject());
 
 		// Lit toutes les paires clé/valeur
-		JsonPair* pair = 0;
+		unique_ptr<JsonPair> pair;
 		bool first= true;
 
 		do {
@@ -81,13 +86,14 @@ JsonObject* JsonObject::readObject(int depth, string& json) {
 			}
 
 			first = false;
-			object->addPair(pair);
+			object->addPair(pair.release());
 
 			result = regex_search(json, s, REGEX_PAIR_SEPARATOR);
 
 			if(result) {
 				cout << endl << indent(depth) << "Separateur trouvé";
-				json = s.suffix();
+
+				json = s.suffix();	// Confirm seperator was read
 			}
 			else {
 				cout << endl << indent(depth) << "Fin des séparateurs";
@@ -100,7 +106,8 @@ JsonObject* JsonObject::readObject(int depth, string& json) {
 
 		if(result) {	// Si un objet a été trouvé
 			cout << endl << indent(depth) << "Fin objet";
-			json = s.suffix();
+
+			json = s.suffix();	// Confirm object end was read
 		}
 		else {
 			throw string("La fin de l'objet est mauvaise");
@@ -114,7 +121,7 @@ JsonObject* JsonObject::readObject(int depth, string& json) {
 	}
 }
 
-JsonList* JsonObject::readList(int depth, string& json) {
+unique_ptr<JsonList> JsonObject::readList(int depth, string& json) {
 	smatch s;
 
 	// Object
@@ -125,11 +132,11 @@ JsonList* JsonObject::readList(int depth, string& json) {
 	if(result) {	// Si un objet a été trouvé
 		cout << endl << indent(depth) << "Liste trouvée";
 
-		JsonList* list = new JsonList();
-		json = s.suffix();
+		unique_ptr<JsonList> list(new JsonList());
+		json = s.suffix();	// Confirm list begin was read
 
 		// Lit toutes les paires clé/valeur
-		JsonValue* value;
+		unique_ptr<JsonValue> value;
 		bool first = true;
 
 		do {
@@ -148,6 +155,10 @@ JsonList* JsonObject::readList(int depth, string& json) {
 			}
 
 			if(!value) {
+				value = readBoolean(depth + 1, json);
+			}
+
+			if(!value) {
 				if(first) {
 					cout << endl << indent(depth) << "Pas de valeur trouvée";
 					break;
@@ -158,13 +169,14 @@ JsonList* JsonObject::readList(int depth, string& json) {
 			}
 
 			first = false;
-			list->addValue(value);
+			list->addValue(value.release());
 
 			result = regex_search(json, s, REGEX_PAIR_SEPARATOR);
 
 			if(result) {
 				cout << endl << indent(depth) << "Séparateur trouvé";
-				json = s.suffix();
+
+				json = s.suffix();	// Confirm list separator was read
 			}
 			else {
 				break;
@@ -175,7 +187,8 @@ JsonList* JsonObject::readList(int depth, string& json) {
 
 		if(result) {	// Si un objet a été trouvé
 			cout << endl << indent(depth) << "Fin de liste";
-			json = s.suffix();
+
+			json = s.suffix();	// Confirm list end was read
 		}
 		else {
 			throw string("La fin de liste est mauvaise");
@@ -189,7 +202,7 @@ JsonList* JsonObject::readList(int depth, string& json) {
 	}
 }
 
-JsonPair* JsonObject::readPair(int depth, string& json) {
+unique_ptr<JsonPair> JsonObject::readPair(int depth, string& json) {
 	smatch s;
 
 	// Object
@@ -200,11 +213,12 @@ JsonPair* JsonObject::readPair(int depth, string& json) {
 	if(result) {
 		cout << endl << indent(depth) << "Paire trouvée";
 		string pairName = s[1];
-		json = s.suffix();
+
+		json = s.suffix();	// Confirm pair name was read
 
 		cout << " => " << pairName;
 
-		JsonValue* value;
+		unique_ptr<JsonValue> value;
 
 		value = readObject(depth + 1, json);
 
@@ -220,9 +234,12 @@ JsonPair* JsonObject::readPair(int depth, string& json) {
 			value = readNumber(depth + 1, json);
 		}
 
+		if(!value) {
+			value = readBoolean(depth + 1, json);
+		}
 
 		if(value) {
-			return new JsonPair(pairName, value);
+			return unique_ptr<JsonPair>(new JsonPair(pairName, value.release()));
 		}
 		else {
 			throw string("La paire n'a pas de valeur");
@@ -234,7 +251,7 @@ JsonPair* JsonObject::readPair(int depth, string& json) {
 	}
 }
 
-JsonString* JsonObject::readString(int depth, string& json) {
+unique_ptr<JsonString> JsonObject::readString(int depth, string& json) {
 	string var = json;
 	smatch s;
 
@@ -247,9 +264,9 @@ JsonString* JsonObject::readString(int depth, string& json) {
 		string value = s[1];
 		cout << endl << indent(depth) << "String lue : " << value;
 
-		json = s.suffix();
+		json = s.suffix();	// Confirm string value was read
 
-		return new JsonString(value);
+		return unique_ptr<JsonString>(new JsonString(value));
 	}
 	else {
 		cout << endl << indent(depth) << "Pas de string";
@@ -257,7 +274,7 @@ JsonString* JsonObject::readString(int depth, string& json) {
 	}
 }
 
-JsonNumber* JsonObject::readNumber(int depth, string& json) {
+unique_ptr<JsonNumber> JsonObject::readNumber(int depth, string& json) {
 	string var = json;
 	smatch s;
 
@@ -270,9 +287,40 @@ JsonNumber* JsonObject::readNumber(int depth, string& json) {
 		int value = boost::lexical_cast<int>(s[1]);
 		cout << endl << indent(depth) << "Nombre lue : " << value;
 
-		json = s.suffix();
+		json = s.suffix();	// Confirm number value was read
 
-		return new JsonNumber(value);
+		return unique_ptr<JsonNumber>(new JsonNumber(value));
+	}
+	else {
+		cout << endl << indent(depth) << "Pas de nombre";
+		return 0;
+	}
+}
+
+unique_ptr<JsonBoolean> JsonObject::readBoolean(int depth, string& json) {
+	string var = json;
+	smatch s;
+
+	// Object
+	cout << endl << indent(depth) << "READ BOOLEAN: " << json;
+
+	bool result = regex_search(json, s, REGEX_BOOLEAN);
+
+	if(result) {
+		bool value;
+
+		if(s[1] == "true") {
+			value = true;
+		}
+		else {
+			value = false;
+		}
+
+		cout << endl << indent(depth) << "Oui/non lu : " << value;
+
+		json = s.suffix();	// Confirm number value was read
+
+		return unique_ptr<JsonBoolean>(new JsonBoolean(value));
 	}
 	else {
 		cout << endl << indent(depth) << "Pas de nombre";
@@ -299,11 +347,6 @@ void JsonObject::addString(const string& name, const string& value) {
 	_pairs.push_back(pair);
 }
 
-void JsonObject::addBoolean(const string& name, const bool value) {
-	JsonPair* pair = new JsonPair(name, value ? (JsonValue*)new JsonString("true") : (JsonValue*)new JsonString("false"));
-	_pairs.push_back(pair);
-}
-
 void JsonObject::addNumber(const string& name, const unsigned int value) {
 	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
 	_pairs.push_back(pair);
@@ -319,6 +362,11 @@ void JsonObject::addNumber(const string& name, const long value) {
 	_pairs.push_back(pair);
 }
 
+void JsonObject::addBoolean(const string& name, const bool value) {
+	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonBoolean(value));
+	_pairs.push_back(pair);
+}
+
 JsonObject& JsonObject::addObject(const string& name) {
 	JsonObject* var = new JsonObject();
 	JsonPair* pair = new JsonPair(name, var);
@@ -331,6 +379,21 @@ JsonList& JsonObject::addList(const string& name) {
 	JsonPair* pair = new JsonPair(name, var);
 	_pairs.push_back(pair);
 	return *var;
+}
+
+vector<JsonPair*>& JsonObject::getPairs() {
+	return _pairs;
+}
+
+JsonNumber* JsonObject::isJsonNumber() const {
+	return 0;
+}
+JsonString* JsonObject::isJsonString() const {
+	return 0;
+}
+
+JsonBoolean* JsonObject::isJsonBoolean() const {
+	return 0;
 }
 
 void JsonObject::toJson(stringstream& buffer) {

@@ -99,7 +99,7 @@ void JsonTest::toJson() {
 void JsonTest::fromJson() {
 	log("From Json test", __LINE__);
 
-	string json = "{\"object1\":{\"string01\":\"str01\",\"string02\":\"str02\",\"list\":[\"str11\",\"str12\",{\"string20\":\"str20\"}]}}";
+	string json = "{\"object1\":{\"string01\":\"str01\",\"string02\":123,\"list\":[\"str11\",\"str12\",{\"string20\":true,\"string20\":false}]}}";
 
 	JsonObject* object = JsonObject::fromJson(json);
 

@@ -16,10 +16,18 @@ using namespace std;
 
 namespace jkt {
 
+class JsonBoolean;
+class JsonNumber;
+class JsonString;
+
 class JsonValue {
 public:
 	JsonValue();
 	virtual ~JsonValue();
+
+	virtual const JsonNumber* isJsonNumber() const = 0;
+	virtual const JsonString* isJsonString() const = 0;
+	virtual const JsonBoolean* isJsonBoolean() const = 0;
 
 	virtual void toJson(std::stringstream& buffer) = 0;
 	std::string toString();

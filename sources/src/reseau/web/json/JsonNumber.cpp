@@ -24,6 +24,18 @@ JsonNumber::JsonNumber(const long& value) {
 JsonNumber::~JsonNumber() {
 }
 
+const JsonNumber* JsonNumber::isJsonNumber() const {
+	return this;
+}
+
+const JsonString* JsonNumber::isJsonString() const {
+	return 0;
+}
+
+const JsonBoolean* JsonNumber::isJsonBoolean() const {
+	return 0;
+}
+
 void JsonNumber::toJson(stringstream& buffer) {
 	buffer << _value;
 }

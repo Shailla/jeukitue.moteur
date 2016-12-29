@@ -11,6 +11,7 @@
 #include "util/StringUtils.h"
 #include "util/Trace.h"
 #include "reseau/web/HttpServer.h"
+#include "reseau/web/json/JsonBoolean.h"
 #include "reseau/web/json/JsonObject.h"
 #include "service/MapService.h"
 #include "service/dto/MapInformationDto.h"
@@ -161,6 +162,25 @@ WebServiceResult MapWebService::updateElement(HttpRequest& request, int elementI
 	}
 
 	JsonObject* newValues = request.getBodyJson();
+
+	for(JsonPair* pair : newValues->getPairs()) {
+		const string& name = pair->getName();
+
+		if(name == "selected") {
+			const JsonValue* val = pair->getValue();
+			const JsonBoolean* value;
+
+			if((val && (value = val->isJsonBoolean()))) {
+				object->select(value->getValue());
+			}
+			else {
+				JsonObject root;
+				JsonObject& error = root.addObject("error");
+				error.addString("detail", "Bad request format");
+				return WebServiceResult(root, HttpServer::HTTP_RESPONSE_404);
+			}
+		}
+	}
 
 	JsonObject root;
 	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);

@@ -18,6 +18,12 @@ public:
 	JsonString(const string& value);
 	virtual ~JsonString();
 
+	const string& getValue() const;
+
+	const JsonNumber* isJsonNumber() const override;
+	const JsonString* isJsonString() const override;
+	const JsonBoolean* isJsonBoolean() const override;
+
 	void toJson(std::stringstream& buffer) override;
 };
 

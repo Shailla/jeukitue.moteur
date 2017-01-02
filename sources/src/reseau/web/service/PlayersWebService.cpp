@@ -13,6 +13,7 @@
 #include "reseau/web/json/JsonObject.h"
 #include "service/PlayersService.h"
 #include "service/dto/PlayerInformationDto.h"
+#include "reseau/web/HttpException.h"
 
 #include "reseau/web/service/PlayersWebService.h"
 
@@ -45,7 +46,7 @@ WebServiceResult PlayersWebService::execute(HttpRequest& request, const std::str
 	}
 
 	// Service not found
-	throw HttpServer::HTTP_EXCEPTION::SERVICE_NOT_EXISTS;
+	throw HttpException(HttpException::SERVICE_NOT_EXISTS, "No player service found for the endpoint");
 }
 
 } /* namespace jkt */

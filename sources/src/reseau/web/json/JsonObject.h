@@ -15,6 +15,7 @@
 #include "reseau/web/json/JsonValue.h"
 #include "reseau/web/json/JsonPair.h"
 #include "reseau/web/json/JsonList.h"
+#include "reseau/web/json/MalformedJsonException.h"
 
 namespace jkt {
 
@@ -32,14 +33,15 @@ class JsonObject : public JsonValue {
 	static std::regex REGEX_BOOLEAN;
 	static std::regex REGEX_LIST_BEGIN;
 	static std::regex REGEX_LIST_END;
+	static std::regex REGEX_BLANK;
 
 	static std::string indent(int depth);
-	static unique_ptr<JsonObject> readObject(int depth, std::string& json);
-	static unique_ptr<JsonPair> readPair(int depth, std::string& json);
-	static unique_ptr<JsonString> readString(int depth, std::string& json);
-	static unique_ptr<JsonNumber> readNumber(int depth, std::string& json);
-	static unique_ptr<JsonBoolean> readBoolean(int depth, std::string& json);
-	static unique_ptr<JsonList> readList(int depth, std::string& json);
+	static unique_ptr<JsonObject> readObject(int depth, std::string& json) throw(MalformedJsonException);
+	static unique_ptr<JsonPair> readPair(int depth, std::string& json) throw(MalformedJsonException);
+	static unique_ptr<JsonString> readString(int depth, std::string& json) throw(MalformedJsonException);
+	static unique_ptr<JsonNumber> readNumber(int depth, std::string& json) throw(MalformedJsonException);
+	static unique_ptr<JsonBoolean> readBoolean(int depth, std::string& json) throw(MalformedJsonException);
+	static unique_ptr<JsonList> readList(int depth, std::string& json) throw(MalformedJsonException);
 
 	std::vector<JsonPair*> _pairs;
 
@@ -65,7 +67,7 @@ public:
 	JsonBoolean* isJsonBoolean() const override;
 
 	void toJson(std::stringstream& buffer) override;
-	static JsonObject* fromJson(const std::string& json);
+	static JsonObject* fromJson(const std::string& json) throw(MalformedJsonException);
 };
 
 } /* namespace jkt */

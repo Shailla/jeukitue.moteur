@@ -9,6 +9,8 @@
 
 using namespace std;
 
+#include "reseau/web/json/JsonObject.h"
+
 #include "reseau/web/service/WebService.h"
 
 namespace jkt {
@@ -29,5 +31,14 @@ WebService::WebService() {
 
 WebService::~WebService() {
 }
+
+WebServiceResult WebService::jsonErrorResponse(const char* httpStatus, const string& errorDetail) {
+	JsonObject root;
+	JsonObject& error = root.addObject("error");
+	error.addString("detail", errorDetail);
+
+	return WebServiceResult(root, httpStatus);
+}
+
 
 } /* namespace jkt */

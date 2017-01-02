@@ -19,6 +19,7 @@
 #include "spatial/Map.h"
 #include "spatial/geo/EntryPoint.h"
 #include "spatial/light/Light.h"
+#include "reseau/web/HttpException.h"
 
 #include "reseau/web/service/MapWebService.h"
 
@@ -125,13 +126,13 @@ WebServiceResult MapWebService::getElement(int elementId) {
 	CMap* map = Game.getMap();
 
 	if(!map) {
-		return WebServiceResult(root, HttpServer::HTTP_RESPONSE_404);
+		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_404, "There is no active Map");
 	}
 
 	MapObject* object = map->findMapObject(elementId);
 
 	if(!object) {
-		return WebServiceResult(root, HttpServer::HTTP_RESPONSE_404);
+		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_404, "Object not found in the active Map");
 	}
 
 	mapElement.addString(TYPE, ENTRYPOINT);
@@ -146,38 +147,35 @@ WebServiceResult MapWebService::updateElement(HttpRequest& request, int elementI
 	CMap* map = Game.getMap();
 
 	if(!map) {
-		JsonObject root;
-		JsonObject& error = root.addObject("error");
-		error.addString("detail", "There is no active Map");
-		return WebServiceResult(root, HttpServer::HTTP_RESPONSE_404);
+		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_404, "There is no active Map");
 	}
 
 	MapObject* object = map->findMapObject(elementId);
 
 	if(!object) {
-		JsonObject root;
-		JsonObject& error = root.addObject("error");
-		error.addString("detail", "Object not found in active Map");
-		return WebServiceResult(root, HttpServer::HTTP_RESPONSE_404);
+		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_404, "Object not found in the active Map");
 	}
 
 	JsonObject* newValues = request.getBodyJson();
 
-	for(JsonPair* pair : newValues->getPairs()) {
-		const string& name = pair->getName();
+	if(newValues) {
+		for(JsonPair* pair : newValues->getPairs()) {
+			const string& name = pair->getName();
 
-		if(name == "selected") {
-			const JsonValue* val = pair->getValue();
-			const JsonBoolean* value;
+			if(name == "selected") {
+				const JsonValue* val = pair->getValue();
 
-			if((val && (value = val->isJsonBoolean()))) {
+				if(!val) {
+					return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, 'selected' element has no value");
+				}
+
+				const JsonBoolean* value = val->isJsonBoolean();
+
+				if(!value) {
+					return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, 'selected' element value should be boolean ('true' or 'false')");
+				}
+
 				object->select(value->getValue());
-			}
-			else {
-				JsonObject root;
-				JsonObject& error = root.addObject("error");
-				error.addString("detail", "Bad request format");
-				return WebServiceResult(root, HttpServer::HTTP_RESPONSE_404);
 			}
 		}
 	}
@@ -209,7 +207,7 @@ WebServiceResult MapWebService::execute(HttpRequest& request, const string& base
 	}
 
 	// Service not found
-	throw HttpServer::HTTP_EXCEPTION::SERVICE_NOT_EXISTS;
+	throw HttpException(HttpException::SERVICE_NOT_EXISTS, "No map service found for the endpoint");
 }
 
 } /* namespace jkt */

@@ -16,7 +16,7 @@ namespace jkt {
 
 const char* HttpRequest::SPLIT_HTTP_HEADER_BODY = 	"\r\n\r\n";
 
-HttpRequest::HttpRequest(const char* request, int requestSize) : _request(request, requestSize) {
+HttpRequest::HttpRequest(const char* request, int requestSize) throw(HttpException) : _request(request, requestSize) {
 	size_t fr = _request.find(HttpServer::HTTP_RETURN);
 	string firstLine = _request.substr(0, fr);
 
@@ -29,7 +29,7 @@ HttpRequest::HttpRequest(const char* request, int requestSize) : _request(reques
 	std::size_t splitHttpHeaderBody = _request.find(SPLIT_HTTP_HEADER_BODY);
 
 	if(splitHttpHeaderBody == string::npos) {
-		throw (int)HttpServer::MALFORMED_HTTP_REQUEST;
+		throw HttpException(HttpException::MALFORMED_HTTP_REQUEST, "Cannot split http header and body");
 	}
 
 	_header = _request.substr(0, splitHttpHeaderBody);
@@ -86,7 +86,7 @@ string HttpRequest::getBodyText() const {
 	return _body;
 }
 
-JsonObject* HttpRequest::getBodyJson() const {
+JsonObject* HttpRequest::getBodyJson() const throw(MalformedJsonException) {
 	return JsonObject::fromJson(_body);
 }
 

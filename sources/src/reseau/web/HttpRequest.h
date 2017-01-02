@@ -11,6 +11,8 @@
 #include <string>
 
 #include "reseau/web/json/JsonObject.h"
+#include "reseau/web/json/MalformedJsonException.h"
+#include "reseau/web/HttpException.h"
 #include "reseau/web/HttpServer.h"
 
 namespace jkt {
@@ -30,14 +32,14 @@ class HttpRequest {
 	std::string _body;
 
 public:
-	HttpRequest(const char* request, int requestSize);
+	HttpRequest(const char* request, int requestSize) throw(HttpException);
 	virtual ~HttpRequest();
 
 	HttpServer::HTTP_METHODS getMethod() const;
 	const string& getEndpoint() const;
 
 	std::string getBodyText() const;
-	JsonObject* getBodyJson() const;
+	JsonObject* getBodyJson() const throw(MalformedJsonException);
 
 	const std::string& toString() const;
 };

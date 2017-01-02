@@ -14,10 +14,26 @@
 
 #include "SDL.h"
 
+#include "reseau/web/HttpException.h"
+
 namespace jkt
 {
 
 class WebService;
+
+class HttpTcpResponse {
+	long _size;
+	char* _content;
+public:
+	HttpTcpResponse();
+	~HttpTcpResponse();
+
+	void update(char* content, long size);
+	void reset();
+
+	long getSize() const;
+	char* getContent() const;
+};
 
 class WebResource {
 	std::string _file;
@@ -67,21 +83,18 @@ private:
 
 	void collecteDir(const std::string& dirname, const std::string& endpoint, const std::string& contentType);
 
-	std::string buildStringResponse(const std::string& content, const std::string& contentType, const std::string& status);
-	std::string buildResponseHeader(const std::string& contentType, long contentSize, const std::string& status);
+	void buildResponse(HttpTcpResponse& tcpResponse, const std::string& contentType, const std::string& content, const std::string& status);
+	void buildResponse(HttpTcpResponse& tcpResponse, const std::string& contentType, void* content, long contentSize, const std::string& status);
+	void buildResponse(HttpTcpResponse& tcpResponse, WebResource& webResource, const std::string& status);
+
 
 	void* buildResponse();
 
 public:
-	enum HTTP_EXCEPTION {
-		RESOURCE_NOT_FOUND_EXCEPTION = 1,
-		SERVICE_NOT_EXISTS = 2,
-		MALFORMED_HTTP_REQUEST = 3
-	};
-
 	static const char* HTTP_RETURN;
 	static const char* HTTP_HEAD;
 	static const char* HTTP_RESPONSE_200;
+	static const char* HTTP_RESPONSE_400;
 	static const char* HTTP_RESPONSE_404;
 	static const char* HTTP_RESPONSE_500;
 	static const char* HTTP_CONTENT_TYPE_HTML;

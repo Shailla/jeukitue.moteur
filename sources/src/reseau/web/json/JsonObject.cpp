@@ -14,6 +14,7 @@
 #include "reseau/web/json/JsonString.h"
 #include "reseau/web/json/JsonNumber.h"
 #include "reseau/web/json/JsonList.h"
+#include "reseau/web/json/MalformedJsonException.h"
 
 #include "reseau/web/json/JsonObject.h"
 
@@ -30,6 +31,7 @@ regex JsonObject::REGEX_NUMBER("^\\s*(\\d+)");
 regex JsonObject::REGEX_BOOLEAN("^\\s*(true|false)");
 regex JsonObject::REGEX_LIST_BEGIN("^\\s*\\[");
 regex JsonObject::REGEX_LIST_END("^\\s*\\]");
+regex JsonObject::REGEX_BLANK("^\\s*$");
 
 JsonObject::JsonObject() {
 }
@@ -40,12 +42,16 @@ JsonObject::~JsonObject() {
 	}
 }
 
-JsonObject* JsonObject::fromJson(const string& json) {
+JsonObject* JsonObject::fromJson(const string& json) throw(MalformedJsonException) {
 	string var = json;
 
 	unique_ptr<JsonObject> object = readObject(0, var);
+	smatch s;
 
-	if(object) {
+	if(!regex_search(var, s, REGEX_BLANK)) {		// S'il reste des caracrères non-convertis dans le Json c'est qu'il était malformé
+		throw MalformedJsonException("Tous les caractères du Json n'ont pas pu être convertis");
+	}
+	else if(object) {
 		return object.release();
 	}
 	else {
@@ -53,7 +59,7 @@ JsonObject* JsonObject::fromJson(const string& json) {
 	}
 }
 
-unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) {
+unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) throw(MalformedJsonException) {
 	smatch s;
 
 	// Object
@@ -81,7 +87,7 @@ unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) {
 					break;
 				}
 				else {
-					throw string("Apres un separateur on devrait avoir une paire");
+					throw MalformedJsonException("Apres un separateur on devrait avoir une paire");
 				}
 			}
 
@@ -110,7 +116,7 @@ unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) {
 			json = s.suffix();	// Confirm object end was read
 		}
 		else {
-			throw string("La fin de l'objet est mauvaise");
+			throw MalformedJsonException("La fin de l'objet est mauvaise");
 		}
 
 		return object;
@@ -121,7 +127,7 @@ unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) {
 	}
 }
 
-unique_ptr<JsonList> JsonObject::readList(int depth, string& json) {
+unique_ptr<JsonList> JsonObject::readList(int depth, string& json) throw(MalformedJsonException) {
 	smatch s;
 
 	// Object
@@ -164,7 +170,7 @@ unique_ptr<JsonList> JsonObject::readList(int depth, string& json) {
 					break;
 				}
 				else {
-					throw string("Apres un separateur dans une liste on devrait avoir une valeur");
+					throw MalformedJsonException("Apres un separateur dans une liste on devrait avoir une valeur");
 				}
 			}
 
@@ -191,7 +197,7 @@ unique_ptr<JsonList> JsonObject::readList(int depth, string& json) {
 			json = s.suffix();	// Confirm list end was read
 		}
 		else {
-			throw string("La fin de liste est mauvaise");
+			throw MalformedJsonException("La fin de liste est mauvaise");
 		}
 
 		return list;
@@ -202,7 +208,7 @@ unique_ptr<JsonList> JsonObject::readList(int depth, string& json) {
 	}
 }
 
-unique_ptr<JsonPair> JsonObject::readPair(int depth, string& json) {
+unique_ptr<JsonPair> JsonObject::readPair(int depth, string& json) throw(MalformedJsonException) {
 	smatch s;
 
 	// Object
@@ -242,7 +248,7 @@ unique_ptr<JsonPair> JsonObject::readPair(int depth, string& json) {
 			return unique_ptr<JsonPair>(new JsonPair(pairName, value.release()));
 		}
 		else {
-			throw string("La paire n'a pas de valeur");
+			throw MalformedJsonException("La paire n'a pas de valeur");
 		}
 	}
 	else {
@@ -251,7 +257,7 @@ unique_ptr<JsonPair> JsonObject::readPair(int depth, string& json) {
 	}
 }
 
-unique_ptr<JsonString> JsonObject::readString(int depth, string& json) {
+unique_ptr<JsonString> JsonObject::readString(int depth, string& json) throw(MalformedJsonException) {
 	string var = json;
 	smatch s;
 
@@ -274,7 +280,7 @@ unique_ptr<JsonString> JsonObject::readString(int depth, string& json) {
 	}
 }
 
-unique_ptr<JsonNumber> JsonObject::readNumber(int depth, string& json) {
+unique_ptr<JsonNumber> JsonObject::readNumber(int depth, string& json) throw(MalformedJsonException) {
 	string var = json;
 	smatch s;
 
@@ -297,7 +303,7 @@ unique_ptr<JsonNumber> JsonObject::readNumber(int depth, string& json) {
 	}
 }
 
-unique_ptr<JsonBoolean> JsonObject::readBoolean(int depth, string& json) {
+unique_ptr<JsonBoolean> JsonObject::readBoolean(int depth, string& json) throw(MalformedJsonException) {
 	string var = json;
 	smatch s;
 

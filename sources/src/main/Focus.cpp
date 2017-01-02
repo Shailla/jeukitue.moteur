@@ -40,7 +40,7 @@ bool CFocus::isPlayFocus() {
  * Choisi la fonction focus dédiée à une partie en cours
  */
 void CFocus::SetPlayFocus() {
-	SDL_WarpMouse( 250, 250 );			// Positionne la curseur de la souris
+//	SDL_WarpMouse( 250, 250 );			// Positionne la curseur de la souris
 	SDL_ShowCursor( SDL_DISABLE );		// Cache le curseur de la souris
 	SDL_WM_GrabInput( SDL_GRAB_ON );	// Active le mode déplacement relatif de la souris
 
@@ -53,7 +53,7 @@ void CFocus::SetPlayFocus() {
  * Choisi la fonction focus dédiée au menu
  */
 void CFocus::SetMenuFocus() {
-	SDL_WarpMouse( 250, 250 );			// Positionne le curseur de la souris
+//	SDL_WarpMouse( 250, 250 );			// Positionne le curseur de la souris
 	SDL_ShowCursor( SDL_ENABLE );		// Affiche le curseur de la souris
 	SDL_WM_GrabInput( SDL_GRAB_ON );	// Active le mode déplacement relatif de la souris
 
@@ -66,7 +66,7 @@ void CFocus::SetMenuFocus() {
  * Choisi la fonction focus dédiée au menu
  */
 void CFocus::SetMenuAgarFocus() {
-	SDL_WarpMouse( 250, 250 );			// Positionne le curseur de la souris
+//	SDL_WarpMouse( 250, 250 );			// Positionne le curseur de la souris
 	SDL_ShowCursor( SDL_ENABLE );		// Affiche le curseur de la souris
 	SDL_WM_GrabInput( SDL_GRAB_ON );	// Active le mode déplacement relatif de la souris
 

@@ -51,7 +51,7 @@ const char* CSimpleGeo::identifier = "SimpleGeo";
 
 //CONSTRUCTEURS
 CSimpleGeo::CSimpleGeo(CMap* map, const string& name, unsigned int nbrVertex, float* vertex, unsigned int nbrFaces,
-						int* faces, float* color, bool solid) : MapObject(map) {
+						int* faces, float* color, bool solid) : MapObject(map, MapObject::GEO) {
 	setName(name);	// Nom de l'objet
 
 	_color[0] = color[0];			// Couleur de l'objet
@@ -72,7 +72,7 @@ CSimpleGeo::CSimpleGeo(CMap* map, const string& name, unsigned int nbrVertex, fl
 	_rayon = 0.0f;
 }
 
-CSimpleGeo::CSimpleGeo(CMap* map) : MapObject(map) {
+CSimpleGeo::CSimpleGeo(CMap* map) : MapObject(map, MapObject::GEO) {
 	_color[0] = 1.0f;	// Couleur de l'objet
 	_color[1] = 1.0f;
 	_color[2] = 1.0f;

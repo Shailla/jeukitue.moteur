@@ -32,7 +32,7 @@ class CGame;
 namespace jkt
 {
 
-Dirigeable::Dirigeable(CMap* map) : MapObject(map) {
+Dirigeable::Dirigeable(CMap* map) : MapObject(map, MapObject::DIRIGEABLE) {
 }
 
 Dirigeable::Dirigeable(const Dirigeable& other) : MapObject(other) {

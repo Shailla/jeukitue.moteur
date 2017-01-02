@@ -24,11 +24,6 @@ class MapWebService : public WebService {
 	static string TYPE;
 	static string SELECTED;
 
-	static string MAP;
-	static string GEO;
-	static string LIGHT;
-	static string ENTRYPOINT;
-
 	static std::regex RG_GET_MAPS;
 	static std::regex RG_GET_MAP_GRAPHE;
 	static std::regex RG_GET_ELEMENT_SERVICE;

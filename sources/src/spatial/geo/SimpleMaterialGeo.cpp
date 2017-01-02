@@ -50,7 +50,7 @@ const char* CSimpleMaterialGeo::identifier = "SimpleMaterialGeo";
 
 //CONSTRUCTEURS
 CSimpleMaterialGeo::CSimpleMaterialGeo(CMap* map, const string& name, CMaterial* mat,
-		unsigned int nbrVertex, float* vertex, float* normals, bool solid) : MapObject(map) {
+		unsigned int nbrVertex, float* vertex, float* normals, bool solid) : MapObject(map, MapObject::MATERIAL) {
 	m_OffsetMateriaux = -1;
 	m_TabVectNormaux = NULL;
 	m_pNormalTriangle = NULL;		// Sera initialisé par Init()
@@ -63,7 +63,7 @@ CSimpleMaterialGeo::CSimpleMaterialGeo(CMap* map, const string& name, CMaterial*
 	m_Material = mat;
 }
 
-CSimpleMaterialGeo::CSimpleMaterialGeo(CMap* map) : MapObject(map) {
+CSimpleMaterialGeo::CSimpleMaterialGeo(CMap* map) : MapObject(map, MapObject::MATERIAL) {
 	m_NumVertex = 0;
 	m_TabVertex = NULL;			// Pointeur sur le tableau de sommets
 	m_TabVectNormaux = NULL;

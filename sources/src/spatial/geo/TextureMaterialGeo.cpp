@@ -51,7 +51,7 @@ const char* CTextureMaterialGeo::identifier = "TextureMaterialGeo";
 
 //CONSTRUCTEURS
 CTextureMaterialGeo::CTextureMaterialGeo(CMap* map, const string& name, CMaterialTexture* mat,
-		unsigned int nbrvertex, float* vertex, float* normals, float* texvertex, bool solid) : MapObject(map) {
+		unsigned int nbrvertex, float* vertex, float* normals, float* texvertex, bool solid) : MapObject(map, MapObject::MATERIAL) {
 	m_NumVertex = 0;
 	m_OffsetMateriaux = -1;
 	m_TabVectNormaux = 0;
@@ -68,7 +68,7 @@ CTextureMaterialGeo::CTextureMaterialGeo(CMap* map, const string& name, CMateria
 	_isGlInitialized = false;
 }
 
-CTextureMaterialGeo::CTextureMaterialGeo(CMap* map) : MapObject(map) {
+CTextureMaterialGeo::CTextureMaterialGeo(CMap* map) : MapObject(map, MapObject::MATERIAL) {
 	m_NumVertex = 0;
 	m_TabVertex = NULL;			// Pointeur sur le tableau de sommets
 	m_TabVectNormaux = NULL;

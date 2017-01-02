@@ -11,15 +11,18 @@ namespace jkt {
 
 CGenRef Object::GENREF;
 
-Object::Object(CMap* map) {
+Object::Object(CMap* map, const std::string& type) {
 	_parent = map;
 	_id = GENREF.genRef();	// Génère une référence pour l'objet
 	_reference = -1;
+	_type = type;
 }
 
-Object::Object(const Object& other) : Object(other._parent) {
+Object::Object(const Object& other) : Object(other._parent, other._type) {
 	_id = GENREF.genRef();	// Génère une référence pour l'objet
+
 	_reference = -1;
+
 	_name = other._name;
 	_name += "-copy";
 	_name += _id;
@@ -42,6 +45,10 @@ void Object::setName(const std::string &nom) {
 
 const char* Object::getName() {
 	return _name.c_str();
+}
+
+const std::string& Object::getType() const {
+	return _type;
 }
 
 CMap* Object::getMap() {

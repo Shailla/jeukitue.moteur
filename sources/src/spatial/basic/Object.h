@@ -25,16 +25,17 @@ class CMap;
 class Object {
 	static jkt::CGenRef GENREF;
 
-	int _id;
-	std::string _name;				// Nom donné à au géo
-	CMap* _parent;						// Navigabilité vers l'objet parent
+	int _id;				// Identifiant unique de l'object
+	std::string _name;		// Nom de l'objet (pas forcément unique)
+	std::string _type;
+	CMap* _parent;			// Navigabilité vers la Map d'appartenance
 
 protected:
 	int _reference;					// Secondary / external identifier, can be a doublon
 	std::string _tostring;
 
 public:
-	Object(CMap* map);
+	Object(CMap* map, const std::string& type);
 	Object(const Object& other);
 	virtual ~Object();
 	virtual void init() throw(CErreur);
@@ -48,6 +49,7 @@ public:
 	const char *getName();						// Renvoie le nom de l'objet
 	virtual const char* toString();				// Description résumée de l'objet
 	int getId() const;
+	const std::string& getType() const;
 
 	// Sérialisation
 	virtual bool Lit(TiXmlElement* el, MapLogger* mapLogger) = 0;

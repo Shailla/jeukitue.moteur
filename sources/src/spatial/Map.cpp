@@ -65,7 +65,7 @@ namespace jkt
 
 const char* CMap::identifier = "Map";
 
-CMap::CMap(CMap* parent) : MapObject(parent) {
+CMap::CMap(CMap* parent) : MapObject(parent, MapObject::MAP) {
 	LOGDEBUG(("CMap::CMap(*parent) %T", this ));
 
 	_bSelection = false;
@@ -73,7 +73,7 @@ CMap::CMap(CMap* parent) : MapObject(parent) {
 	_isPluginsInitialized = false;
 }
 
-CMap::CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur) : MapObject(parent) {
+CMap::CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur) : MapObject(parent, MapObject::MAP) {
 	LOGDEBUG(("CMap::CMap(*parent,nomFichier=%s)%T", nomFichier.c_str(), this ));
 
 	if( !Lit(nomFichier, 0) ) {
@@ -88,7 +88,7 @@ CMap::CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur) : MapObje
 	_isPluginsInitialized = false;
 }
 
-CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur) : MapObject(parent) {
+CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur) : MapObject(parent, MapObject::MAP) {
 	LOGDEBUG(("CMap::CMap(*parent,nomFichier=%s)%T", nomFichier.c_str(), this ));
 
 	if( !Lit(nomFichier, mapLogger) ) {

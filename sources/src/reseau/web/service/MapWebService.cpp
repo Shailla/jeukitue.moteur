@@ -32,11 +32,6 @@ string MapWebService::NAME = "name";
 string MapWebService::TYPE = "type";
 string MapWebService::SELECTED = "selected";
 
-string MapWebService::MAP = "map";
-string MapWebService::GEO = "geo";
-string MapWebService::LIGHT = "light";
-string MapWebService::ENTRYPOINT = "entryPoint";
-
 std::regex MapWebService::RG_GET_MAPS("^maps$");
 std::regex MapWebService::RG_GET_MAP_GRAPHE("^map-graphe$");
 std::regex MapWebService::RG_GET_ELEMENT_SERVICE("^element/(\\d+)$");
@@ -64,7 +59,7 @@ WebServiceResult MapWebService::getMapList() {
 }
 
 void MapWebService::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
-	mapGraphe.addString(TYPE, MAP);
+	mapGraphe.addString(TYPE, map->getType());
 	mapGraphe.addNumber(ID, map->getId());
 	mapGraphe.addString(NAME, map->getName());
 	mapGraphe.addString(SELECTED, "false");			// TODO permettre de sélectionner une sous-Map la Map
@@ -73,7 +68,7 @@ void MapWebService::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 
 	for(EntryPoint* ePt : map->getEntryPointsList()) {
 		JsonObject& obj = elements.addObject();
-		obj.addString(TYPE, ENTRYPOINT);
+		obj.addString(TYPE, ePt->getType());
 		obj.addNumber(ID, ePt->getId());
 		obj.addString(NAME, ePt->getName());
 		obj.addString(SELECTED, "false");		// TODO permettre de sélectionner un entry point dans la Map
@@ -83,7 +78,7 @@ void MapWebService::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 
 	for(CLight* light : map->getLights()) {
 		JsonObject& obj = elements.addObject();
-		obj.addString(TYPE, LIGHT);
+		obj.addString(TYPE, light->getType());
 		obj.addNumber(ID, light->getId());
 		obj.addString(NAME, "lumiere");
 		obj.addString(SELECTED, "false");		// TODO permettre de sélectionner une lumière dans la Map
@@ -93,7 +88,7 @@ void MapWebService::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 
 	for(MapObject* mObj : map->getMapObjects()) {
 		JsonObject& obj = elements.addObject();
-		obj.addString(TYPE, GEO);
+		obj.addString(TYPE, mObj->getType());
 		obj.addNumber(ID, mObj->getId());
 		obj.addString(NAME, mObj->getName());
 		obj.addBoolean(SELECTED, mObj->isSelected());
@@ -135,10 +130,15 @@ WebServiceResult MapWebService::getElement(int elementId) {
 		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_404, "Object not found in the active Map");
 	}
 
-	mapElement.addString(TYPE, ENTRYPOINT);
+
+	/* ***************************************************** */
+	/* Common parameters                                     */
+	/* ***************************************************** */
+
 	mapElement.addNumber(ID, object->getId());
 	mapElement.addString(NAME, object->getName());
 	mapElement.addBoolean(SELECTED, object->isSelected());
+	mapElement.addString(TYPE, object->getType());
 
 	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
 }
@@ -180,8 +180,7 @@ WebServiceResult MapWebService::updateElement(HttpRequest& request, int elementI
 		}
 	}
 
-	JsonObject root;
-	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
+	return getElement(elementId);
 }
 
 WebServiceResult MapWebService::execute(HttpRequest& request, const string& baseEndpoint, const string& serviceEndpoint) {

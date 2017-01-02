@@ -55,7 +55,7 @@ class CNavette;
 const char* CGeoObject::identifier = "GeoObject";
 
 		//CONSTRUCTEURS
-CGeoObject::CGeoObject(CMap *map, unsigned int nbrVertex, unsigned int nbrFaces) : MapObject(map) {
+CGeoObject::CGeoObject(CMap *map, unsigned int nbrVertex, unsigned int nbrFaces) : MapObject(map, MapObject::GEO) {
 	m_Color[0] = 1.0;	//Couleur blanche par défaut
 	m_Color[1] = 1.0;
 	m_Color[2] = 1.0;
@@ -81,7 +81,7 @@ CGeoObject::CGeoObject(CMap *map, unsigned int nbrVertex, unsigned int nbrFaces)
 	maxX = maxY = maxZ = minX = minY = minZ = 0.0f;
 }
 
-CGeoObject::CGeoObject(CMap *map) : MapObject(map) {
+CGeoObject::CGeoObject(CMap *map) : MapObject(map, MapObject::GEO) {
 	m_Color[0] = 1.0;	//Couleur blanche par défaut
 	m_Color[1] = 1.0;
 	m_Color[2] = 1.0;

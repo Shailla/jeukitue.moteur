@@ -5,13 +5,25 @@
  *      Author: VGDJ7997
  */
 
+#include <string>
+
 #include "util/Trace.h"
 
 #include "spatial/basic/MapObject.h"
 
+using namespace std;
+
 namespace jkt {
 
-MapObject::MapObject(CMap* map) : Object(map) {
+string MapObject::MAP = "map";
+string MapObject::GEO = "geo";
+string MapObject::LIGHT = "light";
+string MapObject::ENTRYPOINT = "entryPoint";
+string MapObject::MATERIAL = "material";
+string MapObject::CHECK = "map";
+string MapObject::DIRIGEABLE = "dirigeable";
+
+MapObject::MapObject(CMap* map, const string& type) : Object(map, type) {
 }
 
 MapObject::MapObject(const MapObject& other) : Object(other) {

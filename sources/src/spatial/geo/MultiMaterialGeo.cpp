@@ -45,7 +45,7 @@ const char* CMultiMaterialGeo::identifier = "MultiMaterialGeo";
 
 		//CONSTRUCTEURS
 CMultiMaterialGeo::CMultiMaterialGeo(CMap* map, const string& name, CMaterialMulti* mat, unsigned int nbrVertex, float* vertex,
-		float* normals,	float* texvertex, std::map<int,int> &canauxnumbers, bool solid) : MapObject(map) {
+		float* normals,	float* texvertex, std::map<int,int> &canauxnumbers, bool solid) : MapObject(map, MapObject::MATERIAL) {
 	m_NumVertex = 0;
 	m_OffsetMateriaux = -1;				// Inicateur non-initialisé (-1)
 	m_TabVectNormaux = NULL;
@@ -66,7 +66,7 @@ CMultiMaterialGeo::CMultiMaterialGeo(CMap* map, const string& name, CMaterialMul
 		cout << endl << m_TabVertex[p];
 }
 
-CMultiMaterialGeo::CMultiMaterialGeo(CMap* map) : MapObject(map) {
+CMultiMaterialGeo::CMultiMaterialGeo(CMap* map) : MapObject(map, MapObject::MATERIAL) {
 	m_NumVertex = 0;
 	m_TabVertex = NULL;			// Pointeur sur le tableau de sommets
 	m_TabVectNormaux = NULL;

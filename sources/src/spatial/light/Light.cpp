@@ -95,7 +95,7 @@ void CLight::freeLight( int ref ) {
 	}
 }
 
-CLight::CLight(CMap* map) : MapObject(map) {
+CLight::CLight(CMap* map) : MapObject(map, MapObject::LIGHT) {
 	m_ColorAmbient[0] = 0.0f;		m_ColorAmbient[1] = 0.0f;		m_ColorAmbient[2] = 0.0f;		m_ColorAmbient[3] = 1.0f;
 	m_ColorDiffuse[0] = 0.0f;		m_ColorDiffuse[1] = 0.0f;		m_ColorDiffuse[2] = 0.0f;		m_ColorDiffuse[3] = 1.0f;
 	m_ColorSpecular[0] = 0.0f;		m_ColorSpecular[1] = 0.0f;		m_ColorSpecular[2] = 0.0f;		m_ColorSpecular[3] = 1.0f;

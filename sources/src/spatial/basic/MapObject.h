@@ -30,7 +30,15 @@ class CMap;
 class MapObject : public Object, public Drawable, public Geometrical, public Refreshable, public SolidAndTargettable {
 
 public:
-	MapObject(CMap* map);
+	static std::string MAP;
+	static std::string GEO;
+	static std::string LIGHT;
+	static std::string ENTRYPOINT;
+	static std::string MATERIAL;
+	static std::string CHECK;
+	static std::string DIRIGEABLE;
+
+	MapObject(CMap* map, const std::string& type);
 	MapObject(const MapObject& other);
 	virtual ~MapObject();
 

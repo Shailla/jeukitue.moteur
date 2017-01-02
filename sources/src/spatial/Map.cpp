@@ -64,11 +64,11 @@ namespace jkt
 {
 
 const char* CMap::identifier = "Map";
+bool CMap::_bSelection = false;
 
 CMap::CMap(CMap* parent) : MapObject(parent, MapObject::MAP) {
 	LOGDEBUG(("CMap::CMap(*parent) %T", this ));
 
-	_bSelection = false;
 	_isGlInitialized = false;
 	_isPluginsInitialized = false;
 }
@@ -83,7 +83,6 @@ CMap::CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur) : MapObje
 		LOGINFO(("Fichier Map lu '%s'", nomFichier.c_str()));
 	}
 
-	_bSelection = false;
 	_isGlInitialized = false;
 	_isPluginsInitialized = false;
 }
@@ -98,7 +97,6 @@ CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(j
 		LOGINFO(("Fichier Map lu '%s'", nomFichier.c_str()));
 	}
 
-	_bSelection = false;
 	_isGlInitialized = false;
 	_isPluginsInitialized = false;
 }
@@ -179,7 +177,7 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 		int i=0;
 
 		for(Drawable* drawable : _drawables) {
-			if(drawable->isSelected())
+			if(!drawable->isSelected())
 				drawable->Affiche();			// Affichage de l'objet géo
 			else
 				drawable->AfficheSelection(1.0f, 0.0f, 0.0f);

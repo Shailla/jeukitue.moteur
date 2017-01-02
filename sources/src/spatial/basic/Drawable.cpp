@@ -14,7 +14,7 @@ Drawable::Drawable() {
 }
 
 Drawable::Drawable(const Drawable& other) {
-	_selected = false;
+	_selected = other._selected;
 }
 
 Drawable::~Drawable() {

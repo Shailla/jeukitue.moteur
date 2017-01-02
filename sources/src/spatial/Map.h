@@ -60,7 +60,7 @@ class CMap : public MapObject {
 
 	vector<string> _plugins;						// Liste des plugins de la Map
 
-	bool _bSelection;								// Indique si le mode sélection est actif ou non
+	static bool _bSelection;								// Indique si le mode sélection est actif ou non
 
 	bool _isGlInitialized;							// Indique si les éléments OpenGL de la MAP ont été initialisés
 	bool _isPluginsInitialized;						// Indique si les plugins de la MAP ont été initialisés
@@ -160,8 +160,8 @@ public:
 	vector<MapObject*>& getMapObjects();
 
 	// Sélection
-	void ChangeSelectionMode();
-	bool IsSelectionMode();
+	static void ChangeSelectionMode();
+	static bool IsSelectionMode();
 
 	// Points d'entrée des personnages joueurs
 	void add(EntryPoint* entryPoint);

@@ -14,7 +14,7 @@ class CPhoto
 public:
 	CPhoto( int x, int y );
 	~CPhoto();
-	bool Save( std::string &nomFichier );
+	bool save(const  std::string& nomFichier );
 };
 
 #endif

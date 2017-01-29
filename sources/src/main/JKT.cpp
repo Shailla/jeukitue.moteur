@@ -52,8 +52,11 @@ using namespace std;
 #include "util/Tableau.cpp"				//Liste chaînée
 #include "util/TableauIndex.cpp"		//Liste Indexée
 #include "util/FindFolder.h"
+#include "util/FileUtils.h"
 #include "util/Erreur.h"
 #include "util/fonte/Fonte.h"
+#include "util/TableauIndex.h"
+#include "util/V3D.h"
 #include "ressource/RessourcesLoader.h"
 
 class CGame;
@@ -62,40 +65,39 @@ class CGame;
 #include "main/Cfg.h"
 #include "spatial/materiau/Material.h"
 #include "spatial/IfstreamMap.h"
-#include <spatial/basic/Geometrical.h>				//Paramètres des objets géométriques
+#include "spatial/basic/Geometrical.h"				//Paramètres des objets géométriques
 #include "spatial/objet/Dirigeable.h"
-#include <spatial/basic/Refreshable.h>
+#include "spatial/basic/Refreshable.h"
 #include "spatial/geo/GeoObject.h"
-#include <reseau/web/HttpServer.h>
+#include "reseau/web/HttpServer.h"
 #include "Rocket.h"
 #include "Laser.h"
 #include "spatial/objet/Porte.h"
 #include "spatial/objet/Navette.h"
-#include "main/Clavier.h"		//Requêtes du clavier
+#include "main/Clavier.h"							//Requêtes du clavier
 #include "Photo.h"
-#include "spatial/materiau/MaterialTexture.h"	//Paramètres des matériaux associés aux objets géométriques
+#include "spatial/materiau/MaterialTexture.h"		//Paramètres des matériaux associés aux objets géométriques
 #include "spatial/materiau/MaterialMulti.h"
-#include "spatial/light/Light.h"			//Lumières de la map
+#include "spatial/light/Light.h"					//Lumières de la map
 #include "spatial/Map.h"
 #include "son/DemonSons.h"
 #include "son/Son.h"
 #include "son/ReqSon.h"
 #include "reseau/SPA.h"
 #include "main/Player.h"
-#include "spatial/contact.h"		//Fonctions utilisées pour le contact
-#include "main/divers.h"		//Initialisation d'SDL
+#include "spatial/contact.h"						//Fonctions utilisées pour le contact
+#include "main/divers.h"							//Initialisation d'SDL
 #include "son/audio.h"
 #include "ihm/DlgBoite.h"
 #include "ihm/Portail.h"
-#include "ihm/Menu.h"			// Fonctions de gestion du menu
-#include "main/Focus.h"			// Gestion du focus
+#include "ihm/Menu.h"								// Fonctions de gestion du menu
+#include "main/Focus.h"								// Gestion du focus
 #include "spatial/materiau/Textures.h"
-#include "util/TableauIndex.h"
 #include "reseau/Client.h"
 #include "reseau/Server.h"
 #include "main/RequeteProcess.h"
 #include "main/Game.h"
-#include "util/V3D.h"
+
 #include "reseau/NetworkManager.h"
 #include "reseau/enumReseau.h"
 #include "menu/Controller.h"
@@ -878,15 +880,11 @@ void play_handle_key_down( SDL_Event *event ) {
 
 		case SDLK_RETURN :	// Sauve le fichier map actuel
 			if(Game.getMap()) {
+				string saveMapFilename = "map-" + FileUtils::horodatage();
+				Game.getMap()->Save(saveMapFilename);
+
 				ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
-
-				time_t currentTime;
-				time(&currentTime);
-				std::ostringstream saveMapName;
-				saveMapName << "save-" << currentTime;
-				console->println(ConsoleView::COT_INFO, string("Enregistrement de la Map : ") + saveMapName.str());
-
-				Game.getMap()->Save(saveMapName.str());
+				console->println(ConsoleView::COT_INFO, string("Map enregistrée : ") + saveMapFilename);
 			}
 			break;
 
@@ -1436,12 +1434,21 @@ void executeJktRequests() {
 	if( Game.RequeteProcess.isTakePicture() ) {	// S'il y a une demande de prise de photo de la scène
 		CPhoto photo( Config.Display.X, Config.Display.Y );
 
-		string fichier_photo("./Images/photo.bmp");
+		// Nom du fichier avec horodatage
+		string fichierPhoto = "./photos/photo_" + FileUtils::horodatage() + ".bmp";
 
-		if( photo.Save( fichier_photo ) )
-			cout << "\nPhoto prise.";
-		else
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Echec a la prise de la photo";
+		ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
+
+
+		// Prends la photo
+		if( photo.save(fichierPhoto) ) {
+			LOGINFO(("Photo prise '%'", fichierPhoto.c_str()));
+			console->println(ConsoleView::COT_INFO, string("Photo enregistrée : ") + fichierPhoto);
+		}
+		else {
+			LOGINFO(("Echec de la photo '%'", fichierPhoto.c_str()));
+			console->println(ConsoleView::COT_ERROR, "Echec photo");
+		}
 	}
 }
 

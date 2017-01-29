@@ -215,7 +215,7 @@ private:
 		Uint16 getHtmlServerPort()							{ return _htmlServerPort;				}
 	};
 
-	string nomFichierConfig;
+	string configFile;
 
 public:
 	CGeneral General;				// Configuration générale
@@ -231,7 +231,7 @@ public:
 		
 	CCfg();
 
-	void NommeConfig(const string &nomFichier);
+	void NommeConfig(const string &configFileBaseName, const string& configFileSuffixName);
 	void AfficheDateCompilation();		// Affiche le n° de version du programme
 
 	void Lit();			// Lit le fichier de configuration

@@ -12,6 +12,9 @@
 
 using namespace std;
 
+#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
+#include "boost/filesystem/fstream.hpp"
+
 #include <SDL.h>
 #include <SDL_net.h>
 #include <SDL_image.h>
@@ -23,6 +26,7 @@ using namespace std;
 #include "main/divers.h"
 #include "util/StringUtils.h"
 #include "util/Trace.h"
+#include "util/StringUtils.h"
 #include "son/audio.h"
 #include "ressource/RessourcesLoader.h"
 
@@ -94,8 +98,7 @@ const char* CCfg::CST_DEB_AXES_METER_VISIBILITY = 	"debug.afficheAxesMeter";
 const char* CCfg::CST_DEB_CUBIC_METER_VISIBILITY =	"debug.afficheCubeMeter";
 
 
-CCfg::CCfg()
-{
+CCfg::CCfg() {
 	LOGDEBUG(("Cfg::Cfg()%T", this));
 }
 
@@ -103,21 +106,31 @@ void CCfg::AfficheDateCompilation() {
 	LOGINFO(("Date de compilation : %s", __DATE__));
 }
 
-void CCfg::NommeConfig(const string &nomFichier) {
-	LOGDEBUG(("Cfg::NommeConfig(nomFichier=%s)%T", nomFichier.c_str(), this));
-	nomFichierConfig = nomFichier;
+void CCfg::NommeConfig(const string &configFileBaseName, const string& configFileSuffixName) {
+
+	string candidat = "./" + configFileBaseName + "-" + configFileSuffixName + ".ini";	// config-<suffix>.ini
+	string defaut = "./" + configFileBaseName + ".ini";				// config.ini
+
+	if(!jkt::StringUtils::isBlank(configFileSuffixName) && boost::filesystem::exists(candidat)) {
+		configFile = candidat;
+	}
+	else {
+		LOGINFO(("Pas de fichier de configuration spécifique ('%s')", candidat.c_str()));
+		configFile = defaut;				// config.ini
+	}
+
+	LOGINFO(("Choix du fichier de configuration : %s", configFile.c_str()));
 }
 
 void CCfg::Lit() {
 	LOGDEBUG(("Cfg::Lit()%T", this));
 	string mot;
 
-	string nomFichierEntier = "./" + nomFichierConfig + ".ini";
-	ifstream fichier(nomFichierEntier.c_str());
+	ifstream fichier(configFile.c_str());
 	fichier.exceptions(ifstream::eofbit);
 
 	if(!fichier) {
-		quit_game("Fichier de configuration introuvable '" + nomFichierEntier + "'", 1);
+		quit_game("Fichier de configuration introuvable '" + configFile + "'", 1);
 	}
 
 	try {
@@ -370,13 +383,12 @@ void CCfg::Lit() {
 		fichier.close();
 	}
 	catch(istringstream::failure& finDuFlux) {
-		quit_game("Fichier de configuration corrompu '" + nomFichierEntier + "'", 1);
+		quit_game("Fichier de configuration corrompu '" + configFile + "'", 1);
 	}
 }
 
 void CCfg::Ecrit() {
-	string nomFichierEntier = "./" + nomFichierConfig + ".ini";
-	ofstream fichier( nomFichierEntier.c_str() );
+	ofstream fichier( configFile.c_str() );
 
 	fichier << "\n-------------------------GENERAL-------------------------";
 	fichier << endl << CST_GEN_PLAY_INTRO << "\t\t" << General._playIntro;

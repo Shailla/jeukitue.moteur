@@ -1614,16 +1614,49 @@ int main(int argc, char** argv) {
 
 	atexit( quit_JKT );
 
-	string fichier;
 
-	Config.AfficheDateCompilation();		// Affiche la date de compilation du programme
-	Config.NommeConfig( nomFichierConfig );	// Nomme le fichier de configuration
-	Config.Lit();							// Lit le fichier de configuration
+	/* ********************************************** */
+	/* Lecture configuration                          */
+	/* ********************************************** */
+
+	LOGINFO(("LECTURE CONFIGURATION"));
+
+	Config.Reseau.Init();	// Initialisation du réseau
+
+	// Détection de la machine
+	string host;
+	IPaddress ipaddress;
+
+	if(!SDLNet_ResolveHost( &ipaddress, "localhost", 0 )) {
+		const char* hostChar = SDLNet_ResolveIP( &ipaddress );
+
+		if(hostChar) {
+			LOGINFO(("Nom et adresse de la machine locale : %s / %s", hostChar, IpUtils::translateAddress(ipaddress).c_str()));
+			host = hostChar;
+		}
+		else {
+			LOGWARN(("Nom de la machine locale : <Inconnu> / %s",IpUtils::translateAddress(ipaddress).c_str()));
+			host = "";
+		}
+	}
+	else {
+		LOGERROR(("Echec de resolution du nom de la machine locale"));
+		host = "";
+	}
+
+	// Lecture fichier configuration
+	Config.AfficheDateCompilation();				// Affiche la date de compilation du programme
+	Config.NommeConfig(nomFichierConfig, host);		// Nomme le fichier de configuration
+	Config.Lit();									// Lit le fichier de configuration
+
+
+	/* ********************************************** */
+	/* Initialisations (vidéo, réseau, ...)           */
+	/* ********************************************** */
 
 	LOGINFO(("RESUME DE L'INITIALISATION VIDEO"));
 	Config.Display.Init();	// Initialisation SDL, OpenGL et Agar
 
-	Config.Reseau.Init();	// Initialisation du réseau
 	_networkManager = new NetworkManager();
 
 	Config.Audio.Init();	// Initialisation audio
@@ -1640,21 +1673,7 @@ int main(int argc, char** argv) {
 	_grahicObjectsToInitializeMutex = SDL_CreateMutex();
 	_grahicObjectsToDestructMutex = SDL_CreateMutex();
 
-	LOGINFO(("INFO DIVERSES"));
 
-	// Info réseau
-	IPaddress ipaddress;
-	if(!SDLNet_ResolveHost( &ipaddress, "localhost", 0 )) {
-		const char *host = SDLNet_ResolveIP( &ipaddress );
-
-		if(host)
-			LOGINFO(("Nom et adresse de la machine locale : %s / %s", host, IpUtils::translateAddress(ipaddress).c_str()));
-		else
-			LOGWARN(("Nom de la machine locale : <Inconnu> / %s",IpUtils::translateAddress(ipaddress).c_str()));
-	}
-	else {
-		LOGERROR(("Echec de resolution du nom de la machine locale"));
-	}
 
 	Fabrique::construct();
 

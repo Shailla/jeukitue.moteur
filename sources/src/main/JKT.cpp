@@ -15,7 +15,6 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 #include <cmath>
 #include <sstream>
 #include <vector>
-#include <time.h>
 
 #ifdef WIN32
 #include <windows.h>
@@ -33,6 +32,9 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 #include <agar/gui/opengl.h>
 
 using namespace std;
+
+#include "boost/program_options.hpp"
+namespace bpo = boost::program_options;
 
 #include "Constantes.h"
 #include "SDL.h"
@@ -485,7 +487,7 @@ void display() {		// Fonction principale d'affichage
 
 		glEnable(GL_DEPTH_TEST);
 
-//		Game.getMap()->AfficheSelection(1.0f, 0.0f, 0.0f);		// Affichage de la map
+		//		Game.getMap()->AfficheSelection(1.0f, 0.0f, 0.0f);		// Affichage de la map
 		Game.getMap()->Affiche();		// Affichage de la map
 		Game.AfficheProjectils();		// Affichage des projectiles
 		Game.AfficheDirigeables();		// Affichage des dirigeables
@@ -750,8 +752,8 @@ void chopeLesEvenements() {
 
 			erwin->getVitesse( vect );
 			balle->changeVitesse( 	sinTeta*cosPhi*10*QUANTUM_VITESSE_PLAYER + vect[0],
-									sinPhi*10*QUANTUM_VITESSE_PLAYER + vect[1],
-									cosTeta*cosPhi*10*QUANTUM_VITESSE_PLAYER + vect[2]);
+					sinPhi*10*QUANTUM_VITESSE_PLAYER + vect[1],
+					cosTeta*cosPhi*10*QUANTUM_VITESSE_PLAYER + vect[2]);
 
 			balle->changeAction( gravitePlayer );	// associe au projectile une fonction de gravité
 			balle->changeContact( contactSprite );	// associe une fonction pour les contacts avec la map
@@ -975,7 +977,6 @@ static void process_events(void) {
 				}
 				else {
 					Controller::executeAction(Controller::Action::HideMenuAction);
-
 					pFocus->SetPlayFocus();
 				}
 			}
@@ -1213,6 +1214,7 @@ void executeJktRequests() {
 		// Lancement du jeu en mode local
 		Aide = false;
 		pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
+		Controller::executeAction(Controller::Action::HideMenuAction);
 		Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_AUCUNE);
 
 		cout << "\nFINI";
@@ -1299,6 +1301,7 @@ void executeJktRequests() {
 		// Lancement du jeu en mode local
 		Aide = false;
 		pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
+		Controller::executeAction(Controller::Action::HideMenuAction);
 
 		jkt::CClient *client = Game.getClient();
 		client->nomMAP = clientGameDto->getMapName();			// Informe le serveur sur le nom de la MAP lancée
@@ -1413,6 +1416,7 @@ void executeJktRequests() {
 		// Lancement du jeu en mode local
 		Aide = false;
 		pFocus->SetPlayFocus();						// Met l'interception des commandes sur le mode jeu
+		Controller::executeAction(Controller::Action::HideMenuAction);
 
 		jkt::CServer *server = Game.getServer();
 		server->nomMAP = serverGameDto->getMapName();					// Informe le serveur sur le nom de la MAP lancée
@@ -1603,23 +1607,61 @@ void boucle() {
 }
 
 int main(int argc, char** argv) {
-	//	LOGDEBUG(("main(argc=%d,argv=%x)", argc, argv);
+	atexit( quit_JKT );
 
-	if(argc > 1) {
-		// Exécution des tests unitaires
-		if(string("test") == argv[1]) {
-			cout << endl << "MODE TEST" << endl;
-			jkt::TestSuite* testSuite = new jkt::TestSuite();
 
-			testSuite->init();
-			testSuite->launchTests();
-			cout << flush;
-			cerr << flush;
-			exit(0);
-		}
+	/* ********************************************** */
+	/* Parse command line parameters                  */
+	/* ********************************************** */
+
+	string mapFile;
+
+	bpo::options_description desc("Allowed options");
+	desc.add_options()
+				// First parameter describes option name/short name
+				// The second is parameter to option
+				// The third is description
+				("help,h", "print usage message")
+				("test,t", "execute unit tests")
+				("openLocal,ol", bpo::value(&mapFile), "open the specified local map");
+
+	bpo::variables_map cmdParameters;
+
+	try {
+		bpo::store(bpo::parse_command_line(argc, argv, desc), cmdParameters);
+		bpo::notify(cmdParameters);
+	}
+	catch (bpo::error& error) {
+		cerr << endl << "Error: " << error.what() << endl;
+		cout << endl << desc << endl << flush;
+
+		exit(0);
 	}
 
-	atexit( quit_JKT );
+	// Affiche aide ligne de commandes
+	if(cmdParameters.count("help")) {
+		cout << desc << endl << flush;
+		exit(0);
+	}
+	// Execute les tests unitaires
+	else if (cmdParameters.count("test")) {		// Execute unit tests
+		cout << endl << "MODE TEST" << endl;
+		jkt::TestSuite* testSuite = new jkt::TestSuite();
+
+		testSuite->init();
+		testSuite->launchTests();
+		cout << flush;
+		cerr << flush;
+		exit(0);
+	}
+	// Ouvre en local la Map spécifiée
+	else if(cmdParameters.count("openLocal")) {
+		string mapName = cmdParameters["openLocal"].as<string>();
+
+		LOGINFO(("Ouverture map locale en ligne de commandes '%s'", mapName.c_str()));
+
+		Game.RequeteProcess.setOuvreMapLocal(mapName);
+	}
 
 
 	/* ********************************************** */

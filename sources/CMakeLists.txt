@@ -9,7 +9,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 set(EXECUTABLE_OUTPUT_PATH ../../deploy/${CMAKE_BUILD_TYPE}-g++)
 set(CMAKE_CXX_FLAGS "-ggdb -Wall -Wno-unknown-pragmas -std=c++14 -fpermissive")
  
-find_package(Boost REQUIRED COMPONENTS filesystem) 
+find_package(Boost REQUIRED COMPONENTS filesystem program_options) 
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(LUA REQUIRED)

@@ -12,7 +12,7 @@ import { MapService } 		from './map.service';
 })
 export class MapElementDetail {
 	@Input() mapElementId: number;
-	mapElement: Promise<MapElement>;
+	mapElement: MapElement;
 	
 	constructor(private mapService: MapService) {
 	}
@@ -21,7 +21,15 @@ export class MapElementDetail {
 		if(this.mapElementId != undefined) {
 			console.log("ngOnChange 1 => " + this.mapElementId);
 			
-			this.mapElement = this.mapService.getMapElement(this.mapElementId);
+			 this.mapService.getMapElement(this.mapElementId).then(
+				mapElement => this.mapElement = mapElement
+			 );
 		}
+	}
+	
+	onSubmit() {
+		console.log("Submit");
+
+		this.mapService.updateMapElement(this.mapElementId, this.mapElement);
 	}
 }

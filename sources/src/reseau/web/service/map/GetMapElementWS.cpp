@@ -21,29 +21,29 @@
 #include "spatial/light/Light.h"
 #include "reseau/web/HttpException.h"
 
-#include "reseau/web/service/MapWebService.h"
+#include "reseau/web/service/map/GetMapElementWS.h"
 
 extern CGame Game;
 
 namespace jkt {
 
-string MapWebService::ID = "id";
-string MapWebService::NAME = "name";
-string MapWebService::TYPE = "type";
-string MapWebService::SELECTED = "selected";
+string GetMapElementWS::ID = "id";
+string GetMapElementWS::NAME = "name";
+string GetMapElementWS::TYPE = "type";
+string GetMapElementWS::SELECTED = "selected";
 
-std::regex MapWebService::RG_GET_MAPS("^maps$");
-std::regex MapWebService::RG_GET_MAP_GRAPHE("^map-graphe$");
-std::regex MapWebService::RG_GET_ELEMENT_SERVICE("^element/(\\d+)$");
-std::regex MapWebService::RG_UPDATE_ELEMENT_SERVICE("^element/(\\d+)$");
+std::regex GetMapElementWS::RG_GET_MAPS("^maps$");
+std::regex GetMapElementWS::RG_GET_MAP_GRAPHE("^map-graphe$");
+std::regex GetMapElementWS::RG_GET_ELEMENT_SERVICE("^element/(\\d+)$");
+std::regex GetMapElementWS::RG_UPDATE_ELEMENT_SERVICE("^element/(\\d+)$");
 
-MapWebService::MapWebService() {
+GetMapElementWS::GetMapElementWS() {
 }
 
-MapWebService::~MapWebService() {
+GetMapElementWS::~GetMapElementWS() {
 }
 
-WebServiceResult MapWebService::getMapList() {
+WebServiceResult GetMapElementWS::getMapList() {
 	JsonObject root;
 	JsonList& maps = root.addList("maps");
 
@@ -58,7 +58,7 @@ WebServiceResult MapWebService::getMapList() {
 	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
 }
 
-void MapWebService::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
+void GetMapElementWS::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 	mapGraphe.addString(TYPE, map->getType());
 	mapGraphe.addNumber(ID, map->getId());
 	mapGraphe.addString(NAME, map->getName());
@@ -102,7 +102,7 @@ void MapWebService::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 	}
 }
 
-WebServiceResult MapWebService::getCurrentMapGraphe() {
+WebServiceResult GetMapElementWS::getCurrentMapGraphe() {
 	JsonObject root;
 	JsonObject& mapElement = root.addObject("mapElement");
 
@@ -114,7 +114,7 @@ WebServiceResult MapWebService::getCurrentMapGraphe() {
 	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
 }
 
-WebServiceResult MapWebService::getElement(int elementId) {
+WebServiceResult GetMapElementWS::getElement(int elementId) {
 	JsonObject root;
 	JsonObject& mapElement = root.addObject("mapElement");
 
@@ -143,7 +143,7 @@ WebServiceResult MapWebService::getElement(int elementId) {
 	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
 }
 
-WebServiceResult MapWebService::updateElement(HttpRequest& request, int elementId) {
+WebServiceResult GetMapElementWS::updateElement(HttpRequest& request, int elementId) {
 	CMap* map = Game.getMap();
 
 	if(!map) {
@@ -183,7 +183,7 @@ WebServiceResult MapWebService::updateElement(HttpRequest& request, int elementI
 	return getElement(elementId);
 }
 
-WebServiceResult MapWebService::execute(HttpRequest& request, const string& baseEndpoint, const string& serviceEndpoint) {
+WebServiceResult GetMapElementWS::execute(HttpRequest& request, const string& baseEndpoint, const string& serviceEndpoint) throw(HttpException) {
 	smatch match;
 
 	if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_GET && regex_match(serviceEndpoint, RG_GET_MAPS)) {

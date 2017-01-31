@@ -1,4 +1,9 @@
-<map-element-detail [mapElementId]="selectedMapElementId"></map-element-detail>
-
 <h1 class="title" style="text-align: center;">Graphe Map courante</h1>
-<tree-view [items]="elements" [grapheMapComponent]="this"></tree-view>
+<div class="row">
+	<div class="col-md-8">
+		<tree-view [items]="elements" [grapheMapComponent]="this"></tree-view>
+	</div>
+	<div class="col-md-4">
+		<map-element-detail [mapElementId]="selectedMapElementId"></map-element-detail>
+	</div>
+</div>

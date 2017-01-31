@@ -1,5 +1,5 @@
 import { Injectable }   from '@angular/core';
-import { Http } 		from '@angular/http';
+import { Http, Headers } 		from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -15,7 +15,7 @@ export class MapService {
 	
 	private mapsServiceUrl = this.mapServiceBaseUrl + '/maps';				// Get available Maps
 	private mapServiceUrl = this.mapServiceBaseUrl + '/map-graphe';			// Get the current Map graph
-	private mapElementServiceUrl = this.mapServiceBaseUrl + '/element';		// Get an element from current Map
+	private mapElementServiceUrl = this.mapServiceBaseUrl + '/element';		// Get or update an element from current Map
 	
 	constructor(private http: Http) {};
 
@@ -58,6 +58,27 @@ export class MapService {
 			.then(json => json.mapElement)
 			.then(mapElement => new MapElement().fromJson(mapElement))
 			.catch(this.handleError); 
+	}
+	
+	updateMapElement(mapElementId: number, mapElement: MapElement): Promise<MapElement> {
+		let headers = new Headers({ 'Content-Type': 'application/json' });
+		
+		
+		
+		
+		let element = {};
+		element["mapElement"] = mapElement;
+		
+		let body = JSON.stringify(element);
+		
+		console.log(body);
+		
+		return this.http.put(this.mapElementServiceUrl + "/" + mapElementId, body, headers)
+			.toPromise()
+			.then(response => response.json())
+			.then(json => json.mapElement)
+			.then(mapElement => new MapElement().fromJson(mapElement))
+			.catch(this.handleError);
 	}
 	
 	private handleError(error: any): Promise<any> {

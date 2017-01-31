@@ -1,5 +1,5 @@
 /*
- * PlayersWebService.h
+ * GetPlayersWS.h
  *
  *  Created on: 25 févr. 2016
  *      Author: VGDJ7997
@@ -12,14 +12,14 @@
 
 namespace jkt {
 
-class PlayersWebService : public WebService {
+class GetPlayersWS : public WebService {
 	WebServiceResult getPlayersInCurrentMap();
 
 public:
-	PlayersWebService();
-	virtual ~PlayersWebService();
+	GetPlayersWS();
+	virtual ~GetPlayersWS();
 
-	WebServiceResult execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) override;
+	WebServiceResult execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) throw(HttpException) override;
 };
 
 } /* namespace jkt */

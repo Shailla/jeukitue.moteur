@@ -1,17 +1,41 @@
-<div *ngIf="mapElement">
-	<div>
-		<label>ID : </label>
-		{{ (mapElement | async)?.id }}</div>
-	<div>
-		<label>Name : </label>
-		{{ (mapElement | async)?.name }}
-	</div>
-	<div>
-		<label>Type : </label>
-		{{ (mapElement | async)?.type }}
-	</div>
-	<div>
-		<label>Selected : </label>
-		{{ (mapElement | async)?.selected }}
-	</div>
+<div *ngIf="mapElement" class="container">
+	<form (ngSubmit)="onSubmit()">
+<!--
+		<div>
+			<label>ID : </label>
+			{{ (mapElement | async)?.id }}
+		</div>
+		<div class="form-group">
+			<label for="name">Name</label>
+			<input type="text" value="{{ (mapElement | async)?.name }}" placeholder="name" />
+		</div>		
+		<div class="form-group">
+			<label>Type : </label>
+			{{ (mapElement | async)?.type }}
+		</div>
+		<div class="form-group">
+			<label>Selected : </label>
+			<input type="checkbox" value="{{ (mapElement | async)?.selected }}" placeholder="selected" />
+		</div>
+-->
+
+		<div>
+			<label>ID : </label>
+			{{ mapElement.id }}
+		</div>
+		<div class="form-group">
+			<label>Name :</label>
+			<input type="text" [(ngModel)]="mapElement.name" name="name" />
+		</div>
+		<div class="form-group">
+			<label>Type :</label>
+			{{ mapElement.type }}
+		</div>
+		<div class="form-group">
+			<label>Selected :</label>
+			<input type="checkbox" [(ngModel)]="mapElement.selected" name="selected" />
+		</div>
+
+		<button type="submit" class="btn btn-default">Submit</button>
+	</form>
 </div>

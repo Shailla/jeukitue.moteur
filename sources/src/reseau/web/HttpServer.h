@@ -63,7 +63,8 @@ public:
 		HTTP_POST,
 		HTTP_PUT,
 		HTTP_PATCH,
-		HTTP_DELETE
+		HTTP_DELETE,
+		HTTP_OPTIONS
 	};
 private:
 	static const char* WEB_STATIC_RESOURCES_DIR;
@@ -94,9 +95,11 @@ public:
 	static const char* HTTP_RETURN;
 	static const char* HTTP_HEAD;
 	static const char* HTTP_RESPONSE_200;
+	static const char* HTTP_RESPONSE_204;
 	static const char* HTTP_RESPONSE_400;
 	static const char* HTTP_RESPONSE_404;
 	static const char* HTTP_RESPONSE_500;
+	static const char* HTTP_RESPONSE_501;
 	static const char* HTTP_CONTENT_TYPE_HTML;
 	static const char* HTTP_CONTENT_TYPE_CSS;
 	static const char* HTTP_CONTENT_TYPE_IMAGE;
@@ -104,6 +107,7 @@ public:
 	static const char* HTTP_CONTENT_TYPE_JSON;
 	static const char* HTTP_CONTENT_LENGTH;
 
+	static const char* HTTP_METHOD_OPTIONS;
 	static const char* HTTP_METHOD_GET;
 	static const char* HTTP_METHOD_POST;
 	static const char* HTTP_METHOD_PUT;

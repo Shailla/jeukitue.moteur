@@ -2,7 +2,8 @@ export class MapElement {
 	// Data
 	type: string;
 	id: number; 
-	name: string; 
+	name: string;
+	selected: boolean;
 	
 	constructor() {       
     }
@@ -11,6 +12,7 @@ export class MapElement {
 		this.type = jsonObject.type;
 		this.id = jsonObject.id;
 		this.name = jsonObject.name;
+		this.selected = jsonObject.selected;
 		
 		return this;
 	}

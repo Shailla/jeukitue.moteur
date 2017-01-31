@@ -1,6 +1,7 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
+import { FormsModule }   from '@angular/forms';
 
 import { routing } 				from './app.routing';
 import { DashboardComponent }   from './dashboard.component';
@@ -15,7 +16,7 @@ import { PlayerService }		from './player.service';
 
 
 @NgModule({
-  imports:      [ BrowserModule, HttpModule, routing ],
+  imports:      [ BrowserModule, FormsModule, HttpModule, routing ],
 
   declarations: [ DashboardComponent, PlayersComponent, MapsComponent, GrapheMapComponent, TreeViewComponent, MapElementDetail ],
   providers: 	[ MapService, PlayerService ],

@@ -5,8 +5,8 @@
  *      Author: VGDJ7997
  */
 
-#ifndef SRC_RESEAU_WEB_SERVICE_MAPWEBSERVICE_H_
-#define SRC_RESEAU_WEB_SERVICE_MAPWEBSERVICE_H_
+#ifndef SRC_RESEAU_WEB_SERVICE_GETMAPELEMENTWS_H_
+#define SRC_RESEAU_WEB_SERVICE_GETMAPELEMENTWS_H_
 
 #include <regex>
 
@@ -18,7 +18,7 @@ namespace jkt {
 
 class CMap;
 
-class MapWebService : public WebService {
+class GetMapElementWS : public WebService {
 	static string ID;
 	static string NAME;
 	static string TYPE;
@@ -37,12 +37,12 @@ class MapWebService : public WebService {
 	void jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe);
 
 public:
-	MapWebService();
-	virtual ~MapWebService();
+	GetMapElementWS();
+	virtual ~GetMapElementWS();
 
-	WebServiceResult execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) override;
+	WebServiceResult execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) throw(HttpException) override;
 };
 
 } /* namespace jkt */
 
-#endif /* SRC_RESEAU_WEB_SERVICE_MAPWEBSERVICE_H_ */
+#endif /* SRC_RESEAU_WEB_SERVICE_GETMAPELEMENTWS_H_ */

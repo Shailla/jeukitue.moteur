@@ -17,16 +17,14 @@ namespace jkt {
 const char* HttpRequest::SPLIT_HTTP_HEADER_BODY = 	"\r\n\r\n";
 
 HttpRequest::HttpRequest(const char* request, int requestSize) throw(HttpException) : _request(request, requestSize) {
-	size_t fr = _request.find(HttpServer::HTTP_RETURN);
-	string firstLine = _request.substr(0, fr);
-
-	LOGINFO(("FIRST LINE:'%s'", firstLine.c_str()));
 
 	/* ************************************************************** */
 	/* Sépare les paramètres HTTP de son body                         */
 	/* ************************************************************** */
 
 	std::size_t splitHttpHeaderBody = _request.find(SPLIT_HTTP_HEADER_BODY);
+
+	LOGINFO(("REQUETE:%s", _request.c_str()));
 
 	if(splitHttpHeaderBody == string::npos) {
 		throw HttpException(HttpException::MALFORMED_HTTP_REQUEST, "Cannot split http header and body");

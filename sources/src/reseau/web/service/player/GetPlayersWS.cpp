@@ -1,5 +1,5 @@
 /*
- * PlayersWebService.cpp
+ * GetPlayersWS.cpp
  *
  *  Created on: 25 févr. 2016
  *      Author: VGDJ7997
@@ -15,17 +15,17 @@
 #include "service/dto/PlayerInformationDto.h"
 #include "reseau/web/HttpException.h"
 
-#include "reseau/web/service/PlayersWebService.h"
+#include "reseau/web/service/player/GetPlayersWS.h"
 
 namespace jkt {
 
-PlayersWebService::PlayersWebService() {
+GetPlayersWS::GetPlayersWS() {
 }
 
-PlayersWebService::~PlayersWebService() {
+GetPlayersWS::~GetPlayersWS() {
 }
 
-WebServiceResult PlayersWebService::getPlayersInCurrentMap() {
+WebServiceResult GetPlayersWS::getPlayersInCurrentMap() {
 	JsonObject root;
 	JsonList& players = root.addList("players");
 
@@ -40,7 +40,7 @@ WebServiceResult PlayersWebService::getPlayersInCurrentMap() {
 	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
 }
 
-WebServiceResult PlayersWebService::execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) {
+WebServiceResult GetPlayersWS::execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) throw(HttpException) {
 	if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_GET && serviceEndpoint == "players") {
 		return getPlayersInCurrentMap();
 	}

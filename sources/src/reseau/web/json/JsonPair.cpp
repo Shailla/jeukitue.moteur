@@ -26,7 +26,7 @@ const std::string& JsonPair::getName() const {
 	return _name;
 }
 
-const JsonValue* JsonPair::getValue() const {
+JsonValue* JsonPair::getValue() {
 	return _value;
 }
 

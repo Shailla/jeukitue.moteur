@@ -20,9 +20,11 @@ public:
 
 	bool getValue() const;
 
-	const JsonNumber* isJsonNumber() const override;
-	const JsonString* isJsonString() const override;
-	const JsonBoolean* isJsonBoolean() const override;
+	JsonNumber* isJsonNumber() override;
+	JsonString* isJsonString() override;
+	JsonBoolean* isJsonBoolean() override;
+	JsonObject* isJsonObject() override;
+	JsonList* isJsonList() override;
 
 	void toJson(std::stringstream& buffer) override;
 };

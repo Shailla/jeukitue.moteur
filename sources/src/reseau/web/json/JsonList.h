@@ -36,9 +36,11 @@ public:
 	JsonObject& addObject();
 	JsonList& addList();
 
-	JsonNumber* isJsonNumber() const override;
-	JsonString* isJsonString() const override;
-	JsonBoolean* isJsonBoolean() const override;
+	JsonNumber* isJsonNumber() override;
+	JsonString* isJsonString() override;
+	JsonBoolean* isJsonBoolean() override;
+	JsonObject* isJsonObject() override;
+	JsonList* isJsonList() override;
 
 	void toJson(std::stringstream& buffer) override;
 };

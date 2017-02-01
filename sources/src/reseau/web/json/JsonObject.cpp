@@ -37,9 +37,9 @@ JsonObject::JsonObject() {
 }
 
 JsonObject::~JsonObject() {
-	for(JsonPair* pair : _pairs) {
-		delete pair;
-	}
+//	for(JsonPair* pair : _pairs) {
+//		delete pair;
+//	}
 }
 
 JsonObject* JsonObject::fromJson(const string& json) throw(MalformedJsonException) {
@@ -57,6 +57,19 @@ JsonObject* JsonObject::fromJson(const string& json) throw(MalformedJsonExceptio
 	else {
 		return 0;
 	}
+}
+
+JsonValue* JsonObject::getValue(const std::string& name) {
+	JsonValue* value;
+
+	try {
+		value = _pairs.at(name);
+	}
+	catch(out_of_range& exception) {
+		value = 0;
+	}
+
+	return value;
 }
 
 unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) throw(MalformedJsonException) {
@@ -345,60 +358,74 @@ string JsonObject::indent(int depth) {
 }
 
 void JsonObject::addPair(JsonPair* pair) {
-	_pairs.push_back(pair);
+//	_pairs.push_back(pair);
+	_pairs[pair->getName()] = pair->getValue();
 }
 
 void JsonObject::addString(const string& name, const string& value) {
-	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonString(value));
-	_pairs.push_back(pair);
+//	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonString(value));
+//	_pairs.push_back(pair);
+	_pairs[name] = (JsonValue*)new JsonString(value);
 }
 
 void JsonObject::addNumber(const string& name, const unsigned int value) {
-	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
-	_pairs.push_back(pair);
+//	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
+//	_pairs.push_back(pair);
+	_pairs[name] = (JsonValue*)new JsonNumber(value);
 }
 
 void JsonObject::addNumber(const string& name, const int value) {
-	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
-	_pairs.push_back(pair);
+//	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
+//	_pairs.push_back(pair);
+	_pairs[name] = (JsonValue*)new JsonNumber(value);
 }
 
 void JsonObject::addNumber(const string& name, const long value) {
-	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
-	_pairs.push_back(pair);
+//	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
+//	_pairs.push_back(pair);
+	_pairs[name] = (JsonValue*)new JsonNumber(value);
 }
 
 void JsonObject::addBoolean(const string& name, const bool value) {
-	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonBoolean(value));
-	_pairs.push_back(pair);
+//	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonBoolean(value));
+//	_pairs.push_back(pair);
+	_pairs[name] = (JsonValue*)new JsonBoolean(value);
 }
 
 JsonObject& JsonObject::addObject(const string& name) {
 	JsonObject* var = new JsonObject();
-	JsonPair* pair = new JsonPair(name, var);
-	_pairs.push_back(pair);
+//	JsonPair* pair = new JsonPair(name, var);
+//	_pairs.push_back(pair);
+	_pairs[name] = (JsonValue*)var;
+
 	return *var;
 }
 
 JsonList& JsonObject::addList(const string& name) {
 	JsonList* var = new JsonList();
-	JsonPair* pair = new JsonPair(name, var);
-	_pairs.push_back(pair);
+//	JsonPair* pair = new JsonPair(name, var);
+//	_pairs.push_back(pair);
+	_pairs[name] = (JsonValue*)var;
+
 	return *var;
 }
 
-vector<JsonPair*>& JsonObject::getPairs() {
-	return _pairs;
-}
-
-JsonNumber* JsonObject::isJsonNumber() const {
+JsonNumber* JsonObject::isJsonNumber() {
 	return 0;
 }
-JsonString* JsonObject::isJsonString() const {
+JsonString* JsonObject::isJsonString() {
 	return 0;
 }
 
-JsonBoolean* JsonObject::isJsonBoolean() const {
+JsonBoolean* JsonObject::isJsonBoolean() {
+	return 0;
+}
+
+JsonObject* JsonObject::isJsonObject() {
+	return this;
+}
+
+JsonList* JsonObject::isJsonList() {
 	return 0;
 }
 
@@ -407,14 +434,15 @@ void JsonObject::toJson(stringstream& buffer) {
 
 	bool first = true;
 
-	for(JsonPair* pair : _pairs) {
+	for(auto& var : _pairs) {
 		if(!first) {
 			buffer << ",";
 		}
 
 		first = false;
 
-		pair->toJson(buffer);
+		buffer << "\"" << var.first << "\":";
+		var.second->toJson(buffer);
 	}
 
 	buffer << "}";

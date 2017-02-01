@@ -24,15 +24,23 @@ JsonNumber::JsonNumber(const long& value) {
 JsonNumber::~JsonNumber() {
 }
 
-const JsonNumber* JsonNumber::isJsonNumber() const {
+JsonNumber* JsonNumber::isJsonNumber() {
 	return this;
 }
 
-const JsonString* JsonNumber::isJsonString() const {
+JsonString* JsonNumber::isJsonString() {
 	return 0;
 }
 
-const JsonBoolean* JsonNumber::isJsonBoolean() const {
+JsonBoolean* JsonNumber::isJsonBoolean() {
+	return 0;
+}
+
+JsonObject* JsonNumber::isJsonObject() {
+	return 0;
+}
+
+JsonList* JsonNumber::isJsonList() {
 	return 0;
 }
 

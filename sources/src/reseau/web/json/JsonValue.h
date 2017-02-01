@@ -19,15 +19,19 @@ namespace jkt {
 class JsonBoolean;
 class JsonNumber;
 class JsonString;
+class JsonObject;
+class JsonList;
 
 class JsonValue {
 public:
 	JsonValue();
 	virtual ~JsonValue();
 
-	virtual const JsonNumber* isJsonNumber() const = 0;
-	virtual const JsonString* isJsonString() const = 0;
-	virtual const JsonBoolean* isJsonBoolean() const = 0;
+	virtual JsonNumber* isJsonNumber() = 0;
+	virtual JsonString* isJsonString() = 0;
+	virtual JsonBoolean* isJsonBoolean() = 0;
+	virtual JsonObject* isJsonObject() = 0;
+	virtual JsonList* isJsonList() = 0;
 
 	virtual void toJson(std::stringstream& buffer) = 0;
 	std::string toString();

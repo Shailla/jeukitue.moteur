@@ -159,16 +159,12 @@ WebServiceResult GetMapElementWS::updateElement(HttpRequest& request, int elemen
 	JsonObject* newValues = request.getBodyJson();
 
 	if(newValues) {
-		for(JsonPair* pair : newValues->getPairs()) {
-			const string& name = pair->getName();
+		JsonValue* mapElement = newValues->getValue("mapElement");
 
-			if(name == "selected") {
-				const JsonValue* val = pair->getValue();
+		if(mapElement && mapElement->isJsonObject()) {
+			JsonValue* val = ((JsonObject*)mapElement)->getValue("selected");
 
-				if(!val) {
-					return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, 'selected' element has no value");
-				}
-
+			if(val) {
 				const JsonBoolean* value = val->isJsonBoolean();
 
 				if(!value) {
@@ -177,7 +173,13 @@ WebServiceResult GetMapElementWS::updateElement(HttpRequest& request, int elemen
 
 				object->select(value->getValue());
 			}
+			else {
+				return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, 'selected' element does not exists");
+			}
 		}
+	}
+	else {
+		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, root 'mapElement' element does not exists");
 	}
 
 	return getElement(elementId);

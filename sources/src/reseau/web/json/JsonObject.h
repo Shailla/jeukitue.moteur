@@ -10,6 +10,7 @@
 
 #include <regex>
 #include <vector>
+#include <map>
 #include <string>
 
 #include "reseau/web/json/JsonValue.h"
@@ -43,7 +44,8 @@ class JsonObject : public JsonValue {
 	static unique_ptr<JsonBoolean> readBoolean(int depth, std::string& json) throw(MalformedJsonException);
 	static unique_ptr<JsonList> readList(int depth, std::string& json) throw(MalformedJsonException);
 
-	std::vector<JsonPair*> _pairs;
+//	std::vector<JsonPair*> _pairs;
+	std::map<std::string, JsonValue*> _pairs;
 
 public:
 	JsonObject();
@@ -60,14 +62,16 @@ public:
 
 	JsonList& addList(const std::string& name);
 
-	vector<JsonPair*>& getPairs();
-
-	JsonNumber* isJsonNumber() const override;
-	JsonString* isJsonString() const override;
-	JsonBoolean* isJsonBoolean() const override;
+	JsonNumber* isJsonNumber() override;
+	JsonString* isJsonString() override;
+	JsonBoolean* isJsonBoolean() override;
+	JsonObject* isJsonObject() override;
+	JsonList* isJsonList() override;
 
 	void toJson(std::stringstream& buffer) override;
 	static JsonObject* fromJson(const std::string& json) throw(MalformedJsonException);
+
+	JsonValue* getValue(const std::string& name);
 };
 
 } /* namespace jkt */

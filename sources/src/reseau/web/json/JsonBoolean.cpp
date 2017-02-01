@@ -20,16 +20,24 @@ bool JsonBoolean::getValue() const {
 	return _value;
 }
 
-const JsonNumber* JsonBoolean::isJsonNumber() const {
+JsonNumber* JsonBoolean::isJsonNumber() {
 	return 0;
 }
 
-const JsonString* JsonBoolean::isJsonString() const {
+JsonString* JsonBoolean::isJsonString() {
 	return 0;
 }
 
-const JsonBoolean* JsonBoolean::isJsonBoolean() const {
+JsonBoolean* JsonBoolean::isJsonBoolean() {
 	return this;
+}
+
+JsonObject* JsonBoolean::isJsonObject() {
+	return 0;
+}
+
+JsonList* JsonBoolean::isJsonList() {
+	return 0;
 }
 
 void JsonBoolean::toJson(stringstream& buffer) {

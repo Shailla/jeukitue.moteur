@@ -70,15 +70,23 @@ JsonList& JsonList::addList() {
 	return *var;
 }
 
-JsonNumber* JsonList::isJsonNumber() const {
+JsonNumber* JsonList::isJsonNumber() {
 	return 0;
 }
-JsonString* JsonList::isJsonString() const {
+JsonString* JsonList::isJsonString() {
 	return 0;
 }
 
-JsonBoolean* JsonList::isJsonBoolean() const {
+JsonBoolean* JsonList::isJsonBoolean() {
 	return 0;
+}
+
+JsonObject* JsonList::isJsonObject() {
+	return 0;
+}
+
+JsonList* JsonList::isJsonList() {
+	return this;
 }
 
 void JsonList::toJson(stringstream& buffer) {

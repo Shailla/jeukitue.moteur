@@ -20,14 +20,22 @@ const string& JsonString::getValue() const {
 	return _value;
 }
 
-const JsonNumber* JsonString::isJsonNumber() const {
+JsonNumber* JsonString::isJsonNumber() {
 	return 0;
 }
-const JsonString* JsonString::isJsonString() const {
+JsonString* JsonString::isJsonString() {
 	return this;
 }
 
-const JsonBoolean* JsonString::isJsonBoolean() const {
+JsonBoolean* JsonString::isJsonBoolean() {
+	return 0;
+}
+
+JsonObject* JsonString::isJsonObject() {
+	return 0;
+}
+
+JsonList* JsonString::isJsonList() {
 	return 0;
 }
 

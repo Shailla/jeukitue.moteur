@@ -7,14 +7,14 @@ import { MapService } 		from './map.service';
 
 @Component({
 	selector: 		'map-element-detail',
-	templateUrl: 	'app/map-element-detail.component.html',
-	providers:		[MapService]
+	templateUrl: 	'app/map-element-detail.component.html'
 })
 export class MapElementDetail {
 	@Input() mapElementId: number;
 	mapElement: MapElement;
 	
 	constructor(private mapService: MapService) {
+		this.mapService.mapElementUpdated.subscribe(mapElement => this.onMapElementUpdated(mapElement));
 	}
 	
 	ngOnChanges(): void {
@@ -28,8 +28,12 @@ export class MapElementDetail {
 	}
 	
 	onSubmit() {
-		console.log("Submit");
-
+		console.log("Submit map element detail");
 		this.mapService.updateMapElement(this.mapElementId, this.mapElement);
+	}
+	
+	private onMapElementUpdated(mapElement: MapElement) {
+		console.log("map-element-detail received 'mapElementUpdated' event");
+		this.mapElement = mapElement;
 	}
 }

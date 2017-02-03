@@ -1,24 +1,5 @@
 <div *ngIf="mapElement" class="container">
 	<form (ngSubmit)="onSubmit()">
-<!--
-		<div>
-			<label>ID : </label>
-			{{ (mapElement | async)?.id }}
-		</div>
-		<div class="form-group">
-			<label for="name">Name</label>
-			<input type="text" value="{{ (mapElement | async)?.name }}" placeholder="name" />
-		</div>		
-		<div class="form-group">
-			<label>Type : </label>
-			{{ (mapElement | async)?.type }}
-		</div>
-		<div class="form-group">
-			<label>Selected : </label>
-			<input type="checkbox" value="{{ (mapElement | async)?.selected }}" placeholder="selected" />
-		</div>
--->
-
 		<div>
 			<label>ID : </label>
 			{{ mapElement.id }}

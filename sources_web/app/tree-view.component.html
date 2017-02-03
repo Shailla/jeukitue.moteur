@@ -9,13 +9,13 @@
         <span><input type="checkbox" [checked]="item.checked" (click)="item.check()" /></span> 
 		
 		<!-- Icon and name -->
-		<span >
+		<span (click)="grapheMapComponent.onSelectMapElement(item)">
 			&nbsp;
 			<span><img src="/images/ICON_{{ item.type }}_16px-16px.png" style="width: 16px; height: 16px;"/></span>
 			&nbsp;
 			<span>({{ item.id }})</span>
 			&nbsp;
-			<span (click)="grapheMapComponent.onSelectMapElement(item)">{{ item.name }}</span>
+			<span>{{ item.name }}</span>
 		</span>
 		
 		<!-- Sub elements -->

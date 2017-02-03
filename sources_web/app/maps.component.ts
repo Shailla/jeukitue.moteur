@@ -5,8 +5,7 @@ import { MapService } from './map.service';
 
 @Component({
   selector: 	'my-maps',
-  templateUrl: 	'app/maps.component.html',
-  providers:	[MapService]
+  templateUrl: 	'app/maps.component.html'
 })
 export class MapsComponent implements OnInit {
 	maps: Map[];

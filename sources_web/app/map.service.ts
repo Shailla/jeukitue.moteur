@@ -1,5 +1,5 @@
-import { Injectable }   from '@angular/core';
-import { Http, Headers } 		from '@angular/http';
+import { Injectable, Output, EventEmitter }		from '@angular/core';
+import { Http, Headers } 						from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -17,7 +17,17 @@ export class MapService {
 	private mapServiceUrl = this.mapServiceBaseUrl + '/map-graphe';			// Get the current Map graph
 	private mapElementServiceUrl = this.mapServiceBaseUrl + '/element';		// Get or update an element from current Map
 	
-	constructor(private http: Http) {};
+	private static once: boolean = false;
+	
+	@Output() mapElementUpdated = new EventEmitter<MapElement>();
+	
+	constructor(private http: Http) {
+		if(MapService.once) {
+			console.error("Multiple instanciations of singleton");
+		}
+		
+		MapService.once = true;
+	};
 
 	// Lecture des Maps disponibles dans le jeu	
 	getMaps(): Promise<Map[]> {	
@@ -63,9 +73,6 @@ export class MapService {
 	updateMapElement(mapElementId: number, mapElement: MapElement): Promise<MapElement> {
 		let headers = new Headers({ 'Content-Type': 'application/json' });
 		
-		
-		
-		
 		let element = {};
 		element["mapElement"] = mapElement;
 		
@@ -75,9 +82,15 @@ export class MapService {
 		
 		return this.http.put(this.mapElementServiceUrl + "/" + mapElementId, body, headers)
 			.toPromise()
-			.then(response => response.json())
-			.then(json => json.mapElement)
-			.then(mapElement => new MapElement().fromJson(mapElement))
+			.then(response => {
+					let json = response.json();
+					let jsonMapElement = json.mapElement;
+					let mapElement = new MapElement().fromJson(jsonMapElement);
+					this.mapElementUpdated.emit(mapElement);
+					
+					return mapElement;
+				}
+			)
 			.catch(this.handleError);
 	}
 	

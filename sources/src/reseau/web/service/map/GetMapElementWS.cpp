@@ -30,7 +30,7 @@ namespace jkt {
 string GetMapElementWS::ID = "id";
 string GetMapElementWS::NAME = "name";
 string GetMapElementWS::TYPE = "type";
-string GetMapElementWS::SELECTED = "selected";
+string GetMapElementWS::HIGHLIGHTED = "highlighted";
 
 std::regex GetMapElementWS::RG_GET_MAPS("^maps$");
 std::regex GetMapElementWS::RG_GET_MAP_GRAPHE("^map-graphe$");
@@ -62,7 +62,7 @@ void GetMapElementWS::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 	mapGraphe.addString(TYPE, map->getType());
 	mapGraphe.addNumber(ID, map->getId());
 	mapGraphe.addString(NAME, map->getName());
-	mapGraphe.addString(SELECTED, "false");			// TODO permettre de sélectionner une sous-Map la Map
+	mapGraphe.addString(HIGHLIGHTED, "false");			// TODO permettre de sélectionner une sous-Map la Map
 
 	JsonList& elements = mapGraphe.addList("elements");
 
@@ -71,7 +71,7 @@ void GetMapElementWS::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 		obj.addString(TYPE, ePt->getType());
 		obj.addNumber(ID, ePt->getId());
 		obj.addString(NAME, ePt->getName());
-		obj.addString(SELECTED, "false");		// TODO permettre de sélectionner un entry point dans la Map
+		obj.addString(HIGHLIGHTED, "false");		// TODO permettre de sélectionner un entry point dans la Map
 
 		obj.addList("elements");
 	}
@@ -81,7 +81,7 @@ void GetMapElementWS::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 		obj.addString(TYPE, light->getType());
 		obj.addNumber(ID, light->getId());
 		obj.addString(NAME, "lumiere");
-		obj.addString(SELECTED, "false");		// TODO permettre de sélectionner une lumière dans la Map
+		obj.addString(HIGHLIGHTED, "false");		// TODO permettre de sélectionner une lumière dans la Map
 
 		obj.addList("elements");
 	}
@@ -91,7 +91,7 @@ void GetMapElementWS::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 		obj.addString(TYPE, mObj->getType());
 		obj.addNumber(ID, mObj->getId());
 		obj.addString(NAME, mObj->getName());
-		obj.addBoolean(SELECTED, mObj->isSelected());
+		obj.addBoolean(HIGHLIGHTED, mObj->isHighlighted());
 
 		obj.addList("elements");
 	}
@@ -137,7 +137,7 @@ WebServiceResult GetMapElementWS::getElement(int elementId) {
 
 	mapElement.addNumber(ID, object->getId());
 	mapElement.addString(NAME, object->getName());
-	mapElement.addBoolean(SELECTED, object->isSelected());
+	mapElement.addBoolean(HIGHLIGHTED, object->isHighlighted());
 	mapElement.addString(TYPE, object->getType());
 
 	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
@@ -162,19 +162,19 @@ WebServiceResult GetMapElementWS::updateElement(HttpRequest& request, int elemen
 		JsonValue* mapElement = newValues->getValue("mapElement");
 
 		if(mapElement && mapElement->isJsonObject()) {
-			JsonValue* val = ((JsonObject*)mapElement)->getValue("selected");
+			JsonValue* val = ((JsonObject*)mapElement)->getValue(HIGHLIGHTED);
 
 			if(val) {
 				const JsonBoolean* value = val->isJsonBoolean();
 
 				if(!value) {
-					return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, 'selected' element value should be boolean ('true' or 'false')");
+					return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, 'highlighted' element value should be boolean ('true' or 'false')");
 				}
 
-				object->select(value->getValue());
+				object->highlight(value->getValue());
 			}
 			else {
-				return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, 'selected' element does not exists");
+				return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, 'highlighted' element does not exists");
 			}
 		}
 	}

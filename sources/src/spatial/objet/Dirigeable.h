@@ -27,10 +27,10 @@ public:
 	Dirigeable(const Dirigeable& other);
 	~Dirigeable();
 
-	void Affiche() override;							// Fonction d'affichage de l'objet géométrique
-	void AfficheSelection(float r, float g, float b) override;							// Fonction d'affichage de l'objet géométrique
+	void Affiche() override;										// Fonction d'affichage de l'objet géométrique
+	void AfficheHighlighted(float r, float g, float b) override;	// Fonction d'affichage de l'objet géométrique
 	static void Affiche(Branche* branche);
-	void refresh(CGame *game) override;		// Rafraichissement des données, position, vitesse, ... de l'objet
+	void refresh(CGame *game) override;								// Rafraichissement des données, position, vitesse, ... de l'objet
 	MapObject* clone() override;
 	void init() throw(CErreur);
 

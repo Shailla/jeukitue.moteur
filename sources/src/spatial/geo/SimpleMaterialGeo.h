@@ -89,7 +89,7 @@ public:
 	bool Contact( const float pos[3], float dist ) override;
 
 	void Affiche() override;									// Affiche cet objet géo
-	void AfficheSelection(float r,float v,float b) override;	// Affiche l'objet en couleur unique
+	void AfficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique
 	const char* toString() override;
 };
 

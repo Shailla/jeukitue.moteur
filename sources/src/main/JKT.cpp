@@ -890,12 +890,6 @@ void play_handle_key_down( SDL_Event *event ) {
 			}
 			break;
 
-		case SDLK_s :
-			if(Game.getMap()) {
-				Game.getMap()->ChangeSelectionMode();
-			}
-			break;
-
 		case SDLK_p :		// Demande la prise d'une photo au prochain display
 			Game.RequeteProcess.setTakePicture();
 			break;

@@ -8,7 +8,7 @@ void lanceMenuAideEssai(void *var);
 void lanceMenuAide(void *var);
 void lanceMenuMode(void *var);
 void lanceMenuPrinc(void *var);
-void lanceMenuModeSelection(void *var);
+void lanceMenuModeHighlight(void *var);
 void lanceMenuOpenScene(void *var);
 
 }	// JktMenu

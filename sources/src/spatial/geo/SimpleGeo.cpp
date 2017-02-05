@@ -239,7 +239,7 @@ const char* CSimpleGeo::toString() {
 	return tostring.c_str();
 }
 
-void CSimpleGeo::AfficheSelection(float r, float v, float b) {
+void CSimpleGeo::AfficheHighlighted(float r, float v, float b) {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 

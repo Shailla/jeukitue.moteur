@@ -63,7 +63,7 @@ public:
 	void freeGL() override;
 
 	void Affiche() override;											// Affiche l'objet géométrique
-	void AfficheSelection(float r,float v,float b) override;
+	void AfficheHighlighted(float r,float v,float b) override;
 
 	// Refreshable
 	void beginRefresh() override;

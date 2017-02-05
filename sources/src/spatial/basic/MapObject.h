@@ -73,7 +73,7 @@ public:
 	 * *******************************************/
 
 	virtual void Affiche() override;										// Affiche l'objet géométrique
-	virtual void AfficheSelection(float r,float v,float b) override;		// Affiche l'objet géométrique en couleur unique
+	virtual void AfficheHighlighted(float r,float v,float b) override;		// Affiche l'objet géométrique en couleur unique
 	virtual void initGL() override;											// Initialisation de l'objet géométrique
 	virtual void freeGL() override;											// Libération des ressources de l'objet dans le contexte OpenGL
 

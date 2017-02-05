@@ -211,7 +211,7 @@ void CTextureMaterialGeo::Affiche() {
 		AfficheNormals();
 }
 
-void CTextureMaterialGeo::AfficheSelection(float r,float v,float b) {
+void CTextureMaterialGeo::AfficheHighlighted(float r,float v,float b) {
 	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_VERTEX]);
 	glVertexPointer(3, GL_FLOAT, 0, 0);
 

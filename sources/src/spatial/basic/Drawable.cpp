@@ -10,22 +10,32 @@
 namespace jkt {
 
 Drawable::Drawable() {
-	_selected = false;
+	_highlighted = false;
+	_hidden = false;
 }
 
 Drawable::Drawable(const Drawable& other) {
-	_selected = other._selected;
+	_hidden = other._hidden;
+	_highlighted = other._highlighted;
 }
 
 Drawable::~Drawable() {
 }
 
-bool Drawable::isSelected() const {
-	return _selected;
+bool Drawable::isHidden() const {
+	return _hidden;
 }
 
-void Drawable::select(bool selected) {
-	_selected = selected;
+void Drawable::hide(bool hidden) {
+	_hidden = hidden;
+}
+
+bool Drawable::isHighlighted() const {
+	return _highlighted;
+}
+
+void Drawable::highlight(bool highlighted) {
+	_highlighted = highlighted;
 }
 
 } /* namespace jkt */

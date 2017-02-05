@@ -64,7 +64,6 @@ namespace jkt
 {
 
 const char* CMap::identifier = "Map";
-bool CMap::_bSelection = false;
 
 CMap::CMap(CMap* parent) : MapObject(parent, MapObject::MAP) {
 	LOGDEBUG(("CMap::CMap(*parent) %T", this ));
@@ -171,23 +170,15 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 	glDisable( GL_BLEND );
 	glDepthMask( GL_TRUE );
 
-
 	// Affichage des objets
-	if(_bSelection) {
-		int i=0;
-
-		for(Drawable* drawable : _drawables) {
-			if(!drawable->isSelected())
+	for(Drawable* drawable : _drawables) {
+		if(!drawable->isHidden()) {
+			if(!drawable->isHighlighted()) {
 				drawable->Affiche();			// Affichage de l'objet géo
-			else
-				drawable->AfficheSelection(1.0f, 0.0f, 0.0f);
-
-			i++;
-		}
-	}
-	else {
-		for(Drawable* drawable : _drawables) {
-			drawable->Affiche();			// Affichage de l'objet géo
+			}
+			else {
+				drawable->AfficheHighlighted(1.0f, 0.0f, 0.0f);
+			}
 		}
 	}
 
@@ -199,7 +190,7 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 	}
 }
 
-void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objets géo de du MAP
+void CMap::AfficheHighlighted(float r,float v,float b) {	// Affiche tous les objets géo de du MAP
 	// Si nécessaire, initialise les éléments OpenGL de la MAP
 	if(!_isGlInitialized) {
 		initGL();
@@ -212,14 +203,14 @@ void CMap::AfficheSelection(float r,float v,float b) {	// Affiche tous les objet
 	glEnableClientState( GL_VERTEX_ARRAY );
 
 	for(Drawable* drawable : _drawables) {
-		drawable->AfficheSelection(r, v, b);
+		drawable->AfficheHighlighted(r, v, b);
 	}
 
 	glDisable( GL_VERTEX_ARRAY );
 
 	// Initialisation des sous-Map
 	for(auto& subMap : _subMaps) {
-		subMap.second->AfficheSelection(r, v, b);
+		subMap.second->AfficheHighlighted(r, v, b);
 	}
 }
 
@@ -262,14 +253,6 @@ MapObject* CMap::findMapObject(int id) {
 	}
 
 	return 0;
-}
-
-void CMap::ChangeSelectionMode() {
-	_bSelection = !_bSelection;
-}
-
-bool CMap::IsSelectionMode() {
-	return _bSelection;
 }
 
 void CMap::merge(int mapId, MapLogger* mapLogger) {

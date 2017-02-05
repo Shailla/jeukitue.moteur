@@ -6,7 +6,7 @@ namespace jkt
 {
 
 void lanceMenuMode(void *var);
-void lanceMenuModeSelection(void *var);
+void lanceMenuModeHighlight(void *var);
 
 }	// JktMenu
 

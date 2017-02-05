@@ -77,7 +77,7 @@ public:
 
 	// Affichage
 	void Affiche() override;									// Affiche cet objet géo
-	void AfficheSelection(float r,float v,float b) override;	// Affiche l'objet en couleur unique
+	void AfficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique
 
 	// Sérialisation
 	bool Save(TiXmlElement* element) override;

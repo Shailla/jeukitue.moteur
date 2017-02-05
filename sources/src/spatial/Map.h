@@ -60,8 +60,6 @@ class CMap : public MapObject {
 
 	vector<string> _plugins;						// Liste des plugins de la Map
 
-	static bool _bSelection;								// Indique si le mode sélection est actif ou non
-
 	bool _isGlInitialized;							// Indique si les éléments OpenGL de la MAP ont été initialisés
 	bool _isPluginsInitialized;						// Indique si les plugins de la MAP ont été initialisés
 
@@ -97,7 +95,7 @@ public:
 	void freeGL() override;		// Libération du contexte OpenGL
 
 	void Affiche() override;											// Affiche l'ensemble des éléments 3D de cette Map
-	void AfficheSelection(float r,float v,float b) override;			// Affiche l'objet géométrique en couleur unique
+	void AfficheHighlighted(float r,float v,float b) override;			// Affiche l'objet géométrique en couleur unique
 
 	bool Save(const string nomFichier);	// Sauvegarde du CMap dans un fichier *.map.xml
 
@@ -158,10 +156,6 @@ public:
 	map<int, CMap*>& getSubMaps();
 	vector<CLight*>& getLights();
 	vector<MapObject*>& getMapObjects();
-
-	// Sélection
-	static void ChangeSelectionMode();
-	static bool IsSelectionMode();
 
 	// Points d'entrée des personnages joueurs
 	void add(EntryPoint* entryPoint);

@@ -254,7 +254,7 @@ void CGeoObject::AfficheWithMaterialSimple(CMaterial *mat) {
 	glDisable(GL_LIGHTING);
 }
 
-void CGeoObject::AfficheSelection(float r,float v,float b) {
+void CGeoObject::AfficheHighlighted(float r,float v,float b) {
 	glVertexPointer( 3, GL_FLOAT, 0, m_TabVertex );	//Initialisation du tableau de sommets
 
 	glColor3f(r, v, b); // Définit la couleur de l'objet géo. sélectionné

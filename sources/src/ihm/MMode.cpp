@@ -55,43 +55,43 @@ namespace jkt
 
 PF liste_suivant_mode[] =
 {
-	lanceMenuModeSelection,
+	lanceMenuModeHighlight,
 };
 
 
 const char *item_menu_mode[] =
 {
-	"MODE SELECTION",
+	"MODE HIGHLIGHT",
 };
 
 CMenu MenuMode( "MODES", item_menu_mode, 1, liste_suivant_mode, 0 );
 
 	// Sous Menu mode
 
-void fonctionModeSelection1(void *var)
+void fonctionModeHighlight1(void *var)
 {
 	cout << "Solidité 1\n";
 }
 
-void fonctionModeSelection2(void *var)
+void fonctionModeHighlight2(void *var)
 {
 	cout << "Suppression 2\n";
 }
 
-PF liste_suivant_Mode_Selection[] =
+PF liste_suivant_Mode_Highlight[] =
 {
-	fonctionModeSelection1,
-	fonctionModeSelection2,
+	fonctionModeHighlight1,
+	fonctionModeHighlight2,
 };
 
-const char *item_menu_Mode_Selection[] =
+const char *item_menu_Mode_Highlight[] =
 {
 	"SOLIDITE",
 	"SUPPRESSION",
 };
 
-CMenu MenuModeSelection( "MODE SELECTION", item_menu_Mode_Selection, 2,
-						liste_suivant_Mode_Selection, lanceMenuMode );
+CMenu MenuModeHighlight( "MODE HIGHLIGHT", item_menu_Mode_Highlight, 2,
+						liste_suivant_Mode_Highlight, lanceMenuMode );
 
 void lanceMenuMode(void *var) {
 LOGDEBUG(("lanceMenuMode(var=%x)", var));
@@ -100,9 +100,9 @@ LOGDEBUG(("lanceMenuMode(var=%x)", var));
 	Aide = true;
 }
 
-void lanceMenuModeSelection(void *var) {
-LOGDEBUG(("lanceMenuModeSelection(var=%x)", var));
-	CDlg::SetMenuActif( &MenuModeSelection );
+void lanceMenuModeHighlight(void *var) {
+LOGDEBUG(("lanceMenuModeHighlight(var=%x)", var));
+	CDlg::SetMenuActif( &MenuModeHighlight );
 }
 
 }	// JktMenu

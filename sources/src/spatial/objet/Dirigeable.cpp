@@ -41,7 +41,7 @@ Dirigeable::Dirigeable(const Dirigeable& other) : MapObject(other) {
 Dirigeable::~Dirigeable(void) {
 }
 
-void Dirigeable::AfficheSelection(float r, float g, float b) {		// Fonction d'affichage de la porte
+void Dirigeable::AfficheHighlighted(float r, float g, float b) {		// Fonction d'affichage de la porte
 	Affiche();
 }
 

@@ -209,7 +209,7 @@ const char* CMultiMaterialGeo::toString() {
 	return tostring.c_str();
 }
 
-void CMultiMaterialGeo::AfficheSelection(float r,float v,float b) {
+void CMultiMaterialGeo::AfficheHighlighted(float r,float v,float b) {
 	glLineWidth( 1 );
 
 	// Attachement VBO sommets

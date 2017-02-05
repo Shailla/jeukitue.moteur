@@ -48,7 +48,7 @@ void MapObject::Affiche() {
 	LOGWARN(("Use of undefined method '%s'", __FUNCTION__));
 }
 
-void MapObject::AfficheSelection(float r,float v,float b){
+void MapObject::AfficheHighlighted(float r,float v,float b){
 	LOGWARN(("Use of undefined method '%s'", __FUNCTION__));
 }
 

@@ -21,7 +21,7 @@ export class MapGrapheElement {
 		this.type = jsonObject.type;
 		this.id = jsonObject.id;
 		this.name = jsonObject.name;
-		this.checked = jsonObject.selected;
+		this.checked = jsonObject.highlighted;
 		
 		for(let iter of jsonObject.elements) {
 			this.elements.push(new MapGrapheElement().fromJson(iter));
@@ -51,7 +51,7 @@ export class MapGrapheElement {
         this.elements.forEach(element => {
             if(element.id == mapElement.id) {
 				element.name = mapElement.name;
-				element.checked = mapElement.selected;
+				element.checked = mapElement.highlighted;
 			}
 			
             element.updateMapElement(mapElement);

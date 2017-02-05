@@ -221,7 +221,7 @@ const char* CSimpleMaterialGeo::toString() {
 	return tostring.c_str();
 }
 
-void CSimpleMaterialGeo::AfficheSelection(float r,float v,float b) {
+void CSimpleMaterialGeo::AfficheHighlighted(float r,float v,float b) {
 	glDisable(GL_TEXTURE_2D);
 
 	glLineWidth(1);

@@ -134,7 +134,7 @@ void CheckPlayerInZone::Affiche() {
 	}
 }
 
-void CheckPlayerInZone::AfficheSelection(float r,float v,float b) {
+void CheckPlayerInZone::AfficheHighlighted(float r,float v,float b) {
 	glColor3f(r, v, b);
 	Affiche();
 }

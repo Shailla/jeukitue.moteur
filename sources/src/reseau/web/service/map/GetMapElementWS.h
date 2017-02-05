@@ -22,7 +22,7 @@ class GetMapElementWS : public WebService {
 	static string ID;
 	static string NAME;
 	static string TYPE;
-	static string SELECTED;
+	static string HIGHLIGHTED;
 
 	static std::regex RG_GET_MAPS;
 	static std::regex RG_GET_MAP_GRAPHE;

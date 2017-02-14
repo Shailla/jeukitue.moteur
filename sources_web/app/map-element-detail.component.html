@@ -13,6 +13,10 @@
 			{{ mapElement.type }}
 		</div>
 		<div class="form-group">
+			<label>Hide :</label>
+			<input type="checkbox" [(ngModel)]="mapElement.hidden" name="hidden" />
+		</div>
+		<div class="form-group">
 			<label>Highlighted :</label>
 			<input type="checkbox" [(ngModel)]="mapElement.highlighted" name="highlighted" />
 		</div>

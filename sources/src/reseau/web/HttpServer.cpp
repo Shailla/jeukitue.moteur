@@ -37,11 +37,13 @@ const char* HttpServer::WEB_JSON_DIR =				"./web/json";
 const char* HttpServer::HTTP_RETURN =				"\r\n";
 const char* HttpServer::HTTP_HEAD = 				"HTTP/1.1";
 const char* HttpServer::HTTP_RESPONSE_200 = 		"200 OK";
+const char* HttpServer::HTTP_RESPONSE_201 = 		"201 Created";
 const char* HttpServer::HTTP_RESPONSE_204 = 		"204 No Content";
 const char* HttpServer::HTTP_RESPONSE_400 = 		"400 Bad Request";
 const char* HttpServer::HTTP_RESPONSE_404 = 		"404 Not Found";
 const char* HttpServer::HTTP_RESPONSE_500 = 		"500 Internal Error";
 const char* HttpServer::HTTP_RESPONSE_501 = 		"501 Not Implemented";
+
 const char* HttpServer::HTTP_CONTENT_TYPE_HTML = 	"Content-type: text/html; charset=utf-8";
 const char* HttpServer::HTTP_CONTENT_TYPE_CSS = 	"Content-type: text/css; charset=utf-8";
 const char* HttpServer::HTTP_CONTENT_TYPE_IMAGE = 	"Content-type: image";

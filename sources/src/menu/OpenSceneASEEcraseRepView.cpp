@@ -19,7 +19,7 @@ using namespace boost::filesystem;
 
 OpenSceneASEEcraseRepView::OpenSceneASEEcraseRepView(const AG_EventFn controllerCallback) :View(controllerCallback) {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
-	AG_WindowSetCaption(m_window, "Importer une scene ASE");
+	AG_WindowSetCaption(m_window, "Importer une sc\u00e8ne ASE");
 
 	AG_LabelNew(m_window, 0, "Un repertoire existe deja, voulez-vous le supprimer ?");
 

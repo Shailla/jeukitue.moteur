@@ -45,7 +45,7 @@ function onLoad()
 	boxBoutonsAudio:expandHoriz();
 	backButton = boxBoutonsAudio:addButton("Retour");
 	appliquerAudioButton = boxBoutonsAudio:addButton("Appliquer");
-	reinitialiserAudioButton = boxBoutonsAudio:addButton("Reinitialiser");
+	reinitialiserAudioButton = boxBoutonsAudio:addButton("Réinitialiser");
 
 	-- ----------------------------------------
 	-- Chargement des informations

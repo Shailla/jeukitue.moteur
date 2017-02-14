@@ -886,7 +886,7 @@ void play_handle_key_down( SDL_Event *event ) {
 				Game.getMap()->Save(saveMapFilename);
 
 				ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
-				console->println(ConsoleView::COT_INFO, string("Map enregistrée : ") + saveMapFilename);
+				console->println(ConsoleView::COT_INFO, string("Map enregistr\u00e9e : ") + saveMapFilename);
 			}
 			break;
 
@@ -1441,7 +1441,7 @@ void executeJktRequests() {
 		// Prends la photo
 		if( photo.save(fichierPhoto) ) {
 			LOGINFO(("Photo prise '%'", fichierPhoto.c_str()));
-			console->println(ConsoleView::COT_INFO, string("Photo enregistrée : ") + fichierPhoto);
+			console->println(ConsoleView::COT_INFO, string("Photo enregistr\u00e9e : ") + fichierPhoto);
 		}
 		else {
 			LOGINFO(("Echec de la photo '%'", fichierPhoto.c_str()));

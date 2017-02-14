@@ -27,7 +27,7 @@ function onLoad()
 	window:setTitle("Menu principal");
 	
 	-- Combos	
-	sceneButton = window:addButton("Ouvrir une scene");
+	sceneButton = window:addButton("Ouvrir une scène");
 	sceneButton:expandHoriz();
 	
 	multiButton = window:addButton("Multi-joueurs");

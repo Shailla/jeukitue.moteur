@@ -93,7 +93,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
 
 		// Création du joueur
-		console->println(ConsoleView::COT_INFO, "Creation du joueur principal...");
+		console->println(ConsoleView::COT_INFO, "Cr\u00e9ation du joueur principal...");
 		LOGINFO(("Creation du joueur principal..."));
 
 		CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
@@ -122,7 +122,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		pMapJoueurJulien->Scale(-0.6f, 0.6f, 0.6f);
 
 		// Création d'un second joueur
-		console->println(ConsoleView::COT_INFO, "Creation du second joueur...");
+		console->println(ConsoleView::COT_INFO, "Cr\u00e9ation du second joueur...");
 		LOGINFO(("Creation du second joueur..."));
 
 		CPlayer *julien;
@@ -155,7 +155,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
 
 		// Création d'un troisième joueur
-		console->println(ConsoleView::COT_INFO, "Creation du troisieme joueur...");
+		console->println(ConsoleView::COT_INFO, "Cr\u00e9ation du troisieme joueur...");
 		LOGINFO(("Creation du troisieme joueur..."));
 
 		CPlayer *sprite;
@@ -246,7 +246,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 		player->init();
 	}
 
-	console->println(ConsoleView::COT_INFO, "Partie chargee");
+	console->println(ConsoleView::COT_INFO, "Partie charg\u00e9e");
 	LOGINFO(("Partie chargée"));
 
 	Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_OUVERTURE);
@@ -312,7 +312,7 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 		pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
 
 		// Création du joueur
-		console->println(ConsoleView::COT_INFO, "Creation du joueur principal...");
+		console->println(ConsoleView::COT_INFO, "Cr\u00e9ation du joueur principal...");
 		LOGINFO(("Creation du joueur principal..."));
 
 		CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)

@@ -56,7 +56,7 @@ PF liste_suivant_princ2[] =
 
 const char *item_menu_princ2[] =
 {
-	"Ouvrir une scene",
+	"Ouvrir une sc\u00e8ne",
 	"Multi-joueurs",
 	"Configuration",
 	"Quitter la partie",

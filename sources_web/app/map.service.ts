@@ -13,9 +13,9 @@ import { JSON_MAP }			from './mock-map';
 export class MapService {
 	private mapServiceBaseUrl = 'http://localhost:20000/rest/map-service';
 	
-	private mapsServiceUrl = this.mapServiceBaseUrl + '/maps';				// Get available Maps
-	private mapServiceUrl = this.mapServiceBaseUrl + '/map-graphe';			// Get the current Map graph
-	private mapElementServiceUrl = this.mapServiceBaseUrl + '/element';		// Get or update an element from current Map
+	private mapsServiceUrl = 		this.mapServiceBaseUrl + '/maps';		// Get available Maps
+	private mapServiceUrl = 		this.mapServiceBaseUrl + '/map';		// Get the current Map graph
+	private mapElementServiceUrl = 	this.mapServiceBaseUrl + '/map/element';	// Get or update an element from current Map
 	
 	private static once: boolean = false;
 	
@@ -91,6 +91,15 @@ export class MapService {
 					return mapElement;
 				}
 			)
+			.catch(this.handleError);
+	}
+	
+	// Sauvegarde de la Map courante
+	saveMap() {
+		let headers = new Headers({ 'Content-Type': 'application/json' }); 
+				
+		return this.http.post(this.mapServiceUrl, "", headers)
+			.toPromise()
 			.catch(this.handleError);
 	}
 	

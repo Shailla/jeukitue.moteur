@@ -6,7 +6,8 @@
 		<span *ngIf="item.elements.length == 0"><img src="/images/ICO_Empty.gif"/></span>
 		
 		<!-- Checkbox -->
-        <span><input type="checkbox" [checked]="item.checked" (click)="item.check()" /></span> 
+		<span><input type="checkbox" [checked]="item.hidden" (click)="item.hide()" /></span> 
+		<span><input type="checkbox" [checked]="item.highlighted" (click)="item.highlight()" /></span> 
 		
 		<!-- Icon and name -->
 		<span (click)="grapheMapComponent.onSelectMapElement(item)">

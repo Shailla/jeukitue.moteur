@@ -16,7 +16,7 @@ function onLoad()
 
 	-- Ouverture fenêtre
 	window = Window();
-	window:setTitle("Configuration avancee");
+	window:setTitle("Configuration avancée");
 	window:setSize(400, 400);
 	window:setPosition(0, 0);
 	local notebook = window:addNotebook();
@@ -28,7 +28,7 @@ function onLoad()
 	checkboxHitboxJoueurVisibility = boxJoueur:addCheckbox("Voir la hit box des joueurs");
 	checkboxSolidboxJoueurVisibility = boxJoueur:addCheckbox("Voir les contours solides des joueurs");
 	checkboxAxesMeterVisibility = boxJoueur:addCheckbox("Voir les axes");
-	checkboxCubicMeterVisibility = boxJoueur:addCheckbox("Voir un cube d'un metre");
+	checkboxCubicMeterVisibility = boxJoueur:addCheckbox("Voir un cube d'un mètre");
 	
 	loadJoueurConfiguration();	-- Chargement des valeurs courantes
 	local boxBoutonsJoueur = boxJoueur:addBoxHoriz();

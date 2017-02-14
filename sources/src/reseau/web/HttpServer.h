@@ -95,11 +95,13 @@ public:
 	static const char* HTTP_RETURN;
 	static const char* HTTP_HEAD;
 	static const char* HTTP_RESPONSE_200;
+	static const char* HTTP_RESPONSE_201;
 	static const char* HTTP_RESPONSE_204;
 	static const char* HTTP_RESPONSE_400;
 	static const char* HTTP_RESPONSE_404;
 	static const char* HTTP_RESPONSE_500;
 	static const char* HTTP_RESPONSE_501;
+
 	static const char* HTTP_CONTENT_TYPE_HTML;
 	static const char* HTTP_CONTENT_TYPE_CSS;
 	static const char* HTTP_CONTENT_TYPE_IMAGE;

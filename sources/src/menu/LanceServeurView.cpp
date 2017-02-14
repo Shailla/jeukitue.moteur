@@ -26,7 +26,7 @@ LanceServeurView::LanceServeurView(const AG_EventFn controllerCallback)
 :View(controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
-	AG_WindowSetCaption(m_window, "Ouvrir une scene Map");
+	AG_WindowSetCaption(m_window, "Ouvrir une sc\u00e8ne Map");
 
     // Scrollview qui contiendra toutes les map disponibles
 	_scrollview = AG_ScrollviewNew(m_window, AG_SCROLLVIEW_NOPAN_X);

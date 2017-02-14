@@ -4,6 +4,7 @@ export class MapElement {
 	id: number; 
 	name: string;
 	highlighted: boolean;
+	hidden: boolean;
 	
 	constructor() {       
     }
@@ -13,6 +14,7 @@ export class MapElement {
 		this.id = jsonObject.id;
 		this.name = jsonObject.name;
 		this.highlighted = jsonObject.highlighted;
+		this.hidden = jsonObject.hidden;
 		
 		return this;
 	}

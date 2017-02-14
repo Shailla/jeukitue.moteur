@@ -39,7 +39,7 @@ int Object::getId() const {
 	return _id;
 }
 
-void Object::setName(const std::string &nom) {
+void Object::setName(const std::string& nom) {
 	_name = nom;
 }
 

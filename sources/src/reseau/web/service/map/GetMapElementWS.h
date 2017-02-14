@@ -23,14 +23,15 @@ class GetMapElementWS : public WebService {
 	static string NAME;
 	static string TYPE;
 	static string HIGHLIGHTED;
+	static string HIDDEN;
 
-	static std::regex RG_GET_MAPS;
-	static std::regex RG_GET_MAP_GRAPHE;
-	static std::regex RG_GET_ELEMENT_SERVICE;
-	static std::regex RG_UPDATE_ELEMENT_SERVICE;
+	static std::regex RG_MAPS_SERVICE;
+	static std::regex RG_MAP_SERVICE;
+	static std::regex RG_MAP_ELEMENT_SERVICE;
 
 	WebServiceResult getMapList();
-	WebServiceResult getCurrentMapGraphe();
+	WebServiceResult getCurrentMap();
+	WebServiceResult saveCurrentMap();
 	WebServiceResult getElement(int elementId);
 	WebServiceResult updateElement(HttpRequest& request, int elementId);
 

@@ -44,8 +44,8 @@ PF liste_suivant_open_scene[] =
 
 const char *item_menu_open_scene[] =
 {
-	"Convertir une scene ASE",
-	"Ouvrir une scene MAP",
+	"Convertir une sc\u00e8ne ASE",
+	"Ouvrir une sc\u00e8ne MAP",
 };
 
 CMenu MenuOpenScene( "OUVRIR UNE SCENE", item_menu_open_scene, 2,

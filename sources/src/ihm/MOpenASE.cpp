@@ -338,7 +338,7 @@ LOGDEBUG(("lanceMenuConvertASE(var=%x)", var));
 		nbrFichier++;
 	}
 
-	MenuOpenASE = new CMenu( "Convertir une Scene ASE", (const char**)item_menu_open_ASE, nbrFichier,
+	MenuOpenASE = new CMenu( "Convertir une sc\u00e8ne ASE", (const char**)item_menu_open_ASE, nbrFichier,
 			liste_suivant_open_ASE, retourASE, liste_argument_open_ASE );
 
 	delete[] liste_suivant_open_ASE;

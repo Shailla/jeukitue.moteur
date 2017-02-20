@@ -24,6 +24,10 @@ JsonNumber::JsonNumber(const long& value) {
 JsonNumber::~JsonNumber() {
 }
 
+long JsonNumber::getValue() const {
+	return _value;
+}
+
 JsonNumber* JsonNumber::isJsonNumber() {
 	return this;
 }

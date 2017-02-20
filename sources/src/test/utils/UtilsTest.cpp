@@ -43,10 +43,19 @@ void UtilsTest::test() {
 void UtilsTest::stringUtilsTest() {
 	log("Test - 'StringUtils::isBlank'", __LINE__);
 	ASSERT_TRUE(StringUtils::isBlank(""), "'isBlank' KO");
+	ASSERT_FALSE(StringUtils::isNotBlank(""), "'isNotBlank' KO");
+
 	ASSERT_TRUE(StringUtils::isBlank("  "), "'isBlank' KO");
+	ASSERT_FALSE(StringUtils::isNotBlank("  "), "'isNotBlank' KO");
+
 	ASSERT_TRUE(StringUtils::isBlank("\t"), "'isBlank' KO");
+	ASSERT_FALSE(StringUtils::isNotBlank("\t"), "'isNotBlank' KO");
+
 	ASSERT_TRUE(StringUtils::isBlank("  \t"), "'isBlank' KO");
+	ASSERT_FALSE(StringUtils::isNotBlank("  \t"), "'isNotBlank' KO");
+
 	ASSERT_FALSE(StringUtils::isBlank("  nn "), "'isBlank' KO");
+	ASSERT_TRUE(StringUtils::isNotBlank("  nn "), "'isNotBlank' KO");
 
 	// -----------------------------------------------------
 	log("Test - 'StringUtils::isBlank'", __LINE__);

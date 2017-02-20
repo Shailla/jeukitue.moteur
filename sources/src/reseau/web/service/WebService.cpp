@@ -26,6 +26,23 @@ WebServiceResult::WebServiceResult(JsonObject& root, const char* status) {
 	json.copy((char*)_content, json.size());
 }
 
+WebServiceResult::WebServiceResult(JsonObject& root, const vector<string>& errors, const char* status) {
+	_contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
+	_status = status;
+
+	JsonList& errorList = root.addList("errors");
+
+	for(const string error : errors) {
+		errorList.addString(error);
+	}
+
+	string json = root.toString();
+
+	_contentSize = json.size();
+	_content = malloc(json.size());
+	json.copy((char*)_content, json.size());
+}
+
 WebService::WebService() {
 }
 

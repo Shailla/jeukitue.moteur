@@ -111,7 +111,7 @@ void CCfg::NommeConfig(const string &configFileBaseName, const string& configFil
 	string candidat = "./" + configFileBaseName + "-" + configFileSuffixName + ".ini";	// config-<suffix>.ini
 	string defaut = "./" + configFileBaseName + ".ini";				// config.ini
 
-	if(!jkt::StringUtils::isBlank(configFileSuffixName) && boost::filesystem::exists(candidat)) {
+	if(jkt::StringUtils::isNotBlank(configFileSuffixName) && boost::filesystem::exists(candidat)) {
 		configFile = candidat;
 	}
 	else {

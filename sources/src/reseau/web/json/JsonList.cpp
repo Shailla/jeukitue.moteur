@@ -24,6 +24,24 @@ JsonList::~JsonList() {
 	}
 }
 
+void JsonList::toJson(std::stringstream& buffer) {
+	buffer << "[";
+
+	bool first = true;
+
+	for(JsonValue* value : _values) {
+		if(!first) {
+			buffer << ",";
+		}
+
+		first = false;
+
+		value->toJson(buffer);
+	}
+
+	buffer << "]";
+}
+
 void JsonList::addValue(JsonValue* value) {
 	_values.push_back(value);
 }
@@ -70,6 +88,10 @@ JsonList& JsonList::addList() {
 	return *var;
 }
 
+const vector<JsonValue*>& JsonList::getValue() {
+	return _values;
+}
+
 JsonNumber* JsonList::isJsonNumber() {
 	return 0;
 }
@@ -87,24 +109,6 @@ JsonObject* JsonList::isJsonObject() {
 
 JsonList* JsonList::isJsonList() {
 	return this;
-}
-
-void JsonList::toJson(stringstream& buffer) {
-	buffer << "[";
-
-	bool first = true;
-
-	for(JsonValue* value : _values) {
-		if(!first) {
-			buffer << ",";
-		}
-
-		first = false;
-
-		value->toJson(buffer);
-	}
-
-	buffer << "]";
 }
 
 } /* namespace jkt */

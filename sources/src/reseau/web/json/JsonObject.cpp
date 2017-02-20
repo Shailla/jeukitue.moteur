@@ -76,7 +76,7 @@ unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) throw(Mal
 	smatch s;
 
 	// Object
-	cout << endl << indent(depth) << "READ OBJECT: " << json;
+	cout << endl << indent(depth) << "READ OBJECT: '" << json << "'" << flush;
 
 	bool result = regex_search(json, s, REGEX_OBJECT_BEGIN);
 
@@ -135,7 +135,7 @@ unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) throw(Mal
 		return object;
 	}
 	else {
-		cout << endl << indent(depth) << "Pas d'objet";
+		cout << endl << indent(depth) << "Pas d'objet" << flush;
 		return 0;
 	}
 }
@@ -358,44 +358,31 @@ string JsonObject::indent(int depth) {
 }
 
 void JsonObject::addPair(JsonPair* pair) {
-//	_pairs.push_back(pair);
 	_pairs[pair->getName()] = pair->getValue();
 }
 
 void JsonObject::addString(const string& name, const string& value) {
-//	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonString(value));
-//	_pairs.push_back(pair);
 	_pairs[name] = (JsonValue*)new JsonString(value);
 }
 
 void JsonObject::addNumber(const string& name, const unsigned int value) {
-//	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
-//	_pairs.push_back(pair);
 	_pairs[name] = (JsonValue*)new JsonNumber(value);
 }
 
 void JsonObject::addNumber(const string& name, const int value) {
-//	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
-//	_pairs.push_back(pair);
 	_pairs[name] = (JsonValue*)new JsonNumber(value);
 }
 
 void JsonObject::addNumber(const string& name, const long value) {
-//	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonNumber(value));
-//	_pairs.push_back(pair);
 	_pairs[name] = (JsonValue*)new JsonNumber(value);
 }
 
 void JsonObject::addBoolean(const string& name, const bool value) {
-//	JsonPair* pair = new JsonPair(name, (JsonValue*)new JsonBoolean(value));
-//	_pairs.push_back(pair);
 	_pairs[name] = (JsonValue*)new JsonBoolean(value);
 }
 
 JsonObject& JsonObject::addObject(const string& name) {
 	JsonObject* var = new JsonObject();
-//	JsonPair* pair = new JsonPair(name, var);
-//	_pairs.push_back(pair);
 	_pairs[name] = (JsonValue*)var;
 
 	return *var;
@@ -403,8 +390,6 @@ JsonObject& JsonObject::addObject(const string& name) {
 
 JsonList& JsonObject::addList(const string& name) {
 	JsonList* var = new JsonList();
-//	JsonPair* pair = new JsonPair(name, var);
-//	_pairs.push_back(pair);
 	_pairs[name] = (JsonValue*)var;
 
 	return *var;

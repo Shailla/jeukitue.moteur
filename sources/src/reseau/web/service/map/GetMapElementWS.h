@@ -17,23 +17,32 @@
 namespace jkt {
 
 class CMap;
+class MapObject;
 
 class GetMapElementWS : public WebService {
 	static string ID;
 	static string NAME;
 	static string TYPE;
+	static string MAPS;
+	static string ELEMENTS;
+	static string MAPELEMENT;
+	static string MAPELEMENTS;
 	static string HIGHLIGHTED;
 	static string HIDDEN;
 
 	static std::regex RG_MAPS_SERVICE;
 	static std::regex RG_MAP_SERVICE;
+	static std::regex RG_MAP_ELEMENTS_SERVICE;
 	static std::regex RG_MAP_ELEMENT_SERVICE;
 
 	WebServiceResult getMapList();
 	WebServiceResult getCurrentMap();
 	WebServiceResult saveCurrentMap();
-	WebServiceResult getElement(int elementId);
+	void getElement(int elementId, JsonObject& mapElement, vector<string>& errors);
+	WebServiceResult updateElements(HttpRequest& request);
 	WebServiceResult updateElement(HttpRequest& request, int elementId);
+
+	std::string updateElement(JsonObject* jsonObject, MapObject* object);
 
 	void jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe);
 

@@ -22,9 +22,9 @@ HttpRequest::HttpRequest(const char* request, int requestSize) throw(HttpExcepti
 	/* Sépare les paramètres HTTP de son body                         */
 	/* ************************************************************** */
 
-	std::size_t splitHttpHeaderBody = _request.find(SPLIT_HTTP_HEADER_BODY);
-
 	LOGINFO(("REQUETE:%s", _request.c_str()));
+
+	std::size_t splitHttpHeaderBody = _request.find(SPLIT_HTTP_HEADER_BODY);
 
 	if(splitHttpHeaderBody == string::npos) {
 		throw HttpException(HttpException::MALFORMED_HTTP_REQUEST, "Cannot split http header and body");

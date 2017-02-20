@@ -13,9 +13,12 @@ import { JSON_MAP }			from './mock-map';
 export class MapService {
 	private mapServiceBaseUrl = 'http://localhost:20000/rest/map-service';
 	
-	private mapsServiceUrl = 		this.mapServiceBaseUrl + '/maps';		// Get available Maps
-	private mapServiceUrl = 		this.mapServiceBaseUrl + '/map';		// Get the current Map graph
+	private mapsServiceUrl = 		this.mapServiceBaseUrl + '/maps';			// Get available Maps
+	private mapServiceUrl = 		this.mapServiceBaseUrl + '/map';			// Get the current Map graph
 	private mapElementServiceUrl = 	this.mapServiceBaseUrl + '/map/element';	// Get or update an element from current Map
+	private mapElementsServiceUrl = this.mapServiceBaseUrl + '/map/elements';	// Get or update several elements from current Map
+	
+	private headers = new Headers({'Content-Type': 'application/json'});
 	
 	private static once: boolean = false;
 	
@@ -71,16 +74,14 @@ export class MapService {
 	}
 	
 	updateMapElement(mapElementId: number, mapElement: MapElement): Promise<MapElement> {
-		let headers = new Headers({ 'Content-Type': 'application/json' });
+		let param = {};
+		param["mapElement"] = mapElement;
 		
-		let element = {};
-		element["mapElement"] = mapElement;
-		
-		let body = JSON.stringify(element);
+		let body = JSON.stringify(param);
 		
 		console.log(body);
 		
-		return this.http.put(this.mapElementServiceUrl + "/" + mapElementId, body, headers)
+		return this.http.put(this.mapElementServiceUrl + "/" + mapElementId, body, {headers: this.headers})
 			.toPromise()
 			.then(response => {
 					let json = response.json();
@@ -94,11 +95,30 @@ export class MapService {
 			.catch(this.handleError);
 	}
 	
+	updateMapElements(elementsToUpdate) {
+		let param = {};
+		param["mapElements"] = elementsToUpdate;
+		
+		let body = JSON.stringify(param);
+		
+		console.log("REQUEST:" + body);
+		
+		this.http.put(this.mapElementsServiceUrl, body, {headers: this.headers})
+			.toPromise()
+			.then(response => {
+					let json = response.json();
+					console.log("RESPONSE:" + JSON.stringify(json));
+					json.mapElements.forEach(
+						mapElement => this.mapElementUpdated.emit(mapElement)
+					);
+				}
+			)
+			.catch(this.handleError);
+	}
+	
 	// Sauvegarde de la Map courante
 	saveMap() {
-		let headers = new Headers({ 'Content-Type': 'application/json' }); 
-				
-		return this.http.post(this.mapServiceUrl, "", headers)
+		return this.http.post(this.mapServiceUrl, "", {headers: this.headers})
 			.toPromise()
 			.catch(this.handleError);
 	}

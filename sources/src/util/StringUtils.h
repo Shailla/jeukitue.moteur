@@ -20,7 +20,9 @@ public:
 
 	static char* toChars(const std::string& str);
 	static void toChars(const std::string& str, char* out, unsigned int maxLength);
+
 	static bool isBlank(const std::string& str);
+	static bool isNotBlank(const std::string& str);
 
 	static std::string findAndEraseFirstWord(std::string& s, int (isSeparator)(int));
 	static std::string findAndEraseFirstWord(std::string& s);

@@ -61,6 +61,17 @@ bool StringUtils::isBlank(const string& s) {
 	return find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace))) == s.end();
 }
 
+/**
+ * Attention, cette méthode n'est pas finie, pour l'instant elle vérifie uniquement si la chaîne n'est pas vide !
+ * ""		: true
+ * "     "	: true
+ * "-"		: false
+ * "  - "	: false
+ */
+bool StringUtils::isNotBlank(const string& s) {
+	return !isBlank(s);
+}
+
 string StringUtils::findAndEraseFirstWord(string& s) {
 	return findAndEraseFirstWord(s, isspace);
 }

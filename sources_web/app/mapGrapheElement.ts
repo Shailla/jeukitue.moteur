@@ -7,11 +7,12 @@ export class MapGrapheElement {
 	name: string; 
 	elements: Array<MapGrapheElement>;
 	
-	highlighted: boolean;
 	hidden: boolean;
+	highlighted: boolean;
 	
 	// Mise en forme
     expanded: boolean;
+	checked: boolean;
 	
 	constructor() {       
 		this.elements = [];
@@ -20,14 +21,15 @@ export class MapGrapheElement {
         this.highlighted = false;
 		
 		this.expanded = false;
+		this.checked = false;
     }
 	
 	fromJson(jsonObject) {
 		this.type = jsonObject.type;
 		this.id = jsonObject.id;
 		this.name = jsonObject.name;
-		this.highlighted = jsonObject.highlighted;
 		this.hidden = jsonObject.hidden;
+		this.highlighted = jsonObject.highlighted;
 		
 		for(let iter of jsonObject.elements) {
 			this.elements.push(new MapGrapheElement().fromJson(iter));
@@ -40,29 +42,25 @@ export class MapGrapheElement {
         this.expanded = !this.expanded;
     }
 	
-    highlight() {
-        let newState = !this.highlighted;
-        this.highlighted = newState;
-        this.highlightRecursive(newState);
+	check() {
+        let newState = !this.checked;
+        this.checked = newState;
+		console.log("Simple click");
     }
+		
+	checkRecursive(state?: boolean) {
+		let newState;
+		
+		if(state == undefined) {
+			newState = !this.checked;
+		}
+		else {
+			newState = state;
+		}
 	
-	hide() {
-        let newState = !this.hidden;
-        this.hidden = newState;
-        this.hideRecursive(newState);
-    }
-	
-    highlightRecursive(state) {
+		this.checked = newState;
         this.elements.forEach(d => {
-            d.highlighted = state;
-            d.highlightRecursive(state);
-        })
-    }
-	
-	hideRecursive(state) {
-        this.elements.forEach(d => {
-            d.hidden = state;
-            d.hideRecursive(state);
+            d.checkRecursive(newState);
         })
     }
 	

@@ -35,6 +35,7 @@ public:
 	JsonBoolean& addBoolean(bool value);
 	JsonObject& addObject();
 	JsonList& addList();
+	const vector<JsonValue*>& getValue();
 
 	JsonNumber* isJsonNumber() override;
 	JsonString* isJsonString() override;

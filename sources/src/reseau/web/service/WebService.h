@@ -9,6 +9,7 @@
 #define SRC_RESEAU_WEB_SERVICE_WEBSERVICE_H_
 
 #include <string>
+#include <vector>
 
 #include "reseau/web/json/JsonObject.h"
 #include "reseau/web/HttpServer.h"
@@ -20,6 +21,7 @@ class WebServiceResult {
 public:
 	WebServiceResult();
 	WebServiceResult(JsonObject& root, const char* status);
+	WebServiceResult(JsonObject& root, const std::vector<string>& errors, const char* status);
 
 	std::string _status;
 	std::string _contentType;

@@ -309,10 +309,11 @@ void HttpServer::start() {
 		while(clientSocket == 0)
 			clientSocket = SDLNet_TCP_Accept(serveurSocket);
 
-		int requestSize = SDLNet_TCP_Recv(clientSocket, buffer, 1024); 				// Reception parametres connection du client
+		int requestSize = SDLNet_TCP_Recv(clientSocket, buffer, 10240); 				// Reception parametres connection du client
 		buffer[requestSize] = '\0';
 
 		try {
+			LOGINFO(("REQUETE BRUTE : '%s'", buffer));
 
 			/* ****************************************** */
 			/* Décodage de la requête HTTP                */
@@ -320,7 +321,7 @@ void HttpServer::start() {
 
 			HttpRequest request(buffer, requestSize);
 			endpoint = request.getEndpoint();
-			LOGDEBUG(("HTTP requête reçue : '%s'", request.toString().c_str()));
+			LOGINFO(("HTTP requête reçue : '%s'", request.toString().c_str()));
 
 
 			/* ****************************************** */
@@ -408,7 +409,7 @@ void HttpServer::start() {
 				break;
 
 			case HttpException::MALFORMED_HTTP_REQUEST:
-				LOGWARN(("Requête http malformée reçue sur le service : '%s'", buffer));
+				LOGWARN(("Requête http malformée reçue sur le service : '%s'", endpoint.c_str()));
 
 				resource = getResource("/bad_http_request.html");
 
@@ -488,6 +489,9 @@ void HttpServer::buildResponse(HttpTcpResponse& tcpResponse, const string& conte
 	response << "Access-Control-Allow-Headers: *" << HTTP_RETURN;
 	response << "Access-Control-Allow-Methods: GET, HEAD, POST, PUT, OPTIONS, TRACE" << HTTP_RETURN;
 	response << "Access-Control-Allow-Origin: *" << HTTP_RETURN;	// TODO A supprimer, sert juste aux tests avec nodejs
+	response << "Cache-Control: no-cache, no-store, must-revalidate" << HTTP_RETURN;
+	response << "Pragma: no-cache" << HTTP_RETURN;
+	response << "Expires: 0" << HTTP_RETURN;
 	response << contentType << HTTP_RETURN;
 	response << HTTP_CONTENT_LENGTH << content.size() << HTTP_RETURN;
 	response << HTTP_RETURN;
@@ -505,9 +509,12 @@ void HttpServer::buildResponse(HttpTcpResponse& tcpResponse, const string& conte
 
 	// Entête de réponse
 	header << HTTP_HEAD << " " << status << HTTP_RETURN;
-	header << "Access-Control-Allow-Headers: *" << HTTP_RETURN;
+	header << "Access-Control-Allow-Headers: Content-Type" << HTTP_RETURN;
 	header << "Access-Control-Allow-Methods: GET, HEAD, POST, PUT, OPTIONS, TRACE" << HTTP_RETURN;
 	header << "Access-Control-Allow-Origin: *" << HTTP_RETURN;	// TODO A supprimer, sert juste aux tests avec nodejs
+	header << "Cache-Control: no-cache, no-store, must-revalidate" << HTTP_RETURN;
+	header << "Pragma: no-cache" << HTTP_RETURN;
+	header << "Expires: 0" << HTTP_RETURN;
 	header << contentType << HTTP_RETURN;
 	header << HTTP_CONTENT_LENGTH << contentSize << HTTP_RETURN;
 	header << HTTP_RETURN;

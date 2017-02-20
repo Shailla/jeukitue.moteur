@@ -549,7 +549,7 @@ void Controller::executeAgarAction(AG_Event* event) {
 			ConsoleView* view = (ConsoleView*)_agarView->getView(Viewer::CONSOLE_VIEW);
 			string commande = view->getCommandAndClearCommandLine();
 
-			if(!jkt::StringUtils::isBlank(commande)) {
+			if(jkt::StringUtils::isNotBlank(commande)) {
 				Fabrique::getCommandeInterpreter()->interpreteCommande(commande, true);
 			}
 

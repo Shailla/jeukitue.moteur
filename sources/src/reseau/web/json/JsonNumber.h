@@ -26,6 +26,8 @@ public:
 	JsonObject* isJsonObject() override;
 	JsonList* isJsonList() override;
 
+	long getValue() const;
+
 	void toJson(std::stringstream& buffer) override;
 };
 

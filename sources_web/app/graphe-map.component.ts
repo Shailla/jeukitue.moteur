@@ -28,4 +28,43 @@ export class GrapheMapComponent {
 		console.log("graphe-map received 'mapElementUpdated' event");
 		this.elements.forEach(element => element.updateMapElement(mapElement));
 	}
+
+	// Hide or UnHide all checked elements
+	onHideElements(hidden: boolean) {
+		console.log("Hide or UnHide selected elements");
+	
+		let elementsToUpdate = [];
+		this.changeElements(this.elements, "hidden", hidden, elementsToUpdate);
+		
+		console.log(elementsToUpdate);
+		
+		this.mapService.updateMapElements(elementsToUpdate);
+	}
+	
+	// Highlight or UnHighlight all checked elements
+	onHighlightElements(highlighted: boolean) {
+		console.log("Highlight or UnHighlight selected elements");
+		
+		let elementsToUpdate = [];
+		this.changeElements(this.elements, "highlighted", highlighted, elementsToUpdate);
+		
+		console.log(elementsToUpdate);
+		
+		this.mapService.updateMapElements(elementsToUpdate);
+	}
+
+	private changeElements(elements: MapGrapheElement[], param: string, state: boolean, elementsToUpdate) {
+		elements.forEach(
+			element => {
+				if(element.checked) {
+					let newElement = {};
+					newElement["id"] = element.id;
+					newElement[param] = state;
+					elementsToUpdate.push(newElement);
+				}
+				
+				this.changeElements(element.elements, param, state, elementsToUpdate);
+			}
+		);
+	}
 }

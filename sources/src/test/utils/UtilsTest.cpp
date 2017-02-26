@@ -97,6 +97,10 @@ void UtilsTest::stringUtilsTest() {
 	ASSERT_EQUAL(true, StringUtils::isBeginingWith("abcdefghijkl", "abcde"), "'isBeginingWith' KO");
 	ASSERT_EQUAL(false, StringUtils::isBeginingWith("abc", "jkl"), "'isBeginingWith' KO");
 	ASSERT_EQUAL(false, StringUtils::isBeginingWith("abcdefghijklm", "klm"), "'isBeginingWith' KO");
+	ASSERT_EQUAL(false, StringUtils::isBeginingWith("aa", "aaaa"), "'isBeginingWith' KO");
+	ASSERT_EQUAL(true, StringUtils::isBeginingWith("", ""), "'isBeginingWith' KO");
+	ASSERT_EQUAL(true, StringUtils::isBeginingWith("a", ""), "'isBeginingWith' KO");
+	ASSERT_EQUAL(false, StringUtils::isBeginingWith("", "a"), "'isBeginingWith' KO");
 
 	// -----------------------------------------------------
 	log("Test - 'StringUtils::split'", __LINE__);

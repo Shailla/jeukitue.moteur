@@ -92,14 +92,15 @@ void JsonTest::toJson() {
 		JsonObject& object2 = valueList.addObject();
 		object2.addString("string20", "str20");
 
-		ASSERT_EQUAL("{\"object1\":{\"string01\":\"str01\",\"string02\":\"str02\",\"list\":[\"str11\",\"str12\",{\"string20\":\"str20\"}]}}", root.toString(),  "");
+		// En Json un objet n'est pas ordonné, mais dans jkt la std::map utilisée dans JsonObject impose l'ordre alphabétique des clés
+		ASSERT_EQUAL("{\"object1\":{\"list\":[\"str11\",\"str12\",{\"string20\":\"str20\"}],\"string01\":\"str01\",\"string02\":\"str02\"}}", root.toString(),  "");
 	}
 }
 
 void JsonTest::fromJson() {
 	log("From Json test", __LINE__);
 
-	string json = "{\"object1\":{\"string01\":\"str01\",\"string02\":123,\"list\":[\"str11\",\"str12\",{\"string20\":true,\"string20\":false}]}}";
+	string json = "{\"object1\":{\"list\":[\"str11\",\"str12\",{\"string20\":true,\"string22\":false}],\"string01\":\"str01\",\"string02\":123}}";
 
 	JsonObject* object = JsonObject::fromJson(json);
 

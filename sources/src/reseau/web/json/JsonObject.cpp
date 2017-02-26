@@ -37,13 +37,13 @@ JsonObject::JsonObject() {
 }
 
 JsonObject::~JsonObject() {
-//	for(JsonPair* pair : _pairs) {
-//		delete pair;
-//	}
 }
 
 JsonObject* JsonObject::fromJson(const string& json) throw(MalformedJsonException) {
 	string var = json;
+
+	cout << "BODY:'" << json << "'";
+
 
 	unique_ptr<JsonObject> object = readObject(0, var);
 	smatch s;

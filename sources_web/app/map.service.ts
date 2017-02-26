@@ -18,7 +18,7 @@ export class MapService {
 	private mapElementServiceUrl = 	this.mapServiceBaseUrl + '/map/element';	// Get or update an element from current Map
 	private mapElementsServiceUrl = this.mapServiceBaseUrl + '/map/elements';	// Get or update several elements from current Map
 	
-	private headers = new Headers({'Content-Type': 'application/json'});
+	private headers = new Headers({'Content-Type': 'application/json; charset=utf-8'});
 	
 	private static once: boolean = false;
 	

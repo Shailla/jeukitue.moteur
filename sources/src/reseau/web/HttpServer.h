@@ -84,9 +84,9 @@ private:
 
 	void collecteDir(const std::string& dirname, const std::string& endpoint, const std::string& contentType);
 
-	void buildResponse(HttpTcpResponse& tcpResponse, const std::string& contentType, const std::string& content, const std::string& status);
-	void buildResponse(HttpTcpResponse& tcpResponse, const std::string& contentType, void* content, long contentSize, const std::string& status);
-	void buildResponse(HttpTcpResponse& tcpResponse, WebResource& webResource, const std::string& status);
+	void buildResponse(HttpTcpResponse& tcpResponse, const std::string& status, const std::string& contentType, const std::string& content);
+	void buildResponse(HttpTcpResponse& tcpResponse, const std::string& status, const std::string& contentType, long contentSize, void* content);
+	void buildResponse(HttpTcpResponse& tcpResponse, const std::string& status, WebResource& webResource);
 
 
 	void* buildResponse();

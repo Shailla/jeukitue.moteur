@@ -44,11 +44,11 @@ const char* HttpServer::HTTP_RESPONSE_404 = 		"404 Not Found";
 const char* HttpServer::HTTP_RESPONSE_500 = 		"500 Internal Error";
 const char* HttpServer::HTTP_RESPONSE_501 = 		"501 Not Implemented";
 
-const char* HttpServer::HTTP_CONTENT_TYPE_HTML = 	"Content-type: text/html; charset=utf-8";
-const char* HttpServer::HTTP_CONTENT_TYPE_CSS = 	"Content-type: text/css; charset=utf-8";
-const char* HttpServer::HTTP_CONTENT_TYPE_IMAGE = 	"Content-type: image";
-const char* HttpServer::HTTP_CONTENT_TYPE_JS = 		"Content-type: application/javascript;";
-const char* HttpServer::HTTP_CONTENT_TYPE_JSON = 	"Content-type: application/json; charset=utf-8";
+const char* HttpServer::HTTP_CONTENT_TYPE_HTML = 	"Content-Type: text/html; charset=utf-8";
+const char* HttpServer::HTTP_CONTENT_TYPE_CSS = 	"Content-Type: text/css; charset=utf-8";
+const char* HttpServer::HTTP_CONTENT_TYPE_IMAGE = 	"Content-Type: image";
+const char* HttpServer::HTTP_CONTENT_TYPE_JS = 		"Content-Type: application/javascript;";
+const char* HttpServer::HTTP_CONTENT_TYPE_JSON = 	"Content-Type: application/json; charset=utf-8";
 const char* HttpServer::HTTP_CONTENT_LENGTH = 		"Content-Length: ";
 
 const char* HttpServer::HTTP_METHOD_OPTIONS =		"OPTIONS";
@@ -286,6 +286,11 @@ void HttpServer::start() {
 		LOGERROR(("Open TCP server failed : %s", SDLNet_GetError()));
 	}
 
+	SDLNet_SocketSet serveurSocketSet = SDLNet_AllocSocketSet(1);
+	if( !serveurSocketSet ) {
+		LOGERROR(("Open TCP server socket set failed : %s", SDLNet_GetError()));
+	}
+
 	TCPsocket clientSocket;
 	HttpTcpResponse tcpResponse;
 	string header, methodStr, url, endpoint, params, protocol, path0;
@@ -296,7 +301,8 @@ void HttpServer::start() {
 	string contentType;
 	string status;
 	bool found;
-	char buffer[1024];
+	const int TCP_BUFFER_SIZE = 16384;
+	char buffer[TCP_BUFFER_SIZE];
 
 	while(1) {
 
@@ -306,152 +312,176 @@ void HttpServer::start() {
 
 		clientSocket = 0;
 
-		while(clientSocket == 0)
+		while(clientSocket == 0) {
+			SDLNet_CheckSockets(serveurSocketSet, -1);
 			clientSocket = SDLNet_TCP_Accept(serveurSocket);
+		}
 
-		int requestSize = SDLNet_TCP_Recv(clientSocket, buffer, 10240); 				// Reception parametres connection du client
-		buffer[requestSize] = '\0';
-
-		try {
-			LOGINFO(("REQUETE BRUTE : '%s'", buffer));
-
-			/* ****************************************** */
-			/* Décodage de la requête HTTP                */
-			/* ****************************************** */
-
-			HttpRequest request(buffer, requestSize);
-			endpoint = request.getEndpoint();
-			LOGINFO(("HTTP requête reçue : '%s'", request.toString().c_str()));
+		int requestSize = SDLNet_TCP_Recv(clientSocket, buffer, TCP_BUFFER_SIZE); 				// Reception parametres connection du client
 
 
-			/* ****************************************** */
-			/* Recherche du contenu demandé               */
-			/* ****************************************** */
-
-			content = 0;
-			found = false;
+		// Requête de gestion du TCP (keepalive, ...)
+		if(requestSize == 0) {
 			tcpResponse.reset();
+			tcpResponse.update((char*)malloc(0), 0);
+			LOGINFO(("Empty TCP paquet ==> empty TCP response"));
+		}
+		// Requête métier
+		else {
+			buffer[requestSize] = '\0';
 
-			// Search web service
-			if(!found) {
-				string baseEndpoint, serviceEndpoint;
-				WebService* service = getService(request.getEndpoint(), baseEndpoint, serviceEndpoint);
+			try {
+				stringstream decimal;
 
-				if(service) {
-					found = true;
+				for(int i=0 ; i< requestSize ; i++) {
+					if(i > 0) {
+						decimal << ",";
+					}
 
-					if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_OPTIONS) {
-						contentType = HTTP_CONTENT_TYPE_HTML;
-						contentSize = 0;
-						content = (void*)"";
-						status = HTTP_RESPONSE_204;
+					decimal << std::hex << (int)buffer[i];
+				}
+
+				LOGINFO(("ssssssssssss HTTP received request (native)\nssssssssssssssssssssssssssssssssssssssssssssssssssssssss\n'%s'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n'%s'\n========================================================", buffer, decimal.str().c_str()));
+
+
+				/* ****************************************** */
+				/* Décodage de la requête HTTP                */
+				/* ****************************************** */
+
+				HttpRequest request(buffer, requestSize);
+				endpoint = request.getEndpoint();
+				LOGINFO(("%%%%%%%%%%%% HTTP received request\nssssssssssssssssssssssssssssssssssssssssssssssssssssssss\n'%s'\nssssssssssssssssssssssssssssssssssssssssssssssssssssssss", request.toString().c_str()));
+
+
+				/* ****************************************** */
+				/* Recherche du contenu demandé               */
+				/* ****************************************** */
+
+				content = 0;
+				found = false;
+				tcpResponse.reset();
+
+				// Search web service
+				if(!found) {
+					string baseEndpoint, serviceEndpoint;
+					WebService* service = getService(request.getEndpoint(), baseEndpoint, serviceEndpoint);
+
+					if(service) {
+						found = true;
+
+						if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_OPTIONS) {
+							contentType = HTTP_CONTENT_TYPE_JSON;
+							contentSize = 0;
+							content = (void*)"";
+							status = HTTP_RESPONSE_204;
+						}
+						else {
+							WebServiceResult result = service->execute(request, baseEndpoint, serviceEndpoint);
+
+							contentType = result._contentType;
+							contentSize = result._contentSize;
+							content = result._content;
+							status = result._status;
+						}
+					}
+				}
+
+				// Search static web resource
+				if(!found) {
+					resource = getResource(request.getEndpoint());	// Exception thrown if no resource found
+
+					if(resource) {
+						contentType = resource->getContentType();
+						contentSize = resource->getContentSize();
+						content = resource->getContent();
+						status = HTTP_RESPONSE_200;
+
+						found = true;
+					}
+				}
+
+				// Nothing is found for the endpoint
+				if(!found) {
+					throw HttpException(HttpException::RESOURCE_NOT_FOUND_EXCEPTION, "No service or resource found");
+				}
+				else {
+					buildResponse(tcpResponse, status, contentType, contentSize, content);
+				}
+			}
+			catch(HttpException& exception) {
+				switch(exception.getCode()) {
+				case HttpException::RESOURCE_NOT_FOUND_EXCEPTION:
+					LOGWARN(("Endpoint introuvable : '%s'", endpoint.c_str()));
+
+					resource = getResource("/resource_not_found.html");
+
+					if(resource) {
+						buildResponse(tcpResponse, HTTP_RESPONSE_404, *resource);
 					}
 					else {
-						WebServiceResult result = service->execute(request, baseEndpoint, serviceEndpoint);
-
-						contentType = result._contentType;
-						contentSize = result._contentSize;
-						content = result._content;
-						status = result._status;
+						LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
 					}
+
+					break;
+
+				case HttpException::SERVICE_NOT_EXISTS:
+					LOGWARN(("Service introuvable : '%s'", endpoint.c_str()));
+
+					resource = getResource("/resource_not_found.html");
+
+					if(resource) {
+						buildResponse(tcpResponse, HTTP_RESPONSE_404, *resource);
+					}
+					else {
+						LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
+					}
+					break;
+
+				case HttpException::MALFORMED_HTTP_REQUEST:
+					LOGWARN(("Requête http malformée reçue sur le service : '%s'", endpoint.c_str()));
+
+					resource = getResource("/bad_http_request.html");
+
+					if(resource) {
+						buildResponse(tcpResponse, HTTP_RESPONSE_400, *resource);
+					}
+					else {
+						LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
+					}
+					break;
+
+				default:
+					LOGERROR(("On ne devrait jamais être ici (erreur non-maîtrisée) '%s' : %d", buffer, exception.getCode()));
+					break;
 				}
 			}
-
-			// Search static web resource
-			if(!found) {
-				resource = getResource(request.getEndpoint());	// Exception thrown if no resource found
-
-				if(resource) {
-					contentType = resource->getContentType();
-					contentSize = resource->getContentSize();
-					content = resource->getContent();
-					status = HTTP_RESPONSE_200;
-
-					found = true;
-				}
-			}
-
-			// Nothing is found for the endpoint
-			if(!found) {
-				throw HttpException(HttpException::RESOURCE_NOT_FOUND_EXCEPTION, "No service or resource found");
-			}
-			else {
-				buildResponse(tcpResponse, contentType, content, contentSize, status);
-			}
-		}
-		catch(HttpException& exception) {
-			switch(exception.getCode()) {
-			case HttpException::RESOURCE_NOT_FOUND_EXCEPTION:
-				LOGWARN(("Endpoint introuvable : '%s'", endpoint.c_str()));
-
-				resource = getResource("/resource_not_found.html");
-
-				if(resource) {
-					buildResponse(tcpResponse, *resource, HTTP_RESPONSE_404);
-				}
-				else {
-					LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
-				}
-
-				break;
-
-			case HttpException::SERVICE_NOT_EXISTS:
-				LOGWARN(("Service introuvable : '%s'", endpoint.c_str()));
-
-				resource = getResource("/resource_not_found.html");
-
-				if(resource) {
-					buildResponse(tcpResponse, *resource, HTTP_RESPONSE_404);
-				}
-				else {
-					LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
-				}
-				break;
-
-			case HttpException::MALFORMED_HTTP_REQUEST:
-				LOGWARN(("Requête http malformée reçue sur le service : '%s'", endpoint.c_str()));
+			catch(MalformedJsonException& exception) {
+				LOGWARN(("La requête HTTP reçue contient un Json malformé sur le service : '%s'", endpoint.c_str()));
 
 				resource = getResource("/bad_http_request.html");
 
 				if(resource) {
-					buildResponse(tcpResponse, *resource, HTTP_RESPONSE_400);
+					buildResponse(tcpResponse, HTTP_RESPONSE_400, *resource);
 				}
 				else {
-					LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
+					LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant) '%s' : %d", endpoint.c_str(), exception));
 				}
-				break;
-
-			default:
-				LOGERROR(("On ne devrait jamais être ici (erreur non-maîtrisée) '%s' : %d", buffer, exception.getCode()));
-				break;
 			}
-		}
-		catch(MalformedJsonException& exception) {
-			LOGWARN(("La requête HTTP reçue contient un Json malformé sur le service : '%s'", endpoint.c_str()));
-
-			resource = getResource("/bad_http_request.html");
-
-			if(resource) {
-				buildResponse(tcpResponse, *resource, HTTP_RESPONSE_400);
+			catch(std::exception& exception) {
+				LOGERROR(("Erreur interne (exception standard) sur '%s' : '%s'", buffer, exception.what()));
 			}
-			else {
-				LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant) '%s' : %d", endpoint.c_str(), exception));
+			catch(...) {
+				LOGERROR(("Erreur interne inconnue sur '%s'", buffer));
 			}
-		}
-		catch(std::exception& exception) {
-			LOGERROR(("Erreur interne (exception standard) sur '%s' : '%s'", buffer, exception.what()));
-		}
-		catch(...) {
-			LOGERROR(("Erreur interne inconnue sur '%s'", buffer));
 		}
 
 		if(tcpResponse.getSize() <= 0) {	// Si aucune réponse n'a été obtenue ici c'est qu'il y a une couille dans le potage
 			LOGERROR(("On ne devrait jamais être ici '%s'", buffer));
-			buildResponse(tcpResponse, HTTP_CONTENT_TYPE_HTML, HTTP_INTERNAL_ERROR_CONTENT, HTTP_RESPONSE_500);
+			buildResponse(tcpResponse, HTTP_RESPONSE_500, HTTP_CONTENT_TYPE_HTML, HTTP_INTERNAL_ERROR_CONTENT);
 		}
 
 		// Envoi réponse
-		LOGDEBUG(("HTTP response : '%s'", tcpResponse.getContent()));
+		LOGINFO(("%%%%%%%%%%%% HTTP response                  %%%%%%%%%%%%\n'%s'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", tcpResponse.getContent()));
 
 		SDLNet_TCP_Send(clientSocket, tcpResponse.getContent(), tcpResponse.getSize()); 		// Envoi du contenu de la page au client
 		SDLNet_TCP_Close(clientSocket);
@@ -459,7 +489,6 @@ void HttpServer::start() {
 }
 
 WebService* HttpServer::getService(const string& fullEndpoint, string& baseEndpoint, string& serviceEndpoint) {
-
 	for(auto& iter : _services) {
 		if(StringUtils::isBeginingWith(fullEndpoint, iter.first)) {
 			baseEndpoint = iter.first;
@@ -481,15 +510,15 @@ WebResource* HttpServer::getResource(const string& endpoint) throw(int) {
 	}
 }
 
-void HttpServer::buildResponse(HttpTcpResponse& tcpResponse, const string& contentType, const string& content, const string& status) {
+void HttpServer::buildResponse(HttpTcpResponse& tcpResponse, const string& status, const string& contentType, const string& content) {
 	stringstream response;
 
 	// Entête de réponse
 	response << HTTP_HEAD << " " << status << HTTP_RETURN;
-	response << "Access-Control-Allow-Headers: *" << HTTP_RETURN;
+	response << "Access-Control-Allow-Headers: content-type" << HTTP_RETURN;
 	response << "Access-Control-Allow-Methods: GET, HEAD, POST, PUT, OPTIONS, TRACE" << HTTP_RETURN;
 	response << "Access-Control-Allow-Origin: *" << HTTP_RETURN;	// TODO A supprimer, sert juste aux tests avec nodejs
-	response << "Cache-Control: no-cache, no-store, must-revalidate" << HTTP_RETURN;
+	response << "Cache-Control: no-cache, no-store" << HTTP_RETURN;
 	response << "Pragma: no-cache" << HTTP_RETURN;
 	response << "Expires: 0" << HTTP_RETURN;
 	response << contentType << HTTP_RETURN;
@@ -504,15 +533,15 @@ void HttpServer::buildResponse(HttpTcpResponse& tcpResponse, const string& conte
 	tcpResponse.getContent()[str.size()] = '\0';
 }
 
-void HttpServer::buildResponse(HttpTcpResponse& tcpResponse, const string& contentType, void* content, long contentSize, const string& status) {
+void HttpServer::buildResponse(HttpTcpResponse& tcpResponse, const string& status, const string& contentType, long contentSize, void* content) {
 	stringstream header;
 
 	// Entête de réponse
 	header << HTTP_HEAD << " " << status << HTTP_RETURN;
-	header << "Access-Control-Allow-Headers: Content-Type" << HTTP_RETURN;
+	header << "Access-Control-Allow-Headers: content-type" << HTTP_RETURN;
 	header << "Access-Control-Allow-Methods: GET, HEAD, POST, PUT, OPTIONS, TRACE" << HTTP_RETURN;
 	header << "Access-Control-Allow-Origin: *" << HTTP_RETURN;	// TODO A supprimer, sert juste aux tests avec nodejs
-	header << "Cache-Control: no-cache, no-store, must-revalidate" << HTTP_RETURN;
+	header << "Cache-Control: no-cache, no-store" << HTTP_RETURN;
 	header << "Pragma: no-cache" << HTTP_RETURN;
 	header << "Expires: 0" << HTTP_RETURN;
 	header << contentType << HTTP_RETURN;
@@ -529,8 +558,8 @@ void HttpServer::buildResponse(HttpTcpResponse& tcpResponse, const string& conte
 	tcpResponse.getContent()[responseSize] = '\0';
 }
 
-void HttpServer::buildResponse(HttpTcpResponse& tcpResponse, WebResource& webResource, const string& status) {
-	buildResponse(tcpResponse, webResource.getContentType(), webResource.getContent(), webResource.getContentSize(), status);
+void HttpServer::buildResponse(HttpTcpResponse& tcpResponse, const string& status, WebResource& webResource) {
+	buildResponse(tcpResponse, status, webResource.getContentType(), webResource.getContentSize(), webResource.getContent());
 }
 
 }	// JktNet

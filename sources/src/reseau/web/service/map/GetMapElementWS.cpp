@@ -204,9 +204,12 @@ WebServiceResult GetMapElementWS::updateElement(HttpRequest& request, int elemen
 				return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, result);
 			}
 		}
+		else {
+			return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, root object 'mapElement' element does not exists");
+		}
 	}
 	else {
-		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, root 'mapElement' element does not exists");
+		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, no Json content");
 	}
 
 	vector<string> errors;

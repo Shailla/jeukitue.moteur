@@ -25,8 +25,13 @@ export class GrapheMapComponent {
 	}
 	
 	private onMapElementUpdated(mapElement: MapElement) {
-		console.log("graphe-map received 'mapElementUpdated' event");
-		this.elements.forEach(element => element.updateMapElement(mapElement));
+		if(this.elements != undefined) {
+			console.log("graphe-map received 'onMapElementUpdated' event");
+			this.elements.forEach(element => element.updateMapElement(mapElement));
+		}
+		else {
+			console.log("graphe-map received 'onMapElementUpdated' event, ignored because elements are undefined");
+		}
 	}
 
 	// Hide or UnHide all checked elements

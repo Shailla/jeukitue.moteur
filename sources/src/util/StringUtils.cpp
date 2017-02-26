@@ -155,12 +155,7 @@ bool StringUtils::isFinishingWith(const string& txt, const string& suffix) {
 }
 
 bool StringUtils::isBeginingWith(const string& txt, const string& prefix) {
-	if( txt.size() >= prefix.size() && string( txt.begin(), txt.begin() + prefix.size() ) == prefix ) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	return txt.substr(0, prefix.length()) == prefix ;
 }
 
 vector<string> StringUtils::splitByCarriageReturns(const string& s) {

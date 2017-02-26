@@ -44,7 +44,6 @@ class JsonObject : public JsonValue {
 	static unique_ptr<JsonBoolean> readBoolean(int depth, std::string& json) throw(MalformedJsonException);
 	static unique_ptr<JsonList> readList(int depth, std::string& json) throw(MalformedJsonException);
 
-//	std::vector<JsonPair*> _pairs;
 	std::map<std::string, JsonValue*> _pairs;
 
 public:
@@ -57,9 +56,7 @@ public:
 	void addNumber(const std::string& name, const unsigned int value);
 	void addNumber(const std::string& name, const int value);
 	void addNumber(const std::string& name, const long value);
-
 	JsonObject& addObject(const std::string& name);
-
 	JsonList& addList(const std::string& name);
 
 	JsonNumber* isJsonNumber() override;

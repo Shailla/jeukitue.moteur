@@ -2,9 +2,9 @@
 #include <cmath>
 #include <iostream>
 
-using namespace std;
-
 #include "V3D.h"
+
+using namespace std;
 
 namespace jkt
 {

@@ -9,8 +9,6 @@
 #include <vector>
 #include <sstream>
 
-using namespace std;
-
 #include "util/TraceMethod.h"
 #include "util/Trace.h"
 #include "util/StringUtils.h"
@@ -35,6 +33,7 @@ using namespace std;
 
 #include "data/ClientDataTree.h"
 
+using namespace std;
 using namespace jkt;
 
 ClientDataTree::ClientDataTree(const std::string& clientName, Interlocutor2* serverInterlocutor) : DataTree(TREE_CLIENT) {

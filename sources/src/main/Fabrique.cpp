@@ -1,12 +1,11 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "util/Trace.h"
 
 #include "main/Fabrique.h"
 
+using namespace std;
 using namespace jkt;
 
 Centralisateur* Fabrique::_centralisateur = 0;

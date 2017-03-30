@@ -18,7 +18,7 @@ SolidAndTargettable::SolidAndTargettable(const SolidAndTargettable& other) {
 SolidAndTargettable::~SolidAndTargettable() {
 }
 
-bool SolidAndTargettable::Contact(const float pos[3], float dist) {
+bool SolidAndTargettable::checkContact(const float pos[3], float dist) {
 	return false;
 }
 

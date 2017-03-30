@@ -9,8 +9,6 @@
 #include <vector>
 #include <iostream>
 
-using namespace std;
-
 #include "SDL.h"
 #include "fmod.h"
 
@@ -21,6 +19,7 @@ using namespace std;
 
 #include "audio.h"
 
+using namespace std;
 using namespace jkt;
 
 //char **remarquesDriver;

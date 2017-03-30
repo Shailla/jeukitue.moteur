@@ -7,13 +7,13 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "main/Fabrique.h"
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/PluginEngine.h"
 
 #include "plugin/lua/proxy/gui/PluginWindowProxy.h"
+
+using namespace std;
 
 namespace jkt {
 

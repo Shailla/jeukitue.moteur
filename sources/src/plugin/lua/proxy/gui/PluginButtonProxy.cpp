@@ -7,14 +7,14 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/PluginContext.h"
 #include "plugin/PluginEngine.h"
 #include "plugin/api/gui/PluginButton.h"
 
 #include "plugin/lua/proxy/gui/PluginButtonProxy.h"
+
+using namespace std;
 
 namespace jkt {
 

@@ -11,8 +11,6 @@
 #include <string>
 #include <sstream>
 
-using namespace std;
-
 #include "util/exception/UnserializeException.h"
 
 namespace jkt {
@@ -32,13 +30,13 @@ private:
 
 	int _int_value;
 	float _float_value;
-	string _string_value;
+	std::string _string_value;
 
 public:
 	AnyData();
 	AnyData(const int& value);
 	AnyData(const float& value);
-	AnyData(const string& value);
+	AnyData(const std::string& value);
 	AnyData(std::istringstream& in);
 	virtual ~AnyData();
 
@@ -55,7 +53,7 @@ public:
 
 	void update(const int& value);
 	void update(const float& value);
-	void update(const string& value);
+	void update(const std::string& value);
 
 	bool isInt() const;
 	bool isFloat() const;
@@ -63,7 +61,7 @@ public:
 
 	int getValueInt() const;
 	float getValueFloat() const;
-	string getValueString() const;
+	std::string getValueString() const;
 };
 
 };

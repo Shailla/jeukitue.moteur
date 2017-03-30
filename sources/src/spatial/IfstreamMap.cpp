@@ -3,14 +3,14 @@
 #include <fstream>
 #include <iostream>
 
-using namespace std;
-
 #include "ressource/RessourcesLoader.h"
 #include "util/Erreur.h"
 #include "util/Tableau.cpp"
 #include "spatial/materiau/Material.h"
 
 #include "spatial/IfstreamMap.h"
+
+using namespace std;
 
 namespace jkt
 {

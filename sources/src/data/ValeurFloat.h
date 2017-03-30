@@ -10,8 +10,6 @@
 
 #include <string>
 
-using namespace std;
-
 #include "util/GenRef.h"
 #include "data/Valeur.h"
 
@@ -20,7 +18,7 @@ class Branche;
 class ValeurFloat : public Valeur {
 	float _valeur;
 public:
-	ValeurFloat(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, UPDATE_MODE updateMode, int tmpRef, int revision, float valeur);
+	ValeurFloat(AbstractBranche* parent, int valeurId, const std::string& valeurName, DONNEE_TYPE valeurType, UPDATE_MODE updateMode, int tmpRef, int revision, float valeur);
 	virtual ~ValeurFloat();
 
 	float getValeur() const;

@@ -9,8 +9,6 @@
 #include <map>
 #include <cmath>
 
-using namespace std;
-
 #include "util/Erreur.h"
 #include "util/Trace.h"
 #include "util/V3D.h"
@@ -28,6 +26,7 @@ using namespace std;
 
 #include "Rocket.h"
 
+using namespace std;
 using namespace jkt;
 
 extern CGame Game;
@@ -146,7 +145,7 @@ void CRocket::Deplace() {
 	pos[1] = m_Pos.Y;
 	pos[2] = m_Pos.Z;
 
-	if(Game.getMap()->Contact(pos, ROCKET_RAYON*1.02f))	// Si la rocket touche un objet
+	if(Game.getMap()->checkContact(pos, ROCKET_RAYON*1.02f))	// Si la rocket touche un objet
 		m_State = ROCKET_STATE_CONTACT;	// La rocket doit exploser
 	else
 		m_Pos += m_Dir * 0.02f;	// Le mouvement de la rocket continue

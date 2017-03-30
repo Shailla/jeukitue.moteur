@@ -9,12 +9,9 @@
 	#include <windows.h>
 #endif
 
-using namespace std;
 
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
-
-using namespace jkt;
 
 class CMaterial;
 class CLight;
@@ -39,6 +36,9 @@ class CPorte;
 #include "util/Trace.h"
 
 #include "ihm/MMode.h"
+
+using namespace std;
+using namespace jkt;
 
 extern CFocus *pFocus;
 extern bool Aide;

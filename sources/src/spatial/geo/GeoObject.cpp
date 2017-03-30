@@ -12,8 +12,6 @@
 #include <GL/glew.h>
 #include <GL/GLU.H>
 
-using namespace std;
-
 class CGame;
 
 extern int JKT_RenderMode;
@@ -41,10 +39,10 @@ extern int JKT_RenderMode;
 
 #include "GeoObject.h"
 
+using namespace std;
 using namespace jkt;
 
 extern CCfg Config;
-
 
 namespace jkt
 {
@@ -791,7 +789,7 @@ float CGeoObject::testContactTriangle( unsigned int i, const float posPlayer[3],
 
 	// Renvoie la distance entre le point de position 'pos' et le plus proche triangle de l'objet
 	// géo. N'effectue cette mesure que pour des distances inférieures à 'dist'
-bool CGeoObject::Contact( const float pos[3], float dist )
+bool CGeoObject::checkContact( const float pos[3], float dist )
 {
 	float distanceW;
 	if( TestContactPave( pos, dist ) )	// Teste proximité 'joueur / l'objet géo'

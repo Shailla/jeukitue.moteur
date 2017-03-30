@@ -1,5 +1,4 @@
 #include <string>
-using namespace std;
 
 #include "SDL_net.h"
 
@@ -7,6 +6,8 @@ using namespace std;
 #include "centralisateur/UdpController.h"
 
 #include "centralisateur/data/SignalementData.h"
+
+using namespace std;
 
 SignalementData::SignalementData(void)
 {

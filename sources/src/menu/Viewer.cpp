@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include <agar/core.h>
 #include <agar/gui.h>
 
@@ -29,6 +27,8 @@ using namespace std;
 #include "menu/PlayersView.h"
 #include "menu/QuestsView.h"
 #include "menu/NetworkConnectionsView.h"
+
+using namespace std;
 
 Viewer::Viewer(AG_EventFn controllerCallback) {
 	// Initialisation des fenêtres

@@ -3,8 +3,6 @@
 #include <set>
 #include <map>
 
-using namespace std;
-
 #include "util/IpUtils.h"
 #include "main/Fabrique.h"
 #include "util/Erreur.h"
@@ -22,6 +20,8 @@ using namespace std;
 
 #include "enumReseau.h"
 #include "reseau/Client.h"
+
+using namespace std;
 
 extern CGame Game;
 

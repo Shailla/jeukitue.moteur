@@ -7,8 +7,6 @@
   #include "wincompat.h"	// Pour FMOD
 #endif						// Pour FMOD
 
-using namespace std;
-
 #include "util/Trace.h"
 #include "fmod.h"
 
@@ -17,6 +15,7 @@ using namespace std;
 
 #include "DemonSons.h"
 
+using namespace std;
 using namespace jkt;
 
 CDemonSons::CDemonSons()

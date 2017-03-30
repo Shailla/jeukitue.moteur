@@ -8,9 +8,7 @@
 #ifndef TEXTURE_H_
 #define TEXTURE_H_
 
-#include "string"
-
-using namespace std;
+#include <string>
 
 #include "SDL.h"
 
@@ -29,7 +27,7 @@ namespace jkt {
  */
 class Texture : public GraphicObject {
 	/** Nom du fichier de l'image qui a servi à créer l'icone. */
-	string _nomFichier;
+	std::string _nomFichier;
 
 	/** Indique si la transparence est active ou non pour cette icone. */
 	bool _alpha;
@@ -56,7 +54,7 @@ public:
 	 * largeur : Largeur de l'icone en pixels.
 	 * pixels : Pixels de l'icone.
 	 */
-	Texture(const string& nomFichier, bool alpha, int hauteur, int largeur, Uint8* pixels);
+	Texture(const std::string& nomFichier, bool alpha, int hauteur, int largeur, Uint8* pixels);
 
 	/** Destructeur. */
 	virtual ~Texture();
@@ -69,7 +67,7 @@ public:
 
 	unsigned int getGlTexName(void);
 
-	const string& getFilename() const;
+	const std::string& getFilename() const;
 
 	/**
 	 * Affiche la texture dans un rectangle aux coordonnées indiquées.

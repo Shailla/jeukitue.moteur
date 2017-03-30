@@ -7,8 +7,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "util/StringUtils.h"
 #include "data/ServeurDataTree.h"
 #include "script/exception/IllegalParameterException.h"
@@ -17,6 +15,7 @@ using namespace std;
 #include "script/commandes/dataCommandes/AddDataCommande.h"
 #include "script/commandes/dataCommandes/UpdateDataCommande.h"
 
+using namespace std;
 using namespace jkt;
 
 DataCommande::DataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {

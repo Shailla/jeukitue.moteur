@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-using namespace std;
 
 #include <agar/core.h>
 #include <agar/gui.h>
@@ -11,8 +10,7 @@ using namespace std;
 #include "centralisateur/data/DownloadFileItem.h"
 #include "menu/View.h"
 
-class CentralisateurView : public View
-{
+class CentralisateurView : public View {
 	AG_Textbox* _receivedTextbox;
 	AG_Textbox* _textboxToSend;
 	std::string _receivedText;
@@ -30,7 +28,7 @@ public:
 	void setPlayerList(char** playerList, int nombreJoueurs);
 
 	// Met à jour la liste des fichiers téléchargeables dans l'IHM
-	void updateDownloadFileList(vector<DownloadFileItem> items);
+	void updateDownloadFileList(std::vector<DownloadFileItem> items);
 };
 
 #endif

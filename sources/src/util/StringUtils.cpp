@@ -10,11 +10,11 @@
 #include <string.h>
 #include <algorithm>
 
-using namespace std;
-
 #include "ctype.h"
 
 #include "util/StringUtils.h"
+
+using namespace std;
 
 namespace jkt {
 

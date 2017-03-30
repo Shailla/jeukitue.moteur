@@ -27,12 +27,10 @@ Il existe 2 façons de jouer un son :
 #ifndef __JKT__DEMONSONS_H
 #define __JKT__DEMONSONS_H
 
-#include "fmod.h"
-
 #include <set>
 #include <map>
 
-using namespace std;
+#include "fmod.h"
 
 #include "son/TypeSon.h"
 
@@ -49,8 +47,8 @@ class CDemonSons
 {
 friend class CSon;
 public:
-	set<CSon*> m_TabSon;				// Table des identifiants des sons existants
-	map<CReqSon*,CSon*> m_TabReq;		// Table des identifiants des requêtes existantes
+	std::set<CSon*> m_TabSon;				// Table des identifiants des sons existants
+	std::map<CReqSon*,CSon*> m_TabReq;		// Table des identifiants des requêtes existantes
 private:
 	void Erase( CReqSon *req );			// Enlève la requête de la liste des requêtes
 public:

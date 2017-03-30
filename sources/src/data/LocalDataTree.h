@@ -11,8 +11,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 #include "data/DataTree.h"
 
 class LocalDataTree : public DataTree {
@@ -33,9 +31,9 @@ public:
 
 	Valeur* createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const jkt::AnyData valeur) override;
 
-	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException) override;
+	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId) throw(NotExistingBrancheException) override;
 
-	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) override;
+	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) override;
 };
 
 #endif /* CLIENTDATATREE_H_ */

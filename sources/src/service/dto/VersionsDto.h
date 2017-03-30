@@ -10,23 +10,21 @@
 
 #include <string>
 
-using namespace std;
-
 namespace jkt {
 
 class VersionsDto {
-	string _openGlVersion;
-	string _gluVersion;
-	string _fmodVersion;
-	string _agarVersion;
+	std::string _openGlVersion;
+	std::string _gluVersion;
+	std::string _fmodVersion;
+	std::string _agarVersion;
 public:
-	VersionsDto(const string& openGlVersion, const string& gluVersion, const string& fmodVersion, const string& agarVersion);
+	VersionsDto(const std::string& openGlVersion, const std::string& gluVersion, const std::string& fmodVersion, const std::string& agarVersion);
 	virtual ~VersionsDto();
 
-	string getOpenGlVersion() const;
-	string getGluVersion() const;
-	string getFmodVersion() const;
-	string getAgarVersion() const;
+	std::string getOpenGlVersion() const;
+	std::string getGluVersion() const;
+	std::string getFmodVersion() const;
+	std::string getAgarVersion() const;
 };
 
 } /* namespace jkt */

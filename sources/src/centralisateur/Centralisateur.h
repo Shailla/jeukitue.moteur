@@ -4,28 +4,25 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 #include "centralisateur/data/DownloadFileItem.h"
 #include "exception/centralisateur/CentralisateurTcpException.h"
 
 #include "UdpController.h"
 #include "menu/ProgressBarView.h"
 
-class Centralisateur
-{
+class Centralisateur {
     int _portLocal;
     UdpController* _udpController;
-    string _userName;
+    std::string _userName;
 public:
     Centralisateur(UdpController* udpController);
     ~Centralisateur(void);
 
     void connecter(char* userName, char* adresseIp, int port);
     void sendSignalement(void);
-	void sendMessageChat(const string& message, const string& userName);
+	void sendMessageChat(const std::string& message, const std::string& userName);
 
-	vector<DownloadFileItem> askDownloadFileList(const int port) throw(CentralisateurTcpException);
+	std::vector<DownloadFileItem> askDownloadFileList(const int port) throw(CentralisateurTcpException);
 	void downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) throw(CentralisateurTcpException);
 };
 

@@ -9,8 +9,6 @@
 #include <cmath>
 #include <map>
 
-using namespace std;
-
 #include "SDL.h"
 
 #include "util/Erreur.h"
@@ -23,6 +21,7 @@ using namespace std;
 
 #include "Laser.h"
 
+using namespace std;
 using namespace jkt;
 
 #define Pi 3.14159265f

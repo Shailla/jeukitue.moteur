@@ -3,10 +3,8 @@
 #define __JKT__REQUETEPROCESS_H
 
 #include <string>
+
 #include "SDL.h"
-
-using namespace std;
-
 
 class CRequeteProcess
 {
@@ -37,7 +35,7 @@ private:
 	OUVRE_MAP_LOCALE_ETAPES _openMapLocalEtape;		// Indique une demande d'ouvrir la MAP nommée dans _MapAOuvrir
 	OUVRE_MAP_SERVER_ETAPES _openMapServerEtape;	// Indique une demande d'ouvrir la MAP nommée dans _MapAOuvrir
 	OUVRE_MAP_CLIENT_ETAPES _openMapClientEtape;	// Indique une demande d'ouvrir la MAP nommée dans _MapAOuvrir
-	string _MapAOuvrir;								// Indique le nom du fichier Map à ouvrir
+	std::string _MapAOuvrir;								// Indique le nom du fichier Map à ouvrir
 	SDL_mutex *_mutex;
 	bool _bTakePicture;								// Indique une demande de prise de photo de la scène
 
@@ -45,9 +43,9 @@ public:
 	CRequeteProcess();
 	~CRequeteProcess();
 
-	void setOuvreMapLocal(const string& nomMAP );					// Inscrit une demande d'ouverture de MAP en mode de jeu local
-	void setOuvreMapClient(const string& nomMAP );					// Inscrit une demande d'ouverture de MAP en mode de jeu client
-	void setOuvreMapServer(const string& nomMAP );					// Inscrit une demande d'ouverture de MAP en mode de jeu serveur
+	void setOuvreMapLocal(const std::string& nomMAP );				// Inscrit une demande d'ouverture de MAP en mode de jeu local
+	void setOuvreMapClient(const std::string& nomMAP );				// Inscrit une demande d'ouverture de MAP en mode de jeu client
+	void setOuvreMapServer(const std::string& nomMAP );				// Inscrit une demande d'ouverture de MAP en mode de jeu serveur
 
 	void setOuvreMapLocaleEtape(OUVRE_MAP_LOCALE_ETAPES etape);
 	void setOuvreMapServerEtape(OUVRE_MAP_SERVER_ETAPES etape);
@@ -57,7 +55,7 @@ public:
 	int getOuvreMapClientEtape();									// Intéroge sur la présence d'une demande d'ouverture de MAP en jeu client
 	int getOuvreMapServerEtape();									// Intéroge sur la présence d'une demande d'ouverture de MAP en jeu serveur
 
-	string getOuvreMap();											// Renvoie le nom de la MAP à ouvrir et détruit la demande
+	std::string getOuvreMap();										// Renvoie le nom de la MAP à ouvrir et détruit la demande
 
 	void setTakePicture();											// Inscrit une demande de prise de photo de la scène
 	bool isTakePicture();											// Intéroge sur la présence d'un demande de prise de photo

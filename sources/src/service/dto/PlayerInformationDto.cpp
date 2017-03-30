@@ -5,7 +5,9 @@
  *      Author: VGDJ7997
  */
 
-#include <service/dto/PlayerInformationDto.h>
+#include "service/dto/PlayerInformationDto.h"
+
+using namespace std;
 
 PlayerInformationDto::PlayerInformationDto() {
 }

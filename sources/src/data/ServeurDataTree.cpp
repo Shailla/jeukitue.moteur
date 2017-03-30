@@ -10,8 +10,6 @@
 #include <vector>
 #include <sstream>
 
-using namespace std;
-
 #include "util/CollectionsUtils.h"
 #include "util/Trace.h"
 #include "util/TraceMethod.h"
@@ -33,6 +31,7 @@ using namespace std;
 
 #include "data/ServeurDataTree.h"
 
+using namespace std;
 using namespace jkt;
 
 ServeurDataTree::ServeurDataTree() : DataTree(TREE_SERVER) {

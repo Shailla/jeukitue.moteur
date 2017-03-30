@@ -7,8 +7,6 @@
 #include <iostream>
 #include <cmath>
 
-using namespace std;
-
 #include "SDL.h"
 #include "SDL_net.h"
 
@@ -29,6 +27,8 @@ using namespace std;
 
 #include "reseau/enumReseau.h"
 #include "reseau/Server.h"
+
+using namespace std;
 
 void jkt::contactPlayer(CPlayer *player, float *normal, float distanceW);
 void gravitePlayer(CPlayer *player);

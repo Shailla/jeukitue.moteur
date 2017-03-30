@@ -13,8 +13,6 @@
 #include <map>
 #include <fstream>
 
-using namespace std;
-
 #include "spatial/geo/ChanTex.h"
 #include "spatial/basic/MapObject.h"
 #include "spatial/geo/GeoMaker.h"
@@ -25,7 +23,7 @@ namespace jkt
 class CMultiMaterialGeo : public MapObject {
 	static const char* identifier;
 	int m_OffsetMateriaux;			// Sert lors de la lecture des références matériaux
-	string tostring;
+	std::string tostring;
 	CMaterialMulti* m_Material;		// Matériau multiple associé
 
 	float minX, minY, minZ, maxX, maxY, maxZ;	// Coordonnées du pavé englobant l'objet géo
@@ -38,7 +36,7 @@ class CMultiMaterialGeo : public MapObject {
 	float* m_TabVertex;			// Pointeur sur le tableau de sommets
 	int getOffsetMateriau() throw(CErreur);
 		// Canaux et coordonées de texture
-	map<int,int> m_CanauxNumbers;	// first=numéro de canal ; second=nombre de faces du canal
+	std::map<int,int> m_CanauxNumbers;	// first=numéro de canal ; second=nombre de faces du canal
 	float* m_TabTexVertex;			// Liste des coordonnées de texture des canaux
 		// VBO
 	enum {	VBO_VERTEX=0, VBO_NORMAUX, VBO_TEXVERTEX };
@@ -84,7 +82,7 @@ public:
 	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
 
 	// Gestion des contacts
-	bool Contact( const float pos[3], float dist ) override;
+	bool checkContact( const float pos[3], float dist ) override;
 	bool TestContactPave(const float pos[3], float dist);					// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
 	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;
 	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;	// Voir la définition de la fonction

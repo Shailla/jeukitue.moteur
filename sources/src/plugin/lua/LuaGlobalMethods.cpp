@@ -14,6 +14,8 @@
 
 #include "plugin/lua/LuaGlobalMethods.h"
 
+using namespace std;
+
 namespace jkt {
 
 const char* LuaGlobalMethods::REFRESH_EVENT_TYPE = "refresh";

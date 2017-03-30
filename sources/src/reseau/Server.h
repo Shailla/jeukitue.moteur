@@ -5,8 +5,6 @@
 #include <string>
 #include <map>
 
-using namespace std;
-
 #include "SDL.h"
 #include "SDL_net.h"
 
@@ -20,17 +18,17 @@ namespace jkt
 
 class CServer {									// Contient les données courantes du serveur (nombre de joueur, partie en cours,...)
 	StatutServer m_Statut;						// Etat du serveur (déconnecté, connecté, partie en cours, ...)
-	map<IPaddress, CPlayer*> _addressPlayer;	// Mapping entre adresses IP/Port et joueurs connectés
-	map<Uint16, CPlayer*> _jetonPlayer;	// Mapping entre adresses IP/Port et joueurs connectés
+	std::map<IPaddress, CPlayer*> _addressPlayer;	// Mapping entre adresses IP/Port et joueurs connectés
+	std::map<Uint16, CPlayer*> _jetonPlayer;	// Mapping entre adresses IP/Port et joueurs connectés
 public:
 	CSPA spaMaitre;
 	SDLNet_SocketSet socketSet;		// Les sockets à écouter
 
-	string nom;						// Nom du serveur
-	string nameMap;					// Nom de la MAP ouverte en mode multi-joueurs
+	std::string nom;						// Nom du serveur
+	std::string nameMap;					// Nom de la MAP ouverte en mode multi-joueurs
 	
 	bool bGame;						// true si une partie est en cours
-	string nomMAP;					// Nom du fichier MAP de la partie en cours
+	std::string nomMAP;					// Nom du fichier MAP de la partie en cours
 
 	// Serveur moderne
 	ServerUdpInterlocutor* _serverUdpInterlocutor;

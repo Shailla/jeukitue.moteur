@@ -8,8 +8,6 @@
 #include <iostream>
 #include <exception>
 
-using namespace std;
-
 #include "main/Cfg.h"
 #include "exception/JktException.h"
 #include "test/utils/TableauTest.h"
@@ -20,6 +18,8 @@ using namespace std;
 #include "test/data/DataTreeTest.h"
 
 #include "test/TestSuite.h"
+
+using namespace std;
 
 extern CCfg Config;		// Contient la configuration du jeu
 

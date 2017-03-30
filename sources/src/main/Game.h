@@ -62,7 +62,7 @@ public:
 	// Gestion de la Map
 	jkt::CMap *getMap();
 	void changeActiveMap(jkt::CMap* map);
-	bool openMap( const string &nomFichierMap ) throw(jkt::CErreur);
+	bool openMap( const std::string &nomFichierMap ) throw(jkt::CErreur);
 
 	// Gestion du mode
 	void setModeNull();									// Passe en mode "pas de jeu en cours"

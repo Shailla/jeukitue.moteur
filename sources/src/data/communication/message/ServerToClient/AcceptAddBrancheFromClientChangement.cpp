@@ -9,14 +9,14 @@
 #include <vector>
 #include <iostream>
 
-using namespace std;
-
 #include "util/StreamUtils.h"
 #include "data/ValeurInt.h"
 #include "data/ServeurDataTree.h"
 #include "data/MarqueurDistant.h"
 
 #include "data/communication/message/ServerToClient/AcceptAddBrancheFromClientChangement.h"
+
+using namespace std;
 
 AcceptAddBrancheFromClientChangement::AcceptAddBrancheFromClientChangement(istringstream& in) : Changement("AcceptAddBrFromClChgt", PRIORITY_AcceptAddBrancheFromClientChangement, 0) {
 	unserialize(in);

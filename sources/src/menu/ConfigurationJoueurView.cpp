@@ -1,8 +1,6 @@
 
 #include <sstream>
 
-using namespace std;
-
 #include <agar/core.h>
 #include <agar/gui.h>
 
@@ -13,6 +11,8 @@ using namespace std;
 #include "ressource/RessourcesLoader.h"
 
 #include "menu/ConfigurationJoueurView.h"
+
+using namespace std;
 
 extern CCfg Config;
 

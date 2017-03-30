@@ -8,9 +8,7 @@
 #ifndef ICONE_H_
 #define ICONE_H_
 
-#include "string"
-
-using namespace std;
+#include <string>
 
 #include "SDL.h"
 
@@ -23,7 +21,7 @@ namespace jkt {
  */
 class Icone : public GraphicObject {
 	/** Nom du fichier de l'image qui a servi à créer l'icone. */
-	string _nomFichier;
+	std::string _nomFichier;
 
 	/** Indique si la transparence est active ou non pour cette icone. */
 	bool _alpha;
@@ -50,7 +48,7 @@ public:
 	 * largeur : Largeur de l'icone en pixels.
 	 * pixels : Pixels de l'icone.
 	 */
-	Icone(const string& nomFichier, bool alpha, int hauteur, int largeur, Uint8* pixels);
+	Icone(const std::string& nomFichier, bool alpha, int hauteur, int largeur, Uint8* pixels);
 
 	/** Destructeur. */
 	virtual ~Icone();

@@ -17,8 +17,6 @@
 #include "GL/gl.h"
 #include "GL/glext.h"
 
-using namespace std;
-
 class CCfg {
 	static const char* CST_GEN_PLAY_INTRO;
 
@@ -136,7 +134,7 @@ private:
 		void InitOpenGL();
         void InitAgar();
 	public :
-		string position;
+        std::string position;
 		int X;
 		int Y;
 		bool Fullscreen() const		{	return m_bFullscreen;	}
@@ -149,12 +147,12 @@ private:
 		friend class CCfg;
 	protected:
 		Uint16 m_Port;				// Port à utiliser
-		string m_IpServer;			// Adresse IP du serveur (s'il s'agit d'un client)
+		std::string m_IpServer;			// Adresse IP du serveur (s'il s'agit d'un client)
 	public:
 		Uint16 getPort() const			{ return m_Port; }
 		void setPort( Uint16 port )		{ m_Port = port; }
-		string getIp() const		{ return m_IpServer; }
-		void setIp( string ip )		{ m_IpServer = ip; }
+		std::string getIp() const		{ return m_IpServer; }
+		void setIp( std::string ip )		{ m_IpServer = ip; }
 	};
 
 	class CReseau {		// Informations sur la config réseau
@@ -162,17 +160,17 @@ private:
 	protected:
 		Uint16 _Port;						// Port à utiliser
 		Uint16 _portTree;					// Port à utiliser
-		string _IpServer;					// Adresse IP du serveur (s'il s'agit d'un client)
+		std::string _IpServer;					// Adresse IP du serveur (s'il s'agit d'un client)
 		int _treeUpdateClientToServerDelay;	// Temps mini entre 2 mises à jour des données de l'arbre par le client sur le serveur
 		int _treeUpdateServerToClientDelay;	// Temps mini entre 2 mises à jour des données de l'arbre par le serveur sur le client
 	public:
-		string getIpServer() const								{ return _IpServer;							}
+		std::string getIpServer() const								{ return _IpServer;							}
 		Uint16 getServerPort() const							{ return _Port;								}
 		Uint16 getServerPortTree() const						{ return _portTree;							}
 		int getTreeUpdateClientToServerDelay() const			{ return _treeUpdateClientToServerDelay;	}
 		int getTreeUpdateServerToClientDelay() const			{ return _treeUpdateServerToClientDelay;	}
 
-		void setIpServer(const string& ipServeur)										{ _IpServer = ipServeur;	}
+		void setIpServer(const std::string& ipServeur)										{ _IpServer = ipServeur;	}
 		void setPort(Uint16 port)														{ _Port = port;				}
 		void setPortTree(Uint16 portTree)												{ _portTree = portTree;		}
 		void setTreeUpdateClientToServerDelay(int treeUpdateClientToServerDelay)	{ _treeUpdateClientToServerDelay = treeUpdateClientToServerDelay;	}
@@ -183,8 +181,8 @@ private:
 
 	class CJoueur {		// Informations du joueur
 	public:
-		string nom;					// Nom du joueur
-		string mapName;				// Nom de la map réprésentant le skin du joueur
+		std::string nom;					// Nom du joueur
+		std::string mapName;				// Nom de la map réprésentant le skin du joueur
 		bool skinVisibility;		// Indique si le joueur (son skin) est affiché ou non
 		bool hitboxVisibility;		// Indique si la zone de frappe des joueurs est visible
 		bool solidboxVisibility;	// Indique si le contours physiques du joueur (ellipsoïde qui l'entoure) est visible
@@ -192,7 +190,7 @@ private:
 
 	class CPlugin {		// Configuration du moteur de plugin
 	public:
-		vector<string> _defaultPluging;
+		std::vector<std::string> _defaultPluging;
 	};
 
 	class CDebug {
@@ -215,7 +213,7 @@ private:
 		Uint16 getHtmlServerPort()							{ return _htmlServerPort;				}
 	};
 
-	string configFile;
+	std::string configFile;
 
 public:
 	CGeneral General;				// Configuration générale
@@ -231,7 +229,7 @@ public:
 		
 	CCfg();
 
-	void NommeConfig(const string &configFileBaseName, const string& configFileSuffixName);
+	void NommeConfig(const std::string &configFileBaseName, const std::string& configFileSuffixName);
 	void AfficheDateCompilation();		// Affiche le n° de version du programme
 
 	void Lit();			// Lit le fichier de configuration
@@ -250,7 +248,7 @@ public:
 	/**
 	 * Retourne sous forme de texte descriptif l'événement SDL.
 	 */
-	static void resolve(const SDL_Event* sdlEvent, string& description);
+	static void resolve(const SDL_Event* sdlEvent, std::string& description);
 };
 
 #endif

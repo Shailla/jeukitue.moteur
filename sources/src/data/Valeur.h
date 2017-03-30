@@ -10,8 +10,6 @@
 
 #include <string>
 
-using namespace std;
-
 #include "util/types/AnyData.h"
 #include "data/Donnee.h"
 
@@ -22,15 +20,15 @@ class AbstractBranche;
 class Valeur : public Donnee {
 	AbstractBranche* _parent;
 	int _valeurId;
-	string _valeurName;
+	std::string _valeurName;
 	int _valeurTmpId;
 public:
-	Valeur(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, UPDATE_MODE updateMode, int valeurTmpId, int revision);
+	Valeur(AbstractBranche* parent, int valeurId, const std::string& valeurName, DONNEE_TYPE valeurType, UPDATE_MODE updateMode, int valeurTmpId, int revision);
 	virtual ~Valeur();
 
-	vector<int> getBrancheId() const;
-	vector<int> getBrancheIdOrTmpId() const;
-	string getValeurName() const;
+	std::vector<int> getBrancheId() const;
+	std::vector<int> getBrancheIdOrTmpId() const;
+	std::string getValeurName() const;
 	int getValeurTmpId() const;
 	int getValeurId() const;
 	void setValeurId(int valeurId);

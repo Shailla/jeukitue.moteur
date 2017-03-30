@@ -11,8 +11,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 #include "data/DataTree.h"
 
 class ClientDataTree : public DataTree {
@@ -27,11 +25,11 @@ public:
 	ClientDataTree(const std::string& clientName, Interlocutor2* serverInterlocutor);
 	virtual ~ClientDataTree();
 
-	const string& getClientName() const;
-	Branche* getBrancheByTmpId(const vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
+	const std::string& getClientName() const;
+	Branche* getBrancheByTmpId(const std::vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
 
-	Branche* getBrancheFromDistant(DistantTreeProxy* ignored, const vector<int>& brancheId) throw(NotExistingBrancheException) override;
-	Valeur* getValeurFromDistant(DistantTreeProxy* ignored, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) override;
+	Branche* getBrancheFromDistant(DistantTreeProxy* ignored, const std::vector<int>& brancheId) throw(NotExistingBrancheException) override;
+	Valeur* getValeurFromDistant(DistantTreeProxy* ignored, const std::vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) override;
 
 	/* *****************************************************
 	 * Serveur local actions
@@ -55,9 +53,9 @@ public:
 	 * ***************************************************/
 
 	void diffuseChangementsToServer(void);
-	void collecteChangements(vector<Changement*>& changements);
+	void collecteChangements(std::vector<Changement*>& changements);
 	void receiveChangementsFromServer();
-	void sendChangementsToServer(vector<Changement*>& changements);
+	void sendChangementsToServer(std::vector<Changement*>& changements);
 };
 
 #endif /* CLIENTDATATREE_H_ */

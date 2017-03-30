@@ -12,8 +12,6 @@
 #include <algorithm>
 #include <stdexcept>
 
-using namespace std;
-
 #include "util/CollectionsUtils.h"
 #include "data/Branche.h"
 #include "data/Valeur.h"
@@ -26,6 +24,7 @@ using namespace std;
 
 #include "data/PrivateBranche.h"
 
+using namespace std;
 using namespace jkt;
 
 PrivateBranche::PrivateBranche(AbstractBranche* parent, int brancheId, const string& brancheName, DONNEE_TYPE brancheType, int revision, int brancheTmpId) : Branche(parent, brancheId, brancheName, brancheType, revision, brancheTmpId) {

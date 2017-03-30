@@ -8,11 +8,7 @@
 #ifndef MAPLOADER_H_
 #define MAPLOADER_H_
 
-#include <string>
-
 #include "game/GameDto.h"
-
-using namespace std;
 
 class MapLoader {
 	MapLoader();	// Masquage du constructeur de singleton

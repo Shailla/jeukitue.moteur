@@ -14,8 +14,6 @@
 #include <GL/glu.h>
 #include <GL/glext.h>
 
-using namespace std;
-
 class CGame;
 
 extern int JKT_RenderMode;
@@ -37,6 +35,7 @@ extern int JKT_RenderMode;
 
 #include "spatial/geo/TextureMaterialGeo.h"
 
+using namespace std;
 using namespace jkt;
 
 extern CCfg Config;
@@ -709,7 +708,7 @@ float CTextureMaterialGeo::testContactTriangle( unsigned int i, const float posP
 
 // Renvoie la distance entre le point de position 'pos' et le plus proche triangle de l'objet
 // géo. N'effectue cette mesure que pour des distances inférieures à 'dist'
-bool CTextureMaterialGeo::Contact( const float pos[3], float dist )
+bool CTextureMaterialGeo::checkContact( const float pos[3], float dist )
 {
 	float distanceW;
 	if( TestContactPave( pos, dist ) )	// Teste proximité 'joueur / l'objet géo'

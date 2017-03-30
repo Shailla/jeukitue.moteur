@@ -53,7 +53,7 @@ protected:
 		PRIORITY_AddBrancheFromClientChangement
 	};
 
-	string _dataType;
+	std::string _dataType;
 
 	virtual void unserialize(std::istringstream& in) = 0;
 

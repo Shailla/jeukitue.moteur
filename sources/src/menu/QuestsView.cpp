@@ -7,14 +7,14 @@
 #include <sstream>
 #include <iostream>
 
-using namespace std;
-
 #include "SDL.h"
 
 #include <agar/core.h>
 #include <agar/gui.h>
 
 #include "menu/QuestsView.h"
+
+using namespace std;
 
 QuestsView::QuestsView(const AG_EventFn controllerCallback) : View(controllerCallback) {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE|AG_WINDOW_MAXIMIZED);

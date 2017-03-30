@@ -1,8 +1,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "SDL.h"
 #include <agar/core.h>
 #include <agar/gui.h>
@@ -11,6 +9,8 @@ using namespace std;
 #include "util/Trace.h"
 
 #include "Focus.h"
+
+using namespace std;
 
 namespace jkt
 {

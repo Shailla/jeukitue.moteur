@@ -10,8 +10,6 @@
 
 #include <map>
 
-using namespace std;
-
 #include "fmod.h"
 #include "fmod_errors.h"
 #include "util/Trace.h"
@@ -20,7 +18,10 @@ using namespace std;
 
 #include "ReqSon.h"
 #include "DemonSons.h"
+
+using namespace std;
 using namespace jkt;
+
 CSon::CSon( CDemonSons* p,const char *name )
 {
 LOGDEBUG(("CSon::CSon(nom=%s,...)%T", name, this ));

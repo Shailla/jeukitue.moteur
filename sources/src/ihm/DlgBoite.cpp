@@ -9,8 +9,6 @@
 #include "SDL.h"
 #include "util/fonte/Fonte.h"
 
-using namespace std;
-
 #include "util/Trace.h"
 #include "util/Erreur.h"
 #include "spatial/materiau/Textures.h"
@@ -19,7 +17,7 @@ using namespace std;
 
 #include "ihm/DlgBoite.h"
 
-using namespace jkt;
+using namespace std;
 using namespace jkt;
 
 extern CCfg Config;

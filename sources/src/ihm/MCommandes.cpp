@@ -6,7 +6,6 @@
 
 #include <fstream>
 #include <iostream>
-using namespace std;
 
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
@@ -17,13 +16,14 @@ using namespace std;
 
 #include "ihm/MMenuPrinc.h"
 
-using namespace jkt;
-
 class CGame;
 
 extern CCfg Config;
 
 #include "ihm/MConfiguration.h"
+
+using namespace std;
+using namespace jkt;
 
 namespace jkt
 {

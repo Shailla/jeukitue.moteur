@@ -89,7 +89,7 @@ float MapObject::GereLaserPlayer(float pos[3], CV3D& Dir, float dist) {
 	return 0.0f;
 }
 
-bool MapObject::Contact(const float pos[3], float dist) {
+bool MapObject::checkContact(const float pos[3], float dist) {
 	LOGWARN(("Use of undefined method '%s'", __FUNCTION__));
 	return false;
 }

@@ -1,12 +1,11 @@
 
 #include <sstream>
 
-using namespace std;
-
 #include "util/Erreur.h"
 
 #include "spatial/XmlVocabulaire.h"
 
+using namespace std;
 using namespace jkt;
 
 // Map

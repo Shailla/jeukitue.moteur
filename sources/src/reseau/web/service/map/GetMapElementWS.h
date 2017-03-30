@@ -20,15 +20,23 @@ class CMap;
 class MapObject;
 
 class GetMapElementWS : public WebService {
-	static string ID;
-	static string NAME;
-	static string TYPE;
-	static string MAPS;
-	static string ELEMENTS;
-	static string MAPELEMENT;
-	static string MAPELEMENTS;
-	static string HIGHLIGHTED;
-	static string HIDDEN;
+	static std::string ID;
+	static std::string NAME;
+	static std::string TYPE;
+	static std::string MAPS;
+	static std::string ELEMENTS;
+	static std::string MAPELEMENT;
+	static std::string MAPELEMENTS;
+	static std::string HIGHLIGHTED;
+	static std::string HIDDEN;
+
+	static std::string CARAC;
+	static std::string CARAC_UPDATABLE;
+	static std::string CARAC_VALUE;
+	static std::string CARAC_TYPE;
+	static std::string CARAC_TYPE_STRING;
+	static std::string CARAC_GROUP;
+	static std::string CARAC_GROUP_MAIN;
 
 	static std::regex RG_MAPS_SERVICE;
 	static std::regex RG_MAP_SERVICE;
@@ -38,11 +46,12 @@ class GetMapElementWS : public WebService {
 	WebServiceResult getMapList();
 	WebServiceResult getCurrentMap();
 	WebServiceResult saveCurrentMap();
-	void getElement(int elementId, JsonObject& mapElement, vector<string>& errors);
+	void getElement(int elementId, JsonObject& mapElement, std::vector<std::string>& errors);
 	WebServiceResult updateElements(HttpRequest& request);
 	WebServiceResult updateElement(HttpRequest& request, int elementId);
 
 	std::string updateElement(JsonObject* jsonObject, MapObject* object);
+	JsonObject& addCharistic(JsonObject& jsonCharistics, const std::string& name, const std::string& value, const std::string& group, bool updatable);
 
 	void jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe);
 

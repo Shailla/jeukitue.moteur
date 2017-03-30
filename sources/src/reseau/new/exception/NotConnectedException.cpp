@@ -7,9 +7,9 @@
 
 #include <string>
 
-using namespace std;
-
 #include "reseau/new/exception/NotConnectedException.h"
+
+using namespace std;
 
 NotConnectedException::NotConnectedException(void) : JktException("NotConnectedException") {
 }

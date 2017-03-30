@@ -10,14 +10,14 @@
 #include <stdexcept>
 #include <iostream>
 
-using namespace std;
-
 #include "data/Branche.h"
 #include "data/ValeurInt.h"
 #include "main/Cfg.h"
 #include "data/DataTreeUtils.h"
 
 #include "data/DistantTreeControl.h"
+
+using namespace std;
 
 extern CCfg Config;
 

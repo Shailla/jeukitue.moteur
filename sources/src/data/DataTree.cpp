@@ -7,9 +7,9 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "data/DataTree.h"
+
+using namespace std;
 
 DataTree::DataTree(TREE_TYPE treeType) : _root(this, 0, DONNEE_PUBLIC, 0, -1) {
 	_treeType = treeType;

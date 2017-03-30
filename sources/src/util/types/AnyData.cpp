@@ -10,6 +10,8 @@
 #include "util/StreamUtils.h"
 #include "util/exception/UnserializeException.h"
 
+using namespace std;
+
 namespace jkt {
 
 AnyData::AnyData() {

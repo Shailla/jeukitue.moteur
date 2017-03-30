@@ -8,13 +8,12 @@
 #include <iostream>
 #include <typeinfo>
 
-using namespace std;
-
 #include "util/Trace.h"
 #include "util/types/AnyData.h"
 
 #include "data/ValeurInt.h"
 
+using namespace std;
 using namespace jkt;
 
 ValeurInt::ValeurInt(AbstractBranche* parent, int valeurId, const string& valeurName, DONNEE_TYPE valeurType, UPDATE_MODE updateMode, int tmpId, int revision, int valeur) : Valeur(parent, valeurId, valeurName, valeurType, updateMode, tmpId, revision) {

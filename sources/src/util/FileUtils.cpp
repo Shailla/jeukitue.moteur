@@ -9,9 +9,9 @@
 #include <sstream>
 #include <time.h>
 
-using namespace std;
-
 #include "util/FileUtils.h"
+
+using namespace std;
 
 namespace jkt {
 

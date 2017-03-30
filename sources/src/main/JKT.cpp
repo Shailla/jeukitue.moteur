@@ -31,7 +31,6 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 #include <agar/gui/sdl.h>
 #include <agar/gui/opengl.h>
 
-using namespace std;
 
 #include "boost/program_options.hpp"
 namespace bpo = boost::program_options;
@@ -123,6 +122,7 @@ class CGame;
 
 #include "jkt.h"
 
+using namespace std;
 using namespace jkt;
 
 NotConnectedInterlocutor2* _notConnectedServerInterlocutor = 0;

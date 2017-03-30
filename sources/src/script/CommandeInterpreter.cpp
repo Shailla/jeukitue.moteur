@@ -9,8 +9,6 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
-
 #include "util/StringUtils.h"
 #include "main/Fabrique.h"
 #include "menu/ConsoleView.h"
@@ -20,9 +18,10 @@ using namespace std;
 #include "script/commandes/EchoCommande.h"
 #include "script/commandes/HelpCommande.h"
 
-using namespace jkt;
-
 #include "script/CommandeInterpreter.h"
+
+using namespace std;
+using namespace jkt;
 
 CommandeInterpreter::CommandeInterpreter(Viewer* viewer) {
 	_viewer = viewer;

@@ -4,7 +4,6 @@
 
 #include <vector>
 #include <string>
-using namespace std;
 
 #include "spatial/widget/Icone.h"
 
@@ -21,7 +20,7 @@ class CBouton
 {
 public:
 	bool m_bActif;
-	string _txt;
+	std::string _txt;
 	void *m_Arg;			// Argument à transmettre à la fonction appelée lors de l'appui du bouton
 	bool m_bFocus;			// Indique si le bouton est focussé
 	PF m_FctGo;
@@ -57,7 +56,7 @@ private:
 	static Icone* _iconeConfirm;		// Texture de l'icone associée à un message de confitmation
 
 	char *m_Titre;			// Titre de la boîte de dialogue
-	vector<string> m_Texte;	// Texte apparaissant dans la boite de dialogue
+	std::vector<std::string> m_Texte;	// Texte apparaissant dans la boite de dialogue
 	PF m_FonctionRetour;	// Fonction retour de ce sous menu
 	int m_Focus;			// Indique quel bouton est focussé
 	JKT_DLG m_Type;			// Type de la boîte de dialogue

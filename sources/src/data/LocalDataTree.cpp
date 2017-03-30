@@ -10,8 +10,6 @@
 #include <vector>
 #include <algorithm>
 
-using namespace std;
-
 #include "data/MarqueurDistant.h"
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/exception/DataCommunicationException.h"
@@ -26,6 +24,7 @@ using namespace std;
 
 #include "data/LocalDataTree.h"
 
+using namespace std;
 using namespace jkt;
 
 LocalDataTree::LocalDataTree() : DataTree(TREE_LOCAL) {

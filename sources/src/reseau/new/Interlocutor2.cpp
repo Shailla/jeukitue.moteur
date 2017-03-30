@@ -9,13 +9,13 @@
 #include <string>
 #include <queue>
 
-using namespace std;
-
 #include "sdl.h"
 
 #include "util/types/Bytes.h"
 
 #include "reseau/new/Interlocutor2.h"
+
+using namespace std;
 
 Interlocutor2::Interlocutor2(SDL_cond* condDataToSend, SDL_mutex* mutexDataToSend) {
 	_name = "";

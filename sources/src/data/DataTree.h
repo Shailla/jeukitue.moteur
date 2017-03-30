@@ -49,24 +49,24 @@ public:
 
 	Branche& getRoot();
 
-	virtual Branche* getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException) = 0;
-	virtual Valeur* getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) = 0;
+	virtual Branche* getBrancheFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId) throw(NotExistingBrancheException) = 0;
+	virtual Valeur* getValeurFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) = 0;
 
 	/**
 	 * Retourne la branche idéntifiée par son identifiant.
 	 *
 	 * @param brancheId coordonnées de la branche dans l'arbre
 	 */
-	Branche* getBranche(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException);
+	Branche* getBranche(DistantTreeProxy* distant, const std::vector<int>& brancheId) throw(NotExistingBrancheException);
 
 	/**
 	 * Retourne la branche idéntifiée par son chemin.
 	 *
 	 * @param branchePath chemin d'accès à la branche
 	 */
-	Branche* getBranche(DistantTreeProxy* distant, const vector<string>& branchePath) throw(NotExistingBrancheException);
+	Branche* getBranche(DistantTreeProxy* distant, const std::vector<std::string>& branchePath) throw(NotExistingBrancheException);
 
-	Valeur* getValeur(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
+	Valeur* getValeur(DistantTreeProxy* distant, const std::vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
 
 	/** Indique si la branche ou valeur est contenue dans l'arbre. */
 	bool containsDonnee(Donnee* donnee);

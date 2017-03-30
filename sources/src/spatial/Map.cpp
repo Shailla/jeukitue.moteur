@@ -11,8 +11,6 @@
 #endif
 #include <GL/glew.h>
 
-using namespace std;
-
 #include "SDL.h"
 #include "tinyxml.h"
 
@@ -58,6 +56,7 @@ class CGame;
 #include "spatial/MapLogger.h"
 #include "spatial/Map.h"
 
+using namespace std;
 using namespace jkt;
 
 namespace jkt
@@ -1019,12 +1018,12 @@ bool CMap::Save(const string nomFichier) {
 	return true;
 }
 
-bool CMap::Contact(const float pos[3], const float dist) {
+bool CMap::checkContact(const float pos[3], const float dist) {
 	bool var = false;	// Pas de contact par défaut
 	vector<SolidAndTargettable*>::iterator iter;
 
 	for(iter = _solidAndTargettables.begin() ; iter != _solidAndTargettables.end() ; iter++) {
-		var = (*iter)->Contact( pos, dist );
+		var = (*iter)->checkContact( pos, dist );
 
 		if(var)	// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
 			break;
@@ -1033,7 +1032,7 @@ bool CMap::Contact(const float pos[3], const float dist) {
 	// Initialisation des sous-Map
 	if(!var) {
 		for(auto& subMap : _subMaps) {
-			var = subMap.second->Contact( pos, dist );
+			var = subMap.second->checkContact( pos, dist );
 
 			if(var)	// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
 				break;

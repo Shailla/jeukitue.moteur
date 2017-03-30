@@ -10,8 +10,6 @@
 #include <stdexcept>
 #include <iostream>
 
-using namespace std;
-
 #include "util/CollectionsUtils.h"
 #include "data/communication/message/Changement.h"
 #include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
@@ -25,6 +23,8 @@ using namespace std;
 #include "data/Branche.h"
 
 #include "data/DistantTreeProxy.h"
+
+using namespace std;
 
 DistantTreeProxy::DistantTreeProxy(Interlocutor2* interlocutor) : _control(this) {
 	_interlocutor = interlocutor;

@@ -7,6 +7,8 @@
 
 #include "centralisateur/Centralisateur.h"
 
+using namespace std;
+
 Centralisateur::Centralisateur(UdpController* udpController)
 {
     _udpController = udpController;

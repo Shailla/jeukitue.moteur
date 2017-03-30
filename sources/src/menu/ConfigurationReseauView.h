@@ -1,8 +1,6 @@
 #ifndef __JKT__CONFIGURATIONRESEAUVIEW_H
 #define __JKT__CONFIGURATIONRESEAUVIEW_H
 
-using namespace std;
-
 #include "SDL.h"
 #include <agar/core.h>
 #include <agar/gui.h>

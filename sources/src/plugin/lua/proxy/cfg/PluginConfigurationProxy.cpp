@@ -8,8 +8,6 @@
 #include <iostream>
 #include <sstream>
 
-using namespace std;
-
 #include "fmod.h"
 
 #include "main/Fabrique.h"
@@ -21,6 +19,8 @@ using namespace std;
 #include "main/Game.h"
 
 #include "plugin/lua/proxy/cfg/PluginConfigurationProxy.h"
+
+using namespace std;
 
 extern CCfg Config;		// Contient la configuration du jeu
 extern CGame Game;

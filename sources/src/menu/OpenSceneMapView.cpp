@@ -3,7 +3,6 @@
 #ifdef WIN32
 	#include <io.h>
 #endif
-using namespace std;
 
 #include <agar/core.h>
 #include <agar/gui.h>
@@ -15,6 +14,8 @@ using namespace std;
 #include "service/MapService.h"
 
 #include "menu/OpenSceneMapView.h"
+
+using namespace std;
 
 /*
     OpenSceneMapView affiche dans une scrollview la liste des map disponibles dans

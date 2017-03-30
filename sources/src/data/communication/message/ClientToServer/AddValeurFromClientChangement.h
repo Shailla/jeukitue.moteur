@@ -19,7 +19,7 @@ class AddValeurFromClientChangement: public Changement {
 	std::vector<int> _parentBrancheId;
 	UPDATE_MODE _updateMode;
 	int _valeurTmpId;
-	string _valeurName;
+	std::string _valeurName;
 	int _revision;
 	jkt::AnyData _valeur;
 
@@ -27,7 +27,7 @@ class AddValeurFromClientChangement: public Changement {
 
 public:
 	AddValeurFromClientChangement(std::istringstream& in);
-	AddValeurFromClientChangement(const std::vector<int>& brancheId, int valeurTmpId, int revision, const string& valeurName, jkt::AnyData valeur);
+	AddValeurFromClientChangement(const std::vector<int>& brancheId, int valeurTmpId, int revision, const std::string& valeurName, jkt::AnyData valeur);
 	~AddValeurFromClientChangement();
 
 	void update(MarqueurDistant* marqueur);
@@ -42,7 +42,7 @@ public:
 	const std::vector<int>& getParentBrancheId() const;
 	int getValeurTmpId() const;
 	UPDATE_MODE getUpdateMode() const;
-	const string& getValeurName() const;
+	const std::string& getValeurName() const;
 	int getRevision() const;
 	jkt::AnyData getValeur() const;
 	int getRootDistance() const;

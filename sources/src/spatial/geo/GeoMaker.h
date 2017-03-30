@@ -12,8 +12,6 @@
 #include <map>
 #include <fstream>
 
-using namespace std;
-
 #include "tinyxml.h"
 
 #include "util/Erreur.h"
@@ -36,7 +34,7 @@ class CTexVertexList;
 
 class CGeoMaker
 {
-	string m_Nom;	// Nom de l'objet
+	std::string m_Nom;	// Nom de l'objet
 	CMap* m_Map;
 
 	int m_NumColor;		// Valeur 0, 3 ou 4 qui correspond à 'pas de couleur', 'couleur sans alpha' ou 'couleur avec alpha'
@@ -90,14 +88,14 @@ public:
 	static void SaveMateriau(TiXmlElement* element, unsigned int refMat);
 	static void SaveCouleur3fv(TiXmlElement* element, const char* name, float* couleur);	// Sauve les sommets de texture d'un object géo
 	static void SaveVecteursNormaux(TiXmlElement* element,unsigned int nbr, float* normaux);
-	static void SaveSousMateriaux(TiXmlElement* element, map<int,int>& m_CanauxNumbers);
+	static void SaveSousMateriaux(TiXmlElement* element, std::map<int,int>& m_CanauxNumbers);
 	static void SaveMultiTexVertex(TiXmlElement *element, CTexVertexList* texvertexliste);
 	static int* LitFaces(TiXmlElement *element, int& nbr);
 	static float* LitVertex(TiXmlElement *element, int& nbr);
 	static float* LitTexVertex(TiXmlElement *element, int& nbr);
 	static CTexVertexList* LitMultiTexVertex(TiXmlElement* element);
 	static float* LitVecteursNormaux(TiXmlElement* element, int& nbr);
-	static map<int,int>* LitSousMateriaux(TiXmlElement* el);
+	static std::map<int,int>* LitSousMateriaux(TiXmlElement* el);
 
 	static MapObject* Lit(TiXmlElement* el, CMap* pMap, MapLogger* mapLogger);
 	MapObject* makeNewGeoInstance();	// Crée une instance de l'objet géométrique
@@ -110,7 +108,7 @@ private:
 
 	void lineariseVertex();		// Désindexe les sommets
 	void lineariseTexVertex();	// Désindexe les coord. de texture dans leurs canaux
-	void optimiseSubMat(map<int,int> &canauxnumbers);
+	void optimiseSubMat(std::map<int,int> &canauxnumbers);
 };
 
 }	// JktMoteur

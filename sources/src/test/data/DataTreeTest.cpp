@@ -7,8 +7,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "util/CollectionsUtils.h"
 #include "data/ValeurString.h"
 #include "data/ValeurFloat.h"
@@ -21,6 +19,7 @@ using namespace std;
 
 #include "test/data/DataTreeTest.h"
 
+using namespace std;
 using namespace jkt;
 
 namespace jkt {

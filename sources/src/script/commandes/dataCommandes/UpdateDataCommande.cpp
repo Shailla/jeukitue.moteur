@@ -7,8 +7,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "util/StringUtils.h"
 #include "data/ValeurInt.h"
 #include "data/ValeurFloat.h"
@@ -20,6 +18,7 @@ using namespace std;
 
 #include "script/commandes/dataCommandes/UpdateDataCommande.h"
 
+using namespace std;
 using namespace jkt;
 
 extern CGame Game;

@@ -8,8 +8,6 @@
 #include <cmath>
 #include <iostream>
 
-using namespace std;
-
 #include "SDL.h"
 
 #include "util/V3D.h"
@@ -17,6 +15,8 @@ using namespace std;
 
 #include <spatial/moteur/neige/simple/Particule.h>
 #include <spatial/moteur/neige/simple/MoteurParticulesNeige.h>
+
+using namespace std;
 
 namespace jkt
 {

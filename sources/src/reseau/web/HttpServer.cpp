@@ -11,8 +11,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-using namespace std;
-
 #include "SDL.h"
 #include "SDL_net.h"
 
@@ -24,6 +22,8 @@ using namespace std;
 #include "reseau/web/service/map/GetMapElementWS.h"
 
 #include "reseau/web/HttpServer.h"
+
+using namespace std;
 
 namespace jkt
 {
@@ -331,17 +331,7 @@ void HttpServer::start() {
 			buffer[requestSize] = '\0';
 
 			try {
-				stringstream decimal;
-
-				for(int i=0 ; i< requestSize ; i++) {
-					if(i > 0) {
-						decimal << ",";
-					}
-
-					decimal << std::hex << (int)buffer[i];
-				}
-
-				LOGINFO(("ssssssssssss HTTP received request (native)\nssssssssssssssssssssssssssssssssssssssssssssssssssssssss\n'%s'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n'%s'\n========================================================", buffer, decimal.str().c_str()));
+				LOGDEBUG(("\nHTTP received request (native)\nssssssssssssssssssssssssssssssssssssssssssssssssssssssss\n'%s'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", buffer));
 
 
 				/* ****************************************** */
@@ -350,7 +340,7 @@ void HttpServer::start() {
 
 				HttpRequest request(buffer, requestSize);
 				endpoint = request.getEndpoint();
-				LOGINFO(("%%%%%%%%%%%% HTTP received request\nssssssssssssssssssssssssssssssssssssssssssssssssssssssss\n'%s'\nssssssssssssssssssssssssssssssssssssssssssssssssssssssss", request.toString().c_str()));
+				LOGINFO(("\nHTTP received request\nssssssssssssssssssssssssssssssssssssssssssssssssssssssss\n'%s'\nssssssssssssssssssssssssssssssssssssssssssssssssssssssss", request.toString().c_str()));
 
 
 				/* ****************************************** */

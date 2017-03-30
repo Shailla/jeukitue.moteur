@@ -9,14 +9,14 @@
 #include <vector>
 #include <iostream>
 
-using namespace std;
-
 #include "util/StreamUtils.h"
 #include "data/ValeurInt.h"
 #include "data/ServeurDataTree.h"
 #include "data/MarqueurDistant.h"
 
 #include "data/communication/message/ConfirmBrancheChangement.h"
+
+using namespace std;
 
 ConfirmBrancheChangement::ConfirmBrancheChangement(istringstream& in) : Changement("ConfirmBrChgt", PRIORITY_ConfirmBrancheChangement, 0) {
 	unserialize(in);

@@ -9,9 +9,9 @@
 
 #include "util/Trace.h"
 
-using namespace std;
-
 #include "spatial/light/Light.h"
+
+using namespace std;
 
 namespace jkt
 {

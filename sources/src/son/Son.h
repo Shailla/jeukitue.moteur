@@ -6,8 +6,6 @@
 #include <set>
 #include <string>
 
-using namespace std;
-
 namespace jkt {
 
 class CReqSon;
@@ -17,9 +15,9 @@ class CSon
 {
 public:
 	FSOUND_SAMPLE *m_Sample;	// Echantillons du son à proprement dit
-	set<CReqSon*> m_TabReq;		// Liste des requêtes sur ce son
+	std::set<CReqSon*> m_TabReq;		// Liste des requêtes sur ce son
 	CDemonSons* pDemon;			// Pointeur sur le démon des sons
-	string nom;					// Nom du son (POUR LE DEBUG)
+	std::string nom;					// Nom du son (POUR LE DEBUG)
 
 		// Constructeurs / Destructeur
 public:

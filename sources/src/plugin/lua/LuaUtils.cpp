@@ -8,12 +8,12 @@
 #include <iostream>
 #include <sstream>
 
-using namespace std;
-
 #include "main/Fabrique.h"
 #include "plugin/PluginEngine.h"
 
 #include "plugin/lua/LuaUtils.h"
+
+using namespace std;
 
 namespace jkt {
 

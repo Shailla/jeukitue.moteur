@@ -7,8 +7,6 @@
 #include <fstream>
 #include <iostream>
 
-using namespace std;
-
 #include "SDL.h"
 
 #include "spatial/XmlVocabulaire.h"
@@ -22,6 +20,8 @@ using namespace std;
 #include "ressource/RessourcesLoader.h"
 
 #include "spatial/materiau/MaterialTexture.h"
+
+using namespace std;
 
 namespace jkt
 {

@@ -2,8 +2,6 @@
 #include <iostream>
 #include <stdexcept>
 
-using namespace std;
-
 #include <agar/core.h>
 #include <agar/gui.h>
 
@@ -13,6 +11,8 @@ using namespace std;
 #include "main/Game.h"
 
 #include "menu/PlayersView.h"
+
+using namespace std;
 
 extern CGame Game;
 

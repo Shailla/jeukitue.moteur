@@ -3,15 +3,13 @@
 
 #include <string>
 #include <vector>
-using namespace std;
 
 #include <agar/core.h>
 #include <agar/gui.h>
 
 #include "menu/View.h"
 
-class ProgressBarView : public View
-{
+class ProgressBarView : public View {
 	int* _progressPourcentagePtr;
 	char _currentOperationMessage[50];
 

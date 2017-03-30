@@ -1,14 +1,13 @@
 
 #include <string>
 
-using namespace std;
-
 #include "spatial/XmlVocabulaire.h"
 #include "util/Erreur.h"
 #include "spatial/materiau/MaterialTexture.h"
 #include "spatial/materiau/MaterialMulti.h"
 #include "spatial/materiau/MaterialMaker.h"
 
+using namespace std;
 using namespace jkt;
 
 namespace jkt

@@ -7,6 +7,8 @@
 
 #include "reseau/web/json/JsonNumber.h"
 
+using namespace std;
+
 namespace jkt {
 
 JsonNumber::JsonNumber(const unsigned int& value) {

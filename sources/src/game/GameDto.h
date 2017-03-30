@@ -13,21 +13,20 @@
 #include "main/Player.h"
 #include "spatial/Map.h"
 
-using namespace std;
 using namespace jkt;
 
 class GameDto {
-	string _mapName;
+	std::string _mapName;
 	int _playersMaxNumber;
-	vector<CPlayer*> _players;
+	std::vector<CPlayer*> _players;
 	CMap* _map;
 	CPlayer* _erwin;
 
 public:
-	GameDto(const string& mapName);
+	GameDto(const std::string& mapName);
 	virtual ~GameDto();
 
-	string getMapName();
+	std::string getMapName();
 
 	int getPlayersMaxNumber();
 	void setPlayersMaxNumber(int playerNumber);
@@ -35,7 +34,7 @@ public:
 	CPlayer* getErwin();
 	void setErwin(CPlayer* erwin);
 
-	vector<CPlayer*>& getPlayers();
+	std::vector<CPlayer*>& getPlayers();
 
 	CMap* getMap();
 	void setMap(CMap* map);

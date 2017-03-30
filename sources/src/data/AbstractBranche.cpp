@@ -12,8 +12,6 @@
 #include <algorithm>
 #include <stdexcept>
 
-using namespace std;
-
 #include "util/CollectionsUtils.h"
 #include "data/Valeur.h"
 #include "data/ValeurInt.h"
@@ -23,6 +21,7 @@ using namespace std;
 
 #include "data/AbstractBranche.h"
 
+using namespace std;
 using namespace jkt;
 
 AbstractBranche::AbstractBranche(DataTree* dataTree, int brancheId, const string& brancheName, DONNEE_TYPE brancheType, int revision, int brancheTmpId) : Donnee(dataTree, revision, brancheType, UPDATE_MODE::ANY) {

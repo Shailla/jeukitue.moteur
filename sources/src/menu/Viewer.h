@@ -1,11 +1,10 @@
 #ifndef __JKT__AGARVIEW_H
 #define __JKT__AGARVIEW_H
 
-#include <agar/core.h>
-#include <agar/gui.h>
 #include <map>
 
-using namespace std;
+#include <agar/core.h>
+#include <agar/gui.h>
 
 #include "menu/View.h"
 class MainMenuView;
@@ -53,8 +52,8 @@ public:
 	};
 
 private:
-	map<VIEWS, View*> _views;
-	map<VIEWS, View*> _menuViews;
+	std::map<VIEWS, View*> _views;
+	std::map<VIEWS, View*> _menuViews;
 	void addMenuView(VIEWS viewId, View* view);
 	void addSimpleView(VIEWS viewId, View* view);
 public:

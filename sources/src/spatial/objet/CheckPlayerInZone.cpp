@@ -18,6 +18,8 @@
 
 #include "spatial/objet/CheckPlayerInZone.h"
 
+using namespace std;
+
 extern CGame Game;
 
 namespace jkt {

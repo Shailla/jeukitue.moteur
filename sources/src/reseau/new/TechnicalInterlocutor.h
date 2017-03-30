@@ -56,7 +56,7 @@ protected:
 	SDL_cond* getCondIntelligence();
 
 public:
-	TechnicalInterlocutor(const string& name, Uint16 localPort);
+	TechnicalInterlocutor(const std::string& name, Uint16 localPort);
 	virtual ~TechnicalInterlocutor();
 
 	Uint16 getLocalPort() const;
@@ -65,8 +65,8 @@ public:
 
 	// Log methods
 	void log(int line, const char* sourceFile, const char* message);
-	void log(int line, const char* sourceFile, const string& message);
-	void log(int line, const char* sourceFile, const stringstream& message);
+	void log(int line, const char* sourceFile, const std::string& message);
+	void log(int line, const char* sourceFile, const std::stringstream& message);
 };
 
 #endif /* TECHNICALINTERLOCUTOR_H_ */

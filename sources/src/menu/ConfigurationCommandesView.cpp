@@ -2,8 +2,6 @@
 #include <sstream>
 #include <iostream>
 
-using namespace std;
-
 #include "SDL.h"
 
 #include <agar/core.h>
@@ -18,6 +16,8 @@ using namespace std;
 #include "main/Cfg.h"
 
 #include "menu/ConfigurationCommandesView.h"
+
+using namespace std;
 
 extern CCfg Config;
 extern jkt::CFocus* pFocus;

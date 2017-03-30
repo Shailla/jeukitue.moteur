@@ -1,9 +1,7 @@
 #ifndef __JKT__TCPCONNECTOR_H
 #define __JKT__TCPCONNECTOR_H
 
-#include <string>
 #include <vector>
-using namespace std;
 
 #include "SDL_net.h"
 
@@ -17,7 +15,7 @@ namespace jkt
 class TcpConnector
 {
 public:
-	static vector<DownloadFileItem> askDownloadFileList(const int port) throw(CentralisateurTcpException);
+	static std::vector<DownloadFileItem> askDownloadFileList(const int port) throw(CentralisateurTcpException);
 	static void downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) throw(CentralisateurTcpException);
 };
 

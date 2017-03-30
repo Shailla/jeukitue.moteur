@@ -2,20 +2,18 @@
 #define __JKT__SIGNALEMENTDATA_H
 
 #include <string>
-using namespace std;
 
 #include "SDL_net.h"
 
 #include "centralisateur/data/Data.h"
 
-class SignalementData : public Data
-{
-    string m_userName;
+class SignalementData : public Data {
+	std::string m_userName;
 public:
     SignalementData(void);
     ~SignalementData(void);
 
-    void setUserName(const string& userName);
+    void setUserName(const std::string& userName);
 
     UDPpacket* toPacket(void);
 };

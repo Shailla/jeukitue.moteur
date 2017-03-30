@@ -12,8 +12,6 @@
 
 #include "service/dto/VersionsDto.h"
 
-using namespace std;
-
 namespace jkt {
 
 /**

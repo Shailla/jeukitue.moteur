@@ -9,14 +9,14 @@
 #include <vector>
 #include <iostream>
 
-using namespace std;
-
 #include "util/StreamUtils.h"
 #include "data/ValeurInt.h"
 #include "data/ServeurDataTree.h"
 #include "data/MarqueurDistant.h"
 
 #include "data/communication/message/ServerToClient/UpdateValeurFromServerChangement.h"
+
+using namespace std;
 
 UpdateValeurFromServerChangement::UpdateValeurFromServerChangement(istringstream& in) : Changement("UpdateValChgt", PRIORITY_UpdateValeurFromServerChangement, 0) {
 	unserialize(in);

@@ -7,14 +7,14 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/PluginEngine.h"
 #include "plugin/api/gui/PluginNotebook.h"
 #include "plugin/lua/proxy/gui/PluginTabProxy.h"
 
 #include "plugin/lua/proxy/gui/PluginNotebookProxy.h"
+
+using namespace std;
 
 namespace jkt {
 

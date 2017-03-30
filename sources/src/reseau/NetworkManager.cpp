@@ -6,8 +6,6 @@
 #include <windows.h>
 #endif
 
-using namespace std;
-
 #include "SDL.h"
 #include "SDL_net.h"
 
@@ -28,6 +26,8 @@ class CGame;
 
 #include "enumReseau.h"
 #include "reseau/NetworkManager.h"
+
+using namespace std;
 
 extern CGame Game;
 

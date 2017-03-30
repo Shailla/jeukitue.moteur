@@ -1,10 +1,7 @@
 #ifndef __JKT__MATERIALTEXTURE_H
 #define __JKT__MATERIALTEXTURE_H
 
-#include <iostream>
 #include <string>
-
-using namespace std;
 
 #include "spatial/materiau/Material.h"
 #include "util/Erreur.h"
@@ -28,7 +25,7 @@ public:
 		// Fonctions membres
 	void initGL() throw(jkt::CErreur) override; // Lit le fichier de texture associé au matériau
 	void freeGL() override;
-	bool Lit(TiXmlElement* el, string &repertoire, MapLogger* mapLogger) override;
+	bool Lit(TiXmlElement* el, std::string &repertoire, MapLogger* mapLogger) override;
 	bool LitFichier(CIfstreamMap &fichier) override;
 	bool SaveFichierMap(std::ofstream &fichier) override;
 	bool Save(TiXmlElement* element) override;

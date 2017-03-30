@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 #include "util/Tableau.h"
 
 using namespace jkt;
@@ -14,28 +12,27 @@ namespace jkt
 {
 class CMaterial;
 
-class CIfstreamMap:private ifstream
-{
+class CIfstreamMap:private std::ifstream {
 	CIfstreamMap *next;	// Sous-fichier associé
 	bool bFin;			// Indique que la fin du fichier est atteinte
 									// (Pour que chaque matériau soit associé au bon objet géo)
-	vector<CMaterial*> *tabMat;	// Permet de lire le nombre de matériaux pour m_OffsetMateriaux
-	string m_NomFichier;	// Nom de la Map sans extension de nom de fichier
-	string m_NomFichierWithExtension;
+	std::vector<CMaterial*> *tabMat;	// Permet de lire le nombre de matériaux pour m_OffsetMateriaux
+	std::string m_NomFichier;	// Nom de la Map sans extension de nom de fichier
+	std::string m_NomFichierWithExtension;
 public:
 	static int m_OffsetMateriaux;		// Offset pour la lecture des matériaux
 		// Constructeur
-	CIfstreamMap( vector<CMaterial*> *tab );
+	CIfstreamMap( std::vector<CMaterial*> *tab );
 	~CIfstreamMap();
 
-	bool open(const string &nomFichier);
+	bool open(const std::string &nomFichier);
 	bool operator!();
-	const string& getFileFullName();
-	const string& getFileName();
+	const std::string& getFileFullName();
+	const std::string& getFileName();
 
 	int OffsetMateriaux();	// Renvoie l'offset matériaux actuel
 
-	CIfstreamMap &operator >>( string &mot );
+	CIfstreamMap &operator >>( std::string &mot );
 	CIfstreamMap &operator>>( float &val );
 	CIfstreamMap &operator>>( bool &val );
 	CIfstreamMap &operator>>( unsigned int &val );

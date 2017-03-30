@@ -10,9 +10,9 @@
 #include <GL/glew.h>
 #include <GL/glu.h>
 
-using namespace std;
-
 #include "photo.h"
+
+using namespace std;
 
 CPhoto::CPhoto(int x, int y) {
 	m_Ptr = new Uint8[x*y*3];

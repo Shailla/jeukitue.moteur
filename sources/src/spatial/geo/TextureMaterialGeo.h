@@ -13,8 +13,6 @@
 #include <map>
 #include <fstream>
 
-using namespace std;
-
 #include "tinyxml.h"
 
 #include "spatial/geo/ChanTex.h"
@@ -28,7 +26,7 @@ class CTextureMaterialGeo : public MapObject {
 	bool _isGlInitialized;
 
 	int m_OffsetMateriaux;		// Sert lors de la lecture des références matériaux
-	string tostring;
+	std::string tostring;
 	CMaterialTexture* m_Material;	// Matériau multiple associé
 	float _minX, _minY, _minZ, _maxX, _maxY, _maxZ;	// Coordonnées du pavé englobant l'objet géo
 	float m_Centre[3];			// Centre de la sphère englobant l'objet
@@ -58,7 +56,7 @@ class CTextureMaterialGeo : public MapObject {
 public:
 	static const char* identifier;
 
-	CTextureMaterialGeo(CMap* map, const string& name, CMaterialTexture* mat, unsigned int nbrfaces, float* vertex, float* normals, float* texvertex, bool solid=true);
+	CTextureMaterialGeo(CMap* map, const std::string& name, CMaterialTexture* mat, unsigned int nbrfaces, float* vertex, float* normals, float* texvertex, bool solid=true);
 	CTextureMaterialGeo(CMap *map);
 	CTextureMaterialGeo(const CTextureMaterialGeo& geo);
 	~CTextureMaterialGeo();
@@ -88,7 +86,7 @@ public:
 	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
 
 	void setOffsetMateriau(int offset);			// Décale la référence matériau de l'offset
-	bool Contact( const float pos[3], float dist ) override;
+	bool checkContact( const float pos[3], float dist ) override;
 
 	void Affiche() override;							// Affiche cet objet géo
 	void AfficheHighlighted(float r,float v,float b) override;		// Affiche l'objet en couleur unique

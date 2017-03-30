@@ -17,6 +17,8 @@
 
 #include "reseau/web/service/player/GetPlayersWS.h"
 
+using namespace std;
+
 namespace jkt {
 
 GetPlayersWS::GetPlayersWS() {

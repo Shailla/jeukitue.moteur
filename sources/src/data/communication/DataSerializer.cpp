@@ -9,8 +9,6 @@
 #include <vector>
 #include <iostream>
 
-using namespace std;
-
 #include "data/communication/DataSerializer.h"
 #include "data/communication/message/ServerToClient/AddBrancheFromServerChangement.h"
 #include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
@@ -24,6 +22,8 @@ using namespace std;
 #include "data/communication/message/ConfirmBrancheChangement.h"
 #include "data/communication/message/ConfirmValeurChangement.h"
 #include "util/StreamUtils.h"
+
+using namespace std;
 
 DataSerializer::DataSerializer() {
 }

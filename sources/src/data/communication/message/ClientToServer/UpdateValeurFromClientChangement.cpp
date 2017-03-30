@@ -8,12 +8,12 @@
 #include <sstream>
 #include <vector>
 
-using namespace std;
-
 #include "util/StreamUtils.h"
 #include "data/ServeurDataTree.h"
 
 #include "data/communication/message/ClientToServer/UpdateValeurFromClientChangement.h"
+
+using namespace std;
 
 UpdateValeurFromClientChangement::UpdateValeurFromClientChangement(istringstream& in) : Changement("UpdateValFromClChgt", PRIORITY_UpdateValeurFromClientChangement, 0) {
 	unserialize(in);

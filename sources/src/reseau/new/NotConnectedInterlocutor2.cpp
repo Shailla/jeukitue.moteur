@@ -10,13 +10,13 @@
 #include <queue>
 #include <iostream>
 
-using namespace std;
-
 #include "sdl.h"
 
 #include "util/types/Bytes.h"
 
 #include "reseau/new/NotConnectedInterlocutor2.h"
+
+using namespace std;
 
 NotConnectedInterlocutor2::NotConnectedInterlocutor2(SDL_cond* condDataToSend, SDL_mutex* mutexDataToSend) {
 	_name = "";

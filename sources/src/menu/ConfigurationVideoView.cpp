@@ -1,8 +1,6 @@
 
 #include <sstream>
 
-using namespace std;
-
 #include <agar/core.h>
 #include <agar/gui.h>
 
@@ -12,6 +10,8 @@ using namespace std;
 #include "main/Cfg.h"
 
 #include "menu/ConfigurationVideoView.h"
+
+using namespace std;
 
 extern CCfg Config;
 

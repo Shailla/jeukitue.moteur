@@ -9,8 +9,6 @@
 #include <iostream>
 #include <cmath>
 
-using namespace std;
-
 #include <agar/core.h>
 #include "SDL.h"
 #include "fmod.h"
@@ -29,6 +27,7 @@ using namespace std;
 
 #include "main/divers.h"
 
+using namespace std;
 using namespace jkt;
 
 extern jkt::CDemonSons *DemonSons;

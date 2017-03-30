@@ -8,9 +8,9 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
-
 #include "data/communication/message/Changement.h"
+
+using namespace std;
 
 Changement::Changement(const string& dataType, int majorPriority, int minorPriority) {
 	_dataType = dataType;

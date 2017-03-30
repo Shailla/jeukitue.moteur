@@ -7,12 +7,12 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/PluginEngine.h"
 
 #include "plugin/lua/proxy/gui/PluginCheckboxProxy.h"
+
+using namespace std;
 
 namespace jkt {
 

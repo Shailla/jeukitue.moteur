@@ -11,6 +11,8 @@
 
 #include "centralisateur/UdpController.h"
 
+using namespace std;
+
 UdpController::UdpController(void)
 {
     m_udpConnector = 0;
@@ -34,16 +36,14 @@ void UdpController::connect(char* userName,
     m_udpConnector->connect(ipCentralisateur, portCentralisateur);
 }
 
-void UdpController::sendSignalement(const string& userName)
-{
+void UdpController::sendSignalement(const string& userName) {
     SignalementData data;
     data.setUserName(userName);
     UDPpacket* packet = data.toPacket();
     m_udpConnector->send(packet);
 }
 
-void UdpController::sendMessageChat(const string& message, const string& userName)
-{
+void UdpController::sendMessageChat(const string& message, const string& userName) {
     SendChatMessageData data;
     data.setMessage(message);
 	data.setUserName(userName);
@@ -51,8 +51,7 @@ void UdpController::sendMessageChat(const string& message, const string& userNam
     m_udpConnector->send(packet);
 }
 
-void UdpController::receive(UDPpacket* packet)
-{
+void UdpController::receive(UDPpacket* packet) {
     Uint8* data = packet->data;
 	Uint8* current = data;
     

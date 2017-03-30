@@ -6,8 +6,6 @@
 #include <vector>
 #include <map>
 
-using namespace std;
-
 #include "tinyxml.h"
 
 #include "util/Tableau.h"
@@ -35,43 +33,43 @@ class CheckPlayerInZone;
 
 class CMap : public MapObject {
 	static const char* identifier;
-	string tostring;
+	std::string tostring;
 
-	string _filename;								// Nom du fichier de la Map (par exemple "Monde.map.xml")
-	string _binariesDirectory;						// Répertoires des binaires de la Map (textures, plugins, ...)
+	std::string _filename;								// Nom du fichier de la Map (par exemple "Monde.map.xml")
+	std::string _binariesDirectory;						// Répertoires des binaires de la Map (textures, plugins, ...)
 
-	map<int, CMap*> _subMaps;
+	std::map<int, CMap*> _subMaps;
 
-	map<int, MapObject*> _geoDescriptions;
+	std::map<int, MapObject*> _geoDescriptions;
 
 	// Objets de la Map
-	vector<MapObject*> _objects;						// Liste des objets géométriques
-	vector<Geometrical*> _geos;							// Liste des objets géométriques
-	vector<SolidAndTargettable*> _solidAndTargettables;	// Liste des objets géométriques
-	vector<Drawable*> _drawables;						// Liste des objets à afficher
-	vector<Refreshable*> _refreshables;					// Liste des objets nécessitant une actualisation (portes,...)
+	std::vector<MapObject*> _objects;							// Liste des objets géométriques
+	std::vector<Geometrical*> _geos;							// Liste des objets géométriques
+	std::vector<SolidAndTargettable*> _solidAndTargettables;	// Liste des objets géométriques
+	std::vector<Drawable*> _drawables;							// Liste des objets à afficher
+	std::vector<Refreshable*> _refreshables;					// Liste des objets nécessitant une actualisation (portes,...)
 
 	// Lumières et autres caractéristiques de la Map
-	vector<CLight*> _lights;							// Lumières
-	vector<EntryPoint*> _entryPoints;					// Points d'entrée des joueurs sur la Map
+	std::vector<CLight*> _lights;								// Lumières
+	std::vector<EntryPoint*> _entryPoints;						// Points d'entrée des joueurs sur la Map
 
 	// Objets complexes de la Map
-	vector<CMoteurParticules*> _particulesEngines;	// Liste des moteurs de particules de la Map
+	std::vector<CMoteurParticules*> _particulesEngines;			// Liste des moteurs de particules de la Map
 
-	vector<string> _plugins;						// Liste des plugins de la Map
+	std::vector<std::string> _plugins;							// Liste des plugins de la Map
 
-	bool _isGlInitialized;							// Indique si les éléments OpenGL de la MAP ont été initialisés
-	bool _isPluginsInitialized;						// Indique si les plugins de la MAP ont été initialisés
+	bool _isGlInitialized;										// Indique si les éléments OpenGL de la MAP ont été initialisés
+	bool _isPluginsInitialized;									// Indique si les plugins de la MAP ont été initialisés
 
-	CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
+	CMap(CMap* parent, const std::string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
 
 	bool afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
 public:
-	vector<CMaterial*> _materials;		// Liste des matériaux A VOIR : devrait être membre privé
+	std::vector<CMaterial*> _materials;		// Liste des matériaux A VOIR : devrait être membre privé
 
 		// Constructeurs / destructeur
 	CMap(CMap* parent);
-	CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
+	CMap(CMap* parent, const std::string& nomFichier) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
 	~CMap();
 
 	void clear();
@@ -81,14 +79,14 @@ public:
 
 	// Object
 	void init() throw(jkt::CErreur) override;	// Initialisation de la CMap
-	static bool Lit(CMap& map, const string &mapName, MapLogger* mapLogger);
-	bool Lit(const string &nomFichier, MapLogger* mapLogger);
+	static bool Lit(CMap& map, const std::string &mapName, MapLogger* mapLogger);
+	bool Lit(const std::string &nomFichier, MapLogger* mapLogger);
 	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
 	bool Save(TiXmlElement* element) override;			// Sauve l'objet géo dans un fichier Map
 
 	// Gestion des plugins de la Map
-	void initPlugins();		// Chargement / exécution des plugins de la Map
-	void freePlugins();		// Libération des plugins de la Map
+	void initPlugins();			// Chargement / exécution des plugins de la Map
+	void freePlugins();			// Libération des plugins de la Map
 
 	// Drawable
 	void initGL() override;		// Initialisation du contexte OpenGL
@@ -97,7 +95,7 @@ public:
 	void Affiche() override;											// Affiche l'ensemble des éléments 3D de cette Map
 	void AfficheHighlighted(float r,float v,float b) override;			// Affiche l'objet géométrique en couleur unique
 
-	bool Save(const string nomFichier);	// Sauvegarde du CMap dans un fichier *.map.xml
+	bool Save(const std::string nomFichier);	// Sauvegarde du CMap dans un fichier *.map.xml
 
 	// Refreshable
 
@@ -128,13 +126,14 @@ public:
 	void add(CMap* map);										// Intègre tous les éléments d'une autre Map dans celle-ci
 	void merge(int mapId, MapLogger* mapLogger = 0);			// Intègre tous les éléments d'une autre Map dans celle-ci
 
-	void add(MapObject* object);			// Ajoute un GeoObject à la map
+	void add(MapObject* object);					// Ajoute un GeoObject à la map
 	void add(Dirigeable* dirigeable);
-	void add(CPorte *porte);				// Ajoute une porte à la map
-	void add(CNavette *navette);			// Ajoute une navette à la map
-	void add(CMoteurParticules* engine);	// Ajoute un moteur de particules à la map
-	void add(CLight *light);				// Ajoute une lumière à la map
-	void add(CMaterial *mat);				// Ajoute un matériau à la map
+	void add(CPorte *porte);						// Ajoute une porte à la map
+	void add(CNavette *navette);					// Ajoute une navette à la map
+	void add(CMoteurParticules* engine);			// Ajoute un moteur de particules à la map
+	void add(CLight *light);						// Ajoute une lumière à la map
+	void add(CMaterial *mat);						// Ajoute un matériau à la map
+	void add(EntryPoint* entryPoint);
 	void add(CheckPlayerInZone* detector);
 
 	// Geometrical
@@ -145,21 +144,20 @@ public:
 	void translate(float x, float y, float z) override;				// Translation de la Map selon x, y, z
 
 	// Gestion des contacts
-	bool Contact(const float pos[3], const float dist) override;	// Indique s'il y a un triangle � une distance inférieure à 'dist' de la position 'pos'
+	bool checkContact(const float pos[3], const float dist) override;	// Indique s'il y a un triangle à une distance inférieure à 'dist' de la position 'pos'
 
 	/**
 	 * positionPlayer : position du jouer ou position calculé ce qui permet d'optimiser certains contacts quand un objet a bougé en considérant que c'est plutôt le
 	 */
-	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;								// Gère tous les contacts entre la map et les joueurs
-	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;	// Envoie d'un laser sur la map
+	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;			// Gère tous les contacts entre la map et les joueurs
+	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;			// Envoie d'un laser sur la map
 
-	map<int, CMap*>& getSubMaps();
-	vector<CLight*>& getLights();
-	vector<MapObject*>& getMapObjects();
+	std::map<int, CMap*>& getSubMaps();
+	std::vector<CLight*>& getLights();
+	std::vector<MapObject*>& getMapObjects();
 
 	// Points d'entrée des personnages joueurs
-	void add(EntryPoint* entryPoint);
-	vector<EntryPoint*>& getEntryPointsList();
+	std::vector<EntryPoint*>& getEntryPointsList();
 };
 
 }	// JktMoteur

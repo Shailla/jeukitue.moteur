@@ -13,11 +13,11 @@
 #include <GL/glu.h>
 #include "SDL.h"
 
-using namespace std;
-
 #include "util/Trace.h"
 
 #include "spatial/widget/Icone.h"
+
+using namespace std;
 
 namespace jkt {
 

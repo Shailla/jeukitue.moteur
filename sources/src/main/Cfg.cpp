@@ -10,8 +10,6 @@
 #include <agar/gui.h>
 #include <agar/gui/opengl.h>
 
-using namespace std;
-
 #include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
 #include "boost/filesystem/fstream.hpp"
 
@@ -32,6 +30,8 @@ using namespace std;
 
 
 #include "main/Cfg.h"
+
+using namespace std;
 
 char **remarquesDriver;
 int bpp, flags;

@@ -3,8 +3,6 @@
 
 #include <string>
 
-using namespace std;
-
 #include "tinyxml.h"
 
 #include "spatial/materiau/Material.h"
@@ -15,7 +13,7 @@ namespace jkt
 class CMaterialMaker
 {
 public:
-	static CMaterial* Lit(TiXmlElement* el, string &repertoire, MapLogger* mapLogger);
+	static CMaterial* Lit(TiXmlElement* el, std::string &repertoire, MapLogger* mapLogger);
 };
 
 }

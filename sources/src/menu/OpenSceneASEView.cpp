@@ -1,7 +1,5 @@
 #include <vector>
 
-using namespace std;
-
 #include <agar/core.h>
 #include <agar/gui.h>
 
@@ -12,6 +10,8 @@ using namespace std;
 #include "menu/Viewer.h"
 
 #include "menu/OpenSceneASEView.h"
+
+using namespace std;
 
 OpenSceneASEView::OpenSceneASEView(const AG_EventFn controllerCallback)
 :View(controllerCallback)

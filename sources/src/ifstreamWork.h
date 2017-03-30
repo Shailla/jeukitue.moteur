@@ -3,11 +3,9 @@
 
 #include <string>
 
-using namespace std;
-
 class ifstreamWork
 {
-	ifstream current;	// Fichier associé
+	std::ifstream current;	// Fichier associé
 	ifstreamWork *next;	// Sous-fichier associé
 	bool bFin;			// Indique que la fin du fichier est atteinte
 	char *txt;			// DEBUG
@@ -16,11 +14,11 @@ public:
 	ifstreamWork();
 	~ifstreamWork();
 
-	bool open( const string &nomFichier );
+	bool open( const std::string &nomFichier );
 	//bool eof();	
 	bool operator!();
 	char *nameFichier();
-	ifstreamWork& operator>>( string &mot );
+	ifstreamWork& operator>>( std::string &mot );
 	ifstreamWork& operator>>( float &val );
 	ifstreamWork& operator>>( bool &val );
 	ifstreamWork& operator>>( unsigned int &val );

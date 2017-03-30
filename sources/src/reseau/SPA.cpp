@@ -1,7 +1,6 @@
 
 #include <iostream>
 #include <sstream>
-using namespace std;
 
 #include "SDL.h"
 #include "SDL_net.h"
@@ -13,6 +12,8 @@ using namespace std;
 #include "reseau/Packet.h"
 #include "main/Player.h"
 #include "main/Statistics.h"
+
+using namespace std;
 
 namespace jkt
 {

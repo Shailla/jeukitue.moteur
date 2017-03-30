@@ -10,6 +10,8 @@
 
 #include "service/PlayersService.h"
 
+using namespace std;
+
 extern CGame Game;
 
 PlayersService::PlayersService() {

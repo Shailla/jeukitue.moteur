@@ -3,7 +3,6 @@
 #ifdef WIN32
 	#include <io.h>
 #endif
-using namespace std;
 
 #include <agar/core.h>
 #include <agar/gui.h>
@@ -16,6 +15,8 @@ using namespace std;
 #include "menu/Viewer.h"
 
 #include "menu/LanceServeurView.h"
+
+using namespace std;
 
 /*
     LanceServeurView affiche dans une scrollview la liste des map disponibles dans

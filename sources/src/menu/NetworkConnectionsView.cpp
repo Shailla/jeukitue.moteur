@@ -2,8 +2,6 @@
 #include <iostream>
 #include <stdexcept>
 
-using namespace std;
-
 #include <agar/core.h>
 #include <agar/gui.h>
 
@@ -11,6 +9,8 @@ using namespace std;
 #include "menu/Controller.h"
 
 #include "menu/NetworkConnectionsView.h"
+
+using namespace std;
 
 NetworkConnectionsView::NetworkConnectionsView(const AG_EventFn controllerCallback)
 :View(controllerCallback)

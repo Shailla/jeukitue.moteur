@@ -3,11 +3,11 @@
 #include <iostream>
 #include <string.h>
 
-using namespace std;
-
 #include "util/Erreur.h"
 
 #include "ifstreamWork.h"
+
+using namespace std;
 
 ifstreamWork::ifstreamWork()
 {

@@ -8,14 +8,14 @@
 #include <string>
 #include <sstream>
 
-using namespace std;
-
 #include "SDL.h"
 
 #include "util/Trace.h"
 #include "reseau/new/message/TechnicalMessage.h"
 
 #include "reseau/new/TechnicalInterlocutor.h"
+
+using namespace std;
 
 TechnicalInterlocutor::TechnicalInterlocutor(const string& name, Uint16 portLocal) {
 	_name = name;

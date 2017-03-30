@@ -5,7 +5,6 @@
 	/****************************/
 
 #include <fstream>
-using namespace std;
 
 #include "fmod.h"
 
@@ -19,11 +18,12 @@ using namespace std;
 
 #include "ihm/MAudio.h"
 
-using namespace jkt;
-
 extern CCfg Config;
 #include "ihm/MAudioDrivers.h"
 extern char **remarquesDriver;
+
+using namespace std;
+using namespace jkt;
 
 namespace jkt
 {

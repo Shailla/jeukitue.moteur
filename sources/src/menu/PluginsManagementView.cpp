@@ -4,8 +4,6 @@
 	#include <io.h>
 #endif
 
-using namespace std;
-
 #include <agar/core.h>
 #include <agar/gui.h>
 
@@ -18,6 +16,7 @@ using namespace std;
 
 #include "menu/PluginsManagementView.h"
 
+using namespace std;
 using namespace jkt;
 
 /*

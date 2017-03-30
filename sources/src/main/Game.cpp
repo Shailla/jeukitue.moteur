@@ -10,8 +10,6 @@
 #include <GL/glew.h>
 #include <GL/glu.h>
 
-using namespace std;
-
 class CGame;
 
 #include "util/Erreur.h"
@@ -34,6 +32,7 @@ class CGame;
 #include "reseau/enumReseau.h"
 #include "main/Game.h"
 
+using namespace std;
 using namespace jkt;
 
 extern NetworkManager* _networkManager;

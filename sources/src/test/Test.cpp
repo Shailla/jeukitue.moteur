@@ -8,13 +8,13 @@
 #include <iostream>
 #include <sstream>
 
-using namespace std;
-
 #include "SDL.h"
 
 #include "util/Trace.h"
 
 #include "test/Test.h"
+
+using namespace std;
 
 namespace jkt {
 

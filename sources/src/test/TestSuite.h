@@ -13,13 +13,11 @@
 
 #include "test/Test.h"
 
-using namespace std;
-
 namespace jkt {
 
 class TestSuite {
-	vector<Test*> _tests;
-	vector<string> _results;
+	std::vector<Test*> _tests;
+	std::vector<std::string> _results;
 
 public:
 	TestSuite();

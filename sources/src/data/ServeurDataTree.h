@@ -21,19 +21,19 @@ class ServeurDataTree : public DataTree {
 	void addDistantToPrivateBranches(DistantTreeProxy* distant, Branche* branche);
 	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
 
-	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException);
-	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
+	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId) throw(NotExistingBrancheException);
+	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
 
 	/* ****************************************************
 	 * Distant actions
 	 * ***************************************************/
 
-	Branche* getBrancheByDistantTmpId(DistantTreeProxy* distant, const vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
-	Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurTmpId) throw(NotExistingBrancheException, NotExistingValeurException);
+	Branche* getBrancheByDistantTmpId(DistantTreeProxy* distant, const std::vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
+	Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, const std::vector<int>& brancheId, int valeurTmpId) throw(NotExistingBrancheException, NotExistingValeurException);
 
-	Branche* addBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, DistantTreeProxy* distant);
-	PrivateBranche* addPrivateBrancheFromDistant(const vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, DistantTreeProxy* distant);
-	Valeur* addValeurFromDistant(const vector<int>& parentBrancheId, UPDATE_MODE updateMode, const std::string& valeurName, int valeurTmpId, int revision, const jkt::AnyData valeur, DistantTreeProxy* distant);
+	Branche* addBrancheFromDistant(const std::vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, DistantTreeProxy* distant);
+	PrivateBranche* addPrivateBrancheFromDistant(const std::vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, DistantTreeProxy* distant);
+	Valeur* addValeurFromDistant(const std::vector<int>& parentBrancheId, UPDATE_MODE updateMode, const std::string& valeurName, int valeurTmpId, int revision, const jkt::AnyData valeur, DistantTreeProxy* distant);
 
 public:
 	ServeurDataTree();
@@ -69,7 +69,7 @@ public:
 	 * ***************************************************/
 
 	void diffuseChangementsToClients(void);
-	void collecteChangements(vector<Changement*>& changements, DistantTreeProxy* distant);
+	void collecteChangements(std::vector<Changement*>& changements, DistantTreeProxy* distant);
 	void receiveChangementsFromClients();
 };
 

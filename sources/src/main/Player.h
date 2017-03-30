@@ -4,7 +4,6 @@
 
 #include <string>
 #include <vector>
-using namespace std;
 
 #include "util/Tableau.h"
 #include "util/V3D.h"
@@ -50,7 +49,7 @@ class CPlayer {
 
 	float _rayonSolidbox;		// Rayon de la sphère englobant le joueur pour la gestion des contacts
 	float _pente;				// Sert à calculer si le joueur glisse sur une pente de la map ou non
-	string _name;				// Nom du perso
+	std::string _name;				// Nom du perso
 	jkt::CMap *_pSkin;			// Gueule du joueur
 
 	void createClavier();	// Crée la gestion par clavier du joueur
@@ -104,8 +103,8 @@ public :
 	float Pente() const;
 	void Pente( float pente );
 
-	void setName(const string &name);
-	string getName() const;
+	void setName(const std::string &name);
+	std::string getName() const;
 
 	void Skin( jkt::CMap *skin );
 

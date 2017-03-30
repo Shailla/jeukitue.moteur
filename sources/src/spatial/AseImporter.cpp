@@ -3,8 +3,6 @@
 #include <string>
 #include <set>
 
-using namespace std;
-
 #include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
 #include "boost/filesystem/fstream.hpp"
 using namespace boost::filesystem;
@@ -25,6 +23,7 @@ using namespace boost::filesystem;
 
 extern CCfg Config;
 
+using namespace std;
 using namespace jkt;
 
 namespace jkt

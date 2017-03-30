@@ -6,14 +6,14 @@
 #include <string>
 #include <fstream>
 
-using namespace std;
-
 #include "spatial/XmlVocabulaire.h"
 #include "MaterialMaker.h"
 #include "spatial/IfstreamMap.h"
 #include "spatial/geo/GeoMaker.h"
 
 #include "spatial/materiau/Material.h"
+
+using namespace std;
 
 namespace jkt
 {

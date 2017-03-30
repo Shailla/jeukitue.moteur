@@ -19,6 +19,7 @@
 #include "menu/MapTreeView.h"
 
 using namespace jkt;
+using namespace std;
 
 extern CGame Game;
 

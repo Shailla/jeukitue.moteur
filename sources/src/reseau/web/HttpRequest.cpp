@@ -5,12 +5,12 @@
  *      Author: VGDJ7997
  */
 
-using namespace std;
-
 #include "util/Trace.h"
 #include "util/StringUtils.h"
 
 #include "reseau/web/HttpRequest.h"
+
+using namespace std;
 
 namespace jkt {
 

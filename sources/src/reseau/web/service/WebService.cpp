@@ -7,11 +7,11 @@
 
 #include <string>
 
-using namespace std;
-
 #include "reseau/web/json/JsonObject.h"
 
 #include "reseau/web/service/WebService.h"
+
+using namespace std;
 
 namespace jkt {
 

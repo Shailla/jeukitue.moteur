@@ -11,9 +11,9 @@
 #include <sstream>
 #include <algorithm>
 
-using namespace std;
-
 #include "util/CollectionsUtils.h"
+
+using namespace std;
 
 namespace jkt {
 

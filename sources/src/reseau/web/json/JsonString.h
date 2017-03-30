@@ -8,17 +8,17 @@
 #ifndef SRC_RESEAU_WEB_JSON_JSONSTRING_H_
 #define SRC_RESEAU_WEB_JSON_JSONSTRING_H_
 
-#include <reseau/web/json/JsonValue.h>
+#include "reseau/web/json/JsonValue.h"
 
 namespace jkt {
 
 class JsonString : public JsonValue {
-	string _value;
+	std::string _value;
 public:
-	JsonString(const string& value);
+	JsonString(const std::string& value);
 	virtual ~JsonString();
 
-	const string& getValue() const;
+	const std::string& getValue() const;
 
 	JsonNumber* isJsonNumber() override;
 	JsonString* isJsonString() override;

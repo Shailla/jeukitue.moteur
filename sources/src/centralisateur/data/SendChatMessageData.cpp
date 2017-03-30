@@ -1,6 +1,5 @@
 #include <string>
 #include <iostream>
-using namespace std;
 
 #include "SDL_net.h"
 
@@ -9,6 +8,8 @@ using namespace std;
 #include "centralisateur/UdpController.h"
 
 #include "centralisateur/data/SendChatMessageData.h"
+
+using namespace std;
 
 SendChatMessageData::SendChatMessageData(void)
 {

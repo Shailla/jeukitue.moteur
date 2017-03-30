@@ -7,9 +7,9 @@
 
 #include <sstream>
 
-using namespace std;
-
 #include "util/IpUtils.h"
+
+using namespace std;
 
 bool operator < (const IPaddress& adr1, const IPaddress& adr2) {
 	if(adr1.host == adr2.host) {

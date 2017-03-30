@@ -10,8 +10,6 @@
 
 #include <string>
 
-using namespace std;
-
 #include "SDL.h"
 #include "SDL_net.h"
 
@@ -22,7 +20,7 @@ using namespace std;
 class TechnicalMessage;
 
 class ClientUdpInterlocutor : public TechnicalInterlocutor {
-	string _distantIp;
+	std::string _distantIp;
 	Uint16 _distantPort;
 	Interlocutor2* _interlocutor;
 
@@ -44,12 +42,12 @@ private:
 	void manageConnection(TechnicalMessage* lastConnectionMsg);
 
 public:
-	ClientUdpInterlocutor(const string& name, Uint16 localPort);
+	ClientUdpInterlocutor(const std::string& name, Uint16 localPort);
 	virtual ~ClientUdpInterlocutor();
 
 	void close();
-	Interlocutor2* connect(const string& distantIp, Uint16 distantPort) throw(ConnectionFailedException);
-	const string& getDistantIp() const;
+	Interlocutor2* connect(const std::string& distantIp, Uint16 distantPort) throw(ConnectionFailedException);
+	const std::string& getDistantIp() const;
 	Uint16 getDistantPort() const;
 };
 

@@ -8,8 +8,6 @@
 #include <iostream>
 #include <sstream>
 
-using namespace std;
-
 #include "fmod.h"
 
 #include "util/Trace.h"
@@ -21,6 +19,8 @@ using namespace std;
 #include "plugin/lua/proxy/data/PluginDataValeurProxy.h"
 
 #include "plugin/lua/proxy/data/PluginDataTreeProxy.h"
+
+using namespace std;
 
 extern CGame Game;			// Contient toutes les données vivantes du jeu
 

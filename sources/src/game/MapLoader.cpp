@@ -21,6 +21,7 @@
 #include "spatial/contact.h"
 
 using namespace jkt;
+using namespace std;
 
 extern CGame Game;
 extern CCfg Config;		// Contient la configuration du jeu

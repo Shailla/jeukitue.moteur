@@ -3,8 +3,6 @@
 #include <fstream>
 #include "SDL.h"
 
-using namespace std;
-
 class CLight;
 class CMaterial;
 class CGeo;
@@ -23,6 +21,10 @@ class CPorte;
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
 
+#include "ihm/Portail.h"
+
+using namespace std;
+
 namespace jkt
 {
 
@@ -31,7 +33,5 @@ void quit_JKTici(void *var)
 LOGDEBUG(("quit_JKTici(%x)", var));
 	quit_game("Qui game from old gui action", 0);
 }
-
-#include "ihm/Portail.h"
 
 }	// JktMenu

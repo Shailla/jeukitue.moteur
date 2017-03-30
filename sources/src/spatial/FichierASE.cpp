@@ -3,8 +3,6 @@
 #include <fstream>
 #include <sstream>
 
-using namespace std;
-
 #include "util/math_vectoriel.h"
 #include "spatial/light/LightOmni.h"
 #include "spatial/light/LightTarget.h"
@@ -16,6 +14,8 @@ using namespace std;
 #include "spatial/geo/ChanTex.h"
 
 #include "spatial/FichierASE.h"
+
+using namespace std;
 
 namespace jkt
 {

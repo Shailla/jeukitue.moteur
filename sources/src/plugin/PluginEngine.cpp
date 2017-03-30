@@ -32,6 +32,8 @@
 
 #include "plugin/PluginEngine.h"
 
+using namespace std;
+
 extern const char* PLUGINS_DIRECTORY;
 extern CCfg Config;
 

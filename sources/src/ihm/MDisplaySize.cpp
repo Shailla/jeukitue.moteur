@@ -6,7 +6,6 @@
 
 #include <fstream>
 #include <iostream>
-using namespace std;
 
 #include "SDL.h"
 
@@ -24,6 +23,8 @@ class CGame;
 extern CCfg Config;
 
 #include "ihm/MDisplaySize.h"
+
+using namespace std;
 
 namespace jkt
 {

@@ -11,13 +11,12 @@
 #include <iostream>
 #include <stdexcept>
 
-using namespace std;
-
 #include "util/StringUtils.h"
 #include "script/CommandeInterpreter.h"
 
 #include "script/commandes/Commande.h"
 
+using namespace std;
 using namespace jkt;
 
 Commande::Commande(CommandeInterpreter* interpreter) {

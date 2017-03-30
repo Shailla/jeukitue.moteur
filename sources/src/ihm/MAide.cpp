@@ -7,8 +7,6 @@
 #include <fstream>
 #include <iostream>
 
-using namespace std;
-
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
 
@@ -19,6 +17,7 @@ using namespace std;
 
 #include "ihm/MAide.h"
 
+using namespace std;
 using namespace jkt;
 
 extern CFocus *pFocus;

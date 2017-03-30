@@ -9,13 +9,13 @@
 #include <vector>
 #include <iostream>
 
-using namespace std;
-
 #include "util/StreamUtils.h"
 #include "data/ValeurInt.h"
 #include "data/ServeurDataTree.h"
 
 #include "data/communication/message/ServerToClient/AcceptAddValeurFromClientChangement.h"
+
+using namespace std;
 
 AcceptAddValeurFromClientChangement::AcceptAddValeurFromClientChangement(istringstream& in) : Changement("AcceptAddValFromClChgt", PRIORITY_AcceptAddValeurFromClientChangement, 0) {
 	unserialize(in);

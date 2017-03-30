@@ -8,13 +8,13 @@
 #include <sstream>
 #include <vector>
 
-using namespace std;
-
 #include "util/StreamUtils.h"
 #include "data/ServeurDataTree.h"
 #include "data/MarqueurDistant.h"
 
 #include "data/communication/message/ServerToClient/AddBrancheFromServerChangement.h"
+
+using namespace std;
 
 AddBrancheFromServerChangement::AddBrancheFromServerChangement(istringstream& in) : Changement("AddBrFromSrvChgt", PRIORITY_AddBrancheFromServerChangement, 0) {
 	unserialize(in);

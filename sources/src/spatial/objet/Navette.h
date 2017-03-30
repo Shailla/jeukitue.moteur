@@ -28,12 +28,12 @@ public:
 
 	void operator =( const CPointNavette &pp );
 	void LitFichierPoint( CIfstreamMap &fichier );
-	void SaveFichierPoint( ostream &fichier );
+	void SaveFichierPoint( std::ostream &fichier );
 	void SavePoint(TiXmlElement* element);
 };
 
 class CNavette : public CGeoObject {
-	vector<CPointNavette> m_ListePoints;	// Liste des points sur le trajet de la navette
+	std::vector<CPointNavette> m_ListePoints;	// Liste des points sur le trajet de la navette
 	jkt::CV3D m_Direction;	// Direction courante de la navette
 	int m_Point;		// Point du trajet à utiliser
 	float m_distPoints;	// Distance entre les deux points courants

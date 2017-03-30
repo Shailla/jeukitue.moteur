@@ -5,8 +5,6 @@
 #include <vector>
 #include <map>
 
-using namespace std;
-
 #include "SDL.h"
 #include <agar/core.h>
 #include <agar/gui.h>
@@ -38,8 +36,8 @@ public:
 	ConsoleView(const AG_EventFn controllerCallback);
 	~ConsoleView(void);
 
-	void println(ConsoleOutputType type, const string& texte);
-	string getCommandAndClearCommandLine(void);
+	void println(ConsoleOutputType type, const std::string& texte);
+	std::string getCommandAndClearCommandLine(void);
 	void setMapOuverteName(const std::string& mapName);
 	void setActivePlayerName(const std::string& activePlayerName);
 	void setDureeCalcules(Uint32 computateDuration);

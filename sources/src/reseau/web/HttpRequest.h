@@ -36,7 +36,7 @@ public:
 	virtual ~HttpRequest();
 
 	HttpServer::HTTP_METHODS getMethod() const;
-	const string& getEndpoint() const;
+	const std::string& getEndpoint() const;
 
 	std::string getBodyText() const;
 	JsonObject* getBodyJson() const throw(MalformedJsonException);

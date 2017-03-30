@@ -13,8 +13,6 @@
 #include <map>
 #include <fstream>
 
-using namespace std;
-
 #ifdef WIN32
 	#include <windows.h>
 #endif
@@ -28,7 +26,7 @@ namespace jkt
 
 class CSimpleGeo : public MapObject {
 	friend class GeoMaker;
-	string tostring;
+	std::string tostring;
 
 	float _minX, _minY, _minZ, _maxX, _maxY, _maxZ;	// Coordonnées du pavé englobant l'objet géo
 	float _centre[3];			// Centre de la sphère englobant l'objet
@@ -50,7 +48,7 @@ class CSimpleGeo : public MapObject {
 public:
 	static const char* identifier;
 
-	CSimpleGeo(CMap *map, const string& name, unsigned int nbrVertex, float* vertex, unsigned int nbrFaces, int* faces, float* color, bool solid=true);
+	CSimpleGeo(CMap *map, const std::string& name, unsigned int nbrVertex, float* vertex, unsigned int nbrFaces, int* faces, float* color, bool solid=true);
 	CSimpleGeo(CMap *map);
 	CSimpleGeo(const CSimpleGeo& other);
 	~CSimpleGeo();
@@ -88,7 +86,7 @@ public:
 	bool Lit(TiXmlElement* element, MapLogger* mapLogger) override;
 	bool Save(TiXmlElement* element) override;
 
-	bool Contact( const float pos[3], float dist ) override;
+	bool checkContact( const float pos[3], float dist ) override;
 
 	void Affiche() override;									// Affiche l'objet géo
 	void AfficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique

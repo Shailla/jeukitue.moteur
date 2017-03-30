@@ -40,8 +40,8 @@ public:
 	Commande* getSubCommande(const std::string& subCommandeName) throw(IllegalParameterException);
 	void registerSubCommande(const std::string& subCommandeName, Commande* subCommande);
 
-	static int getIntParameter(const string& word) throw(IllegalParameterException);
-	static float getFloatParameter(const string& word) throw(IllegalParameterException);
+	static int getIntParameter(const std::string& word) throw(IllegalParameterException);
+	static float getFloatParameter(const std::string& word) throw(IllegalParameterException);
 	static std::vector<int> getIntParameters(const std::string& ligne) throw(IllegalParameterException);
 };
 

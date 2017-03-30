@@ -11,8 +11,6 @@
 #include <GL/glu.h>
 #include "SDL.h"
 
-using namespace std;
-
 class CGame;
 #include "util/fonte/Fonte.h"
 #include "util/Trace.h"
@@ -24,6 +22,7 @@ class CGame;
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
 
+using namespace std;
 using namespace jkt;
 
 extern CFocus *pFocus;

@@ -5,8 +5,6 @@
 #include <string>
 #include <map>
 
-using namespace std;
-
 #ifdef WIN32
 	#include <windows.h>
 #endif
@@ -28,6 +26,8 @@ class CGame;
 #include "main/Game.h"
 
 #include "spatial/objet/Dirigeable.h"
+
+using namespace std;
 
 namespace jkt
 {

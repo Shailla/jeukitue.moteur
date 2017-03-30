@@ -10,8 +10,6 @@
 	#include <windows.h>
 #endif
 
-using namespace std;
-
 class CGame;
 
 #include "spatial/XmlVocabulaire.h"
@@ -34,6 +32,7 @@ class CGame;
 
 #include "spatial/geo/GeoMaker.h"
 
+using namespace std;
 using namespace jkt;
 
 class CCfg;

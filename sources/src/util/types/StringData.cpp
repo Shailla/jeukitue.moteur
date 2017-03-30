@@ -7,11 +7,11 @@
 
 #include <string>
 
-using namespace std;
-
 #include "util/StreamUtils.h"
 
 #include "util/types/StringData.h"
+
+using namespace std;
 
 namespace jkt {
 

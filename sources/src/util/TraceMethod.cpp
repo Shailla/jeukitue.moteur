@@ -7,11 +7,11 @@
 #include <stdarg.h>
 #include <sstream>
 
-using namespace std;
-
 #include "TraceMethod.h"
 
 #include "Trace.h"
+
+using namespace std;
 
 CTraceMethod::CTraceMethod( int ligne, const char *nomFichier) {
 	m_NomFichier = nomFichier;

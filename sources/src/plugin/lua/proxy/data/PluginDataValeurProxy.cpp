@@ -8,8 +8,6 @@
 #include <iostream>
 #include <sstream>
 
-using namespace std;
-
 #include "fmod.h"
 
 #include "data/ValeurInt.h"
@@ -23,6 +21,8 @@ using namespace std;
 #include "main/Game.h"
 
 #include "plugin/lua/proxy/data/PluginDataValeurProxy.h"
+
+using namespace std;
 
 namespace jkt {
 

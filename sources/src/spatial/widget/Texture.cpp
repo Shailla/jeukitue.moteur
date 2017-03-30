@@ -13,10 +13,10 @@
 #include "SDL.h"
 #include "util/V3D.h"
 
-using namespace std;
-
 #include "util/Trace.h"
 #include "spatial/widget/Texture.h"
+
+using namespace std;
 
 namespace jkt {
 

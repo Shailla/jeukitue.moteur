@@ -9,8 +9,6 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
-using namespace std;
-
 #include "util/Erreur.h"
 #include "ressource/RessourcesLoader.h"
 #include "util/utils_SDL.h"
@@ -19,6 +17,8 @@ using namespace std;
 #include "main/jkt.h"
 
 #include "spatial/materiau/Textures.h"
+
+using namespace std;
 
 using namespace jkt;
 

@@ -60,7 +60,7 @@ public:
 
 
 	/* ********************************************
-	 * Manipulation de l'évolution de l'objet
+	 * Evolution temporelle de l'objet
 	 * *******************************************/
 
 	virtual void beginRefresh() override;
@@ -95,7 +95,7 @@ public:
 
 	virtual void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;	// Gère les contact entre 'player' et l'objet géo
 	virtual float GereLaserPlayer(float pos[3], CV3D& Dir, float dist) override;			// Voir la définition de la fonction
-	virtual bool Contact(const float pos[3], float dist) override;
+	virtual bool checkContact(const float pos[3], float dist) override;
 };
 
 } /* namespace jkt */

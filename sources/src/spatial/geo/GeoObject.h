@@ -104,7 +104,7 @@ public:
 	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override {return true;}
 	void setOffsetMateriau( int offset );					// Décale la référence matériau de l'offset
 
-	bool Contact( const float pos[3], float dist ) override;
+	bool checkContact( const float pos[3], float dist ) override;
 
 	void Affiche() override;									// Affiche cet objet géo
 	void AfficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique

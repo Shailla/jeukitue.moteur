@@ -1,10 +1,9 @@
 
 #include <string>
 
-using namespace std;
-
 #include "Erreur.h"
 
+using namespace std;
 
 namespace jkt
 {

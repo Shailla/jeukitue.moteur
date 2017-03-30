@@ -1,8 +1,8 @@
 #include <iostream>
 
-using namespace std;
-
 #include "menu/View.h"
+
+using namespace std;
 
 View::View(const AG_EventFn controllerCallback) {
     m_controllerCallback = controllerCallback;

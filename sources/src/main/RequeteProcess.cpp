@@ -3,6 +3,8 @@
 
 #include "main/RequeteProcess.h"
 
+using namespace std;
+
 CRequeteProcess::CRequeteProcess()
 {
 	_bTakePicture = false;

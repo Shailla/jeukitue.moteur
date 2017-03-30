@@ -7,6 +7,8 @@
 
 #include "game/GameDto.h"
 
+using namespace std;
+
 GameDto::GameDto(const string& mapName) : _mapName(mapName) {
 	_playersMaxNumber = 0;
 	_map = NULL;

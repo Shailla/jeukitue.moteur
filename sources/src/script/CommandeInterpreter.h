@@ -31,7 +31,7 @@ public:
 	virtual ~CommandeInterpreter();
 
 	/** Retourne la liste des commandes */
-	const map<string, Commande*>& getCommandes() const;
+	const std::map<std::string, Commande*>& getCommandes() const;
 
 	/** Retourne une commande spécifiée par son nom */
 	Commande* getCommande(const std::string& commandeName);

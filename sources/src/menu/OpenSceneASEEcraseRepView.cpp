@@ -1,7 +1,5 @@
 #include <vector>
 
-using namespace std;
-
 #include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
 #include "boost/filesystem/fstream.hpp"
 
@@ -16,6 +14,8 @@ using namespace boost::filesystem;
 #include "menu/Viewer.h"
 
 #include "menu/OpenSceneASEEcraseRepView.h"
+
+using namespace std;
 
 OpenSceneASEEcraseRepView::OpenSceneASEEcraseRepView(const AG_EventFn controllerCallback) :View(controllerCallback) {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);

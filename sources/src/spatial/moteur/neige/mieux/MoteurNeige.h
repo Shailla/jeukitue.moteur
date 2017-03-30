@@ -8,8 +8,6 @@
 #include "spatial/moteur/MoteurParticules.h"
 #include "spatial/moteur/neige/mieux/Flocon.h"
 
-using namespace std;
-
 class CGame;
 
 namespace jkt
@@ -19,7 +17,7 @@ class MoteurNeige : public CMoteurParticules {
 	int _nbrParticules;					// Nombre total de flocons
 	int _nbrParticulesOnGround;			// Nombre de flocons au sole
 	Flocon* _flocons;					// Liste de tous les flocons
-	queue<Flocon*> _floconsOnGround;	// Liste des flocons actuellement au sol
+	std::queue<Flocon*> _floconsOnGround;	// Liste des flocons actuellement au sol
 	unsigned int _texName;				// Texture du flocon
 
 	jkt::CV3D _centre;

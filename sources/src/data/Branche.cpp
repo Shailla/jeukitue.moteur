@@ -12,8 +12,6 @@
 #include <algorithm>
 #include <stdexcept>
 
-using namespace std;
-
 #include "util/CollectionsUtils.h"
 #include "data/Valeur.h"
 #include "data/ValeurInt.h"
@@ -24,8 +22,8 @@ using namespace std;
 #include "data/Branche.h"
 #include "data/PrivateBranche.h"
 
+using namespace std;
 using namespace jkt;
-
 
 BrancheIterator::BrancheIterator(Branche* origin, DistantTreeProxy* distant) {
 	_origin = origin;

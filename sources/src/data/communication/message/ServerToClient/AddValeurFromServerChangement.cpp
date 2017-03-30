@@ -8,13 +8,13 @@
 #include <sstream>
 #include <vector>
 
-using namespace std;
-
 #include "util/StreamUtils.h"
 #include "data/ServeurDataTree.h"
 #include "data/MarqueurDistant.h"
 
 #include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"
+
+using namespace std;
 
 AddValeurFromServerChangement::AddValeurFromServerChangement(istringstream& in) : Changement("AddValFromSrvChgt", PRIORITY_AddValeurFromServerChangement, 0) {
 	unserialize(in);

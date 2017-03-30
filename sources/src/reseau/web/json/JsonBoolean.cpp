@@ -7,6 +7,8 @@
 
 #include "reseau/web/json/JsonBoolean.h"
 
+using namespace std;
+
 namespace jkt {
 
 JsonBoolean::JsonBoolean(bool value) {

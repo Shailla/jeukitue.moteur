@@ -13,7 +13,6 @@
 #include "boost/filesystem/fstream.hpp"                       // for std::cout
 
 using namespace boost::filesystem;
-using namespace std;
 
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
@@ -27,6 +26,7 @@ using namespace std;
 
 #include "MOpenMAP.h"
 
+using namespace std;
 using namespace jkt;
 
 class CMaterial;

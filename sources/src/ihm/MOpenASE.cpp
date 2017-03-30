@@ -14,8 +14,6 @@
 #include "boost/filesystem/fstream.hpp"                       // for std::cout
 using namespace boost::filesystem;
 
-using namespace std;
-
 #include "SDL.h"
 #include "SDL_thread.h"
 
@@ -37,7 +35,7 @@ using namespace std;
 
 #include "ihm/MOpenASE.h"
 
-using namespace jkt;
+using namespace std;
 using namespace jkt;
 
 bool deprecatedOpenMAP( const void *arg );

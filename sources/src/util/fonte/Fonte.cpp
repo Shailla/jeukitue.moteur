@@ -11,11 +11,11 @@
 #include <freetype2/ft2build.h>
 #include FT_FREETYPE_H
 
-using namespace std;
-
 #include "util/Trace.h"
 
 #include "util/fonte/Fonte.h"
+
+using namespace std;
 
 Fonte::Fonte() :_ft() {
 	_atlasWidth = 0;

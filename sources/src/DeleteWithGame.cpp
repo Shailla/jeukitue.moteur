@@ -1,9 +1,9 @@
 
 #include <set>
 
-using namespace std;
-
 #include "DeleteWithGame.h"
+
+using namespace std;
 
 set<CDeleteWithGame*>* CDeleteWithGame::m_Tab = new set<CDeleteWithGame*>();
 

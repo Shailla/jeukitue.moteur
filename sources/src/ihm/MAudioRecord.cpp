@@ -5,7 +5,6 @@
 	/****************************/
 
 #include <fstream>
-using namespace std;
 
 #include "fmod.h"
 
@@ -18,7 +17,9 @@ using namespace std;
 #include "util/Trace.h"
 
 #include "ihm/MAudio.h"
+#include "ihm/MAudioDrivers.h"
 
+using namespace std;
 using namespace jkt;
 
 extern CCfg Config;
@@ -28,7 +29,6 @@ extern CCfg Config;
 	/*   MENU CONFIGURATION AUDIO DRIVERS RECORD	*/
 	/*												*/
 	/************************************************/
-#include "ihm/MAudioDrivers.h"
 
 namespace jkt
 {

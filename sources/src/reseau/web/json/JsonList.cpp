@@ -46,7 +46,7 @@ void JsonList::addValue(JsonValue* value) {
 	_values.push_back(value);
 }
 
-JsonString& JsonList::addString(const string& value) {
+JsonString& JsonList::addString(const std::string& value) {
 	JsonString* var = new JsonString(value);
 	_values.push_back(var);
 	return *var;
@@ -88,7 +88,7 @@ JsonList& JsonList::addList() {
 	return *var;
 }
 
-const vector<JsonValue*>& JsonList::getValue() {
+const std::vector<JsonValue*>& JsonList::getValue() {
 	return _values;
 }
 

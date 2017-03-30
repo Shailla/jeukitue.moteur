@@ -3,7 +3,6 @@
 #define __JKT__DELETEWITHGAME_H
 
 #include <set>
-using namespace std;
 
 class CDeleteWithGame;
 
@@ -14,7 +13,7 @@ public:
 	CDeleteWithGame();
 	~CDeleteWithGame();
 
-    static set<CDeleteWithGame*>* m_Tab;
+    static std::set<CDeleteWithGame*>* m_Tab;
 	static void DeleteAll();			// Détruit toutes les classes dérivées de CDeleteWithGame
 };
 

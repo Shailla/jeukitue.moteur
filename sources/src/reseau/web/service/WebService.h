@@ -21,7 +21,7 @@ class WebServiceResult {
 public:
 	WebServiceResult();
 	WebServiceResult(JsonObject& root, const char* status);
-	WebServiceResult(JsonObject& root, const std::vector<string>& errors, const char* status);
+	WebServiceResult(JsonObject& root, const std::vector<std::string>& errors, const char* status);
 
 	std::string _status;
 	std::string _contentType;

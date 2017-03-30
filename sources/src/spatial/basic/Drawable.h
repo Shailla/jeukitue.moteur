@@ -20,17 +20,17 @@ public:
 	Drawable(const Drawable& other);
 	virtual ~Drawable();
 
-	virtual void Affiche() = 0;									// Affiche l'objet géométrique
+	virtual void Affiche() = 0;										// Affiche l'objet géométrique
 	virtual void AfficheHighlighted(float r,float v,float b) = 0;	// Affiche l'objet géométrique en couleur unique
 
-	bool isHidden() const;										// Indique si l'objet est caché
-	void hide(bool highlighted);								// Cache ou non l'objet
+	bool isHidden() const;											// Indique si l'objet est caché
+	void hide(bool highlighted);									// Cache ou non l'objet
 
-	bool isHighlighted() const;									// Indique si l'objet est sélectionné
-	void highlight(bool highlighted);							// Sélectionne l'objet (il sera affiché différemment dans sa Map)
+	bool isHighlighted() const;										// Indique si l'objet est sélectionné
+	void highlight(bool highlighted);								// Sélectionne l'objet (il sera affiché différemment dans sa Map)
 
-	virtual void initGL() = 0;									// Initialisation de l'objet géométrique
-	virtual void freeGL() = 0;									// Libération des ressources de l'objet dans le contexte OpenGL
+	virtual void initGL() = 0;										// Initialisation de l'objet géométrique
+	virtual void freeGL() = 0;										// Libération des ressources de l'objet dans le contexte OpenGL
 };
 
 } /* namespace jkt */

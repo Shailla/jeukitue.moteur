@@ -19,8 +19,6 @@ extern "C" {
 
 #include "lunar.h"
 
-using namespace std;
-
 namespace jkt {
 
 enum LUA_PARAMETER_TYPES {

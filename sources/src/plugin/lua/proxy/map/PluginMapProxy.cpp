@@ -13,6 +13,8 @@
 
 #include "plugin/lua/proxy/map/PluginMapProxy.h"
 
+using namespace std;
+
 namespace jkt {
 
 const char PluginMapProxy::className[] = "Map";

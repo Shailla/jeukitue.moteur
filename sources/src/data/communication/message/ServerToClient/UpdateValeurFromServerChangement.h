@@ -26,7 +26,7 @@ class UpdateValeurFromServerChangement: public Changement {
 
 public:
 	UpdateValeurFromServerChangement(std::istringstream& in);
-	UpdateValeurFromServerChangement(const vector<int>& brancheId, int valeurId, int revision, jkt::AnyData valeur);
+	UpdateValeurFromServerChangement(const std::vector<int>& brancheId, int valeurId, int revision, jkt::AnyData valeur);
 	~UpdateValeurFromServerChangement();
 
 	void update(MarqueurDistant* marqueur);

@@ -48,10 +48,10 @@ class CFichierASE : private std::ifstream
 	CMaterialMulti* materialMulti( unsigned int uRef );
 	CMaterial* materialStandard(unsigned int uRef);
 	MapObject* litGeomobject(CMap *pMap, unsigned int nbr);
-	void LitFichier(const string &nomFichier, CMap *pMap);
-	void LitGroupe(const string &nomFichier, CMap *pMap, unsigned int& nbr_GeoObject);
+	void LitFichier(const std::string &nomFichier, CMap *pMap);
+	void LitGroupe(const std::string &nomFichier, CMap *pMap, unsigned int& nbr_GeoObject);
 
-	string extractGuillemetsDelimitedString(const string str);
+	std::string extractGuillemetsDelimitedString(const std::string str);
 
 
 	bool operator!();
@@ -61,7 +61,7 @@ class CFichierASE : private std::ifstream
 	void findAccoladeDebut(int line);					// Trouve le prochain guillemet ouvrant du fichier
 	void findAccoladeFin(int line);						// Trouve le prochain guillemet ouvrant du fichier
 
-	void get( string &mot, int line );
+	void get( std::string &mot, int line );
 	void get( float &val, int line );
 	void get( bool &val, int line );
 	void get( unsigned int &val, int line );

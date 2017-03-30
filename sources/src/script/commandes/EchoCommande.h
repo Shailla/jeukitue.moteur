@@ -18,7 +18,7 @@ class EchoCommande : public Commande {
 public:
 	EchoCommande (CommandeInterpreter* interpreter);
 
-	std::	string getShortHelp() const;
+	std::string getShortHelp() const;
 	std::string getHelp() const;
 };
 

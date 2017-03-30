@@ -9,14 +9,14 @@
 #include <string>
 #include <iostream>
 
-using namespace std;
-
 #include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
 #include "boost/filesystem/fstream.hpp"
 
 using namespace boost::filesystem;
 
 #include "FindFolder.h"
+
+using namespace std;
 
 // Est-ce un répertoire
 bool CFindFolder::isFolder(const string& directory) {

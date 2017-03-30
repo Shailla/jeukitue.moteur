@@ -10,17 +10,14 @@
 
 #include <string>
 
-using namespace std;
-
-
 class PlayerInformationDto {
-	string _name;
+	std::string _name;
 public:
 	PlayerInformationDto();
 	virtual ~PlayerInformationDto();
 
-	string getName() const;
-	void setName(const string& name);
+	std::string getName() const;
+	void setName(const std::string& name);
 };
 
 #endif /* SRC_SERVICE_DTO_PLAYERINFORMATIONDTO_H_ */

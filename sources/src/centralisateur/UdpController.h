@@ -2,7 +2,6 @@
 #define __JKT__UDPCONTROLLER_H
 
 #include <string>
-using namespace std;
 
 #include "SDL_net.h"
 
@@ -29,8 +28,8 @@ public:
     ~UdpController(void);
 
     void connect(char* userName, int portLocal, char* ipCentralisateur, int portCentralisateur);
-    void sendSignalement(const string& userName);
-	void sendMessageChat(const string& message, const string& userName);
+    void sendSignalement(const std::string& userName);
+	void sendMessageChat(const std::string& message, const std::string& userName);
     void receive(UDPpacket* packet);
 };
 

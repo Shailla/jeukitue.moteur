@@ -34,7 +34,7 @@ class PluginEngine {
 	std::map<std::string, PluginContext*> _nameMapPlugin;
 	std::map<const lua_State*, PluginContext*> _luaMapContext;
 
-	PluginContext* activatePlugin(const string& pluginName, const string& pluginDirectory);
+	PluginContext* activatePlugin(const std::string& pluginName, const std::string& pluginDirectory);
 
 public:
 	PluginEngine();
@@ -50,7 +50,7 @@ public:
 	PluginContext* getGlobalPluginContext(const lua_State* L);
 
 	// Gestion des plugins de la Map active
-	void activateMapPlugin(CMap* map, const string& pluginName, const string pluginDirectory);
+	void activateMapPlugin(CMap* map, const std::string& pluginName, const std::string pluginDirectory);
 	void deactivateMapPlugins();
 	PluginContext* getMapPluginContext(const std::string& pluginName);
 	PluginContext* getMapPluginContext(const lua_State* L);

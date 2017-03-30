@@ -7,6 +7,8 @@
 
 #include "reseau/web/json/JsonString.h"
 
+using namespace std;
+
 namespace jkt {
 
 JsonString::JsonString(const string& value) {

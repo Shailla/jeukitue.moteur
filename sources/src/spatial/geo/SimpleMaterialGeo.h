@@ -13,8 +13,6 @@
 #include <map>
 #include <fstream>
 
-using namespace std;
-
 #include "spatial/geo/GeoMaker.h"
 #include "util/Erreur.h"
 #include "spatial/basic/MapObject.h"
@@ -25,7 +23,7 @@ namespace jkt
 class CSimpleMaterialGeo : public MapObject {
 	int m_OffsetMateriaux;		// Sert lors de la lecture des références matériaux
 	CMaterial* m_Material;		// Matériau utilisé
-	string tostring;
+	std::string tostring;
 
 	// VBO
 	enum {	VBO_VERTEX=0, VBO_NORMAUX };
@@ -51,7 +49,7 @@ class CSimpleMaterialGeo : public MapObject {
 public:
 	static const char* identifier;
 
-	CSimpleMaterialGeo(CMap *map, const string& name, CMaterial *mat, unsigned int nbrVertex, float* vertex, float* normals, bool solid=true);
+	CSimpleMaterialGeo(CMap *map, const std::string& name, CMaterial *mat, unsigned int nbrVertex, float* vertex, float* normals, bool solid=true);
 	CSimpleMaterialGeo(CMap *map);
 	CSimpleMaterialGeo(const CSimpleMaterialGeo& other);
 	~CSimpleMaterialGeo();
@@ -86,7 +84,7 @@ public:
 	bool Save(TiXmlElement* element) override;
 	bool Lit(TiXmlElement* element, MapLogger* mapLogger) override;
 
-	bool Contact( const float pos[3], float dist ) override;
+	bool checkContact( const float pos[3], float dist ) override;
 
 	void Affiche() override;									// Affiche cet objet géo
 	void AfficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique

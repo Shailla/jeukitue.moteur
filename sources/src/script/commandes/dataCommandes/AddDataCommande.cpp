@@ -7,8 +7,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "util/StringUtils.h"
 #include "data/DataTree.h"
 #include "data/DistantTreeProxy.h"
@@ -17,6 +15,7 @@ using namespace std;
 
 #include "script/commandes/dataCommandes/AddDataCommande.h"
 
+using namespace std;
 using namespace jkt;
 
 extern CGame Game;

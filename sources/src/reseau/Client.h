@@ -19,8 +19,8 @@ public:
 	class CInfoServer {
 		bool m_bReady;						// Informe si ces infos ont été actualisées depuis la dernière requête d'infos
 	public:
-		string nom;						// Nom du serveur
-		string map;						// Nom de la MAP jouée sur le serveur
+		std::string nom;						// Nom du serveur
+		std::string map;						// Nom de la MAP jouée sur le serveur
 		CInfoServer();
 		CInfoServer &operator=( CInfoServer &infoServer );
 		void Ready( bool ready );
@@ -45,20 +45,20 @@ public:
 	int IDpersonnel;					// Identifiant du joueur (sur ce PC)
 	Uint16 _jeton;
 
-	string nomMAP;						// Nom de la MAP en cours
+	std::string nomMAP;						// Nom de la MAP en cours
 
 		// Constructeurs/destructeurs
 	CClient();
 	~CClient();
 
-	Interlocutor2* connect(const string &address, Uint16 port, Uint16 portTree);
+	Interlocutor2* connect(const std::string &address, Uint16 port, Uint16 portTree);
 	void disconnect();
 
-	bool sendNotConnectedRequestInfoToServer(const string& destinationAddress, Uint16 destinationPort);
+	bool sendNotConnectedRequestInfoToServer(const std::string& destinationAddress, Uint16 destinationPort);
 
-	bool sendNotConnectedRequestPingToServer(const string& destinationAddress, Uint16 destinationPort);
+	bool sendNotConnectedRequestPingToServer(const std::string& destinationAddress, Uint16 destinationPort);
 
-	void sendConnectedRequestJoinTheGame(const string& nomPlayer );
+	void sendConnectedRequestJoinTheGame(const std::string& nomPlayer );
 
 	ClientUdpInterlocutor* getClientUdpInterlocutor();
 

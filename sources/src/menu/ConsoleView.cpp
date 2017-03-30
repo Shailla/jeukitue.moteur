@@ -16,6 +16,8 @@
 
 #include "menu/ConsoleView.h"
 
+using namespace std;
+
 extern float delta;
 Uint32 aaa;
 

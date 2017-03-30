@@ -5,11 +5,11 @@
  *      Author: Erwin
  */
 
-using namespace std;
-
 #include "util/StringUtils.h"
 
 #include "script/commandes/EchoCommande.h"
+
+using namespace std;
 
 EchoCommande::EchoCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }

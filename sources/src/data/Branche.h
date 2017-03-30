@@ -31,9 +31,9 @@ class BrancheIterator {
 	Branche* _origin;
 	DistantTreeProxy* _distant;
 
-	stack<Branche*> _br;
-	stack<int> _pos;
-	stack<int> _size;
+	std::stack<Branche*> _br;
+	std::stack<int> _pos;
+	std::stack<int> _size;
 
 	BrancheIterator(Branche* origin, DistantTreeProxy* distant);
 
@@ -49,12 +49,12 @@ class Branche : public AbstractBranche {
 	std::vector<Branche*> _subBranches;
 	std::map<int, Branche*> _subBranchesById;
 	std::map<int, Branche*> _subBranchesByTmpId;
-	std::map<string, Branche*> _subBranchesByName;
+	std::map<std::string, Branche*> _subBranchesByName;
 
 	std::vector<Valeur*> _valeurs;
 	std::map<int, Valeur*> _valeursById;
 	std::map<int, Valeur*> _valeursByTmpId;
-	std::map<string, Valeur*> _valeursByName;
+	std::map<std::string, Valeur*> _valeursByName;
 
 	jkt::CGenRef _brancheTmpRefGenerator;
 	jkt::CGenRef _brancheRefGenerator;
@@ -83,13 +83,13 @@ public:
 
 	/** Crée une nouvelle valeur entière et lui attribue un identifiant temporaire */
 	Valeur* createValeurForClient(UPDATE_MODE updateMode, const std::string& valeurName, int revision, const jkt::AnyData& valeur);
-	virtual Valeur* getValeurByName(DistantTreeProxy* distant, const string& valeurName);
+	virtual Valeur* getValeurByName(DistantTreeProxy* distant, const std::string& valeurName);
 
 	/* ****************************************************** */
 	// Fonctions non-compatibles avec les branches privées
 	/* ****************************************************** */
 
-	virtual Branche* getSubBrancheByName(DistantTreeProxy* distant, const string& brancheName);
+	virtual Branche* getSubBrancheByName(DistantTreeProxy* distant, const std::string& brancheName);
 	virtual Branche* getSubBrancheByIdOrTmpId(DistantTreeProxy* distant, int brancheId);
 	virtual std::vector<Branche*>* getSubBranches(DistantTreeProxy* distant);
 

@@ -9,8 +9,6 @@
 #include <string>
 #include <map>
 
-using namespace std;
-
 #include "SDL.h"
 #include "SDL_net.h"
 
@@ -24,6 +22,7 @@ using namespace std;
 
 #include "reseau/new/ServerUdpInterlocutor.h"
 
+using namespace std;
 using namespace jkt;
 
 ServerUdpInterlocutor::ServerUdpInterlocutor(const string& name, Uint16 localPort) : TechnicalInterlocutor(name, localPort), _clientsOfServer() {

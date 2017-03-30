@@ -2,8 +2,6 @@
 #include <fstream>
 #include <iostream>
 
-using namespace std;
-
 #ifdef WIN32
 	#include <windows.h>
 #endif
@@ -18,6 +16,8 @@ using namespace std;
 #include "spatial/light/Light.h"
 
 #include "spatial/light/LightTarget.h"
+
+using namespace std;
 
 namespace jkt
 {

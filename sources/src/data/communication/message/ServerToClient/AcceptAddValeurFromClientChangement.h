@@ -25,7 +25,7 @@ class AcceptAddValeurFromClientChangement : public Changement {
 
 public:
 	AcceptAddValeurFromClientChangement(std::istringstream& in);
-	AcceptAddValeurFromClientChangement(const vector<int>& brancheId, int valeurTmpId, int valeurId, int revision);
+	AcceptAddValeurFromClientChangement(const std::vector<int>& brancheId, int valeurTmpId, int valeurId, int revision);
 	~AcceptAddValeurFromClientChangement();
 
 	void update(MarqueurDistant* marqueur);

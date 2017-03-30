@@ -1,14 +1,13 @@
 
 #include <string>
 
-using namespace std;
-
 #include "util/Erreur.h"
 #include "spatial/XmlVocabulaire.h"
 #include "spatial/geo/EntryPoint.h"
 
 #include "spatial/geo/EntryPointMaker.h"
 
+using namespace std;
 using namespace jkt;
 
 namespace jkt

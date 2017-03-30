@@ -7,12 +7,12 @@
 
 #include <sstream>
 
-using namespace std;
-
 #include "util/StringUtils.h"
 #include "script/CommandeInterpreter.h"
 
 #include "script/commandes/HelpCommande.h"
+
+using namespace std;
 
 HelpCommande::HelpCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }

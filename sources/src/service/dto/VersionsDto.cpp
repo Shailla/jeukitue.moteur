@@ -7,6 +7,8 @@
 
 #include "service/dto/VersionsDto.h"
 
+using namespace std;
+
 namespace jkt {
 
 VersionsDto::VersionsDto(const string& openGlVersion, const string& gluVersion, const string& fmodVersion, const string& agarVersion) {

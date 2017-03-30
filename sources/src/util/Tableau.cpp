@@ -5,9 +5,9 @@
 
 #include <iostream>
 
-using namespace std;
-
 #include "Tableau.h"
+
+using namespace std;
 
 namespace jkt
 {

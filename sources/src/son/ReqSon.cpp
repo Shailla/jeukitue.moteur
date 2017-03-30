@@ -9,13 +9,12 @@
 #include <vector>
 #include <iostream>
 
-using namespace std;
-
 #include "fmod.h"
 
 #include "Son.h"
 #include "ReqSon.h"
 
+using namespace std;
 using namespace jkt;
 
 CReqSon::CReqSon( CSon *id )

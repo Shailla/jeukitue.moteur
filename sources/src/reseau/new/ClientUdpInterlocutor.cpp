@@ -9,15 +9,11 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
-
 #include "SDL.h"
 #include "SDL_net.h"
 
 #include "util/types/Bytes.h"
 #include "util/IpUtils.h"
-
-using namespace jkt;
 
 #include "reseau/new/message/TechnicalMessage.h"
 #include "reseau/new/message/S2CConnectionAcceptedTechnicalMessage.h"
@@ -26,6 +22,9 @@ using namespace jkt;
 #include "reseau/new/Interlocutor2.h"
 
 #include "reseau/new/ClientUdpInterlocutor.h"
+
+using namespace std;
+using namespace jkt;
 
 ClientUdpInterlocutor::ClientUdpInterlocutor(const string& name, Uint16 localPort) : TechnicalInterlocutor(name, localPort) {
 	_interlocutor = NULL;

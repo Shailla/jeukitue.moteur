@@ -31,19 +31,32 @@
 
 #include "reseau/web/service/map/GetMapElementWS.h"
 
+using namespace std;
+
 extern CGame Game;
 
 namespace jkt {
 
-string GetMapElementWS::ID = "id";
-string GetMapElementWS::NAME = "name";
-string GetMapElementWS::TYPE = "type";
+string GetMapElementWS::ID = "id";						// Identifiant unique d'un Map element
+string GetMapElementWS::NAME = "name";					// Nom d'un Map element
+string GetMapElementWS::TYPE = "type";					// Type d'un Map element
 string GetMapElementWS::MAPS = "maps";
 string GetMapElementWS::ELEMENTS = "elements";
 string GetMapElementWS::MAPELEMENT = "mapElement";
 string GetMapElementWS::MAPELEMENTS = "mapElements";
 string GetMapElementWS::HIGHLIGHTED = "highlighted";
 string GetMapElementWS::HIDDEN = "hidden";
+
+string GetMapElementWS::CARAC = 				"charistics";
+
+string GetMapElementWS::CARAC_UPDATABLE = 		"updatable";
+string GetMapElementWS::CARAC_VALUE = 			"value";
+
+string GetMapElementWS::CARAC_TYPE = 			"type";
+string GetMapElementWS::CARAC_TYPE_STRING = 	"string";
+
+string GetMapElementWS::CARAC_GROUP = 			"group";
+string GetMapElementWS::CARAC_GROUP_MAIN = 		"main";
 
 std::regex GetMapElementWS::RG_MAPS_SERVICE("^maps$");
 std::regex GetMapElementWS::RG_MAP_SERVICE("^map$");
@@ -173,10 +186,25 @@ void GetMapElementWS::getElement(int elementId, JsonObject& mapElement, vector<s
 	/* ***************************************************** */
 
 	mapElement.addNumber(ID, object->getId());
-	mapElement.addString(NAME, object->getName());
 	mapElement.addBoolean(HIGHLIGHTED, object->isHighlighted());
 	mapElement.addBoolean(HIDDEN, object->isHidden());
 	mapElement.addString(TYPE, object->getType());
+	mapElement.addString(NAME, object->getName());
+
+	JsonObject& charistics = mapElement.addObject(CARAC);
+
+	addCharistic(charistics, NAME, object->getName(), CARAC_GROUP_MAIN, true);
+}
+
+JsonObject& GetMapElementWS::addCharistic(JsonObject& jsonCharistics, const string& name, const string& value, const string& group, bool updatable) {
+	JsonObject& charistic = jsonCharistics.addObject(name);
+
+	charistic.addString(CARAC_VALUE, value);
+	charistic.addString(CARAC_TYPE, CARAC_TYPE_STRING);
+	charistic.addString(CARAC_GROUP, group);
+	charistic.addBoolean(CARAC_UPDATABLE, updatable);
+
+	return charistic;
 }
 
 WebServiceResult GetMapElementWS::updateElement(HttpRequest& request, int elementId) {

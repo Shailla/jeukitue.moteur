@@ -9,9 +9,9 @@
 #include <string>
 #include <sstream>
 
-using namespace std;
-
 #include "util/StreamUtils.h"
+
+using namespace std;
 
 jkt::AnyData StreamUtils::readData(istringstream& in) {
 	return jkt::AnyData(in);

@@ -14,8 +14,6 @@
 #include <GL/glu.h>
 #include <GL/glext.h>
 
-using namespace std;
-
 class CGame;
 
 extern int JKT_RenderMode;
@@ -37,6 +35,7 @@ extern int JKT_RenderMode;
 
 #include "SimpleGeo.h"
 
+using namespace std;
 using namespace jkt;
 
 extern CCfg Config;
@@ -650,7 +649,7 @@ float CSimpleGeo::testContactTriangle(unsigned int i, const float posPlayer[3], 
 
 // Renvoie la distance entre le point de position 'pos' et le plus proche triangle de l'objet
 // géo. N'effectue cette mesure que pour des distances inférieures à 'dist'
-bool CSimpleGeo::Contact( const float pos[3], float dist )
+bool CSimpleGeo::checkContact( const float pos[3], float dist )
 {
 	float distanceW;
 	if( TestContactPave( pos, dist ) )	// Teste proximité 'joueur / l'objet géo'

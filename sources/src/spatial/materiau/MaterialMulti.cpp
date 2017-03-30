@@ -7,8 +7,6 @@
 #include <string>
 #include <fstream>
 
-using namespace std;
-
 #include "spatial/XmlVocabulaire.h"
 #include "spatial/materiau/Material.h"
 #include "spatial/geo/GeoMaker.h"
@@ -17,6 +15,8 @@ using namespace std;
 #include "util/Trace.h"
 
 #include "MaterialMulti.h"
+
+using namespace std;
 
 namespace jkt
 {

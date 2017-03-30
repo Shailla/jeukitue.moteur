@@ -28,14 +28,14 @@ public:
 	virtual ~JsonList();
 
 	void addValue(JsonValue* value);
-	JsonString& addString(const string& value);
+	JsonString& addString(const std::string& value);
 	JsonNumber& addNumber(unsigned int value);
 	JsonNumber& addNumber(int value);
 	JsonNumber& addNumber(long value);
 	JsonBoolean& addBoolean(bool value);
 	JsonObject& addObject();
 	JsonList& addList();
-	const vector<JsonValue*>& getValue();
+	const std::vector<JsonValue*>& getValue();
 
 	JsonNumber* isJsonNumber() override;
 	JsonString* isJsonString() override;

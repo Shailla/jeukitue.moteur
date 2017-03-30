@@ -10,9 +10,6 @@
 
 #include <string>
 #include <map>
-#include <queue>
-
-using namespace std;
 
 #include "SDL.h"
 #include "SDL_net.h"
@@ -56,7 +53,7 @@ class ServerUdpInterlocutor : TechnicalInterlocutor {
 		}
 	};
 
-	string _distantIp;
+	std::string _distantIp;
 	Uint16 _distantPort;
 	NotConnectedInterlocutor2* _notConnectedInterlocutor;
 
@@ -69,7 +66,7 @@ class ServerUdpInterlocutor : TechnicalInterlocutor {
 	SDL_cond* _sendingCondition;
 
 	SDL_mutex* _clientsOfServerMutex;
-	map<IPaddress, ClientOfServer*> _clientsOfServer;
+	std::map<IPaddress, ClientOfServer*> _clientsOfServer;
 
 private:
 
@@ -97,7 +94,7 @@ private:
 	void manageConnection(const IPaddress& address, C2SHelloTechnicalMessage* msg);
 
 public:
-	ServerUdpInterlocutor(const string& name, Uint16 localPort);
+	ServerUdpInterlocutor(const std::string& name, Uint16 localPort);
 	virtual ~ServerUdpInterlocutor();
 
 	/** Connect the server. */

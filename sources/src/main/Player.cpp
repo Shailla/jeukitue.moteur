@@ -5,8 +5,6 @@
 #include <map>
 #include <cmath>
 
-using namespace std;
-
 #ifdef WIN32
 	#include <windows.h>
 #endif
@@ -40,13 +38,14 @@ class CGame;
 #include "main/Game.h"
 #include "reseau/SPA.h"
 
+#include "main/Player.h"
+
+using namespace std;
 using namespace jkt;
 
 extern CCfg Config;
 extern CDemonSons *DemonSons;
 extern CGame Game;
-
-#include "main/Player.h"
 
 Icone* CPlayer::_weaponsChoice = NULL;
 

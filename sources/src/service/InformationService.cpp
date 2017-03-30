@@ -15,9 +15,9 @@
 #include <agar/core.h>
 #include "fmod.h"
 
-using namespace std;
-
 #include "service/InformationService.h"
+
+using namespace std;
 
 namespace jkt {
 

@@ -51,7 +51,7 @@ class GetMapElementWS : public WebService {
 	WebServiceResult updateElement(HttpRequest& request, int elementId);
 
 	std::string updateElement(JsonObject* jsonObject, MapObject* object);
-	JsonObject& addCharistic(JsonObject& jsonCharistics, const std::string& name, const std::string& value, const std::string& group, bool updatable);
+	JsonObject& addCharistic(JsonObject& jsonCharistics, const std::string& name, const std::string& group, bool updatable, const std::string& value);
 
 	void jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe);
 

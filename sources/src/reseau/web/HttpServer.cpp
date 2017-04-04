@@ -82,6 +82,10 @@ void HttpTcpResponse::reset() {
 	_content = 0;
 }
 
+bool HttpTcpResponse::isEmpty() const {
+	return !_content;
+}
+
 long HttpTcpResponse::getSize() const {
 	return _size;
 }
@@ -315,14 +319,17 @@ void HttpServer::start() {
 		while(clientSocket == 0) {
 			SDLNet_CheckSockets(serveurSocketSet, -1);
 			clientSocket = SDLNet_TCP_Accept(serveurSocket);
+//			SDL_Delay(1000);
 		}
 
 		int requestSize = SDLNet_TCP_Recv(clientSocket, buffer, TCP_BUFFER_SIZE); 				// Reception parametres connection du client
 
+		content = 0;
+		found = false;
+		tcpResponse.reset();
 
 		// Requête de gestion du TCP (keepalive, ...)
 		if(requestSize == 0) {
-			tcpResponse.reset();
 			tcpResponse.update((char*)malloc(0), 0);
 			LOGINFO(("Empty TCP paquet ==> empty TCP response"));
 		}
@@ -331,7 +338,8 @@ void HttpServer::start() {
 			buffer[requestSize] = '\0';
 
 			try {
-				LOGDEBUG(("\nHTTP received request (native)\nssssssssssssssssssssssssssssssssssssssssssssssssssssssss\n'%s'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", buffer));
+				LOGINFO(("%d", requestSize));
+				LOGINFO(("\nHTTP received request (native) :\n========================================================\n'%s'\n========================================================", buffer));
 
 
 				/* ****************************************** */
@@ -340,16 +348,12 @@ void HttpServer::start() {
 
 				HttpRequest request(buffer, requestSize);
 				endpoint = request.getEndpoint();
-				LOGINFO(("\nHTTP received request\nssssssssssssssssssssssssssssssssssssssssssssssssssssssss\n'%s'\nssssssssssssssssssssssssssssssssssssssssssssssssssssssss", request.toString().c_str()));
+				LOGINFO(("\nHTTP received request :\n========================================================\n'%s'\n========================================================", request.toString().c_str()));
 
 
 				/* ****************************************** */
 				/* Recherche du contenu demandé               */
 				/* ****************************************** */
-
-				content = 0;
-				found = false;
-				tcpResponse.reset();
 
 				// Search web service
 				if(!found) {
@@ -465,13 +469,13 @@ void HttpServer::start() {
 			}
 		}
 
-		if(tcpResponse.getSize() <= 0) {	// Si aucune réponse n'a été obtenue ici c'est qu'il y a une couille dans le potage
+		if(tcpResponse.isEmpty()) {	// Si aucune réponse n'a été obtenue ici c'est qu'il y a une couille dans le potage
 			LOGERROR(("On ne devrait jamais être ici '%s'", buffer));
 			buildResponse(tcpResponse, HTTP_RESPONSE_500, HTTP_CONTENT_TYPE_HTML, HTTP_INTERNAL_ERROR_CONTENT);
 		}
 
 		// Envoi réponse
-		LOGINFO(("%%%%%%%%%%%% HTTP response                  %%%%%%%%%%%%\n'%s'\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", tcpResponse.getContent()));
+		LOGINFO(("\nHTTP response :\n********************************************************\n'%s'\n********************************************************", tcpResponse.getContent()));
 
 		SDLNet_TCP_Send(clientSocket, tcpResponse.getContent(), tcpResponse.getSize()); 		// Envoi du contenu de la page au client
 		SDLNet_TCP_Close(clientSocket);

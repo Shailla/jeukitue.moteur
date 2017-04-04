@@ -193,16 +193,15 @@ void GetMapElementWS::getElement(int elementId, JsonObject& mapElement, vector<s
 
 	JsonObject& charistics = mapElement.addObject(CARAC);
 
-	addCharistic(charistics, NAME, object->getName(), CARAC_GROUP_MAIN, true);
+	addCharistic(charistics, NAME, CARAC_GROUP_MAIN, true, object->getName());
 }
 
-JsonObject& GetMapElementWS::addCharistic(JsonObject& jsonCharistics, const string& name, const string& value, const string& group, bool updatable) {
+JsonObject& GetMapElementWS::addCharistic(JsonObject& jsonCharistics, const string& name, const string& group, bool updatable, const string& value) {
 	JsonObject& charistic = jsonCharistics.addObject(name);
-
-	charistic.addString(CARAC_VALUE, value);
 	charistic.addString(CARAC_TYPE, CARAC_TYPE_STRING);
 	charistic.addString(CARAC_GROUP, group);
 	charistic.addBoolean(CARAC_UPDATABLE, updatable);
+	charistic.addString(CARAC_VALUE, value);
 
 	return charistic;
 }
@@ -296,6 +295,10 @@ WebServiceResult GetMapElementWS::updateElements(HttpRequest& request) {
 	}
 
 	JsonObject* body = request.getBodyJson();
+
+	if(!body) {
+		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad http request, there is no body");
+	}
 
 	JsonValue* mapElements = body->getValue(MAPELEMENTS);
 

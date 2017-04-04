@@ -31,6 +31,7 @@ public:
 	void update(char* content, long size);
 	void reset();
 
+	bool isEmpty() const;
 	long getSize() const;
 	char* getContent() const;
 };

@@ -1,0 +1,26 @@
+
+<!-- STRING -->
+
+<div *ngIf="characteristic.type == 'string' && !characteristic.updatable">
+	<label>{{ characteristic.name }} :</label>
+	<input type="text" [(ngModel)]="characteristic.value" disabled />
+	
+</div>
+
+<div *ngIf="characteristic.type == 'string' && characteristic.updatable">
+	<label>{{ characteristic.name }} :</label>
+	<input type="text" [(ngModel)]="characteristic.value" />
+</div>
+
+<!-- BOOL -->
+
+<div *ngIf="characteristic.type == 'bool' && !characteristic.updatable">
+	<label>{{ characteristic.name }} :</label>aaa
+	<input type="checkbox" [(ngModel)]="characteristic.value" disabled />
+</div>
+
+<div *ngIf="characteristic.type == 'bool' && characteristic.updatable">
+	<label>{{ characteristic.name }} :</label>bbb
+	<input type="checkbox" [(ngModel)]="characteristic.value" />
+</div>
+

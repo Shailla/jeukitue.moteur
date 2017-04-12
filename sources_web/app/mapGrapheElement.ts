@@ -1,27 +1,20 @@
-import { MapElement } 		from './MapElement';
+import { MapElement } 					from './MapElement';
 
 export class MapGrapheElement {
 	// Data
 	type: string;
 	id: number; 
 	name: string; 
-	elements: Array<MapGrapheElement>;
+	elements: Array<MapGrapheElement> = [];
 	
-	hidden: boolean;
-	highlighted: boolean;
+	hidden: boolean = false;
+	highlighted: boolean = false;
 	
 	// Mise en forme
-    expanded: boolean;
-	checked: boolean;
+    expanded: boolean = false;
+	checked: boolean = false;
 	
 	constructor() {       
-		this.elements = [];
-		
-		this.hidden = false;
-        this.highlighted = false;
-		
-		this.expanded = false;
-		this.checked = false;
     }
 	
 	fromJson(jsonObject) {
@@ -31,8 +24,10 @@ export class MapGrapheElement {
 		this.hidden = jsonObject.hidden;
 		this.highlighted = jsonObject.highlighted;
 		
-		for(let iter of jsonObject.elements) {
-			this.elements.push(new MapGrapheElement().fromJson(iter));
+		if(jsonObject.elements != undefined) {
+			for(let iter of jsonObject.elements) {
+				this.elements.push(new MapGrapheElement().fromJson(iter));
+			}
 		}
 		
 		return this;

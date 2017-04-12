@@ -1,3 +1,5 @@
+import { MapGrapheElementCharacteristic } 	from './MapGrapheElementCharacteristic';
+
 export class MapElement {
 	// Data
 	type: string;
@@ -5,6 +7,8 @@ export class MapElement {
 	name: string;
 	highlighted: boolean;
 	hidden: boolean;
+	
+	characteristics: Array<MapGrapheElementCharacteristic> = [];
 	
 	constructor() {       
     }
@@ -15,6 +19,12 @@ export class MapElement {
 		this.name = jsonObject.name;
 		this.highlighted = jsonObject.highlighted;
 		this.hidden = jsonObject.hidden;
+		
+		if(jsonObject.characteristics != undefined) {
+			for(let iter of jsonObject.characteristics) {
+				this.characteristics.push(new MapGrapheElementCharacteristic().fromJson(iter));
+			}
+		}
 		
 		return this;
 	}

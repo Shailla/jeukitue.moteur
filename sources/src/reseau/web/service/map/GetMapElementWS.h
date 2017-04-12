@@ -31,10 +31,15 @@ class GetMapElementWS : public WebService {
 	static std::string HIDDEN;
 
 	static std::string CARAC;
+
 	static std::string CARAC_UPDATABLE;
+	static std::string CARAC_NAME;
 	static std::string CARAC_VALUE;
+
 	static std::string CARAC_TYPE;
 	static std::string CARAC_TYPE_STRING;
+	static std::string CARAC_TYPE_BOOL;
+
 	static std::string CARAC_GROUP;
 	static std::string CARAC_GROUP_MAIN;
 
@@ -51,7 +56,9 @@ class GetMapElementWS : public WebService {
 	WebServiceResult updateElement(HttpRequest& request, int elementId);
 
 	std::string updateElement(JsonObject* jsonObject, MapObject* object);
-	JsonObject& addCharistic(JsonObject& jsonCharistics, const std::string& name, const std::string& group, bool updatable, const std::string& value);
+	JsonObject& addCharisticString(JsonList& jsonCharistics, const std::string& name, const std::string& group, bool updatable, const std::string& value);
+	JsonObject& addCharisticBoolean(JsonList& jsonCharistics, const std::string& name, const std::string& group, bool updatable, const bool value);
+	JsonObject& addCharisticNumber(JsonList& jsonCharistics, const std::string& name, const std::string& group, bool updatable, long value);
 
 	void jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe);
 

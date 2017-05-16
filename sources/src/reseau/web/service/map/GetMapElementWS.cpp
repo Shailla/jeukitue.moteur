@@ -37,33 +37,37 @@ extern CGame Game;
 
 namespace jkt {
 
-string GetMapElementWS::ID = "id";						// Identifiant unique d'un Map element
-string GetMapElementWS::NAME = "name";					// Nom d'un Map element
-string GetMapElementWS::TYPE = "type";					// Type d'un Map element
-string GetMapElementWS::MAPS = "maps";
-string GetMapElementWS::ELEMENTS = "elements";
-string GetMapElementWS::MAPELEMENT = "mapElement";
-string GetMapElementWS::MAPELEMENTS = "mapElements";
-string GetMapElementWS::HIGHLIGHTED = "highlighted";
-string GetMapElementWS::HIDDEN = "hidden";
+const string GetMapElementWS::ID = "id";						// Identifiant unique d'un Map element
+const string GetMapElementWS::NAME = "name";					// Nom d'un Map element
+const string GetMapElementWS::TYPE = "type";					// Type d'un Map element
+const string GetMapElementWS::MAPS = "maps";
+const string GetMapElementWS::ELEMENTS = "elements";
+const string GetMapElementWS::MAPELEMENT = "mapElement";
+const string GetMapElementWS::MAPELEMENTS = "mapElements";
 
-string GetMapElementWS::CARAC = 				"characteristics";
+const string GetMapElementWS::CARACS =				"caracs";
+const string GetMapElementWS::CARAC_UPDATABLE = 		"caracUpdatable";
+const string GetMapElementWS::CARAC_VALUE = 			"caracValue";
 
-string GetMapElementWS::CARAC_NAME =			"characName";
-string GetMapElementWS::CARAC_UPDATABLE = 		"characUpdatable";
-string GetMapElementWS::CARAC_VALUE = 			"characValue";
+const string GetMapElementWS::CARAC_TYPE = 			"caracType";
+const string GetMapElementWS::CARAC_TYPE_BOOL = 		"bool";
+const string GetMapElementWS::CARAC_TYPE_LONG = 		"long";
+const string GetMapElementWS::CARAC_TYPE_STRING = 	"string";
 
-string GetMapElementWS::CARAC_TYPE = 			"characType";
-string GetMapElementWS::CARAC_TYPE_STRING = 	"string";
-string GetMapElementWS::CARAC_TYPE_BOOL = 		"bool";
+const string GetMapElementWS::CARAC_GROUP = 			"characGroup";
+const string GetMapElementWS::CARAC_GROUP_MAIN = 		"main";
 
-string GetMapElementWS::CARAC_GROUP = 			"characGroup";
-string GetMapElementWS::CARAC_GROUP_MAIN = 		"main";
+const GetMapElementWS::Caracteristic GetMapElementWS::HIGHLIGHTED("highlithted", GetMapElementWS::CARAC_TYPE_BOOL, "general", true);
+const GetMapElementWS::Caracteristic GetMapElementWS::HIDDEN("hidden", GetMapElementWS::CARAC_TYPE_BOOL, "general", true);
 
 std::regex GetMapElementWS::RG_MAPS_SERVICE("^maps$");
 std::regex GetMapElementWS::RG_MAP_SERVICE("^map$");
 std::regex GetMapElementWS::RG_MAP_ELEMENTS_SERVICE("^map/elements$");
 std::regex GetMapElementWS::RG_MAP_ELEMENT_SERVICE("^map/element/(\\d+)$");
+
+GetMapElementWS::Caracteristic::Caracteristic(const string& name, const string& type, const string& group,
+		bool updatable) :_name(name), _type(type), _group(group), _updatable(updatable) {
+}
 
 GetMapElementWS::GetMapElementWS() {
 }
@@ -90,8 +94,8 @@ void GetMapElementWS::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 	mapGraphe.addString(TYPE, map->getType());
 	mapGraphe.addNumber(ID, map->getId());
 	mapGraphe.addString(NAME, map->getName());
-	mapGraphe.addString(HIGHLIGHTED, "false");			// TODO permettre de sélectionner une sous-Map la Map
-	mapGraphe.addString(HIDDEN, "false");			// TODO permettre de sélectionner une sous-Map la Map
+	mapGraphe.addString(HIGHLIGHTED._name, "false");	// TODO permettre de sélectionner une sous-Map la Map
+	mapGraphe.addString(HIDDEN._name, "false");			// TODO permettre de sélectionner une sous-Map la Map
 
 	JsonList& elements = mapGraphe.addList(ELEMENTS);
 
@@ -100,8 +104,8 @@ void GetMapElementWS::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 		obj.addString(TYPE, ePt->getType());
 		obj.addNumber(ID, ePt->getId());
 		obj.addString(NAME, ePt->getName());
-		obj.addString(HIGHLIGHTED, "false");		// TODO permettre de mettre en surbrillance
-		obj.addString(HIDDEN, "false");				// TODO permettre de masquer
+		obj.addString(HIGHLIGHTED._name, "false");		// TODO permettre de mettre en surbrillance
+		obj.addString(HIDDEN._name, "false");			// TODO permettre de masquer
 
 		obj.addList(ELEMENTS);
 	}
@@ -111,8 +115,8 @@ void GetMapElementWS::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 		obj.addString(TYPE, light->getType());
 		obj.addNumber(ID, light->getId());
 		obj.addString(NAME, "lumiere");
-		obj.addString(HIGHLIGHTED, "false");		// TODO permettre de mettre en surbrillance
-		obj.addString(HIDDEN, "false");				// TODO permettre de masquer
+		obj.addString(HIGHLIGHTED._name, "false");		// TODO permettre de mettre en surbrillance
+		obj.addString(HIDDEN._name, "false");			// TODO permettre de masquer
 
 		obj.addList(ELEMENTS);
 	}
@@ -122,8 +126,8 @@ void GetMapElementWS::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 		obj.addString(TYPE, mObj->getType());
 		obj.addNumber(ID, mObj->getId());
 		obj.addString(NAME, mObj->getName());
-		obj.addBoolean(HIGHLIGHTED, mObj->isHighlighted());
-		obj.addBoolean(HIDDEN, mObj->isHidden());
+		obj.addBoolean(HIGHLIGHTED._name, mObj->isHighlighted());
+		obj.addBoolean(HIDDEN._name, mObj->isHidden());
 
 		obj.addList(ELEMENTS);
 	}
@@ -188,26 +192,39 @@ void GetMapElementWS::getElement(int elementId, JsonObject& mapElement, vector<s
 	/* ***************************************************** */
 
 	mapElement.addNumber(ID, object->getId());
-	mapElement.addBoolean(HIGHLIGHTED, object->isHighlighted());
-	mapElement.addBoolean(HIDDEN, object->isHidden());
 	mapElement.addString(TYPE, object->getType());
 	mapElement.addString(NAME, object->getName());
 
-	JsonList& charistics = mapElement.addList(CARAC);
+	JsonObject& caracs = mapElement.addObject(CARACS);
 
-	addCharisticBoolean(charistics, "Boolean", "Updatables", true, true);
-	addCharisticBoolean(charistics, "Boolean", "Not updatables", false, true);
+	addCharisticBoolean(caracs, HIGHLIGHTED, object->isHighlighted());
+	addCharisticBoolean(caracs, HIDDEN, object->isHidden());
 
-	addCharisticString(charistics, "String", "Updatables", true, "coucou");
-	addCharisticString(charistics, "String", "Not updatables", false, "coucou");
+	// Exemples
+	addCharisticBoolean(caracs, "boolean1", "Updatables", true, true);
+	addCharisticBoolean(caracs, "boolean2", "Not updatables", false, true);
 
-	addCharisticNumber(charistics, "Number", "Updatables", true, 56);
-	addCharisticNumber(charistics, "Number", "Not updatables", false, 56);
+	addCharisticLong(caracs, "number1", "Updatables", true, 56);
+	addCharisticLong(caracs, "number2", "Not updatables", false, 56);
+
+	addCharisticString(caracs, "string1", "Updatables", true, "coucou");
+	addCharisticString(caracs, "string2", "Not updatables", false, "coucou");
 }
 
-JsonObject& GetMapElementWS::addCharisticString(JsonList& jsonCharistics, const string& name, const string& group, bool updatable, const string& value) {
-	JsonObject& charistic = jsonCharistics.addObject();
-	charistic.addString(CARAC_NAME, name);
+JsonObject& GetMapElementWS::addCharisticString(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value) {
+	return addCharisticBoolean(jsonCharistics, carac._name, carac._group, carac._updatable, value);
+}
+
+JsonObject& GetMapElementWS::addCharisticLong(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value) {
+	return addCharisticBoolean(jsonCharistics, carac._name, carac._group, carac._updatable, value);
+}
+
+JsonObject& GetMapElementWS::addCharisticBoolean(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value) {
+	return addCharisticBoolean(jsonCharistics, carac._name, carac._group, carac._updatable, value);
+}
+
+JsonObject& GetMapElementWS::addCharisticString(JsonObject& jsonCharistics, const string& name, const string& group, bool updatable, const string& value) {
+	JsonObject& charistic = jsonCharistics.addObject(name);
 	charistic.addString(CARAC_TYPE, CARAC_TYPE_STRING);
 	charistic.addString(CARAC_GROUP, group);
 	charistic.addBoolean(CARAC_UPDATABLE, updatable);
@@ -216,10 +233,9 @@ JsonObject& GetMapElementWS::addCharisticString(JsonList& jsonCharistics, const 
 	return charistic;
 }
 
-JsonObject& GetMapElementWS::addCharisticNumber(JsonList& jsonCharistics, const string& name, const string& group, bool updatable, long value) {
-	JsonObject& charistic = jsonCharistics.addObject();
-	charistic.addString(CARAC_NAME, name);
-	charistic.addString(CARAC_TYPE, CARAC_TYPE_STRING);
+JsonObject& GetMapElementWS::addCharisticLong(JsonObject& jsonCharistics, const string& name, const string& group, bool updatable, long value) {
+	JsonObject& charistic = jsonCharistics.addObject(name);
+	charistic.addString(CARAC_TYPE, CARAC_TYPE_LONG);
 	charistic.addString(CARAC_GROUP, group);
 	charistic.addBoolean(CARAC_UPDATABLE, updatable);
 	charistic.addNumber(CARAC_VALUE, value);
@@ -227,9 +243,8 @@ JsonObject& GetMapElementWS::addCharisticNumber(JsonList& jsonCharistics, const 
 	return charistic;
 }
 
-JsonObject& GetMapElementWS::addCharisticBoolean(JsonList& jsonCharistics, const string& name, const string& group, bool updatable, const bool value) {
-	JsonObject& charistic = jsonCharistics.addObject();
-	charistic.addString(CARAC_NAME, name);
+JsonObject& GetMapElementWS::addCharisticBoolean(JsonObject& jsonCharistics, const string& name, const string& group, bool updatable, const bool value) {
+	JsonObject& charistic = jsonCharistics.addObject(name);
 	charistic.addString(CARAC_TYPE, CARAC_TYPE_BOOL);
 	charistic.addString(CARAC_GROUP, group);
 	charistic.addBoolean(CARAC_UPDATABLE, updatable);
@@ -241,10 +256,12 @@ JsonObject& GetMapElementWS::addCharisticBoolean(JsonList& jsonCharistics, const
 WebServiceResult GetMapElementWS::updateElement(HttpRequest& request, int elementId) {
 	CMap* map = Game.getMap();
 
+	// Is there an active Map
 	if(!map) {
 		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_404, "There is no active Map");
 	}
 
+	// Do the object exist
 	MapObject* object = map->findMapObject(elementId);
 
 	if(!object) {
@@ -254,13 +271,15 @@ WebServiceResult GetMapElementWS::updateElement(HttpRequest& request, int elemen
 	JsonObject* newValues = request.getBodyJson();
 
 	if(newValues) {
-		JsonValue* mapElement = newValues->getValue(MAPELEMENT);
+		JsonObject* mapElement = newValues->getObject(MAPELEMENT, false);
 
-		if(mapElement && mapElement->isJsonObject()) {
-			string result = updateElement(mapElement->isJsonObject(), object);
-
-			if(StringUtils::isNotBlank(result)) {
-				return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, result);
+		if(mapElement) {
+			// Update the object
+			try {
+				updateElement(mapElement, object);
+			}
+			catch(BadFormatJsonException& exception) {
+				return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, exception.getMessage());
 			}
 		}
 		else {
@@ -278,43 +297,71 @@ WebServiceResult GetMapElementWS::updateElement(HttpRequest& request, int elemen
 	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
 }
 
-string GetMapElementWS::updateElement(JsonObject* jsonObject, MapObject* object) {
-	// Name
-	JsonValue* val;
+bool GetMapElementWS::updateCharisticBoolean(JsonObject& jsonCharistics, const Caracteristic& carac, bool& newValue) {
+	if(carac._updatable) {
+		JsonObject* caracObject = jsonCharistics.getObject(carac._name, false);
 
-	if((val = jsonObject->getValue(NAME))) {
-		const JsonString* value = val->isJsonString();
-
-		if(!value) {
-			return "Bad request format, 'name' element value must be a string";
+		if(caracObject) {
+			const JsonBoolean* value = caracObject->getBoolean(CARAC_VALUE, true);
+			newValue = value->getValue();
 		}
-
-		object->setName(value->getValue());
 	}
 
-	// Highlighted state
-	if((val = jsonObject->getValue(HIGHLIGHTED))) {
-		const JsonBoolean* value = val->isJsonBoolean();
+	return carac._updatable;
+}
 
-		if(!value) {
-			return "Bad request format, 'highlighted' element value must be boolean ('true' or 'false')";
+bool GetMapElementWS::updateCharisticLong(JsonObject& jsonCharistics, const Caracteristic& carac, long& newValue) {
+	if(carac._updatable) {
+		JsonObject* caracObject = jsonCharistics.getObject(carac._name, false);
+
+		if(caracObject) {
+			const JsonNumber* value = caracObject->getNumber(CARAC_VALUE, true);
+			newValue = value->getValue();
 		}
-
-		object->highlight(value->getValue());
 	}
 
-	// Hidden state
-	if((val = jsonObject->getValue(HIDDEN))) {
-		const JsonBoolean* value = val->isJsonBoolean();
+	return carac._updatable;
+}
 
-		if(!value) {
-			return "Bad request format, 'hidden' element value must be boolean ('true' or 'false')";
+bool GetMapElementWS::updateCharisticString(JsonObject& jsonCharistics, const Caracteristic& carac, string& newValue) {
+	if(carac._updatable) {
+		JsonObject* caracObject = jsonCharistics.getObject(carac._name, false);
+
+		if(caracObject) {
+			const JsonString* value = caracObject->getString(CARAC_VALUE, true);
+			newValue = value->getValue();
 		}
-
-		object->hide(value->getValue());
 	}
 
-	return "";	// No error
+	return carac._updatable;
+}
+
+void GetMapElementWS::updateElement(JsonObject* jsonObject, MapObject* object) throw(BadFormatJsonException) {
+
+	// Update Name
+	const JsonString* name = jsonObject->getString(NAME, false);
+
+	if(name) {
+		object->setName(name->getValue());
+	}
+
+
+	/* ********************************************* */
+	/* Characteristics update                        */
+	/* ********************************************* */
+
+	JsonObject& caracs = *jsonObject->getObject(CARACS, true);
+	bool newValue;
+
+	// HIGHLIGHTED characteristic
+	if(updateCharisticBoolean(caracs, HIGHLIGHTED, newValue)) {
+		object->highlight(newValue);
+	}
+
+	// HIDDEN characteristic
+	if(updateCharisticBoolean(caracs, HIDDEN, newValue)) {
+		object->hide(newValue);
+	}
 }
 
 WebServiceResult GetMapElementWS::updateElements(HttpRequest& request) {
@@ -332,7 +379,7 @@ WebServiceResult GetMapElementWS::updateElements(HttpRequest& request) {
 		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad http request, there is no body");
 	}
 
-	JsonValue* mapElements = body->getValue(MAPELEMENTS);
+	JsonValue* mapElements = body->getValue(MAPELEMENTS, false);
 
 	if(!mapElements) {
 		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, root 'mapElements' element does not exist");
@@ -357,7 +404,7 @@ WebServiceResult GetMapElementWS::updateElements(HttpRequest& request) {
 			continue;
 		}
 
-		JsonValue* val = mapElement->getValue(ID);
+		JsonValue* val = mapElement->getValue(ID, false);
 
 		if(!val) {
 			errors.push_back("'id' must exist in each mapElement");
@@ -380,11 +427,11 @@ WebServiceResult GetMapElementWS::updateElements(HttpRequest& request) {
 			continue;
 		}
 
-		string result = updateElement(mapElement->isJsonObject(), object);
-
-		if(StringUtils::isNotBlank(result)) {
-			errors.push_back(result);
-			continue;
+		try {
+			updateElement(mapElement->isJsonObject(), object);
+		}
+		catch(BadFormatJsonException& exception) {
+			errors.push_back(exception.getMessage());
 		}
 
 		JsonObject& mapElementResponse = mapElementsResponse.addObject();

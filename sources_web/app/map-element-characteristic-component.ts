@@ -7,5 +7,5 @@ import { MapGrapheElementCharacteristic } 		from './MapGrapheElementCharacterist
 	templateUrl: 'app/map-graph-element-characteristic.component.html'
 })
 export class MapGrapheElementCharacteristicComponent {
-	@Input() characteristic: MapGrapheElementCharacteristic;
+	@Input() carac: MapGrapheElementCharacteristic;
 }

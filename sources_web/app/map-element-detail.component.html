@@ -21,7 +21,7 @@
 			<input type="checkbox" [(ngModel)]="mapElement.highlighted" name="highlighted" />
 		</div>
 
-		<map-graph-element-characteristic *ngFor="let characteristic of mapElement.characteristics" [characteristic]="characteristic"></map-graph-element-characteristic>
+		<map-graph-element-characteristic *ngFor="let carac of mapElement.caracs" [carac]="carac"></map-graph-element-characteristic>
 		
 		<button type="submit" class="btn btn-default">Submit</button>
 	</form>

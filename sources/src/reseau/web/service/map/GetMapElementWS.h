@@ -11,6 +11,7 @@
 #include <regex>
 
 #include "reseau/web/json/JsonObject.h"
+#include "reseau/web/json/BadFormatJsonException.h"
 
 #include "reseau/web/service/WebService.h"
 
@@ -20,29 +21,41 @@ class CMap;
 class MapObject;
 
 class GetMapElementWS : public WebService {
-	static std::string ID;
-	static std::string NAME;
-	static std::string TYPE;
-	static std::string MAPS;
-	static std::string ELEMENTS;
-	static std::string MAPELEMENT;
-	static std::string MAPELEMENTS;
-	static std::string HIGHLIGHTED;
-	static std::string HIDDEN;
+public:
+	class Caracteristic {
+	public:
+		const std::string _name;
+		const std::string _type;
+		const std::string _group;
+		const bool _updatable;
 
-	static std::string CARAC;
+		Caracteristic(const std::string& name, const std::string& type, const std::string& group, const bool updatable);
+	};
 
-	static std::string CARAC_UPDATABLE;
-	static std::string CARAC_NAME;
-	static std::string CARAC_VALUE;
+	static const std::string ID;
+	static const std::string NAME;
+	static const std::string TYPE;
+	static const std::string MAPS;
+	static const std::string ELEMENTS;
+	static const std::string MAPELEMENT;
+	static const std::string MAPELEMENTS;
 
-	static std::string CARAC_TYPE;
-	static std::string CARAC_TYPE_STRING;
-	static std::string CARAC_TYPE_BOOL;
+	static const std::string CARACS;
+	static const std::string CARAC_VALUE;
+	static const std::string CARAC_UPDATABLE;
 
-	static std::string CARAC_GROUP;
-	static std::string CARAC_GROUP_MAIN;
+	static const std::string CARAC_TYPE;
+	static const std::string CARAC_TYPE_LONG;
+	static const std::string CARAC_TYPE_BOOL;
+	static const std::string CARAC_TYPE_STRING;
 
+	static const std::string CARAC_GROUP;
+	static const std::string CARAC_GROUP_MAIN;
+
+	static const Caracteristic HIGHLIGHTED;
+	static const Caracteristic HIDDEN;
+
+private:
 	static std::regex RG_MAPS_SERVICE;
 	static std::regex RG_MAP_SERVICE;
 	static std::regex RG_MAP_ELEMENTS_SERVICE;
@@ -55,10 +68,19 @@ class GetMapElementWS : public WebService {
 	WebServiceResult updateElements(HttpRequest& request);
 	WebServiceResult updateElement(HttpRequest& request, int elementId);
 
-	std::string updateElement(JsonObject* jsonObject, MapObject* object);
-	JsonObject& addCharisticString(JsonList& jsonCharistics, const std::string& name, const std::string& group, bool updatable, const std::string& value);
-	JsonObject& addCharisticBoolean(JsonList& jsonCharistics, const std::string& name, const std::string& group, bool updatable, const bool value);
-	JsonObject& addCharisticNumber(JsonList& jsonCharistics, const std::string& name, const std::string& group, bool updatable, long value);
+	void updateElement(JsonObject* jsonObject, MapObject* object) throw(BadFormatJsonException);
+
+	JsonObject& addCharisticBoolean(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value);
+	JsonObject& addCharisticLong(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value);
+	JsonObject& addCharisticString(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value);
+
+	JsonObject& addCharisticBoolean(JsonObject& jsonCharistics, const std::string& name, const std::string& group, bool updatable, const bool value);
+	JsonObject& addCharisticLong(JsonObject& jsonCharistics, const std::string& name, const std::string& group, bool updatable, long value);
+	JsonObject& addCharisticString(JsonObject& jsonCharistics, const std::string& name, const std::string& group, bool updatable, const std::string& value);
+
+	bool updateCharisticBoolean(JsonObject& jsonCharistics, const Caracteristic& carac, bool& newValue);
+	bool updateCharisticLong(JsonObject& jsonCharistics, const Caracteristic& carac, long& newValue);
+	bool updateCharisticString(JsonObject& jsonCharistics, const Caracteristic& carac, std::string& newValue);
 
 	void jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe);
 

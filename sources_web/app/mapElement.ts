@@ -8,7 +8,7 @@ export class MapElement {
 	highlighted: boolean;
 	hidden: boolean;
 	
-	characteristics: Array<MapGrapheElementCharacteristic> = [];
+	caracs: { [name:string]:MapGrapheElementCharacteristic; } = {}
 	
 	constructor() {       
     }
@@ -20,9 +20,10 @@ export class MapElement {
 		this.highlighted = jsonObject.highlighted;
 		this.hidden = jsonObject.hidden;
 		
-		if(jsonObject.characteristics != undefined) {
-			for(let iter of jsonObject.characteristics) {
-				this.characteristics.push(new MapGrapheElementCharacteristic().fromJson(iter));
+		if(jsonObject.caracs != undefined) {
+			for(let iter of jsonObject.caracs) {
+				console.log(iter);
+				this.caracs[iter.value] = new MapGrapheElementCharacteristic().fromJson(iter);
 			}
 		}
 		

@@ -15,6 +15,7 @@
 #include "reseau/web/json/JsonNumber.h"
 #include "reseau/web/json/JsonList.h"
 #include "reseau/web/json/MalformedJsonException.h"
+#include "reseau/web/json/BadFormatJsonException.h"
 
 #include "reseau/web/json/JsonObject.h"
 
@@ -59,7 +60,8 @@ JsonObject* JsonObject::fromJson(const string& json) throw(MalformedJsonExceptio
 	}
 }
 
-JsonValue* JsonObject::getValue(const std::string& name) {
+JsonBoolean* JsonObject::getBoolean(const string& name, bool mandatory, bool strict) throw(BadFormatJsonException) {
+	JsonBoolean* object = 0;
 	JsonValue* value;
 
 	try {
@@ -67,6 +69,161 @@ JsonValue* JsonObject::getValue(const std::string& name) {
 	}
 	catch(out_of_range& exception) {
 		value = 0;
+	}
+
+	if(value) {
+		object = value->isJsonBoolean();
+
+		if(strict && !object) {
+			stringstream msg;
+			msg << "Bad format, expected boolean for value named '" << name << "'";
+			throw BadFormatJsonException(name);
+		}
+	}
+
+	if(mandatory && !object) {
+		stringstream msg;
+		msg << "Missing mandatory value boolean named '" << name << "'";
+		throw BadFormatJsonException(name);
+	}
+
+	return object;
+}
+
+JsonNumber* JsonObject::getNumber(const std::string& name, bool mandatory, bool strict) throw(BadFormatJsonException) {
+	JsonNumber* object = 0;
+	JsonValue* value;
+
+	try {
+		value = _pairs.at(name);
+	}
+	catch(out_of_range& exception) {
+		value = 0;
+	}
+
+	if(value) {
+		object = value->isJsonNumber();
+
+		if(strict && !object) {
+			stringstream msg;
+			msg << "Bad format, expected number for value named '" << name << "'";
+			throw BadFormatJsonException(name);
+		}
+	}
+
+	if(mandatory && !object) {
+		stringstream msg;
+		msg << "Missing mandatory value number named '" << name << "'";
+		throw BadFormatJsonException(name);
+	}
+
+	return object;
+}
+
+JsonString* JsonObject::getString(const std::string& name, bool mandatory, bool strict) throw(BadFormatJsonException) {
+	JsonString* object = 0;
+	JsonValue* value;
+
+	try {
+		value = _pairs.at(name);
+	}
+	catch(out_of_range& exception) {
+		value = 0;
+	}
+
+	if(value) {
+		object = value->isJsonString();
+
+		if(strict && !object) {
+			stringstream msg;
+			msg << "Bad format, expected string for value named '" << name << "'";
+			throw BadFormatJsonException(name);
+		}
+	}
+
+	if(mandatory && !object) {
+		stringstream msg;
+		msg << "Missing mandatory value string named '" << name << "'";
+		throw BadFormatJsonException(name);
+	}
+
+	return object;
+}
+
+JsonList* JsonObject::getList(const std::string& name, bool mandatory, bool strict) throw(BadFormatJsonException) {
+	JsonList* object = 0;
+	JsonValue* value;
+
+	try {
+		value = _pairs.at(name);
+	}
+	catch(out_of_range& exception) {
+		value = 0;
+	}
+
+	if(value) {
+		object = value->isJsonList();
+
+		if(strict && !object) {
+			stringstream msg;
+			msg << "Bad format, expected list for value named '" << name << "'";
+			throw BadFormatJsonException(name);
+		}
+	}
+
+	if(mandatory && !object) {
+		stringstream msg;
+		msg << "Missing mandatory value list named '" << name << "'";
+		throw BadFormatJsonException(name);
+	}
+
+	return object;
+}
+
+JsonObject* JsonObject::getObject(const std::string& name, bool mandatory, bool strict) throw(BadFormatJsonException) {
+	JsonObject* object = 0;
+	JsonValue* value;
+
+	try {
+		value = _pairs.at(name);
+	}
+	catch(out_of_range& exception) {
+		value = 0;
+	}
+
+	if(value) {
+		object = value->isJsonObject();
+
+		if(strict && !object) {
+			stringstream msg;
+			msg << "Bad format, expected object for value named '" << name << "'";
+			throw BadFormatJsonException(name);
+		}
+	}
+
+	if(mandatory && !object) {
+		stringstream msg;
+		msg << "Missing mandatory value object named '" << name << "'";
+		throw BadFormatJsonException(name);
+	}
+
+	return object;
+}
+
+JsonValue* JsonObject::getValue(const std::string& name, bool mandatory) throw(BadFormatJsonException) {
+	JsonValue* value;
+
+	try {
+		value = _pairs.at(name);
+	}
+	catch(out_of_range& exception) {
+		value = 0;
+	}
+
+	if(mandatory && !value) {
+		stringstream msg;
+		msg << "Missing mandatory value named '" << name << "'";
+		throw BadFormatJsonException(name);
 	}
 
 	return value;

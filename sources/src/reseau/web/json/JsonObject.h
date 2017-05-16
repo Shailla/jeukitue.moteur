@@ -16,6 +16,7 @@
 #include "reseau/web/json/JsonValue.h"
 #include "reseau/web/json/JsonPair.h"
 #include "reseau/web/json/JsonList.h"
+#include "reseau/web/json/BadFormatJsonException.h"
 #include "reseau/web/json/MalformedJsonException.h"
 
 namespace jkt {
@@ -59,16 +60,21 @@ public:
 	JsonObject& addObject(const std::string& name);
 	JsonList& addList(const std::string& name);
 
+	JsonBoolean* isJsonBoolean() override;
 	JsonNumber* isJsonNumber() override;
 	JsonString* isJsonString() override;
-	JsonBoolean* isJsonBoolean() override;
 	JsonObject* isJsonObject() override;
 	JsonList* isJsonList() override;
 
 	void toJson(std::stringstream& buffer) override;
 	static JsonObject* fromJson(const std::string& json) throw(MalformedJsonException);
 
-	JsonValue* getValue(const std::string& name);
+	JsonValue* getValue(const std::string& name, bool mandatory) throw(BadFormatJsonException);
+	JsonBoolean* getBoolean(const std::string& name, bool mandatory, bool strict = true) throw(BadFormatJsonException);
+	JsonNumber* getNumber(const std::string& name, bool mandatory, bool strict = true) throw(BadFormatJsonException);
+	JsonString* getString(const std::string& name, bool mandatory, bool strict = true) throw(BadFormatJsonException);
+	JsonObject* getObject(const std::string& name, bool mandatory, bool strict = true) throw(BadFormatJsonException);
+	JsonList* getList(const std::string& name, bool mandatory, bool strict = true) throw(BadFormatJsonException);
 };
 
 } /* namespace jkt */

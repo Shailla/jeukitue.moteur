@@ -17,7 +17,7 @@ export class GrapheMapComponent {
 	constructor(private mapService: MapService) {
 		this.mapService.getMapGraphe().then(element => this.elements = [element]);
 		
-		this.mapService.mapElementUpdated.subscribe(mapElement => this.onMapElementUpdated(mapElement));
+		this.mapService.mapElementUpdated.subscribe((mapElement:any) => this.onMapElementUpdated(mapElement));
 	}
 	
 	onSelectMapElement(mapGrapheElement: MapGrapheElement) {
@@ -38,7 +38,7 @@ export class GrapheMapComponent {
 	onHideElements(hidden: boolean) {
 		console.log("Hide or UnHide selected elements");
 	
-		let elementsToUpdate = [];
+		let elementsToUpdate: any[] = [];
 		this.changeElements(this.elements, "hidden", hidden, elementsToUpdate);
 		
 		console.log(elementsToUpdate);
@@ -50,7 +50,7 @@ export class GrapheMapComponent {
 	onHighlightElements(highlighted: boolean) {
 		console.log("Highlight or UnHighlight selected elements");
 		
-		let elementsToUpdate = [];
+		let elementsToUpdate: any[] = [];
 		this.changeElements(this.elements, "highlighted", highlighted, elementsToUpdate);
 		
 		console.log(elementsToUpdate);
@@ -58,7 +58,7 @@ export class GrapheMapComponent {
 		this.mapService.updateMapElements(elementsToUpdate);
 	}
 
-	private changeElements(elements: MapGrapheElement[], param: string, state: boolean, elementsToUpdate) {
+	private changeElements(elements: MapGrapheElement[], param: string, state: boolean, elementsToUpdate: any[]) {
 		elements.forEach(
 			element => {
 				if(element.checked) {

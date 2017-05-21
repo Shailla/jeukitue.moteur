@@ -24,9 +24,80 @@ namespace jkt
 #define CSTE_K	1.0f
 #define TAILLE_TEX 0.04f		// Dimension de la texture carrée de la particule
 
-MoteurNeige::MoteurNeige(int nbrParticules, int nbrParticulesOnGround, const CV3D& centre, const CV3D& taille) : CMoteurParticules() {
-	_centre = centre;
-	_taille = taille;
+MoteurNeige::MoteurNeige(CMap* parent) : CMoteurParticules(parent) {
+	_texName = -1;
+	_flocons = 0;
+	_nbrParticules = 0;
+	_nbrParticulesOnGround = 0;
+}
+
+MoteurNeige::~MoteurNeige() {
+	delete[] _flocons;
+}
+
+MapObject* MoteurNeige::clone() {
+	return new MoteurNeige(*this);
+}
+
+void MoteurNeige::init() throw(CErreur) {
+}
+
+void MoteurNeige::randomPosition(Flocon& flocon) {
+	flocon._position.X = _centre.X + (_taille.X * (((float)rand() / (float)RAND_MAX) - 0.5f));
+	flocon._position.Y = _centre.Y + (_taille.Y / 2);
+	flocon._position.Z = _centre.Z + (_taille.Z * (((float)rand() / (float)RAND_MAX) - 0.5f));
+}
+
+void MoteurNeige::randomVelocity(Flocon& flocon) {
+	flocon._vitesse.X = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
+	flocon._vitesse.Y = -0.0001f - 0.0005f * ((float)rand() / (float)RAND_MAX);
+	flocon._vitesse.Z = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
+
+	flocon._acceleration.X = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
+	flocon._acceleration.Y = -0.0001f - 0.0005f * ((float)rand() / (float)RAND_MAX);
+	flocon._acceleration.Z = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
+}
+
+bool MoteurNeige::Lit(TiXmlElement* el, MapLogger* mapLogger){
+	if(strcmp(Xml::NEIGE, el->Value())) {
+		Xml::throwCorruptedMapFileException(Xml::NEIGE, el->Value());
+	}
+
+	// Lecture du nombre de particules à afficher
+	int nbrParticules, nbrParticulesOnGround;
+
+	if(!el->Attribute(Xml::NBR_PARTICULES, &nbrParticules)) {		// Lecture nom de la Map à importer
+		mapLogger->logError("Fichier Map corrompu : Nombre de particules du moteur manquant");
+		throw CErreur("Fichier Map corrompu : Nombre de particules du moteur manquant");
+	}
+
+	if(!el->Attribute(Xml::NBR_PARTICULES_ON_GROUND, &nbrParticulesOnGround)) {		// Lecture nom de la Map à importer
+		mapLogger->logInfo("Fichier Map : Nombre de particules du moteur sur le sol manquant absent, application valeur par défaut");
+		nbrParticulesOnGround = nbrParticules / 3;
+	}
+
+	// Lecture de la position du moteur de neige
+	float position[3];
+
+	if(!Xml::Lit3fv(el, Xml::POSITION, Xml::X, Xml::Y, Xml::Z, position)) {
+		position[0] = 0.0;
+		position[1] = 0.0;
+		position[2] = 0.0;
+	}
+
+	// Lecture des dimensions du moteur de neige
+	float dimension[3];
+
+	if(!Xml::Lit3fv(el, Xml::DIMENSION, Xml::X, Xml::Y, Xml::Z, dimension)) {
+		dimension[0] = 0.0;
+		dimension[1] = 0.0;
+		dimension[2] = 0.0;
+	}
+
+	_centre = position;
+	_taille = dimension;
+
+
 	_nbrParticules = nbrParticules;
 	_nbrParticulesOnGround = nbrParticulesOnGround;
 
@@ -50,26 +121,6 @@ MoteurNeige::MoteurNeige(int nbrParticules, int nbrParticulesOnGround, const CV3
 			flocon.changeState(Flocon::FloconState::FALLING);
 		}
 	}
-}
-
-MoteurNeige::~MoteurNeige() {
-	delete[] _flocons;
-}
-
-void MoteurNeige::randomPosition(Flocon& flocon) {
-	flocon._position.X = _centre.X + (_taille.X * (((float)rand() / (float)RAND_MAX) - 0.5f));
-	flocon._position.Y = _centre.Y + (_taille.Y / 2);
-	flocon._position.Z = _centre.Z + (_taille.Z * (((float)rand() / (float)RAND_MAX) - 0.5f));
-}
-
-void MoteurNeige::randomVelocity(Flocon& flocon) {
-	flocon._vitesse.X = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
-	flocon._vitesse.Y = -0.0001f - 0.0005f * ((float)rand() / (float)RAND_MAX);
-	flocon._vitesse.Z = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
-
-	flocon._acceleration.X = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
-	flocon._acceleration.Y = -0.0001f - 0.0005f * ((float)rand() / (float)RAND_MAX);
-	flocon._acceleration.Z = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
 }
 
 void MoteurNeige::initGL() {
@@ -114,8 +165,6 @@ void MoteurNeige::GenereTextureParticule() {
 }
 
 void MoteurNeige::affiche() {
-	Refresh(0);
-
 	// Calcul du plan orthogonal à l'axe de la vue
 	GLfloat mat[16];
 	glGetFloatv(GL_MODELVIEW_MATRIX, mat);
@@ -155,7 +204,7 @@ void MoteurNeige::affiche() {
 	glDisable( GL_TEXTURE_2D );
 }
 
-void MoteurNeige::Refresh(CGame *game) {
+void MoteurNeige::refresh(CGame *game) {
 	CV3D Var, accRND;
 
 	for(int i=0 ; i<_nbrParticules ; i++) {

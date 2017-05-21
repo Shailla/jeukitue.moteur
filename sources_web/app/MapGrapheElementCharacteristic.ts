@@ -9,7 +9,7 @@ export class MapGrapheElementCharacteristic {
 	constructor() {       
     }
 	
-	fromJson(jsonObject) {
+	fromJson(jsonObject: any) {
 		this.name = jsonObject.characName;
 		this.updatable = jsonObject.characUpdatable;
 		this.type = jsonObject.characType;

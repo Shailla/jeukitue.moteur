@@ -1,5 +1,5 @@
 
-export const JSON_MAP = {
+export const JSON_MAP: any = {
 	"mapElement": {
 		"type": "map",
 		"id": 7,

@@ -13,7 +13,7 @@ export class MapElement {
 	constructor() {       
     }
 	
-	fromJson(jsonObject) {
+	fromJson(jsonObject: any) {
 		this.type = jsonObject.type;
 		this.id = jsonObject.id;
 		this.name = jsonObject.name;

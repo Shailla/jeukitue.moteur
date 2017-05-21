@@ -1617,7 +1617,7 @@ int main(int argc, char** argv) {
 				// The third is description
 				("help,h", "print usage message")
 				("test,t", "execute unit tests")
-				("openLocal,ol", bpo::value(&mapFile), "open the specified local map");
+				("openLocal,o", bpo::value(&mapFile), "open the specified local map");
 
 	bpo::variables_map cmdParameters;
 

@@ -41,7 +41,7 @@ public:
 	void freeGL() override;			// Libération des ressources de l'objet dans le contexte OpenGL
 
 	/** Affiche la neige. */
-	void affiche() override;		// Affiche l'ensemble des particules
+	void Affiche() override;		// Affiche l'ensemble des particules
 };
 
 }	// JktMoteur

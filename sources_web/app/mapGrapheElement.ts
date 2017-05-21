@@ -17,7 +17,7 @@ export class MapGrapheElement {
 	constructor() {       
     }
 	
-	fromJson(jsonObject) {
+	fromJson(jsonObject: any) {
 		this.type = jsonObject.type;
 		this.id = jsonObject.id;
 		this.name = jsonObject.name;
@@ -44,7 +44,7 @@ export class MapGrapheElement {
     }
 		
 	checkRecursive(state?: boolean) {
-		let newState;
+		let newState: boolean;
 		
 		if(state == undefined) {
 			newState = !this.checked;

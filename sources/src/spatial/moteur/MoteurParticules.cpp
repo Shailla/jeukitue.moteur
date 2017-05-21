@@ -4,12 +4,10 @@
 namespace jkt
 {
 
-CMoteurParticules::CMoteurParticules()
-{
+CMoteurParticules::CMoteurParticules(CMap* parent) : MapObject(parent, MapObject::ENGINE_PARTICULES) {
 }
 
-CMoteurParticules::~CMoteurParticules()
-{
+CMoteurParticules::~CMoteurParticules() {
 }
 
 }	// JktMoteur

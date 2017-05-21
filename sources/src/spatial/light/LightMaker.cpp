@@ -10,8 +10,11 @@
 namespace jkt
 {
 
-CLight* CLightMaker::Lit(TiXmlElement* element, MapLogger* mapLogger, CMap& map)
-{
+CLight* CLightMaker::Lit(TiXmlElement* element, MapLogger* mapLogger, CMap& map) throw(CErreur) {
+	if(strcmp(Xml::LUMIERE, element->Value())) {
+		Xml::throwCorruptedMapFileException(Xml::LUMIERE, element->Value());
+	}
+
 	const char* type = element->Attribute(Xml::TYPE);
 	CLight* light;
 

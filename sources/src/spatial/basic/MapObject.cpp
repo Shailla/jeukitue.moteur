@@ -22,6 +22,7 @@ string MapObject::ENTRYPOINT = "entryPoint";
 string MapObject::MATERIAL = "material";
 string MapObject::CHECK = "map";
 string MapObject::DIRIGEABLE = "dirigeable";
+string MapObject::ENGINE_PARTICULES = "particulesEngine";
 
 MapObject::MapObject(CMap* map, const string& type) : Object(map, type) {
 }

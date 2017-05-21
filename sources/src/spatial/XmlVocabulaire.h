@@ -79,7 +79,9 @@ public:
 	static const char* TYPE;
 	static const char* PARTICULES_ENGINES;
 	static const char* NEIGE;
+	static const char* NEIGE_OLD;
 	static const char* NBR_PARTICULES;
+	static const char* NBR_PARTICULES_ON_GROUND;
 	static const char* DIMENSION;
 
 	// Boîte à outils XML

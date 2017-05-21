@@ -34,8 +34,10 @@ const char* Xml::MATERIAU = "Materiau";
 const char* Xml::ENTRYPOINT = "EntryPoint";		// Points d'entrée des joueurs
 
 const char* Xml::PARTICULES_ENGINES = "ParticulesEngines";
-const char* Xml::NEIGE = "Neige";					// Moteur de particules de neige
-const char* Xml::NBR_PARTICULES = "NbrParticules";	// Nombre de particules à afficher dans le moteur de neige
+const char* Xml::NBR_PARTICULES = "NbrParticules";						// Nombre de particules à afficher dans le moteur de neige
+const char* Xml::NBR_PARTICULES_ON_GROUND = "NbrParticulesOnGround";	// Nombre de particules à afficher dans le moteur de neige
+const char* Xml::NEIGE = "Neige";										// Moteur de particules de neige
+const char* Xml::NEIGE_OLD = "NeigeOld";								// Ancien et deprecated moteur de particules de neige
 
 // Opérations
 const char* Xml::SCALE = "Scale";

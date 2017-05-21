@@ -46,6 +46,8 @@ class CGame;
 #include "spatial/objet/Porte.h"
 #include "spatial/objet/Navette.h"
 #include "spatial/objet/CheckPlayerInZone.h"
+#include "spatial/moteur/MoteurParticules.h"
+#include "spatial/moteur/EngineMaker.h"
 #include "son/DemonSons.h"
 #include "reseau/SPA.h"
 #include "main/Player.h"
@@ -163,7 +165,7 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 		glDepthMask( GL_FALSE );
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE );
 
-		engine->affiche();	// Le moteur de particules affiche toutes ses particules
+		engine->Affiche();	// Le moteur de particules affiche toutes ses particules
 	}
 
 	glDisable( GL_BLEND );
@@ -717,40 +719,16 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 
 			if(elEntry) {
 				for(TiXmlElement* el=elEntry->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
-					if(strcmp(Xml::NEIGE, el->Value())) {
-						Xml::throwCorruptedMapFileException(Xml::NEIGE, el->Value());
+					CMoteurParticules* engine = EngineMaker::Lit(el, map, mapLogger);
+
+					map.add(engine);
+
+					if(engine) {
+						map.add(engine);
 					}
-
-					// Lecture du nombre de particules à afficher
-					int nbrParticules;
-
-					if(!el->Attribute(Xml::NBR_PARTICULES, &nbrParticules)) {		// Lecture nom de la Map à importer
-						mapLogger->logError("Fichier Map corrompu : Nombre de particules du moteur manquant");
-						throw CErreur("Fichier Map corrompu : Nombre de particules du moteur manquant");
+					else {
+						mapLogger->logError("Moteur de particules corrompu ?");
 					}
-
-					// Lecture de la position du moteur de neige
-					float position[3];
-
-					if(!Xml::Lit3fv(el, Xml::POSITION, Xml::X, Xml::Y, Xml::Z, position)) {
-						position[0] = 0.0;
-						position[1] = 0.0;
-						position[2] = 0.0;
-					}
-
-					// Lecture des dimensions du moteur de neige
-					float dimension[3];
-
-					if(!Xml::Lit3fv(el, Xml::DIMENSION, Xml::X, Xml::Y, Xml::Z, dimension)) {
-						dimension[0] = 0.0;
-						dimension[1] = 0.0;
-						dimension[2] = 0.0;
-					}
-
-					CV3D posMoteurParticulesNeige(position[0], position[1], position[2]);
-					CV3D tailleMoteurParticulesNeige(dimension[0], dimension[1], dimension[2]);
-					//					map.add(new CMoteurParticulesNeige(nbrParticules, posMoteurParticulesNeige, tailleMoteurParticulesNeige));
-					map.add(new MoteurNeige(nbrParticules, nbrParticules/3, posMoteurParticulesNeige, tailleMoteurParticulesNeige));
 				}
 			}
 		}
@@ -760,10 +738,6 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 
 		if(elMat) {
 			for(TiXmlElement* el=elMat->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
-				if(strcmp(Xml::MATERIAU, el->Value())) {
-					Xml::throwCorruptedMapFileException(Xml::MATERIAU, el->Value());
-				}
-
 				CMaterial* mat = CMaterialMaker::Lit(el, map._binariesDirectory, mapLogger);
 
 				if(mat) {
@@ -780,10 +754,6 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 
 		if(elLight) {
 			for(TiXmlElement* el=elLight->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
-				if(strcmp(Xml::LUMIERE, el->Value())) {
-					Xml::throwCorruptedMapFileException(Xml::LUMIERE, el->Value());
-				}
-
 				CLight* lum = CLightMaker::Lit(el, mapLogger, map);
 
 				if(lum) {

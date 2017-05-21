@@ -58,8 +58,7 @@ export class MapService {
 	getMapGrapheSlowly(): Promise<MapGrapheElement> {
 		return new Promise<MapGrapheElement>(resolve => setTimeout(resolve, 1000)) // delay 2 seconds
 			.then(() => Promise.resolve(JSON_MAP))
-			.then(json => json.mapElement)
-			.then(mapGrapheElement => new MapGrapheElement().fromJson(mapGrapheElement))
+			.then((json: any) => new MapGrapheElement().fromJson(json.mapElement))
 			.catch(this.handleError);
 	}
 
@@ -95,7 +94,7 @@ export class MapService {
 			.catch(this.handleError);
 	}
 	
-	updateMapElements(elementsToUpdate) {
+	updateMapElements(elementsToUpdate: any) {
 		let param = {};
 		param["mapElements"] = elementsToUpdate;
 		
@@ -109,7 +108,7 @@ export class MapService {
 					let json = response.json();
 					console.log("RESPONSE:" + JSON.stringify(json));
 					json.mapElements.forEach(
-						mapElement => this.mapElementUpdated.emit(mapElement)
+						(mapElement: any) => this.mapElementUpdated.emit(mapElement)
 					);
 				}
 			)

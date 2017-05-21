@@ -38,16 +38,22 @@ public:
 	 * @param position position du centre du moteur de particules dans le scène OpenGL
 	 * @param taille vecteur dimension du parallélépipède dans lequel sont affichées les particules
 	 */
-	MoteurNeige(int nbrParticules, int nbrParticulesOnGround, const CV3D& centre, const CV3D& taille);
+	MoteurNeige(CMap* parent);
 	~MoteurNeige();
+
+	MapObject* clone() override;
+	void init() throw(CErreur) override;
+
+	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;	// Lit l'objet depuis un fichier Map
+	bool Save(TiXmlElement* element) override;					// Sauve l'objet dans un fichier Map
 
 	// Fonctions d'intialisation et libération
 	void initGL() override;			// Initialisation de l'objet géométrique
 	void freeGL() override;			// Libération des ressources de l'objet dans le contexte OpenGL
 
 	/** Affiche la neige. */
-	void affiche() override;			// Affiche l'ensemble des particules
-	void Refresh(CGame* game);
+	void Affiche() override;			// Affiche l'ensemble des particules
+	void refresh(CGame* game) override;
 };
 
 }	// JktMoteur

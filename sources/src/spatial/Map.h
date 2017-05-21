@@ -36,7 +36,7 @@ class CMap : public MapObject {
 	std::string tostring;
 
 	std::string _filename;								// Nom du fichier de la Map (par exemple "Monde.map.xml")
-	std::string _binariesDirectory;						// RÃ©pertoires des binaires de la Map (textures, plugins, ...)
+	std::string _binariesDirectory;						// Répertoires des binaires de la Map (textures, plugins, ...)
 
 	std::map<int, CMap*> _subMaps;
 
@@ -65,7 +65,7 @@ class CMap : public MapObject {
 
 	bool afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
 public:
-	std::vector<CMaterial*> _materials;		// Liste des matÃ©riaux A VOIR : devrait Ãªtre membre privÃ©
+	std::vector<CMaterial*> _materials;		// Liste des matériaux A VOIR : devrait être membre privé
 
 		// Constructeurs / destructeur
 	CMap(CMap* parent);

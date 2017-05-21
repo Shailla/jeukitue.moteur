@@ -29,7 +29,6 @@ extern int JKT_RenderMode;
 #include "spatial/Map.h"
 #include "son/DemonSons.h"
 #include "spatial/contact.h"
-#include "main/Cfg.h"
 #include "spatial/geo/GeoMaker.h"
 #include "main/Player.h"
 
@@ -37,8 +36,6 @@ extern int JKT_RenderMode;
 
 using namespace std;
 using namespace jkt;
-
-extern CCfg Config;
 
 namespace jkt
 {

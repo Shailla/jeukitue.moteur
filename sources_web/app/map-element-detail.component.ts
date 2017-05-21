@@ -14,7 +14,7 @@ export class MapElementDetail {
 	mapElement: MapElement;
 	
 	constructor(private mapService: MapService) {
-		this.mapService.mapElementUpdated.subscribe(mapElement => this.onMapElementUpdated(mapElement));
+		this.mapService.mapElementUpdated.subscribe((mapElement: any) => this.onMapElementUpdated(mapElement));
 	}
 	
 	ngOnChanges(): void {

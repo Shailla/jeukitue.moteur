@@ -29,7 +29,6 @@ class CMap;
 
 class CGeoObject : public MapObject {
 private:
-	int m_OffsetMateriau;		// Sert lors de la lecture des références matériaux
 	CMaterial::MAT_TYPE m_TypeMateriau;	// Type du matériau associé (standard, multi,...)
 	std::string tostring;
 
@@ -102,7 +101,6 @@ public:
 	// Fonctions pour l'interface CGeo
 	bool Save(TiXmlElement* element) override;
 	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override {return true;}
-	void setOffsetMateriau( int offset );					// Décale la référence matériau de l'offset
 
 	bool checkContact( const float pos[3], float dist ) override;
 

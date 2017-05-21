@@ -37,6 +37,7 @@ public:
 	static std::string MATERIAL;
 	static std::string CHECK;
 	static std::string DIRIGEABLE;
+	static std::string ENGINE_PARTICULES;
 
 	MapObject(CMap* map, const std::string& type);
 	MapObject(const MapObject& other);
@@ -47,7 +48,7 @@ public:
 	 * Manipulation de l'objet
 	 * *******************************************/
 
-	virtual MapObject* clone() = 0 ;
+	virtual MapObject* clone() = 0;
 	virtual void init() throw(CErreur) = 0;
 
 
@@ -64,7 +65,7 @@ public:
 	 * *******************************************/
 
 	virtual void beginRefresh() override;
-	virtual void refresh( CGame *game ) override;
+	virtual void refresh(CGame *game) override;
 	virtual void endRefresh() override;
 
 

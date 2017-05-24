@@ -13,6 +13,7 @@
 #include "util/V3D.h"
 #include "util/Trace.h"
 
+#include "spatial/XmlVocabulaire.h"
 #include "spatial/moteur/neige/mieux/Flocon.h"
 #include "spatial/moteur/neige/mieux/MoteurNeige.h"
 
@@ -79,7 +80,7 @@ bool MoteurNeige::Lit(TiXmlElement* el, MapLogger* mapLogger){
 	// Lecture de la position du moteur de neige
 	float position[3];
 
-	if(!Xml::Lit3fv(el, Xml::POSITION, Xml::X, Xml::Y, Xml::Z, position)) {
+	if(!Xml::Lit3fv(el, Xml::CENTRE, Xml::X, Xml::Y, Xml::Z, position)) {
 		position[0] = 0.0;
 		position[1] = 0.0;
 		position[2] = 0.0;
@@ -121,6 +122,34 @@ bool MoteurNeige::Lit(TiXmlElement* el, MapLogger* mapLogger){
 			flocon.changeState(Flocon::FloconState::FALLING);
 		}
 	}
+
+	return true;
+}
+
+bool MoteurNeige::Save(TiXmlElement* el) {
+
+	TiXmlElement *elEngine = new TiXmlElement(Xml::NEIGE);
+	el->LinkEndChild(elEngine);
+
+	// Nombres de particules
+	elEngine->SetAttribute(Xml::NBR_PARTICULES, _nbrParticules);
+	elEngine->SetAttribute(Xml::NBR_PARTICULES_ON_GROUND, _nbrParticulesOnGround);
+
+	// Position du centre du moteur de particules
+	TiXmlElement* elPos = new TiXmlElement(Xml::CENTRE);
+	Xml::SaveAttribut(elPos, Xml::X, _centre.X);
+	Xml::SaveAttribut(elPos, Xml::Y, _centre.Y);
+	Xml::SaveAttribut(elPos, Xml::Z, _centre.Z);
+	elEngine->LinkEndChild(elPos);
+
+	// Dimensions du moteur de particules
+	TiXmlElement* elDim = new TiXmlElement(Xml::DIMENSION);
+	Xml::SaveAttribut(elDim, Xml::X, _taille.X);
+	Xml::SaveAttribut(elDim, Xml::Y, _taille.Y);
+	Xml::SaveAttribut(elDim, Xml::Z, _taille.Z);
+	elEngine->LinkEndChild(elPos);
+
+	return true;
 }
 
 void MoteurNeige::initGL() {
@@ -164,7 +193,15 @@ void MoteurNeige::GenereTextureParticule() {
 	delete[] pixels;
 }
 
-void MoteurNeige::affiche() {
+void MoteurNeige::AfficheHighlighted(float r,float v,float b) {
+	// TODO
+}
+
+void MoteurNeige::Affiche() {
+	glEnable( GL_BLEND );
+	glDepthMask( GL_FALSE );
+	glBlendFunc( GL_SRC_ALPHA, GL_ONE );
+
 	// Calcul du plan orthogonal à l'axe de la vue
 	GLfloat mat[16];
 	glGetFloatv(GL_MODELVIEW_MATRIX, mat);

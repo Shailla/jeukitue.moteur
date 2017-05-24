@@ -21,10 +21,7 @@ class CGame;
 #include "util/Erreur.h"
 #include "main/Fabrique.h"
 #include "util/Tableau.cpp"
-#include <spatial/moteur/neige/simple/Particule.h>
-#include <spatial/moteur/MoteurParticules.h>
-#include <spatial/moteur/neige/simple/MoteurParticulesNeige.h>
-#include <spatial/moteur/neige/mieux/MoteurNeige.h>
+#include "spatial/moteur/MoteurParticules.h"
 #include "spatial/materiau/Material.h"
 #include "spatial/materiau/MaterialMaker.h"
 #include "spatial/IfstreamMap.h"
@@ -46,7 +43,6 @@ class CGame;
 #include "spatial/objet/Porte.h"
 #include "spatial/objet/Navette.h"
 #include "spatial/objet/CheckPlayerInZone.h"
-#include "spatial/moteur/MoteurParticules.h"
 #include "spatial/moteur/EngineMaker.h"
 #include "son/DemonSons.h"
 #include "reseau/SPA.h"
@@ -132,7 +128,6 @@ void CMap::clear() {
 	_refreshables.clear();
 	_lights.clear();
 	_entryPoints.clear();
-	_particulesEngines.clear();
 	_materials.clear();
 }
 
@@ -344,7 +339,11 @@ void CMap::add(EntryPoint* entryPoint) {
 }
 
 void CMap::add(CMoteurParticules* engine) {
-	_particulesEngines.push_back(engine);
+	_objects.push_back(engine);
+	_drawables.push_back(engine);
+	_refreshables.push_back(engine);
+	_geos.push_back(engine);
+	_geoDescriptions.insert(pair<int, MapObject*>(engine->getId(), engine));
 }
 
 void CMap::add(Dirigeable* dirigeable) {
@@ -719,7 +718,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 
 			if(elEntry) {
 				for(TiXmlElement* el=elEntry->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
-					CMoteurParticules* engine = EngineMaker::Lit(el, map, mapLogger);
+					CMoteurParticules* engine = EngineMaker::Lit(el, &map, mapLogger);
 
 					map.add(engine);
 
@@ -895,21 +894,11 @@ void CMap::initGL() {
 			drawable->initGL();
 		}
 
-		// Initialisation GL des moteurs de particules
-		for(CMoteurParticules *engine : _particulesEngines) {
-			engine->initGL();
-		}
-
 		_isGlInitialized = true;	// Indique que les éléments OpenGL de la MAP ont bien été initialisés
 	}
 }
 
 void CMap::freeGL() {
-	// Libération GL des moteurs de particules
-	for(CMoteurParticules *engine : _particulesEngines) {
-		engine->freeGL();
-	}
-
 	// Libération GL des object géométriques dans le contexte OpenGL
 	for(Drawable* drawable : _drawables) {
 		drawable->freeGL();

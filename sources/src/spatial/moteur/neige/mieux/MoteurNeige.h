@@ -52,7 +52,8 @@ public:
 	void freeGL() override;			// Libération des ressources de l'objet dans le contexte OpenGL
 
 	/** Affiche la neige. */
-	void Affiche() override;			// Affiche l'ensemble des particules
+	void Affiche() override;								// Affiche l'ensemble des particules
+	void AfficheHighlighted(float r,float v,float b) override;
 	void refresh(CGame* game) override;
 };
 

@@ -15,11 +15,6 @@ public:
 		// Constructeurs
 	CMoteurParticules(CMap* parent);
 	virtual ~CMoteurParticules(void);
-
-	virtual MapObject* clone() = 0;
-	virtual void init() throw(CErreur) = 0;
-	virtual bool Lit(TiXmlElement* el, MapLogger* mapLogger) override = 0;	// Lit l'objet depuis un fichier Map
-	virtual bool Save(TiXmlElement* element) override = 0;					// Sauve l'objet dans un fichier Map
 };
 
 }	// JktMoteur

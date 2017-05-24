@@ -16,6 +16,7 @@ class CGame;
 #include "util/V3D.h"
 
 #include "spatial/moteur/EngineMaker.h"
+#include "spatial/moteur/neige/mieux/MoteurNeige.h"
 
 using namespace std;
 using namespace jkt;
@@ -25,19 +26,12 @@ class CCfg;
 namespace jkt
 {
 
-//Constructeurs / Destructeur
-EngineMaker::EngineMaker(CMap *map) {
-}
-
 CMoteurParticules* EngineMaker::Lit(TiXmlElement* el, CMap* map, MapLogger* mapLogger) throw(CErreur) {
 	const char* elType = el->Value();
 	CMoteurParticules* engine;
 
 	if(!strcmp(Xml::NEIGE, elType)) {
-		engine = new CMoteurParticulesNeige(map);
-	}
-	else if(!strcmp(Xml::NEIGE_OLD, elType)) {
-		engine = new CMoteurParticules(map);
+		engine = new MoteurNeige(map);
 	}
 	else {
 		throw jkt::CErreur("Fichier Map corrompu : Moteur de particules de type inconnu");
@@ -46,9 +40,6 @@ CMoteurParticules* EngineMaker::Lit(TiXmlElement* el, CMap* map, MapLogger* mapL
 	engine->Lit(el, mapLogger);
 
 	return engine;
-}
-
-EngineMaker::~EngineMaker() {
 }
 
 }	// JktMoteur

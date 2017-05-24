@@ -120,7 +120,7 @@ CMap::~CMap() {
 
 void CMap::clear() {
 	_subMaps.clear();
-	_geoDescriptions.clear();
+	_objectDescriptions.clear();
 	_objects.clear();
 	_geos.clear();
 	_solidAndTargettables.clear();
@@ -211,17 +211,17 @@ void CMap::AfficheHighlighted(float r,float v,float b) {	// Affiche tous les obj
 }
 
 void CMap::addMapObject(int id, MapObject* geo, MapLogger* mapLogger) {
-	if(_geoDescriptions.find(id) != _geoDescriptions.end()) {
+	if(_objectDescriptions.find(id) != _objectDescriptions.end()) {
 		mapLogger->logError("Map corrompue, la référence est en doublon");
 	}
 
-	_geoDescriptions[id] = geo;
+	_objectDescriptions[id] = geo;
 }
 
 MapObject* CMap::getMapObject(int id) {
-	map<int, MapObject*>::iterator iter = _geoDescriptions.find(id);
+	map<int, MapObject*>::iterator iter = _objectDescriptions.find(id);
 
-	if(iter != _geoDescriptions.end()) {
+	if(iter != _objectDescriptions.end()) {
 		return iter->second;
 	}
 	else {
@@ -265,8 +265,8 @@ void CMap::merge(int mapId, MapLogger* mapLogger) {
 			_geos.push_back(geo);
 		}
 
-		for(auto& geoDesc : subMap->_geoDescriptions) {
-			_geoDescriptions[geoDesc.first] = geoDesc.second;
+		for(auto& geoDesc : subMap->_objectDescriptions) {
+			_objectDescriptions[geoDesc.first] = geoDesc.second;
 		}
 
 		for(Refreshable* refreshable : subMap->_refreshables) {
@@ -325,7 +325,7 @@ vector<EntryPoint*>& CMap::getEntryPointsList() {
 void CMap::add(CMap* subMap) {
 	if(subMap) {
 		_subMaps.insert(pair<int, CMap*>(subMap->getId(), subMap));
-		_geoDescriptions.insert(pair<int, MapObject*>(subMap->getId(), subMap));
+		_objectDescriptions.insert(pair<int, MapObject*>(subMap->getId(), subMap));
 	}
 	else {
 		LOGERROR(("Sub Map nulle"));
@@ -334,65 +334,78 @@ void CMap::add(CMap* subMap) {
 
 void CMap::add(EntryPoint* entryPoint) {
 	_geos.push_back(entryPoint);
+	_objectDescriptions.insert(pair<int, MapObject*>(entryPoint->getId(), entryPoint));
+
 	_entryPoints.push_back(entryPoint);
-	_geoDescriptions.insert(pair<int, MapObject*>(entryPoint->getId(), entryPoint));
 }
 
 void CMap::add(CMoteurParticules* engine) {
 	_objects.push_back(engine);
+	_objectDescriptions.insert(pair<int, MapObject*>(engine->getId(), engine));
+
 	_drawables.push_back(engine);
 	_refreshables.push_back(engine);
 	_geos.push_back(engine);
-	_geoDescriptions.insert(pair<int, MapObject*>(engine->getId(), engine));
 }
 
 void CMap::add(Dirigeable* dirigeable) {
 	_objects.push_back(dirigeable);
+	_objectDescriptions.insert(pair<int, MapObject*>(dirigeable->getId(), dirigeable));
+
 	_drawables.push_back(dirigeable);
 	_refreshables.push_back(dirigeable);
 	_geos.push_back(dirigeable);
-	_geoDescriptions.insert(pair<int, MapObject*>(dirigeable->getId(), dirigeable));
 }
 
 void CMap::add(MapObject* object) {
 	_objects.push_back(object);
+	_objectDescriptions.insert(pair<int, MapObject*>(object->getId(), object));
+
 	_geos.push_back(object);
 	_drawables.push_back(object);
 	_solidAndTargettables.push_back(object);
-	_geoDescriptions.insert(pair<int, MapObject*>(object->getId(), object));
 }
 
 void CMap::add(CMaterial *mat) {
-	_materials.push_back(mat);	// Ajoute mat à la liste des objets affichables
+	_objects.push_back(mat);
+	_objectDescriptions.insert(pair<int, MapObject*>(mat->getId(), mat));
+
+	_materials.push_back(mat);
 }
 
 void CMap::add(CLight *light) {
+	_objects.push_back(light);
+	_objectDescriptions.insert(pair<int, MapObject*>(light->getId(), light));
+
 	_lights.push_back(light);	// Ajoute light à la liste des objets affichables
 	_geos.push_back(light);	// Ajoute light à la liste des objets affichables
-	_geoDescriptions.insert(pair<int, MapObject*>(light->getId(), light));
 }
 
 void CMap::add(CPorte *porte) {
 	_objects.push_back(porte);
+	_objectDescriptions.insert(pair<int, MapObject*>(porte->getId(), porte));
+
 	_geos.push_back(porte);
 	_refreshables.push_back(porte);
 	_drawables.push_back(porte);
-	_geoDescriptions.insert(pair<int, MapObject*>(porte->getId(), porte));
 }
 
 void CMap::add(CheckPlayerInZone* detector) {
+	_objects.push_back(detector);
+	_objectDescriptions.insert(pair<int, MapObject*>(detector->getId(), detector));
+
 	_geos.push_back(detector);
 	_refreshables.push_back(detector);
 	_drawables.push_back(detector);
-	_geoDescriptions.insert(pair<int, MapObject*>(detector->getId(), detector));
 }
 
 void CMap::add(CNavette *navette) {		// Une navette est avant tout un objet géo
+	_objects.push_back(navette);
+	_objectDescriptions.insert(pair<int, MapObject*>(navette->getId(), navette));
+
 	_geos.push_back(navette);
 	_refreshables.push_back(navette);
 	_drawables.push_back(navette);
-	_objects.push_back(navette);
-	_geoDescriptions.insert(pair<int, MapObject*>(navette->getId(), navette));
 }
 
 vector<MapObject*>& CMap::getMapObjects() {
@@ -546,12 +559,16 @@ bool CMap::Lit(const string &nomFichier, MapLogger* mapLogger) {
 	return Lit(*this, nomFichier, mapLogger);
 }
 
-bool CMap::Lit(TiXmlElement* el, MapLogger* mapLogger) {
+bool CMap::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	return false;
 }
 
 bool CMap::Save(TiXmlElement* element) {			// Sauve l'objet géo dans un fichier Map
 	return false;
+}
+
+const string& CMap::getBinariesDirectory() {
+	return _binariesDirectory;
 }
 
 bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
@@ -703,7 +720,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						Xml::throwCorruptedMapFileException(Xml::ENTRYPOINT, el->Value());
 					}
 
-					EntryPoint* entry = EntryPointMaker::Lit(&map, el, mapLogger);
+					EntryPoint* entry = EntryPointMaker::Lit(map, el, mapLogger);
 
 					if(entry) {
 						map.add(entry);
@@ -718,9 +735,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 
 			if(elEntry) {
 				for(TiXmlElement* el=elEntry->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
-					CMoteurParticules* engine = EngineMaker::Lit(el, &map, mapLogger);
-
-					map.add(engine);
+					CMoteurParticules* engine = EngineMaker::Lit(el, map, mapLogger);
 
 					if(engine) {
 						map.add(engine);
@@ -737,7 +752,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 
 		if(elMat) {
 			for(TiXmlElement* el=elMat->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
-				CMaterial* mat = CMaterialMaker::Lit(el, map._binariesDirectory, mapLogger);
+				CMaterial* mat = CMaterialMaker::Lit(el, map, mapLogger);
 
 				if(mat) {
 					map.add(mat);
@@ -753,7 +768,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 
 		if(elLight) {
 			for(TiXmlElement* el=elLight->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
-				CLight* lum = CLightMaker::Lit(el, mapLogger, map);
+				CLight* lum = CLightMaker::Lit(el, map, mapLogger);
 
 				if(lum) {
 					map.add(lum);
@@ -772,7 +787,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 				// Descriptions d'objets géométriques
 				if(!strcmp(Xml::GEODESCRIPTION, el->Value())) {
-					MapObject* geo = CGeoMaker::Lit(el, &map, mapLogger);
+					MapObject* geo = CGeoMaker::Lit(el, map, mapLogger);
 
 					if(geo) {
 						map.addMapObject(geo->getId(), geo, mapLogger);
@@ -786,7 +801,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 				// Objets géométriques réels
 				if(!strcmp(Xml::GEO, el->Value())) {
-					MapObject* object = CGeoMaker::Lit(el, &map, mapLogger);
+					MapObject* object = CGeoMaker::Lit(el, map, mapLogger);
 
 					if(object) {
 						map.add(object);

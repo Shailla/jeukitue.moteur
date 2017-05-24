@@ -27,7 +27,7 @@ public:
 	void init() throw(CErreur) override;
 
 	// Méthodes de sérialisation
-	bool Lit(TiXmlElement* element, MapLogger* mapLogger) override;		// Lit le point d'entrée joueur d'un fichier Map format XML
+	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) override;		// Lit le point d'entrée joueur d'un fichier Map format XML
 	bool Save(TiXmlElement* element) override;							// Lit le point d'entrée joueur dans un fichier Map format XML
 
 	// Méthodes de manipulation géométrique

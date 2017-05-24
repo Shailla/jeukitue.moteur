@@ -15,6 +15,7 @@
 #include "spatial/materiau/Textures.h"
 #include "spatial/widget/Texture.h"
 #include "util/Trace.h"
+#include "spatial/Map.h"
 #include "spatial/materiau/Material.h"
 #include "spatial/materiau/MaterialMaker.h"
 #include "ressource/RessourcesLoader.h"
@@ -26,14 +27,12 @@ using namespace std;
 namespace jkt
 {
 
-CMaterialTexture::CMaterialTexture()
-:CMaterial()
-{
+CMaterialTexture::CMaterialTexture(CMap* map) : CMaterial(map) {
 	m_Type = MAT_TYPE_TEXTURE;
 	_texture = NULL;
 }
 
-CMaterialTexture::CMaterialTexture( const CMaterial &mat ) {
+CMaterialTexture::CMaterialTexture(CMap* map, const CMaterial &mat) : CMaterial(map) {
 	// Copie des attributs de 'mat'
 	m_Type = MAT_TYPE_TEXTURE;
 
@@ -48,8 +47,14 @@ CMaterialTexture::CMaterialTexture( const CMaterial &mat ) {
 	_texture = NULL;
 }
 
-CMaterialTexture::~CMaterialTexture()
-{
+CMaterialTexture::~CMaterialTexture() {
+}
+
+MapObject* CMaterialTexture::clone() {
+	return new CMaterial(*this);
+}
+
+void CMaterialTexture::init() throw(CErreur) {
 }
 
 void CMaterialTexture::initGL() throw(jkt::CErreur) {
@@ -67,24 +72,30 @@ void CMaterialTexture::freeGL() {
 	// TODO
 }
 
-bool CMaterialTexture::Lit(TiXmlElement* element, string &repertoire, MapLogger* mapLogger) {
+bool CMaterialTexture::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	double ref;
 
 	// Référence
-	if(!element->Attribute(Xml::REF, &ref)) {
+	if(!el->Attribute(Xml::REF, &ref)) {
 		mapLogger->logError("Fichier map corrompu : Reference materiau");
 		throw CErreur("Fichier map corrompu : Reference materiau");
 	}
 
 	m_Ref = (unsigned int)ref;
 
+	// Nom
+	const char* nom = el->Attribute(Xml::NOM);
+	if(nom) {
+		setName(nom);
+	}
+
 	// Couleurs
-	Xml::LitCouleur3fv(element, Xml::AMBIANTE, m_Ambient);
-	Xml::LitCouleur3fv(element, Xml::DIFFUSE, m_Diffuse);
-	Xml::LitCouleur3fv(element, Xml::SPECULAR, m_Specular);
+	Xml::LitCouleur3fv(el, Xml::AMBIANTE, m_Ambient);
+	Xml::LitCouleur3fv(el, Xml::DIFFUSE, m_Diffuse);
+	Xml::LitCouleur3fv(el, Xml::SPECULAR, m_Specular);
 
 	// Fichier de texture
-	TiXmlElement* elFic = element->FirstChildElement(Xml::FICHIER);
+	TiXmlElement* elFic = el->FirstChildElement(Xml::FICHIER);
 
 	if(!elFic) {
 		mapLogger->logError("Fichier map corrompu : Nom de fichier de texture");
@@ -92,12 +103,12 @@ bool CMaterialTexture::Lit(TiXmlElement* element, string &repertoire, MapLogger*
 	}
 
 	m_FichierTexture = elFic->Attribute(Xml::NOM);
-	RessourcesLoader::getFileRessource(repertoire, m_FichierTexture);
+	RessourcesLoader::getFileRessource(map.getBinariesDirectory(), m_FichierTexture);
 
 	return true;
 }
 
-bool CMaterialTexture::LitFichier( CIfstreamMap &fichier ) {
+bool CMaterialTexture::LitFichier(CMap* map, CIfstreamMap &fichier) {
 	string mot;
 	fichier >> mot;
 	if( mot!="Reference" )
@@ -174,6 +185,7 @@ bool CMaterialTexture::Save(TiXmlElement* element) {
 	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAU);
 	elMat->SetAttribute(Xml::TYPE, Xml::TEXTURE);
 	elMat->SetAttribute(Xml::REF, getRef());
+	elMat->SetAttribute(Xml::NOM, getName());
 	element->LinkEndChild(elMat);
 
 	// Couleurs de matériau

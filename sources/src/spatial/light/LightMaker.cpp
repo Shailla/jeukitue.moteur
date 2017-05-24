@@ -10,7 +10,7 @@
 namespace jkt
 {
 
-CLight* CLightMaker::Lit(TiXmlElement* element, MapLogger* mapLogger, CMap& map) throw(CErreur) {
+CLight* CLightMaker::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) {
 	if(strcmp(Xml::LUMIERE, element->Value())) {
 		Xml::throwCorruptedMapFileException(Xml::LUMIERE, element->Value());
 	}
@@ -25,7 +25,7 @@ CLight* CLightMaker::Lit(TiXmlElement* element, MapLogger* mapLogger, CMap& map)
 	else
 		throw jkt::CErreur("Fichier Map corrompu : Lumiere de type inconnu");
 
-	light->Lit(element, mapLogger);
+	light->Lit(element, map, mapLogger);
 
 	return light;
 }

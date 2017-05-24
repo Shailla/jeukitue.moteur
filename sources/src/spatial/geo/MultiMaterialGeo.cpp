@@ -458,7 +458,7 @@ void CMultiMaterialGeo::translate( float x, float y, float z ) {
 	}
 }
 
-bool CMultiMaterialGeo::Lit(TiXmlElement* el, MapLogger* mapLogger)
+bool CMultiMaterialGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger)
 {
 	double ref;
 
@@ -497,7 +497,7 @@ bool CMultiMaterialGeo::Lit(TiXmlElement* el, MapLogger* mapLogger)
 	m_TabTexVertex = CGeoMaker::LitTexVertex(el, m_NumVertex);
 
 	// Sous-Matériaux de texture
-	map<int, int>* canauxNumbers = CGeoMaker::LitSousMateriaux(el);
+	std::map<int, int>* canauxNumbers = CGeoMaker::LitSousMateriaux(el);
 	m_CanauxNumbers = *canauxNumbers;
 	delete canauxNumbers;
 

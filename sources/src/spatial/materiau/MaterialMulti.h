@@ -19,8 +19,11 @@ public:
 	CMaterial** m_TabMat;		// Tableau des sous-matériaux
 
 		// Constructeurs / Destructeurs
-	CMaterialMulti();
+	CMaterialMulti(CMap* map);
 	~CMaterialMulti();
+
+	virtual MapObject* clone() override;
+	virtual void init() throw(CErreur) override;
 
 		// Fonctions membres
 	void initGL() override;
@@ -28,10 +31,10 @@ public:
 	void NbrTex(int nbr);		// Renseigne le nombre de sous-matériaux
 	int NbrTex();				// Renvoie le nombre de sous-matériaux
 	CMaterial* getMat(int i);	// Renvoie le sous-matériau d'index i
-	bool LitFichier(CIfstreamMap &fichier) override;
+	bool LitFichier(CMap* map, CIfstreamMap &fichier) override;
 	bool SaveFichierMap(std::ofstream &fichier) override;
 	bool Save(TiXmlElement* element) override;
-	bool Lit(TiXmlElement* element, std::string& repertoire, MapLogger* mapLogger) override;
+	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) override;
 	const char* toString();
 };
 

@@ -48,7 +48,7 @@ public:
 
 	// Object
 	void init() throw(CErreur) override;								// Initialisation de l'objet
-	bool Lit(TiXmlElement* element, MapLogger* mapLogger) override;
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;
 	bool Save(TiXmlElement* element) override;
 
 	// Geometrical

@@ -26,18 +26,18 @@ class CCfg;
 namespace jkt
 {
 
-CMoteurParticules* EngineMaker::Lit(TiXmlElement* el, CMap* map, MapLogger* mapLogger) throw(CErreur) {
+CMoteurParticules* EngineMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
 	const char* elType = el->Value();
 	CMoteurParticules* engine;
 
 	if(!strcmp(Xml::NEIGE, elType)) {
-		engine = new MoteurNeige(map);
+		engine = new MoteurNeige(&map);
 	}
 	else {
 		throw jkt::CErreur("Fichier Map corrompu : Moteur de particules de type inconnu");
 	}
 
-	engine->Lit(el, mapLogger);
+	engine->Lit(el, map, mapLogger);
 
 	return engine;
 }

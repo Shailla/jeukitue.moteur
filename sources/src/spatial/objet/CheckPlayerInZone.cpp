@@ -167,7 +167,7 @@ void CheckPlayerInZone::setVisibility(bool isVisible) {
 	_isVisible = isVisible;
 }
 
-bool CheckPlayerInZone::Lit(TiXmlElement* element, MapLogger* mapLogger) {
+bool CheckPlayerInZone::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	// TODO
 	return true;
 }

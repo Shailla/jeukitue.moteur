@@ -79,7 +79,7 @@ public:
 
 	// Sérialisation
 	bool Save(TiXmlElement* element) override;
-	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;
 
 	// Gestion des contacts
 	bool checkContact( const float pos[3], float dist ) override;

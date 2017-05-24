@@ -487,7 +487,7 @@ void CSimpleMaterialGeo::translate( float x, float y, float z ) {
 	}
 }
 
-bool CSimpleMaterialGeo::Lit(TiXmlElement* element, MapLogger* mapLogger)
+bool CSimpleMaterialGeo::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger)
 {
 	double ref;
 

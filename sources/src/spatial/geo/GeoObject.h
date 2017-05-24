@@ -100,7 +100,7 @@ public:
 
 	// Fonctions pour l'interface CGeo
 	bool Save(TiXmlElement* element) override;
-	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override {return true;}
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override {return true;}
 
 	bool checkContact( const float pos[3], float dist ) override;
 

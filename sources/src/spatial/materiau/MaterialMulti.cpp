@@ -21,10 +21,17 @@ using namespace std;
 namespace jkt
 {
 
-CMaterialMulti::CMaterialMulti() : CMaterial() {
+CMaterialMulti::CMaterialMulti(CMap* map) : CMaterial(map) {
 	m_Type = MAT_TYPE_MULTI;
 	m_TabMat = 0;			// Pas de sous-matériaux
 	m_NbrTex = 0;			// Pas de sous-matériaux
+}
+
+MapObject* CMaterialMulti::clone() {
+	return new CMaterial(*this);
+}
+
+void CMaterialMulti::init() throw(CErreur) {
 }
 
 int CMaterialMulti::NbrTex()
@@ -62,7 +69,7 @@ void CMaterialMulti::freeGL()  {
 		m_TabMat[i]->freeGL();
 }
 
-bool CMaterialMulti::LitFichier(CIfstreamMap &fichier) {
+bool CMaterialMulti::LitFichier(CMap* map, CIfstreamMap &fichier) {
 	string mot;
 	int nbrSM;		// Nombre de sous-matériaux
 
@@ -108,8 +115,8 @@ bool CMaterialMulti::LitFichier(CIfstreamMap &fichier) {
 		fichier >> mot;
 
 		if(mot=="MateriauSimple") {
-			CMaterial *pMatSimple = new CMaterial();
-			if(!pMatSimple->LitFichier(fichier)) {
+			CMaterial *pMatSimple = new CMaterial(map);
+			if(!pMatSimple->LitFichier(map, fichier)) {
 				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Materiau simple corrompu dans un multi-materiau" << endl;
 				delete pMatSimple;
 				return false;
@@ -118,8 +125,8 @@ bool CMaterialMulti::LitFichier(CIfstreamMap &fichier) {
 			m_TabMat[ i ] = pMatSimple;
 		}
 		else if( mot=="MateriauTexture" ) {
-			CMaterialTexture *pMatTex = new CMaterialTexture();
-			if(!pMatTex->LitFichier(fichier)) {
+			CMaterialTexture *pMatTex = new CMaterialTexture(map);
+			if(!pMatTex->LitFichier(map, fichier)) {
 				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Materiau de texture corrompu dans un multi-materiau" << endl;
 				delete pMatTex;
 				return false;
@@ -161,20 +168,26 @@ bool CMaterialMulti::SaveFichierMap(ofstream &fichier) {
 	return true;
 }
 
-bool CMaterialMulti::Lit(TiXmlElement* element, string& repertoire, MapLogger* mapLogger) {
+bool CMaterialMulti::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	// Référence
 	double ref;
-	if(!element->Attribute(Xml::REF, &ref))
+	if(!el->Attribute(Xml::REF, &ref))
 		throw CErreur("Fichier map corrompu : Reference materiau");
 
 	m_Ref = (unsigned int)ref;
 
-	// Couleurs
-	Xml::LitCouleur3fv(element, Xml::AMBIANTE, m_Ambient);
-	Xml::LitCouleur3fv(element, Xml::DIFFUSE, m_Diffuse);
-	Xml::LitCouleur3fv(element, Xml::SPECULAR, m_Specular);
+	// Nom
+	const char* nom = el->Attribute(Xml::NOM);
+	if(nom) {
+		setName(nom);
+	}
 
-	TiXmlElement* elSma = element->FirstChildElement(Xml::SOUSMATERIAUX);
+	// Couleurs
+	Xml::LitCouleur3fv(el, Xml::AMBIANTE, m_Ambient);
+	Xml::LitCouleur3fv(el, Xml::DIFFUSE, m_Diffuse);
+	Xml::LitCouleur3fv(el, Xml::SPECULAR, m_Specular);
+
+	TiXmlElement* elSma = el->FirstChildElement(Xml::SOUSMATERIAUX);
 
 	if(!elSma) {
 		mapLogger->logError("Fichier map corrompu : Sous-materiaux");
@@ -204,7 +217,7 @@ bool CMaterialMulti::Lit(TiXmlElement* element, string& repertoire, MapLogger* m
 			throw CErreur("Fichier map corrompu : Reference sous-materiau");
 		}
 
-		CMaterial* mat = CMaterialMaker::Lit(el, repertoire, mapLogger);
+		CMaterial* mat = CMaterialMaker::Lit(el, map, mapLogger);
 		m_TabMat[i++] = mat;
 	}
 
@@ -216,6 +229,7 @@ bool CMaterialMulti::Save(TiXmlElement* element) {
 	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAU);
 	elMat->SetAttribute(Xml::TYPE, Xml::MULTI);
 	elMat->SetAttribute(Xml::REF, getRef());
+	elMat->SetAttribute(Xml::NOM, getName());
 	element->LinkEndChild(elMat);
 
 	// Couleurs

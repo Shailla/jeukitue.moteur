@@ -52,8 +52,8 @@ public:
 	const std::string& getType() const;
 
 	// Sérialisation
-	virtual bool Lit(TiXmlElement* el, MapLogger* mapLogger) = 0;
-	virtual bool Save(TiXmlElement* element) = 0;		// Sauve l'objet géo dans un fichier Map
+	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) = 0;
+	virtual bool Save(TiXmlElement* element) = 0;								// Sauve l'objet géo dans un fichier Map
 };
 
 } /* namespace jkt */

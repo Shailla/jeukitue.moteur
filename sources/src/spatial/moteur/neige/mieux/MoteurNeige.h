@@ -44,7 +44,7 @@ public:
 	MapObject* clone() override;
 	void init() throw(CErreur) override;
 
-	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;	// Lit l'objet depuis un fichier Map
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;	// Lit l'objet depuis un fichier Map
 	bool Save(TiXmlElement* element) override;					// Sauve l'objet dans un fichier Map
 
 	// Fonctions d'intialisation et libération

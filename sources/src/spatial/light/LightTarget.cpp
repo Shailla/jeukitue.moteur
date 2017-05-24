@@ -54,19 +54,19 @@ void CLightTarget::SetDirection( float direction[3] ) {
 	m_Direction[ 3 ] = 1.0f;
 }
 
-bool CLightTarget::Lit(TiXmlElement* element, MapLogger* mapLogger) {
+bool CLightTarget::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	double ref;
 	const char* type;
 
 	// Référence
-	if(!element->Attribute(Xml::REF, &ref)) {
+	if(!el->Attribute(Xml::REF, &ref)) {
 		mapLogger->logError("Fichier Map corrompu : Lumiere ref");
 		throw CErreur("Fichier Map corrompu : Lumiere ref");
 	}
 	m_refLight = (int)ref;
 
 	// Type
-	type = element->Attribute(Xml::TYPE);
+	type = el->Attribute(Xml::TYPE);
 	if(!type) {
 		mapLogger->logError("Fichier Map corrompu : Type lumiere manquant");
 		throw CErreur("Fichier Map corrompu : Type lumiere manquant");
@@ -78,18 +78,18 @@ bool CLightTarget::Lit(TiXmlElement* element, MapLogger* mapLogger) {
 	}
 
 	// Couleurs
-	Xml::LitCouleur3fv(element, Xml::AMBIANTE, m_ColorAmbient);
-	Xml::LitCouleur3fv(element, Xml::DIFFUSE, m_ColorDiffuse);
-	Xml::LitCouleur3fv(element, Xml::SPECULAR, m_ColorSpecular);
+	Xml::LitCouleur3fv(el, Xml::AMBIANTE, m_ColorAmbient);
+	Xml::LitCouleur3fv(el, Xml::DIFFUSE, m_ColorDiffuse);
+	Xml::LitCouleur3fv(el, Xml::SPECULAR, m_ColorSpecular);
 
 	// Position
-	Xml::LitPosition3fv(element, Xml::POSITION, m_Position);
+	Xml::LitPosition3fv(el, Xml::POSITION, m_Position);
 
 	// Direction
-	Xml::LitDirection3fv(element, Xml::DIRECTION, m_Direction);
+	Xml::LitDirection3fv(el, Xml::DIRECTION, m_Direction);
 
 	// Fall off
-	m_fFallOff = (float)Xml::LitValeur(element, Xml::FALLOFF);
+	m_fFallOff = (float)Xml::LitValeur(el, Xml::FALLOFF);
 
 	return true;
 }

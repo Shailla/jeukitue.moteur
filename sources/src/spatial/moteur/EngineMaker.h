@@ -27,7 +27,7 @@ class CMoteurParticules;
 class EngineMaker
 {
 public:
-	static CMoteurParticules* Lit(TiXmlElement* el, CMap* map, MapLogger* mapLogger) throw(CErreur);
+	static CMoteurParticules* Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur);
 };
 
 }	// JktMoteur

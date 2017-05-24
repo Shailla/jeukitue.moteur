@@ -83,7 +83,7 @@ public:
 	//bool LitFichier( CIfstreamMap &fichier );			// Lit un objet géo dans un fichier Map
 	//bool SaveNameType( ofstream &fichier );			// Sauve le nom du type d'objet géométrique
 	//bool SaveFichierMap( ofstream &fichier );			// Sauve l'objet géo dans un fichier Map
-	bool Lit(TiXmlElement* element, MapLogger* mapLogger) override;
+	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) override;
 	bool Save(TiXmlElement* element) override;
 
 	bool checkContact( const float pos[3], float dist ) override;

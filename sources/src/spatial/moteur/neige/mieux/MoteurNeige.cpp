@@ -59,9 +59,15 @@ void MoteurNeige::randomVelocity(Flocon& flocon) {
 	flocon._acceleration.Z = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
 }
 
-bool MoteurNeige::Lit(TiXmlElement* el, MapLogger* mapLogger){
+bool MoteurNeige::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger){
 	if(strcmp(Xml::NEIGE, el->Value())) {
 		Xml::throwCorruptedMapFileException(Xml::NEIGE, el->Value());
+	}
+
+	// Nom
+	const char* nom = el->Attribute(Xml::NOM);
+	if(nom) {
+		setName(nom);
 	}
 
 	// Lecture du nombre de particules à afficher
@@ -130,6 +136,8 @@ bool MoteurNeige::Save(TiXmlElement* el) {
 
 	TiXmlElement *elEngine = new TiXmlElement(Xml::NEIGE);
 	el->LinkEndChild(elEngine);
+
+	el->SetAttribute(Xml::NOM, getName());
 
 	// Nombres de particules
 	elEngine->SetAttribute(Xml::NBR_PARTICULES, _nbrParticules);

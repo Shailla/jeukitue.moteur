@@ -11,7 +11,7 @@ class CLight;
 class CLightMaker
 {
 public:
-	static CLight* Lit(TiXmlElement* element, MapLogger* mapLogger, CMap& map) throw(CErreur);
+	static CLight* Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur);
 };
 
 }

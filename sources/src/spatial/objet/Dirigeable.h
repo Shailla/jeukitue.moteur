@@ -35,7 +35,7 @@ public:
 	void init() throw(CErreur);
 
 	// Sérialisation
-	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;
 	bool Save(TiXmlElement* element) override;
 };
 

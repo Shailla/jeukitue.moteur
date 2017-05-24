@@ -97,7 +97,7 @@ public:
 	static float* LitVecteursNormaux(TiXmlElement* element, int& nbr);
 	static std::map<int,int>* LitSousMateriaux(TiXmlElement* el);
 
-	static MapObject* Lit(TiXmlElement* el, CMap* pMap, MapLogger* mapLogger);
+	static MapObject* Lit(TiXmlElement* el, CMap& pMap, MapLogger* mapLogger);
 	MapObject* makeNewGeoInstance();	// Crée une instance de l'objet géométrique
 								// optimisé correspondant
 private:

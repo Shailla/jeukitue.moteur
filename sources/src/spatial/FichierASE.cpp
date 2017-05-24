@@ -696,7 +696,7 @@ float* CFichierASE::LitNormaux(unsigned int numFaces, const float *row)
 	return tab;
 }
 
-CMaterial* CFichierASE::materiallist()
+CMaterial* CFichierASE::materiallist(CMap* map)
 {
 	string mot;
 	CMaterial *pMaterial;
@@ -720,11 +720,11 @@ CMaterial* CFichierASE::materiallist()
 
 	if( mot=="\"Standard\"" ) {	// S'il s'agit d'un matériau de type standard
 		trace() << "\nMateriau Standard";
-		pMaterial = materialStandard( uRef );
+		pMaterial = materialStandard(map, uRef );
 	}
 	else if((mot=="\"Multi/sous-objet\"") || (mot=="\"Multi/Sub-Object\"")) {	// S'il s'agit d'un matériau multiple
 		trace() << "\nMateriau Multi";
-		pMaterial = materialMulti( uRef );
+		pMaterial = materialMulti(map, uRef );
 	}
 	else {
 		trace() << "\nErreur (FichierASE.cpp::" << __LINE__ << ") : Type de materiau inconnu (" << mot << ")";
@@ -734,13 +734,13 @@ CMaterial* CFichierASE::materiallist()
 	return pMaterial;
 }
 
-CMaterialMulti* CFichierASE::materialMulti(unsigned int uRef)
+CMaterialMulti* CFichierASE::materialMulti(CMap* map, unsigned int uRef)
 {
 	unsigned int accolade2 = 1;
 	int indexTex = 0;				// Index du sous-matériau en cours de lecture
 	string mot;
 
-	CMaterialMulti *pMaterialMulti = new CMaterialMulti();
+	CMaterialMulti *pMaterialMulti = new CMaterialMulti(map);
 	pMaterialMulti->setRef(uRef);
 
 	do {
@@ -798,7 +798,7 @@ CMaterialMulti* CFichierASE::materialMulti(unsigned int uRef)
 
 			find("*MATERIAL_CLASS", __LINE__);	// Place toi à la définition du type de matériaux
 
-			CMaterialTexture *pMat = (CMaterialTexture*)materialStandard(uRef );	// Lecture du sous-matériau
+			CMaterialTexture *pMat = (CMaterialTexture*)materialStandard(map, uRef );	// Lecture du sous-matériau
 
 			pMaterialMulti->m_TabMat[ indexTex++ ] = pMat;
 		}
@@ -812,13 +812,13 @@ CMaterialMulti* CFichierASE::materialMulti(unsigned int uRef)
 	return pMaterialMulti;
 }
 
-CMaterial* CFichierASE::materialStandard(unsigned int uRef)
+CMaterial* CFichierASE::materialStandard(CMap* map, unsigned int uRef)
 {
 	unsigned int accolade2 = 1;
 	string mot;
 	bool indic;		// Indique si un canal de texture a été trouvé
 
-	CMaterial *pMaterial = new CMaterial();
+	CMaterial *pMaterial = new CMaterial(map);
 	pMaterial->setRef(uRef);
 	string::iterator k;
 
@@ -893,15 +893,10 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 		else if(mot=="*MAP_CLASS") {
 			get(mot,__LINE__);
 
-			CMaterialTexture *pMaterialTexture = 0;
-
 			if(mot=="\"Bitmap\"") {
-				pMaterialTexture = new CMaterialTexture( *pMaterial );
+				CMaterialTexture* pMaterialTexture = new CMaterialTexture(map, *pMaterial);
 				delete pMaterial;
 				pMaterial = pMaterialTexture;
-			}
-			else {
-				pMaterialTexture = (CMaterialTexture*)pMaterial;
 			}
 		}
 		else if( mot=="*MATERIAL_AMBIENT" ) {			//Recherche l'éventuelle couleur ambiante de l'objet geo
@@ -914,8 +909,7 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 				trace()<<pMaterial->m_Ambient[0]<<' '<<pMaterial->m_Ambient[1]<<' '<<pMaterial->m_Ambient[2];
 			}
 		}
-		else if( mot=="*MATERIAL_DIFFUSE" )	//Recherche l'éventuelle couleur diffuse de l'objet géo
-		{
+		else if( mot=="*MATERIAL_DIFFUSE" )	{			//Recherche l'éventuelle couleur diffuse de l'objet géo
 			get(pMaterial->m_Diffuse[0],__LINE__);
 			get(pMaterial->m_Diffuse[1],__LINE__);
 			get(pMaterial->m_Diffuse[2],__LINE__);
@@ -925,8 +919,7 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 				trace()<<pMaterial->m_Diffuse[0]<<' '<<pMaterial->m_Diffuse[1]<<' '<<pMaterial->m_Diffuse[2];
 			}
 		}
-		else if( mot=="*MATERIAL_SPECULAR" )	//Recherche l'éventuelle couleur spéculaire de l'objet géo
-		{
+		else if( mot=="*MATERIAL_SPECULAR" ) {			//Recherche l'éventuelle couleur spéculaire de l'objet géo
 			get(pMaterial->m_Specular[0],__LINE__);
 			get(pMaterial->m_Specular[1],__LINE__);
 			get(pMaterial->m_Specular[2],__LINE__);
@@ -936,13 +929,12 @@ CMaterial* CFichierASE::materialStandard(unsigned int uRef)
 				trace()<<pMaterial->m_Specular[0]<<' '<<pMaterial->m_Specular[1]<<' '<<pMaterial->m_Specular[2];
 			}
 		}
-		else if( mot=="*BITMAP" )	// Lecture du nom de fichier de texture
-		{
+		else if( mot=="*BITMAP" ) {	// Lecture du nom de fichier de texture
 			string nomFichier;
 			CMaterialTexture *pMaterialTexture = 0;
 
 			if( pMaterial->Type() != CMaterial::MAT_TYPE_TEXTURE ) {
-				pMaterialTexture = new CMaterialTexture( *pMaterial );
+				pMaterialTexture = new CMaterialTexture(map, *pMaterial);
 				delete pMaterial;
 				pMaterial = pMaterialTexture;
 			}
@@ -1349,7 +1341,7 @@ void CFichierASE::LitFichier(const string &nomFichier, CMap *pMap) {
 				trace() << "Nombre de matériaux : " << nbr_materiau << endl;
 
 			while(nbr_materiau) {	// Lecture de tous les matériaux
-				pMaterial = materiallist();
+				pMaterial = materiallist(pMap);
 
 				if(pMaterial)
 					pMap->add(pMaterial) ;

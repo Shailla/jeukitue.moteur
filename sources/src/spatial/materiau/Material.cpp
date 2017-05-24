@@ -18,7 +18,7 @@ using namespace std;
 namespace jkt
 {
 
-CMaterial::CMaterial() {
+CMaterial::CMaterial(CMap* map) : MapObject(map, MapObject::MATERIAL) {
 	m_Type = MAT_TYPE_SIMPLE;
 	m_Ref = 0;
 
@@ -28,6 +28,13 @@ CMaterial::CMaterial() {
 }
 
 CMaterial::~CMaterial() {
+}
+
+MapObject* CMaterial::clone() {
+	return new CMaterial(*this);
+}
+
+void CMaterial::init() throw(CErreur) {
 }
 
 CMaterial::MAT_TYPE CMaterial::Type() const {
@@ -53,7 +60,7 @@ const char* CMaterial::toString() {
 	return tostring.c_str();
 }
 
-bool CMaterial::LitFichier(CIfstreamMap &fichier) {
+bool CMaterial::LitFichier(CMap* map, CIfstreamMap &fichier) {
 	string mot;
 
 	fichier >> mot;
@@ -83,8 +90,14 @@ bool CMaterial::LitFichier(CIfstreamMap &fichier) {
 	return true;
 }
 
-bool CMaterial::Lit(TiXmlElement* el, string &repertoire, MapLogger* mapLogger) {
+bool CMaterial::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	double ref;
+
+	// Nom
+	const char* nom = el->Attribute(Xml::NOM);
+	if(nom) {
+		setName(nom);
+	}
 
 	// Référence
 	el->Attribute(Xml::REF, &ref);
@@ -113,6 +126,7 @@ bool CMaterial::Save(TiXmlElement* element) {
 	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAU);
 	elMat->SetAttribute(Xml::TYPE,Xml::SIMPLE);
 	elMat->SetAttribute(Xml::REF,m_Ref);
+	elMat->SetAttribute(Xml::NOM, getName());
 	element->LinkEndChild(elMat);
 
 	// Couleurs

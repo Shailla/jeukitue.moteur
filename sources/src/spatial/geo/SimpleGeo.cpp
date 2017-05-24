@@ -47,7 +47,7 @@ const char* CSimpleGeo::identifier = "SimpleGeo";
 
 //CONSTRUCTEURS
 CSimpleGeo::CSimpleGeo(CMap* map, const string& name, unsigned int nbrVertex, float* vertex, unsigned int nbrFaces,
-						int* faces, float* color, bool solid) : MapObject(map, MapObject::GEO) {
+		int* faces, float* color, bool solid) : MapObject(map, MapObject::GEO) {
 	setName(name);	// Nom de l'objet
 
 	_color[0] = color[0];			// Couleur de l'objet
@@ -524,38 +524,38 @@ void CSimpleGeo::Color( float r, float g, float b ) {
 	return true;
 }*/
 
-bool CSimpleGeo::Lit(TiXmlElement* element, MapLogger* mapLogger) {
+bool CSimpleGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	double ref;
 
 	// Nom
-	const char* nom = element->Attribute(Xml::NOM);
-	if(!nom)
-		throw CErreur("Fichier Map corrompu CSimpleGeo 1");
-	setName(nom);
+	const char* nom = el->Attribute(Xml::NOM);
+	if(nom) {
+		setName(nom);
+	}
 
 	// Type
-	const char* type = element->Attribute(Xml::TYPE);
+	const char* type = el->Attribute(Xml::TYPE);
 	if(!type)
 		throw CErreur("Fichier Map corrompu CSimpleGeo 2");
 	if(strcmp(type, Xml::SIMPLE))
 		throw CErreur("Fichier Map corrompu CSimpleGeo 3");
 
 	// Référence
-	if(!element->Attribute(Xml::REF, &ref))
+	if(!el->Attribute(Xml::REF, &ref))
 		throw CErreur("Fichier Map corrompu CSimpleGeo 4");
 	_reference = (int)ref;
 
 	// Solidité
-	_bSolid = Xml::LitSolidite(element);
+	_bSolid = Xml::LitSolidite(el);
 
 	// Couleur
-	Xml::LitCouleur3fv(element, Xml::COULEUR, _color);
+	Xml::LitCouleur3fv(el, Xml::COULEUR, _color);
 
 	// Sommets
-	m_TabVertex = CGeoMaker::LitVertex(element, _numVertex);
+	m_TabVertex = CGeoMaker::LitVertex(el, _numVertex);
 
 	// Index des sommets
-	m_TabFaces = CGeoMaker::LitFaces(element, _numFaces);
+	m_TabFaces = CGeoMaker::LitFaces(el, _numFaces);
 
 	return true;
 }

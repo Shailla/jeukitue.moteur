@@ -8,13 +8,14 @@
 #include "tinyxml.h"
 
 #include "spatial/MapLogger.h"
+#include "spatial/basic/MapObject.h"
 
 namespace jkt
 {
 
 class CIfstreamMap;
 
-class CMaterial {
+class CMaterial : public MapObject {
 	friend class CMaterialMaker;
 public:
 	enum MAT_TYPE {
@@ -33,17 +34,23 @@ public:
 	float m_Specular[4];	// Composante de lumière spéculaire de l'objet géo
 
 		// Constructeurs / Destructeur
-	CMaterial();
+	CMaterial(CMap* map);
 	virtual ~CMaterial();
+
+	virtual MapObject* clone() override;
+	virtual void init() throw(CErreur) override;
 
 	MAT_TYPE Type() const;	// Retourne le type de matériau (simple, tree, ...)
 
+	// Sérialisation
+	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;
+	virtual bool Save(TiXmlElement* element) override;
+
+	virtual bool LitFichier(CMap* map, CIfstreamMap &fichier);
+	virtual bool SaveFichierMap(std::ofstream &fichier);
+
 	virtual void initGL() {};	// Lit le fichier de texture associé au matériau
 	virtual void freeGL() {};	// Lit le fichier de texture associé au matériau
-	virtual bool LitFichier(CIfstreamMap &fichier);
-	virtual bool Lit(TiXmlElement* el, std::string &repertoire, MapLogger* mapLogger);
-	virtual bool SaveFichierMap(std::ofstream &fichier);
-	virtual bool Save(TiXmlElement* element);
 	virtual void Active();
 	virtual void Desactive();
 	const char* toString();

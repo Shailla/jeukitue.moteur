@@ -58,7 +58,7 @@ public :
 	virtual ~CLight();
 
 	// Méthodes de sérialisation
-	virtual bool Lit(TiXmlElement* element, MapLogger* mapLogger) = 0;		// Lit une light dans un fichier Map format XML
+	virtual bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) = 0;		// Lit une light dans un fichier Map format XML
 	virtual bool LitFichier(CIfstreamMap &fichier) = 0;						// Lit une light dans un fichier Map
 	virtual bool SaveFichierMap(std::ofstream &fichier) = 0;				// Sauve la light dans un fichier Map
 	virtual bool Save(TiXmlElement* element) = 0;							// Sauve la light dans un fichier Map format XML

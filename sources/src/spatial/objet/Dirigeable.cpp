@@ -78,7 +78,7 @@ void Dirigeable::init() throw(CErreur) {
 void Dirigeable::refresh(CGame *game) {
 }
 
-bool Dirigeable::Lit(TiXmlElement* el, MapLogger* mapLogger) {
+bool Dirigeable::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	return true;
 }
 

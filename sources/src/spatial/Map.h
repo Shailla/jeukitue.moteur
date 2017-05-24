@@ -36,17 +36,17 @@ class CMap : public MapObject {
 	std::string tostring;
 
 	std::string _filename;								// Nom du fichier de la Map (par exemple "Monde.map.xml")
-	std::string _binariesDirectory;						// R�pertoires des binaires de la Map (textures, plugins, ...)
+	std::string _binariesDirectory;						// Répertoires des binaires de la Map (textures, plugins, ...)
 
 	std::map<int, CMap*> _subMaps;
 
-	std::map<int, MapObject*> _geoDescriptions;
+	std::vector<MapObject*> _objects;
+	std::map<int, MapObject*> _objectDescriptions;
 
 	// Objets de la Map
-	std::vector<MapObject*> _objects;							// Liste des objets géométriques
-	std::vector<Geometrical*> _geos;							// Liste des objets géométriques
-	std::vector<SolidAndTargettable*> _solidAndTargettables;	// Liste des objets géométriques
-	std::vector<Drawable*> _drawables;							// Liste des objets à afficher
+	std::vector<Geometrical*> _geos;
+	std::vector<SolidAndTargettable*> _solidAndTargettables;
+	std::vector<Drawable*> _drawables;
 	std::vector<Refreshable*> _refreshables;					// Liste des objets nécessitant une actualisation (portes,...)
 
 	// Lumières et autres caractéristiques de la Map
@@ -65,7 +65,7 @@ class CMap : public MapObject {
 
 	bool afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
 public:
-	std::vector<CMaterial*> _materials;		// Liste des mat�riaux A VOIR : devrait �tre membre priv�
+	std::vector<CMaterial*> _materials;		// Liste des mat�riaux A VOIR : devrait �tre membre priv�
 
 		// Constructeurs / destructeur
 	CMap(CMap* parent);
@@ -81,7 +81,7 @@ public:
 	void init() throw(jkt::CErreur) override;	// Initialisation de la CMap
 	static bool Lit(CMap& map, const std::string &mapName, MapLogger* mapLogger);
 	bool Lit(const std::string &nomFichier, MapLogger* mapLogger);
-	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;
 	bool Save(TiXmlElement* element) override;			// Sauve l'objet géo dans un fichier Map
 
 	// Gestion des plugins de la Map
@@ -155,6 +155,8 @@ public:
 	std::map<int, CMap*>& getSubMaps();
 	std::vector<CLight*>& getLights();
 	std::vector<MapObject*>& getMapObjects();
+
+	const std::string& getBinariesDirectory();
 
 	// Points d'entrée des personnages joueurs
 	std::vector<EntryPoint*>& getEntryPointsList();

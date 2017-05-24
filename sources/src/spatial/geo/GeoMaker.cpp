@@ -876,31 +876,31 @@ void CGeoMaker::SaveMateriau(TiXmlElement* element, unsigned int refMat)
 	element->LinkEndChild(elMat);
 }
 
-MapObject* CGeoMaker::Lit(TiXmlElement* el, CMap* pMap, MapLogger* mapLogger) {
+MapObject* CGeoMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	const char* type = el->Attribute(Xml::TYPE);
 	MapObject* geo = 0;
 
 	if(!strcmp(Xml::SIMPLE, type)) {
-		CSimpleGeo* simpleGeo = new CSimpleGeo(pMap);
-		simpleGeo->Lit(el, mapLogger);
+		CSimpleGeo* simpleGeo = new CSimpleGeo(&map);
+		simpleGeo->Lit(el, map, mapLogger);
 		geo = simpleGeo;
 	}
 	else if(!strcmp(Xml::SIMPLEMATERIAL, type)) {
-		CSimpleMaterialGeo* geoSM = new CSimpleMaterialGeo(pMap);
+		CSimpleMaterialGeo* geoSM = new CSimpleMaterialGeo(&map);
 		geoSM->setOffsetMateriau(0);
-		geoSM->Lit(el, mapLogger);
+		geoSM->Lit(el, map, mapLogger);
 		geo = geoSM;
 	}
 	else if(!strcmp(Xml::TEXTURE, type)) {
-		CTextureMaterialGeo* geoTM = new CTextureMaterialGeo(pMap);
+		CTextureMaterialGeo* geoTM = new CTextureMaterialGeo(&map);
 		geoTM->setOffsetMateriau(0);
-		geoTM->Lit(el, mapLogger);
+		geoTM->Lit(el, map, mapLogger);
 		geo = geoTM;
 	}
 	else if(!strcmp(Xml::MULTI, type)) {
-		CMultiMaterialGeo* geoMM = new CMultiMaterialGeo(pMap);
+		CMultiMaterialGeo* geoMM = new CMultiMaterialGeo(&map);
 		geoMM->setOffsetMateriau(0);
-		geoMM->Lit(el, mapLogger);
+		geoMM->Lit(el, map, mapLogger);
 		geo = geoMM;
 	}
 	else {

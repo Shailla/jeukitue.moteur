@@ -56,7 +56,7 @@ public:
 	 * Serialisation de l'objet
 	 * *******************************************/
 
-	virtual bool Lit(TiXmlElement* el, MapLogger* mapLogger) override = 0;	// Lit l'objet depuis un fichier Map
+	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override = 0;	// Lit l'objet depuis un fichier Map
 	virtual bool Save(TiXmlElement* element) override = 0;					// Sauve l'objet dans un fichier Map
 
 

@@ -83,7 +83,7 @@ public:
 	//bool SaveNameType(ofstream &fichier);				// Sauve le nom du type d'objet géométrique
 	//bool SaveFichierMap(ofstream &fichier);			// Sauve l'objet géo dans un fichier Map
 	bool Save(TiXmlElement* element) override;
-	bool Lit(TiXmlElement* el, MapLogger* mapLogger) override;
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;
 
 	void setOffsetMateriau(int offset);			// Décale la référence matériau de l'offset
 	bool checkContact( const float pos[3], float dist ) override;

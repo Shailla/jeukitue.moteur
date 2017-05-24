@@ -35,7 +35,7 @@ CV3D EntryPoint::getEntryPosition() {
 	return _entryPosition;
 }
 
-bool EntryPoint::Lit(TiXmlElement* element, MapLogger* mapLogger) {
+bool EntryPoint::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) {
 	// Position
 	float pos[3];
 	Xml::LitPosition3fv(element, Xml::POSITION, pos);

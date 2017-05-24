@@ -99,27 +99,27 @@ void GetMapElementWS::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 
 	JsonList& elements = mapGraphe.addList(ELEMENTS);
 
-	for(EntryPoint* ePt : map->getEntryPointsList()) {
-		JsonObject& obj = elements.addObject();
-		obj.addString(TYPE, ePt->getType());
-		obj.addNumber(ID, ePt->getId());
-		obj.addString(NAME, ePt->getName());
-		obj.addString(HIGHLIGHTED._name, "false");		// TODO permettre de mettre en surbrillance
-		obj.addString(HIDDEN._name, "false");			// TODO permettre de masquer
-
-		obj.addList(ELEMENTS);
-	}
-
-	for(CLight* light : map->getLights()) {
-		JsonObject& obj = elements.addObject();
-		obj.addString(TYPE, light->getType());
-		obj.addNumber(ID, light->getId());
-		obj.addString(NAME, "lumiere");
-		obj.addString(HIGHLIGHTED._name, "false");		// TODO permettre de mettre en surbrillance
-		obj.addString(HIDDEN._name, "false");			// TODO permettre de masquer
-
-		obj.addList(ELEMENTS);
-	}
+//	for(EntryPoint* ePt : map->getEntryPointsList()) {
+//		JsonObject& obj = elements.addObject();
+//		obj.addString(TYPE, ePt->getType());
+//		obj.addNumber(ID, ePt->getId());
+//		obj.addString(NAME, ePt->getName());
+//		obj.addString(HIGHLIGHTED._name, "false");		// TODO permettre de mettre en surbrillance
+//		obj.addString(HIDDEN._name, "false");			// TODO permettre de masquer
+//
+//		obj.addList(ELEMENTS);
+//	}
+//
+//	for(CLight* light : map->getLights()) {
+//		JsonObject& obj = elements.addObject();
+//		obj.addString(TYPE, light->getType());
+//		obj.addNumber(ID, light->getId());
+//		obj.addString(NAME, "lumiere");
+//		obj.addString(HIGHLIGHTED._name, "false");		// TODO permettre de mettre en surbrillance
+//		obj.addString(HIDDEN._name, "false");			// TODO permettre de masquer
+//
+//		obj.addList(ELEMENTS);
+//	}
 
 	for(MapObject* mObj : map->getMapObjects()) {
 		JsonObject& obj = elements.addObject();

@@ -44,9 +44,9 @@ class CFichierASE : private std::ifstream
 	float* LitVertex(unsigned int num);
 	float* LitTexVertex(unsigned int num);
 	float* LitNormaux(unsigned int num, const float *row);
-	CMaterial* materiallist();
-	CMaterialMulti* materialMulti( unsigned int uRef );
-	CMaterial* materialStandard(unsigned int uRef);
+	CMaterial* materiallist(CMap* map);
+	CMaterialMulti* materialMulti(CMap* map, unsigned int uRef );
+	CMaterial* materialStandard(CMap* map, unsigned int uRef);
 	MapObject* litGeomobject(CMap *pMap, unsigned int nbr);
 	void LitFichier(const std::string &nomFichier, CMap *pMap);
 	void LitGroupe(const std::string &nomFichier, CMap *pMap, unsigned int& nbr_GeoObject);

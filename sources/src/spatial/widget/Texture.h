@@ -69,11 +69,7 @@ public:
 
 	const std::string& getFilename() const;
 
-	/**
-	 * Affiche la texture dans un rectangle aux coordonnées indiquées.
-	 *
-	 *
-	 */
+	/** Affiche la texture dans un rectangle aux coordonnées indiquées. */
 	void afficheQuad(const CV3D& a, const CV3D& b, const CV3D& c, const CV3D& d);
 };
 

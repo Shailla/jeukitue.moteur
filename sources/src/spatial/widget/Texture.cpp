@@ -26,7 +26,7 @@ Texture::Texture(const string& nomFichier, bool alpha, int hauteur, int largeur,
 	_pixels = pixels;
 	_hauteur = hauteur;
 	_largeur = largeur;
-	_glTexName = 0;
+	_glTexName = -1;
 }
 
 Texture::~Texture() {
@@ -51,7 +51,9 @@ const string& Texture::getFilename() const {
 }
 
 void Texture::destructGraphicObject(void) {
-	// TODO Détruire la texture OpenGL
+	if(_glTexName >= 0) {
+		glDeleteTextures(1, &_glTexName);
+	}
 }
 
 unsigned int Texture::getGlTexName(void) {

@@ -17,6 +17,7 @@
 
 #include "reseau/web/HttpParameters.h"
 #include "reseau/web/HttpException.h"
+#include "reseau/tcp/TcpServer.h"
 
 namespace jkt
 {
@@ -67,9 +68,10 @@ private:
 
 	static const char* HTTP_INTERNAL_ERROR_CONTENT;
 
+	TcpServer _tcpServer;
 	HttpParameters _basicParameters;
+	std::map<TcpSession*, HttpSession> _sessions;
 
-	Uint16 _port;
 	std::map<std::string, WebResource*> _resources;
 	std::map<std::string, WebService*> _services;
 
@@ -78,9 +80,9 @@ private:
 	void buildResponse(HttpResponse& tcpResponse, const std::string& status, const std::string& contentType, const std::string& content);
 	void buildResponse(HttpResponse& tcpResponse, const std::string& status, const std::string& contentType, long contentSize, void* content);
 	void buildResponse(HttpResponse& tcpResponse, const std::string& status, WebResource& webResource);
-
-
 	void* buildResponse();
+
+	HttpSession& getSession(const TcpSession* tcpSession);
 
 public:
 	static TCPsocket _serveurSocket;

@@ -5,21 +5,21 @@
  *      Author: Erwin
  */
 
-#ifndef SRC_RESEAU_TCP_TCPCLIENT_H_
-#define SRC_RESEAU_TCP_TCPCLIENT_H_
+#ifndef SRC_RESEAU_TCP_TCPSESSION_H_
+#define SRC_RESEAU_TCP_TCPSESSION_H_
 
 #include "SDL.h"
 #include "SDL_net.h"
 
 namespace jkt {
 
-class TcpClient {
+class TcpSession {
 	TCPsocket _socket;
 	Uint32 _lastTime;
 
 public:
-	TcpClient(TCPsocket socket, Uint32 lastTime);
-	virtual ~TcpClient();
+	TcpSession(TCPsocket socket, Uint32 lastTime);
+	virtual ~TcpSession();
 
 	void setLastTime(Uint32 lastTime);
 	Uint32 getLastTime() const;
@@ -28,4 +28,4 @@ public:
 
 } /* namespace jkt */
 
-#endif /* SRC_RESEAU_TCP_TCPCLIENT_H_ */
+#endif /* SRC_RESEAU_TCP_TCPSESSION_H_ */

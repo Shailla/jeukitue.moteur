@@ -13,7 +13,8 @@
 #include "SDL.h"
 #include "SDL_net.h"
 
-#include "reseau/tcp/TcpClient.h"
+#include "reseau/tcp/TcpPacket.h"
+#include "reseau/tcp/TcpSession.h"
 
 namespace jkt {
 
@@ -25,8 +26,10 @@ class TcpServer {
 	/** Port du serveur TCP */
 	int _serverPort;
 	TCPsocket _serverSocket;
-	std::map<TCPsocket, TcpClient> _clientSockets;
+	std::map<TCPsocket, TcpSession> _clientSockets;
 	SDLNet_SocketSet _socketSet;
+
+	TcpPacket* receive(Uint32 time, TcpSession& session);
 
 public:
 	TcpServer(int port);
@@ -35,7 +38,8 @@ public:
 	void start();
 	void stop();
 
-	void receive(Uint32 time, std::map<TCPsocket, TcpClient>::iterator itClient);
+	TcpPacket* receive();
+	void send(TcpSession* session, void* data, int size);
 };
 
 } /* namespace jkt */

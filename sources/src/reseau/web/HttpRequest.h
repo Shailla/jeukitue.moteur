@@ -14,13 +14,12 @@
 #include "reseau/web/json/MalformedJsonException.h"
 #include "reseau/web/HttpException.h"
 #include "reseau/web/HttpServer.h"
+#include "reseau/tcp/TcpPacket.h"
 
 namespace jkt {
 
 class HttpRequest {
 	static const char* SPLIT_HTTP_HEADER_BODY;
-
-	std::string _request;
 
 	HttpServer::HTTP_METHODS _method;
 	std::string _url;
@@ -32,7 +31,7 @@ class HttpRequest {
 	std::string _body;
 
 public:
-	HttpRequest(const char* request, int requestSize) throw(HttpException);
+	HttpRequest(TcpPacket* tcpPacket) throw(HttpException);
 	virtual ~HttpRequest();
 
 	HttpServer::HTTP_METHODS getMethod() const;

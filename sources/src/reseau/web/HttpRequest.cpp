@@ -16,22 +16,22 @@ namespace jkt {
 
 const char* HttpRequest::SPLIT_HTTP_HEADER_BODY = 	"\r\n\r\n";
 
-HttpRequest::HttpRequest(const char* request, int requestSize) throw(HttpException) : _request(request, requestSize) {
+HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
 
 	/* ************************************************************** */
 	/* Sépare les paramètres HTTP de son body                         */
 	/* ************************************************************** */
 
-	LOGDEBUG(("\n\t* TCP REQUEST (%d bytes) :\n\t********************************'%s'", requestSize, _request.c_str()));
+	LOGDEBUG(("\n\t* TCP REQUEST (%d bytes) :\n\t********************************'%s'", packet->getData().c_str()));
 
-	std::size_t splitHttpHeaderBody = _request.find(SPLIT_HTTP_HEADER_BODY);
+	std::size_t splitHttpHeaderBody = packet->getData().find(SPLIT_HTTP_HEADER_BODY);
 
 	if(splitHttpHeaderBody == string::npos) {
 		throw HttpException(HttpException::MALFORMED_HTTP_REQUEST, "Cannot split http header and body");
 	}
 
-	_header = _request.substr(0, splitHttpHeaderBody);
-	_body = _request.substr(splitHttpHeaderBody + 4);
+	_header = packet->getData().substr(0, splitHttpHeaderBody);
+	_body = packet->getData().substr(splitHttpHeaderBody + 4);
 
 
 	/* ************************************************************** */
@@ -84,7 +84,7 @@ const string& HttpRequest::getEndpoint() const {
 }
 
 const string& HttpRequest::toString() const {
-	return _request;
+//	return _request;
 }
 
 string HttpRequest::getVerb() const {

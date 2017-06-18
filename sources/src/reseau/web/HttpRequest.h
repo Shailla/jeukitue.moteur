@@ -38,6 +38,7 @@ public:
 	HttpServer::HTTP_METHODS getMethod() const;
 	const std::string& getEndpoint() const;
 
+	std::string getVerb() const;
 	std::string getBodyText() const;
 	JsonObject* getBodyJson() const throw(MalformedJsonException);
 

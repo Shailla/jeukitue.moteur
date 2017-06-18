@@ -70,17 +70,17 @@ private:
 
 	void updateElement(JsonObject* jsonObject, MapObject* object) throw(BadFormatJsonException);
 
-	JsonObject& addCharisticBoolean(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value);
-	JsonObject& addCharisticLong(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value);
-	JsonObject& addCharisticString(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value);
+	JsonObject& addCaracBoolean(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value);
+	JsonObject& addCaracLong(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value);
+	JsonObject& addCaracString(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value);
 
-	JsonObject& addCharisticBoolean(JsonObject& jsonCharistics, const std::string& name, const std::string& group, bool updatable, const bool value);
-	JsonObject& addCharisticLong(JsonObject& jsonCharistics, const std::string& name, const std::string& group, bool updatable, long value);
-	JsonObject& addCharisticString(JsonObject& jsonCharistics, const std::string& name, const std::string& group, bool updatable, const std::string& value);
+	JsonObject& addCaracBoolean(JsonObject& jsonCharistics, const std::string& name, const std::string& group, bool updatable, const bool value);
+	JsonObject& addCaracLong(JsonObject& jsonCharistics, const std::string& name, const std::string& group, bool updatable, long value);
+	JsonObject& addCaracString(JsonObject& jsonCharistics, const std::string& name, const std::string& group, bool updatable, const std::string& value);
 
-	bool updateCharisticBoolean(JsonObject& jsonCharistics, const Caracteristic& carac, bool& newValue);
-	bool updateCharisticLong(JsonObject& jsonCharistics, const Caracteristic& carac, long& newValue);
-	bool updateCharisticString(JsonObject& jsonCharistics, const Caracteristic& carac, std::string& newValue);
+	bool updateCaracBoolean(JsonObject& jsonCharistics, const Caracteristic& carac, bool& newValue);
+	bool updateCaracLong(JsonObject& jsonCharistics, const Caracteristic& carac, long& newValue);
+	bool updateCaracString(JsonObject& jsonCharistics, const Caracteristic& carac, std::string& newValue);
 
 	void jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe);
 

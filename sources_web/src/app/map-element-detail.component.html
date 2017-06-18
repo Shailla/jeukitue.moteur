@@ -1,0 +1,28 @@
+<div *ngIf="mapElement" class="container">
+	<form (ngSubmit)="onSubmit()">
+		<div>
+			<label>ID : </label>
+			{{ mapElement.id }}
+		</div>
+		<div>
+			<label>Name :</label>
+			<input type="text" [(ngModel)]="mapElement.name" name="name" />
+		</div>
+		<div>
+			<label>Type :</label>
+			{{ mapElement.type }}
+		</div>
+		<div>
+			<label>Hide :</label>
+			<input type="checkbox" [(ngModel)]="mapElement.caracs['hidden'].value" name="hidden" />
+		</div>
+		<div>
+			<label>Highlighted :</label>
+			<input type="checkbox" [(ngModel)]="mapElement.caracs['highlighted'].value" name="highlighted" />
+		</div>
+
+		<app-map-element-carac *ngFor="let caracName of mapElement.caracs.keys" [carac]="mapElement.caracs[caracName]"></app-map-element-carac>
+		
+		<button type="submit" class="btn btn-default">Submit</button>
+	</form>
+</div>

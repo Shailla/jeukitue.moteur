@@ -20,6 +20,7 @@ namespace jkt {
 class WebServiceResult {
 public:
 	WebServiceResult();
+	WebServiceResult(const char* status);
 	WebServiceResult(JsonObject& root, const char* status);
 	WebServiceResult(JsonObject& root, const std::vector<std::string>& errors, const char* status);
 

@@ -77,8 +77,7 @@ enum TraceType {
 #define EXT_FICHIER_TRACE		".log"
 #define FICHIER_SOURCE_BASE		"\\src\\"
 
-class Donnees
-{
+class Donnees {
 	int _line;
 	const char *_sourceFile;
 	void p(TraceLevel level, const char *txt, ... );
@@ -103,8 +102,7 @@ public:
 
 std::ofstream mFichier();
 
-class Trace 
-{
+class Trace {
 	static Trace *_Instance;
 	std::ofstream _Fichier;
 	SDL_mutex *_Mutex;
@@ -126,6 +124,7 @@ class Trace
 
 public:
 	static Trace& instance();
+	bool isLogLevelEnabled(TraceLevel level, const char *nomFichier);
 	void print(TraceLevel level, TraceType type, int line, const char *nomFichier, const char *txt , va_list &vl );
 };
 

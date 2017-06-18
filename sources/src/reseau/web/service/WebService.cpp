@@ -15,15 +15,26 @@ using namespace std;
 
 namespace jkt {
 
+WebServiceResult::WebServiceResult(const char* status) {
+	_contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
+	_status = status;
+
+	string body = "";
+
+	_contentSize = body.size();
+	_content = malloc(body.size());
+	body.copy((char*)_content, body.size());
+}
+
 WebServiceResult::WebServiceResult(JsonObject& root, const char* status) {
 	_contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
 	_status = status;
 
-	string json = root.toString();
+	string body = root.toString();
 
-	_contentSize = json.size();
-	_content = malloc(json.size());
-	json.copy((char*)_content, json.size());
+	_contentSize = body.size();
+	_content = malloc(body.size());
+	body.copy((char*)_content, body.size());
 }
 
 WebServiceResult::WebServiceResult(JsonObject& root, const vector<string>& errors, const char* status) {
@@ -36,11 +47,11 @@ WebServiceResult::WebServiceResult(JsonObject& root, const vector<string>& error
 		errorList.addString(error);
 	}
 
-	string json = root.toString();
+	string body = root.toString();
 
-	_contentSize = json.size();
-	_content = malloc(json.size());
-	json.copy((char*)_content, json.size());
+	_contentSize = body.size();
+	_content = malloc(body.size());
+	body.copy((char*)_content, body.size());
 }
 
 WebService::WebService() {

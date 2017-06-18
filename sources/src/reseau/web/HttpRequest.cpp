@@ -22,7 +22,7 @@ HttpRequest::HttpRequest(const char* request, int requestSize) throw(HttpExcepti
 	/* Sépare les paramètres HTTP de son body                         */
 	/* ************************************************************** */
 
-	LOGDEBUG(("\nCONSTRUCTION REQUETE:\n'%s'", _request.c_str()));
+	LOGDEBUG(("\n\t* TCP REQUEST (%d bytes) :\n\t********************************'%s'", requestSize, _request.c_str()));
 
 	std::size_t splitHttpHeaderBody = _request.find(SPLIT_HTTP_HEADER_BODY);
 
@@ -59,10 +59,17 @@ HttpRequest::HttpRequest(const char* request, int requestSize) throw(HttpExcepti
 	// Protocole
 	_protocol = jkt::StringUtils::findAndEraseFirstWord(_header);
 
-	LOGDEBUG((" - Méthode :  '%s (%d)'", methodStr.c_str(), (int)_method));
-	LOGDEBUG((" - Endpoint : '%s'", _endpoint.c_str()));
-	LOGDEBUG((" - Params:    '%s'", _parameters.c_str()));
-	LOGDEBUG((" - Protocol : '%s'", _protocol.c_str()));
+	if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_DEBUG, __FILE__)) {
+		stringstream log;
+
+		log << "\n\t- Méthode :  '" << methodStr 	<< "' (" << _method << ")";
+		log << "\n\t- Endpoint : '" << _endpoint 	<< "'";
+		log << "\n\t- Params:    '" << _parameters 	<< "'";
+		log << "\n\t- Protocol : '" << _protocol 	<< "'";
+		log << "\n\t- Protocol : '" << _protocol 	<< "'";
+
+		LOGDEBUG(("http paquet received synthesis :%s", log.str().c_str()));
+	}
 }
 
 HttpRequest::~HttpRequest() {
@@ -78,6 +85,42 @@ const string& HttpRequest::getEndpoint() const {
 
 const string& HttpRequest::toString() const {
 	return _request;
+}
+
+string HttpRequest::getVerb() const {
+	stringstream verb;
+
+	switch(_method) {
+	case HttpServer::HTTP_UNKNOWN:
+		verb << "Méthode HTTP inconnue";
+		break;
+	case HttpServer::HTTP_GET:
+		verb << "GET";
+		break;
+	case HttpServer::HTTP_POST:
+		verb << "POST";
+		break;
+	case HttpServer::HTTP_PUT:
+		verb << "PUT";
+		break;
+	case HttpServer::HTTP_PATCH:
+		verb << "PACTH";
+		break;
+	case HttpServer::HTTP_DELETE:
+		verb << "DELETE";
+		break;
+	case HttpServer::HTTP_OPTIONS:
+		verb << "OPTIONS";
+		break;
+	default:
+		verb << "Méthode HTTP inconnue";
+		LOGERROR(("On ne devrait jamais être ici"));
+		break;
+	}
+
+	verb << " " << _endpoint;
+
+	return verb.str();
 }
 
 string HttpRequest::getBodyText() const {

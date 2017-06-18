@@ -267,6 +267,49 @@ Trace &Trace::instance() {
 	return *_Instance;
 }
 
+bool Trace::isLogLevelEnabled(TraceLevel level, const char *nomFichier) {
+	bool youHaveToLog = (level >= _loggerLevel);	// Si on ne veut pas cette trace-là alors sors
+	string nomCourtFichier;
+
+	// Vérifie si le fichier n'est pas exclu des log
+	if(youHaveToLog) {
+		nomCourtFichier = nomFichier;
+		size_t pos = nomCourtFichier.find(FICHIER_SOURCE_BASE);
+		nomCourtFichier.replace(0, pos + sizeof(FICHIER_SOURCE_BASE)-1, "");
+
+		vector<string>* excludeFiles;
+
+		switch(level) {
+		case TraceLevel::TRACE_LEVEL_DEBUG:
+			excludeFiles = &_excludeDebugFiles;
+			break;
+		case TraceLevel::TRACE_LEVEL_INFO:
+			excludeFiles = &_excludeInfoFiles;
+			break;
+		case TraceLevel::TRACE_LEVEL_WARN:
+			excludeFiles = &_excludeWarnFiles;
+			break;
+		case TraceLevel::TRACE_LEVEL_ERROR:
+			excludeFiles = &_excludeErrorFiles;
+			break;
+		default:
+			excludeFiles = 0;
+			break;
+		}
+
+		if(excludeFiles) {
+			for(const string& var : *excludeFiles) {
+				if(var == nomCourtFichier) {
+					youHaveToLog = false;
+					break;
+				}
+			}
+		}
+	}
+
+	return youHaveToLog;
+}
+
 void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFichier, const char *txt, va_list &vl) {
 	SDL_LockMutex( _Mutex );
 

@@ -10,6 +10,7 @@
 
 #include "main/Cfg.h"
 #include "exception/JktException.h"
+#include "test/utils/TraceTest.h"
 #include "test/utils/TableauTest.h"
 #include "test/utils/UtilsTest.h"
 #include "test/utils/RessourcesLoaderTest.h"
@@ -26,6 +27,7 @@ extern CCfg Config;		// Contient la configuration du jeu
 namespace jkt {
 
 TestSuite::TestSuite() {
+	_tests.push_back(new TraceTest());
 	_tests.push_back(new TableauTest());
 	_tests.push_back(new UtilsTest());
 	_tests.push_back(new RessourcesLoaderTest());

@@ -13,33 +13,21 @@
 #include <map>
 
 #include "SDL.h"
+#include "SDL_net.h"
 
+#include "reseau/web/HttpParameters.h"
 #include "reseau/web/HttpException.h"
 
 namespace jkt
 {
 
 class WebService;
-
-class HttpTcpResponse {
-	long _size;
-	char* _content;
-public:
-	HttpTcpResponse();
-	~HttpTcpResponse();
-
-	void update(char* content, long size);
-	void reset();
-
-	bool isEmpty() const;
-	long getSize() const;
-	char* getContent() const;
-};
+class HttpResponse;
 
 class WebResource {
 	std::string _file;
 	std::string _contentType;
-	void* _content;
+	char* _content;
 	long _contentSize;
 public:
 	WebResource();
@@ -50,7 +38,7 @@ public:
 	std::string getContentType();
 
 	/** Get of the web resource, content is cached at first read */
-	void* getContent();
+	char* getContent();
 
 	/** Get size of the web resource, content is cached at first read */
 	long getContentSize();
@@ -79,22 +67,27 @@ private:
 
 	static const char* HTTP_INTERNAL_ERROR_CONTENT;
 
+	HttpParameters _basicParameters;
+
 	Uint16 _port;
 	std::map<std::string, WebResource*> _resources;
 	std::map<std::string, WebService*> _services;
 
 	void collecteDir(const std::string& dirname, const std::string& endpoint, const std::string& contentType);
 
-	void buildResponse(HttpTcpResponse& tcpResponse, const std::string& status, const std::string& contentType, const std::string& content);
-	void buildResponse(HttpTcpResponse& tcpResponse, const std::string& status, const std::string& contentType, long contentSize, void* content);
-	void buildResponse(HttpTcpResponse& tcpResponse, const std::string& status, WebResource& webResource);
+	void buildResponse(HttpResponse& tcpResponse, const std::string& status, const std::string& contentType, const std::string& content);
+	void buildResponse(HttpResponse& tcpResponse, const std::string& status, const std::string& contentType, long contentSize, void* content);
+	void buildResponse(HttpResponse& tcpResponse, const std::string& status, WebResource& webResource);
 
 
 	void* buildResponse();
 
 public:
+	static TCPsocket _serveurSocket;
+
 	static const char* HTTP_RETURN;
 	static const char* HTTP_HEAD;
+	static const char* HTTP_RESPONSE_100;
 	static const char* HTTP_RESPONSE_200;
 	static const char* HTTP_RESPONSE_201;
 	static const char* HTTP_RESPONSE_204;
@@ -103,6 +96,16 @@ public:
 	static const char* HTTP_RESPONSE_500;
 	static const char* HTTP_RESPONSE_501;
 
+	static const char* HTTP_PARAM_SEPARATOR;
+
+	static const char* HTTP_ACCESS_CONTROL_ALLOW_HEADERS;
+	static const char* HTTP_ACCESS_CONTROL_ALLOW_METHODS;
+	static const char* HTTP_ACCESS_CONTROL_ALLOW_ORIGIN;
+	static const char* HTTP_CACHE_CONTROL;
+	static const char* HTTP_PRAGMA;
+	static const char* HTTP_EXPIRES;
+
+	static const char* HTTP_CONTENT_TYPE;
 	static const char* HTTP_CONTENT_TYPE_HTML;
 	static const char* HTTP_CONTENT_TYPE_CSS;
 	static const char* HTTP_CONTENT_TYPE_IMAGE;

@@ -1,0 +1,37 @@
+
+<!-- BOOL -->
+
+<div *ngIf="carac.caracType == 'bool' && !carac.caracUpdatable">
+	<label>{{ carac.caracName }} :</label>aaa
+	<input type="checkbox" [(ngModel)]="carac.caracValue" disabled />
+</div>
+
+<div *ngIf="carac.caracType == 'bool' && !carac.caracUpdatable">
+	<label>{{ carac.caracName }} :</label>bbb
+	<input type="checkbox" [(ngModel)]="carac.caracValue" />
+</div>
+
+
+<!-- STRING -->
+
+<div *ngIf="carac.caracType == 'string' && !carac.caracUpdatable">
+	<label>{{ carac.caracName }} :</label>
+	<input type="text" [(ngModel)]="carac.caracValue" disabled />
+</div>
+
+<div *ngIf="carac.caracType == 'string' && !carac.caracUpdatable">
+	<label>{{ carac.caracName }} :</label>
+	<input type="text" [(ngModel)]="carac.caracValue" />
+</div>
+
+<!-- LONG -->
+
+<div *ngIf="carac.caracType == 'long' && !carac.caracUpdatable">
+	<label>{{ carac.caracName }} :</label>
+	<input type="number" [(ngModel)]="carac.caracValue" disabled />
+</div>
+
+<div *ngIf="carac.caracType == 'long' && !carac.caracUpdatable">
+	<label>{{ carac.caracName }} :</label>
+	<input type="number" [(ngModel)]="carac.caracValue" />
+</div>

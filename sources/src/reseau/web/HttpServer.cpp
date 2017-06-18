@@ -17,6 +17,7 @@
 #include "util/StringUtils.h"
 #include "util/Trace.h"
 #include "util/FindFolder.h"
+#include "reseau/web/HttpResponse.h"
 #include "reseau/web/service/WebService.h"
 #include "reseau/web/service/player/GetPlayersWS.h"
 #include "reseau/web/service/map/GetMapElementWS.h"
@@ -28,6 +29,8 @@ using namespace std;
 namespace jkt
 {
 
+TCPsocket HttpServer::_serveurSocket; // TODO A Virer
+
 const char* HttpServer::WEB_CSS_DIR =				"./web/css";
 const char* HttpServer::WEB_HTML_DIR =				"./web/html";
 const char* HttpServer::WEB_IMAGE_DIR =				"./web/image";
@@ -36,6 +39,7 @@ const char* HttpServer::WEB_JSON_DIR =				"./web/json";
 
 const char* HttpServer::HTTP_RETURN =				"\r\n";
 const char* HttpServer::HTTP_HEAD = 				"HTTP/1.1";
+const char* HttpServer::HTTP_RESPONSE_100 = 		"100 Continue";
 const char* HttpServer::HTTP_RESPONSE_200 = 		"200 OK";
 const char* HttpServer::HTTP_RESPONSE_201 = 		"201 Created";
 const char* HttpServer::HTTP_RESPONSE_204 = 		"204 No Content";
@@ -44,12 +48,23 @@ const char* HttpServer::HTTP_RESPONSE_404 = 		"404 Not Found";
 const char* HttpServer::HTTP_RESPONSE_500 = 		"500 Internal Error";
 const char* HttpServer::HTTP_RESPONSE_501 = 		"501 Not Implemented";
 
-const char* HttpServer::HTTP_CONTENT_TYPE_HTML = 	"Content-Type: text/html; charset=utf-8";
-const char* HttpServer::HTTP_CONTENT_TYPE_CSS = 	"Content-Type: text/css; charset=utf-8";
-const char* HttpServer::HTTP_CONTENT_TYPE_IMAGE = 	"Content-Type: image";
-const char* HttpServer::HTTP_CONTENT_TYPE_JS = 		"Content-Type: application/javascript;";
-const char* HttpServer::HTTP_CONTENT_TYPE_JSON = 	"Content-Type: application/json; charset=utf-8";
-const char* HttpServer::HTTP_CONTENT_LENGTH = 		"Content-Length: ";
+const char* HttpServer::HTTP_PARAM_SEPARATOR = 		": ";
+
+const char* HttpServer::HTTP_ACCESS_CONTROL_ALLOW_HEADERS = 	"Access-Control-Allow-Headers";
+const char* HttpServer::HTTP_ACCESS_CONTROL_ALLOW_METHODS = 	"Access-Control-Allow-Methods";
+const char* HttpServer::HTTP_ACCESS_CONTROL_ALLOW_ORIGIN = 		"Access-Control-Allow-Origin";
+const char* HttpServer::HTTP_CACHE_CONTROL = 					"Cache-Control";
+const char* HttpServer::HTTP_PRAGMA = 							"Pragma";
+const char* HttpServer::HTTP_EXPIRES = 							"Expires";
+
+const char* HttpServer::HTTP_CONTENT_LENGTH = 		"Content-Length";
+const char* HttpServer::HTTP_CONTENT_TYPE = 		"Content-Type";
+
+const char* HttpServer::HTTP_CONTENT_TYPE_HTML = 	"text/html; charset=utf-8";
+const char* HttpServer::HTTP_CONTENT_TYPE_CSS = 	"text/css; charset=utf-8";
+const char* HttpServer::HTTP_CONTENT_TYPE_IMAGE = 	"image";
+const char* HttpServer::HTTP_CONTENT_TYPE_JS = 		"application/javascript";
+const char* HttpServer::HTTP_CONTENT_TYPE_JSON = 	"application/json; charset=utf-8";
 
 const char* HttpServer::HTTP_METHOD_OPTIONS =		"OPTIONS";
 const char* HttpServer::HTTP_METHOD_GET = 			"GET";
@@ -57,48 +72,6 @@ const char* HttpServer::HTTP_METHOD_POST = 			"POST";
 const char* HttpServer::HTTP_METHOD_PUT = 			"PUT";
 const char* HttpServer::HTTP_METHOD_PATCH = 		"PATCH";
 const char* HttpServer::HTTP_METHOD_DELETE =		"DELETE";
-
-
-HttpTcpResponse::HttpTcpResponse() {
-	_size = 0;
-	_content = 0;
-}
-
-void HttpTcpResponse::update(char* content, long size) {
-	if(_content) {
-		free(_content);
-	}
-
-	_size = size;
-	_content = content;
-}
-
-void HttpTcpResponse::reset() {
-	if(_content) {
-		free(_content);
-	}
-
-	_size = 0;
-	_content = 0;
-}
-
-bool HttpTcpResponse::isEmpty() const {
-	return !_content;
-}
-
-long HttpTcpResponse::getSize() const {
-	return _size;
-}
-
-char* HttpTcpResponse::getContent() const {
-	return _content;
-}
-
-HttpTcpResponse::~HttpTcpResponse() {
-	if(_content) {
-		free(_content);
-	}
-}
 
 WebResource::WebResource() {
 	_content = 0;
@@ -122,7 +95,7 @@ string WebResource::getContentType() {
 	return _contentType;
 }
 
-void* WebResource::getContent() {
+char* WebResource::getContent() {
 	if(!_content) {
 		load();
 	}
@@ -155,7 +128,7 @@ void WebResource::load() {
 		rewind(file);
 
 		// Allocate memory to contain the whole file:
-		_content = malloc(_contentSize);
+		_content = (char*)malloc(_contentSize);
 
 		if(_contentSize == 0) {
 			LOGERROR(("Echec d'allocation mémoire pour le fichier : '%s'", _file.c_str()));
@@ -186,6 +159,15 @@ const char* HttpServer::HTTP_INTERNAL_ERROR_CONTENT = "<html><center><h1>JKT Pow
 
 HttpServer::HttpServer(int port) {
 	_port = port;
+
+
+	/* ************************************ */
+	/* Réponse HTTP de base                 */
+	/* ************************************ */
+
+	_basicParameters.addParameter(HTTP_ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type");
+	_basicParameters.addParameter(HTTP_ACCESS_CONTROL_ALLOW_METHODS, "GET, HEAD, POST, PUT, OPTIONS, TRACE");
+	_basicParameters.addParameter(HTTP_ACCESS_CONTROL_ALLOW_ORIGIN, "*");
 
 
 	/* ************************************ */
@@ -284,19 +266,20 @@ void HttpServer::start() {
 		LOGERROR(("Resolve address error : %s", SDLNet_GetError()));
 	}
 
-	TCPsocket serveurSocket = SDLNet_TCP_Open(&adresse);
+	_serveurSocket = SDLNet_TCP_Open(&adresse);
 
-	if(!serveurSocket) {
+	if(!_serveurSocket) {
 		LOGERROR(("Open TCP server failed : %s", SDLNet_GetError()));
 	}
 
 	SDLNet_SocketSet serveurSocketSet = SDLNet_AllocSocketSet(1);
+
 	if( !serveurSocketSet ) {
 		LOGERROR(("Open TCP server socket set failed : %s", SDLNet_GetError()));
 	}
 
 	TCPsocket clientSocket;
-	HttpTcpResponse tcpResponse;
+	HttpResponse tcpResponse;
 	string header, methodStr, url, endpoint, params, protocol, path0;
 	vector<string> paths;
 	WebResource* resource;
@@ -318,8 +301,7 @@ void HttpServer::start() {
 
 		while(clientSocket == 0) {
 			SDLNet_CheckSockets(serveurSocketSet, -1);
-			clientSocket = SDLNet_TCP_Accept(serveurSocket);
-//			SDL_Delay(1000);
+			clientSocket = SDLNet_TCP_Accept(_serveurSocket);
 		}
 
 		int requestSize = SDLNet_TCP_Recv(clientSocket, buffer, TCP_BUFFER_SIZE); 				// Reception parametres connection du client
@@ -330,7 +312,7 @@ void HttpServer::start() {
 
 		// Requête de gestion du TCP (keepalive, ...)
 		if(requestSize == 0) {
-			tcpResponse.update((char*)malloc(0), 0);
+			tcpResponse.updateToEmptyPaquet();
 			LOGINFO(("Empty TCP paquet ==> empty TCP response"));
 		}
 		// Requête métier
@@ -338,9 +320,6 @@ void HttpServer::start() {
 			buffer[requestSize] = '\0';
 
 			try {
-				LOGINFO(("%d", requestSize));
-				LOGINFO(("\nHTTP received request (native) :\n========================================================\n'%s'\n========================================================", buffer));
-
 
 				/* ****************************************** */
 				/* Décodage de la requête HTTP                */
@@ -348,7 +327,13 @@ void HttpServer::start() {
 
 				HttpRequest request(buffer, requestSize);
 				endpoint = request.getEndpoint();
-				LOGINFO(("\nHTTP received request :\n========================================================\n'%s'\n========================================================", request.toString().c_str()));
+
+				if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_DEBUG, __FILE__)) {
+					LOGDEBUG(("\n\t* HTTP REQUEST full :\n\t********************************\n'%s'", buffer));
+				}
+				else if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_INFO, __FILE__)) {
+					LOGINFO(("\n\t* HTTP RESPONSE synthesis :\n\t********************************\n'%s'\n'%s'", request.getVerb().c_str(), request.getBodyText().c_str()));
+				}
 
 
 				/* ****************************************** */
@@ -361,13 +346,13 @@ void HttpServer::start() {
 					WebService* service = getService(request.getEndpoint(), baseEndpoint, serviceEndpoint);
 
 					if(service) {
-						found = true;
-
 						if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_OPTIONS) {
-							contentType = HTTP_CONTENT_TYPE_JSON;
-							contentSize = 0;
-							content = (void*)"";
-							status = HTTP_RESPONSE_204;
+							// Build response
+							HttpParameters params(_basicParameters);
+							params.addParameter("Access-Control-Max-Age", 86400);
+							params.addParameter("Content-Length", 0);
+							tcpResponse.update(HTTP_RESPONSE_204, params, "");
+							found = true;
 						}
 						else {
 							WebServiceResult result = service->execute(request, baseEndpoint, serviceEndpoint);
@@ -376,6 +361,10 @@ void HttpServer::start() {
 							contentSize = result._contentSize;
 							content = result._content;
 							status = result._status;
+
+							// Build response
+							buildResponse(tcpResponse, status, contentType, contentSize, content);
+							found = true;
 						}
 					}
 				}
@@ -390,6 +379,8 @@ void HttpServer::start() {
 						content = resource->getContent();
 						status = HTTP_RESPONSE_200;
 
+						// Build response
+						buildResponse(tcpResponse, status, contentType, contentSize, content);
 						found = true;
 					}
 				}
@@ -397,9 +388,6 @@ void HttpServer::start() {
 				// Nothing is found for the endpoint
 				if(!found) {
 					throw HttpException(HttpException::RESOURCE_NOT_FOUND_EXCEPTION, "No service or resource found");
-				}
-				else {
-					buildResponse(tcpResponse, status, contentType, contentSize, content);
 				}
 			}
 			catch(HttpException& exception) {
@@ -475,9 +463,14 @@ void HttpServer::start() {
 		}
 
 		// Envoi réponse
-		LOGINFO(("\nHTTP response :\n********************************************************\n'%s'\n********************************************************", tcpResponse.getContent()));
+		if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_DEBUG, __FILE__)) {
+			LOGDEBUG(("\n\tHTTP RESPONSE full :\n\t********************************\n'%s'", tcpResponse.getResponseString().c_str()));
+		}
+		else if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_INFO, __FILE__)) {
+			LOGINFO(("\n\tHTTP RESPONSE header :\n\t********************************\n'%s'", tcpResponse.getHeader().c_str()));
+		}
 
-		SDLNet_TCP_Send(clientSocket, tcpResponse.getContent(), tcpResponse.getSize()); 		// Envoi du contenu de la page au client
+		SDLNet_TCP_Send(clientSocket, tcpResponse.getResponseContent(), tcpResponse.getResponseSize()); 		// Envoi du contenu de la page au client
 		SDLNet_TCP_Close(clientSocket);
 	}
 }
@@ -504,55 +497,24 @@ WebResource* HttpServer::getResource(const string& endpoint) throw(int) {
 	}
 }
 
-void HttpServer::buildResponse(HttpTcpResponse& tcpResponse, const string& status, const string& contentType, const string& content) {
-	stringstream response;
+void HttpServer::buildResponse(HttpResponse& tcpResponse, const string& status, const string& contentType, const string& content) {
+	HttpParameters params(_basicParameters);
+	params.addParameter(HTTP_CONTENT_TYPE, contentType);
+	params.addParameter(HTTP_CONTENT_LENGTH, content.size());
 
-	// Entête de réponse
-	response << HTTP_HEAD << " " << status << HTTP_RETURN;
-	response << "Access-Control-Allow-Headers: content-type" << HTTP_RETURN;
-	response << "Access-Control-Allow-Methods: GET, HEAD, POST, PUT, OPTIONS, TRACE" << HTTP_RETURN;
-	response << "Access-Control-Allow-Origin: *" << HTTP_RETURN;	// TODO A supprimer, sert juste aux tests avec nodejs
-	response << "Cache-Control: no-cache, no-store" << HTTP_RETURN;
-	response << "Pragma: no-cache" << HTTP_RETURN;
-	response << "Expires: 0" << HTTP_RETURN;
-	response << contentType << HTTP_RETURN;
-	response << HTTP_CONTENT_LENGTH << content.size() << HTTP_RETURN;
-	response << HTTP_RETURN;
-
-	response << content;
-	string str = response.str();
-
-	tcpResponse.update( (char*)malloc(str.size()+1), str.size());
-	str.copy(tcpResponse.getContent(), str.size());
-	tcpResponse.getContent()[str.size()] = '\0';
+	tcpResponse.update(status, params, content);
 }
 
-void HttpServer::buildResponse(HttpTcpResponse& tcpResponse, const string& status, const string& contentType, long contentSize, void* content) {
-	stringstream header;
+void HttpServer::buildResponse(HttpResponse& tcpResponse, const string& status, const string& contentType, long contentSize, void* content) {
+	// Paramètres
+	HttpParameters params(_basicParameters);
+	params.addParameter(HTTP_CONTENT_TYPE, contentType);
+	params.addParameter(HTTP_CONTENT_LENGTH, contentSize);
 
-	// Entête de réponse
-	header << HTTP_HEAD << " " << status << HTTP_RETURN;
-	header << "Access-Control-Allow-Headers: content-type" << HTTP_RETURN;
-	header << "Access-Control-Allow-Methods: GET, HEAD, POST, PUT, OPTIONS, TRACE" << HTTP_RETURN;
-	header << "Access-Control-Allow-Origin: *" << HTTP_RETURN;	// TODO A supprimer, sert juste aux tests avec nodejs
-	header << "Cache-Control: no-cache, no-store" << HTTP_RETURN;
-	header << "Pragma: no-cache" << HTTP_RETURN;
-	header << "Expires: 0" << HTTP_RETURN;
-	header << contentType << HTTP_RETURN;
-	header << HTTP_CONTENT_LENGTH << contentSize << HTTP_RETURN;
-	header << HTTP_RETURN;
-
-	string headerStr = header.str();
-
-	long responseSize = headerStr.size() + contentSize;
-	tcpResponse.update((char*)malloc(responseSize+1), responseSize);
-
-	headerStr.copy(tcpResponse.getContent(), headerStr.size());
-	memcpy(tcpResponse.getContent() + (size_t)headerStr.size(), content, contentSize);
-	tcpResponse.getContent()[responseSize] = '\0';
+	tcpResponse.update(status, params, content, contentSize);
 }
 
-void HttpServer::buildResponse(HttpTcpResponse& tcpResponse, const string& status, WebResource& webResource) {
+void HttpServer::buildResponse(HttpResponse& tcpResponse, const string& status, WebResource& webResource) {
 	buildResponse(tcpResponse, status, webResource.getContentType(), webResource.getContentSize(), webResource.getContent());
 }
 

@@ -24,7 +24,7 @@ public:
 	virtual ~TcpPacket();
 
 	const std::string& getData() const;
-	TcpSession* getSession() const;
+	TcpSession* getTcpSession() const;
 };
 
 } /* namespace jkt */

@@ -82,7 +82,7 @@ private:
 	void buildResponse(HttpResponse& tcpResponse, const std::string& status, WebResource& webResource);
 	void* buildResponse();
 
-	HttpSession& getSession(const TcpSession* tcpSession);
+	HttpSession* getHttpSession(TcpSession* tcpSession);
 
 public:
 	static TCPsocket _serveurSocket;

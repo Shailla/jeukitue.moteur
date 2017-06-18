@@ -257,6 +257,17 @@ HttpServer::HTTP_METHODS HttpServer::resolveHttpMethod(const string& method) {
 	}
 }
 
+HttpSession* HttpServer::getHttpSession(TcpSession* tcpSession) {
+	map<TcpSession*, HttpSession>::iterator it = _sessions.find(tcpSession);
+
+	if(it != _sessions.end()) {
+		return it->second;
+	}
+	else {
+		return 0;
+	}
+}
+
 void HttpServer::start() {
 	HttpResponse tcpResponse;
 	string header, methodStr, url, endpoint, params, protocol, path0;
@@ -284,20 +295,35 @@ void HttpServer::start() {
 
 		try {
 
-			HttpSession* httpSession = getSession(packet->getSession());
+			/* ****************************************** */
+			/* Réconciliation de la session HTTP          */
+			/* ****************************************** */
+
+			HttpSession* httpSession = getHttpSession(packet->getTcpSession());
+
+			if(!httpSession) {
+				httpSession = new HttpSession();
+				_sessions[packet->getTcpSession()] = httpSession;
+			}
+
 
 			/* ****************************************** */
 			/* Décodage de la requête HTTP                */
 			/* ****************************************** */
 
-			HttpRequest request(packet);
-			endpoint = request.getEndpoint();
+			 HttpRequest* httpRequest = httpSession->getCurrentRequest();
+
+			if(!httpRequest) {
+				httpRequest = new HttpRequest(packet);
+			}
+
+			endpoint = httpRequest->getEndpoint();
 
 			if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_DEBUG, __FILE__)) {
 				LOGDEBUG(("\n\t* HTTP REQUEST full :\n\t********************************\n'%s'", packet->getData().c_str()));
 			}
 			else if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_INFO, __FILE__)) {
-				LOGINFO(("\n\t* HTTP RESPONSE synthesis :\n\t********************************\n'%s'\n'%s'", request.getVerb().c_str(), request.getBodyText().c_str()));
+				LOGINFO(("\n\t* HTTP RESPONSE synthesis :\n\t********************************\n'%s'\n'%s'", httpRequest->getVerb().c_str(), httpRequest->getBodyText().c_str()));
 			}
 
 
@@ -308,10 +334,10 @@ void HttpServer::start() {
 			// Search web service
 			if(!found) {
 				string baseEndpoint, serviceEndpoint;
-				WebService* service = getService(request.getEndpoint(), baseEndpoint, serviceEndpoint);
+				WebService* service = getService(httpRequest->getEndpoint(), baseEndpoint, serviceEndpoint);
 
 				if(service) {
-					if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_OPTIONS) {
+					if(httpRequest->getMethod() == HttpServer::HTTP_METHODS::HTTP_OPTIONS) {
 						// Build response
 						HttpParameters params(_basicParameters);
 						params.addParameter("Access-Control-Max-Age", 86400);
@@ -336,7 +362,7 @@ void HttpServer::start() {
 
 			// Search static web resource
 			if(!found) {
-				resource = getResource(request.getEndpoint());	// Exception thrown if no resource found
+				resource = getResource(httpRequest->getEndpoint());	// Exception thrown if no resource found
 
 				if(resource) {
 					contentType = resource->getContentType();
@@ -434,7 +460,7 @@ void HttpServer::start() {
 			LOGINFO(("\n\tHTTP RESPONSE header :\n\t********************************\n'%s'", tcpResponse.getHeader().c_str()));
 		}
 
-		_tcpServer.send(packet->getSession(), tcpResponse.getResponseContent(), tcpResponse.getResponseSize());		// Envoi du contenu de la page au client
+		_tcpServer.send(packegetTcpSessionession(), tcpResponse.getResponseContent(), tcpResponse.getResponseSize());		// Envoi du contenu de la page au client
 	}
 }
 

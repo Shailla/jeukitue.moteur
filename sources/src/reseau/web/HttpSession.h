@@ -8,9 +8,12 @@
 #ifndef SRC_RESEAU_WEB_HTTPSESSION_H_
 #define SRC_RESEAU_WEB_HTTPSESSION_H_
 
+#include "reseau/web/HttpRequest.h"
+
 namespace jkt {
 
 class HttpSession {
+	HttpRequest* _currentRequest;
 
 public:
 	HttpSession();

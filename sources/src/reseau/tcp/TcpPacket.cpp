@@ -22,7 +22,7 @@ const string& TcpPacket::getData() const {
 	return _data;
 }
 
-TcpSession* TcpPacket::getSession() const {
+TcpSession* TcpPacket::getTcpSession() const {
 	return _session;
 }
 

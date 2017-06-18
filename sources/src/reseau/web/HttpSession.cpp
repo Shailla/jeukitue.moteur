@@ -10,12 +10,10 @@
 namespace jkt {
 
 HttpSession::HttpSession() {
-	// TODO Auto-generated constructor stub
-
+	_currentRequest = 0;
 }
 
 HttpSession::~HttpSession() {
-	// TODO Auto-generated destructor stub
 }
 
 } /* namespace jkt */

@@ -83,6 +83,10 @@ const string& HttpRequest::getEndpoint() const {
 	return _endpoint;
 }
 
+HttpRequest::STATUS HttpRequest::getStatus() const {
+	return _status;
+}
+
 const string& HttpRequest::toString() const {
 //	return _request;
 }

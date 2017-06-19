@@ -314,7 +314,24 @@ void HttpServer::start() {
 			 HttpRequest* httpRequest = httpSession->getCurrentRequest();
 
 			if(!httpRequest) {
+				// New HTTP request
 				httpRequest = new HttpRequest(packet);
+			}
+			else {
+				// Continuing HTTP request
+				httpRequest->complete(packet);
+			}
+
+			switch(httpRequest->getStatus()) {
+			case HttpRequest::INCOMING:
+				break;
+			case HttpRequest::COMPLET:
+				break;
+			case HttpRequest::ERROR:
+				break;
+			default:
+				LOGERROR(("On ne devrait jamais être ici %d", httpRequest->getStatus()));
+				break;
 			}
 
 			endpoint = httpRequest->getEndpoint();

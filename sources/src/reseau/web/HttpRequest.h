@@ -20,6 +20,11 @@ namespace jkt {
 
 class HttpRequest {
 	static const char* SPLIT_HTTP_HEADER_BODY;
+	enum STATUS {
+		INCOMING,
+		COMPLET,
+		ERROR
+	};
 
 	HttpServer::HTTP_METHODS _method;
 	std::string _url;
@@ -29,6 +34,7 @@ class HttpRequest {
 
 	std::string _header;
 	std::string _body;
+	STATUS _status;
 
 public:
 	HttpRequest(TcpPacket* tcpPacket) throw(HttpException);
@@ -36,6 +42,8 @@ public:
 
 	HttpServer::HTTP_METHODS getMethod() const;
 	const std::string& getEndpoint() const;
+
+	STATUS getStatus() const;
 
 	std::string getVerb() const;
 	std::string getBodyText() const;

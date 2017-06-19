@@ -184,6 +184,20 @@ vector<string> StringUtils::split(const string& s, int (isSeparator)(int)) {
 	return result;
 }
 
+vector<string> StringUtils::split(const string& s, const string& delimiter) {
+	vector<string> res;
+	size_t current = 0, found, delimlen = delimiter.size();
+
+	while((found = s.find(delimiter, current)) != string::npos) {
+		res.push_back(string(s, current, found - current));
+		current = found + delimlen;
+	}
+
+	res.push_back(string(s, current, s.size() - current));
+
+	return res;
+}
+
 void StringUtils::splitOnce(const string& s, int (isSeparator)(int), string& debutRes, string& finRes) {
 	string::const_iterator middle = find_if(s.begin(), s.end(), ptr_fun<int, int>(isSeparator));
 

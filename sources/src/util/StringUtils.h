@@ -36,6 +36,7 @@ public:
 	static std::vector<std::string> splitByCarriageReturns(const std::string& s);
 	static std::vector<std::string> splitBySpaces(const std::string& s);
 	static std::vector<std::string> split(const std::string& s, int (isSeparator)(int));
+	static std::vector<std::string> split(const std::string& s, const std::string& delimiter);
 	static void splitOnce(const std::string& s, int (isSeparator)(int), std::string& debutRes, std::string& finRes);
 
 	// trim from start

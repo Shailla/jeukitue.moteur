@@ -14,6 +14,7 @@ using namespace std;
 
 namespace jkt {
 
+const char* HttpRequest::SPLIT_HTTP_HEADERS = 	"\r\n";
 const char* HttpRequest::SPLIT_HTTP_HEADER_BODY = 	"\r\n\r\n";
 
 HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
@@ -38,8 +39,10 @@ HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
 	/** Extrait les info du header HTTP                               */
 	/* ************************************************************** */
 
+	vector<string> headers = StringUtils::split(_header, SPLIT_HTTP_HEADERS);
+
 	// Méthode HTTP
-	string methodStr = jkt::StringUtils::findAndEraseFirstWord(_header);
+	string methodStr = StringUtils::findAndEraseFirstWord(_header);
 
 	_method = HttpServer::resolveHttpMethod(methodStr);
 
@@ -59,6 +62,10 @@ HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
 	// Protocole
 	_protocol = jkt::StringUtils::findAndEraseFirstWord(_header);
 
+	// TODO _bodyContentLength
+
+	_status = PCOMPLET;
+
 	if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_DEBUG, __FILE__)) {
 		stringstream log;
 
@@ -73,6 +80,25 @@ HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
 }
 
 HttpRequest::~HttpRequest() {
+}
+
+void HttpRequest::complete(TcpPacket* packet) {
+	if(_status != PINCOMING) {
+		LOGERROR(("On ne devrait jamais être ici"));
+		_status = PERROR;
+	}
+	else {
+		size_t missingData = _bodyContentLength - _body.size();
+
+		if(missingData > packet->getData().size()) {
+			_body += packet->getData();
+			_status = PINCOMING;	// We wait stil more data
+		}
+		else {
+			_body += packet->getData().substr(0, missingData);
+			_status = PCOMPLET;	// Http request is complete
+		}
+	}
 }
 
 HttpServer::HTTP_METHODS HttpRequest::getMethod() const {

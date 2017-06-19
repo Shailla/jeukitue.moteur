@@ -5,7 +5,7 @@
  *      Author: Erwin
  */
 
-#include <reseau/web/HttpSession.h>
+#include "reseau/web/HttpSession.h"
 
 namespace jkt {
 
@@ -14,6 +14,10 @@ HttpSession::HttpSession() {
 }
 
 HttpSession::~HttpSession() {
+}
+
+HttpRequest* HttpSession::getCurrentRequest() {
+	return _currentRequest;
 }
 
 } /* namespace jkt */

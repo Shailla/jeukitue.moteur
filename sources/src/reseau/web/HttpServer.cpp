@@ -17,6 +17,7 @@
 #include "util/StringUtils.h"
 #include "util/Trace.h"
 #include "util/FindFolder.h"
+#include "reseau/web/HttpSession.h"
 #include "reseau/web/HttpResponse.h"
 #include "reseau/web/service/WebService.h"
 #include "reseau/web/service/player/GetPlayersWS.h"
@@ -258,7 +259,7 @@ HttpServer::HTTP_METHODS HttpServer::resolveHttpMethod(const string& method) {
 }
 
 HttpSession* HttpServer::getHttpSession(TcpSession* tcpSession) {
-	map<TcpSession*, HttpSession>::iterator it = _sessions.find(tcpSession);
+	map<TcpSession*, HttpSession*>::iterator it = _sessions.find(tcpSession);
 
 	if(it != _sessions.end()) {
 		return it->second;
@@ -323,11 +324,11 @@ void HttpServer::start() {
 			}
 
 			switch(httpRequest->getStatus()) {
-			case HttpRequest::INCOMING:
+			case HttpRequest::PINCOMING:
 				break;
-			case HttpRequest::COMPLET:
+			case HttpRequest::PCOMPLET:
 				break;
-			case HttpRequest::ERROR:
+			case HttpRequest::PERROR:
 				break;
 			default:
 				LOGERROR(("On ne devrait jamais être ici %d", httpRequest->getStatus()));
@@ -363,7 +364,7 @@ void HttpServer::start() {
 						found = true;
 					}
 					else {
-						WebServiceResult result = service->execute(request, baseEndpoint, serviceEndpoint);
+						WebServiceResult result = service->execute(*httpRequest, baseEndpoint, serviceEndpoint);
 
 						contentType = result._contentType;
 						contentSize = result._contentSize;
@@ -477,7 +478,7 @@ void HttpServer::start() {
 			LOGINFO(("\n\tHTTP RESPONSE header :\n\t********************************\n'%s'", tcpResponse.getHeader().c_str()));
 		}
 
-		_tcpServer.send(packegetTcpSessionession(), tcpResponse.getResponseContent(), tcpResponse.getResponseSize());		// Envoi du contenu de la page au client
+		_tcpServer.send(packet->getTcpSession(), tcpResponse.getResponseContent(), tcpResponse.getResponseSize());		// Envoi du contenu de la page au client
 	}
 }
 

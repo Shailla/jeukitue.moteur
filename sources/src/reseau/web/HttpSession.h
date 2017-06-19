@@ -18,6 +18,8 @@ class HttpSession {
 public:
 	HttpSession();
 	virtual ~HttpSession();
+
+	HttpRequest* getCurrentRequest();
 };
 
 } /* namespace jkt */

@@ -16,7 +16,6 @@
 #include "SDL_net.h"
 
 #include "reseau/web/HttpParameters.h"
-#include "reseau/web/HttpException.h"
 #include "reseau/tcp/TcpServer.h"
 
 namespace jkt
@@ -24,6 +23,9 @@ namespace jkt
 
 class WebService;
 class HttpResponse;
+class HttpSession;
+class HttpException;
+class HttpParameters;
 
 class WebResource {
 	std::string _file;
@@ -70,7 +72,7 @@ private:
 
 	TcpServer _tcpServer;
 	HttpParameters _basicParameters;
-	std::map<TcpSession*, HttpSession> _sessions;
+	std::map<TcpSession*, HttpSession*> _sessions;
 
 	std::map<std::string, WebResource*> _resources;
 	std::map<std::string, WebService*> _services;

@@ -114,6 +114,16 @@ void UtilsTest::stringUtilsTest() {
 	ASSERT_EQUAL(" ", split[5], "'split' KO");
 
 	// -----------------------------------------------------
+	log("Test - 'StringUtils::split'", __LINE__);
+	split = StringUtils::split("Coucou--comment--tu--vas--?", "--");
+	ASSERT_EQUAL(5, split.size(), "'split' KO");
+	ASSERT_EQUAL("Coucou", split[0], "'split' KO");
+	ASSERT_EQUAL("comment", split[1], "'split' KO");
+	ASSERT_EQUAL("tu", split[2], "'split' KO");
+	ASSERT_EQUAL("vas", split[3], "'split' KO");
+	ASSERT_EQUAL("?", split[4], "'split' KO");
+
+	// -----------------------------------------------------
 	log("Test - 'StringUtils::splitOnce'", __LINE__);
 	string sodR, sofR;
 	StringUtils::splitOnce("var=value=1", StringUtils::isEqual, sodR, sofR);

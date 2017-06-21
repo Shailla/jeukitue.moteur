@@ -50,11 +50,12 @@ void TcpServer::start() {
 	}
 }
 
-TcpPacket* TcpServer::receive() {
-	TcpPacket* tcpPacket = 0;
+vector<TcpPacket*> TcpServer::receive() {
 	map<TCPsocket, TcpSession>::iterator itSession;
+	vector<TcpPacket*> tcpPackets;
+	TcpPacket* tcpPacket;
 
-	while(tcpPacket == 0) {
+	while(tcpPackets.size() == 0) {
 		Uint32 time = SDL_GetTicks();
 
 		if(SDLNet_CheckSockets(_socketSet, 100)) {
@@ -64,14 +65,22 @@ TcpPacket* TcpServer::receive() {
 
 				if(_clientSockets.size() >=  TCP_CLIENTS_SIZE) {
 					SDLNet_TCP_Close(clientSocket);
-					LOGWARN(("Connexion TCP refussée car la pile de connexions est pleine"));
+					LOGWARN(("Connexion TCP refusée car la pile de connexions est pleine"));
 				}
 				else if(clientSocket) {
 					map<TCPsocket, TcpSession>::iterator it = _clientSockets.find(clientSocket);
 
-					if(it != _clientSockets.end()) {
+					if(it == _clientSockets.end()) {	// Si la socket n'est pas encore connectée
+						// Connecte la socket au serveur
+						LOGINFO(("Nouvelle connexion socket TCP"));
+
+						SDLNet_TCP_AddSocket(_socketSet, clientSocket);
 						pair<map<TCPsocket, TcpSession>::iterator, bool> ret = _clientSockets.insert(pair<TCPsocket, TcpSession>(clientSocket, TcpSession(clientSocket, time)));
 						tcpPacket = receive(time, ret.first->second);
+
+						if(tcpPacket) {
+							tcpPackets.push_back(tcpPacket);
+						}
 					}
 					else {
 						LOGWARN(("On ne devrait jamais être ici, le client est déjà connecté en TCP"));
@@ -85,7 +94,12 @@ TcpPacket* TcpServer::receive() {
 			// Clients management
 			for(itSession = _clientSockets.begin() ; itSession != _clientSockets.end() ; itSession++) {
 				if(SDLNet_SocketReady(itSession->first)) {
+					LOGINFO(("Réception d'un paquet TCP"));
 					tcpPacket = receive(time, itSession->second);
+
+					if(tcpPacket) {
+						tcpPackets.push_back(tcpPacket);
+					}
 				}
 			}
 		}
@@ -95,14 +109,17 @@ TcpPacket* TcpServer::receive() {
 			TcpSession& session = itSession->second;
 
 			if(time - session.getLastTime() > TCP_SOCKET_TIMEOUT) {
+				LOGINFO(("Purge d'une connexion TCP en timeout"));
+
 				SDLNet_TCP_DelSocket(_socketSet, session.getSocket());
 				SDLNet_TCP_Close(session.getSocket());
-				_clientSockets.erase(itSession);
+				itSession = _clientSockets.erase(itSession);
 			}
 		}
 	}
 
-	return tcpPacket;
+	LOGINFO(("Paquet TCP reçu"));
+	return tcpPackets;
 }
 
 TcpPacket* TcpServer::receive(Uint32 time, TcpSession& session) {

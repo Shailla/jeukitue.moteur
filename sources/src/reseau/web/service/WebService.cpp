@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "reseau/web/HttpVocabulary.h"
 #include "reseau/web/json/JsonObject.h"
 
 #include "reseau/web/service/WebService.h"
@@ -16,7 +17,7 @@ using namespace std;
 namespace jkt {
 
 WebServiceResult::WebServiceResult(const char* status) {
-	_contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
+	_contentType = HttpVocabulary::HTTP_CONTENT_TYPE_JSON;
 	_status = status;
 
 	string body = "";
@@ -27,7 +28,7 @@ WebServiceResult::WebServiceResult(const char* status) {
 }
 
 WebServiceResult::WebServiceResult(JsonObject& root, const char* status) {
-	_contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
+	_contentType = HttpVocabulary::HTTP_CONTENT_TYPE_JSON;
 	_status = status;
 
 	string body = root.toString();
@@ -38,7 +39,7 @@ WebServiceResult::WebServiceResult(JsonObject& root, const char* status) {
 }
 
 WebServiceResult::WebServiceResult(JsonObject& root, const vector<string>& errors, const char* status) {
-	_contentType = HttpServer::HTTP_CONTENT_TYPE_JSON;
+	_contentType = HttpVocabulary::HTTP_CONTENT_TYPE_JSON;
 	_status = status;
 
 	JsonList& errorList = root.addList("errors");

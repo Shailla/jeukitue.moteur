@@ -20,4 +20,8 @@ HttpRequest* HttpSession::getCurrentRequest() {
 	return _currentRequest;
 }
 
+void HttpSession::setCurrentRequest(HttpRequest* currentRequest) {
+	_currentRequest = currentRequest;
+}
+
 } /* namespace jkt */

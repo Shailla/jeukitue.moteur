@@ -9,6 +9,7 @@
 #include <stdlib.h>
 
 #include "util/Trace.h"
+#include "reseau/web/HttpVocabulary.h"
 #include "reseau/web/HttpServer.h"
 #include "reseau/web/json/JsonObject.h"
 #include "service/PlayersService.h"
@@ -39,7 +40,7 @@ WebServiceResult GetPlayersWS::getPlayersInCurrentMap() {
 		jsonPlayer.addString("name", dto.getName());
 	}
 
-	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
+	return WebServiceResult(root, HttpVocabulary::HTTP_RESPONSE_200);
 }
 
 WebServiceResult GetPlayersWS::execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) throw(HttpException) {

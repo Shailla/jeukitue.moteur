@@ -8,6 +8,7 @@
 #ifndef SRC_RESEAU_TCP_TCPSERVER_H_
 #define SRC_RESEAU_TCP_TCPSERVER_H_
 
+#include <vector>
 #include <map>
 
 #include "SDL.h"
@@ -38,7 +39,7 @@ public:
 	void start();
 	void stop();
 
-	TcpPacket* receive();
+	std::vector<TcpPacket*> receive();
 	void send(TcpSession* session, void* data, int size);
 };
 

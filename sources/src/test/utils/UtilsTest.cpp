@@ -114,7 +114,6 @@ void UtilsTest::stringUtilsTest() {
 	ASSERT_EQUAL(" ", split[5], "'split' KO");
 
 	// -----------------------------------------------------
-	log("Test - 'StringUtils::split'", __LINE__);
 	split = StringUtils::split("Coucou--comment--tu--vas--?", "--");
 	ASSERT_EQUAL(5, split.size(), "'split' KO");
 	ASSERT_EQUAL("Coucou", split[0], "'split' KO");
@@ -122,6 +121,14 @@ void UtilsTest::stringUtilsTest() {
 	ASSERT_EQUAL("tu", split[2], "'split' KO");
 	ASSERT_EQUAL("vas", split[3], "'split' KO");
 	ASSERT_EQUAL("?", split[4], "'split' KO");
+
+	// -----------------------------------------------------
+	log("Test - 'StringUtils::toLower StringUtils::toUpper'", __LINE__);
+	string toLower = "AbCDe", toUpper = "AbCDe";
+	StringUtils::toLower(toLower);
+	StringUtils::toUpper(toUpper);
+	ASSERT_EQUAL("abcde", toLower, "'toLower' KO");
+	ASSERT_EQUAL("ABCDE", toUpper, "'toUpper' KO");
 
 	// -----------------------------------------------------
 	log("Test - 'StringUtils::splitOnce'", __LINE__);

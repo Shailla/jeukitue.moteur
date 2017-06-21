@@ -21,6 +21,7 @@
 #include "spatial/geo/EntryPoint.h"
 #include "spatial/light/Light.h"
 
+#include "reseau/web/HttpVocabulary.h"
 #include "reseau/web/HttpServer.h"
 #include "reseau/web/json/JsonObject.h"
 #include "reseau/web/json/JsonBoolean.h"
@@ -90,7 +91,7 @@ WebServiceResult GetMapElementWS::getMapList() {
 		jsonMap.addString(NAME, dto.getMapFileMinimalName());
 	}
 
-	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
+	return WebServiceResult(root, HttpVocabulary::HTTP_RESPONSE_200);
 }
 
 void GetMapElementWS::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
@@ -132,7 +133,7 @@ WebServiceResult GetMapElementWS::getCurrentMap() {
 	if(map) {		jisonifyMapGraphe(map, mapElement);;
 	}
 
-	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
+	return WebServiceResult(root, HttpVocabulary::HTTP_RESPONSE_200);
 }
 
 WebServiceResult GetMapElementWS::saveCurrentMap() {
@@ -147,10 +148,10 @@ WebServiceResult GetMapElementWS::saveCurrentMap() {
 		ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
 		console->println(ConsoleView::COT_INFO, string("Map enregistr\u00e9e : ") + saveMapFilename);
 
-		return WebServiceResult(root, HttpServer::HTTP_RESPONSE_201);
+		return WebServiceResult(root, HttpVocabulary::HTTP_RESPONSE_201);
 	}
 	else {
-		return WebServiceResult(root, HttpServer::HTTP_RESPONSE_204);
+		return WebServiceResult(root, HttpVocabulary::HTTP_RESPONSE_204);
 	}
 
 
@@ -243,14 +244,14 @@ WebServiceResult GetMapElementWS::updateElement(HttpRequest& request, int elemen
 
 	// Is there an active Map
 	if(!map) {
-		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_404, "There is no active Map");
+		return jsonErrorResponse(HttpVocabulary::HTTP_RESPONSE_404, "There is no active Map");
 	}
 
 	// Do the object exist
 	MapObject* object = map->findMapObject(elementId);
 
 	if(!object) {
-		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_404, "Object not found in the active Map");
+		return jsonErrorResponse(HttpVocabulary::HTTP_RESPONSE_404, "Object not found in the active Map");
 	}
 
 	JsonObject* newValues = request.getBodyJson();
@@ -264,24 +265,24 @@ WebServiceResult GetMapElementWS::updateElement(HttpRequest& request, int elemen
 				updateElement(mapElement, object);
 			}
 			catch(BadFormatJsonException& exception) {
-				return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, exception.getMessage());
+				return jsonErrorResponse(HttpVocabulary::HTTP_RESPONSE_400, exception.getMessage());
 			}
 		}
 		else {
-			return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, root object 'mapElement' element does not exists");
+			return jsonErrorResponse(HttpVocabulary::HTTP_RESPONSE_400, "Bad request format, root object 'mapElement' element does not exists");
 		}
 	}
 	else {
 		JsonObject root;
-		return WebServiceResult(HttpServer::HTTP_RESPONSE_200);
-//		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, no Json content");
+		return WebServiceResult(HttpVocabulary::HTTP_RESPONSE_200);
+//		return jsonErrorResponse(HttpVocabulary::HTTP_RESPONSE_400, "Bad request format, no Json content");
 	}
 
 	vector<string> errors;
 	JsonObject root;
 	JsonObject& mapElement = root.addObject(MAPELEMENT);
 	getElement(elementId, mapElement, errors);
-	return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
+	return WebServiceResult(root, HttpVocabulary::HTTP_RESPONSE_200);
 }
 
 bool GetMapElementWS::updateCaracBoolean(JsonObject& jsonCharistics, const Caracteristic& carac, bool& newValue) {
@@ -357,25 +358,25 @@ WebServiceResult GetMapElementWS::updateElements(HttpRequest& request) {
 	CMap* map = Game.getMap();
 
 	if(!map) {
-		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_404, "There is no active Map");
+		return jsonErrorResponse(HttpVocabulary::HTTP_RESPONSE_404, "There is no active Map");
 	}
 
 	JsonObject* body = request.getBodyJson();
 
 	if(!body) {
-		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad http request, there is no body");
+		return jsonErrorResponse(HttpVocabulary::HTTP_RESPONSE_400, "Bad http request, there is no body");
 	}
 
 	JsonValue* mapElements = body->getValue(MAPELEMENTS, false);
 
 	if(!mapElements) {
-		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, root 'mapElements' element does not exist");
+		return jsonErrorResponse(HttpVocabulary::HTTP_RESPONSE_400, "Bad request format, root 'mapElements' element does not exist");
 	}
 
 	JsonList* mapElementList = mapElements->isJsonList();
 
 	if(!mapElementList) {
-		return jsonErrorResponse(HttpServer::HTTP_RESPONSE_400, "Bad request format, root 'mapElements' must be a list");
+		return jsonErrorResponse(HttpVocabulary::HTTP_RESPONSE_400, "Bad request format, root 'mapElements' must be a list");
 	}
 
 	const vector<JsonValue*>& list = mapElementList->getValue();
@@ -428,10 +429,10 @@ WebServiceResult GetMapElementWS::updateElements(HttpRequest& request) {
 	}
 
 	if(errors.size() == 0) {
-		return WebServiceResult(rootResponse, HttpServer::HTTP_RESPONSE_200);
+		return WebServiceResult(rootResponse, HttpVocabulary::HTTP_RESPONSE_200);
 	}
 	else {
-		return WebServiceResult(rootResponse, errors, HttpServer::HTTP_RESPONSE_400);
+		return WebServiceResult(rootResponse, errors, HttpVocabulary::HTTP_RESPONSE_400);
 	}
 }
 
@@ -465,10 +466,10 @@ WebServiceResult GetMapElementWS::execute(HttpRequest& request, const string& ba
 		getElement(elementId, mapElement, errors);
 
 		if(errors.size() == 0) {
-			return WebServiceResult(root, HttpServer::HTTP_RESPONSE_200);
+			return WebServiceResult(root, HttpVocabulary::HTTP_RESPONSE_200);
 		}
 		else {
-			return WebServiceResult(root, errors, HttpServer::HTTP_RESPONSE_400);
+			return WebServiceResult(root, errors, HttpVocabulary::HTTP_RESPONSE_400);
 		}
 	}
 	// Update one Map element

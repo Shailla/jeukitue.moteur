@@ -8,7 +8,7 @@
 #include <string>
 #include <stdlib.h>
 
-#include "reseau/web/HttpServer.h"
+#include "reseau/web/HttpVocabulary.h"
 
 #include "reseau/web/HttpResponse.h"
 
@@ -69,9 +69,9 @@ void* HttpResponse::getResponseContent() const {
 
 void HttpResponse::generateResponse() {
 	stringstream response;
-	response << HttpServer::HTTP_HEAD << " " << _status << HttpServer::HTTP_RETURN;
+	response << HttpVocabulary::HTTP_HEAD << " " << _status << HttpVocabulary::HTTP_RETURN;
 	response << _parameters.str();
-	response << HttpServer::HTTP_RETURN;
+	response << HttpVocabulary::HTTP_RETURN;
 	response << _body;
 
 	if(_responseContent) {
@@ -85,7 +85,7 @@ void HttpResponse::generateResponse() {
 
 string HttpResponse::getStatus() const {
 	stringstream status;
-	status << HttpServer::HTTP_HEAD << " " << _status;
+	status << HttpVocabulary::HTTP_HEAD << " " << _status;
 
 	return status.str();
 }
@@ -93,7 +93,7 @@ string HttpResponse::getStatus() const {
 string HttpResponse::getHeader() {
 	stringstream header;
 
-	header << HttpServer::HTTP_HEAD << " " << _status << HttpServer::HTTP_RETURN;
+	header << HttpVocabulary::HTTP_HEAD << " " << _status << HttpVocabulary::HTTP_RETURN;
 	header << _parameters.str();
 
 	return header.str();

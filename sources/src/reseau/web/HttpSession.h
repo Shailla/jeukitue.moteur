@@ -20,6 +20,7 @@ public:
 	virtual ~HttpSession();
 
 	HttpRequest* getCurrentRequest();
+	void setCurrentRequest(HttpRequest* currentRequest);
 };
 
 } /* namespace jkt */

@@ -53,6 +53,9 @@ public:
 	static int isComma(int c);
 	static int isEqual(int c);
 	static int isSlash(int c);
+
+	static void toLower(std::string& s);
+	static void toUpper(std::string& s);
 };
 
 } /* namespace jkt */

@@ -21,24 +21,22 @@ namespace jkt {
 class HttpRequest {
 public:
 	enum STATUS {
-		PINCOMING = 0,
+		PINCOMPLET = 0,
 		PCOMPLET,
 		PERROR
 	};
 
 private:
-	static const char* SPLIT_HTTP_HEADERS;
-	static const char* SPLIT_HTTP_HEADER_BODY;
-
 	std::string _header;
 	std::string _body;
 
 	HttpServer::HTTP_METHODS _method;
 	std::string _url;
 	std::string _endpoint;
-	std::string _parameters;
+	std::string _urlParameters;
 	std::string _protocol;
 	int _bodyContentLength;
+	std::map<std::string, std::string> _httpParameters;
 
 	STATUS _status;
 
@@ -56,8 +54,6 @@ public:
 	std::string getVerb() const;
 	std::string getBodyText() const;
 	JsonObject* getBodyJson() const throw(MalformedJsonException);
-
-	const std::string& toString() const;
 };
 
 }

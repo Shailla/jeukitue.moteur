@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#include "reseau/web/HttpServer.h"
+#include "reseau/web/HttpVocabulary.h"
 #include "reseau/web/HttpParameters.h"
 
 namespace jkt {
@@ -78,7 +78,7 @@ const string& HttpParameters::str() {
 	}
 
 	for(pair<string, string> parameter : _parameters) {
-		head << parameter.first << HttpServer::HTTP_PARAM_SEPARATOR << parameter.second << HttpServer::HTTP_RETURN;
+		head << parameter.first << HttpVocabulary::HTTP_PARAM_SEPARATOR << parameter.second << HttpVocabulary::HTTP_RETURN;
 	}
 
 	_head = head.str();

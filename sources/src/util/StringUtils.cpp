@@ -112,6 +112,14 @@ int StringUtils::isComma(int c) {
 	return c == ',';
 }
 
+void StringUtils::toLower(std::string& s) {
+	std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+}
+
+void StringUtils::toUpper(std::string& s) {
+	std::transform(s.begin(), s.end(), s.begin(), ::toupper);
+}
+
 string StringUtils::findAndEraseFirstString(string& s) {
 	return findAndEraseFirstString(s);
 }

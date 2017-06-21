@@ -17,6 +17,7 @@
 #include "util/StringUtils.h"
 #include "util/Trace.h"
 #include "util/FindFolder.h"
+#include "reseau/web/HttpVocabulary.h"
 #include "reseau/web/HttpSession.h"
 #include "reseau/web/HttpResponse.h"
 #include "reseau/web/service/WebService.h"
@@ -38,42 +39,6 @@ const char* HttpServer::WEB_HTML_DIR =				"./web/html";
 const char* HttpServer::WEB_IMAGE_DIR =				"./web/image";
 const char* HttpServer::WEB_JS_DIR =				"./web/js";
 const char* HttpServer::WEB_JSON_DIR =				"./web/json";
-
-const char* HttpServer::HTTP_RETURN =				"\r\n";
-const char* HttpServer::HTTP_HEAD = 				"HTTP/1.1";
-const char* HttpServer::HTTP_RESPONSE_100 = 		"100 Continue";
-const char* HttpServer::HTTP_RESPONSE_200 = 		"200 OK";
-const char* HttpServer::HTTP_RESPONSE_201 = 		"201 Created";
-const char* HttpServer::HTTP_RESPONSE_204 = 		"204 No Content";
-const char* HttpServer::HTTP_RESPONSE_400 = 		"400 Bad Request";
-const char* HttpServer::HTTP_RESPONSE_404 = 		"404 Not Found";
-const char* HttpServer::HTTP_RESPONSE_500 = 		"500 Internal Error";
-const char* HttpServer::HTTP_RESPONSE_501 = 		"501 Not Implemented";
-
-const char* HttpServer::HTTP_PARAM_SEPARATOR = 		": ";
-
-const char* HttpServer::HTTP_ACCESS_CONTROL_ALLOW_HEADERS = 	"Access-Control-Allow-Headers";
-const char* HttpServer::HTTP_ACCESS_CONTROL_ALLOW_METHODS = 	"Access-Control-Allow-Methods";
-const char* HttpServer::HTTP_ACCESS_CONTROL_ALLOW_ORIGIN = 		"Access-Control-Allow-Origin";
-const char* HttpServer::HTTP_CACHE_CONTROL = 					"Cache-Control";
-const char* HttpServer::HTTP_PRAGMA = 							"Pragma";
-const char* HttpServer::HTTP_EXPIRES = 							"Expires";
-
-const char* HttpServer::HTTP_CONTENT_LENGTH = 		"Content-Length";
-const char* HttpServer::HTTP_CONTENT_TYPE = 		"Content-Type";
-
-const char* HttpServer::HTTP_CONTENT_TYPE_HTML = 	"text/html; charset=utf-8";
-const char* HttpServer::HTTP_CONTENT_TYPE_CSS = 	"text/css; charset=utf-8";
-const char* HttpServer::HTTP_CONTENT_TYPE_IMAGE = 	"image";
-const char* HttpServer::HTTP_CONTENT_TYPE_JS = 		"application/javascript";
-const char* HttpServer::HTTP_CONTENT_TYPE_JSON = 	"application/json; charset=utf-8";
-
-const char* HttpServer::HTTP_METHOD_OPTIONS =		"OPTIONS";
-const char* HttpServer::HTTP_METHOD_GET = 			"GET";
-const char* HttpServer::HTTP_METHOD_POST = 			"POST";
-const char* HttpServer::HTTP_METHOD_PUT = 			"PUT";
-const char* HttpServer::HTTP_METHOD_PATCH = 		"PATCH";
-const char* HttpServer::HTTP_METHOD_DELETE =		"DELETE";
 
 WebResource::WebResource() {
 	_content = 0;
@@ -165,9 +130,9 @@ HttpServer::HttpServer(int port) : _tcpServer(port) {
 	/* Réponse HTTP de base                 */
 	/* ************************************ */
 
-	_basicParameters.addParameter(HTTP_ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type");
-	_basicParameters.addParameter(HTTP_ACCESS_CONTROL_ALLOW_METHODS, "GET, HEAD, POST, PUT, OPTIONS, TRACE");
-	_basicParameters.addParameter(HTTP_ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+	_basicParameters.addParameter(HttpVocabulary::HTTP_ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type");
+	_basicParameters.addParameter(HttpVocabulary::HTTP_ACCESS_CONTROL_ALLOW_METHODS, "GET, HEAD, POST, PUT, OPTIONS, TRACE");
+	_basicParameters.addParameter(HttpVocabulary::HTTP_ACCESS_CONTROL_ALLOW_ORIGIN, "*");
 
 
 	/* ************************************ */
@@ -183,11 +148,11 @@ HttpServer::HttpServer(int port) : _tcpServer(port) {
 	/* ************************************ */
 
 	// Lecture des ressources web
-	collecteDir(WEB_JS_DIR, "", HTTP_CONTENT_TYPE_JS);				// Scripts
-	collecteDir(WEB_CSS_DIR, "", HTTP_CONTENT_TYPE_CSS);			// CSS
-	collecteDir(WEB_JSON_DIR, "", HTTP_CONTENT_TYPE_JSON);			// JSON
-	collecteDir(WEB_HTML_DIR, "", HTTP_CONTENT_TYPE_HTML);			// HTML
-	collecteDir(WEB_IMAGE_DIR, "", HTTP_CONTENT_TYPE_IMAGE);		// Images
+	collecteDir(WEB_JS_DIR, "", HttpVocabulary::HTTP_CONTENT_TYPE_JS);				// Scripts
+	collecteDir(WEB_CSS_DIR, "", HttpVocabulary::HTTP_CONTENT_TYPE_CSS);			// CSS
+	collecteDir(WEB_JSON_DIR, "", HttpVocabulary::HTTP_CONTENT_TYPE_JSON);			// JSON
+	collecteDir(WEB_HTML_DIR, "", HttpVocabulary::HTTP_CONTENT_TYPE_HTML);			// HTML
+	collecteDir(WEB_IMAGE_DIR, "", HttpVocabulary::HTTP_CONTENT_TYPE_IMAGE);		// Images
 }
 
 void HttpServer::collecteDir(const string& dirname, const string& endpoint, const string& contentType) {
@@ -235,22 +200,22 @@ int HttpServer::run(void* thiz) {
 }
 
 HttpServer::HTTP_METHODS HttpServer::resolveHttpMethod(const string& method) {
-	if(method == HTTP_METHOD_GET) {
+	if(method == HttpVocabulary::HTTP_METHOD_GET) {
 		return HTTP_METHODS::HTTP_GET;
 	}
-	else if(method == HTTP_METHOD_POST) {
+	else if(method == HttpVocabulary::HTTP_METHOD_POST) {
 		return HTTP_METHODS::HTTP_POST;
 	}
-	else if(method == HTTP_METHOD_PUT) {
+	else if(method == HttpVocabulary::HTTP_METHOD_PUT) {
 		return HTTP_METHODS::HTTP_PUT;
 	}
-	else if(method == HTTP_METHOD_PATCH) {
+	else if(method == HttpVocabulary::HTTP_METHOD_PATCH) {
 		return HTTP_METHODS::HTTP_PATCH;
 	}
-	else if(method == HTTP_METHOD_DELETE) {
+	else if(method == HttpVocabulary::HTTP_METHOD_DELETE) {
 		return HTTP_METHODS::HTTP_DELETE;
 	}
-	else if(method == HTTP_METHOD_OPTIONS) {
+	else if(method == HttpVocabulary::HTTP_METHOD_OPTIONS) {
 		return HTTP_METHODS::HTTP_OPTIONS;
 	}
 	else {
@@ -279,7 +244,9 @@ void HttpServer::start() {
 	string contentType;
 	string status;
 	bool found;
-	TcpPacket* packet;
+	vector<TcpPacket*> tcpPackets;
+
+	_tcpServer.start();
 
 	while(1) {
 
@@ -287,198 +254,199 @@ void HttpServer::start() {
 		/* Attente des connexions client              */
 		/* ****************************************** */
 
-		packet = _tcpServer.receive();
+		tcpPackets.clear();
+		tcpPackets = _tcpServer.receive();
 
 
-		content = 0;
-		found = false;
-		tcpResponse.reset();
+		for(TcpPacket* tcpPacket : tcpPackets) {
 
-		try {
+			content = 0;
+			found = false;
+			tcpResponse.reset();
 
-			/* ****************************************** */
-			/* Réconciliation de la session HTTP          */
-			/* ****************************************** */
+			try {
 
-			HttpSession* httpSession = getHttpSession(packet->getTcpSession());
+				/* ****************************************** */
+				/* Réconciliation de la session HTTP          */
+				/* ****************************************** */
 
-			if(!httpSession) {
-				httpSession = new HttpSession();
-				_sessions[packet->getTcpSession()] = httpSession;
+				HttpSession* httpSession = getHttpSession(tcpPacket->getTcpSession());
+
+				if(!httpSession) {
+					httpSession = new HttpSession();
+					_sessions[tcpPacket->getTcpSession()] = httpSession;
+				}
+
+
+				/* ****************************************** */
+				/* Décodage de la requête HTTP                */
+				/* ****************************************** */
+
+				HttpRequest* httpRequest = httpSession->getCurrentRequest();
+
+				if(!httpRequest) {
+					// New HTTP request
+					httpRequest = new HttpRequest(tcpPacket);
+
+				}
+				else {
+					// Continuing HTTP request
+					httpRequest->complete(tcpPacket);
+				}
+
+				if(httpRequest->getStatus() == HttpRequest::PINCOMPLET) {
+					httpSession->setCurrentRequest(httpRequest);
+				}
+				else if(httpRequest->getStatus() == HttpRequest::PERROR) {
+					LOGERROR(("Erreur de lecture de la requête HTTP"));
+					httpSession->setCurrentRequest(0);
+				}
+				else {	// HttpRequest::PCOMPLET
+					httpSession->setCurrentRequest(0);	// Http request is complete, no need to remember it anymore
+
+					endpoint = httpRequest->getEndpoint();
+
+					if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_DEBUG, __FILE__)) {
+						LOGDEBUG(("\n\t* HTTP REQUEST full :\n\t********************************\n'%s'", tcpPacket->getData().c_str()));
+					}
+					else if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_INFO, __FILE__)) {
+						LOGINFO(("\n\t* HTTP RESPONSE synthesis :\n\t********************************\n'%s'\n'%s'", httpRequest->getVerb().c_str(), httpRequest->getBodyText().c_str()));
+					}
+
+
+					/* ****************************************** */
+					/* Recherche du contenu demandé               */
+					/* ****************************************** */
+
+					// Search web service
+					if(!found) {
+						string baseEndpoint, serviceEndpoint;
+						WebService* service = getService(httpRequest->getEndpoint(), baseEndpoint, serviceEndpoint);
+
+						if(service) {
+							if(httpRequest->getMethod() == HttpServer::HTTP_METHODS::HTTP_OPTIONS) {
+								// Build response
+								HttpParameters params(_basicParameters);
+								params.addParameter("Access-Control-Max-Age", 86400);
+								params.addParameter("Content-Length", 0);
+								tcpResponse.update(HttpVocabulary::HTTP_RESPONSE_204, params, "");
+								found = true;
+							}
+							else {
+								WebServiceResult result = service->execute(*httpRequest, baseEndpoint, serviceEndpoint);
+
+								contentType = result._contentType;
+								contentSize = result._contentSize;
+								content = result._content;
+								status = result._status;
+
+								// Build response
+								buildResponse(tcpResponse, status, contentType, contentSize, content);
+								found = true;
+							}
+						}
+					}
+
+					// Search static web resource
+					if(!found) {
+						resource = getResource(httpRequest->getEndpoint());	// Exception thrown if no resource found
+
+						if(resource) {
+							contentType = resource->getContentType();
+							contentSize = resource->getContentSize();
+							content = resource->getContent();
+							status = HttpVocabulary::HTTP_RESPONSE_200;
+
+							// Build response
+							buildResponse(tcpResponse, status, contentType, contentSize, content);
+							found = true;
+						}
+					}
+
+					// Nothing is found for the endpoint
+					if(!found) {
+						throw HttpException(HttpException::RESOURCE_NOT_FOUND_EXCEPTION, "No service or resource found");
+					}
+				}
 			}
+			catch(HttpException& exception) {
+				switch(exception.getCode()) {
+				case HttpException::RESOURCE_NOT_FOUND_EXCEPTION:
+					LOGWARN(("Endpoint introuvable : '%s'", endpoint.c_str()));
 
+					resource = getResource("/resource_not_found.html");
 
-			/* ****************************************** */
-			/* Décodage de la requête HTTP                */
-			/* ****************************************** */
-
-			 HttpRequest* httpRequest = httpSession->getCurrentRequest();
-
-			if(!httpRequest) {
-				// New HTTP request
-				httpRequest = new HttpRequest(packet);
-			}
-			else {
-				// Continuing HTTP request
-				httpRequest->complete(packet);
-			}
-
-			switch(httpRequest->getStatus()) {
-			case HttpRequest::PINCOMING:
-				break;
-			case HttpRequest::PCOMPLET:
-				break;
-			case HttpRequest::PERROR:
-				break;
-			default:
-				LOGERROR(("On ne devrait jamais être ici %d", httpRequest->getStatus()));
-				break;
-			}
-
-			endpoint = httpRequest->getEndpoint();
-
-			if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_DEBUG, __FILE__)) {
-				LOGDEBUG(("\n\t* HTTP REQUEST full :\n\t********************************\n'%s'", packet->getData().c_str()));
-			}
-			else if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_INFO, __FILE__)) {
-				LOGINFO(("\n\t* HTTP RESPONSE synthesis :\n\t********************************\n'%s'\n'%s'", httpRequest->getVerb().c_str(), httpRequest->getBodyText().c_str()));
-			}
-
-
-			/* ****************************************** */
-			/* Recherche du contenu demandé               */
-			/* ****************************************** */
-
-			// Search web service
-			if(!found) {
-				string baseEndpoint, serviceEndpoint;
-				WebService* service = getService(httpRequest->getEndpoint(), baseEndpoint, serviceEndpoint);
-
-				if(service) {
-					if(httpRequest->getMethod() == HttpServer::HTTP_METHODS::HTTP_OPTIONS) {
-						// Build response
-						HttpParameters params(_basicParameters);
-						params.addParameter("Access-Control-Max-Age", 86400);
-						params.addParameter("Content-Length", 0);
-						tcpResponse.update(HTTP_RESPONSE_204, params, "");
-						found = true;
+					if(resource) {
+						buildResponse(tcpResponse, HttpVocabulary::HTTP_RESPONSE_404, *resource);
 					}
 					else {
-						WebServiceResult result = service->execute(*httpRequest, baseEndpoint, serviceEndpoint);
-
-						contentType = result._contentType;
-						contentSize = result._contentSize;
-						content = result._content;
-						status = result._status;
-
-						// Build response
-						buildResponse(tcpResponse, status, contentType, contentSize, content);
-						found = true;
+						LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
 					}
+
+					break;
+
+				case HttpException::SERVICE_NOT_EXISTS:
+					LOGWARN(("Service introuvable : '%s'", endpoint.c_str()));
+
+					resource = getResource("/resource_not_found.html");
+
+					if(resource) {
+						buildResponse(tcpResponse, HttpVocabulary::HTTP_RESPONSE_404, *resource);
+					}
+					else {
+						LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
+					}
+					break;
+
+				case HttpException::MALFORMED_HTTP_REQUEST:
+					LOGWARN(("Requête http malformée reçue sur le service : '%s'", endpoint.c_str()));
+
+					resource = getResource("/bad_http_request.html");
+
+					if(resource) {
+						buildResponse(tcpResponse, HttpVocabulary::HTTP_RESPONSE_400, *resource);
+					}
+					else {
+						LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
+					}
+					break;
+
+				default:
+					LOGERROR(("On ne devrait jamais être ici (erreur non-maîtrisée) '%s' : %d", tcpPacket->getData().c_str(), exception.getCode()));
+					break;
 				}
 			}
-
-			// Search static web resource
-			if(!found) {
-				resource = getResource(httpRequest->getEndpoint());	// Exception thrown if no resource found
-
-				if(resource) {
-					contentType = resource->getContentType();
-					contentSize = resource->getContentSize();
-					content = resource->getContent();
-					status = HTTP_RESPONSE_200;
-
-					// Build response
-					buildResponse(tcpResponse, status, contentType, contentSize, content);
-					found = true;
-				}
-			}
-
-			// Nothing is found for the endpoint
-			if(!found) {
-				throw HttpException(HttpException::RESOURCE_NOT_FOUND_EXCEPTION, "No service or resource found");
-			}
-		}
-		catch(HttpException& exception) {
-			switch(exception.getCode()) {
-			case HttpException::RESOURCE_NOT_FOUND_EXCEPTION:
-				LOGWARN(("Endpoint introuvable : '%s'", endpoint.c_str()));
-
-				resource = getResource("/resource_not_found.html");
-
-				if(resource) {
-					buildResponse(tcpResponse, HTTP_RESPONSE_404, *resource);
-				}
-				else {
-					LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
-				}
-
-				break;
-
-			case HttpException::SERVICE_NOT_EXISTS:
-				LOGWARN(("Service introuvable : '%s'", endpoint.c_str()));
-
-				resource = getResource("/resource_not_found.html");
-
-				if(resource) {
-					buildResponse(tcpResponse, HTTP_RESPONSE_404, *resource);
-				}
-				else {
-					LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
-				}
-				break;
-
-			case HttpException::MALFORMED_HTTP_REQUEST:
-				LOGWARN(("Requête http malformée reçue sur le service : '%s'", endpoint.c_str()));
+			catch(MalformedJsonException& exception) {
+				LOGWARN(("La requête HTTP reçue contient un Json malformé sur le service : '%s'", endpoint.c_str()));
 
 				resource = getResource("/bad_http_request.html");
 
 				if(resource) {
-					buildResponse(tcpResponse, HTTP_RESPONSE_400, *resource);
+					buildResponse(tcpResponse, HttpVocabulary::HTTP_RESPONSE_400, *resource);
 				}
 				else {
-					LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
+					LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant) '%s' : %d", endpoint.c_str(), exception));
 				}
-				break;
+			}
+			catch(std::exception& exception) {
+				LOGERROR(("Erreur interne (exception standard) sur '%s' : '%s'", tcpPacket->getData().c_str(), exception.what()));
+			}
+			catch(...) {
+				LOGERROR(("Erreur interne inconnue sur '%s'", tcpPacket->getData().c_str()));
+			}
 
-			default:
-				LOGERROR(("On ne devrait jamais être ici (erreur non-maîtrisée) '%s' : %d", packet->getData().c_str(), exception.getCode()));
-				break;
+			if(!tcpResponse.isEmpty()) {
+				// Envoi réponse
+				if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_DEBUG, __FILE__)) {
+					LOGDEBUG(("\n\tHTTP RESPONSE full :\n\t********************************\n'%s'", tcpResponse.getResponseString().c_str()));
+				}
+				else if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_INFO, __FILE__)) {
+					LOGINFO(("\n\tHTTP RESPONSE header :\n\t********************************\n'%s'", tcpResponse.getHeader().c_str()));
+				}
+
+				_tcpServer.send(tcpPacket->getTcpSession(), tcpResponse.getResponseContent(), tcpResponse.getResponseSize());		// Envoi du contenu de la page au client
 			}
 		}
-		catch(MalformedJsonException& exception) {
-			LOGWARN(("La requête HTTP reçue contient un Json malformé sur le service : '%s'", endpoint.c_str()));
-
-			resource = getResource("/bad_http_request.html");
-
-			if(resource) {
-				buildResponse(tcpResponse, HTTP_RESPONSE_400, *resource);
-			}
-			else {
-				LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant) '%s' : %d", endpoint.c_str(), exception));
-			}
-		}
-		catch(std::exception& exception) {
-			LOGERROR(("Erreur interne (exception standard) sur '%s' : '%s'", packet->getData().c_str(), exception.what()));
-		}
-		catch(...) {
-			LOGERROR(("Erreur interne inconnue sur '%s'", packet->getData().c_str()));
-		}
-
-		if(tcpResponse.isEmpty()) {	// Si aucune réponse n'a été obtenue ici c'est qu'il y a une couille dans le potage
-			LOGERROR(("On ne devrait jamais être ici '%s'", packet->getData().c_str()));
-			buildResponse(tcpResponse, HTTP_RESPONSE_500, HTTP_CONTENT_TYPE_HTML, HTTP_INTERNAL_ERROR_CONTENT);
-		}
-
-		// Envoi réponse
-		if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_DEBUG, __FILE__)) {
-			LOGDEBUG(("\n\tHTTP RESPONSE full :\n\t********************************\n'%s'", tcpResponse.getResponseString().c_str()));
-		}
-		else if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_INFO, __FILE__)) {
-			LOGINFO(("\n\tHTTP RESPONSE header :\n\t********************************\n'%s'", tcpResponse.getHeader().c_str()));
-		}
-
-		_tcpServer.send(packet->getTcpSession(), tcpResponse.getResponseContent(), tcpResponse.getResponseSize());		// Envoi du contenu de la page au client
 	}
 }
 
@@ -506,8 +474,8 @@ WebResource* HttpServer::getResource(const string& endpoint) throw(int) {
 
 void HttpServer::buildResponse(HttpResponse& tcpResponse, const string& status, const string& contentType, const string& content) {
 	HttpParameters params(_basicParameters);
-	params.addParameter(HTTP_CONTENT_TYPE, contentType);
-	params.addParameter(HTTP_CONTENT_LENGTH, content.size());
+	params.addParameter(HttpVocabulary::HTTP_CONTENT_TYPE, contentType);
+	params.addParameter(HttpVocabulary::HTTP_CONTENT_LENGTH, content.size());
 
 	tcpResponse.update(status, params, content);
 }
@@ -515,8 +483,8 @@ void HttpServer::buildResponse(HttpResponse& tcpResponse, const string& status, 
 void HttpServer::buildResponse(HttpResponse& tcpResponse, const string& status, const string& contentType, long contentSize, void* content) {
 	// Paramètres
 	HttpParameters params(_basicParameters);
-	params.addParameter(HTTP_CONTENT_TYPE, contentType);
-	params.addParameter(HTTP_CONTENT_LENGTH, contentSize);
+	params.addParameter(HttpVocabulary::HTTP_CONTENT_TYPE, contentType);
+	params.addParameter(HttpVocabulary::HTTP_CONTENT_LENGTH, contentSize);
 
 	tcpResponse.update(status, params, content, contentSize);
 }

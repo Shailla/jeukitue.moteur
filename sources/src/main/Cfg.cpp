@@ -88,6 +88,8 @@ const char* CCfg::CST_JOU_SKIN_VISIBILITY =			"joueur.skinVisibility";
 const char* CCfg::CST_PLU_ACT_BEGIN =				"plugin.activate.begin";
 const char* CCfg::CST_PLU_ACT_END =					"plugin.activate.end";
 
+const char* CCfg::CST_WEB_TCP_SERVER_TIMEOUT =		"web.tcp.server.timeout";
+const char* CCfg::CST_WEB_TCP_SERVER_CLIENTS_SIZE =	"web.tcp.server.clients.size";
 const char* CCfg::CST_WEB_HTML_PORT =				"web.html.server.port";
 
 const char* CCfg::CST_DEB_SONPERFORMANCES =			"debug.sonPerformances";
@@ -354,6 +356,12 @@ void CCfg::Lit() {
 		 * Web
 		 * **************************************/
 
+		do fichier >> mot;	while( mot!=CST_WEB_TCP_SERVER_TIMEOUT );
+		fichier >> Web._htmlTcpTimeout;
+
+		do fichier >> mot;	while( mot!=CST_WEB_TCP_SERVER_CLIENTS_SIZE );
+		fichier >> Web._htmlTcpClientsSize;
+
 		do fichier >> mot;	while( mot!=CST_WEB_HTML_PORT );
 		fichier >> Web._htmlServerPort;
 
@@ -458,6 +466,8 @@ void CCfg::Ecrit() {
 	fichier << CST_PLU_ACT_END;
 
 	fichier << "\n\n-------------------------WEB---------------------------";
+	fichier << endl << CST_WEB_TCP_SERVER_TIMEOUT << "\t\t" << Web._htmlTcpTimeout;
+	fichier << endl << CST_WEB_TCP_SERVER_CLIENTS_SIZE << "\t\t" << Web._htmlTcpClientsSize;
 	fichier << endl << CST_WEB_HTML_PORT << "\t\t" << Web._htmlServerPort;
 
 	fichier << "\n\n------------------------DEBUG-------------------------";

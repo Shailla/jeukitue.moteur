@@ -20,6 +20,11 @@ TcpServer::TcpServer(int port) {
 	_serverPort = port;
 	_serverSocket = 0;
 	_socketSet = 0;
+	_acknowledgementCount = 0;
+
+	_tcpSocketTimeout = 180000;
+	_tcpClientsSize = 20;
+	_tcpBufferSize = 16384;
 }
 
 TcpServer::~TcpServer() {
@@ -39,7 +44,7 @@ void TcpServer::start() {
 		LOGERROR(("SDLNet_TCP_Open : %s", SDLNet_GetError()));
 	}
 
-	_socketSet = SDLNet_AllocSocketSet(1+ TCP_CLIENTS_SIZE);	// One for the server and one for each client
+	_socketSet = SDLNet_AllocSocketSet(1+ _tcpClientsSize);	// One for the server and one for each client
 
 	if( !_socketSet ) {
 		LOGERROR(("SDLNet_AllocSocketSet : %s", SDLNet_GetError()));
@@ -50,20 +55,32 @@ void TcpServer::start() {
 	}
 }
 
-vector<TcpPacket*> TcpServer::receive() {
+void TcpServer::setTimeout(int tcpSocketTimeout) {
+	_tcpSocketTimeout = tcpSocketTimeout;
+}
+
+void TcpServer::setClientsSize(int tcpClientsSize) {
+	_tcpClientsSize = tcpClientsSize;
+}
+
+vector<TcpPacket*> TcpServer::receive(long maxTime) {
 	map<TCPsocket, TcpSession>::iterator itSession;
 	vector<TcpPacket*> tcpPackets;
 	TcpPacket* tcpPacket;
 
-	while(tcpPackets.size() == 0) {
-		Uint32 time = SDL_GetTicks();
+	long startTime = SDL_GetTicks();
+	long now = startTime;
+	long last = startTime;
 
-		if(SDLNet_CheckSockets(_socketSet, 100)) {
+	do {
+		if(SDLNet_CheckSockets(_socketSet, maxTime - (last - startTime))) {
+			now = SDL_GetTicks();
+
 			// Server management
 			if(SDLNet_SocketReady(_serverSocket)) {
 				TCPsocket clientSocket = SDLNet_TCP_Accept(_serverSocket);
 
-				if(_clientSockets.size() >=  TCP_CLIENTS_SIZE) {
+				if(_clientSockets.size() >=  (size_t)_tcpClientsSize) {
 					SDLNet_TCP_Close(clientSocket);
 					LOGWARN(("Connexion TCP refusée car la pile de connexions est pleine"));
 				}
@@ -74,13 +91,8 @@ vector<TcpPacket*> TcpServer::receive() {
 						// Connecte la socket au serveur
 						LOGINFO(("Nouvelle connexion socket TCP"));
 
+						_clientSockets.insert(pair<TCPsocket, TcpSession>(clientSocket, TcpSession(clientSocket, now)));
 						SDLNet_TCP_AddSocket(_socketSet, clientSocket);
-						pair<map<TCPsocket, TcpSession>::iterator, bool> ret = _clientSockets.insert(pair<TCPsocket, TcpSession>(clientSocket, TcpSession(clientSocket, time)));
-						tcpPacket = receive(time, ret.first->second);
-
-						if(tcpPacket) {
-							tcpPackets.push_back(tcpPacket);
-						}
 					}
 					else {
 						LOGWARN(("On ne devrait jamais être ici, le client est déjà connecté en TCP"));
@@ -94,10 +106,10 @@ vector<TcpPacket*> TcpServer::receive() {
 			// Clients management
 			for(itSession = _clientSockets.begin() ; itSession != _clientSockets.end() ; itSession++) {
 				if(SDLNet_SocketReady(itSession->first)) {
-					LOGINFO(("Réception d'un paquet TCP"));
-					tcpPacket = receive(time, itSession->second);
+					tcpPacket = receive(now, itSession->second);
 
 					if(tcpPacket) {
+						LOGINFO(("Paquet TCP reçu"));
 						tcpPackets.push_back(tcpPacket);
 					}
 				}
@@ -108,38 +120,57 @@ vector<TcpPacket*> TcpServer::receive() {
 		for(itSession = _clientSockets.begin() ; itSession != _clientSockets.end() ; itSession++) {
 			TcpSession& session = itSession->second;
 
-			if(time - session.getLastTime() > TCP_SOCKET_TIMEOUT) {
-				LOGINFO(("Purge d'une connexion TCP en timeout"));
+			if(now - session.getLastTime() > (size_t)_tcpSocketTimeout) {
+				LOGINFO(("Purge d'une session TCP en timeout"));
 
 				SDLNet_TCP_DelSocket(_socketSet, session.getSocket());
 				SDLNet_TCP_Close(session.getSocket());
 				itSession = _clientSockets.erase(itSession);
 			}
 		}
-	}
 
-	LOGINFO(("Paquet TCP reçu"));
+		last = SDL_GetTicks();
+	} while((last - startTime < maxTime) && (tcpPackets.size() == 0));
+
 	return tcpPackets;
 }
 
-TcpPacket* TcpServer::receive(Uint32 time, TcpSession& session) {
+TcpPacket* TcpServer::receive(Uint32 now, TcpSession& session) {
 	TcpPacket* packet = 0;
 
-	char buffer[TCP_BUFFER_SIZE];
-	int requestSize = SDLNet_TCP_Recv(session.getSocket(), buffer, TCP_BUFFER_SIZE); 				// Reception parametres connection du client
+	char buffer[_tcpBufferSize];
+	int requestSize = SDLNet_TCP_Recv(session.getSocket(), buffer, _tcpBufferSize); 				// Reception parametres connection du client
 
 	// Réponse aux messages d'acknowledge
-	if(requestSize == 0) {
-		session.setLastTime(time);
+	/*if(requestSize == 0) {
+		session.setLastTime(now);
+		LOGINFO(("TCP ACK"));
+		_acknowledgementCount++;
 		SDLNet_TCP_Send(session.getSocket(), "", 0); 		// Envoi du contenu de la page au client
-
-		LOGDEBUG(("TCP acknowledge"));
 	}
+	// Déconnexion client ou erreur socket
+	else */if(requestSize <= 0) {
+		LOGINFO(("Déconnexion d'une session TCP par le client"));
+
+		SDLNet_TCP_DelSocket(_socketSet, session.getSocket());
+		SDLNet_TCP_Close(session.getSocket());
+		_clientSockets.erase(session.getSocket());
+	}
+	// Données métier
 	else {
+		session.setLastTime(now);
 		packet = new TcpPacket(&session, buffer, requestSize);
 	}
 
 	return packet;
+}
+
+long TcpServer::getAcknowledgementCount() const {
+	return _acknowledgementCount;
+}
+
+void TcpServer::setTcpBufferSize(int tcpBufferSize) {
+	_tcpBufferSize = tcpBufferSize;
 }
 
 void TcpServer::send(TcpSession* session, void* data, int size) {

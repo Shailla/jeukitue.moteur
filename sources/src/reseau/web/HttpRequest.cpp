@@ -45,12 +45,9 @@ HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
 		throw HttpException(HttpException::MALFORMED_HTTP_REQUEST, "Header is empty !");
 	}
 
-	int a = headers.size();
-
 	string firstLine = headers[0];
 	headers.erase(headers.begin());	// Remove first line
 
-	int b = headers.size();
 
 	// ************************************************************************************
 	// Lecture de la première ligne (méthode, url/paramètres et protocole)
@@ -89,7 +86,6 @@ HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
 			LOGWARN(("Ligne de paramètre http malformée '%s'", line.c_str()));
 		}
 		else {
-
 			name = line.substr(0, splitLine);
 			value = line.substr(splitLine + 1);
 

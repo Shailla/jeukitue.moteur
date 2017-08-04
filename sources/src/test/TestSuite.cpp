@@ -15,6 +15,7 @@
 #include "test/utils/UtilsTest.h"
 #include "test/utils/RessourcesLoaderTest.h"
 #include "test/reseau/JsonTest.h"
+#include "test/reseau/TcpServerTest.h"
 #include "test/reseau/UdpCommunicationTest.h"
 #include "test/data/DataTreeTest.h"
 
@@ -27,13 +28,14 @@ extern CCfg Config;		// Contient la configuration du jeu
 namespace jkt {
 
 TestSuite::TestSuite() {
-	_tests.push_back(new TraceTest());
-	_tests.push_back(new TableauTest());
-	_tests.push_back(new UtilsTest());
-	_tests.push_back(new RessourcesLoaderTest());
-	_tests.push_back(new JsonTest());
-	_tests.push_back(new UdpCommunicationTest());
-	_tests.push_back(new DataTreeTest());
+//	_tests.push_back(new TraceTest());
+//	_tests.push_back(new TableauTest());
+//	_tests.push_back(new UtilsTest());
+//	_tests.push_back(new RessourcesLoaderTest());
+	_tests.push_back(new TcpServerTest());
+//	_tests.push_back(new JsonTest());
+//	_tests.push_back(new UdpCommunicationTest());
+//	_tests.push_back(new DataTreeTest());
 }
 
 TestSuite::~TestSuite() {

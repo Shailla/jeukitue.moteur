@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 #ifdef WIN32
-	#include <windows.h>
+#include <windows.h>
 #endif
 
 #include "SDL.h"
@@ -68,6 +68,8 @@ class CCfg {
 	static const char* CST_PLU_ACT_BEGIN;
 	static const char* CST_PLU_ACT_END;
 
+	static const char* CST_WEB_TCP_SERVER_TIMEOUT;
+	static const char* CST_WEB_TCP_SERVER_CLIENTS_SIZE;
 	static const char* CST_WEB_HTML_PORT;
 
 	static const char* CST_DEB_SONPERFORMANCES;
@@ -132,9 +134,9 @@ private:
 		bool m_bFullscreen;
 		void InitSDL();
 		void InitOpenGL();
-        void InitAgar();
+		void InitAgar();
 	public :
-        std::string position;
+		std::string position;
 		int X;
 		int Y;
 		bool Fullscreen() const		{	return m_bFullscreen;	}
@@ -206,8 +208,16 @@ private:
 	class CWeb {		// Configuration du moteur de plugin
 		friend class CCfg;
 	protected:
+		int _htmlTcpTimeout;
+		int _htmlTcpClientsSize;
 		Uint16 _htmlServerPort;
 	public:
+
+		void setHtmlTcpTimeout(int htmlTcpTimeout)			{ _htmlTcpTimeout = htmlTcpTimeout;		}
+		int getHtmlTcpTimeout()								{ return _htmlTcpTimeout;				}
+
+		void setHtmlTcpClientsSize(int htmlTcpClientsSize)	{ _htmlTcpClientsSize = htmlTcpClientsSize;		}
+		int getHtmlTcpClientsSize()							{ return _htmlTcpClientsSize;				}
 
 		void setHtmlServerPort(Uint16 htmlServerPort)		{ _htmlServerPort = htmlServerPort;		}
 		Uint16 getHtmlServerPort()							{ return _htmlServerPort;				}
@@ -226,7 +236,7 @@ public:
 	CPlugin Plugin;					// Configuration du moteur de plugins
 	CDebug Debug;					// Paramètres servant au débuggage
 	CWeb Web;						// Paramètres du serveur web
-		
+
 	CCfg();
 
 	void NommeConfig(const std::string &configFileBaseName, const std::string& configFileSuffixName);

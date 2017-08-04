@@ -20,17 +20,18 @@
 namespace jkt {
 
 class TcpServer {
-	static const int TCP_CLIENTS_SIZE = 20;
-	static const int TCP_BUFFER_SIZE = 16384;
-	static const int TCP_SOCKET_TIMEOUT = 180000;	// millisecondes
+	int _serverPort;		// Port du serveur TCP
+	int _tcpSocketTimeout;	// millisecondes
+	int _tcpClientsSize;
+	int _tcpBufferSize;
 
-	/** Port du serveur TCP */
-	int _serverPort;
 	TCPsocket _serverSocket;
 	std::map<TCPsocket, TcpSession> _clientSockets;
 	SDLNet_SocketSet _socketSet;
 
-	TcpPacket* receive(Uint32 time, TcpSession& session);
+	int _acknowledgementCount;
+
+	TcpPacket* receive(Uint32 now, TcpSession& session);
 
 public:
 	TcpServer(int port);
@@ -39,8 +40,14 @@ public:
 	void start();
 	void stop();
 
-	std::vector<TcpPacket*> receive();
+	void setTcpBufferSize(int tcpBufferSize);
+	void setTimeout(int tcpSocketTimeout);
+	void setClientsSize(int tcpClientsSize);
+
+	std::vector<TcpPacket*> receive(long maxTime);
 	void send(TcpSession* session, void* data, int size);
+
+	long getAcknowledgementCount() const;
 };
 
 } /* namespace jkt */

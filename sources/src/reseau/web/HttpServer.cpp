@@ -14,6 +14,7 @@
 #include "SDL.h"
 #include "SDL_net.h"
 
+#include "main/Cfg.h"
 #include "util/StringUtils.h"
 #include "util/Trace.h"
 #include "util/FindFolder.h"
@@ -26,6 +27,8 @@
 #include "reseau/tcp/TcpServer.h"
 
 #include "reseau/web/HttpServer.h"
+
+extern CCfg Config;
 
 using namespace std;
 
@@ -125,6 +128,10 @@ void WebResource::load() {
 const char* HttpServer::HTTP_INTERNAL_ERROR_CONTENT = "<html><center><h1>JKT Power</h1><font size=5 color=red>Erreur interne</font></center></html>";
 
 HttpServer::HttpServer(int port) : _tcpServer(port) {
+
+	_tcpServer.setTimeout(Config.Web.getHtmlTcpTimeout());
+	_tcpServer.setClientsSize(Config.Web.getHtmlTcpClientsSize());
+
 
 	/* ************************************ */
 	/* Réponse HTTP de base                 */
@@ -255,7 +262,7 @@ void HttpServer::start() {
 		/* ****************************************** */
 
 		tcpPackets.clear();
-		tcpPackets = _tcpServer.receive();
+		tcpPackets = _tcpServer.receive(1000);
 
 
 		for(TcpPacket* tcpPacket : tcpPackets) {

@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 import 'rxjs/add/operator/toPromise';
 

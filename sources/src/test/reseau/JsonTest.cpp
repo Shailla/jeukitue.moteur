@@ -29,11 +29,7 @@ JsonTest::~JsonTest() {
 }
 
 string JsonTest::getDescription() {
-	string description;
-
-	description += "Tests de l'API de conversion en JSON";
-
-	return description;
+	return "Tests de l'API de conversion en JSON";
 }
 
 void JsonTest::test() {

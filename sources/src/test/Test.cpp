@@ -95,6 +95,10 @@ void Test::assertEqual(const char* file, int line, int expected, int var, const 
 	}
 }
 
+void Test::fail(const char* file, int line, const char* message) {
+	throw TestError(file, line, message);
+}
+
 void Test::log(const char* message, int line) {
 	ostringstream msg;
 

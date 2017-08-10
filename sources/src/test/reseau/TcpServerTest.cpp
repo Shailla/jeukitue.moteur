@@ -6,6 +6,7 @@
  */
 
 #include <string>
+#include <sstream>
 #include <vector>
 #include <iostream>
 
@@ -40,7 +41,7 @@ void TcpServerTest::test() {
 	TcpServer server(_serverPort);
 	server.setClientsSize(3);
 	server.setTimeout(10);
-	server.setTcpBufferSize(6);
+	server.setTcpBufferSize(7);
 
 	server.start();
 
@@ -52,42 +53,66 @@ void TcpServerTest::test() {
 	_client2Socket = createClient();
 
 
-	// Exchange data
-	log("Exchange data", __LINE__);
-
+	// Exchange data with 2 clients
+	log("Send TCP data to client 1", __LINE__);
 	SDLNet_TCP_Send(_client1Socket, "Hello1", 6);
+
+	log("Send TCP data to client 2", __LINE__);
 	SDLNet_TCP_Send(_client2Socket, "Coucou1", 7);
 
-	SDL_Delay(10);
+	SDL_Delay(100);
+	log("Try to connect clients and receive data", __LINE__);
 	packets = server.receive(20);
 
-//	ASSERT_EQUAL(2, packets.size(), "Should have received 2 data packet, since each packet size is higger than the buffer size");
-	cout << endl << "Nombre de paquets : " << packets.size();
+	logPackets(packets);
 
-	for(int i=0 ; i< packets.size() ; i++) {
-		cout << endl << "Paquet " << i << " : '" << packets[i]->getData() << "'";
-	}
-
-	cout << endl << "end" << flush;
+	ASSERT_EQUAL(2, packets.size(), "Should have received 2 data packet, since each packet size is higher than the buffer size");
 
 	ASSERT_EQUAL("Hello1", packets[0]->getData(), "");
 	ASSERT_EQUAL("Coucou1", packets[1]->getData(), "");
 
-	// Exchange data
+
+	// Exchange data with a single client
 	log("Exchange data", __LINE__);
 
+	log("Send TCP data to client 1", __LINE__);
 	SDLNet_TCP_Send(_client1Socket, "Hello2", 6);
+
+	log("Send TCP data to client 1", __LINE__);
 	SDLNet_TCP_Send(_client1Socket, "Coucou2", 7);
 
 	SDL_Delay(10);
 	packets = server.receive(20);
 
-	ASSERT_EQUAL(2, packets.size(), "Should have received 2 data packet, since each packet size is higger than the buffer size");
-	ASSERT_EQUAL("Hello2", packets[0]->getData(), "");
-	ASSERT_EQUAL("Coucou2", packets[1]->getData(), "");
+	logPackets(packets);
+
+	ASSERT_EQUAL(1, packets.size(), "Should have received 1 data packet, since each packet size is higher than the buffer size");
+	ASSERT_EQUAL("Hello2C", packets[0]->getData(), "");
+
+	packets = server.receive(20);
+
+	logPackets(packets);
+
+	ASSERT_EQUAL(1, packets.size(), "Should have received 1 data packet, since each packet size is higher than the buffer size");
+	ASSERT_EQUAL("oucou2", packets[0]->getData(), "");
+}
+
+void TcpServerTest::logPackets(vector<TcpPacket*>& packets) {
+	stringstream msg;
+	msg << "Paquets reçus : " << packets.size();
+
+	for(int i=0 ; (size_t)i< packets.size() ; i++) {
+		msg << endl << "\tPaquet " << i << " : '" << packets[i]->getData() << "'";
+	}
+
+	msg << endl << "end" << flush;
+
+	log(msg.str(), __LINE__);
 }
 
 TCPsocket TcpServerTest::createClient() {
+	log("Create client", __LINE__);
+
 	// Creation de la socket serveur
 	IPaddress adresse;
 

@@ -9,9 +9,12 @@
 #define SRC_TEST_RESEAU_TCPSERVERTEST_H_
 
 #include <string>
+#include <vector>
 
 #include "SDL.h"
 #include "SDL_net.h"
+
+#include "reseau/tcp/TcpPacket.h"
 
 #include "test/Test.h"
 
@@ -23,6 +26,7 @@ class TcpServerTest : public Test {
 	TCPsocket _client2Socket;
 
 	TCPsocket createClient();
+	void logPackets(std::vector<TcpPacket*>& packets);
 
 public:
 	TcpServerTest();

@@ -73,50 +73,66 @@ vector<TcpPacket*> TcpServer::receive(long maxTime) {
 	long last = startTime;
 
 	do {
-		if(SDLNet_CheckSockets(_socketSet, maxTime - (last - startTime))) {
+		int socketsReady = SDLNet_CheckSockets(_socketSet, maxTime - (last - startTime));
+		LOGDEBUG(("Sockets ready : %d", socketsReady));
+
+		if(socketsReady) {
 			now = SDL_GetTicks();
 
-			// Server management
+
+			/* *************************** */
+			/* Server management           */
+			/* *************************** */
+
 			if(SDLNet_SocketReady(_serverSocket)) {
-				TCPsocket clientSocket = SDLNet_TCP_Accept(_serverSocket);
+				TCPsocket clientSocket;
 
-				if(_clientSockets.size() >=  (size_t)_tcpClientsSize) {
-					SDLNet_TCP_Close(clientSocket);
-					LOGWARN(("Connexion TCP refusée car la pile de connexions est pleine"));
-				}
-				else if(clientSocket) {
-					map<TCPsocket, TcpSession>::iterator it = _clientSockets.find(clientSocket);
+				while((clientSocket = SDLNet_TCP_Accept(_serverSocket))) {
+					if(_clientSockets.size() >=  (size_t)_tcpClientsSize) {
+						LOGWARN(("Connexion TCP refusée (pile de connexions est pleine)"));
 
-					if(it == _clientSockets.end()) {	// Si la socket n'est pas encore connectée
-						// Connecte la socket au serveur
-						LOGINFO(("Nouvelle connexion socket TCP"));
-
-						_clientSockets.insert(pair<TCPsocket, TcpSession>(clientSocket, TcpSession(clientSocket, now)));
-						SDLNet_TCP_AddSocket(_socketSet, clientSocket);
+						SDLNet_TCP_Close(clientSocket);
 					}
 					else {
-						LOGWARN(("On ne devrait jamais être ici, le client est déjà connecté en TCP"));
+						map<TCPsocket, TcpSession>::iterator it = _clientSockets.find(clientSocket);
+
+						if(it == _clientSockets.end()) {	// Si la socket n'est pas encore connectée
+							// Connecte la socket au serveur
+							LOGINFO(("Nouvelle connexion TCP"));
+
+							_clientSockets.insert(pair<TCPsocket, TcpSession>(clientSocket, TcpSession(clientSocket, now)));
+							SDLNet_TCP_AddSocket(_socketSet, clientSocket);
+						}
+						else {
+							LOGERROR(("On ne devrait jamais être ici, le client est déjà connecté en TCP"));
+						}
 					}
-				}
-				else {
-					LOGWARN(("Socket ready mais rien à accepter"));
 				}
 			}
 
-			// Clients management
+
+			/* *************************** */
+			/* Clients data reception      */
+			/* *************************** */
+
+			LOGDEBUG(("Client sockets size : %d", _clientSockets.size()));
+
 			for(itSession = _clientSockets.begin() ; itSession != _clientSockets.end() ; itSession++) {
 				if(SDLNet_SocketReady(itSession->first)) {
 					tcpPacket = receive(now, itSession->second);
 
 					if(tcpPacket) {
-						LOGINFO(("Paquet TCP reçu"));
 						tcpPackets.push_back(tcpPacket);
 					}
 				}
 			}
 		}
 
-		// Garbage old clients
+
+		/* *************************** */
+		/* Garbage clients             */
+		/* *************************** */
+
 		for(itSession = _clientSockets.begin() ; itSession != _clientSockets.end() ; itSession++) {
 			TcpSession& session = itSession->second;
 
@@ -158,6 +174,7 @@ TcpPacket* TcpServer::receive(Uint32 now, TcpSession& session) {
 	}
 	// Données métier
 	else {
+		LOGINFO(("Reception d'un paquet"));
 		session.setLastTime(now);
 		packet = new TcpPacket(&session, buffer, requestSize);
 	}

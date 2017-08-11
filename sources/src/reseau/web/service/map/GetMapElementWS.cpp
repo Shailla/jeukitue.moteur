@@ -286,42 +286,51 @@ WebServiceResult GetMapElementWS::updateElement(HttpRequest& request, int elemen
 }
 
 bool GetMapElementWS::updateCaracBoolean(JsonObject& jsonCharistics, const Caracteristic& carac, bool& newValue) {
+	bool updated = false;
+
 	if(carac._updatable) {
 		JsonObject* caracObject = jsonCharistics.getObject(carac._name, false);
 
 		if(caracObject) {
 			const JsonBoolean* value = caracObject->getBoolean(CARAC_VALUE, true);
 			newValue = value->getValue();
+			updated = true;
 		}
 	}
 
-	return carac._updatable;
+	return updated;
 }
 
 bool GetMapElementWS::updateCaracLong(JsonObject& jsonCharistics, const Caracteristic& carac, long& newValue) {
+	bool updated = false;
+
 	if(carac._updatable) {
 		JsonObject* caracObject = jsonCharistics.getObject(carac._name, false);
 
 		if(caracObject) {
 			const JsonNumber* value = caracObject->getNumber(CARAC_VALUE, true);
 			newValue = value->getValue();
+			updated = true;
 		}
 	}
 
-	return carac._updatable;
+	return updated;
 }
 
 bool GetMapElementWS::updateCaracString(JsonObject& jsonCharistics, const Caracteristic& carac, string& newValue) {
+	bool updated = false;
+
 	if(carac._updatable) {
 		JsonObject* caracObject = jsonCharistics.getObject(carac._name, false);
 
 		if(caracObject) {
 			const JsonString* value = caracObject->getString(CARAC_VALUE, true);
 			newValue = value->getValue();
+			updated = true;
 		}
 	}
 
-	return carac._updatable;
+	return updated;
 }
 
 void GetMapElementWS::updateElement(JsonObject* jsonObject, MapObject* object) throw(BadFormatJsonException) {

@@ -126,6 +126,11 @@ public:
 	static Trace& instance();
 	bool isLogLevelEnabled(TraceLevel level, const char *nomFichier);
 	void print(TraceLevel level, TraceType type, int line, const char *nomFichier, const char *txt , va_list &vl );
+
+	/** ********************************************
+	 * Création du fichier de log
+	 ***********************************************/
+	void rotate();
 };
 
 #endif

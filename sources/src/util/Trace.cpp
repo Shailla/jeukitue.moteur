@@ -186,9 +186,16 @@ Trace::Trace() {
 		loadConfigKeyCommaSeparated(config, "logger.file.exclude.error", _excludeErrorFiles);
 	}
 
-	/* ***********************************************
-	 * Création du fichier de log
-	 * **********************************************/
+	// Création du fichier de log
+	rotate();
+
+	_Instance = this;
+
+	SDL_UnlockMutex(_Mutex);
+}
+
+void Trace::rotate() {
+	SDL_LockMutex( _Mutex );
 
 	// Nom du fichier de log courrant
 	std::stringstream logFile;
@@ -203,7 +210,7 @@ Trace::Trace() {
 			return;
 		}
 
-		// Recherche un index d'ancien fichier de traces disponible
+		// Recherche un index de fichier de traces disponible après les index déjà utilisés
 		int numeroFichier = -1, num;
 		directory_iterator end_itr; // default construction yields past-the-end
 
@@ -235,14 +242,16 @@ Trace::Trace() {
 		stringstream newName;
 		newName << TRACE_FOLDER << PREFIX_FICHIER_TRACE << numeroFichier << EXT_FICHIER_TRACE;
 
+		if(_Fichier.is_open()) {
+			_Fichier.close();
+		}
+
 		// Renomme ancien fichier courant
 		boost::filesystem::rename(logFile.str(), newName.str());
 	}
 
 	// Ouvre le fichier de log courant
 	_Fichier.open( logFile.str().c_str() );
-
-	_Instance = this;
 
 	SDL_UnlockMutex(_Mutex);
 }

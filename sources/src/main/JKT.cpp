@@ -862,6 +862,7 @@ void play_handle_key_down( SDL_Event *event ) {
 			lanceMenuPrinc( 0 );
 			break;
 
+			// Affiche les erreurs
 		case SDLK_F3 : {
 			LOGINFO(("Derniere erreur FMOD : %s", FMOD_ErrorString(FSOUND_GetError())));
 			LOGINFO(("Derniere erreur SDL : %s", SDL_GetError()));
@@ -871,16 +872,24 @@ void play_handle_key_down( SDL_Event *event ) {
 		}
 		break;
 
+			// Place le focus sur le menu
 		case SDLK_F5:
-			pFocus->SwitchPlayOrConsoleFocus();		// Place le focus sur le menu
+			pFocus->SwitchPlayOrConsoleFocus();
 			break;
 
-		case SDLK_v :		// Annule la vitesse du joueur actif
+			// Force la rotation du fichier de logs
+		case SDLK_F6:
+			Trace::instance().rotate();
+			break;
+
+			// Annule la vitesse du joueur actif
+		case SDLK_v :
 			if( Game.getMap() )
 				Game.Erwin()->changeVitesse(0.0f, 0.0f, 0.0f);
 			break;
 
-		case SDLK_RETURN :	// Sauve le fichier map actuel
+			// Sauve le fichier map actue
+		case SDLK_RETURN :
 			if(Game.getMap()) {
 				string saveMapFilename = "map-" + FileUtils::horodatage();
 				Game.getMap()->Save(saveMapFilename);
@@ -890,18 +899,21 @@ void play_handle_key_down( SDL_Event *event ) {
 			}
 			break;
 
-		case SDLK_p :		// Demande la prise d'une photo au prochain display
+			// Demande la prise d'une photo au prochain display
+		case SDLK_p :
 			Game.RequeteProcess.setTakePicture();
 			break;
 
-		case SDLK_m :		// Change de mode de rendu (normal ou filaire)
+			// Change de mode de rendu (normal ou filaire)
+		case SDLK_m :
 			if( JKT_RenderMode==GL_TRIANGLES )
 				JKT_RenderMode = GL_LINE_STRIP;
 			else
 				JKT_RenderMode = GL_TRIANGLES;
 			break;
 
-		case SDLK_o :		// Retour du joueur à la position d'origine avec vitesse nulle
+			// Retour du joueur à la position d'origine avec vitesse nulle
+		case SDLK_o :
 			if(Game.Erwin()) {
 				Game.Erwin()->choiceOneEntryPoint();
 				Game.Erwin()->changeVitesse( 0.0f, 0.0f, 0.0f );
@@ -1612,12 +1624,12 @@ int main(int argc, char** argv) {
 
 	bpo::options_description desc("Allowed options");
 	desc.add_options()
-				// First parameter describes option name/short name
-				// The second is parameter to option
-				// The third is description
-				("help,h", "print usage message")
-				("test,t", "execute unit tests")
-				("openLocal,o", bpo::value(&mapFile), "open the specified local map");
+						// First parameter describes option name/short name
+						// The second is parameter to option
+						// The third is description
+						("help,h", "print usage message")
+						("test,t", "execute unit tests")
+						("openLocal,o", bpo::value(&mapFile), "open the specified local map");
 
 	bpo::variables_map cmdParameters;
 

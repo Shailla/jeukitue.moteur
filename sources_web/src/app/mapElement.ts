@@ -6,6 +6,7 @@ export class MapElement {
   id: number;
   name: string;
 
+  caracKeys : string[] = []
   caracs = {};
 
   constructor() {
@@ -31,6 +32,7 @@ export class MapElement {
         console.log("coucou : " + caracName);
         let element = new MapGrapheElementCarac().fromJson(caracName, jsonObject.caracs[caracName])
         this.caracs[caracName] = element;
+        this.caracKeys.push(caracName);
         console.log("coucou : OK");
       }
 

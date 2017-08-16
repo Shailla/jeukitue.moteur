@@ -41,7 +41,7 @@ extern CGame Game;
 
 namespace jkt {
 
-const string GetMapElementWS::ID = 					"id";						// Identifiant unique d'un Map element
+const string GetMapElementWS::ID = 					"id";					// Identifiant unique d'un Map element
 const string GetMapElementWS::NAME = 				"name";					// Nom d'un Map element
 const string GetMapElementWS::TYPE = 				"type";					// Type d'un Map element
 const string GetMapElementWS::MAPS = 				"maps";
@@ -124,7 +124,7 @@ void GetMapElementWS::jisonifyMapGraphe(CMap* map, JsonObject& mapGraphe) {
 	}
 }
 
-WebServiceResult GetMapElementWS::getCurrentMap() {
+WebServiceResult GetMapElementWS::getCurrentMapGraphe() {
 	JsonObject root;
 	JsonObject& mapElement = root.addObject(MAPELEMENT);
 
@@ -187,14 +187,14 @@ void GetMapElementWS::getElement(int elementId, JsonObject& mapElement, vector<s
 	addCaracBoolean(caracs, HIDDEN, object->isHidden());
 
 	// Exemples
-	addCaracBoolean(caracs, "boolean1", "Updatables", true, true);
-	addCaracBoolean(caracs, "boolean2", "Not updatables", false, true);
+	addCaracBoolean(caracs, "booleanUpdatable", "Updatables", true, true);
+	addCaracBoolean(caracs, "booleanNotUpdatable", "Not updatables", false, true);
 
-	addCaracLong(caracs, "number1", "Updatables", true, 56);
-	addCaracLong(caracs, "number2", "Not updatables", false, 56);
+	addCaracLong(caracs, "numberUpdatable", "Updatables", true, 56);
+	addCaracLong(caracs, "numberNotUpdatable", "Not updatables", false, 56);
 
-	addCaracString(caracs, "string1", "Updatables", true, "coucou");
-	addCaracString(caracs, "string2", "Not updatables", false, "coucou");
+	addCaracString(caracs, "stringUpdatable", "Updatables", true, "coucou");
+	addCaracString(caracs, "stringNotUpdatable", "Not updatables", false, "coucou");
 }
 
 JsonObject& GetMapElementWS::addCaracString(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value) {
@@ -454,7 +454,7 @@ WebServiceResult GetMapElementWS::execute(HttpRequest& request, const string& ba
 	}
 	// Get current Map
 	else if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_GET && regex_match(serviceEndpoint, RG_MAP_SERVICE)) {
-		return getCurrentMap();
+		return getCurrentMapGraphe();
 	}
 	// Save current Map
 	else if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_POST && regex_match(serviceEndpoint, RG_MAP_SERVICE)) {

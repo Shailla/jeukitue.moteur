@@ -62,7 +62,7 @@ private:
 	static std::regex RG_MAP_ELEMENT_SERVICE;
 
 	WebServiceResult getMapList();
-	WebServiceResult getCurrentMap();
+	WebServiceResult getCurrentMapGraphe();
 	WebServiceResult saveCurrentMap();
 	void getElement(int elementId, JsonObject& mapElement, std::vector<std::string>& errors);
 	WebServiceResult updateElements(HttpRequest& request);

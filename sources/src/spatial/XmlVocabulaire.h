@@ -26,6 +26,11 @@ public:
 	static const char* FAUX;
 	static const char* VRAI;
 	static const char* VALEUR;
+	static const char* GEOSIMPLE;
+	static const char* GEOSIMPLEMATERIAL;
+	static const char* GEOOBJECT;
+	static const char* GEOTEXTURE;
+	static const char* GEOMULTI;
 	static const char* SOLIDE;
 	static const char* INDEX2SOMMETS2TEXTURE;
 	static const char* SOMMETS2TEXTURE;
@@ -46,15 +51,12 @@ public:
 	static const char* SOMMET;
 	static const char* SOMMETS;
 	static const char* VECTEURSNORMAUX;
-	static const char* SIMPLEMATERIAL;
 	static const char* MATERIAU;
 	static const char* MATERIAUSIMPLE;
 	static const char* MATERIAUTEXTURE;
 	static const char* MATERIAUMULTI;
 	static const char* MULTITEXVERTEX;
 	static const char* REF;
-	static const char* SIMPLE;
-	static const char* MULTI;
 	static const char* TEXTURE;
 	static const char* AMBIANTE;
 	static const char* DIFFUSE;

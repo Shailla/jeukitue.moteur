@@ -10,7 +10,7 @@
     </Materiaux>
     <Lumieres />
     <Geos>
-        <Geo Ref="1" Nom="Plan01" Type="Texture">
+        <GeoTexture Ref="1" Nom="Plan01">
             <Materiau Ref="0" />
             <Solide Valeur="true" />
             <Sommets Nbr="9">
@@ -46,8 +46,8 @@
                 <S X="-0" Y="0" Z="1" />
                 <S X="-0" Y="0" Z="1" />
             </VecteursNormaux>
-        </Geo>
-        <Geo Ref="2" Nom="Plan02" Type="Texture">
+        </GeoTexture>
+        <GeoTexture Ref="2" Nom="Plan02">
             <Materiau Ref="0" />
             <Solide Valeur="true" />
             <Sommets Nbr="9">
@@ -83,8 +83,8 @@
                 <S X="-0" Y="0" Z="1" />
                 <S X="-0" Y="0" Z="1" />
             </VecteursNormaux>
-        </Geo>
-        <Geo Ref="3" Nom="Plan03" Type="Texture">
+        </GeoTexture>
+        <GeoTexture Ref="3" Nom="Plan03">
             <Materiau Ref="0" />
             <Solide Valeur="true" />
             <Sommets Nbr="9">
@@ -120,8 +120,8 @@
                 <S X="-1" Y="-0.0008" Z="0" />
                 <S X="-1" Y="-0.0008" Z="0" />
             </VecteursNormaux>
-        </Geo>
-        <Geo Ref="4" Nom="Plan04" Type="Texture">
+        </GeoTexture>
+        <GeoTexture Ref="4" Nom="Plan04">
             <Materiau Ref="0" />
             <Solide Valeur="true" />
             <Sommets Nbr="9">
@@ -157,8 +157,8 @@
                 <S X="-1" Y="-0.0008" Z="0" />
                 <S X="-1" Y="-0.0008" Z="0" />
             </VecteursNormaux>
-        </Geo>
-        <Geo Ref="5" Nom="Capsule01" Type="Texture">
+        </GeoTexture>
+        <GeoTexture Ref="5" Nom="Capsule01">
             <Materiau Ref="0" />
             <Solide Valeur="true" />
             <Sommets Nbr="864">
@@ -2759,6 +2759,6 @@
                 <S X="-0.0008" Y="1" Z="0" />
                 <S X="0.240732" Y="0.960493" Z="-0.1394" />
             </VecteursNormaux>
-        </Geo>
+        </GeoTexture>
     </Geos>
 </Map>

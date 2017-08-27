@@ -461,20 +461,21 @@ void CTextureMaterialGeo::translate(float x, float y, float z) {
 bool CTextureMaterialGeo::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) {
 	double ref;
 
+	// Type
+	const char* type = element->Value();
+
+	if(!type)
+		throw CErreur("Fichier Map corrompu CTextureMaterialGeo 2");
+
+	if(strcmp(type, Xml::GEOTEXTURE)) {
+		throw CErreur("Fichier Map corrompu CTextureMaterialGeo 3");
+	}
+
 	// Nom
 	const char* nom = element->Attribute(Xml::NOM);
 	if(!nom)
 		throw CErreur("Fichier Map corrompu CTextureMaterialGeo 1");
 	setName(nom);
-
-	// Type
-	const char* type = element->Attribute(Xml::TYPE);
-	if(!type)
-		throw CErreur("Fichier Map corrompu CTextureMaterialGeo 2");
-
-	if(strcmp(type, Xml::TEXTURE)) {
-		throw CErreur("Fichier Map corrompu CTextureMaterialGeo 3");
-	}
 
 	// Référence
 	if(!element->Attribute(Xml::REF, &ref))
@@ -621,13 +622,11 @@ bool CTextureMaterialGeo::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLo
 	return true;
 }*/
 
-bool CTextureMaterialGeo::Save(TiXmlElement* element)
-{
+bool CTextureMaterialGeo::Save(TiXmlElement* element) {
 	// Sauve les données générales
-	TiXmlElement* elGeo = new TiXmlElement(Xml::GEO);
+	TiXmlElement* elGeo = new TiXmlElement(Xml::GEOTEXTURE);
 	elGeo->SetAttribute(Xml::REF, getId());
 	elGeo->SetAttribute(Xml::NOM, getName());
-	elGeo->SetAttribute(Xml::TYPE, Xml::TEXTURE);
 	element->LinkEndChild(elGeo);
 
 	// Matériau
@@ -649,8 +648,7 @@ bool CTextureMaterialGeo::Save(TiXmlElement* element)
 	return true;
 }
 
-float CTextureMaterialGeo::testContactTriangle( unsigned int i, const float posPlayer[3], float dist )
-{		// Test s'il y a contact entre un point P et le i° triangle de l'objet géo
+float CTextureMaterialGeo::testContactTriangle( unsigned int i, const float posPlayer[3], float dist ) {		// Test s'il y a contact entre un point P et le i° triangle de l'objet géo
 	float *normal = &m_pNormalTriangle[3*i];
 	float A[3], B[3], C[3], F[3], G[3], X[3], Y[3], Z[3];
 	float distanceW;
@@ -708,8 +706,7 @@ float CTextureMaterialGeo::testContactTriangle( unsigned int i, const float posP
 
 // Renvoie la distance entre le point de position 'pos' et le plus proche triangle de l'objet
 // géo. N'effectue cette mesure que pour des distances inférieures à 'dist'
-bool CTextureMaterialGeo::checkContact( const float pos[3], float dist )
-{
+bool CTextureMaterialGeo::checkContact( const float pos[3], float dist ) {
 	float distanceW;
 	if( TestContactPave( pos, dist ) )	// Teste proximité 'joueur / l'objet géo'
 	{
@@ -738,8 +735,7 @@ void CTextureMaterialGeo::GereContactPlayer(float positionPlayer[3], CPlayer *pl
 			}
 }
 
-bool CTextureMaterialGeo::TestContactPave( const float pos[3], float dist )
-{
+bool CTextureMaterialGeo::TestContactPave( const float pos[3], float dist ) {
 	// Teste si le point qui a pour position 'pos' se trouve ou non à une distance inférieure à 'dist'
 	// du pavé englobant l'objet
 
@@ -754,8 +750,7 @@ bool CTextureMaterialGeo::TestContactPave( const float pos[3], float dist )
 	return false;	// Le point 'pos' se trouve à une distance supérieure
 }
 
-float CTextureMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist)
-{
+float CTextureMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
 	float distanceVar;
 	float *vertex, *normal;
 	CV3D AP, N, AB, AC, U, V, W, var;

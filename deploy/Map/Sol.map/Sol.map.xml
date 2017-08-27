@@ -1,42 +1,41 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<Map>
+<?xml version="1.0" encoding="UTF-8"?><Map>
     <Materiaux>
         <MateriauTexture Ref="0">
-            <Ambiante R="0.588" G="0.588" B="0.588" />
-            <Diffuse R="0.588" G="0.588" B="0.588" />
-            <Specular R="0.9" G="0.9" B="0.9" />
-            <Fichier Nom="$\Sand3.jpg" />
+            <Ambiante R="0.588" G="0.588" B="0.588"/>
+            <Diffuse R="0.588" G="0.588" B="0.588"/>
+            <Specular R="0.9" G="0.9" B="0.9"/>
+            <Fichier Nom="$\Sand3.jpg"/>
         </MateriauTexture>
     </Materiaux>
-    <Lumieres />
+    <Lumieres/>
     <Geos>
-        <Geo Ref="6" Nom="Plane01" Type="Texture">
-            <Materiau Ref="0" />
-            <Solide Valeur="true" />
+        <GeoTexture Ref="6" Nom="Plane01">
+            <Materiau Ref="0"/>
+            <Solide Valeur="true"/>
             <Sommets Nbr="6">
-                <S X="5" 	Y="-1" 	Z="5" 	/>
-                <S X="5" 	Y="-1" 	Z="-5" 	/>
-                <S X="-5" 	Y="-1" 	Z="5" 	/>
-                <S X="-5" 	Y="-1" 	Z="-5" 	/>
-                <S X="-5" 	Y="-1" 	Z="5" 	/>
-                <S X="5" 	Y="-1" 	Z="-5" 	/>
+                <S X="5" Y="-1" Z="5"/>
+                <S X="5" Y="-1" Z="-5"/>
+                <S X="-5" Y="-1" Z="5"/>
+                <S X="-5" Y="-1" Z="-5"/>
+                <S X="-5" Y="-1" Z="5"/>
+                <S X="5" Y="-1" Z="-5"/>
             </Sommets>
             <SommetsDeTexture Nbr="6">
-                <S U="17.991" V="0.0085" />
-                <S U="0.009" V="0.0085" />
-                <S U="17.991" V="16.9915" />
-                <S U="0.009" V="16.9915" />
-                <S U="17.991" V="16.9915" />
-                <S U="0.009" V="0.0085" />
+                <S U="17.991" V="0.0085"/>
+                <S U="0.009" V="0.0085"/>
+                <S U="17.991" V="16.9915"/>
+                <S U="0.009" V="16.9915"/>
+                <S U="17.991" V="16.9915"/>
+                <S U="0.009" V="0.0085"/>
             </SommetsDeTexture>
             <VecteursNormaux Nbr="6">
-                <S X="-0" Y="0" Z="1" />
-                <S X="-0" Y="0" Z="1" />
-                <S X="-0" Y="0" Z="1" />
-                <S X="-0" Y="0" Z="1" />
-                <S X="-0" Y="0" Z="1" />
-                <S X="-0" Y="0" Z="1" />
+                <S X="-0" Y="0" Z="1"/>
+                <S X="-0" Y="0" Z="1"/>
+                <S X="-0" Y="0" Z="1"/>
+                <S X="-0" Y="0" Z="1"/>
+                <S X="-0" Y="0" Z="1"/>
+                <S X="-0" Y="0" Z="1"/>
             </VecteursNormaux>
-        </Geo>
+        </GeoTexture>
     </Geos>
 </Map>

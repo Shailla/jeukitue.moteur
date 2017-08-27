@@ -20,6 +20,7 @@ extern int JKT_RenderMode;
 
 #include "spatial/XmlVocabulaire.h"
 #include "util/Tableau.cpp"
+#include "util/StringUtils.h"
 #include "util/math_vectoriel.h"
 #include "util/V3D.h"
 #include "spatial/IfstreamMap.h"
@@ -527,18 +528,23 @@ void CSimpleGeo::Color( float r, float g, float b ) {
 bool CSimpleGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	double ref;
 
+	// Type
+	const char* geoType = el->Value();
+
+	if(StringUtils::isBlank(geoType)) {
+		throw CErreur("Fichier Map corrompu CSimpleGeo 2");
+	}
+
+	if(strcmp(geoType, Xml::GEOSIMPLE)) {
+		throw CErreur("Fichier Map corrompu CSimpleGeo 3");
+	}
+
 	// Nom
 	const char* nom = el->Attribute(Xml::NOM);
+
 	if(nom) {
 		setName(nom);
 	}
-
-	// Type
-	const char* type = el->Attribute(Xml::TYPE);
-	if(!type)
-		throw CErreur("Fichier Map corrompu CSimpleGeo 2");
-	if(strcmp(type, Xml::SIMPLE))
-		throw CErreur("Fichier Map corrompu CSimpleGeo 3");
 
 	// Référence
 	if(!el->Attribute(Xml::REF, &ref))
@@ -562,10 +568,9 @@ bool CSimpleGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 
 bool CSimpleGeo::Save(TiXmlElement* element) {
 	// Sauve les données générales
-	TiXmlElement* elGeo = new TiXmlElement(Xml::GEO);
+	TiXmlElement* elGeo = new TiXmlElement(Xml::GEOSIMPLE);
 	elGeo->SetAttribute(Xml::REF, getId());
 	elGeo->SetAttribute(Xml::NOM, getName());
-	elGeo->SetAttribute(Xml::TYPE, Xml::SIMPLE);
 	element->LinkEndChild(elGeo);
 
 	// Solidité

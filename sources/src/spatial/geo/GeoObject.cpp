@@ -468,50 +468,41 @@ void CGeoObject::ConstruitBase()
 }
 
 //DESTRUCTEUR
-CGeoObject::~CGeoObject()
-{
-	if( m_TabVertex )
-	{
+CGeoObject::~CGeoObject() {
+	if( m_TabVertex ) {
 		delete[] m_TabVertex;
 		m_TabVertex = 0;
 	}
 
-	if( m_TabFaces )
-	{
+	if( m_TabFaces ) {
 		delete[] m_TabFaces;
 		m_TabFaces = 0;
 	}
 
-	if( m_TabSubMat )
-	{
+	if( m_TabSubMat ) {
 		delete[] m_TabSubMat;			// Index des éventuels sous-matériau
 		m_TabSubMat = 0;
 	}
 
-	if( m_pNormalTriangle )
-	{
+	if( m_pNormalTriangle ) {
 		delete[] m_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs préliminaires à la gestion des contacts)
 		m_pNormalTriangle = 0;
 	}
 
-	if( m_TabVectNormaux )
-	{
+	if( m_TabVectNormaux ) {
 		delete[] m_TabVectNormaux;	// Pointeur sur le tableau des vecteurs normaux
 		m_TabVectNormaux = 0;
 	}
 
-	for( map<int,CChanTex*>::iterator p=TabTex.begin() ; p!=TabTex.end() ; p++ )
-	{
+	for( map<int,CChanTex*>::iterator p=TabTex.begin() ; p!=TabTex.end() ; p++ ) {
 		delete (*p).second;
 	}
 }
 
-void CGeoObject::EchangeXY()	// Echange les axes X et Y de l'objet
-{
+void CGeoObject::EchangeXY() {		// Echange les axes X et Y de l'objet
 	float varX, varY;
 
-	for( int i=0 ; i<m_NumVertex ; i++ )
-	{
+	for( int i=0 ; i<m_NumVertex ; i++ ) {
 		varX = m_TabVertex[ 3*i ];
 		varY = m_TabVertex[ (3*i)+1 ];
 
@@ -519,10 +510,8 @@ void CGeoObject::EchangeXY()	// Echange les axes X et Y de l'objet
 		m_TabVertex[ (3*i)+1 ] = varX;
 	}
 
-	if( m_TabVectNormaux )
-	{
-		for( int i=0 ; i<(m_NumFaces*3) ; i++ )
-		{
+	if( m_TabVectNormaux ) {
+		for( int i=0 ; i<(m_NumFaces*3) ; i++ ) {
 			varX = m_TabVectNormaux[ 3*i ];
 			varY = m_TabVectNormaux[ (3*i)+1 ];
 
@@ -532,12 +521,10 @@ void CGeoObject::EchangeXY()	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CGeoObject::EchangeXZ()	// Echange les axes X et Y de l'objet
-{
+void CGeoObject::EchangeXZ() {		// Echange les axes X et Y de l'objet
 	float varX, varZ;
 
-	for( int i=0 ; i<m_NumVertex ; i++ )
-	{
+	for( int i=0 ; i<m_NumVertex ; i++ ) {
 		varX = m_TabVertex[ 3*i ];
 		varZ = m_TabVertex[ (3*i)+2 ];
 
@@ -545,10 +532,8 @@ void CGeoObject::EchangeXZ()	// Echange les axes X et Y de l'objet
 		m_TabVertex[ (3*i)+2 ] =varX;
 	}
 
-	if( m_TabVectNormaux )
-	{
-		for( int i=0 ; i<(m_NumFaces*3) ; i++ )
-		{
+	if( m_TabVectNormaux ) {
+		for( int i=0 ; i<(m_NumFaces*3) ; i++ ) {
 			varX = m_TabVectNormaux[ 3*i ];
 			varZ = m_TabVectNormaux[ (3*i)+2 ];
 
@@ -558,12 +543,10 @@ void CGeoObject::EchangeXZ()	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CGeoObject::EchangeYZ()	// Echange les axes X et Y de l'objet
-{
+void CGeoObject::EchangeYZ() {		// Echange les axes X et Y de l'objet
 	float varY, varZ;
 
-	for( int i=0 ; i<m_NumVertex ; i++ )
-	{
+	for( int i=0 ; i<m_NumVertex ; i++ ) {
 		varY = m_TabVertex[ (3*i)+1 ];
 		varZ = m_TabVertex[ (3*i)+2 ];
 
@@ -571,10 +554,8 @@ void CGeoObject::EchangeYZ()	// Echange les axes X et Y de l'objet
 		m_TabVertex[ (3*i)+2 ] =varY;
 	}
 
-	if( m_TabVectNormaux )
-	{
-		for( int j=0 ; j<(m_NumFaces*3) ; j++ )
-		{
+	if( m_TabVectNormaux ) {
+		for( int j=0 ; j<(m_NumFaces*3) ; j++ ) {
 			varZ = m_TabVectNormaux[ (3*j)+2 ];
 			varY = m_TabVectNormaux[ (3*j)+1 ];
 
@@ -644,10 +625,9 @@ bool CGeoObject::Save(TiXmlElement* element) {
 	int i=0;
 
 	// Sauve les données générales
-	TiXmlElement* elGeo = new TiXmlElement("Geo");
-	elGeo->SetAttribute("Ref", getId());
-	elGeo->SetAttribute("Nom", getName());
-	elGeo->SetAttribute("Type", "Simple material");
+	TiXmlElement* elGeo = new TiXmlElement(Xml::GEOOBJECT);
+	elGeo->SetAttribute(Xml::REF, getId());
+	elGeo->SetAttribute(Xml::NOM, getName());
 	element->LinkEndChild(elGeo);
 
 	// Solidité
@@ -655,8 +635,8 @@ bool CGeoObject::Save(TiXmlElement* element) {
 
 	// Présence matériau
 	if(m_bMaterialTexture) {
-		TiXmlElement* elMat = new TiXmlElement("Materiau");
-		elMat->SetAttribute("Ref", m_MaterialTexture);
+		TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAU);
+		elMat->SetAttribute(Xml::REF, m_MaterialTexture);
 		elGeo->LinkEndChild(elMat);
 	}
 
@@ -690,7 +670,7 @@ bool CGeoObject::Save(TiXmlElement* element) {
 
 	// Canaux de texture
 	TiXmlElement* elCan = new TiXmlElement("Canaux");
-	elCan->SetAttribute("Nbr", (int)TabTex.size());
+	elCan->SetAttribute(Xml::NBR, (int)TabTex.size());
 	for( map<int,CChanTex*>::iterator p=TabTex.begin() ; p!=TabTex.end() ; p++ )
 	{
 		TiXmlElement* el = new TiXmlElement("Canal");

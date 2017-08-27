@@ -487,22 +487,24 @@ void CSimpleMaterialGeo::translate( float x, float y, float z ) {
 	}
 }
 
-bool CSimpleMaterialGeo::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger)
-{
+bool CSimpleMaterialGeo::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) {
 	double ref;
+
+	// Type
+	const char* type = element->Value();
+
+	if(!type)
+		throw CErreur("Fichier Map corrompu CSimpleMaterialGeo 2");
+
+	if(strcmp(type, Xml::GEOSIMPLEMATERIAL))
+
+		throw CErreur("Fichier Map corrompu CSimpleMaterialGeo 3");
 
 	// Nom
 	const char* nom = element->Attribute(Xml::NOM);
 	if(!nom)
 		throw CErreur("Fichier Map corrompu CSimpleMaterialGeo 1");
 	setName(nom);
-
-	// Type
-	const char* type = element->Attribute(Xml::TYPE);
-	if(!type)
-		throw CErreur("Fichier Map corrompu CSimpleMaterialGeo 2");
-	if(strcmp(type, Xml::SIMPLEMATERIAL))
-		throw CErreur("Fichier Map corrompu CSimpleMaterialGeo 3");
 
 	// Référence
 	if(!element->Attribute(Xml::REF, &ref))
@@ -630,10 +632,9 @@ bool CSimpleMaterialGeo::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLog
 bool CSimpleMaterialGeo::Save(TiXmlElement* element)
 {
 	// Sauve les données générales
-	TiXmlElement* elGeo = new TiXmlElement(Xml::GEO);
+	TiXmlElement* elGeo = new TiXmlElement(Xml::GEOSIMPLEMATERIAL);
 	elGeo->SetAttribute(Xml::REF, getId());
 	elGeo->SetAttribute(Xml::NOM, getName());
-	elGeo->SetAttribute(Xml::TYPE, Xml::SIMPLEMATERIAL);
 	element->LinkEndChild(elGeo);
 
 	// Solidité
@@ -711,8 +712,7 @@ float CSimpleMaterialGeo::testContactTriangle( unsigned int i, const float posPl
 
 // Renvoie la distance entre le point de position 'pos' et le plus proche triangle de l'objet
 // géo. N'effectue cette mesure que pour des distances inférieures à 'dist'
-bool CSimpleMaterialGeo::checkContact( const float pos[3], float dist )
-{
+bool CSimpleMaterialGeo::checkContact( const float pos[3], float dist ) {
 	float distanceW;
 	if( TestContactPave( pos, dist ) )	// Teste proximité 'joueur / l'objet géo'
 	{
@@ -742,8 +742,7 @@ void CSimpleMaterialGeo::GereContactPlayer(float positionPlayer[3], CPlayer *pla
 			}
 }
 
-bool CSimpleMaterialGeo::TestContactPave( const float pos[3], float dist )
-{
+bool CSimpleMaterialGeo::TestContactPave( const float pos[3], float dist ) {
 	// Teste si le point qui a pour position 'pos' se trouve ou non à une distance inférieure à 'dist'
 	// du pavé englobant l'objet
 
@@ -758,8 +757,7 @@ bool CSimpleMaterialGeo::TestContactPave( const float pos[3], float dist )
 	return false;	// Le point 'pos' se trouve à une distance supérieure
 }
 
-float CSimpleMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist)
-{
+float CSimpleMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
 	float distanceVar;
 	float *vertex, *normal;
 	CV3D AP, N, AB, AC, U, V, W, var;

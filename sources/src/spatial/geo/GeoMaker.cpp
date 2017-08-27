@@ -22,6 +22,7 @@ class CGame;
 #include <spatial/basic/Geometrical.h>
 #include "spatial/geo/SimpleGeo.h"
 #include "spatial/geo/SimpleMaterialGeo.h"
+#include "spatial/geo/GeoObject.h"
 #include "spatial/geo/MultiMaterialGeo.h"
 #include "spatial/geo/TextureMaterialGeo.h"
 #include "spatial/geo/ChanTex.h"
@@ -65,32 +66,33 @@ CGeoMaker::CGeoMaker(CMap *map) {
 	m_NumColor = 0;
 }
 
-CGeoMaker::~CGeoMaker()
-{
+CGeoMaker::~CGeoMaker() {
 	if(m_Color) {
 		delete[] m_Color;
 	}
+
 	if(m_TabVertex) {
 		delete[] m_TabVertex;
 	}
+
 	if(m_TabFaces) {
 		delete[] m_TabFaces;
 	}
+
 	if(m_TabVectNormaux) {
 		delete[] m_TabVectNormaux;
 	}
+
 	if(m_TabSubMat) {
 		delete[] m_TabSubMat;
 	}
 }
 
-void CGeoMaker::setOffsetMateriau(int offset)
-{
+void CGeoMaker::setOffsetMateriau(int offset) {
 	m_OffsetMateriau = offset;
 }
 
-int CGeoMaker::getOffsetMateriau() throw(CErreur)
-{
+int CGeoMaker::getOffsetMateriau() throw(CErreur) {
 	if(m_OffsetMateriau < 0) {
 		throw CErreur("GeoMaker erreur : m_OffsetMateriau non initialisé");
 	}
@@ -445,15 +447,13 @@ void CGeoMaker::lineariseTexVertex() {
 	}
 }
 
-void CGeoMaker::lineariseVertex()	// Renvoie le tableau de vertex sous forme non-indexée
-{
+void CGeoMaker::lineariseVertex() {		// Renvoie le tableau de vertex sous forme non-indexée
 	if(m_TabFaces) {
 		m_NumVertex = m_NumFaces*3;
 		float* vertex = new float[3*m_NumVertex];
 
 			// Linéarise les vertex à partir du tableau des indices et des vertex indexés
-		for(int i=0; i<m_NumVertex ; i++)	// Pour chaque face de la forme
-		{
+		for(int i=0; i<m_NumVertex ; i++) {	// Pour chaque face de la forme
 			vertex[(i*3) + 0] = m_TabVertex[(3*m_TabFaces[i]) + 0];
 			vertex[(i*3) + 1] = m_TabVertex[(3*m_TabFaces[i]) + 1];
 			vertex[(i*3) + 2] = m_TabVertex[(3*m_TabFaces[i]) + 2];
@@ -464,8 +464,7 @@ void CGeoMaker::lineariseVertex()	// Renvoie le tableau de vertex sous forme non
 	}
 }
 
-CSimpleGeo* CGeoMaker::makeSimpleGeo()
-{
+CSimpleGeo* CGeoMaker::makeSimpleGeo() {
 	CSimpleGeo* geo;
 
 	geo = new CSimpleGeo(m_Map,m_Nom,m_NumVertex,m_TabVertex,m_NumFaces,m_TabFaces,m_Color,m_bSolid);
@@ -484,16 +483,14 @@ CSimpleGeo* CGeoMaker::makeSimpleGeo()
 	return geo;
 }
 
-void CGeoMaker::SaveVertex(TiXmlElement *element, unsigned int nbr, float* vertex)
-{
+void CGeoMaker::SaveVertex(TiXmlElement *element, unsigned int nbr, float* vertex) {
 	stringstream ss0, ss1, ss2;
 
 		// Sommets
 	TiXmlElement* elSom = new TiXmlElement("Sommets");
 	elSom->SetAttribute(Xml::NBR, nbr);
 
-	for(unsigned int i=0 ; i<nbr ; i++)
-	{
+	for(unsigned int i=0 ; i<nbr ; i++) {
 		stringstream ss0, ss1, ss2;
 
 		ss0 << vertex[3*i + 0];
@@ -511,8 +508,7 @@ void CGeoMaker::SaveVertex(TiXmlElement *element, unsigned int nbr, float* verte
 	element->LinkEndChild(elSom);
 }
 
-float* CGeoMaker::LitVertex(TiXmlElement *element, int &nbr)
-{
+float* CGeoMaker::LitVertex(TiXmlElement *element, int &nbr) {
 	TiXmlElement* elSom = element->FirstChildElement(Xml::SOMMETS);
 	if(!elSom) {
 		string str = "Fichier Map corrompu : LitVertex - ";
@@ -877,35 +873,31 @@ void CGeoMaker::SaveMateriau(TiXmlElement* element, unsigned int refMat)
 }
 
 MapObject* CGeoMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
-	const char* type = el->Attribute(Xml::TYPE);
+	const char* type = el->Value();
 	MapObject* geo = 0;
 
-	if(!strcmp(Xml::SIMPLE, type)) {
+	if(!strcmp(Xml::GEOSIMPLE, type)) {
 		CSimpleGeo* simpleGeo = new CSimpleGeo(&map);
 		simpleGeo->Lit(el, map, mapLogger);
 		geo = simpleGeo;
 	}
-	else if(!strcmp(Xml::SIMPLEMATERIAL, type)) {
+	else if(!strcmp(Xml::GEOSIMPLEMATERIAL, type)) {
 		CSimpleMaterialGeo* geoSM = new CSimpleMaterialGeo(&map);
 		geoSM->setOffsetMateriau(0);
 		geoSM->Lit(el, map, mapLogger);
 		geo = geoSM;
 	}
-	else if(!strcmp(Xml::TEXTURE, type)) {
+	else if(!strcmp(Xml::GEOTEXTURE, type)) {
 		CTextureMaterialGeo* geoTM = new CTextureMaterialGeo(&map);
 		geoTM->setOffsetMateriau(0);
 		geoTM->Lit(el, map, mapLogger);
 		geo = geoTM;
 	}
-	else if(!strcmp(Xml::MULTI, type)) {
+	else if(!strcmp(Xml::GEOMULTI, type)) {
 		CMultiMaterialGeo* geoMM = new CMultiMaterialGeo(&map);
 		geoMM->setOffsetMateriau(0);
 		geoMM->Lit(el, map, mapLogger);
 		geo = geoMM;
-	}
-	else {
-		mapLogger->logError("Fichier Map corrompu : Geo de type inconnu");
-		throw jkt::CErreur("Fichier Map corrompu : Geo de type inconnu");
 	}
 
 	return geo;

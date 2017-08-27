@@ -458,22 +458,23 @@ void CMultiMaterialGeo::translate( float x, float y, float z ) {
 	}
 }
 
-bool CMultiMaterialGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger)
-{
+bool CMultiMaterialGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	double ref;
+
+	// Type
+	const char* type = el->Value();
+
+	if(!type)
+		throw CErreur("Fichier Map corrompu CMultiMaterialGeo 2");
+
+	if(strcmp(type, Xml::GEOMULTI))
+		throw CErreur("Fichier Map corrompu CMultiMaterialGeo 3");
 
 	// Nom
 	const char* nom = el->Attribute(Xml::NOM);
 	if(!nom)
 		throw CErreur("Fichier Map corrompu CMultiMaterialGeo 1");
 	setName(nom);
-
-	// Type
-	const char* type = el->Attribute(Xml::TYPE);
-	if(!type)
-		throw CErreur("Fichier Map corrompu CMultiMaterialGeo 2");
-	if(strcmp(type, Xml::MULTI))
-		throw CErreur("Fichier Map corrompu CMultiMaterialGeo 3");
 
 	// Référence
 	if(!el->Attribute(Xml::REF, &ref))
@@ -645,13 +646,11 @@ bool CMultiMaterialGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger)
 	return true;
 }*/
 
-bool CMultiMaterialGeo::Save(TiXmlElement* element)
-{
+bool CMultiMaterialGeo::Save(TiXmlElement* element) {
 	// Sauve les données générales
-	TiXmlElement* elGeo = new TiXmlElement(Xml::GEO);
+	TiXmlElement* elGeo = new TiXmlElement(Xml::GEOMULTI);
 	elGeo->SetAttribute(Xml::REF, getId());
 	elGeo->SetAttribute(Xml::NOM, getName());
-	elGeo->SetAttribute(Xml::TYPE, Xml::MULTI);
 	element->LinkEndChild(elGeo);
 
 	// Matériau
@@ -679,8 +678,7 @@ bool CMultiMaterialGeo::Save(TiXmlElement* element)
 	return true;
 }
 
-float CMultiMaterialGeo::testContactTriangle( unsigned int i, const float posPlayer[3], float dist )
-{		// Test s'il y a contact entre un point P et le i° triangle de l'objet géo
+float CMultiMaterialGeo::testContactTriangle(unsigned int i, const float posPlayer[3], float dist) {		// Test s'il y a contact entre un point P et le i° triangle de l'objet géo
 	float *normal = &m_pNormalTriangle[3*i];
 	float A[3], B[3], C[3], F[3], G[3], X[3], Y[3], Z[3];
 	float distanceW;
@@ -738,8 +736,7 @@ float CMultiMaterialGeo::testContactTriangle( unsigned int i, const float posPla
 
 	// Renvoie la distance entre le point de position 'pos' et le plus proche triangle de l'objet
 	// géo. N'effectue cette mesure que pour des distances inférieures à 'dist'
-bool CMultiMaterialGeo::checkContact( const float pos[3], float dist )
-{
+bool CMultiMaterialGeo::checkContact( const float pos[3], float dist ) {
 	float distanceW;
 	if( TestContactPave( pos, dist ) )	// Teste proximité 'joueur / l'objet géo'
 	{
@@ -769,8 +766,7 @@ void CMultiMaterialGeo::GereContactPlayer(float positionPlayer[3], CPlayer *play
 			}
 }
 
-bool CMultiMaterialGeo::TestContactPave( const float pos[3], float dist )
-{
+bool CMultiMaterialGeo::TestContactPave( const float pos[3], float dist ) {
 	// Teste si le point qui a pour position 'pos' se trouve ou non à une distance inférieure à 'dist'
 	// du pavé englobant l'objet
 
@@ -785,8 +781,7 @@ bool CMultiMaterialGeo::TestContactPave( const float pos[3], float dist )
 	return false;	// Le point 'pos' se trouve à une distance supérieure
 }
 
-float CMultiMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist)
-{
+float CMultiMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
 	float distanceVar;
 	float *vertex, *normal;
 	CV3D AP, N, AB, AC, U, V, W, var;
@@ -809,8 +804,8 @@ float CMultiMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist)
 
 		// Vérifie si le laser touche une face de la map
 	vertex = m_TabVertex;
-	for( int i=0; i<m_NumVertex; i=i+3) //pour chaque triangle de l'objet géo.
-	{
+
+	for( int i=0; i<m_NumVertex; i=i+3) {		//pour chaque triangle de l'objet géo.
 		normal = &m_pNormalTriangle[3*i];
 
 			// vecteur AP, P personnage, A point du triangle

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jkt="http://jkt/map2017.xsd" targetNamespace="http://jkt/map2017.xsd" elementFormDefault="qualified">
+
+	<xs:include schemaLocation="map2017-basicTypes.xsd" />
+
+	<xs:element name="Map">
+		<xs:annotation>
+			<xs:documentation>Map de jeu</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Plugins" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Plugins de la Map</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Load" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="Nom" type="xs:string">
+										<xs:annotation>
+											<xs:documentation>Nom du plugin</xs:documentation>
+										</xs:annotation>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="ParticulesEngines" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Moteur de particules présents dans la Map</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Neige" type="jkt:TParticulesEngineNeige" minOccurs="0" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Materiaux" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Liste des materiaux utilisés (simples couleurs, textures, textures multiples)</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="MateriauSimple" type="jkt:TMateriauSimple" minOccurs="0" maxOccurs="unbounded" />
+							<xs:element name="MateriauTexture" type="jkt:TMateriauTexture" minOccurs="0" maxOccurs="unbounded" />
+							<xs:element name="MateriauMulti" type="jkt:TMateriauTexture" minOccurs="0" maxOccurs="unbounded" />
+						</xs:sequence>
+						<xs:attribute name="Ref" type="xs:integer" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Lumieres" minOccurs="0" maxOccurs="1" />
+				<xs:element name="Geos" minOccurs="0" maxOccurs="1" />
+				<xs:element name="Imports" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Autres fichiers Map à importer</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Import" type="jkt:TImport" minOccurs="0" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="EntryPoints" minOccurs="0" maxOccurs="1">
+					<xs:annotation>
+						<xs:documentation>Points d'entrée des joueurs dans la Map</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="EntryPoint" type="jkt:TEntryPoint" minOccurs="0" maxOccurs="unbounded" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="TParticulesEngineNeige">
+		<xs:sequence>
+			<xs:element name="Position" type="jkt:TPosition" />
+			<xs:element name="Dimention" type="jkt:TDimension" />
+		</xs:sequence>
+		<xs:attribute name="Nom" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>Nom du moteur de particules</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="NbrParticules" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>Nombre de particles que le moteur de particules doit générer</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="TMateriauSimple">
+		<xs:sequence>
+			<xs:element name="Ambiante" type="jkt:TColor" />
+			<xs:element name="Diffuse" type="jkt:TColor" />
+			<xs:element name="Specular" type="jkt:TColor" />
+		</xs:sequence>
+		<xs:attribute name="Type">
+			<xs:annotation>
+				<xs:documentation>Type d'import à effectuer (add=ajout en sous-Map, merge=fusion de la Map)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="TMateriauTexture">
+		<xs:sequence>
+			<xs:element name="Ambiante" type="jkt:TColor" />
+			<xs:element name="Diffuse" type="jkt:TColor" />
+			<xs:element name="Specular" type="jkt:TColor" />
+			<xs:element name="Fichier">
+				<xs:complexType>
+					<xs:attribute name="Nom" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Nom du fichier de texture</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Type">
+			<xs:annotation>
+				<xs:documentation>Type d'import à effectuer (add=ajout en sous-Map, merge=fusion de la Map)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="TMateriauMulti">
+		<xs:sequence>
+			<xs:element name="Ambiante" type="jkt:TColor" />
+			<xs:element name="Diffuse" type="jkt:TColor" />
+			<xs:element name="Specular" type="jkt:TColor" />
+			<xs:element name="Fichier">
+				<xs:complexType>
+					<xs:attribute name="Nom" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Nom du fichier de texture</xs:documentation>
+						</xs:annotation>
+					</xs:attribute>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SousMateriaux">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="MateriauSimple" type="jkt:TMateriauSimple" minOccurs="0" maxOccurs="unbounded" />
+						<xs:element name="MateriauTexture" type="jkt:TMateriauTexture" minOccurs="0" maxOccurs="unbounded" />
+						<xs:element name="MateriauMulti" type="jkt:TMateriauTexture" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+					<xs:attribute name="Nbr" type="xs:integer"></xs:attribute>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Type">
+			<xs:annotation>
+				<xs:documentation>Type d'import à effectuer (add=ajout en sous-Map, merge=fusion de la Map)</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="TImport">
+		<xs:sequence>
+			<xs:element name="Translate" type="jkt:TTranslate" />
+			<xs:element name="Scale" type="jkt:TScale" />
+		</xs:sequence>
+		<xs:attribute name="Mode">
+			<xs:annotation>
+				<xs:documentation>Type d'import à effectuer (add=ajout en sous-Map, merge=fusion de la Map)</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:enumeration value="add" />
+					<xs:enumeration value="merge" />
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="Nom" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>Nom de la Map à importer</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="TEntryPoint">
+		<xs:sequence>
+			<xs:element name="Position" type="jkt:TPosition" />
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Map>
     <Materiaux>
-        <Materiau Type="Texture" Ref="0">
+        <MateriauTexture Ref="0">
             <Ambiante R="0.588" G="0.588" B="0.588" />
             <Diffuse R="0.588" G="0.588" B="0.588" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\Sand3.jpg" />
-        </Materiau>
+        </MateriauTexture>
     </Materiaux>
     <Lumieres />
     <Geos>

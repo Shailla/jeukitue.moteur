@@ -208,7 +208,7 @@ bool CMaterialMulti::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	int i=0;
 	m_TabMat = new CMaterial*[m_NbrTex];
 
-	for(TiXmlElement* el=elSma->FirstChildElement(Xml::MATERIAU); el!=0; el=el->NextSiblingElement()) {
+	for(TiXmlElement* el=elSma->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 		el->Value();
 		el->Attribute(Xml::REF);
 
@@ -226,8 +226,7 @@ bool CMaterialMulti::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 
 bool CMaterialMulti::Save(TiXmlElement* element) {
 	// Nom, référence...
-	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAU);
-	elMat->SetAttribute(Xml::TYPE, Xml::MULTI);
+	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAUMULTI);
 	elMat->SetAttribute(Xml::REF, getRef());
 	elMat->SetAttribute(Xml::NOM, getName());
 	element->LinkEndChild(elMat);
@@ -240,8 +239,9 @@ bool CMaterialMulti::Save(TiXmlElement* element) {
 	// Sous-matériaux
 	TiXmlElement* elSma = new TiXmlElement(Xml::SOUSMATERIAUX);
 	elSma->SetAttribute(Xml::NBR, NbrTex());
-	for( int i=0 ; i<NbrTex() ; i++ )
+	for( int i=0 ; i<NbrTex() ; i++ ) {
 		m_TabMat[i]->Save(elSma);
+	}
 
 	elMat->LinkEndChild(elSma);
 

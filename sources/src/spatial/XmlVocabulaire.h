@@ -48,6 +48,9 @@ public:
 	static const char* VECTEURSNORMAUX;
 	static const char* SIMPLEMATERIAL;
 	static const char* MATERIAU;
+	static const char* MATERIAUSIMPLE;
+	static const char* MATERIAUTEXTURE;
+	static const char* MATERIAUMULTI;
 	static const char* MULTITEXVERTEX;
 	static const char* REF;
 	static const char* SIMPLE;

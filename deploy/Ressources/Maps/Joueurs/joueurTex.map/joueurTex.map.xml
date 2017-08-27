@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Map>
     <Materiaux>
-        <Materiau Type="Texture" Ref="0">
+        <MateriauTexture Ref="0">
             <Ambiante R="0.5294" G="0.2353" B="0.2353" />
             <Diffuse R="0.5294" G="0.2353" B="0.2353" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\fessealex2.jpg" />
-        </Materiau>
+        </MateriauTexture>
     </Materiaux>
     <Lumieres />
     <Geos>

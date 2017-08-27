@@ -15,7 +15,7 @@ public:
     ~JktException(void);
 
     const char* getMessage() const;
-    const char* what() const throw();
+    const char* what() const throw() override;
 };
 
 #endif

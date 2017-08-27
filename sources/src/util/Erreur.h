@@ -13,6 +13,8 @@ class CErreur : public JktException {		// Classe pour l'émission d'erreurs par e
 public:
 	CErreur(const std::stringstream &message);
 	CErreur(const std::string &message);
+
+	const char* what() const throw() override;
 };
 
 }	// JktUtils

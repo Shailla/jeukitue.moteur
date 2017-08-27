@@ -182,8 +182,7 @@ bool CMaterialTexture::SaveFichierMap( ofstream &fichier ) {
 
 bool CMaterialTexture::Save(TiXmlElement* element) {
 	// Nom, référence...
-	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAU);
-	elMat->SetAttribute(Xml::TYPE, Xml::TEXTURE);
+	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAUTEXTURE);
 	elMat->SetAttribute(Xml::REF, getRef());
 	elMat->SetAttribute(Xml::NOM, getName());
 	element->LinkEndChild(elMat);

@@ -1,4 +1,5 @@
 
+#include <sstream>
 #include <string>
 
 #include "spatial/XmlVocabulaire.h"
@@ -14,33 +15,24 @@ namespace jkt
 {
 
 CMaterial* CMaterialMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
-	if(strcmp(el->Value(), Xml::MATERIAU)) {
-		string erreur = "Fichier map corrompu : '";
-		erreur += Xml::MATERIAU;
-		erreur += "' attendu, '";
-		erreur += el->Value();
-		erreur += "' recu";
-
-		mapLogger->logInfo(erreur);
-
-		throw CErreur(erreur);
-	}
-
 	CMaterial* mat = NULL;
-	const char* type = el->Attribute(Xml::TYPE);
 
-	if(!strcmp(Xml::SIMPLE, type)) {
+	const char* materialType = el->Value();
+
+	if(!strcmp(Xml::MATERIAUSIMPLE, materialType)) {
 		mat = new CMaterial(&map);
 	}
-	else if(!strcmp(Xml::TEXTURE, type)) {
+	else if(!strcmp(Xml::MATERIAUTEXTURE, materialType)) {
 		mat = new CMaterialTexture(&map);
 	}
-	else if(!strcmp(Xml::MULTI, type)) {
+	else if(!strcmp(Xml::MATERIAUMULTI, materialType)) {
 		mat = new CMaterialMulti(&map);
 	}
 	else {
-		mapLogger->logError("Fichier map corrompu");
-		throw CErreur("Fichier map corrompu");
+		stringstream msg;
+		msg << "Fichier map corrompu, type de matériau inconnu '" << materialType << "'";
+		mapLogger->logError(msg.str());
+		throw CErreur(msg);
 	}
 
 	mat->Lit(el, map, mapLogger);

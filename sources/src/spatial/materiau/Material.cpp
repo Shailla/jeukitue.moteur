@@ -123,8 +123,7 @@ bool CMaterial::SaveFichierMap( ofstream &fichier ) {
 
 bool CMaterial::Save(TiXmlElement* element) {
 	// Nom, référence...
-	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAU);
-	elMat->SetAttribute(Xml::TYPE,Xml::SIMPLE);
+	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAUSIMPLE);
 	elMat->SetAttribute(Xml::REF,m_Ref);
 	elMat->SetAttribute(Xml::NOM, getName());
 	element->LinkEndChild(elMat);

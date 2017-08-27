@@ -30,7 +30,12 @@ const char* Xml::GEO = "Geo";
 const char* Xml::GEODESCRIPTION = "GeoDescription";
 const char* Xml::GEOINSTANCE = "GeoInstance";
 const char* Xml::LUMIERE = "Lumiere";
+
 const char* Xml::MATERIAU = "Materiau";
+const char* Xml::MATERIAUSIMPLE = "MateriauSimple";
+const char* Xml::MATERIAUTEXTURE = "MateriauTexture";
+const char* Xml::MATERIAUMULTI = "MateriauMulti";
+
 const char* Xml::ENTRYPOINT = "EntryPoint";		// Points d'entrée des joueurs
 
 const char* Xml::PARTICULES_ENGINES = "ParticulesEngines";

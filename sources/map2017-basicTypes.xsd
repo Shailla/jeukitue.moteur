@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jkt="http://jkt/map2017.xsd" targetNamespace="http://jkt/map2017.xsd" elementFormDefault="qualified">
+
+	<xs:complexType name="TColor">
+		<xs:annotation>
+			<xs:documentation>Couleur Rouge, Vert, Bleu</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="R" type="xs:double" />
+		<xs:attribute name="G" type="xs:double" />
+		<xs:attribute name="B" type="xs:double" />
+	</xs:complexType>
+
+	<xs:complexType name="TPosition">
+		<xs:annotation>
+			<xs:documentation>Position d'un point (X, Y, Y) de quelque chose dans un espace 3D</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="X" type="xs:double" />
+		<xs:attribute name="Y" type="xs:double" />
+		<xs:attribute name="Z" type="xs:double" />
+	</xs:complexType>
+
+	<xs:complexType name="TTranslate">
+		<xs:annotation>
+			<xs:documentation>Valeurs (X, Y, Z) de la translation d'un objet dans un espace 3D</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="X" type="xs:double" />
+		<xs:attribute name="Y" type="xs:double" />
+		<xs:attribute name="Z" type="xs:double" />
+	</xs:complexType>
+
+
+	<xs:complexType name="TDimension">
+		<xs:annotation>
+			<xs:documentation>Dimensions d'un volume sur les axes (X, Y, Y) dans
+				un espace 3D
+			</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="X" type="xs:double" />
+		<xs:attribute name="Y" type="xs:double" />
+		<xs:attribute name="Z" type="xs:double" />
+	</xs:complexType>
+
+	<xs:complexType name="TScale">
+		<xs:annotation>
+			<xs:documentation>Multiplicateurs sur (X, Y, Z) pour scaler un volume dans un espace 3D</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="X" type="xs:double" />
+		<xs:attribute name="Y" type="xs:double" />
+		<xs:attribute name="Z" type="xs:double" />
+	</xs:complexType>
+
+</xs:schema>

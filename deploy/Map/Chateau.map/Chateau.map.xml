@@ -1,97 +1,97 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Map>
     <Materiaux>
-        <Materiau Type="Texture" Ref="0">
+        <MateriauTexture Ref="0">
             <Ambiante R="0" G="0" B="0" />
             <Diffuse R="0.5333" G="0.7725" B="0.5216" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\Grass2.jpg" />
-        </Materiau>
-        <Materiau Type="Texture" Ref="1">
+        </MateriauTexture>
+        <MateriauTexture Ref="1">
             <Ambiante R="0.5882" G="0.5882" B="0.5882" />
             <Diffuse R="0.5882" G="0.5882" B="0.5882" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\MOON.JPG" />
-        </Materiau>
-        <Materiau Type="Texture" Ref="2">
+        </MateriauTexture>
+        <MateriauTexture Ref="2">
             <Ambiante R="0.4471" G="0.4471" B="0.4471" />
             <Diffuse R="0.4471" G="0.4471" B="0.4471" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\Limesto1.jpg" />
-        </Materiau>
-        <Materiau Type="Texture" Ref="3">
+        </MateriauTexture>
+        <MateriauTexture Ref="3">
             <Ambiante R="0.1791" G="0.0654" B="0.0654" />
             <Diffuse R="0.5804" G="0.4118" B="0.1961" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\Cedfence.jpg" />
-        </Materiau>
-        <Materiau Type="Texture" Ref="4">
+        </MateriauTexture>
+        <MateriauTexture Ref="4">
             <Ambiante R="0.5882" G="0.5882" B="0.5882" />
             <Diffuse R="0.5882" G="0.5882" B="0.5882" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\Brkrun.JPG" />
-        </Materiau>
-        <Materiau Type="Texture" Ref="5">
+        </MateriauTexture>
+        <MateriauTexture Ref="5">
             <Ambiante R="0.588" G="0.588" B="0.588" />
             <Diffuse R="0.588" G="0.588" B="0.588" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\evgreen.jpg" />
-        </Materiau>
-        <Materiau Type="Texture" Ref="6">
+        </MateriauTexture>
+        <MateriauTexture Ref="6">
             <Ambiante R="0.5882" G="0.5882" B="0.5882" />
             <Diffuse R="0.5882" G="0.5882" B="0.5882" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\Metal7.jpg" />
-        </Materiau>
-        <Materiau Type="Texture" Ref="7">
+        </MateriauTexture>
+        <MateriauTexture Ref="7">
             <Ambiante R="0.5882" G="0.5882" B="0.5882" />
             <Diffuse R="0.5882" G="0.5882" B="0.5882" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\evgreen.jpg" />
-        </Materiau>
-        <Materiau Type="Texture" Ref="8">
+        </MateriauTexture>
+        <MateriauTexture Ref="8">
             <Ambiante R="0.5882" G="0.5882" B="0.5882" />
             <Diffuse R="0.5882" G="0.5882" B="0.5882" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\evgreen.jpg" />
-        </Materiau>
-        <Materiau Type="Multi" Ref="9">
+        </MateriauTexture>
+        <MateriauMulti Ref="9">
             <Ambiante R="0.5882" G="0.5882" B="0.5882" />
             <Diffuse R="0.5882" G="0.5882" B="0.5882" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <SousMateriaux Nbr="2">
-                <Materiau Type="Texture" Ref="0">
+                <MateriauTexture Ref="0">
                     <Ambiante R="0.5882" G="0.5882" B="0.5882" />
                     <Diffuse R="0.5882" G="0.5882" B="0.5882" />
                     <Specular R="0.9" G="0.9" B="0.9" />
                     <Fichier Nom="$\WATER1.JPG" />
-                </Materiau>
-                <Materiau Type="Texture" Ref="1">
+                </MateriauTexture>
+                <MateriauTexture Ref="1">
                     <Ambiante R="0" G="0" B="0" />
                     <Diffuse R="0.5216" G="0.5216" B="0.5216" />
                     <Specular R="0.9" G="0.9" B="0.9" />
                     <Fichier Nom="$\Grydirt2.jpg" />
-                </Materiau>
+                </MateriauTexture>
             </SousMateriaux>
-        </Materiau>
-        <Materiau Type="Texture" Ref="10">
+        </MateriauMulti>
+        <MateriauTexture Ref="10">
             <Ambiante R="0" G="0" B="0" />
             <Diffuse R="0.5216" G="0.5216" B="0.5216" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\Grydirt2.jpg" />
-        </Materiau>
-        <Materiau Type="Texture" Ref="11">
+        </MateriauTexture>
+        <MateriauTexture Ref="11">
             <Ambiante R="0.588" G="0.588" B="0.588" />
             <Diffuse R="0.588" G="0.588" B="0.588" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\SALMNSKN.TGA" />
-        </Materiau>
-        <Materiau Type="Texture" Ref="12">
+        </MateriauTexture>
+        <MateriauTexture Ref="12">
             <Ambiante R="0.5882" G="0.5882" B="0.5882" />
             <Diffuse R="0.5882" G="0.5882" B="0.5882" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\RedBricks.jpg" />
-        </Materiau>
+        </MateriauTexture>
     </Materiaux>
     <Lumieres />
     <Geos>

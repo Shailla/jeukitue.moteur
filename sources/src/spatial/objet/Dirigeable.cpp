@@ -48,7 +48,7 @@ void Dirigeable::AfficheHighlighted(float r, float g, float b) {		// Fonction d'
 void Dirigeable::Affiche() {		// Fonction d'affichage de la porte
 }
 
-void Dirigeable::Affiche(Branche* branche) {		// Fonction d'affichage de la porte
+void Dirigeable::Affiche(Branche* branche) {
 	glPushMatrix();
 
 	float x = ((ValeurFloat*)branche->getValeurByIdOrTmpId(0, 1))->getValeur();

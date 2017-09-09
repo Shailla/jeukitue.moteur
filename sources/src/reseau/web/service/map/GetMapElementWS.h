@@ -12,6 +12,7 @@
 
 #include "reseau/web/json/JsonObject.h"
 #include "reseau/web/json/BadFormatJsonException.h"
+#include "spatial/basic/MapObject.h"
 
 #include "reseau/web/service/WebService.h"
 
@@ -30,6 +31,25 @@ public:
 		const bool _updatable;
 
 		Caracteristic(const std::string& name, const std::string& type, const std::string& group, const bool updatable);
+	};
+
+	class MockElement : public MapObject {
+	public:
+		MockElement();
+
+		bool _booleanUpdatable;
+		bool _booleanNotUpdatable;
+
+		long _numberUpdatable;
+		long _numberNotUpdatable;
+
+		std::string _stringUpdatable;
+		std::string _stringNotUpdatable;
+
+		MapObject* clone();														// Mandatory to compile
+		void init() throw(CErreur);
+		bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;	// Mandatory to compile
+		bool Save(TiXmlElement* element) override;								// Mandatory to compile
 	};
 
 	static const std::string ID;
@@ -60,6 +80,8 @@ private:
 	static std::regex RG_MAP_SERVICE;
 	static std::regex RG_MAP_ELEMENTS_SERVICE;
 	static std::regex RG_MAP_ELEMENT_SERVICE;
+
+	MockElement _mockElement;
 
 	WebServiceResult getMapList();
 	WebServiceResult getCurrentMapGraphe();

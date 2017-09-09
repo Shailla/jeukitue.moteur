@@ -13,7 +13,7 @@ const char* Xml::MAP = "Map";
 const char* Xml::IMPORTS = "Imports";
 const char* Xml::ENTRYPOINTS = "EntryPoints";
 const char* Xml::MATERIAUX = "Materiaux";
-const char* Xml::LUMIERES = "Lumieres";
+const char* Xml::LIGHTS = "Lights";
 const char* Xml::GEOS = "Geos";
 
 // Plugins
@@ -78,8 +78,8 @@ const char* Xml::MULTITEXVERTEX = "MultiTexVertex";
 
 // Lumières
 const char* Xml::FALLOFF = "FallOff";
-const char* Xml::OMNI = "Omni";
-const char* Xml::TARGET = "Target";
+const char* Xml::LIGHTOMNI = "LightOmni";
+const char* Xml::LIGHTTARGET = "LightTarget";
 
 // Spatial
 const char* Xml::CENTRE = "Centre";

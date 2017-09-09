@@ -10,6 +10,14 @@
 		<xs:attribute name="B" type="xs:double" />
 	</xs:complexType>
 
+	<xs:complexType name="TTexCoord">
+		<xs:annotation>
+			<xs:documentation>Coordonnée d'un sommet de texture</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="U" type="xs:double" />
+		<xs:attribute name="V" type="xs:double" />
+	</xs:complexType>
+
 	<xs:complexType name="TPosition">
 		<xs:annotation>
 			<xs:documentation>Position d'un point (X, Y, Y) de quelque chose dans un espace 3D</xs:documentation>

@@ -531,10 +531,6 @@ bool CSimpleGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	// Type
 	const char* geoType = el->Value();
 
-	if(StringUtils::isBlank(geoType)) {
-		throw CErreur("Fichier Map corrompu CSimpleGeo 2");
-	}
-
 	if(strcmp(geoType, Xml::GEOSIMPLE)) {
 		throw CErreur("Fichier Map corrompu CSimpleGeo 3");
 	}

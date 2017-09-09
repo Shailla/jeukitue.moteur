@@ -17,7 +17,7 @@ public:
 	static const char* ENTRYPOINTS;
 	static const char* ENTRYPOINT;
 	static const char* MATERIAUX;
-	static const char* LUMIERES;
+	static const char* LIGHTS;
 	static const char* LUMIERE;
 	static const char* GEOS;
 	static const char* GEO;
@@ -71,8 +71,8 @@ public:
 	static const char* R;
 	static const char* G;
 	static const char* B;
-	static const char* TARGET;
-	static const char* OMNI;
+	static const char* LIGHTTARGET;
+	static const char* LIGHTOMNI;
 	static const char* FALLOFF;
 	static const char* POSITION;
 	static const char* DIRECTION;

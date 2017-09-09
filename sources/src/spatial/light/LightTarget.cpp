@@ -56,7 +56,19 @@ void CLightTarget::SetDirection( float direction[3] ) {
 
 bool CLightTarget::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	double ref;
-	const char* type;
+
+	// Type
+	const char* type = el->Value();
+
+	if(!type) {
+		mapLogger->logError("Fichier Map corrompu : Type lumiere manquant");
+		throw CErreur("Fichier Map corrompu : Type lumiere manquant");
+	}
+
+	if(strcmp(Xml::LIGHTTARGET, type)) {
+		mapLogger->logError("Fichier Map corrompu : Type incompatible");
+		throw CErreur("Fichier Map corrompu : Type incompatible");
+	}
 
 	// Référence
 	if(!el->Attribute(Xml::REF, &ref)) {
@@ -64,18 +76,6 @@ bool CLightTarget::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 		throw CErreur("Fichier Map corrompu : Lumiere ref");
 	}
 	m_refLight = (int)ref;
-
-	// Type
-	type = el->Attribute(Xml::TYPE);
-	if(!type) {
-		mapLogger->logError("Fichier Map corrompu : Type lumiere manquant");
-		throw CErreur("Fichier Map corrompu : Type lumiere manquant");
-	}
-
-	if(strcmp(Xml::TARGET, type)) {
-		mapLogger->logError("Fichier Map corrompu : Type incompatible");
-		throw CErreur("Fichier Map corrompu : Type incompatible");
-	}
 
 	// Couleurs
 	Xml::LitCouleur3fv(el, Xml::AMBIANTE, m_ColorAmbient);
@@ -147,9 +147,8 @@ bool CLightTarget::SaveFichierMap( ofstream &fichier )
 bool CLightTarget::Save(TiXmlElement* element)
 {
 	// Nom, référence, type
-	TiXmlElement* elLum = new TiXmlElement(Xml::LUMIERE);
+	TiXmlElement* elLum = new TiXmlElement(Xml::LIGHTTARGET);
 	elLum->SetAttribute(Xml::REF, m_refLight);
-	elLum->SetAttribute(Xml::TYPE, Xml::TARGET);
 	element->LinkEndChild(elLum);
 
 	// Couleurs

@@ -14,7 +14,7 @@
 						<xs:documentation>Plugins de la Map</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
-						<xs:sequence>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
 							<xs:element name="Load" minOccurs="0" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:attribute name="Nom" type="xs:string">
@@ -24,7 +24,7 @@
 									</xs:attribute>
 								</xs:complexType>
 							</xs:element>
-						</xs:sequence>
+						</xs:choice>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="ParticulesEngines" minOccurs="0" maxOccurs="1">
@@ -32,9 +32,9 @@
 						<xs:documentation>Moteur de particules présents dans la Map</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="Neige" type="jkt:TParticulesEngineNeige" minOccurs="0" maxOccurs="unbounded" />
-						</xs:sequence>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="Neige" type="jkt:TParticulesEngineNeige" />
+						</xs:choice>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="Materiaux" minOccurs="0" maxOccurs="1">
@@ -42,24 +42,42 @@
 						<xs:documentation>Liste des materiaux utilisés (simples couleurs, textures, textures multiples)</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="MateriauSimple" type="jkt:TMateriauSimple" minOccurs="0" maxOccurs="unbounded" />
-							<xs:element name="MateriauTexture" type="jkt:TMateriauTexture" minOccurs="0" maxOccurs="unbounded" />
-							<xs:element name="MateriauMulti" type="jkt:TMateriauTexture" minOccurs="0" maxOccurs="unbounded" />
-						</xs:sequence>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="MateriauSimple" type="jkt:TMateriauSimple" />
+							<xs:element name="MateriauTexture" type="jkt:TMateriauTexture" />
+							<xs:element name="MateriauMulti" type="jkt:TMateriauTexture" />
+						</xs:choice>
 						<xs:attribute name="Ref" type="xs:integer" />
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="Lumieres" minOccurs="0" maxOccurs="1" />
-				<xs:element name="Geos" minOccurs="0" maxOccurs="1" />
+				<xs:element name="Lights" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="LightOmni" type="jkt:TLightOmni" />
+							<xs:element name="LightTarget" type="jkt:TLightTarget" />
+						</xs:choice>
+						<xs:attribute name="Ref" type="xs:integer" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Geos" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="GeoSimple" type="jkt:TGeoSimple" />
+							<xs:element name="GeoTexture" type="jkt:TGeoTexture" />
+							<xs:element name="GeoSimpleMaterial" type="jkt:TGeoSimpleMaterial" />
+							<xs:element name="GeoMulti" type="jkt:TGeoMulti" />
+						</xs:choice>
+						<xs:attribute name="Ref" type="xs:integer" />
+					</xs:complexType>
+				</xs:element>
 				<xs:element name="Imports" minOccurs="0" maxOccurs="1">
 					<xs:annotation>
 						<xs:documentation>Autres fichiers Map à importer</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="Import" type="jkt:TImport" minOccurs="0" maxOccurs="unbounded" />
-						</xs:sequence>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="Import" type="jkt:TImport" />
+						</xs:choice>
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="EntryPoints" minOccurs="0" maxOccurs="1">
@@ -67,9 +85,9 @@
 						<xs:documentation>Points d'entrée des joueurs dans la Map</xs:documentation>
 					</xs:annotation>
 					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="EntryPoint" type="jkt:TEntryPoint" minOccurs="0" maxOccurs="unbounded" />
-						</xs:sequence>
+						<xs:choice minOccurs="0" maxOccurs="unbounded">
+							<xs:element name="EntryPoint" type="jkt:TEntryPoint" />
+						</xs:choice>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
@@ -79,7 +97,7 @@
 	<xs:complexType name="TParticulesEngineNeige">
 		<xs:sequence>
 			<xs:element name="Position" type="jkt:TPosition" />
-			<xs:element name="Dimention" type="jkt:TDimension" />
+			<xs:element name="Dimension" type="jkt:TDimension" />
 		</xs:sequence>
 		<xs:attribute name="Nom" type="xs:string">
 			<xs:annotation>
@@ -99,11 +117,7 @@
 			<xs:element name="Diffuse" type="jkt:TColor" />
 			<xs:element name="Specular" type="jkt:TColor" />
 		</xs:sequence>
-		<xs:attribute name="Type">
-			<xs:annotation>
-				<xs:documentation>Type d'import à effectuer (add=ajout en sous-Map, merge=fusion de la Map)</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
+		<xs:attribute name="Ref" type="xs:integer" />
 	</xs:complexType>
 
 	<xs:complexType name="TMateriauTexture">
@@ -121,11 +135,7 @@
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="Type">
-			<xs:annotation>
-				<xs:documentation>Type d'import à effectuer (add=ajout en sous-Map, merge=fusion de la Map)</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
+		<xs:attribute name="Ref" type="xs:integer" />
 	</xs:complexType>
 
 	<xs:complexType name="TMateriauMulti">
@@ -144,26 +154,211 @@
 			</xs:element>
 			<xs:element name="SousMateriaux">
 				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="MateriauSimple" type="jkt:TMateriauSimple" minOccurs="0" maxOccurs="unbounded" />
-						<xs:element name="MateriauTexture" type="jkt:TMateriauTexture" minOccurs="0" maxOccurs="unbounded" />
-						<xs:element name="MateriauMulti" type="jkt:TMateriauTexture" minOccurs="0" maxOccurs="unbounded" />
-					</xs:sequence>
+					<xs:choice minOccurs="0" maxOccurs="unbounded">
+						<xs:element name="MateriauSimple" type="jkt:TMateriauSimple" />
+						<xs:element name="MateriauTexture" type="jkt:TMateriauTexture" />
+						<xs:element name="MateriauMulti" type="jkt:TMateriauTexture" />
+					</xs:choice>
 					<xs:attribute name="Nbr" type="xs:integer"></xs:attribute>
 				</xs:complexType>
 			</xs:element>
 		</xs:sequence>
-		<xs:attribute name="Type">
-			<xs:annotation>
-				<xs:documentation>Type d'import à effectuer (add=ajout en sous-Map, merge=fusion de la Map)</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
+		<xs:attribute name="Ref" type="xs:integer" />
+	</xs:complexType>
+
+	<xs:complexType name="TLightOmni">
+		<xs:sequence>
+			<xs:element name="Ambiante" type="jkt:TColor" />
+			<xs:element name="Diffuse" type="jkt:TColor" />
+			<xs:element name="Specular" type="jkt:TColor" />
+			<xs:element name="Position" type="jkt:TPosition" />
+		</xs:sequence>
+		<xs:attribute name="Ref" type="xs:integer" />
+	</xs:complexType>
+
+	<xs:complexType name="TLightTarget">
+		<xs:sequence>
+			<xs:element name="Ambiante" type="jkt:TColor" />
+			<xs:element name="Diffuse" type="jkt:TColor" />
+			<xs:element name="Specular" type="jkt:TColor" />
+			<xs:element name="Position" type="jkt:TPosition" />
+			<xs:element name="Direction" type="jkt:TPosition" />
+			<xs:element name="FallOff">
+				<xs:complexType>
+					<xs:attribute name="Valeur" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Ref" type="xs:integer" />
+	</xs:complexType>
+
+	<xs:complexType name="TGeoSimple">
+		<xs:sequence>
+			<xs:element name="Solide">
+				<xs:complexType>
+					<xs:attribute name="Valeur" type="xs:boolean" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Couleur" type="jkt:TColor" />
+			<xs:element name="Sommets">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+					<xs:attribute name="Nbr" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Faces">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Sommet" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:attribute name="S1" type="xs:integer" />
+								<xs:attribute name="S2" type="xs:integer" />
+								<xs:attribute name="S3" type="xs:integer" />
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="Nbr" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Ref" type="xs:integer" />
+		<xs:attribute name="Nom" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="TGeoSimpleMaterial">
+		<xs:sequence>
+			<xs:element name="Solide">
+				<xs:complexType>
+					<xs:attribute name="Valeur" type="xs:boolean" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Materiau">
+				<xs:complexType>
+					<xs:attribute name="Ref" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Sommets">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+					<xs:attribute name="Nbr" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="VecteursNormaux">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+					<xs:attribute name="Nbr" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Ref" type="xs:integer" />
+		<xs:attribute name="Nom" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="TGeoTexture">
+		<xs:sequence>
+			<xs:element name="Solide">
+				<xs:complexType>
+					<xs:attribute name="Valeur" type="xs:boolean" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Materiau">
+				<xs:complexType>
+					<xs:attribute name="Ref" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Sommets">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+					<xs:attribute name="Nbr" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="VecteursNormaux">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+					<xs:attribute name="Nbr" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SommetsDeTexture">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="S" type="jkt:TTexCoord" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+					<xs:attribute name="Nbr" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Ref" type="xs:integer" />
+		<xs:attribute name="Nom" type="xs:string" />
+	</xs:complexType>
+
+	<xs:complexType name="TGeoMulti">
+		<xs:sequence>
+			<xs:element name="Solide">
+				<xs:complexType>
+					<xs:attribute name="Valeur" type="xs:boolean" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Materiau">
+				<xs:complexType>
+					<xs:attribute name="Ref" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="Sommets">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+					<xs:attribute name="Nbr" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="VecteursNormaux">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+					<xs:attribute name="Nbr" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SommetsDeTexture">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="S" type="jkt:TTexCoord" minOccurs="0" maxOccurs="unbounded" />
+					</xs:sequence>
+					<xs:attribute name="Nbr" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SousMateriaux">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="SousMateriau" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType>
+								<xs:attribute name="Id" type="xs:integer" />
+								<xs:attribute name="NbrFaces" type="xs:integer" />
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+					<xs:attribute name="NbrFaces" type="xs:integer" />
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="Ref" type="xs:integer" />
+		<xs:attribute name="Nom" type="xs:string" />
 	</xs:complexType>
 
 	<xs:complexType name="TImport">
 		<xs:sequence>
-			<xs:element name="Translate" type="jkt:TTranslate" />
-			<xs:element name="Scale" type="jkt:TScale" />
+			<xs:element name="Translate" type="jkt:TTranslate" minOccurs="0" maxOccurs="1" />
+			<xs:element name="Scale" type="jkt:TScale" minOccurs="0" maxOccurs="1" />
 		</xs:sequence>
 		<xs:attribute name="Mode">
 			<xs:annotation>

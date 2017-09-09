@@ -747,7 +747,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 			}
 		}
 
-		// Lecture des matÃ©riaux
+		// Lecture des matï¿½riaux
 		TiXmlElement* elMat = elMap->FirstChildElement(Xml::MATERIAUX);
 
 		if(elMat) {
@@ -758,13 +758,13 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					map.add(mat);
 				}
 				else {
-					mapLogger->logError("MatÃ©riau corrompu ?");
+					mapLogger->logError("Matï¿½riau corrompu ?");
 				}
 			}
 		}
 
-		// Lecture des lumières
-		TiXmlElement* elLight = elMap->FirstChildElement(Xml::LUMIERES);
+		// Lecture des lumiï¿½res
+		TiXmlElement* elLight = elMap->FirstChildElement(Xml::LIGHTS);
 
 		if(elLight) {
 			for(TiXmlElement* el=elLight->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
@@ -774,19 +774,19 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					map.add(lum);
 				}
 				else {
-					mapLogger->logError("Lumière corrompue ?");
+					mapLogger->logError("Lumiï¿½re corrompue ?");
 				}
 			}
 		}
 
-		// Lecture des objets géométriques
+		// Lecture des objets gï¿½omï¿½triques
 		TiXmlElement* elGeo = elMap->FirstChildElement(Xml::GEOS);
 
 		if(elGeo) {
 
 			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 
-				// Descriptions d'objets géométriques
+				// Descriptions d'objets gï¿½omï¿½triques
 				if(!strcmp(Xml::GEODESCRIPTION, el->Value())) {
 					MapObject* geo = CGeoMaker::Lit(el, map, mapLogger);
 
@@ -794,11 +794,11 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						map.addMapObject(geo->getId(), geo, mapLogger);
 					}
 					else {
-						mapLogger->logError("Géo description corrompue ?");
+						mapLogger->logError("Gï¿½o description corrompue ?");
 					}
 				}
 
-				// Objets géométriques réels instancié à partir d'une description
+				// Objets gï¿½omï¿½triques rï¿½els instanciï¿½ ï¿½ partir d'une description
 				else if(!strcmp(Xml::GEOINSTANCE, el->Value())) {
 					double translation[3];
 					translation[0] = translation[1] = translation[2] = 0.0f;
@@ -832,11 +832,11 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						map.add(clone);
 					}
 					else {
-						mapLogger->logError("Géo description introuvable");
+						mapLogger->logError("Gï¿½o description introuvable");
 					}
 				}
 
-				// Objets géométriques réels auto-instancié
+				// Objets gï¿½omï¿½triques rï¿½els auto-instanciï¿½
 				else {
 					MapObject* object = CGeoMaker::Lit(el, map, mapLogger);
 
@@ -844,7 +844,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						map.add(object);
 					}
 					else {
-						mapLogger->logError("Géo corrompue ?");
+						mapLogger->logError("Gï¿½o corrompue ?");
 					}
 				}
 			}
@@ -966,7 +966,7 @@ bool CMap::Save(const string nomFichier) {
 
 	// Sauvegarde des lumieres
 	{
-		TiXmlElement *elLum = new TiXmlElement(Xml::LUMIERES);
+		TiXmlElement *elLum = new TiXmlElement(Xml::LIGHTS);
 		elMap->LinkEndChild(elLum);
 		vector<CLight*>::iterator iterLight;
 

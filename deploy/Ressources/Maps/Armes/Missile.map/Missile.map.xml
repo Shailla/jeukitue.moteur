@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Map>
     <Materiaux>
-        <MateriauTexture Ref="0">
+        <Materiau Type="Texture" Ref="0">
             <Ambiante R="0.588" G="0.588" B="0.588" />
             <Diffuse R="0.588" G="0.588" B="0.588" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\Medrust3.jpg" />
-        </MateriauTexture>
+        </Materiau>
     </Materiaux>
     <Lumieres />
     <Geos>
-        <GeoTexture Ref="1" Nom="Plan01">
+        <Geo Ref="1" Nom="Plan01" Type="Texture">
             <Materiau Ref="0" />
             <Solide Valeur="true" />
             <Sommets Nbr="9">
@@ -46,8 +46,8 @@
                 <S X="-0" Y="0" Z="1" />
                 <S X="-0" Y="0" Z="1" />
             </VecteursNormaux>
-        </GeoTexture>
-        <GeoTexture Ref="2" Nom="Plan02">
+        </Geo>
+        <Geo Ref="2" Nom="Plan02" Type="Texture">
             <Materiau Ref="0" />
             <Solide Valeur="true" />
             <Sommets Nbr="9">
@@ -83,8 +83,8 @@
                 <S X="-0" Y="0" Z="1" />
                 <S X="-0" Y="0" Z="1" />
             </VecteursNormaux>
-        </GeoTexture>
-        <GeoTexture Ref="3" Nom="Plan03">
+        </Geo>
+        <Geo Ref="3" Nom="Plan03" Type="Texture">
             <Materiau Ref="0" />
             <Solide Valeur="true" />
             <Sommets Nbr="9">
@@ -120,8 +120,8 @@
                 <S X="-1" Y="-0.0008" Z="0" />
                 <S X="-1" Y="-0.0008" Z="0" />
             </VecteursNormaux>
-        </GeoTexture>
-        <GeoTexture Ref="4" Nom="Plan04">
+        </Geo>
+        <Geo Ref="4" Nom="Plan04" Type="Texture">
             <Materiau Ref="0" />
             <Solide Valeur="true" />
             <Sommets Nbr="9">
@@ -157,8 +157,8 @@
                 <S X="-1" Y="-0.0008" Z="0" />
                 <S X="-1" Y="-0.0008" Z="0" />
             </VecteursNormaux>
-        </GeoTexture>
-        <GeoTexture Ref="5" Nom="Capsule01">
+        </Geo>
+        <Geo Ref="5" Nom="Capsule01" Type="Texture">
             <Materiau Ref="0" />
             <Solide Valeur="true" />
             <Sommets Nbr="864">
@@ -2759,6 +2759,6 @@
                 <S X="-0.0008" Y="1" Z="0" />
                 <S X="0.240732" Y="0.960493" Z="-0.1394" />
             </VecteursNormaux>
-        </GeoTexture>
+        </Geo>
     </Geos>
 </Map>

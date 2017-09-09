@@ -73,9 +73,8 @@ bool CLightOmni::SaveFichierMap( ofstream &fichier )
 bool CLightOmni::Save(TiXmlElement* element)
 {
 	// Nom, référence, type
-	TiXmlElement* elLum = new TiXmlElement(Xml::LUMIERE);
+	TiXmlElement* elLum = new TiXmlElement(Xml::LIGHTOMNI);
 	elLum->SetAttribute(Xml::REF, m_refLight);
-	elLum->SetAttribute(Xml::TYPE, Xml::OMNI);
 	element->LinkEndChild(elLum);
 
 	// Couleurs
@@ -126,7 +125,18 @@ void CLightOmni::Active()
 
 bool CLightOmni::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	double ref;
-	const char* type;
+
+	// Type
+	const char* type = el->Value();
+	if(!type) {
+		mapLogger->logError("Fichier Map corrompu : Type lumiere manquant");
+		throw CErreur("Fichier Map corrompu : Type lumiere manquant");
+	}
+
+	if(strcmp(Xml::LIGHTOMNI, type)) {
+		mapLogger->logError("Fichier Map corrompu : Type incompatible");
+		throw CErreur("Fichier Map corrompu : Type incompatible");
+	}
 
 	// Référence
 	if(!el->Attribute(Xml::REF, &ref)) {
@@ -135,18 +145,6 @@ bool CLightOmni::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	}
 
 	m_refLight = (int)ref;
-
-	// Type
-	type = el->Attribute(Xml::TYPE);
-	if(!type) {
-		mapLogger->logError("Fichier Map corrompu : Type lumiere manquant");
-		throw CErreur("Fichier Map corrompu : Type lumiere manquant");
-	}
-
-	if(strcmp(Xml::OMNI, type)) {
-		mapLogger->logError("Fichier Map corrompu : Type incompatible");
-		throw CErreur("Fichier Map corrompu : Type incompatible");
-	}
 
 	// Couleurs
 	Xml::LitCouleur3fv(el, Xml::AMBIANTE, m_ColorAmbient);

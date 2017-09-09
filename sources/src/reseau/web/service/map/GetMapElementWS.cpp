@@ -73,7 +73,31 @@ GetMapElementWS::Caracteristic::Caracteristic(const string& name, const string& 
 		bool updatable) :_name(name), _type(type), _group(group), _updatable(updatable) {
 }
 
-GetMapElementWS::GetMapElementWS() {
+GetMapElementWS::MockElement::MockElement() : MapObject(0, MapObject::LIGHT) {
+	_booleanUpdatable = false;
+	_booleanNotUpdatable = false;
+	_numberUpdatable = 56;
+	_numberNotUpdatable = 78;
+	_stringUpdatable = "Coucou";
+	_stringNotUpdatable = "Salut";
+}
+
+MapObject* GetMapElementWS::MockElement::clone() {
+	return 0;
+}
+
+void GetMapElementWS::MockElement::init() throw(CErreur) {
+}
+
+bool GetMapElementWS::MockElement::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
+	return true;
+}
+
+bool GetMapElementWS::MockElement::Save(TiXmlElement* element) {
+	return true;
+}
+
+GetMapElementWS::GetMapElementWS() : _mockElement() {
 }
 
 GetMapElementWS::~GetMapElementWS() {
@@ -128,6 +152,18 @@ WebServiceResult GetMapElementWS::getCurrentMapGraphe() {
 	JsonObject root;
 	JsonObject& mapElement = root.addObject(MAPELEMENT);
 
+	// Add mock element (for tests only)
+	{
+		JsonObject& obj = mapElement.addObject("Mock element");
+		obj.addString(TYPE, _mockElement.getType());
+		obj.addNumber(ID, _mockElement.getId());
+		obj.addString(NAME, _mockElement.getName());
+
+		JsonObject& caracs = obj.addObject(CARACS);
+		addCaracBoolean(caracs, HIGHLIGHTED, _mockElement.isHighlighted());
+		addCaracBoolean(caracs, HIDDEN, _mockElement.isHidden());
+	}
+
 	CMap* map = Game.getMap();
 
 	if(map) {		jisonifyMapGraphe(map, mapElement);;
@@ -158,43 +194,55 @@ WebServiceResult GetMapElementWS::saveCurrentMap() {
 }
 
 void GetMapElementWS::getElement(int elementId, JsonObject& mapElement, vector<string>& errors) {
-	CMap* map = Game.getMap();
+	if(_mockElement.getId() == elementId) {
+		mapElement.addNumber(ID, _mockElement.getId());
+		mapElement.addString(TYPE, _mockElement.getType());
+		mapElement.addString(NAME, _mockElement.getName());
 
-	if(!map) {
-		errors.push_back("There is no active Map");
-		return;
+		JsonObject& caracs = mapElement.addObject(CARACS);
+
+		addCaracBoolean(caracs, HIGHLIGHTED, _mockElement.isHighlighted());
+		addCaracBoolean(caracs, HIDDEN, _mockElement.isHidden());
+
+		// Exemples
+		addCaracBoolean(caracs, "booleanUpdatable", "Updatables", true, true);
+		addCaracBoolean(caracs, "booleanNotUpdatable", "Not updatables", false, true);
+
+		addCaracLong(caracs, "numberUpdatable", "Updatables", true, 56);
+		addCaracLong(caracs, "numberNotUpdatable", "Not updatables", false, 56);
+
+		addCaracString(caracs, "stringUpdatable", "Updatables", true, "coucou");
+		addCaracString(caracs, "stringNotUpdatable", "Not updatables", false, "coucou");
 	}
+	else {
+		CMap* map = Game.getMap();
 
-	MapObject* object = map->findMapObject(elementId);
+		if(!map) {
+			errors.push_back("There is no active Map");
+			return;
+		}
 
-	if(!object) {
-		errors.push_back("Object not found in the active Map");
-		return;
+		MapObject* object = map->findMapObject(elementId);
+
+		if(!object) {
+			errors.push_back("Object not found in the active Map");
+			return;
+		}
+
+
+		/* ***************************************************** */
+		/* Common parameters                                     */
+		/* ***************************************************** */
+
+		mapElement.addNumber(ID, object->getId());
+		mapElement.addString(TYPE, object->getType());
+		mapElement.addString(NAME, object->getName());
+
+		JsonObject& caracs = mapElement.addObject(CARACS);
+
+		addCaracBoolean(caracs, HIGHLIGHTED, object->isHighlighted());
+		addCaracBoolean(caracs, HIDDEN, object->isHidden());
 	}
-
-
-	/* ***************************************************** */
-	/* Common parameters                                     */
-	/* ***************************************************** */
-
-	mapElement.addNumber(ID, object->getId());
-	mapElement.addString(TYPE, object->getType());
-	mapElement.addString(NAME, object->getName());
-
-	JsonObject& caracs = mapElement.addObject(CARACS);
-
-	addCaracBoolean(caracs, HIGHLIGHTED, object->isHighlighted());
-	addCaracBoolean(caracs, HIDDEN, object->isHidden());
-
-	// Exemples
-	addCaracBoolean(caracs, "booleanUpdatable", "Updatables", true, true);
-	addCaracBoolean(caracs, "booleanNotUpdatable", "Not updatables", false, true);
-
-	addCaracLong(caracs, "numberUpdatable", "Updatables", true, 56);
-	addCaracLong(caracs, "numberNotUpdatable", "Not updatables", false, 56);
-
-	addCaracString(caracs, "stringUpdatable", "Updatables", true, "coucou");
-	addCaracString(caracs, "stringNotUpdatable", "Not updatables", false, "coucou");
 }
 
 JsonObject& GetMapElementWS::addCaracString(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value) {
@@ -275,7 +323,7 @@ WebServiceResult GetMapElementWS::updateElement(HttpRequest& request, int elemen
 	else {
 		JsonObject root;
 		return WebServiceResult(HttpVocabulary::HTTP_RESPONSE_200);
-//		return jsonErrorResponse(HttpVocabulary::HTTP_RESPONSE_400, "Bad request format, no Json content");
+		//		return jsonErrorResponse(HttpVocabulary::HTTP_RESPONSE_400, "Bad request format, no Json content");
 	}
 
 	vector<string> errors;
@@ -418,6 +466,10 @@ WebServiceResult GetMapElementWS::updateElements(HttpRequest& request) {
 		int elementId = elementIdVl->getValue();
 
 		MapObject* object = map->findMapObject(elementId);
+
+		if(!object && _mockElement.getId() == elementId) {
+			object = &_mockElement;
+		}
 
 		if(!object) {
 			stringstream msg;

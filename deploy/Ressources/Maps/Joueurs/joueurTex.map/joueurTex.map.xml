@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Map>
     <Materiaux>
-        <MateriauTexture Ref="0">
+        <Materiau Type="Texture" Ref="0">
             <Ambiante R="0.5294" G="0.2353" B="0.2353" />
             <Diffuse R="0.5294" G="0.2353" B="0.2353" />
             <Specular R="0.9" G="0.9" B="0.9" />
             <Fichier Nom="$\fessealex2.jpg" />
-        </MateriauTexture>
+        </Materiau>
     </Materiaux>
     <Lumieres />
     <Geos>
-        <GeoSimple Ref="6" Nom="Bo_te01">
+        <Geo Ref="6" Nom="Bo_te01" Type="Simple">
             <Solide Valeur="true" />
             <Couleur R="0.3373" G="0.3373" B="0.3373" />
             <Sommets Nbr="8">
@@ -37,8 +37,8 @@
                 <Sommet S1="2" S2="0" S3="4" />
                 <Sommet S1="4" S2="6" S3="2" />
             </Faces>
-        </GeoSimple>
-        <GeoSimple Ref="7" Nom="Bo_te02">
+        </Geo>
+        <Geo Ref="7" Nom="Bo_te02" Type="Simple">
             <Solide Valeur="true" />
             <Couleur R="0.3373" G="0.3373" B="0.3373" />
             <Sommets Nbr="8">
@@ -65,8 +65,8 @@
                 <Sommet S1="2" S2="0" S3="4" />
                 <Sommet S1="4" S2="6" S3="2" />
             </Faces>
-        </GeoSimple>
-        <GeoSimple Ref="8" Nom="Cylindre01">
+        </Geo>
+        <Geo Ref="8" Nom="Cylindre01" Type="Simple">
             <Solide Valeur="true" />
             <Couleur R="0.8941" G="0.7216" B="0.6" />
             <Sommets Nbr="14">
@@ -111,8 +111,8 @@
                 <Sommet S1="13" S2="11" S3="12" />
                 <Sommet S1="13" S2="12" S3="7" />
             </Faces>
-        </GeoSimple>
-        <GeoSimple Ref="9" Nom="Tore01">
+        </Geo>
+        <Geo Ref="9" Nom="Tore01" Type="Simple">
             <Solide Valeur="true" />
             <Couleur R="0.0235" G="0.5255" B="0.4431" />
             <Sommets Nbr="30">
@@ -209,8 +209,8 @@
                 <Sommet S1="29" S2="0" S3="4" />
                 <Sommet S1="29" S2="25" S3="0" />
             </Faces>
-        </GeoSimple>
-        <GeoSimple Ref="10" Nom="Tore02">
+        </Geo>
+        <Geo Ref="10" Nom="Tore02" Type="Simple">
             <Solide Valeur="true" />
             <Couleur R="0.0235" G="0.5255" B="0.4431" />
             <Sommets Nbr="30">
@@ -307,8 +307,8 @@
                 <Sommet S1="29" S2="0" S3="4" />
                 <Sommet S1="29" S2="25" S3="0" />
             </Faces>
-        </GeoSimple>
-        <GeoSimple Ref="11" Nom="Cylindre04">
+        </Geo>
+        <Geo Ref="11" Nom="Cylindre04" Type="Simple">
             <Solide Valeur="true" />
             <Couleur R="0.8941" G="0.7216" B="0.6" />
             <Sommets Nbr="14">
@@ -353,8 +353,8 @@
                 <Sommet S1="13" S2="11" S3="12" />
                 <Sommet S1="13" S2="12" S3="7" />
             </Faces>
-        </GeoSimple>
-        <GeoSimple Ref="12" Nom="Cylindre02">
+        </Geo>
+        <Geo Ref="12" Nom="Cylindre02" Type="Simple">
             <Solide Valeur="true" />
             <Couleur R="0.8941" G="0.7216" B="0.6" />
             <Sommets Nbr="14">
@@ -399,8 +399,8 @@
                 <Sommet S1="13" S2="11" S3="12" />
                 <Sommet S1="13" S2="12" S3="7" />
             </Faces>
-        </GeoSimple>
-        <GeoSimple Ref="13" Nom="Cylindre03">
+        </Geo>
+        <Geo Ref="13" Nom="Cylindre03" Type="Simple">
             <Solide Valeur="true" />
             <Couleur R="0.8941" G="0.7216" B="0.6" />
             <Sommets Nbr="14">
@@ -445,8 +445,8 @@
                 <Sommet S1="13" S2="11" S3="12" />
                 <Sommet S1="13" S2="12" S3="7" />
             </Faces>
-        </GeoSimple>
-        <GeoSimple Ref="14" Nom="Cylindre05">
+        </Geo>
+        <Geo Ref="14" Nom="Cylindre05" Type="Simple">
             <Solide Valeur="true" />
             <Couleur R="0.8941" G="0.7216" B="0.6" />
             <Sommets Nbr="14">
@@ -491,8 +491,8 @@
                 <Sommet S1="13" S2="11" S3="12" />
                 <Sommet S1="13" S2="12" S3="7" />
             </Faces>
-        </GeoSimple>
-        <GeoSimple Ref="15" Nom="Cylindre06">
+        </Geo>
+        <Geo Ref="15" Nom="Cylindre06" Type="Simple">
             <Solide Valeur="true" />
             <Couleur R="0.8941" G="0.7216" B="0.6" />
             <Sommets Nbr="14">
@@ -537,8 +537,8 @@
                 <Sommet S1="13" S2="11" S3="12" />
                 <Sommet S1="13" S2="12" S3="7" />
             </Faces>
-        </GeoSimple>
-        <GeoSimple Ref="16" Nom="Cylindre07">
+        </Geo>
+        <Geo Ref="16" Nom="Cylindre07" Type="Simple">
             <Solide Valeur="true" />
             <Couleur R="0.8941" G="0.7216" B="0.6" />
             <Sommets Nbr="14">
@@ -583,8 +583,8 @@
                 <Sommet S1="13" S2="11" S3="12" />
                 <Sommet S1="13" S2="12" S3="7" />
             </Faces>
-        </GeoSimple>
-        <GeoSimple Ref="17" Nom="Sph_re06">
+        </Geo>
+        <Geo Ref="17" Nom="Sph_re06" Type="Simple">
             <Solide Valeur="true" />
             <Couleur R="0.5608" G="0.8784" B="0.3412" />
             <Sommets Nbr="6">
@@ -605,8 +605,8 @@
                 <Sommet S1="5" S2="4" S3="3" />
                 <Sommet S1="5" S2="1" S3="4" />
             </Faces>
-        </GeoSimple>
-        <GeoTexture Ref="18" Nom="Sph_re01">
+        </Geo>
+        <Geo Ref="18" Nom="Sph_re01" Type="Texture">
             <Materiau Ref="0" />
             <Solide Valeur="true" />
             <Sommets Nbr="672">
@@ -1957,6 +1957,6 @@
                 <S U="0.125" V="1" />
                 <S U="0.125" V="0.9375" />
             </SommetsDeTexture>
-        </GeoTexture>
+        </Geo>
     </Geos>
 </Map>

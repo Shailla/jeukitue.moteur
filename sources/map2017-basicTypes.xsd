@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jkt="http://jkt/map2017.xsd" targetNamespace="http://jkt/map2017.xsd" elementFormDefault="qualified">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jkt="http://jkt/map2017.xsd" targetNamespace="http://jkt/map2017.xsd" elementFormDefault="qualified">
 
-	<xs:complexType name="TColor">
-		<xs:annotation>
-			<xs:documentation>Couleur Rouge, Vert, Bleu</xs:documentation>
-		</xs:annotation>
-		<xs:attribute name="R" type="xs:double" />
-		<xs:attribute name="G" type="xs:double" />
-		<xs:attribute name="B" type="xs:double" />
-	</xs:complexType>
+	<xsd:complexType name="TColor">
+		<xsd:annotation>
+			<xsd:documentation>Couleur Rouge, Vert, Bleu</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="R" type="xsd:double" />
+		<xsd:attribute name="G" type="xsd:double" />
+		<xsd:attribute name="B" type="xsd:double" />
+	</xsd:complexType>
 
-	<xs:complexType name="TTexCoord">
-		<xs:annotation>
-			<xs:documentation>Coordonnée d'un sommet de texture</xs:documentation>
-		</xs:annotation>
-		<xs:attribute name="U" type="xs:double" />
-		<xs:attribute name="V" type="xs:double" />
-	</xs:complexType>
+	<xsd:complexType name="TTexCoord">
+		<xsd:annotation>
+			<xsd:documentation>Coordonnée d'un sommet de texture</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="U" type="xsd:double" />
+		<xsd:attribute name="V" type="xsd:double" />
+	</xsd:complexType>
 
-	<xs:complexType name="TPosition">
-		<xs:annotation>
-			<xs:documentation>Position d'un point (X, Y, Y) de quelque chose dans un espace 3D</xs:documentation>
-		</xs:annotation>
-		<xs:attribute name="X" type="xs:double" />
-		<xs:attribute name="Y" type="xs:double" />
-		<xs:attribute name="Z" type="xs:double" />
-	</xs:complexType>
+	<xsd:complexType name="TPosition">
+		<xsd:annotation>
+			<xsd:documentation>Position d'un point (X, Y, Y) de quelque chose dans un espace 3D</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="X" type="xsd:double" />
+		<xsd:attribute name="Y" type="xsd:double" />
+		<xsd:attribute name="Z" type="xsd:double" />
+	</xsd:complexType>
 
-	<xs:complexType name="TTranslate">
-		<xs:annotation>
-			<xs:documentation>Valeurs (X, Y, Z) de la translation d'un objet dans un espace 3D</xs:documentation>
-		</xs:annotation>
-		<xs:attribute name="X" type="xs:double" />
-		<xs:attribute name="Y" type="xs:double" />
-		<xs:attribute name="Z" type="xs:double" />
-	</xs:complexType>
+	<xsd:complexType name="TTranslate">
+		<xsd:annotation>
+			<xsd:documentation>Valeurs (X, Y, Z) de la translation d'un objet dans un espace 3D</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="X" type="xsd:double" />
+		<xsd:attribute name="Y" type="xsd:double" />
+		<xsd:attribute name="Z" type="xsd:double" />
+	</xsd:complexType>
 
 
-	<xs:complexType name="TDimension">
-		<xs:annotation>
-			<xs:documentation>Dimensions d'un volume sur les axes (X, Y, Y) dans
+	<xsd:complexType name="TDimension">
+		<xsd:annotation>
+			<xsd:documentation>Dimensions d'un volume sur les axes (X, Y, Y) dans
 				un espace 3D
-			</xs:documentation>
-		</xs:annotation>
-		<xs:attribute name="X" type="xs:double" />
-		<xs:attribute name="Y" type="xs:double" />
-		<xs:attribute name="Z" type="xs:double" />
-	</xs:complexType>
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="X" type="xsd:double" />
+		<xsd:attribute name="Y" type="xsd:double" />
+		<xsd:attribute name="Z" type="xsd:double" />
+	</xsd:complexType>
 
-	<xs:complexType name="TScale">
-		<xs:annotation>
-			<xs:documentation>Multiplicateurs sur (X, Y, Z) pour scaler un volume dans un espace 3D</xs:documentation>
-		</xs:annotation>
-		<xs:attribute name="X" type="xs:double" />
-		<xs:attribute name="Y" type="xs:double" />
-		<xs:attribute name="Z" type="xs:double" />
-	</xs:complexType>
+	<xsd:complexType name="TScale">
+		<xsd:annotation>
+			<xsd:documentation>Multiplicateurs sur (X, Y, Z) pour scaler un volume dans un espace 3D</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="X" type="xsd:double" />
+		<xsd:attribute name="Y" type="xsd:double" />
+		<xsd:attribute name="Z" type="xsd:double" />
+	</xsd:complexType>
 
-</xs:schema>
+</xsd:schema>

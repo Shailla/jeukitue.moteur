@@ -1,387 +1,391 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jkt="http://jkt/map2017.xsd" targetNamespace="http://jkt/map2017.xsd" elementFormDefault="qualified">
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jkt="http://jkt/map2017.xsd" targetNamespace="http://jkt/map2017.xsd" elementFormDefault="qualified">
 
-	<xs:include schemaLocation="map2017-basicTypes.xsd" />
+	<xsd:include schemaLocation="map2017-basicTypes.xsd" />
 
-	<xs:element name="Map">
-		<xs:annotation>
-			<xs:documentation>Map de jeu</xs:documentation>
-		</xs:annotation>
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="Plugins" minOccurs="0" maxOccurs="1">
-					<xs:annotation>
-						<xs:documentation>Plugins de la Map</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Load" minOccurs="0" maxOccurs="unbounded">
-								<xs:complexType>
-									<xs:attribute name="Nom" type="xs:string">
-										<xs:annotation>
-											<xs:documentation>Nom du plugin</xs:documentation>
-										</xs:annotation>
-									</xs:attribute>
-								</xs:complexType>
-							</xs:element>
-						</xs:choice>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="ParticulesEngines" minOccurs="0" maxOccurs="1">
-					<xs:annotation>
-						<xs:documentation>Moteur de particules présents dans la Map</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Neige" type="jkt:TParticulesEngineNeige" />
-						</xs:choice>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="Materiaux" minOccurs="0" maxOccurs="1">
-					<xs:annotation>
-						<xs:documentation>Liste des materiaux utilisés (simples couleurs, textures, textures multiples)</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="MateriauSimple" type="jkt:TMateriauSimple" />
-							<xs:element name="MateriauTexture" type="jkt:TMateriauTexture" />
-							<xs:element name="MateriauMulti" type="jkt:TMateriauTexture" />
-						</xs:choice>
-						<xs:attribute name="Ref" type="xs:integer" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="Lights" minOccurs="0" maxOccurs="1">
-					<xs:complexType>
-						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="LightOmni" type="jkt:TLightOmni" />
-							<xs:element name="LightTarget" type="jkt:TLightTarget" />
-						</xs:choice>
-						<xs:attribute name="Ref" type="xs:integer" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="Geos" minOccurs="0" maxOccurs="1">
-					<xs:complexType>
-						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="GeoSimple" type="jkt:TGeoSimple" />
-							<xs:element name="GeoTexture" type="jkt:TGeoTexture" />
-							<xs:element name="GeoSimpleMaterial" type="jkt:TGeoSimpleMaterial" />
-							<xs:element name="GeoMulti" type="jkt:TGeoMulti" />
-						</xs:choice>
-						<xs:attribute name="Ref" type="xs:integer" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="Imports" minOccurs="0" maxOccurs="1">
-					<xs:annotation>
-						<xs:documentation>Autres fichiers Map à importer</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="Import" type="jkt:TImport" />
-						</xs:choice>
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="EntryPoints" minOccurs="0" maxOccurs="1">
-					<xs:annotation>
-						<xs:documentation>Points d'entrée des joueurs dans la Map</xs:documentation>
-					</xs:annotation>
-					<xs:complexType>
-						<xs:choice minOccurs="0" maxOccurs="unbounded">
-							<xs:element name="EntryPoint" type="jkt:TEntryPoint" />
-						</xs:choice>
-					</xs:complexType>
-				</xs:element>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
+	<xsd:element name="Map">
+		<xsd:annotation>
+			<xsd:documentation>Map de jeu</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Plugins" minOccurs="0" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>Plugins de la Map</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:choice minOccurs="0" maxOccurs="unbounded">
+							<xsd:element name="Load" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:attribute name="Nom" type="xsd:string">
+										<xsd:annotation>
+											<xsd:documentation>Nom du plugin</xsd:documentation>
+										</xsd:annotation>
+									</xsd:attribute>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:choice>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="ParticulesEngines" minOccurs="0" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>Moteur de particules présents dans la Map</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:choice minOccurs="0" maxOccurs="unbounded">
+							<xsd:element name="Neige" type="jkt:TParticulesEngineNeige" />
+						</xsd:choice>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Materiaux" minOccurs="0" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>Liste des materiaux utilisés (simples couleurs, textures, textures multiples)</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:choice minOccurs="0" maxOccurs="unbounded">
+							<xsd:element name="MateriauSimple" type="jkt:TMateriauSimple" />
+							<xsd:element name="MateriauTexture" type="jkt:TMateriauTexture" />
+							<xsd:element name="MateriauMulti" type="jkt:TMateriauMulti" />
+						</xsd:choice>
+						<xsd:attribute name="Ref" type="xsd:integer" />
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Lights" minOccurs="0" maxOccurs="1">
+					<xsd:complexType>
+						<xsd:choice minOccurs="0" maxOccurs="unbounded">
+							<xsd:element name="LightOmni" type="jkt:TLightOmni" />
+							<xsd:element name="LightTarget" type="jkt:TLightTarget" />
+						</xsd:choice>
+						<xsd:attribute name="Ref" type="xsd:integer" />
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Geos" minOccurs="0" maxOccurs="1">
+					<xsd:complexType>
+						<xsd:choice minOccurs="0" maxOccurs="unbounded">
+							<xsd:element name="GeoSimple" type="jkt:TGeoSimple" />
+							<xsd:element name="GeoTexture" type="jkt:TGeoTexture" />
+							<xsd:element name="GeoSimpleMaterial" type="jkt:TGeoSimpleMaterial" />
+							<xsd:element name="GeoMulti" type="jkt:TGeoMulti" />
+						</xsd:choice>
+						<xsd:attribute name="Ref" type="xsd:integer" />
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="Imports" minOccurs="0" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>Autres fichiers Map à importer</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:choice minOccurs="0" maxOccurs="unbounded">
+							<xsd:element name="Import" type="jkt:TImport" />
+						</xsd:choice>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="EntryPoints" minOccurs="0" maxOccurs="1">
+					<xsd:annotation>
+						<xsd:documentation>Points d'entrée des joueurs dans la Map</xsd:documentation>
+					</xsd:annotation>
+					<xsd:complexType>
+						<xsd:choice minOccurs="0" maxOccurs="unbounded">
+							<xsd:element name="EntryPoint" type="jkt:TEntryPoint" />
+						</xsd:choice>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
 
-	<xs:complexType name="TParticulesEngineNeige">
-		<xs:sequence>
-			<xs:element name="Position" type="jkt:TPosition" />
-			<xs:element name="Dimension" type="jkt:TDimension" />
-		</xs:sequence>
-		<xs:attribute name="Nom" type="xs:string">
-			<xs:annotation>
-				<xs:documentation>Nom du moteur de particules</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-		<xs:attribute name="NbrParticules" type="xs:string">
-			<xs:annotation>
-				<xs:documentation>Nombre de particles que le moteur de particules doit générer</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-	</xs:complexType>
+	<xsd:complexType name="TParticulesEngineNeige">
+		<xsd:sequence>
+			<xsd:element name="Position" type="jkt:TPosition" />
+			<xsd:element name="Dimension" type="jkt:TDimension" />
+		</xsd:sequence>
+		<xsd:attribute name="Nom" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>Nom du moteur de particules</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="NbrParticules" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>Nombre de particles que le moteur de particules doit générer</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
 
-	<xs:complexType name="TMateriauSimple">
-		<xs:sequence>
-			<xs:element name="Ambiante" type="jkt:TColor" />
-			<xs:element name="Diffuse" type="jkt:TColor" />
-			<xs:element name="Specular" type="jkt:TColor" />
-		</xs:sequence>
-		<xs:attribute name="Ref" type="xs:integer" />
-	</xs:complexType>
+	<xsd:complexType name="TMateriauSimple">
+		<xsd:sequence>
+			<xsd:element name="Ambiante" type="jkt:TColor" />
+			<xsd:element name="Diffuse" type="jkt:TColor" />
+			<xsd:element name="Specular" type="jkt:TColor" />
+		</xsd:sequence>
+		<xsd:attribute name="Ref" type="xsd:integer" />
+	</xsd:complexType>
 
-	<xs:complexType name="TMateriauTexture">
-		<xs:sequence>
-			<xs:element name="Ambiante" type="jkt:TColor" />
-			<xs:element name="Diffuse" type="jkt:TColor" />
-			<xs:element name="Specular" type="jkt:TColor" />
-			<xs:element name="Fichier">
-				<xs:complexType>
-					<xs:attribute name="Nom" type="xs:string">
-						<xs:annotation>
-							<xs:documentation>Nom du fichier de texture</xs:documentation>
-						</xs:annotation>
-					</xs:attribute>
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-		<xs:attribute name="Ref" type="xs:integer" />
-	</xs:complexType>
+	<xsd:complexType name="TMateriauTexture">
+		<xsd:sequence>
+			<xsd:element name="Ambiante" type="jkt:TColor" />
+			<xsd:element name="Diffuse" type="jkt:TColor" />
+			<xsd:element name="Specular" type="jkt:TColor" />
+			<xsd:element name="Fichier">
+				<xsd:complexType>
+					<xsd:attribute name="Nom" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>Nom du fichier de texture</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Ref" type="xsd:integer" />
+	</xsd:complexType>
 
-	<xs:complexType name="TMateriauMulti">
-		<xs:sequence>
-			<xs:element name="Ambiante" type="jkt:TColor" />
-			<xs:element name="Diffuse" type="jkt:TColor" />
-			<xs:element name="Specular" type="jkt:TColor" />
-			<xs:element name="Fichier">
-				<xs:complexType>
-					<xs:attribute name="Nom" type="xs:string">
-						<xs:annotation>
-							<xs:documentation>Nom du fichier de texture</xs:documentation>
-						</xs:annotation>
-					</xs:attribute>
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="SousMateriaux">
-				<xs:complexType>
-					<xs:choice minOccurs="0" maxOccurs="unbounded">
-						<xs:element name="MateriauSimple" type="jkt:TMateriauSimple" />
-						<xs:element name="MateriauTexture" type="jkt:TMateriauTexture" />
-						<xs:element name="MateriauMulti" type="jkt:TMateriauTexture" />
-					</xs:choice>
-					<xs:attribute name="Nbr" type="xs:integer"></xs:attribute>
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-		<xs:attribute name="Ref" type="xs:integer" />
-	</xs:complexType>
+	<xsd:complexType name="TMateriauMulti">
+		<xsd:sequence>
+			<xsd:element name="Ambiante" type="jkt:TColor" />
+			<xsd:element name="Diffuse" type="jkt:TColor" />
+			<xsd:element name="Specular" type="jkt:TColor" />
+			<xsd:element name="Fichier" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="Nom" type="xsd:string">
+						<xsd:annotation>
+							<xsd:documentation>Nom du fichier de texture</xsd:documentation>
+						</xsd:annotation>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SousMateriaux">
+				<xsd:complexType>
+					<xsd:choice minOccurs="0" maxOccurs="unbounded">
+						<xsd:element name="MateriauSimple" type="jkt:TMateriauSimple" />
+						<xsd:element name="MateriauTexture" type="jkt:TMateriauTexture" />
+						<xsd:element name="MateriauMulti" type="jkt:TMateriauTexture" />
+					</xsd:choice>
+					<xsd:attribute name="Nbr" type="xsd:integer"></xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Ref" type="xsd:integer" />
+	</xsd:complexType>
 
-	<xs:complexType name="TLightOmni">
-		<xs:sequence>
-			<xs:element name="Ambiante" type="jkt:TColor" />
-			<xs:element name="Diffuse" type="jkt:TColor" />
-			<xs:element name="Specular" type="jkt:TColor" />
-			<xs:element name="Position" type="jkt:TPosition" />
-		</xs:sequence>
-		<xs:attribute name="Ref" type="xs:integer" />
-	</xs:complexType>
+	<xsd:complexType name="TLightOmni">
+		<xsd:sequence>
+			<xsd:element name="Ambiante" type="jkt:TColor" />
+			<xsd:element name="Diffuse" type="jkt:TColor" />
+			<xsd:element name="Specular" type="jkt:TColor" />
+			<xsd:element name="Position" type="jkt:TPosition" />
+		</xsd:sequence>
+		<xsd:attribute name="Ref" type="xsd:integer" />
+	</xsd:complexType>
 
-	<xs:complexType name="TLightTarget">
-		<xs:sequence>
-			<xs:element name="Ambiante" type="jkt:TColor" />
-			<xs:element name="Diffuse" type="jkt:TColor" />
-			<xs:element name="Specular" type="jkt:TColor" />
-			<xs:element name="Position" type="jkt:TPosition" />
-			<xs:element name="Direction" type="jkt:TPosition" />
-			<xs:element name="FallOff">
-				<xs:complexType>
-					<xs:attribute name="Valeur" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-		<xs:attribute name="Ref" type="xs:integer" />
-	</xs:complexType>
+	<xsd:complexType name="TLightTarget">
+		<xsd:sequence>
+			<xsd:element name="Ambiante" type="jkt:TColor" />
+			<xsd:element name="Diffuse" type="jkt:TColor" />
+			<xsd:element name="Specular" type="jkt:TColor" />
+			<xsd:element name="Position" type="jkt:TPosition" />
+			<xsd:element name="Direction" type="jkt:TPosition" />
+			<xsd:element name="FallOff">
+				<xsd:complexType>
+					<xsd:attribute name="Valeur" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Ref" type="xsd:integer" />
+	</xsd:complexType>
 
-	<xs:complexType name="TGeoSimple">
-		<xs:sequence>
-			<xs:element name="Solide">
-				<xs:complexType>
-					<xs:attribute name="Valeur" type="xs:boolean" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="Couleur" type="jkt:TColor" />
-			<xs:element name="Sommets">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
-					</xs:sequence>
-					<xs:attribute name="Nbr" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="Faces">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="Sommet" minOccurs="0" maxOccurs="unbounded">
-							<xs:complexType>
-								<xs:attribute name="S1" type="xs:integer" />
-								<xs:attribute name="S2" type="xs:integer" />
-								<xs:attribute name="S3" type="xs:integer" />
-							</xs:complexType>
-						</xs:element>
-					</xs:sequence>
-					<xs:attribute name="Nbr" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-		<xs:attribute name="Ref" type="xs:integer" />
-		<xs:attribute name="Nom" type="xs:string" />
-	</xs:complexType>
+	<xsd:complexType name="TGeoSimple">
+		<xsd:sequence>
+			<xsd:element name="Solide">
+				<xsd:complexType>
+					<xsd:attribute name="Valeur" type="xsd:boolean" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Couleur" type="jkt:TColor" />
+			<xsd:element name="Sommets">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+					<xsd:attribute name="Nbr" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Faces">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Sommet" minOccurs="0" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:attribute name="S1" type="xsd:integer" />
+								<xsd:attribute name="S2" type="xsd:integer" />
+								<xsd:attribute name="S3" type="xsd:integer" />
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+					<xsd:attribute name="Nbr" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="abstract" type="xsd:boolean" />
+		<xsd:attribute name="Ref" type="xsd:integer" />
+		<xsd:attribute name="Nom" type="xsd:string" />
+	</xsd:complexType>
 
-	<xs:complexType name="TGeoSimpleMaterial">
-		<xs:sequence>
-			<xs:element name="Solide">
-				<xs:complexType>
-					<xs:attribute name="Valeur" type="xs:boolean" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="Materiau">
-				<xs:complexType>
-					<xs:attribute name="Ref" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="Sommets">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
-					</xs:sequence>
-					<xs:attribute name="Nbr" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="VecteursNormaux">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
-					</xs:sequence>
-					<xs:attribute name="Nbr" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-		<xs:attribute name="Ref" type="xs:integer" />
-		<xs:attribute name="Nom" type="xs:string" />
-	</xs:complexType>
+	<xsd:complexType name="TGeoSimpleMaterial">
+		<xsd:sequence>
+			<xsd:element name="Solide">
+				<xsd:complexType>
+					<xsd:attribute name="Valeur" type="xsd:boolean" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Materiau">
+				<xsd:complexType>
+					<xsd:attribute name="Ref" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Sommets">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+					<xsd:attribute name="Nbr" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="VecteursNormaux" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+					<xsd:attribute name="Nbr" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="abstract" type="xsd:boolean" />
+		<xsd:attribute name="Ref" type="xsd:integer" />
+		<xsd:attribute name="Nom" type="xsd:string" />
+	</xsd:complexType>
 
-	<xs:complexType name="TGeoTexture">
-		<xs:sequence>
-			<xs:element name="Solide">
-				<xs:complexType>
-					<xs:attribute name="Valeur" type="xs:boolean" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="Materiau">
-				<xs:complexType>
-					<xs:attribute name="Ref" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="Sommets">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
-					</xs:sequence>
-					<xs:attribute name="Nbr" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="VecteursNormaux">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
-					</xs:sequence>
-					<xs:attribute name="Nbr" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="SommetsDeTexture">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="S" type="jkt:TTexCoord" minOccurs="0" maxOccurs="unbounded" />
-					</xs:sequence>
-					<xs:attribute name="Nbr" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-		<xs:attribute name="Ref" type="xs:integer" />
-		<xs:attribute name="Nom" type="xs:string" />
-	</xs:complexType>
+	<xsd:complexType name="TGeoTexture">
+		<xsd:sequence>
+			<xsd:element name="Solide">
+				<xsd:complexType>
+					<xsd:attribute name="Valeur" type="xsd:boolean" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Materiau">
+				<xsd:complexType>
+					<xsd:attribute name="Ref" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Sommets">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+					<xsd:attribute name="Nbr" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="VecteursNormaux" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+					<xsd:attribute name="Nbr" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SommetsDeTexture">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="S" type="jkt:TTexCoord" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+					<xsd:attribute name="Nbr" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="abstract" type="xsd:boolean" />
+		<xsd:attribute name="Ref" type="xsd:integer" />
+		<xsd:attribute name="Nom" type="xsd:string" />
+	</xsd:complexType>
 
-	<xs:complexType name="TGeoMulti">
-		<xs:sequence>
-			<xs:element name="Solide">
-				<xs:complexType>
-					<xs:attribute name="Valeur" type="xs:boolean" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="Materiau">
-				<xs:complexType>
-					<xs:attribute name="Ref" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="Sommets">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
-					</xs:sequence>
-					<xs:attribute name="Nbr" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="VecteursNormaux">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
-					</xs:sequence>
-					<xs:attribute name="Nbr" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="SommetsDeTexture">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="S" type="jkt:TTexCoord" minOccurs="0" maxOccurs="unbounded" />
-					</xs:sequence>
-					<xs:attribute name="Nbr" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-			<xs:element name="SousMateriaux">
-				<xs:complexType>
-					<xs:sequence>
-						<xs:element name="SousMateriau" minOccurs="0" maxOccurs="unbounded">
-							<xs:complexType>
-								<xs:attribute name="Id" type="xs:integer" />
-								<xs:attribute name="NbrFaces" type="xs:integer" />
-							</xs:complexType>
-						</xs:element>
-					</xs:sequence>
-					<xs:attribute name="NbrFaces" type="xs:integer" />
-				</xs:complexType>
-			</xs:element>
-		</xs:sequence>
-		<xs:attribute name="Ref" type="xs:integer" />
-		<xs:attribute name="Nom" type="xs:string" />
-	</xs:complexType>
+	<xsd:complexType name="TGeoMulti">
+		<xsd:sequence>
+			<xsd:element name="Solide">
+				<xsd:complexType>
+					<xsd:attribute name="Valeur" type="xsd:boolean" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Materiau">
+				<xsd:complexType>
+					<xsd:attribute name="Ref" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Sommets">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+					<xsd:attribute name="Nbr" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="VecteursNormaux" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="S" type="jkt:TPosition" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+					<xsd:attribute name="Nbr" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SommetsDeTexture">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="S" type="jkt:TTexCoord" minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+					<xsd:attribute name="Nbr" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="SousMateriaux">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="SousMateriau" minOccurs="0" maxOccurs="unbounded">
+							<xsd:complexType>
+								<xsd:attribute name="Id" type="xsd:integer" />
+								<xsd:attribute name="NbrFaces" type="xsd:integer" />
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+					<xsd:attribute name="NbrFaces" type="xsd:integer" />
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="abstract" type="xsd:boolean" />
+		<xsd:attribute name="Ref" type="xsd:integer" />
+		<xsd:attribute name="Nom" type="xsd:string" />
+	</xsd:complexType>
 
-	<xs:complexType name="TImport">
-		<xs:sequence>
-			<xs:element name="Translate" type="jkt:TTranslate" minOccurs="0" maxOccurs="1" />
-			<xs:element name="Scale" type="jkt:TScale" minOccurs="0" maxOccurs="1" />
-		</xs:sequence>
-		<xs:attribute name="Mode">
-			<xs:annotation>
-				<xs:documentation>Type d'import à effectuer (add=ajout en sous-Map, merge=fusion de la Map)</xs:documentation>
-			</xs:annotation>
-			<xs:simpleType>
-				<xs:restriction base="xs:string">
-					<xs:enumeration value="add" />
-					<xs:enumeration value="merge" />
-				</xs:restriction>
-			</xs:simpleType>
-		</xs:attribute>
-		<xs:attribute name="Nom" type="xs:string">
-			<xs:annotation>
-				<xs:documentation>Nom de la Map à importer</xs:documentation>
-			</xs:annotation>
-		</xs:attribute>
-	</xs:complexType>
+	<xsd:complexType name="TImport">
+		<xsd:sequence>
+			<xsd:element name="Translate" type="jkt:TTranslate" minOccurs="0" maxOccurs="1" />
+			<xsd:element name="Scale" type="jkt:TScale" minOccurs="0" maxOccurs="1" />
+		</xsd:sequence>
+		<xsd:attribute name="Mode">
+			<xsd:annotation>
+				<xsd:documentation>Type d'import à effectuer (add=ajout en sous-Map, merge=fusion de la Map)</xsd:documentation>
+			</xsd:annotation>
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="add" />
+					<xsd:enumeration value="merge" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
+		<xsd:attribute name="Nom" type="xsd:string">
+			<xsd:annotation>
+				<xsd:documentation>Nom de la Map à importer</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
 
-	<xs:complexType name="TEntryPoint">
-		<xs:sequence>
-			<xs:element name="Position" type="jkt:TPosition" />
-		</xs:sequence>
-	</xs:complexType>
+	<xsd:complexType name="TEntryPoint">
+		<xsd:sequence>
+			<xsd:element name="Position" type="jkt:TPosition" />
+		</xsd:sequence>
+	</xsd:complexType>
 
-</xs:schema>
+</xsd:schema>

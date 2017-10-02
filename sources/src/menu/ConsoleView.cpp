@@ -42,7 +42,7 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	_commande = AG_TextboxNew(box, AG_TEXTBOX_EXCL|AG_TEXTBOX_HFILL, "Commande : ");
 	AG_WidgetFocus(_commande);
 	AG_WidgetEnable(_commande);
-	AG_SetEvent(_commande, "textbox-return", controllerCallback, "%i", Controller::ExecuteUserCommandeAction); // L'appui sur ENTER est interprêté
+	AG_SetEvent(_commande, "textbox-return", controllerCallback, "%i", Controller::ExecuteUserCommandeAction); // L'appui sur ENTER est interprï¿½tï¿½
 
 	_buttonOk = AG_ButtonNewFn(box, 0, "Ok", controllerCallback, "%i", Controller::ExecuteUserCommandeAction);
 
@@ -91,20 +91,20 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	/*AG_NotebookTab* subtabSon = */AG_NotebookAddTab(subbookInfo, "Son", AG_BOX_VERT);
 
 	/******************************
-		Sous-onglet Info / Réseau
+		Sous-onglet Info / Rï¿½seau
 	******************************/
-	AG_NotebookTab* subtabReseau = AG_NotebookAddTab(subbookInfo, "Réseau", AG_BOX_VERT);
+	AG_NotebookTab* subtabReseau = AG_NotebookAddTab(subbookInfo, "R\u00e9seau", AG_BOX_VERT);
 	AG_Scrollview* scrollReseau = AG_ScrollviewNew(subtabReseau, AG_SCROLLVIEW_EXPAND | AG_SCROLLVIEW_NOPAN_X);
 
-	// Débit réseau en émission
+	// Dï¿½bit rï¿½seau en ï¿½mission
 	label = AG_LabelNewPolledMT(scrollReseau, 0, Statistics::getInstance()->getMutex(), "Debit en emission : %f ko/s (%f o)", &Statistics::getInstance()->_fDebitEm, &Statistics::getInstance()->_fTailleEm);
 	AG_LabelSizeHint(label, 1, "Debit en emission : xxxx ko/s (xxxx o)");
 
-	// Débit réseau en réception
+	// Dï¿½bit rï¿½seau en rï¿½ception
 	label = AG_LabelNewPolledMT(scrollReseau, 0, Statistics::getInstance()->getMutex(), "Debit en reception : %f ko/s (%f o)", &Statistics::getInstance()->_fDebitRec, &Statistics::getInstance()->_fTailleRec);
 	AG_LabelSizeHint(label, 1, "Map ouverte : Debit en reception : xxxx ko/s (xxxx o)");
 
-	// Disposition de la fenêtre	
+	// Disposition de la fenï¿½tre
 	AG_WidgetUpdate(book);
 	AG_NotebookSelectTab (book, tabMain);
 	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_BL, 70, 30);
@@ -117,7 +117,7 @@ ConsoleView::~ConsoleView(void) {
 }
 
 string ConsoleView::getCommandAndClearCommandLine() {
-	// Récupération de la saisie de l'utilisateur
+	// Rï¿½cupï¿½ration de la saisie de l'utilisateur
 	char* cmd = AG_TextboxDupString(_commande);
 	string commande = cmd;
 
@@ -126,6 +126,10 @@ string ConsoleView::getCommandAndClearCommandLine() {
 	free(cmd);
 
 	return commande;
+}
+
+void ConsoleView::println(ConsoleOutputType type, const stringstream& texte) {
+	println(type, texte.str());
 }
 
 void ConsoleView::println(ConsoleOutputType type, const string& texte) {

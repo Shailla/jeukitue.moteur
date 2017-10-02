@@ -60,48 +60,19 @@ const char* CMaterial::toString() {
 	return tostring.c_str();
 }
 
-bool CMaterial::LitFichier(CMap* map, CIfstreamMap &fichier) {
-	string mot;
-
-	fichier >> mot;
-	if( mot!="Reference" )
-		return false;	// Fichier corrompu
-
-	fichier >> m_Ref;			// Référence du matériau
-
-	fichier >> mot;
-	if( mot!="Ambient" )
-		return false;	// Fichier corrompu
-
-	fichier >> m_Ambient[0] >> m_Ambient[1] >> m_Ambient[2];
-
-	fichier >> mot;
-	if( mot!="Diffuse" )
-		return false;	// Fichier corrompu
-
-	fichier >> m_Diffuse[0] >> m_Diffuse[1] >> m_Diffuse[2];
-
-	fichier >> mot;
-	if( mot!="Specular" )
-		return false;
-
-	fichier >> m_Specular[0] >> m_Specular[1] >> m_Specular[2];
-
-	return true;
-}
-
-bool CMaterial::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
-	double ref;
-
+bool CMaterial::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
 	// Nom
 	const char* nom = el->Attribute(Xml::NOM);
 	if(nom) {
 		setName(nom);
 	}
 
-	// Référence
-	el->Attribute(Xml::REF, &ref);
-	m_Ref = (unsigned int)ref;
+	// RÃ©fÃ©rence
+	const char* reference = el->Attribute(Xml::REF);
+
+	if(reference) {
+		_reference = reference;
+	}
 
 	// Couleurs
 	Xml::LitCouleur3fv(el, Xml::AMBIANTE, m_Ambient);
@@ -111,18 +82,8 @@ bool CMaterial::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	return true;
 }
 
-bool CMaterial::SaveFichierMap( ofstream &fichier ) {
-	fichier << "\n\nMateriauSimple";
-	fichier << "\n\tReference\t" << m_Ref;
-	fichier << "\n\tAmbient\t\t" << m_Ambient[0] << "\t" << m_Ambient[1] << "\t" << m_Ambient[2];
-	fichier << "\n\tDiffuse\t\t" << m_Diffuse[0] << "\t" << m_Diffuse[1] << "\t" << m_Diffuse[2];
-	fichier << "\n\tSpecular\t" << m_Specular[0] << "\t" << m_Specular[1] << "\t" << m_Specular[2];
-
-	return true;
-}
-
-bool CMaterial::Save(TiXmlElement* element) {
-	// Nom, référence...
+bool CMaterial::Save(TiXmlElement* element) throw(CErreur) {
+	// Nom, rÃ©fÃ©rence...
 	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAUSIMPLE);
 	elMat->SetAttribute(Xml::REF,m_Ref);
 	elMat->SetAttribute(Xml::NOM, getName());
@@ -146,7 +107,7 @@ void CMaterial::Active() {
 void CMaterial::Desactive() {
 }
 
-unsigned int CMaterial::getRef() const {	// Renvoie la référence du matériau
+unsigned int CMaterial::getRef() const {	// Renvoie la rï¿½fï¿½rence du matï¿½riau
 	return m_Ref;
 }
 

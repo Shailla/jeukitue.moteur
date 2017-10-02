@@ -2,7 +2,7 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jkt="http://jkt/map2017.xsd" targetNamespace="http://jkt/map2017.xsd" elementFormDefault="qualified">
 
 	<xsd:include schemaLocation="map2017-basicTypes.xsd" />
-
+	
 	<xsd:element name="Map">
 		<xsd:annotation>
 			<xsd:documentation>Map de jeu</xsd:documentation>
@@ -47,7 +47,7 @@
 							<xsd:element name="MateriauTexture" type="jkt:TMateriauTexture" />
 							<xsd:element name="MateriauMulti" type="jkt:TMateriauMulti" />
 						</xsd:choice>
-						<xsd:attribute name="Ref" type="xsd:integer" />
+						<xsd:attribute name="Ref" type="xsd:ID" />
 					</xsd:complexType>
 				</xsd:element>
 				<xsd:element name="Lights" minOccurs="0" maxOccurs="1">
@@ -56,7 +56,7 @@
 							<xsd:element name="LightOmni" type="jkt:TLightOmni" />
 							<xsd:element name="LightTarget" type="jkt:TLightTarget" />
 						</xsd:choice>
-						<xsd:attribute name="Ref" type="xsd:integer" />
+						<xsd:attribute name="Ref" type="xsd:ID" />
 					</xsd:complexType>
 				</xsd:element>
 				<xsd:element name="Geos" minOccurs="0" maxOccurs="1">
@@ -66,8 +66,9 @@
 							<xsd:element name="GeoTexture" type="jkt:TGeoTexture" />
 							<xsd:element name="GeoSimpleMaterial" type="jkt:TGeoSimpleMaterial" />
 							<xsd:element name="GeoMulti" type="jkt:TGeoMulti" />
+							<xsd:element name="GeoInstance" type="jkt:TGeoInstance" />
 						</xsd:choice>
-						<xsd:attribute name="Ref" type="xsd:integer" />
+						<xsd:attribute name="Ref" type="xsd:ID" />
 					</xsd:complexType>
 				</xsd:element>
 				<xsd:element name="Imports" minOccurs="0" maxOccurs="1">
@@ -117,7 +118,7 @@
 			<xsd:element name="Diffuse" type="jkt:TColor" />
 			<xsd:element name="Specular" type="jkt:TColor" />
 		</xsd:sequence>
-		<xsd:attribute name="Ref" type="xsd:integer" />
+		<xsd:attribute name="Ref" type="xsd:ID" />
 	</xsd:complexType>
 
 	<xsd:complexType name="TMateriauTexture">
@@ -135,7 +136,7 @@
 				</xsd:complexType>
 			</xsd:element>
 		</xsd:sequence>
-		<xsd:attribute name="Ref" type="xsd:integer" />
+		<xsd:attribute name="Ref" type="xsd:ID" />
 	</xsd:complexType>
 
 	<xsd:complexType name="TMateriauMulti">
@@ -159,11 +160,11 @@
 						<xsd:element name="MateriauTexture" type="jkt:TMateriauTexture" />
 						<xsd:element name="MateriauMulti" type="jkt:TMateriauTexture" />
 					</xsd:choice>
-					<xsd:attribute name="Nbr" type="xsd:integer"></xsd:attribute>
+					<xsd:attribute name="Nbr" type="xsd:integer" />
 				</xsd:complexType>
 			</xsd:element>
 		</xsd:sequence>
-		<xsd:attribute name="Ref" type="xsd:integer" />
+		<xsd:attribute name="Ref" type="xsd:ID" />
 	</xsd:complexType>
 
 	<xsd:complexType name="TLightOmni">
@@ -173,7 +174,7 @@
 			<xsd:element name="Specular" type="jkt:TColor" />
 			<xsd:element name="Position" type="jkt:TPosition" />
 		</xsd:sequence>
-		<xsd:attribute name="Ref" type="xsd:integer" />
+		<xsd:attribute name="Ref" type="xsd:ID" />
 	</xsd:complexType>
 
 	<xsd:complexType name="TLightTarget">
@@ -189,7 +190,16 @@
 				</xsd:complexType>
 			</xsd:element>
 		</xsd:sequence>
-		<xsd:attribute name="Ref" type="xsd:integer" />
+		<xsd:attribute name="Ref" type="xsd:ID" />
+	</xsd:complexType>
+
+	<xsd:complexType name="TGeoInstance">
+		<xsd:attribute name="Ref" type="xsd:ID" />
+		<xsd:attribute name="Nom" type="xsd:string" />
+		<xsd:attribute name="Description" type="xsd:IDREF" />
+		<xsd:attribute name="X" type="xsd:float" />
+		<xsd:attribute name="Y" type="xsd:float" />
+		<xsd:attribute name="Z" type="xsd:float" />
 	</xsd:complexType>
 
 	<xsd:complexType name="TGeoSimple">
@@ -223,8 +233,8 @@
 				</xsd:complexType>
 			</xsd:element>
 		</xsd:sequence>
-		<xsd:attribute name="abstract" type="xsd:boolean" />
-		<xsd:attribute name="Ref" type="xsd:integer" />
+		<xsd:attribute name="Abstract" type="xsd:boolean" use="optional" />
+		<xsd:attribute name="Ref" type="xsd:ID" />
 		<xsd:attribute name="Nom" type="xsd:string" />
 	</xsd:complexType>
 
@@ -237,7 +247,7 @@
 			</xsd:element>
 			<xsd:element name="Materiau">
 				<xsd:complexType>
-					<xsd:attribute name="Ref" type="xsd:integer" />
+					<xsd:attribute name="Ref" type="xsd:IDREF" />
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="Sommets">
@@ -257,8 +267,8 @@
 				</xsd:complexType>
 			</xsd:element>
 		</xsd:sequence>
-		<xsd:attribute name="abstract" type="xsd:boolean" />
-		<xsd:attribute name="Ref" type="xsd:integer" />
+		<xsd:attribute name="Abstract" type="xsd:boolean" use="optional" />
+		<xsd:attribute name="Ref" type="xsd:ID" />
 		<xsd:attribute name="Nom" type="xsd:string" />
 	</xsd:complexType>
 
@@ -271,7 +281,7 @@
 			</xsd:element>
 			<xsd:element name="Materiau">
 				<xsd:complexType>
-					<xsd:attribute name="Ref" type="xsd:integer" />
+					<xsd:attribute name="Ref" type="xsd:IDREF" />
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="Sommets">
@@ -299,8 +309,8 @@
 				</xsd:complexType>
 			</xsd:element>
 		</xsd:sequence>
-		<xsd:attribute name="abstract" type="xsd:boolean" />
-		<xsd:attribute name="Ref" type="xsd:integer" />
+		<xsd:attribute name="Abstract" type="xsd:boolean" use="optional" />
+		<xsd:attribute name="Ref" type="xsd:ID" />
 		<xsd:attribute name="Nom" type="xsd:string" />
 	</xsd:complexType>
 
@@ -313,7 +323,7 @@
 			</xsd:element>
 			<xsd:element name="Materiau">
 				<xsd:complexType>
-					<xsd:attribute name="Ref" type="xsd:integer" />
+					<xsd:attribute name="Ref" type="xsd:IDREF" />
 				</xsd:complexType>
 			</xsd:element>
 			<xsd:element name="Sommets">
@@ -350,12 +360,12 @@
 							</xsd:complexType>
 						</xsd:element>
 					</xsd:sequence>
-					<xsd:attribute name="NbrFaces" type="xsd:integer" />
+					<xsd:attribute name="Nbr" type="xsd:integer" />
 				</xsd:complexType>
 			</xsd:element>
 		</xsd:sequence>
-		<xsd:attribute name="abstract" type="xsd:boolean" />
-		<xsd:attribute name="Ref" type="xsd:integer" />
+		<xsd:attribute name="Abstract" type="xsd:boolean" use="optional" />
+		<xsd:attribute name="Ref" type="xsd:ID" />
 		<xsd:attribute name="Nom" type="xsd:string" />
 	</xsd:complexType>
 

@@ -34,9 +34,17 @@ void MapLogger::logInfo(const string& trace) {
 	_logFile << endl << LOG_INFO_PREFIX << trace.c_str() << flush;
 }
 
+void MapLogger::logInfo(const stringstream& trace) {
+	logInfo(trace.str());
+}
+
 void MapLogger::logError(const string& trace) {
 	LOGWARN(("[Log lecture Map] %s", trace.c_str()));
-	_logFile << endl << LOG_INFO_PREFIX << trace.c_str() << flush;
+	_logFile << endl << LOG_ERROR_PREFIX << trace.c_str() << flush;
+}
+
+void MapLogger::logError(const stringstream& trace) {
+	logError(trace.str());
 }
 
 MapLogger::~MapLogger() {

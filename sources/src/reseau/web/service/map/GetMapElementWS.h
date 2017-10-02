@@ -1,7 +1,7 @@
 /*
  * MapWebService.h
  *
- *  Created on: 25 févr. 2016
+ *  Created on: 25 fï¿½vr. 2016
  *      Author: VGDJ7997
  */
 
@@ -48,8 +48,8 @@ public:
 
 		MapObject* clone();														// Mandatory to compile
 		void init() throw(CErreur);
-		bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;	// Mandatory to compile
-		bool Save(TiXmlElement* element) override;								// Mandatory to compile
+		bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;	// Mandatory to compile
+		bool Save(TiXmlElement* element) throw(CErreur) override;								// Mandatory to compile
 	};
 
 	static const std::string ID;

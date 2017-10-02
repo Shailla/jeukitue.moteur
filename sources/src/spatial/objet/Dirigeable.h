@@ -27,16 +27,16 @@ public:
 	Dirigeable(const Dirigeable& other);
 	~Dirigeable();
 
-	void Affiche() override;										// Fonction d'affichage de l'objet géométrique
-	void AfficheHighlighted(float r, float g, float b) override;	// Fonction d'affichage de l'objet géométrique
+	void Affiche() override;										// Fonction d'affichage de l'objet gï¿½omï¿½trique
+	void AfficheHighlighted(float r, float g, float b) override;	// Fonction d'affichage de l'objet gï¿½omï¿½trique
 	static void Affiche(Branche* branche);
-	void refresh(CGame *game) override;								// Rafraichissement des données, position, vitesse, ... de l'objet
+	void refresh(CGame *game) override;								// Rafraichissement des donnï¿½es, position, vitesse, ... de l'objet
 	MapObject* clone() override;
 	void init() throw(CErreur);
 
-	// Sérialisation
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;
-	bool Save(TiXmlElement* element) override;
+	// Sï¿½rialisation
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
+	bool Save(TiXmlElement* element) throw(CErreur) override;
 };
 
 }	// JktMoteur

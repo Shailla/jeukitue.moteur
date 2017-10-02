@@ -46,7 +46,7 @@ CGame::CGame() : _players(false) {
 	_clientDataTree = NULL;
 	_map = NULL;			// Pas de map
 	_erwin = NULL;			// Pas de joueur actif
-	_gravite = true;		// Par défaut la gravité est active
+	_gravite = true;		// Par dï¿½faut la gravitï¿½ est active
 }
 
 bool CGame::isModeServer() {
@@ -118,8 +118,18 @@ bool CGame::openMap(const string &nomFichierMap) throw(jkt::CErreur) {
 		delete _map;
 
 	try {
-		_map = new jkt::CMap(0, nomFichierMap);
-		_map->init();
+		try {
+			_map = new CMap(0);
+			_map->Lit(nomFichierMap, 0);
+			_map->init();
+		}
+		catch(CErreur& error) {
+			stringstream msg;
+			msg << "Echec de lecture de la Map : " << error.what();
+			LOGWARN((msg));
+			delete _map;
+			_map = 0;
+		}
 	}
 	catch(jkt::CErreur& erreur) {
 		LOGERROR(("Echec d'ouverture de la Map '%s' : %s", nomFichierMap.c_str(), erreur.what()));
@@ -250,7 +260,7 @@ void CGame::refresh() {
 	}
 }
 
-void CGame::GereContactPlayers() {	// Gère les contacts de tous les joueurs avec la map
+void CGame::GereContactPlayers() {	// Gï¿½re les contacts de tous les joueurs avec la map
 	CPlayer *player;
 	int curseur = -1;
 
@@ -259,7 +269,7 @@ void CGame::GereContactPlayers() {	// Gère les contacts de tous les joueurs avec
 
 		if(player) {
 			player->Pente(0.0f);
-			_map->GereContactPlayer(0, player);		// Gère les contact avec la map de player
+			_map->GereContactPlayer(0, player);		// Gï¿½re les contact avec la map de player
 		}
 	}
 }
@@ -296,7 +306,7 @@ void CGame::AffichePlayers() {
 
 		if(player) {
 			player->Affiche(); 				//affiche un seul joueur pour le moment
-			player->AfficheProjectils(); 	// Affiche les projectils lancés par 'player'
+			player->AfficheProjectils(); 	// Affiche les projectils lancï¿½s par 'player'
 		}
 	}
 }
@@ -360,7 +370,7 @@ jkt::CMap *CGame::getMap() {
 	return _map;
 }
 
-int CGame::afficheDamierTextures(int x, int y, int tailleX, int tailleY, int page, int nbrHoriz, int nbrVert) const {	// Affiche à l'écran toutes les textures de la Map
+int CGame::afficheDamierTextures(int x, int y, int tailleX, int tailleY, int page, int nbrHoriz, int nbrVert) const {	// Affiche ï¿½ l'ï¿½cran toutes les textures de la Map
 	if(_map) {
 		return _map->afficheDamierTextures(x, y, tailleX, tailleY, nbrHoriz, nbrVert, page);
 	}
@@ -414,7 +424,7 @@ void CGame::faitTousRequetesClavier() {
 	CPlayer *player;
 	int curseur = -1;
 
-	while(_players.Suivant(curseur)) {	//exécute les requêtes clavier sur les joueurs
+	while(_players.Suivant(curseur)) {	//exï¿½cute les requï¿½tes clavier sur les joueurs
 		player = _players[curseur];
 
 		if(player) {
@@ -451,20 +461,20 @@ void CGame::faitTousPlayerGravite() {
 		player = _players[curseur];
 
 		if(player) {
-			player->exeActionFunc();	//exécute l'action périodique (gravité,...) du joueur
+			player->exeActionFunc();	//exï¿½cute l'action pï¿½riodique (gravitï¿½,...) du joueur
 		}
 	}
 }
 
 void CGame::timer() {
 	if(_map) {
-		if( _gravite )					// Si la gravité est active
+		if( _gravite )					// Si la gravitï¿½ est active
 			faitTousPlayerGravite();
 
-		refresh();						// Rafraichi les classes qui ont besoin de l'être (celles de type CMouve et CProjectil)
-		faitTousRequetesClavier();		// Exécute les requêtes clavier sur tous les joueurs
-		GereContactPlayers();			// Gère tous les contacts entre la map et les joueurs
-		deplaceTousPlayer();			// Déplace tous les joueurs de leurs vitesses
+		refresh();						// Rafraichi les classes qui ont besoin de l'ï¿½tre (celles de type CMouve et CProjectil)
+		faitTousRequetesClavier();		// Exï¿½cute les requï¿½tes clavier sur tous les joueurs
+		GereContactPlayers();			// Gï¿½re tous les contacts entre la map et les joueurs
+		deplaceTousPlayer();			// Dï¿½place tous les joueurs de leurs vitesses
 	}
 }
 

@@ -1,6 +1,6 @@
 
 #ifdef WIN32
-	#include <windows.h>
+#include <windows.h>
 #endif
 #include <GL/glew.h>
 #include <GL/glu.h>
@@ -32,7 +32,7 @@ using namespace jkt;
 extern CGame Game;
 
 Texture* CRocket::_textureExplosion = NULL;		// Texture pour l'explosion de la rocket
-bool CRocket::m_B_INIT_CLASSE = false;	// Par défaut la classe n'a pas encore été initialisée
+bool CRocket::m_B_INIT_CLASSE = false;	// Par dï¿½faut la classe n'a pas encore ï¿½tï¿½ initialisï¿½e
 jkt::CMap* CRocket::_mapRocket = NULL;			// Image 3D de la rocket
 
 #define Pi 3.14159265f
@@ -41,45 +41,55 @@ jkt::CMap* CRocket::_mapRocket = NULL;			// Image 3D de la rocket
 #define TAILLE_TEX_EXPLOSION	0.1f
 
 bool CRocket::INIT_CLASSE() {
-LOGDEBUG(("CRocket::INIT_CLASSE()"));
-		// Initialise la classe si elle ne l'a pas encore été
+	LOGDEBUG(("CRocket::INIT_CLASSE()"));
+	// Initialise la classe si elle ne l'a pas encore ï¿½tï¿½
 	if( !m_B_INIT_CLASSE ) {
 		try {
 			Uint8* pixels = jkt::litFichierImage("@Texture/Explosion.jpg", 0.75f);
 			_textureExplosion = jkt::litFichierTexture("@Texture/Explosion.jpg", 0.75f , pixels);
 		}
 		catch(CErreur& erreur) {
-			cerr << endl << __FILE__ << ":" << __LINE__ << " Echec lecture icone d'explosion du rocket";
+			LOGWARN(("Echec lecture icone d'explosion du rocket"));
 			_textureExplosion = NULL;
-			return false;	// L'initialisation a échoué
+			return false;	// L'initialisation a ï¿½chouï¿½
 		}
 
-		_mapRocket = new jkt::CMap(0, "@Arme\\Missile");
-		_mapRocket->init();
+		try {
+			_mapRocket = new jkt::CMap(0);
+			_mapRocket->Lit("@Arme\\Missile", 0);
+			_mapRocket->init();
+		}
+		catch(CErreur& error) {
+			stringstream msg;
+			msg << "Echec de lecture du missile : " << error.what();
+			LOGWARN((msg));
+			delete _mapRocket;
+			_mapRocket = 0;
+		}
 
-		m_B_INIT_CLASSE = true;	// Indique que l'initialisation a été faite
+		m_B_INIT_CLASSE = true;	// Indique que l'initialisation a ï¿½tï¿½ faite
 	}
 
-	return true;	// L'initialisation a réussi
+	return true;	// L'initialisation a rï¿½ussi
 }
 
 CRocket::CRocket(CPlayer *player) : CProjectil(player) {
 	float pos[3];
-	INIT_CLASSE();	// Initialise la classe (normalement ça a déjà été fait !!!)
+	INIT_CLASSE();	// Initialise la classe (normalement ï¿½a a dï¿½jï¿½ ï¿½tï¿½ fait !!!)
 
-		// Calcul de la direction du tir
+	// Calcul de la direction du tir
 	m_Dir.X = /*FastSin0( player->Teta/180.0f*Pi )*FastCos0( player->Phi/180.0f*Pi );*/
-		sinf( player->Teta()/180.0f*Pi )*cosf( player->Phi()/180.0f*Pi );
+			sinf( player->Teta()/180.0f*Pi )*cosf( player->Phi()/180.0f*Pi );
 	m_Dir.Y = /*-FastSin0( player->Phi/180.0f*Pi ) ;*/
-		-sinf( player->Phi()/180.0f*Pi ) ;
+			-sinf( player->Phi()/180.0f*Pi ) ;
 	m_Dir.Z = /*-FastCos0( player->Teta/180.0f*Pi )*FastCos0( player->Phi/180.0f*Pi ) ;*/
-		cosf( player->Teta()/180.0f*Pi )*cosf( player->Phi()/180.0f*Pi ) ;
+			cosf( player->Teta()/180.0f*Pi )*cosf( player->Phi()/180.0f*Pi ) ;
 
 	player->getPosition( pos );
-	m_Pos = pos;	// Position de départ de la rocket
+	m_Pos = pos;	// Position de dï¿½part de la rocket
 	m_Teta = player->Teta();			// Orientation de la rocket
 	m_Phi = player->Phi();				//
-	m_State = ROCKET_STATE_DEPL;		// Etat de départ
+	m_State = ROCKET_STATE_DEPL;		// Etat de dï¿½part
 	m_Taille = ROCKET_RAYON;
 }
 
@@ -90,7 +100,7 @@ void CRocket::afficheRocket() {
 	glPushMatrix();
 	glTranslatef(m_Pos.X, m_Pos.Y, -m_Pos.Z);
 	//glRotated(90.0f, 0.0f, 1.0f, 0.0f);
-	glRotated(-m_Teta, 0.0f, 1.0f, 0.0f);	//Rotation par rapport à l'axe verticale
+	glRotated(-m_Teta, 0.0f, 1.0f, 0.0f);	//Rotation par rapport ï¿½ l'axe verticale
 	glRotated(-m_Phi, 1.0, 0.0, 0.0);
 
 	_mapRocket->Affiche();
@@ -100,7 +110,7 @@ void CRocket::afficheRocket() {
 }
 
 void CRocket::afficheExplosion() {
-	// Calcul du plan orthogonal à l'axe de la vue
+	// Calcul du plan orthogonal ï¿½ l'axe de la vue
 	GLfloat mat[16];
 	glGetFloatv( GL_MODELVIEW_MATRIX, mat );
 	CV3D v_droit( mat[0], mat[4], mat[8] );
@@ -115,7 +125,7 @@ void CRocket::afficheExplosion() {
 	glPushMatrix();
 
 	CV3D pos_explosion;
-	pos_explosion = m_Pos - m_Dir*0.04f;	// Recule un peu l'explosion par rapport à la position où elle se passe
+	pos_explosion = m_Pos - m_Dir*0.04f;	// Recule un peu l'explosion par rapport ï¿½ la position oï¿½ elle se passe
 	glTranslatef(pos_explosion.X, pos_explosion.Y, -pos_explosion.Z);
 
 	_textureExplosion->afficheQuad(a, b, c, d);
@@ -150,8 +160,8 @@ void CRocket::Deplace() {
 	else
 		m_Pos += m_Dir * 0.02f;	// Le mouvement de la rocket continue
 
-		// Vérifie si un joueur passe assez près de la rocket pour déclencher son explosion
-	CPlayer *playerTouche = 0;	// Eventuel touché par la rocket
+	// Vï¿½rifie si un joueur passe assez prï¿½s de la rocket pour dï¿½clencher son explosion
+	CPlayer *playerTouche = 0;	// Eventuel touchï¿½ par la rocket
 	CPlayer *player;
 	int curseur = -1;
 
@@ -163,21 +173,21 @@ void CRocket::Deplace() {
 			EH.Z = pos2[2] - pos[2];
 
 			if(EH.norme() < DISTANCE_TOUCHE)
-				playerTouche = player;	// Se souvient quel joeur est touché
+				playerTouche = player;	// Se souvient quel joeur est touchï¿½
 		}
 	}
 
 	if(playerTouche) {
 		m_State = ROCKET_STATE_EXPLOSION;	// Passe la rocket en mode explosion
-		playerTouche->tuer();	// Tue le joueur touché par la rocket
+		playerTouche->tuer();	// Tue le joueur touchï¿½ par la rocket
 	}
 }
 
 bool CRocket::Refresh() {
-	bool vie = true;	// Demande à ce que l'objet CRocket survive (par défaut)
+	bool vie = true;	// Demande ï¿½ ce que l'objet CRocket survive (par dï¿½faut)
 
 	switch(m_State) {
-	case ROCKET_STATE_DEPL:		// La rocket est en déplacement
+	case ROCKET_STATE_DEPL:		// La rocket est en dï¿½placement
 		Deplace();
 		break;
 

@@ -7,36 +7,52 @@
 
 #include "spatial/basic/Object.h"
 
+using namespace std;
+
 namespace jkt {
 
 CGenRef Object::GENREF;
 
 Object::Object(CMap* map, const std::string& type) {
 	_parent = map;
-	_id = GENREF.genRef();	// Génère une référence pour l'objet
-	_reference = -1;
+	_id = GENREF.genRef();	// Gï¿½nï¿½re une rï¿½fï¿½rence pour l'objet
+	_reference = "";
 	_type = type;
+	_abstract = false;
 }
 
 Object::Object(const Object& other) : Object(other._parent, other._type) {
-	_id = GENREF.genRef();	// Génère une référence pour l'objet
+	_id = GENREF.genRef();	// Gï¿½nï¿½re une rï¿½fï¿½rence pour l'objet
 
-	_reference = -1;
+	_reference = "";
 
 	_name = other._name;
 	_name += "-copy";
 	_name += _id;
+	_abstract = false;
 }
 
 Object::~Object() {
-	GENREF.delRef(_id);		// Libère la référence de l'objet
+	GENREF.delRef(_id);		// Libï¿½re la rï¿½fï¿½rence de l'objet
 }
 
 void Object::init() throw(CErreur) {
 }
 
+bool Object::isAbstract() const {
+	return _abstract;
+}
+
+void Object::setAbstract(bool abstract) {
+	_abstract = abstract;
+}
+
 int Object::getId() const {
 	return _id;
+}
+
+string Object::getReference() const {
+	return _reference;
 }
 
 void Object::setName(const std::string& nom) {

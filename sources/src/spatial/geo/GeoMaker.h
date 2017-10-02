@@ -1,11 +1,11 @@
-#pragma warning( disable : 4290 )	// Evite les warnings sur les déclaration de throw
+#pragma warning( disable : 4290 )	// Evite les warnings sur les dï¿½claration de throw
 
 #ifndef __JKT__GEOMAKER_H
 #define __JKT__GEOMAKER_H
 
-/**	Cette classe a pour rôle de servir de réceptable des données concernant un
-	nouvel objet géométrique, puis une fois toutes les données disponibles,
-	elle sert surtout à créer un objet géométrique (CGeo) optimisé pour
+/**	Cette classe a pour rï¿½le de servir de rï¿½ceptable des donnï¿½es concernant un
+	nouvel objet gï¿½omï¿½trique, puis une fois toutes les donnï¿½es disponibles,
+	elle sert surtout ï¿½ crï¿½er un objet gï¿½omï¿½trique (CGeo) optimisï¿½ pour
 	le type d'affichage de l'objet (avec ou sans texture, indexation,...).
 */
 
@@ -37,14 +37,14 @@ class CGeoMaker
 	std::string m_Nom;	// Nom de l'objet
 	CMap* m_Map;
 
-	int m_NumColor;		// Valeur 0, 3 ou 4 qui correspond à 'pas de couleur', 'couleur sans alpha' ou 'couleur avec alpha'
+	int m_NumColor;		// Valeur 0, 3 ou 4 qui correspond ï¿½ 'pas de couleur', 'couleur sans alpha' ou 'couleur avec alpha'
 	float *m_Color;
 
-	// Matériau
-	bool m_bMaterialTexture;	// "true" si l'objet est associé à un matériau
-	int m_MaterialRef;			// Référence du matériau associé
+	// Matï¿½riau
+	bool m_bMaterialTexture;	// "true" si l'objet est associï¿½ ï¿½ un matï¿½riau
+	int m_MaterialRef;			// Rï¿½fï¿½rence du matï¿½riau associï¿½
 	int m_OffsetMateriau;
-	int* m_TabSubMat;			// Index des éventuels sous-matériau
+	int* m_TabSubMat;			// Index des ï¿½ventuels sous-matï¿½riau
 
 	// Sommets
 	int m_NumVertex;			// Nbre de sommets
@@ -57,8 +57,8 @@ class CGeoMaker
 	// Vecteurs normaux
 	float* m_TabVectNormaux;	// Tableau des vecteurs normaux
 
-	// Coordonnées de texture
-	CTexVertexList *m_TexVertexListe;	// Liste des tableaux de coordonnées de texture
+	// Coordonnï¿½es de texture
+	CTexVertexList *m_TexVertexListe;	// Liste des tableaux de coordonnï¿½es de texture
 
 	// Divers
 	bool m_bSolid;
@@ -75,39 +75,38 @@ public:
 	void setName(const std::string& nom);
 	void setColor3(float r, float v, float b);
 	void setColor4(float r, float v, float b, float a);
-	void setVertex(int nbr, float* tab);	// Données du tableau des sommets
-	void setFaces(int nbr, int* tab);		// Données du tableau des index de faces
-	void setNormals(int nbr, float* tab) throw(jkt::CErreur);	// Données du tableau des vecteurs normaux
-	void setMaterialRef(int ref);			// Associe l'objet à un matériau
+	void setVertex(int nbr, float* tab);	// DonnÃ©es du tableau des sommets
+	void setFaces(int nbr, int* tab);		// DonnÃ©es du tableau des index de faces
+	void setNormals(int nbr, float* tab) throw(jkt::CErreur);	// DonnÃ©es du tableau des vecteurs normaux
+	void setMaterialRef(int ref);			// Associe l'objet Ã  un matÃ©riau
 	void setSubMat(int* tab);
-	static void SaveVertex(TiXmlElement* element, unsigned int nbr, float* vertex);		// Sauve les sommets d'un objet géo
-	static void SaveFaces(TiXmlElement* element, unsigned int nbr, int* faces);	// Sauve les sommets de texture d'un object géo
-	static void SaveTexVertex(TiXmlElement* element, unsigned int nbr, float* texvertex);	// Sauve les sommets de texture d'un object géo
-	static void SaveTexIndex(TiXmlElement* element, unsigned int nbr, int* texindex);	// Sauve les sommets de texture d'un object géo
-	static void SaveSolidite(TiXmlElement* element, bool solidite);	// Sauve les sommets de texture d'un object géo
+	static void SaveVertex(TiXmlElement* element, unsigned int nbr, float* vertex);		// Sauve les sommets d'un objet gÃ©o
+	static void SaveFaces(TiXmlElement* element, unsigned int nbr, int* faces);	// Sauve les sommets de texture d'un object gÃ©o
+	static void SaveTexVertex(TiXmlElement* element, unsigned int nbr, float* texvertex);	// Sauve les sommets de texture d'un object gÃ©o
+	static void SaveTexIndex(TiXmlElement* element, unsigned int nbr, int* texindex);	// Sauve les sommets de texture d'un object gÃ©o
+	static void SaveSolidite(TiXmlElement* element, bool solidite);	// Sauve les sommets de texture d'un object gÃ©o
 	static void SaveMateriau(TiXmlElement* element, unsigned int refMat);
-	static void SaveCouleur3fv(TiXmlElement* element, const char* name, float* couleur);	// Sauve les sommets de texture d'un object géo
+	static void SaveCouleur3fv(TiXmlElement* element, const char* name, float* couleur);	// Sauve les sommets de texture d'un object gÃ©o
 	static void SaveVecteursNormaux(TiXmlElement* element,unsigned int nbr, float* normaux);
 	static void SaveSousMateriaux(TiXmlElement* element, std::map<int,int>& m_CanauxNumbers);
 	static void SaveMultiTexVertex(TiXmlElement *element, CTexVertexList* texvertexliste);
 	static int* LitFaces(TiXmlElement *element, int& nbr);
-	static float* LitVertex(TiXmlElement *element, int& nbr);
-	static float* LitTexVertex(TiXmlElement *element, int& nbr);
+	static float* LitVertex(TiXmlElement *element, int& nbr) throw(CErreur);
+	static float* LitTexVertex(TiXmlElement *element, int& nbr) throw(CErreur);
 	static CTexVertexList* LitMultiTexVertex(TiXmlElement* element);
-	static float* LitVecteursNormaux(TiXmlElement* element, int& nbr);
-	static std::map<int,int>* LitSousMateriaux(TiXmlElement* el);
+	static float* LitVecteursNormaux(TiXmlElement* element, int& nbr) throw(CErreur);
+	static void LitSousMateriaux(TiXmlElement* el, std::map<int, int>& canauxNumbers) throw(CErreur);
 
-	static MapObject* Lit(TiXmlElement* el, CMap& pMap, MapLogger* mapLogger);
-	MapObject* makeNewGeoInstance();	// Crée une instance de l'objet géométrique
-								// optimisé correspondant
+	static MapObject* Lit(TiXmlElement* el, CMap& pMap, MapLogger* mapLogger) throw(CErreur);
+	MapObject* makeNewGeoInstance();	// CrÃ©e une instance de l'objet gÃ©omÃ©trique
 private:
 	CSimpleGeo* makeSimpleGeo();
 	CSimpleMaterialGeo* makeSimpleMaterialGeo(CMaterial* mat);
 	CMultiMaterialGeo* makeMultiMaterialGeo(CMaterialMulti* mat);
 	CTextureMaterialGeo* makeTextureMaterialGeo(CMaterialTexture* mat);
 
-	void lineariseVertex();		// Désindexe les sommets
-	void lineariseTexVertex();	// Désindexe les coord. de texture dans leurs canaux
+	void lineariseVertex();		// DÃ©sindexe les sommets
+	void lineariseTexVertex();	// DÃ©sindexe les coord. de texture dans leurs canaux
 	void optimiseSubMat(std::map<int,int> &canauxnumbers);
 };
 

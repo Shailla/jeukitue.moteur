@@ -17,17 +17,17 @@ namespace jkt
 {
 
 class CheckPlayerInZone : public MapObject {
-	// Identifiant du check, permet à un plugin par exemple de savoir quel check a été activé
+	// Identifiant du check, permet ï¿½ un plugin par exemple de savoir quel check a ï¿½tï¿½ activï¿½
 	std::string _id;
 
-	// Permet d'activer l'affichage dans la Map de la zone de détection (à fin de debug essentiellement)
+	// Permet d'activer l'affichage dans la Map de la zone de dï¿½tection (ï¿½ fin de debug essentiellement)
 	bool _isVisible;
 
-	// Indique que le joueur est actuellement détecté dans la zone
+	// Indique que le joueur est actuellement dï¿½tectï¿½ dans la zone
 	bool _playerInZone;
 	std::set<CPlayer*> _playersInZone;
 
-	// Zone dans laquelle un joueur déclenche la détection
+	// Zone dans laquelle un joueur dï¿½clenche la dï¿½tection
 	float _zoneDetectionXmin;
 	float _zoneDetectionXmax;
 	float _zoneDetectionYmin;
@@ -48,21 +48,21 @@ public:
 
 	// Object
 	void init() throw(CErreur) override;								// Initialisation de l'objet
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;
-	bool Save(TiXmlElement* element) override;
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
+	bool Save(TiXmlElement* element) throw(CErreur) override;
 
 	// Geometrical
-	void EchangeXY() override;										// Echange les coordonnées X et Y de l'objet
-	void EchangeXZ() override;										// Echange les coordonnées X et Z de l'objet
-	void EchangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
-	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
-	void translate( float x, float y, float z ) override;			// Translation pondérée selon X, Y et Z de l'objet
+	void EchangeXY() override;										// Echange les coordonnï¿½es X et Y de l'objet
+	void EchangeXZ() override;										// Echange les coordonnï¿½es X et Z de l'objet
+	void EchangeYZ() override;										// Echange les coordonnï¿½es Y et Z de l'objet
+	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothï¿½tie pondï¿½rï¿½e selon X, Y et Z de l'objet
+	void translate( float x, float y, float z ) override;			// Translation pondï¿½rï¿½e selon X, Y et Z de l'objet
 
 	// Drawable
 	void initGL() override;
 	void freeGL() override;
 
-	void Affiche() override;											// Affiche l'objet géométrique
+	void Affiche() override;											// Affiche l'objet gï¿½omï¿½trique
 	void AfficheHighlighted(float r,float v,float b) override;
 
 	// Refreshable

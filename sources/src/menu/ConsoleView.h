@@ -36,6 +36,7 @@ public:
 	ConsoleView(const AG_EventFn controllerCallback);
 	~ConsoleView(void);
 
+	void println(ConsoleOutputType type, const std::stringstream& texte);
 	void println(ConsoleOutputType type, const std::string& texte);
 	std::string getCommandAndClearCommandLine(void);
 	void setMapOuverteName(const std::string& mapName);

@@ -78,11 +78,11 @@ void Dirigeable::init() throw(CErreur) {
 void Dirigeable::refresh(CGame *game) {
 }
 
-bool Dirigeable::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
+bool Dirigeable::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
 	return true;
 }
 
-bool Dirigeable::Save(TiXmlElement* element) {
+bool Dirigeable::Save(TiXmlElement* element) throw(CErreur) {
 	return true;
 }
 

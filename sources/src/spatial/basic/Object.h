@@ -26,13 +26,14 @@ class Object {
 	static jkt::CGenRef GENREF;
 
 	int _id;				// Identifiant unique de l'object
-	std::string _name;		// Nom de l'objet (pas forcément unique)
+	std::string _name;		// Nom de l'objet (pas forcÃ©ment unique)
 	std::string _type;
-	CMap* _parent;			// Navigabilité vers la Map d'appartenance
+	CMap* _parent;			// NavigabilitÃ© vers la Map d'appartenance
+	bool _abstract;
 
 protected:
-	int _reference;					// Secondary / external identifier, can be a doublon
 	std::string _tostring;
+	std::string _reference;					// Secondary / external identifier, can be a doublon
 
 public:
 	Object(CMap* map, const std::string& type);
@@ -40,20 +41,24 @@ public:
 	virtual ~Object();
 	virtual void init() throw(CErreur);
 
+	bool isAbstract() const;
+	void setAbstract(bool abstract);
+
 	// Parent
 	CMap* getMap();
 	void setMap(CMap* map);
 
-	// Gestion identiant, nom et référence
-	void setName(const std::string &nom);		// Implémente le nom du géo
+	// Gestion identiant, nom et rï¿½fï¿½rence
+	void setName(const std::string &nom);		// Implï¿½mente le nom du gï¿½o
 	const char *getName();						// Renvoie le nom de l'objet
-	virtual const char* toString();				// Description résumée de l'objet
+	virtual const char* toString();				// Description rï¿½sumï¿½e de l'objet
 	int getId() const;
+	std::string getReference() const;
 	const std::string& getType() const;
 
-	// Sérialisation
-	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) = 0;
-	virtual bool Save(TiXmlElement* element) = 0;								// Sauve l'objet géo dans un fichier Map
+	// Sï¿½rialisation
+	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) = 0;
+	virtual bool Save(TiXmlElement* element) throw(CErreur) = 0;								// Sauve l'objet gï¿½o dans un fichier Map
 };
 
 } /* namespace jkt */

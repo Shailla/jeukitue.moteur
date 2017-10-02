@@ -50,19 +50,31 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 	console->println(ConsoleView::COT_INFO, string("Lecture de la MAP '").append(mapName).append("'..."));
 	LOGINFO(("Lecture de la MAP '%s'...", mapName.c_str()));
 
-	CMap* map = new CMap(0, mapName);
-	gameDto->setMap(map);
-	map->init();
+	CMap* currentMap;
 
-	// Création joueurs
-	gameDto->setPlayersMaxNumber(20);	// Indique que la partie peut contenir jusqu'à 20 joueurs
+	try {
+		currentMap = new CMap(0);
+		currentMap->Lit(mapName, 0);
+		gameDto->setMap(currentMap);
+		currentMap->init();
+	}
+	catch(CErreur& error) {
+		stringstream msg;
+		msg << "Echec de lecture de la Map : " << error.what();
+		LOGWARN((msg));
+		console->println(ConsoleView::COT_ERROR, msg);
+		delete currentMap;
+	}
+
+	// CrÃ©ation joueurs
+	gameDto->setPlayersMaxNumber(20);	// Indique que la partie peut contenir jusqu'ï¿½ 20 joueurs
 
 
 	/**************************************
 	 * Chargement de sons pour les joueurs
 	 **************************************/
 
-	// Récupération des ressources de cris des personnages
+	// RÃ©cupÃ©ration des ressources de cris des personnages
 	console->println(ConsoleView::COT_INFO, "Lecture du premier cri...");
 	LOGINFO(("Lecture du premier cri..."));
 
@@ -77,7 +89,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 
 
 	/***************************************
-	 * Création du joueur principal (Erwin)
+	 * Crï¿½ation du joueur principal (Erwin)
 	 ***************************************/
 	{
 		// Chargement du skin
@@ -87,87 +99,132 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'..."));
 		LOGINFO(("Lecture du skin '%s'...", mapJoueur.c_str()));
 
-		CMap *pMapJoueur = new CMap(0, mapJoueur);
-		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
-		console->println(ConsoleView::COT_INFO, "Scaling du skin...");
-		LOGINFO(("Scaling du skin"));
-		pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+		CMap *pMapJoueur;
 
-		// Création du joueur
+		try {
+			pMapJoueur = new CMap(0);
+			pMapJoueur->Lit(mapJoueur, 0);
+			pMapJoueur->EchangeXZ();			// Ajuste les coordonnÃ©es
+			console->println(ConsoleView::COT_INFO, "Scaling du skin");
+			LOGINFO(("Scaling du skin"));
+			pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+		}
+		catch(CErreur& error) {
+			stringstream msg;
+			msg << "Erreur de lecture du skin du joueur principal : " << error.what();
+			LOGWARN((msg));
+			console->println(ConsoleView::COT_ERROR, msg.str());
+			delete pMapJoueur;
+
+			pMapJoueur = 0;
+		}
+
+		// CrÃ©ation du joueur
 		console->println(ConsoleView::COT_INFO, "Cr\u00e9ation du joueur principal...");
 		LOGINFO(("Creation du joueur principal..."));
 
-		CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
-		erwin->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
+		CPlayer *erwin = new CPlayer();				// CrÃ©e le joueur principal (celui gÃ©rÃ© par le clavier et l'Ã©cran)
+		erwin->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravitÃ©
 		erwin->changeContact(contactPlayer);		// Associe une fonction de gestion des contacts avec la map
 		erwin->Skin(pMapJoueur);
 		erwin->setCri( cri1.c_str() );				// Cri du joueur
 		erwin->setName("Erwin");
-		erwin->init();								// Initialise certaines données
+		erwin->init();								// Initialise certaines donnÃ©es
 		gameDto->setErwin(erwin);
 	}
 
 
 	/***************************************
-	 * Création du second joueur (Julien)
+	 * CrÃ©ation du second joueur (Julien)
 	 ***************************************/
 	{
 		// Chargement du skin
-		console->println(ConsoleView::COT_INFO, "Lecture du skin 'JoueurTex'...");
-		LOGINFO(("Lecture du skin 'JoueurTex'..."));
-
-		CMap *pMapJoueurJulien = new CMap(0, "@Joueur\\joueurTex");
-		pMapJoueurJulien->EchangeXZ();					// Ajuste les coordonnées
-		console->println(ConsoleView::COT_INFO, "Scaling du skin...");
-		LOGINFO(("Scaling du skin"));
-		pMapJoueurJulien->Scale(-0.6f, 0.6f, 0.6f);
-
-		// Création d'un second joueur
-		console->println(ConsoleView::COT_INFO, "Cr\u00e9ation du second joueur...");
-		LOGINFO(("Creation du second joueur..."));
-
-		CPlayer *julien;
-		julien = new CPlayer();						// Crée un autre joueur
-		julien->changeAction(gravitePlayer);		// Associe au joueur une fonction de gravité
-		julien->changeContact(contactPlayer);		// Associe une fonction pour les contacts avec la map
-		julien->Skin( pMapJoueurJulien );
-		julien->setCri( cri1.c_str() );
-		julien->setName( "Julien" );
-		julien->init();
-		gameDto->getPlayers().push_back(julien);				// Ajoute le joueur à la liste des joueurs
-	}
-
-
-	/***************************************
-	 * Création du troisième joueur (Sprite)
-	 ***************************************/
-	{
-		// Chargement du skin
-		string mapJoueur;
-		mapJoueur.append("@Joueur\\").append(Config.Joueur.mapName);
+//		string mapJoueur = "@Joueur\\GrosBonhomme";
+		string mapJoueur = "@Joueur\\JoueurTex";
 
 		console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'..."));
 		LOGINFO(("Lecture du skin '%s'", mapJoueur.c_str()));
 
-		CMap *pMapJoueur = new CMap(0, mapJoueur);
-		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
-		console->println(ConsoleView::COT_INFO, "Scaling du skin...");
-		LOGINFO(("Scaling du skin"));
-		pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+		CMap *pMapJoueur;
 
-		// Création d'un troisième joueur
+		try {
+			pMapJoueur = new CMap(0);
+			pMapJoueur->Lit(mapJoueur, 0);
+			pMapJoueur->EchangeXZ();			// Ajuste les coordonnÃ©es
+			console->println(ConsoleView::COT_INFO, "Scaling du skin");
+			LOGINFO(("Scaling du skin"));
+			pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+		}
+		catch(CErreur& error) {
+			stringstream msg;
+			msg << "Erreur de lecture du skin du joueur principal : " << error.what();
+			LOGWARN((msg));
+			console->println(ConsoleView::COT_ERROR, msg.str());
+			delete pMapJoueur;
+
+			pMapJoueur = 0;
+		}
+
+		// CrÃ©ation d'un second joueur
+		console->println(ConsoleView::COT_INFO, "Cr\u00e9ation du second joueur...");
+		LOGINFO(("CrÃ©ation du second joueur..."));
+
+		CPlayer *julien;
+		julien = new CPlayer();						// CrÃ©e un autre joueur
+		julien->changeAction(gravitePlayer);		// Associe au joueur une fonction de gravitÃ©
+		julien->changeContact(contactPlayer);		// Associe une fonction pour les contacts avec la map
+		julien->Skin( pMapJoueur );
+		julien->setCri( cri1.c_str() );
+		julien->setName( "Julien" );
+		julien->init();
+		gameDto->getPlayers().push_back(julien);				// Ajoute le joueur Ã  la liste des joueurs
+	}
+
+
+	/***************************************
+	 * CrÃ©ation du troisiÃ¨me joueur (Sprite)
+	 ***************************************/
+	{
+		// Chargement du skin
+//		string mapJoueur = "@Joueur\\GrosBonhomme";
+		string mapJoueur = "@Joueur\\JoueurTex";
+
+		console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'..."));
+		LOGINFO(("Lecture du skin '%s'", mapJoueur.c_str()));
+
+		CMap *pMapJoueur;
+
+		try {
+			pMapJoueur = new CMap(0);
+			pMapJoueur->Lit(mapJoueur, 0);
+			pMapJoueur->EchangeXZ();			// Ajuste les coordonnÃ©es
+			console->println(ConsoleView::COT_INFO, "Scaling du skin");
+			LOGINFO(("Scaling du skin"));
+			pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+		}
+		catch(CErreur& error) {
+			stringstream msg;
+			msg << "Erreur de lecture du skin du joueur principal : " << error.what();
+			LOGWARN((msg));
+			console->println(ConsoleView::COT_ERROR, msg.str());
+			delete pMapJoueur;
+
+			pMapJoueur = 0;
+		}
+
+		// CrÃ©ation d'un troisiÃ¨me joueur
 		console->println(ConsoleView::COT_INFO, "Cr\u00e9ation du troisieme joueur...");
 		LOGINFO(("Creation du troisieme joueur..."));
 
 		CPlayer *sprite;
-		sprite = new CPlayer();						// Crée un autre joueur
-		sprite->changeAction(gravitePlayer);		// Associe au joueur une fonction de gravité
+		sprite = new CPlayer();						// Crï¿½e un autre joueur
+		sprite->changeAction(gravitePlayer);		// Associe au joueur une fonction de gravitï¿½
 		sprite->changeContact(contactSprite);		// Associe une fonction pour les contacts avec la map
 		sprite->Skin( pMapJoueur );
 		sprite->setCri( cri2.c_str() );
 		sprite->setName( "Sprite" );
 		sprite->init();
-		gameDto->getPlayers().push_back(sprite);				// Ajoute le joueur à la liste des joueurs
+		gameDto->getPlayers().push_back(sprite);				// Ajoute le joueur ï¿½ la liste des joueurs
 	}
 
 	console->println(ConsoleView::COT_COMMAND_RESULT, "Map lue.");
@@ -198,9 +255,21 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	console->println(ConsoleView::COT_INFO, string("Lecture de la MAP '").append(mapName).append("'..."));
 	LOGINFO(("Lecture de la MAP '%s'", mapName.c_str()));
 
-	CMap* map = new CMap(0, mapName);
-	gameDto->setMap(map);
-	map->init();
+	CMap* currentMap;
+
+	try {
+		currentMap = new CMap(0);
+		currentMap->Lit(mapName, 0);
+		gameDto->setMap(currentMap);
+		currentMap->init();
+	}
+	catch(CErreur& error) {
+		stringstream msg;
+		msg << "Echec de lecture de la Map : " << error.what();
+		LOGWARN((msg));
+		console->println(ConsoleView::COT_ERROR, msg);
+		delete currentMap;
+	}
 
 
 	/***************************************************
@@ -221,11 +290,25 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
 	LOGINFO(("Lecture du skin '%s'", mapJoueur.c_str()));
 
-	CMap *pMapJoueur = new CMap(0, mapJoueur);
-	pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
-	console->println(ConsoleView::COT_INFO, "Scaling du skin");
-	LOGINFO(("Scaling du skin"));
-	pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+	CMap *pMapJoueur;
+
+	try {
+		pMapJoueur = new CMap(0);
+		pMapJoueur->Lit("@Joueur\\joueurTex", 0);
+		pMapJoueur->EchangeXZ();			// Ajuste les coordonnÃ©es
+		console->println(ConsoleView::COT_INFO, "Scaling du skin");
+		LOGINFO(("Scaling du skin"));
+		pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+	}
+	catch(CErreur& error) {
+		stringstream msg;
+		msg << "Erreur de lecture du skin du joueur principal : " << error.what();
+		LOGWARN((msg));
+		console->println(ConsoleView::COT_ERROR, msg);
+		delete pMapJoueur;
+
+		pMapJoueur = 0;
+	}
 
 
 	/***************************************
@@ -240,7 +323,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	CPlayer* player;
 
 	while((player = Game.nextPlayer(curseur))) {
-		player->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
+		player->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravitï¿½
 		player->changeContact(contactPlayer);			// Associe une fonction de gestion des contacts avec la map
 		player->Skin(pMapJoueur);
 		player->setCri( cri1.c_str() );					// Cri du joueur
@@ -248,7 +331,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	}
 
 	console->println(ConsoleView::COT_INFO, "Partie charg\u00e9e");
-	LOGINFO(("Partie chargée"));
+	LOGINFO(("Partie chargï¿½e"));
 
 	Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_OUVERTURE);
 
@@ -275,19 +358,31 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 	console->println(ConsoleView::COT_INFO, string("Lecture de la MAP '").append(mapName).append("'..."));
 	LOGINFO(("Lecture de la MAP '%s'", mapName.c_str()));
 
-	CMap* map = new CMap(0, mapName);
-	gameDto->setMap(map);
-	map->init();
+	CMap* currentMap;
 
-	// Création joueurs
-	gameDto->setPlayersMaxNumber(10);	// Indique que la partie peut contenir jusqu'à 10 joueurs
+	try {
+		currentMap = new CMap(0);
+		currentMap->Lit(mapName, 0);
+		gameDto->setMap(currentMap);
+		currentMap->init();
+	}
+	catch(CErreur& error) {
+		stringstream msg;
+		msg << "Echec de lecture de la Map : " << error.what();
+		LOGWARN((msg));
+		console->println(ConsoleView::COT_ERROR, msg);
+		delete currentMap;
+	}
+
+	// CrÃ©ation joueurs
+	gameDto->setPlayersMaxNumber(10);	// Indique que la partie peut contenir jusqu'ï¿½ 10 joueurs
 
 
 	/**************************************
 	 * Chargement de sons pour les joueurs
 	 **************************************/
 
-	// Récupération des ressources de cris des personnages
+	// RÃ©cupÃ©ration des ressources de cris des personnages
 	console->println(ConsoleView::COT_INFO, "Lecture du cri...");
 	LOGINFO(("Lecture du cri..."));
 
@@ -296,7 +391,7 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 
 
 	/***************************************
-	 * Création du joueur principal (Erwin)
+	 * CrÃ©ation du joueur principal (Erwin)
 	 ***************************************/
 	{
 		// Chargement du skin
@@ -306,23 +401,37 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 		console->println(ConsoleView::COT_INFO, string("Lecture du skin '").append(mapJoueur).append("'...").c_str());
 		LOGINFO(("Lecture du skin '%s'", mapJoueur.c_str()));
 
-		CMap *pMapJoueur = new CMap(0, mapJoueur);
-		pMapJoueur->EchangeXZ();					// Ajuste les coordonnées
-		console->println(ConsoleView::COT_INFO, "Scaling du skin");
-		LOGINFO(("Scaling du skin"));
-		pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+		CMap *pMapJoueur;
 
-		// Création du joueur
+		try {
+			pMapJoueur = new CMap(0);
+			pMapJoueur->Lit(mapJoueur, 0);
+			pMapJoueur->EchangeXZ();			// Ajuste les coordonnÃ©es
+			console->println(ConsoleView::COT_INFO, "Scaling du skin");
+			LOGINFO(("Scaling du skin"));
+			pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+		}
+		catch(CErreur& error) {
+			stringstream msg;
+			msg << "Erreur de lecture du skin du joueur principal : " << error.what();
+			LOGWARN((msg));
+			console->println(ConsoleView::COT_ERROR, msg);
+			delete pMapJoueur;
+
+			pMapJoueur = 0;
+		}
+
+		// CrÃ©ation du joueur
 		console->println(ConsoleView::COT_INFO, "Cr\u00e9ation du joueur principal...");
 		LOGINFO(("Creation du joueur principal..."));
 
-		CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
-		erwin->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
+		CPlayer *erwin = new CPlayer();				// CrÃ©e le joueur principal (celui gï¿½rï¿½ par le clavier et l'ï¿½cran)
+		erwin->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravitï¿½
 		erwin->changeContact(contactPlayer);		// Associe une fonction de gestion des contacts avec la map
 		erwin->Skin(pMapJoueur);
 		erwin->setCri( cri1.c_str() );				// Cri du joueur
 		erwin->setName("Erwin");
-		erwin->init();								// Initialise certaines données
+		erwin->init();								// Initialise certaines donnï¿½es
 
 		gameDto->setErwin(erwin);
 	}

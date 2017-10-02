@@ -4,9 +4,9 @@
 
 /************************************************************/
 /*															*/
-/*			Objet affichable 3D simple associé à un			*/
-/*			matériau unique. Faces non-indexées,			*/
-/*			peut être éclairé.								*/
+/*			Objet affichable 3D simple associï¿½ ï¿½ un			*/
+/*			matï¿½riau unique. Faces non-indexï¿½es,			*/
+/*			peut ï¿½tre ï¿½clairï¿½.								*/
 /*															*/
 /************************************************************/
 
@@ -25,33 +25,33 @@ namespace jkt
 class CTextureMaterialGeo : public MapObject {
 	bool _isGlInitialized;
 
-	int m_OffsetMateriaux;		// Sert lors de la lecture des références matériaux
+	int m_OffsetMateriaux;		// Sert lors de la lecture des rï¿½fï¿½rences matï¿½riaux
 	std::string tostring;
-	CMaterialTexture* m_Material;	// Matériau multiple associé
-	float _minX, _minY, _minZ, _maxX, _maxY, _maxZ;	// Coordonnées du pavé englobant l'objet géo
-	float m_Centre[3];			// Centre de la sphère englobant l'objet
-	float m_Rayon;				// Rayon de la sphère englobant l'objet
-	float* m_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs préliminaires à la gestion des contacts)
+	CMaterialTexture* m_Material;	// Matï¿½riau multiple associï¿½
+	float _minX, _minY, _minZ, _maxX, _maxY, _maxZ;	// Coordonnï¿½es du pavï¿½ englobant l'objet gï¿½o
+	float m_Centre[3];			// Centre de la sphï¿½re englobant l'objet
+	float m_Rayon;				// Rayon de la sphï¿½re englobant l'objet
+	float* m_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs prï¿½liminaires ï¿½ la gestion des contacts)
 	float testContactTriangle( unsigned int i, const float *pos, float dist );
 	bool m_bSolid;				// Indique si l'objet est solide ou non
 	int m_NumVertex;				// Nbre de faces
 	float* m_TabVertex;			// Pointeur sur le tableau de sommets
 	int getOffsetMateriau() throw(CErreur);
-	float* m_TabTexVertex;			// Coordonnées de texture
+	float* m_TabTexVertex;			// Coordonnï¿½es de texture
 	// VBO
 	enum {	VBO_VERTEX=0, VBO_NORMAUX, VBO_TEXVERTEX };
 	static const int VBO_BUFFER_SIZE = 3;
 	GLuint m_VboBufferNames[VBO_BUFFER_SIZE];
 
-	void MinMax();			// Calcul les variables MinX,...,MaxZ de cet objet géométrique
+	void MinMax();			// Calcul les variables MinX,...,MaxZ de cet objet gï¿½omï¿½trique
 	void Bulle();			// Calcul les variables 'centre' et rayon
-	void ConstruitBase();	// Construit les vecteurs normaux aux triangles de l'objet géo
+	void ConstruitBase();	// Construit les vecteurs normaux aux triangles de l'objet gï¿½o
 	void AfficheNormals();
 
-	void setMaterial(int matRef);	// Associe l'objet au matériau de référence matRef
-	void setNormalVertex(float *tab);			// Implémente les normales aux sommets
-	void setVertex(int num, float *tab);		// Implémente les sommets
-	void setTexVertex(int num, float *tab);		// Implémente les sommets de texture
+	void setMaterial(const std::string& matRef);	// Associe l'objet au matÃ©riau de rÃ©fÃ©rence matRef
+	void setNormalVertex(float *tab);				// ImplÃ©mente les normales aux sommets
+	void setVertex(int num, float *tab);			// ImplÃ©mente les sommets
+	void setTexVertex(int num, float *tab);			// ImplÃ©mente les sommets de texture
 
 public:
 	static const char* identifier;
@@ -68,27 +68,27 @@ public:
 
 	float *m_TabVectNormaux;	// Pointeur sur le tableau des vecteurs normaux
 
-	void EchangeXY() override;										// Echange les coordonnées X et Y de l'objet
-	void EchangeXZ() override;										// Echange les coordonnées X et Z de l'objet
-	void EchangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
-	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
-	void translate( float x, float y, float z ) override;			// Translation pondérée selon X, Y et Z de l'objet
+	void EchangeXY() override;										// Echange les coordonnï¿½es X et Y de l'objet
+	void EchangeXZ() override;										// Echange les coordonnï¿½es X et Z de l'objet
+	void EchangeYZ() override;										// Echange les coordonnï¿½es Y et Z de l'objet
+	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothï¿½tie pondï¿½rï¿½e selon X, Y et Z de l'objet
+	void translate( float x, float y, float z ) override;			// Translation pondï¿½rï¿½e selon X, Y et Z de l'objet
 
-	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
+	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pavï¿½ constituï¿½ des distances min/max de l'objet gï¿½o
 	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;
-	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;	// Voir la définition de la fonction
+	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;	// Voir la dï¿½finition de la fonction
 
 		// Fonctions pour l'interface CGeo
-	//bool LitFichier(CIfstreamMap &fichier);			// Lit un objet géo dans un fichier Map
-	//bool SaveNameType(ofstream &fichier);				// Sauve le nom du type d'objet géométrique
-	//bool SaveFichierMap(ofstream &fichier);			// Sauve l'objet géo dans un fichier Map
-	bool Save(TiXmlElement* element) override;
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;
+	//bool LitFichier(CIfstreamMap &fichier);			// Lit un objet gï¿½o dans un fichier Map
+	//bool SaveNameType(ofstream &fichier);				// Sauve le nom du type d'objet gï¿½omï¿½trique
+	//bool SaveFichierMap(ofstream &fichier);			// Sauve l'objet gï¿½o dans un fichier Map
+	bool Save(TiXmlElement* element) throw(CErreur) override;
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
 
-	void setOffsetMateriau(int offset);			// Décale la référence matériau de l'offset
+	void setOffsetMateriau(int offset);			// Dï¿½cale la rï¿½fï¿½rence matï¿½riau de l'offset
 	bool checkContact( const float pos[3], float dist ) override;
 
-	void Affiche() override;							// Affiche cet objet géo
+	void Affiche() override;							// Affiche cet objet gï¿½o
 	void AfficheHighlighted(float r,float v,float b) override;		// Affiche l'objet en couleur unique
 	const char* toString() override;
 };

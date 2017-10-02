@@ -17,7 +17,7 @@
 namespace jkt {
 
 class EntryPoint : public MapObject {
-	jkt::CV3D _entryPosition;	// Position du point d'entrée
+	jkt::CV3D _entryPosition;	// Position du point d'entrï¿½e
 public:
 	EntryPoint(CMap* map);
 	EntryPoint(CMap* map, const float entryPosition[3]);
@@ -26,16 +26,16 @@ public:
 	MapObject* clone() override;
 	void init() throw(CErreur) override;
 
-	// Méthodes de sérialisation
-	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) override;		// Lit le point d'entrée joueur d'un fichier Map format XML
-	bool Save(TiXmlElement* element) override;							// Lit le point d'entrée joueur dans un fichier Map format XML
+	// MÃ©thodes de sÃ©rialisation
+	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) override;		// Lit le point d'entrï¿½e joueur d'un fichier Map format XML
+	bool Save(TiXmlElement* element) throw(CErreur) override;							// Lit le point d'entrï¿½e joueur dans un fichier Map format XML
 
-	// Méthodes de manipulation géométrique
-	void EchangeXY() override;										// Echange les coordonnées X et Y de l'objet
-	void EchangeXZ() override;										// Echange les coordonnées X et Z de l'objet
-	void EchangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
-	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
-	void translate(float x, float y, float z) override;				// Translation pondérée selon X, Y et Z de l'objet
+	// Mï¿½thodes de manipulation gï¿½omï¿½trique
+	void EchangeXY() override;										// Echange les coordonnï¿½es X et Y de l'objet
+	void EchangeXZ() override;										// Echange les coordonnï¿½es X et Z de l'objet
+	void EchangeYZ() override;										// Echange les coordonnï¿½es Y et Z de l'objet
+	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothï¿½tie pondï¿½rï¿½e selon X, Y et Z de l'objet
+	void translate(float x, float y, float z) override;				// Translation pondï¿½rï¿½e selon X, Y et Z de l'objet
 
 	jkt::CV3D getEntryPosition();
 };

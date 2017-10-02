@@ -17,20 +17,20 @@ class CPorte : public CGeoObject {
 	jkt::CV3D m_Position;		// Position de la porte
 	float m_fMarge;					// Distance parcourue par la porte lors de son ouverture
 	float m_fOuverture;				// Ouverture courante de la porte ( 0.0f <= m_fOuverture <= m_fMarge )
-	float m_fVitesse;				// Vitesse d'ouverture de la porte (en unité float/milliseconde)
-	float m_fDeclenche;				// Distance de la porte qui déclenche son mécanisme
+	float m_fVitesse;				// Vitesse d'ouverture de la porte (en unitï¿½ float/milliseconde)
+	float m_fDeclenche;				// Distance de la porte qui dï¿½clenche son mï¿½canisme
 
 public:
 	static const char* identifier;
 	CPorte( CMap *map );
 	~CPorte();
 
-	void init() throw(CErreur) override;					// Initialisation de l'objet géométrique
+	void init() throw(CErreur) override;					// Initialisation de l'objet gï¿½omï¿½trique
 
-	void Affiche() override;				// Fonction d'affichage de l'objet géométrique
-	void refresh( CGame *game ) override;	// Rafraichissement des données, position, vitesse, ... de l'objet
+	void Affiche() override;				// Fonction d'affichage de l'objet gï¿½omï¿½trique
+	void refresh( CGame *game ) override;	// Rafraichissement des donnï¿½es, position, vitesse, ... de l'objet
 
-	bool Save(TiXmlElement* element) override;
+	bool Save(TiXmlElement* element) throw(CErreur) override;
 
 	void GereContactPlayer(float positionPlayer[3], CPlayer *player ) override;
 	float GereLaserPlayer( float pos[3], jkt::CV3D &Dir, float dist ) override;

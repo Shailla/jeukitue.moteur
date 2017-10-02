@@ -54,7 +54,7 @@ const char* CGeoObject::identifier = "GeoObject";
 
 //CONSTRUCTEURS
 CGeoObject::CGeoObject(CMap *map, unsigned int nbrVertex, unsigned int nbrFaces) : MapObject(map, MapObject::GEO) {
-	m_Color[0] = 1.0;	//Couleur blanche par défaut
+	m_Color[0] = 1.0;	//Couleur blanche par dï¿½faut
 	m_Color[1] = 1.0;
 	m_Color[2] = 1.0;
 
@@ -63,7 +63,7 @@ CGeoObject::CGeoObject(CMap *map, unsigned int nbrVertex, unsigned int nbrFaces)
 	m_NumTexVertex = 0;
 	m_NumTexFaces = 0;
 
-	m_bMaterialTexture = false;			//Pas de référence à un matériau à l'initialisation
+	m_bMaterialTexture = false;			//Pas de rï¿½fï¿½rence ï¿½ un matï¿½riau ï¿½ l'initialisation
 	m_TypeMateriau = CMaterial::MAT_TYPE_SIMPLE;
 	m_Material = 0;
 	m_MaterialTexture = 0;
@@ -73,13 +73,13 @@ CGeoObject::CGeoObject(CMap *map, unsigned int nbrVertex, unsigned int nbrFaces)
 	m_TabVectNormaux = 0;
 	m_pNormalTriangle = 0;
 	m_TabSubMat = 0;
-	m_bSolid = true;		// Objet solide par défaut
+	m_bSolid = true;		// Objet solide par dï¿½faut
 	m_Rayon = 0.0f;
 	maxX = maxY = maxZ = minX = minY = minZ = 0.0f;
 }
 
 CGeoObject::CGeoObject(CMap *map) : MapObject(map, MapObject::GEO) {
-	m_Color[0] = 1.0;	//Couleur blanche par défaut
+	m_Color[0] = 1.0;	//Couleur blanche par dï¿½faut
 	m_Color[1] = 1.0;
 	m_Color[2] = 1.0;
 
@@ -94,12 +94,12 @@ CGeoObject::CGeoObject(CMap *map) : MapObject(map, MapObject::GEO) {
 	m_TabVectNormaux = 0;
 	m_pNormalTriangle = 0;
 
-	m_bMaterialTexture = false;	//Pas de référence à un matériau à l'initialisation
+	m_bMaterialTexture = false;	//Pas de rï¿½fï¿½rence ï¿½ un matï¿½riau ï¿½ l'initialisation
 	m_TypeMateriau = CMaterial::MAT_TYPE_SIMPLE;
 	m_Material = 0;
 	m_MaterialTexture = 0;
 
-	m_bSolid = true;		// Objet solide par défaut
+	m_bSolid = true;		// Objet solide par dï¿½faut
 	m_Rayon = 0.0f;
 	maxX = maxY = maxZ = minX = minY = minZ = 0.0f;
 }
@@ -110,9 +110,9 @@ void CGeoObject::setVertex( float *tab, int num ) {
 
 	m_NumVertex = num;	// Nombre de sommets
 
-	m_TabVertex = new float[ 3*m_NumVertex ];	// Création du tableau de sommets
+	m_TabVertex = new float[ 3*m_NumVertex ];	// Crï¿½ation du tableau de sommets
 
-	for( int i=0 ; i< num ; i++ )	// Copie des données du tableau
+	for( int i=0 ; i< num ; i++ )	// Copie des donnï¿½es du tableau
 		for( int j=0 ; j<3 ; j++ )
 			m_TabVertex[ (i*3)+j ] = tab[ (i*3)+j ];
 }
@@ -123,9 +123,9 @@ void CGeoObject::setFaces( int *tab, int num ) {
 
 	m_NumFaces = num;	// Nombre d'indices de sommets
 
-	m_TabFaces = new int[ 3*num ];	// Création du tableau d'indices de sommets
+	m_TabFaces = new int[ 3*num ];	// Crï¿½ation du tableau d'indices de sommets
 
-	for( int i=0 ; i< num ; i++ )	// Copie des données du tableau
+	for( int i=0 ; i< num ; i++ )	// Copie des donnï¿½es du tableau
 	{
 		for( int j=0 ; j<3 ; j++ )	// Copie des faces
 		{
@@ -139,11 +139,11 @@ void CGeoObject::setSubMat( int *tab )
 	if( m_TabSubMat )
 		delete[] m_TabSubMat;
 
-	m_TabSubMat = new int[ m_NumFaces ];	// Création du tableau des références
-	// sous-matériaux
+	m_TabSubMat = new int[ m_NumFaces ];	// Crï¿½ation du tableau des rï¿½fï¿½rences
+	// sous-matï¿½riaux
 
 	for( int i=0 ; i<m_NumFaces ; i++ )
-		m_TabSubMat[ i ] = tab[ i ];	// Copie des références sous-matériaux
+		m_TabSubMat[ i ] = tab[ i ];	// Copie des rï¿½fï¿½rences sous-matï¿½riaux
 }
 
 void CGeoObject::setNormalVertex( float *tab )
@@ -253,7 +253,7 @@ void CGeoObject::AfficheWithMaterialSimple(CMaterial *mat) {
 void CGeoObject::AfficheHighlighted(float r,float v,float b) {
 	glVertexPointer( 3, GL_FLOAT, 0, m_TabVertex );	//Initialisation du tableau de sommets
 
-	glColor3f(r, v, b); // Définit la couleur de l'objet géo. sélectionné
+	glColor3f(r, v, b); // Dï¿½finit la couleur de l'objet gï¿½o. sï¿½lectionnï¿½
 	glDrawElements(GL_TRIANGLES, 3*m_NumFaces, GL_UNSIGNED_INT, m_TabFaces);
 
 	//AFFICHAGE DES VECTEURS NORMAUX
@@ -275,7 +275,7 @@ const char* CGeoObject::toString() {
 
 void CGeoObject::AfficheWithMaterialTexture(CMaterialTexture *mat, int canal)
 {
-	// Initialisation pour la texture avec canal par défaut
+	// Initialisation pour la texture avec canal par dï¿½faut
 	float *texVertex = TabTex[ canal ]->getTexVertex();
 	int *texFaces = TabTex[ canal ]->getTexFaces();
 
@@ -350,23 +350,23 @@ void CGeoObject::AfficheWithMaterialMultiTexture(CMaterialMulti *mat)
 void CGeoObject::Affiche() {
 	glVertexPointer( 3, GL_FLOAT, 0, m_TabVertex );	//Initialisation du tableau de sommets
 
-	if( m_bMaterialTexture && m_Material )	// Y a-t-il un matériau associé
+	if( m_bMaterialTexture && m_Material )	// Y a-t-il un matï¿½riau associï¿½
 	{
 		CMaterial *m = m_Material;
 
-		if( m->Type() == CMaterial::MAT_TYPE_SIMPLE )			// Un matériau minimaliste est associé (propriétés diffuses, ambiantes et spéculaires)
+		if( m->Type() == CMaterial::MAT_TYPE_SIMPLE )			// Un matï¿½riau minimaliste est associï¿½ (propriï¿½tï¿½s diffuses, ambiantes et spï¿½culaires)
 			AfficheWithMaterialSimple( m );
-		else if( m->Type() == CMaterial::MAT_TYPE_TEXTURE )		// Matériau associé == texture
+		else if( m->Type() == CMaterial::MAT_TYPE_TEXTURE )		// Matï¿½riau associï¿½ == texture
 			AfficheWithMaterialTexture( (CMaterialTexture*)m, 1 );
-		else if( m->Type() == CMaterial::MAT_TYPE_MULTI )		// Matériau associé == texture multiple
+		else if( m->Type() == CMaterial::MAT_TYPE_MULTI )		// Matï¿½riau associï¿½ == texture multiple
 			AfficheWithMaterialMultiTexture( (CMaterialMulti*)m );
 		else
 			cerr << endl << __FILE__ << ":" << __LINE__ << " CGeoObject::Affiche (name=" << this->getName() << "): Materiau de type inconnu";
 	}
-	else	// Pas de texture associée
+	else	// Pas de texture associï¿½e
 	{
 		cout << endl << "Nothing : " << getName();
-		glColor3fv( m_Color ); // Définit la couleur de l'objet géo.
+		glColor3fv( m_Color ); // Dï¿½finit la couleur de l'objet gï¿½o.
 		glDrawElements(GL_TRIANGLES, 3*m_NumFaces, GL_UNSIGNED_INT, m_TabFaces);
 	}
 
@@ -408,8 +408,8 @@ void CGeoObject::MinMax()
 
 	for( int i=1 ; i<m_NumVertex ; i++ )
 	{
-		if( m_TabVertex[3*i] < minX )		//récupération des coordonnées du pavé englobant
-			minX = m_TabVertex[3*i];		//l'objet géo
+		if( m_TabVertex[3*i] < minX )		//rï¿½cupï¿½ration des coordonnï¿½es du pavï¿½ englobant
+			minX = m_TabVertex[3*i];		//l'objet gï¿½o
 		if( m_TabVertex[(3*i)+1] < minY )
 			minY = m_TabVertex[(3*i)+1];
 		if( m_TabVertex[(3*i)+2] < minZ )
@@ -427,12 +427,12 @@ void CGeoObject::MinMax()
 void CGeoObject::Bulle()
 {
 	float r0, r1, r2;
-	// Calcul du centre de la sphère à partir des valeurs min/max
+	// Calcul du centre de la sphï¿½re ï¿½ partir des valeurs min/max
 	m_Centre[0] = (minX+maxX)/2.0f;
 	m_Centre[1] = (minY+maxY)/2.0f;
 	m_Centre[2] = (minZ+maxZ)/2.0f;
 
-	// Recherche du rayon de la sphère
+	// Recherche du rayon de la sphï¿½re
 	r0 = fabsf( minX-maxX );
 	r1 = fabsf( minY-maxY );
 	r2 = fabsf( minZ-maxZ );
@@ -449,14 +449,14 @@ void CGeoObject::ConstruitBase()
 
 	m_pNormalTriangle = new float[ 3*m_NumFaces ];
 
-	for( int i=0; i<m_NumFaces; i++ ) //pour chaque triangle de l'objet géo.
+	for( int i=0; i<m_NumFaces; i++ ) //pour chaque triangle de l'objet gï¿½o.
 	{
-		// X = vecteur coté AB
+		// X = vecteur cotï¿½ AB
 		X[0] = m_TabVertex[ 3*m_TabFaces[(3*i)+1]] - m_TabVertex[ 3*m_TabFaces[3*i] ];
 		X[1] = m_TabVertex[ (3*m_TabFaces[(3*i)+1])+1 ] - m_TabVertex[ (3*m_TabFaces[3*i])+1 ];
 		X[2] = m_TabVertex[ (3*m_TabFaces[(3*i)+1])+2 ] - m_TabVertex[ (3*m_TabFaces[3*i])+2 ];
 
-		// Y = vecteur coté AC
+		// Y = vecteur cotï¿½ AC
 		Y[0] = m_TabVertex[3*m_TabFaces[(3*i)+2]] - m_TabVertex[3*m_TabFaces[3*i]];
 		Y[1] = m_TabVertex[(3*m_TabFaces[(3*i)+2])+1] - m_TabVertex[(3*m_TabFaces[3*i])+1];
 		Y[2] = m_TabVertex[(3*m_TabFaces[(3*i)+2])+2] - m_TabVertex[(3*m_TabFaces[3*i])+2];
@@ -480,12 +480,12 @@ CGeoObject::~CGeoObject() {
 	}
 
 	if( m_TabSubMat ) {
-		delete[] m_TabSubMat;			// Index des éventuels sous-matériau
+		delete[] m_TabSubMat;			// Index des ï¿½ventuels sous-matï¿½riau
 		m_TabSubMat = 0;
 	}
 
 	if( m_pNormalTriangle ) {
-		delete[] m_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs préliminaires à la gestion des contacts)
+		delete[] m_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs prï¿½liminaires ï¿½ la gestion des contacts)
 		m_pNormalTriangle = 0;
 	}
 
@@ -595,7 +595,7 @@ void CGeoObject::setMaterial(int matRef)
 {
 	int nbrMat = matRef;
 
-	// Vérification du type de matériau
+	// Vï¿½rification du type de matï¿½riau
 	CMap *map = getMap();
 
 	if( nbrMat >= (int)map->_materials.size() ) {
@@ -604,7 +604,7 @@ void CGeoObject::setMaterial(int matRef)
 	else {
 		CMaterial *mat = map->_materials[ nbrMat ];
 		if( mat != 0 ) {
-			m_bMaterialTexture = true;		// Indique la présence d'un matériau associé à l'objet
+			m_bMaterialTexture = true;		// Indique la prï¿½sence d'un matï¿½riau associï¿½ ï¿½ l'objet
 			m_Material = mat;
 			m_MaterialTexture = nbrMat;
 			m_TypeMateriau = m_Material->Type();
@@ -621,19 +621,19 @@ void CGeoObject::Color( float r, float g, float b ) {
 	m_Color[2] = b;
 }
 
-bool CGeoObject::Save(TiXmlElement* element) {
+bool CGeoObject::Save(TiXmlElement* element) throw(CErreur) {
 	int i=0;
 
-	// Sauve les données générales
+	// Sauve les donnï¿½es gï¿½nï¿½rales
 	TiXmlElement* elGeo = new TiXmlElement(Xml::GEOOBJECT);
 	elGeo->SetAttribute(Xml::REF, getId());
 	elGeo->SetAttribute(Xml::NOM, getName());
 	element->LinkEndChild(elGeo);
 
-	// Solidité
+	// Soliditï¿½
 	CGeoMaker::SaveSolidite(elGeo, m_bSolid);
 
-	// Présence matériau
+	// Prï¿½sence matï¿½riau
 	if(m_bMaterialTexture) {
 		TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAU);
 		elMat->SetAttribute(Xml::REF, m_MaterialTexture);
@@ -649,7 +649,7 @@ bool CGeoObject::Save(TiXmlElement* element) {
 	// Index de sommets
 	CGeoMaker::SaveFaces(elGeo, m_NumFaces, m_TabFaces);
 
-	// Index de sommets et références de sous-matériaux
+	// Index de sommets et rï¿½fï¿½rences de sous-matï¿½riaux
 	TiXmlElement* elFac = new TiXmlElement("IndexDeSommets");
 	elGeo->LinkEndChild(elFac);
 
@@ -660,7 +660,7 @@ bool CGeoObject::Save(TiXmlElement* element) {
 		el->SetAttribute("S2", m_TabFaces[3*i + 1]);
 		el->SetAttribute("S3", m_TabFaces[3*i + 2]);
 
-		if( m_TypeMateriau==CMaterial::MAT_TYPE_MULTI )		// Sauvegarde des références de texture en cas de
+		if( m_TypeMateriau==CMaterial::MAT_TYPE_MULTI )		// Sauvegarde des rï¿½fï¿½rences de texture en cas de
 		{
 			el->SetAttribute("SubMat", m_TabSubMat[i]);	// texture multiple
 		}
@@ -693,13 +693,13 @@ bool CGeoObject::Save(TiXmlElement* element) {
 }
 
 void CGeoObject::init() throw(CErreur) {
-	MinMax();			// Mesure les minimums et maximums de l'objet géo
-	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet géo
+	MinMax();			// Mesure les minimums et maximums de l'objet gï¿½o
+	Bulle();			// Mesure le centre et le rayon de la sphï¿½re englobant l'objet gï¿½o
 	ConstruitBase();	// Construit la table des vecteurs normaux
 }
 
 
-float CGeoObject::testContactTriangle( unsigned int i, const float posPlayer[3], float dist ) {		// Test s'il y a contact entre un point P et le i° triangle de l'objet géo
+float CGeoObject::testContactTriangle( unsigned int i, const float posPlayer[3], float dist ) {		// Test s'il y a contact entre un point P et le iï¿½ triangle de l'objet gï¿½o
 	int *indices = &m_TabFaces[3*i];
 	float *normal = &m_pNormalTriangle[3*i];
 	float A[3], B[3], C[3], F[3], G[3], X[3], Y[3], Z[3];
@@ -724,7 +724,7 @@ float CGeoObject::testContactTriangle( unsigned int i, const float posPlayer[3],
 	produitVectoriel( X, normal, A );
 	normalise( A );
 	// test position P / droite AB
-	if( produitScalaire(A, Z) >= dist )	// avant c'était 0.0
+	if( produitScalaire(A, Z) >= dist )	// avant c'ï¿½tait 0.0
 		return 1000.0f;
 
 	Y[0] = m_TabVertex[ (3*indices[2])+0 ] - m_TabVertex[ (3*indices[0])+0 ];
@@ -734,7 +734,7 @@ float CGeoObject::testContactTriangle( unsigned int i, const float posPlayer[3],
 	produitVectoriel(Y, normal, B);
 	normalise(B);
 	// test position P / droite AC
-	if( produitScalaire(B, Z) <= -dist )	// avant c'était 0.0
+	if( produitScalaire(B, Z) <= -dist )	// avant c'ï¿½tait 0.0
 		return 1000.0f;
 
 	// calcul de F = vecteur BC
@@ -757,13 +757,13 @@ float CGeoObject::testContactTriangle( unsigned int i, const float posPlayer[3],
 }
 
 // Renvoie la distance entre le point de position 'pos' et le plus proche triangle de l'objet
-// géo. N'effectue cette mesure que pour des distances inférieures à 'dist'
+// gï¿½o. N'effectue cette mesure que pour des distances infï¿½rieures ï¿½ 'dist'
 bool CGeoObject::checkContact( const float pos[3], float dist )
 {
 	float distanceW;
-	if( TestContactPave( pos, dist ) )	// Teste proximité 'joueur / l'objet géo'
+	if( TestContactPave( pos, dist ) )	// Teste proximitï¿½ 'joueur / l'objet gï¿½o'
 	{
-		for( int i=0; i<m_NumFaces; i++)		//pour chaque triangle de l'objet géo.
+		for( int i=0; i<m_NumFaces; i++)		//pour chaque triangle de l'objet gï¿½o.
 		{
 			distanceW = testContactTriangle( i, pos, dist );
 			if( distanceW <= dist )
@@ -775,12 +775,12 @@ bool CGeoObject::checkContact( const float pos[3], float dist )
 }
 
 void CGeoObject::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
-	float dist = player->getRayon();	// Rayon de la sphère représentant le volume du joueur
+	float dist = player->getRayon();	// Rayon de la sphï¿½re reprï¿½sentant le volume du joueur
 	float distanceW;
 
 	if( m_bSolid )	// Si l'objet est solide
-		if( TestContactPave( positionPlayer, dist ) )	// Teste proximité 'joueur / l'objet géo'
-			for( int i=0; i<m_NumFaces; i++) {		//pour chaque triangle de l'objet géo.
+		if( TestContactPave( positionPlayer, dist ) )	// Teste proximitï¿½ 'joueur / l'objet gï¿½o'
+			for( int i=0; i<m_NumFaces; i++) {		//pour chaque triangle de l'objet gï¿½o.
 				distanceW = testContactTriangle( i, positionPlayer, dist );
 
 				if( distanceW<500.0f ) // Teste le contact avec le joueur (1.0f = valeur arbitraire mais grande)
@@ -790,8 +790,8 @@ void CGeoObject::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
 
 bool CGeoObject::TestContactPave( const float pos[3], float dist )
 {
-	// Teste si le point qui a pour position 'pos' se trouve ou non à une distance inférieure à 'dist'
-	// du pavé englobant l'objet
+	// Teste si le point qui a pour position 'pos' se trouve ou non ï¿½ une distance infï¿½rieure ï¿½ 'dist'
+	// du pavï¿½ englobant l'objet
 
 	if( pos[0] < maxX+dist )
 		if( pos[0] > minX-dist )
@@ -799,9 +799,9 @@ bool CGeoObject::TestContactPave( const float pos[3], float dist )
 				if( pos[1] < maxY+dist )
 					if( -pos[2] < maxZ+dist )
 						if( -pos[2] > minZ-dist )
-							return true;	// Le point 'pos' est à une distance inférieure
+							return true;	// Le point 'pos' est ï¿½ une distance infï¿½rieure
 
-	return false;	// Le point 'pos' se trouve à une distance supérieure
+	return false;	// Le point 'pos' se trouve ï¿½ une distance supï¿½rieure
 }
 
 float CGeoObject::GereLaserPlayer(float pos[3], CV3D &Dir, float dist)
@@ -811,25 +811,25 @@ float CGeoObject::GereLaserPlayer(float pos[3], CV3D &Dir, float dist)
 	int *indices;
 	CV3D AP, N, AB, AC, U, V, W, var;
 
-	if( !m_bSolid )	// Si l'objet n'est pas solide, il ne peut être touché par le laser
+	if( !m_bSolid )	// Si l'objet n'est pas solide, il ne peut ï¿½tre touchï¿½ par le laser
 		return dist;	// => on sort en renvoyant 'dist'
 
-	// Vérifie si le laser passe à proxomité de l'objet géo
-	CV3D CP;	// Vecteur allant du point origine du laser au centre de l'objet géo (=centre de la Bulle qui l'englobe)
+	// Vï¿½rifie si le laser passe ï¿½ proxomitï¿½ de l'objet gï¿½o
+	CV3D CP;	// Vecteur allant du point origine du laser au centre de l'objet gï¿½o (=centre de la Bulle qui l'englobe)
 	CP.X = m_Centre[0] - pos[0];
 	CP.Y = m_Centre[1] - pos[1];
 	CP.Z = m_Centre[2] + pos[2];
 
-	float a = CP^Dir;				// Dir est normalisé
-	float bCarre = CP^CP;			// b = norme du veteur CP au carré
-	float hCarre = bCarre - (a*a);	// b²=bCarre = h² + a² => h²=hCarre = b² - a²
+	float a = CP^Dir;				// Dir est normalisï¿½
+	float bCarre = CP^CP;			// b = norme du veteur CP au carrï¿½
+	float hCarre = bCarre - (a*a);	// bï¿½=bCarre = hï¿½ + aï¿½ => hï¿½=hCarre = bï¿½ - aï¿½
 	float rCarre = (0.001f+m_Rayon)*(0.001f+m_Rayon);
-	if( hCarre > rCarre )			// Si distance (laser-centre de la sphère) > rayon de la sphère
+	if( hCarre > rCarre )			// Si distance (laser-centre de la sphï¿½re) > rayon de la sphï¿½re
 		return dist;				// Alors le rayon laser ne touche pas l'objet
 
-	// Vérifie si le laser touche une face de la map
+	// Vï¿½rifie si le laser touche une face de la map
 	vertex = m_TabVertex;
-	for( int i=0; i<m_NumFaces; i++) //pour chaque triangle de l'objet géo.
+	for( int i=0; i<m_NumFaces; i++) //pour chaque triangle de l'objet gï¿½o.
 	{
 		indices = &m_TabFaces[3*i];
 		normal = &m_pNormalTriangle[3*i];
@@ -846,9 +846,9 @@ float CGeoObject::GereLaserPlayer(float pos[3], CV3D &Dir, float dist)
 
 		distanceVar = -(N^AP)/(N^Dir);
 
-		if( distanceVar < 0.0f )	// Si la distance trouvée pour ce triangle est négative
+		if( distanceVar < 0.0f )	// Si la distance trouvï¿½e pour ce triangle est nï¿½gative
 			continue;	// Passe au triangle suivant
-		if( distanceVar > dist )	// Si elle est supérieure à une autre déjà trouvée
+		if( distanceVar > dist )	// Si elle est supï¿½rieure ï¿½ une autre dï¿½jï¿½ trouvï¿½e
 			continue;	// Passe au triangle suivant
 
 		AB.X = vertex[ 3*indices[1] ] - vertex[ 3*indices[0] ];
@@ -858,7 +858,7 @@ float CGeoObject::GereLaserPlayer(float pos[3], CV3D &Dir, float dist)
 		V = (Dir*distanceVar)+AP;
 		var = AB*V;
 
-		if( (N^var)<0.0f )	// Si le laser passe du mauvais côté du premier segment du triangle
+		if( (N^var)<0.0f )	// Si le laser passe du mauvais cï¿½tï¿½ du premier segment du triangle
 			continue;	// Passe au triangle suivant
 
 		AC.X = vertex[ 3*indices[2] ] - vertex[ 3*indices[0] ];
@@ -867,20 +867,20 @@ float CGeoObject::GereLaserPlayer(float pos[3], CV3D &Dir, float dist)
 
 		var = AC*V;
 
-		if( (N^var)>0.0f )	// S'il passe du mauvais côté du second segment du triangle
+		if( (N^var)>0.0f )	// S'il passe du mauvais cï¿½tï¿½ du second segment du triangle
 			continue;	// Passe au triangle suivant
 
-		// Ici on est passé du bon côté du second segment du triangle
+		// Ici on est passï¿½ du bon cï¿½tï¿½ du second segment du triangle
 		U = AC - AB;
 		W = V - AB;
 
 		var = W*U;
 
-		if( (N^var)<=0.0f )	// S'il passe du bon côté du dernier segment du triangle
+		if( (N^var)<=0.0f )	// S'il passe du bon cï¿½tï¿½ du dernier segment du triangle
 			dist = distanceVar;	// C'est qu'il le touche
 	}
 
-	return dist;	// Renvoie la distance trouvée
+	return dist;	// Renvoie la distance trouvï¿½e
 }
 
 }	// JktMoteur

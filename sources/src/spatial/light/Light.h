@@ -45,33 +45,30 @@ protected:
 	static const char* TYPE;
 	static const char* REF;
 
-	float m_ColorAmbient[4];	// Couleur de la lumière
-	float m_ColorDiffuse[4];	// Couleur de la lumière
-	float m_ColorSpecular[4];	// Couleur de la lumière
-	float m_Position[4];		// Position de la lumière
-	int m_refLight;				// Référence sur la lumière openGL actuellement utilisée
-	int takeLight();			// Trouve une lumière openGL disponible et la réserve
-	void freeLight( int ref );	// Libère une lumière openGL réservée
+	float m_ColorAmbient[4];	// Couleur de la lumiï¿½re
+	float m_ColorDiffuse[4];	// Couleur de la lumiï¿½re
+	float m_ColorSpecular[4];	// Couleur de la lumiï¿½re
+	float m_Position[4];		// Position de la lumiï¿½re
+	int m_refLight;				// Rï¿½fï¿½rence sur la lumiï¿½re openGL actuellement utilisï¿½e
+	int takeLight();			// Trouve une lumiï¿½re openGL disponible et la rï¿½serve
+	void freeLight( int ref );	// Libï¿½re une lumiï¿½re openGL rï¿½servï¿½e
 
 public :
 	CLight(CMap* map);
 	virtual ~CLight();
 
-	// Méthodes de sérialisation
-	virtual bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) = 0;		// Lit une light dans un fichier Map format XML
-	virtual bool LitFichier(CIfstreamMap &fichier) = 0;						// Lit une light dans un fichier Map
-	virtual bool SaveFichierMap(std::ofstream &fichier) = 0;				// Sauve la light dans un fichier Map
-	virtual bool Save(TiXmlElement* element) = 0;							// Sauve la light dans un fichier Map format XML
+	// MÃ©thodes de sÃ©rialisation
+	virtual bool Save(TiXmlElement* element) throw(CErreur) = 0;							// Sauve la light dans un fichier Map format XML
 
-	// Méthodes de manipulation géométrique
-	virtual void EchangeXY() override;										// Echange les coordonnées X et Y de l'objet
-	virtual void EchangeXZ() override;										// Echange les coordonnées X et Z de l'objet
-	virtual void EchangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
-	virtual void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
-	virtual void translate(float x, float y, float z) override;				// Translation pondérée selon X, Y et Z de l'objet
+	// Mï¿½thodes de manipulation gï¿½omï¿½trique
+	virtual void EchangeXY() override;										// Echange les coordonnï¿½es X et Y de l'objet
+	virtual void EchangeXZ() override;										// Echange les coordonnï¿½es X et Z de l'objet
+	virtual void EchangeYZ() override;										// Echange les coordonnï¿½es Y et Z de l'objet
+	virtual void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothï¿½tie pondï¿½rï¿½e selon X, Y et Z de l'objet
+	virtual void translate(float x, float y, float z) override;				// Translation pondï¿½rï¿½e selon X, Y et Z de l'objet
 
-	virtual void Active();		// Active la lumière
-	virtual void Desactive();	// Désactive la lumière
+	virtual void Active();		// Active la lumiÃ¨re
+	virtual void Desactive();	// DÃ©sactive la lumiÃ¨re
 
 	void SetPosition(const float position[4]);
 	void SetColorAmbient(const float color[4]);

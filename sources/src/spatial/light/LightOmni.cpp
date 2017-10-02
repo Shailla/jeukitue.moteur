@@ -33,46 +33,8 @@ void CLightOmni::init() throw(CErreur) {
 
 }
 
-bool CLightOmni::LitFichier( CIfstreamMap &fichier ) {
-	string mot;
-
-	fichier >> mot;
-	if( mot!="CouleurAmbient" )
-		return false;
-	fichier >> m_ColorAmbient[0] >> m_ColorAmbient[1] >> m_ColorAmbient[2];
-
-	fichier >> mot;
-	if( mot!="CouleurDiffuse" )
-		return false;
-	fichier >> m_ColorDiffuse[0] >> m_ColorDiffuse[1] >> m_ColorDiffuse[2];
-
-	fichier >> mot;
-	if( mot!="CouleurSpecular" )
-		return false;
-	fichier >> m_ColorSpecular[0] >> m_ColorSpecular[1] >> m_ColorSpecular[2];
-
-	fichier >> mot;
-	if( mot!="Position" )
-		return false;
-	fichier >> m_Position[0] >> m_Position[1] >> m_Position[2];
-
-	return true;
-}
-
-bool CLightOmni::SaveFichierMap( ofstream &fichier )
-{
-	fichier << "\n\nLumiereOmni";
-	fichier << "\n\tCouleurAmbient\t\t" << m_ColorAmbient[0] << "\t" << m_ColorAmbient[1] << "\t"  << m_ColorAmbient[2];
-	fichier << "\n\tCouleurDiffuse\t\t" << m_ColorDiffuse[0] << "\t" << m_ColorDiffuse[1] << "\t"  << m_ColorDiffuse[2];
-	fichier << "\n\tCouleurSpecular\t\t" << m_ColorSpecular[0] << "\t" << m_ColorSpecular[1] << "\t"  << m_ColorSpecular[2];
-	fichier << "\n\tPosition\t" << m_Position[0] << "\t" << m_Position[1] << "\t" << m_Position[2];
-
-	return true;
-}
-
-bool CLightOmni::Save(TiXmlElement* element)
-{
-	// Nom, référence, type
+bool CLightOmni::Save(TiXmlElement* element) throw(CErreur) {
+	// Nom, rï¿½fï¿½rence, type
 	TiXmlElement* elLum = new TiXmlElement(Xml::LIGHTOMNI);
 	elLum->SetAttribute(Xml::REF, m_refLight);
 	element->LinkEndChild(elLum);
@@ -92,8 +54,7 @@ bool CLightOmni::Save(TiXmlElement* element)
 	return true;
 }
 
-void CLightOmni::Active()
-{
+void CLightOmni::Active() {
 	float fff[4];
 	fff[0] = m_Position[0];
 	fff[1] = m_Position[1];
@@ -123,9 +84,7 @@ void CLightOmni::Active()
 	glLightfv( m_refLight, GL_SPECULAR, m_ColorSpecular );
 }
 
-bool CLightOmni::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
-	double ref;
-
+bool CLightOmni::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
 	// Type
 	const char* type = el->Value();
 	if(!type) {
@@ -138,13 +97,12 @@ bool CLightOmni::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 		throw CErreur("Fichier Map corrompu : Type incompatible");
 	}
 
-	// Référence
-	if(!el->Attribute(Xml::REF, &ref)) {
-		mapLogger->logError("Fichier Map corrompu : Lumiere ref");
-		throw CErreur("Fichier Map corrompu : Lumiere ref");
-	}
+	// RÃ©fÃ©rence
+	const char* reference = el->Attribute(Xml::REF);
 
-	m_refLight = (int)ref;
+	if(reference) {
+		_reference = reference;
+	}
 
 	// Couleurs
 	Xml::LitCouleur3fv(el, Xml::AMBIANTE, m_ColorAmbient);

@@ -19,19 +19,19 @@ class CMaterial : public MapObject {
 	friend class CMaterialMaker;
 public:
 	enum MAT_TYPE {
-		MAT_TYPE_SIMPLE = 0,	// Matériau simple
-		MAT_TYPE_TEXTURE,		// Matériau de type simple texture
-		MAT_TYPE_MULTI,			// Matériau de type textures multiples
+		MAT_TYPE_SIMPLE = 0,	// Matï¿½riau simple
+		MAT_TYPE_TEXTURE,		// Matï¿½riau de type simple texture
+		MAT_TYPE_MULTI,			// Matï¿½riau de type textures multiples
 	};
 	std::string tostring;
 protected:
-	MAT_TYPE m_Type;	// type de matériau : MAT_TYPE_TEXTURE = CMaterialTexture, MAT_TYPE_MULTI = textures multiples
+	MAT_TYPE m_Type;	// type de matï¿½riau : MAT_TYPE_TEXTURE = CMaterialTexture, MAT_TYPE_MULTI = textures multiples
 	unsigned int m_Ref;
 
 public:
-	float m_Ambient[4];		// Composante de lumière ambiante de l'objet géo
-	float m_Diffuse[4];		// Composante de lumière diffuse de l'objet géo
-	float m_Specular[4];	// Composante de lumière spéculaire de l'objet géo
+	float m_Ambient[4];		// Composante de lumiï¿½re ambiante de l'objet gï¿½o
+	float m_Diffuse[4];		// Composante de lumiï¿½re diffuse de l'objet gï¿½o
+	float m_Specular[4];	// Composante de lumiï¿½re spï¿½culaire de l'objet gï¿½o
 
 		// Constructeurs / Destructeur
 	CMaterial(CMap* map);
@@ -40,21 +40,18 @@ public:
 	virtual MapObject* clone() override;
 	virtual void init() throw(CErreur) override;
 
-	MAT_TYPE Type() const;	// Retourne le type de matériau (simple, tree, ...)
+	MAT_TYPE Type() const;	// Retourne le type de matï¿½riau (simple, tree, ...)
 
-	// Sérialisation
-	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;
-	virtual bool Save(TiXmlElement* element) override;
+	// Sï¿½rialisation
+	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
+	virtual bool Save(TiXmlElement* element) throw(CErreur) override;
 
-	virtual bool LitFichier(CMap* map, CIfstreamMap &fichier);
-	virtual bool SaveFichierMap(std::ofstream &fichier);
-
-	virtual void initGL() {};	// Lit le fichier de texture associé au matériau
-	virtual void freeGL() {};	// Lit le fichier de texture associé au matériau
+	virtual void initGL() {};	// Lit le fichier de texture associï¿½ au matï¿½riau
+	virtual void freeGL() {};	// Lit le fichier de texture associï¿½ au matï¿½riau
 	virtual void Active();
 	virtual void Desactive();
 	const char* toString();
-	unsigned int getRef() const;	// Renvoie la référence du matériau
+	unsigned int getRef() const;	// Renvoie la rï¿½fï¿½rence du matï¿½riau
 	void setRef(unsigned int ref);
 };
 

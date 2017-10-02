@@ -23,7 +23,7 @@ namespace jkt
 {
 
 #define CSTE_K	1.0f
-#define TAILLE_TEX 0.04f		// Dimension de la texture carrée de la particule
+#define TAILLE_TEX 0.04f		// Dimension de la texture carrï¿½e de la particule
 
 MoteurNeige::MoteurNeige(CMap* parent) : CMoteurParticules(parent) {
 	_texName = -1;
@@ -59,7 +59,7 @@ void MoteurNeige::randomVelocity(Flocon& flocon) {
 	flocon._acceleration.Z = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
 }
 
-bool MoteurNeige::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger){
+bool MoteurNeige::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
 	if(strcmp(Xml::NEIGE, el->Value())) {
 		Xml::throwCorruptedMapFileException(Xml::NEIGE, el->Value());
 	}
@@ -70,16 +70,16 @@ bool MoteurNeige::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger){
 		setName(nom);
 	}
 
-	// Lecture du nombre de particules à afficher
+	// Lecture du nombre de particules ï¿½ afficher
 	int nbrParticules, nbrParticulesOnGround;
 
-	if(!el->Attribute(Xml::NBR_PARTICULES, &nbrParticules)) {		// Lecture nom de la Map à importer
+	if(!el->Attribute(Xml::NBR_PARTICULES, &nbrParticules)) {		// Lecture nom de la Map ï¿½ importer
 		mapLogger->logError("Fichier Map corrompu : Nombre de particules du moteur manquant");
 		throw CErreur("Fichier Map corrompu : Nombre de particules du moteur manquant");
 	}
 
-	if(!el->Attribute(Xml::NBR_PARTICULES_ON_GROUND, &nbrParticulesOnGround)) {		// Lecture nom de la Map à importer
-		mapLogger->logInfo("Fichier Map : Nombre de particules du moteur sur le sol manquant absent, application valeur par défaut");
+	if(!el->Attribute(Xml::NBR_PARTICULES_ON_GROUND, &nbrParticulesOnGround)) {		// Lecture nom de la Map ï¿½ importer
+		mapLogger->logInfo("Fichier Map : Nombre de particules du moteur sur le sol manquant absent, application valeur par dï¿½faut");
 		nbrParticulesOnGround = nbrParticules / 3;
 	}
 
@@ -114,14 +114,14 @@ bool MoteurNeige::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger){
 		Flocon& flocon = _flocons[i];
 
 		if(i < _nbrParticulesOnGround) {
-			// Crée les particules au sol
+			// Crï¿½e les particules au sol
 			randomPosition(flocon);
 			flocon._position.Y = 0.0f;	// Met le flocon au sol
 			flocon.changeState(Flocon::FloconState::ON_THE_GROUND);
 			_floconsOnGround.push(&flocon);
 		}
 		else {
-			// Crée les particules qui tombent
+			// Crï¿½e les particules qui tombent
 			randomPosition(flocon);
 			flocon._position.Y = _centre.Y + (_taille.Y * (((float)rand() / (float)RAND_MAX) - 0.5f));
 			randomVelocity(flocon);
@@ -132,7 +132,7 @@ bool MoteurNeige::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger){
 	return true;
 }
 
-bool MoteurNeige::Save(TiXmlElement* el) {
+bool MoteurNeige::Save(TiXmlElement* el) throw(CErreur) {
 
 	TiXmlElement *elEngine = new TiXmlElement(Xml::NEIGE);
 	el->LinkEndChild(elEngine);
@@ -210,7 +210,7 @@ void MoteurNeige::Affiche() {
 	glDepthMask( GL_FALSE );
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE );
 
-	// Calcul du plan orthogonal à l'axe de la vue
+	// Calcul du plan orthogonal ï¿½ l'axe de la vue
 	GLfloat mat[16];
 	glGetFloatv(GL_MODELVIEW_MATRIX, mat);
 	CV3D v_droit(mat[0], mat[4], mat[8]);
@@ -271,7 +271,7 @@ void MoteurNeige::refresh(CGame *game) {
 		}
 	}
 
-	// Quand le nombre de flocons au sol dépasse le seuil on refait tomber les premiers à être arriver au sol
+	// Quand le nombre de flocons au sol dï¿½passe le seuil on refait tomber les premiers ï¿½ ï¿½tre arriver au sol
 	int newFallingFlocons = _floconsOnGround.size() - _nbrParticulesOnGround;
 
 	for(int i=0 ; i<newFallingFlocons ; i++) {

@@ -14,8 +14,8 @@ using namespace jkt;
 namespace jkt
 {
 
-CMaterial* CMaterialMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
-	CMaterial* mat = NULL;
+CMaterial* CMaterialMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+	CMaterial* mat = 0;
 
 	const char* materialType = el->Value();
 
@@ -30,7 +30,7 @@ CMaterial* CMaterialMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger
 	}
 	else {
 		stringstream msg;
-		msg << "Fichier map corrompu, type de matériau inconnu '" << materialType << "'";
+		msg << "Fichier map corrompu, type de matÃ©riau inconnu '" << materialType << "'";
 		mapLogger->logError(msg.str());
 		throw CErreur(msg);
 	}

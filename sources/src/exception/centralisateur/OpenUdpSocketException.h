@@ -4,7 +4,7 @@
 #include "exception/centralisateur/CentralisateurException.h"
 
 /**
-    A utiliser pour indiquer un échec d'ouverture de socket UDP
+    A utiliser pour indiquer un Ã©chec d'ouverture de socket UDP
 */
 class OpenUdpSocketException : public CentralisateurException
 {

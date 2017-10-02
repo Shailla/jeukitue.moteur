@@ -31,9 +31,9 @@ class CGame;
 #include "spatial/light/LightOmni.h"
 #include "spatial/light/LightTarget.h"
 #include "spatial/light/LightMaker.h"
-#include <spatial/basic/Refreshable.h>
+#include "spatial/basic/Refreshable.h"
 #include "spatial/objet/Dirigeable.h"
-#include <spatial/basic/Geometrical.h>
+#include "spatial/basic/Geometrical.h"
 #include "spatial/geo/EntryPoint.h"
 #include "spatial/geo/SimpleGeo.h"
 #include "spatial/geo/SimpleMaterialGeo.h"
@@ -64,34 +64,6 @@ const char* CMap::identifier = "Map";
 
 CMap::CMap(CMap* parent) : MapObject(parent, MapObject::MAP) {
 	LOGDEBUG(("CMap::CMap(*parent) %T", this ));
-
-	_isGlInitialized = false;
-	_isPluginsInitialized = false;
-}
-
-CMap::CMap(CMap* parent, const string& nomFichier) throw(jkt::CErreur) : MapObject(parent, MapObject::MAP) {
-	LOGDEBUG(("CMap::CMap(*parent,nomFichier=%s)%T", nomFichier.c_str(), this ));
-
-	if( !Lit(nomFichier, 0) ) {
-		LOGERROR(("Erreur de lecture de la Map '%s'", nomFichier.c_str()));
-	}
-	else {
-		LOGINFO(("Fichier Map lu '%s'", nomFichier.c_str()));
-	}
-
-	_isGlInitialized = false;
-	_isPluginsInitialized = false;
-}
-
-CMap::CMap(CMap* parent, const string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur) : MapObject(parent, MapObject::MAP) {
-	LOGDEBUG(("CMap::CMap(*parent,nomFichier=%s)%T", nomFichier.c_str(), this ));
-
-	if( !Lit(nomFichier, mapLogger) ) {
-		LOGERROR(("Erreur de lecture de la Map '%s'", nomFichier.c_str()));
-	}
-	else {
-		LOGINFO(("Fichier Map lu '%s'", nomFichier.c_str()));
-	}
 
 	_isGlInitialized = false;
 	_isPluginsInitialized = false;
@@ -186,7 +158,7 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 	}
 }
 
-void CMap::AfficheHighlighted(float r,float v,float b) {	// Affiche tous les objets géo de du MAP
+void CMap::AfficheHighlighted(float r,float v,float b) {	// Affiche tous les objets g�o de du MAP
 	// Si nécessaire, initialise les éléments OpenGL de la MAP
 	if(!_isGlInitialized) {
 		initGL();
@@ -210,12 +182,9 @@ void CMap::AfficheHighlighted(float r,float v,float b) {	// Affiche tous les obj
 	}
 }
 
-void CMap::addMapObject(int id, MapObject* geo, MapLogger* mapLogger) {
-	if(_objectDescriptions.find(id) != _objectDescriptions.end()) {
-		mapLogger->logError("Map corrompue, la référence est en doublon");
-	}
-
-	_objectDescriptions[id] = geo;
+void CMap::addMapObject(MapObject* object) {
+	_objectDescriptions.insert(pair<int, MapObject*>(object->getId(), object));
+	_references.insert(pair<string, int>(object->getReference(), object->getId()));
 }
 
 MapObject* CMap::getMapObject(int id) {
@@ -223,6 +192,29 @@ MapObject* CMap::getMapObject(int id) {
 
 	if(iter != _objectDescriptions.end()) {
 		return iter->second;
+	}
+	else {
+		return 0;
+	}
+}
+
+int CMap::getMapObjectIdByReference(const string& reference) {
+	map<string, int>::iterator iter = _references.find(reference);
+
+	if(iter != _references.end()) {
+		return iter->second;
+	}
+	else {
+		return -1;
+	}
+}
+
+MapObject* CMap::getMapObjectByReference(const string& reference) {
+	map<string, int>::iterator iter = _references.find(reference);
+
+	if(iter != _references.end()) {
+		int objectId = iter->second;
+		return getMapObject(objectId);
 	}
 	else {
 		return 0;
@@ -261,7 +253,7 @@ void CMap::merge(int mapId, MapLogger* mapLogger) {
 			_objects.push_back(object);
 		}
 
-		for(Geometrical* geo : subMap->_geos) {
+		for(MapObject* geo : subMap->_geos) {
 			_geos.push_back(geo);
 		}
 
@@ -269,24 +261,26 @@ void CMap::merge(int mapId, MapLogger* mapLogger) {
 			_objectDescriptions[geoDesc.first] = geoDesc.second;
 		}
 
-		for(Refreshable* refreshable : subMap->_refreshables) {
+		for(MapObject* refreshable : subMap->_refreshables) {
 			_refreshables.push_back(refreshable);
 		}
 
-		for(SolidAndTargettable* solid : subMap->_solidAndTargettables) {
+		for(MapObject* solid : subMap->_solidAndTargettables) {
 			_solidAndTargettables.push_back(solid);
 		}
 
-		for(Drawable* drawable : subMap->_drawables) {
-			_drawables.push_back(drawable);
+		for(MapObject* drawable : subMap->_drawables) {
+			if(!drawable->isAbstract()) {
+				_drawables.push_back(drawable);
+			}
 		}
 
-		// Merge des lumiéres
+		// Merge des lumi�res
 		for(CLight* light : subMap->_lights) {
 			_lights.push_back(light);
 		}
 
-		// Merge des matériaux
+		// Merge des mat�riaux
 		for(CMaterial* mat : subMap->_materials) {
 			_materials.push_back(mat);
 		}
@@ -307,7 +301,7 @@ void CMap::merge(int mapId, MapLogger* mapLogger) {
 	}
 	else {
 		stringstream msg;
-		msg << "Map à merger introuvable : " << mapId;
+		msg << "Map � merger introuvable : " << mapId;
 
 		if(mapLogger) {
 			mapLogger->logError(msg.str());
@@ -325,7 +319,7 @@ vector<EntryPoint*>& CMap::getEntryPointsList() {
 void CMap::add(CMap* subMap) {
 	if(subMap) {
 		_subMaps.insert(pair<int, CMap*>(subMap->getId(), subMap));
-		_objectDescriptions.insert(pair<int, MapObject*>(subMap->getId(), subMap));
+		addMapObject(subMap);
 	}
 	else {
 		LOGERROR(("Sub Map nulle"));
@@ -334,78 +328,96 @@ void CMap::add(CMap* subMap) {
 
 void CMap::add(EntryPoint* entryPoint) {
 	_geos.push_back(entryPoint);
-	_objectDescriptions.insert(pair<int, MapObject*>(entryPoint->getId(), entryPoint));
+	addMapObject(entryPoint);
 
 	_entryPoints.push_back(entryPoint);
 }
 
 void CMap::add(CMoteurParticules* engine) {
 	_objects.push_back(engine);
-	_objectDescriptions.insert(pair<int, MapObject*>(engine->getId(), engine));
+	addMapObject(engine);
 
-	_drawables.push_back(engine);
 	_refreshables.push_back(engine);
 	_geos.push_back(engine);
+
+	if(!engine->isAbstract()) {
+		_drawables.push_back(engine);
+	}
 }
 
 void CMap::add(Dirigeable* dirigeable) {
 	_objects.push_back(dirigeable);
-	_objectDescriptions.insert(pair<int, MapObject*>(dirigeable->getId(), dirigeable));
+	addMapObject(dirigeable);
 
-	_drawables.push_back(dirigeable);
 	_refreshables.push_back(dirigeable);
 	_geos.push_back(dirigeable);
+
+	if(!dirigeable->isAbstract()) {
+		_drawables.push_back(dirigeable);
+	}
 }
 
 void CMap::add(MapObject* object) {
 	_objects.push_back(object);
-	_objectDescriptions.insert(pair<int, MapObject*>(object->getId(), object));
+	addMapObject(object);
 
 	_geos.push_back(object);
-	_drawables.push_back(object);
 	_solidAndTargettables.push_back(object);
+
+	if(!object->isAbstract()) {
+		_drawables.push_back(object);
+	}
 }
 
 void CMap::add(CMaterial *mat) {
 	_objects.push_back(mat);
-	_objectDescriptions.insert(pair<int, MapObject*>(mat->getId(), mat));
+	addMapObject(mat);
 
 	_materials.push_back(mat);
 }
 
 void CMap::add(CLight *light) {
 	_objects.push_back(light);
-	_objectDescriptions.insert(pair<int, MapObject*>(light->getId(), light));
+	addMapObject(light);
 
-	_lights.push_back(light);	// Ajoute light à la liste des objets affichables
-	_geos.push_back(light);	// Ajoute light à la liste des objets affichables
+	_lights.push_back(light);	// Ajoute light � la liste des objets affichables
+	_geos.push_back(light);	// Ajoute light � la liste des objets affichables
 }
 
 void CMap::add(CPorte *porte) {
 	_objects.push_back(porte);
-	_objectDescriptions.insert(pair<int, MapObject*>(porte->getId(), porte));
+	addMapObject(porte);
 
 	_geos.push_back(porte);
 	_refreshables.push_back(porte);
-	_drawables.push_back(porte);
+
+	if(!porte->isAbstract()) {
+		_drawables.push_back(porte);
+	}
 }
 
 void CMap::add(CheckPlayerInZone* detector) {
 	_objects.push_back(detector);
-	_objectDescriptions.insert(pair<int, MapObject*>(detector->getId(), detector));
+	addMapObject(detector);
 
 	_geos.push_back(detector);
 	_refreshables.push_back(detector);
-	_drawables.push_back(detector);
+
+	if(!detector->isAbstract()) {
+		_drawables.push_back(detector);
+	}
 }
 
-void CMap::add(CNavette *navette) {		// Une navette est avant tout un objet géo
+void CMap::add(CNavette *navette) {		// Une navette est avant tout un objet g�o
 	_objects.push_back(navette);
-	_objectDescriptions.insert(pair<int, MapObject*>(navette->getId(), navette));
+	addMapObject(navette);
 
 	_geos.push_back(navette);
 	_refreshables.push_back(navette);
-	_drawables.push_back(navette);
+
+	if(!navette->isAbstract()) {
+		_drawables.push_back(navette);
+	}
 }
 
 vector<MapObject*>& CMap::getMapObjects() {
@@ -421,7 +433,7 @@ void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	}
 
 	for(SolidAndTargettable* solid : _solidAndTargettables) {
-		solid->GereContactPlayer(positionPlayer, player);	// Gére les contacts entre l'objet géo et le joueur
+		solid->GereContactPlayer(positionPlayer, player);	// G�re les contacts entre l'objet g�o et le joueur
 	}
 
 	// Initialisation des sous-Map
@@ -432,7 +444,7 @@ void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 
 float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 	// Renvoie la distance du premier point de contact entre un rayon laser parti du point 'pos'
-	// dans la direction 'Dir' si cette distance est inférieure à 'dist', renvoie 'dist' sinon
+	// dans la direction 'Dir' si cette distance est inf�rieure � 'dist', renvoie 'dist' sinon
 
 	for(SolidAndTargettable* solid : _solidAndTargettables) {
 		dist = solid->GereLaserPlayer( pos, Dir, dist );
@@ -443,7 +455,7 @@ float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 		subMap.second->GereLaserPlayer( pos, Dir, dist );
 	}
 
-	return dist;	// Renvoie la distance du premier contact trouvé entre le laser et une face d'objet géo
+	return dist;	// Renvoie la distance du premier contact trouv� entre le laser et une face d'objet g�o
 }
 
 void CMap::EchangeXY() {
@@ -555,15 +567,15 @@ void CMap::translate(float x, float y, float z) {
 	}
 }
 
-bool CMap::Lit(const string &nomFichier, MapLogger* mapLogger) {
+bool CMap::Lit(const string &nomFichier, MapLogger* mapLogger) throw(CErreur) {
 	return Lit(*this, nomFichier, mapLogger);
 }
 
-bool CMap::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
+bool CMap::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
 	return false;
 }
 
-bool CMap::Save(TiXmlElement* element) {			// Sauve l'objet géo dans un fichier Map
+bool CMap::Save(TiXmlElement* element) throw(CErreur) {			// Sauve l'objet géo dans un fichier Map
 	return false;
 }
 
@@ -571,7 +583,7 @@ const string& CMap::getBinariesDirectory() {
 	return _binariesDirectory;
 }
 
-bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
+bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) throw(CErreur) {
 	// Répertoire et fichier de la Map
 	string mapDirectory, mapFilename;
 	bool isResource = jkt::RessourcesLoader::getRessource(mapName, mapDirectory, mapFilename);
@@ -593,7 +605,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 	// Lecture XML de la Map
 	stringstream msg;
 	msg << "Lecture fichier Map '" << map._filename << "'";
-	mapLogger->logInfo(msg.str());
+	mapLogger->logInfo(msg);
 
 	bool result = false;
 
@@ -603,8 +615,10 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 		// Element de map
 		TiXmlElement* elMap = document.FirstChildElement(Xml::MAP);
 		if(!elMap) {
-			mapLogger->logError("Fichier map corrompu");
-			throw CErreur("Fichier map corrompu");
+			stringstream msg;
+			msg << "Fichier map corrompu '" << map._filename << "'";
+			mapLogger->logError(msg);
+			throw CErreur(msg);
 		}
 
 		// Lecture des plugins de la Map
@@ -617,7 +631,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						Xml::throwCorruptedMapFileException(Xml::LOAD, el->Value());
 					}
 
-					string pluginFilename = el->Attribute(Xml::NOM);	// Lecture nom de la Map à importer
+					string pluginFilename = el->Attribute(Xml::NOM);	// Lecture nom de la Map � importer
 					RessourcesLoader::getFileRessource(map._binariesDirectory, pluginFilename);
 					map._plugins.push_back(pluginFilename);
 				}
@@ -636,7 +650,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					}
 
 					const char* importMode = el->Attribute(Xml::MODE);	// Lecture du mode d'import
-					const char* subMapName = el->Attribute(Xml::NOM);	// Lecture nom de la Map à importer
+					const char* subMapName = el->Attribute(Xml::NOM);	// Lecture nom de la Map � importer
 
 					if(!subMapName) {
 						mapLogger->logError("Fichier Map corrompu : Nom de la sous-Map a importer manquant");
@@ -668,14 +682,14 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 
 					stringstream msg;
 					msg << "Translation " << subMap->getId() << " : " << translation[0] << " " << translation[1] << " " << translation[2];
-					mapLogger->logInfo(msg.str());
+					mapLogger->logInfo(msg);
 
 					subMap->translate(translation[0], translation[1], translation[2]);
 
 					msg.clear();//clear any bits set
 					msg.str(std::string());
 					msg << "Scaling " << subMap->getId() << " : " << scaling[0] << " " << scaling[1] << " " << scaling[2];
-					mapLogger->logInfo(msg.str());
+					mapLogger->logInfo(msg);
 
 					subMap->Scale(scaling[0], scaling[1], scaling[2]);
 
@@ -684,7 +698,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						msg.clear();//clear any bits set
 						msg.str(std::string());
 						msg << "Merge sous-Map '" << subMap->getId() << "'";
-						mapLogger->logInfo(msg.str());
+						mapLogger->logInfo(msg);
 
 						map.add(subMap);
 						map.merge(subMap->getId());
@@ -694,14 +708,14 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						msg.str(std::string());
 						msg << "Add sous-Map '" << subMap->getId() << "'";
 
-						mapLogger->logInfo(msg.str());
+						mapLogger->logInfo(msg);
 						map.add(subMap);
 					}
 					else {
 						msg.clear();//clear any bits set
 						msg.str(std::string());
 						msg << "Merge sous-Map (default) '" << subMap->getId() << "'";
-						mapLogger->logInfo(msg.str());
+						mapLogger->logInfo(msg);
 
 						map.add(subMap);
 						map.merge(subMap->getId());
@@ -710,7 +724,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 			}
 		}
 
-		// Lecture des point d'entrée des joueurs
+		// Lecture des point d'entr�e des joueurs
 		{
 			TiXmlElement* elEntry = elMap->FirstChildElement(Xml::ENTRYPOINTS);
 
@@ -747,7 +761,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 			}
 		}
 
-		// Lecture des mat�riaux
+		// Lecture des mat�riaux
 		TiXmlElement* elMat = elMap->FirstChildElement(Xml::MATERIAUX);
 
 		if(elMat) {
@@ -758,12 +772,12 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					map.add(mat);
 				}
 				else {
-					mapLogger->logError("Mat�riau corrompu ?");
+					mapLogger->logError("Matériau corrompu ?");
 				}
 			}
 		}
 
-		// Lecture des lumi�res
+		// Lecture des lumières
 		TiXmlElement* elLight = elMap->FirstChildElement(Xml::LIGHTS);
 
 		if(elLight) {
@@ -774,35 +788,22 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 					map.add(lum);
 				}
 				else {
-					mapLogger->logError("Lumi�re corrompue ?");
+					mapLogger->logError("Lumière corrompue ?");
 				}
 			}
 		}
 
-		// Lecture des objets g�om�triques
+		// Lecture des objets géométriques
 		TiXmlElement* elGeo = elMap->FirstChildElement(Xml::GEOS);
 
 		if(elGeo) {
 
 			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
 
-				// Descriptions d'objets g�om�triques
-				if(!strcmp(Xml::GEODESCRIPTION, el->Value())) {
-					MapObject* geo = CGeoMaker::Lit(el, map, mapLogger);
-
-					if(geo) {
-						map.addMapObject(geo->getId(), geo, mapLogger);
-					}
-					else {
-						mapLogger->logError("G�o description corrompue ?");
-					}
-				}
-
-				// Objets g�om�triques r�els instanci� � partir d'une description
-				else if(!strcmp(Xml::GEOINSTANCE, el->Value())) {
+				// Objets gémétriques réels instancié à partir d'un objet abstrait
+				if(!strcmp(Xml::GEOINSTANCE, el->Value())) {
 					double translation[3];
 					translation[0] = translation[1] = translation[2] = 0.0f;
-					int description = -1;
 
 					if(!el->Attribute(Xml::X, &translation[0])) {
 						mapLogger->logError("Fichier Map corrompu");
@@ -819,24 +820,38 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						throw CErreur("Fichier Map corrompu");
 					}
 
-					if(!el->Attribute(Xml::DESCRIPTION, &description)) {
-						mapLogger->logError("Fichier Map corrompu");
-						throw CErreur("Fichier Map corrompu");
+					const char* description = el->Attribute(Xml::DESCRIPTION);
+
+					if(!description) {
+						mapLogger->logError("Fichier Map corrompu, description manquante");
+						throw CErreur("Fichier Map corrompu, description manquante");
 					}
 
-					MapObject* object = map.getMapObject(description);
+					int objectId = map.getMapObjectIdByReference(description);
 
-					if(object) {
-						MapObject* clone = object->clone();
-						clone->translate(translation[0], translation[1], translation[2]);
-						map.add(clone);
+					if(objectId > 0) {
+						MapObject* object = map.getMapObject(objectId);
+
+						if(object) {
+							MapObject* clone = object->clone();
+							clone->translate(translation[0], translation[1], translation[2]);
+							map.add(clone);
+						}
+						else {
+							stringstream msg;
+							msg << "Description référencée [id=" << objectId << ", ref=" << description << "]";
+							mapLogger->logError(msg);
+						}
 					}
 					else {
-						mapLogger->logError("G�o description introuvable");
+						stringstream msg;
+						msg << "Référence de la description introuvable '" << description << "'";
+						mapLogger->logError(msg);
 					}
+
 				}
 
-				// Objets g�om�triques r�els auto-instanci�
+				// Objets géométriques réels ou abstraits auto-instanciés
 				else {
 					MapObject* object = CGeoMaker::Lit(el, map, mapLogger);
 
@@ -844,7 +859,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 						map.add(object);
 					}
 					else {
-						mapLogger->logError("G�o corrompue ?");
+						mapLogger->logError("Géo corrompue ?");
 					}
 				}
 			}
@@ -866,7 +881,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 void CMap::init() throw(jkt::CErreur) {	// Initialisation de la CMap
 	LOGINFO(("Init Map %d", getId()));
 
-	// Initialisation des object géométriques
+	// Initialisation des object g�om�triques
 	vector<MapObject*>::iterator iterObject;
 
 	for(iterObject = _objects.begin() ; iterObject != _objects.end() ; iterObject++) {
@@ -887,12 +902,12 @@ void CMap::initPlugins() {
 		Fabrique::getPluginEngine()->activateMapPlugin(this, *it, _binariesDirectory);
 	}
 
-	_isPluginsInitialized = true;	// Indique que les éléments OpenGL de la MAP ont bien été initialisés
+	_isPluginsInitialized = true;	// Indique que les �l�ments OpenGL de la MAP ont bien �t� initialis�s
 }
 
 void CMap::freePlugins() {
 	Fabrique::getPluginEngine()->deactivateMapPlugins();
-	_isPluginsInitialized = false;			// Indique que les éléments OpenGL de la MAP ont bien été initialisés
+	_isPluginsInitialized = false;			// Indique que les �l�ments OpenGL de la MAP ont bien �t� initialis�s
 }
 
 void CMap::initGL() {
@@ -904,27 +919,27 @@ void CMap::initGL() {
 			material->initGL();
 		}
 
-		// Initialisation GL des object géométriques dans le contexte OpenGL
+		// Initialisation GL des object g�om�triques dans le contexte OpenGL
 		for(Drawable* drawable : _drawables) {
 			drawable->initGL();
 		}
 
-		_isGlInitialized = true;	// Indique que les éléments OpenGL de la MAP ont bien été initialisés
+		_isGlInitialized = true;	// Indique que les �l�ments OpenGL de la MAP ont bien �t� initialis�s
 	}
 }
 
 void CMap::freeGL() {
-	// Libération GL des object géométriques dans le contexte OpenGL
+	// Lib�ration GL des object g�om�triques dans le contexte OpenGL
 	for(Drawable* drawable : _drawables) {
 		drawable->freeGL();
 	}
 
-	// Libération GL des fichiers de texture
+	// Lib�ration GL des fichiers de texture
 	for(CMaterial* material : _materials) {
 		material->freeGL();
 	}
 
-	// Libération GL des sous-Map
+	// Lib�ration GL des sous-Map
 	for(auto& subMap : _subMaps) {
 		subMap.second->freeGL();
 	}
@@ -944,14 +959,14 @@ bool CMap::Save(const string nomFichier) {
 	TiXmlElement *elMap = new TiXmlElement("Map");
 	document.LinkEndChild(elMap);
 
-	// Sauvegarde des points d'entrée des joueurs
+	// Sauvegarde des points d'entr�e des joueurs
 	{
 		TiXmlElement *elEntryPoint = new TiXmlElement(Xml::ENTRYPOINTS);
 		elMap->LinkEndChild(elEntryPoint);
 		vector<EntryPoint*>::iterator iterEntryPoint;
 
 		for( iterEntryPoint=_entryPoints.begin() ; iterEntryPoint!=_entryPoints.end() ; iterEntryPoint++ )
-			(*iterEntryPoint)->Save( elEntryPoint );		// Sauvegarde des paramètres de l'objet
+			(*iterEntryPoint)->Save( elEntryPoint );		// Sauvegarde des param�tres de l'objet
 	}
 
 	// Sauvegarde des materiaux
@@ -961,7 +976,7 @@ bool CMap::Save(const string nomFichier) {
 		vector<CMaterial*>::iterator iterMat;
 
 		for( iterMat=_materials.begin() ; iterMat!=_materials.end() ; iterMat++ )
-			(*iterMat)->Save(elMat);		// Sauvegarde du matériau
+			(*iterMat)->Save(elMat);		// Sauvegarde du mat�riau
 	}
 
 	// Sauvegarde des lumieres
@@ -981,7 +996,7 @@ bool CMap::Save(const string nomFichier) {
 		vector<MapObject*>::iterator iterObject;
 
 		for(iterObject = _objects.begin() ; iterObject != _objects.end() ; iterObject++)
-			(*iterObject)->Save( elGeo );		// Sauvegarde des paramètres de l'objet
+			(*iterObject)->Save( elGeo );		// Sauvegarde des param�tres de l'objet
 	}
 
 	document.SaveFile(nomFichierMap.c_str());
@@ -993,13 +1008,13 @@ bool CMap::Save(const string nomFichier) {
 }
 
 bool CMap::checkContact(const float pos[3], const float dist) {
-	bool var = false;	// Pas de contact par défaut
-	vector<SolidAndTargettable*>::iterator iter;
+	bool var = false;	// Pas de contact par d�faut
+	vector<MapObject*>::iterator iter;
 
 	for(iter = _solidAndTargettables.begin() ; iter != _solidAndTargettables.end() ; iter++) {
 		var = (*iter)->checkContact( pos, dist );
 
-		if(var)	// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
+		if(var)	// Si un triangle a �t� trouv� � une distance inf�rieure � 'dist' de la position 'pos'
 			break;
 	}
 
@@ -1008,7 +1023,7 @@ bool CMap::checkContact(const float pos[3], const float dist) {
 		for(auto& subMap : _subMaps) {
 			var = subMap.second->checkContact( pos, dist );
 
-			if(var)	// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
+			if(var)	// Si un triangle a �t� trouv� � une distance inf�rieure � 'dist' de la position 'pos'
 				break;
 		}
 	}
@@ -1017,7 +1032,7 @@ bool CMap::checkContact(const float pos[3], const float dist) {
 }
 
 void CMap::refresh(CGame *game) {
-	vector<Refreshable*>::iterator iter;
+	vector<MapObject*>::iterator iter;
 
 	for(iter = _refreshables.begin() ; iter != _refreshables.end() ; iter++)
 		(*iter)->refresh(game);
@@ -1031,12 +1046,12 @@ void CMap::refresh(CGame *game) {
 bool CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndexOfPage, int& posX, int& posY, int& indexOfPages) {
 	bool again = true;
 
-	// Si on n'a pas dépassé l'index de la dernière texture de la page active du damier on s'arrête là
+	// Si on n'a pas d�pass� l'index de la derni�re texture de la page active du damier on s'arr�te l�
 	if(indexOfPages >= firstIndexOfPage + (nbrX * nbrY)) {
 		again = false;
 	}
 	else if(material->Type() == CMaterial::MAT_TYPE_TEXTURE) {
-		// On compte une texture à afficher de plus (affichée ou non sur la page active du damier)
+		// On compte une texture � afficher de plus (affich�e ou non sur la page active du damier)
 		indexOfPages++;
 
 		// Si la texture est sur la page active du damier on l'affiche
@@ -1126,8 +1141,8 @@ int CMap::afficheDamierTextures(int x, int y, int tailleX, int tailleY, int nbrX
 		again = afficheMaterial(*iter, x, y, tailleX, tailleY, nbrX, nbrY, firstIndex, posX, posY, index);
 	}
 
-	// Retourne le numéro de la page ou 0 si la page affichée ne contient aucune texture
-	// Si index > firstIndex ça veut dire qu'on a affiché au moins une texture sur la page de damier active
+	// Retourne le num�ro de la page ou 0 si la page affich�e ne contient aucune texture
+	// Si index > firstIndex �a veut dire qu'on a affich� au moins une texture sur la page de damier active
 	return (index > firstIndex) ? page : 0;
 }
 

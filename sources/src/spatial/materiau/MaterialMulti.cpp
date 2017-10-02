@@ -23,8 +23,8 @@ namespace jkt
 
 CMaterialMulti::CMaterialMulti(CMap* map) : CMaterial(map) {
 	m_Type = MAT_TYPE_MULTI;
-	m_TabMat = 0;			// Pas de sous-matériaux
-	m_NbrTex = 0;			// Pas de sous-matériaux
+	m_TabMat = 0;			// Pas de sous-matÃ©riaux
+	m_NbrTex = 0;			// Pas de sous-matÃ©riaux
 }
 
 MapObject* CMaterialMulti::clone() {
@@ -39,14 +39,20 @@ int CMaterialMulti::NbrTex()
 
 void CMaterialMulti::NbrTex( int nbr ) {
 	m_NbrTex = nbr;
-	m_TabMat = new CMaterial*[nbr];	// Création du tableau des sous-matériaux
+	m_TabMat = new CMaterial*[nbr];	// CrÃ©ation du tableau des sous-matÃ©riaux
 
-	for( int i=0 ; i<nbr ; i++ )
-		m_TabMat[i] = NULL;
+	for( int i=0 ; i<nbr ; i++ ) {
+		m_TabMat[i] = 0;
+	}
 }
 
 CMaterial* CMaterialMulti::getMat(int i) {
-	return m_TabMat[i];
+	if(i < m_NbrTex) {
+		return m_TabMat[i];
+	}
+	else {
+		return 0;
+	}
 }
 
 CMaterialMulti::~CMaterialMulti() {
@@ -55,126 +61,47 @@ CMaterialMulti::~CMaterialMulti() {
 			if( m_TabMat[ i ] )
 				delete m_TabMat[ i ];
 
-		delete[] m_TabMat;	// Création du tableau des sous-matériaux
+		delete[] m_TabMat;	// CrÃ©ation du tableau des sous-matÃ©riaux
 	}
 }
 
 void CMaterialMulti::initGL() {
-	for(int i=0 ; i<NbrTex() ; i++)
-		m_TabMat[i]->initGL();
+	for(int i=0 ; i<m_NbrTex ; i++) {
+		CMaterial* mat = m_TabMat[i];
+
+		if(mat) {
+			mat->initGL();
+		}
+		else {
+			LOGWARN(("Materiau nul"));
+		}
+	}
 }
 
 void CMaterialMulti::freeGL()  {
-	for(int i=0 ; i<NbrTex() ; i++)
-		m_TabMat[i]->freeGL();
-}
+	for(int i=0 ; i<m_NbrTex ; i++) {
+		CMaterial* mat = m_TabMat[i];
 
-bool CMaterialMulti::LitFichier(CMap* map, CIfstreamMap &fichier) {
-	string mot;
-	int nbrSM;		// Nombre de sous-matériaux
-
-	fichier >> mot;
-	if( mot!="Reference" )
-		return false;
-
-	fichier >> m_Ref;			// Référence du matériau
-
-	fichier >> mot;				// "Fichier de texture"
-	if( mot!="NbrSousMateriaux" )
-		return false;	// Fichier corrompu
-
-	fichier >> nbrSM;
-	NbrTex( nbrSM );
-
-	fichier >> mot;
-	if( mot!="Ambient" )
-		return false;	// Fichier corrompu
-
-	fichier >> m_Ambient[0] >> m_Ambient[1] >> m_Ambient[2];
-
-	fichier >> mot;
-	if( mot!="Diffuse" )
-		return false;	// Fichier corrompu
-	fichier >> m_Diffuse[0] >> m_Diffuse[1] >> m_Diffuse[2];
-
-	fichier >> mot;
-	if( mot!="Specular" )
-		return false;
-
-	fichier >> m_Specular[0] >> m_Specular[1] >> m_Specular[2];
-
-	fichier >> mot;
-	if( mot!="Sous-materiaux" )
-		return false;
-
-	fichier >> mot;
-	if( mot!="debut" )
-		return false;
-
-	for(int i=0 ; i<NbrTex() ; i++) {
-		fichier >> mot;
-
-		if(mot=="MateriauSimple") {
-			CMaterial *pMatSimple = new CMaterial(map);
-			if(!pMatSimple->LitFichier(map, fichier)) {
-				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Materiau simple corrompu dans un multi-materiau" << endl;
-				delete pMatSimple;
-				return false;
-			}
-
-			m_TabMat[ i ] = pMatSimple;
-		}
-		else if( mot=="MateriauTexture" ) {
-			CMaterialTexture *pMatTex = new CMaterialTexture(map);
-			if(!pMatTex->LitFichier(map, fichier)) {
-				cerr << endl << __FILE__ << ":" << __LINE__ << " Erreur : Materiau de texture corrompu dans un multi-materiau" << endl;
-				delete pMatTex;
-				return false;
-			}
-
-			m_TabMat[ i ] = pMatTex;
+		if(mat) {
+			mat->freeGL();
 		}
 		else {
-			return false;
+			LOGWARN(("Materiau nul"));
 		}
 	}
-
-	fichier >> mot;
-	if( mot!="Sous-materiaux" )
-		return false;
-
-	fichier >> mot;
-	if( mot!="fin" )
-		return false;
-
-	return true;
 }
 
-bool CMaterialMulti::SaveFichierMap(ofstream &fichier) {
-	fichier << "\n\tNbrSousMateriaux\t" << NbrTex();
-
-	fichier << "\n\tAmbient\t\t" << m_Ambient[0] << "\t" << m_Ambient[1] << "\t" << m_Ambient[2];
-	fichier << "\n\tDiffuse\t\t" << m_Diffuse[0] << "\t" << m_Diffuse[1] << "\t" << m_Diffuse[2];
-	fichier << "\n\tSpecular\t" << m_Specular[0] << "\t" << m_Specular[1] << "\t" << m_Specular[2];
-
-	fichier << "\nSous-materiaux debut";
-
-	for(int i=0 ; i<NbrTex() ; i++) {
-		m_TabMat[ i ]->SaveFichierMap( fichier );
-	}
-
-	fichier << "\nSous-materiaux fin";
-
-	return true;
-}
-
-bool CMaterialMulti::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
-	// Référence
+bool CMaterialMulti::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+	// RÃ©fÃ©rence
 	double ref;
 	if(!el->Attribute(Xml::REF, &ref))
 		throw CErreur("Fichier map corrompu : Reference materiau");
 
-	m_Ref = (unsigned int)ref;
+	const char* reference = el->Attribute(Xml::REF);
+
+	if(reference) {
+		_reference = reference;
+	}
 
 	// Nom
 	const char* nom = el->Attribute(Xml::NOM);
@@ -195,21 +122,18 @@ bool CMaterialMulti::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	}
 
 
-	// Nombre de sous-matériaux
+	// Nombre de sous-matÃ©riaux
 	double nbrSSMat;
 	if(!elSma->Attribute(Xml::NBR, &nbrSSMat)) {
 		mapLogger->logError("Fichier map corrompu : Nombre de sous-materiaux");
 		throw CErreur("Fichier map corrompu : Nombre de sous-materiaux");
 	}
 
-	m_NbrTex = (int)nbrSSMat;
-
-	// Liste des sous-matériaux
+	// Liste des sous-matÃ©riaux
 	int i=0;
-	m_TabMat = new CMaterial*[m_NbrTex];
+	NbrTex((int)nbrSSMat);
 
 	for(TiXmlElement* el=elSma->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
-		el->Value();
 		el->Attribute(Xml::REF);
 
 		if(i >= NbrTex()) {
@@ -221,11 +145,16 @@ bool CMaterialMulti::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 		m_TabMat[i++] = mat;
 	}
 
+	if(i != (int)nbrSSMat) {
+		mapLogger->logError("Fichier map corrompu : Nombre de sous-materiaux et compte non-cohÃ©rents");
+		throw CErreur("Fichier map corrompu : Nombre de sous-materiaux et compte non-cohÃ©rents");
+	}
+
 	return true;
 }
 
-bool CMaterialMulti::Save(TiXmlElement* element) {
-	// Nom, référence...
+bool CMaterialMulti::Save(TiXmlElement* element) throw(CErreur) {
+	// Nom, rÃ©fÃ©rence...
 	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAUMULTI);
 	elMat->SetAttribute(Xml::REF, getRef());
 	elMat->SetAttribute(Xml::NOM, getName());
@@ -236,7 +165,7 @@ bool CMaterialMulti::Save(TiXmlElement* element) {
 	CGeoMaker::SaveCouleur3fv(elMat, Xml::DIFFUSE, m_Diffuse);
 	CGeoMaker::SaveCouleur3fv(elMat, Xml::SPECULAR, m_Specular);
 
-	// Sous-matériaux
+	// Sous-matÃ©riaux
 	TiXmlElement* elSma = new TiXmlElement(Xml::SOUSMATERIAUX);
 	elSma->SetAttribute(Xml::NBR, NbrTex());
 	for( int i=0 ; i<NbrTex() ; i++ ) {

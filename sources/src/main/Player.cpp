@@ -70,18 +70,18 @@ CPlayer::CPlayer() {
 	_posVue[1] = 0.1f;
 	_posVue[2] = 0.137f;
 
-	_rayonSolidbox = 0.30f;	// Rayon de la sphère qui représente le joueur dans la amp. Le joueur mesure arbitrairement 1m70, son rayon la moitier
+	_rayonSolidbox = 0.30f;	// Rayon de la sphï¿½re qui reprï¿½sente le joueur dans la amp. Le joueur mesure arbitrairement 1m70, son rayon la moitier
 
 	_pClavier = NULL;
-	_actionFunc = NULL;		// Pas d'action périodique à réaliser
-	_contactFunc = NULL;	// Pas d'action à réaliser lors d'un contact avec la map
+	_actionFunc = NULL;		// Pas d'action pï¿½riodique ï¿½ rï¿½aliser
+	_contactFunc = NULL;	// Pas d'action ï¿½ rï¿½aliser lors d'un contact avec la map
 
-	_pSkin = NULL;			// Pas de skin associé par défaut
+	_pSkin = NULL;			// Pas de skin associï¿½ par dï¿½faut
 
-	ID_Cri = NULL;			// Le cri du joueur n'a pas encore été chargé
-	ID_ReqCri = NULL;		// Y'a pas encore la requête sur le cri non plus
+	ID_Cri = NULL;			// Le cri du joueur n'a pas encore ï¿½tï¿½ chargï¿½
+	ID_ReqCri = NULL;		// Y'a pas encore la requï¿½te sur le cri non plus
 
-	createClavier();		// Crée la classe qui gère les requêtes de mouvement, tir ...
+	createClavier();		// Crï¿½e la classe qui gï¿½re les requï¿½tes de mouvement, tir ...
 
 	if(_weaponsChoice == NULL) {
 		try {
@@ -119,7 +119,7 @@ void CPlayer::AfficheIconesArmes() {
 		float X = (float)Config.Display.X;
 		float Y = (float)Config.Display.Y/2;
 
-		// Affiche les icônes des armes
+		// Affiche les icï¿½nes des armes
 		_weaponsChoice->affiche(X-50.0f, X, Y-(_nbrArmes*50/2), Y+(_nbrArmes*50/2));
 
 		// Affichage du focus sur l'arme active
@@ -147,7 +147,7 @@ void CPlayer::armeUp() {	// Rends l'arme suivante active
 }
 
 /**
- * Active l'arme précédente de la liste des armes.
+ * Active l'arme prï¿½cï¿½dente de la liste des armes.
  */
 void CPlayer::armeDown() {
 	_armeActif--;
@@ -175,7 +175,7 @@ CPlayer::~CPlayer() {
 }
 
 /**
- * Définit le cri du joueur à l'instant où est blessé.
+ * Dï¿½finit le cri du joueur ï¿½ l'instant oï¿½ est blessï¿½.
  */
 void CPlayer::setCri(const char *nomFichier) {
 	ID_Cri = DemonSons->CreateSon( nomFichier );
@@ -195,7 +195,7 @@ void CPlayer::setPosition(float x, float y, float z) {
 }
 
 /**
- * Choisit un point d'entrée pour le joueur dans la MAP parmi les points d'entrée de la MAP courante.
+ * Choisit un point d'entrï¿½e pour le joueur dans la MAP parmi les points d'entrï¿½e de la MAP courante.
  */
 void CPlayer::choiceOneEntryPoint() {
 	if(Game.getMap()->getEntryPointsList().size() >= 1) {
@@ -208,8 +208,8 @@ void CPlayer::choiceOneEntryPoint() {
 		vector<EntryPoint*>::iterator iterEntry;
 		vector<CPlayer*>::iterator iterPlayer;
 
-			// Fait la liste des points d'entrée se trouvant à une distance supérieure
-			// à DISTANCE_INTER_JOUEURS_ENTRY_POINT de tout autre joueur
+			// Fait la liste des points d'entrï¿½e se trouvant ï¿½ une distance supï¿½rieure
+			// ï¿½ DISTANCE_INTER_JOUEURS_ENTRY_POINT de tout autre joueur
 		for(iterEntry=Game.getMap()->getEntryPointsList().begin() ; iterEntry!=Game.getMap()->getEntryPointsList().end() ; iterEntry++) {
 			curseur = -1;
 			valide = false;
@@ -221,8 +221,8 @@ void CPlayer::choiceOneEntryPoint() {
 					distance -= pos;
 
 					if(distance.norme() < DISTANCE_INTER_JOUEURS_ENTRY_POINT) {
-						valide = false;		// Le point d'entrée est trop proche d'un des joueurs
-						break;				// On passe au point d'entrée suivant
+						valide = false;		// Le point d'entrï¿½e est trop proche d'un des joueurs
+						break;				// On passe au point d'entrï¿½e suivant
 					}
 					else {
 						valide = true;
@@ -230,17 +230,17 @@ void CPlayer::choiceOneEntryPoint() {
 				}
 			}
 
-			if( valide )	// Si le point d'entrée est suffisament distant de tout joueur, souviens-t'en
+			if( valide )	// Si le point d'entrï¿½e est suffisament distant de tout joueur, souviens-t'en
 				liste.push_back(iterEntry);
 		}
 
 
 		size_t nbr = liste.size();
 
-		if(nbr) {	// S'il y a des entrées à une distance convenable de tout joueur
+		if(nbr) {	// S'il y a des entrï¿½es ï¿½ une distance convenable de tout joueur
 			int choice = rand() % nbr;
 			setPosition((*(liste[choice]))->getEntryPosition());	// alors choisi l'une d'elles au hasard
-			LOGINFO(("Choix d'un entry point éloigné des autres joueurs : %d", choice));
+			LOGINFO(("Choix d'un entry point ï¿½loignï¿½ des autres joueurs : %d", choice));
 		}
 		else {							// sinon prends-en une au hasard dans la liste
 			nbr = Game.getMap()->getEntryPointsList().size();
@@ -314,11 +314,11 @@ void CPlayer::setVitesse(const float vit[3]) {
 }
 
 void CPlayer::changeAction(void (*action)(CPlayer *player)) {
-	_actionFunc = action;	//définit l'action périodique à réaliser
+	_actionFunc = action;	// DÃ©finit l'action pÃ©riodique Ã  rÃ©aliser
 }
 
 void CPlayer::changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW)) {
-	_contactFunc = contact;	//définit l'action à réaliser lors d'un contact avec la map
+	_contactFunc = contact;	//DÃ©finit l'action Ã  rÃ©aliser lors d'un contact avec la map
 }
 
 void CPlayer::Affiche() {
@@ -326,13 +326,26 @@ void CPlayer::Affiche() {
 
 	glTranslatef(_position[0], _position[1], -_position[2]);
 	glRotated(90.0f, 0.0f, 1.0f, 0.0f);
-	glRotated(-_teta, 0.0f, 1.0f, 0.0f); //Rotation par rapport à l'axe verticale
+	glRotated(-_teta, 0.0f, 1.0f, 0.0f); 	// Rotation par rapport Ã  l'axe verticale
 
-	// Affiche le skin du joueur s'il existe et si le jeu est configuré pour
-	if(Config.Joueur.skinVisibility && _pSkin)
-		_pSkin->Affiche();
+	// Affiche le skin du joueur s'il existe et si le jeu est configurÃ© pour
+	if(Config.Joueur.skinVisibility) {
+		if(_pSkin) {
+			_pSkin->Affiche();
+		}
+		else {
+			// Si le joueur n'a pas de Skin, affiche un elipsoÃ¯de Ã  sa place
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// Affiche un ellipsoïde qui trace les contours de la hitbox du joueur si le jeu est configuré pour
+			glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
+			Fabrique::getGlUtils()->drawSphere(0.1f, 16, 16);
+
+			glDisable(GL_BLEND);
+		}
+	}
+
+	// Affiche un ellipsÃ¯de qui trace les contours de la hitbox du joueur si le jeu est configurÃ© pour
 	if(Config.Joueur.hitboxVisibility) {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -343,7 +356,7 @@ void CPlayer::Affiche() {
 		glDisable(GL_BLEND);
 	}
 
-	// Affiche un ellipsoïde qui trace les contours physiques du joueur si le jeu est configuré pour
+	// Affiche un ellipsoÃ¯de qui trace les contours physiques du joueur si le jeu est configurÃ© pour
 	if(Config.Joueur.solidboxVisibility) {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -370,9 +383,9 @@ void CPlayer::AfficheProjectils() {		// Affiche tous les projectils du joueur
 	while(adr) {
 		pro = adr->m_adrX;
 
-		pro->Affiche();			// Affichage de l'objet géo
+		pro->Affiche();			// Affichage de l'objet gï¿½o
 
-		adr = TabProjectil.Suivant( adr );	//Passe à l'objet géométrique suivant
+		adr = TabProjectil.Suivant( adr );	//Passe ï¿½ l'objet gï¿½omï¿½trique suivant
 	}
 }
 
@@ -401,20 +414,20 @@ void CPlayer::RefreshProjectils() {
 
 	Tableau<CProjectil>::Adr *adr = TabProjectil.BeginAdr();
 
-	while(adr) {	//tant que ce n'est pas le dernier objet géométrique de la liste
+	while(adr) {	//tant que ce n'est pas le dernier objet gï¿½omï¿½trique de la liste
 		pro = adr->m_adrX;
 
-		if(!pro->Refresh())			// Affichage de l'objet géo
+		if(!pro->Refresh())			// Affichage de l'objet gï¿½o
 		{
-			// L'objet 'pro' a signalé la fin de sa vie, il doit être détruit
-			adrSuivant = TabProjectil.Suivant( adr );	//Passe à l'objet géométrique suivant
+			// L'objet 'pro' a signalï¿½ la fin de sa vie, il doit ï¿½tre dï¿½truit
+			adrSuivant = TabProjectil.Suivant( adr );	//Passe ï¿½ l'objet gï¿½omï¿½trique suivant
 
 			TabProjectil.Enleve( adr );
 			delete pro;
 		}
 		else {
-			// L'objet 'pro' a signalé qu'il reste vivant
-			adrSuivant = TabProjectil.Suivant( adr );	//Passe à l'objet géométrique suivant
+			// L'objet 'pro' a signalï¿½ qu'il reste vivant
+			adrSuivant = TabProjectil.Suivant( adr );	//Passe ï¿½ l'objet gï¿½omï¿½trique suivant
 		}
 
 		adr = adrSuivant;
@@ -425,7 +438,7 @@ void CPlayer::init() {
 }
 
 /**
- * Initialise les éléments OpenGL du joueur.
+ * Initialise les ï¿½lï¿½ments OpenGL du joueur.
  */
 void CPlayer::initGL() {
 	_pSkin->initPlugins();
@@ -433,7 +446,7 @@ void CPlayer::initGL() {
 }
 
 /**
- * Libère les éléments OpenGL du joueur.
+ * Libï¿½re les ï¿½lï¿½ments OpenGL du joueur.
  */
 void CPlayer::freeGL() {
 	_pSkin->freePlugins();
@@ -443,13 +456,13 @@ void CPlayer::freeGL() {
 void CPlayer::createClavier()
 {	_pClavier = new CClavier();	}
 
-void CPlayer::exeActionFunc() {	// Exécute l'action périodique associée au joueur
+void CPlayer::exeActionFunc() {	// Exï¿½cute l'action pï¿½riodique associï¿½e au joueur
 	if(_actionFunc) {
 		_actionFunc( this );
 	}
 }
 
-void CPlayer::exeContactFunc(float *normal, float distanceW) {	// Exécute fonction gestion contacts avec joueur
+void CPlayer::exeContactFunc(float *normal, float distanceW) {	// Exï¿½cute fonction gestion contacts avec joueur
 	if(_contactFunc) {
 		_contactFunc( this, normal, distanceW );
 	}
@@ -507,9 +520,9 @@ void CPlayer::deplace() {
 	float norm;
 	float vect[3];
 
-	if( fabsf(Pente())>0.707f ) {	// Si la pente est inférieure à 45°
+	if( fabsf(Pente())>0.707f ) {	// Si la pente est infï¿½rieure ï¿½ 45ï¿½
 		if( (fabsf(getClavier()->m_fDroite)<QUANTUM_VITESSE_PLAYER/(5.f)) && (fabsf(getClavier()->m_fAvance)<QUANTUM_VITESSE_PLAYER/(5.f)) )
-				// S'il n'y a pas de requête de déplacement=>ralenti le joueur
+				// S'il n'y a pas de requï¿½te de dï¿½placement=>ralenti le joueur
 		{
 			getVitesse( vect );
 
@@ -534,13 +547,13 @@ void CPlayer::deplace() {
 	float position[3], vitesse[3];
 	getPosition(position);
 	getVitesse(vitesse);
-	position[0] += vitesse[0];	//incrémente la position du joueur
+	position[0] += vitesse[0];	//incrï¿½mente la position du joueur
 	position[1] += vitesse[1];	//de sa vitesse
 	position[2] += vitesse[2];
 	setPosition(position);
 
 
-	if(fabsf(Pente()) > 0.707f) {	//Si la pente est inférieure à 45°=>limite la vitesse
+	if(fabsf(Pente()) > 0.707f) {	//Si la pente est infï¿½rieure ï¿½ 45ï¿½=>limite la vitesse
 		norm = norme( vitesse );
 
 		if(norm > MAX_VITESSE_PLAYER) {	//Limitation de la vitesse du joueur
@@ -571,5 +584,5 @@ void CPlayer::faitRequeteClavier() {
 
 	setVitesse( vect );
 
-	_pClavier->reset();	// Réinitialise les requêtes clavier du joueur
+	_pClavier->reset();	// Rï¿½initialise les requï¿½tes clavier du joueur
 }

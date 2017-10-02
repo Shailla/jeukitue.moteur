@@ -20,23 +20,21 @@ public:
 	MapObject* clone() override;
 	void init() throw(CErreur) override;
 
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger);
-	bool LitFichier(CIfstreamMap &fichier);
-	bool SaveFichierMap(std::ofstream &fichier);
-	bool Save(TiXmlElement* element);
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
+	bool Save(TiXmlElement* element) throw(CErreur) override;
 
-	void Active();
-	void Desactive();
+	void Active() override;
+	void Desactive() override;
 
 	void SetDirection( float direction[3] );
 	void getDirection(float direction[3]) const;
 	void SetFallOff( float falloff );
 	float getFallOff() const;
 
-	void EchangeXY();										// Echange les coordonnées X et Y de l'objet
-	void EchangeXZ();										// Echange les coordonnées X et Z de l'objet
-	void EchangeYZ();										// Echange les coordonnées Y et Z de l'objet
-	void Scale(float scaleX, float scaleY, float scaleZ);	// Homothétie pondérée selon X, Y et Z de l'objet
+	void EchangeXY();										// Echange les coordonnï¿½es X et Y de l'objet
+	void EchangeXZ();										// Echange les coordonnï¿½es X et Z de l'objet
+	void EchangeYZ();										// Echange les coordonnï¿½es Y et Z de l'objet
+	void Scale(float scaleX, float scaleY, float scaleZ);	// Homothï¿½tie pondï¿½rï¿½e selon X, Y et Z de l'objet
 };
 
 }	// JktMoteur

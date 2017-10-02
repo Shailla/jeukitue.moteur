@@ -43,7 +43,7 @@ CPorte::CPorte( CMap *map ) : CGeoObject(map) {
 CPorte::~CPorte(void) {
 }
 
-void CPorte::init() throw(CErreur) {			// Initialisation de l'objet géométrique
+void CPorte::init() throw(CErreur) {			// Initialisation de l'objet gï¿½omï¿½trique
 	CGeoObject::init();
 	m_Position = m_Centre;
 }
@@ -57,8 +57,8 @@ void CPorte::Affiche() {		// Fonction d'affichage de la porte
 	glPopMatrix();
 }
 
-bool CPorte::Save(TiXmlElement* element) {	// Sauve l'objet géo dans un fichier Map
-	// Sauve les données générales
+bool CPorte::Save(TiXmlElement* element) throw(CErreur) {	// Sauve l'objet gÃ©o dans un fichier Map
+	// Sauve les donnÃ©es gÃ©nÃ©rales
 	TiXmlElement* elGeo = new TiXmlElement("Geo");
 	elGeo->SetAttribute("Ref", getId());
 	elGeo->SetAttribute("Nom", getName());
@@ -67,7 +67,7 @@ bool CPorte::Save(TiXmlElement* element) {	// Sauve l'objet géo dans un fichier 
 
 	Xml::SaveElement(elGeo, "Marget", m_fMarge);	// Marge de la porte lors de son ouverture
 	Xml::SaveElement(elGeo, "Vitesse", m_fVitesse);	// Vitesse de la porte
-	Xml::SaveElement(elGeo, "Declenche", m_fDeclenche);	// Distance de la porte qui déclenche son mécanisme
+	Xml::SaveElement(elGeo, "Declenche", m_fDeclenche);	// Distance de la porte qui dï¿½clenche son mï¿½canisme
 
 	if( !CGeoObject::Save( elGeo ) )
 		return false;		// La sauvegarde a echoue
@@ -78,7 +78,7 @@ bool CPorte::Save(TiXmlElement* element) {	// Sauve l'objet géo dans un fichier 
 float CPorte::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 	float newPos[3];
 
-		// Ajustement de la position de la porte du à son ouverture (la porte monte <=> le joueur descend)
+		// Ajustement de la position de la porte du ï¿½ son ouverture (la porte monte <=> le joueur descend)
 	newPos[ 0 ] = pos[ 0 ];
 	newPos[ 1 ] = pos[ 1 ] - m_fOuverture;
 	newPos[ 2 ] = pos[ 2 ];
@@ -89,7 +89,7 @@ float CPorte::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 void CPorte::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	float newPos[3];
 
-	// Ajustement de la position de la porte du à son ouverture (la porte monte <=> le joueur descend)
+	// Ajustement de la position de la porte du ï¿½ son ouverture (la porte monte <=> le joueur descend)
 	newPos[ 0 ] = positionPlayer[ 0 ];
 	newPos[ 1 ] = positionPlayer[ 1 ] - m_fOuverture;
 	newPos[ 2 ] = positionPlayer[ 2 ];
@@ -98,7 +98,7 @@ void CPorte::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
 }
 
 void CPorte::refresh( CGame *game ) {
-	bool bOuvre = false;	// La porte ne bouge pas par défaut
+	bool bOuvre = false;	// La porte ne bouge pas par dï¿½faut
 	CPlayer *player;
 	CV3D dist;
 	int curseur = -1;
@@ -109,7 +109,7 @@ void CPorte::refresh( CGame *game ) {
 		player->getPosition( pos );
 		dist -  pos;
 
-		// Un joueur est-il prêt de la porte
+		// Un joueur est-il prï¿½t de la porte
 		if( dist.norme() < m_fDeclenche  ) {
 			bOuvre = true;	// Demande l'ouverture de la porte
 			break;			// Sortie de la boucle car on sait que la porte doit s'ouvrir
@@ -117,14 +117,14 @@ void CPorte::refresh( CGame *game ) {
 	}
 
 	if( bOuvre ) {
-		if( m_fOuverture < m_fMarge )		// Si la porte n'est pas entièrement ouverte...
+		if( m_fOuverture < m_fMarge )		// Si la porte n'est pas entiï¿½rement ouverte...
 			m_fOuverture += m_fVitesse;		// ...commande son ouverture
 
-		if( m_fOuverture > m_fMarge )		// Mais elle peut pas dépasser son ouverture maximale
+		if( m_fOuverture > m_fMarge )		// Mais elle peut pas dï¿½passer son ouverture maximale
 			m_fOuverture = m_fMarge;
 	}
 	else {
-		if( m_fOuverture > 0.0f )			// Si la porte n'est pas fermée...
+		if( m_fOuverture > 0.0f )			// Si la porte n'est pas fermï¿½e...
 			m_fOuverture -= m_fVitesse;		// commande sa fermeture
 
 		if( m_fOuverture < 0.0f )			// Mais la porte peut pas descendre sous terre !

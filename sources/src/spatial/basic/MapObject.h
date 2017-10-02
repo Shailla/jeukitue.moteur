@@ -28,7 +28,6 @@ namespace jkt {
 class CMap;
 
 class MapObject : public Object, public Drawable, public Geometrical, public Refreshable, public SolidAndTargettable {
-
 public:
 	static std::string MAP;
 	static std::string GEO;
@@ -56,8 +55,8 @@ public:
 	 * Serialisation de l'objet
 	 * *******************************************/
 
-	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override = 0;	// Lit l'objet depuis un fichier Map
-	virtual bool Save(TiXmlElement* element) override = 0;					// Sauve l'objet dans un fichier Map
+	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override = 0;	// Lit l'objet depuis un fichier Map
+	virtual bool Save(TiXmlElement* element) throw(CErreur) override = 0;					// Sauve l'objet dans un fichier Map
 
 
 	/* ********************************************
@@ -73,29 +72,29 @@ public:
 	 * Affichage de l'objet
 	 * *******************************************/
 
-	virtual void Affiche() override;										// Affiche l'objet géométrique
-	virtual void AfficheHighlighted(float r,float v,float b) override;		// Affiche l'objet géométrique en couleur unique
-	virtual void initGL() override;											// Initialisation de l'objet géométrique
-	virtual void freeGL() override;											// Libération des ressources de l'objet dans le contexte OpenGL
+	virtual void Affiche() override;										// Affiche l'objet gï¿½omï¿½trique
+	virtual void AfficheHighlighted(float r,float v,float b) override;		// Affiche l'objet gï¿½omï¿½trique en couleur unique
+	virtual void initGL() override;											// Initialisation de l'objet gï¿½omï¿½trique
+	virtual void freeGL() override;											// Libï¿½ration des ressources de l'objet dans le contexte OpenGL
 
 
 	/* ********************************************
-	 * Manipulation géométrique de l'objet
+	 * Manipulation gï¿½omï¿½trique de l'objet
 	 * *******************************************/
 
-	virtual void EchangeXY() override;										// Echange les coordonnées X et Y de l'objet
-	virtual void EchangeXZ() override;										// Echange les coordonnées X et Z de l'objet
-	virtual void EchangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
-	virtual void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
-	virtual void translate(float x, float y, float z) override;				// Translation pondérée selon X, Y et Z de l'objet
+	virtual void EchangeXY() override;										// Echange les coordonnï¿½es X et Y de l'objet
+	virtual void EchangeXZ() override;										// Echange les coordonnï¿½es X et Z de l'objet
+	virtual void EchangeYZ() override;										// Echange les coordonnï¿½es Y et Z de l'objet
+	virtual void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothï¿½tie pondï¿½rï¿½e selon X, Y et Z de l'objet
+	virtual void translate(float x, float y, float z) override;				// Translation pondï¿½rï¿½e selon X, Y et Z de l'objet
 
 
 	/* ********************************************
 	 * Gestion des contacts de l'objet
 	 * *******************************************/
 
-	virtual void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;	// Gère les contact entre 'player' et l'objet géo
-	virtual float GereLaserPlayer(float pos[3], CV3D& Dir, float dist) override;			// Voir la définition de la fonction
+	virtual void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;	// Gï¿½re les contact entre 'player' et l'objet gï¿½o
+	virtual float GereLaserPlayer(float pos[3], CV3D& Dir, float dist) override;			// Voir la dï¿½finition de la fonction
 	virtual bool checkContact(const float pos[3], float dist) override;
 };
 

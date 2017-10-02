@@ -115,7 +115,7 @@ void CPointNavette::SaveFichierPoint( std::ostream &fichier ) {
 }
 
 void CPointNavette::SavePoint(TiXmlElement* element) {
-		// Sauve les données générales
+		// Sauve les donnï¿½es gï¿½nï¿½rales
 	TiXmlElement* elPoi = new TiXmlElement("Point");
 
 		// Vitesse
@@ -130,7 +130,7 @@ void CPointNavette::SavePoint(TiXmlElement* element) {
 }
 
 CNavette::CNavette(CMap *map) : CGeoObject(map) {
-	m_Point = -1;			// On a pas encore démarrer la navette
+	m_Point = -1;			// On a pas encore dï¿½marrer la navette
 	m_distPoints = 0.0f;
 	m_Vitesse = 0.0f;
 	m_Deplacement = 0.0f;
@@ -139,7 +139,7 @@ CNavette::CNavette(CMap *map) : CGeoObject(map) {
 CNavette::~CNavette(void) {
 }
 
-void CNavette::init() throw(CErreur) {			// Initialisation de l'objet géométrique
+void CNavette::init() throw(CErreur) {			// Initialisation de l'objet gï¿½omï¿½trique
 	CGeoObject::init();
 }
 
@@ -153,8 +153,8 @@ void CNavette::Affiche() {		// Fonction d'affichage de la navette
 	glPopMatrix();
 }
 
-bool CNavette::Save(TiXmlElement* element) {	// Sauve l'objet géo dans un fichier Map
-	// Sauve les données générales
+bool CNavette::Save(TiXmlElement* element) throw(CErreur) {	// Sauve l'objet gï¿½o dans un fichier Map
+	// Sauve les donnï¿½es gï¿½nï¿½rales
 	TiXmlElement* elGeo = new TiXmlElement("Geo");
 	elGeo->SetAttribute("Ref", getId());
 	elGeo->SetAttribute("Nom", getName());

@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<Map>
+<?xml version="1.0" encoding="UTF-8"?>
+<Map xmlns="http://jkt/map2017.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jkt/map2017.xsd H:/jkt/git/moteur/sources/map2017.xsd">
 	<Geos>
-	    <GeoDescription Ref="1" Nom="dalle-claire" Type="Simple">
-			<Translate X="0" Y="0" Z="0" />
+	    <GeoSimple Ref="id-1" Nom="dalle-claire">
             <Solide Valeur="true" />
             <Couleur R="0.9" G="0.9" B="0.7" />
             <Sommets Nbr="4">
@@ -15,9 +14,8 @@
 				<Sommet S1="0" S2="1" S3="2" />
                 <Sommet S1="0" S2="3" S3="2" />
             </Faces>
-        </GeoDescription>
-	    <GeoDescription Ref="2" Nom="dalle-foncee" Type="Simple">
-			<Translate X="0" Y="0" Z="0" />
+        </GeoSimple>
+	    <GeoSimple Ref="id-2" Nom="dalle-foncee">
             <Solide Valeur="true" />
             <Couleur R="0.6" G="0.6" B="0.4" />
             <Sommets Nbr="4">
@@ -30,51 +28,8 @@
 				<Sommet S1="0" S2="1" S3="2" />
                 <Sommet S1="0" S2="3" S3="2" />
             </Faces>
-        </GeoDescription>
-		
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="0" Y="0" Z="0" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="1" Y="0" Z="0" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="2" Y="0" Z="0" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="3" Y="0" Z="0" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="4" Y="0" Z="0" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="5" Y="0" Z="0" />
-		
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="0" Y="0" Z="1" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="1" Y="0" Z="1" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="2" Y="0" Z="1" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="3" Y="0" Z="1" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="4" Y="0" Z="1" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="5" Y="0" Z="1" />
-
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="0" Y="0" Z="2" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="1" Y="0" Z="2" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="2" Y="0" Z="2" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="3" Y="0" Z="2" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="4" Y="0" Z="2" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="5" Y="0" Z="2" />
-
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="0" Y="0" Z="3" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="1" Y="0" Z="3" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="2" Y="0" Z="3" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="3" Y="0" Z="3" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="4" Y="0" Z="3" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="5" Y="0" Z="3" />
-		
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="0" Y="0" Z="4" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="1" Y="0" Z="4" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="2" Y="0" Z="4" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="3" Y="0" Z="4" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="4" Y="0" Z="4" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="5" Y="0" Z="4" />
-		
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="0" Y="0" Z="5" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="1" Y="0" Z="5" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="2" Y="0" Z="5" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="3" Y="0" Z="5" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="2" X="4" Y="0" Z="5" />
-		<GeoInstance Ref="1" Nom="Dalle" Description="1" X="5" Y="0" Z="5" />
-        
-		<GeoDescription Ref="3" Nom="Cube-1M" Type="Simple">
+        </GeoSimple>
+		<GeoSimple Ref="id-3" Nom="Cube-1M">
 			<Solide Valeur="true" />
             <Couleur R="1.0" G="0.0" B="0.0" />
             <Sommets Nbr="8">
@@ -107,8 +62,51 @@
 				<Sommet S1="1" S2="2" S3="6" />
                 <Sommet S1="1" S2="5" S3="6" />
             </Faces>
-        </GeoDescription>
-		<GeoInstance Ref="1" Nom="Cube-1M" Description="3" X="3" Y="0" Z="3" />
+        </GeoSimple>
+		
+		<GeoInstance Ref="id-1003" Nom="Dalle" Description="id-1" X="0" Y="0" Z="0" />
+		<GeoInstance Ref="id-1004" Nom="Dalle" Description="id-2" X="1" Y="0" Z="0" />
+		<GeoInstance Ref="id-1005" Nom="Dalle" Description="id-1" X="2" Y="0" Z="0" />
+		<GeoInstance Ref="id-1006" Nom="Dalle" Description="id-2" X="3" Y="0" Z="0" />
+		<GeoInstance Ref="id-1007" Nom="Dalle" Description="id-1" X="4" Y="0" Z="0" />
+		<GeoInstance Ref="id-1008" Nom="Dalle" Description="id-2" X="5" Y="0" Z="0" />
+		
+		<GeoInstance Ref="id-1009" Nom="Dalle" Description="id-2" X="0" Y="0" Z="1" />
+		<GeoInstance Ref="id-10010" Nom="Dalle" Description="id-1" X="1" Y="0" Z="1" />
+		<GeoInstance Ref="id-10011" Nom="Dalle" Description="id-2" X="2" Y="0" Z="1" />
+		<GeoInstance Ref="id-10012" Nom="Dalle" Description="id-1" X="3" Y="0" Z="1" />
+		<GeoInstance Ref="id-10013" Nom="Dalle" Description="id-2" X="4" Y="0" Z="1" />
+		<GeoInstance Ref="id-10014" Nom="Dalle" Description="id-1" X="5" Y="0" Z="1" />
+
+		<GeoInstance Ref="id-10015" Nom="Dalle" Description="id-1" X="0" Y="0" Z="2" />
+		<GeoInstance Ref="id-10016" Nom="Dalle" Description="id-2" X="1" Y="0" Z="2" />
+		<GeoInstance Ref="id-10017" Nom="Dalle" Description="id-1" X="2" Y="0" Z="2" />
+		<GeoInstance Ref="id-10018" Nom="Dalle" Description="id-2" X="3" Y="0" Z="2" />
+		<GeoInstance Ref="id-10019" Nom="Dalle" Description="id-1" X="4" Y="0" Z="2" />
+		<GeoInstance Ref="id-10020" Nom="Dalle" Description="id-2" X="5" Y="0" Z="2" />
+
+		<GeoInstance Ref="id-10021" Nom="Dalle" Description="id-2" X="0" Y="0" Z="3" />
+		<GeoInstance Ref="id-10022" Nom="Dalle" Description="id-1" X="1" Y="0" Z="3" />
+		<GeoInstance Ref="id-10023" Nom="Dalle" Description="id-2" X="2" Y="0" Z="3" />
+		<GeoInstance Ref="id-10024" Nom="Dalle" Description="id-1" X="3" Y="0" Z="3" />
+		<GeoInstance Ref="id-10025" Nom="Dalle" Description="id-2" X="4" Y="0" Z="3" />
+		<GeoInstance Ref="id-10026" Nom="Dalle" Description="id-1" X="5" Y="0" Z="3" />
+		
+		<GeoInstance Ref="id-10027" Nom="Dalle" Description="id-1" X="0" Y="0" Z="4" />
+		<GeoInstance Ref="id-10028" Nom="Dalle" Description="id-2" X="1" Y="0" Z="4" />
+		<GeoInstance Ref="id-10029" Nom="Dalle" Description="id-1" X="2" Y="0" Z="4" />
+		<GeoInstance Ref="id-10030" Nom="Dalle" Description="id-2" X="3" Y="0" Z="4" />
+		<GeoInstance Ref="id-10031" Nom="Dalle" Description="id-1" X="4" Y="0" Z="4" />
+		<GeoInstance Ref="id-10032" Nom="Dalle" Description="id-2" X="5" Y="0" Z="4" />
+		
+		<GeoInstance Ref="id-10033" Nom="Dalle" Description="id-2" X="0" Y="0" Z="5" />
+		<GeoInstance Ref="id-10034" Nom="Dalle" Description="id-1" X="1" Y="0" Z="5" />
+		<GeoInstance Ref="id-10035" Nom="Dalle" Description="id-2" X="2" Y="0" Z="5" />
+		<GeoInstance Ref="id-10036" Nom="Dalle" Description="id-1" X="3" Y="0" Z="5" />
+		<GeoInstance Ref="id-10037" Nom="Dalle" Description="id-2" X="4" Y="0" Z="5" />
+		<GeoInstance Ref="id-10038" Nom="Dalle" Description="id-1" X="5" Y="0" Z="5" />
+
+		<GeoInstance Ref="id-10039" Nom="Cube-1M" Description="id-3" X="3" Y="0" Z="3" />
 	</Geos>
     <EntryPoints>
         <EntryPoint>

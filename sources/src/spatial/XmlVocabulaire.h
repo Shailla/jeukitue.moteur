@@ -56,6 +56,7 @@ public:
 	static const char* MATERIAUTEXTURE;
 	static const char* MATERIAUMULTI;
 	static const char* MULTITEXVERTEX;
+	static const char* ABSTRACT;
 	static const char* REF;
 	static const char* TEXTURE;
 	static const char* AMBIANTE;
@@ -89,7 +90,7 @@ public:
 	static const char* CENTRE;
 	static const char* DIMENSION;
 
-	// Boîte à outils XML
+	// Boï¿½te ï¿½ outils XML
 	static void throwCorruptedMapFileException(const char* expected, const char* value) throw(jkt::CErreur);
 	static void SaveElement(TiXmlElement* element, const char* name, float valeur);
 	static void SaveElement(TiXmlElement* element, const char* name, int valeur);
@@ -99,9 +100,11 @@ public:
 	static bool LitCouleur3fv(TiXmlElement* el, const char* name, float* couleur);
 	static bool LitPosition3fv(TiXmlElement* el, const char* name, float* couleur);
 	static bool LitDirection3fv(TiXmlElement* el, const char* name, float* direction);
-	static unsigned int LitMaterialRef(TiXmlElement* el);
+	static std::string LitMaterialRef(TiXmlElement* el) throw(jkt::CErreur);
 	static double LitValeur(TiXmlElement* el, const char* name);
-	static bool LitSolidite(TiXmlElement* el);
+	static bool LitSolidite(TiXmlElement* el) throw(jkt::CErreur);
+	static bool LitBooleanMandatory(const char* value) throw(jkt::CErreur);
+	static bool LitBooleanNotMandatory(const char* value, bool defaultValue) throw(jkt::CErreur);
 };
 
 #endif

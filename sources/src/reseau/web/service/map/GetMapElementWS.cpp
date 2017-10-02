@@ -1,7 +1,7 @@
 /*
  * MapWebService.cpp
  *
- *  Created on: 25 févr. 2016
+ *  Created on: 25 fï¿½vr. 2016
  *      Author: VGDJ7997
  */
 
@@ -89,11 +89,11 @@ MapObject* GetMapElementWS::MockElement::clone() {
 void GetMapElementWS::MockElement::init() throw(CErreur) {
 }
 
-bool GetMapElementWS::MockElement::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
+bool GetMapElementWS::MockElement::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
 	return true;
 }
 
-bool GetMapElementWS::MockElement::Save(TiXmlElement* element) {
+bool GetMapElementWS::MockElement::Save(TiXmlElement* element) throw(CErreur) {
 	return true;
 }
 

@@ -47,8 +47,8 @@ CGeoMaker::CGeoMaker(CMap *map) {
 	m_Color = NULL;
 
 	m_OffsetMateriau = -1;
-	m_bMaterialTexture = false;	// "true" si l'objet est associé à un matériau
-	m_MaterialRef = 0;		// Référence du matériau associé
+	m_bMaterialTexture = false;	// "true" si l'objet est associï¿½ ï¿½ un matï¿½riau
+	m_MaterialRef = 0;		// Rï¿½fï¿½rence du matï¿½riau associï¿½
 
 	m_NumVertex = 0;			// Nbre de sommets
 	m_TabVertex = NULL;			// Pointeur sur le tableau de sommets
@@ -58,7 +58,7 @@ CGeoMaker::CGeoMaker(CMap *map) {
 
 	m_TabVectNormaux = NULL;		// Tableau des vecteurs normaux
 
-	m_TabSubMat = NULL;			// Index des éventuels sous-matériau
+	m_TabSubMat = NULL;			// Index des ï¿½ventuels sous-matï¿½riau
 
 	m_bSolid = true;
 
@@ -94,7 +94,7 @@ void CGeoMaker::setOffsetMateriau(int offset) {
 
 int CGeoMaker::getOffsetMateriau() throw(CErreur) {
 	if(m_OffsetMateriau < 0) {
-		throw CErreur("GeoMaker erreur : m_OffsetMateriau non initialisé");
+		throw CErreur("GeoMaker erreur : m_OffsetMateriau non initialisÃ©");
 	}
 
 	return m_OffsetMateriau;
@@ -131,13 +131,13 @@ void CGeoMaker::setColor4(float r, float v, float b, float a) {
 	m_Color[3] = a;
 }
 
-void CGeoMaker::setVertex(int nbr, float* tab)	// Données du tableau des sommets
+void CGeoMaker::setVertex(int nbr, float* tab)	// Donnï¿½es du tableau des sommets
 {
 	m_NumVertex = nbr;
 	m_TabVertex = tab;
 }
 
-void CGeoMaker::setFaces(int nbr, int* tab)		// Données du tableau des index de faces
+void CGeoMaker::setFaces(int nbr, int* tab)		// Donnï¿½es du tableau des index de faces
 {
 	if(m_TabFaces) {
 		delete[] m_TabFaces;
@@ -148,8 +148,8 @@ void CGeoMaker::setFaces(int nbr, int* tab)		// Données du tableau des index de 
 }
 
 void CGeoMaker::setNormals(int nbr, float* tab)	throw(CErreur)
-{		// Données du tableau des vecteurs normaux
-	if(nbr != m_NumFaces*9)	// Vérification du nombre de vecteurs normaux
+{		// Donnï¿½es du tableau des vecteurs normaux
+	if(nbr != m_NumFaces*9)	// Vï¿½rification du nombre de vecteurs normaux
 	{
 		throw CErreur("Nombre de normales incorrect");
 	}
@@ -172,23 +172,23 @@ void CGeoMaker::setSubMat(int* tab) {
 		delete[] m_TabSubMat;
 	}
 
-	m_TabSubMat = new int[ m_NumFaces ];	// Création du tableau des références
-											// sous-matériaux
+	m_TabSubMat = new int[ m_NumFaces ];	// Crï¿½ation du tableau des rï¿½fï¿½rences
+											// sous-matï¿½riaux
 	for( int i=0 ; i<m_NumFaces ; i++ )
-		m_TabSubMat[ i ] = tab[ i ];	// Copie des références sous-matériaux
+		m_TabSubMat[ i ] = tab[ i ];	// Copie des rï¿½fï¿½rences sous-matï¿½riaux
 }
 
-MapObject* CGeoMaker::makeNewGeoInstance() {	// Crée une instance de l'objet géométrique
-												// optimisé correspondant aux données receuillies
+MapObject* CGeoMaker::makeNewGeoInstance() {	// Crï¿½e une instance de l'objet gï¿½omï¿½trique
+												// optimisï¿½ correspondant aux donnï¿½es receuillies
 	MapObject* geo = NULL;
 
-	if( m_bMaterialTexture ) {	// S'il y a un matériau associé
-		int nbrMat = m_MaterialRef + getOffsetMateriau();	// Décalage de la référence matériau de l'offset demandé
+	if( m_bMaterialTexture ) {	// S'il y a un matï¿½riau associï¿½
+		int nbrMat = m_MaterialRef + getOffsetMateriau();	// Dï¿½calage de la rï¿½fï¿½rence matï¿½riau de l'offset demandï¿½
 
-			// Vérification du type de matériau
+			// Vï¿½rification du type de matï¿½riau
 		if( nbrMat >= (int)m_Map->_materials.size() ) {
 			stringstream txt;
-			txt << "Erreur (CGeoMaker::makeNewGeoInstance) : Materiau introuvable, réf=";
+			txt << "Erreur (CGeoMaker::makeNewGeoInstance) : Materiau introuvable, rï¿½f=";
 			txt << nbrMat;
 			throw CErreur(txt);
 		}
@@ -208,7 +208,7 @@ MapObject* CGeoMaker::makeNewGeoInstance() {	// Crée une instance de l'objet géo
 		}
 	}
 	else {
-			// S'il n'y a pas de matériau
+			// S'il n'y a pas de matï¿½riau
 		geo = makeSimpleGeo();
 	}
 
@@ -223,7 +223,7 @@ MapObject* CGeoMaker::makeNewGeoInstance() {	// Crée une instance de l'objet géo
 }
 
 CSimpleMaterialGeo* CGeoMaker::makeSimpleMaterialGeo(CMaterial* mat) {
-	// Désindexe les sommets
+	// Dï¿½sindexe les sommets
 	if(m_TabFaces)
 		lineariseVertex();
 
@@ -236,13 +236,13 @@ CSimpleMaterialGeo* CGeoMaker::makeSimpleMaterialGeo(CMaterial* mat) {
 }
 
 CTextureMaterialGeo* CGeoMaker::makeTextureMaterialGeo(CMaterialTexture* mat) {
-	// Enlève l'indexation des vertex
+	// Enlï¿½ve l'indexation des vertex
 	lineariseVertex();
 
-	// Enlève l'indexation des sommets de texture
+	// Enlï¿½ve l'indexation des sommets de texture
 	lineariseTexVertex();
 
-	// Récupère et copie le canal de texture unique
+	// Rï¿½cupï¿½re et copie le canal de texture unique
 	unsigned int numTV = m_TabChanTex[1]->getNumTexVertex();
 	float* texvertex = new float[numTV*2];
 	float* tab = m_TabChanTex[1]->getTexVertex();
@@ -260,10 +260,10 @@ CTextureMaterialGeo* CGeoMaker::makeTextureMaterialGeo(CMaterialTexture* mat) {
 CMultiMaterialGeo* CGeoMaker::makeMultiMaterialGeo(CMaterialMulti* mat) {
 	map<int,int> canauxnumbers;
 
-	// Linéarise les sommets
-	lineariseVertex();			// Enlève l'indexation des vertex
+	// Linï¿½arise les sommets
+	lineariseVertex();			// Enlï¿½ve l'indexation des vertex
 
-	// Linéarise les coordonnées de texture de tous les canaux
+	// Linï¿½arise les coordonnï¿½es de texture de tous les canaux
 	lineariseTexVertex();
 
 	// Rassemble les sommets/texvertex/normals par canal de texture
@@ -275,7 +275,7 @@ CMultiMaterialGeo* CGeoMaker::makeMultiMaterialGeo(CMaterialMulti* mat) {
 	for(int i=0 ; i<nbrTexVertex*2 ; i++)
 		texVertex[i] = m_TexVertexListe->getTexVertex(0)[i];
 
-	// Création de l'objet géométrique
+	// Crï¿½ation de l'objet gï¿½omï¿½trique
 	CMultiMaterialGeo* geo = new CMultiMaterialGeo(m_Map, m_Nom, mat, m_NumVertex, m_TabVertex, m_TabVectNormaux, texVertex, canauxnumbers);
 
 	cout << "\nmakeMultiMaterialGeo";
@@ -288,37 +288,37 @@ CMultiMaterialGeo* CGeoMaker::makeMultiMaterialGeo(CMaterialMulti* mat) {
 	return geo;
 }
 
-void CGeoMaker::optimiseSubMat(map<int,int> &canauxnumbers) {	// Rassemble les faces associés au même sous-matériau
+void CGeoMaker::optimiseSubMat(map<int,int> &canauxnumbers) {	// Rassemble les faces associï¿½s au mï¿½me sous-matï¿½riau
 	float* vertexRes = new float[m_NumVertex*3];
 	float* normalsRes = 0;
 	if(m_TabVectNormaux)
 		normalsRes = new float[m_NumVertex*3];
 
-	vector<int> listeSousMateriaux;	// Liste des numéros de sous-matériaux
+	vector<int> listeSousMateriaux;	// Liste des numï¿½ros de sous-matï¿½riaux
 
-	// Liste les sous-matériaux
+	// Liste les sous-matï¿½riaux
 	for(int i=0; i<m_NumFaces; i++) {
 		bool indic = true;
 
 		vector<int>::iterator iter = listeSousMateriaux.begin();
 
-			// Vérifie si le sous-matériau est déjà dans la liste
+			// Vï¿½rifie si le sous-matï¿½riau est dï¿½jï¿½ dans la liste
 		for( ; iter!=listeSousMateriaux.end(); iter++) {
 			if((*iter) == m_TabSubMat[i])	// S'il y est
-				indic = false;			// ne pas l'ajouter à la liste
+				indic = false;			// ne pas l'ajouter ï¿½ la liste
 		}
 
-		if(indic)	// Si le matériau n'est pas encore dans liste
+		if(indic)	// Si le matï¿½riau n'est pas encore dans liste
 			listeSousMateriaux.push_back(m_TabSubMat[i]);
 	}
 
 	// Associe les canaux aux index des sommets dans l'objet
 	map<int,vector<int> > canalordre;	// First = canal
-										// Second = liste des index de sommets associés
+										// Second = liste des index de sommets associï¿½s
 
 	vector<int>::iterator iter = listeSousMateriaux.begin();
 	for( ; iter!=listeSousMateriaux.end() ; iter++) {
-		int sousmat = *iter;	// Sous-matériau
+		int sousmat = *iter;	// Sous-matï¿½riau
 		vector<int> ordre;		// Index des sommets de du canal 'sousmat'
 
 		for(int i=0; i<m_NumFaces; i++)
@@ -338,7 +338,7 @@ void CGeoMaker::optimiseSubMat(map<int,int> &canauxnumbers) {	// Rassemble les f
 			cout << " " << *iterMM;
 	}
 
-	// Initialisation de la liste des coordonnées de texture
+	// Initialisation de la liste des coordonnï¿½es de texture
 	m_TexVertexListe = new CTexVertexList((int)m_TabChanTex.size());
 
 	for(int k=0 ; k<m_TexVertexListe->getNbrCanaux() ; k++)
@@ -351,13 +351,13 @@ void CGeoMaker::optimiseSubMat(map<int,int> &canauxnumbers) {	// Rassemble les f
 	for( ; iterMap!=canalordre.end() ; iterMap++) {
 		vector<int> ordre = iterMap->second;
 
-		// Regroupement des données du canal 'canal'
+		// Regroupement des donnï¿½es du canal 'canal'
 		vector<int>::iterator iterOrdre = ordre.begin();
 
 		for( ; iterOrdre!=ordre.end() ; iterOrdre++) {
 			int indexSource = *iterOrdre;
 
-			// Déplacements des 3 sommets de la face
+			// Dï¿½placements des 3 sommets de la face
 			vertexRes[index*9 + 0] = m_TabVertex[9*indexSource + 0];
 			vertexRes[index*9 + 1] = m_TabVertex[9*indexSource + 1];
 			vertexRes[index*9 + 2] = m_TabVertex[9*indexSource + 2];
@@ -368,7 +368,7 @@ void CGeoMaker::optimiseSubMat(map<int,int> &canauxnumbers) {	// Rassemble les f
 			vertexRes[index*9 + 7] = m_TabVertex[9*indexSource + 7];
 			vertexRes[index*9 + 8] = m_TabVertex[9*indexSource + 8];
 
-			// Déplacements des 3 vecteurs normaux de la face de la face
+			// Dï¿½placements des 3 vecteurs normaux de la face de la face
 			if(normalsRes) {
 				normalsRes[index*9 + 0] = m_TabVectNormaux[9*indexSource + 0];
 				normalsRes[index*9 + 1] = m_TabVectNormaux[9*indexSource + 1];
@@ -381,7 +381,7 @@ void CGeoMaker::optimiseSubMat(map<int,int> &canauxnumbers) {	// Rassemble les f
 				normalsRes[index*9 + 8] = m_TabVectNormaux[9*indexSource + 8];
 			}
 
-			// Déplacement des coordonnées de texture
+			// Dï¿½placement des coordonnï¿½es de texture
 			map<int,CChanTex*>::iterator iterCanal = m_TabChanTex.begin();
 			for(int m=0 ; m<m_TexVertexListe->getNbrCanaux() ; m++) {
 				float* tvSource = iterCanal->second->getTexVertex();
@@ -400,13 +400,13 @@ void CGeoMaker::optimiseSubMat(map<int,int> &canauxnumbers) {	// Rassemble les f
 			index++;
 		}
 
-		// Nombre de sommets concerné par le canal de texture
+		// Nombre de sommets concernï¿½ par le canal de texture
 		canauxnumbers[canal++] = (int)ordre.size();
 	}
 
 	assert(index == m_NumFaces);
 
-	// Copie des résultats dans les tableaux et suppression des tableaux temporaires
+	// Copie des rï¿½sultats dans les tableaux et suppression des tableaux temporaires
 
 	// Sommets
 	delete[] m_TabVertex;
@@ -447,12 +447,12 @@ void CGeoMaker::lineariseTexVertex() {
 	}
 }
 
-void CGeoMaker::lineariseVertex() {		// Renvoie le tableau de vertex sous forme non-indexée
+void CGeoMaker::lineariseVertex() {		// Renvoie le tableau de vertex sous forme non-indexï¿½e
 	if(m_TabFaces) {
 		m_NumVertex = m_NumFaces*3;
 		float* vertex = new float[3*m_NumVertex];
 
-			// Linéarise les vertex à partir du tableau des indices et des vertex indexés
+			// Linï¿½arise les vertex ï¿½ partir du tableau des indices et des vertex indexï¿½s
 		for(int i=0; i<m_NumVertex ; i++) {	// Pour chaque face de la forme
 			vertex[(i*3) + 0] = m_TabVertex[(3*m_TabFaces[i]) + 0];
 			vertex[(i*3) + 1] = m_TabVertex[(3*m_TabFaces[i]) + 1];
@@ -469,8 +469,8 @@ CSimpleGeo* CGeoMaker::makeSimpleGeo() {
 
 	geo = new CSimpleGeo(m_Map,m_Nom,m_NumVertex,m_TabVertex,m_NumFaces,m_TabFaces,m_Color,m_bSolid);
 
-		// Oublie les éléments qui ont été transmis à l'instance de CSimpleGeo
-		// afin qu'ils ne soient pas supprimés par l'instance de CGeoMaker
+		// Oublie les ï¿½lï¿½ments qui ont ï¿½tï¿½ transmis ï¿½ l'instance de CSimpleGeo
+		// afin qu'ils ne soient pas supprimï¿½s par l'instance de CGeoMaker
 	m_TabVertex = NULL;
 	m_TabFaces = NULL;
 
@@ -508,7 +508,7 @@ void CGeoMaker::SaveVertex(TiXmlElement *element, unsigned int nbr, float* verte
 	element->LinkEndChild(elSom);
 }
 
-float* CGeoMaker::LitVertex(TiXmlElement *element, int &nbr) {
+float* CGeoMaker::LitVertex(TiXmlElement *element, int &nbr) throw(CErreur) {
 	TiXmlElement* elSom = element->FirstChildElement(Xml::SOMMETS);
 	if(!elSom) {
 		string str = "Fichier Map corrompu : LitVertex - ";
@@ -562,8 +562,7 @@ float* CGeoMaker::LitVertex(TiXmlElement *element, int &nbr) {
 	return vertex;
 }
 
-float* CGeoMaker::LitTexVertex(TiXmlElement *element, int &nbr)
-{
+float* CGeoMaker::LitTexVertex(TiXmlElement *element, int &nbr) throw(CErreur) {
 	double nombre;
 
 	TiXmlElement* elSom = element->FirstChildElement(Xml::SOMMETS2TEXTURE);
@@ -583,8 +582,7 @@ float* CGeoMaker::LitTexVertex(TiXmlElement *element, int &nbr)
 	int i=0;
 
 	double a, b;
-	for(TiXmlElement* el=elSom->FirstChildElement(Xml::S); el!=0; el=el->NextSiblingElement())
-	{
+	for(TiXmlElement* el=elSom->FirstChildElement(Xml::S); el!=0; el=el->NextSiblingElement()) {
 		if(i >= nbr) {
 			delete[] texvertex;
 			throw CErreur("Fichier Map corrompu : Pas assez de sommets de texture");
@@ -644,8 +642,7 @@ CTexVertexList* CGeoMaker::LitMultiTexVertex(TiXmlElement* element)
 	return texVertexListe;
 }
 
-float* CGeoMaker::LitVecteursNormaux(TiXmlElement *element, int& nbr)
-{
+float* CGeoMaker::LitVecteursNormaux(TiXmlElement *element, int& nbr) throw(CErreur) {
 	TiXmlElement* elSom = element->FirstChildElement(Xml::VECTEURSNORMAUX);
 	if(!elSom)
 		return 0;
@@ -872,7 +869,7 @@ void CGeoMaker::SaveMateriau(TiXmlElement* element, unsigned int refMat)
 	element->LinkEndChild(elMat);
 }
 
-MapObject* CGeoMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
+MapObject* CGeoMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
 	const char* type = el->Value();
 	MapObject* geo = 0;
 
@@ -903,15 +900,8 @@ MapObject* CGeoMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	return geo;
 }
 
-map<int,int>* CGeoMaker::LitSousMateriaux(TiXmlElement* el)
-{
+void CGeoMaker::LitSousMateriaux(TiXmlElement* el, map<int, int>& canauxNumbers) throw(CErreur) {
 	double nbr, var1, var2;
-	map<int,int>* canaux = new map<int,int>();
-	map<int,int>& refcanaux = *canaux;
-
-	cout << "\n--" << el->Value();
-	cout << "\n--" << el->Attribute("Nom");
-
 	TiXmlElement* elCan = el->FirstChildElement(Xml::SOUSMATERIAUX);
 
 	if(!elCan) {
@@ -941,16 +931,14 @@ map<int,int>* CGeoMaker::LitSousMateriaux(TiXmlElement* el)
 			throw CErreur(str);
 		}
 
-		refcanaux[(int)var1] = (int)var2;
+		canauxNumbers.insert(pair<int, int>((int)var1, (int)var2));
 	}
 
-	if(canaux->size() != nbr) {
+	if(canauxNumbers.size() != nbr) {
 		string str = "Fichier Map corrompu : LitSousMateriaux 5 - ";
 		str += el->Value();
 		throw CErreur(str);
 	}
-
-	return canaux;
 }
 
 void CGeoMaker::SaveSousMateriaux(TiXmlElement* el, map<int,int>& canaux)

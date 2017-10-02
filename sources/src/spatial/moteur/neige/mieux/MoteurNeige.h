@@ -26,7 +26,7 @@ class MoteurNeige : public CMoteurParticules {
 
 	void GenereTextureParticule();
 
-	/** Calcule une position aléatoire pour une nouvelle particule. */
+	/** Calcule une position alï¿½atoire pour une nouvelle particule. */
 	void randomPosition(Flocon& flocon);
 	void randomVelocity(Flocon& flocon);
 
@@ -35,8 +35,8 @@ public:
 	 * Constructeur.
 	 *
 	 * @param nbrParticules nombre de particules dans le moteur
-	 * @param position position du centre du moteur de particules dans le scène OpenGL
-	 * @param taille vecteur dimension du parallélépipède dans lequel sont affichées les particules
+	 * @param position position du centre du moteur de particules dans le scï¿½ne OpenGL
+	 * @param taille vecteur dimension du parallï¿½lï¿½pipï¿½de dans lequel sont affichï¿½es les particules
 	 */
 	MoteurNeige(CMap* parent);
 	~MoteurNeige();
@@ -44,12 +44,12 @@ public:
 	MapObject* clone() override;
 	void init() throw(CErreur) override;
 
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;	// Lit l'objet depuis un fichier Map
-	bool Save(TiXmlElement* element) override;					// Sauve l'objet dans un fichier Map
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;	// Lit l'objet depuis un fichier Map
+	bool Save(TiXmlElement* element) throw(CErreur) override;					// Sauve l'objet dans un fichier Map
 
-	// Fonctions d'intialisation et libération
-	void initGL() override;			// Initialisation de l'objet géométrique
-	void freeGL() override;			// Libération des ressources de l'objet dans le contexte OpenGL
+	// Fonctions d'intialisation et libï¿½ration
+	void initGL() override;			// Initialisation de l'objet gï¿½omï¿½trique
+	void freeGL() override;			// Libï¿½ration des ressources de l'objet dans le contexte OpenGL
 
 	/** Affiche la neige. */
 	void Affiche() override;								// Affiche l'ensemble des particules

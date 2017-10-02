@@ -115,7 +115,7 @@ void CheckPlayerInZone::refresh(CGame* game) {
 		}
 	}
 
-	// Mise à jour de la liste des joeurs actuellement dans la zone
+	// Mise ï¿½ jour de la liste des joeurs actuellement dans la zone
 	_playersInZone.clear();
 	_playersInZone.insert(playersInZoneNow.begin(), playersInZoneNow.end());
 }
@@ -167,12 +167,12 @@ void CheckPlayerInZone::setVisibility(bool isVisible) {
 	_isVisible = isVisible;
 }
 
-bool CheckPlayerInZone::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
+bool CheckPlayerInZone::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
 	// TODO
 	return true;
 }
 
-bool CheckPlayerInZone::Save(TiXmlElement* element) {
+bool CheckPlayerInZone::Save(TiXmlElement* element) throw(CErreur) {
 	// TODO
 	return true;
 }

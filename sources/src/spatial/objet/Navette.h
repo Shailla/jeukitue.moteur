@@ -19,7 +19,7 @@ class CPointNavette
 {
 public:
 	static const char* identifier;
-	float m_Vitesse;	// Vitesse de la navette à partir de ce point
+	float m_Vitesse;	// Vitesse de la navette ï¿½ partir de ce point
 	jkt::CV3D m_Position;	// Position de ce point du trajet de la navette
 
 	CPointNavette( const CPointNavette& pp );
@@ -35,13 +35,13 @@ public:
 class CNavette : public CGeoObject {
 	std::vector<CPointNavette> m_ListePoints;	// Liste des points sur le trajet de la navette
 	jkt::CV3D m_Direction;	// Direction courante de la navette
-	int m_Point;		// Point du trajet à utiliser
+	int m_Point;		// Point du trajet ï¿½ utiliser
 	float m_distPoints;	// Distance entre les deux points courants
 	float m_Vitesse;	// Vitesse courante de la navette
-	float m_Deplacement;	// Déplacement relatif courant de la navette
-	jkt::CV3D m_Position;	// Position courante de la navette à partir du point courant intermédiaire
+	float m_Deplacement;	// Dï¿½placement relatif courant de la navette
+	jkt::CV3D m_Position;	// Position courante de la navette ï¿½ partir du point courant intermï¿½diaire
 
-	int prochainPoint( int i );	// Prends le prochain point du trajet et calcule les paramètres
+	int prochainPoint( int i );	// Prends le prochain point du trajet et calcule les paramï¿½tres
 
 public:
 	static const char* identifier;
@@ -49,12 +49,12 @@ public:
 	CNavette(CMap *map);
 	~CNavette();
 
-	void init() throw(CErreur) override;					// Initialisation de l'objet géométrique
+	void init() throw(CErreur) override;					// Initialisation de l'objet gï¿½omï¿½trique
 
-	void Affiche() override;					// Fonction d'affichage de l'objet géométrique
-	void refresh( CGame *game ) override;	// Rafraichissement des données, position, vitesse, ... de l'objet
+	void Affiche() override;					// Fonction d'affichage de l'objet gï¿½omï¿½trique
+	void refresh( CGame *game ) override;	// Rafraichissement des donnï¿½es, position, vitesse, ... de l'objet
 
-	bool Save(TiXmlElement* element) override;
+	bool Save(TiXmlElement* element) throw(CErreur) override;
 
 	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;
 	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;

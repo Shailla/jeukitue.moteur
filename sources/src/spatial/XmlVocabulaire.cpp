@@ -33,18 +33,18 @@ const char* Xml::LUMIERE = "Lumiere";
 
 const char* Xml::MATERIAU = "Materiau";
 
-const char* Xml::ENTRYPOINT = "EntryPoint";		// Points d'entrée des joueurs
+const char* Xml::ENTRYPOINT = "EntryPoint";		// Points d'entrï¿½e des joueurs
 
 const char* Xml::PARTICULES_ENGINES = "ParticulesEngines";
-const char* Xml::NBR_PARTICULES = "NbrParticules";						// Nombre de particules à afficher dans le moteur de neige
-const char* Xml::NBR_PARTICULES_ON_GROUND = "NbrParticulesOnGround";	// Nombre de particules à afficher dans le moteur de neige
+const char* Xml::NBR_PARTICULES = "NbrParticules";						// Nombre de particules ï¿½ afficher dans le moteur de neige
+const char* Xml::NBR_PARTICULES_ON_GROUND = "NbrParticulesOnGround";	// Nombre de particules ï¿½ afficher dans le moteur de neige
 const char* Xml::NEIGE = "Neige";										// Moteur de particules de neige
 
-// Opérations
+// OpÃ©rations
 const char* Xml::SCALE = "Scale";
 const char* Xml::TRANSLATE = "Translate";
 
-// Géo
+// GÃ©o
 const char* Xml::GEOSIMPLE = "GeoSimple";
 const char* Xml::GEOSIMPLEMATERIAL = "GeoSimpleMaterial";
 const char* Xml::GEOOBJECT = "GeoOBbject";
@@ -64,7 +64,7 @@ const char* Xml::VECTEURSNORMAUX = "VecteursNormaux";
 
 const char* Xml::NBRFACES = "NbrFaces";
 
-// Matériaux
+// MatÃ©riaux
 const char* Xml::MATERIAUSIMPLE = "MateriauSimple";
 const char* Xml::MATERIAUTEXTURE = "MateriauTexture";
 const char* Xml::MATERIAUMULTI = "MateriauMulti";
@@ -76,7 +76,7 @@ const char* Xml::CANAUX = "Canaux";
 const char* Xml::ID = "Id";
 const char* Xml::MULTITEXVERTEX = "MultiTexVertex";
 
-// Lumières
+// LumiÃ¨res
 const char* Xml::FALLOFF = "FallOff";
 const char* Xml::LIGHTOMNI = "LightOmni";
 const char* Xml::LIGHTTARGET = "LightTarget";
@@ -110,6 +110,7 @@ const char* Xml::MODE = "Mode";
 const char* Xml::NBR = "Nbr";
 const char* Xml::NOM = "Nom";
 const char* Xml::REF = "Ref";
+const char* Xml::ABSTRACT = "Abstract";
 const char* Xml::TYPE = "Type";
 const char* Xml::VALEUR = "Valeur";
 const char* Xml::VRAI = "true";
@@ -199,17 +200,18 @@ bool Xml::LitDirection3fv(TiXmlElement* el, const char* name, float* direction) 
 	return Lit3fv(el, name, Xml::X, Xml::Y, Xml::Z, direction);
 }
 
-unsigned int Xml::LitMaterialRef(TiXmlElement* el) {
-	double ref;
+string Xml::LitMaterialRef(TiXmlElement* el) throw(jkt::CErreur) {
 	TiXmlElement* elMat = el->FirstChildElement(Xml::MATERIAU);
 
 	if(!elMat)
 		throw CErreur("Fichier Map corrompu : LitMaterialRef 1");
 
-	if(!elMat->Attribute(Xml::REF, &ref))
-		throw CErreur("Fichier Map corrompu : LitMaterialRef 2");
+	const char* matRef = elMat->Attribute(Xml::REF);
 
-	return (unsigned int)ref;
+	if(!matRef)
+		throw CErreur("Fichier Map corrompu : LitMaterialRef 2 - La rÃ©fÃ©rence du matÃ©riau est manquante");
+
+	return matRef;
 }
 
 double Xml::LitValeur(TiXmlElement* el, const char* name) {
@@ -225,7 +227,7 @@ double Xml::LitValeur(TiXmlElement* el, const char* name) {
 	return valeur;
 }
 
-bool Xml::LitSolidite(TiXmlElement* el) {
+bool Xml::LitSolidite(TiXmlElement* el) throw(CErreur) {
 	TiXmlElement* elSol = el->FirstChildElement(Xml::SOLIDE);
 	bool solidite;
 
@@ -245,4 +247,28 @@ bool Xml::LitSolidite(TiXmlElement* el) {
 		throw CErreur("Fichier Map corrompu : solidite");
 
 	return solidite;
+}
+
+bool Xml::LitBooleanMandatory(const char* value) throw(jkt::CErreur) {
+	if(!value)
+		throw CErreur("Fichier Map corrompu : boolean manquant");
+
+	if(!strcmp(value, Xml::VRAI))
+		return true;
+	else if(!strcmp(value, Xml::FAUX))
+		return false;
+	else
+		throw CErreur("Fichier Map corrompu : expected 'true' or 'false'");
+}
+
+bool Xml::LitBooleanNotMandatory(const char* value, bool defaultValue) throw(jkt::CErreur) {
+	if(!value)
+		return defaultValue;
+
+	if(!strcmp(value, Xml::VRAI))
+		return true;
+	else if(!strcmp(value, Xml::FAUX))
+		return false;
+	else
+		throw CErreur("Fichier Map corrompu : expected 'true', 'false' or null");
 }

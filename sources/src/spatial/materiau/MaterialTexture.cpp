@@ -72,16 +72,13 @@ void CMaterialTexture::freeGL() {
 	// TODO
 }
 
-bool CMaterialTexture::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
-	double ref;
+bool CMaterialTexture::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+	// RÃ©fÃ©rence
+	const char* reference = el->Attribute(Xml::REF);
 
-	// Référence
-	if(!el->Attribute(Xml::REF, &ref)) {
-		mapLogger->logError("Fichier map corrompu : Reference materiau");
-		throw CErreur("Fichier map corrompu : Reference materiau");
+	if(reference) {
+		_reference = reference;
 	}
-
-	m_Ref = (unsigned int)ref;
 
 	// Nom
 	const char* nom = el->Attribute(Xml::NOM);
@@ -108,86 +105,14 @@ bool CMaterialTexture::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	return true;
 }
 
-bool CMaterialTexture::LitFichier(CMap* map, CIfstreamMap &fichier) {
-	string mot;
-	fichier >> mot;
-	if( mot!="Reference" )
-		return false;
-
-	fichier >> m_Ref;			// Référence du matériau
-
-	fichier >> mot;				// "Fichier de texture"
-	if( mot!="FichierDeTexture" )
-		return false;	// Fichier corrompu
-
-	fichier >> m_FichierTexture;
-	RessourcesLoader::getFileRessource(fichier.getFileName(),m_FichierTexture);
-
-	fichier >> mot;
-	if( mot!="Ambient" )
-		return false;	// Fichier corrompu
-
-	fichier >> m_Ambient[0] >> m_Ambient[1] >> m_Ambient[2];
-
-	fichier >> mot;
-	if( mot!="Diffuse" )
-		return false;	// Fichier corrompu
-
-	fichier >> m_Diffuse[0] >> m_Diffuse[1] >> m_Diffuse[2];
-
-	fichier >> mot;
-	if( mot!="Specular" )
-		return false;
-
-	fichier >> m_Specular[0] >> m_Specular[1] >> m_Specular[2];
-
-	return true;
-}
-
-bool CMaterialTexture::SaveFichierMap( ofstream &fichier ) {
-	// Le fichier de texture a été transféré dans le répertoire de la Map
-	// Ce répertoire est représenté par le caractère '$' dans une Map
-	// Trouve le dernier séparateur ('/' ou '\') et remplace ce qui précède par '$'
-	// Exemple : /Chateau/Brique.jpg devient $Brique.jpg
-	string fichierTexture = m_FichierTexture;
-
-	size_t backSlashPos = (int)fichierTexture.find_last_of('\\');
-	size_t slashPos = (int)fichierTexture.find_last_of('/');
-
-	size_t dollarPos;
-
-	if(slashPos < fichierTexture.size() && backSlashPos < fichierTexture.size()) {
-		dollarPos = (slashPos > backSlashPos)? slashPos : backSlashPos;
-	}
-	else if(slashPos < fichierTexture.size()) {
-		dollarPos = slashPos;
-	}
-	else if(backSlashPos < fichierTexture.size()) {
-		dollarPos = backSlashPos;
-	}
-	else {
-		dollarPos = 0;
-	}
-
-	fichierTexture.replace(0, dollarPos, "$");
-
-	// Enregistre dans le fichier
-	fichier << "\n\tFichierDeTexture\t" << fichierTexture;
-	fichier << "\n\tAmbient\t\t" << m_Ambient[0] << "\t" << m_Ambient[1] << "\t" << m_Ambient[2];
-	fichier << "\n\tDiffuse\t\t" << m_Diffuse[0] << "\t" << m_Diffuse[1] << "\t" << m_Diffuse[2];
-	fichier << "\n\tSpecular\t" << m_Specular[0] << "\t" << m_Specular[1] << "\t" << m_Specular[2];
-
-	return true;
-}
-
-bool CMaterialTexture::Save(TiXmlElement* element) {
-	// Nom, référence...
+bool CMaterialTexture::Save(TiXmlElement* element) throw(CErreur) {
+	// Nom, rÃ©fÃ©rence...
 	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAUTEXTURE);
 	elMat->SetAttribute(Xml::REF, getRef());
 	elMat->SetAttribute(Xml::NOM, getName());
 	element->LinkEndChild(elMat);
 
-	// Couleurs de matériau
+	// Couleurs de matÃ©riau
 	CGeoMaker::SaveCouleur3fv(elMat, Xml::AMBIANTE, m_Ambient);
 	CGeoMaker::SaveCouleur3fv(elMat, Xml::DIFFUSE, m_Diffuse);
 	CGeoMaker::SaveCouleur3fv(elMat, Xml::SPECULAR, m_Specular);
@@ -195,9 +120,9 @@ bool CMaterialTexture::Save(TiXmlElement* element) {
 	// Fichier de texture
 	string fichierTexture = m_FichierTexture;
 
-	// Le fichier de texture a été transféré dans le répertoire de la Map
-	// Ce répertoire est représenté par le caractère '$' dans une Map
-	// Trouve le dernier séparateur ('/' ou '\') et remplace ce qui précède par '$'
+	// Le fichier de texture a Ã©tÃ© transfÃ©rÃ© dans le rÃ©pertoire de la Map
+	// Ce rÃ©pertoire est reprÃ©sentÃ© par le caractÃ¨re '$' dans une Map
+	// Trouve le dernier sÃ©parateur ('/' ou '\') et remplace ce qui prÃ©cÃ¨de par '$'
 	// Exemple : /Chateau/Brique.jpg devient $Brique.jpg
 	size_t backSlashPos = (int)fichierTexture.find_last_of('\\');
 	size_t slashPos = (int)fichierTexture.find_last_of('/');

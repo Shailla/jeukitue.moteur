@@ -38,7 +38,7 @@
 	<xsl:template match="Geo[@Type='Simple'] | GeoDescription[@Type='Simple']">
 		<GeoSimple>
 			<xsl:if test="name() = 'GeoDescription'">
-				<xsl:attribute name="abstract">true</xsl:attribute>
+				<xsl:attribute name="Abstract">true</xsl:attribute>
 			</xsl:if>
 			<xsl:apply-templates select="@*[name()!='Type']" />
 			<xsl:apply-templates select="Solide" />
@@ -51,7 +51,7 @@
 	<xsl:template match="Geo[@Type='Texture'] | GeoDescription[@Type='Texture']">
 		<GeoTexture>
 			<xsl:if test="name() = 'GeoDescription'">
-				<xsl:attribute name="abstract">true</xsl:attribute>
+				<xsl:attribute name="Abstract">true</xsl:attribute>
 			</xsl:if>
 			<xsl:apply-templates select="@*[name()!='Type']" />
 			<xsl:apply-templates select="Solide" />
@@ -65,7 +65,7 @@
 	<xsl:template match="Geo[@Type='SimpleMaterial'] | GeoDescription[@Type='SimpleMaterial']">
 		<GeoSimpleMaterial>
 			<xsl:if test="name() = 'GeoDescription'">
-				<xsl:attribute name="abstract">true</xsl:attribute>
+				<xsl:attribute name="Abstract">true</xsl:attribute>
 			</xsl:if>
 			<xsl:apply-templates select="@*[name()!='Type']" />
 			<xsl:apply-templates select="Solide" />
@@ -78,7 +78,7 @@
 	<xsl:template match="Geo[@Type='Multi'] | GeoDescription[@Type='Multi']">
 		<GeoMulti>
 			<xsl:if test="name() = 'GeoDescription'">
-				<xsl:attribute name="abstract">true</xsl:attribute>
+				<xsl:attribute name="Abstract">true</xsl:attribute>
 			</xsl:if>
 			<xsl:apply-templates select="@*[name()!='Type']" />
 			<xsl:apply-templates select="Solide" />
@@ -106,6 +106,12 @@
 		<MateriauMulti>
 			<xsl:apply-templates select="@*[name()!='Type']|node()" />
 		</MateriauMulti>
+	</xsl:template>
+
+	<xsl:template match="*[not(self::Materiau)]/@Ref | @Description">	
+		<xsl:attribute name="{name()}">
+			<xsl:value-of select="concat('id-', generate-id())" />
+		</xsl:attribute>
 	</xsl:template>
 
 </xsl:stylesheet>

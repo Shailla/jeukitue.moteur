@@ -35,7 +35,7 @@ CV3D EntryPoint::getEntryPosition() {
 	return _entryPosition;
 }
 
-bool EntryPoint::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) {
+bool EntryPoint::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) {
 	// Position
 	float pos[3];
 	Xml::LitPosition3fv(element, Xml::POSITION, pos);
@@ -44,7 +44,7 @@ bool EntryPoint::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) {
 	return true;
 }
 
-bool EntryPoint::Save(TiXmlElement* element) {
+bool EntryPoint::Save(TiXmlElement* element) throw(CErreur) {
 	TiXmlElement* elEntry = new TiXmlElement(Xml::ENTRYPOINT);
 	element->LinkEndChild(elEntry);
 
@@ -59,7 +59,7 @@ bool EntryPoint::Save(TiXmlElement* element) {
 }
 
 /**
- * Echange les coordonnées X et Y de l'objet.
+ * Echange les coordonnï¿½es X et Y de l'objet.
  */
 void EntryPoint::EchangeXY() {
 	float var = _entryPosition.X;
@@ -68,7 +68,7 @@ void EntryPoint::EchangeXY() {
 }
 
 /**
- * Echange les coordonnées X et Z de l'objet.
+ * Echange les coordonnï¿½es X et Z de l'objet.
  */
 void EntryPoint::EchangeXZ() {
 	float var = _entryPosition.X;
@@ -77,7 +77,7 @@ void EntryPoint::EchangeXZ() {
 }
 
 /**
- * Echange les coordonnées Y et Z de l'objet.
+ * Echange les coordonnï¿½es Y et Z de l'objet.
  */
 void EntryPoint::EchangeYZ() {
 	float var = _entryPosition.Y;
@@ -86,7 +86,7 @@ void EntryPoint::EchangeYZ() {
 }
 
 /**
- * Homothétie pondérée selon X, Y et Z de l'objet.
+ * Homothï¿½tie pondï¿½rï¿½e selon X, Y et Z de l'objet.
  */
 void EntryPoint::Scale(float scaleX, float scaleY, float scaleZ) {
 	_entryPosition.X *= scaleX;

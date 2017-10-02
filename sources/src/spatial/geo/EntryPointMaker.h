@@ -13,7 +13,7 @@ namespace jkt
 class EntryPointMaker
 {
 public:
-	static EntryPoint* Lit(CMap& map, TiXmlElement* el, MapLogger* mapLogger);
+	static EntryPoint* Lit(CMap& map, TiXmlElement* el, MapLogger* mapLogger) throw(CErreur) ;
 };
 
 }

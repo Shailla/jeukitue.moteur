@@ -42,12 +42,13 @@ class CMap : public MapObject {
 
 	std::vector<MapObject*> _objects;
 	std::map<int, MapObject*> _objectDescriptions;
+	std::map<std::string, int> _references;						// clé=référence ; valeur=identifiant : Référence de chaque objet dans la Map (référence = identifiant normalement unique au sein de la Map)
 
 	// Objets de la Map
-	std::vector<Geometrical*> _geos;
-	std::vector<SolidAndTargettable*> _solidAndTargettables;
-	std::vector<Drawable*> _drawables;
-	std::vector<Refreshable*> _refreshables;					// Liste des objets nécessitant une actualisation (portes,...)
+	std::vector<MapObject*> _geos;
+	std::vector<MapObject*> _solidAndTargettables;
+	std::vector<MapObject*> _drawables;
+	std::vector<MapObject*> _refreshables;					// Liste des objets nécessitant une actualisation (portes,...)
 
 	// Lumières et autres caractéristiques de la Map
 	std::vector<CLight*> _lights;								// Lumières
@@ -61,15 +62,14 @@ class CMap : public MapObject {
 	bool _isGlInitialized;										// Indique si les éléments OpenGL de la MAP ont été initialisés
 	bool _isPluginsInitialized;									// Indique si les plugins de la MAP ont été initialisés
 
-	CMap(CMap* parent, const std::string& nomFichier, MapLogger* mapLogger) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
-
 	bool afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndex, int& posX, int& posY, int& index);
+
+	void addMapObject(MapObject* object);
 public:
 	std::vector<CMaterial*> _materials;		// Liste des mat�riaux A VOIR : devrait �tre membre priv�
 
 		// Constructeurs / destructeur
 	CMap(CMap* parent);
-	CMap(CMap* parent, const std::string& nomFichier) throw(jkt::CErreur);	// Construction de la Map par lecture d'un fichier *.map.xml
 	~CMap();
 
 	void clear();
@@ -79,10 +79,10 @@ public:
 
 	// Object
 	void init() throw(jkt::CErreur) override;	// Initialisation de la CMap
-	static bool Lit(CMap& map, const std::string &mapName, MapLogger* mapLogger);
-	bool Lit(const std::string &nomFichier, MapLogger* mapLogger);
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;
-	bool Save(TiXmlElement* element) override;			// Sauve l'objet géo dans un fichier Map
+	static bool Lit(CMap& map, const std::string &mapName, MapLogger* mapLogger) throw(CErreur);
+	bool Lit(const std::string &nomFichier, MapLogger* mapLogger) throw(CErreur);
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
+	bool Save(TiXmlElement* element) throw(CErreur) override;			// Sauve l'objet géo dans un fichier Map
 
 	// Gestion des plugins de la Map
 	void initPlugins();			// Chargement / exécution des plugins de la Map
@@ -115,13 +115,15 @@ public:
 	 */
 	int afficheDamierTextures(int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int page);
 
-	void addMapObject(int id, MapObject* geo, MapLogger* mapLogger);
-
 	/** Find the MapObject in all sub-maps */
 	MapObject* findMapObject(int id);
 
 	/** Find the MapObject in the current Map instance */
 	MapObject* getMapObject(int id);
+
+	/** Find the MapObject in the current Map instance with the reference of the object in the Map */
+	int getMapObjectIdByReference(const std::string& reference);
+	MapObject* getMapObjectByReference(const std::string& reference);
 
 	void add(CMap* map);										// Intègre tous les éléments d'une autre Map dans celle-ci
 	void merge(int mapId, MapLogger* mapLogger = 0);			// Intègre tous les éléments d'une autre Map dans celle-ci

@@ -15,7 +15,7 @@ class CMaterialTexture : public CMaterial
 public:
 	Texture* _texture;	// ID de la texture fourni par openGL
 
-	std::string m_FichierTexture;		// Nom du fichier de la texture associée
+	std::string m_FichierTexture;		// Nom du fichier de la texture associï¿½e
 
 		// Constructeurs / Destructeurs
 	CMaterialTexture(CMap* map);
@@ -26,12 +26,10 @@ public:
 	virtual void init() throw(CErreur) override;
 
 		// Fonctions membres
-	void initGL() throw(jkt::CErreur) override; // Lit le fichier de texture associé au matériau
+	void initGL() throw(jkt::CErreur) override; // Lit le fichier de texture associï¿½ au matï¿½riau
 	void freeGL() override;
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) override;
-	bool LitFichier(CMap* map, CIfstreamMap &fichier) override;
-	bool SaveFichierMap(std::ofstream &fichier) override;
-	bool Save(TiXmlElement* element) override;
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
+	bool Save(TiXmlElement* element) throw(CErreur) override;
 	void Active() override;
 	void Desactive() override;
 };

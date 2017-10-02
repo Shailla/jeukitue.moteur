@@ -13,7 +13,7 @@ namespace jkt
 class CMaterialMaker
 {
 public:
-	static CMaterial* Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger);
+	static CMaterial* Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur);
 };
 
 }

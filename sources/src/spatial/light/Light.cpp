@@ -16,7 +16,7 @@ using namespace std;
 namespace jkt
 {
 
-int CLight::m_nbrLightActivated = 0;	// Nombre de lumières actuellement activées
+int CLight::m_nbrLightActivated = 0;	// Nombre de lumiï¿½res actuellement activï¿½es
 
 bool CLight::m_bLight0 = false;
 bool CLight::m_bLight1 = false;
@@ -108,34 +108,34 @@ CLight::CLight(CMap* map) : MapObject(map, MapObject::LIGHT) {
 CLight::~CLight() {
 }
 
-void CLight::EchangeXY()		// Echange les coordonnées X et Y de l'objet
+void CLight::EchangeXY()		// Echange les coordonnï¿½es X et Y de l'objet
 {
 	float var = m_Position[0];
 	m_Position[0] = m_Position[1];
 	m_Position[1] = var;
 }
-void CLight::EchangeXZ()			// Echange les coordonnées X et Z de l'objet
+void CLight::EchangeXZ()			// Echange les coordonnï¿½es X et Z de l'objet
 {
 	float var = m_Position[0];
 	m_Position[0] = m_Position[2];
 	m_Position[2] = var;
 }
 
-void CLight::EchangeYZ()			// Echange les coordonnées Y et Z de l'objet
+void CLight::EchangeYZ()			// Echange les coordonnï¿½es Y et Z de l'objet
 {
 	float var = m_Position[1];
 	m_Position[1] = m_Position[2];
 	m_Position[2] = var;
 }
 
-void CLight::Scale( float scaleX, float scaleY, float scaleZ )	// Homothétie pondérée selon X, Y et Z de l'objet
+void CLight::Scale( float scaleX, float scaleY, float scaleZ )	// Homothï¿½tie pondï¿½rï¿½e selon X, Y et Z de l'objet
 {
 	m_Position[ 0 ] *= scaleX;
 	m_Position[ 1 ] *= scaleY;
 	m_Position[ 2 ] *= scaleZ;
 }
 
-void CLight::translate( float x, float y, float z )	// Translation pondérée selon X, Y et Z de l'objet
+void CLight::translate( float x, float y, float z )	// Translation pondï¿½rï¿½e selon X, Y et Z de l'objet
 {
 	m_Position[ 0 ] += x;
 	m_Position[ 1 ] += y;
@@ -179,12 +179,12 @@ void CLight::SetColor( const float color[4] ) {
 }
 
 void CLight::Active() {
-	if( !m_nbrLightActivated )		// Si toutes les lumières sont éteintes
-		glEnable( GL_LIGHTING );	// allume l'éclairage
+	if( !m_nbrLightActivated )		// Si toutes les lumiÃ¨res sont Ã©teintes
+		glEnable( GL_LIGHTING );	// allume l'Ã©clairage
 
-	m_nbrLightActivated++;			// Indique qu'une lumière de plus est allumée
+	m_nbrLightActivated++;			// Indique qu'une lumiÃ¨re de plus est allumÃ©e
 
-	m_refLight = takeLight();		// Réserve une lumière
+	m_refLight = takeLight();		// RÃ©serve une lumiÃ¨re
 	glEnable( m_refLight );
 }
 
@@ -195,7 +195,7 @@ void CLight::Desactive() {
 	if( !m_nbrLightActivated )
 		glDisable( GL_LIGHTING );
 
-	freeLight( m_refLight );		// Libère la lumière
+	freeLight( m_refLight );		// Libï¿½re la lumiï¿½re
 }
 
 int CLight::getRefLight() const {

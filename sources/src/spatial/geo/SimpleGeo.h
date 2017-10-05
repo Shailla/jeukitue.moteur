@@ -45,6 +45,13 @@ class CSimpleGeo : public MapObject {
 	static const int VBO_BUFFER_SIZE = 2;
 	GLuint m_VboBufferNames[VBO_BUFFER_SIZE];
 
+private:
+	void MinMax();			// Calcul les variables MinX,...,MaxZ de cet objet g�om�trique
+	void Bulle();			// Calcul les variables 'centre' et rayon
+	void ConstruitBase();	// Construit les vecteurs normaux aux triangles de l'objet g�o
+
+	bool TestContactPave(const float pos[3], float dist);						// 'pos' est-il dans le pav� constitu� des distances min/max de l'objet g�o
+
 public:
 	static const char* identifier;
 
@@ -54,39 +61,27 @@ public:
 	~CSimpleGeo();
 	MapObject* clone() override;
 
-	void init() throw(CErreur) override;								// Initialisation de l'objet
+	void setVertex(int num, float *tab);		// Implémente les sommets
+	void setFaces(int num, int *tab);			// Implémente les indices de sommets
+	void Color(float r, float g, float b);		// définit la couleur de l'objet
+
+	void init() throw(CErreur) override;		// Initialisation de l'objet
 	void initGL() override;
 	void freeGL() override;
 
-private:
-	void MinMax();			// Calcul les variables MinX,...,MaxZ de cet objet g�om�trique
-	void Bulle();			// Calcul les variables 'centre' et rayon
-	void ConstruitBase();	// Construit les vecteurs normaux aux triangles de l'objet g�o
+	void EchangeXY() override;										// Echange les coordonnées X et Y de l'objet
+	void EchangeXZ() override;										// Echange les coordonnées X et Z de l'objet
+	void EchangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
+	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
+	void translate( float x, float y, float z ) override;			// Translation pondérée selon X, Y et Z de l'objet
 
-public:
-	void EchangeXY() override;										// Echange les coordonn�es X et Y de l'objet
-	void EchangeXZ() override;										// Echange les coordonn�es X et Z de l'objet
-	void EchangeYZ() override;										// Echange les coordonn�es Y et Z de l'objet
-	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
-	void translate( float x, float y, float z ) override;			// Translation pond�r�e selon X, Y et Z de l'objet
-
-	void Color(float r, float g, float b);					// d�fini la couleur de l'objet
-
-	bool TestContactPave(const float pos[3], float dist);						// 'pos' est-il dans le pav� constitu� des distances min/max de l'objet g�o
+	bool checkContact( const float pos[3], float dist ) override;
 	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;
 	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;		// Voir la d�finition de la fonction
 
-	void setVertex(int num, float *tab);		// Impl�mente les sommets
-	void setFaces(int num, int *tab);			// Impl�mente les indices de sommets
-
-		// Fonctions pour l'interface CGeo
-	//bool LitFichier( CIfstreamMap &fichier );			// Lit un objet g�o dans un fichier Map
-	//bool SaveNameType( ofstream &fichier );			// Sauve le nom du type d'objet g�om�trique
-	//bool SaveFichierMap( ofstream &fichier );			// Sauve l'objet g�o dans un fichier Map
+	// Fonctions pour l'interface CGeo
 	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
 	bool Save(TiXmlElement* element) throw(CErreur) override;
-
-	bool checkContact( const float pos[3], float dist ) override;
 
 	void Affiche() override;									// Affiche l'objet g�o
 	void AfficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique

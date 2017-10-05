@@ -22,18 +22,17 @@ namespace jkt
 
 class CMultiMaterialGeo : public MapObject {
 	static const char* identifier;
-	int m_OffsetMateriaux;			// Sert lors de la lecture des références matériaux
 	std::string tostring;
 	CMaterialMulti* m_Material;		// Matériau multiple associé
 
 	float minX, minY, minZ, maxX, maxY, maxZ;	// Coordonnées du pavé englobant l'objet géo
-	float m_Centre[3];			// Centre de la sphère englobant l'objet
-	float m_Rayon;				// Rayon de la sphère englobant l'objet
-	float* m_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs préliminaires à la gestion des contacts)
+	float m_Centre[3];							// Centre de la sphère englobant l'objet
+	float m_Rayon;								// Rayon de la sphère englobant l'objet
+	float* m_pNormalTriangle;					// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs préliminaires à la gestion des contacts)
 	float testContactTriangle( unsigned int i, const float *pos, float dist );
-	bool m_bSolid;				// Indique si l'objet est solide ou non
-	int m_NumVertex;				// Nbre de sommets
-	float* m_TabVertex;			// Pointeur sur le tableau de sommets
+	bool m_bSolid;								// Indique si l'objet est solide ou non
+	int m_NumVertex;							// Nbre de sommets
+	float* m_TabVertex;							// Pointeur sur le tableau de sommets
 	int getOffsetMateriau() throw(CErreur);
 		// Canaux et coordonées de texture
 	std::map<int,int> m_CanauxNumbers;	// first=numéro de canal ; second=nombre de faces du canal

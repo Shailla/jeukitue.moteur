@@ -13,7 +13,7 @@
 	</ParticulesEngines>
 	
     <Materiaux>
-        <MateriauTexture Ref="id-0">
+        <MateriauTexture Ref="id-0" Nom="Sol">
             <Ambiante R="0.588" G="0.588" B="0.588"/>
             <Diffuse R="0.588" G="0.588" B="0.588"/>
             <Specular R="0.9" G="0.9" B="0.9"/>

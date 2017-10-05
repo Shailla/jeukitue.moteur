@@ -26,7 +26,7 @@ Fonte::Fonte() :_ft() {
 		LOGERROR(("Librairie FreeType introuvable"));
 	}
 	else {
-		LOGINFO(("Librairie FreeType initialisée"));
+		LOGINFO(("Librairie FreeType initialisÃ©e"));
 	}
 }
 
@@ -38,11 +38,11 @@ void Fonte::load(const string& fonte, int height) {
 	/* ************************************** */
 
 	if(FT_New_Face(_ft, fonte.c_str(), 0, &face)) {
-		LOGERROR(("Echec d'ouverture de la fonte : %s", fonte.c_str()));
+		LOGERROR(("Echec d'ouverture de la fonte : '%s'", fonte.c_str()));
 		return;
 	}
 	else {
-		LOGINFO(("Fonte chargée : %s", fonte.c_str()));
+		LOGINFO(("Fonte chargÃ©e : '%s'", fonte.c_str()));
 	}
 
 	FT_Set_Pixel_Sizes(face, 0, height);
@@ -71,7 +71,7 @@ void Fonte::load(const string& fonte, int height) {
 
 		chars[i] = i;
 
-		if (rowWidth + g->bitmap.width + 1 >= MAXWIDTH) {	// Si on est au bout de la ligne on passe à la suivante
+		if (rowWidth + g->bitmap.width + 1 >= MAXWIDTH) {	// Si on est au bout de la ligne on passe ï¿½ la suivante
 			_atlasWidth = std::max((int)_atlasWidth, rowWidth);
 			_atlasHeight += rowHeight;
 
@@ -98,7 +98,7 @@ void Fonte::load(const string& fonte, int height) {
 
 
 	/* *********************************************** */
-	/* Crée la texture atlas                           */
+	/* Crï¿½e la texture atlas                           */
 	/* *********************************************** */
 
 	/* Create a texture that will be used to hold all ASCII glyphs */
@@ -144,7 +144,7 @@ void Fonte::load(const string& fonte, int height) {
 
 
 		/* ************************************************ */
-		/* Coordonnées relatives à l'atlas                  */
+		/* Coordonnï¿½es relatives ï¿½ l'atlas                  */
 		/* ************************************************ */
 
 		// Position de la lettre dans la texture atlas
@@ -160,13 +160,13 @@ void Fonte::load(const string& fonte, int height) {
 
 
 		/* ************************************************ */
-		/* Coordonnées relatives à l'écran d'affichage      */
+		/* Coordonnï¿½es relatives ï¿½ l'ï¿½cran d'affichage      */
 		/* ************************************************ */
 
 		lettres[i]._width = float(g->bitmap.width);
 		lettres[i]._height = float(g->bitmap.rows);
 
-		// Position de ce caractère par rapport au curseur
+		// Position de ce caractï¿½re par rapport au curseur
 		lettres[i]._offsetX = float(g->bitmap_left);
 		lettres[i]._offsetY = float(g->bitmap_top);
 
@@ -276,6 +276,6 @@ void Fonte::getStringSize(const string& text, float scalar, float& stringWidth, 
 		y += lettres[lettre]._afterY * scalar;
 	}
 
-	stringWidth = x + lettres[lettre]._width * scalar;	// On oublie pas la largeur de la dernière lettre
+	stringWidth = x + lettres[lettre]._width * scalar;	// On oublie pas la largeur de la derniï¿½re lettre
 	stringHeight = height;
 }

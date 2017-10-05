@@ -2,7 +2,7 @@
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:jkt="http://jkt/map2017.xsd" targetNamespace="http://jkt/map2017.xsd" elementFormDefault="qualified">
 
 	<xsd:include schemaLocation="map2017-basicTypes.xsd" />
-	
+
 	<xsd:element name="Map">
 		<xsd:annotation>
 			<xsd:documentation>Map de jeu</xsd:documentation>
@@ -67,8 +67,8 @@
 							<xsd:element name="GeoSimpleMaterial" type="jkt:TGeoSimpleMaterial" />
 							<xsd:element name="GeoMulti" type="jkt:TGeoMulti" />
 							<xsd:element name="GeoInstance" type="jkt:TGeoInstance" />
+							<xsd:element name="GeoGroup" type="jkt:TGeoGroup" />
 						</xsd:choice>
-						<xsd:attribute name="Ref" type="xsd:ID" />
 					</xsd:complexType>
 				</xsd:element>
 				<xsd:element name="Imports" minOccurs="0" maxOccurs="1">
@@ -200,6 +200,69 @@
 		<xsd:attribute name="X" type="xsd:float" />
 		<xsd:attribute name="Y" type="xsd:float" />
 		<xsd:attribute name="Z" type="xsd:float" />
+	</xsd:complexType>
+
+	<xsd:complexType name="TGeoGroup">
+		<xsd:sequence>
+			<xsd:element name="Solide">
+				<xsd:complexType>
+					<xsd:attribute name="Valeur" type="xsd:boolean" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Transformation" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="T1">
+							<xsd:complexType>
+								<xsd:attribute name="X" type="xsd:float" />
+								<xsd:attribute name="Y" type="xsd:float" />
+								<xsd:attribute name="Z" type="xsd:float" />
+								<xsd:attribute name="W" type="xsd:float" />
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="T2">
+							<xsd:complexType>
+								<xsd:attribute name="X" type="xsd:float" />
+								<xsd:attribute name="Y" type="xsd:float" />
+								<xsd:attribute name="Z" type="xsd:float" />
+								<xsd:attribute name="W" type="xsd:float" />
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="T3">
+							<xsd:complexType>
+								<xsd:attribute name="X" type="xsd:float" />
+								<xsd:attribute name="Y" type="xsd:float" />
+								<xsd:attribute name="Z" type="xsd:float" />
+								<xsd:attribute name="W" type="xsd:float" />
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="T4">
+							<xsd:complexType>
+								<xsd:attribute name="X" type="xsd:float" />
+								<xsd:attribute name="Y" type="xsd:float" />
+								<xsd:attribute name="Z" type="xsd:float" />
+								<xsd:attribute name="W" type="xsd:float" />
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+				<xsd:element name="Geos" minOccurs="0" maxOccurs="1">
+					<xsd:complexType>
+						<xsd:choice minOccurs="0" maxOccurs="unbounded">
+							<xsd:element name="GeoSimple" type="jkt:TGeoSimple" />
+							<xsd:element name="GeoTexture" type="jkt:TGeoTexture" />
+							<xsd:element name="GeoSimpleMaterial" type="jkt:TGeoSimpleMaterial" />
+							<xsd:element name="GeoMulti" type="jkt:TGeoMulti" />
+							<xsd:element name="GeoInstance" type="jkt:TGeoInstance" />
+							<xsd:element name="GeoGroup" type="jkt:TGeoGroup" />
+						</xsd:choice>
+					</xsd:complexType>
+				</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Ref" type="xsd:ID" />
+		<xsd:attribute name="Nom" type="xsd:string" />
+		<xsd:attribute name="Description" type="xsd:IDREF" />
 	</xsd:complexType>
 
 	<xsd:complexType name="TGeoSimple">

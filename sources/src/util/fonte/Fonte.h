@@ -19,7 +19,7 @@
 // Maximum texture width
 #define MAXWIDTH 1024
 
-// Plus grand charactère ASCII inclus dans l'atlas
+// Plus grand charactï¿½re ASCII inclus dans l'atlas
 #define MAXASCIICHAR 255
 
 class Fonte {
@@ -43,8 +43,8 @@ class Fonte {
 		float _width;		// Width to draw when no scalar is applied
 		float _height;		// Height to draw when no scalar is applied
 
-		float _offsetX;		// Position de ce caractère par rapport au curseur
-		float _offsetY;		// Position de ce caractère par rapport au curseur
+		float _offsetX;		// Position de ce caractï¿½re par rapport au curseur
+		float _offsetY;		// Position de ce caractï¿½re par rapport au curseur
 
 		float _afterX;		// Mouvements pour la prochaine lettre
 		float _afterY;		// Mouvements pour la prochaine lettre

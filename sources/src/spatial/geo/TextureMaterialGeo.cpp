@@ -52,7 +52,6 @@ const char* CTextureMaterialGeo::identifier = "TextureMaterialGeo";
 CTextureMaterialGeo::CTextureMaterialGeo(CMap* map, const string& name, CMaterialTexture* mat,
 		unsigned int nbrvertex, float* vertex, float* normals, float* texvertex, bool solid) : MapObject(map, MapObject::GEO) {
 	m_NumVertex = 0;
-	m_OffsetMateriaux = -1;
 	m_TabVectNormaux = 0;
 	m_pNormalTriangle = 0;		// Sera initialis� par Init()
 	m_TabVertex = 0;			// Pointeur sur le tableau de sommets
@@ -73,7 +72,6 @@ CTextureMaterialGeo::CTextureMaterialGeo(CMap* map) : MapObject(map, MapObject::
 	m_TabVectNormaux = NULL;
 	m_bSolid = true;			// Objet solide par d�faut
 	m_Material = NULL;
-	m_OffsetMateriaux = -1;
 	m_TabTexVertex = NULL;
 	m_pNormalTriangle = NULL;		// Sera initialis� par Init()
 	_maxX = _maxY = _maxZ = _minX = _minY = _minZ = 0.0f;
@@ -266,20 +264,6 @@ void CTextureMaterialGeo::AfficheNormals() {
 		glEnd();
 	}
 }
-
-void CTextureMaterialGeo::setOffsetMateriau(int offset)
-{
-	m_OffsetMateriaux = offset;
-}
-
-int CTextureMaterialGeo::getOffsetMateriau() throw(CErreur)
-		{
-	if(m_OffsetMateriaux < 0) {
-		throw CErreur("Tentative d'acc�s � m_OffsetMateriau sans initialisation");
-	}
-
-	return m_OffsetMateriaux;
-		}
 
 void CTextureMaterialGeo::setMaterial(const string& matRef) {
 	MapObject* object = getMap()->getMapObjectByReference(matRef);

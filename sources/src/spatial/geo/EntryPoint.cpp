@@ -35,18 +35,18 @@ CV3D EntryPoint::getEntryPosition() {
 	return _entryPosition;
 }
 
-bool EntryPoint::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool EntryPoint::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
 	// Position
 	float pos[3];
-	Xml::LitPosition3fv(element, Xml::POSITION, pos);
+	Xml::LitPosition3fv(el, Xml::POSITION, pos);
 	_entryPosition = CV3D(pos);
 
 	return true;
 }
 
-bool EntryPoint::Save(TiXmlElement* element) throw(CErreur) {
+bool EntryPoint::Save(TiXmlElement* el) throw(CErreur) {
 	TiXmlElement* elEntry = new TiXmlElement(Xml::ENTRYPOINT);
-	element->LinkEndChild(elEntry);
+	el->LinkEndChild(elEntry);
 
 	// Position
 	TiXmlElement* elPos = new TiXmlElement(Xml::POSITION);

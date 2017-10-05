@@ -25,7 +25,6 @@ namespace jkt
 class CTextureMaterialGeo : public MapObject {
 	bool _isGlInitialized;
 
-	int m_OffsetMateriaux;		// Sert lors de la lecture des r�f�rences mat�riaux
 	std::string tostring;
 	CMaterialTexture* m_Material;	// Mat�riau multiple associ�
 	float _minX, _minY, _minZ, _maxX, _maxY, _maxZ;	// Coordonn�es du pav� englobant l'objet g�o
@@ -78,14 +77,10 @@ public:
 	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;
 	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;	// Voir la d�finition de la fonction
 
-		// Fonctions pour l'interface CGeo
-	//bool LitFichier(CIfstreamMap &fichier);			// Lit un objet g�o dans un fichier Map
-	//bool SaveNameType(ofstream &fichier);				// Sauve le nom du type d'objet g�om�trique
-	//bool SaveFichierMap(ofstream &fichier);			// Sauve l'objet g�o dans un fichier Map
+	// Fonctions pour l'interface CGeo
 	bool Save(TiXmlElement* element) throw(CErreur) override;
 	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
 
-	void setOffsetMateriau(int offset);			// D�cale la r�f�rence mat�riau de l'offset
 	bool checkContact( const float pos[3], float dist ) override;
 
 	void Affiche() override;							// Affiche cet objet g�o

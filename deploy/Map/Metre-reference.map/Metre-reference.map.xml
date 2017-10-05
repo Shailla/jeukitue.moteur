@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Map xmlns="http://jkt/map2017.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jkt/map2017.xsd H:/jkt/git/moteur/sources/map2017.xsd">
 	<Geos>
-	    <GeoSimple Ref="id-1" Nom="dalle-claire">
+	    <GeoSimple Abstract="true" Ref="id-1" Nom="dalle-claire">
             <Solide Valeur="true" />
             <Couleur R="0.9" G="0.9" B="0.7" />
             <Sommets Nbr="4">
@@ -15,7 +15,7 @@
                 <Sommet S1="0" S2="3" S3="2" />
             </Faces>
         </GeoSimple>
-	    <GeoSimple Ref="id-2" Nom="dalle-foncee">
+	    <GeoSimple Abstract="true" Ref="id-2" Nom="dalle-foncee">
             <Solide Valeur="true" />
             <Couleur R="0.6" G="0.6" B="0.4" />
             <Sommets Nbr="4">
@@ -29,7 +29,7 @@
                 <Sommet S1="0" S2="3" S3="2" />
             </Faces>
         </GeoSimple>
-		<GeoSimple Ref="id-3" Nom="Cube-1M">
+		<GeoSimple Abstract="true" Ref="id-3" Nom="Cube-1M">
 			<Solide Valeur="true" />
             <Couleur R="1.0" G="0.0" B="0.0" />
             <Sommets Nbr="8">
@@ -64,7 +64,133 @@
             </Faces>
         </GeoSimple>
 		
-		<GeoInstance Ref="id-1003" Nom="Dalle" Description="id-1" X="0" Y="0" Z="0" />
+		<GeoGroup Ref="id-4" Nom="Repere-XYZ">
+			<Solide Valeur="false" />
+			<Transformation>
+				<T1 X="1" Y="0" Z="0" W="0" />
+				<T2 X="0" Y="1" Z="0" W="0" />
+				<T3 X="0" Y="0" Z="1" W="0" />
+				<T4 X="0" Y="0" Z="0" W="1" />
+			</Transformation>
+			<Geos>
+				<GeoSimple Ref="id-5" Nom="fleche-X-rouge">
+					<Solide Valeur="false" />
+					<Couleur R="1" G="0" B="0" />
+					<Sommets Nbr="13">
+						<!-- Trait de la flèche -->
+						<S X="0" 	Y="0" 		Z="-0.02" />
+						<S X="0.8" 	Y="0" 		Z="-0.02" />
+						<S X="0.8" 	Y="0" 		Z="0.02" />
+						<S X="0" 	Y="0" 		Z="0.02" />
+						
+						<S X="0" 	Y="-0.02" 	Z="0" />
+						<S X="0.8" 	Y="-0.02" 	Z="0" />
+						<S X="0.8" 	Y="0.02" 	Z="0" />
+						<S X="0" 	Y="0.02" 	Z="0" />
+						
+						<!-- Pointe de la flèche -->
+						<S X="1" 	Y="0" 		Z="0" />
+						
+						<S X="0.8" 	Y="0" 		Z="-0.1" />
+						<S X="0.8" 	Y="0" 		Z="0.1" />
+						
+						<S X="0.8" 	Y="-0.1"	Z="0" />
+						<S X="0.8" 	Y="0.1"		Z="0" />
+					</Sommets>
+					<Faces Nbr="6">
+						<!-- Trait de la flèche -->
+						<Sommet S1="0" S2="2" S3="1" />
+						<Sommet S1="0" S2="2" S3="3" />
+						
+						<Sommet S1="4" S2="6" S3="5" />
+						<Sommet S1="4" S2="6" S3="7" />
+						
+						<!-- Pointe de la flèche -->
+						<Sommet S1="8"	S2="9" 	S3="10" />
+						<Sommet S1="8" S2="11" S3="12" />						
+					</Faces>
+				</GeoSimple>
+				
+				<GeoSimple Ref="id-6" Nom="fleche-Y-vert">
+					<Solide Valeur="false" />
+					<Couleur R="0" G="1" B="0" />
+					<Sommets Nbr="13">
+						<!-- Trait de la flèche -->
+						<S Y="0" 	X="0" 		Z="-0.02" />
+						<S Y="0.8" 	X="0" 		Z="-0.02" />
+						<S Y="0.8" 	X="0" 		Z="0.02" />
+						<S Y="0" 	X="0" 		Z="0.02" />
+						
+						<S Y="0" 	X="-0.02" 	Z="0" />
+						<S Y="0.8" 	X="-0.02" 	Z="0" />
+						<S Y="0.8" 	X="0.02" 	Z="0" />
+						<S Y="0" 	X="0.02" 	Z="0" />
+						
+						<!-- Pointe de la flèche -->
+						<S Y="1" 	X="0" 		Z="0" />
+						
+						<S Y="0.8" 	X="0" 		Z="-0.1" />
+						<S Y="0.8" 	X="0" 		Z="0.1" />
+						
+						<S Y="0.8" 	X="-0.1"	Z="0" />
+						<S Y="0.8" 	X="0.1"		Z="0" />
+					</Sommets>
+					<Faces Nbr="6">
+						<!-- Trait de la flèche -->
+						<Sommet S1="0" S2="2" S3="1" />
+						<Sommet S1="0" S2="2" S3="3" />
+						
+						<Sommet S1="4" S2="6" S3="5" />
+						<Sommet S1="4" S2="6" S3="7" />
+						
+						<!-- Pointe de la flèche -->
+						<Sommet S1="8"	S2="9" 	S3="10" />
+						<Sommet S1="8" S2="11" S3="12" />						
+					</Faces>
+				</GeoSimple>
+				
+				<GeoSimple Ref="id-7" Nom="fleche-Z-bleu">
+					<Solide Valeur="false" />
+					<Couleur R="0" G="0" B="1" />
+					<Sommets Nbr="13">
+						<!-- Trait de la flèche -->
+						<S Z="0" 	Y="0" 		X="-0.02" />
+						<S Z="0.8" 	Y="0" 		X="-0.02" />
+						<S Z="0.8" 	Y="0" 		X="0.02" />
+						<S Z="0" 	Y="0" 		X="0.02" />
+						
+						<S Z="0" 	Y="-0.02" 	X="0" />
+						<S Z="0.8" 	Y="-0.02" 	X="0" />
+						<S Z="0.8" 	Y="0.02" 	X="0" />
+						<S Z="0" 	Y="0.02" 	X="0" />
+						
+						<!-- Pointe de la flèche -->
+						<S Z="1" 	Y="0" 		X="0" />
+						
+						<S Z="0.8" 	Y="0" 		X="-0.1" />
+						<S Z="0.8" 	Y="0" 		X="0.1" />
+						
+						<S Z="0.8" 	Y="-0.1"	X="0" />
+						<S Z="0.8" 	Y="0.1"		X="0" />
+					</Sommets>
+					<Faces Nbr="6">
+						<!-- Trait de la flèche -->
+						<Sommet S1="0" S2="2" S3="1" />
+						<Sommet S1="0" S2="2" S3="3" />
+						
+						<Sommet S1="4" S2="6" S3="5" />
+						<Sommet S1="4" S2="6" S3="7" />
+						
+						<!-- Pointe de la flèche -->
+						<Sommet S1="8"	S2="9" 	S3="10" />
+						<Sommet S1="8" S2="11" S3="12" />						
+					</Faces>
+				</GeoSimple>
+				
+			</Geos>
+		</GeoGroup>
+		
+		<!-- <GeoInstance Ref="id-1003" Nom="Dalle" Description="id-1" X="0" Y="0" Z="0" /> -->
 		<GeoInstance Ref="id-1004" Nom="Dalle" Description="id-2" X="1" Y="0" Z="0" />
 		<GeoInstance Ref="id-1005" Nom="Dalle" Description="id-1" X="2" Y="0" Z="0" />
 		<GeoInstance Ref="id-1006" Nom="Dalle" Description="id-2" X="3" Y="0" Z="0" />
@@ -110,7 +236,7 @@
 	</Geos>
     <EntryPoints>
         <EntryPoint>
-            <Position X="0" Y="1.0" Z="0" />
+            <Position X="2" Y="1.0" Z="-2" />
         </EntryPoint>
     </EntryPoints>
 </Map>

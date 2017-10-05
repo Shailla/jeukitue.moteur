@@ -1,8 +1,6 @@
 
 #include <sstream>
 
-#include "util/Erreur.h"
-
 #include "spatial/XmlVocabulaire.h"
 
 using namespace std;
@@ -50,6 +48,7 @@ const char* Xml::GEOSIMPLEMATERIAL = "GeoSimpleMaterial";
 const char* Xml::GEOOBJECT = "GeoOBbject";
 const char* Xml::GEOTEXTURE = "GeoTexture";
 const char* Xml::GEOMULTI = "GeoMulti";
+const char* Xml::GEOGROUP = "GeoGroup";
 const char* Xml::SOLIDE = "Solide";
 const char* Xml::INDEX2SOMMETS2TEXTURE = "IndexDeSommetsDeTexture";
 const char* Xml::SOMMETS2TEXTURE = "SommetsDeTexture";
@@ -70,6 +69,7 @@ const char* Xml::MATERIAUTEXTURE = "MateriauTexture";
 const char* Xml::MATERIAUMULTI = "MateriauMulti";
 const char* Xml::SOUSMATERIAU = "SousMateriau";
 const char* Xml::SOUSMATERIAUX = "SousMateriaux";
+const char* Xml::TRANSFORMATION = "Transformation";
 const char* Xml::TEXTURE = "Texture";
 const char* Xml::CANAL = "Canal";
 const char* Xml::CANAUX = "Canaux";
@@ -86,11 +86,19 @@ const char* Xml::CENTRE = "Centre";
 const char* Xml::DIMENSION = "Dimension";
 const char* Xml::DIRECTION = "Direction";
 const char* Xml::POSITION = "Position";
+
 const char* Xml::X = "X";
 const char* Xml::Y = "Y";
 const char* Xml::Z = "Z";
+const char* Xml::W = "W";
+
 const char* Xml::U = "U";
 const char* Xml::V = "V";
+
+const char* Xml::T1 = "T1";
+const char* Xml::T2 = "T2";
+const char* Xml::T3 = "T3";
+const char* Xml::T4 = "T4";
 
 // Couleur
 const char* Xml::AMBIANTE = "Ambiante";
@@ -159,7 +167,7 @@ void Xml::SaveAttribut(TiXmlElement* element, const char* name, float valeur) {
 	element->SetAttribute(name, ss.str().c_str());
 }
 
-bool Xml::Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, float* valeur) {
+bool Xml::Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, float valeur[3]) throw(CErreur) {
 	double x1, x2, x3;
 
 	if(!el)
@@ -172,10 +180,10 @@ bool Xml::Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char*
 			throw CErreur("Xml::LitCouleur3fv> Fichier map corrompu : Lit3fv X1");
 
 		if(!elLig->Attribute(X2, &x2))
-			throw CErreur("Xml::LitCouleur3fv>Fichier map corrompu : Lit3fv X2");
+			throw CErreur("Xml::LitCouleur3fv> Fichier map corrompu : Lit3fv X2");
 
 		if(!elLig->Attribute(X3, &x3))
-			throw CErreur("Xml::LitCouleur3fv>Fichier map corrompu : Lit3fv X3");
+			throw CErreur("Xml::LitCouleur3fv> Fichier map corrompu : Lit3fv X3");
 
 		valeur[0] = (float)x1;
 		valeur[1] = (float)x2;
@@ -188,15 +196,48 @@ bool Xml::Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char*
 	}
 }
 
-bool Xml::LitCouleur3fv(TiXmlElement* el, const char* name, float* couleur) {
+bool Xml::Lit4fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, const char* X4, float valeur[4]) throw(CErreur) {
+	double x1, x2, x3, x4;
+
+	if(!el)
+		throw CErreur("Fichier map corrompu : Lit4fv ");
+
+	TiXmlElement *elLig = el->FirstChildElement(name);
+
+	if(elLig) {
+		if(!elLig->Attribute(X1, &x1))
+			throw CErreur("Xml::LitCouleur3fv> Fichier map corrompu : Lit4fv X1");
+
+		if(!elLig->Attribute(X2, &x2))
+			throw CErreur("Xml::LitCouleur3fv>Fichier map corrompu : Lit4fv X2");
+
+		if(!elLig->Attribute(X3, &x3))
+			throw CErreur("Xml::LitCouleur3fv>Fichier map corrompu : Lit4fv X3");
+
+		if(!elLig->Attribute(X4, &x4))
+			throw CErreur("Xml::LitCouleur3fv>Fichier map corrompu : Lit4fv X4");
+
+		valeur[0] = (float)x1;
+		valeur[1] = (float)x2;
+		valeur[2] = (float)x3;
+		valeur[3] = (float)x4;
+
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool Xml::LitCouleur3fv(TiXmlElement* el, const char* name, float couleur[3]) {
 	return Lit3fv(el, name, Xml::R, Xml::G, Xml::B, couleur);
 }
 
-bool Xml::LitPosition3fv(TiXmlElement* el, const char* name, float* position) {
+bool Xml::LitPosition3fv(TiXmlElement* el, const char* name, float position[3]) {
 	return Lit3fv(el, name, Xml::X, Xml::Y, Xml::Z, position);
 }
 
-bool Xml::LitDirection3fv(TiXmlElement* el, const char* name, float* direction) {
+bool Xml::LitDirection3fv(TiXmlElement* el, const char* name, float direction[3]) {
 	return Lit3fv(el, name, Xml::X, Xml::Y, Xml::Z, direction);
 }
 

@@ -1177,7 +1177,7 @@ void executeJktRequests() {
 	}
 	break;
 
-	case CRequeteProcess::OMLE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la m�thode "openMap"
+	case CRequeteProcess::OMLE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la méthode "openMap"
 		// Nothing to do
 		break;
 
@@ -1195,7 +1195,7 @@ void executeJktRequests() {
 		Dirigeable* dirigeable = new Dirigeable(map);
 		map->add(dirigeable);
 
-		// D�finition des joueurs
+		// Définition des joueurs
 		Game.createPlayerList(localeGameDto->getPlayersMaxNumber());
 
 		CPlayer* erwin = localeGameDto->getErwin();

@@ -31,6 +31,7 @@ public:
 	static const char* GEOOBJECT;
 	static const char* GEOTEXTURE;
 	static const char* GEOMULTI;
+	static const char* GEOGROUP;
 	static const char* SOLIDE;
 	static const char* INDEX2SOMMETS2TEXTURE;
 	static const char* SOMMETS2TEXTURE;
@@ -63,6 +64,7 @@ public:
 	static const char* DIFFUSE;
 	static const char* SPECULAR;
 	static const char* SOUSMATERIAUX;
+	static const char* TRANSFORMATION;
 	static const char* NBRFACES;
 	static const char* SOUSMATERIAU;
 	static const char* MODE;
@@ -82,6 +84,11 @@ public:
 	static const char* X;
 	static const char* Y;
 	static const char* Z;
+	static const char* W;
+	static const char* T1;
+	static const char* T2;
+	static const char* T3;
+	static const char* T4;
 	static const char* TYPE;
 	static const char* PARTICULES_ENGINES;
 	static const char* NEIGE;
@@ -90,16 +97,17 @@ public:
 	static const char* CENTRE;
 	static const char* DIMENSION;
 
-	// Bo�te � outils XML
+	// Boîte à outils XML
 	static void throwCorruptedMapFileException(const char* expected, const char* value) throw(jkt::CErreur);
 	static void SaveElement(TiXmlElement* element, const char* name, float valeur);
 	static void SaveElement(TiXmlElement* element, const char* name, int valeur);
 	static void SaveAttribut(TiXmlElement* element, const char* name, float valeur);
 	static void SaveElement(TiXmlElement* element, const char* name, bool valeur);
-	static bool Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, float* valeur);
-	static bool LitCouleur3fv(TiXmlElement* el, const char* name, float* couleur);
-	static bool LitPosition3fv(TiXmlElement* el, const char* name, float* couleur);
-	static bool LitDirection3fv(TiXmlElement* el, const char* name, float* direction);
+	static bool Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, float valeur[3]) throw(jkt::CErreur);
+	static bool Lit4fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, const char* x4, float valeur[4]) throw(jkt::CErreur);
+	static bool LitCouleur3fv(TiXmlElement* el, const char* name, float couleur[3]);
+	static bool LitPosition3fv(TiXmlElement* el, const char* name, float couleur[3]);
+	static bool LitDirection3fv(TiXmlElement* el, const char* name, float direction[3]);
 	static std::string LitMaterialRef(TiXmlElement* el) throw(jkt::CErreur);
 	static double LitValeur(TiXmlElement* el, const char* name);
 	static bool LitSolidite(TiXmlElement* el) throw(jkt::CErreur);

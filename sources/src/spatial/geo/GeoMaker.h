@@ -26,6 +26,7 @@ class CSimpleGeo;
 class CSimpleMaterialGeo;
 class CMultiMaterialGeo;
 class CTextureMaterialGeo;
+class CMaterial;
 class CMaterialSimple;
 class CMaterialMulti;
 class CMaterialTexture;

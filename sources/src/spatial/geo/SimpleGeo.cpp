@@ -118,7 +118,7 @@ CSimpleGeo::CSimpleGeo(const CSimpleGeo& other) : MapObject(other) {
 	_color[1] = other._color[1];
 	_color[2] = other._color[2];
 
-	// Solidit�
+	// Solidité
 	_bSolid = other._bSolid;
 
 	// Nombres
@@ -384,153 +384,6 @@ void CSimpleGeo::Color( float r, float g, float b ) {
 	_color[2] = b;
 }
 
-/*bool CSimpleGeo::LitFichier( CIfstreamMap &fichier )
-{
-	string mot, nom;
-	int i;
-	char ch;
-
-		// Lecture de la r�f�rence de l'object
-	fichier >> mot;
-	if( mot!="Reference" )
-	{
-		cerr << __LINE__;
-		return false;
-	}
-	unsigned int reference;
-	fichier >> reference;
-
-
-		// Lecture du nom de l'objet g�o entre guillemets
-	fichier >> mot;
-	if( mot!="Nom" )
-	{
-		cerr << "001";
-		return false;
-	}
-
-	fichier >> ch;		// Recherche du guillemet ouvrant
-	if( ch!='\"' )
-	{
-		cerr << "002";
-		return false;
-	}
-
-	do
-	{
-		fichier.get( ch );
-		if( ch=='\n' )
-		{
-			cerr << "003";
-			return false;
-		}
-
-		if( ch!='\"' )
-			nom += ch;
-	}while( ch!='\"' );
-
-	setName( nom );
-
-	fichier >> mot;		// Couleur
-	if( mot!="Couleur" )
-	{
-		cerr << "006";
-		return false;
-	}
-
-	fichier >> m_Color[0] >> m_Color[1] >> m_Color[2];
-
-	fichier >> mot;		// "Nombre de sommets"
-	if( mot!="NombreDeSommets" )
-	{
-		cerr << "007";
-		return false;
-	}
-
-	fichier >> m_NumVertex;
-
-	fichier >> mot;		// "Nombre d'index de sommets"
-	if( mot!="NombreDIndexDeSommets" )
-	{
-		cerr << "008";
-		return false;
-	}
-
-	fichier >> m_NumFaces;
-
-	fichier >> mot;			// Solidit�
-	if( mot!="Solidit�" )
-	{
-		cerr << "012";
-		return false;
-	}
-
-	fichier >> m_bSolid;
-
-	fichier >> mot;			// "Sommets"
-	if( mot!="Sommets" )
-	{
-		cerr << "013";
-		return false;
-	}
-
-	m_TabVertex = new float[ 3*m_NumVertex ];
-
-	for( i=0 ; i<m_NumVertex ; i++ )	// Lecture des sommets
-		fichier >> m_TabVertex[ 3*i ] >> m_TabVertex[ (3*i)+1 ] >> m_TabVertex[ (3*i)+2 ];
-
-	fichier >> mot;	// "Index de sommets"
-	if( mot!="IndexDeSommets" )
-	{
-		cerr << "014";
-		return false;
-	}
-
-	m_TabFaces = new int[ 3*m_NumFaces ];
-
-	for( i=0 ; i<m_NumFaces ; i++ ) {
-		fichier >> m_TabFaces[3*i] >> m_TabFaces[(3*i)+1] >> m_TabFaces[(3*i)+2];
-	}
-
-	return true;
-}*/
-
-/*bool CSimpleGeo::SaveNameType( ofstream &fichier )
-{
-	fichier << "\n\n" << identifier << "\n";	// Cette classe est un GeoObject
-	return true;
-}*/
-
-/*bool CSimpleGeo::SaveFichierMap( ofstream &fichier )
-{
-	int i=0;
-
-	if(!CGeo::SaveFichierMap(fichier))
-		return false;
-
-	fichier << "\n\tCouleur\t\t\t\t" << m_Color[0] << "\t" << m_Color[1] << "\t" << m_Color[2]; // Couleur
-
-	fichier << "\n\tNombreDeSommets\t\t\t" << m_NumVertex;					// Nombre de sommets
-	fichier << "\n\tNombreDIndexDeSommets\t\t" << m_NumFaces;				// Nombre d'index de sommets
-
-	fichier << "\n\tSolidit�\t\t\t" << m_bSolid;						// Solidit�
-
-		// Sommets
-	fichier << "\n\n\tSommets";
-	for( i=0 ; i<m_NumVertex ; i++ )
-		fichier << "\n\t\t" << m_TabVertex[3*i] << "\t" << m_TabVertex[(3*i)+1] << "\t" << m_TabVertex[(3*i)+2];
-
-		// Index de sommets et r�f�rences de sous-mat�riaux
-	fichier << "\n\n\tIndexDeSommets";
-
-	for( i=0 ; i<m_NumFaces ; i++ )
-	{
-		fichier << "\n\t\t" << m_TabFaces[3*i] << "\t" << m_TabFaces[(3*i)+1] << "\t" << m_TabFaces[(3*i)+2];
-	}
-
-	return true;
-}*/
-
 bool CSimpleGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
 	// Type
 	const char* geoType = el->Value();
@@ -558,7 +411,7 @@ bool CSimpleGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CE
 		_reference = reference;
 	}
 
-	// Solidit�
+	// Solidité
 	_bSolid = Xml::LitSolidite(el);
 
 	// Couleur
@@ -660,17 +513,16 @@ float CSimpleGeo::testContactTriangle(unsigned int i, const float posPlayer[3], 
 }
 
 // Renvoie la distance entre le point de position 'pos' et le plus proche triangle de l'objet
-// g�o. N'effectue cette mesure que pour des distances inf�rieures � 'dist'
-bool CSimpleGeo::checkContact( const float pos[3], float dist )
-{
+// géo. N'effectue cette mesure que pour des distances inférieures à 'dist'
+bool CSimpleGeo::checkContact( const float pos[3], float dist ) {
 	float distanceW;
-	if( TestContactPave( pos, dist ) )	// Teste proximit� 'joueur / l'objet g�o'
-	{
-		for( int i=0; i<_numFaces; i++)		//pour chaque triangle de l'objet g�o.
-		{
+
+	if( TestContactPave( pos, dist ) ) {		// Teste proximité 'joueur / l'objet géo'
+		for( int i=0; i<_numFaces; i++) {		//pour chaque triangle de l'objet géo.
 			distanceW = testContactTriangle( i, pos, dist );
-			if( distanceW <= dist )
+			if( distanceW <= dist ) {
 				return true;
+			}
 		}
 	}
 
@@ -678,17 +530,18 @@ bool CSimpleGeo::checkContact( const float pos[3], float dist )
 }
 
 void CSimpleGeo::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
-	float dist = player->getRayon();	// Rayon de la sph�re repr�sentant le volume du joueur
-	float distanceW;
+	if( _bSolid ) {	// Si l'objet est solide
+		float dist = player->getRayon();	// Rayon de la sphère représentant le volume du joueur
+		float distanceW;
 
-	if( _bSolid )	// Si l'objet est solide
-		if( TestContactPave( positionPlayer, dist ) )	// Teste proximit� 'joueur / l'objet g�o'
-			for( int i=0; i<_numFaces; i++) {		//pour chaque triangle de l'objet g�o.
+		if( TestContactPave( positionPlayer, dist ) )	// Teste proximité 'joueur / l'objet géo'
+			for( int i=0; i<_numFaces; i++) {		//pour chaque triangle de l'objet géo.
 				distanceW = testContactTriangle(i, positionPlayer, dist);
 
 				if( distanceW<500.0f ) // Teste le contact avec le joueur (1.0f = valeur arbitraire mais grande)
 					player->exeContactFunc( &_pNormalTriangle[3*i], distanceW );	// On a contact !
 			}
+	}
 }
 
 bool CSimpleGeo::TestContactPave(const float pos[3], float dist) {
@@ -706,16 +559,16 @@ bool CSimpleGeo::TestContactPave(const float pos[3], float dist) {
 	return false;	// Le point 'pos' se trouve � une distance sup�rieure
 }
 
-float CSimpleGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
+float CSimpleGeo::GereLaserPlayer( float pos[3], CV3D& Dir, float dist) {
+	if( !_bSolid )		// Si l'objet n'est pas solide, il ne peut être touché par le laser
+		return dist;	// => on sort en renvoyant 'dist'
+
 	float distanceVar;
 	float *vertex, *normal;
 	int *indices;
 	CV3D AP, N, AB, AC, U, V, W, var;
 
-	if( !_bSolid )	// Si l'objet n'est pas solide, il ne peut �tre touch� par le laser
-		return dist;	// => on sort en renvoyant 'dist'
-
-	// V�rifie si le laser passe � proxomit� de l'objet g�o
+	// Vérifie si le laser passe à proxomité de l'objet géo
 	CV3D CP;	// Vecteur allant du point origine du laser au centre de l'objet g�o (=centre de la Bulle qui l'englobe)
 	CP.X = _centre[0] - pos[0];
 	CP.Y = _centre[1] - pos[1];
@@ -725,13 +578,12 @@ float CSimpleGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
 	float bCarre = CP^CP;			// b = norme du veteur CP au carr�
 	float hCarre = bCarre - (a*a);	// b�=bCarre = h� + a� => h�=hCarre = b� - a�
 	float rCarre = (0.001f+_rayon)*(0.001f+_rayon);
-	if( hCarre > rCarre )			// Si distance (laser-centre de la sph�re) > rayon de la sph�re
+	if( hCarre > rCarre )			// Si distance (laser-centre de la sph�re) > rayon de la sphère
 		return dist;				// Alors le rayon laser ne touche pas l'objet
 
-	// V�rifie si le laser touche une face de la map
+	// Vérifie si le laser touche une face de la map
 	vertex = m_TabVertex;
-	for( int i=0; i<_numFaces; i++) //pour chaque triangle de l'objet g�o.
-	{
+	for( int i=0; i<_numFaces; i++) { //pour chaque triangle de l'objet géo.
 		indices = &m_TabFaces[3*i];
 		normal = &_pNormalTriangle[3*i];
 
@@ -781,7 +633,7 @@ float CSimpleGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
 			dist = distanceVar;	// C'est qu'il le touche
 	}
 
-	return dist;	// Renvoie la distance trouv�e
+	return dist;	// Renvoie la distance trouvée
 }
 
 }	// JktMoteur

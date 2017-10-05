@@ -64,6 +64,9 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		LOGWARN((msg));
 		console->println(ConsoleView::COT_ERROR, msg);
 		delete currentMap;
+		currentMap = 0;
+		Game.RequeteProcess.setOuvreMapLocaleEtape(CRequeteProcess::OMLE_AUCUNE);
+		return 0;
 	}
 
 	// Création joueurs
@@ -89,7 +92,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 
 
 	/***************************************
-	 * Cr�ation du joueur principal (Erwin)
+	 * Création du joueur principal (Erwin)
 	 ***************************************/
 	{
 		// Chargement du skin
@@ -269,6 +272,9 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 		LOGWARN((msg));
 		console->println(ConsoleView::COT_ERROR, msg);
 		delete currentMap;
+		currentMap = 0;
+		Game.RequeteProcess.setOuvreMapClientEtape(CRequeteProcess::OMCE_AUCUNE);
+		return 0;
 	}
 
 
@@ -372,6 +378,9 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 		LOGWARN((msg));
 		console->println(ConsoleView::COT_ERROR, msg);
 		delete currentMap;
+		currentMap = 0;
+		Game.RequeteProcess.setOuvreMapServerEtape(CRequeteProcess::OMSE_AUCUNE);
+		return 0;
 	}
 
 	// Création joueurs

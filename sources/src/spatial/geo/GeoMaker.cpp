@@ -24,6 +24,7 @@ class CGame;
 #include "spatial/geo/SimpleMaterialGeo.h"
 #include "spatial/geo/GeoObject.h"
 #include "spatial/geo/MultiMaterialGeo.h"
+#include "spatial/geo/GeoGroup.h"
 #include "spatial/geo/TextureMaterialGeo.h"
 #include "spatial/geo/ChanTex.h"
 #include "spatial/materiau/MaterialTexture.h"
@@ -148,8 +149,8 @@ void CGeoMaker::setFaces(int nbr, int* tab)		// Donn�es du tableau des index d
 }
 
 void CGeoMaker::setNormals(int nbr, float* tab)	throw(CErreur)
-{		// Donn�es du tableau des vecteurs normaux
-	if(nbr != m_NumFaces*9)	// V�rification du nombre de vecteurs normaux
+{		// Données du tableau des vecteurs normaux
+	if(nbr != m_NumFaces*9)	// Vérification du nombre de vecteurs normaux
 	{
 		throw CErreur("Nombre de normales incorrect");
 	}
@@ -172,20 +173,20 @@ void CGeoMaker::setSubMat(int* tab) {
 		delete[] m_TabSubMat;
 	}
 
-	m_TabSubMat = new int[ m_NumFaces ];	// Cr�ation du tableau des r�f�rences
-											// sous-mat�riaux
+	m_TabSubMat = new int[ m_NumFaces ];	// Création du tableau des références
+											// sous-matériaux
 	for( int i=0 ; i<m_NumFaces ; i++ )
-		m_TabSubMat[ i ] = tab[ i ];	// Copie des r�f�rences sous-mat�riaux
+		m_TabSubMat[ i ] = tab[ i ];	// Copie des r�f�rences sous-matériaux
 }
 
-MapObject* CGeoMaker::makeNewGeoInstance() {	// Cr�e une instance de l'objet g�om�trique
-												// optimis� correspondant aux donn�es receuillies
+MapObject* CGeoMaker::makeNewGeoInstance() {	// Crée une instance de l'objet géométrique
+												// optimisé correspondant aux données receuillies
 	MapObject* geo = NULL;
 
-	if( m_bMaterialTexture ) {	// S'il y a un mat�riau associ�
+	if( m_bMaterialTexture ) {	// S'il y a un matériau associé
 		int nbrMat = m_MaterialRef + getOffsetMateriau();	// D�calage de la r�f�rence mat�riau de l'offset demand�
 
-			// V�rification du type de mat�riau
+		// Vérification du type de matériau
 		if( nbrMat >= (int)m_Map->_materials.size() ) {
 			stringstream txt;
 			txt << "Erreur (CGeoMaker::makeNewGeoInstance) : Materiau introuvable, r�f=";
@@ -785,8 +786,7 @@ void CGeoMaker::SaveFaces(TiXmlElement *element, unsigned int nbr, int* faces)
 	}
 }
 
-int* CGeoMaker::LitFaces(TiXmlElement *element, int &nbr)
-{
+int* CGeoMaker::LitFaces(TiXmlElement *element, int &nbr) {
 	TiXmlElement* elFac = element->FirstChildElement(Xml::FACES);
 	if(!elFac)
 		throw CErreur("Fichier Map corrompu : LitFaces 1");
@@ -800,8 +800,7 @@ int* CGeoMaker::LitFaces(TiXmlElement *element, int &nbr)
 	int i=0;
 
 	double a, b, c;
-	for(TiXmlElement* el=elFac->FirstChildElement(Xml::SOMMET); el!=0; el=el->NextSiblingElement())
-	{
+	for(TiXmlElement* el=elFac->FirstChildElement(Xml::SOMMET); el!=0; el=el->NextSiblingElement()) {
 		if(i >= nbr) {
 			delete[] faces;
 			throw CErreur("Fichier Map corrompu : Trop de faces");
@@ -837,8 +836,7 @@ int* CGeoMaker::LitFaces(TiXmlElement *element, int &nbr)
 	return faces;
 }
 
-void CGeoMaker::SaveTexIndex(TiXmlElement *element, unsigned int nbr, int* texindex)
-{
+void CGeoMaker::SaveTexIndex(TiXmlElement *element, unsigned int nbr, int* texindex) {
 			// Index des sommets
 	TiXmlElement* elFac = new TiXmlElement(Xml::INDEX2SOMMETS2TEXTURE);
 	elFac->SetAttribute(Xml::NBR, nbr);
@@ -848,8 +846,7 @@ void CGeoMaker::SaveTexIndex(TiXmlElement *element, unsigned int nbr, int* texin
 		Xml::SaveElement(elFac, "I", texindex[3*i]);
 }
 
-void CGeoMaker::SaveSolidite(TiXmlElement* element, bool solidite)
-{
+void CGeoMaker::SaveSolidite(TiXmlElement* element, bool solidite) {
 	TiXmlElement* elSol = new TiXmlElement(Xml::SOLIDE);
 
 	if(solidite)
@@ -860,8 +857,7 @@ void CGeoMaker::SaveSolidite(TiXmlElement* element, bool solidite)
 	element->LinkEndChild(elSol);
 }
 
-void CGeoMaker::SaveMateriau(TiXmlElement* element, unsigned int refMat)
-{
+void CGeoMaker::SaveMateriau(TiXmlElement* element, unsigned int refMat) {
 	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAU);
 
 	elMat->SetAttribute(Xml::REF, refMat);
@@ -873,28 +869,83 @@ MapObject* CGeoMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) thr
 	const char* type = el->Value();
 	MapObject* geo = 0;
 
-	if(!strcmp(Xml::GEOSIMPLE, type)) {
+	if(!strcmp(Xml::GEOINSTANCE, el->Value())) {
+			double translation[3];
+			translation[0] = translation[1] = translation[2] = 0.0f;
+
+			if(!el->Attribute(Xml::X, &translation[0])) {
+				mapLogger->logError("Fichier Map corrompu");
+				throw CErreur("Fichier Map corrompu");
+			}
+
+			if(!el->Attribute(Xml::Y, &translation[1])) {
+				mapLogger->logError("Fichier Map corrompu");
+				throw CErreur("Fichier Map corrompu");
+			}
+
+			if(!el->Attribute(Xml::Z, &translation[2])) {
+				mapLogger->logError("Fichier Map corrompu");
+				throw CErreur("Fichier Map corrompu");
+			}
+
+			const char* description = el->Attribute(Xml::DESCRIPTION);
+
+			if(!description) {
+				mapLogger->logError("Fichier Map corrompu, description manquante");
+				throw CErreur("Fichier Map corrompu, description manquante");
+			}
+
+			int objectId = map.getMapObjectIdByReference(description);
+
+			if(objectId > 0) {
+				MapObject* object = map.getMapObject(objectId);
+
+				if(object) {
+					MapObject* clone = object->clone();
+					clone->translate(translation[0], translation[1], translation[2]);
+					map.add(clone);
+				}
+				else {
+					stringstream msg;
+					msg << "Description référencée [id=" << objectId << ", ref=" << description << "]";
+					mapLogger->logError(msg);
+				}
+			}
+			else {
+				stringstream msg;
+				msg << "Référence de la description introuvable '" << description << "'";
+				mapLogger->logError(msg);
+			}
+	}
+	else if(!strcmp(Xml::GEOSIMPLE, type)) {
 		CSimpleGeo* simpleGeo = new CSimpleGeo(&map);
 		simpleGeo->Lit(el, map, mapLogger);
 		geo = simpleGeo;
 	}
 	else if(!strcmp(Xml::GEOSIMPLEMATERIAL, type)) {
 		CSimpleMaterialGeo* geoSM = new CSimpleMaterialGeo(&map);
-		geoSM->setOffsetMateriau(0);
 		geoSM->Lit(el, map, mapLogger);
 		geo = geoSM;
 	}
 	else if(!strcmp(Xml::GEOTEXTURE, type)) {
 		CTextureMaterialGeo* geoTM = new CTextureMaterialGeo(&map);
-		geoTM->setOffsetMateriau(0);
 		geoTM->Lit(el, map, mapLogger);
 		geo = geoTM;
 	}
 	else if(!strcmp(Xml::GEOMULTI, type)) {
 		CMultiMaterialGeo* geoMM = new CMultiMaterialGeo(&map);
-		geoMM->setOffsetMateriau(0);
 		geoMM->Lit(el, map, mapLogger);
 		geo = geoMM;
+	}
+	else if(!strcmp(Xml::GEOGROUP, type)) {
+		GeoGroup* geoGr = new GeoGroup(&map);
+		geoGr->Lit(el, map, mapLogger);
+		geo = geoGr;
+	}
+	else {
+		stringstream msg;
+		msg << "Geo de type inconnu '" << type << "'";
+		mapLogger->logError(msg);
 	}
 
 	return geo;

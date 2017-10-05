@@ -11,33 +11,33 @@ class CRequeteProcess
 public:
 	enum OUVRE_MAP_LOCALE_ETAPES {
 		OMLE_AUCUNE,					// Aucune ouverture de MAP locale n'est en cours
-		OMLE_DEMANDE,					// L'ouverture d'une MAP locale a été demandée ==> Fermeture MAP en cours et lancement ouverture de la nouvelle MAP
-		OMLE_OUVERTURE_EN_COURS,		// Chargement en cours des données de la nouvelle MAP
+		OMLE_DEMANDE,					// L'ouverture d'une MAP locale a Ã©tÃ© demandÃ©e ==> Fermeture MAP en cours et lancement ouverture de la nouvelle MAP
+		OMLE_OUVERTURE_EN_COURS,		// Chargement en cours des donnÃ©es de la nouvelle MAP
 		OMLE_OUVERTURE					// Finalisation ouverture de la nouvelle MAP
 	};
 
 	enum OUVRE_MAP_SERVER_ETAPES {
 		OMSE_AUCUNE,					// Aucune ouverture de MAP serveur n'est en cours
-		OMSE_DEMANDE,					// L'ouverture d'une MAP serveur a été demandée ==> Fermeture MAP en cours et lancement ouverture de la nouvelle MAP
-		OMSE_OUVERTURE_EN_COURS,		// Chargement en cours des données de la nouvelle MAP
+		OMSE_DEMANDE,					// L'ouverture d'une MAP serveur a Ã©tÃ© demandÃ©e ==> Fermeture MAP en cours et lancement ouverture de la nouvelle MAP
+		OMSE_OUVERTURE_EN_COURS,		// Chargement en cours des donnÃ©es de la nouvelle MAP
 		OMSE_OUVERTURE					// Finalisation ouverture de la nouvelle MAP
 	};
 
 	enum OUVRE_MAP_CLIENT_ETAPES {
 		OMCE_AUCUNE,					// Aucune ouverture de MAP serveur n'est en cours
-		OMCE_DEMANDE,					// L'ouverture d'une MAP serveur a été demandée ==> Fermeture MAP en cours et lancement ouverture de la nouvelle MAP
-		OMCE_OUVERTURE_EN_COURS,		// Chargement en cours des données de la nouvelle MAP
+		OMCE_DEMANDE,					// L'ouverture d'une MAP serveur a Ã©tÃ© demandÃ©e ==> Fermeture MAP en cours et lancement ouverture de la nouvelle MAP
+		OMCE_OUVERTURE_EN_COURS,		// Chargement en cours des donnÃ©es de la nouvelle MAP
 		OMCE_OUVERTURE					// Finalisation ouverture de la nouvelle MAP
 	};
 
 private:
-	bool _bOpenMap;									// Indique une demande d'ouvrir la MAP nommée dans _MapAOuvrir
-	OUVRE_MAP_LOCALE_ETAPES _openMapLocalEtape;		// Indique une demande d'ouvrir la MAP nommée dans _MapAOuvrir
-	OUVRE_MAP_SERVER_ETAPES _openMapServerEtape;	// Indique une demande d'ouvrir la MAP nommée dans _MapAOuvrir
-	OUVRE_MAP_CLIENT_ETAPES _openMapClientEtape;	// Indique une demande d'ouvrir la MAP nommée dans _MapAOuvrir
-	std::string _MapAOuvrir;								// Indique le nom du fichier Map à ouvrir
+	bool _bOpenMap;									// Indique une demande d'ouvrir la MAP nommÃ©e dans _MapAOuvrir
+	OUVRE_MAP_LOCALE_ETAPES _openMapLocalEtape;		// Indique une demande d'ouvrir la MAP nommÃ©e dans _MapAOuvrir
+	OUVRE_MAP_SERVER_ETAPES _openMapServerEtape;	// Indique une demande d'ouvrir la MAP nommÃ©e dans _MapAOuvrir
+	OUVRE_MAP_CLIENT_ETAPES _openMapClientEtape;	// Indique une demande d'ouvrir la MAP nommÃ©e dans _MapAOuvrir
+	std::string _MapAOuvrir;						// Indique le nom du fichier Map Ã  ouvrir
 	SDL_mutex *_mutex;
-	bool _bTakePicture;								// Indique une demande de prise de photo de la scène
+	bool _bTakePicture;								// Indique une demande de prise de photo de la scÃ¨ne
 
 public:
 	CRequeteProcess();
@@ -51,14 +51,14 @@ public:
 	void setOuvreMapServerEtape(OUVRE_MAP_SERVER_ETAPES etape);
 	void setOuvreMapClientEtape(OUVRE_MAP_CLIENT_ETAPES etape);
 
-	int getOuvreMapLocaleEtape();									// Intéroge sur la présence d'une demande d'ouverture de MAP en jeu local
-	int getOuvreMapClientEtape();									// Intéroge sur la présence d'une demande d'ouverture de MAP en jeu client
-	int getOuvreMapServerEtape();									// Intéroge sur la présence d'une demande d'ouverture de MAP en jeu serveur
+	int getOuvreMapLocaleEtape();									// Intï¿½roge sur la prï¿½sence d'une demande d'ouverture de MAP en jeu local
+	int getOuvreMapClientEtape();									// Intï¿½roge sur la prï¿½sence d'une demande d'ouverture de MAP en jeu client
+	int getOuvreMapServerEtape();									// Intï¿½roge sur la prï¿½sence d'une demande d'ouverture de MAP en jeu serveur
 
-	std::string getOuvreMap();										// Renvoie le nom de la MAP à ouvrir et détruit la demande
+	std::string getOuvreMap();										// Renvoie le nom de la MAP Ã  ouvrir et dÃ©truit la demande
 
-	void setTakePicture();											// Inscrit une demande de prise de photo de la scène
-	bool isTakePicture();											// Intéroge sur la présence d'un demande de prise de photo
+	void setTakePicture();											// Inscrit une demande de prise de photo de la scÃ¨ne
+	bool isTakePicture();											// Interroge sur la prÃ©sence d'un demande de prise de photo
 };
 
 #endif

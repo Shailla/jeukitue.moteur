@@ -677,15 +677,16 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) throw(CEr
 
 					// Lecture de la Map
 					CMap* subMap = new CMap(&map);
-
 					Lit(*subMap, string(subMapName), mapLogger);
 
+					// Translation de la Map
 					stringstream msg;
 					msg << "Translation " << subMap->getId() << " : " << translation[0] << " " << translation[1] << " " << translation[2];
 					mapLogger->logInfo(msg);
 
 					subMap->translate(translation[0], translation[1], translation[2]);
 
+					// Scaling de la Map
 					msg.clear();//clear any bits set
 					msg.str(std::string());
 					msg << "Scaling " << subMap->getId() << " : " << scaling[0] << " " << scaling[1] << " " << scaling[2];
@@ -695,6 +696,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) throw(CEr
 
 					// Fusion des Map
 					if(importMode && !strcmp(Xml::IMPORT_MODE_MERGE, importMode)) {
+						// Merge de la sous-Map
 						msg.clear();//clear any bits set
 						msg.str(std::string());
 						msg << "Merge sous-Map '" << subMap->getId() << "'";
@@ -704,6 +706,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) throw(CEr
 						map.merge(subMap->getId());
 					}
 					else if(importMode && !strcmp(Xml::IMPORT_MODE_ADD, importMode)) {
+						// Ajout de la sous-Map
 						msg.clear();//clear any bits set
 						msg.str(std::string());
 						msg << "Add sous-Map '" << subMap->getId() << "'";
@@ -712,6 +715,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) throw(CEr
 						map.add(subMap);
 					}
 					else {
+						// Merge de la sous-Map
 						msg.clear();//clear any bits set
 						msg.str(std::string());
 						msg << "Merge sous-Map (default) '" << subMap->getId() << "'";
@@ -794,73 +798,17 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) throw(CEr
 		}
 
 		// Lecture des objets géométriques
-		TiXmlElement* elGeo = elMap->FirstChildElement(Xml::GEOS);
+		TiXmlElement* elGeos = elMap->FirstChildElement(Xml::GEOS);
 
-		if(elGeo) {
+		if(elGeos) {
+			for(TiXmlElement* elGeo=elGeos->FirstChildElement(); elGeo!=0; elGeo=elGeo->NextSiblingElement()) {
+				MapObject* object = CGeoMaker::Lit(elGeo, map, mapLogger);
 
-			for(TiXmlElement* el=elGeo->FirstChildElement(); el!=0; el=el->NextSiblingElement()) {
-
-				// Objets gémétriques réels instancié à partir d'un objet abstrait
-				if(!strcmp(Xml::GEOINSTANCE, el->Value())) {
-					double translation[3];
-					translation[0] = translation[1] = translation[2] = 0.0f;
-
-					if(!el->Attribute(Xml::X, &translation[0])) {
-						mapLogger->logError("Fichier Map corrompu");
-						throw CErreur("Fichier Map corrompu");
-					}
-
-					if(!el->Attribute(Xml::Y, &translation[1])) {
-						mapLogger->logError("Fichier Map corrompu");
-						throw CErreur("Fichier Map corrompu");
-					}
-
-					if(!el->Attribute(Xml::Z, &translation[2])) {
-						mapLogger->logError("Fichier Map corrompu");
-						throw CErreur("Fichier Map corrompu");
-					}
-
-					const char* description = el->Attribute(Xml::DESCRIPTION);
-
-					if(!description) {
-						mapLogger->logError("Fichier Map corrompu, description manquante");
-						throw CErreur("Fichier Map corrompu, description manquante");
-					}
-
-					int objectId = map.getMapObjectIdByReference(description);
-
-					if(objectId > 0) {
-						MapObject* object = map.getMapObject(objectId);
-
-						if(object) {
-							MapObject* clone = object->clone();
-							clone->translate(translation[0], translation[1], translation[2]);
-							map.add(clone);
-						}
-						else {
-							stringstream msg;
-							msg << "Description référencée [id=" << objectId << ", ref=" << description << "]";
-							mapLogger->logError(msg);
-						}
-					}
-					else {
-						stringstream msg;
-						msg << "Référence de la description introuvable '" << description << "'";
-						mapLogger->logError(msg);
-					}
-
+				if(object) {
+					map.add(object);
 				}
-
-				// Objets géométriques réels ou abstraits auto-instanciés
 				else {
-					MapObject* object = CGeoMaker::Lit(el, map, mapLogger);
-
-					if(object) {
-						map.add(object);
-					}
-					else {
-						mapLogger->logError("Géo corrompue ?");
-					}
+					mapLogger->logError("Géo corrompue ?");
 				}
 			}
 		}

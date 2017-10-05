@@ -21,7 +21,6 @@ namespace jkt
 {
 
 class CSimpleMaterialGeo : public MapObject {
-	int m_OffsetMateriaux;		// Sert lors de la lecture des r�f�rences mat�riaux
 	CMaterial* m_Material;		// Mat�riau utilis�
 	std::string tostring;
 

@@ -11,6 +11,7 @@
 
 #include "main/Fabrique.h"
 #include "util/GLUtils.h"
+#include "util/Trace.h"
 #include "menu/Controller.h"
 #include "main/Game.h"
 #include "main/Player.h"
@@ -168,12 +169,12 @@ void CheckPlayerInZone::setVisibility(bool isVisible) {
 }
 
 bool CheckPlayerInZone::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
-	// TODO
+	LOGWARN(("Use of not implemented method"));
 	return true;
 }
 
 bool CheckPlayerInZone::Save(TiXmlElement* element) throw(CErreur) {
-	// TODO
+	LOGWARN(("Use of not implemented method"));
 	return true;
 }
 

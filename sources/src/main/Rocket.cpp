@@ -31,8 +31,8 @@ using namespace jkt;
 
 extern CGame Game;
 
-Texture* CRocket::_textureExplosion = NULL;		// Texture pour l'explosion de la rocket
-bool CRocket::m_B_INIT_CLASSE = false;	// Par d�faut la classe n'a pas encore �t� initialis�e
+Texture* CRocket::_textureExplosion = 0;		// Texture pour l'explosion de la rocket
+bool CRocket::m_B_INIT_CLASSE = false;			// Par défaut la classe n'a pas encore été initialisée
 jkt::CMap* CRocket::_mapRocket = NULL;			// Image 3D de la rocket
 
 #define Pi 3.14159265f
@@ -41,8 +41,8 @@ jkt::CMap* CRocket::_mapRocket = NULL;			// Image 3D de la rocket
 #define TAILLE_TEX_EXPLOSION	0.1f
 
 bool CRocket::INIT_CLASSE() {
-	LOGDEBUG(("CRocket::INIT_CLASSE()"));
-	// Initialise la classe si elle ne l'a pas encore �t�
+
+	// Initialise la classe si elle ne l'a pas encore été
 	if( !m_B_INIT_CLASSE ) {
 		try {
 			Uint8* pixels = jkt::litFichierImage("@Texture/Explosion.jpg", 0.75f);
@@ -50,8 +50,8 @@ bool CRocket::INIT_CLASSE() {
 		}
 		catch(CErreur& erreur) {
 			LOGWARN(("Echec lecture icone d'explosion du rocket"));
-			_textureExplosion = NULL;
-			return false;	// L'initialisation a �chou�
+			_textureExplosion = 0;
+			return false;	// L'initialisation a échoué
 		}
 
 		try {

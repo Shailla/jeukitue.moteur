@@ -47,7 +47,6 @@ const char* CMultiMaterialGeo::identifier = "MultiMaterialGeo";
 CMultiMaterialGeo::CMultiMaterialGeo(CMap* map, const string& name, CMaterialMulti* mat, unsigned int nbrVertex, float* vertex,
 		float* normals,	float* texvertex, std::map<int,int> &canauxnumbers, bool solid) : MapObject(map, MapObject::GEO) {
 	m_NumVertex = 0;
-	m_OffsetMateriaux = -1;				// Inicateur non-initialis� (-1)
 	m_TabVectNormaux = NULL;
 	m_pNormalTriangle = NULL;
 	m_TabVertex = NULL;
@@ -73,7 +72,6 @@ CMultiMaterialGeo::CMultiMaterialGeo(CMap* map) : MapObject(map, MapObject::GEO)
 	m_TabTexVertex = NULL;
 	m_bSolid = true;			// Objet solide par d�faut
 	m_Material = NULL;
-	m_OffsetMateriaux = -1;		// Inicateur non-initialis� (-1)
 	m_pNormalTriangle = 0;		// Sera initialis� par Init()
 
 	m_Rayon = 0.0;
@@ -273,18 +271,6 @@ void CMultiMaterialGeo::AfficheNormals() {
 
 		glEnd();
 	}
-}
-
-void CMultiMaterialGeo::setOffsetMateriau(int offset) {
-	m_OffsetMateriaux = offset;
-}
-
-int CMultiMaterialGeo::getOffsetMateriau() throw(CErreur) {
-	if(m_OffsetMateriaux < 0) {
-		throw CErreur("Tentative d'accès à m_OffsetMateriau sans initialisation");
-	}
-
-	return m_OffsetMateriaux;
 }
 
 void CMultiMaterialGeo::setMaterial(const string& matRef) {

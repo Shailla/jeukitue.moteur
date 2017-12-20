@@ -28,6 +28,7 @@ class CGame;
 #include "reseau/NetworkManager.h"
 #include "util/Trace.h"
 #include "main/Clavier.h"
+#include "menu/ConsoleView.h"
 
 #include "reseau/enumReseau.h"
 #include "main/Game.h"
@@ -241,8 +242,8 @@ jkt::CServer *CGame::getServer() {
 	return _networkManager->getServer();
 }
 
-void CGame::refresh() {
-	Fabrique::getPluginEngine()->sendRefreshEvent();
+void CGame::refresh(Uint32 now, float deltaTime) {
+	Fabrique::getPluginEngine()->sendRefreshEvent(now, deltaTime);
 
 	// Rafraichissement de la map
 	_map->refresh(this);
@@ -255,12 +256,12 @@ void CGame::refresh() {
 		player = _players[curseur];
 
 		if(player) {
-			player->RefreshProjectils();
+			player->RefreshProjectils(now, deltaTime);
 		}
 	}
 }
 
-void CGame::GereContactPlayers() {	// G�re les contacts de tous les joueurs avec la map
+void CGame::GereContactPlayers(Uint32 now, float deltaTime) {	// Gère les contacts de tous les joueurs avec la map
 	CPlayer *player;
 	int curseur = -1;
 
@@ -268,8 +269,8 @@ void CGame::GereContactPlayers() {	// G�re les contacts de tous les joueurs av
 		player = _players[curseur];
 
 		if(player) {
-			player->Pente(0.0f);
-			_map->GereContactPlayer(0, player);		// G�re les contact avec la map de player
+			player->Pente(1.0f);
+			_map->GereContactPlayer(0, player);		// Gère les contacts avec la map de player
 		}
 	}
 }
@@ -407,7 +408,7 @@ void CGame::afficheViseur(int x, int y) const {
 	glPopMatrix();
 }
 
-void CGame::deplaceTousPlayer() {
+void CGame::deplaceTousPlayer(Uint32 now, float deltaTime) {
 	CPlayer *player;
 	int curseur = -1;
 
@@ -415,20 +416,20 @@ void CGame::deplaceTousPlayer() {
 		player = _players[curseur];
 
 		if(player) {
-			player->deplace();
+			player->deplace(now, deltaTime);
 		}
 	}
 }
 
-void CGame::faitTousRequetesClavier() {
+void CGame::faitTousRequetesClavier(Uint32 now, float deltaTime) {
 	CPlayer *player;
 	int curseur = -1;
 
-	while(_players.Suivant(curseur)) {	//ex�cute les requ�tes clavier sur les joueurs
+	while(_players.Suivant(curseur)) {	// exécute les requêtes clavier sur les joueurs
 		player = _players[curseur];
 
 		if(player) {
-			player->faitRequeteClavier();
+			player->faitRequeteClavier(now, deltaTime);
 		}
 	}
 }
@@ -453,7 +454,7 @@ int CGame::addPlayer(CPlayer *player) {
 	return id;
 }
 
-void CGame::faitTousPlayerGravite() {
+void CGame::faitTousPlayerGravite(Uint32 now, float deltaTime) {
 	int curseur = -1;
 	CPlayer *player;			//Prends le premier player
 
@@ -461,20 +462,32 @@ void CGame::faitTousPlayerGravite() {
 		player = _players[curseur];
 
 		if(player) {
-			player->exeActionFunc();	//ex�cute l'action p�riodique (gravit�,...) du joueur
+			player->exeActionFunc(now, deltaTime);	//exécute l'action périodique (gravité,...) du joueur
 		}
 	}
 }
 
-void CGame::timer() {
+void CGame::timer(Uint32 now, float deltaTime) {
 	if(_map) {
-		if( _gravite )					// Si la gravit� est active
-			faitTousPlayerGravite();
+		if( _gravite ) {					// Si la gravité est active
+			faitTousPlayerGravite(now, deltaTime);
+		}
 
-		refresh();						// Rafraichi les classes qui ont besoin de l'�tre (celles de type CMouve et CProjectil)
-		faitTousRequetesClavier();		// Ex�cute les requ�tes clavier sur tous les joueurs
-		GereContactPlayers();			// G�re tous les contacts entre la map et les joueurs
-		deplaceTousPlayer();			// D�place tous les joueurs de leurs vitesses
+		refresh(now, deltaTime);					// Rafraichi les classes qui ont besoin de l'�tre (celles de type CMouve et CProjectil)
+		faitTousRequetesClavier(now, deltaTime);	// Exécute les requ�tes clavier sur tous les joueurs
+		GereContactPlayers(now, deltaTime);			// Gère tous les contacts entre la map et les joueurs
+		deplaceTousPlayer(now, deltaTime);			// Déplace tous les joueurs de leurs vitesses
+	}
+
+	ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));
+
+	if(_erwin) {
+		console->setVitesseErwin(_erwin->getVitesse() / deltaTime);
+		console->setPenteErwin(_erwin->Pente());
+	}
+	else {
+		console->setVitesseErwin(-1.0f);
+		console->setPenteErwin(-1.0f);
 	}
 }
 

@@ -57,7 +57,7 @@ public:
 
 	void dispatchEvent(PluginEventProxy& plugEvent);
 	void dispatchEvent(int actionId);
-	void sendRefreshEvent();
+	void sendRefreshEvent(Uint32 now, float deltaTime);
 };
 
 } /* namespace jkt */

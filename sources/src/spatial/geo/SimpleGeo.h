@@ -28,17 +28,17 @@ class CSimpleGeo : public MapObject {
 	friend class GeoMaker;
 	std::string tostring;
 
-	float _minX, _minY, _minZ, _maxX, _maxY, _maxZ;	// Coordonn�es du pav� englobant l'objet g�o
-	float _centre[3];			// Centre de la sph�re englobant l'objet
-	float _rayon;				// Rayon de la sph�re englobant l'objet
-	float *_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs pr�liminaires � la gestion des contacts)
+	float _minX, _minY, _minZ, _maxX, _maxY, _maxZ;	// Coordonnées du pavé englobant l'objet géo
+	float _centre[3];			// Centre de la sphère englobant l'objet
+	float _rayon;				// Rayon de la sphère englobant l'objet
+	float *_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs préliminaires à la gestion des contacts)
 	float testContactTriangle( unsigned int i, const float *pos, float dist );
-	float _color[3];			// Couleur de l'objet g�o
+	float _color[3];			// Couleur de l'objet géo
 	bool _bSolid;				// Indique si l'objet est solide ou non
-	int _numVertex;			// Nbre de sommets
+	int _numVertex;				// Nbre de sommets
 	int _numFaces;				// Nbre d'index de sommets
-	float* m_TabVertex;			// Pointeur sur le tableau de sommets
-	int* m_TabFaces;			// Pointeur sur le tableau d'index des sommets
+	float* m_TabVertex;			// Tableau de sommets
+	int* m_TabFaces;			// Tableau d'index des sommets
 
 	// VBO
 	enum {	VBO_VERTEX=0, VBO_FACES };
@@ -46,11 +46,11 @@ class CSimpleGeo : public MapObject {
 	GLuint m_VboBufferNames[VBO_BUFFER_SIZE];
 
 private:
-	void MinMax();			// Calcul les variables MinX,...,MaxZ de cet objet g�om�trique
+	void MinMax();			// Calcul les variables MinX,...,MaxZ de cet objet géométrique
 	void Bulle();			// Calcul les variables 'centre' et rayon
-	void ConstruitBase();	// Construit les vecteurs normaux aux triangles de l'objet g�o
+	void ConstruitBase();	// Construit les vecteurs normaux aux triangles de l'objet géo
 
-	bool TestContactPave(const float pos[3], float dist);						// 'pos' est-il dans le pav� constitu� des distances min/max de l'objet g�o
+	bool TestContactPave(const float pos[3], float dist);						// 'pos' est-il dans le pavé constitu� des distances min/max de l'objet géo
 
 public:
 	static const char* identifier;
@@ -83,7 +83,7 @@ public:
 	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
 	bool Save(TiXmlElement* element) throw(CErreur) override;
 
-	void Affiche() override;									// Affiche l'objet g�o
+	void Affiche() override;									// Affiche l'objet géo
 	void AfficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique
 	const char* toString() override;
 };

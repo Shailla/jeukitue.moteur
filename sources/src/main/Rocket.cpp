@@ -183,7 +183,7 @@ void CRocket::Deplace() {
 	}
 }
 
-bool CRocket::Refresh() {
+bool CRocket::Refresh(Uint32 now, float deltaTime) {
 	bool vie = true;	// Demande � ce que l'objet CRocket survive (par d�faut)
 
 	switch(m_State) {

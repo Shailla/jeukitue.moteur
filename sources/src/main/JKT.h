@@ -11,11 +11,11 @@ namespace jkt {
 
 int main(int argc, char** argv);
 void quit_game( int code );							// Quitte avec code d'erreur
-void gravitePlayer(CPlayer *player);				//fonction implémentant la gravité
+void gravitePlayer(Uint32 now, float deltaTime, CPlayer *player);				//fonction implÃ©mentant la gravitÃ©
 void initMenu(void);
 void keyboard(unsigned char key, int x, int y);		// agit en fonction du clavier
-void display(void);									// Affiche l'écran
-unsigned int timer(unsigned int nbr, void *fct);	//focntion qui s'exécute périodiquement et qui provoque l'affichage
+void display(void);									// Affiche l'Ã©cran
+unsigned int timer(unsigned int nbr, void *fct);	//focntion qui s'exÃ©cute pï¿½riodiquement et qui provoque l'affichage
 void play_handle_key_down( SDL_Event* event );
 Uint32 getPixel(SDL_Surface *surface, int x, int y);
 

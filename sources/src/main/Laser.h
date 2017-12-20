@@ -3,9 +3,8 @@
 
 #include "main/Projectil.h"
 
-class CLaser:public CProjectil
-{
-	Uint32 m_TimeStart;	// Horloge au démarrage du lancement de rayon laser
+class CLaser:public CProjectil {
+	Uint32 m_TimeStart;	// Horloge au dï¿½marrage du lancement de rayon laser
 	float m_Delta;
 
 public:
@@ -13,7 +12,7 @@ public:
 	~CLaser();
 
 	void Affiche() override;
-	bool Refresh() override;
+	bool Refresh(Uint32 now, float deltaTime) override;
 };
 
 #endif

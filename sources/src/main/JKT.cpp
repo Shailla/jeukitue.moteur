@@ -189,14 +189,13 @@ CMachin *machin;	// Pour tester le son 3D
 
 NetworkManager* _networkManager;
 
-void gravitePlayer(CPlayer *player)	// Fonction impl�mentant la gravit�
-{									// aux objets qui doivent la subire
-	float vect[3];
-	player->getVitesse( vect );
+void gravitePlayer(Uint32 now, float deltaTime, CPlayer *player) {	// Fonction implémentant la gravité aux objets qui doivent la subire
+	float vitesse[3];
+	player->getVitesse( vitesse );
 
-	vect[1] -= 0.5*QUANTUM_VITESSE_PLAYER; // Ajout de gravit� au joueur
+	vitesse[1] -= GRAVITY_ACCELERATION * deltaTime; // Ajout de gravité au joueur
 
-	player->setVitesse( vect );
+	player->setVitesse( vitesse );
 }
 
 /**
@@ -451,7 +450,7 @@ void addGraphicObjectToDestruct(GraphicObject* graphicObject) {
 }
 
 void display() {		// Fonction principale d'affichage
-	Uint32 temps = SDL_GetTicks();	// Temps au d�but du r�affichage
+	Uint32 temps = SDL_GetTicks();	// Temps au début du réaffichage
 
 	CSPA::computeDebits(temps);
 
@@ -659,7 +658,7 @@ void display() {		// Fonction principale d'affichage
 	((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setDureeDisplay(SDL_GetTicks() - temps);
 }
 
-void chopeLesEvenements() {
+void chopeLesEvenements(Uint32 now, float deltaTime) {
 	Uint8 *keystate = SDL_GetKeyState(0);		// R�cup�re les touches clavier appuy�es
 	Uint8 mouse = SDL_GetMouseState(0, 0);
 
@@ -667,22 +666,22 @@ void chopeLesEvenements() {
 		CPlayer *erwin = Game.Erwin();
 
 		if ( keystate[Config.Commandes.Gauche.key]||(mouse&SDL_BUTTON(Config.Commandes.Gauche.mouse)) )	{	//gauche
-			erwin->getClavier()->m_fDroite = -1.0;
+			erwin->getClavier()->m_fDroite = -1.0f;
 			erwin->getClavier()->m_bIndic = true;
 		}
 
 		if( keystate[Config.Commandes.Reculer.key]||(mouse&SDL_BUTTON(Config.Commandes.Reculer.mouse)) ) {	// Reculer
-			erwin->getClavier()->m_fAvance = -1.0;
+			erwin->getClavier()->m_fAvance = -1.0f;
 			erwin->getClavier()->m_bIndic = true;
 		}
 
 		if( keystate[Config.Commandes.Avancer.key]||(mouse&SDL_BUTTON(Config.Commandes.Avancer.mouse)) ) {	// Avant
-			erwin->getClavier()->m_fAvance = 1.0;
+			erwin->getClavier()->m_fAvance = 1.0f;
 			erwin->getClavier()->m_bIndic = true;
 		}
 
 		if( keystate[Config.Commandes.Droite.key]||(mouse&SDL_BUTTON(Config.Commandes.Droite.mouse)) ) {	// Droite
-			erwin->getClavier()->m_fDroite = 1.0;
+			erwin->getClavier()->m_fDroite = 1.0f;
 			erwin->getClavier()->m_bIndic = true;
 		}
 
@@ -751,11 +750,10 @@ void chopeLesEvenements() {
 			balle->setPosition( vect[0], vect[1], vect[2]);		// positionne le projectile sur la map
 
 			erwin->getVitesse( vect );
-			balle->changeVitesse( 	sinTeta*cosPhi*10*QUANTUM_VITESSE_PLAYER + vect[0],
-					sinPhi*10*QUANTUM_VITESSE_PLAYER + vect[1],
-					cosTeta*cosPhi*10*QUANTUM_VITESSE_PLAYER + vect[2]);
+			float projectilLaunchSpeed = deltaTime * PROJECTIL_LAUNCH_SPEED;
+			balle->changeVitesse( 	sinTeta*cosPhi*projectilLaunchSpeed + vect[0], sinPhi*projectilLaunchSpeed + vect[1], cosTeta*projectilLaunchSpeed + vect[2]);
 
-			balle->changeAction( gravitePlayer );	// associe au projectile une fonction de gravit�
+			balle->changeAction( gravitePlayer );	// associe au projectile une fonction de gravité
 			balle->changeContact( contactSprite );	// associe une fonction pour les contacts avec la map
 
 			Game.addPlayer(balle);			// ajoute le projectile � la liste des joueurs
@@ -1470,18 +1468,18 @@ void communique() {
 	if(_networkManager->getOn()) {	// Si le r�seau est actif
 
 		/* *******************************************
-		 * Le serveur �met et r�ceptionne des donn�es
+		 * Le serveur émet et éceptionne des données
 		 * ******************************************/
 
-		// Envoie des donn�es aux clients
+		// Envoie des données aux clients
 		if(Game.isModeServer()) {
 			if(Game.getStatutServer() == JKT_STATUT_SERVER_PLAY) {
 
-				// Emet les donn�es vers les clients
+				// Emet les données vers les clients
 				Game.getServer()->emet();
 
-				// R�ception des donn�es des clients
-				if(Game.getMap()) {			// Si une partie est en cours en mode de jeu client ou serveur
+				// Réception des données des clients
+				if(Game.getMap()) {						// Si une partie est en cours en mode de jeu client ou serveur
 					_networkManager->recoitServer();	// Recoit les donn�es des clients
 				}
 			}
@@ -1492,14 +1490,14 @@ void communique() {
 		 * Le client �met et r�ceptionne des donn�es
 		 * ******************************************/
 
-		// Le client r�ceptionne les donn�es du serveur
+		// Le client r�ceptionne les données du serveur
 		CClient* client = _networkManager->getClient();
 
 		if(client) {
-			// Recoit les donn�es du serveur en mode d�connect�, ainsi qu'en mode connect� si on l'est
+			// Recoit les données du serveur en mode déconnecté, ainsi qu'en mode connecté si on l'est
 			client->recoit();
 
-			// Emet les donn�es du joueur actif vers le serveur
+			// Emet les données du joueur actif vers le serveur
 			if(Game.getMap() && Game.Erwin() && Game.isModeClient() && (Game.getStatutClient() == JKT_STATUT_CLIENT_PLAY)) {
 				client->emet( *Game.Erwin() );		// Emet les requetes et donn�es du joueur actif;
 			}
@@ -1510,16 +1508,32 @@ void communique() {
 /* ***************************************
  * Boucle du jeu prinipale
  * **************************************/
+
+
 void boucle() {
-	Uint32 lastDataTreeUpdate = SDL_GetTicks();
+	Uint32 now = SDL_GetTicks();
+	Uint32 lastDataTreeUpdate = now;
+	Uint32 newTime, varTime;
+	float deltaTime = 0;
 
 	try {
 		for( ;; ) {
+			newTime = SDL_GetTicks();
+			varTime = newTime - now;
+
+			if(varTime < 10) {	// Pas moins de 10ms pour un cycle calcules et affichage (ça fait 100 images par secondes !)
+				SDL_Delay(10-varTime);
+				newTime = SDL_GetTicks();
+			}
+
+			deltaTime = float(newTime - now) / 1000.0f;	// Nombre de secondes depuis la dernière exécution de la boucle
+			now = newTime;
+
 			executeJktRequests();
 
 
 			/* ***********************************************************
-			 * Traites les connexions � l'arbre de donn�es
+			 * Traites les connexions à l'arbre de données
 			 * **********************************************************/
 
 			if(_notConnectedServerInterlocutor) {
@@ -1528,7 +1542,7 @@ void boucle() {
 				while((newInterlocutor = _notConnectedServerInterlocutor->popNewInterlocutor())) {
 					ServeurDataTree* serverDataTree = Game.getServerDataTree();
 
-					if(serverDataTree) {		// TODO serveurDataTree devrait �tre prot�g� par un mutex
+					if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
 						serverDataTree->addDistant(newInterlocutor);
 					}
 				}
@@ -1536,19 +1550,19 @@ void boucle() {
 
 
 			/* ***********************************************************
-			 * Traites les changements des donn�es du jeu
+			 * Traites les changements des données du jeu
 			 * **********************************************************/
 
-			if(SDL_GetTicks() - lastDataTreeUpdate > 30) {	// Limitation (solution temporaire) des �changes de donn�es pour �viter leur explosion
-				// Traite les changements de donn�es c�t� serveur
+			if(SDL_GetTicks() - lastDataTreeUpdate > 30) {	// Limitation (solution temporaire) des échanges de données pour éviter leur explosion
+				// Traite les changements de données côté serveur
 				ServeurDataTree* serverDataTree = Game.getServerDataTree();
 
 				Uint32 time;
 				saveTime(time);
 
-				if(serverDataTree) {		// TODO serveurDataTree devrait �tre prot�g� par un mutex
-					serverDataTree->receiveChangementsFromClients();		// Le serveur re�oit les changements des donn�e du jeu de la part des clients
-					serverDataTree->diffuseChangementsToClients();			// Diffuse les changements des donn�es du jeu aux clients
+				if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
+					serverDataTree->receiveChangementsFromClients();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
+					serverDataTree->diffuseChangementsToClients();			// Diffuse les changements des données du jeu aux clients
 				}
 
 				// Traite les changements de donn�es c�t� client
@@ -1564,21 +1578,21 @@ void boucle() {
 
 
 			/* **********************************************
-			 * Lecture des �v�nements claviers, souris, ...
+			 * Lecture des événements claviers, souris, ...
 			 * *********************************************/
 
 			if( Game.getMap()) {	// Si une partie est en cours en mode de jeu local, client ou serveur
 				if( 	Game.isModeLocal()
 						|| 	(Game.isModeClient() && Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY)
 						|| 	(Game.isModeServer() && Game.getStatutServer()==JKT_STATUT_SERVER_PLAY) ) {
-					chopeLesEvenements();	// Prends les requ�tes du joueur pour permettre m�me au serveur de jouer
+					chopeLesEvenements(now, deltaTime);	// Prends les requ�tes du joueur pour permettre m�me au serveur de jouer
 				}
 			}
 
 
 			/* ****************************************************************
 			 * Communique
-			 * (�change des donn�es client -> serveur ou serveur -> clients)
+			 * (échange des données client -> serveur ou serveur -> clients)
 			 * ****************************************************************/
 
 			communique();
@@ -1586,24 +1600,24 @@ void boucle() {
 
 			/* ****************************************************
 			 * Effectue les calculs physiques
-			 * (gravit�, gestion des contacts, d�placements, ...)
+			 * (gravité, gestion des contacts, d�placements, ...)
 			 *
 			 * ***************************************************/
-			Uint32 beforeCompute = SDL_GetTicks();	// Temps au d�but du timer (->mesure du temps de calcul)
-			Game.timer();
+			Uint32 beforeCompute = SDL_GetTicks();	// Temps au début du timer (->mesure du temps de calcul)
+			Game.timer(now, deltaTime);
 			Uint32 afterCompute = SDL_GetTicks();
 
 			((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setDureeCalcules(afterCompute - beforeCompute);
 
 
 			/* ***********************************************************
-			 * Affiche la sc�ne
+			 * Affiche la scène
 			 * **********************************************************/
 
-			// Dessine la sc�ne 3D et les menus
+			// Dessine la scène 3D et les menus
 			display();
 
-			process_events();	// v�rifie les �v�nements
+			process_events();	// vérifie les événements
 		}
 	}
 	catch(NotExistingBrancheException& exception) {

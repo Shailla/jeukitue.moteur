@@ -17,9 +17,9 @@ class CRocket : public CProjectil {
 		ROCKET_STATE_EXPLOSION,
 	};
 
-	static bool m_B_INIT_CLASSE;		// Indique si la classe a été initialisée
+	static bool m_B_INIT_CLASSE;		// Indique si la classe a ï¿½tï¿½ initialisï¿½e
 	static Texture* _textureExplosion;			// Texture de l'explosion de la rocket
-	static jkt::CMap *_mapRocket;	// Map associée à l'image de la rocket
+	static jkt::CMap *_mapRocket;	// Map associï¿½e ï¿½ l'image de la rocket
 
 	CV3D m_Pos;		// Position de la rocket
 	CV3D m_Dir;		// Direction de la rocket
@@ -35,7 +35,7 @@ class CRocket : public CProjectil {
 	/** Affiche l'explosion de la rocket. */
 	void afficheExplosion();
 
-	// Déplace la rocket si elle n'a pas encore explosé ou fait la exploser
+	// Dï¿½place la rocket si elle n'a pas encore explosï¿½ ou fait la exploser
 	void Deplace();
 
 public:
@@ -45,7 +45,7 @@ public:
 	~CRocket();
 
 	void Affiche() override;
-	bool Refresh() override;
+	bool Refresh(Uint32 now, float deltaTime) override;
 };
 
 #endif

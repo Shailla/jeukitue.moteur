@@ -4,8 +4,7 @@
 
 class CPlayer;
 
-class CProjectil
-{
+class CProjectil {
 protected:
 	CPlayer *m_Player;
 
@@ -14,7 +13,7 @@ public:
 	virtual ~CProjectil();
 
 	virtual void Affiche() = 0;	// Affichage du projectil
-	virtual bool Refresh() = 0;	// Effectue les calculs et les tests nécessaires
+	virtual bool Refresh(Uint32 now, float deltaTime) = 0;	// Effectue les calculs et les tests nï¿½cessaires
 };
 
 #endif

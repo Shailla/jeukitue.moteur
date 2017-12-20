@@ -47,7 +47,9 @@ PluginEngine::PluginEngine() {
 PluginEngine::~PluginEngine() {
 }
 
-void PluginEngine::sendRefreshEvent() {
+void PluginEngine::sendRefreshEvent(Uint32 now, float deltaTime) {
+	// TODO envoyer les temps now et deltaTime dans l'Ã©vÃ©nement
+
 	// Global plugins
 	{
 		std::map<std::string, PluginContext*>::iterator iter = _nameGlobalPlugin.begin();
@@ -203,14 +205,14 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	luaL_openlibs(L);
 
 	/* ******************************************************************************
-	 * Création du contexte et logger du plugin
+	 * Crï¿½ation du contexte et logger du plugin
 	 * *****************************************************************************/
 
 	PluginContext* pluginContext = new PluginContext(L, pluginName, pluginDirectory);
 
 
 	/* *******************************************************************************
-	 * Déclaration des fonctions et classes mises à disposition dans les plugins
+	 * Dï¿½claration des fonctions et classes mises ï¿½ disposition dans les plugins
 	 * ******************************************************************************/
 
 	// Log date de lancement du plugin
@@ -246,7 +248,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	lua_register(L, "getConstant", &PluginConfigurationProxy::getConstant);
 	lua_register(L, "initAudio", &PluginConfigurationProxy::initAudio);
 
-	// Fonctions d'accès aux données de la partie
+	// Fonctions d'accï¿½s aux donnï¿½es de la partie
 	lua_register(L, "getGame", &PluginGameProxy::getGame);
 
 	// Initialisation des classes dans Lua
@@ -297,7 +299,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 
 	pluginContext->logInfo("Initialisation du script...");
 
-	// Appel principal pour l'initialisation du script chargé
+	// Appel principal pour l'initialisation du script chargï¿½
 	status = lua_pcall(L, 0, LUA_MULTRET, 0);
 
 	if(status != 0) {
@@ -312,7 +314,7 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 	}
 
 	/* *******************************************************************************
-	 * Vérification de la présence d'une fonction "eventManager" dans le plugin
+	 * Vï¿½rification de la prï¿½sence d'une fonction "eventManager" dans le plugin
 	 * ******************************************************************************/
 
 	lua_getglobal(L, "eventManager");
@@ -326,19 +328,19 @@ PluginContext* PluginEngine::activatePlugin(const string& pluginName, const stri
 
 
 	/* *******************************************************************************
-	 * Vérification de la présence de la méthode d'initialisation du plugin ("onLoad")
+	 * Vï¿½rification de la prï¿½sence de la mï¿½thode d'initialisation du plugin ("onLoad")
 	 * ******************************************************************************/
 
 	pluginContext->logInfo("Recherche de la fonction onLoad du script...");
 
 	lua_getglobal(L, "onLoad");
 
-	// Vérifie si la fonction d'initialisation du plugin existe bien
+	// Vï¿½rifie si la fonction d'initialisation du plugin existe bien
 	if(!lua_isfunction(L, -1)) {
 		// la fonction n'existe pas
 		lua_pop(L, 1);
 
-		pluginContext->logError("La fonction 'onLoad' n'existe pas, tout plugin doit définir cette fonction.");
+		pluginContext->logError("La fonction 'onLoad' n'existe pas, tout plugin doit dï¿½finir cette fonction.");
 		pluginContext->logLuaError(status);
 		pluginContext->logError("Echec d'initialisation du plugin.");
 
@@ -358,8 +360,8 @@ void PluginEngine::activateGlobalPlugin(const string& pluginName) {
 	PluginContext* pluginContext = getGlobalPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
-		LOGERROR(("Le plugin '%s' est déjà actif", pluginName.c_str()));
-		pluginContext->logError("Tentative d'activation du plugin alors qu'il est déjà actif");
+		LOGERROR(("Le plugin '%s' est dï¿½jï¿½ actif", pluginName.c_str()));
+		pluginContext->logError("Tentative d'activation du plugin alors qu'il est dï¿½jï¿½ actif");
 		return;
 	}
 
@@ -373,25 +375,25 @@ void PluginEngine::activateGlobalPlugin(const string& pluginName) {
 	pluginContext = activatePlugin("main", pluginDirectory);
 
 	if(pluginContext) {
-		// Référencement du plugin
+		// Rï¿½fï¿½rencement du plugin
 		lua_State* L = pluginContext->getLuaState();
 
 		_nameGlobalPlugin[pluginName] = pluginContext;
 		_luaGlobalContext[L] = pluginContext;
 
-		pluginContext->logInfo("Plugin initialisé");
+		pluginContext->logInfo("Plugin initialisï¿½");
 
-		// Exécution de la méthode d'init du plugin (onLoad)
-		pluginContext->logInfo("Exécution du plugin");
+		// Exï¿½cution de la mï¿½thode d'init du plugin (onLoad)
+		pluginContext->logInfo("Exï¿½cution du plugin");
 
 		int status = lua_pcall(L, 0, 0, 0);
 
 		if(status) {
 			pluginContext->logLuaError(status);
-			pluginContext->logError("Echec d'exécution du plugin.");
+			pluginContext->logError("Echec d'exï¿½cution du plugin.");
 		}
 		else {
-			pluginContext->logInfo("Plugin en cours d'exécution");
+			pluginContext->logInfo("Plugin en cours d'exï¿½cution");
 		}
 	}
 }
@@ -403,8 +405,8 @@ void PluginEngine::activateMapPlugin(CMap* map, const string& pluginName, const 
 	PluginContext* pluginContext = getMapPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
-		LOGERROR(("Le plugin de Map '%s' est déjà actif", pluginName.c_str()));
-		pluginContext->logError("Tentative d'activation du plugin de Map alors qu'il est déjà actif");
+		LOGERROR(("Le plugin de Map '%s' est dï¿½jï¿½ actif", pluginName.c_str()));
+		pluginContext->logError("Tentative d'activation du plugin de Map alors qu'il est dï¿½jï¿½ actif");
 		return;
 	}
 
@@ -417,23 +419,23 @@ void PluginEngine::activateMapPlugin(CMap* map, const string& pluginName, const 
 	pluginContext = activatePlugin(pluginName, pluginDirectory);
 
 	if(pluginContext) {
-		// Référencement du plugin
+		// Rï¿½fï¿½rencement du plugin
 		lua_State* L = pluginContext->getLuaState();
 
 		_nameMapPlugin[pluginName] = pluginContext;
 		_luaMapContext[L] = pluginContext;
 
-		// Exécution de la méthode d'init du plugin (onLoad)
-		pluginContext->logInfo("Exécution du plugin de Map (onLoad)");
+		// Exï¿½cution de la mï¿½thode d'init du plugin (onLoad)
+		pluginContext->logInfo("Exï¿½cution du plugin de Map (onLoad)");
 
 		int status = lua_pcall(L, 0, 0, 0);
 
 		if(status) {
 			pluginContext->logLuaError(status);
-			pluginContext->logError("Echec d'exécution du plugin de Map.");
+			pluginContext->logError("Echec d'exï¿½cution du plugin de Map.");
 		}
 		else {
-			pluginContext->logInfo("Plugin de Map en cours d'exécution");
+			pluginContext->logInfo("Plugin de Map en cours d'exï¿½cution");
 		}
 	}
 }
@@ -446,15 +448,15 @@ void PluginEngine::deactivateMapPlugins() {
 		PluginContext* pluginContext = itName->second;
 
 		if(pluginContext != NULL) {
-			pluginContext->logInfo("Début de désactivation du plugin de Map");
+			pluginContext->logInfo("Dï¿½but de dï¿½sactivation du plugin de Map");
 
 			lua_close(pluginContext->getLuaState());
-			pluginContext->logInfo("Plugin de Map désactivé");
+			pluginContext->logInfo("Plugin de Map dï¿½sactivï¿½");
 
 			delete pluginContext;
 		}
 		else {
-			LOGERROR(("Le plugin de Map ne peut pas être désactivé, il n'est pas actif '%s'", itName->first.c_str()));
+			LOGERROR(("Le plugin de Map ne peut pas ï¿½tre dï¿½sactivï¿½, il n'est pas actif '%s'", itName->first.c_str()));
 		}
 	}
 
@@ -470,19 +472,19 @@ void PluginEngine::deactivateGlobalPlugin(const string& pluginName) {
 	PluginContext* pluginContext = getGlobalPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
-		pluginContext->logInfo("Début de désactivation du plugin");
+		pluginContext->logInfo("Dï¿½but de dï¿½sactivation du plugin");
 
 		lua_close(pluginContext->getLuaState());
 
 		_luaGlobalContext.erase(pluginContext->getLuaState());
 		_nameGlobalPlugin.erase(pluginName);
 
-		pluginContext->logInfo("Plugin désactivé");
+		pluginContext->logInfo("Plugin dï¿½sactivï¿½");
 
 		delete pluginContext;
 	}
 	else {
-		LOGERROR(("Le plugin ne peut pas être désactivé, il n'est pas actif '%s'", pluginName.c_str()));
+		LOGERROR(("Le plugin ne peut pas ï¿½tre dï¿½sactivï¿½, il n'est pas actif '%s'", pluginName.c_str()));
 	}
 }
 

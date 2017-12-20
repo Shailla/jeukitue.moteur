@@ -11,7 +11,7 @@ float produitScalaire(const float *A, const float *B) {
 	return A[0]*B[0] + A[1]*B[1] + A[2]*B[2];
 }
 
-float norme(float *A) {
+float norme(const float *A) {
 	return sqrtf((A[0]*A[0]) + (A[1]*A[1]) + (A[2]*A[2]) );
 }
 

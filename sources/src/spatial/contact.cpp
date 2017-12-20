@@ -15,51 +15,49 @@
 using namespace jkt;
 using namespace std;
 
-namespace jkt
-{
+namespace jkt {
 
 void contactPlayer(CPlayer *player, float *normal, float distanceW) {
 	float vitesse[3];
 	player->getVitesse( vitesse );
 	float var = -(vitesse[0]*normal[0]) - (vitesse[1]*normal[1]) + (vitesse[2]*normal[2]);
 
-	if( distanceW > 0.0 ) {		// Vérifie si le joueur s'approche ou s'éloigne de la surface du triangle
+	if( distanceW > 0.0 ) {		// VÃ©rifie si le joueur s'approche ou s'Ã©loigne de la surface du triangle
 		if( var > 0.0) {
-			vitesse[0] += var*normal[0]; 	// Rend le vecteur vitesse du joueur parallèle à la surface du triangle
+			vitesse[0] += var*normal[0]; 	// Rend le vecteur vitesse du joueur parallÃ¨le Ã  la surface du triangle
 			vitesse[1] += var*normal[1];
 			vitesse[2] -= var*normal[2];
 		}
 	}
-	else {						// Vérifie si le joueur s'approche ou s'éloigne de la surface du triangle
+	else {						// VÃ©rifie si le joueur s'approche ou s'Ã©loigne de la surface du triangle
 		if( var < 0.0) {
-			vitesse[0] += var*normal[0]; 	// Rend le vecteur vitesse du joueur parallèle
-			vitesse[1] += var*normal[1];	//à la surface du triangle
+			vitesse[0] += var*normal[0]; 	// Rend le vecteur vitesse du joueur parallÃ¨le Ã  la surface du triangle
+			vitesse[1] += var*normal[1];
 			vitesse[2] -= var*normal[2];
 		}
 	}
 
 	player->setVitesse( vitesse );
 
-	if( (fabsf(normal[1]))>player->Pente() ) {	//Cherche la pente la plus horizontale subie par le joueur
-		player->Pente( normal[1] );	//Donne la pente du triangle en contact /rapport à l'horizontale
+	// Parmi les objets en contact avec le joeur, cherche celui dont la pente est la plus faible
+	// Un sol horizontal sous les pieds du joueur a une pente de 0, un mur vertical contre le joueur a une pente de 1
+	float pente = 1.0f - fabsf(normal[1]);
+
+	if( pente < player->Pente() ) {			// Cherche la pente la plus horizontale subie par le joueur
+		player->Pente( pente );				// Donne la pente du triangle en contact / rapport Ã  l'horizontale
 	}
 }
 
-void contactSprite(CPlayer *sprite, float *normal, float distanceW)	//fonction de rebond sur
-{																	//les parois
+void contactSprite(CPlayer *sprite, float *normal, float distanceW) {	// fonction de rebond sur les parois
 	float vitesse[3];
 	sprite->getVitesse( vitesse );
-	float var = -(vitesse[0]*normal[0])
-			-(vitesse[1]*normal[1])
-			+(vitesse[2]*normal[2]);
+	float var = -(vitesse[0]*normal[0]) - (vitesse[1]*normal[1]) + (vitesse[2]*normal[2]);
 
-	if( distanceW > 0.0 )	//vérifie si le joueur
-	{						//s'approche ou s'éloigne
-		if( var > 0.0)		//de la surface du triangle
-		{
+	if( distanceW > 0.0 ) {	// VÃ©rifie si le joueur s'approche ou s'Ã©loigne de la surface du triangle
+		if( var > 0.0) {
 			float oldNorm = norme(vitesse);
 			vitesse[0] += 2*var*normal[0];	//inverse la composante du vecteur vitesse
-			vitesse[1] += 2*var*normal[1];	//orthogonale à la surface du triangle, pour
+			vitesse[1] += 2*var*normal[1];	//orthogonale ï¿½ la surface du triangle, pour
 			vitesse[2] -= 2*var*normal[2];	//produire un effet de rebond
 			normalise(vitesse);				//tout en conservant la norme
 			vitesse[0] *= oldNorm;
@@ -67,13 +65,11 @@ void contactSprite(CPlayer *sprite, float *normal, float distanceW)	//fonction d
 			vitesse[2] *= oldNorm;
 		}
 	}
-	else					//vérifie si le joueur
-	{						//s'approche ou s'éloigne
-		if( var < 0.0)		//de la surface du triangle
-		{
+	else {					//vï¿½rifie si le joueur s'approche ou s'ï¿½loigne de la surface du triangle
+		if( var < 0.0) {
 			float oldNorm = norme(vitesse);
 			vitesse[0] += 2*var*normal[0];	//inverse la composante du vecteur vitesse
-			vitesse[1] += 2*var*normal[1];	//orthogonale à la surface du triangle, pour
+			vitesse[1] += 2*var*normal[1];	//orthogonale ï¿½ la surface du triangle, pour
 			vitesse[2] -= 2*var*normal[2];	//produire un effet de rebond
 			normalise(vitesse);				//tout en conservant la norme
 			vitesse[0] *= oldNorm;

@@ -16,6 +16,7 @@ namespace jkt {
 
 class UtilsTest : public Test {
 	void stringUtilsTest();
+	void mathUtilsTest();
 	void containsTest();
 
 public:

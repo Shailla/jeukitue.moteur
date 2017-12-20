@@ -433,7 +433,7 @@ void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	}
 
 	for(SolidAndTargettable* solid : _solidAndTargettables) {
-		solid->GereContactPlayer(positionPlayer, player);	// G�re les contacts entre l'objet g�o et le joueur
+		solid->GereContactPlayer(positionPlayer, player);	// Gère les contacts entre l'objet géo et le joueur
 	}
 
 	// Initialisation des sous-Map
@@ -444,7 +444,7 @@ void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 
 float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 	// Renvoie la distance du premier point de contact entre un rayon laser parti du point 'pos'
-	// dans la direction 'Dir' si cette distance est inf�rieure � 'dist', renvoie 'dist' sinon
+	// dans la direction 'Dir' si cette distance est inférieure à 'dist', renvoie 'dist' sinon
 
 	for(SolidAndTargettable* solid : _solidAndTargettables) {
 		dist = solid->GereLaserPlayer( pos, Dir, dist );
@@ -728,7 +728,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) throw(CEr
 			}
 		}
 
-		// Lecture des point d'entr�e des joueurs
+		// Lecture des point d'entrée des joueurs
 		{
 			TiXmlElement* elEntry = elMap->FirstChildElement(Xml::ENTRYPOINTS);
 
@@ -765,7 +765,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) throw(CEr
 			}
 		}
 
-		// Lecture des mat�riaux
+		// Lecture des matériaux
 		TiXmlElement* elMat = elMap->FirstChildElement(Xml::MATERIAUX);
 
 		if(elMat) {

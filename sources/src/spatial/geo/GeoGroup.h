@@ -52,6 +52,8 @@ public:
 	void Affiche() override;									// Affiche l'objet géo
 	void AfficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique
 	const char* toString() override;
+
+	void setTransformation(const float transformation[16]);
 };
 
 } /* namespace jkt */

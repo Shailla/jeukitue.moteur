@@ -11,8 +11,7 @@
 
 #include "menu/View.h"
 
-class ConsoleView : public View
-{
+class ConsoleView : public View {
 	AG_Console* _console;
 	AG_Textbox* _commande;
 	AG_Button* _buttonOk;
@@ -21,6 +20,8 @@ class ConsoleView : public View
 	char _mapOuverteName[30];
 	char _activePlayerName[30];
 	Uint32 _dureeCalcules, _dureeDisplay;
+	float _vitesseErwin;
+	float _penteErwin;
 	AG_Mutex _agMutex;
 
 public:
@@ -42,6 +43,8 @@ public:
 	void setMapOuverteName(const std::string& mapName);
 	void setActivePlayerName(const std::string& activePlayerName);
 	void setDureeCalcules(Uint32 computateDuration);
+	void setVitesseErwin(float vitesse);
+	void setPenteErwin(float pente);
 	void setDureeDisplay(Uint32 displayDuration);
 
 };

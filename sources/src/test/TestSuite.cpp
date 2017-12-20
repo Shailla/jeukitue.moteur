@@ -28,21 +28,21 @@ extern CCfg Config;		// Contient la configuration du jeu
 namespace jkt {
 
 TestSuite::TestSuite() {
-	_tests.push_back(new TraceTest());
-	_tests.push_back(new TableauTest());
 	_tests.push_back(new UtilsTest());
-	_tests.push_back(new RessourcesLoaderTest());
-	_tests.push_back(new TcpServerTest());
-	_tests.push_back(new JsonTest());
-	_tests.push_back(new UdpCommunicationTest());
-	_tests.push_back(new DataTreeTest());
+//	_tests.push_back(new TraceTest());
+//	_tests.push_back(new TableauTest());
+//	_tests.push_back(new RessourcesLoaderTest());
+//	_tests.push_back(new TcpServerTest());
+//	_tests.push_back(new JsonTest());
+//	_tests.push_back(new UdpCommunicationTest());
+//	_tests.push_back(new DataTreeTest());
 }
 
 TestSuite::~TestSuite() {
 }
 
 void TestSuite::init() {
-	Config.Reseau.Init();	// Initialisation du réseau
+	Config.Reseau.Init();	// Initialisation du rï¿½seau
 }
 
 void TestSuite::launchTests() {
@@ -53,7 +53,7 @@ void TestSuite::launchTests() {
 	string testName;
 
 	cout << endl << "============================================================================";
-	cout << endl << "  ÉXÉCUTION DE " << _tests.size() << " TEST" << ((_tests.size()<=1)?"":"S");
+	cout << endl << "  ï¿½Xï¿½CUTION DE " << _tests.size() << " TEST" << ((_tests.size()<=1)?"":"S");
 	cout << endl << "============================================================================";
 	cout << endl;
 
@@ -64,7 +64,7 @@ void TestSuite::launchTests() {
 
 			cout << endl << ">>>>>>>>>>>>>>>>>>>>>>>> " << nbr << " - LAUNCHING TEST '" << testName << "' >>>>>>>>>>>>>>>>>>>>>>>>";
 			cout << endl << "Description of the test : " << test->getDescription() << endl;
-			test->test();	// Exécution du test
+			test->test();	// Exï¿½cution du test
 			cout << endl << endl << "<<<<<<<<<<<<<<<<<<<<<<<< " << nbr << " - TEST '" << testName << "' OK <<<<<<<<<<<<<<<<<<<<<<<<";
 			cout << endl << flush;
 
@@ -102,16 +102,16 @@ void TestSuite::launchTests() {
 
 	cout << endl;
 	cout << endl << "============================================================================";
-	cout << endl << "  RÉSULTATS";
+	cout << endl << "  Rï¿½SULTATS";
 	cout << endl << "============================================================================";
-	cout << endl << "  Détails :";
+	cout << endl << "  Dï¿½tails :";
 	for(vector<string>::iterator it = _results.begin() ; it != _results.end() ; it++) {
 		cout << endl << "  \t- " << *it;
 	}
 	cout << endl << "----------------------------------------------------------------------------";
-	cout << endl << "  Synthèse :";
-	cout << endl << "  \t" << nbrOk << " test(s) réussi(s)";
-	cout << endl << "  \t" << nbrKo << " test(s) en échec";
+	cout << endl << "  Synthï¿½se :";
+	cout << endl << "  \t" << nbrOk << " test(s) rï¿½ussi(s)";
+	cout << endl << "  \t" << nbrKo << " test(s) en ï¿½chec";
 	cout << endl << "  \tNombre total de test(s) : " << _tests.size();
 	cout << endl;
 	cout << endl;

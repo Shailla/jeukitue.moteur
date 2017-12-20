@@ -11,6 +11,7 @@
 
 #include "util/CollectionsUtils.h"
 #include "util/StringUtils.h"
+#include "util/MathUtils.h"
 #include "util/TableauIndex.h"
 
 #include "test/utils/UtilsTest.h"
@@ -29,8 +30,8 @@ UtilsTest::~UtilsTest() {
 string UtilsTest::getDescription() {
 	string description;
 
-	description += "Tests r�alis�s :";
-	description += "\n - Test des m�thodes de StringUtils";
+	description += "Tests réalisés :";
+	description += "\n - Test des méthodes de StringUtils";
 
 	return description;
 }
@@ -38,6 +39,7 @@ string UtilsTest::getDescription() {
 void UtilsTest::test() {
 	stringUtilsTest();
 	containsTest();
+	mathUtilsTest();
 }
 
 void UtilsTest::stringUtilsTest() {
@@ -165,6 +167,26 @@ void UtilsTest::stringUtilsTest() {
 	ASSERT_EQUAL("   Hello", splitByCarriageReturns[0], "'splitByCarriageReturns' KO");
 	ASSERT_EQUAL(" I am ", splitByCarriageReturns[1], "'splitByCarriageReturns' KO");
 	ASSERT_EQUAL(" Speedy !", splitByCarriageReturns[2], "'splitByCarriageReturns' KO");
+}
+
+void UtilsTest::mathUtilsTest() {
+	// -----------------------------------------------------
+	log("Test - 'MathUtils::determinant4x4'", __LINE__);
+	float var[16] = {17, 2, 3, 4, 9, 33, 24, 12, 10, 99, 21, 13, 11, 55, 42, 1};
+	ASSERT_EQUAL(513660.0f, MathUtils::determinantMatrix4x4(var), "'determinant4x4' KO");
+
+	log("Test - 'MathUtils::determinant4x4'", __LINE__);
+	float inverse[16];
+	float identity[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+	MathUtils::invertMatrix4x4(var, inverse);
+
+	float result[16];
+	MathUtils::multMatrix4x4(var, inverse, result);
+
+	// Vérifie que quand on multiplie la matrice par son inverse on obtient bien la matrice identité aux approximation près
+	for(int i=0 ; i<16 ; i++) {
+		ASSERT_TRUE(result[i]-identity[i] < 0.0000001, "Matrix and inverse multiplication should give the identity matrix");
+	}
 }
 
 void UtilsTest::containsTest() {

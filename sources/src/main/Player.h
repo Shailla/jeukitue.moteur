@@ -26,50 +26,54 @@ class CPlayer {
 
 	static jkt::Icone* _weaponsChoice;	// Textures de l'icone des armes
 
-	CClavier *_pClavier;	//pointeur sur la class des requêtes clavier
+	CClavier *_pClavier;	//pointeur sur la class des requï¿½tes clavier
 
 	//POINTEURS SUR LES FONCTIONS SPECIALES
-	void (*_actionFunc)(CPlayer *player);	//fonction périodique à réaliser (gravité par exemple)
+	void (*_actionFunc)(Uint32 now, float deltaTime, CPlayer *player);	//fonction pï¿½riodique ï¿½ rï¿½aliser (gravitï¿½ par exemple)
 	void (*_contactFunc)(CPlayer *player, float *normal, float distanceW); //focntion agissant lors d'un contact avec la map
-	int _armeActif;							// Numéro de l'arme actuellement active
+	int _armeActif;							// Numï¿½ro de l'arme actuellement active
 	int _nbrArmes;							// Nombre d'armes
 
 	jkt::Tableau<CProjectil> TabProjectil;		// Liste des projectils de ce joueur
 
 	jkt::CSon* ID_Cri;
-	jkt::CReqSon* ID_ReqCri;	// Requete son de cri du personnage
+	jkt::CReqSon* ID_ReqCri;		// Requete son de cri du personnage
 
 	// Position, vitesse et orientation du joueur
-	float _position[3];			// Vecteur position du joueur
-	float _vitesse[3];			// Vecteur vitesse du joueur
-	float _teta;				// Orientation du joueur par rapport à la verticale
-	float _phi;					// Orientation du joueur par rapport au plan horizontal
+	float _position[3];				// Vecteur position du joueur
+	float _vitesse[3];				// Vecteur vitesse du joueur
 
-	float _posVue[3];			// Position et orientation du point de vue par rapport au joueur
+	float _accelerationClavier[3];	// AccÃ©lÃ©ration demandÃ©e par le joueur avec le clavier
+	float _nextMouve[3];
 
-	float _rayonSolidbox;		// Rayon de la sphère englobant le joueur pour la gestion des contacts
-	float _pente;				// Sert à calculer si le joueur glisse sur une pente de la map ou non
+	float _teta;					// Orientation du joueur par rapport Ã  la verticale
+	float _phi;						// Orientation du joueur par rapport au plan horizontal
+
+	float _posVue[3];				// Position et orientation du point de vue par rapport au joueur
+
+	float _rayonSolidbox;			// Rayon de la sphï¿½re englobant le joueur pour la gestion des contacts
+	float _pente;					// Sert Ã  calculer si le joueur glisse sur une pente de la map ou non
 	std::string _name;				// Nom du perso
-	jkt::CMap *_pSkin;			// Gueule du joueur
+	jkt::CMap *_pSkin;				// Gueule du joueur
 
-	void createClavier();	// Crée la gestion par clavier du joueur
+	void createClavier();		// CrÃ©e la gestion par clavier du joueur
 
 public :
 	// Conctructeurs / destructeurs
-	CPlayer();				// Crée un joueur de vitesse, position et orientaions nuls
+	CPlayer();				// CrÃ©e un joueur de vitesse, position et orientaions nuls
 	virtual ~CPlayer();
-	void init();			// Initialise certaines données du joueur
+	void init();			// Initialise certaines donnï¿½es du joueur
 	void setId(int id);
 	int getId() const;
 
-	// Réseau
-	jkt::CSPA* _spa;		// spa associé au proxy-joueur
+	// Rï¿½seau
+	jkt::CSPA* _spa;		// spa associÃ© au proxy-joueur
 	bool openInClientMode(const IPaddress &address);				// Ouverture en mode client
 	void close();
 
 	// Armes
 	void Tir();
-	void RefreshProjectils();
+	void RefreshProjectils(Uint32 now, float deltaTime);
 
 	// Position
 	void setPosition(float x, float y, float z);		// change la position du joueur
@@ -77,13 +81,14 @@ public :
 	void setPosition(const jkt::CV3D& pos );			// change la position du joueur
 	void setVitesse(const float vit[3]);				// Change la vitesse du joueur
 	void getPosition(float pos[3]) const;				// renvoie le pointeur sur la position du joueur
-	void choiceOneEntryPoint();							// Choisi un point d'entrée sur la Map
+	void choiceOneEntryPoint();							// Choisi un point d'entrï¿½e sur la Map
 
 	// Vitesse
 	void changeVitesse(float vx, float vy, float vz);	// change la vitesse du joueur
 	void getVitesse(float vit[3]) const;				// renvoie le pointeur sur la vitesse du joueur
+	float getVitesse() const;							// Renvoie la vitesse du joueur en m/s
 
-	// Géométrie
+	// GÃ©omÃ©trie
 	float getRayon() const;
 
 	// Orientation
@@ -92,7 +97,7 @@ public :
 	void Phi( float phi );
 	void Teta( float teta );
 
-	// Caméra
+	// CamÃ©ra
 	float PhiVue() const;
 	float TetaVue() const;
 	void TetaVue( float tetaVue );
@@ -111,8 +116,8 @@ public :
 	void setCri( const char *nomFichier );					// Indique le son du cri du joueur
 
 	CClavier *getClavier();		// Retourne le pointeur sur la classe clavier du joueur
-	void exeActionFunc();		// Exécute l'action périodique associée au joueur
-	void exeContactFunc( float *normal, float distanceW);	// Exécute fonction gestion contacts avec joueur
+	void exeActionFunc(Uint32 now, float deltaTime);		// Exï¿½cute l'action pï¿½riodique associï¿½e au joueur
+	void exeContactFunc( float *normal, float distanceW);	// Exï¿½cute fonction gestion contacts avec joueur
 
 	// Affichage
 	void Affiche();				// Fonction d'affichage du joueur
@@ -121,19 +126,19 @@ public :
 
 	// Arme
 	void armeUp();				// Rends l'arme suivante active
-	void armeDown();			// Rends l'arme précédente active
+	void armeDown();			// Rends l'arme prï¿½cï¿½dente active
 	void AfficheIconesArmes();
-	int ArmeActif();			// Renvoi le numéro de l'arme active
-	void AfficheProjectils();	// Affiche les projectils lancés par ce joueur
+	int ArmeActif();			// Renvoi le numï¿½ro de l'arme active
+	void AfficheProjectils();	// Affiche les projectils lancï¿½s par ce joueur
 
 	// INTERACTIONS
 	void tuer();				// Tue le joueur
 
 	//FONCTIONS DE MISE EN PLACE DES FONCTIONS SPECIALES
-	void changeAction(void (*action)(CPlayer *player));//change la fonction à effectuer par défaut
-	void changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW));//change la fonction à effectuer lors d'un contact avec la map
-	void deplace();
-	void faitRequeteClavier();
+	void changeAction(void (*action)(Uint32 now, float deltaTime, CPlayer *player));//change la fonction ï¿½ effectuer par dï¿½faut
+	void changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW));//change la fonction ï¿½ effectuer lors d'un contact avec la map
+	void deplace(Uint32 now, float deltaTime);
+	void faitRequeteClavier(Uint32 now, float deltaTime);
 };
 
 #endif

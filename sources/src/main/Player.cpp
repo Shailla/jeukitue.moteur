@@ -6,7 +6,7 @@
 #include <cmath>
 
 #ifdef WIN32
-	#include <windows.h>
+#include <windows.h>
 #endif
 #include <GL/glew.h>
 #include <GL/glu.h>
@@ -70,27 +70,27 @@ CPlayer::CPlayer() {
 	_posVue[1] = 0.1f;
 	_posVue[2] = 0.137f;
 
-	_rayonSolidbox = 0.30f;	// Rayon de la sph�re qui repr�sente le joueur dans la amp. Le joueur mesure arbitrairement 1m70, son rayon la moitier
+	_rayonSolidbox = 0.30f;	// Rayon de la sphère qui représente le joueur dans la amp. Le joueur mesure arbitrairement 1m70, son rayon la moitier
 
-	_pClavier = NULL;
-	_actionFunc = NULL;		// Pas d'action p�riodique � r�aliser
-	_contactFunc = NULL;	// Pas d'action � r�aliser lors d'un contact avec la map
+	_pClavier = 0;
+	_actionFunc = 0;		// Pas d'action périodique à réaliser
+	_contactFunc = 0;		// Pas d'action à réaliser lors d'un contact avec la map
 
-	_pSkin = NULL;			// Pas de skin associ� par d�faut
+	_pSkin = 0;				// Pas de skin associé par défaut
 
-	ID_Cri = NULL;			// Le cri du joueur n'a pas encore �t� charg�
-	ID_ReqCri = NULL;		// Y'a pas encore la requ�te sur le cri non plus
+	ID_Cri = 0;				// Le cri du joueur n'a pas encore été chargé
+	ID_ReqCri = 0;			// Y'a pas encore la requête sur le cri non plus
 
-	createClavier();		// Cr�e la classe qui g�re les requ�tes de mouvement, tir ...
+	createClavier();		// Crée la classe qui gère les requêtes de mouvement, tir ...
 
-	if(_weaponsChoice == NULL) {
+	if(!_weaponsChoice) {
 		try {
 			Uint8* pixelsWeaponsChoice = jkt::litFichierImage("@Icone/Armes.bmp", 0.75f);
 			_weaponsChoice = jkt::litFichierIcone("@Icone/Armes.bmp", 0.75f, pixelsWeaponsChoice);
 		}
 		catch(CErreur& erreur) {
 			LOGDEBUG(("CPlayer::CPlayer() Echec de lecture de texture d'icone des armes%T", this));
-			_weaponsChoice = NULL;
+			_weaponsChoice = 0;
 		}
 	}
 }
@@ -131,10 +131,10 @@ void CPlayer::AfficheIconesArmes() {
 		glColor3f( 1.0f, 0.0f, 0.0f );
 
 		glBegin( GL_LINE_LOOP );
-			glVertex2f( X-50.0f,	Y - (_nbrArmes*50/2) + 50	+ _armeActif*50.0f	);
-			glVertex2f( X,			Y - (_nbrArmes*50/2) + 50	+ _armeActif*50.0f	);
-			glVertex2f( X,			Y - (_nbrArmes*50/2) + 0	+ _armeActif*50.0f	);
-			glVertex2f( X-50.0f,	Y - (_nbrArmes*50/2) + 0	+ _armeActif*50.0f	);
+		glVertex2f( X-50.0f,	Y - (_nbrArmes*50/2) + 50	+ _armeActif*50.0f	);
+		glVertex2f( X,			Y - (_nbrArmes*50/2) + 50	+ _armeActif*50.0f	);
+		glVertex2f( X,			Y - (_nbrArmes*50/2) + 0	+ _armeActif*50.0f	);
+		glVertex2f( X-50.0f,	Y - (_nbrArmes*50/2) + 0	+ _armeActif*50.0f	);
 		glEnd();
 	}
 }
@@ -208,8 +208,8 @@ void CPlayer::choiceOneEntryPoint() {
 		vector<EntryPoint*>::iterator iterEntry;
 		vector<CPlayer*>::iterator iterPlayer;
 
-			// Fait la liste des points d'entr�e se trouvant � une distance sup�rieure
-			// � DISTANCE_INTER_JOUEURS_ENTRY_POINT de tout autre joueur
+		// Fait la liste des points d'entr�e se trouvant � une distance sup�rieure
+		// � DISTANCE_INTER_JOUEURS_ENTRY_POINT de tout autre joueur
 		for(iterEntry=Game.getMap()->getEntryPointsList().begin() ; iterEntry!=Game.getMap()->getEntryPointsList().end() ; iterEntry++) {
 			curseur = -1;
 			valide = false;
@@ -305,6 +305,13 @@ void CPlayer::getVitesse(float vit[3]) const {
 }
 
 /**
+ * Retourne la vitesse du joueur.
+ */
+float CPlayer::getVitesse() const {
+	return norme(_vitesse);
+}
+
+/**
  * Change la vitesse du joueur.
  */
 void CPlayer::setVitesse(const float vit[3]) {
@@ -313,7 +320,7 @@ void CPlayer::setVitesse(const float vit[3]) {
 	_vitesse[2] = vit[2];
 }
 
-void CPlayer::changeAction(void (*action)(CPlayer *player)) {
+void CPlayer::changeAction(void (*action)(Uint32 now, float deltaTime, CPlayer *player)) {
 	_actionFunc = action;	// Définit l'action périodique à réaliser
 }
 
@@ -385,7 +392,7 @@ void CPlayer::AfficheProjectils() {		// Affiche tous les projectils du joueur
 
 		pro->Affiche();			// Affichage de l'objet g�o
 
-		adr = TabProjectil.Suivant( adr );	//Passe � l'objet g�om�trique suivant
+		adr = TabProjectil.Suivant( adr );	//Passe � l'objet géométrique suivant
 	}
 }
 
@@ -401,33 +408,33 @@ void CPlayer::Tir() {
 		TabProjectil.Ajoute(new CLaser(this));
 		break;
 
-	// Si l'arme active est le lance-rocket, alors tire un rocket
+		// Si l'arme active est le lance-rocket, alors tire un rocket
 	case 2:
 		TabProjectil.Ajoute(new CRocket(this));
 		break;
 	}
 }
 
-void CPlayer::RefreshProjectils() {
+void CPlayer::RefreshProjectils(Uint32 now, float deltaTime) {
 	CProjectil *pro;
 	Tableau<CProjectil>::Adr *adrSuivant;
 
 	Tableau<CProjectil>::Adr *adr = TabProjectil.BeginAdr();
 
-	while(adr) {	//tant que ce n'est pas le dernier objet g�om�trique de la liste
+	while(adr) {	//tant que ce n'est pas le dernier objet géométrique de la liste
 		pro = adr->m_adrX;
 
-		if(!pro->Refresh())			// Affichage de l'objet g�o
+		if(!pro->Refresh(now, deltaTime))			// Affichage de l'objet géo
 		{
-			// L'objet 'pro' a signal� la fin de sa vie, il doit �tre d�truit
-			adrSuivant = TabProjectil.Suivant( adr );	//Passe � l'objet g�om�trique suivant
+			// L'objet 'pro' a signal� la fin de sa vie, il doit être détruit
+			adrSuivant = TabProjectil.Suivant( adr );	//Passe à l'objet géométrique suivant
 
 			TabProjectil.Enleve( adr );
 			delete pro;
 		}
 		else {
-			// L'objet 'pro' a signal� qu'il reste vivant
-			adrSuivant = TabProjectil.Suivant( adr );	//Passe � l'objet g�om�trique suivant
+			// L'objet 'pro' a signalé qu'il reste vivant
+			adrSuivant = TabProjectil.Suivant( adr );	//Passe à l'objet géométrique suivant
 		}
 
 		adr = adrSuivant;
@@ -438,27 +445,31 @@ void CPlayer::init() {
 }
 
 /**
- * Initialise les �l�ments OpenGL du joueur.
+ * Initialise les éléments OpenGL du joueur.
  */
 void CPlayer::initGL() {
-	_pSkin->initPlugins();
-	_pSkin->initGL();
+	if(_pSkin) {
+		_pSkin->initPlugins();
+		_pSkin->initGL();
+	}
 }
 
 /**
- * Lib�re les �l�ments OpenGL du joueur.
+ * Libère les éléments OpenGL du joueur.
  */
 void CPlayer::freeGL() {
-	_pSkin->freePlugins();
-	_pSkin->freeGL();
+	if(_pSkin) {
+		_pSkin->freePlugins();
+		_pSkin->freeGL();
+	}
 }
 
 void CPlayer::createClavier()
 {	_pClavier = new CClavier();	}
 
-void CPlayer::exeActionFunc() {	// Ex�cute l'action p�riodique associ�e au joueur
+void CPlayer::exeActionFunc(Uint32 now, float deltaTime) {	// Exécute l'action périodique associée au joueur
 	if(_actionFunc) {
-		_actionFunc( this );
+		_actionFunc(now, deltaTime, this);
 	}
 }
 
@@ -516,73 +527,99 @@ void CPlayer::Skin(jkt::CMap *skin) {
 	_pSkin = skin;
 }
 
-void CPlayer::deplace() {
-	float norm;
-	float vect[3];
+void CPlayer::deplace(Uint32 now, float deltaTime) {
 
-	if( fabsf(Pente())>0.707f ) {	// Si la pente est inf�rieure � 45�
-		if( (fabsf(getClavier()->m_fDroite)<QUANTUM_VITESSE_PLAYER/(5.f)) && (fabsf(getClavier()->m_fAvance)<QUANTUM_VITESSE_PLAYER/(5.f)) )
-				// S'il n'y a pas de requ�te de d�placement=>ralenti le joueur
-		{
-			getVitesse( vect );
+	/* *****************************************************
+	 * Gestion vitesse horizontale
+	 * ****************************************************/
 
-			if(norme(vect) > QUANTUM_VITESSE_PLAYER/2) {
-				float var = 1 - ( QUANTUM_VITESSE_PLAYER/(2*norme( vect )) );
+	float speedHoriz = sqrtf(_vitesse[0]*_vitesse[0] + _vitesse[2]*_vitesse[2]);
 
-				vect[0] = vect[0]*var;
-				vect[1] = vect[1]*var;
-				vect[2] = vect[2]*var;
+	// Si la pente est inférieure à 45° alors le joueur est considéré au sol :
+	//   - il a un contact suffisant avec le sol pour se déplacer, donc ses déplacements clavier peuvent être pris en compte
+	//   - il est contraint à sa vitesse maximale de déplacement au sol
+	if( _pente < 0.707f ) {
+		// Si le joueur n'avance pas alors on ralentit sa vitesse à l'horizatale
+		if( (_accelerationClavier[0] == 0.0f) && (_accelerationClavier[2] == 0.0f) ) {
+			// Ralentit la vitesse du joueur
+			float decelaration = deltaTime*PLAYER_ACCELERATION;
 
-				setVitesse( vect );
+			if(speedHoriz > decelaration) {
+				float decelerationRate = (speedHoriz-decelaration) / speedHoriz;
+
+				_vitesse[0] *= decelerationRate;
+				_vitesse[2] *= decelerationRate;
+
+				speedHoriz = speedHoriz-decelaration;
 			}
 			else {
-				vect[0] = 0;
-				vect[1] = 0;
-				vect[2] = 0;
-				setVitesse( vect );
+				_vitesse[0] = 0.0f;
+				_vitesse[2] = 0.0f;
+
+				speedHoriz = 0.0f;
 			}
 		}
-	}
-
-	float position[3], vitesse[3];
-	getPosition(position);
-	getVitesse(vitesse);
-	position[0] += vitesse[0];	//incr�mente la position du joueur
-	position[1] += vitesse[1];	//de sa vitesse
-	position[2] += vitesse[2];
-	setPosition(position);
-
-
-	if(fabsf(Pente()) > 0.707f) {	//Si la pente est inf�rieure � 45�=>limite la vitesse
-		norm = norme( vitesse );
-
-		if(norm > MAX_VITESSE_PLAYER) {	//Limitation de la vitesse du joueur
-			normalise( vitesse );
-			vitesse[0] = vitesse[0]*MAX_VITESSE_PLAYER;
-			vitesse[1] = vitesse[1]*MAX_VITESSE_PLAYER;
-			vitesse[2] = vitesse[2]*MAX_VITESSE_PLAYER;
-
-			setVitesse( vitesse );
+		else {
+			// Applique l'accélération du clavier
+			_vitesse[0] += _accelerationClavier[0];
+			_vitesse[2] += _accelerationClavier[2];
 		}
 	}
+
+	// Limite la vitesse au sol du joueur
+	float maxSpeedOnGround = deltaTime * MAX_SPEED_PLAYER_ON_GROUND;
+
+	if(speedHoriz > maxSpeedOnGround) {
+		_vitesse[0] *= maxSpeedOnGround / speedHoriz;
+		_vitesse[2] *= maxSpeedOnGround / speedHoriz;
+	}
+
+
+	/* *****************************************************
+	 * Gestion vitesse verticale
+	 * ****************************************************/
+
+	// Applique l'accélération du clavier
+	_vitesse[1] += _accelerationClavier[1];
+
+
+	/* *****************************************************
+	 * Gestion vitesse globale
+	 * ****************************************************/
+
+	// Limite la vitesse du joueur dans tous les axes
+	float maxSpeed = deltaTime * MAX_SPEED_PLAYER;
+	float speed = norme(_vitesse);
+
+	if(speed > maxSpeed) {
+		_vitesse[0] *= maxSpeed / speed;
+		_vitesse[1] *= maxSpeed / speed;
+		_vitesse[2] *= maxSpeed / speed;
+	}
+
+
+	/* *****************************************************
+	 * Gestion du déplacement
+	 * ****************************************************/
+
+	// Calcule la nouvelle position
+	_position[0] += _vitesse[0];
+	_position[1] += _vitesse[1];
+	_position[2] += _vitesse[2];
 }
 
-void CPlayer::faitRequeteClavier() {
+void CPlayer::faitRequeteClavier(Uint32 now, float deltaTime) {
 	float cosTeta = /*FastCos0(erwin->Teta/180.0f*Pi);*/	cosf(_teta/180.0f*Pi);
 	float sinTeta = /*FastSin0(erwin->Teta/180.0f*Pi);*/	sinf(_teta/180.0f*Pi);
-	float vect[3];
 
-	getVitesse( vect );
+	float accelaration = deltaTime*PLAYER_ACCELERATION;
 
-	vect[1] += QUANTUM_VITESSE_PLAYER*_pClavier->m_fMonte;
+	// Poussée verticale
+	_accelerationClavier[1] = accelaration*_pClavier->m_fMonte;
 
-	vect[0] += cosTeta*QUANTUM_VITESSE_PLAYER*_pClavier->m_fDroite;
-	vect[2] -= sinTeta*QUANTUM_VITESSE_PLAYER*_pClavier->m_fDroite;
+	// Poussée horizontale
+	_accelerationClavier[0] = sinTeta*accelaration*_pClavier->m_fAvance + cosTeta*accelaration*_pClavier->m_fDroite;
+	_accelerationClavier[2] = cosTeta*accelaration*_pClavier->m_fAvance - sinTeta*accelaration*_pClavier->m_fDroite;
 
-	vect[0] += sinTeta*QUANTUM_VITESSE_PLAYER*_pClavier->m_fAvance;
-	vect[2] += cosTeta*QUANTUM_VITESSE_PLAYER*_pClavier->m_fAvance;
-
-	setVitesse( vect );
-
-	_pClavier->reset();	// R�initialise les requ�tes clavier du joueur
+	_pClavier->reset();	// Réinitialise les requêtes clavier du joueur
 }

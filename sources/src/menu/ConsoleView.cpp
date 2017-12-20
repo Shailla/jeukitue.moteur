@@ -22,8 +22,7 @@ extern float delta;
 Uint32 aaa;
 
 ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
-:View(controllerCallback)
-{
+:View(controllerCallback) {
 	m_window = AG_WindowNew(AG_WINDOW_PLAIN | AG_WINDOW_NOBUTTONS | AG_WINDOW_NOBACKGROUND | AG_WINDOW_NOMOVE);
 
 	AG_MutexInit(&_agMutex);
@@ -31,11 +30,13 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	AG_Notebook* book = AG_NotebookNew(m_window, 0);
 	AG_Expand(book);
 
+	_penteErwin = -1;
+
 	/******************************
-	 *	ONGLET PRINCIPAL
+	 *	ONGLET CONSOLE
 	 ******************************/
 
-	AG_NotebookTab* tabMain = AG_NotebookAddTab(book, "Principal", AG_BOX_VERT);
+	AG_NotebookTab* tabMain = AG_NotebookAddTab(book, "Console", AG_BOX_VERT);
 	_console = AG_ConsoleNew(tabMain, AG_CONSOLE_EXPAND);
 
 	AG_Box* box = AG_BoxNewHoriz(m_window, AG_BOX_HFILL);
@@ -46,71 +47,72 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 
 	_buttonOk = AG_ButtonNewFn(box, 0, "Ok", controllerCallback, "%i", Controller::ExecuteUserCommandeAction);
 
-
-	/******************************
-		ONGLET DES SCORES
-	******************************/
-	AG_NotebookTab* tabScores = AG_NotebookAddTab(book, "Scores", AG_BOX_VERT);
-	AG_LabelNew(tabScores, 0, "Scores 1");
-	AG_LabelNew(tabScores, 0, "Scores 2");
-	AG_LabelNew(tabScores, 0, "Scores 3");
-
-
 	/******************************
 		ONGLET DES INFO
-	******************************/
-	AG_NotebookTab* tabInfo = AG_NotebookAddTab(book, "Info", AG_BOX_VERT);
-	AG_Notebook* subbookInfo = AG_NotebookNew(tabInfo, 0);
-
-	/******************************
-		Sous-onglet Info / Partie
-	******************************/
-	AG_NotebookTab* subtabPartie = AG_NotebookAddTab(subbookInfo, "Partie", AG_BOX_VERT);
-	AG_Scrollview* scrollInfo = AG_ScrollviewNew(subtabPartie, AG_SCROLLVIEW_EXPAND | AG_SCROLLVIEW_NOPAN_X);
+	 ******************************/
+	AG_NotebookTab* tabGame = AG_NotebookAddTab(book, "Partie", AG_BOX_VERT);
+	AG_Scrollview* scrollGame = AG_ScrollviewNew(tabGame, AG_SCROLLVIEW_EXPAND | AG_SCROLLVIEW_NOPAN_X);
 
 	// Nom de la MAP ouverte dans la partie en cours
 	memset(_mapOuverteName, '\0', sizeof(_mapOuverteName));
-	AG_Label* label = AG_LabelNewPolledMT(scrollInfo, 0, &_agMutex, "Map ouverte : %s", _mapOuverteName);
+	AG_Label* label = AG_LabelNewPolledMT(scrollGame, 0, &_agMutex, "Map ouverte : %s", _mapOuverteName);
 	AG_LabelSizeHint(label, 1, "Map ouverte : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
 	// Nom du joueur courant
 	memset(_activePlayerName, '\0', sizeof(_activePlayerName));
-	label = AG_LabelNewPolledMT(scrollInfo, 0, &_agMutex, "Joueur : %s", _activePlayerName);
+	label = AG_LabelNewPolledMT(scrollGame, 0, &_agMutex, "Joueur : %s", _activePlayerName);
 	AG_LabelSizeHint(label, 1, "Joueur : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
 	// Distance parcourue par le tir laser
-	label = AG_LabelNewPolledMT(scrollInfo, 0, &_agMutex, "Distance laser : %f", &delta);
+	label = AG_LabelNewPolledMT(scrollGame, 0, &_agMutex, "Distance laser : %f", &delta);
 	AG_LabelSizeHint(label, 1, "Distance laser : xxxxxx");
 
-	label = AG_LabelNewPolledMT(scrollInfo, 0,&_agMutex, "Durees : calcules=%i ms, display=%i ms", &_dureeCalcules, &_dureeDisplay);
+	// Vitesse du perso principal
+	label = AG_LabelNewPolledMT(scrollGame, 0, &_agMutex, "Vitesse : %f", &_vitesseErwin);
+	AG_LabelSizeHint(label, 1, "Vitesse : xxxxxxxx");
+
+	// Pente du perso principal avec le sol
+	label = AG_LabelNewPolledMT(scrollGame, 0, &_agMutex, "Pente : %f", &_penteErwin);
+	AG_LabelSizeHint(label, 1, "Pente : xxxxxxxx");
+
+	label = AG_LabelNewPolledMT(scrollGame, 0,&_agMutex, "Durees : calcules=%i ms, display=%i ms", &_dureeCalcules, &_dureeDisplay);
 	AG_LabelSizeHint(label, 1, "Ecarts : total=xxxx ms, timer=xxxx ms, display=xxxx ms");
 
+
 	/******************************
+		ONGLET DES INFO
+	 ******************************/
+	AG_NotebookTab* tabInfo = AG_NotebookAddTab(book, "Info", AG_BOX_VERT);
+	AG_Notebook* subbookInfo = AG_NotebookNew(tabInfo, 0);
+
+	{
+		/******************************
 		Sous-onglet Info / Son
-	******************************/
-	/*AG_NotebookTab* subtabSon = */AG_NotebookAddTab(subbookInfo, "Son", AG_BOX_VERT);
+		 ******************************/
+		/*AG_NotebookTab* subtabSon = */AG_NotebookAddTab(subbookInfo, "Son", AG_BOX_VERT);
 
-	/******************************
-		Sous-onglet Info / R�seau
-	******************************/
-	AG_NotebookTab* subtabReseau = AG_NotebookAddTab(subbookInfo, "R\u00e9seau", AG_BOX_VERT);
-	AG_Scrollview* scrollReseau = AG_ScrollviewNew(subtabReseau, AG_SCROLLVIEW_EXPAND | AG_SCROLLVIEW_NOPAN_X);
+		/******************************
+		Sous-onglet Info / Réseau
+		 ******************************/
+		AG_NotebookTab* subtabReseau = AG_NotebookAddTab(subbookInfo, "R\u00e9seau", AG_BOX_VERT);
+		AG_Scrollview* scrollReseau = AG_ScrollviewNew(subtabReseau, AG_SCROLLVIEW_EXPAND | AG_SCROLLVIEW_NOPAN_X);
 
-	// D�bit r�seau en �mission
-	label = AG_LabelNewPolledMT(scrollReseau, 0, Statistics::getInstance()->getMutex(), "Debit en emission : %f ko/s (%f o)", &Statistics::getInstance()->_fDebitEm, &Statistics::getInstance()->_fTailleEm);
-	AG_LabelSizeHint(label, 1, "Debit en emission : xxxx ko/s (xxxx o)");
+		// Débit réseau en émission
+		label = AG_LabelNewPolledMT(scrollReseau, 0, Statistics::getInstance()->getMutex(), "Debit en emission : %f ko/s (%f o)", &Statistics::getInstance()->_fDebitEm, &Statistics::getInstance()->_fTailleEm);
+		AG_LabelSizeHint(label, 1, "Debit en emission : xxxx ko/s (xxxx o)");
 
-	// D�bit r�seau en r�ception
-	label = AG_LabelNewPolledMT(scrollReseau, 0, Statistics::getInstance()->getMutex(), "Debit en reception : %f ko/s (%f o)", &Statistics::getInstance()->_fDebitRec, &Statistics::getInstance()->_fTailleRec);
-	AG_LabelSizeHint(label, 1, "Map ouverte : Debit en reception : xxxx ko/s (xxxx o)");
+		// Débit réseau en réception
+		label = AG_LabelNewPolledMT(scrollReseau, 0, Statistics::getInstance()->getMutex(), "Debit en reception : %f ko/s (%f o)", &Statistics::getInstance()->_fDebitRec, &Statistics::getInstance()->_fTailleRec);
+		AG_LabelSizeHint(label, 1, "Map ouverte : Debit en reception : xxxx ko/s (xxxx o)");
+	}
 
-	// Disposition de la fen�tre
+	// Disposition de la fenêtre
 	AG_WidgetUpdate(book);
 	AG_NotebookSelectTab (book, tabMain);
 	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_BL, 70, 30);
 	AG_WindowShow(m_window);
 
-    hide();
+	hide();
 }
 
 ConsoleView::~ConsoleView(void) {
@@ -180,6 +182,18 @@ void ConsoleView::setActivePlayerName(const std::string& activePlayerName) {
 void ConsoleView::setDureeCalcules(Uint32 computateDuration) {
 	AG_MutexLock(&_agMutex);
 	_dureeCalcules = computateDuration;
+	AG_MutexUnlock(&_agMutex);
+}
+
+void ConsoleView::setVitesseErwin(float vitesse) {
+	AG_MutexLock(&_agMutex);
+	_vitesseErwin = vitesse;
+	AG_MutexUnlock(&_agMutex);
+}
+
+void ConsoleView::setPenteErwin(float pente) {
+	AG_MutexLock(&_agMutex);
+	_penteErwin = pente;
 	AG_MutexUnlock(&_agMutex);
 }
 

@@ -25,7 +25,7 @@ using namespace std;
 using namespace jkt;
 
 #define Pi 3.14159265f
-#define DUREE_VIE	100			// Durée de vie du laser en millisecondes
+#define DUREE_VIE	100			// Durï¿½e de vie du laser en millisecondes
 
 extern CGame Game;
 
@@ -45,7 +45,7 @@ void CLaser::Affiche() {
 
 	m_Player->getPosition( vect );
 	glTranslatef( vect[0], vect[1], -vect[2] );
-	glRotated( -m_Player->Teta(), 0.0f, 1.0f, 0.0f ); //Rotation par rapport à l'axe verticale
+	glRotated( -m_Player->Teta(), 0.0f, 1.0f, 0.0f ); //Rotation par rapport ï¿½ l'axe verticale
 	glRotated( -m_Player->Phi(), 1.0f, 0.0f, 0.0f );
 	glBegin( GL_QUADS );
 		glColor3f( 1.0f, 0.0f, 0.0f );
@@ -82,11 +82,11 @@ void CLaser::Affiche() {
 	glPopMatrix();
 }
 
-bool CLaser::Refresh() {
-	CV3D Dir, EH;			// Vecteur direction du laser du joueur concerné
-	float pos[3], pos2[3];	// Position du joueur concerné
+bool CLaser::Refresh(Uint32 now, float deltaTime) {
+	CV3D Dir, EH;			// Vecteur direction du laser du joueur concernï¿½
+	float pos[3], pos2[3];	// Position du joueur concernï¿½
 	float distance;
-	CPlayer *playerTouche;	// Identifiant du joueur touché par le laser
+	CPlayer *playerTouche;	// Identifiant du joueur touchï¿½ par le laser
 
 		// vecteur direction du personnage (donc aussi du laser !)
 	Dir.X = /*FastSin0( player->Teta/180.0f*Pi )*FastCos0( player->Phi/180.0f*Pi );*/
@@ -101,10 +101,10 @@ bool CLaser::Refresh() {
 	distance = 10000.0f;
 	CV3D DirVerif;
 	DirVerif = Dir;
-	distance = Game.getMap()->GereLaserPlayer( pos, Dir, distance );	// Gère le laser de 'player' avec la map
+	distance = Game.getMap()->GereLaserPlayer( pos, Dir, distance );	// Gï¿½re le laser de 'player' avec la map
 
-	// Vérifie si un joueur a été touché
-	playerTouche = 0;	// Pas de joueur touché par le laser trouvé
+	// Vï¿½rifie si un joueur a ï¿½tï¿½ touchï¿½
+	playerTouche = 0;	// Pas de joueur touchï¿½ par le laser trouvï¿½
 	int curseur = -1;
 	CPlayer *player;
 
@@ -118,13 +118,13 @@ bool CLaser::Refresh() {
 			float var = EH^Dir;
 
 			if( var >=0.0f ) {	// Si le laser va dans le sens du joueur
-				if( var < distance ) {	// Si le laser n'est pas arrêté par un objet avant
+				if( var < distance ) {	// Si le laser n'est pas arrï¿½tï¿½ par un objet avant
 										// d'atteindre le joueur
 					float hcarre = (EH^EH) - (var*var);
 
 					if( hcarre<0.007f ) {	// Si la distance entre le laser et l'autre joueur < 0.007
 						distance = var;
-						playerTouche = player;	// Se souvient quel joeur est touché
+						playerTouche = player;	// Se souvient quel joeur est touchï¿½
 					}
 				}
 			}
@@ -132,9 +132,9 @@ bool CLaser::Refresh() {
 	}
 
 	if( playerTouche )
-		playerTouche->tuer();	// Tue le joueur touché par le laser
+		playerTouche->tuer();	// Tue le joueur touchï¿½ par le laser
 
-	m_Delta = distance;	// Pour l'affichage du laser, pas très propre, A VOIR
+	m_Delta = distance;	// Pour l'affichage du laser, pas trï¿½s propre, A VOIR
 
 	if( SDL_GetTicks() - m_TimeStart < DUREE_VIE )
 		return true;	// Le laser n'a pas fini

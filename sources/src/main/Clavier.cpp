@@ -1,15 +1,13 @@
 
 #include "main/Clavier.h"
 
-CClavier::CClavier()
-{
+CClavier::CClavier() {
 	reset();
 }
 
-void CClavier::reset()
-{
+void CClavier::reset() {
 	m_fAvance = 0.0;
 	m_fDroite = 0.0;
 	m_fMonte = 0.0;
-	m_bIndic = false; //pas de déplacement demandé par défaut
+	m_bIndic = false; //pas de dï¿½placement demandï¿½ par dï¿½faut
 }

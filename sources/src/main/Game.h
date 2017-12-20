@@ -1,4 +1,4 @@
-#pragma warning( disable : 4290 )	// Evite les warnings sur les déclaration de throw
+#pragma warning( disable : 4290 )	// Evite les warnings sur les dï¿½claration de throw
 
 #ifndef __JKT__GAME_H
 #define __JKT__GAME_H
@@ -21,14 +21,14 @@ namespace jkt
 
 class CPlayer;
 
-// Cette classe est destinée à contenir toutes les paramètres vivants, c'est à dire
-// toutes les données et variables de la partie en cours, du réseau...
+// Cette classe est destinï¿½e ï¿½ contenir toutes les paramï¿½tres vivants, c'est ï¿½ dire
+// toutes les donnï¿½es et variables de la partie en cours, du rï¿½seau...
 class CGame {
 public:
 	enum ModePartie {
 		JKT_MODE_PARTIE_NULL,		// Pas de jeu en cours
-		JKT_MODE_PARTIE_LOCAL,		// Mode de jeu local (c'est à dire pas en réseau)
-		JKT_MODE_PARTIE_CLIENT,		// Mode client connecté à un serveur
+		JKT_MODE_PARTIE_LOCAL,		// Mode de jeu local (c'est ï¿½ dire pas en rï¿½seau)
+		JKT_MODE_PARTIE_CLIENT,		// Mode client connectï¿½ ï¿½ un serveur
 		JKT_MODE_PARTIE_SERVER,		// Mode serveur de jeu
 	};
 
@@ -36,8 +36,8 @@ private:
 	CPlayer* _erwin;								// Pointeur sur le joueur actif
 	jkt::CMap	*_map;								// Map en cours de jeu
 	ModePartie _mode;								// Mode de jeu (parie normale, client ou serveur)
-	bool _gravite;									// Indique si la gravité est active
-	jkt::TableauIndex<CPlayer> _players;	// Liste indexée des joueurs
+	bool _gravite;									// Indique si la gravitï¿½ est active
+	jkt::TableauIndex<CPlayer> _players;	// Liste indexï¿½e des joueurs
 
 public:
 	LocalDataTree* _localDataTree;
@@ -50,13 +50,13 @@ public:
 	// Constructeurs/destructeur
 	CGame();
 
-	// Généralités
+	// Gï¿½nï¿½ralitï¿½s
 	bool isModeNull();		// Indique si aucune partie n'est en cours
 	bool isModeLocal();		// Indique si une partie locale est en cours
-	bool isModeClient();	// Indique si une partie réseau client est en cours
+	bool isModeClient();	// Indique si une partie rï¿½seau client est en cours
 	bool isModeServer();	// Indique si une partie serveur est en cours
 	void Quit();			// Passe en mode aucun jeu en cours
-	bool getGravite() const;	// Indique si la gravité est active
+	bool getGravite() const;	// Indique si la gravitï¿½ est active
 	void setGravite(bool gravite);
 
 	// Gestion de la Map
@@ -71,13 +71,13 @@ public:
 	void setModeLocal();								// Passe en mode de jeu local
 
 	// Gestion du client
-	void setModeClient();								// Crée la classe Client pour un jeu en mode client
+	void setModeClient();								// Crï¿½e la classe Client pour un jeu en mode client
 	jkt::CClient *getClient();							// Retourne le pointeur sur la classe CClient
 	void setStatutClient( jkt::StatutClient statut );	// Renseigne le statut du client
 	jkt::StatutClient getStatutClient();				// Donne le statut du client
 
 	// Gestion du serveur
-	void setModeServer();								// Crée la classe Server pour un jeu en mode serveur
+	void setModeServer();								// Crï¿½e la classe Server pour un jeu en mode serveur
 	jkt::CServer *getServer();							// Retourne le pointeur sur la classe CServer
 	void setStatutServer( jkt::StatutServer statut );	// Renseigne le statut du serveur
 	jkt::StatutServer getStatutServer();				// Donne le statut du serveur
@@ -103,7 +103,7 @@ public:
 	void setErwin(CPlayer *erwin);					// Set le joueur principal
 
 	// Gestion des joueurs
-	void deletePlayers();							// Détruit tous les joueurs
+	void deletePlayers();							// Dï¿½truit tous les joueurs
 
 	void createPlayerList(int size);				// Indique le nombre de joueurs de la partie
 	int getMaxPlayers() const;
@@ -112,29 +112,29 @@ public:
 	CPlayer* nextPlayer(int &pos);
 
 	/**
-	 * Ajout un joueur à la partie
-	 * @param player joueur à ajouter
-	 * @return index du joueur ou -1 si l'ajout a échoué
+	 * Ajout un joueur ï¿½ la partie
+	 * @param player joueur ï¿½ ajouter
+	 * @return index du joueur ou -1 si l'ajout a ï¿½chouï¿½
 	 */
 	int addPlayer(CPlayer *player);
 	bool addPlayer(int id, CPlayer *player);
 	CPlayer* getPlayer(int id);
 
 private:
-	void refresh();					// Rafraichi les classe qui en ont besoin
-	void deplaceTousPlayer();
-	void faitTousRequetesClavier();
-	void faitTousPlayerGravite();
-	void GereContactPlayers();		// Gère les contacts entre tous les joueurs et la map
+	void refresh(Uint32 now, float deltaTime);					// Rafraichi les classe qui en ont besoin
+	void deplaceTousPlayer(Uint32 now, float deltaTime);
+	void faitTousRequetesClavier(Uint32 now, float deltaTime);
+	void faitTousPlayerGravite(Uint32 now, float deltaTime);
+	void GereContactPlayers(Uint32 now, float deltaTime);						// GÃ¨re les contacts entre tous les joueurs et la map
 
 public:
 	void quitCurrentMap();
 
 	// Fonctions d'affichage
 	int afficheDamierTextures(int x, int y, int tailleX, int tailleY, int page, int nbrHoriz, int nbrVert) const;
-	void afficheViseur(int x, int y) const;			// Affiche le joueur à la position voulue sur l'écran
+	void afficheViseur(int x, int y) const;			// Affiche le joueur ï¿½ la position voulue sur l'ï¿½cran
 
-	void timer();
+	void timer(Uint32 now, float deltaTime);
 };
 
 #endif

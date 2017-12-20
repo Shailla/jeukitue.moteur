@@ -31,7 +31,7 @@
 using namespace std;
 
 void jkt::contactPlayer(CPlayer *player, float *normal, float distanceW);
-void gravitePlayer(CPlayer *player);
+void gravitePlayer(Uint32 now, float deltaTime, CPlayer *player);
 
 extern CGame Game;
 class CMap;
@@ -40,7 +40,7 @@ namespace jkt
 {
 
 CServer::CServer() {
-	nom = "ServerJKT";					// Nom de serveur par défaut
+	nom = "ServerJKT";					// Nom de serveur par dï¿½faut
 	bGame = false;						// Pas de partie en cours
 	nomMAP = "";						//donc pas de nom de partie
 	m_Statut = JKT_STATUT_SERVER_INIT;	// Indique que le serveur est en cours d'initialisation
@@ -55,7 +55,7 @@ CServer::~CServer() {
 
 void CServer::disconnect() {
 	LOGDEBUG(("CServer::~CServer() begin%T", this ));
-	SDLNet_FreeSocketSet( socketSet );		// Libère le socket set du serveur
+	SDLNet_FreeSocketSet( socketSet );		// Libï¿½re le socket set du serveur
 	socketSet = 0;
 
 	if(_serverUdpInterlocutor)
@@ -102,7 +102,7 @@ CPlayer* CServer::getPlayerByAddress(const IPaddress& address) {
 }
 
 int CServer::AjoutePlayer( CPlayer *player ) {
-	return Game.addPlayer(player);	// Ajoute le joueur à la liste
+	return Game.addPlayer(player);	// Ajoute le joueur ï¿½ la liste
 }
 
 void CServer::decodeServerUDP( CSPA *spa ) {
@@ -118,12 +118,12 @@ void CServer::decodeServerUDP( CSPA *spa ) {
 		SDLNet_UDP_Unbind( spa->getSocket(), spa->getPacketOut()->channel );
 		break;
 
-	case CLIENT_PING:	// Un client a envoyé un ping
+	case CLIENT_PING:	// Un client a envoyï¿½ un ping
 		switchPing( spa, code2 );
 		SDLNet_UDP_Unbind( spa->getSocket(), spa->getPacketOut()->channel );
 		break;
 
-	case CLIENT_JTG:		// Un client demande à entrer dans le jeu en cours sur le serveur
+	case CLIENT_JTG:		// Un client demande ï¿½ entrer dans le jeu en cours sur le serveur
 		switchJTG( spa, code2 );
 		SDLNet_UDP_Unbind( spa->getSocket(), spa->getPacketOut()->channel );
 		break;
@@ -138,11 +138,11 @@ void CServer::decodeProxyPlayer(CPlayer *player, CSPA* spa) {
 	Uint16 code1, code2;
 
 	spa->init();
-	spa->readCode( code1, code2 );	// Ignore les premières données qui contiennent le jeton
+	spa->readCode( code1, code2 );	// Ignore les premiï¿½res donnï¿½es qui contiennent le jeton
 	spa->readCode( code1, code2 );
 
 	switch( code1 ) {
-	case CLIENT_RECAP:		// Réception d'une récapitulation de partie
+	case CLIENT_RECAP:		// Rï¿½ception d'une rï¿½capitulation de partie
 		switchRecapServer(player, code2, spa);
 		break;
 
@@ -160,9 +160,9 @@ bool CServer::acceptPlayer(CSPA *spa) {
 	char nomNewPlayer[50];
 	spa->readChar( nomNewPlayer );
 
-	// Création player
-	CPlayer* newPlayer = new CPlayer();						// Crée le réceptacle du nouveau joueur
-	newPlayer->changeAction(gravitePlayer);				// Associe au joueur une fonction de gravité
+	// CrÃ©ation player
+	CPlayer* newPlayer = new CPlayer();						// Crï¿½e le rï¿½ceptacle du nouveau joueur
+	newPlayer->changeAction(gravitePlayer);				// Associe au joueur une fonction de gravitï¿½
 	newPlayer->changeContact(contactPlayer);	// Associe une fonction de gestion des contacts avec la map
 	newPlayer->setName( nomNewPlayer );							// Enregistre le nom du nouveau joueur
 	newPlayer->init();
@@ -184,24 +184,24 @@ bool CServer::acceptPlayer(CSPA *spa) {
 	}
 
 	if(result) {
-		// Génère un jeton pour le client
-		// il le présentera pour se faire reconnaitre sur d'autres ports réseaux s'il en ouvre d'autres
+		// Gï¿½nï¿½re un jeton pour le client
+		// il le prï¿½sentera pour se faire reconnaitre sur d'autres ports rï¿½seaux s'il en ouvre d'autres
 		Uint16 jeton = rand()*rand();
 		_jetonPlayer[jeton] = newPlayer;
 
 		// Identifie le joueur dans la partie
 		int IDPlayer = AjoutePlayer( newPlayer );	// Ajoute le joueur pour de bon et identifie-le
-		// TODO Gérer le cas où IDPlayer vaut -1, lorsque l'ajout du joueur a échoué
+		// TODO Gï¿½rer le cas oï¿½ IDPlayer vaut -1, lorsque l'ajout du joueur a ï¿½chouï¿½
 
-		LOGINFO(("Joueur identifié dans la partie %d:%s (jeton %d)", IDPlayer, nomNewPlayer, jeton));
+		LOGINFO(("Joueur identifiï¿½ dans la partie %d:%s (jeton %d)", IDPlayer, nomNewPlayer, jeton));
 
 
 		/* /////////////////////////////////////////////////////////////////////////////////
-		// Dis au client qu'il est accepté et donne-lui les infos de la partie et son jeton
+		// Dis au client qu'il est acceptï¿½ et donne-lui les infos de la partie et son jeton
 		// /////////////////////////////////////////////////////////////////////////////////*/
 
 		newPlayer->_spa->init();
-		newPlayer->_spa->addCode( SERVER_JTG, SERVER_ACK );			// Acquitte la jonction du joueur à la partie
+		newPlayer->_spa->addCode( SERVER_JTG, SERVER_ACK );			// Acquitte la jonction du joueur ï¿½ la partie
 		newPlayer->_spa->add16( (Uint16)IDPlayer );					// Envoie son identifiant au nouveau proxy-joueur
 		newPlayer->_spa->add16( jeton );							// Envoie son identifiant au nouveau proxy-joueur
 		newPlayer->_spa->add( nomMAP );								// Envoie le nom de la MAP en cours
@@ -237,18 +237,18 @@ void CServer::switchRecapServer(CPlayer *player, Uint16 code2, CSPA* spa) {
 		player->getClavier()->m_fDroite = 0.0f;
 		player->getClavier()->m_fMonte = 0.0f;
 
-		if( flags&0x0001 ) {	// S'il y a des requêtes
-			player->getClavier()->m_bIndic = true;	// Indique la présence d'une requête
+		if( flags&0x0001 ) {	// S'il y a des requï¿½tes
+			player->getClavier()->m_bIndic = true;	// Indique la prï¿½sence d'une requï¿½te
 
-			if( flags&0x0010 ) {	// Y a-t-il une requête de mouvement en avant
+			if( flags&0x0010 ) {	// Y a-t-il une requï¿½te de mouvement en avant
 				player->getClavier()->m_fAvance = spa->readf();
 			}
 
-			if( flags&0x0100 ) {	// Y a-t-il une requête de mouvement à droite
+			if( flags&0x0100 ) {	// Y a-t-il une requï¿½te de mouvement ï¿½ droite
 				player->getClavier()->m_fDroite = spa->readf();
 			}
 
-			if( flags&0x1000 ) {	// Y a-t-il une requête de mouvement vers le haut
+			if( flags&0x1000 ) {	// Y a-t-il une requï¿½te de mouvement vers le haut
 				player->getClavier()->m_fMonte = spa->readf();
 			}
 		}
@@ -267,7 +267,7 @@ void CServer::switchRecapServer(CPlayer *player, Uint16 code2, CSPA* spa) {
 	}
 }
 
-void CServer::switchInfo( CSPA *spa, Uint16 code2 ) {	// Réception d'une demande d'info serveur
+void CServer::switchInfo( CSPA *spa, Uint16 code2 ) {	// Rï¿½ception d'une demande d'info serveur
 	LOGDEBUG(("CServer::switchInfo(spa=%x,code2=%d) begin%T", spa, code2, this ));
 	switch( code2 ) {
 	case GLOBAL_NULL:
@@ -298,7 +298,7 @@ void CServer::switchInfo( CSPA *spa, Uint16 code2 ) {	// Réception d'une demande
 	LOGDEBUG(("CServer::switchInfo() end%T", this ));
 }
 
-void CServer::switchPing( CSPA *spa, Uint16 code2 )	// Réception d'une demande de ping
+void CServer::switchPing( CSPA *spa, Uint16 code2 )	// Rï¿½ception d'une demande de ping
 {
 	LOGDEBUG(("CServer::switchPing(spa=%x,code2=%d) begin%T", spa, code2, this ));
 	switch( code2 ) {
@@ -313,7 +313,7 @@ void CServer::switchPing( CSPA *spa, Uint16 code2 )	// Réception d'une demande d
 			}
 			else {
 				LOGDEBUG(("CServer::switchPing() : Envoi reponse ping%T", this ));
-				// Envoie de la réponse au ping
+				// Envoie de la rï¿½ponse au ping
 				Uint32 time;
 				LOGINFO(("Server says : Emmission de la reponse au ping"));
 				time = spa->read32();
@@ -333,7 +333,7 @@ void CServer::switchPing( CSPA *spa, Uint16 code2 )	// Réception d'une demande d
 	LOGDEBUG(("CServer::switchPing() end%T", this ));
 }
 
-void CServer::switchJTG( CSPA *spa, Uint16 code2 )	// Réception d'une demande de JTG
+void CServer::switchJTG( CSPA *spa, Uint16 code2 )	// Rï¿½ception d'une demande de JTG
 {
 	LOGDEBUG(("CServer::switchJTG(spa=%x,code2=%d) begin%T", spa, code2, this ));
 	switch( code2 )
@@ -368,7 +368,7 @@ void CServer::switchJTG( CSPA *spa, Uint16 code2 )	// Réception d'une demande de
 			}
 			else {
 				LOGDEBUG(("CServer::switchJTG() : Serveur sature%T", this ));
-				LOGINFO(("Serveur saturé"));
+				LOGINFO(("Serveur saturï¿½"));
 				spa->init();
 				spa->addCode( SERVER_JTG, SERVER_ERROR );
 				spa->add16( UDP_ERROR_SATURE );
@@ -378,8 +378,8 @@ void CServer::switchJTG( CSPA *spa, Uint16 code2 )	// Réception d'une demande de
 			break;
 		}
 
-		if( acceptPlayer( spa ) )		// Ajoute le client associé à spa en tant que joueur
-			LOGINFO(("Demande acceptée"));
+		if( acceptPlayer( spa ) )		// Ajoute le client associï¿½ ï¿½ spa en tant que joueur
+			LOGINFO(("Demande acceptï¿½e"));
 		else
 			LOGERROR((" Demande infructueuse"));
 		break;
@@ -407,7 +407,7 @@ NotConnectedInterlocutor2* CServer::connect(Uint16 port, Uint16 portTree) {
 	}
 
 	if(result) {
-		socketSet = SDLNet_AllocSocketSet( 20 );	// Nombre maxi de sockets à écouter
+		socketSet = SDLNet_AllocSocketSet( 20 );	// Nombre maxi de sockets ï¿½ ï¿½couter
 
 		if( !socketSet ) {
 			LOGDEBUG(("CServer::ouvre() : %s %T", SDLNet_GetError(), this ));
@@ -439,17 +439,17 @@ NotConnectedInterlocutor2* CServer::connect(Uint16 port, Uint16 portTree) {
 	}
 
 	LOGDEBUG(("CServer::ouvre() -> %b end%T", result, this));
-	return notConnectedServerInterlocutor;	// Ouverture serveur réussie
+	return notConnectedServerInterlocutor;	// Ouverture serveur rï¿½ussie
 }
 
 void CServer::emet() {
 	CPlayer *player, *player2;
 	int curseur = -1, curseur2;
 
-	while((player = Game.nextPlayer(curseur))) {	// Envoie à chaque client-joueur
+	while((player = Game.nextPlayer(curseur))) {	// Envoie ï¿½ chaque client-joueur
 		if(player->_spa) {
 			player->_spa->init();
-			player->_spa->addCode( SERVER_RECAP, GLOBAL_NULL );		// Code de récapitulation
+			player->_spa->addCode( SERVER_RECAP, GLOBAL_NULL );		// Code de rï¿½capitulation
 			player->_spa->add16( (Uint16)Game.getNbrPlayers() );	// Envoie le nombre de joueur
 
 			// Envoie les infos concernant chaque joueur

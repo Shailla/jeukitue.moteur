@@ -453,7 +453,7 @@ bool CSimpleGeo::Save(TiXmlElement* element) throw(CErreur) {
 
 float CSimpleGeo::testContactTriangle(unsigned int i, const float posPlayer[3], float dist) {
 
-	// Teste s'il y a contact entre un point P et le i� triangle de l'objet g�o
+	// Teste s'il y a contact entre un point P et le i° triangle de l'objet géo
 	int *indices = &m_TabFaces[3*i];
 	float *normal = &_pNormalTriangle[3*i];
 	float A[3], B[3], C[3], F[3], G[3], X[3], Y[3], Z[3];
@@ -480,7 +480,7 @@ float CSimpleGeo::testContactTriangle(unsigned int i, const float posPlayer[3], 
 	produitVectoriel( X, normal, A );
 	normalise( A );
 	// test position P / droite AB
-	if( produitScalaire(A, Z) >= dist )	// avant c'�tait 0.0
+	if( produitScalaire(A, Z) >= dist )	// avant c'était 0.0
 		return 1000.0f;
 
 	Y[0] = m_TabVertex[ (3*indices[2])+0 ] - m_TabVertex[ (3*indices[0])+0 ];
@@ -534,19 +534,20 @@ void CSimpleGeo::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 		float dist = player->getRayon();	// Rayon de la sphère représentant le volume du joueur
 		float distanceW;
 
-		if( TestContactPave( positionPlayer, dist ) )	// Teste proximité 'joueur / l'objet géo'
-			for( int i=0; i<_numFaces; i++) {		//pour chaque triangle de l'objet géo.
+		if( TestContactPave( positionPlayer, dist ) )	// Teste proximité 'joueur / l'objet géo' pour chaque triangle de l'objet géo
+			for( int i=0; i<_numFaces; i++) {
 				distanceW = testContactTriangle(i, positionPlayer, dist);
 
-				if( distanceW<500.0f ) // Teste le contact avec le joueur (1.0f = valeur arbitraire mais grande)
+				if(distanceW < 500.0f) {	// Teste le contact avec le joueur (1.0f = valeur arbitraire mais grande)
 					player->exeContactFunc( &_pNormalTriangle[3*i], distanceW );	// On a contact !
+				}
 			}
 	}
 }
 
 bool CSimpleGeo::TestContactPave(const float pos[3], float dist) {
-	// Teste si le point qui a pour position 'pos' se trouve ou non � une distance inf�rieure � 'dist'
-	// du pav� englobant l'objet
+	// Teste si le point qui a pour position 'pos' se trouve ou non � une distance inférieure à 'dist'
+	// du pavé englobant l'objet
 
 	if( pos[0] < _maxX + dist )
 		if( pos[1] < _maxY + dist )
@@ -554,9 +555,9 @@ bool CSimpleGeo::TestContactPave(const float pos[3], float dist) {
 				if( pos[0] > _minX - dist )
 					if( pos[1] > _minY - dist )
 						if( -pos[2] > _minZ - dist )
-							return true;	// Le point 'pos' est � une distance inf�rieure
+							return true;	// Le point 'pos' est à une distance inférieure
 
-	return false;	// Le point 'pos' se trouve � une distance sup�rieure
+	return false;	// Le point 'pos' se trouve à une distance supérieure
 }
 
 float CSimpleGeo::GereLaserPlayer( float pos[3], CV3D& Dir, float dist) {

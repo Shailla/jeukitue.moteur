@@ -10,6 +10,7 @@
 
 #include "util/Trace.h"
 #include "util/Erreur.h"
+#include "util/MathUtils.h"
 #include "spatial/XmlVocabulaire.h"
 #include "spatial/Map.h"
 #include "spatial/geo/GeoMaker.h"
@@ -44,7 +45,9 @@ GeoGroup::GeoGroup(const GeoGroup& other) : MapObject(other) {
 }
 
 GeoGroup::~GeoGroup() {
-	delete[] _transformation;
+	if(_transformation) {
+		delete[] _transformation;
+	}
 }
 
 const char* GeoGroup::toString() {
@@ -79,8 +82,20 @@ void GeoGroup::freeGL() {
 }
 
 bool GeoGroup::checkContact( const float pos[3], float dist ) {
+	float posAjuste[4];
+
+	if(_transformation) {
+		MathUtils::multMatrixVector4x4(_transformation, pos, posAjuste);
+	}
+	else {
+		posAjuste[0] = pos[0];
+		posAjuste[1] = pos[1];
+		posAjuste[2] = pos[2];
+		posAjuste[3] = pos[3];
+	}
+
 	for(MapObject* geo : _geos) {
-		if(geo->checkContact(pos, dist)) {
+		if(geo->checkContact(posAjuste, dist)) {
 			return true;
 		}
 	}
@@ -88,18 +103,42 @@ bool GeoGroup::checkContact( const float pos[3], float dist ) {
 	return false;
 }
 
-void GeoGroup::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
+void GeoGroup::GereContactPlayer(float posPlayer[3], CPlayer *player) {
 	if(_solid) {
+		float posPlayerAjuste[4];
+
+		if(_transformation) {
+			MathUtils::multMatrixVector4x4(_transformation, posPlayer, posPlayerAjuste);
+		}
+		else {
+			posPlayerAjuste[0] = posPlayer[0];
+			posPlayerAjuste[1] = posPlayer[1];
+			posPlayerAjuste[2] = posPlayer[2];
+			posPlayerAjuste[3] = posPlayer[3];
+		}
+
 		for(MapObject* geo : _geos) {
-			geo->GereContactPlayer(positionPlayer, player);
+			geo->GereContactPlayer(posPlayerAjuste, player);
 		}
 	}
 }
 
-float GeoGroup::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
+float GeoGroup::GereLaserPlayer(float posPlayer[3], CV3D &Dir, float dist) {
 	if(_solid) {
+		float posPlayerAjuste[4];
+
+		if(_transformation) {
+			MathUtils::multMatrixVector4x4(_transformation, posPlayer, posPlayerAjuste);
+		}
+		else {
+			posPlayerAjuste[0] = posPlayer[0];
+			posPlayerAjuste[1] = posPlayer[1];
+			posPlayerAjuste[2] = posPlayer[2];
+			posPlayerAjuste[3] = posPlayer[3];
+		}
+
 		for(MapObject* geo : _geos) {
-			dist = geo->GereLaserPlayer(pos, Dir, dist);
+			dist = geo->GereLaserPlayer(posPlayerAjuste, Dir, dist);
 		}
 	}
 
@@ -158,14 +197,17 @@ bool GeoGroup::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErr
 	TiXmlElement* elTransformation = el->FirstChildElement(Xml::TRANSFORMATION);
 
 	if(elTransformation) {
-		_transformation = new float[16];
+		float transformation[16];
 
-		bool a = Xml::Lit4fv(elTransformation, Xml::T1, Xml::X, Xml::Y, Xml::Z, Xml::W, _transformation + 0	);
-		bool b = Xml::Lit4fv(elTransformation, Xml::T2, Xml::X, Xml::Y, Xml::Z, Xml::W, _transformation + 4	);
-		bool c = Xml::Lit4fv(elTransformation, Xml::T3, Xml::X, Xml::Y, Xml::Z, Xml::W, _transformation + 8	);
-		bool d = Xml::Lit4fv(elTransformation, Xml::T4, Xml::X, Xml::Y, Xml::Z, Xml::W, _transformation + 12);
+		bool a = Xml::Lit4fv(elTransformation, Xml::T1, Xml::X, Xml::Y, Xml::Z, Xml::W, transformation + 0	);
+		bool b = Xml::Lit4fv(elTransformation, Xml::T2, Xml::X, Xml::Y, Xml::Z, Xml::W, transformation + 4	);
+		bool c = Xml::Lit4fv(elTransformation, Xml::T3, Xml::X, Xml::Y, Xml::Z, Xml::W, transformation + 8	);
+		bool d = Xml::Lit4fv(elTransformation, Xml::T4, Xml::X, Xml::Y, Xml::Z, Xml::W, transformation + 12);
 
-		if( !(a && b && c && d) ) {
+		if(a && b && c && d) {
+			setTransformation(transformation);
+		}
+		else {
 			throw CErreur("Fichier Map corrompu GeoGroup 4");
 		}
 	}
@@ -178,7 +220,6 @@ bool GeoGroup::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErr
 
 			if(object) {
 				_geos.push_back(object);
-				//map.add(object);
 			}
 			else {
 				mapLogger->logError("Géo corrompue ?");
@@ -187,6 +228,21 @@ bool GeoGroup::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErr
 	}
 
 	return true;
+}
+
+void GeoGroup::setTransformation(const float transformation[16]) {
+	if(!transformation) {
+		if(_transformation) {
+			delete[] _transformation;
+			_transformation = 0;
+		}
+
+		_transformation = new float[16];
+
+		for(int i=0 ; i<16 ; i++) {
+			_transformation[i] = transformation[i];
+		}
+	}
 }
 
 bool GeoGroup::Save(TiXmlElement* element) throw(CErreur) {

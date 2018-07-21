@@ -1,0 +1,19 @@
+
+
+// AVANT
+
+:ContactSol = Vérifier si le joueur est en contact avec le sol (:VitesseAvant)
+:Pente = Calculer la pente du joueur(:ContactSol, :PositionAvant)
+
+:PositionAprès = Calculer la nouvelle position (:PositionAvant, :VitesseAvant)
+	:PositionAprès1 = Calculer position théorique (:PositionAvant, :VitesseAvant)
+	:PositionAprès2 = Empêcher de traverser une surface dure (:PositionAvant, :PositionAprès)
+
+:ContactSol = Vérifier si le joueur est en contact avec le sol (:VitesseAvant)
+:PenteAvant = Calculer la pente du joueur(:ContactSol, :PositionAvant)
+:FrotementSol = Vérifier si le joueur est en frottement avec le sol(:ContactSol, :PenteAvant)
+
+:VitesseAprès = Appliquer les accélérations (:VitesseAvant)
+	:VitesseAprès = Appliquer accélération clavier(:FrottementSol)
+	:VitesseAprès = Appliquer gravité
+	:VitesseAprès = Limiter la vitesse du joueur au sol (:ContactSol, :Pente)

@@ -360,7 +360,7 @@ void PluginEngine::activateGlobalPlugin(const string& pluginName) {
 	PluginContext* pluginContext = getGlobalPluginContext(pluginName);
 
 	if(pluginContext != NULL) {
-		LOGERROR(("Le plugin '%s' est dï¿½jï¿½ actif", pluginName.c_str()));
+		LOGERROR(("Le plugin '%s' est déjà actif", pluginName.c_str()));
 		pluginContext->logError("Tentative d'activation du plugin alors qu'il est dï¿½jï¿½ actif");
 		return;
 	}

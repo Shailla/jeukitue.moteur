@@ -7,6 +7,8 @@
 #include <agar/core.h>
 #include <agar/gui.h>
 
+#include "main/Fabrique.h"
+#include "plugin/PluginEngine.h"
 #include "menu/View.h"
 #include "menu/Controller.h"
 #include "menu/Viewer.h"
@@ -47,6 +49,8 @@ PluginsManagementView::~PluginsManagementView(void) {
 }
 
 void PluginsManagementView::show(void) {
+	PluginEngine* pluginEngine = Fabrique::getPluginEngine();
+
 	// Supprime boxes des plugins
 	vector<AG_Box*>::iterator iterBox = _pluginBoxs.begin();
 
@@ -70,30 +74,28 @@ void PluginsManagementView::show(void) {
 
 	while(iterPluginName < _pluginNames.end()) {
 		string pluginName = *iterPluginName;
+		PluginContext* pluginContext = pluginEngine->getGlobalPluginContext(pluginName);		// Le plugin est-il déjà actif
+
 		AG_Box* boxHoriz = AG_BoxNewHoriz(_boxVert, AG_BOX_HFILL | AG_BOX_HOMOGENOUS | AG_BOX_FRAME);
 
 		// Nom du plugin
-		AG_Label* label = AG_LabelNew(boxHoriz, 0, pluginName.c_str());
-		AG_ExpandHoriz(label);
+		AG_Label* labelName = AG_LabelNew(boxHoriz, 0, pluginName.c_str());
+		AG_ExpandHoriz(labelName);
 
-		// Boutons associés au plugin ("Activer", "Désactiver", "Exécuter")
-		AG_Button* buttonActivate = AG_ButtonNewFn(boxHoriz,
-									   	   	   	   0,
-												   "Activer",
-												   m_controllerCallback,
-												   "%i,%i",
-												   Controller::PluginActivateAction,
-												   pluginNumber);
+		AG_Label* labelActif;
+		AG_Button* buttonActivate;
+
+		if(pluginContext) {
+			labelActif = AG_LabelNew(boxHoriz, 0, "Actif");
+			buttonActivate = AG_ButtonNewFn(boxHoriz, 0, "Desactiver", m_controllerCallback, "%i,%i", Controller::PluginDeactivateAction, pluginNumber);
+		}
+		else {
+			labelActif = AG_LabelNew(boxHoriz, 0, "Inactif");
+			buttonActivate = AG_ButtonNewFn(boxHoriz, 0, "Activer", m_controllerCallback, "%i,%i", Controller::PluginActivateAction, pluginNumber);
+		}
+
+		AG_ExpandHoriz(labelActif);
 		AG_ExpandHoriz(buttonActivate);
-
-		AG_Button* buttonDeactivate = AG_ButtonNewFn(boxHoriz,
-									   	   	   0,
-											   "Desactiver",
-											   m_controllerCallback,
-											   "%i,%i",
-											   Controller::PluginDeactivateAction,
-											   pluginNumber);
-		AG_ExpandHoriz(buttonDeactivate);
 
 		_pluginBoxs.push_back(boxHoriz);
 

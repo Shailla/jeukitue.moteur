@@ -116,7 +116,7 @@ const char* CMap::toString() {
 	return tostring.c_str();
 }
 
-void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
+void CMap::affiche() {	// Affiche tous les objets géo de du MAP
 	// Si nécessaire, initialise les éléments OpenGL de la MAP
 	initGL();
 
@@ -132,7 +132,7 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 		glDepthMask( GL_FALSE );
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE );
 
-		engine->Affiche();	// Le moteur de particules affiche toutes ses particules
+		engine->affiche();	// Le moteur de particules affiche toutes ses particules
 	}
 
 	glDisable( GL_BLEND );
@@ -142,10 +142,10 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 	for(Drawable* drawable : _drawables) {
 		if(!drawable->isHidden()) {
 			if(!drawable->isHighlighted()) {
-				drawable->Affiche();			// Affichage de l'objet géo
+				drawable->affiche();			// Affichage de l'objet géo
 			}
 			else {
-				drawable->AfficheHighlighted(1.0f, 0.0f, 0.0f);
+				drawable->afficheHighlighted(1.0f, 0.0f, 0.0f);
 			}
 		}
 	}
@@ -154,11 +154,11 @@ void CMap::Affiche() {	// Affiche tous les objets géo de du MAP
 
 	// Initialisation des sous-Map
 	for(auto& subMap : _subMaps) {
-		subMap.second->Affiche();
+		subMap.second->affiche();
 	}
 }
 
-void CMap::AfficheHighlighted(float r,float v,float b) {	// Affiche tous les objets g�o de du MAP
+void CMap::afficheHighlighted(float r,float v,float b) {	// Affiche tous les objets g�o de du MAP
 	// Si nécessaire, initialise les éléments OpenGL de la MAP
 	if(!_isGlInitialized) {
 		initGL();
@@ -171,14 +171,14 @@ void CMap::AfficheHighlighted(float r,float v,float b) {	// Affiche tous les obj
 	glEnableClientState( GL_VERTEX_ARRAY );
 
 	for(Drawable* drawable : _drawables) {
-		drawable->AfficheHighlighted(r, v, b);
+		drawable->afficheHighlighted(r, v, b);
 	}
 
 	glDisable( GL_VERTEX_ARRAY );
 
 	// Initialisation des sous-Map
 	for(auto& subMap : _subMaps) {
-		subMap.second->AfficheHighlighted(r, v, b);
+		subMap.second->afficheHighlighted(r, v, b);
 	}
 }
 
@@ -424,7 +424,7 @@ vector<MapObject*>& CMap::getMapObjects() {
 	return _objects;
 }
 
-void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
+void CMap::gereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	float positionPlayerDefault[3];
 
 	if(!positionPlayer) {
@@ -433,111 +433,111 @@ void CMap::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	}
 
 	for(SolidAndTargettable* solid : _solidAndTargettables) {
-		solid->GereContactPlayer(positionPlayer, player);	// Gère les contacts entre l'objet géo et le joueur
+		solid->gereContactPlayer(positionPlayer, player);	// Gère les contacts entre l'objet géo et le joueur
 	}
 
 	// Initialisation des sous-Map
 	for(auto& subMap : _subMaps) {
-		subMap.second->GereContactPlayer(positionPlayer, player);
+		subMap.second->gereContactPlayer(positionPlayer, player);
 	}
 }
 
-float CMap::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
+float CMap::gereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 	// Renvoie la distance du premier point de contact entre un rayon laser parti du point 'pos'
 	// dans la direction 'Dir' si cette distance est inférieure à 'dist', renvoie 'dist' sinon
 
 	for(SolidAndTargettable* solid : _solidAndTargettables) {
-		dist = solid->GereLaserPlayer( pos, Dir, dist );
+		dist = solid->gereLaserPlayer( pos, Dir, dist );
 	}
 
 	// Initialisation des sous-Map
 	for(auto& subMap : _subMaps) {
-		subMap.second->GereLaserPlayer( pos, Dir, dist );
+		subMap.second->gereLaserPlayer( pos, Dir, dist );
 	}
 
 	return dist;	// Renvoie la distance du premier contact trouv� entre le laser et une face d'objet g�o
 }
 
-void CMap::EchangeXY() {
+void CMap::echangeXY() {
 	LOGDEBUG(("CMap::EchangeXY()%T", this ));
 
 	// Entry points
 	for(EntryPoint* entry : _entryPoints)
-		entry->EchangeXY();
+		entry->echangeXY();
 
 	// Geo
 	for(Geometrical* geo : _geos)
-		geo->EchangeXY();
+		geo->echangeXY();
 
 	// Lights
 	for(CLight* light : _lights)
-		light->EchangeXY();
+		light->echangeXY();
 
 	// Initialisation des sous-Map
 	for(auto& subMap : _subMaps)
-		subMap.second->EchangeXY();
+		subMap.second->echangeXY();
 }
 
-void CMap::EchangeXZ() {
+void CMap::echangeXZ() {
 	LOGDEBUG(("CMap::EchangeXZ()%T", this ));
 
 	// Entry points
 	for(EntryPoint* entry : _entryPoints)
-		entry->EchangeXZ();
+		entry->echangeXZ();
 
 	// Geo
 	for(Geometrical* geo : _geos)
-		geo->EchangeXZ();
+		geo->echangeXZ();
 
 	// Lights
 	for(CLight* light : _lights)
-		light->EchangeXZ();
+		light->echangeXZ();
 
 	// Initialisation des sous-Map
 	for(auto& subMap : _subMaps)
-		subMap.second->EchangeXZ();
+		subMap.second->echangeXZ();
 }
 
-void CMap::EchangeYZ() {
+void CMap::echangeYZ() {
 	LOGDEBUG(("CMap::EchangeYZ()%T", this ));
 
 	// Entry points
 	for(EntryPoint* entry : _entryPoints)
-		entry->EchangeYZ();
+		entry->echangeYZ();
 
 	// Geo
 	for(Geometrical* geo : _geos)
-		geo->EchangeYZ();
+		geo->echangeYZ();
 
 	// Lights
 	for(CLight* light : _lights)
-		light->EchangeYZ();
+		light->echangeYZ();
 
 	// Initialisation des sous-Map
 	for(auto& subMap : _subMaps)
-		subMap.second->EchangeYZ();
+		subMap.second->echangeYZ();
 }
 
-void CMap::Scale(float scaleX, float scaleY, float scaleZ) {
+void CMap::scale(float scaleX, float scaleY, float scaleZ) {
 	LOGDEBUG(("CMap::Scale(scaleX=%f,sclaeY=%f,scaleZ=%f)%T", scaleX, scaleY, scaleZ, this ));
 
 	if(scaleX!=1.0 || scaleY!=1.0 || scaleZ!=1.0) {
 		// Entry points
 		for(EntryPoint* entry : _entryPoints)
-			entry->Scale(scaleX, scaleY, scaleZ);
+			entry->scale(scaleX, scaleY, scaleZ);
 
 		// Geo
 		for(Geometrical* geo : _geos)
-			geo->Scale( scaleX, scaleY, scaleZ );
+			geo->scale( scaleX, scaleY, scaleZ );
 
 		// Lights
 		for(CLight* light : _lights)
-			light->Scale( scaleX, scaleY, scaleZ );
+			light->scale( scaleX, scaleY, scaleZ );
 	}
 
 	// Initialisation des sous-Map
 	for(auto& subMap : _subMaps) {
-		subMap.second->Scale( scaleX, scaleY, scaleZ );
+		subMap.second->scale( scaleX, scaleY, scaleZ );
 	}
 }
 
@@ -692,7 +692,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) throw(CEr
 					msg << "Scaling " << subMap->getId() << " : " << scaling[0] << " " << scaling[1] << " " << scaling[2];
 					mapLogger->logInfo(msg);
 
-					subMap->Scale(scaling[0], scaling[1], scaling[2]);
+					subMap->scale(scaling[0], scaling[1], scaling[2]);
 
 					// Fusion des Map
 					if(importMode && !strcmp(Xml::IMPORT_MODE_MERGE, importMode)) {

@@ -45,11 +45,11 @@ void MapObject::endRefresh() {
 	LOGWARN(("Use of not implemented method"));
 }
 
-void MapObject::Affiche() {
+void MapObject::affiche() {
 	LOGWARN(("Use of not implemented method"));
 }
 
-void MapObject::AfficheHighlighted(float r,float v,float b){
+void MapObject::afficheHighlighted(float r,float v,float b){
 	LOGWARN(("Use of not implemented method"));
 }
 
@@ -61,19 +61,19 @@ void MapObject::freeGL() {
 	LOGWARN(("Use of not implemented method"));
 }
 
-void MapObject::EchangeXY() {
+void MapObject::echangeXY() {
 	LOGWARN(("Use of not implemented method"));
 }
 
-void MapObject::EchangeXZ() {
+void MapObject::echangeXZ() {
 	LOGWARN(("Use of not implemented method"));
 }
 
-void MapObject::EchangeYZ() {
+void MapObject::echangeYZ() {
 	LOGWARN(("Use of not implemented method"));
 }
 
-void MapObject::Scale(float scaleX, float scaleY, float scaleZ) {
+void MapObject::scale(float scaleX, float scaleY, float scaleZ) {
 	LOGWARN(("Use of not implemented method"));
 }
 
@@ -81,11 +81,11 @@ void MapObject::translate(float x, float y, float z) {
 	LOGWARN(("Use of not implemented method"));
 }
 
-void MapObject::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
+void MapObject::gereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	LOGWARN(("Use of not implemented method"));
 }
 
-float MapObject::GereLaserPlayer(float pos[3], CV3D& Dir, float dist) {
+float MapObject::gereLaserPlayer(float pos[3], CV3D& Dir, float dist) {
 	LOGWARN(("Use of not implemented method"));
 	return 0.0f;
 }

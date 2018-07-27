@@ -42,15 +42,15 @@ public:
 	void freeGL() override;
 
 	bool checkContact( const float pos[3], float dist ) override;
-	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;
-	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;		// Voir la définition de la fonction
+	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;
+	float gereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;		// Voir la définition de la fonction
 
 	// Fonctions pour l'interface CGeo
 	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
 	bool Save(TiXmlElement* element) throw(CErreur) override;
 
-	void Affiche() override;									// Affiche l'objet géo
-	void AfficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique
+	void affiche() override;									// Affiche l'objet géo
+	void afficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique
 	const char* toString() override;
 
 	void setTransformation(const float transformation[16]);

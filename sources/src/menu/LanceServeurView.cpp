@@ -23,9 +23,7 @@ using namespace std;
     le répertoire Map du jeu.
     On peut en choisir une, visualiser son apperçu et lancer un serveir de jeu avec cette map.
 */
-LanceServeurView::LanceServeurView(const AG_EventFn controllerCallback)
-:View(controllerCallback)
-{
+LanceServeurView::LanceServeurView(const AG_EventFn controllerCallback) : View(controllerCallback) {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
 	AG_WindowSetCaption(m_window, "Ouvrir une sc\u00e8ne Map");
 

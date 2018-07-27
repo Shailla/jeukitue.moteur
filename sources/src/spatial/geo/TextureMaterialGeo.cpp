@@ -169,7 +169,7 @@ void CTextureMaterialGeo::setNormalVertex(float *tab) {
 	m_TabVectNormaux = tab;
 }
 
-void CTextureMaterialGeo::Affiche() {
+void CTextureMaterialGeo::affiche() {
 	_isGlInitialized = true;
 
 	if(!_isGlInitialized) {
@@ -208,7 +208,7 @@ void CTextureMaterialGeo::Affiche() {
 		AfficheNormals();
 }
 
-void CTextureMaterialGeo::AfficheHighlighted(float r,float v,float b) {
+void CTextureMaterialGeo::afficheHighlighted(float r,float v,float b) {
 	glBindBuffer(GL_ARRAY_BUFFER, m_VboBufferNames[VBO_VERTEX]);
 	glVertexPointer(3, GL_FLOAT, 0, 0);
 
@@ -372,7 +372,7 @@ CTextureMaterialGeo::~CTextureMaterialGeo() {
 	}
 }
 
-void CTextureMaterialGeo::EchangeXY()	// Echange les axes X et Y de l'objet
+void CTextureMaterialGeo::echangeXY()	// Echange les axes X et Y de l'objet
 {
 	float varX, varY;
 
@@ -386,7 +386,7 @@ void CTextureMaterialGeo::EchangeXY()	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CTextureMaterialGeo::EchangeXZ() {	// Echange les axes X et Y de l'objet
+void CTextureMaterialGeo::echangeXZ() {	// Echange les axes X et Y de l'objet
 	float varX, varZ;
 
 	for( int i=0 ; i<m_NumVertex ; i++ ) {
@@ -398,7 +398,7 @@ void CTextureMaterialGeo::EchangeXZ() {	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CTextureMaterialGeo::EchangeYZ() {	// Echange les axes X et Y de l'objet
+void CTextureMaterialGeo::echangeYZ() {	// Echange les axes X et Y de l'objet
 	float varY, varZ;
 
 	for( int i=0 ; i<m_NumVertex ; i++ ) {
@@ -410,7 +410,7 @@ void CTextureMaterialGeo::EchangeYZ() {	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CTextureMaterialGeo::Scale(float scaleX, float scaleY, float scaleZ) {
+void CTextureMaterialGeo::scale(float scaleX, float scaleY, float scaleZ) {
 	for( int i=0 ; i<m_NumVertex ; i++ ) {
 		m_TabVertex[ (3*i) ] *= scaleX;
 		m_TabVertex[ (3*i)+1 ] *= scaleY;
@@ -586,7 +586,7 @@ bool CTextureMaterialGeo::checkContact( const float pos[3], float dist ) {
 	return false;
 }
 
-void CTextureMaterialGeo::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
+void CTextureMaterialGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	float dist = player->getRayon();	// Rayon de la sph�re repr�sentant le volume du joueur
 	float distanceW;
 
@@ -615,7 +615,7 @@ bool CTextureMaterialGeo::TestContactPave( const float pos[3], float dist ) {
 	return false;	// Le point 'pos' se trouve � une distance sup�rieure
 }
 
-float CTextureMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
+float CTextureMaterialGeo::gereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
 	float distanceVar;
 	float *vertex, *normal;
 	CV3D AP, N, AB, AC, U, V, W, var;

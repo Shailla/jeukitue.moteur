@@ -108,27 +108,27 @@ CLight::CLight(CMap* map) : MapObject(map, MapObject::LIGHT) {
 CLight::~CLight() {
 }
 
-void CLight::EchangeXY()		// Echange les coordonn�es X et Y de l'objet
+void CLight::echangeXY()		// Echange les coordonn�es X et Y de l'objet
 {
 	float var = m_Position[0];
 	m_Position[0] = m_Position[1];
 	m_Position[1] = var;
 }
-void CLight::EchangeXZ()			// Echange les coordonn�es X et Z de l'objet
+void CLight::echangeXZ()			// Echange les coordonn�es X et Z de l'objet
 {
 	float var = m_Position[0];
 	m_Position[0] = m_Position[2];
 	m_Position[2] = var;
 }
 
-void CLight::EchangeYZ()			// Echange les coordonn�es Y et Z de l'objet
+void CLight::echangeYZ()			// Echange les coordonn�es Y et Z de l'objet
 {
 	float var = m_Position[1];
 	m_Position[1] = m_Position[2];
 	m_Position[2] = var;
 }
 
-void CLight::Scale( float scaleX, float scaleY, float scaleZ )	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
+void CLight::scale( float scaleX, float scaleY, float scaleZ )	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
 {
 	m_Position[ 0 ] *= scaleX;
 	m_Position[ 1 ] *= scaleY;

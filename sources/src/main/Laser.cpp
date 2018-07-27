@@ -101,7 +101,7 @@ bool CLaser::Refresh(Uint32 now, float deltaTime) {
 	distance = 10000.0f;
 	CV3D DirVerif;
 	DirVerif = Dir;
-	distance = Game.getMap()->GereLaserPlayer( pos, Dir, distance );	// G�re le laser de 'player' avec la map
+	distance = Game.getMap()->gereLaserPlayer( pos, Dir, distance );	// G�re le laser de 'player' avec la map
 
 	// V�rifie si un joueur a �t� touch�
 	playerTouche = 0;	// Pas de joueur touch� par le laser trouv�

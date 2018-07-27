@@ -103,7 +103,7 @@ void CRocket::afficheRocket() {
 	glRotated(-m_Teta, 0.0f, 1.0f, 0.0f);	//Rotation par rapport � l'axe verticale
 	glRotated(-m_Phi, 1.0, 0.0, 0.0);
 
-	_mapRocket->Affiche();
+	_mapRocket->affiche();
 
 	glPopMatrix();
 

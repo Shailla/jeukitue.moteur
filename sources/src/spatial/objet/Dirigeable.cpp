@@ -41,11 +41,11 @@ Dirigeable::Dirigeable(const Dirigeable& other) : MapObject(other) {
 Dirigeable::~Dirigeable(void) {
 }
 
-void Dirigeable::AfficheHighlighted(float r, float g, float b) {		// Fonction d'affichage de la porte
-	Affiche();
+void Dirigeable::afficheHighlighted(float r, float g, float b) {		// Fonction d'affichage de la porte
+	affiche();
 }
 
-void Dirigeable::Affiche() {		// Fonction d'affichage de la porte
+void Dirigeable::affiche() {		// Fonction d'affichage de la porte
 }
 
 void Dirigeable::Affiche(Branche* branche) {

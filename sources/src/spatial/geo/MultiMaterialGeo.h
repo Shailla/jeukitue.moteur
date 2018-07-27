@@ -59,10 +59,10 @@ public:
 	float *m_TabVectNormaux;	// Pointeur sur le tableau des vecteurs normaux
 
 	// Transformations
-	void EchangeXY() override;										// Echange les coordonnées X et Y de l'objet
-	void EchangeXZ() override;										// Echange les coordonnées X et Z de l'objet
-	void EchangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
-	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
+	void echangeXY() override;										// Echange les coordonnées X et Y de l'objet
+	void echangeXZ() override;										// Echange les coordonnées X et Z de l'objet
+	void echangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
+	void scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
 	void translate(float x, float y, float z) override;				// Translation pondérée selon X, Y et Z de l'objet
 
 	void setMaterial(const std::string& matRef);	// Associe l'objet au matériau de référence matRef
@@ -73,8 +73,8 @@ public:
 	void setOffsetMateriau(int offset);				// Décale la référence matériau de l'offset
 
 	// Affichage
-	void Affiche() override;									// Affiche cet objet géo
-	void AfficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique
+	void affiche() override;									// Affiche cet objet géo
+	void afficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique
 
 	// Sérialisation
 	bool Save(TiXmlElement* element) throw(CErreur) override;
@@ -83,8 +83,8 @@ public:
 	// Gestion des contacts
 	bool checkContact( const float pos[3], float dist ) override;
 	bool TestContactPave(const float pos[3], float dist);					// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
-	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;
-	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;	// Voir la définition de la fonction
+	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;
+	float gereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;	// Voir la définition de la fonction
 
 	const char* toString() override;
 };

@@ -27,8 +27,8 @@ public:
 	Dirigeable(const Dirigeable& other);
 	~Dirigeable();
 
-	void Affiche() override;										// Fonction d'affichage de l'objet g�om�trique
-	void AfficheHighlighted(float r, float g, float b) override;	// Fonction d'affichage de l'objet g�om�trique
+	void affiche() override;										// Fonction d'affichage de l'objet g�om�trique
+	void afficheHighlighted(float r, float g, float b) override;	// Fonction d'affichage de l'objet g�om�trique
 	static void Affiche(Branche* branche);
 	void refresh(CGame *game) override;								// Rafraichissement des donn�es, position, vitesse, ... de l'objet
 	MapObject* clone() override;

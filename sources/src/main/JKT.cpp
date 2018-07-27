@@ -487,7 +487,7 @@ void display() {		// Fonction principale d'affichage
 		glEnable(GL_DEPTH_TEST);
 
 		//		Game.getMap()->AfficheSelection(1.0f, 0.0f, 0.0f);		// Affichage de la map
-		Game.getMap()->Affiche();		// Affichage de la map
+		Game.getMap()->affiche();		// Affichage de la map
 		Game.AfficheProjectils();		// Affichage des projectiles
 		Game.AfficheDirigeables();		// Affichage des dirigeables
 		Game.AffichePlayers();			// Affiche des joueurs
@@ -1027,14 +1027,14 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 
 	CMap *pMapJoueur = new CMap(0);
 	pMapJoueur->Lit(mapJoueurPrincipal, 0);
-	pMapJoueur->EchangeXZ();					// Ajuste les coordonn�es
-	pMapJoueur->Scale( -0.06f, 0.06f, 0.06f );
+	pMapJoueur->echangeXZ();					// Ajuste les coordonn�es
+	pMapJoueur->scale( -0.06f, 0.06f, 0.06f );
 	pMapJoueur->init();
 
 	CMap *pMapJoueur2 = new CMap(0);
 	pMapJoueur2->Lit(nomFichierJoueur, 0);
-	pMapJoueur2->EchangeXZ();					// Ajuste les coordonn�es
-	pMapJoueur2->Scale( -0.06f, 0.06f, 0.06f );
+	pMapJoueur2->echangeXZ();					// Ajuste les coordonn�es
+	pMapJoueur2->scale( -0.06f, 0.06f, 0.06f );
 	pMapJoueur2->init();
 
 	cout << endl;

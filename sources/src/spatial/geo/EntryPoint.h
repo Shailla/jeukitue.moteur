@@ -31,10 +31,10 @@ public:
 	bool Save(TiXmlElement* element) throw(CErreur) override;							// Lit le point d'entr�e joueur dans un fichier Map format XML
 
 	// M�thodes de manipulation g�om�trique
-	void EchangeXY() override;										// Echange les coordonn�es X et Y de l'objet
-	void EchangeXZ() override;										// Echange les coordonn�es X et Z de l'objet
-	void EchangeYZ() override;										// Echange les coordonn�es Y et Z de l'objet
-	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
+	void echangeXY() override;										// Echange les coordonn�es X et Y de l'objet
+	void echangeXZ() override;										// Echange les coordonn�es X et Z de l'objet
+	void echangeYZ() override;										// Echange les coordonn�es Y et Z de l'objet
+	void scale(float scaleX, float scaleY, float scaleZ) override;	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
 	void translate(float x, float y, float z) override;				// Translation pond�r�e selon X, Y et Z de l'objet
 
 	jkt::CV3D getEntryPosition();

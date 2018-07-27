@@ -13,6 +13,8 @@
 #include <map>
 #include <fstream>
 
+#include <GL/gl.h>
+
 #include "tinyxml.h"
 
 #include "spatial/geo/ChanTex.h"
@@ -67,15 +69,15 @@ public:
 
 	float *m_TabVectNormaux;	// Pointeur sur le tableau des vecteurs normaux
 
-	void EchangeXY() override;										// Echange les coordonn�es X et Y de l'objet
-	void EchangeXZ() override;										// Echange les coordonn�es X et Z de l'objet
-	void EchangeYZ() override;										// Echange les coordonn�es Y et Z de l'objet
-	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
+	void echangeXY() override;										// Echange les coordonn�es X et Y de l'objet
+	void echangeXZ() override;										// Echange les coordonn�es X et Z de l'objet
+	void echangeYZ() override;										// Echange les coordonn�es Y et Z de l'objet
+	void scale(float scaleX, float scaleY, float scaleZ) override;	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
 	void translate( float x, float y, float z ) override;			// Translation pond�r�e selon X, Y et Z de l'objet
 
 	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pav� constitu� des distances min/max de l'objet g�o
-	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;
-	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;	// Voir la d�finition de la fonction
+	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;
+	float gereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;	// Voir la d�finition de la fonction
 
 	// Fonctions pour l'interface CGeo
 	bool Save(TiXmlElement* element) throw(CErreur) override;
@@ -83,8 +85,8 @@ public:
 
 	bool checkContact( const float pos[3], float dist ) override;
 
-	void Affiche() override;							// Affiche cet objet g�o
-	void AfficheHighlighted(float r,float v,float b) override;		// Affiche l'objet en couleur unique
+	void affiche() override;							// Affiche cet objet géo
+	void afficheHighlighted(float r,float v,float b) override;		// Affiche l'objet en couleur unique
 	const char* toString() override;
 };
 

@@ -72,20 +72,20 @@ public:
 	 * Affichage de l'objet
 	 * *******************************************/
 
-	virtual void Affiche() override;										// Affiche l'objet g�om�trique
-	virtual void AfficheHighlighted(float r,float v,float b) override;		// Affiche l'objet g�om�trique en couleur unique
-	virtual void initGL() override;											// Initialisation de l'objet g�om�trique
-	virtual void freeGL() override;											// Lib�ration des ressources de l'objet dans le contexte OpenGL
+	virtual void affiche() override;										// Affiche l'objet géométrique
+	virtual void afficheHighlighted(float r,float v,float b) override;		// Affiche l'objet géométrique en couleur unique
+	virtual void initGL() override;											// Initialisation de l'objet géométrique
+	virtual void freeGL() override;											// Libération des ressources de l'objet dans le contexte OpenGL
 
 
 	/* ********************************************
-	 * Manipulation g�om�trique de l'objet
+	 * Manipulation géométrique de l'objet
 	 * *******************************************/
 
-	virtual void EchangeXY() override;										// Echange les coordonn�es X et Y de l'objet
-	virtual void EchangeXZ() override;										// Echange les coordonn�es X et Z de l'objet
-	virtual void EchangeYZ() override;										// Echange les coordonn�es Y et Z de l'objet
-	virtual void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
+	virtual void echangeXY() override;										// Echange les coordonnées X et Y de l'objet
+	virtual void echangeXZ() override;										// Echange les coordonnées X et Z de l'objet
+	virtual void echangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
+	virtual void scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
 	virtual void translate(float x, float y, float z) override;				// Translation pond�r�e selon X, Y et Z de l'objet
 
 
@@ -93,8 +93,8 @@ public:
 	 * Gestion des contacts de l'objet
 	 * *******************************************/
 
-	virtual void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;	// G�re les contact entre 'player' et l'objet g�o
-	virtual float GereLaserPlayer(float pos[3], CV3D& Dir, float dist) override;			// Voir la d�finition de la fonction
+	virtual void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;	// Gère les contact entre 'player' et l'objet g�o
+	virtual float gereLaserPlayer(float pos[3], CV3D& Dir, float dist) override;			// Voir la d�finition de la fonction
 	virtual bool checkContact(const float pos[3], float dist) override;
 };
 

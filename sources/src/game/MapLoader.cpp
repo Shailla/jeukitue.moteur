@@ -107,10 +107,10 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		try {
 			pMapJoueur = new CMap(0);
 			pMapJoueur->Lit(mapJoueur, 0);
-			pMapJoueur->EchangeXZ();			// Ajuste les coordonnées
+			pMapJoueur->echangeXZ();			// Ajuste les coordonnées
 			console->println(ConsoleView::COT_INFO, "Scaling du skin");
 			LOGINFO(("Scaling du skin"));
-			pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+			pMapJoueur->scale(-0.6f, 0.6f, 0.6f);
 		}
 		catch(CErreur& error) {
 			stringstream msg;
@@ -153,10 +153,10 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		try {
 			pMapJoueur = new CMap(0);
 			pMapJoueur->Lit(mapJoueur, 0);
-			pMapJoueur->EchangeXZ();			// Ajuste les coordonnées
+			pMapJoueur->echangeXZ();			// Ajuste les coordonnées
 			console->println(ConsoleView::COT_INFO, "Scaling du skin");
 			LOGINFO(("Scaling du skin"));
-			pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+			pMapJoueur->scale(-0.6f, 0.6f, 0.6f);
 		}
 		catch(CErreur& error) {
 			stringstream msg;
@@ -200,10 +200,10 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		try {
 			pMapJoueur = new CMap(0);
 			pMapJoueur->Lit(mapJoueur, 0);
-			pMapJoueur->EchangeXZ();			// Ajuste les coordonnées
+			pMapJoueur->echangeXZ();			// Ajuste les coordonnées
 			console->println(ConsoleView::COT_INFO, "Scaling du skin");
 			LOGINFO(("Scaling du skin"));
-			pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+			pMapJoueur->scale(-0.6f, 0.6f, 0.6f);
 		}
 		catch(CErreur& error) {
 			stringstream msg;
@@ -301,10 +301,10 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	try {
 		pMapJoueur = new CMap(0);
 		pMapJoueur->Lit("@Joueur\\joueurTex", 0);
-		pMapJoueur->EchangeXZ();			// Ajuste les coordonnées
+		pMapJoueur->echangeXZ();			// Ajuste les coordonnées
 		console->println(ConsoleView::COT_INFO, "Scaling du skin");
 		LOGINFO(("Scaling du skin"));
-		pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+		pMapJoueur->scale(-0.6f, 0.6f, 0.6f);
 	}
 	catch(CErreur& error) {
 		stringstream msg;
@@ -415,10 +415,10 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 		try {
 			pMapJoueur = new CMap(0);
 			pMapJoueur->Lit(mapJoueur, 0);
-			pMapJoueur->EchangeXZ();			// Ajuste les coordonnées
+			pMapJoueur->echangeXZ();			// Ajuste les coordonnées
 			console->println(ConsoleView::COT_INFO, "Scaling du skin");
 			LOGINFO(("Scaling du skin"));
-			pMapJoueur->Scale(-0.6f, 0.6f, 0.6f);
+			pMapJoueur->scale(-0.6f, 0.6f, 0.6f);
 		}
 		catch(CErreur& error) {
 			stringstream msg;

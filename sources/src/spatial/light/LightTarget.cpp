@@ -167,35 +167,35 @@ void CLightTarget::Desactive()
 	CLight::Desactive();
 }
 
-void CLightTarget::EchangeXY()		// Echange les coordonn�es X et Y de l'objet
+void CLightTarget::echangeXY()		// Echange les coordonn�es X et Y de l'objet
 {
-	CLight::EchangeXY();
+	CLight::echangeXY();
 
 	float var = m_Direction[0];
 	m_Direction[0] = m_Direction[1];
 	m_Direction[1] = var;
 }
-void CLightTarget::EchangeXZ()			// Echange les coordonn�es X et Z de l'objet
+void CLightTarget::echangeXZ()			// Echange les coordonn�es X et Z de l'objet
 {
-	CLight::EchangeXZ();
+	CLight::echangeXZ();
 
 	float var = m_Direction[0];
 	m_Direction[0] = m_Direction[2];
 	m_Direction[2] = var;
 }
 
-void CLightTarget::EchangeYZ()			// Echange les coordonn�es Y et Z de l'objet
+void CLightTarget::echangeYZ()			// Echange les coordonn�es Y et Z de l'objet
 {
-	CLight::EchangeYZ();
+	CLight::echangeYZ();
 
 	float var = m_Direction[1];
 	m_Direction[1] = m_Direction[2];
 	m_Direction[2] = var;
 }
 
-void CLightTarget::Scale( float scaleX, float scaleY, float scaleZ )	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
+void CLightTarget::scale( float scaleX, float scaleY, float scaleZ )	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
 {
-	CLight::Scale( scaleX, scaleY, scaleZ );
+	CLight::scale( scaleX, scaleY, scaleZ );
 
 	m_Direction[ 0 ] *= scaleX;
 	m_Direction[ 1 ] *= scaleY;

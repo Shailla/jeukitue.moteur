@@ -61,7 +61,7 @@ bool EntryPoint::Save(TiXmlElement* el) throw(CErreur) {
 /**
  * Echange les coordonn�es X et Y de l'objet.
  */
-void EntryPoint::EchangeXY() {
+void EntryPoint::echangeXY() {
 	float var = _entryPosition.X;
 	_entryPosition.X = _entryPosition.Y;
 	_entryPosition.Y = var;
@@ -70,7 +70,7 @@ void EntryPoint::EchangeXY() {
 /**
  * Echange les coordonn�es X et Z de l'objet.
  */
-void EntryPoint::EchangeXZ() {
+void EntryPoint::echangeXZ() {
 	float var = _entryPosition.X;
 	_entryPosition.X = _entryPosition.Z;
 	_entryPosition.Z = var;
@@ -79,7 +79,7 @@ void EntryPoint::EchangeXZ() {
 /**
  * Echange les coordonn�es Y et Z de l'objet.
  */
-void EntryPoint::EchangeYZ() {
+void EntryPoint::echangeYZ() {
 	float var = _entryPosition.Y;
 	_entryPosition.Y = _entryPosition.Z;
 	_entryPosition.Z = var;
@@ -88,7 +88,7 @@ void EntryPoint::EchangeYZ() {
 /**
  * Homoth�tie pond�r�e selon X, Y et Z de l'objet.
  */
-void EntryPoint::Scale(float scaleX, float scaleY, float scaleZ) {
+void EntryPoint::scale(float scaleX, float scaleY, float scaleZ) {
 	_entryPosition.X *= scaleX;
 	_entryPosition.Y *= scaleY;
 	_entryPosition.Z *= scaleZ;

@@ -61,10 +61,10 @@ public :
 	virtual bool Save(TiXmlElement* element) throw(CErreur) = 0;							// Sauve la light dans un fichier Map format XML
 
 	// M�thodes de manipulation g�om�trique
-	virtual void EchangeXY() override;										// Echange les coordonn�es X et Y de l'objet
-	virtual void EchangeXZ() override;										// Echange les coordonn�es X et Z de l'objet
-	virtual void EchangeYZ() override;										// Echange les coordonn�es Y et Z de l'objet
-	virtual void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
+	virtual void echangeXY() override;										// Echange les coordonn�es X et Y de l'objet
+	virtual void echangeXZ() override;										// Echange les coordonn�es X et Z de l'objet
+	virtual void echangeYZ() override;										// Echange les coordonn�es Y et Z de l'objet
+	virtual void scale(float scaleX, float scaleY, float scaleZ) override;	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
 	virtual void translate(float x, float y, float z) override;				// Translation pond�r�e selon X, Y et Z de l'objet
 
 	virtual void Active();		// Active la lumière

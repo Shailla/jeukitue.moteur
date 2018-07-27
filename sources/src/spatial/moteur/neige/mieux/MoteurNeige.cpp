@@ -201,11 +201,11 @@ void MoteurNeige::GenereTextureParticule() {
 	delete[] pixels;
 }
 
-void MoteurNeige::AfficheHighlighted(float r,float v,float b) {
+void MoteurNeige::afficheHighlighted(float r, float v, float b) {
 	// TODO
 }
 
-void MoteurNeige::Affiche() {
+void MoteurNeige::affiche() {
 	glEnable( GL_BLEND );
 	glDepthMask( GL_FALSE );
 	glBlendFunc( GL_SRC_ALPHA, GL_ONE );

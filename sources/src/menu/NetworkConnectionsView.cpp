@@ -12,9 +12,7 @@
 
 using namespace std;
 
-NetworkConnectionsView::NetworkConnectionsView(const AG_EventFn controllerCallback)
-:View(controllerCallback)
-{
+NetworkConnectionsView::NetworkConnectionsView(const AG_EventFn controllerCallback) : View(controllerCallback) {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
 	AG_WindowSetCaption(m_window, "Liste des joueurs");
 
@@ -50,20 +48,6 @@ void NetworkConnectionsView::refresh(AG_Event* event) {
 }
 
 void NetworkConnectionsView::refreshList() {
-
-//	AG_TableBegin(_playersTable);
-//
-//	if(Game._pTabIndexPlayer) {
-//		int curseur = -1;
-//		CPlayer* player;
-//
-//		while(Game._pTabIndexPlayer->Suivant(curseur)) {
-//			player = Game._pTabIndexPlayer->operator []( curseur );
-//			AG_TableAddRow(_playersTable, "%s:%s:%s:", player->nom().c_str(), "xxx.xxx.xxx.xxx", "xxxxx");
-//		}
-//	}
-//	AG_TableEnd(_playersTable);
-
 	// Rafraichissement de la page
 	AG_WindowUpdate(m_window);
 }

@@ -69,22 +69,22 @@ public:
 	void initGL() override;
 	void freeGL() override;
 
-	void EchangeXY() override;										// Echange les coordonnées X et Y de l'objet
-	void EchangeXZ() override;										// Echange les coordonnées X et Z de l'objet
-	void EchangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
-	void Scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
+	void echangeXY() override;										// Echange les coordonnées X et Y de l'objet
+	void echangeXZ() override;										// Echange les coordonnées X et Z de l'objet
+	void echangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
+	void scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
 	void translate( float x, float y, float z ) override;			// Translation pondérée selon X, Y et Z de l'objet
 
 	bool checkContact( const float pos[3], float dist ) override;
-	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;
-	float GereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;		// Voir la d�finition de la fonction
+	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;
+	float gereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;		// Voir la d�finition de la fonction
 
 	// Fonctions pour l'interface CGeo
 	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
 	bool Save(TiXmlElement* element) throw(CErreur) override;
 
-	void Affiche() override;									// Affiche l'objet géo
-	void AfficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique
+	void affiche() override;									// Affiche l'objet géo
+	void afficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique
 	const char* toString() override;
 };
 

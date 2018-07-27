@@ -21,8 +21,8 @@ public:
 
 	// Gestion des contacts
 	virtual bool checkContact(const float pos[3], float dist);
-	virtual void GereContactPlayer(float positionPlayer[3], CPlayer *player) = 0;	// Gère les contact entre 'player' et l'objet géo
-	virtual float GereLaserPlayer(float pos[3], CV3D& Dir, float dist) = 0;			// Voir la définition de la fonction
+	virtual void gereContactPlayer(float positionPlayer[3], CPlayer *player) = 0;	// Gère les contact entre 'player' et l'objet géo
+	virtual float gereLaserPlayer(float pos[3], CV3D& Dir, float dist) = 0;			// Voir la définition de la fonction
 };
 
 } /* namespace jkt */

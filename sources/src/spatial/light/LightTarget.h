@@ -31,10 +31,10 @@ public:
 	void SetFallOff( float falloff );
 	float getFallOff() const;
 
-	void EchangeXY();										// Echange les coordonn�es X et Y de l'objet
-	void EchangeXZ();										// Echange les coordonn�es X et Z de l'objet
-	void EchangeYZ();										// Echange les coordonn�es Y et Z de l'objet
-	void Scale(float scaleX, float scaleY, float scaleZ);	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
+	void echangeXY();										// Echange les coordonn�es X et Y de l'objet
+	void echangeXZ();										// Echange les coordonn�es X et Z de l'objet
+	void echangeYZ();										// Echange les coordonn�es Y et Z de l'objet
+	void scale(float scaleX, float scaleY, float scaleZ);	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
 };
 
 }	// JktMoteur

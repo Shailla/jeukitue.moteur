@@ -39,7 +39,7 @@ void AseImporter::lanceImportAse(const string& aseFilename, ConsoleView* console
 }
 
 int AseImporter::importAse(void* arg) {
-	// Récupération et désallocation des paramètres du thread
+	// Rï¿½cupï¿½ration et dï¿½sallocation des paramï¿½tres du thread
 	string aseFileName = (char*)((void**)arg)[0];
 	ConsoleView* console = (ConsoleView*)((void**)arg)[1];
 
@@ -84,8 +84,8 @@ int AseImporter::importAse(void* arg) {
 
 		// Ajustements spatiaux
 		console->println(ConsoleView::ConsoleOutputType::COT_INFO, "Import ASE : Ajustement dimensions / orientation...");
-		pMapASE->EchangeYZ();						// Inversion des coordonnées Y et Z
-		pMapASE->Scale( -1.0f, 1.0f, 1.0f );
+		pMapASE->echangeYZ();						// Inversion des coordonnï¿½es Y et Z
+		pMapASE->scale( -1.0f, 1.0f, 1.0f );
 
 		pMapASE->init();
 
@@ -98,7 +98,7 @@ int AseImporter::importAse(void* arg) {
 		/* Import des textures       */
 		/* ************************* */
 
-		// Crée répertoire de la Map
+		// Crï¿½e rï¿½pertoire de la Map
 		if(!create_directory(mapDir)) {
 			string msg("Cr\u00e9ation du r\u00e9pertoire '");
 			msg += mapDir.string();

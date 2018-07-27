@@ -124,7 +124,7 @@ void CheckPlayerInZone::refresh(CGame* game) {
 void CheckPlayerInZone::endRefresh() {
 }
 
-void CheckPlayerInZone::Affiche() {
+void CheckPlayerInZone::affiche() {
 	if(_isVisible) {
 		glEnable( GL_BLEND );
 		glBlendFunc( GL_SRC_ALPHA, GL_ONE );
@@ -137,9 +137,9 @@ void CheckPlayerInZone::Affiche() {
 	}
 }
 
-void CheckPlayerInZone::AfficheHighlighted(float r,float v,float b) {
+void CheckPlayerInZone::afficheHighlighted(float r,float v,float b) {
 	glColor3f(r, v, b);
-	Affiche();
+	affiche();
 }
 
 bool CheckPlayerInZone::isPlayerInZone() const {
@@ -178,7 +178,7 @@ bool CheckPlayerInZone::Save(TiXmlElement* element) throw(CErreur) {
 	return true;
 }
 
-void CheckPlayerInZone::EchangeXY() {	// Echange les axes X et Y de l'objet
+void CheckPlayerInZone::echangeXY() {	// Echange les axes X et Y de l'objet
 	float var1, var2;
 
 	var1 = _zoneDetectionXmin;
@@ -191,7 +191,7 @@ void CheckPlayerInZone::EchangeXY() {	// Echange les axes X et Y de l'objet
 	_zoneDetectionYmax = var2;
 }
 
-void CheckPlayerInZone::EchangeXZ() {	// Echange les axes X et Y de l'objet
+void CheckPlayerInZone::echangeXZ() {	// Echange les axes X et Y de l'objet
 	float var1, var2;
 
 	var1 = _zoneDetectionXmin;
@@ -204,7 +204,7 @@ void CheckPlayerInZone::EchangeXZ() {	// Echange les axes X et Y de l'objet
 	_zoneDetectionZmax = var2;
 }
 
-void CheckPlayerInZone::EchangeYZ() {	// Echange les axes X et Y de l'objet
+void CheckPlayerInZone::echangeYZ() {	// Echange les axes X et Y de l'objet
 	float var1, var2;
 
 	var1 = _zoneDetectionYmin;
@@ -217,7 +217,7 @@ void CheckPlayerInZone::EchangeYZ() {	// Echange les axes X et Y de l'objet
 	_zoneDetectionZmax = var2;
 }
 
-void CheckPlayerInZone::Scale( float scaleX, float scaleY, float scaleZ ) {
+void CheckPlayerInZone::scale( float scaleX, float scaleY, float scaleZ ) {
 	_zoneDetectionXmin *= scaleX;
 	_zoneDetectionXmax *= scaleX;
 

@@ -229,8 +229,8 @@ int threadConvertASE_1(void *arg)
 		return 0;	// Les choses se sont mal pass�es pour la conversion du fichier
 	}
 
-	pMapASE->EchangeYZ();						// Inversion des coordonnées Y et Z
-	pMapASE->Scale( -1.0f, 1.0f, 1.0f );
+	pMapASE->echangeYZ();						// Inversion des coordonnées Y et Z
+	pMapASE->scale( -1.0f, 1.0f, 1.0f );
 
 		// Transfert des fichiers de texture dans le répertoire du fichier Map
 	string nomRep = "./Map/" + nomFichierASE;

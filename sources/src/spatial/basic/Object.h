@@ -48,7 +48,7 @@ public:
 	CMap* getMap();
 	void setMap(CMap* map);
 
-	// Gestion identiant, nom et r�f�rence
+	// Gestion identiant, nom et référence
 	void setName(const std::string &nom);		// Impl�mente le nom du g�o
 	const char *getName();						// Renvoie le nom de l'objet
 	virtual const char* toString();				// Description r�sum�e de l'objet
@@ -56,7 +56,7 @@ public:
 	std::string getReference() const;
 	const std::string& getType() const;
 
-	// S�rialisation
+	// Sérialisation
 	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) = 0;
 	virtual bool Save(TiXmlElement* element) throw(CErreur) = 0;								// Sauve l'objet g�o dans un fichier Map
 };

@@ -125,7 +125,7 @@ private:
 	void deplaceTousPlayer(Uint32 now, float deltaTime);
 	void faitTousRequetesClavier(Uint32 now, float deltaTime);
 	void faitTousPlayerGravite(Uint32 now, float deltaTime);
-	void GereContactPlayers(Uint32 now, float deltaTime);						// Gère les contacts entre tous les joueurs et la map
+	void gereContactPlayers(Uint32 now, float deltaTime);						// Gère les contacts entre tous les joueurs et la map
 
 public:
 	void quitCurrentMap();

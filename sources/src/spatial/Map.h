@@ -92,8 +92,8 @@ public:
 	void initGL() override;		// Initialisation du contexte OpenGL
 	void freeGL() override;		// Libération du contexte OpenGL
 
-	void Affiche() override;											// Affiche l'ensemble des éléments 3D de cette Map
-	void AfficheHighlighted(float r,float v,float b) override;			// Affiche l'objet géométrique en couleur unique
+	void affiche() override;											// Affiche l'ensemble des éléments 3D de cette Map
+	void afficheHighlighted(float r,float v,float b) override;			// Affiche l'objet géométrique en couleur unique
 
 	bool Save(const std::string nomFichier);	// Sauvegarde du CMap dans un fichier *.map.xml
 
@@ -139,10 +139,10 @@ public:
 	void add(CheckPlayerInZone* detector);
 
 	// Geometrical
-	void EchangeXY() override;										// Echange les coordonnées X et Y des objets géo du map
-	void EchangeXZ() override;										// Echange les coordonnées X et Z des objets géo du map
-	void EchangeYZ() override;										// Echange les coordonnées Y et Z des objets géo du map
-	void Scale(float scaleX, float sclaeY, float scaleZ) override;	// Homothétie la Map (coordonnées multipliées par scale)
+	void echangeXY() override;										// Echange les coordonnées X et Y des objets géo du map
+	void echangeXZ() override;										// Echange les coordonnées X et Z des objets géo du map
+	void echangeYZ() override;										// Echange les coordonnées Y et Z des objets géo du map
+	void scale(float scaleX, float sclaeY, float scaleZ) override;	// Homothétie la Map (coordonnées multipliées par scale)
 	void translate(float x, float y, float z) override;				// Translation de la Map selon x, y, z
 
 	// Gestion des contacts
@@ -151,8 +151,8 @@ public:
 	/**
 	 * positionPlayer : position du jouer ou position calculé ce qui permet d'optimiser certains contacts quand un objet a bougé en considérant que c'est plutôt le
 	 */
-	void GereContactPlayer(float positionPlayer[3], CPlayer *player) override;			// Gère tous les contacts entre la map et les joueurs
-	float GereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;			// Envoie d'un laser sur la map
+	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;			// Gère tous les contacts entre la map et les joueurs
+	float gereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;			// Envoie d'un laser sur la map
 
 	std::map<int, CMap*>& getSubMaps();
 	std::vector<CLight*>& getLights();

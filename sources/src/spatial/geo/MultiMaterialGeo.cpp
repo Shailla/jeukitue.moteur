@@ -132,7 +132,7 @@ void CMultiMaterialGeo::setNormalVertex(float *tab) {
 	m_TabVectNormaux = tab;
 }
 
-void CMultiMaterialGeo::Affiche() {
+void CMultiMaterialGeo::affiche() {
 	glLineWidth( 1 );
 
 	// Attachement VBO sommets
@@ -214,7 +214,7 @@ const char* CMultiMaterialGeo::toString() {
 	return tostring.c_str();
 }
 
-void CMultiMaterialGeo::AfficheHighlighted(float r,float v,float b) {
+void CMultiMaterialGeo::afficheHighlighted(float r,float v,float b) {
 	glLineWidth( 1 );
 
 	// Attachement VBO sommets
@@ -373,7 +373,7 @@ CMultiMaterialGeo::~CMultiMaterialGeo() {
 	}
 }
 
-void CMultiMaterialGeo::EchangeXY()	{	// Echange les axes X et Y de l'objet
+void CMultiMaterialGeo::echangeXY()	{	// Echange les axes X et Y de l'objet
 	float varX, varY;
 
 	for( int i=0 ; i<m_NumVertex ; i++ ) {
@@ -385,7 +385,7 @@ void CMultiMaterialGeo::EchangeXY()	{	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CMultiMaterialGeo::EchangeXZ() {	// Echange les axes X et Y de l'objet
+void CMultiMaterialGeo::echangeXZ() {	// Echange les axes X et Y de l'objet
 	float varX, varZ;
 
 	for( int i=0 ; i<m_NumVertex ; i++ ) {
@@ -397,7 +397,7 @@ void CMultiMaterialGeo::EchangeXZ() {	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CMultiMaterialGeo::EchangeYZ() {	// Echange les axes X et Y de l'objet
+void CMultiMaterialGeo::echangeYZ() {	// Echange les axes X et Y de l'objet
 	float varY, varZ;
 
 	for( int i=0 ; i<m_NumVertex ; i++ ) {
@@ -409,7 +409,7 @@ void CMultiMaterialGeo::EchangeYZ() {	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CMultiMaterialGeo::Scale( float scaleX, float scaleY, float scaleZ ) {
+void CMultiMaterialGeo::scale( float scaleX, float scaleY, float scaleZ ) {
 	for( int i=0 ; i<m_NumVertex ; i++ ) {
 		m_TabVertex[ (3*i) ] *= scaleX;
 		m_TabVertex[ (3*i)+1 ] *= scaleY;
@@ -593,7 +593,7 @@ bool CMultiMaterialGeo::checkContact( const float pos[3], float dist ) {
 	return false;
 }
 
-void CMultiMaterialGeo::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
+void CMultiMaterialGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	float dist = player->getRayon();	// Rayon de la sph�re représentant le volume du joueur
 	float distanceW;
 
@@ -623,7 +623,7 @@ bool CMultiMaterialGeo::TestContactPave( const float pos[3], float dist ) {
 	return false;	// Le point 'pos' se trouve � une distance supérieure
 }
 
-float CMultiMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
+float CMultiMaterialGeo::gereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
 	float distanceVar;
 	float *vertex, *normal;
 	CV3D AP, N, AB, AC, U, V, W, var;

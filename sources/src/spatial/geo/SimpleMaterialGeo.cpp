@@ -155,7 +155,7 @@ void CSimpleMaterialGeo::freeGL() {
 	glDeleteBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 }
 
-void CSimpleMaterialGeo::Affiche() {
+void CSimpleMaterialGeo::affiche() {
 	glDisable(GL_TEXTURE_2D);
 
 	vector<CLight*>& lights = getMap()->getLights();
@@ -217,7 +217,7 @@ const char* CSimpleMaterialGeo::toString() {
 	return tostring.c_str();
 }
 
-void CSimpleMaterialGeo::AfficheHighlighted(float r,float v,float b) {
+void CSimpleMaterialGeo::afficheHighlighted(float r,float v,float b) {
 	glDisable(GL_TEXTURE_2D);
 
 	glLineWidth(1);
@@ -373,7 +373,7 @@ CSimpleMaterialGeo::~CSimpleMaterialGeo() {
 	}
 }
 
-void CSimpleMaterialGeo::EchangeXY()	// Echange les axes X et Y de l'objet
+void CSimpleMaterialGeo::echangeXY()	// Echange les axes X et Y de l'objet
 {
 	float varX, varY;
 	float vnX, vnY;
@@ -395,7 +395,7 @@ void CSimpleMaterialGeo::EchangeXY()	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CSimpleMaterialGeo::EchangeXZ()	// Echange les axes X et Y de l'objet
+void CSimpleMaterialGeo::echangeXZ()	// Echange les axes X et Y de l'objet
 {
 	float varX, varZ;
 	float vnX, vnZ;
@@ -418,7 +418,7 @@ void CSimpleMaterialGeo::EchangeXZ()	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CSimpleMaterialGeo::EchangeYZ()	// Echange les axes X et Y de l'objet
+void CSimpleMaterialGeo::echangeYZ()	// Echange les axes X et Y de l'objet
 {
 	float varY, varZ;
 	float vnY, vnZ;
@@ -441,7 +441,7 @@ void CSimpleMaterialGeo::EchangeYZ()	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CSimpleMaterialGeo::Scale( float scaleX, float scaleY, float scaleZ )
+void CSimpleMaterialGeo::scale( float scaleX, float scaleY, float scaleZ )
 {
 	for( int i=0 ; i<m_NumVertex ; i++ )
 	{
@@ -716,7 +716,7 @@ bool CSimpleMaterialGeo::checkContact( const float pos[3], float dist ) {
 	return false;
 }
 
-void CSimpleMaterialGeo::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
+void CSimpleMaterialGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	float dist = player->getRayon();	// Rayon de la sph�re repr�sentant le volume du joueur
 	float distanceW;
 
@@ -746,7 +746,7 @@ bool CSimpleMaterialGeo::TestContactPave( const float pos[3], float dist ) {
 	return false;	// Le point 'pos' se trouve � une distance sup�rieure
 }
 
-float CSimpleMaterialGeo::GereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
+float CSimpleMaterialGeo::gereLaserPlayer( float pos[3], CV3D &Dir, float dist) {
 	float distanceVar;
 	float *vertex, *normal;
 	CV3D AP, N, AB, AC, U, V, W, var;

@@ -261,7 +261,7 @@ void CGame::refresh(Uint32 now, float deltaTime) {
 	}
 }
 
-void CGame::GereContactPlayers(Uint32 now, float deltaTime) {	// Gère les contacts de tous les joueurs avec la map
+void CGame::gereContactPlayers(Uint32 now, float deltaTime) {	// Gère les contacts de tous les joueurs avec la map
 	CPlayer *player;
 	int curseur = -1;
 
@@ -270,7 +270,7 @@ void CGame::GereContactPlayers(Uint32 now, float deltaTime) {	// Gère les conta
 
 		if(player) {
 			player->Pente(1.0f);
-			_map->GereContactPlayer(0, player);		// Gère les contacts avec la map de player
+			_map->gereContactPlayer(0, player);		// Gère les contacts avec la map de player
 		}
 	}
 }
@@ -473,9 +473,9 @@ void CGame::timer(Uint32 now, float deltaTime) {
 			faitTousPlayerGravite(now, deltaTime);
 		}
 
-		refresh(now, deltaTime);					// Rafraichi les classes qui ont besoin de l'�tre (celles de type CMouve et CProjectil)
-		faitTousRequetesClavier(now, deltaTime);	// Exécute les requ�tes clavier sur tous les joueurs
-		GereContactPlayers(now, deltaTime);			// Gère tous les contacts entre la map et les joueurs
+		refresh(now, deltaTime);					// Rafraichi les classes qui ont besoin de l'être (celles de type CMouve et CProjectil)
+		faitTousRequetesClavier(now, deltaTime);	// Exécute les requêtes clavier sur tous les joueurs
+		gereContactPlayers(now, deltaTime);			// Gère tous les contacts entre la map et les joueurs
 		deplaceTousPlayer(now, deltaTime);			// Déplace tous les joueurs de leurs vitesses
 	}
 

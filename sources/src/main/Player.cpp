@@ -338,7 +338,7 @@ void CPlayer::Affiche() {
 	// Affiche le skin du joueur s'il existe et si le jeu est configuré pour
 	if(Config.Joueur.skinVisibility) {
 		if(_pSkin) {
-			_pSkin->Affiche();
+			_pSkin->affiche();
 		}
 		else {
 			// Si le joueur n'a pas de Skin, affiche un elipsoïde à sa place

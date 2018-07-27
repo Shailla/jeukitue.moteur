@@ -29,11 +29,11 @@ public:
 	virtual ~Geometrical();
 
 	// Transformations 3D
-	virtual void EchangeXY() = 0;										// Echange les coordonnées X et Y de l'objet
-	virtual void EchangeXZ() = 0;										// Echange les coordonnées X et Z de l'objet
-	virtual void EchangeYZ() = 0;										// Echange les coordonnées Y et Z de l'objet
-	virtual void Scale(float scaleX, float scaleY, float scaleZ) = 0;	// Homothétie pondérée selon X, Y et Z de l'objet
-	virtual void translate(float x, float y, float z) = 0;				// Translation pondérée selon X, Y et Z de l'objet
+	virtual void echangeXY() = 0;										// Echange les coordonnÃ©es X et Y de l'objet
+	virtual void echangeXZ() = 0;										// Echange les coordonnÃ©es X et Z de l'objet
+	virtual void echangeYZ() = 0;										// Echange les coordonnÃ©es Y et Z de l'objet
+	virtual void scale(float scaleX, float scaleY, float scaleZ) = 0;	// HomothÃ©tie pondÃ©rÃ©e selon X, Y et Z de l'objet
+	virtual void translate(float x, float y, float z) = 0;				// Translation pondÃ©rÃ©e selon X, Y et Z de l'objet
 };
 
 }	// JktMoteur

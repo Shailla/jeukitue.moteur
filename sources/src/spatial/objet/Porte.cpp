@@ -48,11 +48,11 @@ void CPorte::init() throw(CErreur) {			// Initialisation de l'objet g�om�tri
 	m_Position = m_Centre;
 }
 
-void CPorte::Affiche() {		// Fonction d'affichage de la porte
+void CPorte::affiche() {		// Fonction d'affichage de la porte
 	glPushMatrix();
 
 	glTranslatef( 0.0f, m_fOuverture, 0.0f );	// Translation de la porte de la valeur de son ouverture
-	CGeoObject::Affiche();						// Affichage
+	CGeoObject::affiche();						// Affichage
 
 	glPopMatrix();
 }
@@ -75,7 +75,7 @@ bool CPorte::Save(TiXmlElement* element) throw(CErreur) {	// Sauve l'objet géo 
 	return true;	// La sauvegarde a abouti
 }
 
-float CPorte::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
+float CPorte::gereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 	float newPos[3];
 
 		// Ajustement de la position de la porte du � son ouverture (la porte monte <=> le joueur descend)
@@ -83,10 +83,10 @@ float CPorte::GereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 	newPos[ 1 ] = pos[ 1 ] - m_fOuverture;
 	newPos[ 2 ] = pos[ 2 ];
 
-	return CGeoObject::GereLaserPlayer( newPos, Dir, dist );
+	return CGeoObject::gereLaserPlayer( newPos, Dir, dist );
 }
 
-void CPorte::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
+void CPorte::gereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	float newPos[3];
 
 	// Ajustement de la position de la porte du � son ouverture (la porte monte <=> le joueur descend)
@@ -94,7 +94,7 @@ void CPorte::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	newPos[ 1 ] = positionPlayer[ 1 ] - m_fOuverture;
 	newPos[ 2 ] = positionPlayer[ 2 ];
 
-	CGeoObject::GereContactPlayer(newPos, player);
+	CGeoObject::gereContactPlayer(newPos, player);
 }
 
 void CPorte::refresh( CGame *game ) {

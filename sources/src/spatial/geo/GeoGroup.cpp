@@ -103,7 +103,7 @@ bool GeoGroup::checkContact( const float pos[3], float dist ) {
 	return false;
 }
 
-void GeoGroup::GereContactPlayer(float posPlayer[3], CPlayer *player) {
+void GeoGroup::gereContactPlayer(float posPlayer[3], CPlayer *player) {
 	if(_solid) {
 		float posPlayerAjuste[4];
 
@@ -118,12 +118,12 @@ void GeoGroup::GereContactPlayer(float posPlayer[3], CPlayer *player) {
 		}
 
 		for(MapObject* geo : _geos) {
-			geo->GereContactPlayer(posPlayerAjuste, player);
+			geo->gereContactPlayer(posPlayerAjuste, player);
 		}
 	}
 }
 
-float GeoGroup::GereLaserPlayer(float posPlayer[3], CV3D &Dir, float dist) {
+float GeoGroup::gereLaserPlayer(float posPlayer[3], CV3D &Dir, float dist) {
 	if(_solid) {
 		float posPlayerAjuste[4];
 
@@ -138,7 +138,7 @@ float GeoGroup::GereLaserPlayer(float posPlayer[3], CV3D &Dir, float dist) {
 		}
 
 		for(MapObject* geo : _geos) {
-			dist = geo->GereLaserPlayer(posPlayerAjuste, Dir, dist);
+			dist = geo->gereLaserPlayer(posPlayerAjuste, Dir, dist);
 		}
 	}
 
@@ -146,20 +146,20 @@ float GeoGroup::GereLaserPlayer(float posPlayer[3], CV3D &Dir, float dist) {
 
 }
 
-void GeoGroup::AfficheHighlighted(float r, float v, float b) {
+void GeoGroup::afficheHighlighted(float r, float v, float b) {
 	for(MapObject* geo : _geos) {
-		geo->AfficheHighlighted(r, v, b);
+		geo->afficheHighlighted(r, v, b);
 	}
 }
 
-void GeoGroup::Affiche() {
+void GeoGroup::affiche() {
 	if(_transformation) {
 		glPushMatrix();
 		glMultMatrixf((float*)_transformation);
 	}
 
 	for(MapObject* geo : _geos) {
-		geo->Affiche();
+		geo->affiche();
 	}
 
 	if(_transformation) {

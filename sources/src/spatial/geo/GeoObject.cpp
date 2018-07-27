@@ -250,7 +250,7 @@ void CGeoObject::AfficheWithMaterialSimple(CMaterial *mat) {
 	glDisable(GL_LIGHTING);
 }
 
-void CGeoObject::AfficheHighlighted(float r,float v,float b) {
+void CGeoObject::afficheHighlighted(float r,float v,float b) {
 	glVertexPointer( 3, GL_FLOAT, 0, m_TabVertex );	//Initialisation du tableau de sommets
 
 	glColor3f(r, v, b); // D�finit la couleur de l'objet g�o. s�lectionn�
@@ -347,7 +347,7 @@ void CGeoObject::AfficheWithMaterialMultiTexture(CMaterialMulti *mat)
 	glDisable( GL_TEXTURE_2D );
 }
 
-void CGeoObject::Affiche() {
+void CGeoObject::affiche() {
 	glVertexPointer( 3, GL_FLOAT, 0, m_TabVertex );	//Initialisation du tableau de sommets
 
 	if( m_bMaterialTexture && m_Material )	// Y a-t-il un mat�riau associ�
@@ -499,7 +499,7 @@ CGeoObject::~CGeoObject() {
 	}
 }
 
-void CGeoObject::EchangeXY() {		// Echange les axes X et Y de l'objet
+void CGeoObject::echangeXY() {		// Echange les axes X et Y de l'objet
 	float varX, varY;
 
 	for( int i=0 ; i<m_NumVertex ; i++ ) {
@@ -521,7 +521,7 @@ void CGeoObject::EchangeXY() {		// Echange les axes X et Y de l'objet
 	}
 }
 
-void CGeoObject::EchangeXZ() {		// Echange les axes X et Y de l'objet
+void CGeoObject::echangeXZ() {		// Echange les axes X et Y de l'objet
 	float varX, varZ;
 
 	for( int i=0 ; i<m_NumVertex ; i++ ) {
@@ -543,7 +543,7 @@ void CGeoObject::EchangeXZ() {		// Echange les axes X et Y de l'objet
 	}
 }
 
-void CGeoObject::EchangeYZ() {		// Echange les axes X et Y de l'objet
+void CGeoObject::echangeYZ() {		// Echange les axes X et Y de l'objet
 	float varY, varZ;
 
 	for( int i=0 ; i<m_NumVertex ; i++ ) {
@@ -565,7 +565,7 @@ void CGeoObject::EchangeYZ() {		// Echange les axes X et Y de l'objet
 	}
 }
 
-void CGeoObject::Scale( float scaleX, float scaleY, float scaleZ ) {
+void CGeoObject::scale( float scaleX, float scaleY, float scaleZ ) {
 	for( int i=0 ; i<m_NumVertex ; i++ ) {
 		m_TabVertex[ (3*i)+0 ] *= scaleX;
 		m_TabVertex[ (3*i)+1 ] *= scaleY;
@@ -774,37 +774,33 @@ bool CGeoObject::checkContact( const float pos[3], float dist )
 	return false;
 }
 
-void CGeoObject::GereContactPlayer(float positionPlayer[3], CPlayer *player) {
+void CGeoObject::gereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	float dist = player->getRayon();	// Rayon de la sph�re repr�sentant le volume du joueur
 	float distanceW;
 
-	if( m_bSolid )	// Si l'objet est solide
-		if( TestContactPave( positionPlayer, dist ) )	// Teste proximit� 'joueur / l'objet g�o'
-			for( int i=0; i<m_NumFaces; i++) {		//pour chaque triangle de l'objet g�o.
+	if( m_bSolid ) {									// Si l'objet est solide
+		if( TestContactPave( positionPlayer, dist ) ) {		// Teste proximité 'joueur / objet géo'
+			for( int i=0; i<m_NumFaces; i++) {				// pour chaque triangle de l'objet géo
 				distanceW = testContactTriangle( i, positionPlayer, dist );
 
 				if( distanceW<500.0f ) // Teste le contact avec le joueur (1.0f = valeur arbitraire mais grande)
 					player->exeContactFunc( &m_pNormalTriangle[3*i], distanceW );	// On a contact !
 			}
+		}
+	}
 }
 
-bool CGeoObject::TestContactPave( const float pos[3], float dist )
-{
+bool CGeoObject::TestContactPave(const float pos[3], float dist) {
 	// Teste si le point qui a pour position 'pos' se trouve ou non � une distance inf�rieure � 'dist'
-	// du pav� englobant l'objet
-
-	if( pos[0] < maxX+dist )
-		if( pos[0] > minX-dist )
-			if( pos[1] > minY-dist )
-				if( pos[1] < maxY+dist )
-					if( -pos[2] < maxZ+dist )
-						if( -pos[2] > minZ-dist )
-							return true;	// Le point 'pos' est � une distance inf�rieure
+	// du pavé englobant l'objet
+	if( pos[0] < maxX+dist && pos[0] > minX-dist && pos[1] > minY-dist && pos[1] < maxY+dist && -pos[2] < maxZ+dist && -pos[2] > minZ-dist ) {
+		return true;	// Le point 'pos' est à une distance inférieure
+	}
 
 	return false;	// Le point 'pos' se trouve � une distance sup�rieure
 }
 
-float CGeoObject::GereLaserPlayer(float pos[3], CV3D &Dir, float dist)
+float CGeoObject::gereLaserPlayer(float pos[3], CV3D &Dir, float dist)
 {
 	float distanceVar;
 	float *vertex, *normal;

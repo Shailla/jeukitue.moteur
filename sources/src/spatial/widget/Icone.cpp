@@ -35,9 +35,9 @@ Icone::~Icone() {
 }
 
 void Icone::initializeGraphicObject(void) {
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1 );
-	glGenTextures(1, &_glTexName );
-	glBindTexture(GL_TEXTURE_2D, _glTexName );
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &_glTexName);
+	glBindTexture(GL_TEXTURE_2D, _glTexName);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -48,7 +48,7 @@ void Icone::initializeGraphicObject(void) {
 }
 
 void Icone::destructGraphicObject(void) {
-	// TODO Détruire la texture OpenGL
+	glDeleteTextures(1, &_glTexName);
 }
 
 void Icone::affiche(float left, float right, float down, float up) {

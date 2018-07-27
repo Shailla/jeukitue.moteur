@@ -212,7 +212,7 @@ void CSimpleGeo::freeGL() {
 	glDeleteBuffers(VBO_BUFFER_SIZE, m_VboBufferNames);
 }
 
-void CSimpleGeo::Affiche() {
+void CSimpleGeo::affiche() {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 
@@ -242,7 +242,7 @@ const char* CSimpleGeo::toString() {
 	return tostring.c_str();
 }
 
-void CSimpleGeo::AfficheHighlighted(float r, float v, float b) {
+void CSimpleGeo::afficheHighlighted(float r, float v, float b) {
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_LIGHTING);
 
@@ -326,7 +326,7 @@ void CSimpleGeo::ConstruitBase()
 	}
 }
 
-void CSimpleGeo::EchangeXY() {	// Echange les axes X et Y de l'objet
+void CSimpleGeo::echangeXY() {	// Echange les axes X et Y de l'objet
 	float varX, varY;
 
 	for( int i=0 ; i<_numVertex ; i++ ) {
@@ -338,7 +338,7 @@ void CSimpleGeo::EchangeXY() {	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CSimpleGeo::EchangeXZ() {	// Echange les axes X et Y de l'objet
+void CSimpleGeo::echangeXZ() {	// Echange les axes X et Y de l'objet
 	float varX, varZ;
 
 	for( int i=0 ; i<_numVertex ; i++ ) {
@@ -350,7 +350,7 @@ void CSimpleGeo::EchangeXZ() {	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CSimpleGeo::EchangeYZ() {	// Echange les axes X et Y de l'objet
+void CSimpleGeo::echangeYZ() {	// Echange les axes X et Y de l'objet
 	float varY, varZ;
 
 	for( int i=0 ; i<_numVertex ; i++ ) {
@@ -362,7 +362,7 @@ void CSimpleGeo::EchangeYZ() {	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CSimpleGeo::Scale( float scaleX, float scaleY, float scaleZ ) {
+void CSimpleGeo::scale( float scaleX, float scaleY, float scaleZ ) {
 	for( int i=0 ; i<_numVertex ; i++ ) {
 		m_TabVertex[ (3*i) ] *= scaleX;
 		m_TabVertex[ (3*i)+1 ] *= scaleY;
@@ -529,7 +529,7 @@ bool CSimpleGeo::checkContact( const float pos[3], float dist ) {
 	return false;
 }
 
-void CSimpleGeo::GereContactPlayer(float positionPlayer[3], CPlayer *player ) {
+void CSimpleGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	if( _bSolid ) {	// Si l'objet est solide
 		float dist = player->getRayon();	// Rayon de la sphère représentant le volume du joueur
 		float distanceW;
@@ -560,7 +560,7 @@ bool CSimpleGeo::TestContactPave(const float pos[3], float dist) {
 	return false;	// Le point 'pos' se trouve à une distance supérieure
 }
 
-float CSimpleGeo::GereLaserPlayer( float pos[3], CV3D& Dir, float dist) {
+float CSimpleGeo::gereLaserPlayer( float pos[3], CV3D& Dir, float dist) {
 	if( !_bSolid )		// Si l'objet n'est pas solide, il ne peut être touché par le laser
 		return dist;	// => on sort en renvoyant 'dist'
 

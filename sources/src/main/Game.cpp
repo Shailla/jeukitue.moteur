@@ -269,7 +269,7 @@ void CGame::gereContactPlayers(Uint32 now, float deltaTime) {	// Gère les conta
 		player = _players[curseur];
 
 		if(player) {
-			player->Pente(1.0f);
+			player->pente(1.0f);
 			_map->gereContactPlayer(0, player);		// Gère les contacts avec la map de player
 		}
 	}
@@ -307,7 +307,7 @@ void CGame::affichePlayers() {
 
 		if(player) {
 			player->Affiche(); 				//affiche un seul joueur pour le moment
-			player->AfficheProjectils(); 	// Affiche les projectils lanc�s par 'player'
+			player->afficheProjectils(); 	// Affiche les projectils lanc�s par 'player'
 		}
 	}
 }
@@ -321,7 +321,7 @@ void CGame::afficheProjectils() {	// Affiche tous les projectils
 		player = _players[curseur];
 
 		if(player) {
-			player->AfficheProjectils();
+			player->afficheProjectils();
 		}
 	}
 }
@@ -483,7 +483,7 @@ void CGame::timer(Uint32 now, float deltaTime) {
 
 	if(_erwin) {
 		console->setVitesseErwin(_erwin->getVitesse() / deltaTime);
-		console->setPenteErwin(_erwin->Pente());
+		console->setPenteErwin(_erwin->pente());
 	}
 	else {
 		console->setVitesseErwin(-1.0f);

@@ -962,7 +962,7 @@ bool CMap::checkContact(const float pos[3], const float dist) {
 	for(iter = _solidAndTargettables.begin() ; iter != _solidAndTargettables.end() ; iter++) {
 		var = (*iter)->checkContact( pos, dist );
 
-		if(var)	// Si un triangle a �t� trouv� � une distance inf�rieure � 'dist' de la position 'pos'
+		if(var)	// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
 			break;
 	}
 
@@ -971,7 +971,7 @@ bool CMap::checkContact(const float pos[3], const float dist) {
 		for(auto& subMap : _subMaps) {
 			var = subMap.second->checkContact( pos, dist );
 
-			if(var)	// Si un triangle a �t� trouv� � une distance inf�rieure � 'dist' de la position 'pos'
+			if(var)	// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
 				break;
 		}
 	}
@@ -982,8 +982,9 @@ bool CMap::checkContact(const float pos[3], const float dist) {
 void CMap::refresh(CGame *game) {
 	vector<MapObject*>::iterator iter;
 
-	for(iter = _refreshables.begin() ; iter != _refreshables.end() ; iter++)
+	for(iter = _refreshables.begin() ; iter != _refreshables.end() ; iter++) {
 		(*iter)->refresh(game);
+	}
 
 	// Initialisation des sous-Map
 	for(auto& subMap : _subMaps) {
@@ -994,12 +995,12 @@ void CMap::refresh(CGame *game) {
 bool CMap::afficheMaterial(CMaterial* material, int x, int y, int tailleX, int tailleY, int nbrX, int nbrY, int firstIndexOfPage, int& posX, int& posY, int& indexOfPages) {
 	bool again = true;
 
-	// Si on n'a pas d�pass� l'index de la derni�re texture de la page active du damier on s'arr�te l�
+	// Si on n'a pas d�pass� l'index de la dernière texture de la page active du damier on s'arrête là
 	if(indexOfPages >= firstIndexOfPage + (nbrX * nbrY)) {
 		again = false;
 	}
 	else if(material->Type() == CMaterial::MAT_TYPE_TEXTURE) {
-		// On compte une texture � afficher de plus (affich�e ou non sur la page active du damier)
+		// On compte une texture � afficher de plus (affichée ou non sur la page active du damier)
 		indexOfPages++;
 
 		// Si la texture est sur la page active du damier on l'affiche

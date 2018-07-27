@@ -114,7 +114,7 @@ void CPlayer::close() {			// Ouverture en mode client
 	_spa = 0;
 }
 
-void CPlayer::AfficheIconesArmes() {
+void CPlayer::afficheIconesArmes() {
 	if(_weaponsChoice != NULL) {
 		float X = (float)Config.Display.X;
 		float Y = (float)Config.Display.Y/2;
@@ -142,8 +142,9 @@ void CPlayer::AfficheIconesArmes() {
 void CPlayer::armeUp() {	// Rends l'arme suivante active
 	_armeActif++;
 
-	if( _armeActif >= _nbrArmes )
+	if( _armeActif >= _nbrArmes ) {
 		_armeActif = 0;
+	}
 }
 
 /**
@@ -152,8 +153,9 @@ void CPlayer::armeUp() {	// Rends l'arme suivante active
 void CPlayer::armeDown() {
 	_armeActif--;
 
-	if( _armeActif < 0 )
+	if( _armeActif < 0 ) {
 		_armeActif = _nbrArmes-1;
+	}
 }
 
 CPlayer::~CPlayer() {
@@ -182,8 +184,9 @@ void CPlayer::setCri(const char *nomFichier) {
 	ID_ReqCri = DemonSons->PlayID( ID_Cri, true );
 }
 
-CClavier *CPlayer::getClavier()
-{	return _pClavier;	}
+CClavier *CPlayer::getClavier() {
+	return _pClavier;
+}
 
 /**
  * Change la position du joueur.
@@ -204,25 +207,26 @@ void CPlayer::choiceOneEntryPoint() {
 		float pos[3];
 		int curseur;
 		CV3D distance;
-		vector< vector<EntryPoint*>::iterator > liste;
+		EntryPoint* entryPoint;
+		vector< vector<EntryPoint*>::iterator > candidates;
 		vector<EntryPoint*>::iterator iterEntry;
 		vector<CPlayer*>::iterator iterPlayer;
 
-		// Fait la liste des points d'entr�e se trouvant � une distance sup�rieure
-		// � DISTANCE_INTER_JOUEURS_ENTRY_POINT de tout autre joueur
+		// Fait la liste des points d'entrée se trouvant à une distance supérieure à DISTANCE_INTER_JOUEURS_ENTRY_POINT de tout autre joueur
 		for(iterEntry=Game.getMap()->getEntryPointsList().begin() ; iterEntry!=Game.getMap()->getEntryPointsList().end() ; iterEntry++) {
 			curseur = -1;
 			valide = false;
 
 			while((player = Game.nextPlayer(curseur))) {
 				if( player != this ) {	// Si le joueur en question n'est pas le joueur actuel
-					distance = (*iterEntry)->getEntryPosition();
+					entryPoint = *iterEntry;
+					distance = entryPoint->getEntryPosition();
 					player->getPosition(pos);
 					distance -= pos;
 
 					if(distance.norme() < DISTANCE_INTER_JOUEURS_ENTRY_POINT) {
-						valide = false;		// Le point d'entr�e est trop proche d'un des joueurs
-						break;				// On passe au point d'entr�e suivant
+						valide = false;		// Le point d'entrée est trop proche d'un des joueurs
+						break;				// On passe au point d'entrée suivant
 					}
 					else {
 						valide = true;
@@ -230,17 +234,18 @@ void CPlayer::choiceOneEntryPoint() {
 				}
 			}
 
-			if( valide )	// Si le point d'entr�e est suffisament distant de tout joueur, souviens-t'en
-				liste.push_back(iterEntry);
+			if(valide) {	// Si le point d'entrée est suffisament distant de tout joueur, souviens-t'en
+				candidates.push_back(iterEntry);
+			}
 		}
 
+		// Choisi un entry point
+		size_t nbr = candidates.size();
 
-		size_t nbr = liste.size();
-
-		if(nbr) {	// S'il y a des entr�es � une distance convenable de tout joueur
+		if(nbr) {	// S'il y a des entrées à une distance convenable de tout joueur
 			int choice = rand() % nbr;
-			setPosition((*(liste[choice]))->getEntryPosition());	// alors choisi l'une d'elles au hasard
-			LOGINFO(("Choix d'un entry point �loign� des autres joueurs : %d", choice));
+			setPosition((*(candidates[choice]))->getEntryPosition());	// alors choisi l'une d'elles au hasard
+			LOGINFO(("Choix d'un entry point éloigné des autres joueurs : %d", choice));
 		}
 		else {							// sinon prends-en une au hasard dans la liste
 			nbr = Game.getMap()->getEntryPointsList().size();
@@ -382,7 +387,7 @@ void CPlayer::tuer() {
 		DemonSons->Play( ID_ReqCri );	// Joue le cri du joueur
 }
 
-void CPlayer::AfficheProjectils() {		// Affiche tous les projectils du joueur
+void CPlayer::afficheProjectils() {		// Affiche tous les projectils du joueur
 	CProjectil *pro;
 
 	Tableau<CProjectil>::Adr *adr = TabProjectil.BeginAdr();
@@ -507,11 +512,11 @@ void CPlayer::Teta(float teta) {
 	_teta = teta;
 }
 
-float CPlayer::Pente() const {
+float CPlayer::pente() const {
 	return _pente;
 }
 
-void CPlayer::Pente(float pente) {
+void CPlayer::pente(float pente) {
 	_pente = pente;
 }
 

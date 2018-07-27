@@ -577,7 +577,7 @@ void display() {		// Fonction principale d'affichage
 
 	// Affichage du viseur
 	if(Game.Erwin()) {
-		Game.Erwin()->AfficheIconesArmes();
+		Game.Erwin()->afficheIconesArmes();
 		Game.afficheViseur(Config.Display.X / 2, Config.Display.Y / 2);
 		glDepthMask( GL_TRUE );
 	}

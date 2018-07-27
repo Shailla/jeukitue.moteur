@@ -43,8 +43,8 @@ void contactPlayer(CPlayer *player, float *normal, float distanceW) {
 	// Un sol horizontal sous les pieds du joueur a une pente de 0, un mur vertical contre le joueur a une pente de 1
 	float pente = 1.0f - fabsf(normal[1]);
 
-	if( pente < player->Pente() ) {			// Cherche la pente la plus horizontale subie par le joueur
-		player->Pente( pente );				// Donne la pente du triangle en contact / rapport à l'horizontale
+	if( pente < player->pente() ) {			// Cherche la pente la plus horizontale subie par le joueur
+		player->pente( pente );				// Donne la pente du triangle en contact / rapport à l'horizontale
 	}
 }
 

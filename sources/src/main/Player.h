@@ -105,8 +105,8 @@ public :
 	void getPosVue( float vect[3] ) const;
 	void setPosVue( const float vect[3] );
 
-	float Pente() const;
-	void Pente( float pente );
+	float pente() const;
+	void pente( float pente );
 
 	void setName(const std::string &name);
 	std::string getName() const;
@@ -126,10 +126,10 @@ public :
 
 	// Arme
 	void armeUp();				// Rends l'arme suivante active
-	void armeDown();			// Rends l'arme pr�c�dente active
-	void AfficheIconesArmes();
-	int ArmeActif();			// Renvoi le num�ro de l'arme active
-	void AfficheProjectils();	// Affiche les projectils lanc�s par ce joueur
+	void armeDown();			// Rends l'arme précédente active
+	void afficheIconesArmes();
+	int armeActif();			// Renvoi le numéro de l'arme active
+	void afficheProjectils();	// Affiche les projectils lancés par ce joueur
 
 	// INTERACTIONS
 	void tuer();				// Tue le joueur

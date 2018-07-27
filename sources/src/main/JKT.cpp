@@ -488,9 +488,9 @@ void display() {		// Fonction principale d'affichage
 
 		//		Game.getMap()->AfficheSelection(1.0f, 0.0f, 0.0f);		// Affichage de la map
 		Game.getMap()->affiche();		// Affichage de la map
-		Game.AfficheProjectils();		// Affichage des projectiles
-		Game.AfficheDirigeables();		// Affichage des dirigeables
-		Game.AffichePlayers();			// Affiche des joueurs
+		Game.afficheProjectils();		// Affichage des projectiles
+		Game.afficheDirigeables();		// Affichage des dirigeables
+		Game.affichePlayers();			// Affiche des joueurs
 
 		// Dessine les axes dans la map	(sert au rep�rage pour la conception du jeu)
 		if(Config.Debug.axesMeterVisibility) {

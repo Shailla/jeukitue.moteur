@@ -77,7 +77,7 @@ public:
 	jkt::StatutClient getStatutClient();				// Donne le statut du client
 
 	// Gestion du serveur
-	void setModeServer();								// Cr�e la classe Server pour un jeu en mode serveur
+	void setModeServer();								// Crée la classe Server pour un jeu en mode serveur
 	jkt::CServer *getServer();							// Retourne le pointeur sur la classe CServer
 	void setStatutServer( jkt::StatutServer statut );	// Renseigne le statut du serveur
 	jkt::StatutServer getStatutServer();				// Donne le statut du serveur
@@ -94,16 +94,16 @@ public:
 	ClientDataTree* getClientDataTree();
 
 	// Gestion du jeu
-	void AfficheDirigeables();
-	void AffichePlayers();							// Affiche tous les joueurs
-	void AfficheProjectils();						// Affiche tous les projectils
+	void afficheDirigeables();
+	void affichePlayers();							// Affiche tous les joueurs
+	void afficheProjectils();						// Affiche tous les projectils
 
 	// Gestion du joueur principal (actif)
 	CPlayer* Erwin();								// Renvoie le joueur principal
 	void setErwin(CPlayer *erwin);					// Set le joueur principal
 
 	// Gestion des joueurs
-	void deletePlayers();							// D�truit tous les joueurs
+	void deletePlayers();							// Détruit tous les joueurs
 
 	void createPlayerList(int size);				// Indique le nombre de joueurs de la partie
 	int getMaxPlayers() const;
@@ -112,9 +112,9 @@ public:
 	CPlayer* nextPlayer(int &pos);
 
 	/**
-	 * Ajout un joueur � la partie
-	 * @param player joueur � ajouter
-	 * @return index du joueur ou -1 si l'ajout a �chou�
+	 * Ajout un joueur à la partie
+	 * @param player joueur à ajouter
+	 * @return index du joueur ou -1 si l'ajout a échoué
 	 */
 	int addPlayer(CPlayer *player);
 	bool addPlayer(int id, CPlayer *player);

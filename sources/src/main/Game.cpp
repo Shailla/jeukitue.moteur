@@ -275,7 +275,7 @@ void CGame::gereContactPlayers(Uint32 now, float deltaTime) {	// Gère les conta
 	}
 }
 
-void CGame::AfficheDirigeables() {
+void CGame::afficheDirigeables() {
 	DataTree* dataTree = getDataTree();
 
 	vector<string> dirigeablesBrPath;
@@ -298,7 +298,7 @@ void CGame::AfficheDirigeables() {
 	}
 }
 
-void CGame::AffichePlayers() {
+void CGame::affichePlayers() {
 	CPlayer *player;
 	int curseur = -1;
 
@@ -312,7 +312,7 @@ void CGame::AffichePlayers() {
 	}
 }
 
-void CGame::AfficheProjectils() {	// Affiche tous les projectils
+void CGame::afficheProjectils() {	// Affiche tous les projectils
 	// Rafraichissement des projectils des joueurs
 	CPlayer *player;
 	int curseur = -1;

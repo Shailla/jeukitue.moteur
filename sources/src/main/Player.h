@@ -26,18 +26,18 @@ class CPlayer {
 
 	static jkt::Icone* _weaponsChoice;	// Textures de l'icone des armes
 
-	CClavier *_pClavier;	//pointeur sur la class des requ�tes clavier
+	CClavier *_pClavier;	//pointeur sur la class des requêtes clavier
 
 	//POINTEURS SUR LES FONCTIONS SPECIALES
-	void (*_actionFunc)(Uint32 now, float deltaTime, CPlayer *player);	//fonction p�riodique � r�aliser (gravit� par exemple)
+	void (*_actionFunc)(Uint32 now, float deltaTime, CPlayer *player);	//fonction périodique à réaliser (gravité par exemple)
 	void (*_contactFunc)(CPlayer *player, float *normal, float distanceW); //focntion agissant lors d'un contact avec la map
-	int _armeActif;							// Num�ro de l'arme actuellement active
+	int _armeActif;							// Numéro de l'arme actuellement active
 	int _nbrArmes;							// Nombre d'armes
 
 	jkt::Tableau<CProjectil> TabProjectil;		// Liste des projectils de ce joueur
 
-	jkt::CSon* ID_Cri;
-	jkt::CReqSon* ID_ReqCri;		// Requete son de cri du personnage
+	jkt::CSon* _cri;
+	jkt::CReqSon* ID_ReqCri;		// Requête son de cri du personnage
 
 	// Position, vitesse et orientation du joueur
 	float _position[3];				// Position du joueur
@@ -55,7 +55,7 @@ class CPlayer {
 	std::string _name;				// Nom du perso
 	jkt::CMap *_pSkin;				// Gueule du joueur
 
-	void createClavier();		// Crée la gestion par clavier du joueur
+	void createClavier();			// Crée la gestion par clavier du joueur
 
 public :
 	// Conctructeurs / destructeurs

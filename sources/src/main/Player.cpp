@@ -78,7 +78,7 @@ CPlayer::CPlayer() {
 
 	_pSkin = 0;				// Pas de skin associé par défaut
 
-	ID_Cri = 0;				// Le cri du joueur n'a pas encore été chargé
+	_cri = 0;				// Le cri du joueur n'a pas encore été chargé
 	ID_ReqCri = 0;			// Y'a pas encore la requête sur le cri non plus
 
 	createClavier();		// Crée la classe qui gère les requêtes de mouvement, tir ...
@@ -164,10 +164,10 @@ CPlayer::~CPlayer() {
 		_pClavier = 0;
 	}
 
-	if( ID_Cri ) {	// Destruction du cri du personnage
-		DemonSons->Delete( ID_Cri );
+	if( _cri ) {	// Destruction du cri du personnage
+		DemonSons->Delete( _cri );
 		ID_ReqCri = 0;
-		ID_Cri = 0;
+		_cri = 0;
 	}
 
 	if( _pSkin ) {
@@ -177,11 +177,11 @@ CPlayer::~CPlayer() {
 }
 
 /**
- * D�finit le cri du joueur � l'instant o� est bless�.
+ * Définit le cri du joueur
  */
 void CPlayer::setCri(const char *nomFichier) {
-	ID_Cri = DemonSons->CreateSon( nomFichier );
-	ID_ReqCri = DemonSons->PlayID( ID_Cri, true );
+	_cri = DemonSons->CreateSon( nomFichier );
+	ID_ReqCri = DemonSons->PlayID( _cri, true );
 }
 
 CClavier *CPlayer::getClavier() {

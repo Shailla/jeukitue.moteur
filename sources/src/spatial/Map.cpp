@@ -436,26 +436,26 @@ void CMap::gereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 		solid->gereContactPlayer(positionPlayer, player);	// Gère les contacts entre l'objet géo et le joueur
 	}
 
-	// Initialisation des sous-Map
+	// Contacts dans les sous-Map
 	for(auto& subMap : _subMaps) {
 		subMap.second->gereContactPlayer(positionPlayer, player);
 	}
 }
 
-float CMap::gereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
+float CMap::gereLaserPlayer(float pos[3], CV3D& dir, float dist) {
 	// Renvoie la distance du premier point de contact entre un rayon laser parti du point 'pos'
 	// dans la direction 'Dir' si cette distance est inférieure à 'dist', renvoie 'dist' sinon
 
 	for(SolidAndTargettable* solid : _solidAndTargettables) {
-		dist = solid->gereLaserPlayer( pos, Dir, dist );
+		dist = solid->gereLaserPlayer( pos, dir, dist );
 	}
 
-	// Initialisation des sous-Map
+	// Laser dans les sous-Map
 	for(auto& subMap : _subMaps) {
-		subMap.second->gereLaserPlayer( pos, Dir, dist );
+		subMap.second->gereLaserPlayer( pos, dir, dist );
 	}
 
-	return dist;	// Renvoie la distance du premier contact trouv� entre le laser et une face d'objet g�o
+	return dist;	// Renvoie la distance du premier contact trouvé entre le laser et une face d'objet géo
 }
 
 void CMap::echangeXY() {
@@ -933,8 +933,9 @@ bool CMap::Save(const string nomFichier) {
 		elMap->LinkEndChild(elLum);
 		vector<CLight*>::iterator iterLight;
 
-		for( iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++ )
+		for(iterLight=_lights.begin() ; iterLight!=_lights.end() ; iterLight++) {
 			(*iterLight)->Save( elLum );
+		}
 	}
 
 	// Sauvegarde des objets geometriques
@@ -943,8 +944,9 @@ bool CMap::Save(const string nomFichier) {
 		elMap->LinkEndChild(elGeo);
 		vector<MapObject*>::iterator iterObject;
 
-		for(iterObject = _objects.begin() ; iterObject != _objects.end() ; iterObject++)
+		for(iterObject = _objects.begin() ; iterObject != _objects.end() ; iterObject++) {
 			(*iterObject)->Save( elGeo );		// Sauvegarde des param�tres de l'objet
+		}
 	}
 
 	document.SaveFile(nomFichierMap.c_str());
@@ -962,8 +964,9 @@ bool CMap::checkContact(const float pos[3], const float dist) {
 	for(iter = _solidAndTargettables.begin() ; iter != _solidAndTargettables.end() ; iter++) {
 		var = (*iter)->checkContact( pos, dist );
 
-		if(var)	// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
+		if(var) {		// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
 			break;
+		}
 	}
 
 	// Initialisation des sous-Map

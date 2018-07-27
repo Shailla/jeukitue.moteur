@@ -468,6 +468,11 @@ void CGame::faitTousPlayerGravite(Uint32 now, float deltaTime) {
 }
 
 void CGame::timer(Uint32 now, float deltaTime) {
+	// Nouveau code
+
+
+
+	// Ancien code
 	if(_map) {
 		if( _gravite ) {					// Si la gravité est active
 			faitTousPlayerGravite(now, deltaTime);

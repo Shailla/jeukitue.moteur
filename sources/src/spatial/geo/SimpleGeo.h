@@ -5,8 +5,8 @@
 /************************************************************/
 /*															*/
 /*			Objet affichable 3D le plus simple				*/
-/*			couleur unique sans mat�riau, ni texture.		*/
-/*			Faces index�es, peut �tre �clair�.				*/
+/*			couleur unique sans matériau, ni texture.		*/
+/*			Faces indexées, peut �tre �clair�.				*/
 /*															*/
 /************************************************************/
 

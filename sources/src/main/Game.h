@@ -21,22 +21,22 @@ namespace jkt
 
 class CPlayer;
 
-// Cette classe est destin�e � contenir toutes les param�tres vivants, c'est � dire
-// toutes les donn�es et variables de la partie en cours, du r�seau...
+// Cette classe est destinée à contenir toutes les paramètres vivants, c'est à dire
+// toutes les données et variables de la partie en cours, du réseau...
 class CGame {
 public:
 	enum ModePartie {
 		JKT_MODE_PARTIE_NULL,		// Pas de jeu en cours
-		JKT_MODE_PARTIE_LOCAL,		// Mode de jeu local (c'est � dire pas en r�seau)
+		JKT_MODE_PARTIE_LOCAL,		// Mode de jeu local (c'est � dire pas en réseau)
 		JKT_MODE_PARTIE_CLIENT,		// Mode client connect� � un serveur
 		JKT_MODE_PARTIE_SERVER,		// Mode serveur de jeu
 	};
 
 private:
-	CPlayer* _erwin;								// Pointeur sur le joueur actif
-	jkt::CMap	*_map;								// Map en cours de jeu
-	ModePartie _mode;								// Mode de jeu (parie normale, client ou serveur)
-	bool _gravite;									// Indique si la gravit� est active
+	CPlayer* _erwin;						// Pointeur sur le joueur actif
+	jkt::CMap* _map;						// Map en cours de jeu
+	ModePartie _mode;						// Mode de jeu (parie normale, client ou serveur)
+	bool _gravite;							// Indique si la gravité est active
 	jkt::TableauIndex<CPlayer> _players;	// Liste index�e des joueurs
 
 public:
@@ -50,13 +50,13 @@ public:
 	// Constructeurs/destructeur
 	CGame();
 
-	// G�n�ralit�s
-	bool isModeNull();		// Indique si aucune partie n'est en cours
-	bool isModeLocal();		// Indique si une partie locale est en cours
-	bool isModeClient();	// Indique si une partie r�seau client est en cours
-	bool isModeServer();	// Indique si une partie serveur est en cours
-	void Quit();			// Passe en mode aucun jeu en cours
-	bool getGravite() const;	// Indique si la gravit� est active
+	// Généralités
+	bool isModeNull();				// Indique si aucune partie n'est en cours
+	bool isModeLocal();				// Indique si une partie locale est en cours
+	bool isModeClient();			// Indique si une partie r�seau client est en cours
+	bool isModeServer();			// Indique si une partie serveur est en cours
+	void Quit();					// Passe en mode aucun jeu en cours
+	bool getGravite() const;		// Indique si la gravité est active
 	void setGravite(bool gravite);
 
 	// Gestion de la Map
@@ -121,18 +121,18 @@ public:
 	CPlayer* getPlayer(int id);
 
 private:
-	void refresh(Uint32 now, float deltaTime);					// Rafraichi les classe qui en ont besoin
+	void refresh(Uint32 now, float deltaTime);						// Rafraichi les classe qui en ont besoin
 	void deplaceTousPlayer(Uint32 now, float deltaTime);
 	void faitTousRequetesClavier(Uint32 now, float deltaTime);
 	void faitTousPlayerGravite(Uint32 now, float deltaTime);
-	void gereContactPlayers(Uint32 now, float deltaTime);						// Gère les contacts entre tous les joueurs et la map
+	void gereContactPlayers(Uint32 now, float deltaTime);			// Gère les contacts entre tous les joueurs et la map
 
 public:
 	void quitCurrentMap();
 
 	// Fonctions d'affichage
 	int afficheDamierTextures(int x, int y, int tailleX, int tailleY, int page, int nbrHoriz, int nbrVert) const;
-	void afficheViseur(int x, int y) const;			// Affiche le joueur � la position voulue sur l'�cran
+	void afficheViseur(int x, int y) const;			// Affiche le viseur à la position voulue sur l'écran
 
 	void timer(Uint32 now, float deltaTime);
 };

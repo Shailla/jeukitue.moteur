@@ -40,11 +40,10 @@ class CPlayer {
 	jkt::CReqSon* ID_ReqCri;		// Requete son de cri du personnage
 
 	// Position, vitesse et orientation du joueur
-	float _position[3];				// Vecteur position du joueur
-	float _vitesse[3];				// Vecteur vitesse du joueur
+	float _position[3];				// Position du joueur
+	float _vitesse[3];				// Vitesse du joueur
 
 	float _accelerationClavier[3];	// Accélération demandée par le joueur avec le clavier
-	float _nextMouve[3];
 
 	float _teta;					// Orientation du joueur par rapport à la verticale
 	float _phi;						// Orientation du joueur par rapport au plan horizontal

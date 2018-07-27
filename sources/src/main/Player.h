@@ -37,7 +37,7 @@ class CPlayer {
 	jkt::Tableau<CProjectil> TabProjectil;		// Liste des projectils de ce joueur
 
 	jkt::CSon* _cri;
-	jkt::CReqSon* ID_ReqCri;		// Requête son de cri du personnage
+	jkt::CReqSon* _criRequest;		// Requête son de cri du personnage
 
 	// Position, vitesse et orientation du joueur
 	float _position[3];				// Position du joueur
@@ -65,14 +65,14 @@ public :
 	void setId(int id);
 	int getId() const;
 
-	// R�seau
+	// Réseau
 	jkt::CSPA* _spa;		// spa associé au proxy-joueur
 	bool openInClientMode(const IPaddress &address);				// Ouverture en mode client
 	void close();
 
 	// Armes
-	void Tir();
-	void RefreshProjectils(Uint32 now, float deltaTime);
+	void tir();
+	void refreshProjectils(Uint32 now, float deltaTime);
 
 	// Position
 	void setPosition(float x, float y, float z);		// change la position du joueur
@@ -91,16 +91,16 @@ public :
 	float getRayon() const;
 
 	// Orientation
-	float Phi() const;
-	float Teta() const;
-	void Phi( float phi );
-	void Teta( float teta );
+	float phi() const;
+	float teta() const;
+	void phi( float phi );
+	void teta( float teta );
 
 	// Caméra
-	float PhiVue() const;
-	float TetaVue() const;
-	void TetaVue( float tetaVue );
-	void PhiVue( float phiVue );
+	float phiVue() const;
+	float tetaVue() const;
+	void tetaVue( float tetaVue );
+	void phiVue( float phiVue );
 	void getPosVue( float vect[3] ) const;
 	void setPosVue( const float vect[3] );
 

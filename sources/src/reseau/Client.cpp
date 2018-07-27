@@ -65,11 +65,11 @@ ClientUdpInterlocutor* CClient::getClientUdpInterlocutor() {
 
 void CClient::decodeConnecte( Uint16 code1, Uint16 code2 ) {
 	switch( code1 ) {
-	case SERVER_RECAP:		// Réception d'une récapitulation de partie du serveur
+	case SERVER_RECAP:		// Rï¿½ception d'une rï¿½capitulation de partie du serveur
 		decodeRecap( code2 );
 		break;
 
-	case SERVER_ERROR:		// Réception d'un code d'erreur
+	case SERVER_ERROR:		// Rï¿½ception d'un code d'erreur
 		decodeError( code2 );
 		break;
 
@@ -105,7 +105,7 @@ void CClient::decodeRecap( Uint16 code2 ) {
 	case GLOBAL_NULL:
 		if( _statut==JKT_STATUT_CLIENT_PLAY ) {
 			Uint16 var1;
-			var1 = _spaMaitre.read16();	// Réception du nombre de joueurs
+			var1 = _spaMaitre.read16();	// Rï¿½ception du nombre de joueurs
 
 			if( m_uNbrPlayers!=var1 ) {
 				LOGDEBUG(("CClient::switchRecepClient() Le nombre de joueurs a change%T", this ));
@@ -113,7 +113,7 @@ void CClient::decodeRecap( Uint16 code2 ) {
 				nbrPlayers( var1 );
 			}
 			else {
-				// Lit les données des joueurs
+				// Lit les donnï¿½es des joueurs
 				CPlayer *player;
 				int curseur = -1;
 				while((player = Game.nextPlayer(curseur))) {
@@ -141,14 +141,14 @@ Interlocutor2* CClient::connect(const string& remAddress, Uint16 remPort, Uint16
 
 	LOGINFO((" Ouverture client : remoteAddress=%s port=%d portArbre=%d", remAddress.c_str(), remPort, remPortTree));
 
-	bool result = true;		// Indique si au fur de la fonction si tout s'est bien passé
+	bool result = true;		// Indique si au fur de la fonction si tout s'est bien passï¿½
 	Interlocutor2* interlocutor;
 
 	if(!_spaMaitre.openInClientMode(remAddress, remPort))
 		result = false;
 
 	if(result) {
-		_socketSet = SDLNet_AllocSocketSet( 20 );	// Nombre maxi de sockets à écouter
+		_socketSet = SDLNet_AllocSocketSet( 20 );	// Nombre maxi de sockets ï¿½ ï¿½couter
 		if( !_socketSet ) {
 			cerr << endl << __FILE__ << ":" << __LINE__ << " SDLNet_AllocSocketSet: " << SDLNet_GetError();
 			disconnect();
@@ -175,20 +175,20 @@ Interlocutor2* CClient::connect(const string& remAddress, Uint16 remPort, Uint16
 	}
 
 	if(interlocutor)
-		setStatut( JKT_STATUT_CLIENT_READY );	// Indique que le client est prêt
+		setStatut( JKT_STATUT_CLIENT_READY );	// Indique que le client est prï¿½t
 
 	return interlocutor;
 }
 
 void CClient::disconnect() {
 	if(_socketSet) {
-		SDLNet_FreeSocketSet( _socketSet );		// Libère le socket set du serveur
+		SDLNet_FreeSocketSet( _socketSet );		// Libï¿½re le socket set du serveur
 		_socketSet = 0;
 	}
 
 	_spaMaitre.close();
 
-	setStatut( JKT_STATUT_CLIENT_NULL );	// Indique que le client est prêt
+	setStatut( JKT_STATUT_CLIENT_NULL );	// Indique que le client est prï¿½t
 
 	if(_clientUdpInterlocutor) {
 		delete _clientUdpInterlocutor;
@@ -235,8 +235,8 @@ bool CClient::sendNotConnectedRequestPingToServer(const string& destinationAddre
 	}
 
 	if(result) {
-		m_pingClientServer = -1;					// Initialisation de la durée du ping
-		m_timePingClientServer = SDL_GetTicks();	// Temps à l'envoie du ping
+		m_pingClientServer = -1;					// Initialisation de la durï¿½e du ping
+		m_timePingClientServer = SDL_GetTicks();	// Temps ï¿½ l'envoie du ping
 
 		_spaMaitre.init();
 		_spaMaitre.addCode( CLIENT_PING, GLOBAL_NULL );
@@ -257,14 +257,14 @@ bool CClient::sendNotConnectedRequestPingToServer(const string& destinationAddre
 }
 
 void CClient::sendConnectedRequestJoinTheGame(const string& nomPlayer) {
-	setStatut( JKT_STATUT_CLIENT_DEMJTG );			// Statut, demande de "Join The Game" envoyée
+	setStatut( JKT_STATUT_CLIENT_DEMJTG );			// Statut, demande de "Join The Game" envoyï¿½e
 
 	_spaMaitre.init();
-	_spaMaitre.addCode( CLIENT_JTG, GLOBAL_NULL );	// Envoie la demande à joindre la partie
+	_spaMaitre.addCode( CLIENT_JTG, GLOBAL_NULL );	// Envoie la demande ï¿½ joindre la partie
 	_spaMaitre.add( nomPlayer );					// Envoie nom du joueur qui veut s'y joindre
 
-	setStatut( JKT_STATUT_CLIENT_DEMJTG );			// Statut, demande de "Join The Game" envoyée,
-	// en attente de réponse du serveur
+	setStatut( JKT_STATUT_CLIENT_DEMJTG );			// Statut, demande de "Join The Game" envoyï¿½e,
+	// en attente de rï¿½ponse du serveur
 
 	if( !_spaMaitre.send() ) {
 		LOGDEBUG(("CClient::sendJoinTheGame() SDL_UDP_Send : %s%T", SDLNet_GetError(), this ));
@@ -275,7 +275,7 @@ void CClient::recoit() {
 	int numReady;
 	Uint16 code1, code2;
 
-	numReady = SDLNet_CheckSockets( _socketSet, 0 );		// Nombre de sockets ayant une activité détectée
+	numReady = SDLNet_CheckSockets( _socketSet, 0 );		// Nombre de sockets ayant une activitï¿½ dï¿½tectï¿½e
 
 	if( numReady==-1 ) {
 		cout << "SDLNet_CheckSockets: " << SDLNet_GetError();
@@ -286,11 +286,11 @@ void CClient::recoit() {
 				_spaMaitre.init();
 				_spaMaitre.readCode( code1, code2 );
 
-				bool isNotConnectedMessage = decodeNonConnecte( code1, code2 );			// Tente de décoder les paquets en mode déconnecté
+				bool isNotConnectedMessage = decodeNonConnecte( code1, code2 );			// Tente de dï¿½coder les paquets en mode dï¿½connectï¿½
 
 				if(!isNotConnectedMessage)
 					if( getStatut()==JKT_STATUT_CLIENT_PLAY )	// Si une partie est en cours
-						decodeConnecte( code1, code2 );			// Décode les paquest en mode connecté
+						decodeConnecte( code1, code2 );			// Dï¿½code les paquest en mode connectï¿½
 			}
 		}
 	}
@@ -299,9 +299,9 @@ void CClient::recoit() {
 int CClient::getPingClientServeur() {
 	int ping = m_pingClientServer;
 
-	if( ping==-1 ) {		// Pas de valeur de ping à fournir
-		if(m_timePingClientServer > 0) {	// Si un ping a été envoyé
-			if( SDL_GetTicks()-m_timePingClientServer>9999 ) {	// S'il a été envoyé il y a trop longtemps
+	if( ping==-1 ) {		// Pas de valeur de ping ï¿½ fournir
+		if(m_timePingClientServer > 0) {	// Si un ping a ï¿½tï¿½ envoyï¿½
+			if( SDL_GetTicks()-m_timePingClientServer>9999 ) {	// S'il a ï¿½tï¿½ envoyï¿½ il y a trop longtemps
 				m_pingClientServer = -1;	// Oublie ce ping
 				ping = 9999;			// Signale un temps de ping long
 			}
@@ -326,11 +326,11 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 				char txt[50];
 				LOGDEBUG(("CClient::decodeNonConnecte() : Info serveur%T", this));
 				cout << endl << "Reponse a la demande d'info serveur recue";
-				_spaMaitre.readChar( txt );				// Réception nom du serveur
+				_spaMaitre.readChar( txt );				// Rï¿½ception nom du serveur
 				m_InfoServer.nom = txt;
-				_spaMaitre.readChar( txt );				// Réception de la map en cours
+				_spaMaitre.readChar( txt );				// Rï¿½ception de la map en cours
 				m_InfoServer.map = txt;
-				m_InfoServer.Ready( true );			// Indique que les infos sont actualisées
+				m_InfoServer.Ready( true );			// Indique que les infos sont actualisï¿½es
 
 				MultijoueursClientView* view = (MultijoueursClientView*)Fabrique::getAgarView()->getView(Viewer::MULTIJOUEURS_CLIENT_VIEW);
 				view->setServerName(m_InfoServer.nom);
@@ -412,13 +412,13 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 
 
 							/* *************************************************************
-							 * Récupération d'informations du serveur
+							 * Rï¿½cupï¿½ration d'informations du serveur
 							 * ************************************************************/
 
-							// Détachement du socket du port principal du serveur
+							// Dï¿½tachement du socket du port principal du serveur
 							SDLNet_UDP_Unbind( _spaMaitre.getSocket(), _spaMaitre.getPacketOut()->channel );
 
-							// Attachement au port du serveur qui est réservé à ce client
+							// Attachement au port du serveur qui est rï¿½servï¿½ ï¿½ ce client
 							_spaMaitre.getPacketOut()->channel=SDLNet_UDP_Bind( _spaMaitre.getSocket(),-1,&_spaMaitre.getPacketIn()->address);
 							_spaMaitre.getPacketIn()->channel = _spaMaitre.getPacketOut()->channel;
 							if( _spaMaitre.getPacketOut()->channel==-1 )
@@ -506,9 +506,9 @@ bool CClient::decodeNonConnecte(Uint16 code1, Uint16 code2) {
 						else
 						{
 							LOGDEBUG(("CClient::decodeNonConnecte() : Reponse JKT sans demande%T", this));
-							cerr << endl << __FILE__ << ":" << __LINE__ << " Acceptation JTG recue sans demande envoyée";
+							cerr << endl << __FILE__ << ":" << __LINE__ << " Acceptation JTG recue sans demande envoyï¿½e";
 						}
-						result = true;	// Le paquet a été utilisé
+						result = true;	// Le paquet a ï¿½tï¿½ utilisï¿½
 						break;
 
 					default:
@@ -536,7 +536,7 @@ CClient::CInfoServer::CInfoServer() {
 }
 
 CClient::CInfoServer &CClient::CInfoServer::operator=( CInfoServer &infoServer ) {
-	m_bReady = infoServer.Ready();	// Informe si ces infos ont été actualisées depuis la dernière requête d'infos
+	m_bReady = infoServer.Ready();	// Informe si ces infos ont ï¿½tï¿½ actualisï¿½es depuis la derniï¿½re requï¿½te d'infos
 	nom = infoServer.nom;		// Nom du serveur
 	map = infoServer.map;
 
@@ -555,25 +555,25 @@ void CClient::emet( CPlayer &player ) {
 	CClavier *clavier = player.getClavier();
 
 	_spaMaitre.init();
-	_spaMaitre.addCode( GLOBAL_JETON, _jeton );			// Jeton : permet au serveur de reconnaitre le joueur à partir de son IP/Port si ce n'est pas déjà fait
-	_spaMaitre.addCode( CLIENT_RECAP, GLOBAL_NULL );		// Code de récapitulation
+	_spaMaitre.addCode( GLOBAL_JETON, _jeton );			// Jeton : permet au serveur de reconnaitre le joueur ï¿½ partir de son IP/Port si ce n'est pas dï¿½jï¿½ fait
+	_spaMaitre.addCode( CLIENT_RECAP, GLOBAL_NULL );		// Code de rï¿½capitulation
 
-	// Déplacements
+	// Dï¿½placements
 	Uint16 flags = 0;
 
 	if( clavier->m_bIndic ) {
-		flags |= 0x0001;		// Indique qu'il y a des requetes clavier à prendre en compte
+		flags |= 0x0001;		// Indique qu'il y a des requetes clavier ï¿½ prendre en compte
 
 		if( clavier->m_fAvance!=0.0f ) {
-			flags |= 0x0010;	// Indique la présence d'une requête de mouvement vers l'avant
+			flags |= 0x0010;	// Indique la prï¿½sence d'une requï¿½te de mouvement vers l'avant
 		}
 
 		if( clavier->m_fDroite!=0.0f ) {
-			flags |= 0x0100;	// Indique la présence d'une requête de mouvement vers la droite
+			flags |= 0x0100;	// Indique la prï¿½sence d'une requï¿½te de mouvement vers la droite
 		}
 
 		if( clavier->m_fMonte!=0.0 ) {
-			flags |= 0x1000;	// Indique la présence d'une requête de mouvement vers le haut
+			flags |= 0x1000;	// Indique la prï¿½sence d'une requï¿½te de mouvement vers le haut
 		}
 	}
 
@@ -594,8 +594,8 @@ void CClient::emet( CPlayer &player ) {
 	}
 
 	// Angles
-	_spaMaitre.add( player.Phi() );
-	_spaMaitre.add( player.Teta() );
+	_spaMaitre.add( player.phi() );
+	_spaMaitre.add( player.teta() );
 
 	_spaMaitre.send();
 }

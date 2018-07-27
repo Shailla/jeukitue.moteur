@@ -79,16 +79,16 @@ CRocket::CRocket(CPlayer *player) : CProjectil(player) {
 
 	// Calcul de la direction du tir
 	m_Dir.X = /*FastSin0( player->Teta/180.0f*Pi )*FastCos0( player->Phi/180.0f*Pi );*/
-			sinf( player->Teta()/180.0f*Pi )*cosf( player->Phi()/180.0f*Pi );
+			sinf( player->teta()/180.0f*Pi )*cosf( player->phi()/180.0f*Pi );
 	m_Dir.Y = /*-FastSin0( player->Phi/180.0f*Pi ) ;*/
-			-sinf( player->Phi()/180.0f*Pi ) ;
+			-sinf( player->phi()/180.0f*Pi ) ;
 	m_Dir.Z = /*-FastCos0( player->Teta/180.0f*Pi )*FastCos0( player->Phi/180.0f*Pi ) ;*/
-			cosf( player->Teta()/180.0f*Pi )*cosf( player->Phi()/180.0f*Pi ) ;
+			cosf( player->teta()/180.0f*Pi )*cosf( player->phi()/180.0f*Pi ) ;
 
 	player->getPosition( pos );
 	m_Pos = pos;	// Position de d�part de la rocket
-	m_Teta = player->Teta();			// Orientation de la rocket
-	m_Phi = player->Phi();				//
+	m_Teta = player->teta();			// Orientation de la rocket
+	m_Phi = player->phi();				//
 	m_State = ROCKET_STATE_DEPL;		// Etat de d�part
 	m_Taille = ROCKET_RAYON;
 }

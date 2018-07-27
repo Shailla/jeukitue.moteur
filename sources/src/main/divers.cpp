@@ -30,7 +30,7 @@
 using namespace std;
 using namespace jkt;
 
-extern jkt::CDemonSons *DemonSons;
+extern jkt::CDemonSons *demonSons;
 
 void quit_game(const char* txt, int code)	// Quitte proprement le jeu
 {
@@ -49,7 +49,7 @@ LOGINFO(("quit_game(code=%d,txt=%s)", code, txt.c_str()));
 void quit_JKT() {
 	LOGINFO(("quit_JKT()"));
 
-	string trace = "Denière erreurs des librairies :";
+	string trace = "Deniï¿½re erreurs des librairies :";
 
 	trace = "\n - FMOD : ";
 	trace += FMOD_ErrorString(FSOUND_GetError());
@@ -82,7 +82,7 @@ void quit_JKT() {
 	SDL_Quit();			// Fermeture de SDL
 }
 
-bool checkEventsForIntro(void)		// Vérifie si 'escape' ou le bouton souris ont été frappés
+bool checkEventsForIntro(void)		// Vï¿½rifie si 'escape' ou le bouton souris ont ï¿½tï¿½ frappï¿½s
 {									// true si c'est le cas, false sinon
     SDL_Event event;
 
@@ -90,7 +90,7 @@ bool checkEventsForIntro(void)		// Vérifie si 'escape' ou le bouton souris ont é
         switch( event.type ) {
  		case SDL_MOUSEBUTTONDOWN:	// Handle mouse button presses
 			if( event.button.button==SDL_BUTTON_LEFT )			// Si le bouton de gauche
-				if( event.button.type==SDL_MOUSEBUTTONDOWN )	// est préssé
+				if( event.button.type==SDL_MOUSEBUTTONDOWN )	// est prï¿½ssï¿½
 					return true;
 
 			break;
@@ -112,48 +112,48 @@ bool checkEventsForIntro(void)		// Vérifie si 'escape' ou le bouton souris ont é
 	return false;
 }
 
-CSon* sonChariot;		// Son retour chariot machine à écrire
+CSon* sonChariot;		// Son retour chariot machine ï¿½ ï¿½crire
 CSon* sonTouche;		// Son frappe d'une touche clavier
 CSon* sonEspace;		// Son frappe de la touche espace clavier
-CSon* sonHurlement;		// Son hurlement du sauveur de la planète
+CSon* sonHurlement;		// Son hurlement du sauveur de la planï¿½te
 
 
 void load_Intro( int width, int height ) {
 	LOGDEBUG(("load_Intro(width=%d,height=%d)", width, height));
 
-	// Son retour chariot machine à écrire
+	// Son retour chariot machine ï¿½ ï¿½crire
 	string bruitChariot = "@Bruit\\chariot.wav";
 	jkt::RessourcesLoader::getFileRessource(bruitChariot);
-	sonChariot = DemonSons->CreateSon( bruitChariot.c_str() );
+	sonChariot = demonSons->CreateSon( bruitChariot.c_str() );
 
 	// Son frappe d'une touche clavier
 	string bruitTouche = "@Bruit\\touche.wav";
 	jkt::RessourcesLoader::getFileRessource(bruitTouche);
-	sonTouche = DemonSons->CreateSon( bruitTouche.c_str() );
+	sonTouche = demonSons->CreateSon( bruitTouche.c_str() );
 
 	// Son frappe de la touche espace clavier
 	string bruitEspace = "@Bruit\\espace.wav";
 	jkt::RessourcesLoader::getFileRessource(bruitEspace);
-	sonEspace = DemonSons->CreateSon( bruitEspace.c_str() );
+	sonEspace = demonSons->CreateSon( bruitEspace.c_str() );
 
-	// Son hurlement du sauveur de la planète
+	// Son hurlement du sauveur de la planï¿½te
 	string bruitHurlement = "@Bruit\\hurlement.wav";
 	jkt::RessourcesLoader::getFileRessource(bruitHurlement);
-	sonHurlement = DemonSons->CreateSon( bruitHurlement.c_str() );
+	sonHurlement = demonSons->CreateSon( bruitHurlement.c_str() );
 
 	load_IntroSub( width, height);
 
-	DemonSons->Delete(sonChariot);		// Son retour chariot machine à écrire
-	DemonSons->Delete(sonTouche);		// Son frappe d'une touche clavier
-	DemonSons->Delete(sonEspace);		// Son frappe de la touche espace clavier
-	DemonSons->Delete(sonHurlement);	// Son hurlement du sauveur de la planète
+	demonSons->Delete(sonChariot);		// Son retour chariot machine ï¿½ ï¿½crire
+	demonSons->Delete(sonTouche);		// Son frappe d'une touche clavier
+	demonSons->Delete(sonEspace);		// Son frappe de la touche espace clavier
+	demonSons->Delete(sonHurlement);	// Son hurlement du sauveur de la planï¿½te
 }
 
 
 void load_IntroSub(const int width, const int height) {
 	LOGDEBUG(("load_IntroSub(width=%d,height=%d)", width, height));
 
-	// Chargement de la fonte de caractères
+	// Chargement de la fonte de caractï¿½res
 	string fileFonteIntro = "@Fonte\\Mermaid1001.ttf";
 	jkt::RessourcesLoader::getFileRessource(fileFonteIntro);
 
@@ -162,9 +162,9 @@ void load_IntroSub(const int width, const int height) {
 
 	string str1 = "Nous sommes en 2056.\n\nLa surface de la Terre n'est plus qu'un oc\351an d'acide.\nLa loi a laiss\351 sa place a celle du plus fort et tout se r\350gle\nd\351sormais lors de combats sans gland.\n\n      Voici le seul homme qui peut encore sauver la plan\350te... ";
 	string str2 = "Alors, vous l'avez compris...\n   On est vraiment dans la merde !";
-	vector< string > lignes;		// Lignes séparées par un retour chariot
+	vector< string > lignes;		// Lignes sï¿½parï¿½es par un retour chariot
 
-	srand( SDL_GetTicks() );	// Initialisation de la fonction rand() pour les nombres aléatoires
+	srand( SDL_GetTicks() );	// Initialisation de la fonction rand() pour les nombres alï¿½atoires
 
 	string introJKT = "@Fond\\intro_JKT2.jpg";
 	jkt::RessourcesLoader::getFileRessource(introJKT);
@@ -199,7 +199,7 @@ void load_IntroSub(const int width, const int height) {
 
 	/* ***********************************************
 	 * AFFICHAGE D'UN TEXTE D'INTRO
-	 * lettre par lettre (genre machine à écrire)
+	 * lettre par lettre (genre machine ï¿½ ï¿½crire)
 	 * ***********************************************/
 
 	glColor3f( 1.0, 1.0, 1.0 );
@@ -212,19 +212,19 @@ void load_IntroSub(const int width, const int height) {
 		if( i==0 )
 			lignes.push_back( "" );
 
-		if( (lettre=='\n') ) {	// Si on a affaire à un passage à la ligne
-			DemonSons->Play( sonChariot );	// Envoie le son retour chariot
-			lignes.push_back( "" );			// Et passe à la ligne
+		if( (lettre=='\n') ) {	// Si on a affaire ï¿½ un passage ï¿½ la ligne
+			demonSons->Play( sonChariot );	// Envoie le son retour chariot
+			lignes.push_back( "" );			// Et passe ï¿½ la ligne
 			SDL_Delay( 700 );
 		}
 		else {
 			if( lettre!= ' ' )	// Si c'est pas un espace
-				DemonSons->Play( sonTouche );	// Envoie le son pour une frappe de touche normale
+				demonSons->Play( sonTouche );	// Envoie le son pour une frappe de touche normale
 			else
-				DemonSons->Play( sonEspace );	// Sinon le son d'un espace
+				demonSons->Play( sonEspace );	// Sinon le son d'un espace
 
 			SDL_Delay( 45 );
-			*lignes.rbegin() += lettre ; // Ajoute la lettre à la fin de la dernière ligne
+			*lignes.rbegin() += lettre ; // Ajoute la lettre ï¿½ la fin de la derniï¿½re ligne
 		}
 
 		// Affichage du texte
@@ -234,16 +234,16 @@ void load_IntroSub(const int width, const int height) {
 			vertical -= 25.0f;
 		}
 
-		SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
-		SDL_Delay( (unsigned int)( 60.0f * ((float)rand()/(float)RAND_MAX) ) );	// Petite attente entre deux lettres consécutives
+		SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche ï¿½ l'ï¿½cran
+		SDL_Delay( (unsigned int)( 60.0f * ((float)rand()/(float)RAND_MAX) ) );	// Petite attente entre deux lettres consï¿½cutives
 
-		if( checkEventsForIntro() ) {	// Vérifie si l'utilisateur veut sortir de l'intro
+		if( checkEventsForIntro() ) {	// Vï¿½rifie si l'utilisateur veut sortir de l'intro
 			delete image2;
 			return;
 		}
 	}
 
-	// Attends un petit instant à la fin de l'affichage du texte complet
+	// Attends un petit instant ï¿½ la fin de l'affichage du texte complet
 	SDL_Delay( 1500 );
 	lignes.clear();	// Efface tout le texte
 
@@ -254,11 +254,11 @@ void load_IntroSub(const int width, const int height) {
 
 	glDisable(GL_TEXTURE_2D);
 	glDisable( GL_DEPTH_TEST );
-	glClear( GL_COLOR_BUFFER_BIT );		// Efface l'écran
+	glClear( GL_COLOR_BUFFER_BIT );		// Efface l'ï¿½cran
 
-	DemonSons->Play( sonHurlement );	// Cri du sauveur de la planète
+	demonSons->Play( sonHurlement );	// Cri du sauveur de la planï¿½te
 
-	glRasterPos2i( 0, 0 );		// A partir du coin de l'écran
+	glRasterPos2i( 0, 0 );		// A partir du coin de l'ï¿½cran
 	glDrawPixels( width, height, GL_RGB, GL_UNSIGNED_BYTE, image2 );
 
 	delete image2;
@@ -267,13 +267,13 @@ void load_IntroSub(const int width, const int height) {
 	glDisable( GL_DEPTH_TEST );
 
 
-	SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
+	SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche ï¿½ l'ï¿½cran
 	SDL_Delay( 4000 );
 
-	for( int i=0 ; i<20 ; i++ ) {		// Laisse quelques instants l'image affichée
+	for( int i=0 ; i<20 ; i++ ) {		// Laisse quelques instants l'image affichï¿½e
 		SDL_Delay( 100 );
 
-		if( checkEventsForIntro() ) {	// Vérifie si l'utilisateur veut sortir de l'intro
+		if( checkEventsForIntro() ) {	// Vï¿½rifie si l'utilisateur veut sortir de l'intro
 			return;
 		}
 	}
@@ -281,7 +281,7 @@ void load_IntroSub(const int width, const int height) {
 
 	/* ***********************************************
 	 * AFFICHAGE DE LA FIN DU TEXTE D'INTRO
-	 * lettre par lettre (genre machine à écrire)
+	 * lettre par lettre (genre machine ï¿½ ï¿½crire)
 	 * ***********************************************/
 		
 	glColor3f( 1.0, 1.0, 1.0 );
@@ -295,17 +295,17 @@ void load_IntroSub(const int width, const int height) {
 			lignes.push_back( "" );
 
 		if( (lettre=='\n') ) {
-			DemonSons->Play( sonChariot );
+			demonSons->Play( sonChariot );
 			lignes.push_back( "" );
 			SDL_Delay( 700 );
 		}
 		else {
 			if( lettre!=' ' )	// Si c'est pas un espace
-				DemonSons->Play( sonTouche );	// Envoie le son d'une frappe de touche clavier normale
+				demonSons->Play( sonTouche );	// Envoie le son d'une frappe de touche clavier normale
 			else
-				DemonSons->Play( sonEspace );	// Sinon celui de la frappe d'un espace
+				demonSons->Play( sonEspace );	// Sinon celui de la frappe d'un espace
 
-			*lignes.rbegin() += lettre ; // Ajoute la lettre à la fin de la dernière ligne
+			*lignes.rbegin() += lettre ; // Ajoute la lettre ï¿½ la fin de la derniï¿½re ligne
 		}
 
 			// Affichage de tout le texte
@@ -317,10 +317,10 @@ void load_IntroSub(const int width, const int height) {
 			vertical -= 45.0f;
 		}
 
-		SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche à l'écran
-		SDL_Delay( 75 + (unsigned int)( 60.0f * ((float)rand()/(float)RAND_MAX) ) );	// Petite attente entre deux lettres consécutives
+		SDL_GL_SwapBuffers();	// Echange des buffers graphique -> affiche ï¿½ l'ï¿½cran
+		SDL_Delay( 75 + (unsigned int)( 60.0f * ((float)rand()/(float)RAND_MAX) ) );	// Petite attente entre deux lettres consï¿½cutives
 
-		if( checkEventsForIntro() )	{	// Vérifie si l'utilisateur veut sortir de l'intro
+		if( checkEventsForIntro() )	{	// Vï¿½rifie si l'utilisateur veut sortir de l'intro
 			return;
 		}
 	}

@@ -45,8 +45,8 @@ void CLaser::Affiche() {
 
 	m_Player->getPosition( vect );
 	glTranslatef( vect[0], vect[1], -vect[2] );
-	glRotated( -m_Player->Teta(), 0.0f, 1.0f, 0.0f ); //Rotation par rapport � l'axe verticale
-	glRotated( -m_Player->Phi(), 1.0f, 0.0f, 0.0f );
+	glRotated( -m_Player->teta(), 0.0f, 1.0f, 0.0f ); //Rotation par rapport � l'axe verticale
+	glRotated( -m_Player->phi(), 1.0f, 0.0f, 0.0f );
 	glBegin( GL_QUADS );
 		glColor3f( 1.0f, 0.0f, 0.0f );
 
@@ -90,11 +90,11 @@ bool CLaser::Refresh(Uint32 now, float deltaTime) {
 
 		// vecteur direction du personnage (donc aussi du laser !)
 	Dir.X = /*FastSin0( player->Teta/180.0f*Pi )*FastCos0( player->Phi/180.0f*Pi );*/
-		sinf( m_Player->Teta()/180.0f*Pi )*cosf( m_Player->Phi()/180.0f*Pi );
+		sinf( m_Player->teta()/180.0f*Pi )*cosf( m_Player->phi()/180.0f*Pi );
 	Dir.Y = /*-FastSin0( player->Phi/180.0f*Pi ) ;*/
-		-sinf( m_Player->Phi()/180.0f*Pi ) ;
+		-sinf( m_Player->phi()/180.0f*Pi ) ;
 	Dir.Z = /*-FastCos0( player->Teta/180.0f*Pi )*FastCos0( player->Phi/180.0f*Pi ) ;*/
-		-cosf( m_Player->Teta()/180.0f*Pi )*cosf( m_Player->Phi()/180.0f*Pi ) ;
+		-cosf( m_Player->teta()/180.0f*Pi )*cosf( m_Player->phi()/180.0f*Pi ) ;
 
 	m_Player->getPosition( pos );
 

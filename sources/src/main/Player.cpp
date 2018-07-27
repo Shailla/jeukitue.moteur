@@ -44,7 +44,7 @@ using namespace std;
 using namespace jkt;
 
 extern CCfg Config;
-extern CDemonSons *DemonSons;
+extern CDemonSons *demonSons;
 extern CGame Game;
 
 Icone* CPlayer::_weaponsChoice = NULL;
@@ -79,7 +79,7 @@ CPlayer::CPlayer() {
 	_pSkin = 0;				// Pas de skin associé par défaut
 
 	_cri = 0;				// Le cri du joueur n'a pas encore été chargé
-	ID_ReqCri = 0;			// Y'a pas encore la requête sur le cri non plus
+	_criRequest = 0;			// Y'a pas encore la requête sur le cri non plus
 
 	createClavier();		// Crée la classe qui gère les requêtes de mouvement, tir ...
 
@@ -165,8 +165,8 @@ CPlayer::~CPlayer() {
 	}
 
 	if( _cri ) {	// Destruction du cri du personnage
-		DemonSons->Delete( _cri );
-		ID_ReqCri = 0;
+		demonSons->Delete( _cri );
+		_criRequest = 0;
 		_cri = 0;
 	}
 
@@ -180,8 +180,8 @@ CPlayer::~CPlayer() {
  * Définit le cri du joueur
  */
 void CPlayer::setCri(const char *nomFichier) {
-	_cri = DemonSons->CreateSon( nomFichier );
-	ID_ReqCri = DemonSons->PlayID( _cri, true );
+	_cri = demonSons->CreateSon( nomFichier );
+	_criRequest = demonSons->PlayID( _cri, true );
 }
 
 CClavier *CPlayer::getClavier() {
@@ -383,8 +383,8 @@ void CPlayer::Affiche() {
 }
 
 void CPlayer::tuer() {
-	if( !ID_ReqCri->IsPlaying() )
-		DemonSons->Play( ID_ReqCri );	// Joue le cri du joueur
+	if( !_criRequest->IsPlaying() )
+		demonSons->Play( _criRequest );	// Joue le cri du joueur
 }
 
 void CPlayer::afficheProjectils() {		// Affiche tous les projectils du joueur
@@ -404,7 +404,7 @@ void CPlayer::afficheProjectils() {		// Affiche tous les projectils du joueur
 /**
  * Fait un tir avec l'arme active du joueur.
  */
-void CPlayer::Tir() {
+void CPlayer::tir() {
 	CV3D Dir;
 
 	switch(_armeActif) {
@@ -420,7 +420,7 @@ void CPlayer::Tir() {
 	}
 }
 
-void CPlayer::RefreshProjectils(Uint32 now, float deltaTime) {
+void CPlayer::refreshProjectils(Uint32 now, float deltaTime) {
 	CProjectil *pro;
 	Tableau<CProjectil>::Adr *adrSuivant;
 
@@ -484,11 +484,11 @@ void CPlayer::exeContactFunc(float *normal, float distanceW) {	// Ex�cute fonc
 	}
 }
 
-float CPlayer::Phi() const {
+float CPlayer::phi() const {
 	return _phi;
 }
 
-float CPlayer::Teta() const {
+float CPlayer::teta() const {
 	return _teta;
 }
 
@@ -504,11 +504,11 @@ void CPlayer::setPosVue(const float posVue[3]) {
 	_posVue[2] = posVue[2];
 }
 
-void CPlayer::Phi(float phi) {
+void CPlayer::phi(float phi) {
 	_phi = phi;
 }
 
-void CPlayer::Teta(float teta) {
+void CPlayer::teta(float teta) {
 	_teta = teta;
 }
 

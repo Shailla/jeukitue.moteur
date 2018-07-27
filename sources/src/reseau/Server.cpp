@@ -256,8 +256,8 @@ void CServer::switchRecapServer(CPlayer *player, Uint16 code2, CSPA* spa) {
 			player->getClavier()->m_bIndic = false;
 		}
 
-		player->Phi( spa->readf() );
-		player->Teta( spa->readf() );
+		player->phi( spa->readf() );
+		player->teta( spa->readf() );
 
 		break;
 

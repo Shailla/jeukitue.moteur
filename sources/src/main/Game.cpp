@@ -256,7 +256,7 @@ void CGame::refresh(Uint32 now, float deltaTime) {
 		player = _players[curseur];
 
 		if(player) {
-			player->RefreshProjectils(now, deltaTime);
+			player->refreshProjectils(now, deltaTime);
 		}
 	}
 }

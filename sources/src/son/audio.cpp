@@ -23,7 +23,7 @@ using namespace std;
 using namespace jkt;
 
 //char **remarquesDriver;
-CDemonSons *DemonSons;	// Requêtes des son à jouer
+CDemonSons *demonSons;	// RequÃªtes des son Ã  jouer
 
 const char *resolveOutput(int output)
 {

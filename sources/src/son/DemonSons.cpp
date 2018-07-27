@@ -37,7 +37,7 @@ LOGDEBUG(("CDemonSons::CreateSon3D(nomFichierSon=%s)%T", nomFichierSon, this));
 	return (CSon3D*)CreateSon( nomFichierSon, SON_3D );
 }
 
-CSon* CDemonSons::CreateSon(const char *nomFichierSon, TYPE_SON type) // Charge un CSon à partir d'un fichier wave
+CSon* CDemonSons::CreateSon(const char *nomFichierSon, TYPE_SON type) // Charge un CSon ï¿½ partir d'un fichier wave
 {
 LOGDEBUG(("CDemonSons::CreateSon(nomFichierSon=%s,type=%d)%T",nomFichierSon, type, this));
 	CSon *son = 0;
@@ -66,44 +66,44 @@ LOGDEBUG(("CDemonSons::CreateSon(nomFichierSon=%s,type=%d)%T",nomFichierSon, typ
 			break;
 		}
 	}
-	catch( int )		// Réception d'une erreur de lecture du son
+	catch( int )		// Rï¿½ception d'une erreur de lecture du son
 	{
 		if( son )
 			delete son;
-		son = 0;	// La création du son n'a pas eu lieu
+		son = 0;	// La crï¿½ation du son n'a pas eu lieu
 	}
 
 	return son;
 }
 
-void CDemonSons::Play( CSon* id )	// Joue un son volatil donc sans retour d'identifiant de requête
+void CDemonSons::Play( CSon* id )	// Joue un son volatil donc sans retour d'identifiant de requï¿½te
 {
-	set<CSon*>::iterator p = m_TabSon.find( id );	// Vérifie que le son existe
+	set<CSon*>::iterator p = m_TabSon.find( id );	// Vï¿½rifie que le son existe
 	if( p==m_TabSon.end() ) {
 		LOGWARN(("Erreur (CDemonSons) : Tentative de jouer un son qui n'existe pas."));
 		return;
 	}
 
 	CReqSon *req = id->PlayID( false );		// Joue le son sans pause
-	req->m_bVolatil = true;					// La requête sera supprimée à sa fin
+	req->m_bVolatil = true;					// La requï¿½te sera supprimï¿½e ï¿½ sa fin
 }
 
 void CDemonSons::Delete( CReqSon *req ) {
 LOGDEBUG(("CDemonSons::Delete(req=%x)%T", req, this));
-	map<CReqSon*,CSon*>::iterator r = m_TabReq.find( req );	// Trouve la requête dans la liste du démon
+	map<CReqSon*,CSon*>::iterator r = m_TabReq.find( req );	// Trouve la requï¿½te dans la liste du dï¿½mon
 
 	if( r!=m_TabReq.end() ) {
-		// Destruction de la requête
+		// Destruction de la requï¿½te
 		delete req;
 
-		// Trouve et supprime la requête dans la liste du son associé
+		// Trouve et supprime la requï¿½te dans la liste du son associï¿½
 		set<CReqSon*>::iterator rson = r->second->m_TabReq.find( req );
 		if( rson!=r->second->m_TabReq.end() )
 			r->second->m_TabReq.erase( rson );
 		else
 			LOGERROR((" Erreur (CDemonSons) : Delete impossible 1."));
 
-		// Supprime la requête dans la liste du démon
+		// Supprime la requï¿½te dans la liste du dï¿½mon
 		m_TabReq.erase( r );
 	}
 	else {
@@ -113,21 +113,21 @@ LOGDEBUG(("CDemonSons::Delete(req=%x)%T", req, this));
 
 void CDemonSons::Delete( CSon *son ) {
 LOGDEBUG(("CDemonSons::Delete(son=%x)%T", son, this));
-	set<CSon*>::iterator s = m_TabSon.find( son );	// Vérifie que le son existe
+	set<CSon*>::iterator s = m_TabSon.find( son );	// Vï¿½rifie que le son existe
 
 	if( s==m_TabSon.end() ) {
 		LOGERROR(("Tentative de detruire un son inexistant"));
 		return;
 	}
 
-	m_TabSon.erase( s );	// Supprime le son de la liste du démon
+	m_TabSon.erase( s );	// Supprime le son de la liste du dï¿½mon
 
 	delete son;
 }
 
-void CDemonSons::Play( CReqSon *id )	// Relance la requête au début du son
+void CDemonSons::Play( CReqSon *id )	// Relance la requï¿½te au dï¿½but du son
 {
-	map<CReqSon*,CSon*>::iterator p = m_TabReq.find( id );	// Vérifie que la requête existe
+	map<CReqSon*,CSon*>::iterator p = m_TabReq.find( id );	// Vï¿½rifie que la requï¿½te existe
 	if( p!=m_TabReq.end() )
 		id->Play();
 	else
@@ -139,42 +139,42 @@ LOGDEBUG(("CDemonSons::Erase(req=%x)%T", req, this));
 	map<CReqSon*,CSon*>::iterator R = m_TabReq.find( req );
 
 	if( R!=m_TabReq.end() )
-		m_TabReq.erase( R );	// Supprime la requête de la liste redondante du démon
+		m_TabReq.erase( R );	// Supprime la requï¿½te de la liste redondante du dï¿½mon
 	else
 		LOGERROR(("Erreur (CDemonSons::Delete) : Chose bizarre"));
 }
 
-CReqSon* CDemonSons::PlayID( CSon* id, bool pause )	// Joue un son avec retour d'identifiant de requête
+CReqSon* CDemonSons::PlayID( CSon* id, bool pause )	// Joue un son avec retour d'identifiant de requï¿½te
 {
-	set<CSon*>::iterator p = m_TabSon.find( id );	// Vérifie que le son existe
+	set<CSon*>::iterator p = m_TabSon.find( id );	// Vï¿½rifie que le son existe
 	if( p==m_TabSon.end() ) {
 		LOGERROR(("CSon introuvable !!!"));
 		return 0;
 	}
 
 	CReqSon* req = id->PlayID( pause );
-	req->m_bVolatil = false;		// Seul le demandeur de requête peut la supprimer
+	req->m_bVolatil = false;		// Seul le demandeur de requï¿½te peut la supprimer
 
 	return req;
 }
 
-void CDemonSons::Refresh() {	// Vérifie si des requêtes volatiles sont arrivées à leur fin
+void CDemonSons::Refresh() {	// Vï¿½rifie si des requï¿½tes volatiles sont arrivï¿½es ï¿½ leur fin
 								// dans ce cas les supprime et oublie les
 	LOGINFO(("REFRESH SONS, RESTE A CODER"));
 
 	map<CReqSon*, CSon*>::iterator r,p;
-	for( r=m_TabReq.begin() ; r!=m_TabReq.end() ; ) {	// Ne rien mettre à la fin du for !!!
+	for( r=m_TabReq.begin() ; r!=m_TabReq.end() ; ) {	// Ne rien mettre ï¿½ la fin du for !!!
 		p = r++;
 
 		if( p->first->m_bVolatil ) {
-			if( FSOUND_IsPlaying( p->first->channel ) ) {	// Si la requête a fini son exécution
-				FSOUND_StopSound( p->first->channel );	// Libère son canal
-					// Détruit la requête
+			if( FSOUND_IsPlaying( p->first->channel ) ) {	// Si la requï¿½te a fini son exï¿½cution
+				FSOUND_StopSound( p->first->channel );	// Libï¿½re son canal
+					// Dï¿½truit la requï¿½te
 				delete p->first;
-					// Trouve la et supprime la de la liste des requêtes du son
+					// Trouve la et supprime la de la liste des requï¿½tes du son
 				set<CReqSon*>::iterator rson = p->second->m_TabReq.find( p->first );
 				p->second->m_TabReq.erase( rson );
-					// Supprime la de la liste des requêtes du démon
+					// Supprime la de la liste des requï¿½tes du dï¿½mon
 				m_TabReq.erase( p );
 			}
 		}

@@ -148,7 +148,7 @@ int numMainPlayer = 0;	// Num�ro du joueur principal dans la MAP (identifie le
 
 bool Aide = false;
 
-extern CDemonSons* DemonSons;	// Requ�tes des sons
+extern CDemonSons* demonSons;	// Requ�tes des sons
 
 Uint32 tempsTimer = 0;		// Temps pris par la fonction 'timer'
 Uint32 tempsDisplay = 0;	// Temps pris par la fonction 'display'
@@ -224,10 +224,10 @@ void updateSon3D() {
 
 	CPlayer *erwin = Game.Erwin();
 
-	float cosP = /*FastCos0( erwin->Phi/180.0f*Pi );*/	cosf( erwin->Phi()/180.0f*Pi );
-	float sinP = /*FastSin0( erwin->Phi/180.0f*Pi );*/	sinf( erwin->Phi()/180.0f*Pi );
-	float cosT = /*FastCos0( erwin->Teta/180.0f*Pi );*/	cosf( erwin->Teta()/180.0f*Pi );
-	float sinT = /*FastSin0( erwin->Teta/180.0f*Pi );*/	sinf( erwin->Teta()/180.0f*Pi );
+	float cosP = /*FastCos0( erwin->Phi/180.0f*Pi );*/	cosf( erwin->phi()/180.0f*Pi );
+	float sinP = /*FastSin0( erwin->Phi/180.0f*Pi );*/	sinf( erwin->phi()/180.0f*Pi );
+	float cosT = /*FastCos0( erwin->Teta/180.0f*Pi );*/	cosf( erwin->teta()/180.0f*Pi );
+	float sinT = /*FastSin0( erwin->Teta/180.0f*Pi );*/	sinf( erwin->teta()/180.0f*Pi );
 
 	float fx = cosP*sinT;
 	float fy = -sinP;
@@ -326,7 +326,7 @@ void afficheInfo( Uint32 tempsDisplay ) {
 
 	if(erwin) {
 		// Affiche le Teta du joueur principal
-		sprintf( cou, "Teta Phi : %.3d %.3d", (int)erwin->Teta(), (int)erwin->Phi());
+		sprintf( cou, "Teta Phi : %.3d %.3d", (int)erwin->teta(), (int)erwin->phi());
 		str = cou;
 		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 
@@ -477,8 +477,8 @@ void display() {		// Fonction principale d'affichage
 			erwin->getPosVue(vect);
 			glTranslatef(-vect[0], -vect[1], vect[2]);	// Placement du point de vue
 
-			glRotated(erwin->Phi(), 1.0, 0.0, 0.0);		// Rotation par rapport au plan horizontal
-			glRotated(erwin->Teta(), 0.0, 1.0, 0.0);	// Rotation par rapport � l'axe verticale
+			glRotated(erwin->phi(), 1.0, 0.0, 0.0);		// Rotation par rapport au plan horizontal
+			glRotated(erwin->teta(), 0.0, 1.0, 0.0);	// Rotation par rapport � l'axe verticale
 
 			erwin->getPosition(vect);
 			glTranslatef(-vect[0], -vect[1], vect[2]);	// Placement du point de vue
@@ -728,7 +728,7 @@ void chopeLesEvenements(Uint32 now, float deltaTime) {
 		}
 
 		if( keystate[Config.Commandes.Tir1.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir1.mouse)) ) {	// Tire avec l'arme s�lectionn�e
-			erwin->Tir();		// Valide un tir
+			erwin->tir();		// Valide un tir
 		}
 
 		if( keystate[Config.Commandes.Monter.key]||(mouse&SDL_BUTTON(Config.Commandes.Monter.mouse)) ) {	// Monter
@@ -739,10 +739,10 @@ void chopeLesEvenements(Uint32 now, float deltaTime) {
 		if( keystate[Config.Commandes.Tir2.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir2.mouse)) ) {	// Tire de projectile qui rebondit
 			CPlayer *balle;
 
-			float cosTeta = /*FastCos0( erwin->Teta/180.0f*Pi );	//*/cosf( erwin->Teta()/180.0f*Pi );
-			float sinTeta = /*FastSin0( erwin->Teta/180.0f*Pi );	//*/sinf( erwin->Teta()/180.0f*Pi );
-			float cosPhi = /*FastCos0( erwin->Phi/180.0f*Pi );	//*/cosf( erwin->Phi()/180.0f*Pi );
-			float sinPhi = /*FastSin0( erwin->Phi/180.0f*Pi );	//*/sinf( erwin->Phi()/180.0f*Pi );
+			float cosTeta = /*FastCos0( erwin->Teta/180.0f*Pi );	//*/cosf( erwin->teta()/180.0f*Pi );
+			float sinTeta = /*FastSin0( erwin->Teta/180.0f*Pi );	//*/sinf( erwin->teta()/180.0f*Pi );
+			float cosPhi = /*FastCos0( erwin->Phi/180.0f*Pi );	//*/cosf( erwin->phi()/180.0f*Pi );
+			float sinPhi = /*FastSin0( erwin->Phi/180.0f*Pi );	//*/sinf( erwin->phi()/180.0f*Pi );
 
 			balle = new CPlayer(); //cr�e un autre joueur
 			float vect[3];
@@ -776,21 +776,21 @@ void play_handle_key_down( SDL_Event *event ) {
 	case SDL_MOUSEMOTION:		// Si c'est un �v�nement 'souris'
 		if( erwin ) {
 			// Rotation par rapport au plan horizontal (regarder en l'air ou vers le bas)
-			erwin->Phi( erwin->Phi() + event->motion.yrel );
+			erwin->phi( erwin->phi() + event->motion.yrel );
 
-			if(erwin->Phi()>90.0)
-				erwin->Phi( 90.0f );
+			if(erwin->phi()>90.0)
+				erwin->phi( 90.0f );
 
-			if(erwin->Phi()<-90.0)
-				erwin->Phi( -90.0f );
+			if(erwin->phi()<-90.0)
+				erwin->phi( -90.0f );
 
 			// Rotation par rapport � l'axe verticale (regarder � droite ou � gauche)
-			erwin->Teta( erwin->Teta() + event->motion.xrel );
-			if(erwin->Teta()>180.0f)
-				erwin->Teta( erwin->Teta() - 360.0f );
+			erwin->teta( erwin->teta() + event->motion.xrel );
+			if(erwin->teta()>180.0f)
+				erwin->teta( erwin->teta() - 360.0f );
 
-			if(erwin->Teta()<-180.0f)
-				erwin->Teta( erwin->Teta() + 360.0f );
+			if(erwin->teta()<-180.0f)
+				erwin->teta( erwin->teta() + 360.0f );
 		}
 		break;
 
@@ -800,7 +800,7 @@ void play_handle_key_down( SDL_Event *event ) {
 
 			// Tir de l'arme active
 			if(mouseButtonDown == Config.Commandes.Tir1.mouse) {
-				erwin->Tir();	// Tir avec l'arme active
+				erwin->tir();	// Tir avec l'arme active
 			}
 			// S�lection arme suivante
 			else if(mouseButtonDown == Config.Commandes.SelectWeaponUp.mouse) {
@@ -830,7 +830,7 @@ void play_handle_key_down( SDL_Event *event ) {
 		if( erwin ) {
 			// Tir de l'arme active
 			if(keyDown == Config.Commandes.Tir1.key) {
-				erwin->Tir();
+				erwin->tir();
 			}
 			// S�lection arme suivante
 			else if(keyDown == Config.Commandes.SelectWeaponUp.key) {
@@ -915,8 +915,8 @@ void play_handle_key_down( SDL_Event *event ) {
 			if(Game.Erwin()) {
 				Game.Erwin()->choiceOneEntryPoint();
 				Game.Erwin()->changeVitesse( 0.0f, 0.0f, 0.0f );
-				Game.Erwin()->Teta( 0.0 );
-				Game.Erwin()->Phi( 0.0 );
+				Game.Erwin()->teta( 0.0 );
+				Game.Erwin()->phi( 0.0 );
 			}
 			break;
 
@@ -926,7 +926,7 @@ void play_handle_key_down( SDL_Event *event ) {
 			cout << endl << "Bilan des sons :";
 			cout << endl << "----------------";
 			int i=1;
-			for( p=DemonSons->m_TabSon.begin() ; p!=DemonSons->m_TabSon.end() ; p++ )
+			for( p=demonSons->m_TabSon.begin() ; p!=demonSons->m_TabSon.end() ; p++ )
 				cout << endl << i++ << "\t" << (*p)->nom << "\t" << (unsigned int)(*p)->m_TabReq.size();
 			cout << endl;
 		}
@@ -1749,7 +1749,7 @@ int main(int argc, char** argv) {
 	Fabrique::construct();
 
 	// Cr�ation du d�mon de gestion des sons
-	DemonSons = new CDemonSons();
+	demonSons = new CDemonSons();
 
 	// Lancement de l'introduction du jeu
 	if(Config.General._playIntro) {
@@ -1778,11 +1778,11 @@ int main(int argc, char** argv) {
 	machin = new CMachin();
 	string fichierSon3D = "@Musique\\drumloop.wav";
 	jkt::RessourcesLoader::getFileRessource(fichierSon3D);
-	CSon3D *son3D = DemonSons->CreateSon3D( fichierSon3D.c_str() );
-	CReqSon *reqSon = DemonSons->PlayID( (CSon*)son3D, true );
+	CSon3D *son3D = demonSons->CreateSon3D( fichierSon3D.c_str() );
+	CReqSon *reqSon = demonSons->PlayID( (CSon*)son3D, true );
 	reqSon->Boucle( true );
 	machin->req_son = reqSon;
-	DemonSons->Play( machin->req_son );
+	demonSons->Play( machin->req_son );
 
 	// Initialisation des plugins d�marr�s par d�faut
 	Fabrique::getPluginEngine()->activateDefaultGlobalPlugins();

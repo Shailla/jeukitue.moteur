@@ -1,26 +1,26 @@
 /*
-CDemonSons est le démon qui gère les sons dans le jeu.
+CDemonSons est le dï¿½mon qui gï¿½re les sons dans le jeu.
 
-Il peut créer de nouveaux sons et les requêtes associées.
-Un son (CSon) contient les données audio, par exemple le bruit d'une explosion de rocket
-ou la musique du jeu. Chaque son peut être identifié par son CSon*.
-Un son peut être joué plusieurs fois en même temps, cela se fait par l'intermédiaire des
-requêtes. Par exemple, on crée un son 'explosion', on crée alors durant la partie une
-requête sur ce son chaque fois qu'une rocket explose. Il se peut bien-sûr que plusieurs rocket
-explose en même temps.
+Il peut crï¿½er de nouveaux sons et les requï¿½tes associï¿½es.
+Un son (CSon) contient les donnï¿½es audio, par exemple le bruit d'une explosion de rocket
+ou la musique du jeu. Chaque son peut ï¿½tre identifiï¿½ par son CSon*.
+Un son peut ï¿½tre jouï¿½ plusieurs fois en mï¿½me temps, cela se fait par l'intermï¿½diaire des
+requï¿½tes. Par exemple, on crï¿½e un son 'explosion', on crï¿½e alors durant la partie une
+requï¿½te sur ce son chaque fois qu'une rocket explose. Il se peut bien-sï¿½r que plusieurs rocket
+explose en mï¿½me temps.
 
-Il existe 2 façons de jouer un son :
+Il existe 2 faï¿½ons de jouer un son :
 
-	- la plus simple joue le son une seule fois sans que l'on puisse modifier la façon dont
-	il est joué en cours. Par exemple l'explosion d'une rocket est
-	parfaitement localisée dans l'espace. Dans ce cas la requête est crée de façon transparente
-	par CDemonRequete et est détruite une fois que le son a été joué.
+	- la plus simple joue le son une seule fois sans que l'on puisse modifier la faï¿½on dont
+	il est jouï¿½ en cours. Par exemple l'explosion d'une rocket est
+	parfaitement localisï¿½e dans l'espace. Dans ce cas la requï¿½te est crï¿½e de faï¿½on transparente
+	par CDemonRequete et est dï¿½truite une fois que le son a ï¿½tï¿½ jouï¿½.
 
-	- Avec la deuxième façon on obtient un identifiant de requête qui permet de modifier ses
-	paramètres pendant qu'il est joué. Par exemple le bruit d'une rocket doit se déplacer avec elle,
-	une fois la requête crée on va donc l'informer régulièrement de sa nouvelle position spatiale
-	grâce à son identifiant. La destruction d'une requête créée de cette façon doit être
-	demadée explicitement.
+	- Avec la deuxiï¿½me faï¿½on on obtient un identifiant de requï¿½te qui permet de modifier ses
+	paramï¿½tres pendant qu'il est jouï¿½. Par exemple le bruit d'une rocket doit se dï¿½placer avec elle,
+	une fois la requï¿½te crï¿½e on va donc l'informer rï¿½guliï¿½rement de sa nouvelle position spatiale
+	grï¿½ce ï¿½ son identifiant. La destruction d'une requï¿½te crï¿½ï¿½e de cette faï¿½on doit ï¿½tre
+	demadï¿½e explicitement.
 */
 
 
@@ -48,22 +48,22 @@ class CDemonSons
 friend class CSon;
 public:
 	std::set<CSon*> m_TabSon;				// Table des identifiants des sons existants
-	std::map<CReqSon*,CSon*> m_TabReq;		// Table des identifiants des requêtes existantes
+	std::map<CReqSon*,CSon*> m_TabReq;		// Table des identifiants des requï¿½tes existantes
 private:
-	void Erase( CReqSon *req );			// Enlève la requête de la liste des requêtes
+	void Erase( CReqSon *req );			// Enlï¿½ve la requï¿½te de la liste des requï¿½tes
 public:
 	CDemonSons();
 	~CDemonSons();
 
-	CSon* CreateSon(const char *nomFichierSon, TYPE_SON type=SON_MONO);	// Charge un CSon à partir d'un fichier wave
-	CSon3D* CreateSon3D(const char *nomFichierSon);	// Charge un CSon3D à partir d'un fichier wave
-	void Delete( CSon *son );	// Supprime un son du démon (et ses requêtes bien entendu)
+	CSon* CreateSon(const char *nomFichierSon, TYPE_SON type=SON_MONO);	// Charge un CSon ï¿½ partir d'un fichier wave
+	CSon3D* CreateSon3D(const char *nomFichierSon);	// Charge un CSon3D ï¿½ partir d'un fichier wave
+	void Delete( CSon *son );	// Supprime un son du dï¿½mon (et ses requï¿½tes bien entendu)
 
-	void Play( CSon* id );			// Joue un son sans retour d'identifiant de requête
-	void Play( CReqSon *id );		// (re)joue un son qui possède déjà une requête
-	CReqSon* PlayID( CSon* id, bool pause=false );	// Joue un son avec retour d'identifiant de requête
+	void Play( CSon* id );			// Joue un son sans retour d'identifiant de requï¿½te
+	void Play( CReqSon *id );		// (re)joue un son qui possï¿½de dï¿½jï¿½ une requï¿½te
+	CReqSon* PlayID( CSon* id, bool pause=false );	// Joue un son avec retour d'identifiant de requï¿½te
 	void Refresh();
-	void Delete( CReqSon *req );	// Destruction/suppression d'une requête
+	void Delete( CReqSon *req );	// Destruction/suppression d'une requï¿½te
 };
 
 }	// namespace jkt

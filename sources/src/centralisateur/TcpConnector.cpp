@@ -16,8 +16,7 @@ using namespace std;
 namespace jkt
 {
 
-vector<DownloadFileItem> TcpConnector::askDownloadFileList(const int port) throw(CentralisateurTcpException)
-{
+vector<DownloadFileItem> TcpConnector::askDownloadFileList(const int port) throw(CentralisateurTcpException) {
 	// Open a TCP connection to the Centralisateur exchange files service
 	IPaddress ip;
 	TCPsocket socket;
@@ -75,15 +74,13 @@ vector<DownloadFileItem> TcpConnector::askDownloadFileList(const int port) throw
 	return list;
 }
 
-struct DownloadOneFileThreadData
-{
+struct DownloadOneFileThreadData {
 	int _port;
 	long _downloadId;
 	ProgressBarView* _progressView;
 };
 
-int downloadOneFileThread(void* threadData)
-{
+int downloadOneFileThread(void* threadData) {
 	int port = ((DownloadOneFileThreadData*) threadData)->_port;
 	long downloadId = ((DownloadOneFileThreadData*) threadData)->_downloadId;
 	ProgressBarView* progressView = ((DownloadOneFileThreadData*) threadData)->_progressView;
@@ -148,12 +145,12 @@ int downloadOneFileThread(void* threadData)
 		// Size of the file (size of the name followed by the name itself)
 		item._taille = CTcpUtils::loadInteger(socket);
 
-		// Création d'un fichier temporaire
+		// Crï¿½ation d'un fichier temporaire
 		string tmpFilename = TEMPORARY_DIRECTORY;
 		tmpFilename.append(item._nom);
 		tmpFilename.append(".tmp");
 
-		ofstream tmpFile(tmpFilename.c_str(), ios_base::trunc | ios_base::binary);	// Toute ancienne donnée dans le fichier est écrasée
+		ofstream tmpFile(tmpFilename.c_str(), ios_base::trunc | ios_base::binary);	// Toute ancienne donnï¿½e dans le fichier est ï¿½crasï¿½e
 
 		if(!tmpFile) {
 			LOGERROR(("Erreur ouverture du fichier"));
@@ -168,7 +165,7 @@ int downloadOneFileThread(void* threadData)
 			
 			accompli++;
 
-			// Mise à jour de la barre de progression
+			// Mise ï¿½ jour de la barre de progression
 			progressView->setProgressPercentage((accompli * 100) / item._taille);
 		}
 
@@ -180,7 +177,7 @@ int downloadOneFileThread(void* threadData)
 		progressView->setCurrentOperationMessage("Fermeture du flux du fichier...");
 		SDLNet_TCP_Close(socket);
 
-		// Création du répertoire de la Map
+		// Crï¿½ation du rï¿½pertoire de la Map
 		string destDirectory = MAP_DIRECTORY;
 		destDirectory.append(item._nom).append("/");
 
@@ -188,7 +185,7 @@ int downloadOneFileThread(void* threadData)
 			LOGERROR((" Le repertoire '%s' existe deja", destDirectory.c_str()));
 		}
 
-		// Décompression de l'archive
+		// Dï¿½compression de l'archive
 		progressView->setCurrentOperationMessage("Ouverture de l'archive...");
 
 		CZipArchive zip;
@@ -220,8 +217,7 @@ int downloadOneFileThread(void* threadData)
 	return 0;
 }
 
-void TcpConnector::downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) throw(CentralisateurTcpException)
-{
+void TcpConnector::downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) throw(CentralisateurTcpException) {
 	DownloadOneFileThreadData* threadData = new DownloadOneFileThreadData();
 	threadData->_port = port;
 	threadData->_downloadId = downloadId;

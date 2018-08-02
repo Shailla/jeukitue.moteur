@@ -9,6 +9,7 @@
 #define GAMEDTO_H_
 
 #include <string>
+#include <vector>
 
 #include "main/Player.h"
 #include "spatial/Map.h"

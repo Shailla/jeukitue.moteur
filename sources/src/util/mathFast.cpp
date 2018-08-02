@@ -4,8 +4,7 @@
 namespace jkt
 {
 
-float FastSin0 (float fAngle)
-{
+float FastSin0 (float fAngle) {
 	float fASqr = fAngle*fAngle;
 	float fResult = 7.61e-03f;
 	fResult *= fASqr;
@@ -16,8 +15,7 @@ float FastSin0 (float fAngle)
 	return fResult;
 }
 
-float FastSin1 (float fAngle)
-{
+float FastSin1 (float fAngle) {
 	float fASqr = fAngle*fAngle;
 	float fResult = -2.39e-08f;
 	fResult *= fASqr;
@@ -34,8 +32,7 @@ float FastSin1 (float fAngle)
 	return fResult;
 }
 
-float FastCos0 (float fAngle)
-{
+float FastCos0 (float fAngle) {
 	float fASqr = fAngle*fAngle;
 	float fResult = 3.705e-02f;
 	fResult *= fASqr;
@@ -45,8 +42,7 @@ float FastCos0 (float fAngle)
 	return fResult;
 }
 
-float FastCos1 (float fAngle)
-{
+float FastCos1 (float fAngle) {
 	float fASqr = fAngle*fAngle;
 	float fResult = -2.605e-07f;
 	fResult *= fASqr;
@@ -62,8 +58,7 @@ float FastCos1 (float fAngle)
 	return fResult;
 }
 
-float FastTan0 (float fAngle)
-{
+float FastTan0 (float fAngle) {
 	float fASqr = fAngle*fAngle;
 	float fResult = 2.033e-01f;
 	fResult *= fASqr;
@@ -74,8 +69,7 @@ float FastTan0 (float fAngle)
 	return fResult;
 }
 
-float FastTan1 (float fAngle)
-{
+float FastTan1 (float fAngle) {
 	float fASqr = fAngle*fAngle;
 	float fResult = 9.5168091e-03f;
 	fResult *= fASqr;
@@ -122,8 +116,7 @@ float FastTan1 (float fAngle)
 	return fResult;
 }*/
 
-float FastInvTan0 (float fValue)
-{
+float FastInvTan0 (float fValue) {
 	float fVSqr = fValue*fValue;
 	float fResult = 0.0208351f;
 	fResult *= fVSqr;
@@ -138,8 +131,7 @@ float FastInvTan0 (float fValue)
 	return fResult;
 }
 
-float FastInvTan1 (float fValue)
-{
+float FastInvTan1 (float fValue) {
 	float fVSqr = fValue*fValue;
 	float fResult = 0.0028662257f;
 	fResult *= fVSqr;

@@ -2,8 +2,7 @@
 
 const unsigned int CXmlHelper::NUM_INDENTS_PER_SPACE = 2;
 
-const char* CXmlHelper::getIndent( unsigned int numIndents )
-{
+const char* CXmlHelper::getIndent( unsigned int numIndents ) {
 	static const char * pINDENT="                                      + ";
 	static const unsigned int LENGTH = (unsigned int)strlen( pINDENT );
 	unsigned int n = (unsigned int)numIndents*NUM_INDENTS_PER_SPACE;
@@ -13,8 +12,7 @@ const char* CXmlHelper::getIndent( unsigned int numIndents )
 }
 
 // same as getIndent but no "+" at the end
-const char* CXmlHelper::getIndentAlt( unsigned int numIndents )
-{
+const char* CXmlHelper::getIndentAlt( unsigned int numIndents ) {
 	static const char * pINDENT="                                        ";
 	static const unsigned int LENGTH=(unsigned int)strlen( pINDENT );
 	unsigned int n=numIndents*NUM_INDENTS_PER_SPACE;
@@ -23,9 +21,10 @@ const char* CXmlHelper::getIndentAlt( unsigned int numIndents )
 	return &pINDENT[ LENGTH-n ];
 }
 
-int CXmlHelper::dump_attribs_to_stdout(TiXmlElement* pElement, unsigned int indent)
-{
-	if ( !pElement ) return 0;
+int CXmlHelper::dump_attribs_to_stdout(TiXmlElement* pElement, unsigned int indent) {
+	if ( !pElement ) {
+		return 0;
+	}
 
 	TiXmlAttribute* pAttrib=pElement->FirstAttribute();
 	int i=0;
@@ -33,8 +32,8 @@ int CXmlHelper::dump_attribs_to_stdout(TiXmlElement* pElement, unsigned int inde
 	double dval;
 	const char* pIndent=getIndent(indent);
 	printf("\n");
-	while (pAttrib)
-	{
+
+	while (pAttrib) {
 		printf( "%s%s: value=[%s]", pIndent, pAttrib->Name(), pAttrib->Value());
 
 		if (pAttrib->QueryIntValue(&ival)==TIXML_SUCCESS)    printf( " int=%d", ival);
@@ -43,12 +42,14 @@ int CXmlHelper::dump_attribs_to_stdout(TiXmlElement* pElement, unsigned int inde
 		i++;
 		pAttrib=pAttrib->Next();
 	}
+
 	return i;	
 }
 
-void CXmlHelper::dump_to_stdout( TiXmlNode* pParent, unsigned int indent)
-{
-	if ( !pParent ) return;
+void CXmlHelper::dump_to_stdout( TiXmlNode* pParent, unsigned int indent) {
+	if ( !pParent ) {
+		return;
+	}
 
 	TiXmlNode* pChild;
 	TiXmlText* pText;
@@ -56,8 +57,7 @@ void CXmlHelper::dump_to_stdout( TiXmlNode* pParent, unsigned int indent)
 	printf( "%s", getIndent(indent));
 	int num;
 
-	switch ( t )
-	{
+	switch ( t ) {
 	case TiXmlNode::TINYXML_DOCUMENT:
 		printf( "Document" );
 		break;
@@ -89,28 +89,28 @@ void CXmlHelper::dump_to_stdout( TiXmlNode* pParent, unsigned int indent)
 	case TiXmlNode::TINYXML_DECLARATION:
 		printf( "Declaration" );
 		break;
+
 	default:
 		break;
 	}
+
 	printf( "\n" );
-	for ( pChild = pParent->FirstChild(); pChild != 0; pChild = pChild->NextSibling()) 
-	{
+
+	for( pChild = pParent->FirstChild(); pChild != 0; pChild = pChild->NextSibling()) {
 		dump_to_stdout( pChild, indent+1 );
 	}
 }
 
 // load the named file and dump its structure to STDOUT
-void CXmlHelper::dump_to_stdout(const char* pFilename)
-{
+void CXmlHelper::dump_to_stdout(const char* pFilename) {
 	TiXmlDocument doc(pFilename);
 	bool loadOkay = doc.LoadFile();
-	if (loadOkay)
-	{
+
+	if (loadOkay) {
 		printf("\n%s:\n", pFilename);
 		dump_to_stdout( &doc ); // defined later in the tutorial
 	}
-	else
-	{
+	else {
 		printf("Failed to load file \"%s\"\n", pFilename);
 	}
 }

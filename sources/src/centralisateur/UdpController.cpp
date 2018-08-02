@@ -13,20 +13,14 @@
 
 using namespace std;
 
-UdpController::UdpController(void)
-{
+UdpController::UdpController(void) {
     m_udpConnector = 0;
 }
 
-UdpController::~UdpController(void)
-{
+UdpController::~UdpController(void) {
 }
 
-void UdpController::connect(char* userName,
-                            int portLocal,
-                            char* ipCentralisateur,
-                            int portCentralisateur)
-{
+void UdpController::connect(char* userName, int portLocal, char* ipCentralisateur, int portCentralisateur) {
     if(m_udpConnector) {
         m_udpConnector->stop();  // Kill the actual connector and wait he's dead
         delete m_udpConnector;
@@ -60,7 +54,7 @@ void UdpController::receive(UDPpacket* packet) {
 
     // Respond to an Ping request
     if(code == CODE_D_PingRequest) {
-        // Remplace le code du paquet de requête par celui d'aquittement
+        // Remplace le code du paquet de requï¿½te par celui d'aquittement
 		SDLNet_Write32((Uint32)UdpController::CODE_U_PingAck, data);
 		// current += 4;
         m_udpConnector->send(packet);
@@ -74,7 +68,7 @@ void UdpController::receive(UDPpacket* packet) {
 		char** playerList = new char*[nombreJoueurs];
 
 		for(unsigned int i=0 ; i<nombreJoueurs ; i++) {
-		// Taille et nom du joueur qui a envoyé le message
+		// Taille et nom du joueur qui a envoyï¿½ le message
 			Uint32 taillePlayerName = SDLNet_Read32(current);
 			current +=4;
 
@@ -91,7 +85,7 @@ void UdpController::receive(UDPpacket* packet) {
 
 	// Receive a chat message
 	else if(code == CODE_D_ChatMessage) {
-		// Taille et nom du joueur qui a envoyé le message
+		// Taille et nom du joueur qui a envoyï¿½ le message
 		Uint32 taillePlayerName = SDLNet_Read32(current);
 		current +=4;
 

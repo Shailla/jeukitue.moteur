@@ -9,39 +9,39 @@ template <class X> class TableauIndex
 {
 private:
 	int m_Max;				// Nombre de places dans ce tableau
-	int m_Nbr;				// Nombre d'éléments actuellement présents dans le tableau
-	bool _manageDeletion;	// Indique si le tableau doit exécuter un delete lors des suppression de ses éléments
+	int m_Nbr;				// Nombre d'Ã©lÃ©ments actuellement prÃ©sents dans le tableau
+	bool _manageDeletion;	// Indique si le tableau doit exÃ©cuter un delete lors des suppression de ses ï¿½lï¿½ments
 	X** m_XTableau;			// Tableau des objets
 
 	// Constructeurs/destructeur
 public:
-	TableauIndex(bool manageDeletion);			// Crée un tableau indexé pouvant contenir nbr objets
-	TableauIndex(int nbr, bool manageDeletion);	// Crée un tableau indexé pouvant contenir nbr objets
-	~TableauIndex();							// Détruit le tableau (ne détruis pas les éléments par contre)
+	TableauIndex(bool manageDeletion);			// CrÃ©e un tableau indexÃ© pouvant contenir nbr objets
+	TableauIndex(int nbr, bool manageDeletion);	// CrÃ©e un tableau indexÃ© pouvant contenir nbr objets
+	~TableauIndex();							// Dï¿½truit le tableau (ne dÃ©truis pas les Ã©lÃ©ments par contre)
 
-	void clear();								// Réinitialise le tableau avec une nouvelle nulle, en fonction de '_manageDeletion' les éléments pointés sont supprimés
-	void reinit(int nbr);						// Réinitialise le tableau avec une nouvelle taille, en fonction de '_manageDeletion' les éléments pointés sont supprimés
+	void clear();								// RÃ©initialise le tableau avec une nouvelle nulle, en fonction de '_manageDeletion' lesÃ©lÃ©ments pointï¿½s sont supprimÃ©s
+	void reinit(int nbr);						// RÃ©initialise le tableau avec une nouvelle taille, en fonction de '_manageDeletion' les Ã©lÃ©ments pointï¿½s sont supprimÃ©s
 
 	int getMax() const;							// Retourne le nombre de places disponibles dans le tableau
-	int getNbr() const;							// Retourne le nombre d'éléments actuellement présents dans le tableau
-	bool add(int id, X* objet);					// Ajoute un élément avec l'identifient demandé
-	int add(X *objet);							// Ajoute l'élément à la première place de libre
-	bool Supprime(int id);						// Supprime du tableau l'élément identifié, en fonction de '_manageDeletion' l'élément pointé est supprimé
-	X* operator[](int id);						// Retourne un pointeur sur l'élément indexé 'pos'
+	int getNbr() const;							// Retourne le nombre d'ï¿½lï¿½ments actuellement prÃ©sents dans le tableau
+	bool add(int id, X* objet);					// Ajoute un Ã©lÃ©ment avec l'identifient demandÃ©
+	int add(X *objet);							// Ajoute l'Ã©lÃ©ment ï¿½ la premiÃ¨re place de libre
+	bool Supprime(int id);						// Supprime du tableau l'Ã©lÃ©ment identifiÃ©, en fonction de '_manageDeletion' l'Ã©lÃ©ment pointÃ© est supprimÃ©
+	X* operator[](int id);						// Retourne un pointeur sur l'Ã©lÃ©ment indexÃ© 'pos'
 
 	/**
-	 * Renvoie l'index qui atteint l'élément suivant.
+	 * Renvoie l'index qui atteint l'Ã©lÃ©ment suivant.
 	 *
-	 * @param id index à mettre à jour
-	 * @return index de l'élément suivant ou -1 si la fin du tableau a été atteinte
+	 * @param id index Ã  mettre Ã  jour
+	 * @return index de l'ï¿½lï¿½ment suivant ou -1 si la fin du tableau a ï¿½tï¿½ atteinte
 	 */
-	int IndexSuivant(int id);		// Renvoie l'index de l'élément après l'élément indexé par 'pos'
+	int IndexSuivant(int id);		// Renvoie l'index de l'ï¿½lï¿½ment aprï¿½s l'ï¿½lï¿½ment indexï¿½ par 'pos'
 
 	/**
-	 * Met à jour l'index pour qu'il atteigne l'élément suivant.
+	 * Met ï¿½ jour l'index pour qu'il atteigne l'ï¿½lï¿½ment suivant.
 	 *
-	 * @param id index à mettre à jour. -1 en retour signifie que la fin du tableau a été atteinte
-	 * @return true si la fin du tableau a été atteinte, false sinon
+	 * @param id index ï¿½ mettre ï¿½ jour. -1 en retour signifie que la fin du tableau a ï¿½tï¿½ atteinte
+	 * @return true si la fin du tableau a ï¿½tï¿½ atteinte, false sinon
 	 */
 	bool Suivant(int &id);
 };

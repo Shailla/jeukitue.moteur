@@ -11,7 +11,7 @@ namespace jkt
 {
 
 template<class X>
-TableauIndex<X>::TableauIndex(bool manageDeletion) : TableauIndex(0, manageDeletion) {
+TableauIndex<X>::TableauIndex(bool manageDeletion) : TableauIndex<X>(0, manageDeletion) {
 }
 
 template<class X>
@@ -19,11 +19,12 @@ TableauIndex<X>::TableauIndex(int nbr, bool manageDeletion) {
 	_manageDeletion = manageDeletion;
 
 	m_Max = nbr;					// Nombre d'objets dans le tableau
-	m_Nbr = 0;						// Aucun ÈlÈment dans le tableau actuellement
-	m_XTableau = new X*[ nbr ];		// CrÈation du tableau
+	m_Nbr = 0;						// Aucun √©l√©ment dans le tableau actuellement
+	m_XTableau = new X*[ nbr ];		// Cr√©ation du tableau
 
-	for(int i=0 ; i < m_Max ; i++)	// Mise ‡ zÈro des ÈlÈments du tableau
+	for(int i=0 ; i < m_Max ; i++) {	// Mise √† z√©ro des √©l√©ments du tableau
 		m_XTableau[i] = 0;
+	}
 }
 
 template<class X>
@@ -33,7 +34,7 @@ void TableauIndex<X>::clear() {
 
 template<class X>
 void TableauIndex<X>::reinit(int nbr) {
-	// Suppression des ÈlÈments existants
+	// Suppression des √©l√©ments existants
 	for(int i=0 ; i < m_Max ; i++) {
 		if(_manageDeletion && m_XTableau[i]) {
 			delete m_XTableau[i];
@@ -42,68 +43,70 @@ void TableauIndex<X>::reinit(int nbr) {
 
 	delete[] m_XTableau;		// Destruction du tableau
 
-	// CrÈation d'un nouveau tableau
+	// Cr√©ation d'un nouveau tableau
 	m_Max = nbr;					// Nombre d'objets dans le tableau
-	m_Nbr = 0;						// Aucun ÈlÈment dans le tableau actuellement
-	m_XTableau = new X*[ nbr ];		// CrÈation du tableau
+	m_Nbr = 0;						// Aucun √©l√©ment dans le tableau actuellement
+	m_XTableau = new X*[ nbr ];		// Cr√©ation du tableau
 
-	for(int i=0 ; i < m_Max ; i++)	// Mise ‡ zÈro des ÈlÈments du tableau
+	for(int i=0 ; i < m_Max ; i++)	// Mise √† z√©ro des √©l√©ments du tableau
 		m_XTableau[i] = 0;
 }
 
 template<class X>
 TableauIndex<X>::~TableauIndex() {
-	delete[] m_XTableau;		// Destruction du tableau
+	if(m_XTableau != 0) {
+		delete[] m_XTableau;		// Destruction du tableau
+	}
 }
 
 
 template<class X>
-bool TableauIndex<X>::add(int id, X *objet) {	// Ajoute le pos∞ ÈlÈment du tableau
+bool TableauIndex<X>::add(int id, X *objet) {	// Ajoute le pos√© √©l√©ment du tableau
 													// s'il n'existe pas encore
-	if(objet && 0 <= id && id < m_Max) {			// VÈrifie qu'il n'y a pas dÈpassement du tableau
-		if( !(m_XTableau[id]) ) {		// VÈrifie que la case indexÈe par 'pos' est vide
+	if(objet && 0 <= id && id < m_Max) {			// V√©rifie qu'il n'y a pas d√©passement du tableau
+		if( !(m_XTableau[id]) ) {		// V√©rifie que la case index√©e par 'pos' est vide
 			m_XTableau[id] = objet;
-			m_Nbr++;			// Compte le nouvel ÈlÈment
-			return true;		// L'ÈlÈment a ÈtÈ ajoutÈ
+			m_Nbr++;			// Compte le nouvel √©l√©ment
+			return true;		// L'√©l√©ment a √©t√© ajout√©
 		}
 	}
 
-	return false;		// L'ÈlÈment n'a pas ÈtÈ ajoutÈ ‡ cause d'un problËme
+	return false;		// L'√©l√©ment n'a pas √©t√© ajout√© √† cause d'un probl√®me
 }
 
 template<class X>
-int TableauIndex<X>::add(X *objet) {	// Ajoute l'ÈlÈment ‡ la premiËre place de libre
+int TableauIndex<X>::add(X *objet) {	// Ajoute l'√©l√©ment √† la premi√®re place de libre
 	int id = 0;
 
 	while(m_XTableau[id] && (id < m_Max))
 		id++;
 
-	if(id >= m_Max)			// Si aucune place n'a ÈtÈ trouvÈe dans le tableau
-		return -1;			// Retour sans avoir placÈ le nouvel ÈlÈment dans le tableau
+	if(id >= m_Max)			// Si aucune place n'a √©t√© trouv√©e dans le tableau
+		return -1;			// Retour sans avoir plac√© le nouvel √©l√©ment dans le tableau
 	
-	m_XTableau[id] = objet;	// Place l'ÈlÈment ‡ la place trouvÈe
-	m_Nbr++;				// Compte le nouvel ÈlÈment
+	m_XTableau[id] = objet;	// Place l'√©l√©ment √† la place trouv√©e
+	m_Nbr++;				// Compte le nouvel √©l√©ment
 
-	return id;				// Retourne l'index trouvÈ
+	return id;				// Retourne l'index trouv√©
 }
 
 template<class X>
-bool TableauIndex<X>::Supprime(int id) {		// Supprime l'ÈlÈment du tableau
-	if(0 <= id && id < m_Max) {		// S'il n'y a pas de dÈpassement
+bool TableauIndex<X>::Supprime(int id) {		// Supprime l'√©l√©ment du tableau
+	if(0 <= id && id < m_Max) {		// S'il n'y a pas de d√©passement
 		if(_manageDeletion && m_XTableau[id]) {
 			delete m_XTableau[id];
 		}
 
 		m_XTableau[id] = 0;
-		m_Nbr--;			// DÈcompte le nouvel ÈlÈment
-		return true;		// L'ÈlÈment a ÈtÈ supprimÈ du tableau
+		m_Nbr--;			// D√©compte le nouvel √©l√©ment
+		return true;		// L'√©l√©ment a √©t√© supprim√© du tableau
 	}
 
-	return false;		// Aucun ÈlÈment n'a pas ÈtÈ supprimÈ
+	return false;		// Aucun √©l√©ment n'a pas √©t√© supprim√©
 }
 
 template<class X>
-X *TableauIndex<X>::operator[](int id)		// Retourne le pointeur sur l'ÈlÈment indexÈ 'id'
+X *TableauIndex<X>::operator[](int id)		// Retourne le pointeur sur l'√©l√©ment index√© 'id'
 {
 	if(0 <= id && id < m_Max) {
 		return m_XTableau[id];
@@ -131,10 +134,10 @@ int TableauIndex<X>::IndexSuivant(int id) {
 		id = -1;
 	}
 
-	if(id < m_Max - 1) {	// IncrÈment d'un index
+	if(id < m_Max - 1) {	// Incr√©ment d'un index
 		id++;
 
-		while((id < m_Max) && (m_XTableau[id] == 0))		// Cherche l'ÈlÈment aprËs la position 'id'
+		while((id < m_Max) && (m_XTableau[id] == 0))		// Cherche l'√©l√©ment aprÔøΩs la position 'id'
 			id++;
 	}
 	else {					// Fin d'un index
@@ -145,7 +148,7 @@ int TableauIndex<X>::IndexSuivant(int id) {
 		id = -1;
 	}
 
-	return id;		// Envoie la position de l'ÈlÈment trouvÈ ou de m_Nbr pour indiquer la fin de liste
+	return id;		// Envoie la position de l'√©l√©ment trouv√© ou de m_Nbr pour indiquer la fin de liste
 }
 
 template<class X>

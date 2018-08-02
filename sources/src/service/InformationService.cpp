@@ -29,12 +29,14 @@ InformationService::~InformationService() {
 
 VersionsDto InformationService::loadVersions() {
     AG_AgarVersion agarVersion;
+
     AG_GetVersion(&agarVersion);
-    stringstream agarVersionStr;
-    agarVersionStr << agarVersion.major << "." << agarVersion.minor << "." << agarVersion.patch << " [" << agarVersion.release << "]";
 
     stringstream fmodVersionStr;
     fmodVersionStr << FSOUND_GetVersion();
+
+    stringstream agarVersionStr;
+    agarVersionStr << agarVersion.major << "." << agarVersion.minor << "." << agarVersion.patch << " [" << agarVersion.release << "]";
 
 	return VersionsDto(
 			string((char*)glGetString(GL_VERSION)),

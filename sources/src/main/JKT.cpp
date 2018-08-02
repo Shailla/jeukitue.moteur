@@ -920,14 +920,17 @@ void play_handle_key_down( SDL_Event *event ) {
 			}
 			break;
 
-		case SDLK_n:
-		{
+		case SDLK_n: {
 			set<CSon*>::iterator p;
 			cout << endl << "Bilan des sons :";
 			cout << endl << "----------------";
 			int i=1;
-			for( p=demonSons->m_TabSon.begin() ; p!=demonSons->m_TabSon.end() ; p++ )
-				cout << endl << i++ << "\t" << (*p)->nom << "\t" << (unsigned int)(*p)->m_TabReq.size();
+
+			for( p=demonSons->m_TabSon.begin() ; p!=demonSons->m_TabSon.end() ; p++ ) {
+				CSon* son = *p;
+				cout << endl << i++ << "\t" << son->nom << "\t" << (unsigned int)son->m_TabReq.size();
+			}
+
 			cout << endl;
 		}
 		break;

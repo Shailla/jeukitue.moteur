@@ -2,19 +2,20 @@
 #ifndef __JKT__FOCUS_H
 #define __JKT__FOCUS_H
 
+#include "SDL.h"
+
 namespace jkt
 {
 
-class CFocus
-{
+class CFocus {
 	void (*play_handle_key_down)( SDL_Event *event );			// Handle en cours de jeu
 	void (*menu_handle_key_down)( SDL_Event *event );			// Handle pour le menu
 
 	/**
-	 * Intercepteur d'événements.
+	 * Intercepteur d'Ã©vÃ©nements.
 	 * Renvoi :
-	 *    - true pour indiquer que l'évenement a été consommé
-	 *    - false pour indiquer que l'événement n'a pas été consomme
+	 *    - true pour indiquer que l'Ã©vÃ©nement a Ã©tÃ© consommÃ©
+	 *    - false pour indiquer que l'Ã©vÃ©nement n'a pas Ã©tÃ© consomme
 	 */
 	bool (*_event_interceptor)(SDL_Event *event);
 
@@ -24,10 +25,10 @@ public:
 	CFocus(void (*play)(SDL_Event *event), void (*menu)(SDL_Event *event));
 
 	/**
-	 * Place un intercepteur sur la pile de consommation des événements.
+	 * Place un intercepteur sur la pile de consommation des Ã©vÃ©nements.
 	 * Cet intercepteur renvoie :
-	 *    - true pour indiquer que l'événement a été consommé
-	 *    - false pour indiquer que l'événement n'a pas été consommé
+	 *    - true pour indiquer que l'Ã©vÃ©nement a Ã©tÃ© consommÃ©
+	 *    - false pour indiquer que l'Ã©vÃ©nement n'a pas Ã©tÃ© consommÃ©
 	 */
 	void setEventInterceptor(bool (*eventInterceptor)(SDL_Event*));
 
@@ -38,7 +39,7 @@ public:
 	void SetMenuAgarFocus();											// Place le focus sur le menu
 	void SwitchPlayOrConsoleFocus();									// Place le focus sur le menu
 
-	void ExecFocus( SDL_Event *Event );	// Exécute la fonction de focus
+	void ExecFocus( SDL_Event *Event );	// Exï¿½cute la fonction de focus
 };
 
 }	// JktMenu

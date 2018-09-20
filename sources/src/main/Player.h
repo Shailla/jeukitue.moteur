@@ -48,9 +48,10 @@ class CPlayer {
 	float _teta;					// Orientation du joueur par rapport à la verticale
 	float _phi;						// Orientation du joueur par rapport au plan horizontal
 
-	float _posVue[3];				// Position et orientation du point de vue par rapport au joueur
+	float _posVue[3];				// Position des yeux du joueur par rapport au joueur
+	float _reculVue;				// Recul de la vue du joueur par rapport à ses yeux
 
-	float _rayonSolidbox;			// Rayon de la sph�re englobant le joueur pour la gestion des contacts
+	float _rayonSolidbox;			// Rayon de la sphère englobant le joueur pour la gestion des contacts
 	float _pente;					// Sert à calculer si le joueur glisse sur une pente de la map ou non
 	std::string _name;				// Nom du perso
 	jkt::CMap *_pSkin;				// Gueule du joueur
@@ -99,10 +100,12 @@ public :
 	// Caméra
 	float phiVue() const;
 	float tetaVue() const;
-	void tetaVue( float tetaVue );
-	void phiVue( float phiVue );
-	void getPosVue( float vect[3] ) const;
-	void setPosVue( const float vect[3] );
+	void tetaVue(float tetaVue);
+	void phiVue(float phiVue);
+	void getPosVue(float vect[3]) const;
+	void setPosVue(const float vect[3]);
+	float getReculVue() const;
+	void setReculVue(float reculVue);
 
 	float pente() const;
 	void pente( float pente );

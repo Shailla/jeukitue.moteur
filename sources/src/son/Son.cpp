@@ -34,15 +34,15 @@ CSon::~CSon()
 {
 LOGDEBUG(("CSon::~CSon() nom=%s%T", nom.c_str(), this ));
 
-	set<CReqSon*>::iterator p;		// Destruction de toutes les requêtes sur ce son
+	set<CReqSon*>::iterator p;		// Destruction de toutes les requï¿½tes sur ce son
 	for( p = m_TabReq.begin() ; p != m_TabReq.end() ; p++ )
 	{
-		pDemon->Erase( *p );		// Supprime la requête de la liste appartenant au démon
+		pDemon->Erase( *p );		// Supprime la requï¿½te de la liste appartenant au dï¿½mon
 		delete *p;
 	}
-	m_TabReq.clear();	// Vide la liste des requêtes du son (pas indispensable vu qu'elle va être détruite)
+	m_TabReq.clear();	// Vide la liste des requï¿½tes du son (pas indispensable vu qu'elle va ï¿½tre dï¿½truite)
 
-	if( !m_Sample )		// Destruction des échantillions du son
+	if( !m_Sample )		// Destruction des ï¿½chantillions du son
 		FSOUND_Sample_Free( m_Sample );
 }
 
@@ -105,10 +105,10 @@ CReqSon *CSonMono::PlayID( bool pause ) {
 	CReqSonMono *req = new CReqSonMono( this );
 	m_TabReq.insert( req );
 	pDemon->m_TabReq.insert( pair<CReqSon*,CSon*>( req, this ) );
-	req->m_bPause = pause;
+	req->_pause = pause;
 
 	if( !pause )
-		req->channel = FSOUND_PlaySound( FSOUND_FREE, m_Sample );
+		req->_channel = FSOUND_PlaySound( FSOUND_FREE, m_Sample );
 
 	return req;
 }
@@ -117,10 +117,10 @@ CReqSon *CSonStereo::PlayID( bool pause ) {
 	CReqSonStereo *req = new CReqSonStereo( this );
 	m_TabReq.insert( req );
 	pDemon->m_TabReq.insert( pair<CReqSon*,CSon*>( req, this ) );
-	req->m_bPause = pause;
+	req->_pause = pause;
 
 	if( !pause )
-		req->channel = FSOUND_PlaySound( FSOUND_FREE, m_Sample );
+		req->_channel = FSOUND_PlaySound( FSOUND_FREE, m_Sample );
 
 	return req;
 }
@@ -130,10 +130,10 @@ CReqSon* CSon3D::PlayID( bool pause )
 	CReqSon3D *req = new CReqSon3D( this );
 	m_TabReq.insert( req );
 	pDemon->m_TabReq.insert( pair<CReqSon*,CSon*>( req, this ) );
-	req->m_bPause = pause;
+	req->_pause = pause;
 
 	if( !pause )
-		req->channel = FSOUND_PlaySound( FSOUND_FREE, m_Sample );
+		req->_channel = FSOUND_PlaySound( FSOUND_FREE, m_Sample );
 
 	return req;
 }

@@ -1,10 +1,10 @@
 
 
 #ifdef WIN32				// Pour FMOD
-  #include <conio.h>		// Pour FMOD
-  #include <windows.h>		// Pour FMOD
+#include <conio.h>			// Pour FMOD
+#include <windows.h>		// Pour FMOD
 #else						// Pour FMOD
-  #include "wincompat.h"	// Pour FMOD
+#include "wincompat.h"		// Pour FMOD
 #endif						// Pour FMOD
 #include <vector>
 #include <iostream>
@@ -17,77 +17,64 @@
 using namespace std;
 using namespace jkt;
 
-CReqSon::CReqSon( CSon *id )
-{
-	m_bPause = false;		// Ne mets pas le son en pause
-	m_bBoucle = false;		// Ne joue pas le son en boucle
-	channel = -1;			// Pas de channel réservé
-	m_IdSon = id;			// Associe la requête au son demandé
-	m_bVolatil = false;		// Cette requête est non volatil (ne peut être supprimée que par l'appelant)
+CReqSon::CReqSon(CSon* id) {
+	_pause = false;			// Ne mets pas le son en pause
+	_boucle = false;		// Ne joue pas le son en boucle
+	_channel = -1;			// Pas de channel rÃ©servÃ©
+	_son = id;				// Associe la requÃ©te au son demandÃ©
+	_volatil = false;		// Cette requÃªte est non volatil (ne peut Ãªtre supprimÃ©e que par l'appelant)
 }
 
-CReqSon::~CReqSon()
-{
-	if( channel!=-1 )						// Si canal utilisé
-		FSOUND_StopSound( channel );		// Libère ce canal
+CReqSon::~CReqSon() {
+	if(_channel != -1) {				// Si canal utilisÃ©
+		FSOUND_StopSound(_channel);		// LibÃ¨re ce canal
+	}
 }
 
-void CReqSon::Pause( bool indic )		// Met la requête en pause ou non
-{	m_bPause = indic;		}
-
-void CReqSon::Boucle( bool indic )	// Joue le son associé à la requête en boucle ou non
-{	m_bBoucle = indic;	}
-
-void CReqSon::Play()
-{
-	if( channel != -1 )
-		FSOUND_PlaySound( channel, m_IdSon->m_Sample );
-	else
-		channel = FSOUND_PlaySound( FSOUND_FREE, m_IdSon->m_Sample );
+void CReqSon::pause(bool pause) {		// Met la requÃªte en pause ou non
+	_pause = pause;
 }
 
-bool CReqSon::IsPlaying()
-{
-	if( channel!=-1 )
-		if( FSOUND_IsPlaying( channel ) )
-			return true;
-	
-	return false;
+void CReqSon::boucle(bool boucle) {	// Joue le son associÃ© Ã  la requÃªte en boucle ou non
+	_boucle = boucle;
 }
 
-CReqSonMono::CReqSonMono( CSon *id )
-	:CReqSon( id )
-{
+void CReqSon::play() {
+	if( _channel != -1 ) {
+		FSOUND_PlaySound(_channel, _son->m_Sample);
+	}
+	else {
+		_channel = FSOUND_PlaySound(FSOUND_FREE, _son->m_Sample);
+	}
 }
 
-CReqSonMono::~CReqSonMono()
-{
+bool CReqSon::isPlaying() {
+	return (_channel!=-1) && FSOUND_IsPlaying(_channel);
 }
 
-CReqSonStereo::CReqSonStereo( CSon *id )
-	:CReqSon( id )
-{
+CReqSonMono::CReqSonMono(CSon *id) : CReqSon(id) {
 }
 
-CReqSonStereo::~CReqSonStereo()
-{
+CReqSonMono::~CReqSonMono() {
 }
 
-CReqSon3D::CReqSon3D( CSon *id )
-	:CReqSon( id )
-{
-	m_Position[0] = m_Position[1] = m_Position[2] = 0.0f;	// Opsition à l'origine
-	m_Vitesse[0] = m_Vitesse[1] = m_Vitesse[2] = 0.0f;		// Vitesse nulle
-	m_bDoppler = false;										// Effet doppler désactivé
+CReqSonStereo::CReqSonStereo(CSon *id) : CReqSon(id) {
 }
 
-CReqSon3D::~CReqSon3D()
-{
+CReqSonStereo::~CReqSonStereo() {
 }
 
-void CReqSon3D::SetPosition(float pos[3])
-{
-	m_Position[0] = pos[0];
-	m_Position[1] = pos[1];
-	m_Position[2] = pos[2];
+CReqSon3D::CReqSon3D(CSon *id) : CReqSon(id) {
+	_position[0] = _position[1] = _position[2] = 0.0f;	// Position Ã  l'origine
+	_vitesse[0] = _vitesse[1] = _vitesse[2] = 0.0f;		// Vitesse nulle
+	_doppler = false;									// Effet doppler dÃ©sactivÃ©
+}
+
+CReqSon3D::~CReqSon3D() {
+}
+
+void CReqSon3D::setPosition(const float pos[3]) {
+	_position[0] = pos[0];
+	_position[1] = pos[1];
+	_position[2] = pos[2];
 }

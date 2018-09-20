@@ -130,7 +130,7 @@ NotConnectedInterlocutor2* _notConnectedServerInterlocutor = 0;
 Fonte fonte;
 
 CCfg Config;		// Contient la configuration du jeu
-CGame Game;			// Contient toutes les donn�es vivantes du jeu
+CGame Game;			// Contient toutes les données vivantes du jeu
 
 const char nomFichierJoueur[] = "@Joueur\\joueurTex";
 
@@ -249,7 +249,7 @@ void updateSon3D() {
 	FSOUND_3D_Listener_SetAttributes(pos_erwin, 0, fx,fy,fz,tx,ty,tz);
 
 	// Position de l'�metteur du son
-	((CReqSon3D*)machin->req_son)->SetPosition( pos_machin );
+	((CReqSon3D*)machin->req_son)->setPosition( pos_machin );
 	FSOUND_Update();
 
 	glPushMatrix();
@@ -457,7 +457,7 @@ void display() {		// Fonction principale d'affichage
 	/* **********************************************************
 	 * Mise en place de la perspective
 	 * *********************************************************/
-	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );					// Sp�cifie la couleur de vidage du tampon chromatique
+	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );					// Spécifie la couleur de vidage du tampon chromatique
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
 	glMatrixMode( GL_PROJECTION );
@@ -472,16 +472,23 @@ void display() {		// Fonction principale d'affichage
 		CPlayer* erwin = Game.Erwin();
 
 		if(erwin) {		// S'il y a un joueur principal
-			float vect[3];
+			float posCamera[3], posPlayer[3];
 
-			erwin->getPosVue(vect);
-			glTranslatef(-vect[0], -vect[1], vect[2]);	// Placement du point de vue
+			erwin->getPosVue(posCamera);
+			erwin->getPosition(posPlayer);
 
+			// Recul de la vue du joueur
+			glTranslatef(0.0f, 0.0f, erwin->getReculVue());	// Placement du point de vue
+
+			// Orientation de la vue du joueur
 			glRotated(erwin->phi(), 1.0, 0.0, 0.0);		// Rotation par rapport au plan horizontal
-			glRotated(erwin->teta(), 0.0, 1.0, 0.0);	// Rotation par rapport � l'axe verticale
+			glRotated(erwin->teta(), 0.0, 1.0, 0.0);	// Rotation par rapport à l'axe verticale
 
-			erwin->getPosition(vect);
-			glTranslatef(-vect[0], -vect[1], vect[2]);	// Placement du point de vue
+			// Placement des yeux du joueur
+			glTranslatef(-posCamera[0], -posCamera[1], posCamera[2]);
+
+			// Placement du joueur
+			glTranslatef(-posPlayer[0], -posPlayer[1], posPlayer[2]);
 		}
 
 		glEnable(GL_DEPTH_TEST);
@@ -492,7 +499,7 @@ void display() {		// Fonction principale d'affichage
 		Game.afficheDirigeables();		// Affichage des dirigeables
 		Game.affichePlayers();			// Affiche des joueurs
 
-		// Dessine les axes dans la map	(sert au rep�rage pour la conception du jeu)
+		// Dessine les axes dans la map	(sert au repérage pour la conception du jeu)
 		if(Config.Debug.axesMeterVisibility) {
 			glLineWidth( 3 );
 			glBegin(GL_LINES);	// Dessine les axes X Y Z
@@ -508,7 +515,7 @@ void display() {		// Fonction principale d'affichage
 			glEnd();
 		}
 
-		// Dessine une cube de 1 m�tre de c�t� dans la map (sert au rep�rage pour la conception du jeu)
+		// Dessine une cube de 1 mètre de côté dans la map (sert au repérage pour la conception du jeu)
 		if(Config.Debug.cubicMeterVisibility) {
 			glPushMatrix();
 			glTranslatef(0.0f, 0.0f, -0.5f);
@@ -659,7 +666,7 @@ void display() {		// Fonction principale d'affichage
 }
 
 void chopeLesEvenements(Uint32 now, float deltaTime) {
-	Uint8 *keystate = SDL_GetKeyState(0);		// R�cup�re les touches clavier appuy�es
+	Uint8 *keystate = SDL_GetKeyState(0);		// Récupère les touches clavier appuyées
 	Uint8 mouse = SDL_GetMouseState(0, 0);
 
 	if(Game.Erwin()) {
@@ -727,7 +734,15 @@ void chopeLesEvenements(Uint32 now, float deltaTime) {
 			erwin->setPosVue(posVue);
 		}
 
-		if( keystate[Config.Commandes.Tir1.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir1.mouse)) ) {	// Tire avec l'arme s�lectionn�e
+		// Recul de vue (reculer plus)
+		if ( keystate[Config.Commandes.CameraAvancer.key]||(mouse&SDL_BUTTON(Config.Commandes.CameraAvancer.mouse)) )	{
+			float posVue[3];
+			erwin->getPosVue(posVue);
+			posVue[2] += 0.003f;
+			erwin->setPosVue(posVue);
+		}
+
+		if( keystate[Config.Commandes.Tir1.key]||(mouse&SDL_BUTTON(Config.Commandes.Tir1.mouse)) ) {	// Tire avec l'arme sélectionnée
 			erwin->tir();		// Valide un tir
 		}
 
@@ -778,19 +793,24 @@ void play_handle_key_down( SDL_Event *event ) {
 			// Rotation par rapport au plan horizontal (regarder en l'air ou vers le bas)
 			erwin->phi( erwin->phi() + event->motion.yrel );
 
-			if(erwin->phi()>90.0)
+			if(erwin->phi() > 90.0f) {
 				erwin->phi( 90.0f );
+			}
 
-			if(erwin->phi()<-90.0)
+			if(erwin->phi() < -90.0f) {
 				erwin->phi( -90.0f );
+			}
 
-			// Rotation par rapport � l'axe verticale (regarder � droite ou � gauche)
+			// Rotation par rapport à l'axe verticale (regarder à droite ou à gauche)
 			erwin->teta( erwin->teta() + event->motion.xrel );
-			if(erwin->teta()>180.0f)
-				erwin->teta( erwin->teta() - 360.0f );
 
-			if(erwin->teta()<-180.0f)
-				erwin->teta( erwin->teta() + 360.0f );
+			if(erwin->teta() > 180.0f) {
+				erwin->teta(erwin->teta() - 360.0f);
+			}
+
+			if(erwin->teta() < -180.0f) {
+				erwin->teta(erwin->teta() + 360.0f);
+			}
 		}
 		break;
 
@@ -802,21 +822,35 @@ void play_handle_key_down( SDL_Event *event ) {
 			if(mouseButtonDown == Config.Commandes.Tir1.mouse) {
 				erwin->tir();	// Tir avec l'arme active
 			}
-			// S�lection arme suivante
-			else if(mouseButtonDown == Config.Commandes.SelectWeaponUp.mouse) {
+
+			// Sélection arme suivante
+			if(mouseButtonDown == Config.Commandes.SelectWeaponUp.mouse) {
 				erwin->armeUp();
 			}
-			// S�lection arme pr�c�dente
-			else if(mouseButtonDown == Config.Commandes.SelectWeaponDown.mouse) {
+
+			// Sélection arme précédente
+			if(mouseButtonDown == Config.Commandes.SelectWeaponDown.mouse) {
 				erwin->armeDown();
 			}
-			// D�sactive / active la gravit�
-			else if(mouseButtonDown == Config.Commandes.Gravity.mouse) {
+
+			// Recul de vue (reculer plus)
+			if(mouseButtonDown == Config.Commandes.VueReculer.mouse)	{
+				erwin->setReculVue(erwin->getReculVue() + 0.03f);
+			}
+
+			// Recul de vue (reculer moins)
+			if(mouseButtonDown == Config.Commandes.VueAvancer.mouse)	{
+				erwin->setReculVue(erwin->getReculVue() - 0.03f);
+			}
+
+			// Désactive / active la gravité
+			if(mouseButtonDown == Config.Commandes.Gravity.mouse) {
 				if( Game.getMap() )
 					Game.setGravite( !Game.getGravite() );
 			}
+
 			// Affiche / masque le damier des textures
-			else if(mouseButtonDown == Config.Commandes.Textures.mouse) {
+			if(mouseButtonDown == Config.Commandes.Textures.mouse) {
 				// Affichage la page suivante des textures du jeu
 				// Si la page d�passe le nombre max, l'affiche la remettra � 0
 				damierTextures_page++;
@@ -832,21 +866,35 @@ void play_handle_key_down( SDL_Event *event ) {
 			if(keyDown == Config.Commandes.Tir1.key) {
 				erwin->tir();
 			}
-			// S�lection arme suivante
-			else if(keyDown == Config.Commandes.SelectWeaponUp.key) {
+
+			// Sélection arme suivante
+			if(keyDown == Config.Commandes.SelectWeaponUp.key) {
 				erwin->armeUp();
 			}
-			// S�lection arme pr�c�dente
-			else if(keyDown == Config.Commandes.SelectWeaponDown.key) {
+
+			// Sélection arme précédente
+			if(keyDown == Config.Commandes.SelectWeaponDown.key) {
 				erwin->armeDown();
 			}
-			// D�sactive / active la gravit�
-			else if(keyDown == Config.Commandes.Gravity.key) {
+
+			// Recul de vue (reculer plus)
+			if(keyDown == Config.Commandes.VueReculer.key)	{
+				erwin->setReculVue(erwin->getReculVue() + 0.03f);
+			}
+
+			// Recul de vue (reculer moins)
+			if(keyDown == Config.Commandes.VueAvancer.key)	{
+				erwin->setReculVue(erwin->getReculVue() - 0.03f);
+			}
+
+			// Désactive / active la gravité
+			if(keyDown == Config.Commandes.Gravity.key) {
 				if( Game.getMap() )
 					Game.setGravite( !Game.getGravite() );
 			}
+
 			// Affiche / masque le damier des textures
-			else if(keyDown == Config.Commandes.Textures.key) {
+			if(keyDown == Config.Commandes.Textures.key) {
 				damierTextures_page++;
 			}
 		}
@@ -1781,11 +1829,11 @@ int main(int argc, char** argv) {
 	machin = new CMachin();
 	string fichierSon3D = "@Musique\\drumloop.wav";
 	jkt::RessourcesLoader::getFileRessource(fichierSon3D);
-	CSon3D *son3D = demonSons->CreateSon3D( fichierSon3D.c_str() );
-	CReqSon *reqSon = demonSons->PlayID( (CSon*)son3D, true );
-	reqSon->Boucle( true );
+	CSon3D *son3D = demonSons->createSon3D( fichierSon3D.c_str() );
+	CReqSon *reqSon = demonSons->playID( (CSon*)son3D, true );
+	reqSon->boucle( true );
 	machin->req_son = reqSon;
-	demonSons->Play( machin->req_son );
+	demonSons->play( machin->req_son );
 
 	// Initialisation des plugins d�marr�s par d�faut
 	Fabrique::getPluginEngine()->activateDefaultGlobalPlugins();

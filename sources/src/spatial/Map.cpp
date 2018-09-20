@@ -962,7 +962,8 @@ bool CMap::checkContact(const float pos[3], const float dist) {
 	vector<MapObject*>::iterator iter;
 
 	for(iter = _solidAndTargettables.begin() ; iter != _solidAndTargettables.end() ; iter++) {
-		var = (*iter)->checkContact( pos, dist );
+		MapObject* object = *iter;
+		var = object->checkContact( pos, dist );
 
 		if(var) {		// Si un triangle a été trouvé à une distance inférieure à 'dist' de la position 'pos'
 			break;

@@ -64,9 +64,6 @@ CSimpleGeo::CSimpleGeo(CMap* map, const string& name, unsigned int nbrVertex, fl
 	_bSolid = solid;				// Objet solide ou �th�reux
 
 	_pNormalTriangle = 0;			// Sera initialis� par Init()
-
-	_minX = _maxX = _minY = _maxY = _minZ = _maxZ = 0.0f;
-	_rayon = 0.0f;
 }
 
 CSimpleGeo::CSimpleGeo(CMap* map) : MapObject(map, MapObject::GEO) {
@@ -83,9 +80,6 @@ CSimpleGeo::CSimpleGeo(CMap* map) : MapObject(map, MapObject::GEO) {
 	_bSolid = true;			// Objet solide par d�faut
 
 	_pNormalTriangle = 0;		// Sera initialis� par Init()
-
-	_minX = _maxX = _minY = _maxY = _minZ = _maxZ = 0.0f;
-	_rayon = 0.0f;
 }
 
 CSimpleGeo::CSimpleGeo(const CSimpleGeo& other) : MapObject(other) {
@@ -96,22 +90,6 @@ CSimpleGeo::CSimpleGeo(const CSimpleGeo& other) : MapObject(other) {
 
 	_numFaces = 0;
 	_numVertex = 0;
-
-	// Bulle
-	_minX = other._minX;
-	_minY = other._minY;
-	_minZ = other._minZ;
-	_maxX = other._maxX;
-	_maxY = other._maxY;
-	_maxZ = other._maxZ;
-
-	// Centre
-	_centre[0] = other._centre[0];
-	_centre[1] = other._centre[1];
-	_centre[2] = other._centre[2];
-
-	// Rayon
-	_rayon = other._rayon;
 
 	// Couleur
 	_color[0] = other._color[0];
@@ -338,6 +316,8 @@ void CSimpleGeo::ConstruitBase() {
 }
 
 void CSimpleGeo::echangeXY() {	// Echange les axes X et Y de l'objet
+	MapObject::echangeXY();
+
 	float varX, varY;
 
 	for( int i=0 ; i<_numVertex ; i++ ) {
@@ -350,6 +330,8 @@ void CSimpleGeo::echangeXY() {	// Echange les axes X et Y de l'objet
 }
 
 void CSimpleGeo::echangeXZ() {	// Echange les axes X et Y de l'objet
+	MapObject::echangeXZ();
+
 	float varX, varZ;
 
 	for( int i=0 ; i<_numVertex ; i++ ) {
@@ -362,6 +344,8 @@ void CSimpleGeo::echangeXZ() {	// Echange les axes X et Y de l'objet
 }
 
 void CSimpleGeo::echangeYZ() {	// Echange les axes X et Y de l'objet
+	MapObject::echangeYZ();
+
 	float varY, varZ;
 
 	for( int i=0 ; i<_numVertex ; i++ ) {
@@ -373,7 +357,9 @@ void CSimpleGeo::echangeYZ() {	// Echange les axes X et Y de l'objet
 	}
 }
 
-void CSimpleGeo::scale( float scaleX, float scaleY, float scaleZ ) {
+void CSimpleGeo::scale(float scaleX, float scaleY, float scaleZ) {
+	MapObject::scale(scaleX, scaleY, scaleZ);
+
 	for( int i=0 ; i<_numVertex ; i++ ) {
 		m_TabVertex[ (3*i) ] *= scaleX;
 		m_TabVertex[ (3*i)+1 ] *= scaleY;
@@ -382,6 +368,8 @@ void CSimpleGeo::scale( float scaleX, float scaleY, float scaleZ ) {
 }
 
 void CSimpleGeo::translate( float x, float y, float z ) {
+	MapObject::translate(x, y, z);
+
 	for( int i=0 ; i<_numVertex ; i++ ) {
 		m_TabVertex[ (3*i)+0 ] += x;
 		m_TabVertex[ (3*i)+1 ] += y;
@@ -530,7 +518,7 @@ float CSimpleGeo::testContactTriangle(unsigned int i, const float posPlayer[3], 
 bool CSimpleGeo::checkContact( const float pos[3], float dist ) {
 	float distanceW;
 
-	if( TestContactPave( pos, dist ) ) {		// Teste proximité 'joueur / l'objet géo'
+	if( testeContactPave( pos, dist ) ) {		// Teste proximité 'joueur / l'objet géo'
 		for( int i=0; i<_numFaces; i++) {		//pour chaque triangle de l'objet géo.
 			distanceW = testContactTriangle( i, pos, dist );
 			if( distanceW <= dist ) {
@@ -547,7 +535,7 @@ void CSimpleGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 		float dist = player->getRayon();	// Rayon de la sphère représentant le volume du joueur
 		float distanceW;
 
-		if( TestContactPave( positionPlayer, dist ) ) {	// Teste proximité 'joueur / l'objet géo' pour chaque triangle de l'objet géo
+		if( testeContactPave( positionPlayer, dist ) ) {	// Teste proximité 'joueur / l'objet géo' pour chaque triangle de l'objet géo
 			for( int i=0; i<_numFaces; i++) {
 				distanceW = testContactTriangle(i, positionPlayer, dist);
 
@@ -559,10 +547,8 @@ void CSimpleGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	}
 }
 
-bool CSimpleGeo::TestContactPave(const float pos[3], float dist) {
-	// Teste si le point qui a pour position 'pos' se trouve ou non � une distance inférieure à 'dist'
-	// du pavé englobant l'objet
-
+bool CSimpleGeo::testeContactPave(const float pos[3], float dist) {
+	// Teste si le point qui a pour position 'pos' se trouve ou non à une distance inférieure à 'dist'  du pavé englobant l'objet
 	if( pos[0] < _maxX + dist && pos[1] < _maxY + dist && -pos[2] < _maxZ + dist && pos[0] > _minX - dist && pos[1] > _minY - dist && -pos[2] > _minZ - dist ) {
 		return true;	// Le point 'pos' est à une distance inférieure
 	}
@@ -585,7 +571,7 @@ float CSimpleGeo::gereLaserPlayer( float pos[3], CV3D& Dir, float dist) {
 	CP.Y = _centre[1] - pos[1];
 	CP.Z = _centre[2] + pos[2];
 
-	float a = CP^Dir;				// Dir est normalis�
+	float a = CP^Dir;				// Dir est normalisé
 	float bCarre = CP^CP;			// b = norme du veteur CP au carr�
 	float hCarre = bCarre - (a*a);	// b�=bCarre = h� + a� => h�=hCarre = b� - a�
 	float rCarre = (0.001f+_rayon)*(0.001f+_rayon);

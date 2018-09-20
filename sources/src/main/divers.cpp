@@ -124,36 +124,36 @@ void load_Intro( int width, int height ) {
 	// Son retour chariot machine � �crire
 	string bruitChariot = "@Bruit\\chariot.wav";
 	jkt::RessourcesLoader::getFileRessource(bruitChariot);
-	sonChariot = demonSons->CreateSon( bruitChariot.c_str() );
+	sonChariot = demonSons->createSon( bruitChariot.c_str() );
 
 	// Son frappe d'une touche clavier
 	string bruitTouche = "@Bruit\\touche.wav";
 	jkt::RessourcesLoader::getFileRessource(bruitTouche);
-	sonTouche = demonSons->CreateSon( bruitTouche.c_str() );
+	sonTouche = demonSons->createSon( bruitTouche.c_str() );
 
 	// Son frappe de la touche espace clavier
 	string bruitEspace = "@Bruit\\espace.wav";
 	jkt::RessourcesLoader::getFileRessource(bruitEspace);
-	sonEspace = demonSons->CreateSon( bruitEspace.c_str() );
+	sonEspace = demonSons->createSon( bruitEspace.c_str() );
 
 	// Son hurlement du sauveur de la plan�te
 	string bruitHurlement = "@Bruit\\hurlement.wav";
 	jkt::RessourcesLoader::getFileRessource(bruitHurlement);
-	sonHurlement = demonSons->CreateSon( bruitHurlement.c_str() );
+	sonHurlement = demonSons->createSon( bruitHurlement.c_str() );
 
 	load_IntroSub( width, height);
 
-	demonSons->Delete(sonChariot);		// Son retour chariot machine � �crire
-	demonSons->Delete(sonTouche);		// Son frappe d'une touche clavier
-	demonSons->Delete(sonEspace);		// Son frappe de la touche espace clavier
-	demonSons->Delete(sonHurlement);	// Son hurlement du sauveur de la plan�te
+	demonSons->remove(sonChariot);		// Son retour chariot machine à écrire
+	demonSons->remove(sonTouche);		// Son frappe d'une touche clavier
+	demonSons->remove(sonEspace);		// Son frappe de la touche espace clavier
+	demonSons->remove(sonHurlement);	// Son hurlement du sauveur de la planète
 }
 
 
 void load_IntroSub(const int width, const int height) {
 	LOGDEBUG(("load_IntroSub(width=%d,height=%d)", width, height));
 
-	// Chargement de la fonte de caract�res
+	// Chargement de la fonte de caractères
 	string fileFonteIntro = "@Fonte\\Mermaid1001.ttf";
 	jkt::RessourcesLoader::getFileRessource(fileFonteIntro);
 
@@ -162,7 +162,7 @@ void load_IntroSub(const int width, const int height) {
 
 	string str1 = "Nous sommes en 2056.\n\nLa surface de la Terre n'est plus qu'un oc\351an d'acide.\nLa loi a laiss\351 sa place a celle du plus fort et tout se r\350gle\nd\351sormais lors de combats sans gland.\n\n      Voici le seul homme qui peut encore sauver la plan\350te... ";
 	string str2 = "Alors, vous l'avez compris...\n   On est vraiment dans la merde !";
-	vector< string > lignes;		// Lignes s�par�es par un retour chariot
+	vector< string > lignes;		// Lignes séparées par un retour chariot
 
 	srand( SDL_GetTicks() );	// Initialisation de la fonction rand() pour les nombres al�atoires
 
@@ -213,15 +213,15 @@ void load_IntroSub(const int width, const int height) {
 			lignes.push_back( "" );
 
 		if( (lettre=='\n') ) {	// Si on a affaire � un passage � la ligne
-			demonSons->Play( sonChariot );	// Envoie le son retour chariot
+			demonSons->play( sonChariot );	// Envoie le son retour chariot
 			lignes.push_back( "" );			// Et passe � la ligne
 			SDL_Delay( 700 );
 		}
 		else {
 			if( lettre!= ' ' )	// Si c'est pas un espace
-				demonSons->Play( sonTouche );	// Envoie le son pour une frappe de touche normale
+				demonSons->play( sonTouche );	// Envoie le son pour une frappe de touche normale
 			else
-				demonSons->Play( sonEspace );	// Sinon le son d'un espace
+				demonSons->play( sonEspace );	// Sinon le son d'un espace
 
 			SDL_Delay( 45 );
 			*lignes.rbegin() += lettre ; // Ajoute la lettre � la fin de la derni�re ligne
@@ -256,7 +256,7 @@ void load_IntroSub(const int width, const int height) {
 	glDisable( GL_DEPTH_TEST );
 	glClear( GL_COLOR_BUFFER_BIT );		// Efface l'�cran
 
-	demonSons->Play( sonHurlement );	// Cri du sauveur de la plan�te
+	demonSons->play( sonHurlement );	// Cri du sauveur de la plan�te
 
 	glRasterPos2i( 0, 0 );		// A partir du coin de l'�cran
 	glDrawPixels( width, height, GL_RGB, GL_UNSIGNED_BYTE, image2 );
@@ -295,15 +295,15 @@ void load_IntroSub(const int width, const int height) {
 			lignes.push_back( "" );
 
 		if( (lettre=='\n') ) {
-			demonSons->Play( sonChariot );
+			demonSons->play( sonChariot );
 			lignes.push_back( "" );
 			SDL_Delay( 700 );
 		}
 		else {
 			if( lettre!=' ' )	// Si c'est pas un espace
-				demonSons->Play( sonTouche );	// Envoie le son d'une frappe de touche clavier normale
+				demonSons->play( sonTouche );	// Envoie le son d'une frappe de touche clavier normale
 			else
-				demonSons->Play( sonEspace );	// Sinon celui de la frappe d'un espace
+				demonSons->play( sonEspace );	// Sinon celui de la frappe d'un espace
 
 			*lignes.rbegin() += lettre ; // Ajoute la lettre � la fin de la derni�re ligne
 		}

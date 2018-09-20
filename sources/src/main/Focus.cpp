@@ -17,16 +17,16 @@ namespace jkt
 
 CFocus::CFocus(	void (*play)(SDL_Event *event), void (*menu)(SDL_Event *event)) {
 	LOGDEBUG(("CFocus::CFocus(play=%x,menu=%x)%T", play, menu, this));
-	play_handle_key_down = play;			// Implémente le focus dédié à une partie en cours
-	menu_handle_key_down = menu;			// Implémente le focus dédié au menu
+	play_handle_key_down = play;			// ImplÃ©mente le focus dÃ©diÃ© Ã  une partie en cours
+	menu_handle_key_down = menu;			// ImplÃ©mente le focus dÃ©diÃ© au menu
 
-	focus_actif_handle_key_down = menu;		// Choix du focus actif par défaut
+	focus_actif_handle_key_down = menu;		// Choix du focus actif par dÃ©faut
 
 	_event_interceptor = 0;
 }
 
 /**
- * Met en place un intercepteur d'événements.
+ * Met en place un intercepteur d'Ã©vÃ©nements.
  */
 void CFocus::setEventInterceptor(bool (*eventInterceptor)(SDL_Event*)) {
 	_event_interceptor = eventInterceptor;
@@ -37,40 +37,40 @@ bool CFocus::isPlayFocus() {
 }
 
 /**
- * Choisi la fonction focus dédiée à une partie en cours
+ * Choisi la fonction focus dÃ©diÃ©e Ã  une partie en cours
  */
 void CFocus::SetPlayFocus() {
 //	SDL_WarpMouse( 250, 250 );			// Positionne la curseur de la souris
 	SDL_ShowCursor( SDL_DISABLE );		// Cache le curseur de la souris
-	SDL_WM_GrabInput( SDL_GRAB_ON );	// Active le mode déplacement relatif de la souris
+	SDL_WM_GrabInput( SDL_GRAB_ON );	// Active le mode dÃ©placement relatif de la souris
 
-	SDL_EnableKeyRepeat( 500, 500 );	// Répétition des touches clavier
+	SDL_EnableKeyRepeat( 500, 500 );	// RÃ©pÃ©tition des touches clavier
 
 	focus_actif_handle_key_down = play_handle_key_down;
 }
 
 /**
- * Choisi la fonction focus dédiée au menu
+ * Choisi la fonction focus dÃ©diÃ©e au menu
  */
 void CFocus::SetMenuFocus() {
 //	SDL_WarpMouse( 250, 250 );			// Positionne le curseur de la souris
 	SDL_ShowCursor( SDL_ENABLE );		// Affiche le curseur de la souris
-	SDL_WM_GrabInput( SDL_GRAB_ON );	// Active le mode déplacement relatif de la souris
+	SDL_WM_GrabInput( SDL_GRAB_ON );	// Active le mode dÃ©placement relatif de la souris
 
-	SDL_EnableKeyRepeat( 500, 500 );	// Répétition des touches clavier
+	SDL_EnableKeyRepeat( 500, 500 );	// RÃ©pÃ©tition des touches clavier
 
 	focus_actif_handle_key_down = menu_handle_key_down;
 }
 
 /*
- * Choisi la fonction focus dédiée au menu
+ * Choisi la fonction focus dÃ©diÃ©e au menu
  */
 void CFocus::SetMenuAgarFocus() {
 //	SDL_WarpMouse( 250, 250 );			// Positionne le curseur de la souris
 	SDL_ShowCursor( SDL_ENABLE );		// Affiche le curseur de la souris
-	SDL_WM_GrabInput( SDL_GRAB_ON );	// Active le mode déplacement relatif de la souris
+	SDL_WM_GrabInput( SDL_GRAB_ON );	// Active le mode dÃ©placement relatif de la souris
 
-	SDL_EnableKeyRepeat( 500, 500 );	// Répétition des touches clavier
+	SDL_EnableKeyRepeat( 500, 500 );	// RÃ©pÃ©tition des touches clavier
 
 	focus_actif_handle_key_down = 0;
 }
@@ -86,16 +86,16 @@ void CFocus::SwitchPlayOrConsoleFocus() {
 }
 
 /*
- * Exécute la fonction de focus pour l'évênement 'event'
+ * ExÃ©cute la fonction de focus pour l'Ã©vÃªnement 'event'
  */
 void CFocus::ExecFocus(SDL_Event *event) {
-	if(!_event_interceptor || !_event_interceptor(event)) {	// S'il n'y a pas d'intercepteur ou que rien n'a été intercepté
+	if(!_event_interceptor || !_event_interceptor(event)) {	// S'il n'y a pas d'intercepteur ou que rien n'a Ã©tÃ© interceptÃ©
 		if(focus_actif_handle_key_down) {
 			focus_actif_handle_key_down(event);
 		}
 
 		/* ****************************************** */
-		/* Gestion événements menu Agar               */
+		/* Gestion Ã©vÃ©nements menu Agar               */
 		/* ****************************************** */
 		AG_DriverEvent dev;
 		AG_SDL_TranslateEvent(agDriverSw, event, &dev);

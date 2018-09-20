@@ -11,47 +11,43 @@ namespace jkt {
 class CReqSon;
 class CDemonSons;
 
-class CSon
-{
+class CSon {
 public:
-	FSOUND_SAMPLE *m_Sample;	// Echantillons du son à proprement dit
-	std::set<CReqSon*> m_TabReq;		// Liste des requêtes sur ce son
-	CDemonSons* pDemon;			// Pointeur sur le démon des sons
-	std::string nom;					// Nom du son (POUR LE DEBUG)
+	FSOUND_SAMPLE *m_Sample;		// Echantillons du son Ã  proprement dit
+	std::set<CReqSon*> m_TabReq;	// Liste des requÃªtes sur ce son
+	CDemonSons* pDemon;				// Pointeur sur le dÃ©mon des sons
+	std::string nom;				// Nom du son (POUR LE DEBUG)
 
 		// Constructeurs / Destructeur
 public:
-	CSon(CDemonSons* p,const char* name);
+	CSon(CDemonSons* p, const char* name);
 	virtual ~CSon();
 
-	virtual CReqSon *PlayID( bool pause=false) = 0;
+	virtual CReqSon* PlayID(bool pause=false) = 0;
 };
 
-class CSonMono : public CSon
-{
+class CSonMono : public CSon {
 public:
 		// Constructeurs / Destructeur
-	CSonMono(CDemonSons* p,const char* nomFichierSon);
+	CSonMono(CDemonSons* p, const char* nomFichierSon);
 	~CSonMono();
 
 	CReqSon *PlayID(bool pause=false);
 };
 
-class CSonStereo : public CSon
-{
+class CSonStereo : public CSon {
 public:
 		// Constructeurs / Destructeur
-	CSonStereo(CDemonSons* p,const char* nomFichierSon);
+	CSonStereo(CDemonSons* p, const char* nomFichierSon);
 	~CSonStereo();
 
 	CReqSon *PlayID( bool pause=false );
 };
 
-class CSon3D : public CSon
-{
+class CSon3D : public CSon {
 public:
 		// Constructeurs / Destructeur
-	CSon3D(CDemonSons* p,const char* nomFichierSon);
+	CSon3D(CDemonSons* p, const char* nomFichierSon);
 	~CSon3D();
 
 	CReqSon *PlayID( bool pause=false );

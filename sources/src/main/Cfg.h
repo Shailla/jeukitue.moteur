@@ -39,6 +39,8 @@ class CCfg {
 	static const char* CST_COM_CAMERA_GAUCHE;
 	static const char* CST_COM_CAMERA_RECULER;
 	static const char* CST_COM_CAMERA_AVANCER;
+	static const char* CST_COM_VUE_RECULER;
+	static const char* CST_COM_VUE_AVANCER;
 
 	static const char* CST_COM_TIR1;
 	static const char* CST_COM_TIR2;
@@ -111,20 +113,22 @@ private:
 	public:
 		CComID Avancer;				// Avancer
 		CComID Reculer;				// Reculer
-		CComID Gauche;				// Aller à gauche
-		CComID Droite;				// Aller à droite
-		CComID CameraMonter;		// Monter la caméra
-		CComID CameraDescendre;		// Descendre la caméra
-		CComID CameraDroite;		// Déplacer à droite la caméra
-		CComID CameraGauche;		// Déplacer à gauche la caméra
-		CComID CameraReculer;		// Reculer la caméra
-		CComID CameraAvancer;		// Avancer la caméra
+		CComID Gauche;				// Aller Ã  gauche
+		CComID Droite;				// Aller Ã  droite
+		CComID CameraMonter;		// Monter la camÃ©ra
+		CComID CameraDescendre;		// Descendre la camÃ©ra
+		CComID CameraDroite;		// DÃ©placer Ã  droite la camÃ©ra
+		CComID CameraGauche;		// DÃ©placer Ã  gauche la camÃ©ra
+		CComID CameraReculer;		// Reculer la camÃ©ra
+		CComID CameraAvancer;		// Avancer la camÃ©ra
+		CComID VueReculer;			// Avancer la camÃ©ra
+		CComID VueAvancer;			// Avancer la camÃ©ra
 		CComID Tir1;				// Tir primaire
 		CComID Tir2;				// Tir secondaire
 		CComID Monter;				// Monter
-		CComID SelectWeaponUp;		// Sélectionner arme suivante
-		CComID SelectWeaponDown;	// Sélectionner arme précédente
-		CComID Gravity;				// Annuler / activer la gravité
+		CComID SelectWeaponUp;		// SÃ©lectionner arme suivante
+		CComID SelectWeaponDown;	// SÃ©lectionner arme prÃ©cÃ©dente
+		CComID Gravity;				// Annuler / activer la gravitÃ©
 		CComID Textures;			// Afficher / masquer le damier des textures
 		const char* resolve(CComID com);					// Retourne la touche ou le bouton en texte
 	};
@@ -148,7 +152,7 @@ private:
 	class CCentralisateur {
 		friend class CCfg;
 	protected:
-		Uint16 m_Port;				// Port à utiliser
+		Uint16 m_Port;				// Port ï¿½ utiliser
 		std::string m_IpServer;			// Adresse IP du serveur (s'il s'agit d'un client)
 	public:
 		Uint16 getPort() const			{ return m_Port; }
@@ -157,14 +161,14 @@ private:
 		void setIp( std::string ip )		{ m_IpServer = ip; }
 	};
 
-	class CReseau {		// Informations sur la config réseau
+	class CReseau {		// Informations sur la config rï¿½seau
 		friend class CCfg;
 	protected:
-		Uint16 _Port;						// Port à utiliser
-		Uint16 _portTree;					// Port à utiliser
+		Uint16 _Port;						// Port ï¿½ utiliser
+		Uint16 _portTree;					// Port ï¿½ utiliser
 		std::string _IpServer;					// Adresse IP du serveur (s'il s'agit d'un client)
-		int _treeUpdateClientToServerDelay;	// Temps mini entre 2 mises à jour des données de l'arbre par le client sur le serveur
-		int _treeUpdateServerToClientDelay;	// Temps mini entre 2 mises à jour des données de l'arbre par le serveur sur le client
+		int _treeUpdateClientToServerDelay;	// Temps mini entre 2 mises ï¿½ jour des donnï¿½es de l'arbre par le client sur le serveur
+		int _treeUpdateServerToClientDelay;	// Temps mini entre 2 mises ï¿½ jour des donnï¿½es de l'arbre par le serveur sur le client
 	public:
 		std::string getIpServer() const								{ return _IpServer;							}
 		Uint16 getServerPort() const							{ return _Port;								}
@@ -184,10 +188,10 @@ private:
 	class CJoueur {		// Informations du joueur
 	public:
 		std::string nom;					// Nom du joueur
-		std::string mapName;				// Nom de la map réprésentant le skin du joueur
-		bool skinVisibility;		// Indique si le joueur (son skin) est affiché ou non
+		std::string mapName;				// Nom de la map rï¿½prï¿½sentant le skin du joueur
+		bool skinVisibility;		// Indique si le joueur (son skin) est affichï¿½ ou non
 		bool hitboxVisibility;		// Indique si la zone de frappe des joueurs est visible
-		bool solidboxVisibility;	// Indique si le contours physiques du joueur (ellipsoïde qui l'entoure) est visible
+		bool solidboxVisibility;	// Indique si le contours physiques du joueur (ellipsoï¿½de qui l'entoure) est visible
 	};
 
 	class CPlugin {		// Configuration du moteur de plugin
@@ -197,12 +201,12 @@ private:
 
 	class CDebug {
 	public:
-		bool bSonPerformances;		// Indique si l'usage CPU du son doit être affiché
+		bool bSonPerformances;		// Indique si l'usage CPU du son doit ï¿½tre affichï¿½
 		bool bSonSpectre;			// Affiche le spectre sonore
 		bool bAfficheFichier;		// Indique si l'ouverture des fichiers ASE doit se faire en mode debug (=>affichage dans la console durant la lecture)
 		bool bAfficheNormaux;
-		bool cubicMeterVisibility;	// Indique si le cube d'un mètre de côté servant à calibrer les dimensions de la scène est visible ou non
-		bool axesMeterVisibility;	// Indique si les axes d'un mètre de côté servant à calibrer les dimensions de la scène sont visibles ou non
+		bool cubicMeterVisibility;	// Indique si le cube d'un mï¿½tre de cï¿½tï¿½ servant ï¿½ calibrer les dimensions de la scï¿½ne est visible ou non
+		bool axesMeterVisibility;	// Indique si les axes d'un mï¿½tre de cï¿½tï¿½ servant ï¿½ calibrer les dimensions de la scï¿½ne sont visibles ou non
 	};
 
 	class CWeb {		// Configuration du moteur de plugin
@@ -226,21 +230,21 @@ private:
 	std::string configFile;
 
 public:
-	CGeneral General;				// Configuration générale
+	CGeneral General;				// Configuration gï¿½nï¿½rale
 	CDisplay Display;				// Configuration de l'affichage
 	CAudio Audio;					// Configuration audio
 	CCommandes Commandes;			// Configuration des commandes
 	CCentralisateur Centralisateur;	// Configuration de la connexion au centralisateur
-	CReseau Reseau;					// Configuration du réseau
+	CReseau Reseau;					// Configuration du rï¿½seau
 	CJoueur Joueur;					// Informations sur le joueur principal (nom,...)
 	CPlugin Plugin;					// Configuration du moteur de plugins
-	CDebug Debug;					// Paramètres servant au débuggage
-	CWeb Web;						// Paramètres du serveur web
+	CDebug Debug;					// Paramï¿½tres servant au dï¿½buggage
+	CWeb Web;						// Paramï¿½tres du serveur web
 
 	CCfg();
 
 	void NommeConfig(const std::string &configFileBaseName, const std::string& configFileSuffixName);
-	void AfficheDateCompilation();		// Affiche le n° de version du programme
+	void AfficheDateCompilation();		// Affiche le nï¿½ de version du programme
 
 	void Lit();			// Lit le fichier de configuration
 	void Ecrit();		// Sauvegarde la configuration
@@ -251,12 +255,12 @@ public:
 	static const char* resolve(Uint8 mouse);
 
 	/**
-	 * Retourne sous forme de texte descriptif la touche identifiée dans SDL.
+	 * Retourne sous forme de texte descriptif la touche identifiï¿½e dans SDL.
 	 */
 	static const char* resolve(const SDLKey sym);
 
 	/**
-	 * Retourne sous forme de texte descriptif l'événement SDL.
+	 * Retourne sous forme de texte descriptif l'ï¿½vï¿½nement SDL.
 	 */
 	static void resolve(const SDL_Event* sdlEvent, std::string& description);
 };

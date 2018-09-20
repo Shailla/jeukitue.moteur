@@ -165,7 +165,7 @@ CPlayer::~CPlayer() {
 	}
 
 	if( _cri ) {	// Destruction du cri du personnage
-		demonSons->Delete( _cri );
+		demonSons->remove( _cri );
 		_criRequest = 0;
 		_cri = 0;
 	}
@@ -180,8 +180,8 @@ CPlayer::~CPlayer() {
  * Définit le cri du joueur
  */
 void CPlayer::setCri(const char *nomFichier) {
-	_cri = demonSons->CreateSon( nomFichier );
-	_criRequest = demonSons->PlayID( _cri, true );
+	_cri = demonSons->createSon( nomFichier );
+	_criRequest = demonSons->playID( _cri, true );
 }
 
 CClavier *CPlayer::getClavier() {
@@ -383,8 +383,8 @@ void CPlayer::Affiche() {
 }
 
 void CPlayer::tuer() {
-	if( !_criRequest->IsPlaying() )
-		demonSons->Play( _criRequest );	// Joue le cri du joueur
+	if( !_criRequest->isPlaying() )
+		demonSons->play(_criRequest);	// Joue le cri du joueur
 }
 
 void CPlayer::afficheProjectils() {		// Affiche tous les projectils du joueur
@@ -502,6 +502,14 @@ void CPlayer::setPosVue(const float posVue[3]) {
 	_posVue[0] = posVue[0];
 	_posVue[1] = posVue[1];
 	_posVue[2] = posVue[2];
+}
+
+float CPlayer::getReculVue() const {
+	return _reculVue;
+}
+
+void CPlayer::setReculVue(float reculVue) {
+	_reculVue = reculVue;
 }
 
 void CPlayer::phi(float phi) {

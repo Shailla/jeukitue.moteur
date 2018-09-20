@@ -60,6 +60,8 @@ const char* CCfg::CST_COM_CAMERA_DROITE =		"commande.cameraDroite";
 const char* CCfg::CST_COM_CAMERA_GAUCHE =		"commande.cameraGauche";
 const char* CCfg::CST_COM_CAMERA_RECULER =		"commande.cameraReculer";
 const char* CCfg::CST_COM_CAMERA_AVANCER =		"commande.cameraAvancer";
+const char* CCfg::CST_COM_VUE_RECULER =			"commande.vueReculer";
+const char* CCfg::CST_COM_VUE_AVANCER =			"commande.vueAvancer";
 
 
 const char* CCfg::CST_COM_TIR1 =					"commande.tir1";
@@ -117,7 +119,7 @@ void CCfg::NommeConfig(const string &configFileBaseName, const string& configFil
 		configFile = candidat;
 	}
 	else {
-		LOGINFO(("Pas de fichier de configuration spécifique ('%s')", candidat.c_str()));
+		LOGINFO(("Pas de fichier de configuration spï¿½cifique ('%s')", candidat.c_str()));
 		configFile = defaut;				// config.ini
 	}
 
@@ -138,15 +140,15 @@ void CCfg::Lit() {
 	try {
 
 		/* ***************************************
-		 * Générale
+		 * Gï¿½nï¿½rale
 		 * **************************************/
 
-		do fichier >> mot;	while(mot!=CST_GEN_PLAY_INTRO);		// Indique si l'intro du jeu doit être lancée au démarrage
+		do fichier >> mot;	while(mot!=CST_GEN_PLAY_INTRO);		// Indique si l'intro du jeu doit ï¿½tre lancï¿½e au dï¿½marrage
 		fichier >> General._playIntro;
 
 
 		/* ***************************************
-		 * Vidéo
+		 * Vidï¿½o
 		 * **************************************/
 
 		do fichier >> mot;	while( mot!=CST_VID_DISPLAY_POS );
@@ -240,6 +242,18 @@ void CCfg::Lit() {
 		fichier >> crotte >> mot;
 		Commandes.CameraAvancer.mouse = crotte;
 
+		do fichier >> mot;	while( mot!=CST_COM_VUE_RECULER );
+		fichier >> crotte;
+		Commandes.VueReculer.key = (SDLKey)crotte;
+		fichier >> crotte >> mot;
+		Commandes.VueReculer.mouse = crotte;
+
+		do fichier >> mot;	while( mot!=CST_COM_VUE_AVANCER );
+		fichier >> crotte;
+		Commandes.VueAvancer.key = (SDLKey)crotte;
+		fichier >> crotte >> mot;
+		Commandes.VueAvancer.mouse = crotte;
+
 		do fichier >> mot;	while( mot!=CST_COM_TIR1 );
 		fichier >> crotte;
 		Commandes.Tir1.key = (SDLKey)crotte;
@@ -295,7 +309,7 @@ void CCfg::Lit() {
 
 
 		/* ***************************************
-		 * Réseau
+		 * Rï¿½seau
 		 * **************************************/
 
 		do fichier >> mot;	while( mot!=CST_NET_IP );
@@ -430,6 +444,8 @@ void CCfg::Ecrit() {
 	fichier << endl << CST_COM_CAMERA_GAUCHE << "\t\t\t\t" 		<< Commandes.CameraGauche.key << "\t" << Commandes.CameraGauche.mouse << "\t(" << Commandes.resolve(Commandes.CameraGauche) << ")";
 	fichier << endl << CST_COM_CAMERA_RECULER << "\t\t\t\t" 	<< Commandes.CameraReculer.key << "\t" << Commandes.CameraReculer.mouse << "\t(" << Commandes.resolve(Commandes.CameraReculer) << ")";
 	fichier << endl << CST_COM_CAMERA_AVANCER << "\t\t\t\t" 	<< Commandes.CameraAvancer.key << "\t" << Commandes.CameraAvancer.mouse << "\t(" << Commandes.resolve(Commandes.CameraAvancer) << ")";
+	fichier << endl << CST_COM_VUE_RECULER << "\t\t\t\t" 		<< Commandes.VueReculer.key << "\t" << Commandes.VueReculer.mouse << "\t(" << Commandes.resolve(Commandes.VueReculer) << ")";
+	fichier << endl << CST_COM_VUE_AVANCER << "\t\t\t\t" 		<< Commandes.VueAvancer.key << "\t" << Commandes.VueAvancer.mouse << "\t(" << Commandes.resolve(Commandes.VueAvancer) << ")";
 
 
 	fichier << endl << CST_COM_TIR1 << "\t\t\t\t" 		<< Commandes.Tir1.key << "\t" << Commandes.Tir1.mouse << "\t(" << Commandes.resolve(Commandes.Tir1) << ")";
@@ -742,7 +758,7 @@ bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixe
 		return false;
 	}
 
-	FSOUND_SetOutput( output );		// Sélection de l'output
+	FSOUND_SetOutput( output );		// Sï¿½lection de l'output
 	m_Output = output;
 
 	int numDrivers = FSOUND_GetNumDrivers();
@@ -769,24 +785,24 @@ bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixe
 		strcpy( remarquesDriver[i], rem.c_str() );
 	}
 
-	if(numDrivers > 0) {	// Vérifie s'il y a un driver pour le son
+	if(numDrivers > 0) {	// Vï¿½rifie s'il y a un driver pour le son
 		if(driver < numDrivers ) {
-			FSOUND_SetDriver(driver);			// Sélection du driver configuré
+			FSOUND_SetDriver(driver);			// Sï¿½lection du driver configurï¿½
 			m_Driver = driver;
 		}
-		else {									// Le driver configuré ne peut pas fonctionner
-			LOGERROR(("Driver son mal configuré, choix par défaut."));
+		else {									// Le driver configurï¿½ ne peut pas fonctionner
+			LOGERROR(("Driver son mal configurï¿½, choix par dï¿½faut."));
 			driver = 0;							// Modification du fichier de configuration
-			FSOUND_SetDriver(0);				// Choix du driver par défaut
+			FSOUND_SetDriver(0);				// Choix du driver par dï¿½faut
 			m_Driver = 0;
 		}
 	}
 	else {
 		// Pas de driver son
-		LOGERROR((" Aucun driver son détecté."));
+		LOGERROR((" Aucun driver son dï¿½tectï¿½."));
 	}
 
-	FSOUND_SetMixer(mixer);			// Sélection du mixer
+	FSOUND_SetMixer(mixer);			// Sï¿½lection du mixer
 	m_Mixer = mixer;
 
 	// Initialisation
@@ -797,9 +813,9 @@ bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixe
 
 	FSOUND_DSP_SetActive( FSOUND_DSP_GetFFTUnit(), true );
 
-	if( FSOUND_Record_GetNumDrivers() > 0 ) {	// Vérifie s'il y a un driver d'acquisition du son
+	if( FSOUND_Record_GetNumDrivers() > 0 ) {	// Vï¿½rifie s'il y a un driver d'acquisition du son
 		if( driverRecord < FSOUND_Record_GetNumDrivers() ) {
-			if( !FSOUND_Record_SetDriver(driverRecord)) {	// Sélection du driver				// d'entrée pour le micro
+			if( !FSOUND_Record_SetDriver(driverRecord)) {	// Sï¿½lection du driver				// d'entrï¿½e pour le micro
 				LOGERROR((" Erreur FSOUND_Record_SetDriver : %s", FMOD_ErrorString(FSOUND_GetError())));
 				LOGERROR(("\tAVIS AU PROGRAMMEUR Le programme va planter s'il y a une tentative d'utilisation du micro !!!"));
 			}
@@ -808,9 +824,9 @@ bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixe
 			}
 		}
 		else {		// Le driver de record ne peut pas fonctionner
-			LOGERROR(("Driver de record son mal configuré, choix par défaut."));
+			LOGERROR(("Driver de record son mal configurï¿½, choix par dï¿½faut."));
 
-			if( !FSOUND_Record_SetDriver(0) ) {		// Sélection du driver de record par défaut
+			if( !FSOUND_Record_SetDriver(0) ) {		// Sï¿½lection du driver de record par dï¿½faut
 				LOGERROR(("Erreur FSOUND_Record_SetDriver : ", FMOD_ErrorString(FSOUND_GetError())));
 				LOGERROR(("\tAVIS AU PROGRAMMEUR Le programme va planter s'il y a une tentative d'utilisation du micro !!!"));
 			}
@@ -819,8 +835,8 @@ bool CCfg::CAudio::testInitAndSaveConfiguration(int driver, int output, int mixe
 			}
 		}
 	}
-	else {		// Aucun driver d'acquisition du son détecté
-		LOGERROR((" Aucun driver d'acquisition du son détecté."));
+	else {		// Aucun driver d'acquisition du son dï¿½tectï¿½
+		LOGERROR((" Aucun driver d'acquisition du son dï¿½tectï¿½."));
 	}
 
 	// RESUME DE L'INITIALISATION
@@ -878,7 +894,7 @@ void CCfg::CDisplay::InitSDL() {
 	}
 
 	// Icone et titre
-	SDL_WM_SetCaption( "JKT 2010", "C'est un jeu qui tue !!!" );	// Titre et icon de la fenêtre
+	SDL_WM_SetCaption( "JKT 2010", "C'est un jeu qui tue !!!" );	// Titre et icon de la fenï¿½tre
 
 	string iconeFichier = "@Icone/Icone.bmp";
 	jkt::RessourcesLoader::getFileRessource(iconeFichier);
@@ -973,7 +989,7 @@ void CCfg::CDisplay::InitSDL() {
 
 	string windowPosition("SDL_VIDEO_WINDOW_POS=");
 	windowPosition = windowPosition + position;
-	putenv(windowPosition.c_str()); 	//pour centrer la fenêtre
+	putenv(windowPosition.c_str()); 	//pour centrer la fenï¿½tre
 
 	screen = SDL_SetVideoMode(X, Y, bpp, flags);		// Set the video mode
 
@@ -984,9 +1000,9 @@ void CCfg::CDisplay::InitSDL() {
 
 	SDL_WarpMouse( 250, 250 );			// Positionne le curseur de la souris
 	SDL_ShowCursor( SDL_DISABLE );		// Cache le curseur de la souris
-	SDL_WM_GrabInput( SDL_GRAB_ON );	// Active le mode déplacement relatif de la souris
+	SDL_WM_GrabInput( SDL_GRAB_ON );	// Active le mode dï¿½placement relatif de la souris
 
-	SDL_EnableKeyRepeat( 500, 500 );	// Répétition des touches clavier
+	SDL_EnableKeyRepeat( 500, 500 );	// Rï¿½pï¿½tition des touches clavier
 
 	char txt1[50];
 	LOGINFO(("Driver video :"));
@@ -998,7 +1014,7 @@ void CCfg::CDisplay::InitSDL() {
 
 	LOGINFO(("Video memory : %d Mo", info->video_mem/1024));
 
-	// Purge les événements SDL, si on ne le fait pas deux fenêtres du jeu s'affichent et les événements sont mal gérés
+	// Purge les ï¿½vï¿½nements SDL, si on ne le fait pas deux fenï¿½tres du jeu s'affichent et les ï¿½vï¿½nements sont mal gï¿½rï¿½s
 	SDL_PumpEvents();
 
 	LOGDEBUG(("init_SDL(config) end"));
@@ -1011,7 +1027,7 @@ void CCfg::CDisplay::InitOpenGL() {
 	LOGINFO(("Version openGL : %s", glGetString(GL_VERSION)));
 	LOGINFO(("Version GLU : %s", gluGetString(GLU_VERSION)));
 	LOGINFO(("Version GLEW : %s", glewGetString(GLEW_VERSION)));
-	LOGINFO(("Version GLSL supportés : %s", glGetString(GL_SHADING_LANGUAGE_VERSION)));
+	LOGINFO(("Version GLSL supportï¿½s : %s", glGetString(GL_SHADING_LANGUAGE_VERSION)));
 	LOGINFO(("Extensions openGL disponibles : %s", glGetString(GL_EXTENSIONS)));
 	LOGINFO(("Modele de la carte graphique : %s", glGetString(GL_RENDERER)));
 	LOGINFO(("Fabricant de la carte graphique : %s", glGetString(GL_VENDOR)));
@@ -1025,9 +1041,9 @@ void CCfg::CDisplay::InitOpenGL() {
 
 	glewInit();
 
-	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );					// Spécifie la couleur de vidage du tampon chromatique
+	glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );					// Spï¿½cifie la couleur de vidage du tampon chromatique
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-	glShadeModel( GL_SMOOTH );								// Mode dégradé pour le remplissage des polynomes
+	glShadeModel( GL_SMOOTH );								// Mode dï¿½gradï¿½ pour le remplissage des polynomes
 	glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
 	glViewport( 0, 0, X, Y );
 
@@ -1058,8 +1074,8 @@ void CCfg::CDisplay::InitAgar() {
 	LOGINFO(("Driver Agar actif :"));
 	AG_Driver* driver = (AG_Driver *)agDriverSw;
 	LOGINFO((" - Identification : %s", driver->_inherit.name));
-	LOGINFO((" - Compatibilité OpenGL   : %d", AG_UsingGL(driver)));
-	LOGINFO((" - Compatibilité SDL      : %d", AG_UsingSDL(driver)));
+	LOGINFO((" - Compatibilitï¿½ OpenGL   : %d", AG_UsingGL(driver)));
+	LOGINFO((" - Compatibilitï¿½ SDL      : %d", AG_UsingSDL(driver)));
 
 	unsigned int x, y;
 	AG_GetDisplaySize(driver, &x, &y);

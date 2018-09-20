@@ -6,50 +6,46 @@ namespace jkt {
 
 class CSon;
 
-class CReqSon
-{
+class CReqSon {
 public:
-	CSon* m_IdSon;		// Identifiant du son associé à la requête
-	int channel;		// Canal utilisé par la requête
-	bool m_bPause;
-	bool m_bBoucle;
-	bool m_bVolatil;	// Indique si la requête peut être effacée une fois son exécution terminée
+	CSon* _son;		// Identifiant de la requÃªte son
+	int _channel;		// Canal de la requÃªte
+	bool _pause;
+	bool _boucle;
+	bool _volatil;	// Indique si la requÃªte peut Ãªtre effacÃ©e une fois son exÃ©cution terminÃ©e
 
 public:
-	CReqSon( CSon *id );
+	CReqSon(CSon* id );
 	~CReqSon();
 
-	void Pause( bool indic );		// Met la requête en pause ou non
-	void Boucle( bool indic );		// Joue le son associé à la requête en boucle ou non
-	void Play();					// Joue le son associé en (re)partant du début
-	bool IsPlaying();				// Indique si le son est en train d'être joué
+	void pause(bool pause);			// Met la requÃªte en pause ou non
+	void boucle(bool boucle);		// Joue le son associÃ© Ã  la requÃªte en boucle ou non
+	void play();					// Joue le son associÃ© en (re)partant du dÃ©but
+	bool isPlaying();				// Indique si le son est en train d'Ãªtre jouÃ©
 };
 
-class CReqSonMono : public CReqSon
-{
+class CReqSonMono : public CReqSon {
 public:
-	CReqSonMono(CSon *id);
+	CReqSonMono(CSon* id);
 	~CReqSonMono();
 };
 
-class CReqSonStereo : public CReqSon
-{
+class CReqSonStereo : public CReqSon {
 public:
-	CReqSonStereo(CSon *id);
+	CReqSonStereo(CSon* id);
 	~CReqSonStereo();
 };
 
-class CReqSon3D : public CReqSon
-{
-	float m_Position[3];
-	float m_Vitesse[3];
-	bool m_bDoppler;
+class CReqSon3D : public CReqSon {
+	float _position[3];
+	float _vitesse[3];
+	bool _doppler;
 
 public:
-	CReqSon3D(CSon *id);
+	CReqSon3D(CSon* id);
 	~CReqSon3D();
 
-	void SetPosition( float pos[3] );
+	void setPosition(const float pos[3]);
 };
 
 }	// namespace jkt

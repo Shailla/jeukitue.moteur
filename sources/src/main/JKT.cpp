@@ -66,7 +66,7 @@ class CGame;
 #include "main/Cfg.h"
 #include "spatial/materiau/Material.h"
 #include "spatial/IfstreamMap.h"
-#include "spatial/basic/Geometrical.h"				//Param�tres des objets g�om�triques
+#include "spatial/basic/Geometrical.h"				//Paramêtres des objets g�om�triques
 #include "spatial/objet/Dirigeable.h"
 #include "spatial/basic/Refreshable.h"
 #include "spatial/geo/GeoObject.h"
@@ -77,7 +77,7 @@ class CGame;
 #include "spatial/objet/Navette.h"
 #include "main/Clavier.h"							//Requ�tes du clavier
 #include "Photo.h"
-#include "spatial/materiau/MaterialTexture.h"		//Param�tres des mat�riaux associ�s aux objets g�om�triques
+#include "spatial/materiau/MaterialTexture.h"		//Paramêtres des mat�riaux associ�s aux objets g�om�triques
 #include "spatial/materiau/MaterialMulti.h"
 #include "spatial/light/Light.h"					//Lumi�res de la map
 #include "spatial/Map.h"
@@ -268,6 +268,7 @@ void afficheInfo( Uint32 tempsDisplay ) {
 	string str;
 
 	str = "Mode de jeu : ";
+
 	if( Game.isModeNull() ) {
 		str += "aucun";
 	}
@@ -277,8 +278,7 @@ void afficheInfo( Uint32 tempsDisplay ) {
 	else if( Game.isModeClient() ) {
 		str += "client";
 
-		switch( Game.getStatutClient() )
-		{
+		switch( Game.getStatutClient() ) {
 		case JKT_STATUT_CLIENT_INIT:
 			str += " (initialisation)";
 			break;
@@ -300,8 +300,8 @@ void afficheInfo( Uint32 tempsDisplay ) {
 	}
 	else if( Game.isModeServer() ) {
 		str += "serveur";
-		switch( Game.getStatutServer() )
-		{
+
+		switch( Game.getStatutServer() ) {
 		case JKT_STATUT_SERVER_INIT:
 			str += " (initialisation)";
 			break;
@@ -324,13 +324,14 @@ void afficheInfo( Uint32 tempsDisplay ) {
 
 	CPlayer *erwin = Game.Erwin();
 
+	// Affiche l'orientation d'Erwin
 	if(erwin) {
-		// Affiche le Teta du joueur principal
+		// Affiche le Teta d'Erwin
 		sprintf( cou, "Teta Phi : %.3d %.3d", (int)erwin->teta(), (int)erwin->phi());
 		str = cou;
 		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 
-		// Affiche la position du joueur principal
+		// Affiche la position d'Erwin
 		float position[3];
 		erwin->getPosition( position );
 
@@ -339,6 +340,7 @@ void afficheInfo( Uint32 tempsDisplay ) {
 		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 	}
 
+	// Affiche les performances de la gestion du son
 	if(Config.Debug.bSonPerformances) {
 		unsigned int currentalloced, maxalloced;
 		sprintf( cou, "Son, usage CPU : %.4f %%", FSOUND_GetCPUUsage() );
@@ -356,6 +358,7 @@ void afficheInfo( Uint32 tempsDisplay ) {
 		fonte.drawString(str, 20.0f, pos++*15.0f+20.0f, INFOFONTESCALAR);
 	}
 
+	// Affiche le spectre du son
 	if(Config.Debug.bSonSpectre) {
 		int NBR_RAIES_SPECTRE = 512;
 		float *spectre = FSOUND_DSP_GetSpectrum();
@@ -468,7 +471,7 @@ void display() {		// Fonction principale d'affichage
 	glEnable( GL_DEPTH_TEST );
 	glLoadIdentity();
 
-	if(Game.getMap()) {		// Si il y a une map a afficher
+	if(Game.getMap()) {		// Si il y a une Map a afficher
 		CPlayer* erwin = Game.Erwin();
 
 		if(erwin) {		// S'il y a un joueur principal
@@ -558,8 +561,9 @@ void display() {		// Fonction principale d'affichage
 		gluSphere(quadric, 0.05, 16, 16);
 		gluDeleteQuadric(quadric);
 
-		if( Game.Erwin() )
+		if( Game.Erwin() ) {
 			updateSon3D();	// Positionne le joueur et les objets bruyants dans l'espace sonore
+		}
 	}
 
 
@@ -596,11 +600,12 @@ void display() {		// Fonction principale d'affichage
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glColor3f(1.0, 1.0, 1.0 );
 
-	afficheInfo(SDL_GetTicks()-temps);
+	afficheInfo(SDL_GetTicks() - temps);
 
-	// Affichage du vieux syst�me de menus
-	if( Aide )
+	// Affichage du vieux système de menus
+	if( Aide ) {
 		CDlg::afficheMenuActif();
+	}
 
 	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
@@ -1014,7 +1019,7 @@ static void process_events(void) {
 	while( SDL_PollEvent( &sdlevent ) ) {
 
 		/* ****************************************** */
-		/* Gestion �v�nements prioritaires            */
+		/* Gestion événements prioritaires            */
 		/* ****************************************** */
 
 		switch( sdlevent.type ) {
@@ -1043,7 +1048,7 @@ static void process_events(void) {
 
 
 		/* ****************************************** */
-		/* Gestion �v�nements du jeu                  */
+		/* Gestion événements du jeu                  */
 		/* ****************************************** */
 
 		pFocus->ExecFocus( &sdlevent );
@@ -1064,8 +1069,8 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 		return false;
 	}
 
-	// Cr�ation joueurs
-	Game.createPlayerList( 10 );	// Indique que la partie peut contenir jusqu'� 10 joueurs
+	// Création joueurs
+	Game.createPlayerList( 10 );	// Indique que la partie peut contenir jusqu'à 10 joueurs
 
 
 	/**************************************
@@ -1078,13 +1083,13 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 
 	CMap *pMapJoueur = new CMap(0);
 	pMapJoueur->Lit(mapJoueurPrincipal, 0);
-	pMapJoueur->echangeXZ();					// Ajuste les coordonn�es
+	pMapJoueur->echangeXZ();					// Ajuste les coordonnées
 	pMapJoueur->scale( -0.06f, 0.06f, 0.06f );
 	pMapJoueur->init();
 
 	CMap *pMapJoueur2 = new CMap(0);
 	pMapJoueur2->Lit(nomFichierJoueur, 0);
-	pMapJoueur2->echangeXZ();					// Ajuste les coordonn�es
+	pMapJoueur2->echangeXZ();					// Ajuste les coordonnées
 	pMapJoueur2->scale( -0.06f, 0.06f, 0.06f );
 	pMapJoueur2->init();
 
@@ -1104,44 +1109,44 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 
 
 	/***********************************
-	 * Cr�ation des joueurs dans la Map
+	 * Création des joueurs dans la Map
 	 ***********************************/
 
-	// Cr�ation du joueur principal
-	CPlayer *erwin = new CPlayer();				// Cr�e le joueur principal (celui g�r� par le clavier et l'�cran)
-	erwin->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravit�
+	// Création du joueur principal
+	CPlayer *erwin = new CPlayer();				// Cr�e le joueur principal (celui géré par le clavier et l'�cran)
+	erwin->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	erwin->changeContact( contactPlayer );		// Associe une fonction de gestion des contacts avec la map
 	erwin->Skin( pMapJoueur );
 	erwin->setCri( cri1.c_str() );				// Cri du joueur
 	erwin->setName( "ERWIN" );
-	erwin->init();								// Initialise certaines donn�es
+	erwin->init();								// Initialise certaines données
 	erwin->choiceOneEntryPoint();
 	Game.addPlayer(erwin);	// Ajoute le joueur principal � la liste des joueurs
 	Game.setErwin(erwin);						// Indique que 'erwin' est le joueur principal
 
-	// Cr�ation d'un second joueur
+	// Création d'un second joueur
 	CPlayer *julien;
-	julien = new CPlayer();						// Cr�e un autre joueur
-	julien->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravit�
+	julien = new CPlayer();						// Crée un autre joueur
+	julien->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	julien->changeContact( contactPlayer );		// Associe une fonction pour les contacts avec la map
 	julien->Skin( pMapJoueur2 );
 	julien->setCri( cri1.c_str() );
 	julien->setName( "JULIEN" );
 	julien->init();
 	julien->choiceOneEntryPoint();
-	Game.addPlayer(julien);	// Ajoute le joueur � la liste des joueurs
+	Game.addPlayer(julien);	// Ajoute le joueur à la liste des joueurs
 
-	// Cr�ation d'un troisi�me joueur
+	// Création d'un troisi�me joueur
 	CPlayer *sprite;
-	sprite = new CPlayer();						// Cr�e un autre joueur
-	sprite->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravit�
+	sprite = new CPlayer();						// Crée un autre joueur
+	sprite->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	sprite->changeContact( contactSprite );		// Associe une fonction pour les contacts avec la map
 	sprite->Skin( pMapJoueur );
 	sprite->setCri( cri2.c_str() );
 	sprite->setName( "SPRITE" );
 	sprite->init();
 	sprite->choiceOneEntryPoint();
-	Game.addPlayer(sprite);	// Ajoute le joueur � la liste des joueurs
+	Game.addPlayer(sprite);	// Ajoute le joueur à la liste des joueurs
 
 	return true;
 }
@@ -1162,7 +1167,7 @@ GameDto* serverGameDto;
 void executeJktRequests() {
 
 	//	/* *******************************************************
-	//	 * Ex�cution de l'ouverture d'une MAP en mode multijoueurs
+	//	 * exécution de l'ouverture d'une MAP en mode multijoueurs
 	//	 * ******************************************************/
 	//
 	//	if( Game.RequeteProcess.isOuvreMap() ) {		// S'il y a une demande d'ouvertue de MAP
@@ -1171,7 +1176,7 @@ void executeJktRequests() {
 	//
 	//		openMap( mapName );	// Ouvre la MAP voulue
 	//
-	//		Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );		// Indique que la partie est lanc�e en mode client
+	//		Game.setStatutClient( JKT_STATUT_CLIENT_PLAY );		// Indique que la partie est lancée en mode client
 	//		pFocus->SetPlayFocus();								// Met l'interception des commandes sur le mode jeu
 	//
 	//		Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
@@ -1179,7 +1184,7 @@ void executeJktRequests() {
 
 
 	/* *******************************************************
-	 * Ex�cution du workflow d'ouverture d'une MAP locale
+	 * exécution du workflow d'ouverture d'une MAP locale
 	 * ******************************************************/
 
 	int etape = Game.RequeteProcess.getOuvreMapLocaleEtape();
@@ -1215,7 +1220,7 @@ void executeJktRequests() {
 		DataTreeUtils::formatGameServerDataTree(dataTree);
 		Game.setLocalDataTree(dataTree);
 
-		// Lancement ouverture MAP demand�e
+		// Lancement ouverture MAP demandée
 		const string mapName = Game.RequeteProcess.getOuvreMap();
 
 		localeGameDto = new GameDto(mapName);
@@ -1282,7 +1287,7 @@ void executeJktRequests() {
 
 
 	/* **************************************************************
-	 * Ex�cution du workflow d'ouverture d'une MAP en mode client
+	 * Exécution du workflow d'ouverture d'une MAP en mode client
 	 * *************************************************************/
 
 	etape = Game.RequeteProcess.getOuvreMapClientEtape();
@@ -1322,12 +1327,12 @@ void executeJktRequests() {
 			AG_TextMsg(AG_MSG_ERROR, "Echec de connexion du client au serveur");
 		}
 		else {
-			// Cr�ation de l'arbre des donn�es du client
+			// Création de l'arbre des données du client
 			ClientDataTree* dataTree = new ClientDataTree(string("jkt"), clientInterlocutor);
 			//			DataTreeUtils::formatGameDataTree(dataTree);
 			Game.setClientDataTree(dataTree);
 
-			// Lancement ouverture MAP demand�e
+			// Lancement ouverture MAP demandée
 			const string mapName = Game.RequeteProcess.getOuvreMap();
 
 			clientGameDto = new GameDto(mapName);
@@ -1361,7 +1366,7 @@ void executeJktRequests() {
 		Controller::executeAction(Controller::Action::HideMenuAction);
 
 		jkt::CClient *client = Game.getClient();
-		client->nomMAP = clientGameDto->getMapName();			// Informe le serveur sur le nom de la MAP lanc�e
+		client->nomMAP = clientGameDto->getMapName();			// Informe le serveur sur le nom de la MAP lancée
 		client->setStatut( jkt::JKT_STATUT_CLIENT_PLAY );
 
 		delete clientGameDto;
@@ -1375,7 +1380,7 @@ void executeJktRequests() {
 	}
 
 	/* **************************************************************
-	 * Ex�cution du workflow d'ouverture d'une MAP en mode serveur
+	 * Exécution du workflow d'ouverture d'une MAP en mode serveur
 	 * *************************************************************/
 
 	etape = Game.RequeteProcess.getOuvreMapServerEtape();
@@ -1405,7 +1410,7 @@ void executeJktRequests() {
 		 * Ouverture Map serveur
 		 * ****************************************/
 
-		// Cr�ation de l'arbre des donn�es du serveur
+		// Création de l'arbre des données du serveur
 		Game.setModeServer();
 
 		_notConnectedServerInterlocutor = _networkManager->ouvreServer(Config.Reseau.getServerPort(), Config.Reseau.getServerPortTree());
@@ -1421,7 +1426,7 @@ void executeJktRequests() {
 			DataTreeUtils::formatGameServerDataTree(dataTree);
 			Game.setServerDataTree(dataTree);
 
-			// Lancement ouverture MAP demand�e
+			// Lancement ouverture MAP demandée
 			const string mapName = Game.RequeteProcess.getOuvreMap();
 
 			serverGameDto = new GameDto(mapName);
@@ -1433,7 +1438,7 @@ void executeJktRequests() {
 	}
 	break;
 
-	case CRequeteProcess::OMSE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la m�thode "openMap"
+	case CRequeteProcess::OMSE_OUVERTURE_EN_COURS:	// Attente de la fin de l'ouverture de la nouvelle MAP dans la méthode "openMap"
 		// Nothing to do
 		break;
 
@@ -1452,12 +1457,12 @@ void executeJktRequests() {
 		CPlayer* erwin = serverGameDto->getErwin();
 
 		if(erwin) {
-			Game.addPlayer(erwin);		// Ajoute Erwin � la liste des joueurs
-			Game.setErwin(erwin);			// Indique qu'Erwin est le joueur principal
+			Game.addPlayer(erwin);		// Ajoute Erwin à la liste des joueurs
+			Game.setErwin(erwin);		// Indique qu'Erwin est le joueur principal
 		}
 
 		for(vector<CPlayer*>::iterator iter = serverGameDto->getPlayers().begin() ; iter != serverGameDto->getPlayers().end() ; ++iter) {
-			Game.addPlayer(*iter);				// Ajoute le joueur � la liste des joueurs
+			Game.addPlayer(*iter);				// Ajoute le joueur à la liste des joueurs
 		}
 
 		CPlayer *player;
@@ -1476,7 +1481,7 @@ void executeJktRequests() {
 		Controller::executeAction(Controller::Action::HideMenuAction);
 
 		jkt::CServer *server = Game.getServer();
-		server->nomMAP = serverGameDto->getMapName();					// Informe le serveur sur le nom de la MAP lanc�e
+		server->nomMAP = serverGameDto->getMapName();					// Informe le serveur sur le nom de la MAP lancée
 		server->setStatut( jkt::JKT_STATUT_SERVER_PLAY );
 		server->bGame = true;						// Indique qu'une partie est en cours
 
@@ -1489,10 +1494,10 @@ void executeJktRequests() {
 
 
 	/* *******************************************
-	 * Ex�cution d'une capture d'�cran
+	 * exécution d'une capture d'�cran
 	 * ******************************************/
 
-	if( Game.RequeteProcess.isTakePicture() ) {	// S'il y a une demande de prise de photo de la sc�ne
+	if( Game.RequeteProcess.isTakePicture() ) {	// S'il y a une demande de prise de photo de la scène
 		CPhoto photo( Config.Display.X, Config.Display.Y );
 
 		// Nom du fichier avec horodatage
@@ -1516,10 +1521,10 @@ void executeJktRequests() {
 void communique() {
 	frpTimer++;
 
-	if(_networkManager->getOn()) {	// Si le r�seau est actif
+	if(_networkManager->getOn()) {	// Si le réseau est actif
 
 		/* *******************************************
-		 * Le serveur émet et éceptionne des données
+		 * Le serveur émet et réceptionne des données
 		 * ******************************************/
 
 		// Envoie des données aux clients
@@ -1531,14 +1536,14 @@ void communique() {
 
 				// Réception des données des clients
 				if(Game.getMap()) {						// Si une partie est en cours en mode de jeu client ou serveur
-					_networkManager->recoitServer();	// Recoit les donn�es des clients
+					_networkManager->recoitServer();	// Recoit les données des clients
 				}
 			}
 		}
 
 
 		/* *******************************************
-		 * Le client �met et r�ceptionne des donn�es
+		 * Le client émet et réceptionne des données
 		 * ******************************************/
 
 		// Le client r�ceptionne les données du serveur
@@ -1550,7 +1555,7 @@ void communique() {
 
 			// Emet les données du joueur actif vers le serveur
 			if(Game.getMap() && Game.Erwin() && Game.isModeClient() && (Game.getStatutClient() == JKT_STATUT_CLIENT_PLAY)) {
-				client->emet( *Game.Erwin() );		// Emet les requetes et donn�es du joueur actif;
+				client->emet( *Game.Erwin() );		// Emet les requetes et données du joueur actif;
 			}
 		}
 	}
@@ -1599,7 +1604,7 @@ void boucle() {
 				}
 			}
 
-
+ 
 			/* ***********************************************************
 			 * Traites les changements des données du jeu
 			 * **********************************************************/
@@ -1612,16 +1617,16 @@ void boucle() {
 				saveTime(time);
 
 				if(serverDataTree) {		// TODO serveurDataTree devrait être protégé par un mutex
-					serverDataTree->receiveChangementsFromClients();		// Le serveur reçoit les changements des donnée du jeu de la part des clients
+					serverDataTree->receiveChangementsFromClients();		// Le serveur reçoit les changements des données du jeu de la part des clients
 					serverDataTree->diffuseChangementsToClients();			// Diffuse les changements des données du jeu aux clients
 				}
 
-				// Traite les changements de donn�es c�t� client
+				// Traite les changements de données côté client
 				ClientDataTree* clientDataTree = Game.getClientDataTree();
 
-				if(clientDataTree) {		// TODO clientDataTree devrait �tre prot�g� par un mutex
-					clientDataTree->receiveChangementsFromServer();		// Le client re�oit les changements des donn�es du jeu de la part du serveur
-					clientDataTree->diffuseChangementsToServer();		// Le client re�oit diffuse les changements des donn�es du jeu vers le serveur
+				if(clientDataTree) {		// TODO clientDataTree devrait être protégé par un mutex
+					clientDataTree->receiveChangementsFromServer();		// Le client reçoit les changements des données du jeu de la part du serveur
+					clientDataTree->diffuseChangementsToServer();		// Le client reçoit diffuse les changements des données du jeu vers le serveur
 				}
 
 				lastDataTreeUpdate = SDL_GetTicks();
@@ -1633,10 +1638,8 @@ void boucle() {
 			 * *********************************************/
 
 			if( Game.getMap()) {	// Si une partie est en cours en mode de jeu local, client ou serveur
-				if( 	Game.isModeLocal()
-						|| 	(Game.isModeClient() && Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY)
-						|| 	(Game.isModeServer() && Game.getStatutServer()==JKT_STATUT_SERVER_PLAY) ) {
-					chopeLesEvenements(now, deltaTime);	// Prends les requ�tes du joueur pour permettre m�me au serveur de jouer
+				if( 	Game.isModeLocal() || 	(Game.isModeClient() && Game.getStatutClient()==JKT_STATUT_CLIENT_PLAY) || 	(Game.isModeServer() && Game.getStatutServer()==JKT_STATUT_SERVER_PLAY) ) {
+					chopeLesEvenements(now, deltaTime);	// Prends les requêtes du joueur pour permettre même au serveur de jouer
 				}
 			}
 
@@ -1651,14 +1654,14 @@ void boucle() {
 
 			/* ****************************************************
 			 * Effectue les calculs physiques
-			 * (gravité, gestion des contacts, d�placements, ...)
+			 * (gravité, gestion des contacts, déplacements, ...)
 			 *
 			 * ***************************************************/
-			Uint32 beforeCompute = SDL_GetTicks();	// Temps au début du timer (->mesure du temps de calcul)
+			Uint32 beforeTimer = SDL_GetTicks();	// Temps au début du timer (->mesure du temps de calcul)
 			Game.timer(now, deltaTime);
-			Uint32 afterCompute = SDL_GetTicks();
+			Uint32 afterTimer = SDL_GetTicks();
 
-			((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setDureeCalcules(afterCompute - beforeCompute);
+			((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW))->setDureeCalcules(afterTimer - beforeTimer);
 
 
 			/* ***********************************************************
@@ -1668,7 +1671,7 @@ void boucle() {
 			// Dessine la scène 3D et les menus
 			display();
 
-			process_events();	// vérifie les événements
+			process_events();	// Vérifie les événements
 		}
 	}
 	catch(NotExistingBrancheException& exception) {
@@ -1727,7 +1730,7 @@ int main(int argc, char** argv) {
 		cerr << flush;
 		exit(0);
 	}
-	// Ouvre en local la Map sp�cifi�e
+	// Ouvre en local la Map spécifiée
 	else if(cmdParameters.count("openLocal")) {
 		string mapName = cmdParameters["openLocal"].as<string>();
 
@@ -1743,9 +1746,9 @@ int main(int argc, char** argv) {
 
 	LOGINFO(("LECTURE CONFIGURATION"));
 
-	Config.Reseau.Init();	// Initialisation du r�seau
+	Config.Reseau.Init();	// Initialisation du réseau
 
-	// D�tection de la machine
+	// Détection de la machine
 	string host;
 	IPaddress ipaddress;
 
@@ -1773,7 +1776,7 @@ int main(int argc, char** argv) {
 
 
 	/* ********************************************** */
-	/* Initialisations (vid�o, r�seau, ...)           */
+	/* Initialisations (vidéo, réseau, ...)           */
 	/* ********************************************** */
 
 	LOGINFO(("RESUME DE L'INITIALISATION VIDEO"));
@@ -1782,12 +1785,12 @@ int main(int argc, char** argv) {
 	_networkManager = new NetworkManager();
 
 	Config.Audio.Init();	// Initialisation audio
-	Config.Ecrit();			// Enregistre les �ventuelles modifications de la configuration
+	Config.Ecrit();			// Enregistre les éventuelles modifications de la configuration
 
-	// Purge les �v�nements SDL, si on ne le fait pas deux fen�tres du jeu s'affichent et les �v�nements sont mal g�r�s
+	// Purge les événements SDL, si on ne le fait pas deux fenêtres du jeu s'affichent et les événements sont mal gérés
 	SDL_PumpEvents();
 
-	srand(SDL_GetTicks());		// Initialisation de la fonction rand() pour les nombres al�atoires
+	srand(SDL_GetTicks());		// Initialisation de la fonction rand() pour les nombres aléatoires
 
 	HttpServer htmlServer(Config.Web.getHtmlServerPort());
 	htmlServer.open();
@@ -1799,7 +1802,7 @@ int main(int argc, char** argv) {
 
 	Fabrique::construct();
 
-	// Cr�ation du d�mon de gestion des sons
+	// Création du démon de gestion des sons
 	demonSons = new CDemonSons();
 
 	// Lancement de l'introduction du jeu
@@ -1808,7 +1811,7 @@ int main(int argc, char** argv) {
 	}
 
 	// Lecture fonte
-	string fonteFile = "@Fonte\\Mermaid1001.ttf";		// Chargement de la fonte de caract�res
+	string fonteFile = "@Fonte\\Mermaid1001.ttf";			// Chargement de la fonte de caractères
 	jkt::RessourcesLoader::getFileRessource(fonteFile);
 
 	fonte.load(fonteFile, 48);
@@ -1816,16 +1819,16 @@ int main(int argc, char** argv) {
 
 	// Initialisation de la classe CDlgBoite pour l'IHM
 	if( !CDlgBoite::INIT_CLASSE() )
-		return 1;	// Erreur fatale si la classe n'a pas pu �tre initialis�e
+		return 1;	// Erreur fatale si la classe n'a pas pu être initialisée
 
-	// Initialisation de la classe CRocket, r�fl�chir o� mettre cette initialisation
+	// Initialisation de la classe CRocket, réfléchir où mettre cette initialisation
 	if( !CRocket::INIT_CLASSE() )
-		return 1;	// Erreur fatale si CRocket ne peut �tre initialis�e
+		return 1;	// Erreur fatale si CRocket ne peut être initialisée
 
-	// D�lai d'attente apr�s l'intro du jeu, je sais plus � quoi il sert
+	// Délai d'attente après l'intro du jeu, je sais plus à quoi il sert
 	SDL_Delay( 1000 );
 
-	// Cr�ation d'un haut parleur qui se d�place pour tester le son 3D
+	// Création d'un haut parleur qui se déplace pour tester le son 3D
 	machin = new CMachin();
 	string fichierSon3D = "@Musique\\drumloop.wav";
 	jkt::RessourcesLoader::getFileRessource(fichierSon3D);
@@ -1835,7 +1838,7 @@ int main(int argc, char** argv) {
 	machin->req_son = reqSon;
 	demonSons->play( machin->req_son );
 
-	// Initialisation des plugins d�marr�s par d�faut
+	// Initialisation des plugins démarrés par défaut
 	Fabrique::getPluginEngine()->activateDefaultGlobalPlugins();
 
 	initMenu();
@@ -1844,6 +1847,6 @@ int main(int argc, char** argv) {
 	Fabrique::getAgarView()->showView(Viewer::CONSOLE_VIEW);
 	boucle();
 
-	return 1;	// On ne devrait normalement jamais ex�cuter cette ligne
+	return 1;	// On ne devrait normalement jamais exécuter cette ligne
 }
 

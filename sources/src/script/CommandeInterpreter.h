@@ -33,7 +33,7 @@ public:
 	/** Retourne la liste des commandes */
 	const std::map<std::string, Commande*>& getCommandes() const;
 
-	/** Retourne une commande spécifiée par son nom */
+	/** Retourne une commande spÃ©cifiÃ©e par son nom */
 	Commande* getCommande(const std::string& commandeName);
 
 	void interpreteCommande(std::string commande, bool userOutput);

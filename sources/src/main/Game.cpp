@@ -38,16 +38,16 @@ using namespace jkt;
 
 extern NetworkManager* _networkManager;
 
-#define Pi 3.14159265f			//nombre pi pour les calculs
+#define Pi 3.14159265f			// Nombre PI pour les calculs
 
 CGame::CGame() : _players(false) {
 	_mode = JKT_MODE_PARTIE_NULL;
 	_localDataTree = NULL;
 	_serverDataTree = NULL;
 	_clientDataTree = NULL;
-	_map = NULL;			// Pas de map
-	_erwin = NULL;			// Pas de joueur actif
-	_gravite = true;		// Par d�faut la gravit� est active
+	_map = NULL;					// Pas de map
+	_erwin = NULL;					// Pas de joueur actif
+	_gravite = true;				// Par défaut la gravité est active
 }
 
 bool CGame::isModeServer() {
@@ -307,7 +307,7 @@ void CGame::affichePlayers() {
 
 		if(player) {
 			player->Affiche(); 				//affiche un seul joueur pour le moment
-			player->afficheProjectils(); 	// Affiche les projectils lanc�s par 'player'
+			player->afficheProjectils(); 	// Affiche les projectils lancés par 'player'
 		}
 	}
 }
@@ -462,17 +462,34 @@ void CGame::faitTousPlayerGravite(Uint32 now, float deltaTime) {
 		player = _players[curseur];
 
 		if(player) {
-			player->exeActionFunc(now, deltaTime);	//exécute l'action périodique (gravité,...) du joueur
+			player->exeActionFunc(now, deltaTime);	// Exécute l'action périodique (gravité,...) du joueur
 		}
 	}
 }
 
 void CGame::timer(Uint32 now, float deltaTime) {
-	// Nouveau code
+
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// NOUVEAU CODE
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+	if(_map) {
+
+		// Liste les objets en contact de chaque joueur en vue du calcul des accélérations (appui au sol, ...)
+
+		// Calcule de l'accélération voulue de chaque joueur
+
+		// Calcule du déplacement voulu de chaque joueur
+
+		// Liste les objets sur le chemin de déplacement du joueur
+
+	}
 
 
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// ANCIEN CODE
+	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	// Ancien code
 	if(_map) {
 		if( _gravite ) {					// Si la gravité est active
 			faitTousPlayerGravite(now, deltaTime);

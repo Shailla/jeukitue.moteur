@@ -32,7 +32,7 @@ void LuaService::loadLuaDirectoryContent(vector<string>& content) {
 	path pluginPath(PLUGINS_DIRECTORY);
 
 	if(!exists(pluginPath)) {
-		LOGERROR(("Le répertoire %s n'existe pas", PLUGINS_DIRECTORY));
+		LOGERROR(("Le rÃ©pertoire %s n'existe pas", PLUGINS_DIRECTORY));
 		return;
 	}
 

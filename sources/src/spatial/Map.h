@@ -162,6 +162,9 @@ public:
 
 	// Points d'entrée des personnages joueurs
 	std::vector<EntryPoint*>& getEntryPointsList();
+
+	void listObjectProximite(std::vector<MapObject*>& contacts, const float pos[3], const float dist);
+	void listObjectIntersectionsPave(std::vector<MapObject*>& intersections, const float position1[3], const float position2[3]);
 };
 
 }	// JktMoteur

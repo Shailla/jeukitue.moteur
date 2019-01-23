@@ -20,17 +20,17 @@ public:
 	Drawable(const Drawable& other);
 	virtual ~Drawable();
 
-	virtual void affiche() = 0;										// Affiche l'objet g�om�trique
-	virtual void afficheHighlighted(float r,float v,float b) = 0;	// Affiche l'objet g�om�trique en couleur unique
+	virtual void affiche() = 0;										// Affiche l'objet géométrique
+	virtual void afficheHighlighted(float r, float v, float b) = 0;	// Affiche l'objet géométrique en couleur unique
 
-	bool isHidden() const;											// Indique si l'objet est cach�
+	bool isHidden() const;											// Indique si l'objet est caché
 	void hide(bool highlighted);									// Cache ou non l'objet
 
-	bool isHighlighted() const;										// Indique si l'objet est s�lectionn�
-	void highlight(bool highlighted);								// S�lectionne l'objet (il sera affich� diff�remment dans sa Map)
+	bool isHighlighted() const;										// Indique si l'objet est sélectionné
+	void highlight(bool highlighted);								// Sélectionne l'objet (il sera affiché différemment dans sa Map)
 
-	virtual void initGL() = 0;										// Initialisation de l'objet g�om�trique
-	virtual void freeGL() = 0;										// Lib�ration des ressources de l'objet dans le contexte OpenGL
+	virtual void initGL() = 0;										// Initialisation de l'objet géométrique
+	virtual void freeGL() = 0;										// Libération des ressources de l'objet dans le contexte OpenGL
 };
 
 } /* namespace jkt */

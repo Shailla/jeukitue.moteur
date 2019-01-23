@@ -95,4 +95,20 @@ bool MapObject::checkContact(const float pos[3], float dist) {
 	return false;
 }
 
+bool MapObject::checkIntersectionPave(const float pos1[3], const float pos2[3]) {
+	if((pos1[0] < Geometrical::_minX && pos2[0] < Geometrical::_minX) || (pos1[0] > Geometrical::_maxX && pos2[0] > Geometrical::_maxX)) {
+		return false;
+	}
+
+	if((pos1[1] < Geometrical::_minY && pos2[1] < Geometrical::_minY) || (pos1[1] > Geometrical::_maxY && pos2[1] > Geometrical::_maxY)) {
+		return false;
+	}
+
+	if((pos1[2] < Geometrical::_minZ && pos2[2] < Geometrical::_minZ) || (pos1[2] > Geometrical::_maxZ && pos2[2] > Geometrical::_maxZ)) {
+		return false;
+	}
+
+	return true;
+}
+
 } /* namespace jkt */

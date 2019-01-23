@@ -93,9 +93,10 @@ public:
 	 * Gestion des contacts de l'objet
 	 * *******************************************/
 
-	virtual void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;	// Gère les contact entre 'player' et l'objet g�o
-	virtual float gereLaserPlayer(float pos[3], CV3D& Dir, float dist) override;			// Voir la d�finition de la fonction
+	virtual void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;		// Gère les contact entre 'player' et l'objet g�o
+	virtual float gereLaserPlayer(float pos[3], CV3D& Dir, float dist) override;			// Voir la définition de la fonction
 	virtual bool checkContact(const float pos[3], float dist) override;
+	bool checkIntersectionPave(const float pos1[3], const float pos2[3]) override;			// Indique si le segment qui relie les points pos1 et pos2 entre en intersection avec le pavé englobant l'objet
 };
 
 } /* namespace jkt */

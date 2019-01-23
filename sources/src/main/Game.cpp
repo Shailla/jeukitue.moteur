@@ -14,6 +14,7 @@ class CGame;
 
 #include "util/Erreur.h"
 #include "util/V3D.h"
+#include "util/math_vectoriel.h"
 #include "main/Fabrique.h"
 #include "util/Tableau.cpp"
 #include "util/TableauIndex.cpp"
@@ -475,14 +476,32 @@ void CGame::timer(Uint32 now, float deltaTime) {
 
 	if(_map) {
 
-		// Liste les objets en contact de chaque joueur en vue du calcul des accélérations (appui au sol, ...)
 
-		// Calcule de l'accélération voulue de chaque joueur
+		CPlayer *player;
+		int index = -1;
+		float position[3], vitesse[3], deplacementVoulu[3];
 
-		// Calcule du déplacement voulu de chaque joueur
+		while(_players.Suivant(index)) {		// Pour chaque joueur
+			player = _players[index];
 
-		// Liste les objets sur le chemin de déplacement du joueur
+			// Applique les poussées liées à l'environnement (gravité, vent, ...)
+			if( _gravite ) {
+				player->exeActionFunc(now, deltaTime);
+			}
 
+			player->getPosition(position);
+			player->getVitesse(vitesse);
+			scale(vitesse, deltaTime, deplacementVoulu);	// Déplacement voulu = vitesse * temps écoulé
+
+			// Liste les objets en intersection avec la trajectoire voulue du joueur
+			std::vector<MapObject*> intersections;
+			_map->listObjectIntersectionsPave(intersections, position, deplacementVoulu);
+
+			// Liste les objets en proximité du joueur
+			std::vector<MapObject*> proximites;
+			_map->listObjectProximite(proximites, position, 500.0f * deltaTime);	// TODO Affiner cette valeur de 500.0f
+
+		}
 	}
 
 

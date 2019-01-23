@@ -8,8 +8,10 @@ namespace jkt
 float produitScalaire(const float *A, const float *B);
 float norme(const float *A);
 void normalise(float *A);
-void produitVectoriel(const float *A, const float *B, float *C);			// C = A*B
-void produitMatriciel(const float *row, const float *A, float *B);		// B = row * A
+void scale(const float *A, const float factor, float *result);
+void scale(float *A, const float factor);
+void produitVectoriel(const float *A, const float *B, float *result);			// C = A*B
+void produitMatriciel(const float *row, const float *A, float *result);		// B = row * A
 
 }	// JktUtils
 

@@ -74,7 +74,7 @@ public:
 
 	bool checkContact( const float pos[3], float dist ) override;
 	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;
-	float gereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;		// Voir la d�finition de la fonction
+	float gereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;		// Voir la définition de la fonction
 
 	// Fonctions pour l'interface CGeo
 	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) override;

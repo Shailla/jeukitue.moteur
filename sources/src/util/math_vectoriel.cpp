@@ -23,6 +23,18 @@ void normalise(float *A) {
 	A[2] /= n;
 }
 
+void scale(const float *A, const float factor, float *result) {
+	result[0] = A[0] * factor;
+	result[1] = A[1] * factor;
+	result[2] = A[2] * factor;
+}
+
+void scale(float *A, const float factor) {
+	A[0] *= factor;
+	A[1] *= factor;
+	A[2] *= factor;
+}
+
 void produitVectoriel(const float *A, const float *B, float *C) {		//C = A*B
 	C[0] = A[1]*B[2]-A[2]*B[1];
 	C[1] = A[2]*B[0]-A[0]*B[2];

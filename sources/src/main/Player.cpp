@@ -478,7 +478,7 @@ void CPlayer::exeActionFunc(Uint32 now, float deltaTime) {	// Exécute l'action 
 	}
 }
 
-void CPlayer::exeContactFunc(float *normal, float distanceW) {	// Ex�cute fonction gestion contacts avec joueur
+void CPlayer::exeContactFunc(float *normal, float distanceW) {	// Exécute fonction gestion contacts avec joueur
 	if(_contactFunc) {
 		_contactFunc( this, normal, distanceW );
 	}

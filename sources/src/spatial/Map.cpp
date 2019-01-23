@@ -1099,4 +1099,44 @@ int CMap::afficheDamierTextures(int x, int y, int tailleX, int tailleY, int nbrX
 	return (index > firstIndex) ? page : 0;
 }
 
+void CMap::listObjectProximite(std::vector<MapObject*>& contacts, const float pos[3], const float dist) {
+	bool var = false;
+	vector<MapObject*>::iterator iter;
+	MapObject* object;
+
+	for(iter = _solidAndTargettables.begin() ; iter != _solidAndTargettables.end() ; iter++) {
+		object = *iter;
+		var = object->checkContact(pos, dist);
+
+		if(var) {
+			contacts.push_back(object);
+		}
+	}
+
+	// Liste dans les des sous-Map
+	for(auto& subMap : _subMaps) {
+		subMap.second->listObjectProximite(contacts, pos, dist);
+	}
+}
+
+void CMap::listObjectIntersectionsPave(std::vector<MapObject*>& intersections, const float position1[3], const float position2[3]) {
+	bool var = false;
+	vector<MapObject*>::iterator iter;
+	MapObject* object;
+
+	for(iter = _solidAndTargettables.begin() ; iter != _solidAndTargettables.end() ; iter++) {
+		object = *iter;
+		var = object->checkIntersectionPave(position1, position2);
+
+		if(var) {
+			intersections.push_back(object);
+		}
+	}
+
+	// Liste dans les des sous-Map
+	for(auto& subMap : _subMaps) {
+		subMap.second->listObjectIntersectionsPave(intersections, position1, position2 );
+	}
+}
+
 }	// JktMoteur

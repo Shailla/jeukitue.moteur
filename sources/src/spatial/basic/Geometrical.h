@@ -24,9 +24,9 @@ class CIfstreamMap;
 class Geometrical {
 
 protected:
-	float _minX, _minY, _minZ, _maxX, _maxY, _maxZ;	// Coordonnées du pavé englobant l'objet géo
-	float _centre[3];			// Centre de la sphère englobant l'objet
-	float _rayon;				// Rayon de la sphère englobant l'objet
+	float _minX, _minY, _minZ, _maxX, _maxY, _maxZ;		// Coordonnées du pavé englobant l'objet géo
+	float _centre[3];									// Centre de la sphère englobant l'objet
+	float _rayon;										// Rayon de la sphère englobant l'objet
 
 public:
 	// Constructeurs / destructeur

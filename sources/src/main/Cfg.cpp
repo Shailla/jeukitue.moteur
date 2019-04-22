@@ -140,7 +140,7 @@ void CCfg::Lit() {
 	try {
 
 		/* ***************************************
-		 * G�n�rale
+		 * Générale
 		 * **************************************/
 
 		do fichier >> mot;	while(mot!=CST_GEN_PLAY_INTRO);		// Indique si l'intro du jeu doit �tre lanc�e au d�marrage
@@ -148,7 +148,7 @@ void CCfg::Lit() {
 
 
 		/* ***************************************
-		 * Vid�o
+		 * Vidéo
 		 * **************************************/
 
 		do fichier >> mot;	while( mot!=CST_VID_DISPLAY_POS );

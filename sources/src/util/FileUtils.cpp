@@ -7,6 +7,7 @@
 
 #include <string>
 #include <sstream>
+#include <sys/stat.h>
 #include <time.h>
 
 #include "util/FileUtils.h"
@@ -32,6 +33,11 @@ string FileUtils::horodatage() {
 			<< now->tm_hour << "-" << now->tm_min << "-" << now->tm_sec;				// hour-min-sec
 
 	return horodatage.str();
+}
+
+bool FileUtils::checkFileExist(const std::string& name) {
+	struct stat buffer;
+	return (stat (name.c_str(), &buffer) == 0);
 }
 
 } /* namespace jkt */

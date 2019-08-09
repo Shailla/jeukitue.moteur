@@ -17,8 +17,10 @@ class FileUtils {
 public:
 	virtual ~FileUtils();
 
-	/** Génère un horodate sur date et heure courante, format year-month-day_hour-minute-second */
+	/** GÃ©nÃ¨re un horodate sur date et heure courante, format year-month-day_hour-minute-second */
 	static std::string horodatage();
+
+	static bool checkFileExist(const std::string& name);
 };
 
 } /* namespace jkt */

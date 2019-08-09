@@ -19,6 +19,7 @@ class CGame;
 #include "spatial/XmlVocabulaire.h"
 #include "util/Trace.h"
 #include "util/Erreur.h"
+#include "util/FileUtils.h"
 #include "main/Fabrique.h"
 #include "util/Tableau.cpp"
 #include "spatial/moteur/MoteurParticules.h"
@@ -600,13 +601,26 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) throw(CEr
 		mapFilename = mapName + MAP_FILE_EXTENSION;
 	}
 
-	map.setName(mapName);								// Nom de la Map
-	map._filename = mapDirectory + "/" + mapFilename;	// Chemin complet fichier Map XML
-	map._binariesDirectory = mapDirectory;				// Chemin des fichier binaires de la Map
+	string xmlFilePath = mapDirectory + "/" + mapFilename;
+
+	if(!FileUtils::checkFileExist(xmlFilePath)) {
+		stringstream msg;
+		msg << "Fichier XML introuvable '" << xmlFilePath << "'";
+
+		if(mapLogger) {
+			mapLogger->logError(msg);
+		}
+
+		throw CErreur(msg);
+	}
 
 	if(!mapLogger) {
 		mapLogger = new MapLogger(mapDirectory + "/" + mapFilename);
 	}
+
+	map.setName(mapName);								// Nom de la Map
+	map._filename = xmlFilePath;						// Chemin complet fichier Map XML
+	map._binariesDirectory = mapDirectory;				// Chemin des fichier binaires de la Map
 
 	// Lecture XML de la Map
 	stringstream msg;

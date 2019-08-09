@@ -122,9 +122,9 @@ public:
 
 private:
 	void refresh(Uint32 now, float deltaTime);						// Rafraichi les classe qui en ont besoin
+	void calculeDeplacementVouluTousPlayer(Uint32 now, float deltaTime);
 	void deplaceTousPlayer(Uint32 now, float deltaTime);
 	void faitTousRequetesClavier(Uint32 now, float deltaTime);
-	void faitTousPlayerGravite(Uint32 now, float deltaTime);
 	void gereContactPlayers(Uint32 now, float deltaTime);			// Gère les contacts entre tous les joueurs et la map
 
 public:

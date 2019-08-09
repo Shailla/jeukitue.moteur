@@ -586,17 +586,17 @@ bool CTextureMaterialGeo::checkContact( const float pos[3], float dist ) {
 	return false;
 }
 
-void CTextureMaterialGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player ) {
+void CTextureMaterialGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) {
 	float dist = player->getRayon();	// Rayon de la sph�re repr�sentant le volume du joueur
 	float distanceW;
 
 	if( m_bSolid )	// Si l'objet est solide
-		if( TestContactPave( positionPlayer, dist ) )	// Teste proximit� 'joueur / l'objet g�o'
-			for( int i=0; i<m_NumVertex; i=i+3) {		//pour chaque triangle de l'objet g�o.
+		if( TestContactPave( positionPlayer, dist ) )	// Teste proximité 'joueur / l'objet géo'
+			for( int i=0; i<m_NumVertex; i=i+3) {		//pour chaque triangle de l'objet géo.
 				distanceW = testContactTriangle( i, positionPlayer, dist );
 
 				if( distanceW<500.0f ) // Teste le contact avec le joueur (1.0f = valeur arbitraire mais grande)
-					player->exeContactFunc( &m_pNormalTriangle[3*i], distanceW );	// On a contact !
+					player->exeContactFunc(&m_pNormalTriangle[3*i], distanceW, deltaTime);	// On a contact !
 			}
 }
 

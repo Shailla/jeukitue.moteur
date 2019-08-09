@@ -329,7 +329,7 @@ void CPlayer::changeAction(void (*action)(Uint32 now, float deltaTime, CPlayer *
 	_actionFunc = action;	// Définit l'action périodique à réaliser
 }
 
-void CPlayer::changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW)) {
+void CPlayer::changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW, float deltaTime)) {
 	_contactFunc = contact;	//Définit l'action à réaliser lors d'un contact avec la map
 }
 
@@ -478,9 +478,9 @@ void CPlayer::exeActionFunc(Uint32 now, float deltaTime) {	// Exécute l'action 
 	}
 }
 
-void CPlayer::exeContactFunc(float *normal, float distanceW) {	// Exécute fonction gestion contacts avec joueur
+void CPlayer::exeContactFunc(float *normal, float distanceW, float deltaTime) {	// Exécute fonction gestion contacts avec joueur
 	if(_contactFunc) {
-		_contactFunc( this, normal, distanceW );
+		_contactFunc(this, normal, distanceW, deltaTime);
 	}
 }
 
@@ -540,7 +540,7 @@ void CPlayer::Skin(jkt::CMap *skin) {
 	_pSkin = skin;
 }
 
-void CPlayer::deplace(Uint32 now, float deltaTime) {
+void CPlayer::calculeVitesseVoulue(Uint32 now, float deltaTime) {
 
 	/* *****************************************************
 	 * Gestion vitesse horizontale
@@ -609,12 +609,9 @@ void CPlayer::deplace(Uint32 now, float deltaTime) {
 		_vitesse[1] *= maxSpeed / speed;
 		_vitesse[2] *= maxSpeed / speed;
 	}
+}
 
-
-	/* *****************************************************
-	 * Gestion du déplacement
-	 * ****************************************************/
-
+void CPlayer::deplace(Uint32 now, float deltaTime) {
 	// Calcule la nouvelle position
 	_position[0] += _vitesse[0];
 	_position[1] += _vitesse[1];

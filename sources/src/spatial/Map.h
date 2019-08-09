@@ -151,8 +151,8 @@ public:
 	/**
 	 * positionPlayer : position du jouer ou position calculé ce qui permet d'optimiser certains contacts quand un objet a bougé en considérant que c'est plutôt le
 	 */
-	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;			// Gère tous les contacts entre la map et les joueurs
-	float gereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;			// Envoie d'un laser sur la map
+	void gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) override;			// Gère tous les contacts entre la map et les joueurs
+	float gereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;							// Envoie d'un laser sur la map
 
 	std::map<int, CMap*>& getSubMaps();
 	std::vector<CLight*>& getLights();

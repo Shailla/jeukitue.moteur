@@ -57,7 +57,7 @@ public:
 	bool Save(TiXmlElement* element) throw(CErreur) override;
 
 	float gereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;
-	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;
+	void gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) override;
 };
 
 }	// JktMoteur

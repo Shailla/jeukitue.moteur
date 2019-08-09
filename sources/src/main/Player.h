@@ -29,8 +29,8 @@ class CPlayer {
 	CClavier *_pClavier;	//pointeur sur la class des requêtes clavier
 
 	//POINTEURS SUR LES FONCTIONS SPECIALES
-	void (*_actionFunc)(Uint32 now, float deltaTime, CPlayer *player);	//fonction périodique à réaliser (gravité par exemple)
-	void (*_contactFunc)(CPlayer *player, float *normal, float distanceW); //focntion agissant lors d'un contact avec la map
+	void (*_actionFunc)(Uint32 now, float deltaTime, CPlayer *player);						//fonction périodique à réaliser (gravité par exemple)
+	void (*_contactFunc)(CPlayer *player, float *normal, float distanceW, float deltaTime); //focntion agissant lors d'un contact avec la map
 	int _armeActif;							// Numéro de l'arme actuellement active
 	int _nbrArmes;							// Nombre d'armes
 
@@ -115,11 +115,11 @@ public :
 
 	void Skin( jkt::CMap *skin );
 
-	void setCri( const char *nomFichier );					// Indique le son du cri du joueur
+	void setCri( const char *nomFichier );									// Indique le son du cri du joueur
 
-	CClavier *getClavier();		// Retourne le pointeur sur la classe clavier du joueur
-	void exeActionFunc(Uint32 now, float deltaTime);		// Ex�cute l'action p�riodique associ�e au joueur
-	void exeContactFunc( float *normal, float distanceW);	// Ex�cute fonction gestion contacts avec joueur
+	CClavier *getClavier();													// Retourne le pointeur sur la classe clavier du joueur
+	void exeActionFunc(Uint32 now, float deltaTime);						// Exécute l'action périodique associée au joueur
+	void exeContactFunc( float *normal, float distanceW, float deltaTime);	// Exécute fonction gestion contacts avec joueur
 
 	// Affichage
 	void Affiche();				// Fonction d'affichage du joueur
@@ -138,7 +138,8 @@ public :
 
 	//FONCTIONS DE MISE EN PLACE DES FONCTIONS SPECIALES
 	void changeAction(void (*action)(Uint32 now, float deltaTime, CPlayer *player));//change la fonction � effectuer par d�faut
-	void changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW));//change la fonction � effectuer lors d'un contact avec la map
+	void changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW, float deltaTime));//change la fonction � effectuer lors d'un contact avec la map
+	void calculeVitesseVoulue(Uint32 now, float deltaTime);
 	void deplace(Uint32 now, float deltaTime);
 	void faitRequeteClavier(Uint32 now, float deltaTime);
 };

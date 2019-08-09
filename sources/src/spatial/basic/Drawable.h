@@ -15,6 +15,8 @@ namespace jkt {
 class Drawable {
 	bool _hidden;
 	bool _highlighted;
+	bool _volatileHighlighted;
+	float _volatileHighlightedColor[3];
 public:
 	Drawable();
 	Drawable(const Drawable& other);
@@ -27,7 +29,11 @@ public:
 	void hide(bool highlighted);									// Cache ou non l'objet
 
 	bool isHighlighted() const;										// Indique si l'objet est sélectionné
+	bool isVolatileHighlighted() const;										// Indique si l'objet est sélectionné
 	void highlight(bool highlighted);								// Sélectionne l'objet (il sera affiché différemment dans sa Map)
+	void setVolatileHighlighted(float r, float v, float b);			// Affiche l'objet dans une coleur spécifique au prochain affichage uniquement
+	void unsetVolatileHighlighted();
+	void getVolatileHighlightedColor(float& r, float& v, float& b) const;
 
 	virtual void initGL() = 0;										// Initialisation de l'objet géométrique
 	virtual void freeGL() = 0;										// Libération des ressources de l'objet dans le contexte OpenGL

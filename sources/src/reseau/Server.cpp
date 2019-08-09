@@ -30,7 +30,7 @@
 
 using namespace std;
 
-void jkt::contactPlayer(CPlayer *player, float *normal, float distanceW);
+void jkt::contactPlayer(CPlayer *player, float *normal, float distanceW, float deltaTime);
 void gravitePlayer(Uint32 now, float deltaTime, CPlayer *player);
 
 extern CGame Game;

@@ -17,7 +17,7 @@ using namespace std;
 
 namespace jkt {
 
-void contactPlayer(CPlayer *player, float *normal, float distanceW) {
+void contactPlayer(CPlayer *player, float *normal, float distanceW, float deltaTime) {
 	float vitesse[3];
 	player->getVitesse( vitesse );
 	float var = -(vitesse[0]*normal[0]) - (vitesse[1]*normal[1]) + (vitesse[2]*normal[2]);
@@ -48,7 +48,7 @@ void contactPlayer(CPlayer *player, float *normal, float distanceW) {
 	}
 }
 
-void contactSprite(CPlayer *sprite, float *normal, float distanceW) {	// fonction de rebond sur les parois
+void contactSprite(CPlayer *sprite, float *normal, float distanceW, float deltaTime) {	// fonction de rebond sur les parois
 	float vitesse[3];
 	sprite->getVitesse( vitesse );
 	float var = -(vitesse[0]*normal[0]) - (vitesse[1]*normal[1]) + (vitesse[2]*normal[2]);

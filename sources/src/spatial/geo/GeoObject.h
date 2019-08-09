@@ -90,7 +90,7 @@ public:
 	void Color( float r, float g, float b );								// d�fini la couleur de l'objet
 
 	bool TestContactPave( const float pos[3], float dist );					// 'pos' est-il dans le pav� constitu� des distances min/max de l'objet g�o
-	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;
+	void gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) override;
 	float gereLaserPlayer( float pos[3], CV3D &Dir, float dist) override;	// Voir la d�finition de la fonction
 
 	void setVertex( float *tab, int num );		// Impl�mente les sommets

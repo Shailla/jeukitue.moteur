@@ -5,8 +5,8 @@ const float Pi = 3.14159265f;									// Nombre pi pour les calculs
 const float QUANTUM_VITESSE_PLAYER = 0.003f;					// Pas d'augmentation de la vitesse du joueur (accélération discrète)
 
 const float GRAVITY_ACCELERATION = 9.81f;						// Accélération de la gravité en m/s^2
-const float PLAYER_ACCELERATION = 2.5f;							// Accélération d'un joueur qui court en m/s^2
-const float MAX_SPEED_PLAYER_ON_GROUND = 20.0f;					// Vitesse maximale d'un joueur avec les pieds au sol, en m/s
+const float PLAYER_ACCELERATION = 0.7f;							// Accélération d'un joueur qui court en m/s^2
+const float MAX_SPEED_PLAYER_ON_GROUND = 10.0f;					// Vitesse maximale d'un joueur avec les pieds au sol, en m/s
 const float MAX_SPEED_PLAYER = 100.0f;							// Vitesse maximale d'un joueur avec les pieds au sol, en m/s
 const float PROJECTIL_LAUNCH_SPEED = 10.0f;						// Vitesse à laquelle un projectil est lancé par un joueur
 

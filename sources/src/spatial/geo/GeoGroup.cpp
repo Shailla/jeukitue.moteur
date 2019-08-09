@@ -103,7 +103,7 @@ bool GeoGroup::checkContact( const float pos[3], float dist ) {
 	return false;
 }
 
-void GeoGroup::gereContactPlayer(float posPlayer[3], CPlayer *player) {
+void GeoGroup::gereContactPlayer(float posPlayer[3], CPlayer *player, float deltaTime) {
 	if(_solid) {
 		float posPlayerAjuste[4];
 
@@ -118,7 +118,7 @@ void GeoGroup::gereContactPlayer(float posPlayer[3], CPlayer *player) {
 		}
 
 		for(MapObject* geo : _geos) {
-			geo->gereContactPlayer(posPlayerAjuste, player);
+			geo->gereContactPlayer(posPlayerAjuste, player, deltaTime);
 		}
 	}
 }

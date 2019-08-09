@@ -141,11 +141,17 @@ void CMap::affiche() {	// Affiche tous les objets géo de du MAP
 	// Affichage des objets
 	for(Drawable* drawable : _drawables) {
 		if(!drawable->isHidden()) {
-			if(!drawable->isHighlighted()) {
-				drawable->affiche();			// Affichage de l'objet géo
+			if(drawable->isVolatileHighlighted()) {
+				float r, v, b;
+				drawable->getVolatileHighlightedColor(r, v, b);
+				drawable->afficheHighlighted(r, v, b);
+				drawable->unsetVolatileHighlighted();
+			}
+			else if(drawable->isHighlighted()) {
+				drawable->afficheHighlighted(1.0f, 0.0f, 0.0f);
 			}
 			else {
-				drawable->afficheHighlighted(1.0f, 0.0f, 0.0f);
+				drawable->affiche();			// Affichage de l'objet géo
 			}
 		}
 	}
@@ -424,7 +430,7 @@ vector<MapObject*>& CMap::getMapObjects() {
 	return _objects;
 }
 
-void CMap::gereContactPlayer(float positionPlayer[3], CPlayer *player ) {
+void CMap::gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) {
 	float positionPlayerDefault[3];
 
 	if(!positionPlayer) {
@@ -433,12 +439,12 @@ void CMap::gereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 	}
 
 	for(SolidAndTargettable* solid : _solidAndTargettables) {
-		solid->gereContactPlayer(positionPlayer, player);	// Gère les contacts entre l'objet géo et le joueur
+		solid->gereContactPlayer(positionPlayer, player, deltaTime);	// Gère les contacts entre l'objet géo et le joueur
 	}
 
 	// Contacts dans les sous-Map
 	for(auto& subMap : _subMaps) {
-		subMap.second->gereContactPlayer(positionPlayer, player);
+		subMap.second->gereContactPlayer(positionPlayer, player, deltaTime);
 	}
 }
 

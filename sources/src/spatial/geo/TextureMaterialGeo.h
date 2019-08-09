@@ -4,9 +4,9 @@
 
 /************************************************************/
 /*															*/
-/*			Objet affichable 3D simple associ� � un			*/
-/*			mat�riau unique. Faces non-index�es,			*/
-/*			peut �tre �clair�.								*/
+/*			Objet affichable 3D simple associé à un			*/
+/*			mat�riau unique. Faces non-indexées,			*/
+/*			peut être éclairé.								*/
 /*															*/
 /************************************************************/
 
@@ -28,25 +28,25 @@ class CTextureMaterialGeo : public MapObject {
 	bool _isGlInitialized;
 
 	std::string tostring;
-	CMaterialTexture* m_Material;	// Mat�riau multiple associ�
-	float _minX, _minY, _minZ, _maxX, _maxY, _maxZ;	// Coordonn�es du pav� englobant l'objet g�o
-	float m_Centre[3];			// Centre de la sph�re englobant l'objet
-	float m_Rayon;				// Rayon de la sph�re englobant l'objet
-	float* m_pNormalTriangle;	// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs pr�liminaires � la gestion des contacts)
+	CMaterialTexture* m_Material;	// Mat�riau multiple associé
+	float _minX, _minY, _minZ, _maxX, _maxY, _maxZ;	// Coordonnées du pavé englobant l'objet géo
+	float m_Centre[3];				// Centre de la sphère englobant l'objet
+	float m_Rayon;					// Rayon de la sphère englobant l'objet
+	float* m_pNormalTriangle;		// Pointeur sur le tableau des vecteurs orthogonaux aux surfaces des triangles (calculs préliminaires à la gestion des contacts)
 	float testContactTriangle( unsigned int i, const float *pos, float dist );
-	bool m_bSolid;				// Indique si l'objet est solide ou non
+	bool m_bSolid;					// Indique si l'objet est solide ou non
 	int m_NumVertex;				// Nbre de faces
-	float* m_TabVertex;			// Pointeur sur le tableau de sommets
+	float* m_TabVertex;				// Pointeur sur le tableau de sommets
 	int getOffsetMateriau() throw(CErreur);
-	float* m_TabTexVertex;			// Coordonn�es de texture
+	float* m_TabTexVertex;			// Coordonnées de texture
 	// VBO
 	enum {	VBO_VERTEX=0, VBO_NORMAUX, VBO_TEXVERTEX };
 	static const int VBO_BUFFER_SIZE = 3;
 	GLuint m_VboBufferNames[VBO_BUFFER_SIZE];
 
-	void MinMax();			// Calcul les variables MinX,...,MaxZ de cet objet g�om�trique
+	void MinMax();			// Calcul les variables MinX,...,MaxZ de cet objet géométrique
 	void Bulle();			// Calcul les variables 'centre' et rayon
-	void ConstruitBase();	// Construit les vecteurs normaux aux triangles de l'objet g�o
+	void ConstruitBase();	// Construit les vecteurs normaux aux triangles de l'objet géo
 	void AfficheNormals();
 
 	void setMaterial(const std::string& matRef);	// Associe l'objet au matériau de référence matRef
@@ -69,15 +69,15 @@ public:
 
 	float *m_TabVectNormaux;	// Pointeur sur le tableau des vecteurs normaux
 
-	void echangeXY() override;										// Echange les coordonn�es X et Y de l'objet
-	void echangeXZ() override;										// Echange les coordonn�es X et Z de l'objet
-	void echangeYZ() override;										// Echange les coordonn�es Y et Z de l'objet
-	void scale(float scaleX, float scaleY, float scaleZ) override;	// Homoth�tie pond�r�e selon X, Y et Z de l'objet
-	void translate( float x, float y, float z ) override;			// Translation pond�r�e selon X, Y et Z de l'objet
+	void echangeXY() override;										// Echange les coordonnées X et Y de l'objet
+	void echangeXZ() override;										// Echange les coordonnées X et Z de l'objet
+	void echangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
+	void scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
+	void translate( float x, float y, float z ) override;			// Translation pondérée selon X, Y et Z de l'objet
 
-	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pav� constitu� des distances min/max de l'objet g�o
-	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;
-	float gereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;	// Voir la d�finition de la fonction
+	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
+	void gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) override;
+	float gereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;	// Voir la définition de la fonction
 
 	// Fonctions pour l'interface CGeo
 	bool Save(TiXmlElement* element) throw(CErreur) override;
@@ -85,7 +85,7 @@ public:
 
 	bool checkContact( const float pos[3], float dist ) override;
 
-	void affiche() override;							// Affiche cet objet géo
+	void affiche() override;										// Affiche cet objet géo
 	void afficheHighlighted(float r,float v,float b) override;		// Affiche l'objet en couleur unique
 	const char* toString() override;
 };

@@ -271,7 +271,7 @@ void CGame::gereContactPlayers(Uint32 now, float deltaTime) {	// Gère les conta
 
 		if(player) {
 			player->pente(1.0f);
-			_map->gereContactPlayer(0, player);		// Gère les contacts avec la map de player
+			_map->gereContactPlayer(0, player, deltaTime);		// Gère les contacts avec la map de player
 		}
 	}
 }
@@ -409,6 +409,19 @@ void CGame::afficheViseur(int x, int y) const {
 	glPopMatrix();
 }
 
+void CGame::calculeDeplacementVouluTousPlayer(Uint32 now, float deltaTime) {
+	CPlayer *player;
+	int curseur = -1;
+
+	while(_players.Suivant(curseur)) {
+		player = _players[curseur];
+
+		if(player) {
+			player->calculeVitesseVoulue(now, deltaTime);
+		}
+	}
+}
+
 void CGame::deplaceTousPlayer(Uint32 now, float deltaTime) {
 	CPlayer *player;
 	int curseur = -1;
@@ -455,67 +468,59 @@ int CGame::addPlayer(CPlayer *player) {
 	return id;
 }
 
-void CGame::faitTousPlayerGravite(Uint32 now, float deltaTime) {
-	int curseur = -1;
-	CPlayer *player;			//Prends le premier player
-
-	while(_players.Suivant(curseur)) {
-		player = _players[curseur];
-
-		if(player) {
-			player->exeActionFunc(now, deltaTime);	// Exécute l'action périodique (gravité,...) du joueur
-		}
-	}
-}
-
 void CGame::timer(Uint32 now, float deltaTime) {
-
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	// NOUVEAU CODE
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 	if(_map) {
 
+		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		// NOUVEAU CODE
+		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+		refresh(now, deltaTime);					// Rafraichi les classes qui ont besoin de l'être (celles de type CMouve et CProjectil)
+		faitTousRequetesClavier(now, deltaTime);	// Exécute les requêtes clavier sur tous les joueurs
 
 		CPlayer *player;
 		int index = -1;
-		float position[3], vitesse[3], deplacementVoulu[3];
+		float playerPos[3], playerVit[3], deplacementVoulu[3];
 
 		while(_players.Suivant(index)) {		// Pour chaque joueur
 			player = _players[index];
 
 			// Applique les poussées liées à l'environnement (gravité, vent, ...)
 			if( _gravite ) {
-				player->exeActionFunc(now, deltaTime);
+				player->exeActionFunc(now, deltaTime);	// TODO Gérer la gravité mais aussi la poussée de l'environnement, le vent, ...
 			}
 
-			player->getPosition(position);
-			player->getVitesse(vitesse);
-			scale(vitesse, deltaTime, deplacementVoulu);	// Déplacement voulu = vitesse * temps écoulé
+			// Calcule du déplacement voulu du joueur
+			player->getPosition(playerPos);
+			player->getVitesse(playerVit);
+			scale(playerVit, deltaTime, deplacementVoulu);	// Déplacement voulu = vitesse * temps écoulé
 
-			// Liste les objets en intersection avec la trajectoire voulue du joueur
+			// Liste les objets en intersection avec le déplacement voulu du joueur
 			std::vector<MapObject*> intersections;
-			_map->listObjectIntersectionsPave(intersections, position, deplacementVoulu);
+			_map->listObjectIntersectionsPave(intersections, playerPos, deplacementVoulu);
+
+			for(auto& intersection : intersections) {
+				intersection->setVolatileHighlighted(0.0f, 0.0f, 1.0f);
+			}
 
 			// Liste les objets en proximité du joueur
 			std::vector<MapObject*> proximites;
-			_map->listObjectProximite(proximites, position, 500.0f * deltaTime);	// TODO Affiner cette valeur de 500.0f
+			_map->listObjectProximite(proximites, playerPos, 500.0f * deltaTime);	// TODO Affiner cette valeur de 500.0f
 
 		}
-	}
 
+		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		// ANCIEN CODE
+		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	// ANCIEN CODE
-	// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-	if(_map) {
-		if( _gravite ) {					// Si la gravité est active
-			faitTousPlayerGravite(now, deltaTime);
-		}
-
-		refresh(now, deltaTime);					// Rafraichi les classes qui ont besoin de l'être (celles de type CMouve et CProjectil)
-		faitTousRequetesClavier(now, deltaTime);	// Exécute les requêtes clavier sur tous les joueurs
+//		if( _gravite ) {					// Si la gravité est active
+//			faitTousPlayerGravite(now, deltaTime);
+//		}
+//
+//		refresh(now, deltaTime);					// Rafraichi les classes qui ont besoin de l'être (celles de type CMouve et CProjectil)
+//		faitTousRequetesClavier(now, deltaTime);	// Exécute les requêtes clavier sur tous les joueurs
+		calculeDeplacementVouluTousPlayer(now, deltaTime);
 		gereContactPlayers(now, deltaTime);			// Gère tous les contacts entre la map et les joueurs
 		deplaceTousPlayer(now, deltaTime);			// Déplace tous les joueurs de leurs vitesses
 	}

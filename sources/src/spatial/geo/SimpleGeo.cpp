@@ -530,7 +530,7 @@ bool CSimpleGeo::checkContact( const float pos[3], float dist ) {
 	return false;
 }
 
-void CSimpleGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player ) {
+void CSimpleGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) {
 	if( _bSolid ) {	// Si l'objet est solide
 		float dist = player->getRayon();	// Rayon de la sphère représentant le volume du joueur
 		float distanceW;
@@ -540,7 +540,7 @@ void CSimpleGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player ) {
 				distanceW = testContactTriangle(i, positionPlayer, dist);
 
 				if(distanceW < 500.0f) {	// Teste le contact avec le joueur (1.0f = valeur arbitraire mais grande)
-					player->exeContactFunc( &_pNormalTriangle[3*i], distanceW );	// On a contact !
+					player->exeContactFunc(&_pNormalTriangle[3*i], distanceW, deltaTime);	// On a contact !
 				}
 			}
 		}

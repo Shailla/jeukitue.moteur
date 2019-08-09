@@ -42,7 +42,7 @@ public:
 	void freeGL() override;
 
 	bool checkContact( const float pos[3], float dist ) override;
-	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;
+	void gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) override;
 	float gereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;		// Voir la définition de la fonction
 
 	// Fonctions pour l'interface CGeo

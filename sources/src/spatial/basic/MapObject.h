@@ -56,7 +56,7 @@ public:
 	 * *******************************************/
 
 	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override = 0;	// Lit l'objet depuis un fichier Map
-	virtual bool Save(TiXmlElement* element) throw(CErreur) override = 0;					// Sauve l'objet dans un fichier Map
+	virtual bool Save(TiXmlElement* element) throw(CErreur) override = 0;								// Sauve l'objet dans un fichier Map
 
 
 	/* ********************************************
@@ -73,7 +73,7 @@ public:
 	 * *******************************************/
 
 	virtual void affiche() override;										// Affiche l'objet géométrique
-	virtual void afficheHighlighted(float r,float v,float b) override;		// Affiche l'objet géométrique en couleur unique
+	virtual void afficheHighlighted(float r, float v, float b) override;	// Affiche l'objet géométrique en couleur unique
 	virtual void initGL() override;											// Initialisation de l'objet géométrique
 	virtual void freeGL() override;											// Libération des ressources de l'objet dans le contexte OpenGL
 
@@ -86,14 +86,14 @@ public:
 	virtual void echangeXZ() override;										// Echange les coordonnées X et Z de l'objet
 	virtual void echangeYZ() override;										// Echange les coordonnées Y et Z de l'objet
 	virtual void scale(float scaleX, float scaleY, float scaleZ) override;	// Homothétie pondérée selon X, Y et Z de l'objet
-	virtual void translate(float x, float y, float z) override;				// Translation pond�r�e selon X, Y et Z de l'objet
+	virtual void translate(float x, float y, float z) override;				// Translation pondérée selon X, Y et Z de l'objet
 
 
 	/* ********************************************
 	 * Gestion des contacts de l'objet
 	 * *******************************************/
 
-	virtual void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;		// Gère les contact entre 'player' et l'objet g�o
+	virtual void gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) override;		// Gère les contact entre 'player' et l'objet géo
 	virtual float gereLaserPlayer(float pos[3], CV3D& Dir, float dist) override;			// Voir la définition de la fonction
 	virtual bool checkContact(const float pos[3], float dist) override;
 	bool checkIntersectionPave(const float pos1[3], const float pos2[3]) override;			// Indique si le segment qui relie les points pos1 et pos2 entre en intersection avec le pavé englobant l'objet

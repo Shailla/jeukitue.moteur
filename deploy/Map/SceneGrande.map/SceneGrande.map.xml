@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Map xmlns="http://jkt/map2017.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jkt/map2017.xsd H:/jkt/git/moteur/sources/map2017.xsd">
+	<Plugins>
+	</Plugins>
+	
+	<ParticulesEngines>
+	</ParticulesEngines>
+	
+    <Materiaux>
+    </Materiaux>
+	
+    <Lights/>
+    
+	<Geos>
+    </Geos>
+	
+	<Imports>
+		<Import Mode="add" Nom="Scene">
+			<Translate X="0.0" Y="0.0" Z="0.0"/>
+			<Scale X="5.0" Y="2.0" Z="2.0"/>
+		</Import>
+	</Imports>
+	
+    <EntryPoints>
+    </EntryPoints>
+</Map>

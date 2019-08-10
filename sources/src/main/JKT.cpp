@@ -1027,8 +1027,9 @@ static void process_events(void) {
 			quit_game("SDL quit event", 0 );
 			break;
 
-			// Bascule entre le menu Agar et le jeu
+
 		case SDL_KEYDOWN:
+			// Bascule entre le menu Agar et le jeu
 			if(sdlevent.key.keysym.sym == SDLK_ESCAPE) {
 				if(pFocus->isPlayFocus()) {
 					Controller::executeAction(Controller::Action::ShowMenuAction);
@@ -1039,6 +1040,11 @@ static void process_events(void) {
 					Controller::executeAction(Controller::Action::HideMenuAction);
 					pFocus->SetPlayFocus();
 				}
+			}
+			// Affiche la configuration avancée
+			else if(sdlevent.key.keysym.sym == SDLK_F2) {
+				Controller::executeAction(Controller::Action::ShowConfigurationAdvancedViewAction);
+				pFocus->SetMenuAgarFocus();
 			}
 			break;
 

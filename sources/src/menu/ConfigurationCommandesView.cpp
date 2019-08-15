@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iostream>
 
+#include "GL/glew.h"
 #include "SDL.h"
 
 #include <agar/core.h>

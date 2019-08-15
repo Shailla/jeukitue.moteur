@@ -13,9 +13,8 @@
 #include <windows.h>
 #endif
 
+#include "GL/glew.h"
 #include "SDL.h"
-#include "GL/gl.h"
-#include "GL/glext.h"
 
 class CCfg {
 	static const char* CST_GEN_PLAY_INTRO;

@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "GL/glew.h"
 #include "fmod.h"
 
 #include "main/Fabrique.h"

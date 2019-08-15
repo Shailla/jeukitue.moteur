@@ -64,15 +64,15 @@ ConsoleView::ConsoleView(const AG_EventFn controllerCallback)
 	AG_LabelSizeHint(label, 1, "Joueur : xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
 	// Distance parcourue par le tir laser
-	label = AG_LabelNewPolledMT(scrollGame, 0, &_agMutex, "Distance laser : %f", &delta);
+	label = AG_LabelNewPolledMT(scrollGame, 0, &_agMutex, "Distance laser : %fm", &delta);
 	AG_LabelSizeHint(label, 1, "Distance laser : xxxxxx");
 
 	// Vitesse du perso principal
-	label = AG_LabelNewPolledMT(scrollGame, 0, &_agMutex, "Vitesse : %f", &_vitesseErwin);
+	label = AG_LabelNewPolledMT(scrollGame, 0, &_agMutex, "Vitesse : %fm/s", &_vitesseErwin);
 	AG_LabelSizeHint(label, 1, "Vitesse : xxxxxxxx");
 
 	// Pente du perso principal avec le sol
-	label = AG_LabelNewPolledMT(scrollGame, 0, &_agMutex, "Pente : %f", &_penteErwin);
+	label = AG_LabelNewPolledMT(scrollGame, 0, &_agMutex, "Pente : %f°", &_penteErwin);
 	AG_LabelSizeHint(label, 1, "Pente : xxxxxxxx");
 
 	label = AG_LabelNewPolledMT(scrollGame, 0,&_agMutex, "Durees : calcules=%i ms, display=%i ms", &_dureeCalcules, &_dureeDisplay);

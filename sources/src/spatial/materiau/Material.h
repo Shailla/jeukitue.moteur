@@ -38,13 +38,13 @@ public:
 	virtual ~CMaterial();
 
 	virtual MapObject* clone() override;
-	virtual void init() throw(CErreur) override;
+	virtual void init() noexcept(false) override;
 
 	MAT_TYPE Type() const;	// Retourne le type de mat�riau (simple, tree, ...)
 
 	// S�rialisation
-	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
-	virtual bool Save(TiXmlElement* element) throw(CErreur) override;
+	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) noexcept(false) override;
+	virtual bool Save(TiXmlElement* element) noexcept(false) override;
 
 	virtual void initGL() {};	// Lit le fichier de texture associ� au mat�riau
 	virtual void freeGL() {};	// Lit le fichier de texture associ� au mat�riau

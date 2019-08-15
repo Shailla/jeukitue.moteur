@@ -46,7 +46,7 @@ public:
 	virtual ~ClientUdpInterlocutor();
 
 	void close();
-	Interlocutor2* connect(const std::string& distantIp, Uint16 distantPort) throw(ConnectionFailedException);
+	Interlocutor2* connect(const std::string& distantIp, Uint16 distantPort) noexcept(false);
 	const std::string& getDistantIp() const;
 	Uint16 getDistantPort() const;
 };

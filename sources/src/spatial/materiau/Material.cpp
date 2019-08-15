@@ -34,7 +34,7 @@ MapObject* CMaterial::clone() {
 	return new CMaterial(*this);
 }
 
-void CMaterial::init() throw(CErreur) {
+void CMaterial::init() {
 }
 
 CMaterial::MAT_TYPE CMaterial::Type() const {
@@ -60,7 +60,7 @@ const char* CMaterial::toString() {
 	return tostring.c_str();
 }
 
-bool CMaterial::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool CMaterial::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	// Nom
 	const char* nom = el->Attribute(Xml::NOM);
 	if(nom) {
@@ -82,7 +82,7 @@ bool CMaterial::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CEr
 	return true;
 }
 
-bool CMaterial::Save(TiXmlElement* element) throw(CErreur) {
+bool CMaterial::Save(TiXmlElement* element) {
 	// Nom, référence...
 	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAUSIMPLE);
 	elMat->SetAttribute(Xml::REF,m_Ref);

@@ -21,15 +21,15 @@ class ServeurDataTree : public DataTree {
 	void addDistantToPrivateBranches(DistantTreeProxy* distant, Branche* branche);
 	void initDistantBranche(DistantTreeProxy* distant, Branche* branche);
 
-	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId) throw(NotExistingBrancheException);
-	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException);
+	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId) noexcept(false);
+	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId, int valeurId) noexcept(false);
 
 	/* ****************************************************
 	 * Distant actions
 	 * ***************************************************/
 
-	Branche* getBrancheByDistantTmpId(DistantTreeProxy* distant, const std::vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
-	Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, const std::vector<int>& brancheId, int valeurTmpId) throw(NotExistingBrancheException, NotExistingValeurException);
+	Branche* getBrancheByDistantTmpId(DistantTreeProxy* distant, const std::vector<int>& parentBrancheId, int brancheTmpId) noexcept(false);
+	Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, const std::vector<int>& brancheId, int valeurTmpId) noexcept(false);
 
 	Branche* addBrancheFromDistant(const std::vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, DistantTreeProxy* distant);
 	PrivateBranche* addPrivateBrancheFromDistant(const std::vector<int>& parentBrancheId, const std::string& brancheName, int brancheTmpId, int revision, DistantTreeProxy* distant);

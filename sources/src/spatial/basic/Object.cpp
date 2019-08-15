@@ -36,7 +36,7 @@ Object::~Object() {
 	GENREF.delRef(_id);		// Lib�re la r�f�rence de l'objet
 }
 
-void Object::init() throw(CErreur) {
+void Object::init() noexcept(false) {
 }
 
 bool Object::isAbstract() const {

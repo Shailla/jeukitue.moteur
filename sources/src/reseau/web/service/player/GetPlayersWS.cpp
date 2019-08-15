@@ -43,7 +43,7 @@ WebServiceResult GetPlayersWS::getPlayersInCurrentMap() {
 	return WebServiceResult(root, HttpVocabulary::HTTP_RESPONSE_200);
 }
 
-WebServiceResult GetPlayersWS::execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) throw(HttpException) {
+WebServiceResult GetPlayersWS::execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) {
 	if(request.getMethod() == HttpServer::HTTP_METHODS::HTTP_GET && serviceEndpoint == "players") {
 		return getPlayersInCurrentMap();
 	}

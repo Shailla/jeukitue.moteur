@@ -19,7 +19,7 @@ public:
 	GetPlayersWS();
 	virtual ~GetPlayersWS();
 
-	WebServiceResult execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) throw(HttpException) override;
+	WebServiceResult execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) noexcept(false) override;
 };
 
 } /* namespace jkt */

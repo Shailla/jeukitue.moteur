@@ -49,7 +49,7 @@ AnyData::AnyData(std::istringstream& in) {
 AnyData::~AnyData() {
 }
 
-void AnyData::unserialize(AnyData& data, std::istringstream& in) throw(UnserializeException) {
+void AnyData::unserialize(AnyData& data, std::istringstream& in) {
 	int type;
 
 	StreamUtils::read(in, type);

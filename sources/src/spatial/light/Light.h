@@ -57,8 +57,8 @@ public :
 	CLight(CMap* map);
 	virtual ~CLight();
 
-	// Méthodes de sérialisation
-	virtual bool Save(TiXmlElement* element) throw(CErreur) = 0;							// Sauve la light dans un fichier Map format XML
+	// Méthodes de s�rialisation
+	virtual bool Save(TiXmlElement* element) noexcept(false) = 0;							// Sauve la light dans un fichier Map format XML
 
 	// M�thodes de manipulation g�om�trique
 	virtual void echangeXY() override;										// Echange les coordonn�es X et Y de l'objet

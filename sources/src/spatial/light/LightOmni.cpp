@@ -29,11 +29,11 @@ MapObject* CLightOmni::clone() {
 	return new CLightOmni(*this);
 }
 
-void CLightOmni::init() throw(CErreur) {
+void CLightOmni::init() {
 
 }
 
-bool CLightOmni::Save(TiXmlElement* element) throw(CErreur) {
+bool CLightOmni::Save(TiXmlElement* element) {
 	// Nom, r�f�rence, type
 	TiXmlElement* elLum = new TiXmlElement(Xml::LIGHTOMNI);
 	elLum->SetAttribute(Xml::REF, m_refLight);
@@ -84,7 +84,7 @@ void CLightOmni::Active() {
 	glLightfv( m_refLight, GL_SPECULAR, m_ColorSpecular );
 }
 
-bool CLightOmni::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool CLightOmni::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	// Type
 	const char* type = el->Value();
 	if(!type) {

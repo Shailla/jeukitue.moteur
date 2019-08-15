@@ -55,10 +55,10 @@ public:
 	std::map<DistantTreeProxy*, DistantPrivateBranche>& getDistants();
 	DistantPrivateBranche* addDistant(DistantTreeProxy* distant);
 
-	Branche* getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException);
-	Branche* getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException);
+	Branche* getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) noexcept(false);
+	Branche* getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheId) noexcept(false);
 
-	Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) throw(NotExistingValeurException);
+	Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) noexcept(false);
 
 	Branche* getSubBrancheByName(DistantTreeProxy* distant, const std::string& brancheName) override;
 	Branche* getSubBrancheByIdOrTmpId(DistantTreeProxy* distant, int brancheId) override;
@@ -68,15 +68,15 @@ public:
 	Valeur* getValeurByIdOrTmpId(DistantTreeProxy* distant, int valeurId) override;
 
 	/** Attribue son identifiant définitf à une branche temporaire */
-	Branche* acceptTmpSubBranche(DistantTreeProxy* distant, int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException) override;
+	Branche* acceptTmpSubBranche(DistantTreeProxy* distant, int brancheTmpId, int brancheId, int brancheRevision) noexcept(false) override;
 
-	Valeur* acceptTmpValeur(DistantTreeProxy* distant, int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException) override;
+	Valeur* acceptTmpValeur(DistantTreeProxy* distant, int valeurTmpId, int valeurId, int valeurRevision) noexcept(false) override;
 
 	/** Crée une nouvelle branche et lui attribue un identifiant temporaire */
 	Branche* createSubBrancheForClient(DistantTreeProxy* distant, const std::string& brancheName, int revision);
 
 	/** Crée une nouvelle branche et lui attribue un identifiant */
-	Branche* createSubBrancheForServer(DistantTreeProxy* distant, const std::string& brancheName, DONNEE_TYPE type, int revision) throw(AlreadyExistingBrancheException);
+	Branche* createSubBrancheForServer(DistantTreeProxy* distant, const std::string& brancheName, DONNEE_TYPE type, int revision) noexcept(false);
 
 	/** Ajoute une branche qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
 	Branche* addSubBranche(DistantTreeProxy* distant, int brancheId, DONNEE_TYPE type, const std::string& brancheName, int brancheRevision) override;

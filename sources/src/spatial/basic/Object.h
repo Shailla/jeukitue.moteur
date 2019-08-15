@@ -39,7 +39,7 @@ public:
 	Object(CMap* map, const std::string& type);
 	Object(const Object& other);
 	virtual ~Object();
-	virtual void init() throw(CErreur);
+	virtual void init() noexcept(false);
 
 	bool isAbstract() const;
 	void setAbstract(bool abstract);
@@ -57,8 +57,8 @@ public:
 	const std::string& getType() const;
 
 	// SÃ©rialisation
-	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) = 0;
-	virtual bool Save(TiXmlElement* element) throw(CErreur) = 0;								// Sauve l'objet géo dans un fichier Map
+	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) noexcept(false) = 0;
+	virtual bool Save(TiXmlElement* element) noexcept(false) = 0;								// Sauve l'objet géo dans un fichier Map
 };
 
 } /* namespace jkt */

@@ -54,8 +54,8 @@ public:
 	virtual void test() = 0;
 
 	// Assertion methods
-	void assertTrue(const char* file, int line, bool var, const char* message = 0) throw(TestError);
-	void assertFalse(const char* file, int line, bool var, const char* message = 0) throw(TestError);
+	void assertTrue(const char* file, int line, bool var, const char* message = 0) noexcept(false);
+	void assertFalse(const char* file, int line, bool var, const char* message = 0) noexcept(false);
 	void assertNull(const char* file, int line, const void* var, const char* message = 0);
 	void assertNotNull(const char* file, int line, const void* var, const char* message = 0);
 	void assertEqual(const char* file, int line, const void* expected, const void* var, const char* message = 0);

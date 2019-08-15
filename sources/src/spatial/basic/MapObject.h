@@ -48,15 +48,15 @@ public:
 	 * *******************************************/
 
 	virtual MapObject* clone() = 0;
-	virtual void init() throw(CErreur) = 0;
+	virtual void init() noexcept(false) = 0;
 
 
 	/* ********************************************
 	 * Serialisation de l'objet
 	 * *******************************************/
 
-	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override = 0;	// Lit l'objet depuis un fichier Map
-	virtual bool Save(TiXmlElement* element) throw(CErreur) override = 0;								// Sauve l'objet dans un fichier Map
+	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) noexcept(false) override = 0;	// Lit l'objet depuis un fichier Map
+	virtual bool Save(TiXmlElement* element) noexcept(false) override = 0;								// Sauve l'objet dans un fichier Map
 
 
 	/* ********************************************

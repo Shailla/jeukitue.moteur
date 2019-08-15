@@ -53,7 +53,7 @@ ServeurDataTree::ServeurDataTree() : DataTree(TREE_SERVER) {
 ServeurDataTree::~ServeurDataTree() {
 }
 
-Branche* ServeurDataTree::getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException) {
+Branche* ServeurDataTree::getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) {
 	vector<int>::const_iterator iter;
 
 	Branche* branche = &getRoot();
@@ -70,7 +70,7 @@ Branche* ServeurDataTree::getBrancheFromDistant(DistantTreeProxy* distant, const
 	return branche;
 }
 
-Valeur* ServeurDataTree::getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
+Valeur* ServeurDataTree::getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) {
 	vector<int>::const_iterator iter;
 
 	Branche* branche = &getRoot();
@@ -368,7 +368,7 @@ void ServeurDataTree::collecteChangements(vector<Changement*>& changements, Dist
 	}
 }
 
-Branche* ServeurDataTree::getBrancheByDistantTmpId(DistantTreeProxy* distant, const vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException) {
+Branche* ServeurDataTree::getBrancheByDistantTmpId(DistantTreeProxy* distant, const vector<int>& parentBrancheId, int brancheTmpId) {
 	vector<int>::const_iterator iter;
 
 	AbstractBranche* parentBranche = &getRoot();
@@ -391,7 +391,7 @@ Branche* ServeurDataTree::getBrancheByDistantTmpId(DistantTreeProxy* distant, co
 	return branche;
 }
 
-Valeur* ServeurDataTree::getValeurByDistantTmpId(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurTmpId) throw(NotExistingBrancheException, NotExistingValeurException) {
+Valeur* ServeurDataTree::getValeurByDistantTmpId(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurTmpId) {
 	vector<int>::const_iterator iter;
 
 	Branche* branche = &getRoot();

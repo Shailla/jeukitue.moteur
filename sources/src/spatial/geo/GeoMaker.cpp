@@ -93,7 +93,7 @@ void CGeoMaker::setOffsetMateriau(int offset) {
 	m_OffsetMateriau = offset;
 }
 
-int CGeoMaker::getOffsetMateriau() throw(CErreur) {
+int CGeoMaker::getOffsetMateriau(){
 	if(m_OffsetMateriau < 0) {
 		throw CErreur("GeoMaker erreur : m_OffsetMateriau non initialisé");
 	}
@@ -148,8 +148,8 @@ void CGeoMaker::setFaces(int nbr, int* tab)		// Donn�es du tableau des index d
 	m_TabFaces = tab;
 }
 
-void CGeoMaker::setNormals(int nbr, float* tab)	throw(CErreur)
-{		// Données du tableau des vecteurs normaux
+void CGeoMaker::setNormals(int nbr, float* tab) {
+	// Données du tableau des vecteurs normaux
 	if(nbr != m_NumFaces*9)	// Vérification du nombre de vecteurs normaux
 	{
 		throw CErreur("Nombre de normales incorrect");
@@ -509,7 +509,7 @@ void CGeoMaker::SaveVertex(TiXmlElement *element, unsigned int nbr, float* verte
 	element->LinkEndChild(elSom);
 }
 
-float* CGeoMaker::LitVertex(TiXmlElement *element, int &nbr) throw(CErreur) {
+float* CGeoMaker::LitVertex(TiXmlElement *element, int &nbr){
 	TiXmlElement* elSom = element->FirstChildElement(Xml::SOMMETS);
 	if(!elSom) {
 		string str = "Fichier Map corrompu : LitVertex - ";
@@ -563,7 +563,7 @@ float* CGeoMaker::LitVertex(TiXmlElement *element, int &nbr) throw(CErreur) {
 	return vertex;
 }
 
-float* CGeoMaker::LitTexVertex(TiXmlElement *element, int &nbr) throw(CErreur) {
+float* CGeoMaker::LitTexVertex(TiXmlElement *element, int &nbr){
 	double nombre;
 
 	TiXmlElement* elSom = element->FirstChildElement(Xml::SOMMETS2TEXTURE);
@@ -643,7 +643,7 @@ CTexVertexList* CGeoMaker::LitMultiTexVertex(TiXmlElement* element)
 	return texVertexListe;
 }
 
-float* CGeoMaker::LitVecteursNormaux(TiXmlElement *element, int& nbr) throw(CErreur) {
+float* CGeoMaker::LitVecteursNormaux(TiXmlElement *element, int& nbr){
 	TiXmlElement* elSom = element->FirstChildElement(Xml::VECTEURSNORMAUX);
 	if(!elSom)
 		return 0;
@@ -865,7 +865,7 @@ void CGeoMaker::SaveMateriau(TiXmlElement* element, unsigned int refMat) {
 	element->LinkEndChild(elMat);
 }
 
-MapObject* CGeoMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+MapObject* CGeoMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	const char* type = el->Value();
 	MapObject* geo = 0;
 
@@ -951,7 +951,7 @@ MapObject* CGeoMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) thr
 	return geo;
 }
 
-void CGeoMaker::LitSousMateriaux(TiXmlElement* el, map<int, int>& canauxNumbers) throw(CErreur) {
+void CGeoMaker::LitSousMateriaux(TiXmlElement* el, map<int, int>& canauxNumbers){
 	double nbr, var1, var2;
 	TiXmlElement* elCan = el->FirstChildElement(Xml::SOUSMATERIAUX);
 

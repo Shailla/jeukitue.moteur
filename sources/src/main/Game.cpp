@@ -111,7 +111,7 @@ CPlayer* CGame::nextPlayer(int& pos) {
 	}
 }
 
-bool CGame::openMap(const string &nomFichierMap) throw(jkt::CErreur) {
+bool CGame::openMap(const string &nomFichierMap) {
 	LOGDEBUG(("Opening Map '%s'", nomFichierMap.c_str()));
 
 	bool result = true;

@@ -18,7 +18,7 @@ DataTree::DataTree(TREE_TYPE treeType) : _root(this, 0, DONNEE_PUBLIC, 0, -1) {
 DataTree::~DataTree() {
 }
 
-Branche* DataTree::getBranche(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException) {
+Branche* DataTree::getBranche(DistantTreeProxy* distant, const vector<int>& brancheId) {
 	vector<int>::const_iterator iter;
 
 	Branche* branche = &_root;
@@ -35,7 +35,7 @@ Branche* DataTree::getBranche(DistantTreeProxy* distant, const vector<int>& bran
 	return branche;
 }
 
-Branche* DataTree::getBranche(DistantTreeProxy* distant, const vector<string>& branchePath) throw(NotExistingBrancheException) {
+Branche* DataTree::getBranche(DistantTreeProxy* distant, const vector<string>& branchePath) {
 	vector<string>::const_iterator iter;
 
 	Branche* branche = &_root;
@@ -51,7 +51,7 @@ Branche* DataTree::getBranche(DistantTreeProxy* distant, const vector<string>& b
 	return branche;
 }
 
-Valeur* DataTree::getValeur(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
+Valeur* DataTree::getValeur(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) {
 	vector<int>::const_iterator iter;
 
 	Branche* branche = &_root;

@@ -31,7 +31,7 @@ MapObject* CMaterialMulti::clone() {
 	return new CMaterial(*this);
 }
 
-void CMaterialMulti::init() throw(CErreur) {
+void CMaterialMulti::init() {
 }
 
 int CMaterialMulti::NbrTex()
@@ -91,7 +91,7 @@ void CMaterialMulti::freeGL()  {
 	}
 }
 
-bool CMaterialMulti::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool CMaterialMulti::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	// Référence
 	double ref;
 	if(!el->Attribute(Xml::REF, &ref))
@@ -153,7 +153,7 @@ bool CMaterialMulti::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) thro
 	return true;
 }
 
-bool CMaterialMulti::Save(TiXmlElement* element) throw(CErreur) {
+bool CMaterialMulti::Save(TiXmlElement* element) {
 	// Nom, référence...
 	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAUMULTI);
 	elMat->SetAttribute(Xml::REF, getRef());

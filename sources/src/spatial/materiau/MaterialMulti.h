@@ -23,7 +23,7 @@ public:
 	~CMaterialMulti();
 
 	virtual MapObject* clone() override;
-	virtual void init() throw(CErreur) override;
+	virtual void init() noexcept(false) override;
 
 	// Fonctions membres
 	void initGL() override;
@@ -31,8 +31,8 @@ public:
 	void NbrTex(int nbr);		// Renseigne le nombre de sous-matériaux
 	int NbrTex();				// Renvoie le nombre de sous-matériaux
 	CMaterial* getMat(int i);	// Renvoie le sous-matériau d'index i
-	bool Save(TiXmlElement* element)  throw(CErreur) override;
-	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
+	bool Save(TiXmlElement* element) override;
+	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) noexcept(false) override;
 	const char* toString();
 };
 

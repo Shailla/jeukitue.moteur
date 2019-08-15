@@ -42,7 +42,7 @@ ClientUdpInterlocutor::~ClientUdpInterlocutor() {
 	close();
 }
 
-Interlocutor2* ClientUdpInterlocutor::connect(const string& distantIp, Uint16 distantPort) throw(ConnectionFailedException) {
+Interlocutor2* ClientUdpInterlocutor::connect(const string& distantIp, Uint16 distantPort) {
 	_interlocutor = new Interlocutor2(SDL_CreateCond(), SDL_CreateMutex());
 	_distantIp = distantIp;
 	_distantPort = distantPort;

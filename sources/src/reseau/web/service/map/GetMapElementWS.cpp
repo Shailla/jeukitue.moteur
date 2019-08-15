@@ -86,14 +86,14 @@ MapObject* GetMapElementWS::MockElement::clone() {
 	return 0;
 }
 
-void GetMapElementWS::MockElement::init() throw(CErreur) {
+void GetMapElementWS::MockElement::init() {
 }
 
-bool GetMapElementWS::MockElement::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool GetMapElementWS::MockElement::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	return true;
 }
 
-bool GetMapElementWS::MockElement::Save(TiXmlElement* element) throw(CErreur) {
+bool GetMapElementWS::MockElement::Save(TiXmlElement* element) {
 	return true;
 }
 
@@ -381,7 +381,7 @@ bool GetMapElementWS::updateCaracString(JsonObject& jsonCharistics, const Caract
 	return updated;
 }
 
-void GetMapElementWS::updateElement(JsonObject* jsonObject, MapObject* object) throw(BadFormatJsonException) {
+void GetMapElementWS::updateElement(JsonObject* jsonObject, MapObject* object) {
 
 	// Update Name
 	const JsonString* name = jsonObject->getString(NAME, false);
@@ -497,7 +497,7 @@ WebServiceResult GetMapElementWS::updateElements(HttpRequest& request) {
 	}
 }
 
-WebServiceResult GetMapElementWS::execute(HttpRequest& request, const string& baseEndpoint, const string& serviceEndpoint) throw(HttpException) {
+WebServiceResult GetMapElementWS::execute(HttpRequest& request, const string& baseEndpoint, const string& serviceEndpoint) {
 	smatch match;
 
 	// Get Map list

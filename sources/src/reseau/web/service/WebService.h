@@ -36,7 +36,7 @@ public:
 	WebService();
 	virtual ~WebService();
 
-	virtual WebServiceResult execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) throw(HttpException) = 0;
+	virtual WebServiceResult execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) noexcept(false) = 0;
 
 	WebServiceResult jsonErrorResponse(const char* httpStatus, const std::string& errorDetail);
 };

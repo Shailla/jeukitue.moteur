@@ -40,7 +40,7 @@ public:
 	AnyData(std::istringstream& in);
 	virtual ~AnyData();
 
-	static void unserialize(AnyData& data, std::istringstream& in) throw(UnserializeException);
+	static void unserialize(AnyData& data, std::istringstream& in) noexcept(false);
 	void serialize(std::ostringstream& out) const;
 
 	/** Obtenir une description de la donnée */

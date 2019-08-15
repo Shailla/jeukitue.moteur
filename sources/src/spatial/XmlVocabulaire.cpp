@@ -123,7 +123,7 @@ const char* Xml::TYPE = "Type";
 const char* Xml::VALEUR = "Valeur";
 const char* Xml::VRAI = "true";
 
-void Xml::throwCorruptedMapFileException(const char* expected, const char* value) throw(CErreur) {
+void Xml::throwCorruptedMapFileException(const char* expected, const char* value) {
 	string erreur = "Fichier MAP corrompu, element '";
 	erreur += expected;
 	erreur += "' attendu, mais '";
@@ -167,7 +167,7 @@ void Xml::SaveAttribut(TiXmlElement* element, const char* name, float valeur) {
 	element->SetAttribute(name, ss.str().c_str());
 }
 
-bool Xml::Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, float valeur[3]) throw(CErreur) {
+bool Xml::Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, float valeur[3]) {
 	double x1, x2, x3;
 
 	if(!el)
@@ -196,7 +196,7 @@ bool Xml::Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char*
 	}
 }
 
-bool Xml::Lit4fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, const char* X4, float valeur[4]) throw(CErreur) {
+bool Xml::Lit4fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, const char* X4, float valeur[4]) {
 	double x1, x2, x3, x4;
 
 	if(!el)
@@ -241,7 +241,7 @@ bool Xml::LitDirection3fv(TiXmlElement* el, const char* name, float direction[3]
 	return Lit3fv(el, name, Xml::X, Xml::Y, Xml::Z, direction);
 }
 
-string Xml::LitMaterialRef(TiXmlElement* el) throw(jkt::CErreur) {
+string Xml::LitMaterialRef(TiXmlElement* el) {
 	TiXmlElement* elMat = el->FirstChildElement(Xml::MATERIAU);
 
 	if(!elMat)
@@ -268,7 +268,7 @@ double Xml::LitValeur(TiXmlElement* el, const char* name) {
 	return valeur;
 }
 
-bool Xml::LitSolidite(TiXmlElement* el) throw(CErreur) {
+bool Xml::LitSolidite(TiXmlElement* el) {
 	TiXmlElement* elSol = el->FirstChildElement(Xml::SOLIDE);
 	bool solidite;
 
@@ -290,7 +290,7 @@ bool Xml::LitSolidite(TiXmlElement* el) throw(CErreur) {
 	return solidite;
 }
 
-bool Xml::LitBooleanMandatory(const char* value) throw(jkt::CErreur) {
+bool Xml::LitBooleanMandatory(const char* value) {
 	if(!value)
 		throw CErreur("Fichier Map corrompu : boolean manquant");
 
@@ -302,7 +302,7 @@ bool Xml::LitBooleanMandatory(const char* value) throw(jkt::CErreur) {
 		throw CErreur("Fichier Map corrompu : expected 'true' or 'false'");
 }
 
-bool Xml::LitBooleanNotMandatory(const char* value, bool defaultValue) throw(jkt::CErreur) {
+bool Xml::LitBooleanNotMandatory(const char* value, bool defaultValue) {
 	if(!value)
 		return defaultValue;
 

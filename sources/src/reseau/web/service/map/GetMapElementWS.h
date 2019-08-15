@@ -47,9 +47,9 @@ public:
 		std::string _stringNotUpdatable;
 
 		MapObject* clone();														// Mandatory to compile
-		void init() throw(CErreur);
-		bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;	// Mandatory to compile
-		bool Save(TiXmlElement* element) throw(CErreur) override;								// Mandatory to compile
+		void init() noexcept(false);
+		bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) noexcept(false) override;	// Mandatory to compile
+		bool Save(TiXmlElement* element) noexcept(false) override;								// Mandatory to compile
 	};
 
 	static const std::string ID;
@@ -90,7 +90,7 @@ private:
 	WebServiceResult updateElements(HttpRequest& request);
 	WebServiceResult updateElement(HttpRequest& request, int elementId);
 
-	void updateElement(JsonObject* jsonObject, MapObject* object) throw(BadFormatJsonException);
+	void updateElement(JsonObject* jsonObject, MapObject* object) noexcept(false);
 
 	JsonObject& addCaracBoolean(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value);
 	JsonObject& addCaracLong(JsonObject& jsonCharistics, const Caracteristic& carac, const bool value);
@@ -110,7 +110,7 @@ public:
 	GetMapElementWS();
 	virtual ~GetMapElementWS();
 
-	WebServiceResult execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) throw(HttpException) override;
+	WebServiceResult execute(HttpRequest& request, const std::string& baseEndpoint, const std::string& serviceEndpoint) noexcept(false) override;
 };
 
 } /* namespace jkt */

@@ -62,7 +62,7 @@ public:
 	void setFaces(int num, int *tab);			// Implémente les indices de sommets
 	void Color(float r, float g, float b);		// définit la couleur de l'objet
 
-	void init() throw(CErreur) override;		// Initialisation de l'objet
+	void init() noexcept(false) override;		// Initialisation de l'objet
 	void initGL() override;
 	void freeGL() override;
 
@@ -77,8 +77,8 @@ public:
 	float gereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;		// Voir la définition de la fonction
 
 	// Fonctions pour l'interface CGeo
-	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
-	bool Save(TiXmlElement* element) throw(CErreur) override;
+	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) noexcept(false) override;
+	bool Save(TiXmlElement* element) noexcept(false) override;
 
 	void affiche() override;									// Affiche l'objet géo
 	void afficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique

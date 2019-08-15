@@ -103,7 +103,7 @@ Branche* PrivateBranche::getSubBrancheByIdOrTmpId(DistantTreeProxy* distant, int
 	return branche;
 }
 
-Branche* PrivateBranche::getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException) {
+Branche* PrivateBranche::getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) {
 	if(!distant) {
 		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
 	}
@@ -116,7 +116,7 @@ Branche* PrivateBranche::getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* dista
 	}
 }
 
-Branche* PrivateBranche::getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheTmpId) throw(NotExistingBrancheException) {
+Branche* PrivateBranche::getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheTmpId) {
 	vector<Branche*>::iterator it;
 	MarqueurDistant* marqueur;
 	Branche* subBranche = NULL;
@@ -143,7 +143,7 @@ Branche* PrivateBranche::getSubBrancheByDistantTmpId(DistantTreeProxy* distant, 
 	return subBranche;
 }
 
-Valeur* PrivateBranche::getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) throw(NotExistingValeurException) {
+Valeur* PrivateBranche::getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) {
 	vector<Valeur*>::iterator it;
 	MarqueurDistant* marqueur;
 	Valeur* valeur = NULL;
@@ -212,7 +212,7 @@ Branche* PrivateBranche::createSubBrancheForClient(DistantTreeProxy* distant, co
 	return newBranche;
 }
 
-Branche* PrivateBranche::createSubBrancheForServer(DistantTreeProxy* distant, const string& brancheName, DONNEE_TYPE type, int revision) throw(AlreadyExistingBrancheException) {
+Branche* PrivateBranche::createSubBrancheForServer(DistantTreeProxy* distant, const string& brancheName, DONNEE_TYPE type, int revision) {
 	if(!distant) {
 		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
 	}
@@ -282,7 +282,7 @@ Branche* PrivateBranche::addSubBranche(DistantTreeProxy* distant, int brancheId,
 	return newBranche;
 }
 
-Branche* PrivateBranche::acceptTmpSubBranche(DistantTreeProxy* distant, int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException) {
+Branche* PrivateBranche::acceptTmpSubBranche(DistantTreeProxy* distant, int brancheTmpId, int brancheId, int brancheRevision) {
 	if(!distant) {
 		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
 	}
@@ -303,7 +303,7 @@ Branche* PrivateBranche::acceptTmpSubBranche(DistantTreeProxy* distant, int bran
 	return branche;
 }
 
-Valeur* PrivateBranche::acceptTmpValeur(DistantTreeProxy* distant, int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException) {
+Valeur* PrivateBranche::acceptTmpValeur(DistantTreeProxy* distant, int valeurTmpId, int valeurId, int valeurRevision) {
 	if(!distant) {
 		throw NotSpecifiedClientException("'getSubBrancheByIdOrDistantTmpId' need to know the client on private branche");
 	}

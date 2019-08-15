@@ -20,7 +20,7 @@ Data::Data() {
 Data::~Data() {
 }
 
-Data* Data::unserialize(std::istringstream& in) throw(UnserializeException) {
+Data* Data::unserialize(std::istringstream& in) {
 	int type;
 
 	StreamUtils::read(in, type);

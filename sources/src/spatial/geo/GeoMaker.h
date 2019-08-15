@@ -64,7 +64,7 @@ class CGeoMaker
 	// Divers
 	bool m_bSolid;
 
-	int getOffsetMateriau() throw(CErreur);
+	int getOffsetMateriau() noexcept(false);
 public:
 	std::map<int,CChanTex*> m_TabChanTex;	// Contient tous les canaux de texture
 
@@ -78,7 +78,7 @@ public:
 	void setColor4(float r, float v, float b, float a);
 	void setVertex(int nbr, float* tab);	// Données du tableau des sommets
 	void setFaces(int nbr, int* tab);		// Données du tableau des index de faces
-	void setNormals(int nbr, float* tab) throw(jkt::CErreur);	// Données du tableau des vecteurs normaux
+	void setNormals(int nbr, float* tab) noexcept(false);	// Données du tableau des vecteurs normaux
 	void setMaterialRef(int ref);			// Associe l'objet à un matériau
 	void setSubMat(int* tab);
 	static void SaveVertex(TiXmlElement* element, unsigned int nbr, float* vertex);		// Sauve les sommets d'un objet géo
@@ -92,22 +92,22 @@ public:
 	static void SaveSousMateriaux(TiXmlElement* element, std::map<int,int>& m_CanauxNumbers);
 	static void SaveMultiTexVertex(TiXmlElement *element, CTexVertexList* texvertexliste);
 	static int* LitFaces(TiXmlElement *element, int& nbr);
-	static float* LitVertex(TiXmlElement *element, int& nbr) throw(CErreur);
-	static float* LitTexVertex(TiXmlElement *element, int& nbr) throw(CErreur);
+	static float* LitVertex(TiXmlElement *element, int& nbr) noexcept(false);
+	static float* LitTexVertex(TiXmlElement *element, int& nbr) noexcept(false);
 	static CTexVertexList* LitMultiTexVertex(TiXmlElement* element);
-	static float* LitVecteursNormaux(TiXmlElement* element, int& nbr) throw(CErreur);
-	static void LitSousMateriaux(TiXmlElement* el, std::map<int, int>& canauxNumbers) throw(CErreur);
+	static float* LitVecteursNormaux(TiXmlElement* element, int& nbr) noexcept(false);
+	static void LitSousMateriaux(TiXmlElement* el, std::map<int, int>& canauxNumbers) noexcept(false);
 
-	static MapObject* Lit(TiXmlElement* el, CMap& pMap, MapLogger* mapLogger) throw(CErreur);
-	MapObject* makeNewGeoInstance();	// Crée une instance de l'objet géométrique
+	static MapObject* Lit(TiXmlElement* el, CMap& pMap, MapLogger* mapLogger) noexcept(false);
+	MapObject* makeNewGeoInstance();	// Cr�e une instance de l'objet g�om�trique
 private:
 	CSimpleGeo* makeSimpleGeo();
 	CSimpleMaterialGeo* makeSimpleMaterialGeo(CMaterial* mat);
 	CMultiMaterialGeo* makeMultiMaterialGeo(CMaterialMulti* mat);
 	CTextureMaterialGeo* makeTextureMaterialGeo(CMaterialTexture* mat);
 
-	void lineariseVertex();		// Désindexe les sommets
-	void lineariseTexVertex();	// Désindexe les coord. de texture dans leurs canaux
+	void lineariseVertex();		// D�sindexe les sommets
+	void lineariseTexVertex();	// D�sindexe les coord. de texture dans leurs canaux
 	void optimiseSubMat(std::map<int,int> &canauxnumbers);
 };
 

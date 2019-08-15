@@ -26,10 +26,10 @@ public:
 	virtual ~ClientDataTree();
 
 	const std::string& getClientName() const;
-	Branche* getBrancheByTmpId(const std::vector<int>& parentBrancheId, int brancheTmpId) throw(NotExistingBrancheException);
+	Branche* getBrancheByTmpId(const std::vector<int>& parentBrancheId, int brancheTmpId) noexcept(false);
 
-	Branche* getBrancheFromDistant(DistantTreeProxy* ignored, const std::vector<int>& brancheId) throw(NotExistingBrancheException) override;
-	Valeur* getValeurFromDistant(DistantTreeProxy* ignored, const std::vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) override;
+	Branche* getBrancheFromDistant(DistantTreeProxy* ignored, const std::vector<int>& brancheId) noexcept(false) override;
+	Valeur* getValeurFromDistant(DistantTreeProxy* ignored, const std::vector<int>& brancheId, int valeurId) noexcept(false) override;
 
 	/* *****************************************************
 	 * Serveur local actions

@@ -98,21 +98,21 @@ public:
 	static const char* DIMENSION;
 
 	// Boîte à outils XML
-	static void throwCorruptedMapFileException(const char* expected, const char* value) throw(jkt::CErreur);
+	static void throwCorruptedMapFileException(const char* expected, const char* value) noexcept(false);
 	static void SaveElement(TiXmlElement* element, const char* name, float valeur);
 	static void SaveElement(TiXmlElement* element, const char* name, int valeur);
 	static void SaveAttribut(TiXmlElement* element, const char* name, float valeur);
 	static void SaveElement(TiXmlElement* element, const char* name, bool valeur);
-	static bool Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, float valeur[3]) throw(jkt::CErreur);
-	static bool Lit4fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, const char* x4, float valeur[4]) throw(jkt::CErreur);
+	static bool Lit3fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, float valeur[3]) noexcept(false);
+	static bool Lit4fv(TiXmlElement* el, const char* name, const char* X1, const char* X2, const char* X3, const char* x4, float valeur[4]) noexcept(false);
 	static bool LitCouleur3fv(TiXmlElement* el, const char* name, float couleur[3]);
 	static bool LitPosition3fv(TiXmlElement* el, const char* name, float couleur[3]);
 	static bool LitDirection3fv(TiXmlElement* el, const char* name, float direction[3]);
-	static std::string LitMaterialRef(TiXmlElement* el) throw(jkt::CErreur);
+	static std::string LitMaterialRef(TiXmlElement* el) noexcept(false);
 	static double LitValeur(TiXmlElement* el, const char* name);
-	static bool LitSolidite(TiXmlElement* el) throw(jkt::CErreur);
-	static bool LitBooleanMandatory(const char* value) throw(jkt::CErreur);
-	static bool LitBooleanNotMandatory(const char* value, bool defaultValue) throw(jkt::CErreur);
+	static bool LitSolidite(TiXmlElement* el) noexcept(false);
+	static bool LitBooleanMandatory(const char* value) noexcept(false);
+	static bool LitBooleanNotMandatory(const char* value, bool defaultValue) noexcept(false);
 };
 
 #endif

@@ -18,10 +18,10 @@ public:
 	~CLightOmni();
 
 	MapObject* clone() override;
-	void init() throw(CErreur) override;
+	void init() noexcept(false) override;
 
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
-	bool Save(TiXmlElement* element) throw(CErreur) override;
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) noexcept(false) override;
+	bool Save(TiXmlElement* element) noexcept(false) override;
 
 	void Active() override;
 	void Desactive() override;

@@ -29,13 +29,13 @@ string Test::getName() {
 }
 
 
-void Test::assertTrue(const char* file, int line, bool var, const char* message) throw(TestError) {
+void Test::assertTrue(const char* file, int line, bool var, const char* message) {
 	if(!var) {
 		throw TestError(file, line, message);
 	}
 }
 
-void Test::assertFalse(const char* file, int line, bool var, const char* message) throw(TestError) {
+void Test::assertFalse(const char* file, int line, bool var, const char* message) {
 	if(var) {
 		throw TestError(file, line, message);
 	}

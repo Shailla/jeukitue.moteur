@@ -54,10 +54,10 @@ MapObject* CMaterialTexture::clone() {
 	return new CMaterial(*this);
 }
 
-void CMaterialTexture::init() throw(CErreur) {
+void CMaterialTexture::init() {
 }
 
-void CMaterialTexture::initGL() throw(jkt::CErreur) {
+void CMaterialTexture::initGL() {
 	try {
 		RessourcesLoader::getFileRessource(m_FichierTexture);
 		Uint8* pixels = litFichierImage(m_FichierTexture, 1.0f);
@@ -72,7 +72,7 @@ void CMaterialTexture::freeGL() {
 	// TODO
 }
 
-bool CMaterialTexture::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool CMaterialTexture::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	// Référence
 	const char* reference = el->Attribute(Xml::REF);
 
@@ -105,7 +105,7 @@ bool CMaterialTexture::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) th
 	return true;
 }
 
-bool CMaterialTexture::Save(TiXmlElement* element) throw(CErreur) {
+bool CMaterialTexture::Save(TiXmlElement* element) {
 	// Nom, référence...
 	TiXmlElement* elMat = new TiXmlElement(Xml::MATERIAUTEXTURE);
 	elMat->SetAttribute(Xml::REF, getRef());

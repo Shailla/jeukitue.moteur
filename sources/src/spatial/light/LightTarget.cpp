@@ -33,7 +33,7 @@ MapObject* CLightTarget::clone() {
 	return new CLightTarget(*this);
 }
 
-void CLightTarget::init() throw(CErreur) {
+void CLightTarget::init() {
 
 }
 
@@ -54,7 +54,7 @@ void CLightTarget::SetDirection( float direction[3] ) {
 	m_Direction[ 3 ] = 1.0f;
 }
 
-bool CLightTarget::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool CLightTarget::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	// Type
 	const char* type = el->Value();
 
@@ -92,7 +92,7 @@ bool CLightTarget::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(
 	return true;
 }
 
-bool CLightTarget::Save(TiXmlElement* element) throw(CErreur) {
+bool CLightTarget::Save(TiXmlElement* element) {
 	// Nom, r�f�rence, type
 	TiXmlElement* elLum = new TiXmlElement(Xml::LIGHTTARGET);
 	elLum->SetAttribute(Xml::REF, m_refLight);

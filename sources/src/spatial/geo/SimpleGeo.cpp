@@ -154,7 +154,7 @@ void CSimpleGeo::setVertex(int num, float *tab) {
 			m_TabVertex[ (i*3)+j ] = tab[ (i*3)+j ];
 }
 
-void CSimpleGeo::init() throw(CErreur) {
+void CSimpleGeo::init() {
 	MinMax();			// Mesure les minimums et maximums de l'objet g�o
 	Bulle();			// Mesure le centre et le rayon de la sphère englobant l'objet g�o
 	ConstruitBase();	// Construit la table des vecteurs normaux
@@ -382,7 +382,7 @@ void CSimpleGeo::Color( float r, float g, float b ) {
 	_color[2] = b;
 }
 
-bool CSimpleGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool CSimpleGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	// Type
 	const char* geoType = el->Value();
 
@@ -424,7 +424,7 @@ bool CSimpleGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CE
 	return true;
 }
 
-bool CSimpleGeo::Save(TiXmlElement* element) throw(CErreur) {
+bool CSimpleGeo::Save(TiXmlElement* element) {
 	// Sauve les données générales
 	TiXmlElement* elGeo = new TiXmlElement(Xml::GEOSIMPLE);
 	elGeo->SetAttribute(Xml::REF, getId());

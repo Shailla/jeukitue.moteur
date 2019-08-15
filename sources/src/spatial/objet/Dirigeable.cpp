@@ -72,17 +72,17 @@ MapObject* Dirigeable::clone() {
 	return new Dirigeable(*this);
 }
 
-void Dirigeable::init() throw(CErreur) {
+void Dirigeable::init() {
 }
 
 void Dirigeable::refresh(CGame *game) {
 }
 
-bool Dirigeable::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool Dirigeable::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	return true;
 }
 
-bool Dirigeable::Save(TiXmlElement* element) throw(CErreur) {
+bool Dirigeable::Save(TiXmlElement* element) {
 	return true;
 }
 

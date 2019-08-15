@@ -78,11 +78,11 @@ public:
 	const char* toString();						// Description résumée de l'objet
 
 	// Object
-	void init() throw(jkt::CErreur) override;	// Initialisation de la CMap
-	static bool Lit(CMap& map, const std::string &mapName, MapLogger* mapLogger) throw(CErreur);
-	bool Lit(const std::string &nomFichier, MapLogger* mapLogger) throw(CErreur);
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
-	bool Save(TiXmlElement* element) throw(CErreur) override;			// Sauve l'objet géo dans un fichier Map
+	void init() noexcept(false) override;	// Initialisation de la CMap
+	static bool Lit(CMap& map, const std::string &mapName, MapLogger* mapLogger) noexcept(false);
+	bool Lit(const std::string &nomFichier, MapLogger* mapLogger) noexcept(false);
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) noexcept(false) override;
+	bool Save(TiXmlElement* element) noexcept(false) override;			// Sauve l'objet géo dans un fichier Map
 
 	// Gestion des plugins de la Map
 	void initPlugins();			// Chargement / exécution des plugins de la Map

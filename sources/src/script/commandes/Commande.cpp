@@ -26,7 +26,7 @@ Commande::Commande(CommandeInterpreter* interpreter) {
 Commande::~Commande() {
 }
 
-Commande* Commande::getSubCommande(const string& subCommandeName)  throw(IllegalParameterException) {
+Commande* Commande::getSubCommande(const string& subCommandeName) {
 	Commande* commande;
 
 	try {
@@ -60,7 +60,7 @@ void Commande::printErrLn(const std::string& msg, bool userOutput) {
 	_interpreter->printErrLn(msg, userOutput);
 }
 
-int Commande::getIntParameter(const string& word) throw(IllegalParameterException) {
+int Commande::getIntParameter(const string& word) {
 	int result;
 
 	if(!(istringstream(word) >> result)) {
@@ -70,7 +70,7 @@ int Commande::getIntParameter(const string& word) throw(IllegalParameterExceptio
 	return result;
 }
 
-float Commande::getFloatParameter(const string& word) throw(IllegalParameterException) {
+float Commande::getFloatParameter(const string& word) {
 	float result;
 
 	if(!(istringstream(word) >> result)) {
@@ -80,7 +80,7 @@ float Commande::getFloatParameter(const string& word) throw(IllegalParameterExce
 	return result;
 }
 
-std::vector<int> Commande::getIntParameters(const string& ligne) throw(IllegalParameterException) {
+std::vector<int> Commande::getIntParameters(const string& ligne) {
 	vector<int> result;
 	vector<string> parameters = StringUtils::splitBySpaces(ligne);
 	vector<string>::iterator iter;

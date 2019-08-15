@@ -15,8 +15,8 @@ namespace jkt
 class TcpConnector
 {
 public:
-	static std::vector<DownloadFileItem> askDownloadFileList(const int port) throw(CentralisateurTcpException);
-	static void downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) throw(CentralisateurTcpException);
+	static std::vector<DownloadFileItem> askDownloadFileList(const int port) noexcept(false);
+	static void downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) noexcept(false);
 };
 
 }

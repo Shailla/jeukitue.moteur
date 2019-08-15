@@ -25,15 +25,15 @@ public:
 	 * Serveur local actions
 	 * ****************************************************/
 
-	// Gestion branches et valeurs avec coordonnées vectorielles
+	// Gestion branches et valeurs avec coordonnï¿½es vectorielles
 	Branche* createBranche(DistantTreeProxy* distant, const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
 	Branche* createPrivateBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
 
 	Valeur* createValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::vector<int>& parentBrancheId, const std::string& valeurName, const jkt::AnyData valeur) override;
 
-	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId) throw(NotExistingBrancheException) override;
+	Branche* getBrancheFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId) noexcept(false) override;
 
-	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) override;
+	Valeur* getValeurFromDistant(DistantTreeProxy* distant, const std::vector<int>& brancheId, int valeurId) noexcept(false) override;
 };
 
 #endif /* CLIENTDATATREE_H_ */

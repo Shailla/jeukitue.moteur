@@ -42,7 +42,7 @@ ServerUdpInterlocutor::~ServerUdpInterlocutor() {
 	close();
 }
 
-NotConnectedInterlocutor2* ServerUdpInterlocutor::connect() throw(ConnectionFailedException) {
+NotConnectedInterlocutor2* ServerUdpInterlocutor::connect() {
 	_notConnectedInterlocutor = new NotConnectedInterlocutor2(_sendingCondition, _sendingMutex);
 	_notConnectedInterlocutor->setCondIntelligence(getCondIntelligence());
 
@@ -59,7 +59,7 @@ NotConnectedInterlocutor2* ServerUdpInterlocutor::connect() throw(ConnectionFail
 			throw ConnectionFailedException(msg.str());
 		}
 
-		// Allocation d'un socket set qui permettra d'attendre et de scruter l'arrivée de données
+		// Allocation d'un socket set qui permettra d'attendre et de scruter l'arrivï¿½e de donnï¿½es
 		_socketSet = SDLNet_AllocSocketSet(1);
 
 		if(!_socketSet) {
@@ -98,7 +98,7 @@ void ServerUdpInterlocutor::close() {
 
 	waitProcessesFinished();
 
-	// Libération du socket set
+	// Libï¿½ration du socket set
 	if(_socketSet) {
 		SDLNet_FreeSocketSet(_socketSet);
 		_socketSet = 0;
@@ -110,7 +110,7 @@ void ServerUdpInterlocutor::close() {
 		_socket = 0;
 	}
 
-	// Libération des paquets
+	// Libï¿½ration des paquets
 	if(_packetIn) {
 		SDLNet_FreePacket(_packetIn);
 		_packetIn = 0;
@@ -134,7 +134,7 @@ void ServerUdpInterlocutor::manageConnection(const IPaddress& address, C2SHelloT
 	 * Enregistrement connexion client
 	 * *************************************************/
 
-	// Si le client n'est pas encore connecté alors enregistre sa connexion
+	// Si le client n'est pas encore connectï¿½ alors enregistre sa connexion
 	if(clientIt == _clientsOfServer.end()) {
 		Interlocutor2* clientInterlocutor = new Interlocutor2(_sendingCondition, _sendingMutex);
 		ClientOfServer* client = new ClientOfServer(address, clientInterlocutor);
@@ -177,7 +177,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 		}
 
 		/* ***********************************************************
-		 * Gestion des clients non-connectés
+		 * Gestion des clients non-connectï¿½s
 		 * ***********************************************************/
 
 		{
@@ -211,7 +211,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 
 
 		/* ***********************************************************
-		 * Gestion des clients connectés
+		 * Gestion des clients connectï¿½s
 		 * ***********************************************************/
 
 		{
@@ -229,7 +229,7 @@ void ServerUdpInterlocutor::intelligenceProcess() {
 				bool c2s_hello_received = false;
 				bool c2s_bye_received = false;
 
-				// Gestion des événements liés aux clients non-connectés
+				// Gestion des ï¿½vï¿½nements liï¿½s aux clients non-connectï¿½s
 				while((msg = client->getInterlocutor()->popTechnicalMessageReceived())) {
 					TechnicalMessage* techMsg = TechnicalMessage::traduct(msg);
 
@@ -314,13 +314,13 @@ void ServerUdpInterlocutor::sendingProcess() {
 
 
 		/* *********************************************
-		 * Gestion des envois aux clients non-connectés
+		 * Gestion des envois aux clients non-connectï¿½s
 		 * *********************************************/
 
 		{
 			DataAddress* data;
 
-			// Envoi les messages techniques tant que le serveur est connecté, sinon purge les
+			// Envoi les messages techniques tant que le serveur est connectï¿½, sinon purge les
 			while((data = _notConnectedInterlocutor->popTechnicalMessageToSend()))  {
 				if(CONNECTED == getConnexionStatus()) {
 					_packetOut->len = data->getBytes()->size();
@@ -339,7 +339,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 
 
 		/* *********************************************
-		 * Gestion des envois aux clients connectés
+		 * Gestion des envois aux clients connectï¿½s
 		 * *********************************************/
 
 		{
@@ -352,7 +352,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 			for(iter = _clientsOfServer.begin() ; iter != _clientsOfServer.end() ; iter++) {
 				ClientOfServer* client = iter->second;
 
-				// Envoi les messages techniques tant que le serveur est connecté, sinon purge les
+				// Envoi les messages techniques tant que le serveur est connectï¿½, sinon purge les
 				while((data = client->getInterlocutor()->popTechnicalMessageToSend()))  {
 					if(CONNECTED == getConnexionStatus() && CONNECTED == client->getConnexionStatus()) {
 						_packetOut->len = data->size();
@@ -368,7 +368,7 @@ void ServerUdpInterlocutor::sendingProcess() {
 					delete data;
 				}
 
-				// Envoi les messages de données tant que le serveur est connecté, sinon purge les
+				// Envoi les messages de donnï¿½es tant que le serveur est connectï¿½, sinon purge les
 				while((data = client->getInterlocutor()->popDataToSend())) {
 					if(CONNECTED == getConnexionStatus() && CONNECTED == client->getConnexionStatus()) {
 						_packetOut->len = data->size() + 2;
@@ -405,7 +405,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 		int size = _packetIn->len;
 
 		if(_clientsOfServer.find(address) == _clientsOfServer.end()) {
-			// Gestion des clients non-connectés
+			// Gestion des clients non-connectï¿½s
 			if(size >= 2) {
 				Uint16 code =  SDLNet_Read16(_packetIn->data);
 
@@ -420,12 +420,12 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 			}
 			else {
 				stringstream message;
-				message << "Message inconsistant et client inconnu from " << IpUtils::translateAddress(address) << " ==> ignoré";
+				message << "Message inconsistant et client inconnu from " << IpUtils::translateAddress(address) << " ==> ignorï¿½";
 				log(__LINE__, __FILE__, message);
 			}
 		}
 		else {
-			// Gestion des clients connectés
+			// Gestion des clients connectï¿½s
 			ClientOfServer* client = _clientsOfServer[address];
 
 			if(size >= 2) {
@@ -460,7 +460,7 @@ void ServerUdpInterlocutor::receiveOnePacket() {
 			}
 			else {
 				stringstream message;
-				message << "Message inconsistant de client connu from " << IpUtils::translateAddress(address) << " ==> ignoré";
+				message << "Message inconsistant de client connu from " << IpUtils::translateAddress(address) << " ==> ignorï¿½";
 				log(__LINE__, __FILE__, message);
 			}
 		}

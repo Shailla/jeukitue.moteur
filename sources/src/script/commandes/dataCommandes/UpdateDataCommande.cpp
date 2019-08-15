@@ -26,7 +26,7 @@ extern CGame Game;
 UpdateDataCommande::UpdateDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
 
-void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalParameterException) {
+void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) {
 	string subCommande1 = StringUtils::findAndEraseFirstWord(ligne);
 
 	if(subCommande1 == "valeur") {
@@ -39,7 +39,7 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 			// Valeur de la valeur
 			string valueStr = StringUtils::findAndEraseFirstWord(ligne);
 
-			// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
+			// Coordonnï¿½es de la branche sur laquelle la valeur doit ï¿½tre ajoutï¿½e
 			vector<int> valeurFullId = getIntParameters(ligne);
 
 			if(valeurFullId.size() > 0) {
@@ -75,7 +75,7 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 
 					if(result) {
 						ostringstream result;
-						result << "Valeur mise à jour. Nouvelle revision " << valeur->getRevision() << ".";
+						result << "Valeur mise ï¿½ jour. Nouvelle revision " << valeur->getRevision() << ".";
 						printStdLn(result.str().c_str(), userOutput);
 					}
 				}
@@ -94,7 +94,7 @@ void UpdateDataCommande::executeIt(std::string ligne, bool userOutput) throw(Ill
 }
 
 string UpdateDataCommande::getShortHelp() const {
-	return "Met à jour une donnée de l'arbre";
+	return "Met ï¿½ jour une donnï¿½e de l'arbre";
 }
 
 string UpdateDataCommande::getHelp() const {

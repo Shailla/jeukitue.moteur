@@ -23,7 +23,7 @@ extern CGame Game;
 AddDataCommande::AddDataCommande(CommandeInterpreter* interpreter) : Commande(interpreter) {
 }
 
-void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalParameterException) {
+void AddDataCommande::executeIt(std::string ligne, bool userOutput) {
 	string subCommande1 = StringUtils::findAndEraseFirstWord(ligne);
 
 	if(subCommande1 == "branche") {
@@ -83,7 +83,7 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 			}
 
 			if(valued) {
-				// Coordonnées de la branche sur laquelle la valeur doit être ajoutée
+				// Coordonnï¿½es de la branche sur laquelle la valeur doit ï¿½tre ajoutï¿½e
 				vector<int> brancheId = getIntParameters(ligne);
 
 				dataTree->createValeur(0, ANY, brancheId, valeurName, valeur);
@@ -101,7 +101,7 @@ void AddDataCommande::executeIt(std::string ligne, bool userOutput) throw(Illega
 }
 
 string AddDataCommande::getShortHelp() const {
-	return "Ajoute un donnée sur un arbre";
+	return "Ajoute un donnï¿½e sur un arbre";
 }
 
 string AddDataCommande::getHelp() const {

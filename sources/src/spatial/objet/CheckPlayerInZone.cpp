@@ -155,7 +155,7 @@ const char* CheckPlayerInZone::toString() {
 	return _tostring.c_str();
 }
 
-void CheckPlayerInZone::init() throw(CErreur) {
+void CheckPlayerInZone::init() {
 }
 
 void CheckPlayerInZone::initGL() {
@@ -168,12 +168,12 @@ void CheckPlayerInZone::setVisibility(bool isVisible) {
 	_isVisible = isVisible;
 }
 
-bool CheckPlayerInZone::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool CheckPlayerInZone::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	LOGWARN(("Use of not implemented method"));
 	return true;
 }
 
-bool CheckPlayerInZone::Save(TiXmlElement* element) throw(CErreur) {
+bool CheckPlayerInZone::Save(TiXmlElement* element) {
 	LOGWARN(("Use of not implemented method"));
 	return true;
 }

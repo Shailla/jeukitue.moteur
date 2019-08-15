@@ -22,8 +22,8 @@ public:
     void sendSignalement(void);
 	void sendMessageChat(const std::string& message, const std::string& userName);
 
-	std::vector<DownloadFileItem> askDownloadFileList(const int port) throw(CentralisateurTcpException);
-	void downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) throw(CentralisateurTcpException);
+	std::vector<DownloadFileItem> askDownloadFileList(const int port) noexcept(false);
+	void downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) noexcept(false);
 };
 
 #endif

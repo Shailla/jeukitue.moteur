@@ -38,7 +38,7 @@ class CSimpleMaterialGeo : public MapObject {
 	int m_NumVertex;			// Nbre de sommets
 	float* m_TabVertex;			// Pointeur sur le tableau de sommets
 
-	int getOffsetMateriau() throw(CErreur);
+	int getOffsetMateriau() noexcept(false);
 	void initVBO();
 	void freeVBO();
 	float testContactTriangle( unsigned int i, const float *pos, float dist );
@@ -56,7 +56,7 @@ public:
 	~CSimpleMaterialGeo();
 	MapObject* clone() override;
 
-	void init() throw(CErreur) override;		// Initialisation de l'objet
+	void init() noexcept(false) override;		// Initialisation de l'objet
 	void initGL() override;
 	void freeGL() override;
 
@@ -82,8 +82,8 @@ public:
 	//bool LitFichier(CIfstreamMap &fichier);			// Lit un objet géo dans un fichier Map
 	//bool SaveNameType(ofstream &fichier);				// Sauve le nom du type d'objet géométrique
 	//bool SaveFichierMap(ofstream &fichier);			// Sauve l'objet géo dans un fichier Map
-	bool Save(TiXmlElement* element) throw(CErreur) override;
-	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
+	bool Save(TiXmlElement* element) noexcept(false) override;
+	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) noexcept(false) override;
 
 	bool checkContact( const float pos[3], float dist ) override;
 

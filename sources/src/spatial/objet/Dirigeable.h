@@ -32,11 +32,11 @@ public:
 	static void Affiche(Branche* branche);
 	void refresh(CGame *game) override;								// Rafraichissement des donn�es, position, vitesse, ... de l'objet
 	MapObject* clone() override;
-	void init() throw(CErreur);
+	void init() noexcept(false);
 
 	// S�rialisation
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
-	bool Save(TiXmlElement* element) throw(CErreur) override;
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) noexcept(false) override;
+	bool Save(TiXmlElement* element) noexcept(false) override;
 };
 
 }	// JktMoteur

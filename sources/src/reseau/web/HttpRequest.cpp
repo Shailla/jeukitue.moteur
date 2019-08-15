@@ -1,7 +1,7 @@
 /*
  * HttpRequest.cpp
  *
- *  Created on: 29 déc. 2016
+ *  Created on: 29 dï¿½c. 2016
  *      Author: VGDJ7997
  */
 
@@ -15,13 +15,13 @@ using namespace std;
 
 namespace jkt {
 
-HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
+HttpRequest::HttpRequest(TcpPacket* packet) {
 
 	_bodyContentLength = 0;
 
 
 	/* ************************************************************** */
-	/* Sépare les paramètres HTTP de son body                         */
+	/* Sï¿½pare les paramï¿½tres HTTP de son body                         */
 	/* ************************************************************** */
 
 	LOGDEBUG(("\n\t* TCP REQUEST (%d bytes) :\n\t********************************'%s'", packet->getData().size(), packet->getData().c_str()));
@@ -50,14 +50,14 @@ HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
 
 
 	// ************************************************************************************
-	// Lecture de la première ligne (méthode, url/paramètres et protocole)
+	// Lecture de la premiï¿½re ligne (mï¿½thode, url/paramï¿½tres et protocole)
 
-	// Méthode HTTP
+	// Mï¿½thode HTTP
 	string methodStr = StringUtils::findAndEraseFirstWord(firstLine);
 
 	_method = HttpServer::resolveHttpMethod(methodStr);
 
-	// Endpoint et paramètres
+	// Endpoint et paramï¿½tres
 	_url = jkt::StringUtils::findAndEraseFirstWord(firstLine);
 
 	size_t bp = _url.find("?");
@@ -67,7 +67,7 @@ HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
 		_urlParameters = _url.substr(bp+1);
 	}
 	else {
-		_urlParameters = "";	// Pas de paramètres sur la requête
+		_urlParameters = "";	// Pas de paramï¿½tres sur la requï¿½te
 	}
 
 	// Protocole
@@ -75,7 +75,7 @@ HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
 
 
 	// ************************************************************************************
-	// Lecture des autres paramètres
+	// Lecture des autres paramï¿½tres
 
 	string name, value;
 
@@ -83,7 +83,7 @@ HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
 		std::size_t splitLine = line.find(HttpVocabulary::HTTP_PARAM_SEPARATOR);
 
 		if(splitLine == string::npos) {
-			LOGWARN(("Ligne de paramètre http malformée '%s'", line.c_str()));
+			LOGWARN(("Ligne de paramï¿½tre http malformï¿½e '%s'", line.c_str()));
 		}
 		else {
 			name = line.substr(0, splitLine);
@@ -98,7 +98,7 @@ HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
 				_httpParameters[name] = value;
 			}
 			else {
-				LOGWARN(("Ligne de paramètre http malformée '%s'", line.c_str()));
+				LOGWARN(("Ligne de paramï¿½tre http malformï¿½e '%s'", line.c_str()));
 			}
 		}
 	}
@@ -130,7 +130,7 @@ HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
 			_body = packet->getData().substr(splitHttpHeaderBody + 4, _bodyContentLength);
 			_status = PCOMPLET;
 		}
-		// Sinon prends ce qui est présent, on complètera avec le paquet TCP suivant
+		// Sinon prends ce qui est prï¿½sent, on complï¿½tera avec le paquet TCP suivant
 		else {
 			_body = packet->getData().substr(splitHttpHeaderBody + 4);
 			_status = PINCOMPLET;
@@ -145,7 +145,7 @@ HttpRequest::HttpRequest(TcpPacket* packet) throw(HttpException) {
 	if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_DEBUG, __FILE__)) {
 		stringstream log;
 
-		log << "\n\t- Méthode :        '" << methodStr 	<< "' (" << _method << ")";
+		log << "\n\t- Mï¿½thode :        '" << methodStr 	<< "' (" << _method << ")";
 		log << "\n\t- Endpoint :       '" << _endpoint 	<< "'";
 		log << "\n\t- Params:          '" << _urlParameters 	<< "'";
 		log << "\n\t- Protocol :       '" << _protocol 	<< "'";
@@ -176,13 +176,13 @@ HttpRequest::~HttpRequest() {
 
 void HttpRequest::complete(TcpPacket* packet) {
 	if(_status != PINCOMPLET) {
-		LOGERROR(("On ne devrait jamais être ici"));
+		LOGERROR(("On ne devrait jamais ï¿½tre ici"));
 		_status = PERROR;
 	}
 	else {
 		size_t missingData = _bodyContentLength - _body.size();
 
-		if(missingData > packet->getData().size()) {	// Complète déjà avec ce qui est présent, on complètera avec le paquet TCP suivant
+		if(missingData > packet->getData().size()) {	// Complï¿½te dï¿½jï¿½ avec ce qui est prï¿½sent, on complï¿½tera avec le paquet TCP suivant
 			_body += packet->getData();
 			_status = PINCOMPLET;	// We wait stil more data
 		}
@@ -210,7 +210,7 @@ string HttpRequest::getVerb() const {
 
 	switch(_method) {
 	case HttpServer::HTTP_UNKNOWN:
-		verb << "Méthode HTTP inconnue";
+		verb << "Mï¿½thode HTTP inconnue";
 		break;
 	case HttpServer::HTTP_GET:
 		verb << "GET";
@@ -231,8 +231,8 @@ string HttpRequest::getVerb() const {
 		verb << "OPTIONS";
 		break;
 	default:
-		verb << "Méthode HTTP inconnue";
-		LOGERROR(("On ne devrait jamais être ici"));
+		verb << "Mï¿½thode HTTP inconnue";
+		LOGERROR(("On ne devrait jamais ï¿½tre ici"));
 		break;
 	}
 
@@ -245,7 +245,7 @@ string HttpRequest::getBodyText() const {
 	return _body;
 }
 
-JsonObject* HttpRequest::getBodyJson() const throw(MalformedJsonException) {
+JsonObject* HttpRequest::getBodyJson() const {
 	return JsonObject::fromJson(_body);
 }
 

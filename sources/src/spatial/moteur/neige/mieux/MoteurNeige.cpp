@@ -40,7 +40,7 @@ MapObject* MoteurNeige::clone() {
 	return new MoteurNeige(*this);
 }
 
-void MoteurNeige::init() throw(CErreur) {
+void MoteurNeige::init() {
 }
 
 void MoteurNeige::randomPosition(Flocon& flocon) {
@@ -59,7 +59,7 @@ void MoteurNeige::randomVelocity(Flocon& flocon) {
 	flocon._acceleration.Z = -0.00003f + 0.00006f * ((float)rand() / (float)RAND_MAX);
 }
 
-bool MoteurNeige::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool MoteurNeige::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	if(strcmp(Xml::NEIGE, el->Value())) {
 		Xml::throwCorruptedMapFileException(Xml::NEIGE, el->Value());
 	}
@@ -132,7 +132,7 @@ bool MoteurNeige::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(C
 	return true;
 }
 
-bool MoteurNeige::Save(TiXmlElement* el) throw(CErreur) {
+bool MoteurNeige::Save(TiXmlElement* el) {
 
 	TiXmlElement *elEngine = new TiXmlElement(Xml::NEIGE);
 	el->LinkEndChild(elEngine);

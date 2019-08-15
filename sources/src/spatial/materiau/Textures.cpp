@@ -25,7 +25,7 @@ using namespace jkt;
 namespace jkt
 {
 
-Uint8* litFichierImage(const string &nomFichier, float alpha) throw(CErreur) {
+Uint8* litFichierImage(const string &nomFichier, float alpha) {
 	#define largeur 128
 	#define hauteur 128
 
@@ -54,7 +54,7 @@ Uint8* litFichierImage(const string &nomFichier, float alpha) throw(CErreur) {
 
 	unsigned int HAUTEUR = hauteur * 4;
 
-	for(float i=0 ; i<largeur ; i++) {		// Mets les dimensions de l'image à un format compatible
+	for(float i=0 ; i<largeur ; i++) {		// Mets les dimensions de l'image ï¿½ un format compatible
 		unsigned int pX = ((unsigned int)i) * HAUTEUR;
 
 		for(float j=0 ; j<hauteur ; j++) {	// avec openGL (puissance de 2)

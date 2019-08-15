@@ -71,22 +71,22 @@ public:
 	BrancheIterator begin(DistantTreeProxy* distant);
 
 	/* ****************************************************** */
-	// Fonctions compatibles avec les branches privées
+	// Fonctions compatibles avec les branches privï¿½es
 	/* ****************************************************** */
 
-	Branche* getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException);
-	Branche* getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException);
-	Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) throw(NotExistingValeurException);
+	Branche* getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) noexcept(false);
+	Branche* getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheId) noexcept(false);
+	Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) noexcept(false);
 
-	/** Crée une nouvelle branche et lui attribue un identifiant temporaire */
+	/** Crï¿½e une nouvelle branche et lui attribue un identifiant temporaire */
 	Branche* createSubBrancheForClient(const std::string& brancheName, int revision);
 
-	/** Crée une nouvelle valeur entière et lui attribue un identifiant temporaire */
+	/** Crï¿½e une nouvelle valeur entiï¿½re et lui attribue un identifiant temporaire */
 	Valeur* createValeurForClient(UPDATE_MODE updateMode, const std::string& valeurName, int revision, const jkt::AnyData& valeur);
 	virtual Valeur* getValeurByName(DistantTreeProxy* distant, const std::string& valeurName);
 
 	/* ****************************************************** */
-	// Fonctions non-compatibles avec les branches privées
+	// Fonctions non-compatibles avec les branches privï¿½es
 	/* ****************************************************** */
 
 	virtual Branche* getSubBrancheByName(DistantTreeProxy* distant, const std::string& brancheName);
@@ -96,29 +96,29 @@ public:
 	virtual std::vector<Valeur*>& getValeurs(DistantTreeProxy* distant);
 	virtual Valeur* getValeurByIdOrTmpId(DistantTreeProxy* distant, int valeurId);
 
-	/** Attribue son identifiant définitf à une branche temporaire */
-	virtual Branche* acceptTmpSubBranche(DistantTreeProxy* distant, int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException);
+	/** Attribue son identifiant dï¿½finitf ï¿½ une branche temporaire */
+	virtual Branche* acceptTmpSubBranche(DistantTreeProxy* distant, int brancheTmpId, int brancheId, int brancheRevision) noexcept(false);
 
-	virtual Valeur* acceptTmpValeur(DistantTreeProxy* distant, int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException);
+	virtual Valeur* acceptTmpValeur(DistantTreeProxy* distant, int valeurTmpId, int valeurId, int valeurRevision) noexcept(false);
 
-	/** Crée une nouvelle branche et lui attribue un identifiant */
-	virtual Branche* createSubBrancheForServer(DistantTreeProxy* distant, const std::string& brancheName, DONNEE_TYPE type, int revision) throw(AlreadyExistingBrancheException);
+	/** Crï¿½e une nouvelle branche et lui attribue un identifiant */
+	virtual Branche* createSubBrancheForServer(DistantTreeProxy* distant, const std::string& brancheName, DONNEE_TYPE type, int revision) noexcept(false);
 
-	/** Ajoute une branche qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
+	/** Ajoute une branche qui a dï¿½jï¿½ un identifiant car elle a par exemple ï¿½tï¿½ crï¿½ï¿½e sur le serveur puis diffusï¿½e */
 	virtual Branche* addSubBranche(DistantTreeProxy* distant, int brancheId, DONNEE_TYPE type, const std::string& brancheName, int brancheRevision);
 
-	/** Crée une nouvelle valeur entière et lui attribue un identifiant */
+	/** Crï¿½e une nouvelle valeur entiï¿½re et lui attribue un identifiant */
 	virtual Valeur* createValeurForServeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const std::string& valeurName, int revision, const jkt::AnyData& valeur);
 
-	/** Ajoute une valeur entière qui a déjà un identifiant car elle a par exemple été créée sur le serveur puis diffusée */
+	/** Ajoute une valeur entiï¿½re qui a dï¿½jï¿½ un identifiant car elle a par exemple ï¿½tï¿½ crï¿½ï¿½e sur le serveur puis diffusï¿½e */
 	virtual Valeur* addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, int valeurId, const std::string& valeurName, int valeurRevision, const jkt::AnyData& valeur);
 
 	/**
-	 * Affiche le sous-arbre et ses données et caractéristiques partagées avec les autres arbres.
-	 * Si details=false seules les informations partagées sont affichées, donc 2 arbres synchronisés
-	 * et stabilisés généreront exactement le même affichage avec cette méthode.
-	 * Si tmpId=true alors les identifiants temporaires sont affichés.
-	 * Si publicOnly=true alors les données privées ne sont affichées.
+	 * Affiche le sous-arbre et ses donnÃ©es et caractÃ©ristiques partagÃ©es avec les autres arbres.
+	 * Si details=false seules les informations partagÃ©es sont affichÃ©es, donc 2 arbres synchronisÃ©s
+	 * et stabilisÃ©s gÃ©nÃ©reront exactement le mÃªme affichage avec cette mÃ©thode.
+	 * Si tmpId=true alors les identifiants temporaires sont affichÃ©s.
+	 * Si publicOnly=true alors les donnÃ©es privÃ©es ne sont affichÃ©es.
 	 */
 	virtual void print(std::ostringstream& out, DistantTreeProxy* distant, bool tmpId, bool publicOnly, int indentation) override;
 

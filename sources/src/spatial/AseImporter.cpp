@@ -164,7 +164,7 @@ int AseImporter::importAse(void* arg) {
 	return 0;
 }
 
-void AseImporter::copieTexture(const string& fromFile, CMap *pMapASE, const path &mapDir, ConsoleView* console) throw(CErreur) {
+void AseImporter::copieTexture(const string& fromFile, CMap *pMapASE, const path &mapDir, ConsoleView* console) {
 	stringstream consoleTexte;
 	consoleTexte << "Import ASE : Copie texture '" << fromFile << "'...";
 	console->println(ConsoleView::ConsoleOutputType::COT_INFO, consoleTexte.str());

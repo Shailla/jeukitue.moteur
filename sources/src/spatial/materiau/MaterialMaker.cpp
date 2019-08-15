@@ -14,7 +14,7 @@ using namespace jkt;
 namespace jkt
 {
 
-CMaterial* CMaterialMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+CMaterial* CMaterialMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	CMaterial* mat = 0;
 
 	const char* materialType = el->Value();

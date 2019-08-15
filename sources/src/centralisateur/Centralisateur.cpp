@@ -32,10 +32,10 @@ void Centralisateur::sendMessageChat(const std::string& message, const std::stri
     _udpController->sendMessageChat(message, userName);
 }
 
-vector<DownloadFileItem> Centralisateur::askDownloadFileList(const int port) throw(CentralisateurTcpException) {
+vector<DownloadFileItem> Centralisateur::askDownloadFileList(const int port) {
     return jkt::TcpConnector::askDownloadFileList(port);
 }
 
-void Centralisateur::downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) throw(CentralisateurTcpException) {
+void Centralisateur::downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) {
     jkt::TcpConnector::downloadOneFile(port, downloadId, progressView);
 }

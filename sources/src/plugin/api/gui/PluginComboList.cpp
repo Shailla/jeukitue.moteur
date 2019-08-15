@@ -36,7 +36,7 @@ void PluginComboList::selectItemByUserId(int userId) {
 }
 
 int PluginComboList::getSelectedItemUserId()  {
-	return (int)AG_TlistSelectedItemPtr(_combo->list);
+	return (int)AG_TlistSelectedItemPtr((AG_Tlist*)_combo->list);
 }
 
 void PluginComboList::setComboSize(const string& mask)  {

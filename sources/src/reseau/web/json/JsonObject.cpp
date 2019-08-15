@@ -1,7 +1,7 @@
 /*
  * JsonString.cpp
  *
- *  Created on: 23 févr. 2016
+ *  Created on: 23 fï¿½vr. 2016
  *      Author: VGDJ7997
  */
 
@@ -40,7 +40,7 @@ JsonObject::JsonObject() {
 JsonObject::~JsonObject() {
 }
 
-JsonObject* JsonObject::fromJson(const string& json) throw(MalformedJsonException) {
+JsonObject* JsonObject::fromJson(const string& json) {
 	string var = json;
 
 	cout << "BODY:'" << json << "'";
@@ -49,8 +49,8 @@ JsonObject* JsonObject::fromJson(const string& json) throw(MalformedJsonExceptio
 	unique_ptr<JsonObject> object = readObject(0, var);
 	smatch s;
 
-	if(!regex_search(var, s, REGEX_BLANK)) {		// S'il reste des caracrères non-convertis dans le Json c'est qu'il était malformé
-		throw MalformedJsonException("Tous les caractères du Json n'ont pas pu être convertis");
+	if(!regex_search(var, s, REGEX_BLANK)) {		// S'il reste des caracrï¿½res non-convertis dans le Json c'est qu'il ï¿½tait malformï¿½
+		throw MalformedJsonException("Tous les caractï¿½res du Json n'ont pas pu ï¿½tre convertis");
 	}
 	else if(object) {
 		return object.release();
@@ -60,7 +60,7 @@ JsonObject* JsonObject::fromJson(const string& json) throw(MalformedJsonExceptio
 	}
 }
 
-JsonBoolean* JsonObject::getBoolean(const string& name, bool mandatory, bool strict) throw(BadFormatJsonException) {
+JsonBoolean* JsonObject::getBoolean(const string& name, bool mandatory, bool strict) {
 	JsonBoolean* object = 0;
 	JsonValue* value;
 
@@ -90,7 +90,7 @@ JsonBoolean* JsonObject::getBoolean(const string& name, bool mandatory, bool str
 	return object;
 }
 
-JsonNumber* JsonObject::getNumber(const std::string& name, bool mandatory, bool strict) throw(BadFormatJsonException) {
+JsonNumber* JsonObject::getNumber(const std::string& name, bool mandatory, bool strict) {
 	JsonNumber* object = 0;
 	JsonValue* value;
 
@@ -120,7 +120,7 @@ JsonNumber* JsonObject::getNumber(const std::string& name, bool mandatory, bool 
 	return object;
 }
 
-JsonString* JsonObject::getString(const std::string& name, bool mandatory, bool strict) throw(BadFormatJsonException) {
+JsonString* JsonObject::getString(const std::string& name, bool mandatory, bool strict) {
 	JsonString* object = 0;
 	JsonValue* value;
 
@@ -150,7 +150,7 @@ JsonString* JsonObject::getString(const std::string& name, bool mandatory, bool 
 	return object;
 }
 
-JsonList* JsonObject::getList(const std::string& name, bool mandatory, bool strict) throw(BadFormatJsonException) {
+JsonList* JsonObject::getList(const std::string& name, bool mandatory, bool strict) {
 	JsonList* object = 0;
 	JsonValue* value;
 
@@ -180,7 +180,7 @@ JsonList* JsonObject::getList(const std::string& name, bool mandatory, bool stri
 	return object;
 }
 
-JsonObject* JsonObject::getObject(const std::string& name, bool mandatory, bool strict) throw(BadFormatJsonException) {
+JsonObject* JsonObject::getObject(const std::string& name, bool mandatory, bool strict) {
 	JsonObject* object = 0;
 	JsonValue* value;
 
@@ -210,7 +210,7 @@ JsonObject* JsonObject::getObject(const std::string& name, bool mandatory, bool 
 	return object;
 }
 
-JsonValue* JsonObject::getValue(const std::string& name, bool mandatory) throw(BadFormatJsonException) {
+JsonValue* JsonObject::getValue(const std::string& name, bool mandatory) {
 	JsonValue* value;
 
 	try {
@@ -229,7 +229,7 @@ JsonValue* JsonObject::getValue(const std::string& name, bool mandatory) throw(B
 	return value;
 }
 
-unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) throw(MalformedJsonException) {
+unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) {
 	smatch s;
 
 	// Object
@@ -237,14 +237,14 @@ unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) throw(Mal
 
 	bool result = regex_search(json, s, REGEX_OBJECT_BEGIN);
 
-	if(result) {	// Si un objet a été trouvé
-		cout << endl << indent(depth) << "Object trouvé";
+	if(result) {	// Si un objet a ï¿½tï¿½ trouvï¿½
+		cout << endl << indent(depth) << "Object trouvï¿½";
 
 		json = s.suffix();	// Confirm object begin was read
 
 		unique_ptr<JsonObject> object(new JsonObject());
 
-		// Lit toutes les paires clé/valeur
+		// Lit toutes les paires clï¿½/valeur
 		unique_ptr<JsonPair> pair;
 		bool first= true;
 
@@ -253,7 +253,7 @@ unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) throw(Mal
 
 			if(!pair) {
 				if(first) {
-					cout << endl << "pas de paire trouvé";
+					cout << endl << "pas de paire trouvï¿½";
 					break;
 				}
 				else {
@@ -267,12 +267,12 @@ unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) throw(Mal
 			result = regex_search(json, s, REGEX_PAIR_SEPARATOR);
 
 			if(result) {
-				cout << endl << indent(depth) << "Separateur trouvé";
+				cout << endl << indent(depth) << "Separateur trouvï¿½";
 
 				json = s.suffix();	// Confirm seperator was read
 			}
 			else {
-				cout << endl << indent(depth) << "Fin des séparateurs";
+				cout << endl << indent(depth) << "Fin des sï¿½parateurs";
 				break;
 			}
 		} while(1);
@@ -280,7 +280,7 @@ unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) throw(Mal
 
 		result = regex_search(json, s, REGEX_OBJECT_END);
 
-		if(result) {	// Si un objet a été trouvé
+		if(result) {	// Si un objet a ï¿½tï¿½ trouvï¿½
 			cout << endl << indent(depth) << "Fin objet";
 
 			json = s.suffix();	// Confirm object end was read
@@ -297,7 +297,7 @@ unique_ptr<JsonObject> JsonObject::readObject(int depth, string& json) throw(Mal
 	}
 }
 
-unique_ptr<JsonList> JsonObject::readList(int depth, string& json) throw(MalformedJsonException) {
+unique_ptr<JsonList> JsonObject::readList(int depth, string& json) {
 	smatch s;
 
 	// Object
@@ -305,13 +305,13 @@ unique_ptr<JsonList> JsonObject::readList(int depth, string& json) throw(Malform
 
 	bool result = regex_search(json, s, REGEX_LIST_BEGIN);
 
-	if(result) {	// Si un objet a été trouvé
-		cout << endl << indent(depth) << "Liste trouvée";
+	if(result) {	// Si un objet a ï¿½tï¿½ trouvï¿½
+		cout << endl << indent(depth) << "Liste trouvï¿½e";
 
 		unique_ptr<JsonList> list(new JsonList());
 		json = s.suffix();	// Confirm list begin was read
 
-		// Lit toutes les paires clé/valeur
+		// Lit toutes les paires clï¿½/valeur
 		unique_ptr<JsonValue> value;
 		bool first = true;
 
@@ -336,7 +336,7 @@ unique_ptr<JsonList> JsonObject::readList(int depth, string& json) throw(Malform
 
 			if(!value) {
 				if(first) {
-					cout << endl << indent(depth) << "Pas de valeur trouvée";
+					cout << endl << indent(depth) << "Pas de valeur trouvï¿½e";
 					break;
 				}
 				else {
@@ -350,7 +350,7 @@ unique_ptr<JsonList> JsonObject::readList(int depth, string& json) throw(Malform
 			result = regex_search(json, s, REGEX_PAIR_SEPARATOR);
 
 			if(result) {
-				cout << endl << indent(depth) << "Séparateur trouvé";
+				cout << endl << indent(depth) << "Sï¿½parateur trouvï¿½";
 
 				json = s.suffix();	// Confirm list separator was read
 			}
@@ -361,7 +361,7 @@ unique_ptr<JsonList> JsonObject::readList(int depth, string& json) throw(Malform
 
 		result = regex_search(json, s, REGEX_LIST_END);
 
-		if(result) {	// Si un objet a été trouvé
+		if(result) {	// Si un objet a ï¿½tï¿½ trouvï¿½
 			cout << endl << indent(depth) << "Fin de liste";
 
 			json = s.suffix();	// Confirm list end was read
@@ -378,7 +378,7 @@ unique_ptr<JsonList> JsonObject::readList(int depth, string& json) throw(Malform
 	}
 }
 
-unique_ptr<JsonPair> JsonObject::readPair(int depth, string& json) throw(MalformedJsonException) {
+unique_ptr<JsonPair> JsonObject::readPair(int depth, string& json) {
 	smatch s;
 
 	// Object
@@ -387,7 +387,7 @@ unique_ptr<JsonPair> JsonObject::readPair(int depth, string& json) throw(Malform
 	bool result = regex_search(json, s, REGEX_PAIR_KEY);
 
 	if(result) {
-		cout << endl << indent(depth) << "Paire trouvée";
+		cout << endl << indent(depth) << "Paire trouvï¿½e";
 		string pairName = s[1];
 
 		json = s.suffix();	// Confirm pair name was read
@@ -422,12 +422,12 @@ unique_ptr<JsonPair> JsonObject::readPair(int depth, string& json) throw(Malform
 		}
 	}
 	else {
-		cout << endl << indent(depth) << "pas de paire trouvée";
+		cout << endl << indent(depth) << "pas de paire trouvï¿½e";
 		return 0;
 	}
 }
 
-unique_ptr<JsonString> JsonObject::readString(int depth, string& json) throw(MalformedJsonException) {
+unique_ptr<JsonString> JsonObject::readString(int depth, string& json) {
 	string var = json;
 	smatch s;
 
@@ -450,7 +450,7 @@ unique_ptr<JsonString> JsonObject::readString(int depth, string& json) throw(Mal
 	}
 }
 
-unique_ptr<JsonNumber> JsonObject::readNumber(int depth, string& json) throw(MalformedJsonException) {
+unique_ptr<JsonNumber> JsonObject::readNumber(int depth, string& json) {
 	string var = json;
 	smatch s;
 
@@ -473,7 +473,7 @@ unique_ptr<JsonNumber> JsonObject::readNumber(int depth, string& json) throw(Mal
 	}
 }
 
-unique_ptr<JsonBoolean> JsonObject::readBoolean(int depth, string& json) throw(MalformedJsonException) {
+unique_ptr<JsonBoolean> JsonObject::readBoolean(int depth, string& json) {
 	string var = json;
 	smatch s;
 

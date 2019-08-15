@@ -33,7 +33,7 @@ class CMultiMaterialGeo : public MapObject {
 	bool m_bSolid;								// Indique si l'objet est solide ou non
 	int m_NumVertex;							// Nbre de sommets
 	float* m_TabVertex;							// Pointeur sur le tableau de sommets
-	int getOffsetMateriau() throw(CErreur);
+	int getOffsetMateriau() noexcept(false);
 		// Canaux et coordonées de texture
 	std::map<int,int> m_CanauxNumbers;	// first=numéro de canal ; second=nombre de faces du canal
 	float* m_TabTexVertex;			// Liste des coordonnées de texture des canaux
@@ -54,7 +54,7 @@ public:
 	CMultiMaterialGeo(CMap *map);
 	~CMultiMaterialGeo();
 	MapObject* clone() override;
-	void init() throw(CErreur) override;					// Initialisation de l'objet
+	void init() noexcept(false) override;					// Initialisation de l'objet
 
 	float *m_TabVectNormaux;	// Pointeur sur le tableau des vecteurs normaux
 
@@ -77,8 +77,8 @@ public:
 	void afficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique
 
 	// Sérialisation
-	bool Save(TiXmlElement* element) throw(CErreur) override;
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
+	bool Save(TiXmlElement* element) noexcept(false) override;
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) noexcept(false) override;
 
 	// Gestion des contacts
 	bool checkContact( const float pos[3], float dist ) override;

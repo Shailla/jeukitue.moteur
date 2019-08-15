@@ -25,7 +25,7 @@
 class Fonte {
 	FT_Library _ft;
 
-	int _fonteTex;		// Texture atlas de la fonte
+	GLint _fonteTex;		// Texture atlas de la fonte
 
 	float _atlasWidth;		// Largeur de la texture atlas en pixels
 	float _atlasHeight;		// Hauteur de la texture atlas en pixels

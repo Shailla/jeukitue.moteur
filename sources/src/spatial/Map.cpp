@@ -574,15 +574,15 @@ void CMap::translate(float x, float y, float z) {
 	}
 }
 
-bool CMap::Lit(const string &nomFichier, MapLogger* mapLogger) throw(CErreur) {
+bool CMap::Lit(const string &nomFichier, MapLogger* mapLogger) {
 	return Lit(*this, nomFichier, mapLogger);
 }
 
-bool CMap::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool CMap::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger)  {
 	return false;
 }
 
-bool CMap::Save(TiXmlElement* element) throw(CErreur) {			// Sauve l'objet géo dans un fichier Map
+bool CMap::Save(TiXmlElement* element) {			// Sauve l'objet géo dans un fichier Map
 	return false;
 }
 
@@ -590,7 +590,7 @@ const string& CMap::getBinariesDirectory() {
 	return _binariesDirectory;
 }
 
-bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) throw(CErreur) {
+bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) {
 	// Répertoire et fichier de la Map
 	string mapDirectory, mapFilename;
 	bool isResource = jkt::RessourcesLoader::getRessource(mapName, mapDirectory, mapFilename);
@@ -846,7 +846,7 @@ bool CMap::Lit(CMap& map, const string& mapName, MapLogger* mapLogger) throw(CEr
 	return result;
 }
 
-void CMap::init() throw(jkt::CErreur) {	// Initialisation de la CMap
+void CMap::init() {	// Initialisation de la CMap
 	LOGINFO(("Init Map %d", getId()));
 
 	// Initialisation des object g�om�triques

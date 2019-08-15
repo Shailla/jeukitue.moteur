@@ -13,7 +13,7 @@ using namespace jkt;
 namespace jkt
 {
 
-EntryPoint* EntryPointMaker::Lit(CMap& map, TiXmlElement* el, MapLogger* mapLogger) throw(CErreur) {
+EntryPoint* EntryPointMaker::Lit(CMap& map, TiXmlElement* el, MapLogger* mapLogger) {
 	if(strcmp(el->Value(), Xml::ENTRYPOINT)) {
 		string erreur = "Fichier map corrompu : '";
 		erreur += Xml::ENTRYPOINT;

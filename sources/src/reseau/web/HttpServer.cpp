@@ -1,7 +1,7 @@
 /*
  * HtmlServer.cpp
  *
- *  Created on: 25 déc. 2015
+ *  Created on: 25 dï¿½c. 2015
  *      Author: VGDJ7997
  */
 
@@ -101,7 +101,7 @@ void WebResource::load() {
 		_content = (char*)malloc(_contentSize);
 
 		if(_contentSize == 0) {
-			LOGERROR(("Echec d'allocation mémoire pour le fichier : '%s'", _file.c_str()));
+			LOGERROR(("Echec d'allocation mï¿½moire pour le fichier : '%s'", _file.c_str()));
 			throw (int)1;
 		}
 
@@ -124,7 +124,7 @@ void WebResource::load() {
 	}
 }
 
-// Contenu en dur en dernier recours (erreur interne) pour éviter de cumuler une erreur interne avec une ressource introuvable
+// Contenu en dur en dernier recours (erreur interne) pour ï¿½viter de cumuler une erreur interne avec une ressource introuvable
 const char* HttpServer::HTTP_INTERNAL_ERROR_CONTENT = "<html><center><h1>JKT Power</h1><font size=5 color=red>Erreur interne</font></center></html>";
 
 HttpServer::HttpServer(int port) : _tcpServer(port) {
@@ -134,7 +134,7 @@ HttpServer::HttpServer(int port) : _tcpServer(port) {
 
 
 	/* ************************************ */
-	/* Réponse HTTP de base                 */
+	/* Rï¿½ponse HTTP de base                 */
 	/* ************************************ */
 
 	_basicParameters.addParameter(HttpVocabulary::HTTP_ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type");
@@ -143,7 +143,7 @@ HttpServer::HttpServer(int port) : _tcpServer(port) {
 
 
 	/* ************************************ */
-	/* Déploiement des services web			*/
+	/* Dï¿½ploiement des services web			*/
 	/* ************************************ */
 
 	_services["/rest/player-service/"] = new GetPlayersWS();
@@ -178,7 +178,7 @@ void HttpServer::collecteDir(const string& dirname, const string& endpoint, cons
 			isDir = CFindFolder::isFolder(resFile);
 
 			if(isDir) {
-				// Parcours le sous-répertoire
+				// Parcours le sous-rï¿½pertoire
 				collecteDir(resFile, resEndpoint, contentType);
 			}
 			else {
@@ -274,7 +274,7 @@ void HttpServer::start() {
 			try {
 
 				/* ****************************************** */
-				/* Réconciliation de la session HTTP          */
+				/* Rï¿½conciliation de la session HTTP          */
 				/* ****************************************** */
 
 				HttpSession* httpSession = getHttpSession(tcpPacket->getTcpSession());
@@ -286,7 +286,7 @@ void HttpServer::start() {
 
 
 				/* ****************************************** */
-				/* Décodage de la requête HTTP                */
+				/* Dï¿½codage de la requï¿½te HTTP                */
 				/* ****************************************** */
 
 				HttpRequest* httpRequest = httpSession->getCurrentRequest();
@@ -305,7 +305,7 @@ void HttpServer::start() {
 					httpSession->setCurrentRequest(httpRequest);
 				}
 				else if(httpRequest->getStatus() == HttpRequest::PERROR) {
-					LOGERROR(("Erreur de lecture de la requête HTTP"));
+					LOGERROR(("Erreur de lecture de la requï¿½te HTTP"));
 					httpSession->setCurrentRequest(0);
 				}
 				else {	// HttpRequest::PCOMPLET
@@ -322,7 +322,7 @@ void HttpServer::start() {
 
 
 					/* ****************************************** */
-					/* Recherche du contenu demandé               */
+					/* Recherche du contenu demandï¿½               */
 					/* ****************************************** */
 
 					// Search web service
@@ -387,7 +387,7 @@ void HttpServer::start() {
 						buildResponse(tcpResponse, HttpVocabulary::HTTP_RESPONSE_404, *resource);
 					}
 					else {
-						LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
+						LOGERROR(("On ne devrait jamais ï¿½tre ici (fichier d'erreur HTML manquant)"));
 					}
 
 					break;
@@ -401,12 +401,12 @@ void HttpServer::start() {
 						buildResponse(tcpResponse, HttpVocabulary::HTTP_RESPONSE_404, *resource);
 					}
 					else {
-						LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
+						LOGERROR(("On ne devrait jamais ï¿½tre ici (fichier d'erreur HTML manquant)"));
 					}
 					break;
 
 				case HttpException::MALFORMED_HTTP_REQUEST:
-					LOGWARN(("Requête http malformée reçue sur le service : '%s'", endpoint.c_str()));
+					LOGWARN(("Requï¿½te http malformï¿½e reï¿½ue sur le service : '%s'", endpoint.c_str()));
 
 					resource = getResource("/bad_http_request.html");
 
@@ -414,17 +414,17 @@ void HttpServer::start() {
 						buildResponse(tcpResponse, HttpVocabulary::HTTP_RESPONSE_400, *resource);
 					}
 					else {
-						LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant)"));
+						LOGERROR(("On ne devrait jamais ï¿½tre ici (fichier d'erreur HTML manquant)"));
 					}
 					break;
 
 				default:
-					LOGERROR(("On ne devrait jamais être ici (erreur non-maîtrisée) '%s' : %d", tcpPacket->getData().c_str(), exception.getCode()));
+					LOGERROR(("On ne devrait jamais ï¿½tre ici (erreur non-maï¿½trisï¿½e) '%s' : %d", tcpPacket->getData().c_str(), exception.getCode()));
 					break;
 				}
 			}
 			catch(MalformedJsonException& exception) {
-				LOGWARN(("La requête HTTP reçue contient un Json malformé sur le service : '%s'", endpoint.c_str()));
+				LOGWARN(("La requï¿½te HTTP reï¿½ue contient un Json malformï¿½ sur le service : '%s'", endpoint.c_str()));
 
 				resource = getResource("/bad_http_request.html");
 
@@ -432,7 +432,7 @@ void HttpServer::start() {
 					buildResponse(tcpResponse, HttpVocabulary::HTTP_RESPONSE_400, *resource);
 				}
 				else {
-					LOGERROR(("On ne devrait jamais être ici (fichier d'erreur HTML manquant) '%s' : %d", endpoint.c_str(), exception));
+					LOGERROR(("On ne devrait jamais ï¿½tre ici (fichier d'erreur HTML manquant) '%s' : %d", endpoint.c_str(), exception));
 				}
 			}
 			catch(std::exception& exception) {
@@ -443,7 +443,7 @@ void HttpServer::start() {
 			}
 
 			if(!tcpResponse.isEmpty()) {
-				// Envoi réponse
+				// Envoi rï¿½ponse
 				if(Trace::instance().isLogLevelEnabled(TraceLevel::TRACE_LEVEL_DEBUG, __FILE__)) {
 					LOGDEBUG(("\n\tHTTP RESPONSE full :\n\t********************************\n'%s'", tcpResponse.getResponseString().c_str()));
 				}
@@ -470,7 +470,7 @@ WebService* HttpServer::getService(const string& fullEndpoint, string& baseEndpo
 	return 0;
 }
 
-WebResource* HttpServer::getResource(const string& endpoint) throw(int) {
+WebResource* HttpServer::getResource(const string& endpoint) {
 	try {
 		return _resources.at(endpoint);
 	}
@@ -488,7 +488,7 @@ void HttpServer::buildResponse(HttpResponse& tcpResponse, const string& status, 
 }
 
 void HttpServer::buildResponse(HttpResponse& tcpResponse, const string& status, const string& contentType, long contentSize, void* content) {
-	// Paramètres
+	// Paramï¿½tres
 	HttpParameters params(_basicParameters);
 	params.addParameter(HttpVocabulary::HTTP_CONTENT_TYPE, contentType);
 	params.addParameter(HttpVocabulary::HTTP_CONTENT_LENGTH, contentSize);

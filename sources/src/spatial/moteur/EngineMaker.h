@@ -1,11 +1,11 @@
-#pragma warning( disable : 4290 )	// Evite les warnings sur les déclaration de throw
+#pragma warning( disable : 4290 )	// Evite les warnings sur les dï¿½claration de throw
 
 #ifndef __JKT__ENGINEMAKER_H
 #define __JKT__ENGINEMAKER_H
 
-/**	Cette classe a pour rôle de servir de réceptable des données concernant un
-	nouvel objet géométrique, puis une fois toutes les données disponibles,
-	elle sert surtout à créer un objet géométrique (CGeo) optimisé pour
+/**	Cette classe a pour rï¿½le de servir de rï¿½ceptable des donnï¿½es concernant un
+	nouvel objet gï¿½omï¿½trique, puis une fois toutes les donnï¿½es disponibles,
+	elle sert surtout ï¿½ crï¿½er un objet gï¿½omï¿½trique (CGeo) optimisï¿½ pour
 	le type d'affichage de l'objet (avec ou sans texture, indexation,...).
 */
 
@@ -27,7 +27,7 @@ class CMoteurParticules;
 class EngineMaker
 {
 public:
-	static CMoteurParticules* Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur);
+	static CMoteurParticules* Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) noexcept(false);
 };
 
 }	// JktMoteur

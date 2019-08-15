@@ -53,7 +53,7 @@ Branche* LocalDataTree::createPrivateBranche(const vector<int>& parentBrancheId,
 	return branche;
 }
 
-Branche* LocalDataTree::getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) throw(NotExistingBrancheException) {
+Branche* LocalDataTree::getBrancheFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId) {
 	vector<int>::const_iterator iter;
 
 	Branche* branche = &getRoot();
@@ -70,7 +70,7 @@ Branche* LocalDataTree::getBrancheFromDistant(DistantTreeProxy* distant, const v
 	return branche;
 }
 
-Valeur* LocalDataTree::getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) throw(NotExistingValeurException, NotExistingBrancheException) {
+Valeur* LocalDataTree::getValeurFromDistant(DistantTreeProxy* distant, const vector<int>& brancheId, int valeurId) {
 	vector<int>::const_iterator iter;
 
 	Branche* branche = &getRoot();

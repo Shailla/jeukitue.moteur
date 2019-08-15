@@ -39,7 +39,7 @@ void DataSerializer::toStream(vector<Changement*>& changements, ostringstream& o
 	}
 }
 
-void DataSerializer::fromStream(vector<Changement*>& changements, istringstream& in) throw(DataCommunicationException) {
+void DataSerializer::fromStream(vector<Changement*>& changements, istringstream& in) {
 	in.exceptions(istringstream::eofbit|istringstream::failbit|istringstream::badbit);
 
 	int messageType;
@@ -119,9 +119,9 @@ void DataSerializer::fromStream(vector<Changement*>& changements, istringstream&
 		}
 	}
 	catch(StreamUtils::EndOfStreamException& exception) {
-		// La fin du flux a été atteinte, on peut ressortir
+		// La fin du flux a ï¿½tï¿½ atteinte, on peut ressortir
 	}
 	catch(StreamUtils::ReadStreamError& error) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << " Une erreur s'est produite pendant la lecture du flux ou sa fin a été atteinte de manière prématurée";
+		cerr << endl << __FILE__ << ":" << __LINE__ << " Une erreur s'est produite pendant la lecture du flux ou sa fin a ï¿½tï¿½ atteinte de maniï¿½re prï¿½maturï¿½e";
 	}
 }

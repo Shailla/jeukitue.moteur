@@ -13,7 +13,7 @@
 #include "script/commandes/Commande.h"
 
 class DataCommande : public Commande {
-	void executeIt(std::string ligne, bool userOutput) throw(IllegalParameterException);
+	void executeIt(std::string ligne, bool userOutput) noexcept(false);
 
 public:
 	DataCommande (CommandeInterpreter* interpreter);

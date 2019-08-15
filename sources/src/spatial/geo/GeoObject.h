@@ -75,7 +75,7 @@ private:
 	void AfficheWithMaterialMultiTexture( CMaterialMulti *mat );
 	void AfficheWithMaterialTexture(CMaterialTexture *mat, int canal);
 	void AfficheWithMaterialSimple( CMaterial *mat );
-	int getOffsetMateriau() throw(CErreur);
+	int getOffsetMateriau() noexcept(false);
 
 	void AfficheNormals();
 
@@ -99,15 +99,15 @@ public:
 	void setSubMat( int *tab );					// Impl�mente les r�f de sous mat�riau
 
 	// Fonctions pour l'interface CGeo
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override {return true;}
-	bool Save(TiXmlElement* element) throw(CErreur) override;
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) noexcept(false) override {return true;}
+	bool Save(TiXmlElement* element) noexcept(false) override;
 
 	bool checkContact( const float pos[3], float dist ) override;
 
 	void affiche() override;									// Affiche cet objet g�o
 	void afficheHighlighted(float r,float v,float b) override;	// Affiche l'objet en couleur unique
 
-	void init() throw(CErreur) override;						// Initialisation de l'objet
+	void init() noexcept(false) override;						// Initialisation de l'objet
 	const char* toString() override;
 };
 

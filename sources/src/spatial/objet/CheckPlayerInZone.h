@@ -47,9 +47,9 @@ public:
 	MapObject* clone() override;
 
 	// Object
-	void init() throw(CErreur) override;								// Initialisation de l'objet
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
-	bool Save(TiXmlElement* element) throw(CErreur) override;
+	void init() noexcept(false) override;								// Initialisation de l'objet
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) noexcept(false) override;
+	bool Save(TiXmlElement* element) noexcept(false) override;
 
 	// Geometrical
 	void echangeXY() override;										// Echange les coordonn�es X et Y de l'objet

@@ -1,7 +1,7 @@
 /*
  * JsonObject.h
  *
- *  Created on: 23 févr. 2016
+ *  Created on: 23 fï¿½vr. 2016
  *      Author: VGDJ7997
  */
 
@@ -38,12 +38,12 @@ class JsonObject : public JsonValue {
 	static std::regex REGEX_BLANK;
 
 	static std::string indent(int depth);
-	static std::unique_ptr<JsonObject> readObject(int depth, std::string& json) throw(MalformedJsonException);
-	static std::unique_ptr<JsonPair> readPair(int depth, std::string& json) throw(MalformedJsonException);
-	static std::unique_ptr<JsonString> readString(int depth, std::string& json) throw(MalformedJsonException);
-	static std::unique_ptr<JsonNumber> readNumber(int depth, std::string& json) throw(MalformedJsonException);
-	static std::unique_ptr<JsonBoolean> readBoolean(int depth, std::string& json) throw(MalformedJsonException);
-	static std::unique_ptr<JsonList> readList(int depth, std::string& json) throw(MalformedJsonException);
+	static std::unique_ptr<JsonObject> readObject(int depth, std::string& json) noexcept(false);
+	static std::unique_ptr<JsonPair> readPair(int depth, std::string& json) noexcept(false);
+	static std::unique_ptr<JsonString> readString(int depth, std::string& json) noexcept(false);
+	static std::unique_ptr<JsonNumber> readNumber(int depth, std::string& json) noexcept(false);
+	static std::unique_ptr<JsonBoolean> readBoolean(int depth, std::string& json) noexcept(false);
+	static std::unique_ptr<JsonList> readList(int depth, std::string& json) noexcept(false);
 
 	std::map<std::string, JsonValue*> _pairs;
 
@@ -67,14 +67,14 @@ public:
 	JsonList* isJsonList() override;
 
 	void toJson(std::stringstream& buffer) override;
-	static JsonObject* fromJson(const std::string& json) throw(MalformedJsonException);
+	static JsonObject* fromJson(const std::string& json) noexcept(false);
 
-	JsonValue* getValue(const std::string& name, bool mandatory) throw(BadFormatJsonException);
-	JsonBoolean* getBoolean(const std::string& name, bool mandatory, bool strict = true) throw(BadFormatJsonException);
-	JsonNumber* getNumber(const std::string& name, bool mandatory, bool strict = true) throw(BadFormatJsonException);
-	JsonString* getString(const std::string& name, bool mandatory, bool strict = true) throw(BadFormatJsonException);
-	JsonObject* getObject(const std::string& name, bool mandatory, bool strict = true) throw(BadFormatJsonException);
-	JsonList* getList(const std::string& name, bool mandatory, bool strict = true) throw(BadFormatJsonException);
+	JsonValue* getValue(const std::string& name, bool mandatory) noexcept(false);
+	JsonBoolean* getBoolean(const std::string& name, bool mandatory, bool strict = true) noexcept(false);
+	JsonNumber* getNumber(const std::string& name, bool mandatory, bool strict = true) noexcept(false);
+	JsonString* getString(const std::string& name, bool mandatory, bool strict = true) noexcept(false);
+	JsonObject* getObject(const std::string& name, bool mandatory, bool strict = true) noexcept(false);
+	JsonList* getList(const std::string& name, bool mandatory, bool strict = true) noexcept(false);
 };
 
 } /* namespace jkt */

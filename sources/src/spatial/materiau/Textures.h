@@ -1,4 +1,4 @@
-#pragma warning( disable : 4290 )	// Evite les warnings sur les déclaration de throw
+#pragma warning( disable : 4290 )	// Evite les warnings sur les dï¿½claration de throw
 
 #ifndef __JKT__TEXTURES_H
 #define __JKT__TEXTURES_H
@@ -11,32 +11,32 @@ class Icone;
 class Texture;
 
 /**
- * Lit un fichier image pour créer une texture affichable dans OpenGL.
+ * Lit un fichier image pour crï¿½er une texture affichable dans OpenGL.
  *
  * nomFichier : Chemin complet du fichier de l'image.
- * alpha : Valeur de la transparence comprise entre 0.0 et 1.0. L'alpha est désactivé si alpha < 0.
+ * alpha : Valeur de la transparence comprise entre 0.0 et 1.0. L'alpha est dï¿½sactivï¿½ si alpha < 0.
  */
-Uint8* litFichierImage(const std::string &nomFichier, float alpha) throw(jkt::CErreur);
+Uint8* litFichierImage(const std::string &nomFichier, float alpha) noexcept(false);
 
 /**
- * Crée une texture affichable dans OpenGL à partir des données d'une image.
+ * Crï¿½e une texture affichable dans OpenGL ï¿½ partir des donnï¿½es d'une image.
  *
- * nomFichier : Ressource ou identificateur quelquonque de l'image (utilisé pour les logs applicatifs).
- * alpha : Valeur de la transparence comprise entre 0.0 et 1.0. L'alpha est désactivé si alpha < 0.
- * pixels : Données de l'image.
+ * nomFichier : Ressource ou identificateur quelquonque de l'image (utilisï¿½ pour les logs applicatifs).
+ * alpha : Valeur de la transparence comprise entre 0.0 et 1.0. L'alpha est dï¿½sactivï¿½ si alpha < 0.
+ * pixels : Donnï¿½es de l'image.
  */
 Texture* litFichierTexture(const std::string &nomFichier, float alpha, Uint8* pixels);
 
 /**
- * Lit un fichier image pour créer une icone affichable dans OpenGL.
+ * Lit un fichier image pour crï¿½er une icone affichable dans OpenGL.
  *
- * nomFichier : Ressource ou identificateur quelquonque de l'image (utilisé pour les logs applicatifs).
- * alpha : Valeur de la transparence comprise entre 0.0 et 1.0. L'alpha est désactivé si alpha < 0.
- * pixels : Données de l'image.
+ * nomFichier : Ressource ou identificateur quelquonque de l'image (utilisï¿½ pour les logs applicatifs).
+ * alpha : Valeur de la transparence comprise entre 0.0 et 1.0. L'alpha est dï¿½sactivï¿½ si alpha < 0.
+ * pixels : Donnï¿½es de l'image.
  */
 Icone* litFichierIcone(const std::string &nomFichier, float alpha, Uint8* pixels);
 
-Uint32 getPixel(SDL_Surface *surface, int x, int y) throw(jkt::CErreur);
+Uint32 getPixel(SDL_Surface *surface, int x, int y) ;
 
 }	// JktMoteur
 

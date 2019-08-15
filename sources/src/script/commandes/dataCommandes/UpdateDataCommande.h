@@ -15,7 +15,7 @@
 #include "script/commandes/dataCommandes/UpdateDataCommande.h"
 
 class UpdateDataCommande : public Commande {
-	void executeIt(std::string ligne, bool userOutput) throw(IllegalParameterException);
+	void executeIt(std::string ligne, bool userOutput) noexcept(false);
 
 public:
 	UpdateDataCommande(CommandeInterpreter* interpreter);

@@ -37,7 +37,7 @@ class CTextureMaterialGeo : public MapObject {
 	bool m_bSolid;					// Indique si l'objet est solide ou non
 	int m_NumVertex;				// Nbre de faces
 	float* m_TabVertex;				// Pointeur sur le tableau de sommets
-	int getOffsetMateriau() throw(CErreur);
+	int getOffsetMateriau() noexcept(false);
 	float* m_TabTexVertex;			// Coordonnées de texture
 	// VBO
 	enum {	VBO_VERTEX=0, VBO_NORMAUX, VBO_TEXVERTEX };
@@ -63,7 +63,7 @@ public:
 	~CTextureMaterialGeo();
 	MapObject* clone() override;
 
-	void init() throw(CErreur) override;				// Initialisation de l'objet
+	void init() noexcept(false) override;				// Initialisation de l'objet
 	void initGL() override;
 	void freeGL() override;
 
@@ -80,8 +80,8 @@ public:
 	float gereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;	// Voir la définition de la fonction
 
 	// Fonctions pour l'interface CGeo
-	bool Save(TiXmlElement* element) throw(CErreur) override;
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;
+	bool Save(TiXmlElement* element) noexcept(false) override;
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) noexcept(false) override;
 
 	bool checkContact( const float pos[3], float dist ) override;
 

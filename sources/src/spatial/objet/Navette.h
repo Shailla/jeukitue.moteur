@@ -49,12 +49,12 @@ public:
 	CNavette(CMap *map);
 	~CNavette();
 
-	void init() throw(CErreur) override;					// Initialisation de l'objet g�om�trique
+	void init() noexcept(false) override;					// Initialisation de l'objet g�om�trique
 
 	void affiche() override;					// Fonction d'affichage de l'objet g�om�trique
 	void refresh( CGame *game ) override;	// Rafraichissement des donn�es, position, vitesse, ... de l'objet
 
-	bool Save(TiXmlElement* element) throw(CErreur) override;
+	bool Save(TiXmlElement* element) noexcept(false) override;
 
 	float gereLaserPlayer(float pos[3], jkt::CV3D &Dir, float dist) override;
 	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;

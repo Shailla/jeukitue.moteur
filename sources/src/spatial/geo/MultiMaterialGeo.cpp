@@ -98,7 +98,7 @@ void CMultiMaterialGeo::setTexVertex(float *tab) {
 	m_TabTexVertex = tab;
 }
 
-void CMultiMaterialGeo::init() throw(CErreur) {
+void CMultiMaterialGeo::init() {
 	MinMax();			// Mesure les minimums et maximums de l'objet g�o
 	Bulle();			// Mesure le centre et le rayon de la sph�re englobant l'objet g�o
 	ConstruitBase();	// Construit la table des vecteurs normaux
@@ -435,7 +435,7 @@ void CMultiMaterialGeo::translate( float x, float y, float z ) {
 	}
 }
 
-bool CMultiMaterialGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool CMultiMaterialGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	// Type
 	const char* type = el->Value();
 
@@ -485,7 +485,7 @@ bool CMultiMaterialGeo::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) t
 	return true;
 }
 
-bool CMultiMaterialGeo::Save(TiXmlElement* element) throw(CErreur) {
+bool CMultiMaterialGeo::Save(TiXmlElement* element) {
 	// Sauve les données générales
 	TiXmlElement* elGeo = new TiXmlElement(Xml::GEOMULTI);
 	elGeo->SetAttribute(Xml::REF, getId());

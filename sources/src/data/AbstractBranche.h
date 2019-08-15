@@ -54,28 +54,28 @@ public:
 	std::vector<int> getParentBrancheId(void) const;
 	std::vector<int> getParentBrancheIdOrTmpId(void) const;
 
-	virtual Branche* getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException) = 0;
-	virtual Branche* getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException) = 0;
+	virtual Branche* getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) noexcept(false) = 0;
+	virtual Branche* getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheId) noexcept(false) = 0;
 
-	virtual Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) throw(NotExistingValeurException) = 0;
+	virtual Valeur* getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) noexcept(false) = 0;
 
 	/**
-	 * Affiche le sous-arbre et ses données et caractéristiques partagées avec les autres arbres.
-	 * 2 arbres synchronisés et stabilisés généreront exactement le même affichage avec cette méthode.
+	 * Affiche le sous-arbre et ses donnï¿½es et caractï¿½ristiques partagï¿½es avec les autres arbres.
+	 * 2 arbres synchronisï¿½s et stabilisï¿½s gï¿½nï¿½reront exactement le mï¿½me affichage avec cette mï¿½thode.
 	 *
-	 * @param distant distant dont l'abre doit être affiché, 0 pour afficher l'abre complet avec tous les distants
+	 * @param distant distant dont l'abre doit ï¿½tre affichï¿½, 0 pour afficher l'abre complet avec tous les distants
 	 *
 	 */
 	std::string print(DistantTreeProxy* distant, bool details, bool publicOnly, int indentation);
 
 	/**
-	 * Affiche le sous-arbre et ses données et caractéristiques partagées avec les autres arbres.
-	 * Si details=false seules les informations partagées sont affichées, donc 2 arbres synchronisés
-	 * et stabilisés généreront exactement le même affichage avec cette méthode.
-	 * Si tmpId=true alors les identifiants temporaires sont affichés.
-	 * Si publicOnly=true alors les données privées ne sont affichées.
+	 * Affiche le sous-arbre et ses donnï¿½es et caractï¿½ristiques partagï¿½es avec les autres arbres.
+	 * Si details=false seules les informations partagï¿½es sont affichï¿½es, donc 2 arbres synchronisï¿½s
+	 * et stabilisï¿½s gï¿½nï¿½reront exactement le mï¿½me affichage avec cette mï¿½thode.
+	 * Si tmpId=true alors les identifiants temporaires sont affichï¿½s.
+	 * Si publicOnly=true alors les donnï¿½es privï¿½es ne sont affichï¿½es.
 	 *
-	 * @param distant distant dont l'abre doit être affiché, 0 pour afficher l'abre complet avec tous les distants
+	 * @param distant distant dont l'abre doit ï¿½tre affichï¿½, 0 pour afficher l'abre complet avec tous les distants
 	 */
 	virtual void print(std::ostringstream& out, DistantTreeProxy* distant, bool tmpId, bool publicOnly, int indentation) = 0;
 };

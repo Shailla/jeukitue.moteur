@@ -74,7 +74,7 @@ bool BrancheIterator::operator++() {
 		return true;
 	}
 
-	// Essaie de descendre, sinon recule jusqu'à pouvoir descendre ou avoir fini
+	// Essaie de descendre, sinon recule jusqu'ï¿½ pouvoir descendre ou avoir fini
 	while(_br.size()) {
 		pos = _pos.top();
 		size = _size.top();
@@ -171,7 +171,7 @@ BrancheIterator Branche::begin(DistantTreeProxy* distant) {
 	return BrancheIterator(this, distant);
 }
 
-Branche* Branche::getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) throw(NotExistingBrancheException) {
+Branche* Branche::getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int brancheId) {
 	if(brancheId >= 0) {
 		return getSubBrancheByIdOrTmpId(distant, brancheId);
 	}
@@ -180,7 +180,7 @@ Branche* Branche::getSubBrancheByIdOrDistantTmpId(DistantTreeProxy* distant, int
 	}
 }
 
-Branche* Branche::getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheTmpId) throw(NotExistingBrancheException) {
+Branche* Branche::getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int brancheTmpId) {
 	vector<Branche*>::iterator it;
 	MarqueurDistant* marqueur;
 	Branche* subBranche = NULL;
@@ -201,7 +201,7 @@ Branche* Branche::getSubBrancheByDistantTmpId(DistantTreeProxy* distant, int bra
 	return subBranche;
 }
 
-Valeur* Branche::getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) throw(NotExistingValeurException) {
+Valeur* Branche::getValeurByDistantTmpId(DistantTreeProxy* distant, int valeurTmpId) {
 	vector<Valeur*>::iterator it;
 	MarqueurDistant* marqueur;
 	Valeur* valeur = NULL;
@@ -242,10 +242,10 @@ Valeur* Branche::getValeurByIdOrTmpId(DistantTreeProxy* distant, int valeurId) {
 }
 
 Branche* Branche::createSubBrancheForClient(const string& brancheName, int revision) {
-	// Alloue une référence pour la nouvelle branche
-	int tmpRef = -_brancheTmpRefGenerator.genRef();		// On démarre à -1
+	// Alloue une rï¿½fï¿½rence pour la nouvelle branche
+	int tmpRef = -_brancheTmpRefGenerator.genRef();		// On dï¿½marre ï¿½ -1
 
-	// Vérifie si la branche n'existe pas déjà
+	// Vï¿½rifie si la branche n'existe pas dï¿½jï¿½
 	bool brancheExisting = true;
 
 	try {
@@ -257,13 +257,13 @@ Branche* Branche::createSubBrancheForClient(const string& brancheName, int revis
 
 	if(brancheExisting) {
 		stringstream message;
-		message << "La branche nommée '" << brancheName << "' de parent " << CollectionsUtils::toString(getBrancheFullId()) << " existe déjà";
+		message << "La branche nommï¿½e '" << brancheName << "' de parent " << CollectionsUtils::toString(getBrancheFullId()) << " existe dï¿½jï¿½";
 		throw AlreadyExistingBrancheException(message.str());
 	}
 
-	// Crée la nouvelle branche
+	// Crï¿½e la nouvelle branche
 	Branche* newBranche = new Branche(this, -1, brancheName, getDonneeType(), revision, tmpRef);
-	_subBranchesByTmpId[tmpRef] = newBranche;		// Moins 1 pour éviter les collisions avec les ID non temporaires
+	_subBranchesByTmpId[tmpRef] = newBranche;		// Moins 1 pour ï¿½viter les collisions avec les ID non temporaires
 	_subBranches.push_back(newBranche);
 	_subBranchesByName[brancheName] = newBranche;
 
@@ -271,11 +271,11 @@ Branche* Branche::createSubBrancheForClient(const string& brancheName, int revis
 }
 
 
-Branche* Branche::createSubBrancheForServer(DistantTreeProxy* distant, const string& brancheName, DONNEE_TYPE type, int revision) throw(AlreadyExistingBrancheException) {
-	// Alloue une référence pour la nouvelle branche
-	int ref = _brancheRefGenerator.genRef();	// On démarre à 1
+Branche* Branche::createSubBrancheForServer(DistantTreeProxy* distant, const string& brancheName, DONNEE_TYPE type, int revision) {
+	// Alloue une rï¿½fï¿½rence pour la nouvelle branche
+	int ref = _brancheRefGenerator.genRef();	// On dï¿½marre ï¿½ 1
 
-	// Vérifie si la branche n'existe pas déjà
+	// Vï¿½rifie si la branche n'existe pas dï¿½jï¿½
 	bool brancheExisting = true;
 
 	try {
@@ -287,15 +287,15 @@ Branche* Branche::createSubBrancheForServer(DistantTreeProxy* distant, const str
 
 	if(brancheExisting) {
 		stringstream message;
-		message << "La branche nommée '" << brancheName << "' de parent " << CollectionsUtils::toString(getBrancheFullId()) << " existe déjà";
+		message << "La branche nommï¿½e '" << brancheName << "' de parent " << CollectionsUtils::toString(getBrancheFullId()) << " existe dï¿½jï¿½";
 		throw AlreadyExistingBrancheException(message.str());
 	}
 
-	// Crée la nouvelle branche
+	// Crï¿½e la nouvelle branche
 	DONNEE_TYPE resultType;
 	DONNEE_TYPE parentType = getDonneeType();
 
-	if(parentType == DONNEE_PUBLIC) {		// Sur une branche serveur on peut créer une branche locale ou serveur
+	if(parentType == DONNEE_PUBLIC) {		// Sur une branche serveur on peut crï¿½er une branche locale ou serveur
 		if(type == DONNEE_PRIVATE) {
 			resultType = DONNEE_PRIVATE;
 		}
@@ -303,10 +303,10 @@ Branche* Branche::createSubBrancheForServer(DistantTreeProxy* distant, const str
 			resultType = DONNEE_PUBLIC;
 		}
 	}
-	else if(parentType == DONNEE_PRIVATE || parentType == DONNEE_PRIVATE_SUB) {	// Sur une branche client on ne peut créer qu'une donnée client fille
+	else if(parentType == DONNEE_PRIVATE || parentType == DONNEE_PRIVATE_SUB) {	// Sur une branche client on ne peut crï¿½er qu'une donnï¿½e client fille
 		resultType = DONNEE_PRIVATE_SUB;
 	}
-	else if(parentType == DONNEE_LOCAL) {	// Sur une branche local on ne peut créer qu'une donnée local
+	else if(parentType == DONNEE_LOCAL) {	// Sur une branche local on ne peut crï¿½er qu'une donnï¿½e local
 		resultType = DONNEE_LOCAL;
 	}
 	else {
@@ -335,15 +335,15 @@ Branche* Branche::addSubBranche(DistantTreeProxy* distant, int brancheId, DONNEE
 	map<int, Branche*>::iterator iter = _subBranchesById.find(brancheId);
 
 	if(iter != _subBranchesById.end()) {
-		cerr << endl << __FILE__ << ":" << __LINE__ << "La branche " << brancheId << " (" << brancheName << ") de parent " << CollectionsUtils::toString(getBrancheFullId()) << " existe déjà";
+		cerr << endl << __FILE__ << ":" << __LINE__ << "La branche " << brancheId << " (" << brancheName << ") de parent " << CollectionsUtils::toString(getBrancheFullId()) << " existe dï¿½jï¿½";
 		newBranche = iter->second;
 	}
 	else {
-		// Crée la nouvelle branche
+		// Crï¿½e la nouvelle branche
 		DONNEE_TYPE resultType;
 		DONNEE_TYPE parentType = getDonneeType();
 
-		if(parentType == DONNEE_PUBLIC) {		// Sur une branche serveur on peut créer une branche locale ou serveur
+		if(parentType == DONNEE_PUBLIC) {		// Sur une branche serveur on peut crï¿½er une branche locale ou serveur
 			if(type == DONNEE_PRIVATE) {
 				resultType = DONNEE_PRIVATE;
 			}
@@ -351,10 +351,10 @@ Branche* Branche::addSubBranche(DistantTreeProxy* distant, int brancheId, DONNEE
 				resultType = DONNEE_PUBLIC;
 			}
 		}
-		else if(parentType == DONNEE_PRIVATE || parentType == DONNEE_PRIVATE_SUB) {	// Sur une branche client on ne peut créer qu'une donnée client fille
+		else if(parentType == DONNEE_PRIVATE || parentType == DONNEE_PRIVATE_SUB) {	// Sur une branche client on ne peut crï¿½er qu'une donnï¿½e client fille
 			resultType = DONNEE_PRIVATE_SUB;
 		}
-		else if(parentType == DONNEE_LOCAL) {	// Sur une branche local on ne peut créer qu'une donnée local
+		else if(parentType == DONNEE_LOCAL) {	// Sur une branche local on ne peut crï¿½er qu'une donnï¿½e local
 			resultType = DONNEE_LOCAL;
 		}
 		else {
@@ -362,7 +362,7 @@ Branche* Branche::addSubBranche(DistantTreeProxy* distant, int brancheId, DONNEE
 			resultType = DONNEE_DEFAULT;
 		}
 
-		// Crée la nouvelle branche
+		// Crï¿½e la nouvelle branche
 		newBranche = new Branche(this, brancheId, brancheName, resultType, brancheRevision, -1);
 		_subBranchesById[brancheId] = newBranche;
 		_subBranchesByName[brancheName] = newBranche;
@@ -372,7 +372,7 @@ Branche* Branche::addSubBranche(DistantTreeProxy* distant, int brancheId, DONNEE
 	return newBranche;
 }
 
-Branche* Branche::acceptTmpSubBranche(DistantTreeProxy* distant, int brancheTmpId, int brancheId, int brancheRevision) throw(NotExistingBrancheException) {
+Branche* Branche::acceptTmpSubBranche(DistantTreeProxy* distant, int brancheTmpId, int brancheId, int brancheRevision) {
 	Branche* branche = getSubBrancheByIdOrTmpId(0, brancheTmpId);
 
 	if(!branche) {
@@ -387,7 +387,7 @@ Branche* Branche::acceptTmpSubBranche(DistantTreeProxy* distant, int brancheTmpI
 	return branche;
 }
 
-Valeur* Branche::acceptTmpValeur(DistantTreeProxy* distant, int valeurTmpId, int valeurId, int valeurRevision) throw(NotExistingValeurException) {
+Valeur* Branche::acceptTmpValeur(DistantTreeProxy* distant, int valeurTmpId, int valeurId, int valeurRevision) {
 	Valeur* valeur = getValeurByIdOrTmpId(distant, valeurTmpId);
 
 	if(!valeur) {
@@ -402,20 +402,20 @@ Valeur* Branche::acceptTmpValeur(DistantTreeProxy* distant, int valeurTmpId, int
 }
 
 Valeur* Branche::createValeurForClient(UPDATE_MODE updateMode, const string& valeurName, int revision, const AnyData& valeur) {
-	// Alloue une référence pour la nouvelle branche
-	int tmpRef = -_valeurTmpRefGenerator.genRef();		// On démarre à -1
+	// Alloue une rï¿½fï¿½rence pour la nouvelle branche
+	int tmpRef = -_valeurTmpRefGenerator.genRef();		// On dï¿½marre ï¿½ -1
 
-	// Détermine le type de la nouvelle valeur à créer
+	// Dï¿½termine le type de la nouvelle valeur ï¿½ crï¿½er
 	DONNEE_TYPE resultType;
 	DONNEE_TYPE parentType = getDonneeType();
 
-	if(parentType == DONNEE_PUBLIC) {		// Sur une branche serveur on peut créer une branche locale ou serveur
+	if(parentType == DONNEE_PUBLIC) {		// Sur une branche serveur on peut crï¿½er une branche locale ou serveur
 		resultType = DONNEE_PUBLIC;
 	}
-	else if(parentType == DONNEE_PRIVATE || parentType == DONNEE_PRIVATE_SUB) {	// Sur une branche client on ne peut créer qu'une donnée client fille
+	else if(parentType == DONNEE_PRIVATE || parentType == DONNEE_PRIVATE_SUB) {	// Sur une branche client on ne peut crï¿½er qu'une donnï¿½e client fille
 		resultType = DONNEE_PRIVATE_SUB;
 	}
-	else if(parentType == DONNEE_LOCAL) {	// Sur une branche local on ne peut créer qu'une donnée local
+	else if(parentType == DONNEE_LOCAL) {	// Sur une branche local on ne peut crï¿½er qu'une donnï¿½e local
 		resultType = DONNEE_LOCAL;
 	}
 	else {
@@ -423,7 +423,7 @@ Valeur* Branche::createValeurForClient(UPDATE_MODE updateMode, const string& val
 		resultType = DONNEE_DEFAULT;
 	}
 
-	// Crée la nouvelle branche
+	// Crï¿½e la nouvelle branche
 	Valeur* newValeur = NULL;
 
 	if(valeur.isInt()) {
@@ -445,20 +445,20 @@ Valeur* Branche::createValeurForClient(UPDATE_MODE updateMode, const string& val
 }
 
 Valeur* Branche::createValeurForServeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, const string& valeurName, int revision, const AnyData& valeur) {
-	// Alloue une référence pour la nouvelle branche
-	int ref = _valeurRefGenerator.genRef();		// On démarre à 1
+	// Alloue une rï¿½fï¿½rence pour la nouvelle branche
+	int ref = _valeurRefGenerator.genRef();		// On dï¿½marre ï¿½ 1
 
-	// Détermine le type de la nouvelle valeur à créer
+	// Dï¿½termine le type de la nouvelle valeur ï¿½ crï¿½er
 	DONNEE_TYPE resultType;
 	DONNEE_TYPE parentType = getDonneeType();
 
-	if(parentType == DONNEE_PUBLIC) {		// Sur une branche serveur on peut créer une branche locale ou serveur
+	if(parentType == DONNEE_PUBLIC) {		// Sur une branche serveur on peut crï¿½er une branche locale ou serveur
 		resultType = DONNEE_PUBLIC;
 	}
-	else if(parentType == DONNEE_PRIVATE || parentType == DONNEE_PRIVATE_SUB) {	// Sur une branche client on ne peut créer qu'une donnée client fille
+	else if(parentType == DONNEE_PRIVATE || parentType == DONNEE_PRIVATE_SUB) {	// Sur une branche client on ne peut crï¿½er qu'une donnï¿½e client fille
 		resultType = DONNEE_PRIVATE_SUB;
 	}
-	else if(parentType == DONNEE_LOCAL) {	// Sur une branche local on ne peut créer qu'une donnée local
+	else if(parentType == DONNEE_LOCAL) {	// Sur une branche local on ne peut crï¿½er qu'une donnï¿½e local
 		resultType = DONNEE_LOCAL;
 	}
 	else {
@@ -466,7 +466,7 @@ Valeur* Branche::createValeurForServeur(DistantTreeProxy* distant, UPDATE_MODE u
 		resultType = DONNEE_DEFAULT;
 	}
 
-	// Crée la nouvelle branche
+	// Crï¿½e la nouvelle branche
 	Valeur* newValeur = NULL;
 
 	if(valeur.isInt()) {
@@ -491,20 +491,20 @@ Valeur* Branche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, in
 	Valeur* newValeur = getValeurByIdOrTmpId(distant, valeurId);
 
 	if(newValeur) {
-		cout << endl << __FILE__ << ":" << __LINE__ << "La valeur " << valeurId << " (" << valeurName << ") de parent " << CollectionsUtils::toString(getBrancheFullId()) << " existe déjà";
+		cout << endl << __FILE__ << ":" << __LINE__ << "La valeur " << valeurId << " (" << valeurName << ") de parent " << CollectionsUtils::toString(getBrancheFullId()) << " existe dï¿½jï¿½";
 	}
 	else {
-		// Détermine le type de la nouvelle valeur à créer
+		// Dï¿½termine le type de la nouvelle valeur ï¿½ crï¿½er
 		DONNEE_TYPE resultType;
 		DONNEE_TYPE parentType = getDonneeType();
 
-		if(parentType == DONNEE_PUBLIC) {		// Sur une branche serveur on peut créer une branche locale ou serveur
+		if(parentType == DONNEE_PUBLIC) {		// Sur une branche serveur on peut crï¿½er une branche locale ou serveur
 			resultType = DONNEE_PUBLIC;
 		}
-		else if(parentType == DONNEE_PRIVATE || parentType == DONNEE_PRIVATE_SUB) {	// Sur une branche client on ne peut créer qu'une donnée client fille
+		else if(parentType == DONNEE_PRIVATE || parentType == DONNEE_PRIVATE_SUB) {	// Sur une branche client on ne peut crï¿½er qu'une donnï¿½e client fille
 			resultType = DONNEE_PRIVATE_SUB;
 		}
-		else if(parentType == DONNEE_LOCAL) {	// Sur une branche local on ne peut créer qu'une donnée local
+		else if(parentType == DONNEE_LOCAL) {	// Sur une branche local on ne peut crï¿½er qu'une donnï¿½e local
 			resultType = DONNEE_LOCAL;
 		}
 		else {
@@ -512,7 +512,7 @@ Valeur* Branche::addValeur(DistantTreeProxy* distant, UPDATE_MODE updateMode, in
 			resultType = DONNEE_DEFAULT;
 		}
 
-		// Crée la nouvelle valeur
+		// Crï¿½e la nouvelle valeur
 		if(valeur.isInt()) {
 			newValeur = new ValeurInt(this, valeurId, valeurName, resultType, updateMode, -1, valeurRevision, valeur.getValueInt());
 		}
@@ -553,7 +553,7 @@ void Branche::print(ostringstream& out, DistantTreeProxy* distant, bool tmpId, b
 
 	switch(getDonneeType()) {
 	case DONNEE_DEFAULT:
-		out << "+err_d";	// Une donnée ne devrait jamais être de ce type, elle est créée avec pour recevoir automatiquement son vrai type
+		out << "+err_d";	// Une donnï¿½e ne devrait jamais ï¿½tre de ce type, elle est crï¿½ï¿½e avec pour recevoir automatiquement son vrai type
 		break;
 	case DONNEE_PUBLIC:
 		out << "+pub";
@@ -587,7 +587,7 @@ void Branche::print(ostringstream& out, DistantTreeProxy* distant, bool tmpId, b
 	out << " '" << _brancheName << "'";
 
 	if(!publicOnly || getDonneeType() != DONNEE_PRIVATE) {
-		// Affiche les valeurs de la branche de manière ordonnée
+		// Affiche les valeurs de la branche de maniï¿½re ordonnï¿½e
 		vector<Valeur*> valeurs = _valeurs;
 		sort(valeurs.begin(), valeurs.end(), Valeur::highestId);
 
@@ -596,7 +596,7 @@ void Branche::print(ostringstream& out, DistantTreeProxy* distant, bool tmpId, b
 
 			switch(valeur->getDonneeType()) {
 			case DONNEE_DEFAULT:
-				out << ".err_d";	// Une donnée ne devrait jamais être de ce type, elle est créée avec pour recevoir automatiquement son vrai type
+				out << ".err_d";	// Une donnï¿½e ne devrait jamais ï¿½tre de ce type, elle est crï¿½ï¿½e avec pour recevoir automatiquement son vrai type
 				break;
 			case DONNEE_PUBLIC:
 				out << ".pub";

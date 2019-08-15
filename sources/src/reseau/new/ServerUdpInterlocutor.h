@@ -98,7 +98,7 @@ public:
 	virtual ~ServerUdpInterlocutor();
 
 	/** Connect the server. */
-	NotConnectedInterlocutor2* connect() throw(ConnectionFailedException);
+	NotConnectedInterlocutor2* connect() noexcept(false);
 
 	/** Close the server and free it's resources. */
 	void close();

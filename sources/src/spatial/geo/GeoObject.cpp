@@ -620,7 +620,7 @@ void CGeoObject::Color( float r, float g, float b ) {
 	m_Color[2] = b;
 }
 
-bool CGeoObject::Save(TiXmlElement* element) throw(CErreur) {
+bool CGeoObject::Save(TiXmlElement* element) {
 	int i=0;
 
 	// Sauve les donn�es g�n�rales
@@ -691,7 +691,7 @@ bool CGeoObject::Save(TiXmlElement* element) throw(CErreur) {
 	return true;
 }
 
-void CGeoObject::init() throw(CErreur) {
+void CGeoObject::init() {
 	MinMax();			// Mesure les minimums et maximums de l'objet g�o
 	Bulle();			// Mesure le centre et le rayon de la sph�re englobant l'objet g�o
 	ConstruitBase();	// Construit la table des vecteurs normaux

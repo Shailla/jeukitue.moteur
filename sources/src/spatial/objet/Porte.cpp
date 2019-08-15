@@ -43,7 +43,7 @@ CPorte::CPorte( CMap *map ) : CGeoObject(map) {
 CPorte::~CPorte(void) {
 }
 
-void CPorte::init() throw(CErreur) {			// Initialisation de l'objet g�om�trique
+void CPorte::init() {			// Initialisation de l'objet g�om�trique
 	CGeoObject::init();
 	m_Position = m_Centre;
 }
@@ -57,7 +57,7 @@ void CPorte::affiche() {		// Fonction d'affichage de la porte
 	glPopMatrix();
 }
 
-bool CPorte::Save(TiXmlElement* element) throw(CErreur) {	// Sauve l'objet géo dans un fichier Map
+bool CPorte::Save(TiXmlElement* element) {	// Sauve l'objet géo dans un fichier Map
 	// Sauve les données générales
 	TiXmlElement* elGeo = new TiXmlElement("Geo");
 	elGeo->SetAttribute("Ref", getId());

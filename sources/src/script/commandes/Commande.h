@@ -37,12 +37,12 @@ public:
 	void execute(const std::string& ligne, bool userOutput);
 
 	// Gestion des sous-commandes
-	Commande* getSubCommande(const std::string& subCommandeName) throw(IllegalParameterException);
+	Commande* getSubCommande(const std::string& subCommandeName) noexcept(false);
 	void registerSubCommande(const std::string& subCommandeName, Commande* subCommande);
 
-	static int getIntParameter(const std::string& word) throw(IllegalParameterException);
-	static float getFloatParameter(const std::string& word) throw(IllegalParameterException);
-	static std::vector<int> getIntParameters(const std::string& ligne) throw(IllegalParameterException);
+	static int getIntParameter(const std::string& word) noexcept(false);
+	static float getFloatParameter(const std::string& word) noexcept(false);
+	static std::vector<int> getIntParameters(const std::string& ligne) noexcept(false);
 };
 
 #endif /* COMMANDE_H_ */

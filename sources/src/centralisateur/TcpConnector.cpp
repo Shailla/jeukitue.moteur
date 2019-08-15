@@ -16,7 +16,7 @@ using namespace std;
 namespace jkt
 {
 
-vector<DownloadFileItem> TcpConnector::askDownloadFileList(const int port) throw(CentralisateurTcpException) {
+vector<DownloadFileItem> TcpConnector::askDownloadFileList(const int port) {
 	// Open a TCP connection to the Centralisateur exchange files service
 	IPaddress ip;
 	TCPsocket socket;
@@ -217,7 +217,7 @@ int downloadOneFileThread(void* threadData) {
 	return 0;
 }
 
-void TcpConnector::downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) throw(CentralisateurTcpException) {
+void TcpConnector::downloadOneFile(const int port, const long downloadId, ProgressBarView* progressView) {
 	DownloadOneFileThreadData* threadData = new DownloadOneFileThreadData();
 	threadData->_port = port;
 	threadData->_downloadId = downloadId;

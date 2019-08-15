@@ -81,10 +81,10 @@ do					\
 class CTcpUtils
 {
 public:
-	static int loadInteger(const TCPsocket socket) throw(CentralisateurTcpException);
-	static long loadLong(const TCPsocket socket) throw(CentralisateurTcpException);
-	static char* loadString(const TCPsocket socket) throw(CentralisateurTcpException);
-	static char* loadCharsBySize(const TCPsocket socket, const int size) throw(CentralisateurTcpException);
+	static int loadInteger(const TCPsocket socket) noexcept(false);
+	static long loadLong(const TCPsocket socket) noexcept(false);
+	static char* loadString(const TCPsocket socket) noexcept(false);
+	static char* loadCharsBySize(const TCPsocket socket, const int size) noexcept(false);
 };
 
 }

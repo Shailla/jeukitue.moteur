@@ -63,7 +63,7 @@ MapObject* GeoGroup::clone() {
 	return new GeoGroup(*this);
 }
 
-void GeoGroup::init() throw(CErreur) {
+void GeoGroup::init() {
 	for(MapObject* geo : _geos) {
 		geo->init();
 	}
@@ -167,7 +167,7 @@ void GeoGroup::affiche() {
 	}
 }
 
-bool GeoGroup::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool GeoGroup::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	// Type
 	const char* type = el->Value();
 
@@ -245,7 +245,7 @@ void GeoGroup::setTransformation(const float transformation[16]) {
 	}
 }
 
-bool GeoGroup::Save(TiXmlElement* element) throw(CErreur) {
+bool GeoGroup::Save(TiXmlElement* element) {
 	LOGWARN(("Use of not implemented method"));
 	return true;
 }

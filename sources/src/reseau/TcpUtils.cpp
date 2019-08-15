@@ -7,8 +7,7 @@
 namespace jkt
 {
 
-int CTcpUtils::loadInteger(const TCPsocket socket) throw(CentralisateurTcpException)
-{
+int CTcpUtils::loadInteger(const TCPsocket socket) {
 	// Read the number size of the string
 	const int SIZE = 4;
 
@@ -24,8 +23,7 @@ int CTcpUtils::loadInteger(const TCPsocket socket) throw(CentralisateurTcpExcept
     return (int) SDLNet_Read32(data);
 }
 
-long CTcpUtils::loadLong(const TCPsocket socket) throw(CentralisateurTcpException)
-{
+long CTcpUtils::loadLong(const TCPsocket socket) {
 	// Read the number size of the string
 	const int SIZE = 8;
 
@@ -41,8 +39,7 @@ long CTcpUtils::loadLong(const TCPsocket socket) throw(CentralisateurTcpExceptio
     return (long) JktNet_Read64(data);
 }
 
-char* CTcpUtils::loadString(const TCPsocket socket) throw(CentralisateurTcpException)
-{
+char* CTcpUtils::loadString(const TCPsocket socket) {
 	// Read the number size of the string
 	int strSize = loadInteger(socket);
 
@@ -61,8 +58,7 @@ char* CTcpUtils::loadString(const TCPsocket socket) throw(CentralisateurTcpExcep
     return data;
 }
 
-char* CTcpUtils::loadCharsBySize(const TCPsocket socket, const int size) throw(CentralisateurTcpException)
-{
+char* CTcpUtils::loadCharsBySize(const TCPsocket socket, const int size) {
 	// Read the string itself
 	char* data = new char[size];
 	int num = SDLNet_TCP_Recv(socket, data, size);

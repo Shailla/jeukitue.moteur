@@ -17,7 +17,7 @@ class CMap;
 
 class AseImporter {
 	static int importAse(void* arg);
-	static void copieTexture(const std::string& fromFile, CMap *pMapASE, const boost::filesystem::path& mapDir, ConsoleView* console ) throw(CErreur);
+	static void copieTexture(const std::string& fromFile, CMap *pMapASE, const boost::filesystem::path& mapDir, ConsoleView* console ) noexcept(false);
 	
 public:
 	static void lanceImportAse(const std::string& aseFilename, ConsoleView* console);

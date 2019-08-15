@@ -10,7 +10,7 @@
 namespace jkt
 {
 
-CLight* CLightMaker::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+CLight* CLightMaker::Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) {
 	const char* type = element->Value();
 	CLight* light = 0;
 

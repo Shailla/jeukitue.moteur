@@ -1,7 +1,7 @@
 /*
  * HttpServer.h
  *
- *  Created on: 25 déc. 2015
+ *  Created on: 25 dï¿½c. 2015
  *      Author: VGDJ7997
  */
 
@@ -101,7 +101,7 @@ public:
 	void start();
 
 	WebService* getService(const std::string& fullEndpoint, std::string& baseEndpoint, std::string& serviceEndpoint);
-	WebResource* getResource(const std::string& endpoint) throw(int);
+	WebResource* getResource(const std::string& endpoint) noexcept(false);
 };
 
 }	// jkt

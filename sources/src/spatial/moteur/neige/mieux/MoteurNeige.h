@@ -42,14 +42,14 @@ public:
 	~MoteurNeige();
 
 	MapObject* clone() override;
-	void init() throw(CErreur) override;
+	void init() noexcept(false) override;
 
-	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) override;	// Lit l'objet depuis un fichier Map
-	bool Save(TiXmlElement* element) throw(CErreur) override;					// Sauve l'objet dans un fichier Map
+	bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) noexcept(false) override;	// Lit l'objet depuis un fichier Map
+	bool Save(TiXmlElement* element) noexcept(false) override;					// Sauve l'objet dans un fichier Map
 
-	// Fonctions d'intialisation et lib�ration
-	void initGL() override;			// Initialisation de l'objet g�om�trique
-	void freeGL() override;			// Lib�ration des ressources de l'objet dans le contexte OpenGL
+	// Fonctions d'intialisation et libération
+	void initGL() override;			// Initialisation de l'objet géométrique
+	void freeGL() override;			// Libération des ressources de l'objet dans le contexte OpenGL
 
 	/** Affiche la neige. */
 	void affiche() override;								// Affiche l'ensemble des particules

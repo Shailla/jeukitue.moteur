@@ -23,7 +23,7 @@ DataCommande::DataCommande(CommandeInterpreter* interpreter) : Commande(interpre
 	registerSubCommande("update", new UpdateDataCommande(interpreter));
 }
 
-void DataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalParameterException) {
+void DataCommande::executeIt(std::string ligne, bool userOutput) {
 	string subCommande1 = StringUtils::findAndEraseFirstWord(ligne);
 
 	Commande* subCommande = getSubCommande(subCommande1);	// Throws IllegalParameterException if the sub command is not found
@@ -40,7 +40,7 @@ void DataCommande::executeIt(std::string ligne, bool userOutput) throw(IllegalPa
 }
 
 string DataCommande::getShortHelp() const {
-	return "Manipule les arbres de données";
+	return "Manipule les arbres de donnï¿½es";
 }
 
 string DataCommande::getHelp() const {

@@ -26,7 +26,7 @@ class CCfg;
 namespace jkt
 {
 
-CMoteurParticules* EngineMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+CMoteurParticules* EngineMaker::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	const char* elType = el->Value();
 	CMoteurParticules* engine;
 

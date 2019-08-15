@@ -27,7 +27,7 @@ MapObject* EntryPoint::clone() {
 	return new EntryPoint(*this);
 }
 
-void EntryPoint::init() throw(CErreur) {
+void EntryPoint::init() {
 
 }
 
@@ -35,7 +35,7 @@ CV3D EntryPoint::getEntryPosition() {
 	return _entryPosition;
 }
 
-bool EntryPoint::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) {
+bool EntryPoint::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) {
 	// Position
 	float pos[3];
 	Xml::LitPosition3fv(el, Xml::POSITION, pos);
@@ -44,7 +44,7 @@ bool EntryPoint::Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CE
 	return true;
 }
 
-bool EntryPoint::Save(TiXmlElement* el) throw(CErreur) {
+bool EntryPoint::Save(TiXmlElement* el) {
 	TiXmlElement* elEntry = new TiXmlElement(Xml::ENTRYPOINT);
 	el->LinkEndChild(elEntry);
 

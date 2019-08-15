@@ -24,11 +24,11 @@ public:
 	virtual ~EntryPoint();
 
 	MapObject* clone() override;
-	void init() throw(CErreur) override;
+	void init() noexcept(false) override;
 
 	// Méthodes de sérialisation
-	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) throw(CErreur) override;		// Lit le point d'entr�e joueur d'un fichier Map format XML
-	bool Save(TiXmlElement* element) throw(CErreur) override;							// Lit le point d'entr�e joueur dans un fichier Map format XML
+	bool Lit(TiXmlElement* element, CMap& map, MapLogger* mapLogger) noexcept(false) override;		// Lit le point d'entr�e joueur d'un fichier Map format XML
+	bool Save(TiXmlElement* element) noexcept(false) override;							// Lit le point d'entr�e joueur dans un fichier Map format XML
 
 	// M�thodes de manipulation g�om�trique
 	void echangeXY() override;										// Echange les coordonn�es X et Y de l'objet

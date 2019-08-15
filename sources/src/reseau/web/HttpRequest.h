@@ -1,7 +1,7 @@
 /*
  * HttpRequest.h
  *
- *  Created on: 29 déc. 2016
+ *  Created on: 29 dï¿½c. 2016
  *      Author: VGDJ7997
  */
 
@@ -41,7 +41,7 @@ private:
 	STATUS _status;
 
 public:
-	HttpRequest(TcpPacket* tcpPacket) throw(HttpException);
+	HttpRequest(TcpPacket* tcpPacket) noexcept(false);
 	virtual ~HttpRequest();
 
 	void complete(TcpPacket* tcpPacket);
@@ -53,7 +53,7 @@ public:
 
 	std::string getVerb() const;
 	std::string getBodyText() const;
-	JsonObject* getBodyJson() const throw(MalformedJsonException);
+	JsonObject* getBodyJson() const noexcept(false);
 };
 
 }

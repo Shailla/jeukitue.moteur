@@ -139,7 +139,7 @@ CNavette::CNavette(CMap *map) : CGeoObject(map) {
 CNavette::~CNavette(void) {
 }
 
-void CNavette::init() throw(CErreur) {			// Initialisation de l'objet g�om�trique
+void CNavette::init() {			// Initialisation de l'objet g�om�trique
 	CGeoObject::init();
 }
 
@@ -153,7 +153,7 @@ void CNavette::affiche() {		// Fonction d'affichage de la navette
 	glPopMatrix();
 }
 
-bool CNavette::Save(TiXmlElement* element) throw(CErreur) {	// Sauve l'objet g�o dans un fichier Map
+bool CNavette::Save(TiXmlElement* element) {	// Sauve l'objet g�o dans un fichier Map
 	// Sauve les donn�es g�n�rales
 	TiXmlElement* elGeo = new TiXmlElement("Geo");
 	elGeo->SetAttribute("Ref", getId());

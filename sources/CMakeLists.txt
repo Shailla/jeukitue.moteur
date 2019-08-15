@@ -11,7 +11,7 @@ set(CMAKE_CXX_FLAGS "-ggdb -Wall -Wno-unknown-pragmas -std=c++14 -fpermissive")
  
 find_package(Boost REQUIRED COMPONENTS filesystem program_options) 
 find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
+# find_package(GLEW REQUIRED)	La détection GLEW ne fonctionne plus avec CMake 3.15.2
 find_package(LUA REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(PNG REQUIRED)
@@ -48,7 +48,7 @@ include_directories("src")
 include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${TREADS_INCLUDE_DIR})
 include_directories(${OPENGL_INCLUDE_DIR})
-include_directories(${GLEW_INCLUDE_DIR})
+include_directories("C:/msys64/mingw64/include/GL")	# For GLEW
 include_directories(${LUA_INCLUDE_DIR})
 include_directories(${JPEG_INCLUDE_DIR})
 include_directories(${PNG_INCLUDE_DIR})
@@ -94,5 +94,5 @@ target_link_libraries(
 	ag_core ag_gui ag_dev
 	${SDL_IMAGE_LIBRARY} ${SDL_NET_LIBRARY} ${SDL_LIBRARY}
 	fmod64vc
-	Iphlpapi ziparch mingw32 winmm ${FREETYPE_LIBRARIES} ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${Boost_LIBRARIES} ws2_32 pthread ${LUA_LIBRARIES} ${JPEG_LIBRARIES} ${PNG_LIBRARIES} dxguid
+	Iphlpapi ziparch mingw32 winmm ${FREETYPE_LIBRARIES} libglew32.dll.a ${OPENGL_LIBRARIES} ${Boost_LIBRARIES} ws2_32 pthread ${LUA_LIBRARIES} ${JPEG_LIBRARIES} ${PNG_LIBRARIES} dxguid
 )

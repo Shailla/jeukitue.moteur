@@ -431,7 +431,7 @@ vector<MapObject*>& CMap::getMapObjects() {
 	return _objects;
 }
 
-void CMap::gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) {
+void CMap::gereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	float positionPlayerDefault[3];
 
 	if(!positionPlayer) {
@@ -440,12 +440,12 @@ void CMap::gereContactPlayer(float positionPlayer[3], CPlayer *player, float del
 	}
 
 	for(SolidAndTargettable* solid : _solidAndTargettables) {
-		solid->gereContactPlayer(positionPlayer, player, deltaTime);	// Gère les contacts entre l'objet géo et le joueur
+		solid->gereContactPlayer(positionPlayer, player);	// Gère les contacts entre l'objet géo et le joueur
 	}
 
 	// Contacts dans les sous-Map
 	for(auto& subMap : _subMaps) {
-		subMap.second->gereContactPlayer(positionPlayer, player, deltaTime);
+		subMap.second->gereContactPlayer(positionPlayer, player);
 	}
 }
 

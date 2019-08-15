@@ -32,7 +32,7 @@ public:
 
 	bool Save(TiXmlElement* element) throw(CErreur) override;
 
-	void gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) override;
+	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;
 	float gereLaserPlayer( float pos[3], jkt::CV3D &Dir, float dist) override;
 };
 

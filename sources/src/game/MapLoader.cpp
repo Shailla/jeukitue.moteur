@@ -220,7 +220,7 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		LOGINFO(("Creation du troisieme joueur..."));
 
 		CPlayer *sprite;
-		sprite = new CPlayer();						// Cr�e un autre joueur
+		sprite = new CPlayer();						// Crée un autre joueur
 		sprite->changeAction(gravitePlayer);		// Associe au joueur une fonction de gravit�
 		sprite->changeContact(contactSprite);		// Associe une fonction pour les contacts avec la map
 		sprite->Skin( pMapJoueur );
@@ -329,7 +329,7 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	CPlayer* player;
 
 	while((player = Game.nextPlayer(curseur))) {
-		player->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravit�
+		player->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
 		player->changeContact(contactPlayer);			// Associe une fonction de gestion des contacts avec la map
 		player->Skin(pMapJoueur);
 		player->setCri( cri1.c_str() );					// Cri du joueur

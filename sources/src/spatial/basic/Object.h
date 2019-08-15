@@ -58,7 +58,7 @@ public:
 
 	// SÃ©rialisation
 	virtual bool Lit(TiXmlElement* el, CMap& map, MapLogger* mapLogger) throw(CErreur) = 0;
-	virtual bool Save(TiXmlElement* element) throw(CErreur) = 0;								// Sauve l'objet gï¿½o dans un fichier Map
+	virtual bool Save(TiXmlElement* element) throw(CErreur) = 0;								// Sauve l'objet géo dans un fichier Map
 };
 
 } /* namespace jkt */

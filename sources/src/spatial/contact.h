@@ -7,8 +7,8 @@
 namespace jkt
 {
 
-void contactPlayer(CPlayer *player, float *normal, float distanceW, float deltaTime);
-void contactSprite(CPlayer *sprite, float *normal, float distanceW, float deltaTime);	// Fonction de rebond
+void contactPlayer(CPlayer *player, float *normal, float distanceW);
+void contactSprite(CPlayer *sprite, float *normal, float distanceW);	// Fonction de rebond
 
 }	// JktMoteur
 

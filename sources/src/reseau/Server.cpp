@@ -30,8 +30,8 @@
 
 using namespace std;
 
-void jkt::contactPlayer(CPlayer *player, float *normal, float distanceW, float deltaTime);
-void gravitePlayer(Uint32 now, float deltaTime, CPlayer *player);
+void jkt::contactPlayer(CPlayer *player, float *normal, float distanceW);
+void gravitePlayer(Uint32 now, CPlayer *player, float deltaTime);
 
 extern CGame Game;
 class CMap;
@@ -158,13 +158,13 @@ bool CServer::acceptPlayer(CSPA *spa) {
 
 	// Nom du nouveau joueur
 	char nomNewPlayer[50];
-	spa->readChar( nomNewPlayer );
+	spa->readChar(nomNewPlayer);
 
 	// Création player
-	CPlayer* newPlayer = new CPlayer();						// Cr�e le r�ceptacle du nouveau joueur
-	newPlayer->changeAction(gravitePlayer);				// Associe au joueur une fonction de gravit�
+	CPlayer* newPlayer = new CPlayer();			// Crée le réceptacle du nouveau joueur
+	newPlayer->changeAction(gravitePlayer);		// Associe au joueur une fonction de gravité
 	newPlayer->changeContact(contactPlayer);	// Associe une fonction de gestion des contacts avec la map
-	newPlayer->setName( nomNewPlayer );							// Enregistre le nom du nouveau joueur
+	newPlayer->setName(nomNewPlayer);			// Enregistre le nom du nouveau joueur
 	newPlayer->init();
 
 	// Ouverture lien SPA

@@ -519,7 +519,7 @@ bool CSimpleGeo::checkContact( const float pos[3], float dist ) {
 	float distanceW;
 
 	if( testeContactPave( pos, dist ) ) {		// Teste proximité 'joueur / l'objet géo'
-		for( int i=0; i<_numFaces; i++) {		//pour chaque triangle de l'objet géo.
+		for( int i=0; i<_numFaces; i++) {		// pour chaque triangle de l'objet géo.
 			distanceW = testContactTriangle( i, pos, dist );
 			if( distanceW <= dist ) {
 				return true;
@@ -530,7 +530,7 @@ bool CSimpleGeo::checkContact( const float pos[3], float dist ) {
 	return false;
 }
 
-void CSimpleGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) {
+void CSimpleGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	if( _bSolid ) {	// Si l'objet est solide
 		float dist = player->getRayon();	// Rayon de la sphère représentant le volume du joueur
 		float distanceW;
@@ -540,7 +540,7 @@ void CSimpleGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player, flo
 				distanceW = testContactTriangle(i, positionPlayer, dist);
 
 				if(distanceW < 500.0f) {	// Teste le contact avec le joueur (1.0f = valeur arbitraire mais grande)
-					player->exeContactFunc(&_pNormalTriangle[3*i], distanceW, deltaTime);	// On a contact !
+					player->exeContactFunc(&_pNormalTriangle[3*i], distanceW);	// On a contact !
 				}
 			}
 		}
@@ -566,15 +566,16 @@ float CSimpleGeo::gereLaserPlayer( float pos[3], CV3D& Dir, float dist) {
 	CV3D AP, N, AB, AC, U, V, W, var;
 
 	// Vérifie si le laser passe à proxomité de l'objet géo
-	CV3D CP;	// Vecteur allant du point origine du laser au centre de l'objet g�o (=centre de la Bulle qui l'englobe)
+	CV3D CP;	// Vecteur allant du point origine du laser au centre de l'objet géo (=centre de la Bulle qui l'englobe)
 	CP.X = _centre[0] - pos[0];
 	CP.Y = _centre[1] - pos[1];
 	CP.Z = _centre[2] + pos[2];
 
 	float a = CP^Dir;				// Dir est normalisé
-	float bCarre = CP^CP;			// b = norme du veteur CP au carr�
+	float bCarre = CP^CP;			// b = norme du veteur CP au carré
 	float hCarre = bCarre - (a*a);	// b�=bCarre = h� + a� => h�=hCarre = b� - a�
 	float rCarre = (0.001f+_rayon)*(0.001f+_rayon);
+
 	if( hCarre > rCarre )			// Si distance (laser-centre de la sph�re) > rayon de la sphère
 		return dist;				// Alors le rayon laser ne touche pas l'objet
 
@@ -596,9 +597,9 @@ float CSimpleGeo::gereLaserPlayer( float pos[3], CV3D& Dir, float dist) {
 
 		distanceVar = -(N^AP)/(N^Dir);
 
-		if( distanceVar < 0.0f )	// Si la distance trouv�e pour ce triangle est n�gative
+		if( distanceVar < 0.0f )	// Si la distance trouvée pour ce triangle est négative
 			continue;	// Passe au triangle suivant
-		if( distanceVar > dist )	// Si elle est sup�rieure � une autre d�j� trouv�e
+		if( distanceVar > dist )	// Si elle est supérieure à une autre déjà trouvée
 			continue;	// Passe au triangle suivant
 
 		AB.X = vertex[ 3*indices[1] ] - vertex[ 3*indices[0] ];
@@ -608,7 +609,7 @@ float CSimpleGeo::gereLaserPlayer( float pos[3], CV3D& Dir, float dist) {
 		V = (Dir*distanceVar)+AP;
 		var = AB*V;
 
-		if( (N^var)<0.0f )	// Si le laser passe du mauvais c�t� du premier segment du triangle
+		if( (N^var)<0.0f )	// Si le laser passe du mauvais côté du premier segment du triangle
 			continue;	// Passe au triangle suivant
 
 		AC.X = vertex[ 3*indices[2] ] - vertex[ 3*indices[0] ];
@@ -617,7 +618,7 @@ float CSimpleGeo::gereLaserPlayer( float pos[3], CV3D& Dir, float dist) {
 
 		var = AC*V;
 
-		if( (N^var)>0.0f )	// S'il passe du mauvais c�t� du second segment du triangle
+		if( (N^var)>0.0f )	// S'il passe du mauvais côté du second segment du triangle
 			continue;	// Passe au triangle suivant
 
 		// Ici on est pass� du bon c�t� du second segment du triangle
@@ -626,7 +627,7 @@ float CSimpleGeo::gereLaserPlayer( float pos[3], CV3D& Dir, float dist) {
 
 		var = W*U;
 
-		if( (N^var)<=0.0f )	// S'il passe du bon c�t� du dernier segment du triangle
+		if( (N^var)<=0.0f )	// S'il passe du bon côté du dernier segment du triangle
 			dist = distanceVar;	// C'est qu'il le touche
 	}
 

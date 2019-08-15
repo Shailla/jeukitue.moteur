@@ -17,27 +17,27 @@ using namespace std;
 
 namespace jkt {
 
-void contactPlayer(CPlayer *player, float *normal, float distanceW, float deltaTime) {
-	float vitesse[3];
-	player->getVitesse( vitesse );
-	float var = -(vitesse[0]*normal[0]) - (vitesse[1]*normal[1]) + (vitesse[2]*normal[2]);
+void contactPlayer(CPlayer *player, float *normal, float distanceW) {
+	float deplacement[3];
+	player->getDeplacement( deplacement );
+	float var = -(deplacement[0]*normal[0]) - (deplacement[1]*normal[1]) + (deplacement[2]*normal[2]);
 
 	if( distanceW > 0.0 ) {		// Vérifie si le joueur s'approche ou s'éloigne de la surface du triangle
 		if( var > 0.0) {
-			vitesse[0] += var*normal[0]; 	// Rend le vecteur vitesse du joueur parallèle à la surface du triangle
-			vitesse[1] += var*normal[1];
-			vitesse[2] -= var*normal[2];
+			deplacement[0] += var*normal[0]; 	// Rend le vecteur vitesse du joueur parallèle à la surface du triangle
+			deplacement[1] += var*normal[1];
+			deplacement[2] -= var*normal[2];
 		}
 	}
 	else {						// Vérifie si le joueur s'approche ou s'éloigne de la surface du triangle
 		if( var < 0.0) {
-			vitesse[0] += var*normal[0]; 	// Rend le vecteur vitesse du joueur parallèle à la surface du triangle
-			vitesse[1] += var*normal[1];
-			vitesse[2] -= var*normal[2];
+			deplacement[0] += var*normal[0]; 	// Rend le vecteur vitesse du joueur parallèle à la surface du triangle
+			deplacement[1] += var*normal[1];
+			deplacement[2] -= var*normal[2];
 		}
 	}
 
-	player->setVitesse( vitesse );
+	player->setDeplacement( deplacement );
 
 	// Parmi les objets en contact avec le joeur, cherche celui dont la pente est la plus faible
 	// Un sol horizontal sous les pieds du joueur a une pente de 0, un mur vertical contre le joueur a une pente de 1
@@ -48,7 +48,7 @@ void contactPlayer(CPlayer *player, float *normal, float distanceW, float deltaT
 	}
 }
 
-void contactSprite(CPlayer *sprite, float *normal, float distanceW, float deltaTime) {	// fonction de rebond sur les parois
+void contactSprite(CPlayer *sprite, float *normal, float distanceW) {	// fonction de rebond sur les parois
 	float vitesse[3];
 	sprite->getVitesse( vitesse );
 	float var = -(vitesse[0]*normal[0]) - (vitesse[1]*normal[1]) + (vitesse[2]*normal[2]);

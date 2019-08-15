@@ -593,7 +593,7 @@ bool CMultiMaterialGeo::checkContact( const float pos[3], float dist ) {
 	return false;
 }
 
-void CMultiMaterialGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) {
+void CMultiMaterialGeo::gereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	float dist = player->getRayon();	// Rayon de la sph�re représentant le volume du joueur
 	float distanceW;
 
@@ -604,12 +604,12 @@ void CMultiMaterialGeo::gereContactPlayer(float positionPlayer[3], CPlayer *play
 				distanceW = testContactTriangle( i, positionPlayer, dist );
 
 				if( distanceW<500.0f ) // Teste le contact avec le joueur (1.0f = valeur arbitraire mais grande)
-					player->exeContactFunc(&m_pNormalTriangle[3*i], distanceW, deltaTime);	// On a contact !
+					player->exeContactFunc(&m_pNormalTriangle[3*i], distanceW);	// On a contact !
 			}
 }
 
 bool CMultiMaterialGeo::TestContactPave( const float pos[3], float dist ) {
-	// Teste si le point qui a pour position 'pos' se trouve ou non � une distance inférieure � 'dist'
+	// Teste si le point qui a pour position 'pos' se trouve ou non � une distance inférieure à 'dist'
 	// du pavé englobant l'objet
 
 	if( pos[0] < maxX+dist )
@@ -618,9 +618,9 @@ bool CMultiMaterialGeo::TestContactPave( const float pos[3], float dist ) {
 				if( pos[0] > minX-dist )
 					if( pos[1] > minY-dist )
 						if( -pos[2] > minZ-dist )
-							return true;	// Le point 'pos' est � une distance inférieure
+							return true;	// Le point 'pos' est à une distance inférieure
 
-	return false;	// Le point 'pos' se trouve � une distance supérieure
+	return false;	// Le point 'pos' se trouve à une distance supérieure
 }
 
 float CMultiMaterialGeo::gereLaserPlayer( float pos[3], CV3D &Dir, float dist) {

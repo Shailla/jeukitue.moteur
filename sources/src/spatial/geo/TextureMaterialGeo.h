@@ -76,7 +76,7 @@ public:
 	void translate( float x, float y, float z ) override;			// Translation pondérée selon X, Y et Z de l'objet
 
 	bool TestContactPave(const float pos[3], float dist);	// 'pos' est-il dans le pavé constitué des distances min/max de l'objet géo
-	void gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) override;
+	void gereContactPlayer(float positionPlayer[3], CPlayer *player) override;
 	float gereLaserPlayer(float pos[3], CV3D &Dir, float dist) override;	// Voir la définition de la fonction
 
 	// Fonctions pour l'interface CGeo

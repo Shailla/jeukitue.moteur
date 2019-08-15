@@ -262,20 +262,6 @@ void CGame::refresh(Uint32 now, float deltaTime) {
 	}
 }
 
-void CGame::gereContactPlayers(Uint32 now, float deltaTime) {	// Gère les contacts de tous les joueurs avec la map
-	CPlayer *player;
-	int curseur = -1;
-
-	while(_players.Suivant(curseur)) {		// Pour chaque joueur
-		player = _players[curseur];
-
-		if(player) {
-			player->pente(1.0f);
-			_map->gereContactPlayer(0, player, deltaTime);		// Gère les contacts avec la map de player
-		}
-	}
-}
-
 void CGame::afficheDirigeables() {
 	DataTree* dataTree = getDataTree();
 
@@ -409,32 +395,6 @@ void CGame::afficheViseur(int x, int y) const {
 	glPopMatrix();
 }
 
-void CGame::calculeDeplacementVouluTousPlayer(Uint32 now, float deltaTime) {
-	CPlayer *player;
-	int curseur = -1;
-
-	while(_players.Suivant(curseur)) {
-		player = _players[curseur];
-
-		if(player) {
-			player->calculeVitesseVoulue(now, deltaTime);
-		}
-	}
-}
-
-void CGame::deplaceTousPlayer(Uint32 now, float deltaTime) {
-	CPlayer *player;
-	int curseur = -1;
-
-	while(_players.Suivant(curseur)) {
-		player = _players[curseur];
-
-		if(player) {
-			player->deplace(now, deltaTime);
-		}
-	}
-}
-
 void CGame::faitTousRequetesClavier(Uint32 now, float deltaTime) {
 	CPlayer *player;
 	int curseur = -1;
@@ -488,26 +448,37 @@ void CGame::timer(Uint32 now, float deltaTime) {
 
 			// Applique les poussées liées à l'environnement (gravité, vent, ...)
 			if( _gravite ) {
-				player->exeActionFunc(now, deltaTime);	// TODO Gérer la gravité mais aussi la poussée de l'environnement, le vent, ...
+				player->calculeEnvironment(now, deltaTime);	// TODO Gérer la gravité mais aussi la poussée de l'environnement, le vent, ...
 			}
 
-			// Calcule du déplacement voulu du joueur
-			player->getPosition(playerPos);
-			player->getVitesse(playerVit);
-			scale(playerVit, deltaTime, deplacementVoulu);	// Déplacement voulu = vitesse * temps écoulé
+			// Calcule de la vitesse théorique voulue
+			player->calculeVitesse(deltaTime);
 
-			// Liste les objets en intersection avec le déplacement voulu du joueur
-			std::vector<MapObject*> intersections;
-			_map->listObjectIntersectionsPave(intersections, playerPos, deplacementVoulu);
+			player->calculeDeplacementVoulu(deltaTime);
 
-			for(auto& intersection : intersections) {
-				intersection->setVolatileHighlighted(0.0f, 0.0f, 1.0f);
-			}
+			// Calcule de la pente sous le joueur et réduction de la vitesse en fonction des contacts
+			player->pente(1.0f);
+			_map->gereContactPlayer(0, player);
 
-			// Liste les objets en proximité du joueur
-			std::vector<MapObject*> proximites;
-			_map->listObjectProximite(proximites, playerPos, 500.0f * deltaTime);	// TODO Affiner cette valeur de 500.0f
+			// Déplace le joueur de sa vitesse
+			player->deplace(now);
 
+//			// Calcule du déplacement voulu du joueur
+//			player->getPosition(playerPos);
+//			player->getVitesse(playerVit);
+//			scale(playerVit, deltaTime, deplacementVoulu);	// Déplacement voulu = vitesse * temps écoulé
+//
+//			// Liste les objets en intersection avec le déplacement voulu du joueur
+//			std::vector<MapObject*> intersections;
+//			_map->listObjectIntersectionsPave(intersections, playerPos, deplacementVoulu);
+//
+//			for(auto& intersection : intersections) {
+//				intersection->setVolatileHighlighted(0.0f, 1.0f, 1.0f);
+//			}
+//
+//			// Liste les objets en proximité du joueur
+//			std::vector<MapObject*> proximites;
+//			_map->listObjectProximite(proximites, playerPos, 500.0f * deltaTime);	// TODO Affiner cette valeur de 500.0f
 		}
 
 		// --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -520,9 +491,9 @@ void CGame::timer(Uint32 now, float deltaTime) {
 //
 //		refresh(now, deltaTime);					// Rafraichi les classes qui ont besoin de l'être (celles de type CMouve et CProjectil)
 //		faitTousRequetesClavier(now, deltaTime);	// Exécute les requêtes clavier sur tous les joueurs
-		calculeDeplacementVouluTousPlayer(now, deltaTime);
-		gereContactPlayers(now, deltaTime);			// Gère tous les contacts entre la map et les joueurs
-		deplaceTousPlayer(now, deltaTime);			// Déplace tous les joueurs de leurs vitesses
+//		calculeDeplacementVouluTousPlayer(now, deltaTime);
+//		gereContactPlayers(now, deltaTime);			// Gère tous les contacts entre la map et les joueurs
+//		deplaceTousPlayer(now, deltaTime);			// Déplace tous les joueurs de leurs vitesses
 	}
 
 	ConsoleView* console = ((ConsoleView*)Fabrique::getAgarView()->getView(Viewer::CONSOLE_VIEW));

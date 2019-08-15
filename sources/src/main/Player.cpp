@@ -309,6 +309,12 @@ void CPlayer::getVitesse(float vit[3]) const {
 	vit[2] = _vitesse[2];
 }
 
+void CPlayer::getDeplacement(float deplacement[3]) const {
+	deplacement[0] = _deplacement[0];
+	deplacement[1] = _deplacement[1];
+	deplacement[2] = _deplacement[2];
+}
+
 /**
  * Retourne la vitesse du joueur.
  */
@@ -325,11 +331,20 @@ void CPlayer::setVitesse(const float vit[3]) {
 	_vitesse[2] = vit[2];
 }
 
-void CPlayer::changeAction(void (*action)(Uint32 now, float deltaTime, CPlayer *player)) {
+/**
+ * Change la vitesse du joueur.
+ */
+void CPlayer::setDeplacement(const float deplacement[3]) {
+	_deplacement[0] = deplacement[0];
+	_deplacement[1] = deplacement[1];
+	_deplacement[2] = deplacement[2];
+}
+
+void CPlayer::changeAction(void (*action)(Uint32 now, CPlayer *player, float deltaTime)) {
 	_actionFunc = action;	// Définit l'action périodique à réaliser
 }
 
-void CPlayer::changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW, float deltaTime)) {
+void CPlayer::changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW)) {
 	_contactFunc = contact;	//Définit l'action à réaliser lors d'un contact avec la map
 }
 
@@ -472,15 +487,15 @@ void CPlayer::freeGL() {
 void CPlayer::createClavier()
 {	_pClavier = new CClavier();	}
 
-void CPlayer::exeActionFunc(Uint32 now, float deltaTime) {	// Exécute l'action périodique associée au joueur
+void CPlayer::calculeEnvironment(Uint32 now, float deltaTime) {	// Exécute l'action périodique associée au joueur
 	if(_actionFunc) {
-		_actionFunc(now, deltaTime, this);
+		_actionFunc(now, this, deltaTime);
 	}
 }
 
-void CPlayer::exeContactFunc(float *normal, float distanceW, float deltaTime) {	// Exécute fonction gestion contacts avec joueur
+void CPlayer::exeContactFunc(float *normal, float distanceW) {	// Exécute fonction gestion contacts avec joueur
 	if(_contactFunc) {
-		_contactFunc(this, normal, distanceW, deltaTime);
+		_contactFunc(this, normal, distanceW);
 	}
 }
 
@@ -540,12 +555,13 @@ void CPlayer::Skin(jkt::CMap *skin) {
 	_pSkin = skin;
 }
 
-void CPlayer::calculeVitesseVoulue(Uint32 now, float deltaTime) {
+void CPlayer::calculeVitesse(float deltaTime) {
 
 	/* *****************************************************
 	 * Gestion vitesse horizontale
 	 * ****************************************************/
 
+	float acceleration = PLAYER_ACCELERATION * deltaTime;
 	float speedHoriz = sqrtf(_vitesse[0]*_vitesse[0] + _vitesse[2]*_vitesse[2]);
 
 	// Si la pente est inférieure à 45° alors le joueur est considéré au sol :
@@ -555,15 +571,14 @@ void CPlayer::calculeVitesseVoulue(Uint32 now, float deltaTime) {
 		// Si le joueur n'avance pas alors on ralentit sa vitesse à l'horizatale
 		if( (_accelerationClavier[0] == 0.0f) && (_accelerationClavier[2] == 0.0f) ) {
 			// Ralentit la vitesse du joueur
-			float decelaration = deltaTime*PLAYER_ACCELERATION;
 
-			if(speedHoriz > decelaration) {
-				float decelerationRate = (speedHoriz-decelaration) / speedHoriz;
+			if(speedHoriz > acceleration) {
+				float decelerationRate = (speedHoriz - acceleration) / speedHoriz;
 
 				_vitesse[0] *= decelerationRate;
 				_vitesse[2] *= decelerationRate;
 
-				speedHoriz = speedHoriz-decelaration;
+				speedHoriz -= acceleration;
 			}
 			else {
 				_vitesse[0] = 0.0f;
@@ -574,17 +589,16 @@ void CPlayer::calculeVitesseVoulue(Uint32 now, float deltaTime) {
 		}
 		else {
 			// Applique l'accélération du clavier
-			_vitesse[0] += _accelerationClavier[0];
-			_vitesse[2] += _accelerationClavier[2];
+			_vitesse[0] += _accelerationClavier[0] * acceleration;
+			_vitesse[2] += _accelerationClavier[2] * acceleration;
 		}
-	}
 
-	// Limite la vitesse au sol du joueur
-	float maxSpeedOnGround = deltaTime * MAX_SPEED_PLAYER_ON_GROUND;
-
-	if(speedHoriz > maxSpeedOnGround) {
-		_vitesse[0] *= maxSpeedOnGround / speedHoriz;
-		_vitesse[2] *= maxSpeedOnGround / speedHoriz;
+		// Limite la vitesse au sol du joueur
+		if(speedHoriz > MAX_SPEED_PLAYER_ON_GROUND) {
+			float ajust = MAX_SPEED_PLAYER_ON_GROUND / speedHoriz;
+			_vitesse[0] *= ajust;
+			_vitesse[2] *= ajust;
+		}
 	}
 
 
@@ -593,7 +607,7 @@ void CPlayer::calculeVitesseVoulue(Uint32 now, float deltaTime) {
 	 * ****************************************************/
 
 	// Applique l'accélération du clavier
-	_vitesse[1] += _accelerationClavier[1];
+	_vitesse[1] += _accelerationClavier[1] * acceleration;
 
 
 	/* *****************************************************
@@ -601,35 +615,39 @@ void CPlayer::calculeVitesseVoulue(Uint32 now, float deltaTime) {
 	 * ****************************************************/
 
 	// Limite la vitesse du joueur dans tous les axes
-	float maxSpeed = deltaTime * MAX_SPEED_PLAYER;
 	float speed = norme(_vitesse);
 
-	if(speed > maxSpeed) {
-		_vitesse[0] *= maxSpeed / speed;
-		_vitesse[1] *= maxSpeed / speed;
-		_vitesse[2] *= maxSpeed / speed;
+	if(speed > MAX_SPEED_PLAYER) {
+		float ajust = MAX_SPEED_PLAYER / speed;
+		_vitesse[0] *= ajust;
+		_vitesse[1] *= ajust;
+		_vitesse[2] *= ajust;
 	}
 }
 
-void CPlayer::deplace(Uint32 now, float deltaTime) {
+void CPlayer::calculeDeplacementVoulu(float deltaTime) {
+	_deplacement[0] += _vitesse[0] * deltaTime;
+	_deplacement[1] += _vitesse[1] * deltaTime;
+	_deplacement[2] += _vitesse[2] * deltaTime;
+}
+
+void CPlayer::deplace(Uint32 now) {
 	// Calcule la nouvelle position
-	_position[0] += _vitesse[0];
-	_position[1] += _vitesse[1];
-	_position[2] += _vitesse[2];
+	_position[0] += _deplacement[0];
+	_position[1] += _deplacement[1];
+	_position[2] += _deplacement[2];
 }
 
 void CPlayer::faitRequeteClavier(Uint32 now, float deltaTime) {
 	float cosTeta = /*FastCos0(erwin->Teta/180.0f*Pi);*/	cosf(_teta/180.0f*Pi);
 	float sinTeta = /*FastSin0(erwin->Teta/180.0f*Pi);*/	sinf(_teta/180.0f*Pi);
 
-	float accelaration = deltaTime*PLAYER_ACCELERATION;
-
 	// Poussée verticale
-	_accelerationClavier[1] = accelaration*_pClavier->m_fMonte;
+	_accelerationClavier[1] = _pClavier->m_fMonte;
 
 	// Poussée horizontale
-	_accelerationClavier[0] = sinTeta*accelaration*_pClavier->m_fAvance + cosTeta*accelaration*_pClavier->m_fDroite;
-	_accelerationClavier[2] = cosTeta*accelaration*_pClavier->m_fAvance - sinTeta*accelaration*_pClavier->m_fDroite;
+	_accelerationClavier[0] = (sinTeta * _pClavier->m_fAvance) + (cosTeta * _pClavier->m_fDroite);
+	_accelerationClavier[2] = (cosTeta * _pClavier->m_fAvance) - (sinTeta * _pClavier->m_fDroite);
 
 	_pClavier->reset();	// Réinitialise les requêtes clavier du joueur
 }

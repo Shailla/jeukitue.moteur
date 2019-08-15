@@ -81,7 +81,7 @@ void MapObject::translate(float x, float y, float z) {
 	LOGWARN(("Use of not implemented method"));
 }
 
-void MapObject::gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) {
+void MapObject::gereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	LOGWARN(("Use of not implemented method"));
 }
 

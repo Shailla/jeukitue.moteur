@@ -189,7 +189,7 @@ CMachin *machin;	// Pour tester le son 3D
 
 NetworkManager* _networkManager;
 
-void gravitePlayer(Uint32 now, float deltaTime, CPlayer *player) {	// Fonction implémentant la gravité aux objets qui doivent la subire
+void gravitePlayer(Uint32 now, CPlayer *player, float deltaTime) {	// Fonction implémentant la gravité aux objets qui doivent la subire
 	float vitesse[3];
 	player->getVitesse( vitesse );
 
@@ -1574,6 +1574,8 @@ void communique() {
 
 void boucle() {
 	Uint32 now = SDL_GetTicks();
+	SDL_Delay(10);	// On évite la division par zéro qui serait due à une durée nulle (deltaTime)
+
 	Uint32 lastDataTreeUpdate = now;
 	Uint32 newTime, varTime;
 	float deltaTime = 0;

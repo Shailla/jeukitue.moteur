@@ -86,7 +86,7 @@ float CPorte::gereLaserPlayer(float pos[3], CV3D &Dir, float dist) {
 	return CGeoObject::gereLaserPlayer( newPos, Dir, dist );
 }
 
-void CPorte::gereContactPlayer(float positionPlayer[3], CPlayer *player, float deltaTime) {
+void CPorte::gereContactPlayer(float positionPlayer[3], CPlayer *player) {
 	float newPos[3];
 
 	// Ajustement de la position de la porte du � son ouverture (la porte monte <=> le joueur descend)
@@ -94,7 +94,7 @@ void CPorte::gereContactPlayer(float positionPlayer[3], CPlayer *player, float d
 	newPos[ 1 ] = positionPlayer[ 1 ] - m_fOuverture;
 	newPos[ 2 ] = positionPlayer[ 2 ];
 
-	CGeoObject::gereContactPlayer(newPos, player, deltaTime);
+	CGeoObject::gereContactPlayer(newPos, player);
 }
 
 void CPorte::refresh( CGame *game ) {

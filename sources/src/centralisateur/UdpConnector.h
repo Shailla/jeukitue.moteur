@@ -16,7 +16,7 @@ class UdpConnector
     SDLNet_SocketSet m_socketSet;
     UdpController* m_udpController;
     int m_channel;
-    int m_portLocal;      // Port utilisé en local (donc côté client)
+    int m_portLocal;      // Port utilisï¿½ en local (donc cï¿½tï¿½ client)
     bool m_isAlive;     // False when the connector has to stop listen
     SDL_Thread* m_thread;
     void decodePacket(UDPpacket* packet);
@@ -26,7 +26,7 @@ public:
     UdpConnector(UdpController* udpController, const int portLocal);
     ~UdpConnector(void);
 
-    void connect(char* ip, int port) throw (BindingUdpException);
+    void connect(char* ip, int port) noexcept(false);
     void start();
     void stop();
     void send(UDPpacket* packet);

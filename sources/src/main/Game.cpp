@@ -441,7 +441,6 @@ void CGame::timer(Uint32 now, float deltaTime) {
 
 		CPlayer *player;
 		int index = -1;
-		float playerPos[3], playerVit[3], deplacementVoulu[3];
 
 		while(_players.Suivant(index)) {		// Pour chaque joueur
 			player = _players[index];

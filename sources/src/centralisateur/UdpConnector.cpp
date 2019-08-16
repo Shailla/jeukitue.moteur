@@ -13,7 +13,7 @@ using namespace std;
 
 /**
     Constructeur
-    portLocal : numéro du port d'écoute de la facade
+    portLocal : numï¿½ro du port d'ï¿½coute de la facade
 */
 UdpConnector::UdpConnector(UdpController* udpController, const int portLocal) : m_socketSet() {
     m_channel = -1;   // Uninitialized channel value
@@ -27,11 +27,11 @@ UdpConnector::UdpConnector(UdpController* udpController, const int portLocal) : 
 }
 
 /**
-	Connection à une entité distante
-	ip: adresse IP de l'entité distante
-	port: port de l'entité distante
+	Connection ï¿½ une entitï¿½ distante
+	ip: adresse IP de l'entitï¿½ distante
+	port: port de l'entitï¿½ distante
 */
-void UdpConnector::connect(char* ipDistant, int portDistant) throw (BindingUdpException) {
+void UdpConnector::connect(char* ipDistant, int portDistant) {
 	m_ipDistant = ipDistant;
 	m_portDistant = portDistant;
     m_isAlive = true;
@@ -105,7 +105,7 @@ int UdpConnector::receive() {
 
     while(m_isAlive) {
         // Wait an UDP packet for 1 seconde
-		int numReady = SDLNet_CheckSockets( m_socketSet, 1000 );	// Nombre de sockets ayant une activité détectée
+		int numReady = SDLNet_CheckSockets( m_socketSet, 1000 );	// Nombre de sockets ayant une activitï¿½ dï¿½tectï¿½e
 
         if( numReady==-1 ) {
 			LOGERROR(("SDLNet_CheckSockets: '%s'", SDLNet_GetError()));

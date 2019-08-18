@@ -180,7 +180,6 @@ CMachin::CMachin() {
 
 float delta = 0.0;
 
-extern CFocus *pFocus;				// Gestion du focus
 extern bool Aide;					// Indique que le menu d'aide est actif
 
 unsigned int frpsTimer = 0, frpTimer = 0;

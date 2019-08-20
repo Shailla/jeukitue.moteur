@@ -15,15 +15,14 @@
 #include "fmod_errors.h"
 #include "SDL_image.h"
 #include "SDL_net.h"
-#include "util/fonte/Fonte.h"
 
-#include "ressource/RessourcesLoader.h"
+#include "util/fonte/Fonte.h"
 #include "util/Trace.h"
 #include "util/utils_SDL.h"
+#include "ressource/RessourcesLoader.h"
 #include "son/DemonSons.h"
 #include "son/Son.h"
 #include "spatial/materiau/Textures.h"
-#include "main/Cfg.h"
 
 #include "main/divers.h"
 

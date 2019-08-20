@@ -1,11 +1,10 @@
 /*
  * DataTreeUtils.cpp
  *
- *  Created on: 19 déc. 2014
+ *  Created on: 19 dï¿½c. 2014
  *      Author: VGDJ7997
  */
 
-#include "main/Cfg.h"
 #include "data/TreeConstants.h"
 
 #include "data/DataTreeUtils.h"
@@ -21,7 +20,7 @@ DataTreeUtils::~DataTreeUtils() {
 }
 
 /**
- * Formatte un arbre de données vierge en créant les branches et hiérarchies suivantes :
+ * Formatte un arbre de donnï¿½es vierge en crï¿½ant les branches et hiï¿½rarchies suivantes :
  * [1]			"vid"
  * [1,1]		  "tree-control"
  * [1,1,1]		    "tree-state" int

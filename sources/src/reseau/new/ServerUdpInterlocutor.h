@@ -14,12 +14,10 @@
 #include "SDL.h"
 #include "SDL_net.h"
 
-#include "reseau/new/Interlocutor2.h"
-#include "reseau/new/NotConnectedInterlocutor2.h"
-#include "reseau/new/exception/NotConnectedException.h"
-#include "reseau/new/exception/ConnectionFailedException.h"
 #include "reseau/new/TechnicalInterlocutor.h"
 
+class Interlocutor2;
+class NotConnectedInterlocutor2;
 class C2SHelloTechnicalMessage;
 class C2SByeTechnicalMessage;
 

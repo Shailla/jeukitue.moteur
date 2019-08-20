@@ -20,6 +20,7 @@
 #include "menu/Viewer.h"
 #include "spatial/Map.h"
 #include "spatial/contact.h"
+#include "game/GameDto.h"
 
 using namespace jkt;
 using namespace std;

@@ -19,6 +19,7 @@
 #include "reseau/new/message/S2CConnectionAcceptedTechnicalMessage.h"
 #include "reseau/new/message/C2SHelloTechnicalMessage.h"
 #include "reseau/new/message/C2SByeTechnicalMessage.h"
+#include "reseau/new/exception/ConnectionFailedException.h"
 #include "reseau/new/Interlocutor2.h"
 
 #include "reseau/new/ClientUdpInterlocutor.h"
@@ -53,7 +54,7 @@ Interlocutor2* ClientUdpInterlocutor::connect(const string& distantIp, Uint16 di
 	_packetOut = SDLNet_AllocPacket(65535);
 
 	try {
-		// Résolution adresse distant
+		// Rï¿½solution adresse distant
 		if( SDLNet_ResolveHost(&_distantAddress, _distantIp.c_str(), distantPort) ) {
 			stringstream msg;
 			msg << "SDLNet_ResolveHost - UDP connection, erreur de resolution adresse distant : " << SDLNet_GetError();
@@ -71,7 +72,7 @@ Interlocutor2* ClientUdpInterlocutor::connect(const string& distantIp, Uint16 di
 
 		_socketSet = SDLNet_AllocSocketSet(1);
 
-		// Allocation d'un socket set qui permettra d'attendre et de scruter l'arrivée de données
+		// Allocation d'un socket set qui permettra d'attendre et de scruter l'arrivï¿½e de donnï¿½es
 		if(!_socketSet) {
 			stringstream msg;
 			msg << "SDLNet_AllocSocketSet - UDP connection, erreur de reservation du socket set : " << SDLNet_GetError();
@@ -110,7 +111,7 @@ void ClientUdpInterlocutor::close() {
 
 	waitProcessesFinished();
 
-	// Libération du socket set
+	// Libï¿½ration du socket set
 	if(_socketSet) {
 		SDLNet_FreeSocketSet(_socketSet);
 		_socketSet = 0;
@@ -122,7 +123,7 @@ void ClientUdpInterlocutor::close() {
 		_socket = 0;
 	}
 
-	// Libération des paquets
+	// Libï¿½ration des paquets
 	if(_packetIn) {
 		SDLNet_FreePacket(_packetIn);
 		_packetIn = 0;
@@ -220,7 +221,7 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 
 				default:
 					stringstream message;
-					message << "Reception de donnees techniques inconnues ==> ignoré";
+					message << "Reception de donnees techniques inconnues ==> ignorï¿½";
 					log(__LINE__, __FILE__, message);
 					break;
 				}
@@ -231,7 +232,7 @@ void ClientUdpInterlocutor::intelligenceProcess() {
 			}
 			else {
 				stringstream message;
-				message << "Reception de donnees inconnues ==> ignoré";
+				message << "Reception de donnees inconnues ==> ignorï¿½";
 				log(__LINE__, __FILE__, message);
 			}
 		}
@@ -272,7 +273,7 @@ void ClientUdpInterlocutor::sendingProcess() {
 		}
 		jkt::Bytes* data;
 
-		// Envoi les messages techniques si on n'est pas arrêté, sinon purge les
+		// Envoi les messages techniques si on n'est pas arrï¿½tï¿½, sinon purge les
 		while((data = _interlocutor->popTechnicalMessageToSend()))  {
 			if(STOPPED != getConnexionStatus()) {
 				_packetOut->len = data->size();
@@ -288,13 +289,13 @@ void ClientUdpInterlocutor::sendingProcess() {
 			delete data;
 		}
 
-		// Envoi les messages de données si on est connecté, sinon purge les
+		// Envoi les messages de donnï¿½es si on est connectï¿½, sinon purge les
 		while((data = _interlocutor->popDataToSend())) {
 			if(CONNECTED == getConnexionStatus()) {
-				// Pour un message de données on écrit explicitement le code DATA en début de flux
+				// Pour un message de donnï¿½es on ï¿½crit explicitement le code DATA en dï¿½but de flux
 				_packetOut->len = data->size() + 2;
 
-				SDLNet_Write16(TechnicalMessage::TECHNICAL_MESSAGE::DATA, _packetOut->data);	// Message de données
+				SDLNet_Write16(TechnicalMessage::TECHNICAL_MESSAGE::DATA, _packetOut->data);	// Message de donnï¿½es
 
 				memcpy(_packetOut->data+2, data->getBytes(), _packetOut->len);
 				_packetOut->address = _distantAddress;
@@ -343,7 +344,7 @@ void ClientUdpInterlocutor::receiveOnePacket() {
 		}
 		else {
 			stringstream message;
-			message << "Message inconsistant from " << IpUtils::translateAddress(_packetIn->address) << " ==> ignoré";
+			message << "Message inconsistant from " << IpUtils::translateAddress(_packetIn->address) << " ==> ignorï¿½";
 			log(__LINE__, __FILE__, message);
 		}
 	}

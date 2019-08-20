@@ -132,7 +132,7 @@ using namespace std;
 using namespace jkt;
 
 NotConnectedInterlocutor2* _notConnectedServerInterlocutor = 0;
-
+extern CDemonSons *demonSons;
 Fonte fonte;
 
 CCfg Config;		// Contient la configuration du jeu
@@ -153,8 +153,6 @@ CFocus *pFocus;
 int numMainPlayer = 0;	// Numï¿½ro du joueur principal dans la MAP (identifie le joueur principal dans la liste des joueurs de la MAP)
 
 bool Aide = false;
-
-extern CDemonSons* demonSons;	// Requï¿½tes des sons
 
 Uint32 tempsTimer = 0;		// Temps pris par la fonction 'timer'
 Uint32 tempsDisplay = 0;	// Temps pris par la fonction 'display'
@@ -523,7 +521,7 @@ void display() {		// Fonction principale d'affichage
 			glEnd();
 		}
 
-		// Dessine une cube de 1 mètre de côté dans la Map (sert au repérage pour la conception du jeu)
+		// Dessine une cube de 1 mï¿½tre de cï¿½tï¿½ dans la Map (sert au repï¿½rage pour la conception du jeu)
 		if(Config.Debug.cubicMeterVisibility) {
 			glPushMatrix();
 			glTranslatef(0.0f, 0.0f, -0.5f);

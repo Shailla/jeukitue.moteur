@@ -20,7 +20,8 @@ using namespace std;
 Fonte::Fonte() :_ft() {
 	_atlasWidth = 0;
 	_atlasHeight = 0;
-	_fonteTex = -1;
+	_fonteTexOk = false;
+	_fonteTex = 0;
 
 	if(FT_Init_FreeType(&_ft)) {
 		LOGERROR(("Librairie FreeType introuvable"));
@@ -103,6 +104,7 @@ void Fonte::load(const string& fonte, int height) {
 
 	/* Create a texture that will be used to hold all ASCII glyphs */
 	glGenTextures(1, &_fonteTex);
+	_fonteTexOk = true;
 	glBindTexture(GL_TEXTURE_2D, _fonteTex);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, _atlasWidth, _atlasHeight, 0, GL_ALPHA, GL_UNSIGNED_BYTE, 0);
@@ -184,8 +186,9 @@ void Fonte::load(const string& fonte, int height) {
 }
 
 Fonte::~Fonte() {
-	if(_fonteTex != -1) {
+	if(_fonteTexOk) {
 		glDeleteTextures(1, &_fonteTex);
+		_fonteTexOk = false;
 	}
 }
 

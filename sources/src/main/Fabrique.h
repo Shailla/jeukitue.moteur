@@ -1,12 +1,15 @@
 #ifndef __JKT__FABRIQUE_H
 #define __JKT__FABRIQUE_H
 
-#include "menu/Controller.h"
-#include "menu/Viewer.h"
-#include "centralisateur/Centralisateur.h"
-#include "plugin/PluginEngine.h"
-#include "script/CommandeInterpreter.h"
-#include "util/GLUtils.h"
+namespace jkt {
+class PluginEngine;
+}
+
+class Centralisateur;
+class Viewer;
+class Controller;
+class CommandeInterpreter;
+class GLUtils;
 
 class Fabrique
 {

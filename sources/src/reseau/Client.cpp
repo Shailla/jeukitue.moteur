@@ -17,6 +17,7 @@
 #include "main/Clavier.h"
 #include "main/Game.h"
 #include "menu/MultijoueursClientView.h"
+#include "menu/Viewer.h"
 
 #include "enumReseau.h"
 #include "reseau/Client.h"

@@ -62,6 +62,7 @@ namespace bpo = boost::program_options;
 
 class CGame;
 
+#include "plugin/PluginEngine.h"
 #include "spatial/widget/GraphicObject.h"
 #include "main/Cfg.h"
 #include "spatial/materiau/Material.h"

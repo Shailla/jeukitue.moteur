@@ -30,6 +30,7 @@
 #include "service/MapService.h"
 #include "service/dto/MapInformationDto.h"
 #include "menu/ConsoleView.h"
+#include "menu/Viewer.h"
 
 #include "reseau/web/HttpException.h"
 

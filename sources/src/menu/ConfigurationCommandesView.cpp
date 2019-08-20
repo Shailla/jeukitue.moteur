@@ -332,7 +332,7 @@ bool ConfigurationCommandesView::eventInterceptor(SDL_Event* event) {
 	return commandAcquired || escapeAcquired;	// Indique si l'événement a été consommé ou non
 }
 
-void ConfigurationCommandesView::setCommande(CCfg::CComID& commandeToUpdate, const SDLKey& key, const int& mouse) {
+void ConfigurationCommandesView::setCommande(CComID& commandeToUpdate, const SDLKey& key, const int& mouse) {
 	commandeToUpdate.key = key;
 	commandeToUpdate.mouse = mouse;
 	Config.Ecrit();	// Sauvegarde la configuration

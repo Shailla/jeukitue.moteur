@@ -9,9 +9,9 @@
 #include "main/RequeteProcess.h"
 #include "reseau/enumReseau.h"
 
-#include "data/LocalDataTree.h"
-#include "data/ServeurDataTree.h"
-#include "data/ClientDataTree.h"
+class LocalDataTree;
+class ServeurDataTree;
+class ClientDataTree;
 
 // Cette classe est destinée à  contenir toutes les paramètres vivants, c'est à  dire
 // toutes les données et variables de la partie en cours, du rÃ©seau...

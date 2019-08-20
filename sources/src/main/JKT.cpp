@@ -112,6 +112,9 @@ class CGame;
 #include "data/ClientDataTree.h"
 #include "data/DistantTreeProxy.h"
 #include "data/DataTreeUtils.h"
+#include "data/LocalDataTree.h"
+#include "data/ServeurDataTree.h"
+#include "data/ClientDataTree.h"
 #include "data/exception/NotExistingValeurException.h"
 #include "data/exception/NotExistingBrancheException.h"
 

@@ -24,6 +24,7 @@ class CGame;
 #include "son/DemonSons.h"
 #include "main/Player.h"
 #include "main/Game.h"
+#include "data/Branche.h"
 
 #include "spatial/objet/Dirigeable.h"
 

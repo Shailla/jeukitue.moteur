@@ -14,10 +14,9 @@
 
 #include "tinyxml.h"
 
-#include "util/Erreur.h"
-#include "spatial/MapLogger.h"
-
 #include "spatial/basic/MapObject.h"
+
+class MapLogger;
 
 namespace jkt
 {
@@ -99,15 +98,15 @@ public:
 	static void LitSousMateriaux(TiXmlElement* el, std::map<int, int>& canauxNumbers) noexcept(false);
 
 	static MapObject* Lit(TiXmlElement* el, CMap& pMap, MapLogger* mapLogger) noexcept(false);
-	MapObject* makeNewGeoInstance();	// Crée une instance de l'objet géométrique
+	MapObject* makeNewGeoInstance();	// Crï¿½e une instance de l'objet gï¿½omï¿½trique
 private:
 	CSimpleGeo* makeSimpleGeo();
 	CSimpleMaterialGeo* makeSimpleMaterialGeo(CMaterial* mat);
 	CMultiMaterialGeo* makeMultiMaterialGeo(CMaterialMulti* mat);
 	CTextureMaterialGeo* makeTextureMaterialGeo(CMaterialTexture* mat);
 
-	void lineariseVertex();		// Désindexe les sommets
-	void lineariseTexVertex();	// Désindexe les coord. de texture dans leurs canaux
+	void lineariseVertex();		// Dï¿½sindexe les sommets
+	void lineariseTexVertex();	// Dï¿½sindexe les coord. de texture dans leurs canaux
 	void optimiseSubMat(std::map<int,int> &canauxnumbers);
 };
 

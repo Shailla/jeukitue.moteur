@@ -16,13 +16,13 @@ class CPlayer;
 namespace jkt
 {
 
-class CServer {									// Contient les données courantes du serveur (nombre de joueur, partie en cours,...)
-	StatutServer m_Statut;						// Etat du serveur (déconnecté, connecté, partie en cours, ...)
-	std::map<IPaddress, CPlayer*> _addressPlayer;	// Mapping entre adresses IP/Port et joueurs connectés
-	std::map<Uint16, CPlayer*> _jetonPlayer;	// Mapping entre adresses IP/Port et joueurs connectés
+class CServer {									// Contient les donnï¿½es courantes du serveur (nombre de joueur, partie en cours,...)
+	StatutServer m_Statut;						// Etat du serveur (dï¿½connectï¿½, connectï¿½, partie en cours, ...)
+	std::map<IPaddress, CPlayer*> _addressPlayer;	// Mapping entre adresses IP/Port et joueurs connectï¿½s
+	std::map<Uint16, CPlayer*> _jetonPlayer;	// Mapping entre adresses IP/Port et joueurs connectï¿½s
 public:
 	CSPA spaMaitre;
-	SDLNet_SocketSet socketSet;		// Les sockets à écouter
+	SDLNet_SocketSet socketSet;		// Les sockets ï¿½ ï¿½couter
 
 	std::string nom;						// Nom du serveur
 	std::string nameMap;					// Nom de la MAP ouverte en mode multi-joueurs
@@ -41,14 +41,14 @@ public:
 	void registerPlayerByAddress(const IPaddress& address, CPlayer* player);
 	CPlayer* getPlayerByAddress(const IPaddress& address);
 
-	int AjoutePlayer(CPlayer *player);			// Ajoute un proxy-joueur à la partie en cours
-	void partieEnCours(bool indic);				// Donne une valeur à bPartieEnCours
+	int AjoutePlayer(CPlayer *player);			// Ajoute un proxy-joueur ï¿½ la partie en cours
+	void partieEnCours(bool indic);				// Donne une valeur ï¿½ bPartieEnCours
 	int nbrPlayers();							// Donne le nombre de joueurs sur le serveur
 	void setStatut( StatutServer statut);
 	StatutServer getStatut();
 
-	void decodeServerUDP( CSPA *spa );						// Décode les paquets ne provenant pas des joeurs actuels
-	void decodeProxyPlayer(CPlayer *player, CSPA* spa); 	// Décode les paquets provenant des différents joueurs
+	void decodeServerUDP( CSPA *spa );						// Dï¿½code les paquets ne provenant pas des joeurs actuels
+	void decodeProxyPlayer(CPlayer *player, CSPA* spa); 	// Dï¿½code les paquets provenant des diffï¿½rents joueurs
 	bool acceptPlayer( CSPA *spa );							// Accepte un nouveau joueur dans la partie
 
 	NotConnectedInterlocutor2* connect(Uint16 port, Uint16 portTree);

@@ -11,6 +11,7 @@
 
 #include "util/TraceMethod.h"
 #include "util/Trace.h"
+#include "util/types/Bytes.h"
 #include "util/StringUtils.h"
 #include "data/ValeurInt.h"
 #include "data/MarqueurDistant.h"
@@ -44,7 +45,7 @@ ClientDataTree::ClientDataTree(const std::string& clientName, Interlocutor2* ser
 	_updateClientToServer = SDL_GetTicks();
 
 	/********************************************************************/
-	/* Branche des VID (Very Important Data) de l'arbre de données 		*/
+	/* Branche des VID (Very Important Data) de l'arbre de donnï¿½es 		*/
 	/********************************************************************/
 
 	// Branche racine
@@ -54,7 +55,7 @@ ClientDataTree::ClientDataTree(const std::string& clientName, Interlocutor2* ser
 	Branche* rootBranche = getBranche(_serverTreeProxy, rootBrancheId);
 	Branche* vidBranche = rootBranche->addSubBranche(_serverTreeProxy, 1, DONNEE_TYPE::DONNEE_DEFAULT, DataTreeUtils::TREE_VID_BRANCHE_NAME, 0);
 
-	// Branche de contrôle de l'arbre de données
+	// Branche de contrï¿½le de l'arbre de donnï¿½es
 	vidBranche->addSubBranche(_serverTreeProxy, 1, DONNEE_TYPE::DONNEE_PRIVATE, DataTreeUtils::TREE_CONTROL_BRANCHE_NAME, 0);
 //	createPrivateBranche(vidBranche->getBrancheFullId(), DataTreeUtils::TREE_CONTROL_BRANCHE_NAME);
 
@@ -223,7 +224,7 @@ void ClientDataTree::collecteChangements(vector<Changement*>& changements) {
 	while(++it) {
 		branche = *it;
 
-		// NOUVELLE BRANCHE : branche présente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
+		// NOUVELLE BRANCHE : branche prï¿½sente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
 		if(branche->getBrancheId() < 0) {
 			changement = new AddBrancheFromClientChangement(branche->getParentBrancheIdOrTmpId(), branche->getBrancheTmpId(), branche->getRevision(), branche->getBrancheName());
 
@@ -238,12 +239,12 @@ void ClientDataTree::collecteChangements(vector<Changement*>& changements) {
 			changement = 0;
 			marqueur = valeur->getMarqueur(_serverTreeProxy);
 
-			// NOUVELLE VALEUR : valeur présente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
+			// NOUVELLE VALEUR : valeur prï¿½sente sur le client dont le serveur n'a pas encore connaissance (donc avec un identifiant temporaire)
 			if(valeur->getValeurId() < 0) {
 				changement = new AddValeurFromClientChangement(valeur->getBrancheIdOrTmpId(), valeur->getValeurTmpId(), valeur->getRevision(), valeur->getValeurName(), valeur->getValeurData());
 			}
 
-			// UPDATE VALEUR : Une valeur a changé et le client n'en a pas encore connaissance
+			// UPDATE VALEUR : Une valeur a changï¿½ et le client n'en a pas encore connaissance
 			else if(valeur->getRevision() > marqueur->getConfirmedRevision()) {
 				changement = new UpdateValeurFromClientChangement(valeur->getBrancheIdOrTmpId(), valeur->getValeurId(), valeur->getRevision(), valeur->getValeurData());
 			}
@@ -285,12 +286,12 @@ void ClientDataTree::receiveChangementsFromServer() {
 		saveTime(time);
 
 		/* ********************************************
-		 * Traitement des données venant du serveur
+		 * Traitement des donnï¿½es venant du serveur
 		 * *******************************************/
 
 		Interlocutor2* interlocutor = _serverTreeProxy->getInterlocutor();
 
-		// Récupération des données du serveur
+		// Rï¿½cupï¿½ration des donnï¿½es du serveur
 		jkt::Bytes* fromServer;
 
 		while((fromServer = interlocutor->popDataReceived())) {
@@ -307,7 +308,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 				LOGINFO(("'%s' from '%s' : '%s'", _clientName.c_str(), interlocutor->getName().c_str(), (*itCh)->toString().c_str()));
 
 				try {
-					// Le serveur accepte la création de la nouvelle branche demandée par ce client et lui attribue son identifiant définitif
+					// Le serveur accepte la crï¿½ation de la nouvelle branche demandï¿½e par ce client et lui attribue son identifiant dï¿½finitif
 					if(AcceptAddBrancheFromClientChangement* chgt = dynamic_cast<AcceptAddBrancheFromClientChangement*>(*itCh)) {
 						Branche* parentBranche = getBranche(_serverTreeProxy, chgt->getParentBrancheId());
 						Branche* branche = (Branche*)parentBranche->acceptTmpSubBranche(_serverTreeProxy, chgt->getBrancheTmpId(), chgt->getBrancheId(), chgt->getRevision());
@@ -315,7 +316,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 						answers.push_back(new ConfirmBrancheChangement(branche->getBrancheFullId(), branche->getRevision()));
 					}
 
-					// Le serveur accepte la création de la nouvelle branche demandée par ce client et lui attribue son identifiant définitif
+					// Le serveur accepte la crï¿½ation de la nouvelle branche demandï¿½e par ce client et lui attribue son identifiant dï¿½finitif
 					else if(AcceptAddValeurFromClientChangement* chgt = dynamic_cast<AcceptAddValeurFromClientChangement*>(*itCh)) {
 						Branche* branche = getBranche(_serverTreeProxy, chgt->getParentBrancheId());
 						Valeur* valeur = branche->acceptTmpValeur(_serverTreeProxy, chgt->getValeurTmpId(), chgt->getValeurId(), chgt->getRevision());
@@ -326,7 +327,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), branche->getRevision()));
 					}
 
-					// Le serveur informe de la création d'une nouvelle branche
+					// Le serveur informe de la crï¿½ation d'une nouvelle branche
 					else if(AddBrancheFromServerChangement* chgt = dynamic_cast<AddBrancheFromServerChangement*>(*itCh)) {
 						Branche* parentBranche = getBranche(_serverTreeProxy, chgt->getParentBrancheId());
 						Branche* branche = (Branche*)parentBranche->addSubBranche(_serverTreeProxy, chgt->getBrancheId(), chgt->getBrancheType(), chgt->getBrancheName(), chgt->getRevision());
@@ -337,7 +338,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 						answers.push_back(new ConfirmBrancheChangement(branche->getBrancheFullId(), branche->getRevision()));
 					}
 
-					// Le serveur informe de la création d'une nouvelle valeur
+					// Le serveur informe de la crï¿½ation d'une nouvelle valeur
 					else if(AddValeurFromServerChangement* chgt = dynamic_cast<AddValeurFromServerChangement*>(*itCh)) {
 						Branche* parent = getBranche(_serverTreeProxy, chgt->getParentBrancheId());
 						Valeur* valeur = parent->addValeur(_serverTreeProxy, chgt->getUpdateMode(), chgt->getValeurId(), chgt->getValeurName(), chgt->getRevision(), chgt->getValeur());
@@ -360,7 +361,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 						answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision()));
 					}
 
-					// Le server confirme la révision de la valeur qu'il a reçu
+					// Le server confirme la rï¿½vision de la valeur qu'il a reï¿½u
 					else if(ConfirmValeurChangement* chgt = dynamic_cast<ConfirmValeurChangement*>(*itCh)) {
 						Valeur* valeur = getValeur(_serverTreeProxy, chgt->getBrancheId(), chgt->getValeurId());
 
@@ -368,7 +369,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 						marqueur->setConfirmedRevision(chgt->getRevision());
 					}
 
-					// Le server confirme la révision de la branche qu'il a reçu
+					// Le server confirme la rï¿½vision de la branche qu'il a reï¿½u
 					else if(ConfirmBrancheChangement* chgt = dynamic_cast<ConfirmBrancheChangement*>(*itCh)) {
 						Branche* branche = getBranche(_serverTreeProxy, chgt->getBrancheId());
 
@@ -396,7 +397,7 @@ void ClientDataTree::receiveChangementsFromServer() {
 		 * Envoi des confirmations au serveur
 		 * *******************************************/
 
-		// Envoi les changements présents sur le client au serveur
+		// Envoi les changements prï¿½sents sur le client au serveur
 		sendChangementsToServer(answers);
 	}
 	catch(DataCommunicationException& exception) {

@@ -7,6 +7,9 @@
 
 #include <iostream>
 
+#include "data/exception/NotExistingBrancheException.h"
+#include "data/exception/NotExistingValeurException.h"
+
 #include "data/DataTree.h"
 
 using namespace std;

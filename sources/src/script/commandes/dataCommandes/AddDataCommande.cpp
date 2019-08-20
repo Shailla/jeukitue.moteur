@@ -9,6 +9,7 @@
 
 #include "util/StringUtils.h"
 #include "data/DataTree.h"
+#include "data/exception/NotExistingBrancheException.h"
 #include "data/DistantTreeProxy.h"
 #include "script/exception/IllegalParameterException.h"
 #include "main/Game.h"

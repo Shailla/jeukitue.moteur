@@ -5,9 +5,9 @@
 
 #include "SDL_net.h"
 
-#include "exception/centralisateur/CentralisateurTcpException.h"
 #include "centralisateur/data/DownloadFileItem.h"
-#include "menu/ProgressBarView.h"
+
+class ProgressBarView;
 
 namespace jkt
 {

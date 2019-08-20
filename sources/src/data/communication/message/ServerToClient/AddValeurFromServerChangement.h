@@ -11,9 +11,10 @@
 #include <sstream>
 #include <vector>
 
-#include "data/communication/message/Changement.h"
+#include "includes.h"
+#include "util/types/AnyData.h"
 
-class MarqueurDistant;
+#include "data/communication/message/Changement.h"
 
 class AddValeurFromServerChangement: public Changement {
 	std::vector<int> _parentBrancheId;

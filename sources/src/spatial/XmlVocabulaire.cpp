@@ -1,6 +1,8 @@
 
 #include <sstream>
 
+#include "util/Erreur.h"
+
 #include "spatial/XmlVocabulaire.h"
 
 using namespace std;

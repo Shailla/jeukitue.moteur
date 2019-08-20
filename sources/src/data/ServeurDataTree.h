@@ -14,6 +14,10 @@
 
 #include "data/DataTree.h"
 
+class PrivateBranche;
+class DistantTreeProxy;
+class Interlocutor2;
+
 class ServeurDataTree : public DataTree {
 	std::vector<DistantTreeProxy*> _clients;
 

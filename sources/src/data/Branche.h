@@ -15,15 +15,13 @@
 #include <string>
 #include <vector>
 
+#include "includes.h"
 #include "util/GenRef.h"
-#include "data/exception/NotExistingBrancheException.h"
-#include "data/exception/NotExistingValeurException.h"
-#include "data/exception/AlreadyExistingBrancheException.h"
 #include "data/Donnee.h"
 #include "data/AbstractBranche.h"
 #include "data/Valeur.h"
 
-class DistantTreeProxy;
+class Valeur;
 
 class BrancheIterator {
 	friend Branche;

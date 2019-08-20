@@ -4,10 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "util/Tableau.h"
-
-using namespace jkt;
-
 namespace jkt
 {
 class CMaterial;

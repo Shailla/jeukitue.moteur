@@ -11,8 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "main/Player.h"
-#include "spatial/Map.h"
+#include "includes.h"
 
 using namespace jkt;
 

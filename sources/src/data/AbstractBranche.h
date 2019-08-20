@@ -13,15 +13,12 @@
 #include <map>
 #include <vector>
 
+#include "includes.h"
 #include "util/GenRef.h"
-#include "data/exception/NotExistingBrancheException.h"
-#include "data/exception/NotExistingValeurException.h"
-#include "data/exception/AlreadyExistingBrancheException.h"
 #include "data/Donnee.h"
-#include "data/Valeur.h"
-#include "data/DistantTreeProxy.h"
 
-class Branche;
+class Valeur;
+class DistantTreeProxy;
 
 class AbstractBranche : public Donnee {
 protected:

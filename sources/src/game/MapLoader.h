@@ -10,6 +10,8 @@
 
 #include "game/GameDto.h"
 
+class GameDto;
+
 class MapLoader {
 	MapLoader();	// Masquage du constructeur de singleton
 	virtual ~MapLoader();

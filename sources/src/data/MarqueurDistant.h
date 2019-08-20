@@ -8,7 +8,7 @@
 #ifndef MARQUEURDISTANT_H_
 #define MARQUEURDISTANT_H_
 
-class Donnee;
+#include "includes.h"
 
 class MarqueurDistant {
 	Donnee* _donnee;

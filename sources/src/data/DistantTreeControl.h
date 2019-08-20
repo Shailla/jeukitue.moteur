@@ -8,12 +8,10 @@
 #ifndef DISTANTTREECONTROL_H_
 #define DISTANTTREECONTROL_H_
 
-#include "data/TreeConstants.h"
-
 #include <string>
 
-class ValeurInt;
-class DistantTreeProxy;
+#include "includes.h"
+#include "data/TreeConstants.h"
 
 class DistantTreeControl {
 	DistantTreeProxy* _distant;

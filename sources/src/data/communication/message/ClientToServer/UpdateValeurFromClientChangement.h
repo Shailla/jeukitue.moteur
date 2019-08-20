@@ -11,9 +11,9 @@
 #include <sstream>
 #include <vector>
 
-#include "data/MarqueurDistant.h"
-#include "data/Branche.h"
 #include "data/communication/message/Changement.h"
+
+class MarqueurDistant;
 
 class UpdateValeurFromClientChangement: public Changement {
 	std::vector<int> _parentBrancheId;

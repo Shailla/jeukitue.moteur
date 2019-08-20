@@ -3,7 +3,8 @@
 #ifndef __JKT__GAME_H
 #define __JKT__GAME_H
 
-#include "util/Erreur.h"
+#include "includes.h"
+
 #include "util/TableauIndex.h"
 #include "main/RequeteProcess.h"
 #include "reseau/enumReseau.h"
@@ -12,23 +13,14 @@
 #include "data/ServeurDataTree.h"
 #include "data/ClientDataTree.h"
 
-namespace jkt
-{
-	class CClient ;
-	class CServer;
-	class CMap;
-}
-
-class CPlayer;
-
-// Cette classe est destinÃ©e Ã  contenir toutes les paramÃ¨tres vivants, c'est Ã  dire
-// toutes les donnÃ©es et variables de la partie en cours, du rÃ©seau...
+// Cette classe est destinée à  contenir toutes les paramètres vivants, c'est à  dire
+// toutes les données et variables de la partie en cours, du rÃ©seau...
 class CGame {
 public:
 	enum ModePartie {
 		JKT_MODE_PARTIE_NULL,		// Pas de jeu en cours
 		JKT_MODE_PARTIE_LOCAL,		// Mode de jeu local (c'est ï¿½ dire pas en rÃ©seau)
-		JKT_MODE_PARTIE_CLIENT,		// Mode client connectï¿½ ï¿½ un serveur
+		JKT_MODE_PARTIE_CLIENT,		// Mode client connecté à un serveur
 		JKT_MODE_PARTIE_SERVER,		// Mode serveur de jeu
 	};
 
@@ -36,7 +28,7 @@ private:
 	CPlayer* _erwin;						// Pointeur sur le joueur actif
 	jkt::CMap* _map;						// Map en cours de jeu
 	ModePartie _mode;						// Mode de jeu (parie normale, client ou serveur)
-	bool _gravite;							// Indique si la gravitÃ© est active
+	bool _gravite;							// Indique si la gravité est active
 	jkt::TableauIndex<CPlayer> _players;	// Liste indexï¿½e des joueurs
 
 public:

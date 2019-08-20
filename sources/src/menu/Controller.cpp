@@ -16,6 +16,7 @@ using namespace boost::filesystem;
 #include <agar/dev.h>
 
 #include "main/divers.h"
+#include "exception/centralisateur/CentralisateurTcpException.h"
 #include "menu/ConsoleView.h"
 #include "menu/CentralisateurView.h"
 #include "menu/ConfigCentralisateurView.h"

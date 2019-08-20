@@ -14,13 +14,11 @@
 #include <vector>
 
 #include "util/GenRef.h"
-#include "data/exception/NotExistingBrancheException.h"
-#include "data/exception/NotExistingValeurException.h"
-#include "data/exception/AlreadyExistingBrancheException.h"
 #include "data/Donnee.h"
 #include "data/Branche.h"
-#include "data/Valeur.h"
-#include "data/DistantTreeProxy.h"
+
+class DistantTreeProxy;
+class Valeur;
 
 class PrivateBranche : public Branche {
 public:

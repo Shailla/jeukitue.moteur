@@ -9,6 +9,8 @@
 
 #include "util/StringUtils.h"
 #include "data/ServeurDataTree.h"
+#include "data/exception/NotExistingBrancheException.h"
+#include "data/exception/NotExistingValeurException.h"
 #include "script/exception/IllegalParameterException.h"
 
 #include "script/commandes/DataCommande.h"

@@ -11,6 +11,7 @@
 
 #include "util/StreamUtils.h"
 #include "data/ValeurInt.h"
+#include "data/MarqueurDistant.h"
 #include "data/ServeurDataTree.h"
 
 #include "data/communication/message/ServerToClient/AcceptAddValeurFromClientChangement.h"

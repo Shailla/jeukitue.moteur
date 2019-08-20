@@ -12,6 +12,7 @@
 
 #include "util/Trace.h"
 #include "data/DataTree.h"
+#include "data/exception/NotExistingBrancheException.h"
 #include "main/Fabrique.h"
 #include "plugin/lua/LuaUtils.h"
 #include "plugin/PluginEngine.h"

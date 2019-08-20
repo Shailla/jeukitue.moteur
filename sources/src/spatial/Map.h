@@ -8,10 +8,6 @@
 
 #include "tinyxml.h"
 
-#include "util/Tableau.h"
-#include "util/Erreur.h"
-#include "util/V3D.h"
-#include "spatial/MapLogger.h"
 #include "spatial/basic/MapObject.h"
 
 class CGame;
@@ -30,6 +26,8 @@ class CGeoObject;
 class EntryPoint;
 class CMoteurParticules;
 class CheckPlayerInZone;
+class MapLogger;
+class V3D;
 
 class CMap : public MapObject {
 	static const char* identifier;

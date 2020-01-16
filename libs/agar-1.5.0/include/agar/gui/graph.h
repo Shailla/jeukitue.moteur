@@ -69,7 +69,8 @@ typedef struct ag_graph {
 #define AG_GRAPH_NO_MOVE	0x20	/* User cannot move vertices */
 #define AG_GRAPH_NO_SELECT	0x40	/* User cannot select vertices */
 #define AG_GRAPH_NO_MENUS	0x80	/* Disable popup menus */
-#define AG_GRAPH_READONLY (AG_GRAPH_NO_MOVE|AG_GRAPH_NO_SELECT| AG_GRAPH_NO_MENUS)
+#define AG_GRAPH_READONLY	(AG_GRAPH_NO_MOVE|AG_GRAPH_NO_SELECT| \
+                         	 AG_GRAPH_NO_MENUS)
 
 	int wPre, hPre;			/* Requested geometry */
 	int xOffs, yOffs;		/* Display offset */
@@ -85,8 +86,8 @@ typedef struct ag_graph {
 } AG_Graph;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agGraphClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agGraphClass; 
 extern DECLSPEC AG_Graph *AG_GraphNew(void *, Uint);
 extern DECLSPEC void AG_GraphFreeVertices(AG_Graph *);
 extern DECLSPEC void AG_GraphSizeHint(AG_Graph *, Uint, Uint);
@@ -110,7 +111,7 @@ extern DECLSPEC void AG_GraphEdgeColorLabel(AG_GraphEdge *, Uint8, Uint8, Uint8)
 extern DECLSPEC void AG_GraphEdgeColor(AG_GraphEdge *, Uint8, Uint8, Uint8);
 extern DECLSPEC void AG_GraphEdgePopupMenu(AG_GraphEdge *, struct ag_popup_menu *);
 extern DECLSPEC void AG_GraphAutoPlace(AG_Graph *, Uint, Uint);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

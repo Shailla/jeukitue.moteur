@@ -92,7 +92,8 @@ typedef struct ag_window {
 #define AG_WINDOW_FADEOUT	0x10000000 /* Fade-out (compositing WMs) */
 
 #define AG_WINDOW_NORESIZE	(AG_WINDOW_NOHRESIZE|AG_WINDOW_NOVRESIZE)
-#define AG_WINDOW_NOBUTTONS (AG_WINDOW_NOCLOSE|AG_WINDOW_NOMINIMIZE| AG_WINDOW_NOMAXIMIZE)
+#define AG_WINDOW_NOBUTTONS	(AG_WINDOW_NOCLOSE|AG_WINDOW_NOMINIMIZE|\
+				 AG_WINDOW_NOMAXIMIZE)
 #define AG_WINDOW_PLAIN		(AG_WINDOW_NOTITLE|AG_WINDOW_NOBORDERS)
 
 	char caption[AG_WINDOW_CAPTION_MAX];	/* Window caption */
@@ -139,9 +140,9 @@ typedef struct ag_window {
 typedef AG_TAILQ_HEAD(ag_windowq, ag_window) AG_WindowQ;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const char *agWindowWmTypeNames[];
-extern DECLSPEC AG_WidgetClass agWindowClass;
+__BEGIN_DECLS 
+extern DECLSPEC const char *agWindowWmTypeNames[]; 
+extern DECLSPEC AG_WidgetClass agWindowClass; 
 extern DECLSPEC AG_WindowQ agWindowDetachQ; 
 extern DECLSPEC AG_WindowQ agWindowShowQ; 
 extern DECLSPEC AG_WindowQ agWindowHideQ; 
@@ -156,14 +157,14 @@ extern DECLSPEC AG_Window *AG_WindowNewNamed(Uint, const char *, ...) FORMAT_ATT
 extern DECLSPEC void AG_WindowSetCaptionS(AG_Window *, const char *);
 extern DECLSPEC void AG_WindowSetCaption(AG_Window *, const char *, ...) FORMAT_ATTRIBUTE(printf,2,3) NONNULL_ATTRIBUTE(2);
 extern DECLSPEC void AG_WindowUpdateCaption(AG_Window *);
-#define AG_WindowSetIcon(win,su) AG_IconSetSurface((win)->icon,(su))
-#define AG_WindowSetIconNODUP(win,su) AG_IconSetSurfaceNODUP((win)->icon,(su))
+#define AG_WindowSetIcon(win,su) AG_IconSetSurface((win)->icon,(su)) 
+#define AG_WindowSetIconNODUP(win,su) AG_IconSetSurfaceNODUP((win)->icon,(su)) 
 extern DECLSPEC void AG_WindowSetSpacing(AG_Window *, int);
 extern DECLSPEC void AG_WindowSetPadding(AG_Window *, int, int, int, int);
-#define AG_WindowSetPaddingLeft(w,p) AG_WindowSetPadding((w),(p),-1,-1,-1)
-#define AG_WindowSetPaddingRight(w,p) AG_WindowSetPadding((w),-1,(p),-1,-1)
-#define AG_WindowSetPaddingTop(w,p) AG_WindowSetPadding((w),-1,-1,(p),-1)
-#define AG_WindowSetPaddingBottom(w,p) AG_WindowSetPadding((w),-1,-1,-1,(p))
+#define AG_WindowSetPaddingLeft(w,p) AG_WindowSetPadding((w),(p),-1,-1,-1) 
+#define AG_WindowSetPaddingRight(w,p) AG_WindowSetPadding((w),-1,(p),-1,-1) 
+#define AG_WindowSetPaddingTop(w,p) AG_WindowSetPadding((w),-1,-1,(p),-1) 
+#define AG_WindowSetPaddingBottom(w,p) AG_WindowSetPadding((w),-1,-1,-1,(p)) 
 extern DECLSPEC void AG_WindowSetSideBorders(AG_Window *, int);
 extern DECLSPEC void AG_WindowSetBottomBorder(AG_Window *, int);
 extern DECLSPEC void AG_WindowSetPosition(AG_Window *, enum ag_window_alignment, int);
@@ -173,9 +174,9 @@ extern DECLSPEC void AG_WindowSetMinSizePct(AG_Window *, int);
 extern DECLSPEC int AG_WindowSetGeometryRect(AG_Window *, AG_Rect, int);
 extern DECLSPEC int AG_WindowSetGeometryAligned(AG_Window *, enum ag_window_alignment, int, int);
 extern DECLSPEC int AG_WindowSetGeometryAlignedPct(AG_Window *, enum ag_window_alignment, int, int);
-#define AG_WindowSetGeometry(win,x,y,w,h) AG_WindowSetGeometryRect((win),AG_RECT((x),(y),(w),(h)),0)
-#define AG_WindowSetGeometryBounded(win,x,y,w,h) AG_WindowSetGeometryRect((win),AG_RECT((x),(y),(w),(h)),1)
-extern DECLSPEC void AG_WindowComputeAlignment(AG_Window *, AG_SizeAlloc *);
+#define AG_WindowSetGeometry(win,x,y,w,h) \ 
+#define AG_WindowSetGeometryBounded(win,x,y,w,h) \ 
+ AG_WindowSetGeometryRect((win),AG_RECT((x),(y),(w),(h)),0) AG_WindowSetGeometryRect((win),AG_RECT((x),(y),(w),(h)),1) void AG_WindowComputeAlignment(AG_Window *, AG_SizeAlloc *); 
 extern DECLSPEC int AG_WindowSetOpacity(AG_Window *, float);
 extern DECLSPEC void AG_WindowSetFadeIn(AG_Window *, float, float);
 extern DECLSPEC void AG_WindowSetFadeOut(AG_Window *, float, float);
@@ -200,8 +201,8 @@ extern DECLSPEC void AG_WindowFocus(AG_Window *);
 extern DECLSPEC int AG_WindowFocusAtPos(AG_DriverSw *, int, int);
 extern DECLSPEC int AG_WindowFocusNamed(const char *);
 extern DECLSPEC void AG_WindowCycleFocus(AG_Window *, int);
-#define AG_WindowFindFocused() agWindowFocused
-#define AG_WindowIsFocused(win) (agWindowFocused == win)
+#define AG_WindowFindFocused() agWindowFocused 
+#define AG_WindowIsFocused(win) (agWindowFocused == win) 
 extern DECLSPEC void AG_WindowDetachGenEv(AG_Event *);
 extern DECLSPEC void AG_WindowHideGenEv(AG_Event *);
 extern DECLSPEC void AG_WindowCloseGenEv(AG_Event *);
@@ -214,12 +215,12 @@ extern DECLSPEC AG_CursorArea *AG_MapCursor(void *, AG_Rect, struct ag_cursor *)
 extern DECLSPEC AG_CursorArea *AG_MapStockCursor(void *, AG_Rect, int);
 extern DECLSPEC void AG_UnmapCursor(void *, AG_CursorArea *);
 extern DECLSPEC void AG_UnmapAllCursors(AG_Window *, void *);
-#define AGWINDOW(win) ((AG_Window *)(win))
-#define AGWINDETACH(win) AG_WindowDetachGenEv, "%p", (win)
-#define AGWINHIDE(win) AG_WindowHideGenEv, "%p", (win)
-#define AGWINCLOSE(win) AG_WindowCloseGenEv, "%p", (win)
-#define AG_FOREACH_WINDOW(var, ob) AGOBJECT_FOREACH_CHILD(var, ob, ag_window)
-#define AG_FOREACH_WINDOW_REVERSE(var, ob) AGOBJECT_FOREACH_CHILD_REVERSE(var, ob, ag_window)
+#define AGWINDOW(win) ((AG_Window *)(win)) 
+#define AGWINDETACH(win) AG_WindowDetachGenEv, "%p", (win) 
+#define AGWINHIDE(win) AG_WindowHideGenEv, "%p", (win) 
+#define AGWINCLOSE(win) AG_WindowCloseGenEv, "%p", (win) 
+#define AG_FOREACH_WINDOW(var, ob) \ 
+#define AG_FOREACH_WINDOW_REVERSE(var, ob) \ 
 /*
  * Render a window to the display (must be enclosed between calls to
  * AG_BeginRendering() and AG_EndRendering()).
@@ -398,17 +399,17 @@ AG_WindowProcessQueued(void)
 	if (!AG_TAILQ_EMPTY(&agWindowDetachQ)) { AG_WindowProcessDetachQueue(); }
 	AG_UnlockVFS(&agDrivers);
 }
-#ifdef AG_LEGACY
-#define AG_WINDOW_POPUP 0x01000000
-#define AG_WINDOW_DIALOG 0x02000000
-#define AG_WINDOW_CASCADE AG_WINDOW_TILING
-extern DECLSPEC AG_Window *AG_FindWindow(const char *) DEPRECATED_ATTRIBUTE;
+#ifdef AG_LEGACY 
+#define AG_WINDOW_POPUP 0x01000000 
+#define AG_WINDOW_DIALOG 0x02000000 
+#define AG_WINDOW_CASCADE AG_WINDOW_TILING 
+ AGOBJECT_FOREACH_CHILD(var, ob, ag_window) AGOBJECT_FOREACH_CHILD_REVERSE(var, ob, ag_window) AG_Window *AG_FindWindow(const char *) DEPRECATED_ATTRIBUTE; 
 extern DECLSPEC void AG_ViewAttach(AG_Window *) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC void AG_ViewDetach(AG_Window *) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC void AG_WindowSetVisibility(AG_Window *, int) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC int AG_WindowIntersect(AG_DriverSw *, int, int) DEPRECATED_ATTRIBUTE;
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

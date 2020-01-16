@@ -16,7 +16,8 @@ typedef struct ag_file_selector {
 	Uint flags;
 #define AG_FILE_SELECTOR_HFILL	  0x01
 #define AG_FILE_SELECTOR_VFILL	  0x02
-#define AG_FILE_SELECTOR_EXPAND (AG_FILE_SELECTOR_HFILL| AG_FILE_SELECTOR_VFILL)
+#define AG_FILE_SELECTOR_EXPAND	  (AG_FILE_SELECTOR_HFILL|\
+				   AG_FILE_SELECTOR_VFILL)
 #define AG_FILE_SELECTOR_ANY_FILE 0x04	/* Don't check file access */
 
 	char inTxt[AG_PATHNAME_MAX];	/* Input text buffer */
@@ -29,12 +30,12 @@ typedef struct ag_file_selector {
 } AG_FileSelector;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agFileSelectorClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agFileSelectorClass; 
 extern DECLSPEC AG_FileSelector *AG_FileSelectorNew(void *, Uint, const char *);
 extern DECLSPEC void AG_FileSelectorSetFile(AG_FileSelector *, const char *);
 extern DECLSPEC void AG_FileSelectorSetDirectory(AG_FileSelector *, const char *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

@@ -1,7 +1,7 @@
 /*	Public domain	*/
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void M_PolygonInit(M_Polygon *);
 extern DECLSPEC void M_PolygonFree(M_Polygon *);
 extern DECLSPEC M_Polygon M_PolygonFromPts(Uint, const M_Vector2 *);
@@ -36,5 +36,5 @@ M_PolygonAddVertex(M_Polygon *P, M_Vector2 v)
 	P->v[P->n] = v;
 	return (P->n++);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

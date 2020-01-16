@@ -143,21 +143,21 @@ typedef struct ag_net_ops {
 } AG_NetOps;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const AG_NetOps *agNetOps;
-extern DECLSPEC const AG_NetOps agNetOps_bsd;
-extern DECLSPEC const AG_NetOps agNetOps_winsock1;
-extern DECLSPEC const AG_NetOps agNetOps_winsock2;
-extern DECLSPEC const AG_NetOps agNetOps_dummy;
-extern DECLSPEC const char *agNetAddrFamilyNames[];
-extern DECLSPEC const char *agNetSocketTypeNames[];
+__BEGIN_DECLS 
+extern DECLSPEC const AG_NetOps *agNetOps; 
+extern DECLSPEC const AG_NetOps agNetOps_bsd; 
+extern DECLSPEC const AG_NetOps agNetOps_winsock1; 
+extern DECLSPEC const AG_NetOps agNetOps_winsock2; 
+extern DECLSPEC const AG_NetOps agNetOps_dummy; 
+extern DECLSPEC const char *agNetAddrFamilyNames[]; 
+extern DECLSPEC const char *agNetSocketTypeNames[]; 
 extern DECLSPEC int AG_InitNetworkSubsystem(const AG_NetOps *);
 extern DECLSPEC void AG_DestroyNetworkSubsystem(void);
 extern DECLSPEC AG_NetSocket *AG_NetSocketNew(enum ag_net_addr_family, enum ag_net_socket_type, int);
 extern DECLSPEC void AG_NetSocketFree(AG_NetSocket *);
 extern DECLSPEC void AG_NetSocketSetInit(AG_NetSocketSet *);
 extern DECLSPEC void AG_NetSocketSetClear(AG_NetSocketSet *);
-#define AG_NetSocketSetFree(nss) AG_NetSocketSetClear(nss)
+#define AG_NetSocketSetFree(nss) AG_NetSocketSetClear(nss) 
 extern DECLSPEC AG_NetAddr *AG_NetAddrNew(void);
 extern DECLSPEC AG_NetAddr *AG_NetAddrDup(const AG_NetAddr *);
 extern DECLSPEC int AG_NetAddrCompare(const AG_NetAddr *, const AG_NetAddr *);
@@ -180,7 +180,7 @@ extern DECLSPEC AG_NetSocket *AG_NetAccept(AG_NetSocket *);
 extern DECLSPEC int AG_NetRead(AG_NetSocket *, void *, size_t , size_t *) BOUNDED_ATTRIBUTE(__buffer__,2,3);
 extern DECLSPEC int AG_NetWrite(AG_NetSocket *, const void *, size_t , size_t *) BOUNDED_ATTRIBUTE(__buffer__,2,3);
 extern DECLSPEC void AG_NetClose(AG_NetSocket *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

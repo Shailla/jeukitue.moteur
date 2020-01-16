@@ -26,8 +26,8 @@ typedef struct ag_pixmap {
 } AG_Pixmap;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agPixmapClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agPixmapClass; 
 extern DECLSPEC AG_Pixmap *AG_PixmapNew(void *, Uint, Uint, Uint);
 extern DECLSPEC AG_Pixmap *AG_PixmapFromSurface(void *, Uint, const AG_Surface *);
 extern DECLSPEC AG_Pixmap *AG_PixmapFromSurfaceScaled(void *, Uint, const AG_Surface *, Uint, Uint);
@@ -37,13 +37,13 @@ extern DECLSPEC AG_Pixmap *AG_PixmapFromTexture(void *, Uint, Uint, int);
 extern DECLSPEC int AG_PixmapAddSurface(AG_Pixmap *, const AG_Surface *);
 extern DECLSPEC int AG_PixmapAddSurfaceScaled(AG_Pixmap *, const AG_Surface *, Uint, Uint);
 extern DECLSPEC int AG_PixmapAddSurfaceFromFile(AG_Pixmap *, const char *);
-#ifdef AG_LEGACY
+#ifdef AG_LEGACY 
 extern DECLSPEC AG_Pixmap *AG_PixmapFromBMP(void *, Uint, const char *) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC int AG_PixmapAddSurfaceFromBMP(AG_Pixmap *, const char *) DEPRECATED_ATTRIBUTE;
-#define AG_PixmapFromSurfaceCopy AG_PixmapFromSurface
-#define AG_PixmapReplaceCurrentSurface(px,su) AG_PixmapReplaceSurface((px),(px)->n,(su))
-#define AG_PixmapReplaceCurrentSurfaceScaled(px,su,w,h) AG_PixmapReplaceSurfaceScaled((px),(px)->n,(su),(w),(h))
-#define AG_PixmapUpdateCurrentSurface(px) AG_PixmapUpdateSurface((px),(px)->n)
+#define AG_PixmapFromSurfaceCopy AG_PixmapFromSurface 
+#define AG_PixmapReplaceCurrentSurface(px,su) \ 
+#define AG_PixmapReplaceCurrentSurfaceScaled(px,su,w,h) \ 
+#define AG_PixmapUpdateCurrentSurface(px) \ 
 #endif 
 
 static __inline__ void
@@ -82,7 +82,7 @@ AG_PixmapSetCoords(AG_Pixmap *px, int s, int t)
 	px->t = t;
 	AG_ObjectUnlock(px);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

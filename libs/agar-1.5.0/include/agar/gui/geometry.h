@@ -34,11 +34,11 @@ typedef struct ag_texcoord {
 } AG_TexCoord;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC AG_Rect AG_ReadRect(AG_DataSource *);
 extern DECLSPEC void AG_WriteRect(AG_DataSource *, AG_Rect);
-#define AG_ReadRect2(ds) AG_RectToRect2(AG_ReadRect(ds))
-#define AG_WriteRect2(ds,r) AG_WriteRect(ds, AG_Rect2ToRect(r))
+#define AG_ReadRect2(ds) AG_RectToRect2(AG_ReadRect(ds)) 
+#define AG_WriteRect2(ds,r) AG_WriteRect(ds, AG_Rect2ToRect(r)) 
 
 static __inline__ AG_Point
 AG_POINT(int x, int y)
@@ -194,7 +194,7 @@ AG_RectInside2(const AG_Rect2 *r, int x, int y)
 		x < r->x2 &&
 		y < r->y2); 
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #if defined(_AGAR_INTERNAL) || defined(_USE_AGAR_GUI_GEOMETRY)

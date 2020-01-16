@@ -51,11 +51,11 @@ typedef struct ag_pane {
 } AG_Pane;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agPaneClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agPaneClass; 
 extern DECLSPEC AG_Pane *AG_PaneNew(void *, enum ag_pane_type, Uint);
-#define AG_PaneNewHoriz(p,f) AG_PaneNew((p),AG_PANE_HORIZ,(f))
-#define AG_PaneNewVert(p,f) AG_PaneNew((p),AG_PANE_VERT,(f))
+#define AG_PaneNewHoriz(p,f) AG_PaneNew((p),AG_PANE_HORIZ,(f)) 
+#define AG_PaneNewVert(p,f) AG_PaneNew((p),AG_PANE_VERT,(f)) 
 extern DECLSPEC void AG_PaneAttachBox(AG_Pane *, int, AG_Box *);
 extern DECLSPEC void AG_PaneAttachBoxes(AG_Pane *, AG_Box *, AG_Box *);
 extern DECLSPEC void AG_PaneSetDividerWidth(AG_Pane *, int);
@@ -64,7 +64,7 @@ extern DECLSPEC void AG_PaneSetDivisionPacking(AG_Pane *, int, enum ag_box_type)
 extern DECLSPEC int AG_PaneMoveDivider(AG_Pane *, int);
 extern DECLSPEC int AG_PaneMoveDividerPct(AG_Pane *, int);
 extern DECLSPEC void AG_PaneResizeAction(AG_Pane *, enum ag_pane_resize_action);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

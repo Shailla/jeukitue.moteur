@@ -1,8 +1,8 @@
 /*	Public domain	*/
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const M_VectorOps2 mVecOps2_FPU;
+__BEGIN_DECLS 
+extern DECLSPEC const M_VectorOps2 mVecOps2_FPU; 
 extern DECLSPEC M_Vector2 M_VectorZero2_FPU(void);
 extern DECLSPEC M_Vector2 M_VectorGet2_FPU(M_Real, M_Real);
 extern DECLSPEC void M_VectorSet2_FPU(M_Vector2 *, M_Real, M_Real);
@@ -35,5 +35,5 @@ extern DECLSPEC M_Vector2 M_VectorLERP2_FPU(M_Vector2, M_Vector2, M_Real);
 extern DECLSPEC M_Vector2 M_VectorLERP2p_FPU(M_Vector2 *, M_Vector2 *, M_Real);
 extern DECLSPEC M_Vector2 M_VectorElemPow2_FPU(M_Vector2, M_Real);
 extern DECLSPEC M_Real M_VectorVecAngle2_FPU(M_Vector2, M_Vector2);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

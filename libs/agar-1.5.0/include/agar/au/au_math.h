@@ -43,7 +43,8 @@
 #define AU_Radians(x) (((x)/360.0)*(2.0*AU_PI))
 #define AU_DotProd2(ax,ay,bx,by) ((ax)*(bx) + (ay)*(by))
 #define AU_Norm2(ax,ay)	AU_Sqrt(AU_DotProd2((ax),(ay),(ax),(ay)))
-#define AU_Distance2(ax,ay,bx,by) AU_Norm2((float)((ax)-(bx)), (float)((ay)-(by)))
+#define AU_Distance2(ax,ay,bx,by) AU_Norm2((float)((ax)-(bx)),\
+                                           (float)((ay)-(by)))
 
 #if defined(_AGAR_INTERNAL) || defined(_USE_AGAR_AU_MATH)
 #define Sin(x) AU_Sin(x)
@@ -69,7 +70,7 @@
 #endif /* _AGAR_INTERNAL or _USE_AGAR_AU_MATH */
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 
 static __inline__ int
 AU_PowOf2i(int i)

@@ -42,8 +42,8 @@ typedef struct ag_box {
 #define AGBOX(p) ((AG_Box *)(p))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agBoxClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agBoxClass; 
 extern DECLSPEC AG_Box *AG_BoxNew(void *, enum ag_box_type, Uint);
 extern DECLSPEC void AG_BoxSetLabel(AG_Box *, const char *, ...);
 extern DECLSPEC void AG_BoxSetLabelS(AG_Box *, const char *);
@@ -54,8 +54,8 @@ extern DECLSPEC void AG_BoxSetDepth(AG_Box *, int);
 extern DECLSPEC void AG_BoxSetType(AG_Box *, enum ag_box_type);
 extern DECLSPEC void AG_BoxSetHorizAlign(AG_Box *, enum ag_box_align);
 extern DECLSPEC void AG_BoxSetVertAlign(AG_Box *, enum ag_box_align);
-#define AG_BoxNewHoriz(p,f) AG_BoxNew((p),AG_BOX_HORIZ,(f))
-#define AG_BoxNewVert(p,f) AG_BoxNew((p),AG_BOX_VERT,(f))
+#define AG_BoxNewHoriz(p,f) AG_BoxNew((p),AG_BOX_HORIZ,(f)) 
+#define AG_BoxNewVert(p,f) AG_BoxNew((p),AG_BOX_VERT,(f)) 
 
 static __inline__ AG_Box *
 AG_BoxNewHorizNS(void *p, Uint flags)
@@ -74,7 +74,7 @@ AG_BoxNewVertNS(void *p, Uint flags)
 	AG_BoxSetPadding(vBox, 0);
 	return (vBox);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

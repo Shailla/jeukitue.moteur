@@ -10,11 +10,11 @@ typedef struct ag_color {
 } AG_Color;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC Sint8 agSunkColorShift[3];
-extern DECLSPEC Sint8 agRaisedColorShift[3];
-extern DECLSPEC Sint8 agHighColorShift[3];
-extern DECLSPEC Sint8 agLowColorShift[3];
+__BEGIN_DECLS 
+extern DECLSPEC Sint8 agSunkColorShift[3]; 
+extern DECLSPEC Sint8 agRaisedColorShift[3]; 
+extern DECLSPEC Sint8 agHighColorShift[3]; 
+extern DECLSPEC Sint8 agLowColorShift[3]; 
 
 static __inline__ AG_Color
 AG_ColorRGB(Uint8 r, Uint8 g, Uint8 b)
@@ -59,7 +59,7 @@ AG_ColorCompare(AG_Color c1, AG_Color c2)
 		c1.a == c2.a) ? 0 : 1;
 }
 extern DECLSPEC AG_Color AG_ColorFromString(const char *, const AG_Color *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

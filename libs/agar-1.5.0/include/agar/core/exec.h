@@ -24,11 +24,11 @@ typedef int AG_ProcessID;
 #endif
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC AG_ProcessID AG_Execute(const char *, char **);
 extern DECLSPEC AG_ProcessID AG_WaitOnProcess(AG_ProcessID, enum ag_exec_wait_type);
 extern DECLSPEC int AG_Kill(AG_ProcessID);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

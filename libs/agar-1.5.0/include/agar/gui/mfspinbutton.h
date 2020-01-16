@@ -34,8 +34,8 @@ typedef struct ag_mfspinbutton {
 } AG_MFSpinbutton;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agMFSpinbuttonClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agMFSpinbuttonClass; 
 extern DECLSPEC AG_MFSpinbutton *AG_MFSpinbuttonNew(void *, Uint, const char *, const char *, const char *);
 extern DECLSPEC void AG_MFSpinbuttonUpdate(AG_MFSpinbutton *);
 extern DECLSPEC void AG_MFSpinbuttonSetValue(AG_MFSpinbutton *, const char *, double);
@@ -47,7 +47,7 @@ extern DECLSPEC void AG_MFSpinbuttonSetIncrement(AG_MFSpinbutton *, double);
 extern DECLSPEC void AG_MFSpinbuttonSelectUnit(AG_MFSpinbutton *, const char *);
 extern DECLSPEC void AG_MFSpinbuttonSetPrecision(AG_MFSpinbutton *, const char *, int);
 extern DECLSPEC void AG_MFSpinbuttonSetWriteable(AG_MFSpinbutton *, int);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

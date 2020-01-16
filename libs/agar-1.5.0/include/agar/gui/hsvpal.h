@@ -55,10 +55,10 @@ typedef struct ag_hsvpal {
 } AG_HSVPal;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agHSVPalClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agHSVPalClass; 
 extern DECLSPEC AG_HSVPal *AG_HSVPalNew(void *, Uint);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

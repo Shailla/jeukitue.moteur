@@ -96,7 +96,7 @@ typedef struct ag_net_socket_source {
 #define AG_NET_SOCKET_SOURCE(ds) ((AG_NetSocketSource *)(ds))
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void AG_DataSourceInitSubsystem(void);
 extern DECLSPEC void AG_DataSourceDestroySubsystem(void);
 extern DECLSPEC void AG_DataSourceInit(AG_DataSource *);
@@ -122,18 +122,18 @@ extern DECLSPEC int AG_WriteP(AG_DataSource *, const void *, size_t, size_t *) B
 extern DECLSPEC int AG_WriteAt(AG_DataSource *, const void *, size_t, off_t);
 extern DECLSPEC int AG_WriteAtP(AG_DataSource *, const void *, size_t, off_t, size_t *);
 extern DECLSPEC void AG_CloseFile(AG_DataSource *);
-#define AG_CloseFileHandle(ds) AG_CloseFile(ds)
+#define AG_CloseFileHandle(ds) AG_CloseFile(ds) 
 extern DECLSPEC void AG_CloseCore(AG_DataSource *);
-#define AG_CloseConstCore(ds) AG_CloseCore(ds)
+#define AG_CloseConstCore(ds) AG_CloseCore(ds) 
 extern DECLSPEC void AG_CloseAutoCore(AG_DataSource *);
 extern DECLSPEC void AG_CloseNetSocket(AG_DataSource *);
 extern DECLSPEC void AG_WriteTypeCode(AG_DataSource *, Uint32);
 extern DECLSPEC void AG_WriteTypeCodeAt(AG_DataSource *, Uint32, off_t);
 extern DECLSPEC int AG_WriteTypeCodeE(AG_DataSource *, Uint32);
 extern DECLSPEC int AG_CheckTypeCode(AG_DataSource *, Uint32);
-#define AG_LockDataSource(ds) AG_MutexLock(&(ds)->lock);
-#define AG_UnlockDataSource(ds) AG_MutexUnlock(&(ds)->lock);
-#define AG_WRITEAT_DEBUGOFFS(ds,pos) ((ds)->debug ? (pos)+sizeof(Uint32) : (pos))
+#define AG_LockDataSource(ds) AG_MutexLock(&(ds)->lock); 
+#define AG_UnlockDataSource(ds) AG_MutexUnlock(&(ds)->lock); 
+#define AG_WRITEAT_DEBUGOFFS(ds,pos) ((ds)->debug ? (pos)+sizeof(Uint32) : (pos)) 
 
 static __inline__ int
 AG_DataSourceRealloc(void *obj, size_t size)
@@ -168,7 +168,7 @@ AG_Seek(AG_DataSource *ds, off_t pos, enum ag_seek_mode mode)
 	AG_MutexUnlock(&ds->lock);
 	return (rv);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

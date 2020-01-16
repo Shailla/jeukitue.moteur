@@ -176,21 +176,23 @@ typedef AG_TAILQ_HEAD(ag_driver_eventq, ag_driver_event) AG_DriverEventQ;
 #define AGDRIVER_CLASS(obj)	((struct ag_driver_class *)(AGOBJECT(obj)->cls))
 #define AGDRIVER_SINGLE(drv)	(AGDRIVER_CLASS(drv)->wm == AG_WM_SINGLE)
 #define AGDRIVER_MULTIPLE(drv)	(AGDRIVER_CLASS(drv)->wm == AG_WM_MULTIPLE)
-#define AGDRIVER_BOUNDED_WIDTH(win,x) (((x) < 0) ? 0 : ((x) > AGWIDGET(win)->w) ? (AGWIDGET(win)->w - 1) : (x))
-#define AGDRIVER_BOUNDED_HEIGHT(win,y) (((y) < 0) ? 0 : ((y) > AGWIDGET(win)->h) ? (AGWIDGET(win)->h - 1) : (y))
+#define AGDRIVER_BOUNDED_WIDTH(win,x) (((x) < 0) ? 0 : \
+                                      ((x) > AGWIDGET(win)->w) ? (AGWIDGET(win)->w - 1) : (x))
+#define AGDRIVER_BOUNDED_HEIGHT(win,y) (((y) < 0) ? 0 : \
+                                       ((y) > AGWIDGET(win)->h) ? (AGWIDGET(win)->h - 1) : (y))
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_ObjectClass agDriverClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_ObjectClass agDriverClass; 
 extern DECLSPEC AG_Object agDrivers; 
 extern DECLSPEC AG_DriverClass *agDriverOps; 
 extern DECLSPEC void *agDriverList[]; 
-extern DECLSPEC Uint agDriverListSize;
-#include <agar/config/have_clock_gettime.h>
-#include <agar/config/have_pthreads.h>
-#if defined(HAVE_CLOCK_GETTIME) && defined(HAVE_PTHREADS)
+extern DECLSPEC Uint agDriverListSize; 
+#include <agar/config/have_clock_gettime.h> 
+#include <agar/config/have_pthreads.h> 
+#if defined(HAVE_CLOCK_GETTIME) && defined(HAVE_PTHREADS) 
 extern DECLSPEC AG_Cond agCondBeginRender; 
-extern DECLSPEC AG_Cond agCondEndRender;
-#endif
+extern DECLSPEC AG_Cond agCondEndRender; 
+#endif 
 extern DECLSPEC void AG_ListDriverNames(char *, size_t) BOUNDED_ATTRIBUTE(__string__, 1, 2);
 extern DECLSPEC int AG_DriverProbe(AG_DriverClass *, const char *);
 extern DECLSPEC AG_Driver *AG_DriverOpen(AG_DriverClass *);
@@ -230,14 +232,14 @@ AG_EndRendering(void *drv)
 		AG_CondBroadcast(&agCondEndRender);
 #endif
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/drv_mw.h>
 #include <agar/gui/drv_sw.h>
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 
 static __inline__ int
 AG_UsingGL(void *drv)
@@ -272,7 +274,7 @@ AG_GetDisplaySize(void *drv, Uint *w, Uint *h)
 	}
 	return (-1);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

@@ -115,8 +115,8 @@ typedef struct m_plotter {
 } M_Plotter;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass mPlotterClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass mPlotterClass; 
 extern DECLSPEC M_Plotter *M_PlotterNew(void *, Uint);
 extern DECLSPEC void M_PlotterSizeHint(M_Plotter *, Uint, Uint);
 extern DECLSPEC void M_PlotterUpdate(M_Plotter *);
@@ -143,7 +143,7 @@ extern DECLSPEC void M_PlotReal(M_Plot *, M_Real);
 extern DECLSPEC void M_PlotRealv(M_Plot *, Uint, const M_Real *);
 extern DECLSPEC void M_PlotVector(M_Plot *, const M_Vector *);
 extern DECLSPEC void M_PlotVectorv(M_Plot *, Uint, const M_Vector **);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/math/close.h>

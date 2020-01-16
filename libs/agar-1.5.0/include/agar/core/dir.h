@@ -10,7 +10,7 @@ typedef struct ag_dir {
 } AG_Dir;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC int AG_MkDir(const char *);
 extern DECLSPEC int AG_RmDir(const char *);
 extern DECLSPEC int AG_ChDir(const char *);
@@ -18,7 +18,7 @@ extern DECLSPEC AG_Dir *AG_OpenDir(const char *);
 extern DECLSPEC void AG_CloseDir(AG_Dir *);
 extern DECLSPEC int AG_MkPath(const char *);
 extern DECLSPEC int AG_GetCWD(char *, size_t);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

@@ -1,7 +1,7 @@
 /*	Public domain	*/
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC M_Triangle2 M_TriangleFromLines2(M_Line2, M_Line2, M_Line2);
 extern DECLSPEC M_Triangle3 M_TriangleFromLines3(M_Line3, M_Line3, M_Line3);
 extern DECLSPEC M_Triangle2 M_TriangleRead2(AG_DataSource *);
@@ -29,5 +29,5 @@ M_TriangleFromPts3(M_Vector3 a, M_Vector3 b, M_Vector3 c)
 	T.c = c;
 	return (T);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

@@ -26,10 +26,10 @@ typedef struct ag_titlebar {
 } AG_Titlebar;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agTitlebarClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agTitlebarClass; 
 extern DECLSPEC AG_Titlebar *AG_TitlebarNew(void *, Uint);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

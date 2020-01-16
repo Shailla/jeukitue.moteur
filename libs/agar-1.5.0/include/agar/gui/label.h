@@ -46,8 +46,8 @@ typedef struct ag_label {
 } AG_Label;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agLabelClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agLabelClass; 
 extern DECLSPEC AG_Label *AG_LabelNew(void *, Uint, const char *, ...) FORMAT_ATTRIBUTE(printf, 3, 4);
 extern DECLSPEC AG_Label *AG_LabelNewS(void *, Uint, const char *);
 extern DECLSPEC AG_Label *AG_LabelNewPolled(void *, Uint, const char *, ...);
@@ -57,22 +57,22 @@ extern DECLSPEC void AG_LabelTextS(AG_Label *, const char *);
 extern DECLSPEC void AG_LabelSetPadding(AG_Label *, int, int, int, int);
 extern DECLSPEC void AG_LabelJustify(AG_Label *, enum ag_text_justify);
 extern DECLSPEC void AG_LabelValign(AG_Label *, enum ag_text_valign);
-#define AG_LabelSetPaddingLeft(lbl,v) AG_LabelSetPadding((lbl),(v),-1,-1,-1)
-#define AG_LabelSetPaddingRight(lbl,v) AG_LabelSetPadding((lbl),-1,(v),-1,-1)
-#define AG_LabelSetPaddingTop(lbl,v) AG_LabelSetPadding((lbl),-1,-1,(v),-1)
-#define AG_LabelSetPaddingBottom(lbl,v) AG_LabelSetPadding((lbl),-1,-1,-1,(v))
+#define AG_LabelSetPaddingLeft(lbl,v) AG_LabelSetPadding((lbl),(v),-1,-1,-1) 
+#define AG_LabelSetPaddingRight(lbl,v) AG_LabelSetPadding((lbl),-1,(v),-1,-1) 
+#define AG_LabelSetPaddingTop(lbl,v) AG_LabelSetPadding((lbl),-1,-1,(v),-1) 
+#define AG_LabelSetPaddingBottom(lbl,v) AG_LabelSetPadding((lbl),-1,-1,-1,(v)) 
 extern DECLSPEC void AG_LabelSizeHint(AG_Label *, Uint, const char *);
-#ifdef AG_LEGACY
-# define AG_LabelNewStatic AG_LabelNew
-# define AG_LabelNewString AG_LabelNewS
-# define AG_LabelNewStaticS AG_LabelNewS
-# define AG_LabelPrintf AG_LabelText
-# define AG_LabelString(lbl,s) AG_LabelTextS((lbl),(s))
-# define AG_LabelPrescale AG_LabelSizeHint
-# define AG_LABEL_POLLED_MT AG_LABEL_POLLED
-# define AG_LabelSetFont AG_SetFont
+#ifdef AG_LEGACY 
+# define AG_LabelNewStatic AG_LabelNew 
+# define AG_LabelNewString AG_LabelNewS 
+# define AG_LabelNewStaticS AG_LabelNewS 
+# define AG_LabelPrintf AG_LabelText 
+# define AG_LabelString(lbl,s) AG_LabelTextS((lbl),(s)) 
+# define AG_LabelPrescale AG_LabelSizeHint 
+# define AG_LABEL_POLLED_MT AG_LABEL_POLLED 
+# define AG_LabelSetFont AG_SetFont 
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

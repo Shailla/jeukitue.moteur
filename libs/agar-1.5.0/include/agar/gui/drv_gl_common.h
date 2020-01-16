@@ -29,7 +29,7 @@ typedef struct ag_gl_context {
 } AG_GL_Context;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC int AG_GL_InitContext(void *, AG_GL_Context *);
 extern DECLSPEC void AG_GL_SetViewport(AG_GL_Context *, AG_Rect);
 extern DECLSPEC void AG_GL_DestroyContext(void *);
@@ -124,7 +124,7 @@ AG_GL_GetBlendingFunc(AG_BlendFn fn)
 	default:			return (GL_ONE);
 	}
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

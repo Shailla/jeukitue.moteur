@@ -11,8 +11,8 @@
 				   loop will call AG_ProcessTimeouts(). */
 
 /* Begin generated block */
-__BEGIN_DECLS
-struct ag_event;
+__BEGIN_DECLS 
+struct ag_event; 
 extern DECLSPEC char *agProgName; 
 extern DECLSPEC int agVerbose; 
 extern DECLSPEC int agSoftTimers; 
@@ -21,18 +21,32 @@ extern DECLSPEC void AG_AtExitFunc(void (*)(void));
 extern DECLSPEC void AG_AtExitFuncEv(void (*)(struct ag_event *));
 extern DECLSPEC void AG_Quit(void) NORETURN_ATTRIBUTE;
 extern DECLSPEC void AG_Destroy(void);
-#ifdef AG_LEGACY
-# define AG_InitInput(flags)
-# define AG_CORE_VERBOSE AG_VERBOSE
+#ifdef AG_LEGACY 
+# define AG_InitInput(flags) 
+# define AG_CORE_VERBOSE AG_VERBOSE 
 # define AG_NO_CFG_AUTOLOAD 0x04 
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 /* Utility macros */
-#define AG_SETFLAGS(var,flags,cond) do { if (cond) { (var) |= (flags); } else { (var) &= ~(flags); } } while (0)
+#define AG_SETFLAGS(var,flags,cond)		\
+	do {					\
+		if (cond) {			\
+			(var) |= (flags);	\
+		} else {			\
+			(var) &= ~(flags);	\
+		}				\
+	} while (0)
 
-#define AG_INVFLAGS(var,flags) do { if ((var) & (flags)) { (var) &= ~(flags); } else { (var) |= (flags); } } while (0)
+#define AG_INVFLAGS(var,flags)			\
+	do {					\
+		if ((var) & (flags)) {		\
+			(var) &= ~(flags);	\
+		} else {			\
+			(var) |= (flags);	\
+		}				\
+	} while (0)
 
 #ifndef AG_MIN
 #define	AG_MIN(a,b) (((a)<(b))?(a):(b))

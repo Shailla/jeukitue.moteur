@@ -47,8 +47,8 @@ typedef struct ag_console {
 } AG_Console;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agConsoleClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agConsoleClass; 
 extern DECLSPEC AG_Console *AG_ConsoleNew(void *, Uint);
 extern DECLSPEC void AG_ConsoleSetPadding(AG_Console *, int);
 extern DECLSPEC void AG_ConsoleSetFont(AG_Console *, AG_Font *);
@@ -61,10 +61,10 @@ extern DECLSPEC void AG_ConsoleMsgIcon(AG_ConsoleLine *, int);
 extern DECLSPEC void AG_ConsoleMsgColor(AG_ConsoleLine *, const AG_Color *);
 extern DECLSPEC void AG_ConsoleClear(AG_Console *);
 extern DECLSPEC char *AG_ConsoleExportText(AG_Console *, int);
-#ifdef AG_LEGACY
-# define AG_ConsoleSetFont(cons,font) AG_SetFont((cons),(font))
-#endif
-__END_DECLS
+#ifdef AG_LEGACY 
+# define AG_ConsoleSetFont(cons,font) AG_SetFont((cons),(font)) 
+#endif 
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

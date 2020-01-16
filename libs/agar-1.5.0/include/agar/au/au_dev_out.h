@@ -70,8 +70,8 @@ typedef struct au_dev_out {
 #define AUDEVOUT(obj) ((AU_DevOut *)(obj))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const AU_DevOutClass *auDevOutList[];
+__BEGIN_DECLS 
+extern DECLSPEC const AU_DevOutClass *auDevOutList[]; 
 extern DECLSPEC AU_DevOut *AU_OpenOut(const char *, int, int);
 extern DECLSPEC void AU_CloseOut(AU_DevOut *);
 extern DECLSPEC int AU_AddChannel(AU_DevOut *);
@@ -97,7 +97,7 @@ AU_WriteFloat(AU_DevOut *dev, float *data, size_t frames)
 	AG_MutexUnlock(&dev->lock);
 	return (0);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

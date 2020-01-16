@@ -43,9 +43,9 @@ typedef struct ag_notebook {
 } AG_Notebook;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agNotebookClass;
-extern DECLSPEC AG_WidgetClass agNotebookTabClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agNotebookClass; 
+extern DECLSPEC AG_WidgetClass agNotebookTabClass; 
 extern DECLSPEC AG_Notebook *AG_NotebookNew(void *, Uint);
 extern DECLSPEC void AG_NotebookSetPadding(AG_Notebook *, int);
 extern DECLSPEC void AG_NotebookSetSpacing(AG_Notebook *, int);
@@ -54,15 +54,15 @@ extern DECLSPEC void AG_NotebookSetTabVisibility(AG_Notebook *, int);
 extern DECLSPEC AG_NotebookTab *AG_NotebookAdd(AG_Notebook *, const char *, enum ag_box_type);
 extern DECLSPEC void AG_NotebookDel(AG_Notebook *, AG_NotebookTab *);
 extern DECLSPEC void AG_NotebookSelect(AG_Notebook *, AG_NotebookTab *);
-#ifdef AG_LEGACY
-# define AG_NotebookSetTabFont AG_SetFont
-# define AG_NotebookAddTab AG_NotebookAdd
-# define AG_NotebookAddTabVert(nb,lbl) AG_NotebookAdd((nb),(lbl),AG_BOX_VERT)
-# define AG_NotebookAddTabHoriz(nb,lbl) AG_NotebookAdd((nb),(lbl),AG_BOX_HORIZ)
-# define AG_NotebookDelTab AG_NotebookDel
-# define AG_NotebookSelectTab AG_NotebookSelect
-#endif
-__END_DECLS
+#ifdef AG_LEGACY 
+# define AG_NotebookSetTabFont AG_SetFont 
+# define AG_NotebookAddTab AG_NotebookAdd 
+# define AG_NotebookAddTabVert(nb,lbl) AG_NotebookAdd((nb),(lbl),AG_BOX_VERT) 
+# define AG_NotebookAddTabHoriz(nb,lbl) AG_NotebookAdd((nb),(lbl),AG_BOX_HORIZ) 
+# define AG_NotebookDelTab AG_NotebookDel 
+# define AG_NotebookSelectTab AG_NotebookSelect 
+#endif 
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

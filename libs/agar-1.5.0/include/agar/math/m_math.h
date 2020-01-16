@@ -376,7 +376,7 @@ typedef struct m_matrix {
 #endif
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void M_InitSubsystem(void);
 extern DECLSPEC void M_DestroySubsystem(void);
 extern DECLSPEC M_Real M_ReadReal(AG_DataSource *);
@@ -388,8 +388,8 @@ extern DECLSPEC void M_WriteComplex(AG_DataSource *, M_Complex);
 extern DECLSPEC M_Range M_ReadRange(AG_DataSource *);
 extern DECLSPEC void M_CopyRange(AG_DataSource *, M_Range *);
 extern DECLSPEC void M_WriteRange(AG_DataSource *, M_Range);
-#define M_ReadTime(ds) (M_Time)M_ReadReal(ds)
-#define M_WriteTime(ds,t) M_WriteReal((ds),(M_Real)(t))
+#define M_ReadTime(ds) (M_Time)M_ReadReal(ds) 
+#define M_WriteTime(ds,t) M_WriteReal((ds),(M_Real)(t)) 
 extern DECLSPEC M_TimeRange M_ReadTimeRange(AG_DataSource *);
 extern DECLSPEC void M_CopyTimeRange(AG_DataSource *, M_TimeRange *);
 extern DECLSPEC void M_WriteTimeRange(AG_DataSource *, M_TimeRange);
@@ -398,5 +398,5 @@ extern DECLSPEC void M_QSort(void *, size_t, size_t, M_Real (*)(const void *, co
 extern DECLSPEC int M_MergeSort(void *, size_t, size_t, int (*)(const void *, const void *));
 extern DECLSPEC int M_RadixSort(const Uint8 **, int, const Uint8 *, Uint);
 extern DECLSPEC int M_RadixSortStable(const Uint8 **, int, const Uint8 *, Uint);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

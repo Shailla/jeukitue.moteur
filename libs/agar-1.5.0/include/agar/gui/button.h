@@ -31,8 +31,8 @@ typedef struct ag_button {
 } AG_Button;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agButtonClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agButtonClass; 
 extern DECLSPEC AG_Button *AG_ButtonNew(void *, Uint, const char *, ...) FORMAT_ATTRIBUTE(printf, 3, 4);
 extern DECLSPEC AG_Button *AG_ButtonNewS(void *, Uint, const char *);
 extern DECLSPEC AG_Button *AG_ButtonNewFn(void *, Uint, const char *, AG_EventFn, const char *, ...);
@@ -45,10 +45,10 @@ extern DECLSPEC AG_Button *AG_ButtonNewFlag8(void *, Uint, const char *, Uint8 *
 extern DECLSPEC AG_Button *AG_ButtonNewFlag16(void *, Uint, const char *, Uint16 *, Uint16);
 extern DECLSPEC AG_Button *AG_ButtonNewFlag32(void *, Uint, const char *, Uint32 *, Uint32);
 extern DECLSPEC void AG_ButtonSetPadding(AG_Button *, int, int, int, int);
-#define AG_ButtonSetPaddingLeft(b,v) AG_ButtonSetPadding((b),(v),-1,-1,-1)
-#define AG_ButtonSetPaddingRight(b,v) AG_ButtonSetPadding((b),-1,(v),-1,-1)
-#define AG_ButtonSetPaddingTop(b,v) AG_ButtonSetPadding((b),-1,-1,(v),-1)
-#define AG_ButtonSetPaddingBottom(b,v) AG_ButtonSetPadding((b),-1,-1,-1,(v))
+#define AG_ButtonSetPaddingLeft(b,v) AG_ButtonSetPadding((b),(v),-1,-1,-1) 
+#define AG_ButtonSetPaddingRight(b,v) AG_ButtonSetPadding((b),-1,(v),-1,-1) 
+#define AG_ButtonSetPaddingTop(b,v) AG_ButtonSetPadding((b),-1,-1,(v),-1) 
+#define AG_ButtonSetPaddingBottom(b,v) AG_ButtonSetPadding((b),-1,-1,-1,(v)) 
 extern DECLSPEC void AG_ButtonSetFocusable(AG_Button *, int);
 extern DECLSPEC void AG_ButtonSetSticky(AG_Button *, int);
 extern DECLSPEC void AG_ButtonInvertState(AG_Button *, int);
@@ -59,15 +59,15 @@ extern DECLSPEC void AG_ButtonSurfaceNODUP(AG_Button *, AG_Surface *);
 extern DECLSPEC void AG_ButtonSetRepeatMode(AG_Button *, int);
 extern DECLSPEC void AG_ButtonText(AG_Button *, const char *, ...) FORMAT_ATTRIBUTE(printf, 2, 3) NONNULL_ATTRIBUTE(2);
 extern DECLSPEC void AG_ButtonTextS(AG_Button *, const char *);
-#ifdef AG_LEGACY
-# define AG_ButtonAct AG_ButtonNewFn
-# define AG_ButtonSetSurface(bu,su) AG_ButtonSurface((bu),(su))
-# define AG_ButtonPrintf AG_ButtonText
-# define AG_ButtonEnable AG_WidgetEnable
-# define AG_ButtonDisable AG_WidgetDisable
-# define AG_ButtonSetJustification AG_ButtonJustify
+#ifdef AG_LEGACY 
+# define AG_ButtonAct AG_ButtonNewFn 
+# define AG_ButtonSetSurface(bu,su) AG_ButtonSurface((bu),(su)) 
+# define AG_ButtonPrintf AG_ButtonText 
+# define AG_ButtonEnable AG_WidgetEnable 
+# define AG_ButtonDisable AG_WidgetDisable 
+# define AG_ButtonSetJustification AG_ButtonJustify 
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

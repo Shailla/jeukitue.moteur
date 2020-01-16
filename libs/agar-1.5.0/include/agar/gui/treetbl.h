@@ -113,8 +113,8 @@ typedef struct ag_treetbl {
 } AG_Treetbl;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agTreetblClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agTreetblClass; 
 extern DECLSPEC AG_Treetbl *AG_TreetblNew(void *, Uint, AG_TreetblDataFn, AG_TreetblSortFn);
 extern DECLSPEC void AG_TreetblSizeHint(AG_Treetbl *, int, int);
 extern DECLSPEC void AG_TreetblSetRefreshRate(AG_Treetbl *, Uint);
@@ -138,12 +138,12 @@ extern DECLSPEC void AG_TreetblDeselectAll(AG_Treetbl *, AG_TreetblRow *);
 extern DECLSPEC AG_TreetblRow *AG_TreetblSelectedRow(AG_Treetbl *);
 extern DECLSPEC void AG_TreetblExpandRow(AG_Treetbl *, AG_TreetblRow *);
 extern DECLSPEC void AG_TreetblCollapseRow(AG_Treetbl *, AG_TreetblRow *);
-#if 0
+#if 0 
 extern DECLSPEC void AG_TreetblCellPrintf(AG_Treetbl *, AG_TreetblRow *, int, const char *, ...);
-#endif
-#define AG_TreetblRowToggle(TV, ROW) do { if (NULL == (ROW)) break if ((ROW)->flags & AG_TREETBL_ROW_EXPANDED) AG_TreetblCollapseRow(TV, (ROW)); else AG_TreetblExpandRow(TV, (ROW)); } while (0)
-#define AG_TreetblBegin AG_TreetblClearRows
-#define AG_TreetblEnd AG_TreetblRestoreRows
+#endif 
+#define AG_TreetblRowToggle(TV, ROW) \ 
+#define AG_TreetblBegin AG_TreetblClearRows 
+#define AG_TreetblEnd AG_TreetblRestoreRows 
 /*
  * Return a pointer if the row with the given identifer exists in or in a
  * descendant of the rowq. If it does not exist, return NULL.
@@ -226,7 +226,7 @@ AG_TreetblCollapseRowID(AG_Treetbl *tt, int rowID)
 	AG_TreetblCollapseRow(tt, row);
 	return (0);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

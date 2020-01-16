@@ -19,8 +19,8 @@ typedef struct vg_line {
 #define VGLINE(p) ((VG_Line *)(p))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC VG_NodeOps vgLineOps;
+__BEGIN_DECLS 
+extern DECLSPEC VG_NodeOps vgLineOps; 
 
 static __inline__ VG_Line *
 VG_LineNew(void *pNode, VG_Point *p1, VG_Point *p2)
@@ -53,5 +53,5 @@ VG_LineStipple(VG_Line *vl, Uint16 s)
 	VG_Unlock(VGNODE(vl)->vg);
 }
 extern DECLSPEC void VG_LineEndpointStyle(VG_Line *, enum vg_line_endpoint, ...);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

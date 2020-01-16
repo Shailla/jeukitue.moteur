@@ -20,12 +20,12 @@ typedef struct ag_object_selector {
 } AG_ObjectSelector;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agObjectSelectorClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agObjectSelectorClass; 
 extern DECLSPEC AG_ObjectSelector *AG_ObjectSelectorNew(void *, int, void *, void *, const char *, ...) FORMAT_ATTRIBUTE(printf, 5, 6) NONNULL_ATTRIBUTE(5);
 extern DECLSPEC AG_TlistItem *AG_ObjectSelectorSelect(AG_ObjectSelector *, void *);
 extern DECLSPEC void AG_ObjectSelectorMaskType(AG_ObjectSelector *, const char *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

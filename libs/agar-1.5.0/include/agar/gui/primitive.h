@@ -12,7 +12,7 @@
 #include <agar/gui/begin.h>
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 
 static __inline__ AG_Color
 AG_ColorShift(AG_Color C, Sint8 *shift)
@@ -482,7 +482,7 @@ AG_DrawTiling(void *obj, AG_Rect r, int tsz, int offs, AG_Color c1, AG_Color c2)
 		alt1 = alt2;
 	}
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

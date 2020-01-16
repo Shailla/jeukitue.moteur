@@ -67,10 +67,12 @@ typedef struct vg_tool_command {
 } VG_ToolCommand;
 
 #define VGTOOL(t) ((VG_Tool *)(t))
-#define VG_CURTOOL(vv) (vv)->curtool != NULL ? (vv)->curtool : (vv)->deftool != NULL ? (vv)->deftool : NULL
+#define VG_CURTOOL(vv) \
+    (vv)->curtool != NULL ? (vv)->curtool : \
+    (vv)->deftool != NULL ? (vv)->deftool : NULL
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void VG_ToolInit(VG_Tool *);
 extern DECLSPEC void VG_ToolDestroy(VG_Tool *);
 extern DECLSPEC AG_Window *VG_ToolWindow(void *, const char *);
@@ -78,7 +80,7 @@ extern DECLSPEC VG_ToolCommand *VG_ToolCommandNew(void *, const char *, AG_Event
 extern DECLSPEC void VG_ToolCommandKey(VG_ToolCommand *, AG_KeyMod, AG_KeySym);
 extern DECLSPEC void VG_ToolCommandDescr(VG_ToolCommand *, const char *, ...);
 extern DECLSPEC int VG_ToolCommandExec(void *, const char *, const char *, ...);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/vg/close.h>

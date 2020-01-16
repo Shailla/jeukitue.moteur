@@ -4,7 +4,7 @@
  */
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 
 static __inline__ M_Vector *
 M_VectorNew_FPU(Uint m)
@@ -235,19 +235,19 @@ M_VectorCopy_FPU(M_Vector *x, const M_Vector *y)
 	memcpy(x->v, y->v, MVECSIZE(x) * sizeof(M_Real));
 	return (0);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const M_VectorOps mVecOps_FPU;
+__BEGIN_DECLS 
+extern DECLSPEC const M_VectorOps mVecOps_FPU; 
 extern DECLSPEC M_Vector *M_ReadVector_FPU(AG_DataSource *);
 extern DECLSPEC void M_WriteVector_FPU(AG_DataSource *, const M_Vector *);
 extern DECLSPEC M_Vector *M_VectorFromReals_FPU(Uint, const M_Real *);
 extern DECLSPEC M_Vector *M_VectorFromFloats_FPU(Uint, const float *);
 extern DECLSPEC M_Vector *M_VectorFromDoubles_FPU(Uint, const double *);
-#ifdef AG_HAVE_LONG_DOUBLE
+#ifdef AG_HAVE_LONG_DOUBLE 
 extern DECLSPEC M_Vector *M_VectorFromLongDoubles_FPU(Uint, const long double *);
-#endif
-__END_DECLS
+#endif 
+__END_DECLS 
 /* Close generated block */

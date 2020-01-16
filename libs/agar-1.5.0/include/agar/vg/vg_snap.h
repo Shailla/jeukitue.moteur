@@ -16,10 +16,10 @@ struct ag_menu;
 struct ag_menu_item;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void VG_SnapPoint(struct vg_view *, VG_Vector *);
 extern DECLSPEC void VG_DrawGrid(struct vg_view *);
 extern DECLSPEC struct ag_toolbar *VG_SnapToolbar(void *, struct vg_view *, int);
 extern DECLSPEC void VG_SnapMenu(struct ag_menu_item *, struct vg_view *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

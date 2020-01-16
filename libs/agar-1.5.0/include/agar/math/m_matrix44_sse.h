@@ -29,7 +29,7 @@
 #ifdef HAVE_SSE
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 
 static __inline__ M_Matrix44
 M_MatrixZero44_SSE(void)
@@ -253,12 +253,12 @@ M_MatrixCopy44_SSE(M_Matrix44 *mDst, const M_Matrix44 *mSrc)
 	mDst->m3 = mSrc->m3;
 	mDst->m4 = mSrc->m4;
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const M_MatrixOps44 mMatOps44_SSE;
+__BEGIN_DECLS 
+extern DECLSPEC const M_MatrixOps44 mMatOps44_SSE; 
 extern DECLSPEC M_Matrix44 M_MatrixInvert44_SSE(const M_Matrix44);
 extern DECLSPEC void M_MatrixRotateAxis44_SSE(M_Matrix44 *, M_Real, M_Vector3);
 extern DECLSPEC void M_MatrixRotate44I_SSE(M_Matrix44 *, M_Real);
@@ -271,7 +271,7 @@ extern DECLSPEC void M_MatrixTranslateY44_SSE(M_Matrix44 *, M_Real);
 extern DECLSPEC void M_MatrixTranslateZ44_SSE(M_Matrix44 *, M_Real);
 extern DECLSPEC void M_MatrixScale44_SSE(M_Matrix44 *, M_Real, M_Real, M_Real, M_Real);
 extern DECLSPEC void M_MatrixUniScale44_SSE(M_Matrix44 *, M_Real);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #endif /* HAVE_SSE */

@@ -83,8 +83,8 @@ typedef struct ag_fmt_string_ext {
 #define AG_FMTSTRING_BUFFER_GROW 128
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const unsigned char agStrcasecmpMapASCII[];
+__BEGIN_DECLS 
+extern DECLSPEC const unsigned char agStrcasecmpMapASCII[]; 
 extern DECLSPEC char *AG_Printf(const char *, ...);
 extern DECLSPEC char *AG_PrintfN(Uint, const char *, ...);
 extern DECLSPEC AG_FmtString *AG_PrintfP(const char *, ...);
@@ -251,7 +251,7 @@ AG_Strncasecmp(const char *s1, const char *s2, size_t n)
 	}
 	return i == n ? 0 : cm[us1[i]] - cm[us2[i]];
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #if defined(_AGAR_INTERNAL) || defined(_USE_AGAR_STD)

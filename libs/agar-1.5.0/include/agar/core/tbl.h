@@ -22,7 +22,7 @@ typedef struct ag_tbl {
 } AG_Tbl;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC AG_Tbl *AG_TblNew(Uint, Uint);
 extern DECLSPEC int AG_TblInit(AG_Tbl *, Uint, Uint);
 extern DECLSPEC void AG_TblDestroy(AG_Tbl *);
@@ -30,7 +30,7 @@ extern DECLSPEC AG_Variable *AG_TblLookupHash(AG_Tbl *, Uint, const char *);
 extern DECLSPEC int AG_TblExistsHash(AG_Tbl *, Uint, const char *);
 extern DECLSPEC int AG_TblInsertHash(AG_Tbl *, Uint, const char *, const AG_Variable *);
 extern DECLSPEC int AG_TblDeleteHash(AG_Tbl *, Uint, const char *);
-#define AG_TBL_FOREACH(var, i,j, tbl) for ((i) = 0; ((i) < (tbl)->nBuckets); (i)++) for ((j) = 0; ((j) < (tbl)->buckets[i].nEnts) && ((var) = &(tbl)->buckets[i].ents[j]); (j)++)
+#define AG_TBL_FOREACH(var, i,j, tbl) \ 
 
 static __inline__ Uint
 AG_TblHash(AG_Tbl *tbl, const char *key)
@@ -90,7 +90,7 @@ AG_TblDelete(AG_Tbl *tbl, const char *key)
 {
 	return AG_TblDeleteHash(tbl, AG_TblHash(tbl,key), key);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

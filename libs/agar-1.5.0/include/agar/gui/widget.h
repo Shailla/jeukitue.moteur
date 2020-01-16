@@ -87,7 +87,8 @@ typedef enum ag_action_event_type {
 	AG_ACTION_ON_KEYDOWN,		/* On key-down */
 	AG_ACTION_ON_KEYUP,		/* On key-up */
 	AG_ACTION_ON_KEYREPEAT		/* On key-down, with key repeat */
-#define AG_ACTION_ON_BUTTON AG_ACTION_ON_BUTTONDOWN /* For mousewheel events */
+#define AG_ACTION_ON_BUTTON \
+	AG_ACTION_ON_BUTTONDOWN		/* For mousewheel events */
 } AG_ActionEventType;
 
 typedef struct ag_action_tie {
@@ -229,10 +230,14 @@ typedef struct ag_widget {
 
 #define AGWIDGET_SURFACE(wi, ind)	AGWIDGET(wi)->surfaces[ind]
 #define AGWIDGET_TEXTURE(wi, ind)	AGWIDGET(wi)->textures[ind]
-#define AGWIDGET_SURFACE_NODUP(wi, ind) (AGWIDGET(wi)->surfaceFlags[ind] & AG_WIDGET_SURFACE_NODUP)
+#define AGWIDGET_SURFACE_NODUP(wi, ind)	(AGWIDGET(wi)->surfaceFlags[ind] & \
+					 AG_WIDGET_SURFACE_NODUP)
 #define AGSTYLE(p)			 AGWIDGET(p)->theme
 
-#define AGWIDGET_KEYBOARD(obj) (((obj) != NULL) ? AGWIDGET(obj)->drv->kbd : (agDriverSw != NULL) ? AGDRIVER(agDriverSw)->kbd: NULL)
+#define AGWIDGET_KEYBOARD(obj)				\
+    (((obj) != NULL) ? AGWIDGET(obj)->drv->kbd :	\
+     (agDriverSw != NULL) ? AGDRIVER(agDriverSw)->kbd:	\
+     NULL)
 
 #if defined(_AGAR_INTERNAL) || defined(_USE_AGAR_GUI)
 # define WIDGET(wi)			AGWIDGET(wi)
@@ -260,12 +265,12 @@ struct ag_font;
 AG_TAILQ_HEAD(ag_widgetq, ag_widget);
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agWidgetClass;
-extern DECLSPEC const char *agWidgetPropNames[];
-extern DECLSPEC const char *agWidgetStateNames[];
-extern DECLSPEC const char *agWidgetColorNames[];
-extern DECLSPEC AG_WidgetPalette agDefaultPalette;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agWidgetClass; 
+extern DECLSPEC const char *agWidgetPropNames[]; 
+extern DECLSPEC const char *agWidgetStateNames[]; 
+extern DECLSPEC const char *agWidgetColorNames[]; 
+extern DECLSPEC AG_WidgetPalette agDefaultPalette; 
 extern DECLSPEC void AG_WidgetDraw(void *);
 extern DECLSPEC void AG_WidgetSizeReq(void *, AG_SizeReq *);
 extern DECLSPEC void AG_WidgetSizeAlloc(void *, AG_SizeAlloc *);
@@ -279,15 +284,15 @@ extern DECLSPEC void *AG_WidgetFindRect(const char *, int, int, int, int);
 extern DECLSPEC void AG_WidgetUpdateCoords(void *, int, int);
 extern DECLSPEC int AG_WidgetMapSurface(void *, AG_Surface *);
 extern DECLSPEC void AG_WidgetReplaceSurface(void *, int, AG_Surface *);
-#define AG_WidgetUnmapSurface(w, n) AG_WidgetReplaceSurface((w),(n),NULL)
-#define AG_WidgetBlitSurface(p,n,x,y) AG_WidgetBlitFrom((p),(p),(n),NULL,(x),(y))
-#ifdef HAVE_OPENGL
-extern DECLSPEC void AG_WidgetBlitGL(void *, AG_Surface *, float, float);
+#define AG_WidgetUnmapSurface(w, n) \ 
+#define AG_WidgetBlitSurface(p,n,x,y) \ 
+#ifdef HAVE_OPENGL 
+ AG_WidgetReplaceSurface((w),(n),NULL) AG_WidgetBlitFrom((p),(p),(n),NULL,(x),(y)) void AG_WidgetBlitGL(void *, AG_Surface *, float, float); 
 extern DECLSPEC void AG_WidgetBlitSurfaceGL(void *, int, float, float);
 extern DECLSPEC void AG_WidgetBlitSurfaceFlippedGL(void *, int, float, float);
 extern DECLSPEC void AG_WidgetFreeResourcesGL(void *);
 extern DECLSPEC void AG_WidgetRegenResourcesGL(void *);
-#endif
+#endif 
 extern DECLSPEC int AG_WidgetSensitive(void *, int, int);
 extern DECLSPEC AG_SizeSpec AG_WidgetParseSizeSpec(const char *, int *);
 extern DECLSPEC int AG_WidgetScrollDelta(Uint32 *);
@@ -315,8 +320,8 @@ extern DECLSPEC AG_Action *AG_ActionSetFlag(void *, const char *, Uint *, Uint, 
 extern DECLSPEC AG_Action *AG_ActionToggleFlag(void *, const char *, Uint *, Uint);
 extern DECLSPEC void AG_ActionOnButtonDown(void *, int, const char *);
 extern DECLSPEC void AG_ActionOnButtonUp(void *, int, const char *);
-#define AG_ActionOnButton(w,b,a) AG_ActionOnButtonDown((w),(b),(a))
-extern DECLSPEC void AG_ActionOnKey(void *, AG_KeySym, AG_KeyMod, const char *);
+#define AG_ActionOnButton(w,b,a) \ 
+ AG_ActionOnButtonDown((w),(b),(a)) void AG_ActionOnKey(void *, AG_KeySym, AG_KeyMod, const char *); 
 extern DECLSPEC void AG_ActionOnKeyDown(void *, AG_KeySym, AG_KeyMod, const char *);
 extern DECLSPEC void AG_ActionOnKeyUp(void *, AG_KeySym, AG_KeyMod, const char *);
 extern DECLSPEC int AG_ExecMouseAction(void *, AG_ActionEventType, int, int, int);
@@ -401,11 +406,11 @@ AG_ExpandVert(void *wid)
 	AGWIDGET(wid)->flags |= AG_WIDGET_VFILL;
 	AG_ObjectUnlock(wid);
 }
-#ifdef HAVE_OPENGL
-# define AG_WidgetUpdateSurface(wid,name) do { AGWIDGET(wid)->surfaceFlags[(name)] |= AG_WIDGET_SURFACE_REGEN; } while (0)
-#else
-# define AG_WidgetUpdateSurface(wid,name)
-#endif
+#ifdef HAVE_OPENGL 
+# define AG_WidgetUpdateSurface(wid,name) do { \ 
+#else 
+# define AG_WidgetUpdateSurface(wid,name) 
+#endif 
 /*
  * Request that all computed widget coordinates and geometries in the widget's
  * current window be updated as soon as possible. The widget may or may not
@@ -580,7 +585,7 @@ AG_SetModState(void *obj, Uint ms)
 	AG_Keyboard *kbd = AGWIDGET_KEYBOARD(obj);
 	kbd->modState = ms;
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #ifdef AG_LEGACY

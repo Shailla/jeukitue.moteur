@@ -3,10 +3,10 @@
 #include <agar/au/begin.h>
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC int AU_InitSubsystem(void);
 extern DECLSPEC void AU_DestroySubsystem(void);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/au/close.h>

@@ -169,9 +169,9 @@ typedef struct ag_text {
 #define AGTEXT(p) ((AG_Text *)(p))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const char *agLanguageCodes[];
-extern DECLSPEC const char *agLanguageNames[];
+__BEGIN_DECLS 
+extern DECLSPEC const char *agLanguageCodes[]; 
+extern DECLSPEC const char *agLanguageNames[]; 
 extern DECLSPEC AG_Text *AG_TextNew(size_t);
 extern DECLSPEC void AG_TextInit(AG_Text *, size_t);
 extern DECLSPEC void AG_TextDestroy(AG_Text *);
@@ -282,7 +282,7 @@ AG_TextFree(AG_Text *txt)
 	AG_TextDestroy(txt);
 	AG_Free(txt);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

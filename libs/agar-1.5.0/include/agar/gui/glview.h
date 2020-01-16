@@ -42,15 +42,15 @@ typedef struct ag_glview {
 #define AGGLVIEW(p) ((AG_GLView *)(p))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agGLViewClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agGLViewClass; 
 extern DECLSPEC AG_GLView *AG_GLViewNew(void *, Uint);
 extern DECLSPEC void AG_GLViewDraw(void *);
 extern DECLSPEC void AG_GLViewSizeRequest(void *, AG_SizeReq *);
 extern DECLSPEC int AG_GLViewSizeAllocate(void *, const AG_SizeAlloc *);
 extern DECLSPEC void AG_GLViewSetBgColor(AG_GLView *, AG_Color);
 extern DECLSPEC void AG_GLViewSizeHint(AG_GLView *, int, int);
-#define AG_GLViewPrescale AG_GLViewSizeHint
+#define AG_GLViewPrescale AG_GLViewSizeHint 
 extern DECLSPEC void AG_GLViewReshape(AG_GLView *);
 extern DECLSPEC void AG_GLViewDrawFn(void *, AG_EventFn, const char *, ...);
 extern DECLSPEC void AG_GLViewUnderlayFn(void *, AG_EventFn, const char *, ...);
@@ -61,7 +61,7 @@ extern DECLSPEC void AG_GLViewKeyupFn(void *, AG_EventFn, const char *, ...);
 extern DECLSPEC void AG_GLViewButtondownFn(void *, AG_EventFn, const char *, ...);
 extern DECLSPEC void AG_GLViewButtonupFn(void *, AG_EventFn, const char *, ...);
 extern DECLSPEC void AG_GLViewMotionFn(void *, AG_EventFn, const char *, ...);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

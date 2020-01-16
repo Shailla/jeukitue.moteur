@@ -43,19 +43,21 @@ typedef struct ag_object_class {
 } AG_ObjectClass;
 
 #ifdef AG_DEBUG
-# define AG_ASSERT_CLASS(obj,class) if (!AG_OfClass((obj),(class))) AG_FatalError("%s is not a %s", AGOBJECT(obj)->name, class)
+# define AG_ASSERT_CLASS(obj,class) \
+	if (!AG_OfClass((obj),(class))) \
+		AG_FatalError("%s is not a %s", AGOBJECT(obj)->name, class)
 #else
 # define AG_ASSERT_CLASS(obj,class)
 #endif
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC struct ag_tbl *agClassTbl; 
 extern DECLSPEC AG_ObjectClass *agClassTree; 
 extern DECLSPEC AG_Namespace *agNamespaceTbl; 
-extern DECLSPEC int agNamespaceCount;
+extern DECLSPEC int agNamespaceCount; 
 extern DECLSPEC char **agModuleDirs; 
-extern DECLSPEC int agModuleDirCount;
+extern DECLSPEC int agModuleDirCount; 
 extern DECLSPEC AG_Mutex agClassLock; 
 extern DECLSPEC void AG_InitClassTbl(void);
 extern DECLSPEC void AG_DestroyClassTbl(void);
@@ -125,7 +127,7 @@ AG_ClassIsNamed(void *pClass, const char *pat)
 	}
 	return AG_ClassIsNamedGeneral(cls, pat);	
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

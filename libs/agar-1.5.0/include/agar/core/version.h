@@ -16,13 +16,15 @@ typedef struct ag_agar_version {
 } AG_AgarVersion;
 
 #define AG_VERSION_NUM(X,Y,Z) ((X)*1000 + (Y)*100 + (Z))
-#define AG_COMPILED_VERSION AG_VERSION_NUM(AGAR_MAJOR_VERSION, AGAR_MINOR_VERSION, AGAR_PATCHLEVEL)
-#define AG_VERSION_ATLEAST(X,Y,Z) (AG_COMPILED_VERSION >= AG_VERSION_NUM(X, Y, Z))
+#define AG_COMPILED_VERSION \
+	AG_VERSION_NUM(AGAR_MAJOR_VERSION, AGAR_MINOR_VERSION, AGAR_PATCHLEVEL)
+#define AG_VERSION_ATLEAST(X,Y,Z) \
+	(AG_COMPILED_VERSION >= AG_VERSION_NUM(X, Y, Z))
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void AG_GetVersion(AG_AgarVersion *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

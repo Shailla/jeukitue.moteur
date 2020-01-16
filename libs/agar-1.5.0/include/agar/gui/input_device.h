@@ -15,11 +15,11 @@ typedef struct ag_input_device {
 #define AGINPUTDEV(obj) ((AG_InputDevice *)(obj))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_ObjectClass agInputDeviceClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_ObjectClass agInputDeviceClass; 
 extern DECLSPEC AG_Object agInputDevices; 
 extern DECLSPEC AG_InputDevice *AG_InputDeviceNew(void *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

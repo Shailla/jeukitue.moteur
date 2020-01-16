@@ -32,8 +32,8 @@ typedef struct ag_icon {
 } AG_Icon;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agIconClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agIconClass; 
 extern DECLSPEC AG_Icon *AG_IconNew(void *, Uint);
 extern DECLSPEC AG_Icon *AG_IconFromSurface(AG_Surface *);
 extern DECLSPEC AG_Icon *AG_IconFromBMP(const char *);
@@ -42,7 +42,7 @@ extern DECLSPEC void AG_IconSetSurfaceNODUP(AG_Icon *, AG_Surface *);
 extern DECLSPEC void AG_IconSetText(AG_Icon *, const char *, ...) FORMAT_ATTRIBUTE(printf, 2, 3) NONNULL_ATTRIBUTE(2);
 extern DECLSPEC void AG_IconSetTextS(AG_Icon *, const char *);
 extern DECLSPEC void AG_IconSetBackgroundFill(AG_Icon *, int, AG_Color);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

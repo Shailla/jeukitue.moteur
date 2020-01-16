@@ -29,10 +29,10 @@ typedef pthread_key_t AG_ThreadKey;
 
 #include <agar/core/begin.h>
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC pthread_mutexattr_t agRecursiveMutexAttr;
-extern DECLSPEC AG_Thread agEventThread;
-__END_DECLS
+__BEGIN_DECLS 
+extern DECLSPEC pthread_mutexattr_t agRecursiveMutexAttr; 
+extern DECLSPEC AG_Thread agEventThread; 
+__END_DECLS 
 /* Close generated block */
 #include <agar/core/close.h>
 

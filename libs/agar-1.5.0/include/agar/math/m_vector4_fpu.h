@@ -1,8 +1,8 @@
 /*	Public domain	*/
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const M_VectorOps4 mVecOps4_FPU;
+__BEGIN_DECLS 
+extern DECLSPEC const M_VectorOps4 mVecOps4_FPU; 
 extern DECLSPEC M_Vector4 M_VectorZero4_FPU(void);
 extern DECLSPEC M_Vector4 M_VectorGet4_FPU(M_Real, M_Real, M_Real, M_Real);
 extern DECLSPEC void M_VectorSet4_FPU(M_Vector4 *, M_Real, M_Real, M_Real, M_Real);
@@ -34,5 +34,5 @@ extern DECLSPEC void M_VectorVecAngle4_FPU(M_Vector4, M_Vector4, M_Real *, M_Rea
 extern DECLSPEC M_Vector4 M_VectorLERP4_FPU(M_Vector4, M_Vector4, M_Real);
 extern DECLSPEC M_Vector4 M_VectorLERP4p_FPU(M_Vector4 *, M_Vector4 *, M_Real);
 extern DECLSPEC M_Vector4 M_VectorElemPow4_FPU(M_Vector4, M_Real);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

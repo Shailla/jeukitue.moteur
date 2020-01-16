@@ -6,12 +6,18 @@ cc: checking for compiler warning options.../mingw64/bin/x86_64-w64-mingw32-gcc 
 yes
 cc: checking for long double.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
 conftest.c: In function 'main':
-conftest.c:7:9: error: unknown conversion type character 'L' in format [-Werror=format=]
-  printf("%Lf", ld);
-         ^
+conftest.c:7:11: error: unknown conversion type character 'L' in format [-Werror=format=]
+    7 |  printf("%Lf", ld);
+      |           ^
 conftest.c:7:9: error: too many arguments for format [-Werror=format-extra-args]
-conftest.c:7:9: error: unknown conversion type character 'L' in format [-Werror=format=]
+    7 |  printf("%Lf", ld);
+      |         ^~~~~
+conftest.c:7:11: error: unknown conversion type character 'L' in format [-Werror=format=]
+    7 |  printf("%Lf", ld);
+      |           ^
 conftest.c:7:9: error: too many arguments for format [-Werror=format-extra-args]
+    7 |  printf("%Lf", ld);
+      |         ^~~~~
 cc1.exe: all warnings being treated as errors
 -> failed (0)
 no
@@ -32,12 +38,12 @@ yes
 checking for aligned attribute.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -Wall -Werror -o ./conftest conftest.c
 yes
 checking for __bounded__ attribute.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror  -o ./conftest conftest.c 
-conftest.c:1:1: error: '__bounded__' attribute directive ignored [-Werror=attributes]
- void foostring(char *, int) __attribute__ ((__bounded__(__string__,1,2)));
- ^
-conftest.c:3:1: error: '__bounded__' attribute directive ignored [-Werror=attributes]
- void foobuffer(void *, int) __attribute__ ((__bounded__(__buffer__,1,2)));
- ^
+conftest.c:1:1: error: 'bounded' attribute directive ignored [-Werror=attributes]
+    1 | void foostring(char *, int) __attribute__ ((__bounded__(__string__,1,2)));
+      | ^~~~
+conftest.c:3:1: error: 'bounded' attribute directive ignored [-Werror=attributes]
+    3 | void foobuffer(void *, int) __attribute__ ((__bounded__(__buffer__,1,2)));
+      | ^~~~
 cc1.exe: all warnings being treated as errors
 -> failed (0)
 no
@@ -67,30 +73,46 @@ yes
 checking for int64_t type.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror  -o ./conftest conftest.c 
 conftest.c: In function 'main':
 conftest.c:4:2: error: unknown type name 'int64_t'
-  int64_t i64 = 0;
-  ^
+    4 |  int64_t i64 = 0;
+      |  ^~~~~~~
 conftest.c:5:2: error: unknown type name 'u_int64_t'
-  u_int64_t u64 = 0;
-  ^
-conftest.c:6:9: error: unknown conversion type character 'l' in format [-Werror=format=]
-  printf("%lld %llu", (long long)i64, (unsigned long long)u64);
-         ^
-conftest.c:6:9: error: unknown conversion type character 'l' in format [-Werror=format=]
+    5 |  u_int64_t u64 = 0;
+      |  ^~~~~~~~~
+conftest.c:6:12: error: unknown conversion type character 'l' in format [-Werror=format=]
+    6 |  printf("%lld %llu", (long long)i64, (unsigned long long)u64);
+      |            ^
+conftest.c:6:17: error: unknown conversion type character 'l' in format [-Werror=format=]
+    6 |  printf("%lld %llu", (long long)i64, (unsigned long long)u64);
+      |                 ^
 conftest.c:6:9: error: too many arguments for format [-Werror=format-extra-args]
-conftest.c:6:9: error: unknown conversion type character 'l' in format [-Werror=format=]
-conftest.c:6:9: error: unknown conversion type character 'l' in format [-Werror=format=]
+    6 |  printf("%lld %llu", (long long)i64, (unsigned long long)u64);
+      |         ^~~~~~~~~~~
+conftest.c:6:12: error: unknown conversion type character 'l' in format [-Werror=format=]
+    6 |  printf("%lld %llu", (long long)i64, (unsigned long long)u64);
+      |            ^
+conftest.c:6:17: error: unknown conversion type character 'l' in format [-Werror=format=]
+    6 |  printf("%lld %llu", (long long)i64, (unsigned long long)u64);
+      |                 ^
 conftest.c:6:9: error: too many arguments for format [-Werror=format-extra-args]
+    6 |  printf("%lld %llu", (long long)i64, (unsigned long long)u64);
+      |         ^~~~~~~~~~~
 cc1.exe: all warnings being treated as errors
 -> failed (0)
 no
 checking for __int64 type.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror  -o ./conftest conftest.c 
 conftest.c: In function 'main':
-conftest.c:5:9: error: unknown conversion type character 'l' in format [-Werror=format=]
-  printf("%lld", (long long)i64);
-         ^
+conftest.c:5:12: error: unknown conversion type character 'l' in format [-Werror=format=]
+    5 |  printf("%lld", (long long)i64);
+      |            ^
 conftest.c:5:9: error: too many arguments for format [-Werror=format-extra-args]
-conftest.c:5:9: error: unknown conversion type character 'l' in format [-Werror=format=]
+    5 |  printf("%lld", (long long)i64);
+      |         ^~~~~~
+conftest.c:5:12: error: unknown conversion type character 'l' in format [-Werror=format=]
+    5 |  printf("%lld", (long long)i64);
+      |            ^
 conftest.c:5:9: error: too many arguments for format [-Werror=format-extra-args]
+    5 |  printf("%lld", (long long)i64);
+      |         ^~~~~~
 cc1.exe: all warnings being treated as errors
 -> failed (0)
 no
@@ -98,12 +120,14 @@ checking for <stdlib.h>.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror  -o
 yes
 checking for <unistd.h>.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror  -o ./conftest conftest.c 
 conftest.c: In function 'main':
-conftest.c:4:2: error: unknown type name 'uid_t'
-  uid_t uid = getuid();
-  ^
-conftest.c:4:14: error: implicit declaration of function 'getuid' [-Werror=implicit-function-declaration]
-  uid_t uid = getuid();
-              ^
+conftest.c:4:2: error: unknown type name 'uid_t'; did you mean 'pid_t'?
+    4 |  uid_t uid = getuid();
+      |  ^~~~~
+      |  pid_t
+conftest.c:4:14: error: implicit declaration of function 'getuid'; did you mean 'getpid'? [-Werror=implicit-function-declaration]
+    4 |  uid_t uid = getuid();
+      |              ^~~~~~
+      |              getpid
 cc1.exe: all warnings being treated as errors
 -> failed (0)
 no
@@ -116,12 +140,16 @@ yes
 checking for the C math library (C99).../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror   -o ./conftest conftest.c -lm
 yes
 checking for a getpwuid() function.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
-conftest.c:3:17: fatal error: pwd.h: No such file or directory
+conftest.c:3:10: fatal error: pwd.h: No such file or directory
+    3 | #include <pwd.h>
+      |          ^~~~~~~
 compilation terminated.
 -> failed (0)
 no
 checking for the getpwnam_r() interface.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
-conftest.c:2:17: fatal error: pwd.h: No such file or directory
+conftest.c:2:10: fatal error: pwd.h: No such file or directory
+    2 | #include <pwd.h>
+      |          ^~~~~~~
 compilation terminated.
 -> failed (0)
 no
@@ -129,23 +157,26 @@ checking for a getenv() function.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -W
 yes
 checking for a getuid() function.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
 conftest.c: In function 'main':
-conftest.c:7:2: error: unknown type name 'uid_t'
-  uid_t uid = getuid();
-  ^
-conftest.c:7:14: error: implicit declaration of function 'getuid' [-Werror=implicit-function-declaration]
-  uid_t uid = getuid();
-              ^
+conftest.c:7:2: error: unknown type name 'uid_t'; did you mean 'pid_t'?
+    7 |  uid_t uid = getuid();
+      |  ^~~~~
+      |  pid_t
+conftest.c:7:14: error: implicit declaration of function 'getuid'; did you mean 'getpid'? [-Werror=implicit-function-declaration]
+    7 |  uid_t uid = getuid();
+      |              ^~~~~~
+      |              getpid
 cc1.exe: all warnings being treated as errors
 -> failed (0)
 no
 checking for a strsep() function.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
 conftest.c: In function 'main':
-conftest.c:9:6: error: implicit declaration of function 'strsep' [-Werror=implicit-function-declaration]
-  s = strsep(&pFoo, " ");
-      ^
-conftest.c:9:4: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
-  s = strsep(&pFoo, " ");
-    ^
+conftest.c:9:6: error: implicit declaration of function 'strsep'; did you mean 'strset'? [-Werror=implicit-function-declaration]
+    9 |  s = strsep(&pFoo, " ");
+      |      ^~~~~~
+      |      strset
+conftest.c:9:4: error: assignment to 'char *' from 'int' makes pointer from integer without a cast [-Werror=int-conversion]
+    9 |  s = strsep(&pFoo, " ");
+      |    ^
 cc1.exe: all warnings being treated as errors
 -> failed (0)
 no
@@ -167,105 +198,112 @@ checking for a strtold() function...skipping (no long double)
 checking for byte order.../mingw64/bin/x86_64-w64-mingw32-gcc   -o ./conftest conftest.c
 little-endian
 checking for dlopen() interface.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
-conftest.c:2:19: fatal error: dlfcn.h: No such file or directory
+conftest.c:2:10: fatal error: dlfcn.h: No such file or directory
+    2 | #include <dlfcn.h>
+      |          ^~~~~~~~~
 compilation terminated.
 -> failed (0)
 /mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
 conftest.c: In function 'main':
 conftest.c:11:11: error: implicit declaration of function 'dlopen' [-Werror=implicit-function-declaration]
-  handle = dlopen("foo.so", 0);
-           ^
-conftest.c:11:9: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
-  handle = dlopen("foo.so", 0);
-         ^
+   11 |  handle = dlopen("foo.so", 0);
+      |           ^~~~~~
+conftest.c:11:9: error: assignment to 'void *' from 'int' makes pointer from integer without a cast [-Werror=int-conversion]
+   11 |  handle = dlopen("foo.so", 0);
+      |         ^
 conftest.c:12:10: error: implicit declaration of function 'dlerror' [-Werror=implicit-function-declaration]
-  error = dlerror();
-          ^
-conftest.c:12:8: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
-  error = dlerror();
-        ^
+   12 |  error = dlerror();
+      |          ^~~~~~~
+conftest.c:12:8: error: assignment to 'char *' from 'int' makes pointer from integer without a cast [-Werror=int-conversion]
+   12 |  error = dlerror();
+      |        ^
 conftest.c:13:8: error: implicit declaration of function 'dlsym' [-Werror=implicit-function-declaration]
-  (void)dlsym(handle, "foo");
-        ^
+   13 |  (void)dlsym(handle, "foo");
+      |        ^~~~~
 cc1.exe: all warnings being treated as errors
 -> failed (0)
 no
 checking for dlopen() in -ldl.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -ldl -o ./conftest conftest.c
 conftest.c: In function 'main':
 conftest.c:11:11: error: implicit declaration of function 'dlopen' [-Werror=implicit-function-declaration]
-  handle = dlopen("foo.so", 0);
-           ^
-conftest.c:11:9: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
-  handle = dlopen("foo.so", 0);
-         ^
+   11 |  handle = dlopen("foo.so", 0);
+      |           ^~~~~~
+conftest.c:11:9: error: assignment to 'void *' from 'int' makes pointer from integer without a cast [-Werror=int-conversion]
+   11 |  handle = dlopen("foo.so", 0);
+      |         ^
 conftest.c:12:10: error: implicit declaration of function 'dlerror' [-Werror=implicit-function-declaration]
-  error = dlerror();
-          ^
-conftest.c:12:8: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
-  error = dlerror();
-        ^
+   12 |  error = dlerror();
+      |          ^~~~~~~
+conftest.c:12:8: error: assignment to 'char *' from 'int' makes pointer from integer without a cast [-Werror=int-conversion]
+   12 |  error = dlerror();
+      |        ^
 conftest.c:13:8: error: implicit declaration of function 'dlsym' [-Werror=implicit-function-declaration]
-  (void)dlsym(handle, "foo");
-        ^
+   13 |  (void)dlsym(handle, "foo");
+      |        ^~~~~
 cc1.exe: all warnings being treated as errors
 -> failed (0)
 no
 checking for dyld interface.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
-conftest.c:2:25: fatal error: mach-o/dyld.h: No such file or directory
+conftest.c:2:10: fatal error: mach-o/dyld.h: No such file or directory
+    2 | #include <mach-o/dyld.h>
+      |          ^~~~~~~~~~~~~~~
 compilation terminated.
 -> failed (0)
 /mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
 conftest.c: In function 'main':
 conftest.c:7:2: error: unknown type name 'NSObjectFileImage'
-  NSObjectFileImage img;
-  ^
+    7 |  NSObjectFileImage img;
+      |  ^~~~~~~~~~~~~~~~~
 conftest.c:8:2: error: unknown type name 'NSObjectFileImageReturnCode'
-  NSObjectFileImageReturnCode rv;
-  ^
+    8 |  NSObjectFileImageReturnCode rv;
+      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~
 conftest.c:10:7: error: implicit declaration of function 'NSCreateObjectFileImageFromFile' [-Werror=implicit-function-declaration]
-  rv = NSCreateObjectFileImageFromFile("foo", &img);
-       ^
+   10 |  rv = NSCreateObjectFileImageFromFile("foo", &img);
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 conftest.c:11:16: error: 'NSObjectFileImageSuccess' undeclared (first use in this function)
-  return (rv == NSObjectFileImageSuccess);
-                ^
+   11 |  return (rv == NSObjectFileImageSuccess);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~
 conftest.c:11:16: note: each undeclared identifier is reported only once for each function it appears in
 cc1.exe: all warnings being treated as errors
 -> failed (0)
 no
 checking for shl_load() interface.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
-conftest.c:2:16: fatal error: dl.h: No such file or directory
+conftest.c:2:10: fatal error: dl.h: No such file or directory
+    2 | #include <dl.h>
+      |          ^~~~~~
 compilation terminated.
 -> failed (0)
 /mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -ldld -o ./conftest conftest.c
 conftest.c: In function 'main':
 conftest.c:12:11: error: implicit declaration of function 'shl_load' [-Werror=implicit-function-declaration]
-  handle = shl_load("foo.so", BIND_IMMEDIATE, 0);
-           ^
+   12 |  handle = shl_load("foo.so", BIND_IMMEDIATE, 0);
+      |           ^~~~~~~~
 conftest.c:12:30: error: 'BIND_IMMEDIATE' undeclared (first use in this function)
-  handle = shl_load("foo.so", BIND_IMMEDIATE, 0);
-                              ^
+   12 |  handle = shl_load("foo.so", BIND_IMMEDIATE, 0);
+      |                              ^~~~~~~~~~~~~~
 conftest.c:12:30: note: each undeclared identifier is reported only once for each function it appears in
 conftest.c:13:8: error: implicit declaration of function 'shl_findsym' [-Werror=implicit-function-declaration]
-  (void)shl_findsym((shl_t *)&handle, "foo", TYPE_PROCEDURE, p);
-        ^
+   13 |  (void)shl_findsym((shl_t *)&handle, "foo", TYPE_PROCEDURE, p);
+      |        ^~~~~~~~~~~
 conftest.c:13:21: error: 'shl_t' undeclared (first use in this function)
-  (void)shl_findsym((shl_t *)&handle, "foo", TYPE_PROCEDURE, p);
-                     ^
+   13 |  (void)shl_findsym((shl_t *)&handle, "foo", TYPE_PROCEDURE, p);
+      |                     ^~~~~
 conftest.c:13:28: error: expected expression before ')' token
-  (void)shl_findsym((shl_t *)&handle, "foo", TYPE_PROCEDURE, p);
-                            ^
+   13 |  (void)shl_findsym((shl_t *)&handle, "foo", TYPE_PROCEDURE, p);
+      |                            ^
 conftest.c:14:28: error: expected expression before ')' token
-  (void)shl_findsym((shl_t *)&handle, "foo", TYPE_DATA, p);
-                            ^
+   14 |  (void)shl_findsym((shl_t *)&handle, "foo", TYPE_DATA, p);
+      |                            ^
 conftest.c:15:2: error: implicit declaration of function 'shl_unload' [-Werror=implicit-function-declaration]
-  shl_unload((shl_t)handle);
-  ^
+   15 |  shl_unload((shl_t)handle);
+      |  ^~~~~~~~~~
 conftest.c:15:20: error: expected ')' before 'handle'
-  shl_unload((shl_t)handle);
-                    ^
+   15 |  shl_unload((shl_t)handle);
+      |                    ^~~~~~
+      |                    )
 conftest.c:10:9: error: unused variable 'p' [-Werror=unused-variable]
-  void **p;
-         ^
+   10 |  void **p;
+      |         ^
 cc1.exe: all warnings being treated as errors
 -> failed (0)
 no
@@ -274,13 +312,15 @@ yes
 checking for the select() interface.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
 conftest.c: In function 'main':
 conftest.c:15:7: error: implicit declaration of function 'select' [-Werror=implicit-function-declaration]
-  rv = select(0, NULL, NULL, NULL, &tv);
-       ^
+   15 |  rv = select(0, NULL, NULL, NULL, &tv);
+      |       ^~~~~~
 cc1.exe: all warnings being treated as errors
 -> failed (0)
 no
 checking for the glob() function.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
-conftest.c:2:18: fatal error: glob.h: No such file or directory
+conftest.c:2:10: fatal error: glob.h: No such file or directory
+    2 | #include <glob.h>
+      |          ^~~~~~~~
 compilation terminated.
 -> failed (0)
 no
@@ -295,19 +335,25 @@ yes
 checking for the nanosleep() function.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
 yes
 checking for the kqueue() mechanism.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
-conftest.c:2:23: fatal error: sys/event.h: No such file or directory
+conftest.c:2:10: fatal error: sys/event.h: No such file or directory
+    2 | #include <sys/event.h>
+      |          ^~~~~~~~~~~~~
 compilation terminated.
 -> failed (0)
 no
 checking for the Linux timerfd interface.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
-conftest.c:1:25: fatal error: sys/timerfd.h: No such file or directory
+conftest.c:1:10: fatal error: sys/timerfd.h: No such file or directory
+    1 | #include <sys/timerfd.h>
+      |          ^~~~~~~~~~~~~~~
 compilation terminated.
 -> failed (0)
 no
 checking for the Windows CSIDL system.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror  -o ./conftest conftest.c 
 yes
 checking for the Xbox XDK.../mingw64/bin/x86_64-w64-mingw32-gcc  -Wall -Werror -o ./conftest conftest.c
-conftest.c:1:17: fatal error: xtl.h: No such file or directory
+conftest.c:1:10: fatal error: xtl.h: No such file or directory
+    1 | #include <xtl.h>
+      |          ^~~~~~~
 compilation terminated.
 -> failed (0)
 no
@@ -320,31 +366,155 @@ yes
 checking whether OpenGL works.../mingw64/bin/x86_64-w64-mingw32-gcc  -D_AGAR_INTERNAL -D_BSD_SOURCE -g -Wall -Werror  -o ./conftest conftest.c  -L/mingw64/lib -lopengl32
 yes
 checking for the X window system.../mingw64/bin/x86_64-w64-mingw32-gcc  -D_AGAR_INTERNAL -D_BSD_SOURCE -g -Wall -Werror  -o ./conftest conftest.c 
-In file included from C:/msys64/mingw64/include/X11/Xlib.h:31:0,
+In file included from C:/msys64/mingw64/include/X11/Xlib.h:31,
                  from conftest.c:1:
-C:/msys64/mingw64/include/X11/X.h:44:9: error: unknown type name '__int64'
- typedef __int64 XID;
-         ^
+C:/msys64/mingw64/include/X11/X.h:44:26: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'XID'
+   44 | typedef unsigned __int64 XID;
+      |                          ^~~
+C:/msys64/mingw64/include/X11/X.h:49:9: error: unknown type name 'XID'
+   49 | typedef XID Window;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:50:9: error: unknown type name 'XID'
+   50 | typedef XID Drawable;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:51:9: error: unknown type name 'XID'
+   51 | typedef XID Font;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:52:9: error: unknown type name 'XID'
+   52 | typedef XID Pixmap;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:53:9: error: unknown type name 'XID'
+   53 | typedef XID Cursor;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:54:9: error: unknown type name 'XID'
+   54 | typedef XID Colormap;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:55:9: error: unknown type name 'XID'
+   55 | typedef XID GContext;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:56:9: error: unknown type name 'XID'
+   56 | typedef XID KeySym;
+      |         ^~~
+In file included from conftest.c:1:
+C:/msys64/mingw64/include/X11/Xlib.h:452:9: error: unknown type name 'XID'
+  452 |         XID resource_base; /* resource ID base */
+      |         ^~~
+C:/msys64/mingw64/include/X11/Xlib.h:453:2: error: unknown type name 'XID'
+  453 |  XID resource_mask; /* resource ID mask bits */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xlib.h:454:2: error: unknown type name 'XID'
+  454 |  XID resource_id; /* allocator current ID */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xlib.h:456:2: error: expected specifier-qualifier-list before 'XID'
+  456 |  XID (*resource_alloc)(); /* allocator function */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xlib.h:910:2: error: unknown type name 'XID'
+  910 |  XID resourceid;  /* resource id */
+      |  ^~~
+In file included from C:/msys64/mingw64/include/tkIntXlibDecls.h:30,
+                 from C:/msys64/mingw64/include/X11/Xlib.h:1199,
+                 from conftest.c:1:
+C:/msys64/mingw64/include/X11/Xutil.h:100:2: error: unknown type name 'XID'
+  100 |  XID window_group; /* id of related window group */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xutil.h:268:2: error: unknown type name 'XID'
+  268 |  XID killid;   /* added by ICCCM version 1 */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xutil.h:356:5: error: unknown type name 'XID'; did you mean 'XIC'?
+  356 |     XID   /* rid */,
+      |     ^~~
+      |     XIC
+C:/msys64/mingw64/include/X11/Xutil.h:383:5: error: unknown type name 'XID'; did you mean 'XIC'?
+  383 |     XID   /* rid */,
+      |     ^~~
+      |     XIC
+C:/msys64/mingw64/include/X11/Xutil.h:575:5: error: unknown type name 'XID'; did you mean 'XIC'?
+  575 |     XID   /* rid */,
+      |     ^~~
+      |     XIC
 conftest.c: In function 'main':
 conftest.c:5:9: error: implicit declaration of function 'XOpenDisplay' [-Werror=implicit-function-declaration]
-  disp = XOpenDisplay(NULL);
-         ^
-conftest.c:5:7: error: assignment makes pointer from integer without a cast [-Werror=int-conversion]
-  disp = XOpenDisplay(NULL);
-       ^
+    5 |  disp = XOpenDisplay(NULL);
+      |         ^~~~~~~~~~~~
+conftest.c:5:7: error: assignment to 'Display *' {aka 'struct _XDisplay *'} from 'int' makes pointer from integer without a cast [-Werror=int-conversion]
+    5 |  disp = XOpenDisplay(NULL);
+      |       ^
 conftest.c:6:2: error: implicit declaration of function 'XCloseDisplay' [-Werror=implicit-function-declaration]
-  XCloseDisplay(disp);
-  ^
+    6 |  XCloseDisplay(disp);
+      |  ^~~~~~~~~~~~~
 cc1.exe: all warnings being treated as errors
 -> failed (0)
 no
 checking for the Xinerama extension.../mingw64/bin/x86_64-w64-mingw32-gcc  -D_AGAR_INTERNAL -D_BSD_SOURCE -g -Wall -Werror   -o ./conftest conftest.c   -lXinerama
-In file included from C:/msys64/mingw64/include/X11/Xlib.h:31:0,
+In file included from C:/msys64/mingw64/include/X11/Xlib.h:31,
                  from conftest.c:1:
-C:/msys64/mingw64/include/X11/X.h:44:9: error: unknown type name '__int64'
- typedef __int64 XID;
-         ^
-conftest.c:2:37: fatal error: X11/extensions/Xinerama.h: No such file or directory
+C:/msys64/mingw64/include/X11/X.h:44:26: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'XID'
+   44 | typedef unsigned __int64 XID;
+      |                          ^~~
+C:/msys64/mingw64/include/X11/X.h:49:9: error: unknown type name 'XID'
+   49 | typedef XID Window;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:50:9: error: unknown type name 'XID'
+   50 | typedef XID Drawable;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:51:9: error: unknown type name 'XID'
+   51 | typedef XID Font;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:52:9: error: unknown type name 'XID'
+   52 | typedef XID Pixmap;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:53:9: error: unknown type name 'XID'
+   53 | typedef XID Cursor;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:54:9: error: unknown type name 'XID'
+   54 | typedef XID Colormap;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:55:9: error: unknown type name 'XID'
+   55 | typedef XID GContext;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:56:9: error: unknown type name 'XID'
+   56 | typedef XID KeySym;
+      |         ^~~
+In file included from conftest.c:1:
+C:/msys64/mingw64/include/X11/Xlib.h:452:9: error: unknown type name 'XID'
+  452 |         XID resource_base; /* resource ID base */
+      |         ^~~
+C:/msys64/mingw64/include/X11/Xlib.h:453:2: error: unknown type name 'XID'
+  453 |  XID resource_mask; /* resource ID mask bits */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xlib.h:454:2: error: unknown type name 'XID'
+  454 |  XID resource_id; /* allocator current ID */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xlib.h:456:2: error: expected specifier-qualifier-list before 'XID'
+  456 |  XID (*resource_alloc)(); /* allocator function */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xlib.h:910:2: error: unknown type name 'XID'
+  910 |  XID resourceid;  /* resource id */
+      |  ^~~
+In file included from C:/msys64/mingw64/include/tkIntXlibDecls.h:30,
+                 from C:/msys64/mingw64/include/X11/Xlib.h:1199,
+                 from conftest.c:1:
+C:/msys64/mingw64/include/X11/Xutil.h:100:2: error: unknown type name 'XID'
+  100 |  XID window_group; /* id of related window group */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xutil.h:268:2: error: unknown type name 'XID'
+  268 |  XID killid;   /* added by ICCCM version 1 */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xutil.h:356:5: error: unknown type name 'XID'; did you mean 'XIC'?
+  356 |     XID   /* rid */,
+      |     ^~~
+      |     XIC
+C:/msys64/mingw64/include/X11/Xutil.h:383:5: error: unknown type name 'XID'; did you mean 'XIC'?
+  383 |     XID   /* rid */,
+      |     ^~~
+      |     XIC
+C:/msys64/mingw64/include/X11/Xutil.h:575:5: error: unknown type name 'XID'; did you mean 'XIC'?
+  575 |     XID   /* rid */,
+      |     ^~~
+      |     XIC
+conftest.c:2:10: fatal error: X11/extensions/Xinerama.h: No such file or directory
+    2 | #include <X11/extensions/Xinerama.h>
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~
 compilation terminated.
 -> failed (0)
 no
@@ -354,41 +524,108 @@ x86_64-w64-mingw32-gcc.exe: error: unrecognized command line option '-fpascal-st
 -> failed (0)
 no
 checking for the GLX interface.../mingw64/bin/x86_64-w64-mingw32-gcc  -D_AGAR_INTERNAL -D_BSD_SOURCE -g -Wall -Werror   -o ./conftest conftest.c  -L/mingw64/lib -lopengl32 
-In file included from C:/msys64/mingw64/include/X11/Xlib.h:31:0,
+In file included from C:/msys64/mingw64/include/X11/Xlib.h:31,
                  from conftest.c:1:
-C:/msys64/mingw64/include/X11/X.h:44:9: error: unknown type name '__int64'
- typedef __int64 XID;
-         ^
-conftest.c:8:20: fatal error: GL/glx.h: No such file or directory
+C:/msys64/mingw64/include/X11/X.h:44:26: error: expected '=', ',', ';', 'asm' or '__attribute__' before 'XID'
+   44 | typedef unsigned __int64 XID;
+      |                          ^~~
+C:/msys64/mingw64/include/X11/X.h:49:9: error: unknown type name 'XID'
+   49 | typedef XID Window;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:50:9: error: unknown type name 'XID'
+   50 | typedef XID Drawable;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:51:9: error: unknown type name 'XID'
+   51 | typedef XID Font;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:52:9: error: unknown type name 'XID'
+   52 | typedef XID Pixmap;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:53:9: error: unknown type name 'XID'
+   53 | typedef XID Cursor;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:54:9: error: unknown type name 'XID'
+   54 | typedef XID Colormap;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:55:9: error: unknown type name 'XID'
+   55 | typedef XID GContext;
+      |         ^~~
+C:/msys64/mingw64/include/X11/X.h:56:9: error: unknown type name 'XID'
+   56 | typedef XID KeySym;
+      |         ^~~
+In file included from conftest.c:1:
+C:/msys64/mingw64/include/X11/Xlib.h:452:9: error: unknown type name 'XID'
+  452 |         XID resource_base; /* resource ID base */
+      |         ^~~
+C:/msys64/mingw64/include/X11/Xlib.h:453:2: error: unknown type name 'XID'
+  453 |  XID resource_mask; /* resource ID mask bits */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xlib.h:454:2: error: unknown type name 'XID'
+  454 |  XID resource_id; /* allocator current ID */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xlib.h:456:2: error: expected specifier-qualifier-list before 'XID'
+  456 |  XID (*resource_alloc)(); /* allocator function */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xlib.h:910:2: error: unknown type name 'XID'
+  910 |  XID resourceid;  /* resource id */
+      |  ^~~
+In file included from C:/msys64/mingw64/include/tkIntXlibDecls.h:30,
+                 from C:/msys64/mingw64/include/X11/Xlib.h:1199,
+                 from conftest.c:1:
+C:/msys64/mingw64/include/X11/Xutil.h:100:2: error: unknown type name 'XID'
+  100 |  XID window_group; /* id of related window group */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xutil.h:268:2: error: unknown type name 'XID'
+  268 |  XID killid;   /* added by ICCCM version 1 */
+      |  ^~~
+C:/msys64/mingw64/include/X11/Xutil.h:356:5: error: unknown type name 'XID'; did you mean 'XIC'?
+  356 |     XID   /* rid */,
+      |     ^~~
+      |     XIC
+C:/msys64/mingw64/include/X11/Xutil.h:383:5: error: unknown type name 'XID'; did you mean 'XIC'?
+  383 |     XID   /* rid */,
+      |     ^~~
+      |     XIC
+C:/msys64/mingw64/include/X11/Xutil.h:575:5: error: unknown type name 'XID'; did you mean 'XIC'?
+  575 |     XID   /* rid */,
+      |     ^~~
+      |     XIC
+conftest.c:8:10: fatal error: GL/glx.h: No such file or directory
+    8 | #include <GL/glx.h>
+      |          ^~~~~~~~~~
 compilation terminated.
 -> failed (0)
 no
 checking for the WGL interface.../mingw64/bin/x86_64-w64-mingw32-gcc  -D_AGAR_INTERNAL -D_BSD_SOURCE -g -Wall -Werror  -o ./conftest conftest.c  -L/mingw64/lib -lopengl32 -lgdi32
 yes
-checking for FreeType...yes (18.3.12 in /mingw64)
-checking whether FreeType works.../mingw64/bin/x86_64-w64-mingw32-gcc  -D_AGAR_INTERNAL -D_BSD_SOURCE -g -Wall -Werror -I/mingw64/include/freetype2 -o ./conftest conftest.c -L/mingw64/lib -lfreetype
+checking for FreeType...yes (23.1.17 in /mingw64)
+checking whether FreeType works.../mingw64/bin/x86_64-w64-mingw32-gcc  -D_AGAR_INTERNAL -D_BSD_SOURCE -g -Wall -Werror -mms-bitfields -IC:/msys64/mingw64/include/freetype2 -IC:/msys64/mingw64/include -IC:/msys64/mingw64/include/libpng16 -IC:/msys64/mingw64/include -IC:/msys64/mingw64/include/harfbuzz -IC:/msys64/mingw64/include/glib-2.0 -IC:/msys64/mingw64/lib/glib-2.0/include -IC:/msys64/mingw64/include -o ./conftest conftest.c -LC:/msys64/mingw64/lib -lfreetype
 yes
-checking for fontconfig...yes (2.11.95)
-checking whether fontconfig works.../mingw64/bin/x86_64-w64-mingw32-gcc  -D_AGAR_INTERNAL -D_BSD_SOURCE -g -Wall -Werror -mms-bitfields -IC:/msys64/mingw64/include -IC:/msys64/mingw64/include/freetype2 -IC:/msys64/mingw64/include/libpng16 -IC:/msys64/mingw64/include/harfbuzz -IC:/msys64/mingw64/include/glib-2.0 -IC:/msys64/mingw64/lib/glib-2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/include/freetype2 -IC:/msys64/mingw64/include -IC:/msys64/mingw64/include/libpng16 -IC:/msys64/mingw64/include/harfbuzz -IC:/msys64/mingw64/include/glib-2.0 -IC:/msys64/mingw64/lib/glib-2.0/include -IC:/msys64/mingw64/include -o ./conftest conftest.c -LC:/msys64/mingw64/lib -lfontconfig -lfreetype
-yes
+checking for fontconfig...no
 checking for libjpeg...yes
 checking whether libjpeg works.../mingw64/bin/x86_64-w64-mingw32-gcc  -D_AGAR_INTERNAL -D_BSD_SOURCE -g -Wall -Werror -I/mingw64/include -o ./conftest conftest.c -L/mingw64/lib -ljpeg
 yes
-checking for libpng...yes (1.6.21 in /mingw64)
+checking for libpng...yes (1.6.37 in /mingw64)
 checking whether libpng works.../mingw64/bin/x86_64-w64-mingw32-gcc  -D_AGAR_INTERNAL -D_BSD_SOURCE -g -Wall -Werror -I/mingw64/include/libpng16 -o ./conftest conftest.c -L/mingw64/lib -lpng16
 yes
 checking for the getaddrinfo() function.../mingw64/bin/x86_64-w64-mingw32-gcc  -D_AGAR_INTERNAL -D_BSD_SOURCE -g -Wall -Werror -o ./conftest conftest.c
-conftest.c:3:24: fatal error: sys/socket.h: No such file or directory
+conftest.c:3:10: fatal error: sys/socket.h: No such file or directory
+    3 | #include <sys/socket.h>
+      |          ^~~~~~~~~~~~~~
 compilation terminated.
 -> failed (0)
 no
 checking for the SIOCGIFCONF interface.../mingw64/bin/x86_64-w64-mingw32-gcc  -D_AGAR_INTERNAL -D_BSD_SOURCE -g -Wall -Werror -o ./conftest conftest.c
-conftest.c:2:24: fatal error: sys/socket.h: No such file or directory
+conftest.c:2:10: fatal error: sys/socket.h: No such file or directory
+    2 | #include <sys/socket.h>
+      |          ^~~~~~~~~~~~~~
 compilation terminated.
 -> failed (0)
 no
 checking for the setsockopt() interface.../mingw64/bin/x86_64-w64-mingw32-gcc  -D_AGAR_INTERNAL -D_BSD_SOURCE -g -Wall -Werror -o ./conftest conftest.c
-conftest.c:2:24: fatal error: sys/socket.h: No such file or directory
+conftest.c:2:10: fatal error: sys/socket.h: No such file or directory
+    2 | #include <sys/socket.h>
+      |          ^~~~~~~~~~~~~~
 compilation terminated.
 -> failed (0)
 no

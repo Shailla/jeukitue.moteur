@@ -37,11 +37,11 @@ typedef struct ag_mpane {
 } AG_MPane;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agMPaneClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agMPaneClass; 
 extern DECLSPEC AG_MPane *AG_MPaneNew(void *, enum ag_mpane_layout, Uint);
 extern DECLSPEC void AG_MPaneSetLayout(AG_MPane *, enum ag_mpane_layout);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

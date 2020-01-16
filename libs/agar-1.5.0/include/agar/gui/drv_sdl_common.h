@@ -34,7 +34,7 @@
 #include <agar/gui/begin.h>
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC AG_PixelFormat *AG_SDL_GetPixelFormat(SDL_Surface *);
 extern DECLSPEC void AG_SDL_BlitSurface(const AG_Surface *, const AG_Rect *, SDL_Surface *, int, int);
 extern DECLSPEC AG_Surface *AG_SDL_ImportSurface(SDL_Surface *);
@@ -56,7 +56,7 @@ extern DECLSPEC int AG_SDL_ProcessEvent(void *, AG_DriverEvent *);
 extern DECLSPEC int AG_SDL_EventSink(AG_EventSink *, AG_Event *);
 extern DECLSPEC int AG_SDL_EventEpilogue(AG_EventSink *, AG_Event *);
 extern DECLSPEC void AG_SDL_EndEventProcessing(void *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

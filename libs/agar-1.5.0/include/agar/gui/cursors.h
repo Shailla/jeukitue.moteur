@@ -35,7 +35,7 @@ typedef struct ag_cursor {
 } AG_Cursor;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC int AG_InitStockCursors(struct ag_driver *);
 extern DECLSPEC void AG_FreeCursors(struct ag_driver *);
 extern DECLSPEC AG_Cursor *AG_CursorNew(void *, Uint, Uint, const Uint8 *, const Uint8 *, int, int);
@@ -94,7 +94,7 @@ AG_HideCursor(void *drv)
 {
 	AGDRIVER_CLASS(drv)->setCursorVisibility(drv, 0);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

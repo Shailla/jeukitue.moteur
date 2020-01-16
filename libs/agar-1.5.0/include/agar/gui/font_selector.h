@@ -34,10 +34,10 @@ typedef struct ag_font_selector {
 } AG_FontSelector;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agFontSelectorClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agFontSelectorClass; 
 extern DECLSPEC AG_FontSelector *AG_FontSelectorNew(void *, Uint);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

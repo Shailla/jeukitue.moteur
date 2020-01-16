@@ -77,10 +77,10 @@ typedef struct ag_driver_sw {
 #define AGDRIVER_SW_CLASS(obj) ((struct ag_driver_sw_class *)(AGOBJECT(obj)->cls))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_ObjectClass agDriverSwClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_ObjectClass agDriverSwClass; 
 extern DECLSPEC AG_DriverSw *agDriverSw; 
- struct ag_size_alloc;
+ struct ag_size_alloc; 
 extern DECLSPEC void AG_WM_BackgroundPopupMenu(AG_DriverSw *);
 extern DECLSPEC void AG_WM_CommitWindowFocus(struct ag_window *);
 extern DECLSPEC int AG_ResizeDisplay(int, int);
@@ -141,7 +141,7 @@ AG_ProcessEvent(AG_Driver *drv, AG_DriverEvent *dev)
 		return agDriverOps->processEvent(agDriverSw, dev);
 	}
 }
-#ifdef AG_LEGACY
+#ifdef AG_LEGACY 
 
 static __inline__ void
 AG_ViewUpdateFB(const AG_Rect2 *r2)
@@ -155,5 +155,5 @@ AG_ViewUpdateFB(const AG_Rect2 *r2)
 		agDriverOps->updateRegion(agDriverSw, r);
 }
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

@@ -23,7 +23,7 @@ typedef struct ag_md5_ctx {
 } AG_MD5_CTX;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void AG_MD5Init(AG_MD5_CTX *);
 extern DECLSPEC void AG_MD5Update(AG_MD5_CTX *, const Uint8 *, size_t) BOUNDED_ATTRIBUTE(__string__,2,3);
 extern DECLSPEC void AG_MD5Pad(AG_MD5_CTX *);
@@ -31,7 +31,7 @@ extern DECLSPEC void AG_MD5Final(Uint8 [AG_MD5_DIGEST_LENGTH], AG_MD5_CTX *);
 extern DECLSPEC void AG_MD5Transform(Uint32 [4], const Uint8 [AG_MD5_BLOCK_LENGTH]);
 extern DECLSPEC char *AG_MD5End(AG_MD5_CTX *, char *);
 extern DECLSPEC char *AG_MD5Data(const Uint8 *, size_t, char *) BOUNDED_ATTRIBUTE(__string__,1,2);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

@@ -17,7 +17,7 @@ typedef struct ag_sha1_ctx {
 } AG_SHA1_CTX;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void AG_SHA1Init(AG_SHA1_CTX *);
 extern DECLSPEC void AG_SHA1Pad(AG_SHA1_CTX *);
 extern DECLSPEC void AG_SHA1Transform(Uint32 [5], const Uint8 [AG_SHA1_BLOCK_LENGTH]);
@@ -25,7 +25,7 @@ extern DECLSPEC void AG_SHA1Update(AG_SHA1_CTX *, const Uint8 *, size_t) BOUNDED
 extern DECLSPEC void AG_SHA1Final(Uint8 [AG_SHA1_DIGEST_LENGTH], AG_SHA1_CTX *);
 extern DECLSPEC char *AG_SHA1End(AG_SHA1_CTX *, char *);
 extern DECLSPEC char *AG_SHA1Data(const Uint8 *, size_t, char *) BOUNDED_ATTRIBUTE(__string__,1,2);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

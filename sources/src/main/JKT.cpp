@@ -331,10 +331,20 @@ void afficheInfo( Uint32 tempsDisplay ) {
 		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 
 		// Affiche la position d'Erwin
-		float position[3];
-		erwin->getPosition( position );
+		float var[3];
+		erwin->getPosition( var );
+		sprintf( cou, "Position : %0.4f %0.4f %0.4f", var[0], var[1], var[2] );
+		str = cou;
+		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 
-		sprintf( cou, "Position : %0.4f %0.4f %0.4f", position[0], position[1], position[2] );
+		// Affiche la vitesse d'Erwin
+		erwin->getVitesse( var );
+		sprintf( cou, "Vitesse : %0.4f %0.4f %0.4f", var[0], var[1], var[2] );
+		str = cou;
+		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
+
+		// Affiche l'état de la gravité
+		Game.getGravite()?sprintf( cou, "Gravité : active"):sprintf( cou, "Gravité : inactive");
 		str = cou;
 		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 	}
@@ -849,8 +859,7 @@ void play_handle_key_down( SDL_Event *event ) {
 
 			// DÃ©sactive / active la gravitÃ©
 			if(mouseButtonDown == Config.Commandes.Gravity.mouse) {
-				if( Game.getMap() )
-					Game.setGravite( !Game.getGravite() );
+				Game.setGravite( !Game.getGravite() );
 			}
 
 			// Affiche / masque le damier des textures
@@ -893,8 +902,7 @@ void play_handle_key_down( SDL_Event *event ) {
 
 			// DÃ©sactive / active la gravitÃ©
 			if(keyDown == Config.Commandes.Gravity.key) {
-				if( Game.getMap() )
-					Game.setGravite( !Game.getGravite() );
+				Game.setGravite( !Game.getGravite() );
 			}
 
 			// Affiche / masque le damier des textures
@@ -934,8 +942,9 @@ void play_handle_key_down( SDL_Event *event ) {
 
 			// Annule la vitesse du joueur actif
 		case SDLK_v :
-			if( Game.getMap() )
+			if( Game.Erwin() ) {
 				Game.Erwin()->changeVitesse(0.0f, 0.0f, 0.0f);
+			}
 			break;
 
 			// Sauve le fichier map actue

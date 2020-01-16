@@ -116,19 +116,135 @@ typedef struct ag_event_queue {
 typedef void (*AG_EventFn)(AG_Event *);
 
 #ifdef AG_DEBUG
-#define AG_EVENT_BOUNDARY_CHECK(ev) if ((ev)->argc >= AG_EVENT_ARGS_MAX-1) AG_FatalError("Too many AG_Event(3) arguments");
+#define AG_EVENT_BOUNDARY_CHECK(ev) \
+	if ((ev)->argc >= AG_EVENT_ARGS_MAX-1) \
+		AG_FatalError("Too many AG_Event(3) arguments");
 #else
 #define AG_EVENT_BOUNDARY_CHECK(ev)
 #endif
 
-#define AG_EVENT_INS_VAL(eev,tname,aname,member,val) { AG_EVENT_BOUNDARY_CHECK(eev) (eev)->argv[(eev)->argc].type = (tname); if ((aname) != NULL) { AG_Strlcpy((eev)->argv[(eev)->argc].name, (aname), AG_VARIABLE_NAME_MAX); } else { (eev)->argv[(eev)->argc].name[0] = '\0'; } (eev)->argv[(eev)->argc].mutex = NULL; (eev)->argv[(eev)->argc].data.member = (val); (eev)->argv[(eev)->argc].fn.fnVoid = NULL; (eev)->argc++; }
-#define AG_EVENT_INS_ARG(eev,ap,tname,member,t) { V = &(eev)->argv[(eev)->argc]; AG_EVENT_BOUNDARY_CHECK(eev) V->type = (tname); V->mutex = NULL; V->data.member = va_arg(ap,t); V->fn.fnVoid = NULL; (eev)->argc++; }
-#define AG_EVENT_PUSH_ARG(ap,ev) { AG_Variable *V; switch (*c) { case 'p': AG_EVENT_INS_ARG((ev),ap,AG_VARIABLE_POINTER,p,void *); break; case 'i': AG_EVENT_INS_ARG((ev),ap,AG_VARIABLE_INT,i,int); break; case 'u': AG_EVENT_INS_ARG((ev),ap,AG_VARIABLE_UINT,i,int); break; case 'f': AG_EVENT_INS_ARG((ev),ap,AG_VARIABLE_FLOAT,flt,double); break; case 'd': AG_EVENT_INS_ARG((ev),ap,AG_VARIABLE_DOUBLE,dbl,double); break; case 's': AG_EVENT_INS_ARG((ev),ap,AG_VARIABLE_STRING,s,char *); break; case 'l': switch (c[1]) { case 'i': AG_EVENT_INS_ARG((ev),ap, AG_VARIABLE_SINT32, s32,long); break; case 'u': AG_EVENT_INS_ARG((ev),ap, AG_VARIABLE_UINT32, u32,unsigned long); break; default: AG_FatalError("Bad AG_Event(3) arguments"); continue; } c++; break; case 'C': switch (c[1]) { case 's': AG_EVENT_INS_ARG((ev),ap, AG_VARIABLE_CONST_STRING, Cs,const char *); break; case 'p': AG_EVENT_INS_ARG((ev),ap, AG_VARIABLE_CONST_POINTER, Cp,const void *); break; default: AG_FatalError("Bad AG_Event(3) arguments"); continue; } c++; break; case ' ': case ',': case '%': c++; continue; default: AG_FatalError("Bad AG_Event(3) argument: `%c'", *c); c++; continue; } c++; if (*c == '(' && c[1] != '\0') { char *cEnd; AG_Strlcpy(V->name, &c[1], sizeof(V->name)); for (cEnd = V->name; *cEnd != '\0'; cEnd++) { if (*cEnd == ')') { *cEnd = '\0'; c+=2; break; } c++; } } else { V->name[0] = '\0'; } }
+#define AG_EVENT_INS_VAL(eev,tname,aname,member,val) {			\
+	AG_EVENT_BOUNDARY_CHECK(eev)					\
+	(eev)->argv[(eev)->argc].type = (tname);			\
+	if ((aname) != NULL) {						\
+		AG_Strlcpy((eev)->argv[(eev)->argc].name, (aname),	\
+		        AG_VARIABLE_NAME_MAX);				\
+	} else {							\
+		(eev)->argv[(eev)->argc].name[0] = '\0';		\
+	}								\
+	(eev)->argv[(eev)->argc].mutex = NULL;				\
+	(eev)->argv[(eev)->argc].data.member = (val);			\
+	(eev)->argv[(eev)->argc].fn.fnVoid = NULL;			\
+	(eev)->argc++;							\
+}
+#define AG_EVENT_INS_ARG(eev,ap,tname,member,t) { 			\
+	V = &(eev)->argv[(eev)->argc];					\
+	AG_EVENT_BOUNDARY_CHECK(eev)					\
+	V->type = (tname);						\
+	V->mutex = NULL;						\
+	V->data.member = va_arg(ap,t);					\
+	V->fn.fnVoid = NULL;						\
+	(eev)->argc++;							\
+}
+#define AG_EVENT_PUSH_ARG(ap,ev) {					\
+	AG_Variable *V;							\
+									\
+	switch (*c) {							\
+	case 'p':							\
+		AG_EVENT_INS_ARG((ev),ap,AG_VARIABLE_POINTER,p,void *);	\
+		break;							\
+	case 'i':							\
+		AG_EVENT_INS_ARG((ev),ap,AG_VARIABLE_INT,i,int);	\
+		break;							\
+	case 'u':							\
+		AG_EVENT_INS_ARG((ev),ap,AG_VARIABLE_UINT,i,int);	\
+		break;							\
+	case 'f':							\
+		AG_EVENT_INS_ARG((ev),ap,AG_VARIABLE_FLOAT,flt,double);	\
+		break;							\
+	case 'd':							\
+		AG_EVENT_INS_ARG((ev),ap,AG_VARIABLE_DOUBLE,dbl,double);\
+		break;							\
+	case 's':							\
+		AG_EVENT_INS_ARG((ev),ap,AG_VARIABLE_STRING,s,char *);	\
+		break;							\
+	case 'l':							\
+		switch (c[1]) {						\
+		case 'i':						\
+			AG_EVENT_INS_ARG((ev),ap,			\
+			    AG_VARIABLE_SINT32,				\
+			    s32,long);					\
+			break;						\
+		case 'u':						\
+			AG_EVENT_INS_ARG((ev),ap,			\
+			    AG_VARIABLE_UINT32,				\
+			    u32,unsigned long);				\
+			break;						\
+		default:						\
+			AG_FatalError("Bad AG_Event(3) arguments");	\
+			continue;					\
+		}							\
+		c++;							\
+		break;							\
+	case 'C':							\
+		switch (c[1]) {						\
+		case 's':						\
+			AG_EVENT_INS_ARG((ev),ap,			\
+			    AG_VARIABLE_CONST_STRING,			\
+			    Cs,const char *);				\
+			break;						\
+		case 'p':						\
+			AG_EVENT_INS_ARG((ev),ap,			\
+			    AG_VARIABLE_CONST_POINTER,			\
+			    Cp,const void *);				\
+			break;						\
+		default:						\
+			AG_FatalError("Bad AG_Event(3) arguments");	\
+			continue;					\
+		}							\
+		c++;							\
+		break;							\
+	case ' ':							\
+	case ',':							\
+	case '%':							\
+		c++;							\
+		continue;						\
+	default:							\
+		AG_FatalError("Bad AG_Event(3) argument: `%c'", *c);	\
+		c++;							\
+		continue;						\
+	}								\
+	c++;								\
+	if (*c == '(' && c[1] != '\0') {				\
+		char *cEnd;						\
+		AG_Strlcpy(V->name, &c[1], sizeof(V->name));		\
+		for (cEnd = V->name; *cEnd != '\0'; cEnd++) {		\
+			if (*cEnd == ')') {				\
+				*cEnd = '\0';				\
+				c+=2;					\
+				break;					\
+			}						\
+			c++;						\
+		}							\
+	} else {							\
+		V->name[0] = '\0';					\
+	}								\
+}
 
-#define AG_EVENT_GET_ARGS(ev, fmtp) if (fmtp != NULL) { const char *c = (const char *)fmtp; va_list ap; va_start(ap, fmtp); while (*c != '\0') { AG_EVENT_PUSH_ARG(ap,(ev)); } va_end(ap); }
+#define AG_EVENT_GET_ARGS(ev, fmtp)					\
+	if (fmtp != NULL) {						\
+		const char *c = (const char *)fmtp;			\
+		va_list ap;						\
+									\
+		va_start(ap, fmtp);					\
+		while (*c != '\0') {					\
+			AG_EVENT_PUSH_ARG(ap,(ev));			\
+		}							\
+		va_end(ap);						\
+	}
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC int AG_InitEventSubsystem(Uint);
 extern DECLSPEC void AG_DestroyEventSubsystem(void);
 extern DECLSPEC void AG_EventInit(AG_Event *);
@@ -144,15 +260,15 @@ extern DECLSPEC AG_Function *AG_SetUint16Fn(void *, AG_Uint16Fn, const char *, .
 extern DECLSPEC AG_Function *AG_SetSint16Fn(void *, AG_Sint16Fn, const char *, ...);
 extern DECLSPEC AG_Function *AG_SetUint32Fn(void *, AG_Uint32Fn, const char *, ...);
 extern DECLSPEC AG_Function *AG_SetSint32Fn(void *, AG_Sint32Fn, const char *, ...);
-#ifdef AG_HAVE_64BIT
+#ifdef AG_HAVE_64BIT 
 extern DECLSPEC AG_Function *AG_SetUint64Fn(void *, AG_Uint64Fn, const char *, ...);
 extern DECLSPEC AG_Function *AG_SetSint64Fn(void *, AG_Sint64Fn, const char *, ...);
-#endif
+#endif 
 extern DECLSPEC AG_Function *AG_SetFloatFn(void *, AG_FloatFn, const char *, ...);
 extern DECLSPEC AG_Function *AG_SetDoubleFn(void *, AG_DoubleFn, const char *, ...);
-#ifdef AG_HAVE_LONG_DOUBLE
+#ifdef AG_HAVE_LONG_DOUBLE 
 extern DECLSPEC AG_Function *AG_SetLongDoubleFn(void *, AG_LongDoubleFn, const char *, ...);
-#endif
+#endif 
 extern DECLSPEC AG_Function *AG_SetStringFn(void *, AG_StringFn, const char *, ...);
 extern DECLSPEC AG_Function *AG_SetPointerFn(void *, AG_PointerFn, const char *, ...);
 extern DECLSPEC AG_Function *AG_SetConstPointerFn(void *, AG_ConstPointerFn, const char *, ...);
@@ -270,14 +386,14 @@ AG_GetNamedDbl(AG_Event *event, const char *key)
 	AG_Variable *V = AG_GetNamedEventArg(event, key);
 	return (V->data.dbl);
 }
-#ifdef AG_LEGACY
+#ifdef AG_LEGACY 
 # define AG_EVENT_SCHEDULED 0x04 
-# define AG_CHAR(v) ((char)event->argv[v].data.i)
-# define AG_UCHAR(v) ((Uchar)event->argv[v].data.u)
-# define AG_EventPushChar(ev,key,val) AG_EventPushInt((ev),(key),(int)(val))
-# define AG_EventPushUchar(ev,key,val) AG_EventPushUint((ev),(key),(Uint)(val))
-#endif
-__END_DECLS
+# define AG_CHAR(v) ((char)event->argv[v].data.i) 
+# define AG_UCHAR(v) ((Uchar)event->argv[v].data.u) 
+# define AG_EventPushChar(ev,key,val) AG_EventPushInt((ev),(key),(int)(val)) 
+# define AG_EventPushUchar(ev,key,val) AG_EventPushUint((ev),(key),(Uint)(val)) 
+#endif 
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

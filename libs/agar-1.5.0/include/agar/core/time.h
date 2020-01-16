@@ -45,17 +45,17 @@ typedef AG_Timer AG_Timeout;
 #endif
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC struct ag_objectq agTimerObjQ;
-extern DECLSPEC Uint agTimerCount;
-extern DECLSPEC struct ag_object agTimerMgr;
-extern DECLSPEC AG_Mutex agTimerLock;
-extern DECLSPEC const AG_TimeOps *agTimeOps;
-extern DECLSPEC const AG_TimeOps agTimeOps_dummy;
-extern DECLSPEC const AG_TimeOps agTimeOps_gettimeofday;
-extern DECLSPEC const AG_TimeOps agTimeOps_posix;
-extern DECLSPEC const AG_TimeOps agTimeOps_win32;
-extern DECLSPEC const AG_TimeOps agTimeOps_renderer;
+__BEGIN_DECLS 
+extern DECLSPEC struct ag_objectq agTimerObjQ; 
+extern DECLSPEC Uint agTimerCount; 
+extern DECLSPEC struct ag_object agTimerMgr; 
+extern DECLSPEC AG_Mutex agTimerLock; 
+extern DECLSPEC const AG_TimeOps *agTimeOps; 
+extern DECLSPEC const AG_TimeOps agTimeOps_dummy; 
+extern DECLSPEC const AG_TimeOps agTimeOps_gettimeofday; 
+extern DECLSPEC const AG_TimeOps agTimeOps_posix; 
+extern DECLSPEC const AG_TimeOps agTimeOps_win32; 
+extern DECLSPEC const AG_TimeOps agTimeOps_renderer; 
 extern DECLSPEC void AG_SetTimeOps(const AG_TimeOps *);
 extern DECLSPEC void AG_InitTimers(void);
 extern DECLSPEC void AG_DestroyTimers(void);
@@ -78,21 +78,21 @@ AG_ExecTimerFn(AG_Timer *to)
 	to->flags &= ~(AG_TIMER_EXECD);
 	return (rv);
 }
-#ifdef AG_LEGACY
+#ifdef AG_LEGACY 
 extern DECLSPEC void AG_SetTimeout(AG_Timeout *, Uint32 (*)(void *, Uint32, void *), void *, Uint) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC void AG_ScheduleTimeout(void *, AG_Timeout *, Uint32) DEPRECATED_ATTRIBUTE;
-# define AG_TIMEOUT_INITIALIZER { -1, NULL, 0, 0, 0, NULL }
-# define AG_TIMEOUTS_QUEUED() (!AG_TAILQ_EMPTY(&agTimerObjQ))
+# define AG_TIMEOUT_INITIALIZER { -1, NULL, 0, 0, 0, NULL } 
+# define AG_TIMEOUTS_QUEUED() (!AG_TAILQ_EMPTY(&agTimerObjQ)) 
 # define AG_CANCEL_ONDETACH 0x10 
 # define AG_CANCEL_ONLOAD 0x20 
-# define AG_TimeoutWait(obj,to,d) AG_TimerWait((obj),(to),(d))
-# define AG_TimeoutIsScheduled(obj,to) AG_TimerIsRunning((obj),(to))
-# define AG_DelTimeout(obj,to) AG_DelTimer((obj),(to))
-# define AG_ProcessTimeout(x) AG_ProcessTimeouts(x)
-# define AG_AddTimeout(p,to,dt) AG_ScheduleTimeout((p),(to),(dt))
-# define AG_ReplaceTimeout(p,to,dt) AG_ScheduleTimeout((p),(to),(dt))
+# define AG_TimeoutWait(obj,to,d) AG_TimerWait((obj),(to),(d)) 
+# define AG_TimeoutIsScheduled(obj,to) AG_TimerIsRunning((obj),(to)) 
+# define AG_DelTimeout(obj,to) AG_DelTimer((obj),(to)) 
+# define AG_ProcessTimeout(x) AG_ProcessTimeouts(x) 
+# define AG_AddTimeout(p,to,dt) AG_ScheduleTimeout((p),(to),(dt)) 
+# define AG_ReplaceTimeout(p,to,dt) AG_ScheduleTimeout((p),(to),(dt)) 
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

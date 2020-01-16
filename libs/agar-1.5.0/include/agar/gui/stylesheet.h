@@ -31,14 +31,14 @@ typedef struct ag_static_css {
 } AG_StaticCSS;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_StyleSheet agDefaultCSS;
-extern DECLSPEC AG_StaticCSS agStyleDefault;
+__BEGIN_DECLS 
+extern DECLSPEC AG_StyleSheet agDefaultCSS; 
+extern DECLSPEC AG_StaticCSS agStyleDefault; 
 extern DECLSPEC void AG_InitStyleSheet(AG_StyleSheet *);
 extern DECLSPEC void AG_DestroyStyleSheet(AG_StyleSheet *);
 extern DECLSPEC AG_StyleSheet *AG_LoadStyleSheet(void *, const char *);
 extern DECLSPEC int AG_LookupStyleSheet(AG_StyleSheet *, void *, const char *, char **);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

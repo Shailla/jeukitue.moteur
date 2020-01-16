@@ -105,7 +105,10 @@
 #ifdef __GNUC__
 # define _AGAR_AU_USE_INLINE
 #else
-# if defined(_MSC_VER) || defined(__BORLANDC__) || defined(__DMC__) || defined(__SC__) || defined(__WATCOMC__) || defined(__LCC__) || defined(__DECC) || defined(__EABI__)
+# if defined(_MSC_VER) || defined(__BORLANDC__) || \
+     defined(__DMC__) || defined(__SC__) || \
+     defined(__WATCOMC__) || defined(__LCC__) || \
+     defined(__DECC) || defined(__EABI__)
 #  ifndef __inline__
 #   define __inline__	__inline
 #  endif

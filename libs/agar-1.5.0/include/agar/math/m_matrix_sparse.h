@@ -8,8 +8,8 @@ typedef struct m_matrix_sp {
 } M_MatrixSP;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const M_MatrixOps mMatOps_SP;
+__BEGIN_DECLS 
+extern DECLSPEC const M_MatrixOps mMatOps_SP; 
 extern DECLSPEC M_Real *M_GetElement_SP(void *pM, Uint i, Uint j);
 extern DECLSPEC M_Real M_GetValue_SP(void *pM, Uint i, Uint j);
 extern DECLSPEC M_Real M_Get_SP(void *, Uint, Uint);
@@ -27,5 +27,5 @@ extern DECLSPEC void M_MatrixToFloats_SP(float *fv, const void *pA);
 extern DECLSPEC void M_MatrixToDoubles_SP(double *dv, const void *pA);
 extern DECLSPEC void M_MatrixFromFloats_SP(void *pA, const float *fv);
 extern DECLSPEC void M_MatrixFromDoubles_SP(void *pA, const double *fv);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

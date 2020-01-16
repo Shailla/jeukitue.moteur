@@ -22,11 +22,11 @@ typedef struct ag_fixed {
 } AG_Fixed;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agFixedClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agFixedClass; 
 extern DECLSPEC AG_Fixed *AG_FixedNew(void *, Uint);
 extern DECLSPEC void AG_FixedSizeHint(AG_Fixed *, int, int);
-#define AG_FixedPrescale AG_FixedSizeHint
+#define AG_FixedPrescale AG_FixedSizeHint 
 extern DECLSPEC void AG_FixedDrawBg(void *);
 extern DECLSPEC void AG_FixedDrawBox(void *);
 extern DECLSPEC void AG_FixedDrawInvBox(void *);
@@ -35,7 +35,7 @@ extern DECLSPEC void AG_FixedPut(AG_Fixed *, void *, int, int);
 extern DECLSPEC void AG_FixedDel(AG_Fixed *, void *);
 extern DECLSPEC void AG_FixedSize(AG_Fixed *, void *, int, int);
 extern DECLSPEC void AG_FixedMove(AG_Fixed *, void *, int, int);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

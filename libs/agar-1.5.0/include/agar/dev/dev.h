@@ -11,7 +11,7 @@
 struct ag_menu_item;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void DEV_InitSubsystem(Uint);
 extern DECLSPEC void DEV_DestroySubsystem(void);
 extern DECLSPEC void DEV_ToolMenu(struct ag_menu_item *);
@@ -31,7 +31,7 @@ extern DECLSPEC void DEV_BrowserGenericMenu(void *, void *, AG_Window *);
 extern DECLSPEC void DEV_ConfigShow(void);
 extern DECLSPEC void *DEV_ObjectEdit(void *);
 extern DECLSPEC AG_Window *DEV_ClassInfo(void);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/dev/close.h>

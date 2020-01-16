@@ -11,11 +11,11 @@
 #include <agar/core/begin.h>
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 /*
  * Swap 16-bit
  */
-#if defined(__GNUC__) && defined(__i386__) && !(__GNUC__ == 2 && __GNUC_MINOR__ == 95)
+#if defined(__GNUC__) && defined(__i386__) && \ 
 
 static __inline__ Uint16
 AG_Swap16(Uint16 x)
@@ -25,7 +25,7 @@ AG_Swap16(Uint16 x)
 		"0" (x));
 	return (x);
 }
-#elif defined(__GNUC__) && defined(__x86_64__)
+#elif defined(__GNUC__) && defined(__x86_64__) 
 
 static __inline__ Uint16
 AG_Swap16(Uint16 x)
@@ -35,7 +35,7 @@ AG_Swap16(Uint16 x)
 		"0" (x));
 	return (x);
 }
-#elif defined(__GNUC__) && (defined(__powerpc__) || defined(__ppc__))
+#elif defined(__GNUC__) && (defined(__powerpc__) || defined(__ppc__)) 
 
 static __inline__ Uint16
 AG_Swap16(Uint16 x)
@@ -46,18 +46,18 @@ AG_Swap16(Uint16 x)
 		"0" (x >> 8), "r" (x));
 	return (rv);
 }
-#else
+#else 
 
 static __inline__ Uint16
 AG_Swap16(Uint16 x)
 {
 	return ((x<<8)|(x>>8));
 }
-#endif
+#endif 
 /*
  * Swap 32-bit
  */
-#if defined(__GNUC__) && defined(__i386__)
+#if defined(__GNUC__) && defined(__i386__) 
 
 static __inline__ Uint32
 AG_Swap32(Uint32 x)
@@ -67,7 +67,7 @@ AG_Swap32(Uint32 x)
 		"0" (x));
 	return (x);
 }
-#elif defined(__GNUC__) && defined(__x86_64__)
+#elif defined(__GNUC__) && defined(__x86_64__) 
 
 static __inline__ Uint32
 AG_Swap32(Uint32 x)
@@ -77,7 +77,7 @@ AG_Swap32(Uint32 x)
 		"0" (x));
 	return (x);
 }
-#elif defined(__GNUC__) && (defined(__powerpc__) || defined(__ppc__))
+#elif defined(__GNUC__) && (defined(__powerpc__) || defined(__ppc__)) 
 
 static __inline__ Uint32
 AG_Swap32(Uint32 x)
@@ -94,7 +94,7 @@ AG_Swap32(Uint32 x)
 		"0" (rv), "r" (x));
 	return (rv);
 }
-#else
+#else 
 
 static __inline__ Uint32
 AG_Swap32(Uint32 x)
@@ -103,12 +103,12 @@ AG_Swap32(Uint32 x)
 	       ((x << 8) & 0x00FF0000) | ((x >> 8) & 0x0000FF00) | 
 	        (x >> 24));
 }
-#endif
+#endif 
 /*
  * Swap 64-bit
  */
-#ifdef AG_HAVE_64BIT
-# if defined(__GNUC__) && defined(__i386__)
+#ifdef AG_HAVE_64BIT 
+# if defined(__GNUC__) && defined(__i386__) 
 
 static __inline__ Uint64
 AG_Swap64(Uint64 x)
@@ -123,7 +123,7 @@ AG_Swap64(Uint64 x)
 		"0" (v.s.a), "1" (v.s.b)); 
 	return (v.u);
 }
-# elif defined(__GNUC__) && defined(__x86_64__)
+# elif defined(__GNUC__) && defined(__x86_64__) 
 
 static __inline__ Uint64
 AG_Swap64(Uint64 x)
@@ -163,7 +163,7 @@ AG_SwapFLT(float v)
 	u.i = AG_Swap32(u.i);
 	return (u.v);
 }
-#ifdef AG_HAVE_64BIT
+#ifdef AG_HAVE_64BIT 
 
 static __inline__ double
 AG_SwapDBL(double v)
@@ -174,7 +174,7 @@ AG_SwapDBL(double v)
 	u.i = AG_Swap64(u.i);
 	return (u.v);
 }
-#else
+#else 
 
 static __inline__ double
 AG_SwapDBL(double v)
@@ -190,7 +190,7 @@ AG_SwapDBL(double v)
 	return (uOut.v);
 }
 #endif 
-#ifdef HAVE_LONG_DOUBLE
+#ifdef HAVE_LONG_DOUBLE 
 
 static __inline__ long double
 AG_SwapLDBL(long double v)
@@ -206,7 +206,7 @@ AG_SwapLDBL(long double v)
 	return (uOut.v);
 }
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #if AG_BYTEORDER == AG_BIG_ENDIAN

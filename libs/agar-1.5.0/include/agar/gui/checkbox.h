@@ -21,8 +21,8 @@ typedef struct ag_checkbox {
 } AG_Checkbox;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agCheckboxClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agCheckboxClass; 
 extern DECLSPEC AG_Checkbox *AG_CheckboxNew(void *, Uint, const char *, ...) FORMAT_ATTRIBUTE(printf, 3, 4);
 extern DECLSPEC AG_Checkbox *AG_CheckboxNewS(void *, Uint, const char *);
 extern DECLSPEC AG_Checkbox *AG_CheckboxNewFn(void *, Uint, const char *, AG_EventFn, const char *, ...);
@@ -32,7 +32,7 @@ extern DECLSPEC AG_Checkbox *AG_CheckboxNewFlag32(void *, Uint, const char *, Ui
 extern DECLSPEC void AG_CheckboxSetFromFlags(void *, Uint, Uint *, const AG_FlagDescr *);
 extern DECLSPEC void AG_CheckboxSetFromFlags32(void *, Uint, Uint32 *, const AG_FlagDescr *);
 extern DECLSPEC void AG_CheckboxToggle(AG_Checkbox *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

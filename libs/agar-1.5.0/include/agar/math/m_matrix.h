@@ -92,10 +92,31 @@ typedef struct m_matrix_ops44 {
 
 /* Debug macros */
 #ifdef AG_DEBUG
-# define M_ENTRY_EXISTS(A,i,j) ((i) >= 0 && (i) < (A)->m && (j) >= 0 && (j) < (A)->n)
-# define M_ASSERT_COMPAT_MATRICES(A, B, ret) do { if (MROWS(A) != MROWS(B) || MCOLS(A) != MCOLS(B)) { AG_SetError("Incompatible matrices"); return (ret); } } while (0)
-# define M_ASSERT_MULTIPLIABLE_MATRICES(A, B, ret) do { if (MROWS(A) != MROWS(B) || MCOLS(A) != MCOLS(B)) { AG_SetError("Incompatible matrices"); return (ret); } } while (0)
-# define M_ASSERT_SQUARE_MATRIX(A, ret) do { if (MROWS(A) != MCOLS(A)) { AG_SetError("Incompatible matrices"); return (ret); } } while (0)
+# define M_ENTRY_EXISTS(A,i,j) \
+	((i) >= 0 && (i) < (A)->m && (j) >= 0 && (j) < (A)->n)
+# define M_ASSERT_COMPAT_MATRICES(A, B, ret) \
+	do { \
+		if (MROWS(A) != MROWS(B) || \
+		    MCOLS(A) != MCOLS(B)) { \
+			AG_SetError("Incompatible matrices"); \
+			return (ret); \
+		} \
+	} while (0)
+# define M_ASSERT_MULTIPLIABLE_MATRICES(A, B, ret) \
+	do { \
+		if (MROWS(A) != MROWS(B) || \
+		    MCOLS(A) != MCOLS(B)) { \
+			AG_SetError("Incompatible matrices"); \
+			return (ret); \
+		} \
+	} while (0)
+# define M_ASSERT_SQUARE_MATRIX(A, ret) \
+	do { \
+		if (MROWS(A) != MCOLS(A)) { \
+			AG_SetError("Incompatible matrices"); \
+			return (ret); \
+		} \
+	} while (0)
 #else
 # define M_ENTRY_EXISTS(A,i,j) 1
 # define M_ASSERT_COMPAT_MATRICES(A, B, ret)
@@ -105,10 +126,10 @@ typedef struct m_matrix_ops44 {
 
 /* Backends */
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const M_MatrixOps *mMatOps;
-extern DECLSPEC const M_MatrixOps44 *mMatOps44;
-__END_DECLS
+__BEGIN_DECLS 
+extern DECLSPEC const M_MatrixOps *mMatOps; 
+extern DECLSPEC const M_MatrixOps44 *mMatOps44; 
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/math/m_matrix_fpu.h>
@@ -189,7 +210,7 @@ __END_DECLS
 #endif /* INLINE_SSE */
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void M_MatrixInitEngine(void);
 extern DECLSPEC M_Matrix44 M_ReadMatrix44(AG_DataSource *);
 extern DECLSPEC void M_ReadMatrix44v(AG_DataSource *, M_Matrix44 *);
@@ -207,5 +228,5 @@ M_Set(M_Matrix *M, Uint i, Uint j, M_Real val)
 	M_Real *v = M_GetElement(M, i,j);
 	*v = val;
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

@@ -85,8 +85,8 @@ typedef struct ag_file_dlg {
 } AG_FileDlg;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agFileDlgClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agFileDlgClass; 
 extern DECLSPEC AG_FileDlg *AG_FileDlgNew(void *, Uint);
 extern DECLSPEC AG_FileDlg *AG_FileDlgNewMRU(void *, const char *, Uint);
 extern DECLSPEC void AG_FileDlgSetOptionContainer(AG_FileDlg *, void *);
@@ -108,11 +108,11 @@ extern DECLSPEC AG_FileOption *AG_FileOptionNewDbl(AG_FileType *, const char *, 
 extern DECLSPEC AG_FileOption *AG_FileOptionNewString(AG_FileType *, const char *, const char *, const char *);
 extern DECLSPEC AG_FileOption *AG_FileOptionGet(AG_FileType *, const char *);
 extern DECLSPEC int AG_FileOptionInt(AG_FileType *, const char *);
-#define AG_FileOptionBool(ft,key) AG_FileOptionInt((ft),(key))
+#define AG_FileOptionBool(ft,key) AG_FileOptionInt((ft),(key)) 
 extern DECLSPEC float AG_FileOptionFlt(AG_FileType *, const char *);
 extern DECLSPEC double AG_FileOptionDbl(AG_FileType *, const char *);
 extern DECLSPEC char *AG_FileOptionString(AG_FileType *, const char *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

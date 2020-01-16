@@ -90,10 +90,10 @@ typedef struct ag_editable {
 #endif
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agEditableClass;
-extern DECLSPEC AG_EditableClipboard agEditableClipbrd;
-extern DECLSPEC AG_EditableClipboard agEditableKillring;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agEditableClass; 
+extern DECLSPEC AG_EditableClipboard agEditableClipbrd; 
+extern DECLSPEC AG_EditableClipboard agEditableKillring; 
 extern DECLSPEC AG_Editable *AG_EditableNew(void *, Uint);
 extern DECLSPEC void AG_EditableBindUTF8(AG_Editable *, char *, size_t);
 extern DECLSPEC void AG_EditableBindASCII(AG_Editable *, char *, size_t);
@@ -113,14 +113,14 @@ extern DECLSPEC void AG_EditableSelectAll(AG_Editable *, AG_EditableBuffer *);
 extern DECLSPEC void AG_EditableSizeHint(AG_Editable *, const char *);
 extern DECLSPEC void AG_EditableSizeHintPixels(AG_Editable *, Uint, Uint);
 extern DECLSPEC void AG_EditableSizeHintLines(AG_Editable *, Uint);
-#define AG_EditablePrescale AG_EditableSizeHint
+#define AG_EditablePrescale AG_EditableSizeHint 
 extern DECLSPEC void AG_EditableSetPassword(AG_Editable *, int);
 extern DECLSPEC void AG_EditableSetWordWrap(AG_Editable *, int);
 extern DECLSPEC void AG_EditableSetExcl(AG_Editable *, int);
 extern DECLSPEC void AG_EditableSetFltOnly(AG_Editable *, int);
 extern DECLSPEC void AG_EditableSetIntOnly(AG_Editable *, int);
 extern DECLSPEC void AG_EditableSetString(AG_Editable *, const char *);
-#define AG_EditableClearString(tb) AG_EditableSetString((tb),NULL)
+#define AG_EditableClearString(tb) AG_EditableSetString((tb),NULL) 
 extern DECLSPEC void AG_EditablePrintf(void *, const char *, ...);
 extern DECLSPEC char *AG_EditableDupString(AG_Editable *);
 extern DECLSPEC size_t AG_EditableCopyString(AG_Editable *, char *, size_t) BOUNDED_ATTRIBUTE(__string__, 2, 3);
@@ -171,14 +171,14 @@ AG_EditableValidateSelection(AG_Editable *ed, AG_EditableBuffer *buf)
 		}
 	}
 }	
-#ifdef AG_LEGACY
-# define AG_EditableSetFont AG_SetFont
-# define AG_EditableSetStatic AG_EditableSetExcl
-# define AG_EDITABLE_STATIC AG_EDITABLE_EXCL
-# define AG_EDITABLE_NOWORDSEEK 0
-# define AG_EditableSetWriteable(tb,flag) do { if (flag) { AG_WidgetEnable(tb); } else { AG_WidgetDisable(tb); } } while (0)
+#ifdef AG_LEGACY 
+# define AG_EditableSetFont AG_SetFont 
+# define AG_EditableSetStatic AG_EditableSetExcl 
+# define AG_EDITABLE_STATIC AG_EDITABLE_EXCL 
+# define AG_EDITABLE_NOWORDSEEK 0 
+# define AG_EditableSetWriteable(tb,flag) do { \ 
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

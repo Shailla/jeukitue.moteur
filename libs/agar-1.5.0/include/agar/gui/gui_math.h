@@ -43,7 +43,8 @@
 #define AG_Radians(x) (((x)/360.0)*(2.0*AG_PI))
 #define AG_DotProd2(ax,ay,bx,by) ((ax)*(bx) + (ay)*(by))
 #define AG_Norm2(ax,ay)	AG_Sqrt(AG_DotProd2((ax),(ay),(ax),(ay)))
-#define AG_Distance2(ax,ay,bx,by) AG_Norm2((float)((ax)-(bx)), (float)((ay)-(by)))
+#define AG_Distance2(ax,ay,bx,by) AG_Norm2((float)((ax)-(bx)),\
+                                           (float)((ay)-(by)))
 
 #if defined(_AGAR_INTERNAL) || defined(_USE_AGAR_GUI_MATH)
 #define Sin(x) AG_Sin(x)
@@ -69,7 +70,7 @@
 #endif /* _AGAR_INTERNAL or _USE_AGAR_GUI_MATH */
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 
 static __inline__ int
 AG_PowOf2i(int i)
@@ -102,7 +103,7 @@ AG_FracInvf(double d)
 {
 	return (1 - (d - floor(d)));
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

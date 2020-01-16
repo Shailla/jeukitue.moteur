@@ -25,14 +25,14 @@ AG_TAILQ_HEAD(ag_dsoq, ag_dso);
 #define AGDSO(p) ((AG_DSO *)(p))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC struct ag_dsoq agLoadedDSOs;
-extern DECLSPEC AG_Mutex agDSOLock;
+__BEGIN_DECLS 
+extern DECLSPEC struct ag_dsoq agLoadedDSOs; 
+extern DECLSPEC AG_Mutex agDSOLock; 
 extern DECLSPEC AG_DSO *AG_LoadDSO(const char *, Uint);
 extern DECLSPEC int AG_SymDSO(AG_DSO *, const char *, void **);
 extern DECLSPEC int AG_UnloadDSO(AG_DSO *);
-#define AG_LockDSO() AG_MutexLock(&agDSOLock)
-#define AG_UnlockDSO() AG_MutexUnlock(&agDSOLock)
+#define AG_LockDSO() AG_MutexLock(&agDSOLock) 
+#define AG_UnlockDSO() AG_MutexUnlock(&agDSOLock) 
 extern DECLSPEC char **AG_GetDSOList(Uint *);
 extern DECLSPEC void AG_FreeDSOList(char **, Uint);
 
@@ -49,7 +49,7 @@ AG_LookupDSO(const char *name)
 	AG_UnlockDSO();
 	return (dso);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

@@ -2,7 +2,14 @@
 
 #ifdef AG_DEBUG
 # define M_VEC_ENTRY_EXISTS(v,i) ((i) >= 0 && (i) < MVECTOR(v)->m)
-# define M_ASSERT_MATCHING_VECTORS(a, b, ret) do { if (MVECSIZE(a) != MVECSIZE(b)) { AG_SetError("Incompatible vectors %u != %u", MVECSIZE(a), MVECSIZE(b)); return (ret); } } while (0)
+# define M_ASSERT_MATCHING_VECTORS(a, b, ret) \
+	do { \
+		if (MVECSIZE(a) != MVECSIZE(b)) { \
+			AG_SetError("Incompatible vectors %u != %u", \
+			    MVECSIZE(a), MVECSIZE(b)); \
+			return (ret); \
+		} \
+	} while (0)
 #else
 # define M_VEC_ENTRY_EXISTS(A,i) 1
 # define M_ASSERT_MATCHING_VECTORS(a, b, ret)
@@ -160,11 +167,11 @@ typedef struct m_vector_ops4 {
 } M_VectorOps4;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const M_VectorOps2 *mVecOps2;
-extern DECLSPEC const M_VectorOps3 *mVecOps3;
-extern DECLSPEC const M_VectorOps4 *mVecOps4;
-extern DECLSPEC const M_VectorOps *mVecOps;
+__BEGIN_DECLS 
+extern DECLSPEC const M_VectorOps2 *mVecOps2; 
+extern DECLSPEC const M_VectorOps3 *mVecOps3; 
+extern DECLSPEC const M_VectorOps4 *mVecOps4; 
+extern DECLSPEC const M_VectorOps *mVecOps; 
 
 static __inline__ void
 M_VectorInit(M_Vector *v, Uint m)
@@ -218,7 +225,7 @@ M_VecToProj3(M_Vector3 v, M_Real w)
 	Pv.w = w;
 	return (Pv);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/math/m_vector_fpu.h>
@@ -228,7 +235,7 @@ __END_DECLS
 #include <agar/math/m_vector3_sse.h>
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void M_VectorInitEngine(void);
 extern DECLSPEC M_Vector2 M_ReadVector2(AG_DataSource *);
 extern DECLSPEC M_Vector3 M_ReadVector3(AG_DataSource *);
@@ -245,7 +252,7 @@ extern DECLSPEC M_Vector4 M_RealvToVector4(const M_Real *);
 extern DECLSPEC M_Vector2 *M_VectorDup2(const M_Vector2 *);
 extern DECLSPEC M_Vector3 *M_VectorDup3(const M_Vector3 *);
 extern DECLSPEC M_Vector4 *M_VectorDup4(const M_Vector4 *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #define M_VECTOR2	M_VecGet2

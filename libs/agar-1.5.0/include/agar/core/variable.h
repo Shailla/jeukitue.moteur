@@ -152,9 +152,9 @@ typedef struct ag_variable {
 } AG_Variable;
 
 /* Begin generated block */
-__BEGIN_DECLS
-struct ag_list;
-extern DECLSPEC const AG_VariableTypeInfo agVariableTypes[];
+__BEGIN_DECLS 
+struct ag_list; 
+extern DECLSPEC const AG_VariableTypeInfo agVariableTypes[]; 
 extern DECLSPEC int AG_EvalVariable(void *, AG_Variable *);
 extern DECLSPEC void AG_PrintVariable(char *, size_t, AG_Variable *);
 extern DECLSPEC AG_Variable *AG_GetVariableVFS(void *, const char *) WARN_UNUSED_RESULT_ATTRIBUTE;
@@ -177,11 +177,11 @@ extern DECLSPEC void AG_InitInt(AG_Variable *, int);
 extern DECLSPEC AG_Variable *AG_BindInt(void *, const char *, int *);
 extern DECLSPEC AG_Variable *AG_BindIntFn(void *, const char *, AG_IntFn, const char *, ...);
 extern DECLSPEC AG_Variable *AG_BindIntMp(void *, const char *, int *, AG_Mutex *);
-#define AG_GetBool AG_GetInt
-#define AG_SetBool AG_SetInt
-#define AG_BindBool AG_BindInt
-#define AG_BindBoolFn AG_BindIntFn
-#define AG_BindBoolMp AG_BindIntMp
+#define AG_GetBool AG_GetInt 
+#define AG_SetBool AG_SetInt 
+#define AG_BindBool AG_BindInt 
+#define AG_BindBoolFn AG_BindIntFn 
+#define AG_BindBoolMp AG_BindIntMp 
 extern DECLSPEC Uint8 AG_GetUint8(void *, const char *);
 extern DECLSPEC AG_Variable *AG_SetUint8(void *, const char *, Uint8);
 extern DECLSPEC void AG_InitUint8(AG_Variable *, Uint8);
@@ -218,7 +218,7 @@ extern DECLSPEC void AG_InitSint32(AG_Variable *, Sint32);
 extern DECLSPEC AG_Variable *AG_BindSint32Fn(void *, const char *, AG_Sint32Fn, const char *, ...);
 extern DECLSPEC AG_Variable *AG_BindSint32(void *, const char *, Sint32 *);
 extern DECLSPEC AG_Variable *AG_BindSint32Mp(void *, const char *, Sint32 *, AG_Mutex *);
-#ifdef AG_HAVE_64BIT
+#ifdef AG_HAVE_64BIT 
 extern DECLSPEC Uint64 AG_GetUint64(void *, const char *);
 extern DECLSPEC AG_Variable *AG_SetUint64(void *, const char *, Uint64);
 extern DECLSPEC void AG_InitUint64(AG_Variable *, Uint64);
@@ -244,14 +244,14 @@ extern DECLSPEC void AG_InitDouble(AG_Variable *, double);
 extern DECLSPEC AG_Variable *AG_BindDoubleFn(void *, const char *, AG_DoubleFn, const char *, ...);
 extern DECLSPEC AG_Variable *AG_BindDouble(void *, const char *, double *);
 extern DECLSPEC AG_Variable *AG_BindDoubleMp(void *, const char *, double *, AG_Mutex *);
-#ifdef AG_HAVE_LONG_DOUBLE
+#ifdef AG_HAVE_LONG_DOUBLE 
 extern DECLSPEC long double AG_GetLongDouble(void *, const char *);
 extern DECLSPEC AG_Variable *AG_SetLongDouble(void *, const char *, long double);
 extern DECLSPEC void AG_InitLongDouble(AG_Variable *, long double);
 extern DECLSPEC AG_Variable *AG_BindLongDoubleFn(void *, const char *, AG_LongDoubleFn, const char *, ...);
 extern DECLSPEC AG_Variable *AG_BindLongDouble(void *, const char *, long double *);
 extern DECLSPEC AG_Variable *AG_BindLongDoubleMp(void *, const char *, long double *, AG_Mutex *);
-#endif
+#endif 
 extern DECLSPEC size_t AG_GetString(void *, const char *, char *, size_t) BOUNDED_ATTRIBUTE(__string__, 3, 4);
 extern DECLSPEC char *AG_GetStringDup(void *, const char *);
 extern DECLSPEC char *AG_GetStringP(void *, const char *);
@@ -334,9 +334,9 @@ AG_FreeVariable(AG_Variable *V)
 		break;
 	}
 }
-#define AG_VARIABLE_TYPE(V) (agVariableTypes[(V)->type].typeTgt)
-#define AG_VARIABLE_TYPE_NAME(V) (agVariableTypes[(V)->type].name)
-__END_DECLS
+#define AG_VARIABLE_TYPE(V) (agVariableTypes[(V)->type].typeTgt) 
+#define AG_VARIABLE_TYPE_NAME(V) (agVariableTypes[(V)->type].name) 
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

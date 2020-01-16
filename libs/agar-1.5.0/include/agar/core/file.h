@@ -36,16 +36,16 @@ typedef struct ag_file_ext_mapping {
 } AG_FileExtMapping;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_FileExtMapping *agFileExtMap;
-extern DECLSPEC Uint agFileExtCount;
+__BEGIN_DECLS 
+extern DECLSPEC AG_FileExtMapping *agFileExtMap; 
+extern DECLSPEC Uint agFileExtCount; 
 extern DECLSPEC int AG_GetFileInfo(const char *, AG_FileInfo *);
 extern DECLSPEC int AG_GetSystemTempDir(char *, size_t) BOUNDED_ATTRIBUTE(__string__, 1, 2);
 extern DECLSPEC int AG_FileExists(const char *);
 extern DECLSPEC int AG_FileDelete(const char *);
 extern DECLSPEC const char *AG_ShortFilename(const char *);
 extern DECLSPEC void AG_RegisterFileExtMappings(const AG_FileExtMapping *, Uint);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

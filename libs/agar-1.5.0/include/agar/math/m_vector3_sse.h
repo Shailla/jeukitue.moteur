@@ -25,7 +25,7 @@
 #ifdef HAVE_SSE
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 
 static __inline__ M_Vector3
 M_VectorZero3_SSE(void)
@@ -446,13 +446,13 @@ M_VectorSum3_SSE(const M_Vector3 *va, Uint count)
 	out.m128 = r1;
 	return (out);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const M_VectorOps3 mVecOps3_SSE;
-__END_DECLS
+__BEGIN_DECLS 
+extern DECLSPEC const M_VectorOps3 mVecOps3_SSE; 
+__END_DECLS 
 /* Close generated block */
 
 #endif /* HAVE_SSE */

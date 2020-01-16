@@ -42,8 +42,8 @@ typedef struct ag_slider {
 #define AGSLIDER(p) ((AG_Slider *)p)
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agSliderClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agSliderClass; 
 extern DECLSPEC AG_Slider *AG_SliderNew(void *, enum ag_slider_type, Uint);
 extern DECLSPEC AG_Slider *AG_SliderNewInt(void *, enum ag_slider_type, Uint, int *, int *, int *);
 extern DECLSPEC AG_Slider *AG_SliderNewIntR(void *, enum ag_slider_type, Uint, int *, int, int);
@@ -54,7 +54,7 @@ extern DECLSPEC AG_Slider *AG_SliderNewFltR(void *, enum ag_slider_type, Uint, f
 extern DECLSPEC AG_Slider *AG_SliderNewDbl(void *, enum ag_slider_type, Uint, double *, double *, double *);
 extern DECLSPEC AG_Slider *AG_SliderNewDblR(void *, enum ag_slider_type, Uint, double *, double, double);
 extern DECLSPEC void AG_SliderSetControlSize(AG_Slider *, int);
-#ifdef AG_LEGACY
+#ifdef AG_LEGACY 
 extern DECLSPEC void AG_SliderSetIntIncrement(AG_Slider *, int) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC void AG_SliderSetRealIncrement(AG_Slider *, double) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC AG_Slider *AG_SliderNewUint8(void *, enum ag_slider_type, Uint, Uint8 *, Uint8 *, Uint8 *) DEPRECATED_ATTRIBUTE;
@@ -70,7 +70,7 @@ extern DECLSPEC AG_Slider *AG_SliderNewUint32R(void *, enum ag_slider_type, Uint
 extern DECLSPEC AG_Slider *AG_SliderNewSint32(void *, enum ag_slider_type, Uint, Sint32 *, Sint32 *, Sint32 *) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC AG_Slider *AG_SliderNewSint32R(void *, enum ag_slider_type, Uint, Sint32 *, Sint32, Sint32) DEPRECATED_ATTRIBUTE;
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

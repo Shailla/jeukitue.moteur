@@ -39,10 +39,10 @@ typedef struct ag_cpuinfo {
 } AG_CPUInfo;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_CPUInfo agCPU;
+__BEGIN_DECLS 
+extern DECLSPEC AG_CPUInfo agCPU; 
 extern DECLSPEC void AG_GetCPUInfo(AG_CPUInfo *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

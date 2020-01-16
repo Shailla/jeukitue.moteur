@@ -48,45 +48,45 @@ typedef struct ag_textbox {
 #endif
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agTextboxClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agTextboxClass; 
 extern DECLSPEC AG_Textbox *AG_TextboxNew(void *, Uint, const char *, ...) FORMAT_ATTRIBUTE(printf,3,4);
 extern DECLSPEC AG_Textbox *AG_TextboxNewS(void *, Uint, const char *);
-#define AG_TextboxSizeHint(tb,text) AG_EditableSizeHint((tb)->ed,(text))
-#define AG_TextboxSizeHintPixels(tb,w,h) AG_EditableSizeHintPixels((tb)->ed,(w),(h))
-#define AG_TextboxSizeHintLines(tb,l) AG_EditableSizeHintLines((tb)->ed,(l))
-extern DECLSPEC void AG_TextboxSetLabel(AG_Textbox *, const char *, ...) FORMAT_ATTRIBUTE(printf,2,3) NONNULL_ATTRIBUTE(2);
+#define AG_TextboxSizeHint(tb,text) AG_EditableSizeHint((tb)->ed,(text)) 
+#define AG_TextboxSizeHintPixels(tb,w,h) \ 
+#define AG_TextboxSizeHintLines(tb,l) \ 
+ AG_EditableSizeHintPixels((tb)->ed,(w),(h)) AG_EditableSizeHintLines((tb)->ed,(l)) void AG_TextboxSetLabel(AG_Textbox *, const char *, ...) FORMAT_ATTRIBUTE(printf,2,3) NONNULL_ATTRIBUTE(2); 
 extern DECLSPEC void AG_TextboxSetLabelS(AG_Textbox *, const char *);
 extern DECLSPEC void AG_TextboxSetWordWrap(AG_Textbox *, int);
 extern DECLSPEC void AG_TextboxPrintf(AG_Textbox *, const char *, ...);
-#define AG_TextboxSetPassword(tb,flag) AG_EditableSetPassword((tb)->ed,(flag))
-#define AG_TextboxSetExcl(tb,flag) AG_EditableSetExcl((tb)->ed,(flag))
-#define AG_TextboxSetFltOnly(tb,flag) AG_EditableSetFltOnly((tb)->ed,(flag))
-#define AG_TextboxSetIntOnly(tb,flag) AG_EditableSetIntOnly((tb)->ed,(flag))
-#define AG_TextboxSetLang(tb,lang) AG_EditableSetLang((tb)->ed,(lang))
+#define AG_TextboxSetPassword(tb,flag) AG_EditableSetPassword((tb)->ed,(flag)) 
+#define AG_TextboxSetExcl(tb,flag) AG_EditableSetExcl((tb)->ed,(flag)) 
+#define AG_TextboxSetFltOnly(tb,flag) AG_EditableSetFltOnly((tb)->ed,(flag)) 
+#define AG_TextboxSetIntOnly(tb,flag) AG_EditableSetIntOnly((tb)->ed,(flag)) 
+#define AG_TextboxSetLang(tb,lang) AG_EditableSetLang((tb)->ed,(lang)) 
 extern DECLSPEC int AG_TextboxMapPosition(AG_Textbox *, int, int, int *);
 extern DECLSPEC void AG_TextboxMoveCursor(AG_Textbox *, int, int);
 extern DECLSPEC void AG_TextboxSetCursorPos(AG_Textbox *, int);
-#define AG_TextboxGetCursorPos(tb) AG_EditableGetCursorPos((tb)->ed)
-#define AG_TextboxBindUTF8(tb,p,sz) AG_EditableBindUTF8((tb)->ed,(p),(sz))
-#define AG_TextboxBindASCII(tb,p,sz) AG_EditableBindASCII((tb)->ed,(p),(sz))
-#define AG_TextboxBindEncoded(tb,enc,p,sz) AG_EditableBindEncoded((tb)->ed,(enc),(p),(sz))
-#define AG_TextboxBindText(tb,txt) AG_EditableBindText((tb)->ed,(txt))
-#define AG_TextboxSetString(tb,s) AG_EditableSetString((tb)->ed,(s))
-#define AG_TextboxClearString(tb) AG_EditableSetString((tb)->ed,NULL)
-#define AG_TextboxDupString(tb) AG_EditableDupString((tb)->ed)
-#define AG_TextboxCopyString(tb,p,len) AG_EditableCopyString((tb)->ed,(p),(len))
-#define AG_TextboxInt(tb) AG_EditableInt((tb)->ed)
-#define AG_TextboxFlt(tb) AG_EditableFlt((tb)->ed)
-#define AG_TextboxDbl(tb) AG_EditableDbl((tb)->ed)
-#ifdef AG_LEGACY
-# define AG_TEXTBOX_NOWORDSEEK 0
-# define AG_TEXTBOX_STATIC AG_TEXTBOX_EXCL
-# define AG_TextboxSetStatic AG_TextboxSetExcl
-# define AG_TextboxPrescale AG_TextboxSizeHint
-# define AG_TextboxSetWriteable(tb,flag) do { if (flag) { AG_WidgetEnable(tb); } else { AG_WidgetDisable(tb); } } while (0)
+#define AG_TextboxGetCursorPos(tb) AG_EditableGetCursorPos((tb)->ed) 
+#define AG_TextboxBindUTF8(tb,p,sz) AG_EditableBindUTF8((tb)->ed,(p),(sz)) 
+#define AG_TextboxBindASCII(tb,p,sz) AG_EditableBindASCII((tb)->ed,(p),(sz)) 
+#define AG_TextboxBindEncoded(tb,enc,p,sz) AG_EditableBindEncoded((tb)->ed,(enc),(p),(sz)) 
+#define AG_TextboxBindText(tb,txt) AG_EditableBindText((tb)->ed,(txt)) 
+#define AG_TextboxSetString(tb,s) AG_EditableSetString((tb)->ed,(s)) 
+#define AG_TextboxClearString(tb) AG_EditableSetString((tb)->ed,NULL) 
+#define AG_TextboxDupString(tb) AG_EditableDupString((tb)->ed) 
+#define AG_TextboxCopyString(tb,p,len) AG_EditableCopyString((tb)->ed,(p),(len)) 
+#define AG_TextboxInt(tb) AG_EditableInt((tb)->ed) 
+#define AG_TextboxFlt(tb) AG_EditableFlt((tb)->ed) 
+#define AG_TextboxDbl(tb) AG_EditableDbl((tb)->ed) 
+#ifdef AG_LEGACY 
+# define AG_TEXTBOX_NOWORDSEEK 0 
+# define AG_TEXTBOX_STATIC AG_TEXTBOX_EXCL 
+# define AG_TextboxSetStatic AG_TextboxSetExcl 
+# define AG_TextboxPrescale AG_TextboxSizeHint 
+# define AG_TextboxSetWriteable(tb,flag) do { \ 
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

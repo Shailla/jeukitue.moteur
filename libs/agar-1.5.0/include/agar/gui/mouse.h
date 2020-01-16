@@ -38,8 +38,8 @@ typedef struct ag_mouse {
 } AG_Mouse;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_ObjectClass agMouseClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_ObjectClass agMouseClass; 
 extern DECLSPEC AG_Mouse *AG_MouseNew(void *, const char *);
 extern DECLSPEC void AG_MouseMotionUpdate(AG_Mouse *, int, int);
 extern DECLSPEC void AG_MouseCursorUpdate(struct ag_window *, int, int);
@@ -55,7 +55,7 @@ AG_MouseGetState(AG_Mouse *ms, int *x, int *y)
 	if (y != NULL) { *y = ms->y; }
 	return (ms->btnState);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

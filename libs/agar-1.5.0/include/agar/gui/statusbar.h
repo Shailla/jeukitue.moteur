@@ -22,11 +22,11 @@ typedef struct ag_statusbar {
 } AG_Statusbar;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agStatusbarClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agStatusbarClass; 
 extern DECLSPEC AG_Statusbar *AG_StatusbarNew(void *, Uint);
 extern DECLSPEC AG_Label *AG_StatusbarAddLabel(AG_Statusbar *, const char *, ...);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

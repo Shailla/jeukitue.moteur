@@ -23,7 +23,7 @@
  */
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 
 static __inline__ M_Matrix44
 M_MatrixZero44_FPU(void)
@@ -254,12 +254,12 @@ M_MatrixTranspose44v_FPU(M_Matrix44 *M)
 	T.m[3][3] = M->m[3][3];
 	M_MatrixCopy44_FPU(M, &T);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const M_MatrixOps44 mMatOps44_FPU;
+__BEGIN_DECLS 
+extern DECLSPEC const M_MatrixOps44 mMatOps44_FPU; 
 extern DECLSPEC M_Matrix44 M_MatrixInvert44_FPU(M_Matrix44);
 extern DECLSPEC int M_MatrixInvertElim44_FPU(M_Matrix44, M_Matrix44 *);
 extern DECLSPEC void M_MatrixRotateAxis44_FPU(M_Matrix44 *, M_Real, M_Vector3);
@@ -275,5 +275,5 @@ extern DECLSPEC void M_MatrixTranslateY44_FPU(M_Matrix44 *, M_Real);
 extern DECLSPEC void M_MatrixTranslateZ44_FPU(M_Matrix44 *, M_Real);
 extern DECLSPEC void M_MatrixScale44_FPU(M_Matrix44 *, M_Real, M_Real, M_Real, M_Real);
 extern DECLSPEC void M_MatrixUniScale44_FPU(M_Matrix44 *, M_Real);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

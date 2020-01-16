@@ -49,8 +49,8 @@ typedef enum ag_error_code {
 #endif /* _AGAR_INTERNAL or _USE_AGAR_STD */
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC int agDebugLvl;
+__BEGIN_DECLS 
+extern DECLSPEC int agDebugLvl; 
 extern DECLSPEC int AG_InitErrorSubsystem(void);
 extern DECLSPEC void AG_DestroyErrorSubsystem(void);
 extern DECLSPEC AG_ErrorCode AG_GetErrorCode(void);
@@ -120,8 +120,8 @@ outofmem:
 	AG_SetError("Out of memory");
 	return (NULL);
 }
-#define AG_Free(p) free(p)
-__END_DECLS
+#define AG_Free(p) free(p) 
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

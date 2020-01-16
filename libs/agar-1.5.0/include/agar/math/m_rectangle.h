@@ -1,7 +1,7 @@
 /*	Public domain	*/
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC M_Rectangle2 M_RectangleRead2(AG_DataSource *);
 extern DECLSPEC M_Rectangle3 M_RectangleRead3(AG_DataSource *);
 extern DECLSPEC void M_RectangleWrite2(AG_DataSource *, M_Rectangle2 *);
@@ -53,5 +53,5 @@ M_RectangleHeight3v(const M_Rectangle3 *R)
 {
 	return M_VecDistance3(R->a, R->b);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

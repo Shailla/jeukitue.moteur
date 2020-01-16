@@ -1,3 +1,1 @@
-#ifndef HAVE_FONTCONFIG
-#define HAVE_FONTCONFIG "yes"
-#endif
+#undef HAVE_FONTCONFIG

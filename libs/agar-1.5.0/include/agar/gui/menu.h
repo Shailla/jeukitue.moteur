@@ -111,12 +111,12 @@ typedef struct ag_menu_view {
 } AG_MenuView;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agMenuClass;
-extern DECLSPEC AG_WidgetClass agMenuViewClass;
-extern DECLSPEC AG_Menu *agAppMenu;
-extern DECLSPEC AG_Window *agAppMenuWin;
-extern DECLSPEC AG_Mutex agAppMenuLock;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agMenuClass; 
+extern DECLSPEC AG_WidgetClass agMenuViewClass; 
+extern DECLSPEC AG_Menu *agAppMenu; 
+extern DECLSPEC AG_Window *agAppMenuWin; 
+extern DECLSPEC AG_Mutex agAppMenuLock; 
 extern DECLSPEC void AG_InitAppMenu(void);
 extern DECLSPEC void AG_DestroyAppMenu(void);
 extern DECLSPEC AG_Menu *AG_MenuNew(void *, Uint);
@@ -135,22 +135,22 @@ extern DECLSPEC void AG_MenuCollapse(AG_MenuItem *);
 extern DECLSPEC void AG_MenuCollapseAll(AG_Menu *);
 extern DECLSPEC void AG_MenuSetPadding(AG_Menu *, int, int, int, int);
 extern DECLSPEC void AG_MenuSetLabelPadding(AG_Menu *, int, int, int, int);
-#define AG_MenuSetPaddingLeft(m,v) AG_MenuSetPadding((m),(v),-1,-1,-1)
-#define AG_MenuSetPaddingRight(m,v) AG_MenuSetPadding((m),-1,(v),-1,-1)
-#define AG_MenuSetPaddingTop(m,v) AG_MenuSetPadding((m),-1,-1,(v),-1)
-#define AG_MenuSetPaddingBottom(m,v) AG_MenuSetPadding((m),-1,-1,-1,(v))
-#define AG_MenuSetLabelPaddingLeft(m,v) AG_MenuSetLabelPadding((m),(v),-1,-1,-1)
-#define AG_MenuSetLabelPaddingRight(m,v) AG_MenuSetLabelPadding((m),-1,(v),-1,-1)
-#define AG_MenuSetLabelPaddingTop(m,v) AG_MenuSetLabelPadding((m),-1,-1,(v),-1)
-#define AG_MenuSetLabelPaddingBottom(m,v) AG_MenuSetLabelPadding((m),-1,-1,-1,(v))
-extern DECLSPEC void AG_MenuSetIcon(AG_MenuItem *, const AG_Surface *);
+#define AG_MenuSetPaddingLeft(m,v) AG_MenuSetPadding((m),(v),-1,-1,-1) 
+#define AG_MenuSetPaddingRight(m,v) AG_MenuSetPadding((m),-1,(v),-1,-1) 
+#define AG_MenuSetPaddingTop(m,v) AG_MenuSetPadding((m),-1,-1,(v),-1) 
+#define AG_MenuSetPaddingBottom(m,v) AG_MenuSetPadding((m),-1,-1,-1,(v)) 
+#define AG_MenuSetLabelPaddingLeft(m,v) \ 
+#define AG_MenuSetLabelPaddingRight(m,v) \ 
+#define AG_MenuSetLabelPaddingTop(m,v) \ 
+#define AG_MenuSetLabelPaddingBottom(m,v) \ 
+ AG_MenuSetLabelPadding((m),(v),-1,-1,-1) AG_MenuSetLabelPadding((m),-1,(v),-1,-1) AG_MenuSetLabelPadding((m),-1,-1,(v),-1) AG_MenuSetLabelPadding((m),-1,-1,-1,(v)) void AG_MenuSetIcon(AG_MenuItem *, const AG_Surface *); 
 extern DECLSPEC void AG_MenuSetLabel(AG_MenuItem *, const char *, ...) FORMAT_ATTRIBUTE(printf,2,3) NONNULL_ATTRIBUTE(2);
 extern DECLSPEC void AG_MenuSetLabelS(AG_MenuItem *, const char *);
 extern DECLSPEC void AG_MenuSetPollFn(AG_MenuItem *, AG_EventFn, const char *, ...);
 extern DECLSPEC void AG_MenuUpdateItem(AG_MenuItem *);
 extern DECLSPEC void AG_MenuState(AG_MenuItem *, int);
-#define AG_MenuDisable(m) AG_MenuState((m),0)
-#define AG_MenuEnable(m) AG_MenuState((m),1)
+#define AG_MenuDisable(m) AG_MenuState((m),0) 
+#define AG_MenuEnable(m) AG_MenuState((m),1) 
 extern DECLSPEC void AG_MenuToolbar(AG_MenuItem *, AG_Toolbar *);
 extern DECLSPEC AG_MenuItem *AG_MenuNode(AG_MenuItem *, const char *, const AG_Surface *);
 extern DECLSPEC AG_MenuItem *AG_MenuSeparator(AG_MenuItem *);
@@ -167,25 +167,25 @@ extern DECLSPEC AG_MenuItem *AG_MenuIntFlagsMp(AG_MenuItem *, const char *, cons
 extern DECLSPEC AG_MenuItem *AG_MenuInt8FlagsMp(AG_MenuItem *, const char *, const AG_Surface *, Uint8 *, Uint8, int, AG_Mutex *);
 extern DECLSPEC AG_MenuItem *AG_MenuInt16FlagsMp(AG_MenuItem *, const char *, const AG_Surface *, Uint16 *, Uint16, int, AG_Mutex *);
 extern DECLSPEC AG_MenuItem *AG_MenuInt32FlagsMp(AG_MenuItem *, const char *, const AG_Surface *, Uint32 *, Uint32, int, AG_Mutex *);
-#define AG_MenuIntBool(mi,t,i,p,inv) AG_MenuIntBoolMp((mi),(t),(i),(p),(inv),NULL)
-#define AG_MenuInt8Bool(mi,t,i,p,inv) AG_MenuInt8BoolMp((mi),(t),(i),(p),(inv),NULL)
-#define AG_MenuBool(mi,t,i,p,inv) AG_MenuIntBoolMp((mi),(t),(i),(p),(inv),NULL)
-#define AG_MenuBoolMp(mi,t,i,p,inv,mu) AG_MenuIntBoolMp((mi),(t),(i),(p),(inv),(mu))
-#define AG_MenuIntFlags(mi,t,i,fp,fl,inv) AG_MenuIntFlagsMp((mi),(t),(i),(fp),(fl),(inv),NULL)
-#define AG_MenuInt8Flags(mi,t,i,fp,fl,inv) AG_MenuInt8FlagsMp((mi),(t),(i),(fp),(fl),(inv),NULL)
-#define AG_MenuInt16Flags(mi,t,i,fp,fl,inv) AG_MenuInt16FlagsMp((mi),(t),(i),(fp),(fl),(inv),NULL)
-#define AG_MenuInt32Flags(mi,t,i,fp,fl,inv) AG_MenuInt32FlagsMp((mi),(t),(i),(fp),(fl),(inv),NULL)
-#define AG_MenuUintFlagsMp(mi,t,i,fp,fl,inv,mtx) AG_MenuIntFlagsMp((mi),(t),(i),(int *)(fp),(int)(fl),(inv),(mtx))
-#define AG_MenuUintFlags(mi,t,i,fp,fl,inv) AG_MenuIntFlagsMp((mi),(t),(i),(int *)(fp),(int)(fl),(inv),NULL)
-#define AG_MenuFlagsMp(mi,t,i,fp,fl,inv,mtx) AG_MenuIntFlagsMp((mi),(t),(i),(int *)(fp),(int)(fl),(inv),(mtx))
-#define AG_MenuFlags(mi,t,i,fp,fl,inv) AG_MenuIntFlagsMp((mi),(t),(i),(int *)(fp),(int)(fl),(inv),NULL)
-extern DECLSPEC void AG_MenuSetIntBoolMp(AG_MenuItem *, int *, int, AG_Mutex *);
-#define AG_MenuSetIntBool(mi,p,fl,inv,mtx) AG_MenuSetIntBoolMp((mi),(p),(fl),(inv),(mtx))
-extern DECLSPEC void AG_MenuSetIntFlagsMp(AG_MenuItem *, int *, int, int, AG_Mutex *);
-#ifdef AG_LEGACY
-# define AG_MenuAddItem(m,lbl) AG_MenuNode((m)->root,(lbl),NULL)
+#define AG_MenuIntBool(mi,t,i,p,inv) \ 
+#define AG_MenuInt8Bool(mi,t,i,p,inv) \ 
+#define AG_MenuBool(mi,t,i,p,inv) \ 
+#define AG_MenuBoolMp(mi,t,i,p,inv,mu) \ 
+#define AG_MenuIntFlags(mi,t,i,fp,fl,inv) \ 
+#define AG_MenuInt8Flags(mi,t,i,fp,fl,inv) \ 
+#define AG_MenuInt16Flags(mi,t,i,fp,fl,inv) \ 
+#define AG_MenuInt32Flags(mi,t,i,fp,fl,inv) \ 
+#define AG_MenuUintFlagsMp(mi,t,i,fp,fl,inv,mtx) \ 
+#define AG_MenuUintFlags(mi,t,i,fp,fl,inv) \ 
+#define AG_MenuFlagsMp(mi,t,i,fp,fl,inv,mtx) \ 
+#define AG_MenuFlags(mi,t,i,fp,fl,inv) \ 
+ AG_MenuIntBoolMp((mi),(t),(i),(p),(inv),NULL) AG_MenuInt8BoolMp((mi),(t),(i),(p),(inv),NULL) AG_MenuIntBoolMp((mi),(t),(i),(p),(inv),NULL) AG_MenuIntBoolMp((mi),(t),(i),(p),(inv),(mu)) AG_MenuIntFlagsMp((mi),(t),(i),(fp),(fl),(inv),NULL) AG_MenuInt8FlagsMp((mi),(t),(i),(fp),(fl),(inv),NULL) AG_MenuInt16FlagsMp((mi),(t),(i),(fp),(fl),(inv),NULL) AG_MenuInt32FlagsMp((mi),(t),(i),(fp),(fl),(inv),NULL) AG_MenuIntFlagsMp((mi),(t),(i),(int *)(fp),(int)(fl),(inv),(mtx)) AG_MenuIntFlagsMp((mi),(t),(i),(int *)(fp),(int)(fl),(inv),NULL) AG_MenuIntFlagsMp((mi),(t),(i),(int *)(fp),(int)(fl),(inv),(mtx)) AG_MenuIntFlagsMp((mi),(t),(i),(int *)(fp),(int)(fl),(inv),NULL) void AG_MenuSetIntBoolMp(AG_MenuItem *, int *, int, AG_Mutex *); 
+#define AG_MenuSetIntBool(mi,p,fl,inv,mtx) \ 
+ AG_MenuSetIntBoolMp((mi),(p),(fl),(inv),(mtx)) void AG_MenuSetIntFlagsMp(AG_MenuItem *, int *, int, int, AG_Mutex *); 
+#ifdef AG_LEGACY 
+# define AG_MenuAddItem(m,lbl) AG_MenuNode((m)->root,(lbl),NULL) 
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

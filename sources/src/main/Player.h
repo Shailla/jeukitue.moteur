@@ -145,7 +145,8 @@ public :
 	void changeAction(void (*action)(Uint32 now, CPlayer *player, float deltaTime));		// Change la fonction à effectuer par défaut
 	void changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW));	// Change la fonction à effectuer lors d'un contact avec la map
 	void calculeVitesse(float deltaTime);
-	void calculeDeplacementVoulu(float deltaTime);
+	void resetDeplacement();
+	void calculeDeplacement(float deltaTime);
 	void deplace(Uint32 now);
 	void faitRequeteClavier(Uint32 now, float deltaTime);
 };

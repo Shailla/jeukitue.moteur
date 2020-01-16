@@ -23,9 +23,9 @@
 #else
 # include <agar/core/begin.h>
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC size_t AG_Snprintf(char *, size_t, const char *, ...);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 # include <agar/core/close.h>
 #endif /* !HAVE_SNPRINTF */

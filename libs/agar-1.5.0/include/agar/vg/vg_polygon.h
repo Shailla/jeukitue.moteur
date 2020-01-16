@@ -12,8 +12,8 @@ typedef struct vg_polygon {
 #define VGPOLYGON(p) ((VG_Polygon *)(p))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC VG_NodeOps vgPolygonOps;
+__BEGIN_DECLS 
+extern DECLSPEC VG_NodeOps vgPolygonOps; 
 
 static __inline__ VG_Polygon *
 VG_PolygonNew(void *pNode)
@@ -59,5 +59,5 @@ VG_PolygonDelVertex(VG_Polygon *vP, Uint vtx)
 	}
 	VG_Unlock(VGNODE(vP)->vg);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

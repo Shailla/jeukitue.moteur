@@ -182,12 +182,12 @@ typedef struct ag_table {
 } AG_Table;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agTableClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agTableClass; 
 extern DECLSPEC AG_Table *AG_TableNew(void *, Uint);
 extern DECLSPEC AG_Table *AG_TableNewPolled(void *, Uint, void (*fn)(AG_Event *), const char *, ...);
 extern DECLSPEC void AG_TableSizeHint(AG_Table *, int, int);
-#define AG_TablePrescale AG_TableSizeHint
+#define AG_TablePrescale AG_TableSizeHint 
 extern DECLSPEC void AG_TableSetPollInterval(AG_Table *, Uint);
 extern DECLSPEC void AG_TableSetSeparator(AG_Table *, const char *);
 extern DECLSPEC void AG_TableSetRowClickFn(AG_Table *, AG_EventFn, const char *, ...);
@@ -265,7 +265,7 @@ AG_TableDeselectCol(AG_Table *t, int n)
 {
 	t->cols[n].selected = 0;
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

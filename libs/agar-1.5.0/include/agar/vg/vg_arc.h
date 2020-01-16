@@ -11,8 +11,8 @@ typedef struct vg_arc {
 #define VGARC(p) ((VG_Arc *)(p))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC VG_NodeOps vgArcOps;
+__BEGIN_DECLS 
+extern DECLSPEC VG_NodeOps vgArcOps; 
 
 static __inline__ VG_Arc *
 VG_ArcNew(void *pNode, VG_Point *pCenter, float r, float a1, float a2)
@@ -47,5 +47,5 @@ VG_ArcRadius(VG_Arc *va, float r)
 	va->r = r;
 	VG_Unlock(VGNODE(va)->vg);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

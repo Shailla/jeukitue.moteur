@@ -11,8 +11,8 @@ typedef struct m_matrix_fpu {
 } M_MatrixFPU;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const M_MatrixOps mMatOps_FPU;
+__BEGIN_DECLS 
+extern DECLSPEC const M_MatrixOps mMatOps_FPU; 
 extern DECLSPEC int M_MatrixCompare_FPU(const void *, const void *, M_Real *);
 extern DECLSPEC int M_MatrixTrace_FPU(M_Real *, const void *);
 extern DECLSPEC void *M_MatrixRead_FPU(AG_DataSource *);
@@ -24,11 +24,11 @@ extern DECLSPEC void M_MatrixFromDoubles_FPU(void *, const double *);
 extern DECLSPEC void *M_GaussJordan_FPU(const void *, void *);
 extern DECLSPEC int M_FactorizeLU_FPU(void *);
 extern DECLSPEC void M_BacksubstLU_FPU(void *, void *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 
 static __inline__ M_Real *
 M_GetElement_FPU(void *pM, Uint i, Uint j)
@@ -344,5 +344,5 @@ M_AddToDiag_FPU(void *pA, M_Real g)
 	for(i = 1; i < N; i++)
 		A->v[i][i] += g;
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

@@ -8,8 +8,8 @@ typedef struct vg_point {
 #define VGPOINT(p) ((VG_Point *)(p))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC VG_NodeOps vgPointOps;
+__BEGIN_DECLS 
+extern DECLSPEC VG_NodeOps vgPointOps; 
 
 static __inline__ VG_Point *
 VG_PointNew(void *pNode, VG_Vector pos)
@@ -30,5 +30,5 @@ VG_PointSize(VG_Point *vp, float r)
 	vp->size = r;
 	VG_Unlock(VGNODE(vp)->vg);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

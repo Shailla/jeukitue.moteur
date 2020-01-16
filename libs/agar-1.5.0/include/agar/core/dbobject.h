@@ -11,15 +11,15 @@ typedef struct ag_dbobject {
 #define AGDBOBJECT(p) ((AG_DbObject *)(p))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_ObjectClass agDbObjectClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_ObjectClass agDbObjectClass; 
 extern DECLSPEC AG_DbObject *AG_DbObjectNew(void);
 extern DECLSPEC AG_List *AG_DbObjectList(AG_Db *);
 extern DECLSPEC int AG_DbObjectLoad(void *, AG_Db *, const char *);
 extern DECLSPEC int AG_DbObjectSave(void *, AG_Db *);
 extern DECLSPEC int AG_DbObjectInsert(AG_Db *, void *);
 extern DECLSPEC int AG_DbObjectDelete(AG_Db *, const char *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

@@ -50,8 +50,8 @@ typedef struct ag_scrollbar {
 #define AGSCROLLBAR(p) ((AG_Scrollbar *)p)
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agScrollbarClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agScrollbarClass; 
 extern DECLSPEC AG_Scrollbar *AG_ScrollbarNew(void *, enum ag_scrollbar_type, Uint);
 extern DECLSPEC void AG_ScrollbarSizeHint(AG_Scrollbar *, int);
 extern DECLSPEC void AG_ScrollbarSetIncFn(AG_Scrollbar *, AG_EventFn, const char *, ...);
@@ -83,17 +83,17 @@ AG_ScrollbarWidth(AG_Scrollbar *sb)
 {
 	return (sb->width);
 }
-#ifdef AG_LEGACY
+#ifdef AG_LEGACY 
 # define AG_SCROLLBAR_AUTOSIZE 0x10 
 extern DECLSPEC int AG_ScrollbarControlLength(AG_Scrollbar *) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC void AG_ScrollbarSetIntIncrement(AG_Scrollbar *, int) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC void AG_ScrollbarSetRealIncrement(AG_Scrollbar *, double) DEPRECATED_ATTRIBUTE;
-# define AG_ScrollbarSetBarSize(sb,len) AG_ScrollbarSetControlLength((sb),(len))
-# define AG_ScrollbarGetBarSize(sb) AG_ScrollbarControlLength(sb)
-# define AG_ScrollbarSetButtonSize(sb,w) AG_ScrollbarSetWidth((sb),(w))
-# define AG_ScrollbarGetButtonSize(sb) AG_ScrollbarWidth(sb)
-#endif
-__END_DECLS
+# define AG_ScrollbarSetBarSize(sb,len) AG_ScrollbarSetControlLength((sb),(len)) 
+# define AG_ScrollbarGetBarSize(sb) AG_ScrollbarControlLength(sb) 
+# define AG_ScrollbarSetButtonSize(sb,w) AG_ScrollbarSetWidth((sb),(w)) 
+# define AG_ScrollbarGetButtonSize(sb) AG_ScrollbarWidth(sb) 
+#endif 
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

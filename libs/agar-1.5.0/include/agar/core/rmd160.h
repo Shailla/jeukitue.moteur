@@ -35,7 +35,7 @@ typedef struct ag_rmd160_ctx {
 } AG_RMD160_CTX;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void AG_RMD160Init(AG_RMD160_CTX *);
 extern DECLSPEC void AG_RMD160Transform(Uint32 [5], const Uint8 [AG_RMD160_BLOCK_LENGTH]);
 extern DECLSPEC void AG_RMD160Update(AG_RMD160_CTX *, const Uint8 *, size_t) BOUNDED_ATTRIBUTE(__string__,2,3);
@@ -43,7 +43,7 @@ extern DECLSPEC void AG_RMD160Pad(AG_RMD160_CTX *);
 extern DECLSPEC void AG_RMD160Final(Uint8 [AG_RMD160_DIGEST_LENGTH], AG_RMD160_CTX *);
 extern DECLSPEC char *AG_RMD160End(AG_RMD160_CTX *, char *);
 extern DECLSPEC char *AG_RMD160Data(const Uint8 *, size_t, char *) BOUNDED_ATTRIBUTE(__string__,1,2);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

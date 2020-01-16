@@ -30,12 +30,14 @@ typedef struct ag_combo {
 	int wPreList, hPreList;		/* Size hints */
 } AG_Combo;
 
-#define AG_COMBO_FOREACH(it, com) AG_TLIST_FOREACH(it, (com)->list)
-#define AG_COMBO_FOREACH_ITEM(p, com, it, t) AG_TLIST_FOREACH_ITEM((p),(com)->list, it, t)
+#define AG_COMBO_FOREACH(it, com) \
+	AG_TLIST_FOREACH(it, (com)->list)
+#define AG_COMBO_FOREACH_ITEM(p, com, it, t) \
+	AG_TLIST_FOREACH_ITEM((p),(com)->list, it, t)
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agComboClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agComboClass; 
 extern DECLSPEC AG_Combo *AG_ComboNew(void *, Uint, const char *, ...) FORMAT_ATTRIBUTE(printf, 3, 4);
 extern DECLSPEC AG_Combo *AG_ComboNewS(void *, Uint, const char *);
 extern DECLSPEC void AG_ComboSizeHint(AG_Combo *, const char *, int);
@@ -46,7 +48,7 @@ extern DECLSPEC AG_TlistItem *AG_ComboSelectText(AG_Combo *, const char *);
 extern DECLSPEC void AG_ComboSetButtonText(AG_Combo *, const char *);
 extern DECLSPEC void AG_ComboSetButtonSurface(AG_Combo *, AG_Surface *);
 extern DECLSPEC void AG_ComboSetButtonSurfaceNODUP(AG_Combo *, AG_Surface *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

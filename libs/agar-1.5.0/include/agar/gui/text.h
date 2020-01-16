@@ -127,20 +127,20 @@ typedef struct ag_glyph_cache {
 } AG_GlyphCache;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_ObjectClass agFontClass;
-extern DECLSPEC AG_Font *agDefaultFont;
-extern DECLSPEC int agTextFontHeight;
-extern DECLSPEC int agTextFontAscent;
-extern DECLSPEC int agTextFontDescent;
-extern DECLSPEC int agTextFontLineSkip;
-extern DECLSPEC int agFreetypeInited;
-extern DECLSPEC int agRTL;
-extern DECLSPEC int agGlyphGC;
-extern DECLSPEC AG_TextState *agTextState;
-extern DECLSPEC AG_Mutex agTextLock;
-extern DECLSPEC AG_StaticFont *agBuiltinFonts[];
-extern DECLSPEC const int agBuiltinFontCount;
+__BEGIN_DECLS 
+extern DECLSPEC AG_ObjectClass agFontClass; 
+extern DECLSPEC AG_Font *agDefaultFont; 
+extern DECLSPEC int agTextFontHeight; 
+extern DECLSPEC int agTextFontAscent; 
+extern DECLSPEC int agTextFontDescent; 
+extern DECLSPEC int agTextFontLineSkip; 
+extern DECLSPEC int agFreetypeInited; 
+extern DECLSPEC int agRTL; 
+extern DECLSPEC int agGlyphGC; 
+extern DECLSPEC AG_TextState *agTextState; 
+extern DECLSPEC AG_Mutex agTextLock; 
+extern DECLSPEC AG_StaticFont *agBuiltinFonts[]; 
+extern DECLSPEC const int agBuiltinFontCount; 
 extern DECLSPEC int AG_InitTextSubsystem(void);
 extern DECLSPEC void AG_DestroyTextSubsystem(void);
 extern DECLSPEC void AG_TextParseFontSpec(const char *);
@@ -177,7 +177,7 @@ extern DECLSPEC void AG_TextClearGlyphCache(AG_Driver *);
 extern DECLSPEC void AG_TextDestroyGlyphCache(AG_Driver *);
 extern DECLSPEC AG_Glyph *AG_TextRenderGlyphMiss(AG_Driver *, Uint32);
 extern DECLSPEC void AG_TextAlign(int *, int *, int, int, int, int, int, int, int, int, enum ag_text_justify, enum ag_text_valign);
-#define AG_TextMsgFromError() AG_TextMsgS(AG_MSG_ERROR, AG_GetError())
+#define AG_TextMsgFromError() \ 
 
 static __inline__ int
 AG_TextStateCompare(const AG_TextState *s1, const AG_TextState *s2)
@@ -359,8 +359,8 @@ AG_TextTabWidth(int px)
 	agTextState->tabWd = px;
 	AG_MutexUnlock(&agTextLock);
 }
-#ifdef AG_LEGACY
-#define AG_TextFormat AG_TextRenderf
+#ifdef AG_LEGACY 
+#define AG_TextFormat AG_TextRenderf 
 
 static __inline__ void
 AG_TextColor32(Uint32 px)
@@ -373,7 +373,7 @@ AG_TextColor32(Uint32 px)
 	AG_MutexUnlock(&agTextLock);
 }
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

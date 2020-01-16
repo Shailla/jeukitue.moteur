@@ -46,40 +46,80 @@ typedef	unsigned char bitstr_t;
 
 /* internal macros */
 				/* byte of the bitstring bit is in */
-#define _bit_byte(bit) ((bit) >> 3)
+#define	_bit_byte(bit) \
+	((bit) >> 3)
 
 				/* mask for the bit within its byte */
-#define _bit_mask(bit) (1 << ((bit)&0x7))
+#define	_bit_mask(bit) \
+	(1 << ((bit)&0x7))
 
 /* external macros */
 				/* bytes in a bitstring of nbits bits */
-#define bitstr_size(nbits) (((nbits) + 7) >> 3)
+#define	bitstr_size(nbits) \
+	(((nbits) + 7) >> 3)
 
 				/* allocate a bitstring */
-#define bit_alloc(nbits) (bitstr_t *)calloc((size_t)bitstr_size(nbits), sizeof(bitstr_t))
+#define	bit_alloc(nbits) \
+	(bitstr_t *)calloc((size_t)bitstr_size(nbits), sizeof(bitstr_t))
 
 				/* allocate a bitstring on the stack */
-#define bit_decl(name, nbits) ((name)[bitstr_size(nbits)])
+#define	bit_decl(name, nbits) \
+	((name)[bitstr_size(nbits)])
 
 				/* is bit N of bitstring name set? */
-#define bit_test(name, bit) ((name)[_bit_byte(bit)] & _bit_mask(bit))
+#define	bit_test(name, bit) \
+	((name)[_bit_byte(bit)] & _bit_mask(bit))
 
 				/* set bit N of bitstring name */
-#define bit_set(name, bit) ((name)[_bit_byte(bit)] |= _bit_mask(bit))
+#define	bit_set(name, bit) \
+	((name)[_bit_byte(bit)] |= _bit_mask(bit))
 
 				/* clear bit N of bitstring name */
-#define bit_clear(name, bit) ((name)[_bit_byte(bit)] &= ~_bit_mask(bit))
+#define	bit_clear(name, bit) \
+	((name)[_bit_byte(bit)] &= ~_bit_mask(bit))
 
 				/* clear bits start ... stop in bitstring */
-#define bit_nclear(name, start, stop) do { register bitstr_t *_name = name; register int _start = start, _stop = stop; while (_start <= _stop) { bit_clear(_name, _start); _start++; } } while(0)
+#define	bit_nclear(name, start, stop) do { \
+	register bitstr_t *_name = name; \
+	register int _start = start, _stop = stop; \
+	while (_start <= _stop) { \
+		bit_clear(_name, _start); \
+		_start++; \
+		} \
+} while(0)
 
 				/* set bits start ... stop in bitstring */
-#define bit_nset(name, start, stop) do { register bitstr_t *_name = name; register int _start = start, _stop = stop; while (_start <= _stop) { bit_set(_name, _start); _start++; } } while(0)
+#define	bit_nset(name, start, stop) do { \
+	register bitstr_t *_name = name; \
+	register int _start = start, _stop = stop; \
+	while (_start <= _stop) { \
+		bit_set(_name, _start); \
+		_start++; \
+		} \
+} while(0)
 
 				/* find first bit clear in name */
-#define bit_ffc(name, nbits, value) do { register bitstr_t *_name = name; register int _bit, _nbits = nbits, _value = -1; for (_bit = 0; _bit < _nbits; ++_bit) if (!bit_test(_name, _bit)) { _value = _bit; break; } *(value) = _value; } while(0)
+#define	bit_ffc(name, nbits, value) do { \
+	register bitstr_t *_name = name; \
+	register int _bit, _nbits = nbits, _value = -1; \
+	for (_bit = 0; _bit < _nbits; ++_bit) \
+		if (!bit_test(_name, _bit)) { \
+			_value = _bit; \
+			break; \
+		} \
+	*(value) = _value; \
+} while(0)
 
 				/* find first bit set in name */
-#define bit_ffs(name, nbits, value) do { register bitstr_t *_name = name; register int _bit, _nbits = nbits, _value = -1; for (_bit = 0; _bit < _nbits; ++_bit) if (bit_test(_name, _bit)) { _value = _bit; break; } *(value) = _value; } while(0)
+#define	bit_ffs(name, nbits, value) do { \
+	register bitstr_t *_name = name; \
+	register int _bit, _nbits = nbits, _value = -1; \
+	for (_bit = 0; _bit < _nbits; ++_bit) \
+		if (bit_test(_name, _bit)) { \
+			_value = _bit; \
+			break; \
+		} \
+	*(value) = _value; \
+} while(0)
 
 #endif /* !_AGAR_MATH_M_BITSTRING_H_ */

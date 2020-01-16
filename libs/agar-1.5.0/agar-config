@@ -45,10 +45,10 @@ while test $# -gt 0; do
 		echo "1.5.0"
 		;;
 	--cflags)
-		echo "-I/mingw64/include/agar -I/mingw64/include/SDL -D_GNU_SOURCE=1  -I/mingw64/include/freetype2 -mms-bitfields -IC:/msys64/mingw64/include -IC:/msys64/mingw64/include/freetype2 -IC:/msys64/mingw64/include/libpng16 -IC:/msys64/mingw64/include/harfbuzz -IC:/msys64/mingw64/include/glib-2.0 -IC:/msys64/mingw64/lib/glib-2.0/include -IC:/msys64/mingw64/include -IC:/msys64/mingw64/include/freetype2 -IC:/msys64/mingw64/include -IC:/msys64/mingw64/include/libpng16 -IC:/msys64/mingw64/include/harfbuzz -IC:/msys64/mingw64/include/glib-2.0 -IC:/msys64/mingw64/lib/glib-2.0/include -IC:/msys64/mingw64/include       -I/mingw64/include/libpng16        "
+		echo "-I/mingw64/include/agar -I/mingw64/include/SDL -D_GNU_SOURCE=1  -mms-bitfields -IC:/msys64/mingw64/include/freetype2 -IC:/msys64/mingw64/include -IC:/msys64/mingw64/include/libpng16 -IC:/msys64/mingw64/include -IC:/msys64/mingw64/include/harfbuzz -IC:/msys64/mingw64/include/glib-2.0 -IC:/msys64/mingw64/lib/glib-2.0/include -IC:/msys64/mingw64/include        -I/mingw64/include/libpng16        "
 		;;
 	--libs | --static-libs)
-		echo "-L/mingw64/lib -lag_gui -lag_core -L/mingw64/lib -lSDL.dll -L/mingw64/lib -lfreetype -LC:/msys64/mingw64/lib -lfontconfig -lfreetype  -L/mingw64/lib -lopengl32 -lgdi32    -lm -L/mingw64/lib -ljpeg -L/mingw64/lib -lpng16 -lpthread     -lwinmm  "
+		echo "-L/mingw64/lib -lag_gui -lag_core -L/mingw64/lib -lSDL.dll -LC:/msys64/mingw64/lib -lfreetype   -L/mingw64/lib -lopengl32 -lgdi32    -lm -L/mingw64/lib -ljpeg -L/mingw64/lib -lpng16 -lpthread     -lwinmm  "
 		;;
 	*)
 		echo "${usage}" 1>&2

@@ -33,12 +33,12 @@ typedef struct ag_scrollview {
 } AG_Scrollview;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agScrollviewClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agScrollviewClass; 
 extern DECLSPEC AG_Scrollview *AG_ScrollviewNew(void *, Uint);
 extern DECLSPEC void AG_ScrollviewSizeHint(AG_Scrollview *, Uint, Uint);
 extern DECLSPEC void AG_ScrollviewSetIncrement(AG_Scrollview *, int);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

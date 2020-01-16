@@ -32,16 +32,16 @@ typedef struct ag_progress_bar {
 } AG_ProgressBar;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agProgressBarClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agProgressBarClass; 
 extern DECLSPEC AG_ProgressBar *AG_ProgressBarNew(void *, enum ag_progress_bar_type, Uint);
 extern DECLSPEC AG_ProgressBar *AG_ProgressBarNewInt(void *, enum ag_progress_bar_type, Uint, int *, int *, int *);
-#define AG_ProgressBarNewHoriz(p,flags) AG_ProgressBarNew((p),AG_PROGRESS_BAR_HORIZ,(flags))
-#define AG_ProgressBarNewVert(p,flags) AG_ProgressBarNew((p),AG_PROGRESS_BAR_VERT,(flags))
-extern DECLSPEC void AG_ProgressBarSetLength(AG_ProgressBar *, int);
+#define AG_ProgressBarNewHoriz(p,flags) \ 
+#define AG_ProgressBarNewVert(p,flags) \ 
+ AG_ProgressBarNew((p),AG_PROGRESS_BAR_HORIZ,(flags)) AG_ProgressBarNew((p),AG_PROGRESS_BAR_VERT,(flags)) void AG_ProgressBarSetLength(AG_ProgressBar *, int); 
 extern DECLSPEC void AG_ProgressBarSetWidth(AG_ProgressBar *, int);
 extern DECLSPEC int AG_ProgressBarPercent(AG_ProgressBar *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

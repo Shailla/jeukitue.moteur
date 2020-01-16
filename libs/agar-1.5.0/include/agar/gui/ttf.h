@@ -53,14 +53,14 @@ typedef struct ag_ttf_font {
 #define AG_TTF_STYLE_UNDERLINE	0x04
 
 /* Begin generated block */
-__BEGIN_DECLS
-struct ag_font;
+__BEGIN_DECLS 
+struct ag_font; 
 extern DECLSPEC int AG_TTFInit(void);
 extern DECLSPEC void AG_TTFDestroy(void);
 extern DECLSPEC int AG_TTFOpenFont(struct ag_font *);
 extern DECLSPEC void AG_TTFCloseFont(struct ag_font *);
 extern DECLSPEC int AG_TTFFindGlyph(AG_TTFFont *, Uint32, int);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

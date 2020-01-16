@@ -49,11 +49,11 @@ typedef struct ag_db {
 #define AGDB(p) ((AG_Db *)(p))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_DbClass agDbClass;
-extern DECLSPEC AG_DbClass agDbHashClass;
-extern DECLSPEC AG_DbClass agDbBtreeClass;
-extern DECLSPEC AG_DbClass agDbMySQLClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_DbClass agDbClass; 
+extern DECLSPEC AG_DbClass agDbHashClass; 
+extern DECLSPEC AG_DbClass agDbBtreeClass; 
+extern DECLSPEC AG_DbClass agDbMySQLClass; 
 extern DECLSPEC AG_Db *AG_DbNew(const char *);
 extern DECLSPEC int AG_DbOpen(AG_Db *, const char *, Uint);
 extern DECLSPEC void AG_DbClose(AG_Db *);
@@ -118,7 +118,7 @@ AG_DbIterate(AG_Db *db, AG_DbIterateFn fn, void *arg)
 	AG_ObjectUnlock(db);
 	return (rv);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

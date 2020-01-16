@@ -136,13 +136,27 @@ extern int          vgGUI;
 
 #include <agar/vg/vg_math.h>
 
-#define VG_FOREACH_NODE(node, vg, ntype) for((node) = (struct ntype *)AG_TAILQ_FIRST(&(vg)->nodes); (node) != (struct ntype *)AG_TAILQ_END(&(vg)->nodes); (node) = (struct ntype *)AG_TAILQ_NEXT(VGNODE(node),list))
-#define VG_FOREACH_NODE_CLASS(node, vg, ntype, cn) VG_FOREACH_NODE(node,vg,ntype) if (!VG_NodeIsClass(VGNODE(node),(cn))) { continue; } else
-#define VG_FOREACH_CHLD(node, pnode, ntype) for((node) = (struct ntype *)AG_TAILQ_FIRST(&VGNODE(pnode)->cNodes); (node) != (struct ntype *)AG_TAILQ_END(&VGNODE(pnode)->cNodes); (node) = (struct ntype *)AG_TAILQ_NEXT(VGNODE(node),tree))
-#define VG_FOREACH_CHLD_CLASS(node, pnode, ntype, cn) VG_FOREACH_CHLD(node,pnode,ntype) if (!VG_NodeIsClass(VGNODE(node),(cn))) { continue; } else
+#define VG_FOREACH_NODE(node, vg, ntype)				\
+	for((node) = (struct ntype *)AG_TAILQ_FIRST(&(vg)->nodes);	\
+	    (node) != (struct ntype *)AG_TAILQ_END(&(vg)->nodes);	\
+	    (node) = (struct ntype *)AG_TAILQ_NEXT(VGNODE(node),list))
+#define VG_FOREACH_NODE_CLASS(node, vg, ntype, cn)			\
+	VG_FOREACH_NODE(node,vg,ntype)					\
+		if (!VG_NodeIsClass(VGNODE(node),(cn))) {		\
+			continue;					\
+		} else
+#define VG_FOREACH_CHLD(node, pnode, ntype)				\
+	for((node) = (struct ntype *)AG_TAILQ_FIRST(&VGNODE(pnode)->cNodes); \
+	    (node) != (struct ntype *)AG_TAILQ_END(&VGNODE(pnode)->cNodes); \
+	    (node) = (struct ntype *)AG_TAILQ_NEXT(VGNODE(node),tree))
+#define VG_FOREACH_CHLD_CLASS(node, pnode, ntype, cn)			\
+	VG_FOREACH_CHLD(node,pnode,ntype)				\
+		if (!VG_NodeIsClass(VGNODE(node),(cn))) {		\
+			continue;					\
+		} else
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void VG_InitSubsystem(void);
 extern DECLSPEC void VG_DestroySubsystem(void);
 extern DECLSPEC VG *VG_New(Uint);
@@ -430,7 +444,7 @@ VG_SetPosition(void *pNode, VG_Vector v)
 		vn->T.m[1][2] -= vParent.y;
 	}
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/vg/vg_point.h>

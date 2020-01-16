@@ -61,8 +61,17 @@ typedef struct ag_object {
 #define AG_OBJECT_DEBUG_DATA	 0x04000	/* Datafiles contain debug info */
 #define AG_OBJECT_INATTACH	 0x08000	/* In AG_ObjectAttach() */
 #define AG_OBJECT_INDETACH	 0x10000	/* In AG_ObjectDetach() */
-#define AG_OBJECT_SAVED_FLAGS (AG_OBJECT_FLOATING_VARS| AG_OBJECT_INDESTRUCTIBLE| AG_OBJECT_PRESERVE_DEPS| AG_OBJECT_READONLY| AG_OBJECT_REOPEN_ONLOAD| AG_OBJECT_REMAIN_DATA| AG_OBJECT_DEBUG)
-#define AG_OBJECT_DUPED_FLAGS (AG_OBJECT_SAVED_FLAGS| AG_OBJECT_NON_PERSISTENT| AG_OBJECT_REOPEN_ONLOAD| AG_OBJECT_REMAIN_DATA)
+#define AG_OBJECT_SAVED_FLAGS	(AG_OBJECT_FLOATING_VARS|\
+ 				 AG_OBJECT_INDESTRUCTIBLE|\
+				 AG_OBJECT_PRESERVE_DEPS|\
+				 AG_OBJECT_READONLY|\
+				 AG_OBJECT_REOPEN_ONLOAD|\
+				 AG_OBJECT_REMAIN_DATA|\
+				 AG_OBJECT_DEBUG)
+#define AG_OBJECT_DUPED_FLAGS	(AG_OBJECT_SAVED_FLAGS|\
+				 AG_OBJECT_NON_PERSISTENT|\
+				 AG_OBJECT_REOPEN_ONLOAD|\
+				 AG_OBJECT_REMAIN_DATA)
 
 	AG_TAILQ_HEAD_(ag_event) events;	/* Event handlers / virtual fns */
 	AG_TAILQ_HEAD_(ag_timer) timers;	/* Running timers */
@@ -94,19 +103,33 @@ enum ag_object_checksum_alg {
 };
 
 /* Iterate over the direct child objects. */
-#define AGOBJECT_FOREACH_CHILD(var, ob, t) for((var) = (struct t *)AG_TAILQ_FIRST(&AGOBJECT(ob)->children); (var) != (struct t *)AG_TAILQ_END(&AGOBJECT(ob)->children); (var) = (struct t *)AG_TAILQ_NEXT(AGOBJECT(var), cobjs))
+#define AGOBJECT_FOREACH_CHILD(var, ob, t) \
+	for((var) = (struct t *)AG_TAILQ_FIRST(&AGOBJECT(ob)->children); \
+	    (var) != (struct t *)AG_TAILQ_END(&AGOBJECT(ob)->children); \
+	    (var) = (struct t *)AG_TAILQ_NEXT(AGOBJECT(var), cobjs))
 
 /* Return next entry in list of direct child objects. */
-#define AGOBJECT_NEXT_CHILD(var,t) ((struct t *)AG_TAILQ_NEXT(AGOBJECT(var),cobjs))
+#define AGOBJECT_NEXT_CHILD(var,t) \
+	((struct t *)AG_TAILQ_NEXT(AGOBJECT(var),cobjs))
 
 /* Return last entry in list of direct child objects. */
-#define AGOBJECT_LAST_CHILD(var,t) ((struct t *)AG_TAILQ_LAST(&AGOBJECT(var)->children,ag_objectq))
+#define AGOBJECT_LAST_CHILD(var,t) \
+	((struct t *)AG_TAILQ_LAST(&AGOBJECT(var)->children,ag_objectq))
 	
 /* Iterate over the direct child objects (reverse order). */
-#define AGOBJECT_FOREACH_CHILD_REVERSE(var, ob, t) for((var) = (struct t *)AG_TAILQ_LAST(&AGOBJECT(ob)->children, ag_objectq); (var) != (struct t *)AG_TAILQ_END(&AGOBJECT(ob)->children); (var) = (struct t *)AG_TAILQ_PREV(AGOBJECT(var), ag_objectq, cobjs))
+#define AGOBJECT_FOREACH_CHILD_REVERSE(var, ob, t) \
+	for((var) = (struct t *)AG_TAILQ_LAST(&AGOBJECT(ob)->children, \
+	    ag_objectq); \
+	    (var) != (struct t *)AG_TAILQ_END(&AGOBJECT(ob)->children); \
+	    (var) = (struct t *)AG_TAILQ_PREV(AGOBJECT(var), ag_objectq, \
+	    cobjs))
 
 /* Iterate over the direct child objects (matching a specified class). */
-#define AGOBJECT_FOREACH_CLASS(var, ob, t, subclass) AGOBJECT_FOREACH_CHILD(var,ob,t) if (!AG_OfClass(var,(subclass))) { continue; } else
+#define AGOBJECT_FOREACH_CLASS(var, ob, t, subclass) \
+	AGOBJECT_FOREACH_CHILD(var,ob,t) \
+		if (!AG_OfClass(var,(subclass))) { \
+			continue; \
+		} else
 
 #if defined(_AGAR_INTERNAL) || defined(_USE_AGAR_CORE)
 # define OBJECT(ob)            AGOBJECT(ob)
@@ -126,7 +149,7 @@ enum ag_object_checksum_alg {
 #endif /* _AGAR_INTERNAL || _USE_AGAR_CORE */
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC AG_ObjectClass agObjectClass; 
 extern DECLSPEC void *AG_ObjectNew(void *, const char *, AG_ObjectClass *);
 extern DECLSPEC void AG_ObjectAttach(void *, void *);
@@ -145,8 +168,8 @@ extern DECLSPEC size_t AG_ObjectCopyChecksum(void *, enum ag_object_checksum_alg
 extern DECLSPEC int AG_ObjectCopyDigest(void *, size_t *, char *);
 extern DECLSPEC int AG_ObjectChanged(void *);
 extern DECLSPEC int AG_ObjectChangedAll(void *);
-#define AG_ObjectRoot(ob) (AGOBJECT(ob)->root)
-#define AG_ObjectParent(ob) (AGOBJECT(ob)->parent)
+#define AG_ObjectRoot(ob) (AGOBJECT(ob)->root) 
+#define AG_ObjectParent(ob) (AGOBJECT(ob)->parent) 
 extern DECLSPEC void *AG_ObjectFindS(void *, const char *);
 extern DECLSPEC void *AG_ObjectFind(void *, const char *, ...) FORMAT_ATTRIBUTE(printf, 2, 3);
 extern DECLSPEC void *AG_ObjectFindParent(void *, const char *, const char *);
@@ -175,14 +198,14 @@ extern DECLSPEC int AG_ObjectPageOut(void *);
 extern DECLSPEC int AG_ObjectSerialize(void *, AG_DataSource *);
 extern DECLSPEC int AG_ObjectUnserialize(void *, AG_DataSource *);
 extern DECLSPEC int AG_ObjectSaveToFile(void *, const char *);
-#define AG_ObjectSave(p) AG_ObjectSaveToFile((p),NULL)
+#define AG_ObjectSave(p) AG_ObjectSaveToFile((p),NULL) 
 extern DECLSPEC int AG_ObjectSaveAll(void *);
 extern DECLSPEC void AG_ObjectSaveVariables(void *, AG_DataSource *);
 extern DECLSPEC int AG_ObjectLoadFromDB(void *, struct ag_db *, const struct ag_dbt *);
 extern DECLSPEC int AG_ObjectSaveToDB(void *, struct ag_db *, const struct ag_dbt *);
-#define AG_ObjectLoad(p) AG_ObjectLoadFromFile((p),NULL)
-#define AG_ObjectLoadData(o,f) AG_ObjectLoadDataFromFile((o),(f),NULL)
-#define AG_ObjectLoadGeneric(p) AG_ObjectLoadGenericFromFile((p),NULL)
+#define AG_ObjectLoad(p) AG_ObjectLoadFromFile((p),NULL) 
+#define AG_ObjectLoadData(o,f) AG_ObjectLoadDataFromFile((o),(f),NULL) 
+#define AG_ObjectLoadGeneric(p) AG_ObjectLoadGenericFromFile((p),NULL) 
 extern DECLSPEC int AG_ObjectLoadFromFile(void *, const char *);
 extern DECLSPEC int AG_ObjectLoadGenericFromFile(void *, const char *);
 extern DECLSPEC int AG_ObjectResolveDeps(void *);
@@ -196,17 +219,17 @@ extern DECLSPEC Uint32 AG_ObjectEncodeName(void *, const void *);
 extern DECLSPEC void *AG_ObjectEdit(void *);
 extern DECLSPEC void AG_ObjectGenName(void *, AG_ObjectClass *, char *, size_t);
 extern DECLSPEC void AG_ObjectGenNamePfx(void *, const char *, char *, size_t);
-#define AG_OfClass(obj,cspec) AG_ClassIsNamed(AGOBJECT(obj)->cls,(cspec))
-#ifdef AG_THREADS
-# define AG_ObjectLock(ob) AG_MutexLock(&AGOBJECT(ob)->lock)
-# define AG_ObjectUnlock(ob) AG_MutexUnlock(&AGOBJECT(ob)->lock)
-# define AG_LockVFS(ob) AG_ObjectLock(AGOBJECT(ob)->root)
-# define AG_UnlockVFS(ob) AG_ObjectUnlock(AGOBJECT(ob)->root)
+#define AG_OfClass(obj,cspec) AG_ClassIsNamed(AGOBJECT(obj)->cls,(cspec)) 
+#ifdef AG_THREADS 
+# define AG_ObjectLock(ob) AG_MutexLock(&AGOBJECT(ob)->lock) 
+# define AG_ObjectUnlock(ob) AG_MutexUnlock(&AGOBJECT(ob)->lock) 
+# define AG_LockVFS(ob) AG_ObjectLock(AGOBJECT(ob)->root) 
+# define AG_UnlockVFS(ob) AG_ObjectUnlock(AGOBJECT(ob)->root) 
 #else 
-# define AG_ObjectLock(ob)
-# define AG_ObjectUnlock(ob)
-# define AG_LockVFS(ob)
-# define AG_UnlockVFS(ob)
+# define AG_ObjectLock(ob) 
+# define AG_ObjectUnlock(ob) 
+# define AG_LockVFS(ob) 
+# define AG_UnlockVFS(ob) 
 #endif 
 /*
  * Detach and destroy an object.
@@ -367,37 +390,37 @@ AG_GetNamedObject(AG_Event *event, const char *key, const char *classSpec)
 	}
 	return (V->data.p);
 }
-#ifdef AG_LEGACY
-# define AG_OBJECT_RELOAD_PROPS AG_OBJECT_FLOATING_VARS
-# define AG_LockTimeouts(ob) AG_LockTimers(ob)
-# define AG_UnlockTimeouts(ob) AG_UnlockTimers(ob)
-# define AG_ObjectIsClass(obj,cname) AG_OfClass((obj),(cname))
-# define AG_ObjectFreeProps(obj) AG_ObjectFreeVariables(obj)
-# define AG_ObjectFindF AG_ObjectFind
-# define AG_PropLoad AG_ObjectLoadVariables
-# define AG_PropSave AG_ObjectSaveVariables
-# define AG_PropDefined AG_Defined
-# define AG_GetStringCopy AG_GetString
-# define AG_Prop AG_Variable
-# define ag_prop ag_variable
-# define ag_prop_type ag_variable_type
-# define AG_PROP_UINT AG_VARIABLE_UINT
-# define AG_PROP_INT AG_VARIABLE_INT
-# define AG_PROP_UINT8 AG_VARIABLE_UINT8
-# define AG_PROP_SINT8 AG_VARIABLE_SINT8
-# define AG_PROP_UINT16 AG_VARIABLE_UINT16
-# define AG_PROP_SINT16 AG_VARIABLE_SINT16
-# define AG_PROP_UINT32 AG_VARIABLE_UINT32
-# define AG_PROP_SINT32 AG_VARIABLE_SINT32
-# define AG_PROP_FLOAT AG_VARIABLE_FLOAT
-# define AG_PROP_DOUBLE AG_VARIABLE_DOUBLE
-# define AG_PROP_STRING AG_VARIABLE_STRING
-# define AG_PROP_POINTER AG_VARIABLE_POINTER
-# define AG_PROP_BOOL AG_VARIABLE_INT
+#ifdef AG_LEGACY 
+# define AG_OBJECT_RELOAD_PROPS AG_OBJECT_FLOATING_VARS 
+# define AG_LockTimeouts(ob) AG_LockTimers(ob) 
+# define AG_UnlockTimeouts(ob) AG_UnlockTimers(ob) 
+# define AG_ObjectIsClass(obj,cname) AG_OfClass((obj),(cname)) 
+# define AG_ObjectFreeProps(obj) AG_ObjectFreeVariables(obj) 
+# define AG_ObjectFindF AG_ObjectFind 
+# define AG_PropLoad AG_ObjectLoadVariables 
+# define AG_PropSave AG_ObjectSaveVariables 
+# define AG_PropDefined AG_Defined 
+# define AG_GetStringCopy AG_GetString 
+# define AG_Prop AG_Variable 
+# define ag_prop ag_variable 
+# define ag_prop_type ag_variable_type 
+# define AG_PROP_UINT AG_VARIABLE_UINT 
+# define AG_PROP_INT AG_VARIABLE_INT 
+# define AG_PROP_UINT8 AG_VARIABLE_UINT8 
+# define AG_PROP_SINT8 AG_VARIABLE_SINT8 
+# define AG_PROP_UINT16 AG_VARIABLE_UINT16 
+# define AG_PROP_SINT16 AG_VARIABLE_SINT16 
+# define AG_PROP_UINT32 AG_VARIABLE_UINT32 
+# define AG_PROP_SINT32 AG_VARIABLE_SINT32 
+# define AG_PROP_FLOAT AG_VARIABLE_FLOAT 
+# define AG_PROP_DOUBLE AG_VARIABLE_DOUBLE 
+# define AG_PROP_STRING AG_VARIABLE_STRING 
+# define AG_PROP_POINTER AG_VARIABLE_POINTER 
+# define AG_PROP_BOOL AG_VARIABLE_INT 
 extern DECLSPEC AG_Prop *AG_SetProp(void *, const char *, enum ag_prop_type, ...) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC AG_Prop *AG_GetProp(void *, const char *, int, void *) DEPRECATED_ATTRIBUTE;
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

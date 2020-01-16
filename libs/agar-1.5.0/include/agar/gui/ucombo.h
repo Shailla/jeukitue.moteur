@@ -25,13 +25,13 @@ typedef struct ag_ucombo {
 } AG_UCombo;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agUComboClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agUComboClass; 
 extern DECLSPEC AG_UCombo *AG_UComboNew(void *, Uint);
 extern DECLSPEC AG_UCombo *AG_UComboNewPolled(void *, Uint, AG_EventFn, const char *, ...);
 extern DECLSPEC void AG_UComboSizeHint(AG_UCombo *, const char *, int);
 extern DECLSPEC void AG_UComboSizeHintPixels(AG_UCombo *, int, int);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

@@ -625,7 +625,13 @@ void CPlayer::calculeVitesse(float deltaTime) {
 	}
 }
 
-void CPlayer::calculeDeplacementVoulu(float deltaTime) {
+void CPlayer::resetDeplacement() {
+	_deplacement[0] = 0.0f;
+	_deplacement[1] = 0.0f;
+	_deplacement[2] = 0.0f;
+}
+
+void CPlayer::calculeDeplacement(float deltaTime) {
 	_deplacement[0] += _vitesse[0] * deltaTime;
 	_deplacement[1] += _vitesse[1] * deltaTime;
 	_deplacement[2] += _vitesse[2] * deltaTime;

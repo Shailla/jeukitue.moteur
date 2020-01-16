@@ -50,7 +50,7 @@ typedef struct ag_anim_state {
 } AG_AnimState;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC AG_Anim *AG_AnimNew(enum ag_anim_type, Uint, Uint, const AG_PixelFormat *, Uint);
 extern DECLSPEC AG_Anim *AG_AnimEmpty(void);
 extern DECLSPEC AG_Anim *AG_AnimIndexed(Uint, Uint, int, Uint);
@@ -74,8 +74,8 @@ extern DECLSPEC int AG_AnimPlay(AG_AnimState *);
 extern DECLSPEC void AG_AnimStop(AG_AnimState *);
 extern DECLSPEC int AG_AnimFrameNew(AG_Anim *, const AG_Surface *);
 extern DECLSPEC AG_Surface *AG_AnimFrameToSurface(AG_Anim *, int);
-#define AG_AnimStdRGB(w,h) AG_AnimRGB((w),(h),agSurfaceFmt->BitsPerPixel,0, agSurfaceFmt->Rmask, agSurfaceFmt->Gmask, agSurfaceFmt->Bmask)
-#define AG_AnimStdRGBA(w,h) AG_AnimRGBA((w),(h),agSurfaceFmt->BitsPerPixel,0, agSurfaceFmt->Rmask, agSurfaceFmt->Gmask, agSurfaceFmt->Bmask, agSurfaceFmt->Amask)
+#define AG_AnimStdRGB(w,h) \ 
+#define AG_AnimStdRGBA(w,h) \ 
 
 static __inline__ Uint32
 AG_AnimGetPixel(const AG_Anim *an, const Uint8 *pSrc)
@@ -125,7 +125,7 @@ AG_AnimPutPixel(AG_Anim *an, Uint8 *pDst, Uint32 cDst)
 		break;
 	}
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

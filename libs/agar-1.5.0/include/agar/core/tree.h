@@ -60,16 +60,28 @@ typedef struct ag_tree {
 } AG_Tree;
 
 /* Iterate over direct children under a specified item. */
-#define AGTREE_FOREACH_CHILD_ITEM(var, item) for((var) = AG_TAILQ_FIRST(&(item)->chldItems); (var) != AG_TAILQ_END(&(item)->chldItems); (var) = AG_TAILQ_NEXT((var), tree))
+#define AGTREE_FOREACH_CHILD_ITEM(var, item) \
+	for((var) = AG_TAILQ_FIRST(&(item)->chldItems); \
+	    (var) != AG_TAILQ_END(&(item)->chldItems); \
+	    (var) = AG_TAILQ_NEXT((var), tree))
 
 /* Iterate over data of direct children under a specified item. */
-#define AGTREE_FOREACH_CHILD_DATA(var, item, t) for((var) = (struct t *)(AG_TAILQ_FIRST(&(item)->chldItems))->p; (var) != (struct t *)(AG_TAILQ_END(&(item)->chldItems))->p; (var) = AG_TAILQ_NEXT((var), tree))
+#define AGTREE_FOREACH_CHILD_DATA(var, item, t) \
+	for((var) = (struct t *)(AG_TAILQ_FIRST(&(item)->chldItems))->p; \
+	    (var) != (struct t *)(AG_TAILQ_END(&(item)->chldItems))->p; \
+	    (var) = AG_TAILQ_NEXT((var), tree))
 
 /* Iterate over all items. */
-#define AGTREE_FOREACH_ITEM(var, tree) for((var) = AG_TAILQ_FIRST(&(tree)->list); (var) != AG_TAILQ_END(&(tree)->list); (var) = AG_TAILQ_NEXT((var), list))
+#define AGTREE_FOREACH_ITEM(var, tree) \
+	for((var) = AG_TAILQ_FIRST(&(tree)->list); \
+	    (var) != AG_TAILQ_END(&(tree)->list); \
+	    (var) = AG_TAILQ_NEXT((var), list))
 
 /* Iterate over data of all items. */
-#define AGTREE_FOREACH_DATA(var, tree, t) for((var) = (struct t *)(AG_TAILQ_FIRST(&(tree)->list))->p; (var) != (struct t *)(AG_TAILQ_END(&(tree)->list))->p; (var) = AG_TAILQ_NEXT((var), list))
+#define AGTREE_FOREACH_DATA(var, tree, t) \
+	for((var) = (struct t *)(AG_TAILQ_FIRST(&(tree)->list))->p; \
+	    (var) != (struct t *)(AG_TAILQ_END(&(tree)->list))->p; \
+	    (var) = AG_TAILQ_NEXT((var), list))
 
 #if defined(_AGAR_INTERNAL) || defined(_USE_AGAR_CORE)
 # define TREE_FOREACH_CHILD_ITEM(var,item)	AGTREE_FOREACH_CHILD_ITEM((var),(item))
@@ -79,7 +91,7 @@ typedef struct ag_tree {
 #endif
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC AG_Tree *AG_TreeNew(void);
 extern DECLSPEC void AG_TreeDestroy(AG_Tree *);
 
@@ -169,7 +181,7 @@ AG_TreeClear(AG_Tree *t)
 	AG_TAILQ_INIT(&t->list);
 	t->root = NULL;
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

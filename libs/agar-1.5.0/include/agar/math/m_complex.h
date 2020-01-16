@@ -4,7 +4,7 @@
  */
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 
 static __inline__ M_Complex
 M_ComplexGet(M_Real r, M_Real i)
@@ -86,15 +86,15 @@ M_ComplexMult(M_Complex a, M_Complex b)
 	rv.i = a.i*b.r + a.r*b.i;
 	return (rv);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 /* Begin generated block */
-__BEGIN_DECLS
-#define M_ComplexI() M_ComplexGet(0.0, 1.0)
-#define M_ComplexMinusI() M_ComplexGet(0.0, -1.0)
-#define M_ComplexReal(z) ((z).r)
-#define M_ComplexImag(z) ((z).i)
+__BEGIN_DECLS 
+#define M_ComplexI() M_ComplexGet(0.0, 1.0) 
+#define M_ComplexMinusI() M_ComplexGet(0.0, -1.0) 
+#define M_ComplexReal(z) ((z).r) 
+#define M_ComplexImag(z) ((z).i) 
 extern DECLSPEC M_Real M_ComplexAbs(M_Complex);
 extern DECLSPEC M_Complex M_ComplexDiv(M_Complex, M_Complex);
 extern DECLSPEC M_Complex M_ComplexSqrt(M_Complex);
@@ -114,5 +114,5 @@ extern DECLSPEC M_Complex M_ComplexCosh(M_Complex);
 extern DECLSPEC M_Complex M_ComplexAcosh(M_Complex);
 extern DECLSPEC M_Complex M_ComplexTanh(M_Complex);
 extern DECLSPEC M_Complex M_ComplexAtanh(M_Complex);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

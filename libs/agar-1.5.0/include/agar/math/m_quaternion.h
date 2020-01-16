@@ -1,7 +1,7 @@
 /*	Public domain	*/
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC M_Quaternion M_QuaternionMultIdentity(void);
 extern DECLSPEC M_Quaternion M_QuaternionAddIdentity(void);
 extern DECLSPEC void M_QuaternionpToAxisAngle(const M_Quaternion *, M_Vector3 *, M_Real *);
@@ -23,9 +23,9 @@ extern DECLSPEC M_Quaternion M_QuaternionConcat(const M_Quaternion *, const M_Qu
 extern DECLSPEC M_Quaternion M_QuaternionMult(M_Quaternion, M_Quaternion);
 extern DECLSPEC M_Quaternion M_QuaternionMultp(const M_Quaternion *, const M_Quaternion *);
 extern DECLSPEC void M_QuaternionMultv(M_Quaternion *, const M_Quaternion *, const M_Quaternion *);
-#define M_QuaternionMult3(a,b,c) M_QuaternionMult((b),M_QuaternionMult((a),(c)))
-#define M_QuaternionMult3v(r,a,b,c) M_QuaternionMultv((r),M_QuaternionMult((a),(b)),(c))
-extern DECLSPEC M_Quaternion M_QuaternionNorm(M_Quaternion);
+#define M_QuaternionMult3(a,b,c) \ 
+#define M_QuaternionMult3v(r,a,b,c) \ 
+ M_QuaternionMult((b),M_QuaternionMult((a),(c))) M_QuaternionMultv((r),M_QuaternionMult((a),(b)),(c)) M_Quaternion M_QuaternionNorm(M_Quaternion); 
 extern DECLSPEC M_Quaternion M_QuaternionNormp(const M_Quaternion *);
 extern DECLSPEC void M_QuaternionNormv(M_Quaternion *);
 extern DECLSPEC M_Quaternion M_QuaternionInverse(M_Quaternion);
@@ -35,5 +35,5 @@ extern DECLSPEC M_Quaternion M_QuaternionSLERP(M_Quaternion, M_Quaternion, M_Rea
 extern DECLSPEC M_Quaternion M_QuaternionSLERPp(const M_Quaternion *, const M_Quaternion *, M_Real);
 extern DECLSPEC M_Quaternion M_ReadQuaternion(AG_DataSource *);
 extern DECLSPEC void M_WriteQuaternion(AG_DataSource *, M_Quaternion *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

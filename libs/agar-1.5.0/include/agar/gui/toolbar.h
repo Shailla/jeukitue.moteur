@@ -33,8 +33,8 @@ typedef struct ag_toolbar {
 } AG_Toolbar;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agToolbarClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agToolbarClass; 
 extern DECLSPEC AG_Toolbar *AG_ToolbarNew(void *, enum ag_toolbar_type, int, Uint);
 extern DECLSPEC void AG_ToolbarInit(AG_Toolbar *, enum ag_toolbar_type, int, Uint);
 extern DECLSPEC void AG_ToolbarScale(void *, int, int);
@@ -47,7 +47,7 @@ extern DECLSPEC void AG_ToolbarDeselect(AG_Toolbar *, AG_Button *);
 extern DECLSPEC void AG_ToolbarSelectOnly(AG_Toolbar *, AG_Button *);
 extern DECLSPEC void AG_ToolbarSelectAll(AG_Toolbar *);
 extern DECLSPEC void AG_ToolbarDeselectAll(AG_Toolbar *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

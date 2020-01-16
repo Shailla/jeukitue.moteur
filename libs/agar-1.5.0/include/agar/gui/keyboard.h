@@ -290,8 +290,8 @@ typedef struct ag_keyboard {
 } AG_Keyboard;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_ObjectClass agKeyboardClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_ObjectClass agKeyboardClass; 
 extern DECLSPEC AG_Keyboard *AG_KeyboardNew(void *, const char *);
 extern DECLSPEC int AG_KeyboardUpdate(AG_Keyboard *, AG_KeyboardAction, AG_KeySym, Uint32);
 extern DECLSPEC int AG_ProcessKey(AG_Keyboard *, struct ag_window *, AG_KeyboardAction, AG_KeySym, Uint32);
@@ -341,7 +341,7 @@ AG_CompareKeyMods(Uint modState, const char *flags)
 	}
 	return (0);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

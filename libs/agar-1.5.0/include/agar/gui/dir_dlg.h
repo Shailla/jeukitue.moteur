@@ -43,8 +43,8 @@ typedef struct ag_dir_dlg {
 } AG_DirDlg;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agDirDlgClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agDirDlgClass; 
 extern DECLSPEC AG_DirDlg *AG_DirDlgNew(void *, Uint);
 extern DECLSPEC AG_DirDlg *AG_DirDlgNewMRU(void *, const char *, Uint);
 extern DECLSPEC void AG_DirDlgSetDirectoryMRU(AG_DirDlg *, const char *, const char *);
@@ -54,7 +54,7 @@ extern DECLSPEC void AG_DirDlgOkAction(AG_DirDlg *, AG_EventFn, const char *, ..
 extern DECLSPEC void AG_DirDlgCancelAction(AG_DirDlg *, AG_EventFn, const char *, ...);
 extern DECLSPEC int AG_DirDlgCheckReadAccess(AG_DirDlg *);
 extern DECLSPEC int AG_DirDlgCheckWriteAccess(AG_DirDlg *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

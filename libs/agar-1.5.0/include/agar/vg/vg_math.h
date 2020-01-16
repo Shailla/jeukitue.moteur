@@ -59,9 +59,9 @@
 #endif /* _AGAR_INTERNAL or _USE_AGAR_VG_MATH */
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC int vg_cos_tbl[];
-extern DECLSPEC int vg_sin_tbl[];
+__BEGIN_DECLS 
+extern DECLSPEC int vg_cos_tbl[]; 
+extern DECLSPEC int vg_sin_tbl[]; 
 /*
  * Basic vector operations
  */
@@ -219,7 +219,7 @@ VG_MultMatrixByVector(VG_Vector *c, const VG_Vector *a, const VG_Matrix *T)
 	c->x = ax*T->m[0][0] + ay*T->m[1][0] + T->m[0][2];
 	c->y = ax*T->m[0][1] + ay*T->m[1][1] + T->m[1][2];
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #endif /* _AGAR_VG_MATH_H_ */

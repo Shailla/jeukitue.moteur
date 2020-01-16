@@ -1,7 +1,7 @@
 /*	Public domain	*/
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC M_Line2 M_LineRead2(AG_DataSource *);
 extern DECLSPEC M_Line3 M_LineRead3(AG_DataSource *);
 extern DECLSPEC void M_LineWrite2(AG_DataSource *, M_Line2 *);
@@ -79,5 +79,5 @@ M_LinePointSide2(M_Line2 L, M_Vector2 p)
 	M_LineToPts2(L, &p1, &p2);
 	return (p2.x - p1.x)*(p.y - p1.y) - (p.x - p1.x)*(p2.y - p1.y);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

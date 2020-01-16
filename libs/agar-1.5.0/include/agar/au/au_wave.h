@@ -26,14 +26,14 @@ typedef struct au_wave_state {
 } AU_WaveState;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC AU_Wave *AU_WaveNew(void);
 extern DECLSPEC AU_Wave *AU_WaveFromFile(const char *);
 extern DECLSPEC void AU_WaveFree(AU_Wave *);
 extern DECLSPEC void AU_WaveFreeData(AU_Wave *);
 extern DECLSPEC int AU_WaveLoad(AU_Wave *, const char *);
 extern DECLSPEC int AU_WaveGenVisual(AU_Wave *, int);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/au/close.h>

@@ -28,7 +28,7 @@ typedef struct ag_text_cache {
 } AG_TextCache;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC AG_TextCache *AG_TextCacheNew(void *, Uint, Uint);
 extern DECLSPEC void AG_TextCacheClear(AG_TextCache *);
 extern DECLSPEC void AG_TextCacheDestroy(AG_TextCache *);
@@ -45,7 +45,7 @@ AG_TextCacheHash(AG_TextCache *tc, const char *s)
 	}
 	return (h % tc->nBuckets);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

@@ -18,7 +18,7 @@ enum m_point_set_sort_mode3 {
 };
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC int M_PointSetAlloc2(M_PointSet2 *, Uint);
 extern DECLSPEC int M_PointSetAlloc3(M_PointSet3 *, Uint);
 extern DECLSPEC int M_PointSetAlloc2i(M_PointSet2i *, Uint);
@@ -173,5 +173,5 @@ M_PointSetFree3i(M_PointSet3i *S)
 	S->n = 0;
 	S->nMax = 0;
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

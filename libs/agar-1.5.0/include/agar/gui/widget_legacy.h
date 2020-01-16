@@ -74,7 +74,7 @@
 #define AG_WidgetHiddenRecursive	AG_WidgetHideAll
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC AG_Variable *AG_WidgetBind(void *, const char *, AG_VariableType, ...) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC AG_Variable *AG_WidgetBindMp(void *, const char *, AG_Mutex *, AG_VariableType, ...) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC int AG_WidgetCopyBinding(void *, const char *, AG_Variable *) DEPRECATED_ATTRIBUTE;
@@ -102,5 +102,5 @@ extern DECLSPEC void AG_WidgetSetSint32(void *, const char *, Sint32) DEPRECATED
 extern DECLSPEC void AG_WidgetSetFloat(void *, const char *, float) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC void AG_WidgetSetDouble(void *, const char *, double) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC void AG_WidgetSetPointer(void *, const char *, void *) DEPRECATED_ATTRIBUTE;
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

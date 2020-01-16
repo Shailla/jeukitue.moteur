@@ -47,8 +47,8 @@ typedef struct ag_fixed_plotter {
 } AG_FixedPlotter;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agFixedPlotterClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agFixedPlotterClass; 
 extern DECLSPEC AG_FixedPlotter *AG_FixedPlotterNew(void *, enum ag_fixed_plotter_type, Uint);
 extern DECLSPEC AG_FixedPlotterItem *AG_FixedPlotterCurve(AG_FixedPlotter *, const char *, Uint8, Uint8, Uint8, Uint32);
 extern DECLSPEC void AG_FixedPlotterFreeItems(AG_FixedPlotter *);
@@ -61,7 +61,7 @@ AG_FixedPlotterScroll(AG_FixedPlotter *fpl, int i)
 	if (fpl->flags & AG_FIXED_PLOTTER_SCROLL)
 		fpl->xoffs += i;
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

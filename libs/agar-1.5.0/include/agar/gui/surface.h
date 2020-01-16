@@ -60,7 +60,11 @@ typedef enum ag_blend_func {
 } AG_BlendFn;
 
 /* Clipping test for pixel at ax,ay in surface s (as dst) */
-#define AG_CLIPPED_PIXEL(s, ax, ay) ((ax) < (s)->clipRect.x || (ax) >= (s)->clipRect.x+(s)->clipRect.w || (ay) < (s)->clipRect.y || (ay) >= (s)->clipRect.y+(s)->clipRect.h)
+#define AG_CLIPPED_PIXEL(s, ax, ay)			\
+	((ax) < (s)->clipRect.x ||			\
+	 (ax) >= (s)->clipRect.x+(s)->clipRect.w ||	\
+	 (ay) < (s)->clipRect.y ||			\
+	 (ay) >= (s)->clipRect.y+(s)->clipRect.h)
 
 #define AG_ALPHA_TRANSPARENT	0		/* Transparent alpha value */
 #define AG_ALPHA_OPAQUE		255		/* Opaque alpha value */
@@ -74,7 +78,7 @@ typedef enum ag_blend_func {
 #define AG_EXPORT_JPEG_JDCT_FLOAT	0x04	/* Floating-point method */
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC const char *agBlendFuncNames[]; 
 extern DECLSPEC AG_PixelFormat *agSurfaceFmt; 
 extern DECLSPEC AG_PixelFormat *agTextureFmt; 
@@ -120,19 +124,19 @@ extern DECLSPEC void AG_SetAlphaPixels(AG_Surface *, Uint8);
 extern DECLSPEC void AG_FillRect(AG_Surface *, const AG_Rect *, AG_Color);
 extern DECLSPEC Uint32 AG_MapPixelIndexedRGB(const AG_PixelFormat *, Uint8, Uint8, Uint8);
 extern DECLSPEC Uint32 AG_MapPixelIndexedRGBA(const AG_PixelFormat *, Uint8, Uint8, Uint8, Uint8);
-#define AG_SurfaceStdRGB(w,h) AG_SurfaceRGB((w),(h),agSurfaceFmt->BitsPerPixel,0, agSurfaceFmt->Rmask, agSurfaceFmt->Gmask, agSurfaceFmt->Bmask)
-#define AG_SurfaceStdRGBA(w,h) AG_SurfaceRGBA((w),(h),agSurfaceFmt->BitsPerPixel,0, agSurfaceFmt->Rmask, agSurfaceFmt->Gmask, agSurfaceFmt->Bmask, agSurfaceFmt->Amask)
+#define AG_SurfaceStdRGB(w,h) \ 
+#define AG_SurfaceStdRGBA(w,h) \ 
 /*
  * Generic pixel manipulation macros.
  */
-#define AG_GET_PIXEL(s, p) AG_GetPixel((s),(p))
-#define AG_GET_PIXEL2(s, x, y) AG_GetPixel((s),(Uint8 *)(s)->pixels + (y)*(s)->pitch + (x)*(s)->format->BytesPerPixel)
-#define AG_PUT_PIXEL(s, p, c) AG_SurfacePutPixel((s),(p),(c))
-#define AG_PUT_PIXEL2(s, x, y, c) do { AG_SurfacePutPixel((s), (Uint8 *)(s)->pixels + (y)*(s)->pitch + (x)*(s)->format->BytesPerPixel, (c)); } while (0)
-#define AG_PUT_PIXEL2_CLIPPED(s, x, y, c) do { if (!AG_CLIPPED_PIXEL((s), (x), (y))) { AG_SurfacePutPixel((s), (Uint8 *)(s)->pixels + (y)*(s)->pitch + (x)*(s)->format->BytesPerPixel, (c)); } } while (0)
-#define AG_BLEND_RGBA(s, p, r, g, b, a, fn) AG_SurfaceBlendPixel((s),(p), AG_ColorRGBA((r),(g),(b),(a)),(fn))
-#define AG_BLEND_RGBA2(s, x, y, r, g, b, a, fn) do { AG_SurfaceBlendPixel((s), (Uint8 *)(s)->pixels + (y)*(s)->pitch + (x)*(s)->format->BytesPerPixel, AG_ColorRGBA((r),(g),(b),(a)),(fn)); } while (0)
-#define AG_BLEND_RGBA2_CLIPPED(s, x, y, r, g, b, a, fn) do { if (!AG_CLIPPED_PIXEL((s), (x), (y))) { AG_SurfaceBlendPixel((s), (Uint8 *)(s)->pixels + (y)*(s)->pitch + (x)*(s)->format->BytesPerPixel, AG_ColorRGBA((r),(g),(b),(a)),(fn)); } } while (0)
+#define AG_GET_PIXEL(s, p) AG_GetPixel((s),(p)) 
+#define AG_GET_PIXEL2(s, x, y) \ 
+#define AG_PUT_PIXEL(s, p, c) AG_SurfacePutPixel((s),(p),(c)) 
+#define AG_PUT_PIXEL2(s, x, y, c) do { \ 
+#define AG_PUT_PIXEL2_CLIPPED(s, x, y, c) do { \ 
+#define AG_BLEND_RGBA(s, p, r, g, b, a, fn) \ 
+#define AG_BLEND_RGBA2(s, x, y, r, g, b, a, fn) do { \ 
+#define AG_BLEND_RGBA2_CLIPPED(s, x, y, r, g, b, a, fn) do { \ 
 
 static __inline__ Uint32
 AG_MapPixelRGB(const AG_PixelFormat *pf, Uint8 r, Uint8 g, Uint8 b)
@@ -179,7 +183,8 @@ AG_MapColorRGBA(const AG_PixelFormat *pf, AG_Color C)
 	       (C.b >> pf->Bloss) << pf->Bshift |
 	      ((C.a >> pf->Aloss) << pf->Ashift & pf->Amask);
 }
-#define AG_GET_PIXEL_COMPONENT(rv, mask, shift, loss) tmp = (pc & mask) >> shift; (rv) = (tmp << loss) + (tmp >> (8 - (loss << 1)));
+#define AG_GET_PIXEL_COMPONENT(rv, mask, shift, loss) \ 
+ AG_SurfaceRGB((w),(h),agSurfaceFmt->BitsPerPixel,0, \ agSurfaceFmt->Rmask, \ agSurfaceFmt->Gmask, \ agSurfaceFmt->Bmask) AG_SurfaceRGBA((w),(h),agSurfaceFmt->BitsPerPixel,0, \ agSurfaceFmt->Rmask, \ agSurfaceFmt->Gmask, \ agSurfaceFmt->Bmask, \ agSurfaceFmt->Amask) AG_GetPixel((s),(Uint8 *)(s)->pixels + (y)*(s)->pitch + \ (x)*(s)->format->BytesPerPixel) AG_SurfacePutPixel((s), \ (Uint8 *)(s)->pixels + (y)*(s)->pitch + \ (x)*(s)->format->BytesPerPixel, \ (c)); \ } while (0) if (!AG_CLIPPED_PIXEL((s), (x), (y))) { \ AG_SurfacePutPixel((s), \ (Uint8 *)(s)->pixels + (y)*(s)->pitch + \ (x)*(s)->format->BytesPerPixel, \ (c)); \ } \ } while (0) AG_SurfaceBlendPixel((s),(p), \ AG_ColorRGBA((r),(g),(b),(a)),(fn)) AG_SurfaceBlendPixel((s), \ (Uint8 *)(s)->pixels + (y)*(s)->pitch + \ (x)*(s)->format->BytesPerPixel, \ AG_ColorRGBA((r),(g),(b),(a)),(fn)); \ } while (0) if (!AG_CLIPPED_PIXEL((s), (x), (y))) { \ AG_SurfaceBlendPixel((s), \ (Uint8 *)(s)->pixels + (y)*(s)->pitch + \ (x)*(s)->format->BytesPerPixel, \ AG_ColorRGBA((r),(g),(b),(a)),(fn)); \ } \ } while (0) tmp = (pc & mask) >> shift; \ (rv) = (tmp << loss) + (tmp >> (8 - (loss << 1))); 
 
 static __inline__ void
 AG_GetPixelRGB(Uint32 pc, const AG_PixelFormat *pf, Uint8 *r, Uint8 *g,
@@ -258,7 +263,7 @@ AG_GetColorRGBA(Uint32 pc, const AG_PixelFormat *pf)
 	}
 	return (C);
 }
-#undef AG_GET_PIXEL_COMPONENT
+#undef AG_GET_PIXEL_COMPONENT 
 
 static __inline__ Uint32
 AG_GetPixel(const AG_Surface *s, const Uint8 *pSrc)
@@ -365,7 +370,7 @@ AG_SetClipRect(AG_Surface *su, const AG_Rect *r)
 {
 	su->clipRect = *r;
 }
-#ifdef AG_LEGACY
+#ifdef AG_LEGACY 
 extern DECLSPEC void AG_SurfaceLock(AG_Surface *) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC void AG_SurfaceUnlock(AG_Surface *) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC Uint32 AG_MapRGB(const AG_PixelFormat *, Uint8, Uint8, Uint8) DEPRECATED_ATTRIBUTE;
@@ -375,7 +380,7 @@ extern DECLSPEC void AG_GetRGBA(Uint32, const AG_PixelFormat *, Uint8 *, Uint8 *
 extern DECLSPEC AG_Surface *AG_DupSurface(AG_Surface *) DEPRECATED_ATTRIBUTE;
 extern DECLSPEC int AG_SamePixelFmt (const AG_Surface *, const AG_Surface *) DEPRECATED_ATTRIBUTE;
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

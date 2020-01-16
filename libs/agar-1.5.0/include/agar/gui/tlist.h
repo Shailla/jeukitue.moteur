@@ -84,21 +84,27 @@ typedef struct ag_tlist {
 	int lastKeyDown;		/* For key repeat */
 } AG_Tlist;
 
-#define AG_TLIST_FOREACH(it, tl) AG_TAILQ_FOREACH(it, &(tl)->items, items)
+#define AG_TLIST_FOREACH(it, tl) \
+	AG_TAILQ_FOREACH(it, &(tl)->items, items)
 
-#define AG_TLIST_FOREACH_ITEM(p, tl, it, t) for((it) = AG_TAILQ_FIRST(&(tl)->items), (p) = (it)!=NULL ? (struct t *)(it)->p1 : NULL; (it) != AG_TAILQ_END(&(tl)->children) && (it)->p1 != NULL; (it) = AG_TAILQ_NEXT((it), cobjs), (p) = (it)!=NULL ? (struct t *)(it)->p1 : NULL)
+#define AG_TLIST_FOREACH_ITEM(p, tl, it, t)				\
+	for((it) = AG_TAILQ_FIRST(&(tl)->items),			\
+	     (p) = (it)!=NULL ? (struct t *)(it)->p1 : NULL;		\
+	    (it) != AG_TAILQ_END(&(tl)->children) && (it)->p1 != NULL;	\
+	    (it) = AG_TAILQ_NEXT((it), cobjs),				\
+	     (p) = (it)!=NULL ? (struct t *)(it)->p1 : NULL)
 
 #define AG_TLIST_ITEM(n) AG_TlistSelectedItemPtr(AG_PTR(n))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agTlistClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agTlistClass; 
 extern DECLSPEC AG_Tlist *AG_TlistNew(void *, Uint);
 extern DECLSPEC AG_Tlist *AG_TlistNewPolled(void *, Uint, AG_EventFn, const char *, ...);
 extern DECLSPEC void AG_TlistSizeHint(AG_Tlist *, const char *, int);
 extern DECLSPEC void AG_TlistSizeHintPixels(AG_Tlist *, int, int);
 extern DECLSPEC void AG_TlistSizeHintLargest(AG_Tlist *, int);
-#define AG_TlistPrescale AG_TlistSizeHint
+#define AG_TlistPrescale AG_TlistSizeHint 
 extern DECLSPEC void AG_TlistSetItemHeight(AG_Tlist *, int);
 extern DECLSPEC void AG_TlistSetIconWidth(AG_Tlist *, int);
 extern DECLSPEC void AG_TlistSetIcon(AG_Tlist *, AG_TlistItem *, AG_Surface *);
@@ -138,8 +144,8 @@ extern DECLSPEC int AG_TlistCompareStrings(const AG_TlistItem *, const AG_TlistI
 extern DECLSPEC int AG_TlistComparePtrs(const AG_TlistItem *, const AG_TlistItem *);
 extern DECLSPEC int AG_TlistComparePtrsAndClasses(const AG_TlistItem *, const AG_TlistItem *);
 extern DECLSPEC int AG_TlistSort(AG_Tlist *);
-#define AG_TlistBegin AG_TlistClear
-#define AG_TlistEnd AG_TlistRestore
+#define AG_TlistBegin AG_TlistClear 
+#define AG_TlistEnd AG_TlistRestore 
 
 static __inline__ int
 AG_TlistVisibleChildren(AG_Tlist *tl, AG_TlistItem *cit)
@@ -163,7 +169,7 @@ AG_TlistRefresh(AG_Tlist *tl)
 	tl->flags |= AG_TLIST_REFRESH;
 	AG_ObjectUnlock(tl);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

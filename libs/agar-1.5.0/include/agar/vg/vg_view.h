@@ -85,8 +85,8 @@ typedef struct vg_view {
 #define VG_SELECT_MULTI(vv)     (AG_GetModState(vv) & AG_KEYMOD_CTRL)
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass vgViewClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass vgViewClass; 
 extern DECLSPEC VG_View *VG_ViewNew(void *, VG *, Uint);
 extern DECLSPEC void VG_ViewSetVG(struct vg_view *, VG *);
 extern DECLSPEC void VG_ViewSetScale(struct vg_view *, float);
@@ -285,7 +285,7 @@ VG_HighlightNearestPoint(VG_View *vv, VG_Vector vPos, void *ignore)
 	}
 	return (vnNearest);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/vg/close.h>

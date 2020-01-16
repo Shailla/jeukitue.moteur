@@ -13,7 +13,7 @@ typedef struct ag_list {
 } AG_List;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 
 static __inline__ AG_List *
 AG_ListNew(void)
@@ -155,7 +155,7 @@ AG_ListDestroy(AG_List *L)
 	AG_ListClear(L);
 	AG_Free(L);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

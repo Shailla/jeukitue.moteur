@@ -48,10 +48,10 @@
 #define M_NumericalGetTime	 	 AG_NumericalGetSint32
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void *M_EditTranslate3(void *, const char *, M_Matrix44 *);
 extern DECLSPEC void *M_EditTranslate3Mp(void *, const char *, M_Matrix44 *, AG_Mutex *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/math/close.h>

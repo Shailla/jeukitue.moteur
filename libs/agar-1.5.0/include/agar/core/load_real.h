@@ -12,7 +12,7 @@
 #include <agar/core/begin.h>
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 /*
  * single-precision floats
  */
@@ -151,7 +151,7 @@ AG_WriteDoubleAt(AG_DataSource *ds, double fv, off_t pos)
 	if (AG_WriteAt(ds, &f, sizeof(f), AG_WRITEAT_DEBUGOFFS(ds,pos)) != 0)
 		AG_DataSourceError(ds, NULL);
 }
-#ifdef AG_HAVE_LONG_DOUBLE
+#ifdef AG_HAVE_LONG_DOUBLE 
 /*
  * quad-precision floats
  */
@@ -222,7 +222,7 @@ AG_WriteLongDoubleAt(AG_DataSource *ds, long double fv, off_t pos)
 		AG_DataSourceError(ds, NULL);
 }
 #endif 
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 #include <agar/core/close.h>
 

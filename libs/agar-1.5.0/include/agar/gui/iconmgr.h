@@ -16,10 +16,10 @@ typedef struct ag_static_icon {
 } AG_StaticIcon;
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void AG_InitStaticIcon(AG_StaticIcon *);
 extern DECLSPEC void AG_FreeStaticIcon(AG_StaticIcon *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

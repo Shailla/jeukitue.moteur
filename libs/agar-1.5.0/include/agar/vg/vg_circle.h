@@ -9,8 +9,8 @@ typedef struct vg_circle {
 #define VGCIRCLE(p) ((VG_Circle *)(p))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC VG_NodeOps vgCircleOps;
+__BEGIN_DECLS 
+extern DECLSPEC VG_NodeOps vgCircleOps; 
 
 static __inline__ VG_Circle *
 VG_CircleNew(void *pNode, VG_Point *pCenter, float r)
@@ -35,5 +35,5 @@ VG_CircleCenter(VG_Circle *vc, VG_Point *pCenter)
 	vc->p = pCenter;
 	VG_Unlock(VGNODE(vc)->vg);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

@@ -49,8 +49,8 @@ typedef struct ag_socket {
 } AG_Socket;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agSocketClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agSocketClass; 
 extern DECLSPEC AG_Socket *AG_SocketNew(void *, Uint);
 extern DECLSPEC AG_Socket *AG_SocketFromBMP(void *, Uint, const char *);
 extern DECLSPEC AG_Socket *AG_SocketFromSurface(void *, Uint, AG_Surface *);
@@ -58,17 +58,17 @@ extern DECLSPEC void AG_SocketInsertFn(AG_Socket *, int (*)(AG_Socket *, struct 
 extern DECLSPEC void AG_SocketRemoveFn(AG_Socket *, void (*)(AG_Socket *, struct ag_icon *));
 extern DECLSPEC void AG_SocketOverlayFn(AG_Socket *, AG_EventFn, const char *, ...);
 extern DECLSPEC void AG_SocketSetPadding(AG_Socket *, int, int, int, int);
-#define AG_SocketSetPaddingLeft(b,v) AG_SocketSetPadding((b),(v),-1,-1,-1)
-#define AG_SocketSetPaddingRight(b,v) AG_SocketSetPadding((b),-1,(v),-1,-1)
-#define AG_SocketSetPaddingTop(b,v) AG_SocketSetPadding((b),-1,-1,(v),-1)
-#define AG_SocketSetPaddingBottom(b,v) AG_SocketSetPadding((b),-1,-1,-1,(v))
+#define AG_SocketSetPaddingLeft(b,v) AG_SocketSetPadding((b),(v),-1,-1,-1) 
+#define AG_SocketSetPaddingRight(b,v) AG_SocketSetPadding((b),-1,(v),-1,-1) 
+#define AG_SocketSetPaddingTop(b,v) AG_SocketSetPadding((b),-1,-1,(v),-1) 
+#define AG_SocketSetPaddingBottom(b,v) AG_SocketSetPadding((b),-1,-1,-1,(v)) 
 extern DECLSPEC void AG_SocketBgRect(AG_Socket *, Uint, Uint);
 extern DECLSPEC void AG_SocketBgCircle(AG_Socket *, Uint);
 extern DECLSPEC void AG_SocketBgPixmap(AG_Socket *, AG_Surface *);
 extern DECLSPEC void AG_SocketBgPixmapNODUP(AG_Socket *, AG_Surface *);
 extern DECLSPEC void AG_SocketInsertIcon(AG_Socket *, struct ag_icon *);
 extern DECLSPEC void AG_SocketRemoveIcon(AG_Socket *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

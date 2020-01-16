@@ -30,8 +30,8 @@ typedef struct vg_text {
 #define VGTEXT(p) ((VG_Text *)(p))
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC VG_NodeOps vgTextOps;
+__BEGIN_DECLS 
+extern DECLSPEC VG_NodeOps vgTextOps; 
 extern DECLSPEC void VG_TextString(VG_Text *, const char *);
 extern DECLSPEC void VG_TextPrintf(VG_Text *, const char *, ...);
 
@@ -89,5 +89,5 @@ VG_TextSubstObject(VG_Text *vt, void *obj)
 	vt->vsObj = obj;
 	VG_Unlock(VGNODE(vt)->vg);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

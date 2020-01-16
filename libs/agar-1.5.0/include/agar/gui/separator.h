@@ -20,16 +20,16 @@ typedef struct ag_separator {
 } AG_Separator;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agSeparatorClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agSeparatorClass; 
 extern DECLSPEC AG_Separator *AG_SeparatorNew(void *, enum ag_separator_type);
 extern DECLSPEC AG_Separator *AG_SpacerNew(void *, enum ag_separator_type);
 extern DECLSPEC void AG_SeparatorSetPadding(AG_Separator *, Uint);
-#define AG_SeparatorNewHoriz(p) AG_SeparatorNew((p),AG_SEPARATOR_HORIZ)
-#define AG_SeparatorNewVert(p) AG_SeparatorNew((p),AG_SEPARATOR_VERT)
-#define AG_SpacerNewHoriz(p) AG_SpacerNew((p),AG_SEPARATOR_HORIZ)
-#define AG_SpacerNewVert(p) AG_SpacerNew((p),AG_SEPARATOR_VERT)
-__END_DECLS
+#define AG_SeparatorNewHoriz(p) AG_SeparatorNew((p),AG_SEPARATOR_HORIZ) 
+#define AG_SeparatorNewVert(p) AG_SeparatorNew((p),AG_SEPARATOR_VERT) 
+#define AG_SpacerNewHoriz(p) AG_SpacerNew((p),AG_SEPARATOR_HORIZ) 
+#define AG_SpacerNewVert(p) AG_SpacerNew((p),AG_SEPARATOR_VERT) 
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

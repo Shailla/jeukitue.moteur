@@ -34,12 +34,12 @@ typedef struct ag_user_ops {
 } AG_UserOps;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const AG_UserOps *agUserOps;
-extern DECLSPEC const AG_UserOps agUserOps_dummy;
-extern DECLSPEC const AG_UserOps agUserOps_posix;
-extern DECLSPEC const AG_UserOps agUserOps_win32;
-extern DECLSPEC const AG_UserOps agUserOps_xbox;
+__BEGIN_DECLS 
+extern DECLSPEC const AG_UserOps *agUserOps; 
+extern DECLSPEC const AG_UserOps agUserOps_dummy; 
+extern DECLSPEC const AG_UserOps agUserOps_posix; 
+extern DECLSPEC const AG_UserOps agUserOps_win32; 
+extern DECLSPEC const AG_UserOps agUserOps_xbox; 
 extern DECLSPEC AG_User *AG_UserNew(void);
 extern DECLSPEC void AG_UserFree(AG_User *);
 extern DECLSPEC void AG_SetUserOps(const AG_UserOps *);
@@ -103,7 +103,7 @@ AG_GetEffectiveUser(void)
 	}
 	return (u);
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/core/close.h>

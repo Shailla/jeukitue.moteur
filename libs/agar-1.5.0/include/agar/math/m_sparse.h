@@ -297,25 +297,47 @@
  * Macro function that adds data to a complex element in the matrix by
  * a pointer.
  */
-#define spADD_COMPLEX_ELEMENT(element,real,imag) { *(element) += real; *(element+1) += imag; }
+#define  spADD_COMPLEX_ELEMENT(element,real,imag)       \
+{   *(element) += real;                                 \
+    *(element+1) += imag;                               \
+}
 
 /*
  * Macro function that adds data to each of the four real matrix elements
  * specified by the given template.
  */
-#define spADD_REAL_QUAD(template,real) { *((template).Element1) += real; *((template).Element2) += real; *((template).Element3Negated) -= real; *((template).Element4Negated) -= real; }
+#define  spADD_REAL_QUAD(template,real)         \
+{   *((template).Element1) += real;             \
+    *((template).Element2) += real;             \
+    *((template).Element3Negated) -= real;      \
+    *((template).Element4Negated) -= real;      \
+}
 
 /*
  * Macro function that adds data to each of the four imaginary matrix
  * elements specified by the given template.
  */
-#define spADD_IMAG_QUAD(template,imag) { *((template).Element1+1) += imag; *((template).Element2+1) += imag; *((template).Element3Negated+1) -= imag; *((template).Element4Negated+1) -= imag; }
+#define  spADD_IMAG_QUAD(template,imag)         \
+{   *((template).Element1+1) += imag;           \
+    *((template).Element2+1) += imag;           \
+    *((template).Element3Negated+1) -= imag;    \
+    *((template).Element4Negated+1) -= imag;    \
+}
 
 /*
  * Macro function that adds data to each of the four complex matrix
  * elements specified by the given template.
  */
-#define spADD_COMPLEX_QUAD(template,real,imag) { *((template).Element1) += real; *((template).Element2) += real; *((template).Element3Negated) -= real; *((template).Element4Negated) -= real; *((template).Element1+1) += imag; *((template).Element2+1) += imag; *((template).Element3Negated+1) -= imag; *((template).Element4Negated+1) -= imag; }
+#define  spADD_COMPLEX_QUAD(template,real,imag) \
+{   *((template).Element1) += real;             \
+    *((template).Element2) += real;             \
+    *((template).Element3Negated) -= real;      \
+    *((template).Element4Negated) -= real;      \
+    *((template).Element1+1) += imag;           \
+    *((template).Element2+1) += imag;           \
+    *((template).Element3Negated+1) -= imag;    \
+    *((template).Element4Negated+1) -= imag;    \
+}
 
 /*
  *   TYPE DEFINITION FOR EXTERNAL MATRIX ELEMENT REFERENCES
@@ -353,7 +375,7 @@ struct  spTemplate
 };
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void spClear( spMatrix );
 extern DECLSPEC spREAL spCondition( spMatrix, spREAL, int* );
 extern DECLSPEC spMatrix spCreate( int, int, spError* );
@@ -395,7 +417,7 @@ extern DECLSPEC void spMultTransposed( spMatrix, spREAL[], spREAL[] );
 extern DECLSPEC void spSolve( spMatrix, spREAL[], spREAL[] );
 extern DECLSPEC void spSolveTransposed( spMatrix, spREAL[], spREAL[] );
 extern DECLSPEC void spAddToReorderedDiag(spMatrix, spREAL);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #define  BOOLEAN        int
@@ -412,14 +434,21 @@ __END_DECLS
 
 /* Define macros for validating matrix. */
 #define  SPARSE_ID			0xDeadBeef	/* Arbitrary. */
-#define IS_SPARSE(matrix) (((matrix) != NULL) AND ((matrix)->ID == SPARSE_ID))
-#define NO_ERRORS(matrix) (((matrix)->Error >= spOKAY) AND ((matrix)->Error < spFATAL))
-#define IS_FACTORED(matrix) ((matrix)->Factored AND NOT (matrix)->NeedsOrdering)
+#define  IS_SPARSE(matrix)		(((matrix) != NULL) AND \
+                                	 ((matrix)->ID == SPARSE_ID))
+#define  NO_ERRORS(matrix)		(((matrix)->Error >= spOKAY) AND \
+				 	 ((matrix)->Error < spFATAL))
+#define  IS_FACTORED(matrix)    	((matrix)->Factored AND \
+					 NOT (matrix)->NeedsOrdering)
 
-#define ASSERT_IS_SPARSE(matrix) vASSERT( IS_SPARSE(matrix), spcMatrixIsNotValid )
-#define ASSERT_NO_ERRORS(matrix) vASSERT( NO_ERRORS(matrix), spcErrorsMustBeCleared )
-#define ASSERT_IS_FACTORED(matrix) vASSERT( IS_FACTORED(matrix), spcMatrixMustBeFactored )
-#define ASSERT_IS_NOT_FACTORED(matrix) vASSERT( NOT (matrix)->Factored, spcMatrixMustNotBeFactored )
+#define  ASSERT_IS_SPARSE(matrix)	vASSERT( IS_SPARSE(matrix), \
+					 spcMatrixIsNotValid )
+#define  ASSERT_NO_ERRORS(matrix)	vASSERT( NO_ERRORS(matrix), \
+					 spcErrorsMustBeCleared )
+#define  ASSERT_IS_FACTORED(matrix)	vASSERT( IS_FACTORED(matrix), \
+					 spcMatrixMustBeFactored )
+#define  ASSERT_IS_NOT_FACTORED(matrix)	vASSERT( NOT (matrix)->Factored, \
+					 spcMatrixMustNotBeFactored )
 
 /* Macro commands */
 
@@ -440,12 +469,27 @@ __END_DECLS
 #define  ELEMENT_MAG(ptr)   (ABS((ptr)->Real) + ABS((ptr)->Imag))
 
 /* Complex assignment statements. */
-#define CMPLX_ASSIGN(to,from) { (to).Real = (from).Real; (to).Imag = (from).Imag; }
-#define CMPLX_CONJ_ASSIGN(to,from) { (to).Real = (from).Real; (to).Imag = -(from).Imag; }
-#define CMPLX_NEGATE_ASSIGN(to,from) { (to).Real = -(from).Real; (to).Imag = -(from).Imag; }
-#define CMPLX_CONJ_NEGATE_ASSIGN(to,from) { (to).Real = -(from).Real; (to).Imag = (from).Imag; }
+#define  CMPLX_ASSIGN(to,from)  \
+{   (to).Real = (from).Real;    \
+    (to).Imag = (from).Imag;    \
+}
+#define  CMPLX_CONJ_ASSIGN(to,from)     \
+{   (to).Real = (from).Real;            \
+    (to).Imag = -(from).Imag;           \
+}
+#define  CMPLX_NEGATE_ASSIGN(to,from)   \
+{   (to).Real = -(from).Real;           \
+    (to).Imag = -(from).Imag;           \
+}
+#define  CMPLX_CONJ_NEGATE_ASSIGN(to,from)      \
+{   (to).Real = -(from).Real;                   \
+    (to).Imag = (from).Imag;                    \
+}
 #define  CMPLX_CONJ(a)  (a).Imag = -(a).Imag
-#define CMPLX_NEGATE(a) { (a).Real = -(a).Real; (a).Imag = -(a).Imag; }
+#define  CMPLX_NEGATE(a)        \
+{   (a).Real = -(a).Real;       \
+    (a).Imag = -(a).Imag;       \
+}
 
 /* Macro that returns the approx magnitude (L-1 norm) of a complex number. */
 #define  CMPLX_1_NORM(a)        (ABS((a).Real) + ABS((a).Imag))
@@ -457,76 +501,188 @@ __END_DECLS
 #define  CMPLX_2_NORM(a)        (sqrt((a).Real*(a).Real + (a).Imag*(a).Imag))
 
 /* Macro function that performs complex addition. */
-#define CMPLX_ADD(to,from_a,from_b) { (to).Real = (from_a).Real + (from_b).Real; (to).Imag = (from_a).Imag + (from_b).Imag; }
+#define  CMPLX_ADD(to,from_a,from_b)            \
+{   (to).Real = (from_a).Real + (from_b).Real;  \
+    (to).Imag = (from_a).Imag + (from_b).Imag;  \
+}
 
 /* Macro function that performs complex subtraction. */
-#define CMPLX_SUBT(to,from_a,from_b) { (to).Real = (from_a).Real - (from_b).Real; (to).Imag = (from_a).Imag - (from_b).Imag; }
+#define  CMPLX_SUBT(to,from_a,from_b)           \
+{   (to).Real = (from_a).Real - (from_b).Real;  \
+    (to).Imag = (from_a).Imag - (from_b).Imag;  \
+}
 
 /* Macro function that is equivalent to += operator for complex numbers. */
-#define CMPLX_ADD_ASSIGN(to,from) { (to).Real += (from).Real; (to).Imag += (from).Imag; }
+#define  CMPLX_ADD_ASSIGN(to,from)      \
+{   (to).Real += (from).Real;           \
+    (to).Imag += (from).Imag;           \
+}
 
 /* Macro function that is equivalent to -= operator for complex numbers. */
-#define CMPLX_SUBT_ASSIGN(to,from) { (to).Real -= (from).Real; (to).Imag -= (from).Imag; }
+#define  CMPLX_SUBT_ASSIGN(to,from)     \
+{   (to).Real -= (from).Real;           \
+    (to).Imag -= (from).Imag;           \
+}
 
 /* Macro function that multiplies a complex number by a scalar. */
-#define SCLR_MULT(to,sclr,cmplx) { (to).Real = (sclr) * (cmplx).Real; (to).Imag = (sclr) * (cmplx).Imag; }
+#define  SCLR_MULT(to,sclr,cmplx)       \
+{   (to).Real = (sclr) * (cmplx).Real;  \
+    (to).Imag = (sclr) * (cmplx).Imag;  \
+}
 
 /* Macro function that multiply-assigns a complex number by a scalar. */
-#define SCLR_MULT_ASSIGN(to,sclr) { (to).Real *= (sclr); (to).Imag *= (sclr); }
+#define  SCLR_MULT_ASSIGN(to,sclr)      \
+{   (to).Real *= (sclr);                \
+    (to).Imag *= (sclr);                \
+}
 
 /* Macro function that multiplies two complex numbers. */
-#define CMPLX_MULT(to,from_a,from_b) { (to).Real = (from_a).Real * (from_b).Real - (from_a).Imag * (from_b).Imag; (to).Imag = (from_a).Real * (from_b).Imag + (from_a).Imag * (from_b).Real; }
+#define  CMPLX_MULT(to,from_a,from_b)           \
+{   (to).Real = (from_a).Real * (from_b).Real - \
+                (from_a).Imag * (from_b).Imag;  \
+    (to).Imag = (from_a).Real * (from_b).Imag + \
+                (from_a).Imag * (from_b).Real;  \
+}
 
 /* Macro function that implements to *= from for complex numbers. */
-#define CMPLX_MULT_ASSIGN(to,from) { RealNumber to_real_ = (to).Real; (to).Real = to_real_ * (from).Real - (to).Imag * (from).Imag; (to).Imag = to_real_ * (from).Imag + (to).Imag * (from).Real; }
+#define  CMPLX_MULT_ASSIGN(to,from)             \
+{   RealNumber to_real_ = (to).Real;            \
+    (to).Real = to_real_ * (from).Real -        \
+                (to).Imag * (from).Imag;        \
+    (to).Imag = to_real_ * (from).Imag +        \
+                (to).Imag * (from).Real;        \
+}
 
 /* Macro function that multiplies two complex numbers, the first of which is
  * conjugated. */
-#define CMPLX_CONJ_MULT(to,from_a,from_b) { (to).Real = (from_a).Real * (from_b).Real + (from_a).Imag * (from_b).Imag; (to).Imag = (from_a).Real * (from_b).Imag - (from_a).Imag * (from_b).Real; }
+#define  CMPLX_CONJ_MULT(to,from_a,from_b)      \
+{   (to).Real = (from_a).Real * (from_b).Real + \
+                (from_a).Imag * (from_b).Imag;  \
+    (to).Imag = (from_a).Real * (from_b).Imag - \
+                (from_a).Imag * (from_b).Real;  \
+}
 
 /* Macro function that multiplies two complex numbers and then adds them
  * to another. to = add + mult_a * mult_b */
-#define CMPLX_MULT_ADD(to,mult_a,mult_b,add) { (to).Real = (mult_a).Real * (mult_b).Real - (mult_a).Imag * (mult_b).Imag + (add).Real; (to).Imag = (mult_a).Real * (mult_b).Imag + (mult_a).Imag * (mult_b).Real + (add).Imag; }
+#define  CMPLX_MULT_ADD(to,mult_a,mult_b,add)                   \
+{   (to).Real = (mult_a).Real * (mult_b).Real -                 \
+                (mult_a).Imag * (mult_b).Imag + (add).Real;     \
+    (to).Imag = (mult_a).Real * (mult_b).Imag +                 \
+                (mult_a).Imag * (mult_b).Real + (add).Imag;     \
+}
 
 /* Macro function that subtracts the product of two complex numbers from
  * another.  to = subt - mult_a * mult_b */
-#define CMPLX_MULT_SUBT(to,mult_a,mult_b,subt) { (to).Real = (subt).Real - (mult_a).Real * (mult_b).Real + (mult_a).Imag * (mult_b).Imag; (to).Imag = (subt).Imag - (mult_a).Real * (mult_b).Imag - (mult_a).Imag * (mult_b).Real; }
+#define  CMPLX_MULT_SUBT(to,mult_a,mult_b,subt)                 \
+{   (to).Real = (subt).Real - (mult_a).Real * (mult_b).Real +   \
+                              (mult_a).Imag * (mult_b).Imag;    \
+    (to).Imag = (subt).Imag - (mult_a).Real * (mult_b).Imag -   \
+                              (mult_a).Imag * (mult_b).Real;    \
+}
 
 /* Macro function that multiplies two complex numbers and then adds them
  * to another. to = add + mult_a* * mult_b where mult_a* represents mult_a
  * conjugate. */
-#define CMPLX_CONJ_MULT_ADD(to,mult_a,mult_b,add) { (to).Real = (mult_a).Real * (mult_b).Real + (mult_a).Imag * (mult_b).Imag + (add).Real; (to).Imag = (mult_a).Real * (mult_b).Imag - (mult_a).Imag * (mult_b).Real + (add).Imag; }
+#define  CMPLX_CONJ_MULT_ADD(to,mult_a,mult_b,add)              \
+{   (to).Real = (mult_a).Real * (mult_b).Real +                 \
+                (mult_a).Imag * (mult_b).Imag + (add).Real;     \
+    (to).Imag = (mult_a).Real * (mult_b).Imag -                 \
+                (mult_a).Imag * (mult_b).Real + (add).Imag;     \
+}
 
 /* Macro function that multiplies two complex numbers and then adds them
  * to another. to += mult_a * mult_b */
-#define CMPLX_MULT_ADD_ASSIGN(to,from_a,from_b) { (to).Real += (from_a).Real * (from_b).Real - (from_a).Imag * (from_b).Imag; (to).Imag += (from_a).Real * (from_b).Imag + (from_a).Imag * (from_b).Real; }
+#define  CMPLX_MULT_ADD_ASSIGN(to,from_a,from_b)        \
+{   (to).Real += (from_a).Real * (from_b).Real -        \
+                 (from_a).Imag * (from_b).Imag;         \
+    (to).Imag += (from_a).Real * (from_b).Imag +        \
+                 (from_a).Imag * (from_b).Real;         \
+}
 
 /* Macro function that multiplies two complex numbers and then subtracts them
  * from another. */
-#define CMPLX_MULT_SUBT_ASSIGN(to,from_a,from_b) { (to).Real -= (from_a).Real * (from_b).Real - (from_a).Imag * (from_b).Imag; (to).Imag -= (from_a).Real * (from_b).Imag + (from_a).Imag * (from_b).Real; }
+#define  CMPLX_MULT_SUBT_ASSIGN(to,from_a,from_b)       \
+{   (to).Real -= (from_a).Real * (from_b).Real -        \
+                 (from_a).Imag * (from_b).Imag;         \
+    (to).Imag -= (from_a).Real * (from_b).Imag +        \
+                 (from_a).Imag * (from_b).Real;         \
+}
 
 /* Macro function that multiplies two complex numbers and then adds them
  * to the destination. to += from_a* * from_b where from_a* represents from_a
  * conjugate. */
-#define CMPLX_CONJ_MULT_ADD_ASSIGN(to,from_a,from_b) { (to).Real += (from_a).Real * (from_b).Real + (from_a).Imag * (from_b).Imag; (to).Imag += (from_a).Real * (from_b).Imag - (from_a).Imag * (from_b).Real; }
+#define  CMPLX_CONJ_MULT_ADD_ASSIGN(to,from_a,from_b)   \
+{   (to).Real += (from_a).Real * (from_b).Real +        \
+                 (from_a).Imag * (from_b).Imag;         \
+    (to).Imag += (from_a).Real * (from_b).Imag -        \
+                 (from_a).Imag * (from_b).Real;         \
+}
 
 /* Macro function that multiplies two complex numbers and then subtracts them
  * from the destination. to -= from_a* * from_b where from_a* represents from_a
  * conjugate. */
-#define CMPLX_CONJ_MULT_SUBT_ASSIGN(to,from_a,from_b) { (to).Real -= (from_a).Real * (from_b).Real + (from_a).Imag * (from_b).Imag; (to).Imag -= (from_a).Real * (from_b).Imag - (from_a).Imag * (from_b).Real; }
+#define  CMPLX_CONJ_MULT_SUBT_ASSIGN(to,from_a,from_b)  \
+{   (to).Real -= (from_a).Real * (from_b).Real +        \
+                 (from_a).Imag * (from_b).Imag;         \
+    (to).Imag -= (from_a).Real * (from_b).Imag -        \
+                 (from_a).Imag * (from_b).Real;         \
+}
 
 /*
  * Macro functions that provide complex division.
  */
 
 /* Complex division:  to = num / den */
-#define CMPLX_DIV(to,num,den) { RealNumber r_, s_; if (((den).Real >= (den).Imag AND (den).Real > -(den).Imag) OR ((den).Real < (den).Imag AND (den).Real <= -(den).Imag)) { r_ = (den).Imag / (den).Real; s_ = (den).Real + r_*(den).Imag; (to).Real = ((num).Real + r_*(num).Imag)/s_; (to).Imag = ((num).Imag - r_*(num).Real)/s_; } else { r_ = (den).Real / (den).Imag; s_ = (den).Imag + r_*(den).Real; (to).Real = (r_*(num).Real + (num).Imag)/s_; (to).Imag = (r_*(num).Imag - (num).Real)/s_; } }
+#define CMPLX_DIV(to,num,den)                                           \
+{   RealNumber  r_, s_;                                                 \
+    if (((den).Real >= (den).Imag AND (den).Real > -(den).Imag) OR      \
+        ((den).Real < (den).Imag AND (den).Real <= -(den).Imag))        \
+    {   r_ = (den).Imag / (den).Real;                                   \
+        s_ = (den).Real + r_*(den).Imag;                                \
+        (to).Real = ((num).Real + r_*(num).Imag)/s_;                    \
+        (to).Imag = ((num).Imag - r_*(num).Real)/s_;                    \
+    }                                                                   \
+    else                                                                \
+    {   r_ = (den).Real / (den).Imag;                                   \
+        s_ = (den).Imag + r_*(den).Real;                                \
+        (to).Real = (r_*(num).Real + (num).Imag)/s_;                    \
+        (to).Imag = (r_*(num).Imag - (num).Real)/s_;                    \
+    }                                                                   \
+}
 
 /* Complex division and assignment:  num /= den */
-#define CMPLX_DIV_ASSIGN(num,den) { RealNumber r_, s_, t_; if (((den).Real >= (den).Imag AND (den).Real > -(den).Imag) OR ((den).Real < (den).Imag AND (den).Real <= -(den).Imag)) { r_ = (den).Imag / (den).Real; s_ = (den).Real + r_*(den).Imag; t_ = ((num).Real + r_*(num).Imag)/s_; (num).Imag = ((num).Imag - r_*(num).Real)/s_; (num).Real = t_; } else { r_ = (den).Real / (den).Imag; s_ = (den).Imag + r_*(den).Real; t_ = (r_*(num).Real + (num).Imag)/s_; (num).Imag = (r_*(num).Imag - (num).Real)/s_; (num).Real = t_; } }
+#define CMPLX_DIV_ASSIGN(num,den)                                       \
+{   RealNumber  r_, s_, t_;                                             \
+    if (((den).Real >= (den).Imag AND (den).Real > -(den).Imag) OR      \
+        ((den).Real < (den).Imag AND (den).Real <= -(den).Imag))        \
+    {   r_ = (den).Imag / (den).Real;                                   \
+        s_ = (den).Real + r_*(den).Imag;                                \
+        t_ = ((num).Real + r_*(num).Imag)/s_;                           \
+        (num).Imag = ((num).Imag - r_*(num).Real)/s_;                   \
+        (num).Real = t_;                                                \
+    }                                                                   \
+    else                                                                \
+    {   r_ = (den).Real / (den).Imag;                                   \
+        s_ = (den).Imag + r_*(den).Real;                                \
+        t_ = (r_*(num).Real + (num).Imag)/s_;                           \
+        (num).Imag = (r_*(num).Imag - (num).Real)/s_;                   \
+        (num).Real = t_;                                                \
+    }                                                                   \
+}
 
 /* Complex reciprocation:  to = 1.0 / den */
-#define CMPLX_RECIPROCAL(to,den) { RealNumber r_; if (((den).Real >= (den).Imag AND (den).Real > -(den).Imag) OR ((den).Real < (den).Imag AND (den).Real <= -(den).Imag)) { r_ = (den).Imag / (den).Real; (to).Imag = -r_*((to).Real = 1.0/((den).Real + r_*(den).Imag)); } else { r_ = (den).Real / (den).Imag; (to).Real = -r_*((to).Imag = -1.0/((den).Imag + r_*(den).Real)); } }
+#define CMPLX_RECIPROCAL(to,den)                                        \
+{   RealNumber  r_;                                                     \
+    if (((den).Real >= (den).Imag AND (den).Real > -(den).Imag) OR      \
+        ((den).Real < (den).Imag AND (den).Real <= -(den).Imag))        \
+    {   r_ = (den).Imag / (den).Real;                                   \
+        (to).Imag = -r_*((to).Real = 1.0/((den).Real + r_*(den).Imag)); \
+    }                                                                   \
+    else                                                                \
+    {   r_ = (den).Real / (den).Imag;                                   \
+        (to).Real = -r_*((to).Imag = -1.0/((den).Imag + r_*(den).Real));\
+    }                                                                   \
+}
 
 /*
  *  ASSERT and ABORT
@@ -539,13 +695,17 @@ __END_DECLS
  */
 
 #if spDEBUG
-# define ASSERT(condition) { if (NOT(condition)) { AG_FatalError("SPARSE Assertion Failed"); } }
+# define ASSERT(condition) \
+    { if (NOT(condition)) { AG_FatalError("SPARSE Assertion Failed"); } }
 #else
 # define ASSERT(condition)
 #endif
 
 #if spDEBUG
-# define vASSERT(condition,message) { if (NOT(condition)) vABORT(message); }
+# define vASSERT(condition,message) { \
+if (NOT(condition))			\
+	vABORT(message);		\
+}
 #else
 # define vASSERT(condition,message)
 #endif
@@ -557,12 +717,19 @@ __END_DECLS
  * MEMORY ALLOCATION
  */
 
-#define ALLOC(type,number) ((type *)AG_Malloc((sizeof(type)*(number))))
-#define REALLOC(ptr,type,number) ptr = (type *)AG_Realloc((char *)ptr,(sizeof(type)*(number)))
-#define FREE(ptr) AG_Free(ptr)
+#define ALLOC(type,number) \
+	((type *)AG_Malloc((sizeof(type)*(number))))
+#define REALLOC(ptr,type,number) \
+        ptr = (type *)AG_Realloc((char *)ptr,(sizeof(type)*(number)))
+#define FREE(ptr) \
+	AG_Free(ptr)
 
 /* Calloc that properly handles allocating a cleared vector. */
-#define CALLOC(ptr,type,number) { int i; ptr = ALLOC(type, number); if (ptr != (type *)NULL) for(i=(number)-1;i>=0; i--) ptr[i] = (type) 0; }
+#define CALLOC(ptr,type,number)                         \
+{   int i; ptr = ALLOC(type, number);                   \
+    if (ptr != (type *)NULL)                            \
+        for(i=(number)-1;i>=0; i--) ptr[i] = (type) 0;  \
+}
 
 /*
  * Utility Functions
@@ -572,7 +739,16 @@ __END_DECLS
  * Used when computing Markowitz products.
  */
 
-#define spcMarkoProd(product, op1, op2) if (( (op1) > LARGEST_SHORT_INTEGER AND (op2) != 0) OR ( (op2) > LARGEST_SHORT_INTEGER AND (op1) != 0)) { double fProduct = (double)(op1) * (double)(op2); if (fProduct >= LARGEST_LONG_INTEGER) (product) = LARGEST_LONG_INTEGER; else (product) = (long)fProduct; } else (product) = (op1)*(op2);
+#define spcMarkoProd(product, op1, op2) \
+        if (( (op1) > LARGEST_SHORT_INTEGER AND (op2) != 0) OR \
+            ( (op2) > LARGEST_SHORT_INTEGER AND (op1) != 0)) \
+        {   double fProduct = (double)(op1) * (double)(op2); \
+            if (fProduct >= LARGEST_LONG_INTEGER) \
+                (product) = LARGEST_LONG_INTEGER; \
+            else \
+                (product) = (long)fProduct; \
+        } \
+        else (product) = (op1)*(op2);
 
 /* Real and complex numbers */
 typedef spREAL RealNumber, *RealVector;
@@ -934,11 +1110,11 @@ struct  MatrixFrame
 typedef struct MatrixFrame *MatrixPtr;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const char *spcMatrixIsNotValid;
-extern DECLSPEC const char *spcErrorsMustBeCleared;
-extern DECLSPEC const char *spcMatrixMustBeFactored;
-extern DECLSPEC const char *spcMatrixMustNotBeFactored;
+__BEGIN_DECLS 
+extern DECLSPEC const char *spcMatrixIsNotValid; 
+extern DECLSPEC const char *spcErrorsMustBeCleared; 
+extern DECLSPEC const char *spcMatrixMustBeFactored; 
+extern DECLSPEC const char *spcMatrixMustNotBeFactored; 
 extern DECLSPEC ElementPtr spcGetElement( MatrixPtr );
 extern DECLSPEC ElementPtr spcGetFillin( MatrixPtr );
 extern DECLSPEC ElementPtr spcFindDiag( MatrixPtr, int );
@@ -947,7 +1123,7 @@ extern DECLSPEC void spcCreateInternalVectors( MatrixPtr );
 extern DECLSPEC void spcLinkRows( MatrixPtr );
 extern DECLSPEC void spcColExchange( MatrixPtr, int, int );
 extern DECLSPEC void spcRowExchange( MatrixPtr, int, int );
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/math/close.h>

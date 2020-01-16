@@ -28,14 +28,14 @@ struct ag_key_mapping {
 };
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC const struct ag_keycode agKeymap[];
-extern DECLSPEC const struct ag_key_mapping agKeymapLATIN1[];
-extern DECLSPEC const struct ag_key_composition agCompositionMap[];
-extern DECLSPEC const int agCompositionMapSize;
+__BEGIN_DECLS 
+extern DECLSPEC const struct ag_keycode agKeymap[]; 
+extern DECLSPEC const struct ag_key_mapping agKeymapLATIN1[]; 
+extern DECLSPEC const struct ag_key_composition agCompositionMap[]; 
+extern DECLSPEC const int agCompositionMapSize; 
 extern DECLSPEC Uint32 AG_ApplyModifiersASCII(Uint32, int);
 extern DECLSPEC int AG_KeyInputCompose(struct ag_editable *, Uint32, Uint32 *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

@@ -62,10 +62,10 @@ typedef struct ag_driver_mw {
 #define AG_DRIVER_MW_ANYPOS_AVAIL	0x02	/* Autopositioning supported */
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_ObjectClass agDriverMwClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_ObjectClass agDriverMwClass; 
 extern DECLSPEC AG_DriverMw *agDriverMw; 
 extern DECLSPEC AG_List *agModalWindows; 
-extern DECLSPEC int agModalWindowsRefs;
-__END_DECLS
+extern DECLSPEC int agModalWindowsRefs; 
+__END_DECLS 
 /* Close generated block */

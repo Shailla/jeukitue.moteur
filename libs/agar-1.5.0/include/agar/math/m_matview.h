@@ -33,14 +33,14 @@ typedef struct m_matview {
 } M_Matview;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass mMatviewClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass mMatviewClass; 
 extern DECLSPEC M_Matview *M_MatviewNew(void *, M_Matrix *, Uint);
 extern DECLSPEC void M_MatviewSizeHint(M_Matview *, const char *, Uint, Uint);
 extern DECLSPEC void M_MatviewSetMatrix(M_Matview *, M_Matrix *);
 extern DECLSPEC void M_MatviewSetDisplayMode(M_Matview *, enum m_matview_mode);
 extern DECLSPEC void M_MatviewSetNumericalFmt(M_Matview *, const char *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/math/close.h>

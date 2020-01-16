@@ -213,7 +213,7 @@ typedef struct m_point_set3i {
 #include <agar/math/m_point_set.h>
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 /*
  * Interface to M_GeomSet2 and M_GeomSet3.
  */
@@ -270,5 +270,5 @@ M_GeomSetFree3(M_GeomSet3 *S)
 	S->g = NULL;
 	S->n = 0;
 }
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

@@ -33,8 +33,8 @@ typedef struct ag_radio {
 } AG_Radio;
 
 /* Begin generated block */
-__BEGIN_DECLS
-extern DECLSPEC AG_WidgetClass agRadioClass;
+__BEGIN_DECLS 
+extern DECLSPEC AG_WidgetClass agRadioClass; 
 extern DECLSPEC AG_Radio *AG_RadioNew(void *, Uint, const char *[]);
 extern DECLSPEC AG_Radio *AG_RadioNewFn(void *, Uint, const char **, AG_EventFn, const char *, ...);
 extern DECLSPEC AG_Radio *AG_RadioNewInt(void *, Uint, const char **, int *);
@@ -45,7 +45,7 @@ extern DECLSPEC int AG_RadioAddItemS(AG_Radio *, const char *);
 extern DECLSPEC int AG_RadioAddItemHK(AG_Radio *, AG_KeySym, const char *, ...) FORMAT_ATTRIBUTE(printf,3,4) NONNULL_ATTRIBUTE(3);
 extern DECLSPEC int AG_RadioAddItemHKS(AG_Radio *, AG_KeySym, const char *);
 extern DECLSPEC void AG_RadioClearItems(AG_Radio *);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */
 
 #include <agar/gui/close.h>

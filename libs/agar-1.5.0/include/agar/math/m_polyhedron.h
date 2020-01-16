@@ -1,7 +1,7 @@
 /*	Public domain	*/
 
 /* Begin generated block */
-__BEGIN_DECLS
+__BEGIN_DECLS 
 extern DECLSPEC void M_PolyhedronInit(M_Polyhedron *);
 extern DECLSPEC void M_PolyhedronFree(M_Polyhedron *);
 extern DECLSPEC int M_PolyhedronRead(AG_DataSource *, M_Polyhedron *);
@@ -13,5 +13,5 @@ extern DECLSPEC Uint M_PolyhedronAddEdge(M_Polyhedron *, int, int);
 extern DECLSPEC void M_PolyhedronDelEdge(M_Polyhedron *, Uint);
 extern DECLSPEC Uint M_PolyhedronAddFacet(M_Polyhedron *, Uint, const Uint *);
 extern DECLSPEC void M_PolyhedronDelFacet(M_Polyhedron *, Uint);
-__END_DECLS
+__END_DECLS 
 /* Close generated block */

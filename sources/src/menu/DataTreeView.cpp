@@ -12,6 +12,9 @@
 #include "data/ValeurInt.h"
 #include "data/ClientDataTree.h"
 #include "data/MarqueurDistant.h"
+#include "data/LocalDataTree.h"
+#include "data/ServeurDataTree.h"
+#include "data/ClientDataTree.h"
 #include "reseau/new/Interlocutor2.h"
 #include "main/Game.h"
 

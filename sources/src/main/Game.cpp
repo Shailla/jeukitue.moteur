@@ -31,6 +31,9 @@ class CGame;
 #include "main/Clavier.h"
 #include "menu/ConsoleView.h"
 #include "data/exception/NotExistingBrancheException.h"
+#include "data/LocalDataTree.h"
+#include "data/ServeurDataTree.h"
+#include "data/ClientDataTree.h"
 
 #include "reseau/enumReseau.h"
 #include "main/Game.h"

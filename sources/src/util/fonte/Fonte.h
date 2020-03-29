@@ -25,7 +25,8 @@
 class Fonte {
 	FT_Library _ft;
 
-	GLint _fonteTex;		// Texture atlas de la fonte
+	bool _fonteTexOk;		// Indique si _fonteTex a été intialisé par OpenGL
+	GLuint _fonteTex;		// Texture atlas de la fonte
 
 	float _atlasWidth;		// Largeur de la texture atlas en pixels
 	float _atlasHeight;		// Hauteur de la texture atlas en pixels

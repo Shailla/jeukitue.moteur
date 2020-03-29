@@ -8,15 +8,16 @@
 #include <agar/gui.h>
 
 #include "menu/View.h"
-#include "data/ServeurDataTree.h"
-#include "data/ClientDataTree.h"
 
 class Viewer;
+class AbstractBranche;
 
 namespace jkt {
 	class CMaterial;
 	class CLight;
 }
+
+class DataTree;
 
 class DataTreeView : public View {
 	AG_Tlist* _dataList;

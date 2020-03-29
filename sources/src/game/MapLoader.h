@@ -8,8 +8,6 @@
 #ifndef MAPLOADER_H_
 #define MAPLOADER_H_
 
-#include "game/GameDto.h"
-
 class GameDto;
 
 class MapLoader {

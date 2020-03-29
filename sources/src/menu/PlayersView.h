@@ -8,8 +8,6 @@
 #include <agar/gui.h>
 
 #include "menu/View.h"
-#include "data/ServeurDataTree.h"
-#include "data/ClientDataTree.h"
 
 class Viewer;
 

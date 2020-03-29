@@ -19,6 +19,8 @@
 #include "reseau/new/message/C2SHelloTechnicalMessage.h"
 #include "reseau/new/message/S2CConnectionAcceptedTechnicalMessage.h"
 #include "reseau/new/Interlocutor2.h"
+#include "reseau/new/NotConnectedInterlocutor2.h"
+#include "reseau/new/exception/ConnectionFailedException.h"
 
 #include "reseau/new/ServerUdpInterlocutor.h"
 

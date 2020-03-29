@@ -71,7 +71,7 @@
             <Position X="-0.064221" Y="1.46471" Z="-2.60413"/>
         </EntryPoint>
         <EntryPoint>
-            <Position X="-19.7477" Y="0" Z="-7.52718"/>
+			<Position X="-19.7477" Y="3" Z="-7.52718"/>
         </EntryPoint>
     </EntryPoints>
 </Map>

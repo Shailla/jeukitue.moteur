@@ -290,7 +290,7 @@ void CPlayer::getPosition(float pos[3]) const {
 /**
  * Change la vitesse du joueur.
  */
-void CPlayer::changeVitesse(float vx, float vy, float vz) {
+void CPlayer::setVitesse(float vx, float vy, float vz) {
 	_vitesse[0] = vx;
 	_vitesse[1] = vy;
 	_vitesse[2] = vz;
@@ -632,9 +632,9 @@ void CPlayer::resetDeplacement() {
 }
 
 void CPlayer::calculeDeplacement(float deltaTime) {
-	_deplacement[0] += _vitesse[0] * deltaTime;
-	_deplacement[1] += _vitesse[1] * deltaTime;
-	_deplacement[2] += _vitesse[2] * deltaTime;
+	_deplacement[0] = _vitesse[0] * deltaTime;
+	_deplacement[1] = _vitesse[1] * deltaTime;
+	_deplacement[2] = _vitesse[2] * deltaTime;
 }
 
 void CPlayer::deplace(Uint32 now) {

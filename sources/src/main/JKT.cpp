@@ -347,8 +347,8 @@ void afficheInfo( Uint32 tempsDisplay ) {
 		str = cou;
 		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 
-		// Affiche l'état de la gravité
-		Game.getGravite()?sprintf( cou, "Gravité : active"):sprintf( cou, "Gravité : inactive");
+		// Affiche l'ï¿½tat de la gravitï¿½
+		Game.getGravite()?sprintf( cou, "Gravitï¿½ : active"):sprintf( cou, "Gravitï¿½ : inactive");
 		str = cou;
 		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 	}
@@ -784,7 +784,7 @@ void chopeLesEvenements(Uint32 now, float deltaTime) {
 
 			erwin->getVitesse( vect );
 			float projectilLaunchSpeed = deltaTime * PROJECTIL_LAUNCH_SPEED;
-			balle->changeVitesse( 	sinTeta*cosPhi*projectilLaunchSpeed + vect[0], sinPhi*projectilLaunchSpeed + vect[1], cosTeta*projectilLaunchSpeed + vect[2]);
+			balle->setVitesse( 	sinTeta*cosPhi*projectilLaunchSpeed + vect[0], sinPhi*projectilLaunchSpeed + vect[1], cosTeta*projectilLaunchSpeed + vect[2]);
 
 			balle->changeAction( gravitePlayer );	// associe au projectile une fonction de gravitÃ©
 			balle->changeContact( contactSprite );	// associe une fonction pour les contacts avec la map
@@ -947,7 +947,7 @@ void play_handle_key_down( SDL_Event *event ) {
 			// Annule la vitesse du joueur actif
 		case SDLK_v :
 			if( Game.Erwin() ) {
-				Game.Erwin()->changeVitesse(0.0f, 0.0f, 0.0f);
+				Game.Erwin()->setVitesse(0.0f, 0.0f, 0.0f);
 			}
 			break;
 
@@ -979,7 +979,7 @@ void play_handle_key_down( SDL_Event *event ) {
 		case SDLK_o :
 			if(Game.Erwin()) {
 				Game.Erwin()->choiceOneEntryPoint();
-				Game.Erwin()->changeVitesse( 0.0f, 0.0f, 0.0f );
+				Game.Erwin()->setVitesse( 0.0f, 0.0f, 0.0f );
 				Game.Erwin()->teta( 0.0 );
 				Game.Erwin()->phi( 0.0 );
 			}

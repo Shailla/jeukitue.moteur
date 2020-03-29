@@ -88,7 +88,7 @@ public :
 	void choiceOneEntryPoint();							// Choisi un point d'entr�e sur la Map
 
 	// Vitesse
-	void changeVitesse(float vx, float vy, float vz);	// change la vitesse du joueur
+	void setVitesse(float vx, float vy, float vz);	// change la vitesse du joueur
 	void getVitesse(float vit[3]) const;				// renvoie le pointeur sur la vitesse du joueur
 	float getVitesse() const;							// Renvoie la vitesse du joueur en m/s
 	void getDeplacement(float deplacement[3]) const;	// renvoie le pointeur sur le déplacement du joueur

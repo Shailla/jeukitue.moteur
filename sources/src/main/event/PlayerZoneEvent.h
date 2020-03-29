@@ -8,8 +8,9 @@
 #ifndef SRC_MAIN_EVENT_PLAYERZONEEVENT_H_
 #define SRC_MAIN_EVENT_PLAYERZONEEVENT_H_
 
-#include "main/Player.h"
 #include "main/event/JktEvent.h"
+
+class CPlayer;
 
 namespace jkt {
 

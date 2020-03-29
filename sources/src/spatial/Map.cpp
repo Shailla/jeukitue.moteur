@@ -16,12 +16,13 @@
 
 class CGame;
 
-#include "spatial/XmlVocabulaire.h"
+#include "util/V3D.h"
+#include "util/Tableau.cpp"
 #include "util/Trace.h"
 #include "util/Erreur.h"
 #include "util/FileUtils.h"
+#include "spatial/XmlVocabulaire.h"
 #include "main/Fabrique.h"
-#include "util/Tableau.cpp"
 #include "spatial/moteur/MoteurParticules.h"
 #include "spatial/materiau/Material.h"
 #include "spatial/materiau/MaterialMaker.h"
@@ -48,12 +49,12 @@ class CGame;
 #include "son/DemonSons.h"
 #include "reseau/SPA.h"
 #include "main/Player.h"
-#include "util/V3D.h"
 #include "spatial/geo/GeoMaker.h"
 #include "spatial/geo/EntryPointMaker.h"
 #include "ressource/RessourcesLoader.h"
 #include "spatial/MapLogger.h"
 #include "spatial/Map.h"
+#include "plugin/PluginEngine.h"
 
 using namespace std;
 using namespace jkt;

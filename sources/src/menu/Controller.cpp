@@ -15,6 +15,9 @@ using namespace boost::filesystem;
 #include <agar/gui.h>
 #include <agar/dev.h>
 
+#include "util/FindFolder.h"
+#include "util/StringUtils.h"
+#include "util/Trace.h"
 #include "main/divers.h"
 #include "exception/centralisateur/CentralisateurTcpException.h"
 #include "menu/ConsoleView.h"
@@ -36,7 +39,6 @@ using namespace boost::filesystem;
 #include "centralisateur/TcpConnector.h"
 #include "centralisateur/data/DownloadFileItem.h"
 #include "ihm/Portail.h"
-#include "util/Trace.h"
 #include "main/Game.h"
 #include "main/Focus.h"
 #include "main/Cfg.h"
@@ -48,11 +50,11 @@ using namespace boost::filesystem;
 #include "spatial/materiau/MaterialTexture.h"
 #include "spatial/materiau/MaterialMulti.h"
 #include "spatial/AseImporter.h"
-#include "util/FindFolder.h"
+
 #include "main/event/PlayerZoneEvent.h"
 #include "plugin/lua/proxy/game/PluginPlayerZoneEventProxy.h"
 #include "plugin/PluginEngine.h"
-#include "util/StringUtils.h"
+#include "script/CommandeInterpreter.h"
 
 #include "plugin/PluginActionEvent.h"
 

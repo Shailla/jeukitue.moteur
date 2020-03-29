@@ -34,8 +34,9 @@ class CGame;
 #include "data/LocalDataTree.h"
 #include "data/ServeurDataTree.h"
 #include "data/ClientDataTree.h"
-
+#include "plugin/PluginEngine.h"
 #include "reseau/enumReseau.h"
+
 #include "main/Game.h"
 
 using namespace std;

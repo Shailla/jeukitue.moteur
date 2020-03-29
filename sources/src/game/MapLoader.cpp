@@ -17,6 +17,7 @@
 #include "main/Game.h"
 #include "ressource/RessourcesLoader.h"
 #include "menu/ConsoleView.h"
+#include "menu/Viewer.h"
 #include "spatial/Map.h"
 #include "spatial/contact.h"
 

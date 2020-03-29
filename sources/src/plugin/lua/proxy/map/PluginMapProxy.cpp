@@ -10,6 +10,7 @@
 #include "spatial/objet/CheckPlayerInZone.h"
 #include "spatial/Map.h"
 #include "plugin/lua/proxy/map/PluginPlayerZoneDetectorProxy.h"
+#include "plugin/PluginEngine.h"
 
 #include "plugin/lua/proxy/map/PluginMapProxy.h"
 

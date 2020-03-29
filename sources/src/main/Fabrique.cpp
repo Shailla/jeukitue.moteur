@@ -4,6 +4,11 @@
 #include "util/Trace.h"
 
 #include "centralisateur/UdpController.h"
+#include "centralisateur/Centralisateur.h"
+#include "plugin/PluginEngine.h"
+#include "menu/Viewer.h"
+#include "script/CommandeInterpreter.h"
+#include "util/GLUtils.h"
 
 #include "main/Fabrique.h"
 

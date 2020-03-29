@@ -16,6 +16,8 @@
 #include "GL/glew.h"
 #include "SDL.h"
 
+#include "main/config/ComId.h"
+
 class CCfg {
 	static const char* CST_GEN_PLAY_INTRO;
 
@@ -101,11 +103,6 @@ public:
 		bool testInitAndSaveConfiguration(int driver, int output, int mixer, int driverRecord);
 	};
 
-	class CComID {
-	public:
-		SDLKey key;		// Touche du clavier correspondant
-		int mouse;		// Touche de la souris correspondant
-	};
 private:
 
 	class CCommandes {

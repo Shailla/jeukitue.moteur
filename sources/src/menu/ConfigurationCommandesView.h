@@ -8,7 +8,7 @@
 #include <agar/core.h>
 #include <agar/gui.h>
 
-#include "main/Cfg.h"
+#include "main/config/ComId.h"
 
 #include "menu/View.h"
 
@@ -42,7 +42,7 @@ class ConfigurationCommandesView : public View {
 	bool _waitingCommandUserChoice;
 	COMMANDE_ID _commandToWait;
 
-	static void setCommande(CCfg::CComID& commandeToUpdate, const SDLKey& key, const int& mouse);
+	static void setCommande(CComID& commandeToUpdate, const SDLKey& key, const int& mouse);
 	void refreshCommandButton(COMMANDE_ID commandId);
 
 public:

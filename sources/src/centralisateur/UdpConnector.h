@@ -3,11 +3,9 @@
 
 #include "SDL_net.h"
 
-#include "centralisateur/data/Data.h"
+#include "includes.h"
 
 #include "exception/centralisateur/BindingUdpException.h"
-
-class UdpController;
 
 class UdpConnector
 {

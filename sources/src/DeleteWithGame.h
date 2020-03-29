@@ -4,7 +4,7 @@
 
 #include <set>
 
-class CDeleteWithGame;
+#include "includes.h"
 
 class CDeleteWithGame {
 

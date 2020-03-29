@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "util/StreamUtils.h"
+#include "data/MarqueurDistant.h"
 #include "data/ServeurDataTree.h"
 
 #include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"

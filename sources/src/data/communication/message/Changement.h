@@ -10,9 +10,7 @@
 
 #include <sstream>
 
-class ServeurDataTree;
-class DataSerializer;
-class MarqueurDistant;
+#include "includes.h"
 
 class Changement {
 	friend DataSerializer;

@@ -3,6 +3,8 @@
 
 #include "util/Trace.h"
 
+#include "centralisateur/UdpController.h"
+
 #include "main/Fabrique.h"
 
 using namespace std;

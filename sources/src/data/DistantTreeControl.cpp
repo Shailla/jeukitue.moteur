@@ -11,6 +11,8 @@
 #include <iostream>
 
 #include "data/Branche.h"
+#include "data/PrivateBranche.h"
+#include "data/DistantTreeProxy.h"
 #include "data/ValeurInt.h"
 #include "main/Cfg.h"
 #include "data/DataTreeUtils.h"

@@ -5,10 +5,9 @@
 
 #include "SDL_net.h"
 
-class UdpConnector;
+#include "includes.h"
 
-class UdpController
-{
+class UdpController {
     UdpConnector* m_udpConnector;
 public:
 	enum {

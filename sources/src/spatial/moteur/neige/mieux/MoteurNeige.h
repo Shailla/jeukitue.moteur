@@ -6,12 +6,13 @@
 #include "util/V3D.h"
 
 #include "spatial/moteur/MoteurParticules.h"
-#include "spatial/moteur/neige/mieux/Flocon.h"
 
 class CGame;
 
 namespace jkt
 {
+
+class Flocon;
 
 class MoteurNeige : public CMoteurParticules {
 	int _nbrParticules;					// Nombre total de flocons

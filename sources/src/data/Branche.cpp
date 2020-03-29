@@ -18,6 +18,9 @@
 #include "data/ValeurFloat.h"
 #include "data/ValeurString.h"
 #include "data/MarqueurDistant.h"
+#include "data/exception/AlreadyExistingBrancheException.h"
+#include "data/exception/NotExistingBrancheException.h"
+#include "data/exception/NotExistingValeurException.h"
 
 #include "data/Branche.h"
 #include "data/PrivateBranche.h"

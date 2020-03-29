@@ -12,9 +12,9 @@
 #include <vector>
 #include <string>
 
-#include "data/MarqueurDistant.h"
-#include "data/Branche.h"
 #include "data/communication/message/Changement.h"
+
+class MarqueurDistant;
 
 class AddBrancheFromClientChangement: public Changement {
 	std::vector<int> _parentBrancheId;

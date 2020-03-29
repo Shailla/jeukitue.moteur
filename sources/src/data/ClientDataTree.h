@@ -10,8 +10,11 @@
 
 #include <string>
 #include <vector>
+#include "SDL.h"
 
 #include "data/DataTree.h"
+
+class Interlocutor2;
 
 class ClientDataTree : public DataTree {
 	std::string _clientName;

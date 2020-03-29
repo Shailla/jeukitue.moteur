@@ -5,10 +5,9 @@
 #include <vector>
 
 #include "centralisateur/data/DownloadFileItem.h"
-#include "exception/centralisateur/CentralisateurTcpException.h"
 
-#include "UdpController.h"
-#include "menu/ProgressBarView.h"
+class UdpController;
+class ProgressBarView;
 
 class Centralisateur {
     int _portLocal;

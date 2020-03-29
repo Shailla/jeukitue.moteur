@@ -14,15 +14,11 @@
 
 #include "tinyxml.h"
 
-#include "util/Erreur.h"
-#include "spatial/MapLogger.h"
-
-#include "spatial/basic/MapObject.h"
-
 namespace jkt
 {
 class CMap;
 class CMoteurParticules;
+class MapLogger;
 
 class EngineMaker
 {

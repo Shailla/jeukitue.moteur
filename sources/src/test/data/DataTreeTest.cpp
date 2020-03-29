@@ -15,7 +15,11 @@
 #include "data/MarqueurDistant.h"
 #include "data/ServeurDataTree.h"
 #include "data/ClientDataTree.h"
+#include "data/DistantTreeProxy.h"
+#include "data/PrivateBranche.h"
 #include "data/DataTreeUtils.h"
+#include "data/exception/NotExistingBrancheException.h"
+#include "data/exception/NotExistingValeurException.h"
 
 #include "test/data/DataTreeTest.h"
 

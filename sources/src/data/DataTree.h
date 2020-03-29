@@ -10,13 +10,11 @@
 
 #include <set>
 
-#include "data/exception/NotExistingBrancheException.h"
-#include "data/exception/NotExistingValeurException.h"
 #include "util/types/AnyData.h"
-#include "data/TreeConstants.h"
 #include "data/Branche.h"
-#include "data/PrivateBranche.h"
-#include "data/DistantTreeProxy.h"
+#include "data/TreeConstants.h"
+
+class DistantTreeProxy;
 
 class DataTree {
 	Branche _root;

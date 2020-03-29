@@ -13,6 +13,7 @@
 #include "data/MarqueurDistant.h"
 #include "data/exception/NotExistingBrancheException.h"
 #include "data/exception/DataCommunicationException.h"
+#include "data/exception/NotExistingValeurException.h"
 #include "data/communication/DataSerializer.h"
 #include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
 #include "data/communication/message/ClientToServer/AddValeurFromClientChangement.h"

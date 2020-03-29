@@ -10,6 +10,7 @@
 #include <iostream>
 
 #include "data/communication/DataSerializer.h"
+#include "data/exception/DataCommunicationException.h"
 #include "data/communication/message/ServerToClient/AddBrancheFromServerChangement.h"
 #include "data/communication/message/ClientToServer/AddBrancheFromClientChangement.h"
 #include "data/communication/message/ServerToClient/AddValeurFromServerChangement.h"

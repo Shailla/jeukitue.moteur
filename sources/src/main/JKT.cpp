@@ -112,6 +112,8 @@ class CGame;
 #include "data/ClientDataTree.h"
 #include "data/DistantTreeProxy.h"
 #include "data/DataTreeUtils.h"
+#include "data/exception/NotExistingValeurException.h"
+#include "data/exception/NotExistingBrancheException.h"
 
 #include "reseau/new/ClientUdpInterlocutor.h"
 #include "reseau/new/ServerUdpInterlocutor.h"
@@ -506,7 +508,7 @@ void display() {		// Fonction principale d'affichage
 		glEnable(GL_DEPTH_TEST);
 
 		//		Game.getMap()->AfficheSelection(1.0f, 0.0f, 0.0f);		// Affichage de la map
-		Game.getMap()->affiche();		// Affichage de la map
+		Game.getMap()->affiche();		// Affichage de la Map
 		Game.afficheProjectils();		// Affichage des projectiles
 		Game.afficheDirigeables();		// Affichage des dirigeables
 		Game.affichePlayers();			// Affiche des joueurs
@@ -527,7 +529,7 @@ void display() {		// Fonction principale d'affichage
 			glEnd();
 		}
 
-		// Dessine une cube de 1 mÃ¨tre de cÃ´tÃ© dans la map (sert au repÃ©rage pour la conception du jeu)
+		// Dessine une cube de 1 mètre de côté dans la Map (sert au repérage pour la conception du jeu)
 		if(Config.Debug.cubicMeterVisibility) {
 			glPushMatrix();
 			glTranslatef(0.0f, 0.0f, -0.5f);

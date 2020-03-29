@@ -13,14 +13,10 @@
 #include <vector>
 #include <sstream>
 
+#include "includes.h"
 #include "data/DistantTreeControl.h"
 
 #include "reseau/new/Interlocutor2.h"
-
-class Interlocutor;
-class MarqueurDistant;
-class Donnee;
-class Changement;
 
 class DistantTreeProxy {
 	Interlocutor2* _interlocutor;

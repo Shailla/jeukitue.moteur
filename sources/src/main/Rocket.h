@@ -2,13 +2,16 @@
 #ifndef __JKT__ROCKET_H
 #define __JKT__ROCKET_H
 
-#include "spatial/widget/Texture.h"
 #include "util/V3D.h"
-#include "spatial/Map.h"
 
 #include "main/Projectil.h"
 
 using namespace jkt;
+
+namespace jkt {
+class CMap;
+class Texture;
+}
 
 class CRocket : public CProjectil {
 	enum ROCKET_STATE {

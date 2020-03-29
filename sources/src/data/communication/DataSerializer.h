@@ -11,8 +11,7 @@
 #include <vector>
 #include <sstream>
 
-#include "data/communication/message/Changement.h"
-#include "data/exception/DataCommunicationException.h"
+class Changement;
 
 class DataSerializer {
 	DataSerializer();	// Singleton

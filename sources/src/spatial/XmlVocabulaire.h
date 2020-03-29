@@ -2,9 +2,9 @@
 #ifndef __JKT__XML_H
 #define __JKT__XML_H
 
-#include "tinyxml.h"
+#include <string>
 
-#include "util/Erreur.h"
+#include "tinyxml.h"
 
 class Xml
 {

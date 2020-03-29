@@ -10,11 +10,7 @@
 
 #include <map>
 
-class DataTree;
-class DistantTreeProxy;
-class MarqueurDistant;
-class Branche;
-class Valeur;
+#include "includes.h"
 
 /**
  * Indique de quelle manière la données est partagée entre le serveur et les clients.

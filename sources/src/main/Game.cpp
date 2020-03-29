@@ -30,6 +30,7 @@ class CGame;
 #include "util/Trace.h"
 #include "main/Clavier.h"
 #include "menu/ConsoleView.h"
+#include "data/exception/NotExistingBrancheException.h"
 
 #include "reseau/enumReseau.h"
 #include "main/Game.h"

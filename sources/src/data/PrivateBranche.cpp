@@ -19,8 +19,12 @@
 #include "data/ValeurFloat.h"
 #include "data/ValeurString.h"
 #include "data/MarqueurDistant.h"
+#include "data/DistantTreeProxy.h"
 #include "data/exception/UnavailableOperationException.h"
+#include "data/exception/NotExistingBrancheException.h"
+#include "data/exception/NotExistingValeurException.h"
 #include "data/exception/NotSpecifiedClientException.h"
+#include "data/exception/AlreadyExistingBrancheException.h"
 
 #include "data/PrivateBranche.h"
 

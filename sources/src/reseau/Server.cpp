@@ -162,7 +162,6 @@ bool CServer::acceptPlayer(CSPA *spa) {
 
 	// Création player
 	CPlayer* newPlayer = new CPlayer();			// Crée le réceptacle du nouveau joueur
-	newPlayer->changeAction(gravitePlayer);		// Associe au joueur une fonction de gravité
 	newPlayer->changeContact(contactPlayer);	// Associe une fonction de gestion des contacts avec la map
 	newPlayer->setName(nomNewPlayer);			// Enregistre le nom du nouveau joueur
 	newPlayer->init();

@@ -23,6 +23,10 @@ void normalise(float *A) {
 	A[2] /= n;
 }
 
+float normeCarre(const float *A) {
+	return (A[0]*A[0]) + (A[1]*A[1]) + (A[2]*A[2]);
+}
+
 void scale(const float *A, const float factor, float *result) {
 	result[0] = A[0] * factor;
 	result[1] = A[1] * factor;

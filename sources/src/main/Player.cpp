@@ -73,7 +73,6 @@ CPlayer::CPlayer() {
 	_rayonSolidbox = 0.30f;	// Rayon de la sphère qui représente le joueur dans la amp. Le joueur mesure arbitrairement 1m70, son rayon la moitier
 
 	_pClavier = 0;
-	_actionFunc = 0;		// Pas d'action périodique à réaliser
 	_contactFunc = 0;		// Pas d'action à réaliser lors d'un contact avec la map
 
 	_pSkin = 0;				// Pas de skin associé par défaut
@@ -301,6 +300,15 @@ float CPlayer::getRayon() const {
 }
 
 /**
+ * Retourne l'accélération du joueur.
+ */
+void CPlayer::getAcceleration(float vit[3]) const {
+	vit[0] = _acceleration[0];
+	vit[1] = _acceleration[1];
+	vit[2] = _acceleration[2];
+}
+
+/**
  * Retourne la vitesse du joueur.
  */
 void CPlayer::getVitesse(float vit[3]) const {
@@ -338,10 +346,6 @@ void CPlayer::setDeplacement(const float deplacement[3]) {
 	_deplacement[0] = deplacement[0];
 	_deplacement[1] = deplacement[1];
 	_deplacement[2] = deplacement[2];
-}
-
-void CPlayer::changeAction(void (*action)(Uint32 now, CPlayer *player, float deltaTime)) {
-	_actionFunc = action;	// Définit l'action périodique à réaliser
 }
 
 void CPlayer::changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW)) {
@@ -487,12 +491,6 @@ void CPlayer::freeGL() {
 void CPlayer::createClavier()
 {	_pClavier = new CClavier();	}
 
-void CPlayer::calculeEnvironment(Uint32 now, float deltaTime) {	// Exécute l'action périodique associée au joueur
-	if(_actionFunc) {
-		_actionFunc(now, this, deltaTime);
-	}
-}
-
 void CPlayer::exeContactFunc(float *normal, float distanceW) {	// Exécute fonction gestion contacts avec joueur
 	if(_contactFunc) {
 		_contactFunc(this, normal, distanceW);
@@ -555,47 +553,80 @@ void CPlayer::Skin(jkt::CMap *skin) {
 	_pSkin = skin;
 }
 
+void CPlayer::calculeAcceleration(bool gravity) {
+
+	/* *****************************************************
+	 * Réinitialise les calcules précédents de l'accélération (on la recalcule intégralement à chaque fois)
+	 * * ****************************************************/
+
+	_acceleration[0] = 0.0f;
+	_acceleration[1] = 0.0f;
+	_acceleration[2] = 0.0f;
+	_resistance = 0.0f;
+
+
+	/* *****************************************************
+	 * Applique la gravité si elle est définie et active
+	 * * ****************************************************/
+
+	if(gravity) {
+		_acceleration[1] -= GRAVITY_ACCELERATION;
+	}
+
+
+	/* *****************************************************
+	 * Gère les choix du joueur (joystick / clavier)
+	 * ****************************************************/
+
+	// Gestion vitesse horizontale
+	if( _pente < COSINUS_45 ) {		// Si le joueur est en contact avec le sol (pente inférieure à 45°)
+
+		// Si le joueur avance
+		if( (_accelerationClavier[0] != 0.0f) || (_accelerationClavier[2] != 0.0f) ) {
+			// Applique l'accélération du clavier
+			_acceleration[0] += _accelerationClavier[0] * PLAYER_ACCELERATION;
+			_acceleration[2] += _accelerationClavier[2] * PLAYER_ACCELERATION;
+		}
+
+		// Si le joueur n'avance pas
+		else {
+			// Ralentit la vitesse du joueur
+			_resistance = 0.1f;					// On applique une résistance de 10% à la progression du joueur sur le sol
+		}
+	}
+
+	// Gestion vitesse verticale
+	_acceleration[1] += _accelerationClavier[1] * PLAYER_ACCELERATION;
+}
+
 void CPlayer::calculeVitesse(float deltaTime) {
 
 	/* *****************************************************
-	 * Gestion vitesse horizontale
+	 * Calcule de la vitesse théorique
 	 * ****************************************************/
 
-	float acceleration = PLAYER_ACCELERATION * deltaTime;
-	float speedHoriz = sqrtf(_vitesse[0]*_vitesse[0] + _vitesse[2]*_vitesse[2]);
+	// Prise en compte de l'accélération
+	_vitesse[0] += _acceleration[0] * deltaTime;
+	_vitesse[1] += _acceleration[1] * deltaTime;
+	_vitesse[2] += _acceleration[2] * deltaTime;
 
-	// Si la pente est inférieure à 45° alors le joueur est considéré au sol :
-	//   - il a un contact suffisant avec le sol pour se déplacer, donc ses déplacements clavier peuvent être pris en compte
-	//   - il est contraint à sa vitesse maximale de déplacement au sol
-	if( _pente < 0.707f ) {
-		// Si le joueur n'avance pas alors on ralentit sa vitesse à l'horizatale
-		if( (_accelerationClavier[0] == 0.0f) && (_accelerationClavier[2] == 0.0f) ) {
-			// Ralentit la vitesse du joueur
+	// Résistance de l'environnement
+	if(_resistance != 0.0f) {
+		_vitesse[0] *= (1.0f - _resistance);
+		_vitesse[1] *= (1.0f - _resistance);
+		_vitesse[2] *= (1.0f - _resistance);
+	}
 
-			if(speedHoriz > acceleration) {
-				float decelerationRate = (speedHoriz - acceleration) / speedHoriz;
+	/* *****************************************************
+	 * Limite la vitesse au sol
+	 * ****************************************************/
 
-				_vitesse[0] *= decelerationRate;
-				_vitesse[2] *= decelerationRate;
+	// Si le joueur est en contact avec le sol (pente inférieure à 45°)
+	if( _pente < COSINUS_45 ) {
+		float speedHorizCarre = _vitesse[0]*_vitesse[0] + _vitesse[2]*_vitesse[2];
 
-				speedHoriz -= acceleration;
-			}
-			else {
-				_vitesse[0] = 0.0f;
-				_vitesse[2] = 0.0f;
-
-				speedHoriz = 0.0f;
-			}
-		}
-		else {
-			// Applique l'accélération du clavier
-			_vitesse[0] += _accelerationClavier[0] * acceleration;
-			_vitesse[2] += _accelerationClavier[2] * acceleration;
-		}
-
-		// Limite la vitesse au sol du joueur
-		if(speedHoriz > MAX_SPEED_PLAYER_ON_GROUND) {
-			float ajust = MAX_SPEED_PLAYER_ON_GROUND / speedHoriz;
+		if(speedHorizCarre > MAX_SPEED_PLAYER_ON_GROUND*MAX_SPEED_PLAYER_ON_GROUND) {
+			float ajust = MAX_SPEED_PLAYER_ON_GROUND / sqrtf(speedHorizCarre);
 			_vitesse[0] *= ajust;
 			_vitesse[2] *= ajust;
 		}
@@ -603,22 +634,14 @@ void CPlayer::calculeVitesse(float deltaTime) {
 
 
 	/* *****************************************************
-	 * Gestion vitesse verticale
-	 * ****************************************************/
-
-	// Applique l'accélération du clavier
-	_vitesse[1] += _accelerationClavier[1] * acceleration;
-
-
-	/* *****************************************************
-	 * Gestion vitesse globale
+	 * Limite la vitesse globale
 	 * ****************************************************/
 
 	// Limite la vitesse du joueur dans tous les axes
-	float speed = norme(_vitesse);
+	float speedCarre = normeCarre(_vitesse);
 
-	if(speed > MAX_SPEED_PLAYER) {
-		float ajust = MAX_SPEED_PLAYER / speed;
+	if(speedCarre > MAX_SPEED_PLAYER*MAX_SPEED_PLAYER) {
+		float ajust = MAX_SPEED_PLAYER / sqrtf(speedCarre);
 		_vitesse[0] *= ajust;
 		_vitesse[1] *= ajust;
 		_vitesse[2] *= ajust;
@@ -637,7 +660,7 @@ void CPlayer::calculeDeplacement(float deltaTime) {
 	_deplacement[2] = _vitesse[2] * deltaTime;
 }
 
-void CPlayer::deplace(Uint32 now) {
+void CPlayer::deplace() {
 	// Calcule la nouvelle position
 	_position[0] += _deplacement[0];
 	_position[1] += _deplacement[1];

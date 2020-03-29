@@ -129,7 +129,6 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 		LOGINFO(("Creation du joueur principal..."));
 
 		CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui géré par le clavier et l'écran)
-		erwin->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
 		erwin->changeContact(contactPlayer);		// Associe une fonction de gestion des contacts avec la map
 		erwin->Skin(pMapJoueur);
 		erwin->setCri( cri1.c_str() );				// Cri du joueur
@@ -176,7 +175,6 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 
 		CPlayer *julien;
 		julien = new CPlayer();						// Crée un autre joueur
-		julien->changeAction(gravitePlayer);		// Associe au joueur une fonction de gravité
 		julien->changeContact(contactPlayer);		// Associe une fonction pour les contacts avec la map
 		julien->Skin( pMapJoueur );
 		julien->setCri( cri1.c_str() );
@@ -223,7 +221,6 @@ int MapLoader::loadLocalGameThread(void* gameDtoVar) {
 
 		CPlayer *sprite;
 		sprite = new CPlayer();						// Crée un autre joueur
-		sprite->changeAction(gravitePlayer);		// Associe au joueur une fonction de gravit�
 		sprite->changeContact(contactSprite);		// Associe une fonction pour les contacts avec la map
 		sprite->Skin( pMapJoueur );
 		sprite->setCri( cri2.c_str() );
@@ -331,7 +328,6 @@ int MapLoader::loadClientGameThread(void* gameDtoVar) {
 	CPlayer* player;
 
 	while((player = Game.nextPlayer(curseur))) {
-		player->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravité
 		player->changeContact(contactPlayer);			// Associe une fonction de gestion des contacts avec la map
 		player->Skin(pMapJoueur);
 		player->setCri( cri1.c_str() );					// Cri du joueur
@@ -437,7 +433,6 @@ int MapLoader::loadServerGameThread(void* gameDtoVar) {
 		LOGINFO(("Creation du joueur principal..."));
 
 		CPlayer *erwin = new CPlayer();				// Crée le joueur principal (celui g�r� par le clavier et l'�cran)
-		erwin->changeAction(gravitePlayer);			// Associe au joueur une fonction de gravit�
 		erwin->changeContact(contactPlayer);		// Associe une fonction de gestion des contacts avec la map
 		erwin->Skin(pMapJoueur);
 		erwin->setCri( cri1.c_str() );				// Cri du joueur

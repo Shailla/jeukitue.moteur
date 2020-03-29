@@ -11,7 +11,6 @@ namespace jkt {
 
 int main(int argc, char** argv);
 void quit_game( int code );												// Quitte avec code d'erreur
-void gravitePlayer(Uint32 now, CPlayer *player, float deltaTime);		// Fonction implémentant la gravité
 void initMenu(void);
 void keyboard(unsigned char key, int x, int y);							// Agit en fonction du clavier
 void display(void);														// Affiche l'écran

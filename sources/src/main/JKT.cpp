@@ -334,10 +334,10 @@ void afficheInfo( Uint32 tempsDisplay ) {
 		str = cou;
 		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 
-		// Affiche la position d'Erwin
+		// Affiche la vitesse d'Erwin
 		float var[3];
-		erwin->getPosition( var );
-		sprintf( cou, "Position : %0.4f %0.4f %0.4f", var[0], var[1], var[2] );
+		erwin->getAcceleration( var );
+		sprintf( cou, "Acceleration : %0.4f %0.4f %0.4f", var[0], var[1], var[2] );
 		str = cou;
 		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
 
@@ -346,6 +346,13 @@ void afficheInfo( Uint32 tempsDisplay ) {
 		sprintf( cou, "Vitesse : %0.4f %0.4f %0.4f", var[0], var[1], var[2] );
 		str = cou;
 		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
+
+		// Affiche la position d'Erwin
+		erwin->getPosition( var );
+		sprintf( cou, "Position : %0.4f %0.4f %0.4f", var[0], var[1], var[2] );
+		str = cou;
+		fonte.drawString(str, 20.0f, ((float)Config.Display.Y) - 20.0f - pos++*15.0f, INFOFONTESCALAR);
+
 
 		// Affiche l'�tat de la gravit�
 		Game.getGravite()?sprintf( cou, "Gravit� : active"):sprintf( cou, "Gravit� : inactive");
@@ -786,7 +793,6 @@ void chopeLesEvenements(Uint32 now, float deltaTime) {
 			float projectilLaunchSpeed = deltaTime * PROJECTIL_LAUNCH_SPEED;
 			balle->setVitesse( 	sinTeta*cosPhi*projectilLaunchSpeed + vect[0], sinPhi*projectilLaunchSpeed + vect[1], cosTeta*projectilLaunchSpeed + vect[2]);
 
-			balle->changeAction( gravitePlayer );	// associe au projectile une fonction de gravité
 			balle->changeContact( contactSprite );	// associe une fonction pour les contacts avec la map
 
 			Game.addPlayer(balle);			// ajoute le projectile � la liste des joueurs
@@ -1132,7 +1138,6 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 
 	// Création du joueur principal
 	CPlayer *erwin = new CPlayer();				// Cr�e le joueur principal (celui géré par le clavier et l'�cran)
-	erwin->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	erwin->changeContact( contactPlayer );		// Associe une fonction de gestion des contacts avec la map
 	erwin->Skin( pMapJoueur );
 	erwin->setCri( cri1.c_str() );				// Cri du joueur
@@ -1145,7 +1150,6 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	// Création d'un second joueur
 	CPlayer *julien;
 	julien = new CPlayer();						// Crée un autre joueur
-	julien->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	julien->changeContact( contactPlayer );		// Associe une fonction pour les contacts avec la map
 	julien->Skin( pMapJoueur2 );
 	julien->setCri( cri1.c_str() );
@@ -1157,7 +1161,6 @@ bool deprecatedOpenMAP(const void *nomFichier) {
 	// Création d'un troisi�me joueur
 	CPlayer *sprite;
 	sprite = new CPlayer();						// Crée un autre joueur
-	sprite->changeAction( gravitePlayer );		// Associe au joueur une fonction de gravité
 	sprite->changeContact( contactSprite );		// Associe une fonction pour les contacts avec la map
 	sprite->Skin( pMapJoueur );
 	sprite->setCri( cri2.c_str() );

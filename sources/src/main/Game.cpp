@@ -452,12 +452,9 @@ void CGame::timer(Uint32 now, float deltaTime) {
 
 			player->resetDeplacement();
 
-			// Applique les poussées liées à l'environnement (gravité, vent, ...)
-			if( _gravite ) {
-				player->calculeEnvironment(now, deltaTime);	// TODO Gérer la gravité mais aussi la poussée de l'environnement, le vent, ...
-			}
-
 			// Calcule de la vitesse théorique voulue
+			player->calculeAcceleration(_gravite);
+
 			player->calculeVitesse(deltaTime);
 
 			player->calculeDeplacement(deltaTime);
@@ -467,9 +464,9 @@ void CGame::timer(Uint32 now, float deltaTime) {
 			_map->gereContactPlayer(0, player);
 
 			// Déplace le joueur
-			player->deplace(now);
+			player->deplace();
 
-			// Met � jour sa vitesse
+			// Met à jour sa vitesse
 			float deplacement[3];
 			float vitesse[3];
 			player->getDeplacement(deplacement);

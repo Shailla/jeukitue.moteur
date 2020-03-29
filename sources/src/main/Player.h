@@ -29,7 +29,6 @@ class CPlayer {
 	CClavier *_pClavier;	//pointeur sur la class des requêtes clavier
 
 	//POINTEURS SUR LES FONCTIONS SPECIALES
-	void (*_actionFunc)(Uint32 now, CPlayer *player, float deltaTime);		// Fonction périodique à réaliser (gravité par exemple)
 	void (*_contactFunc)(CPlayer *player, float *normal, float distanceW); 	// Focntion agissant lors d'un contact avec la map
 	int _armeActif;							// Numéro de l'arme actuellement active
 	int _nbrArmes;							// Nombre d'armes
@@ -40,6 +39,8 @@ class CPlayer {
 	jkt::CReqSon* _criRequest;		// Requête son de cri du personnage
 
 	// Position, vitesse et orientation du joueur
+	float _acceleration[3];			// Accélération du joueur en m/s²
+	float _resistance;				// Résistance de l'environnement au déplacement
 	float _vitesse[3];				// Vitesse du joueur
 	float _deplacement[3];			// Déplacement voulu du joueur, calculé en fonction de la vitesse et du temps écoulé
 	float _position[3];				// Position du joueur
@@ -82,12 +83,16 @@ public :
 	void setPosition(float x, float y, float z);		// change la position du joueur
 	void setPosition(const float position[3]);			// change la position du joueur
 	void setPosition(const jkt::CV3D& pos );			// change la position du joueur
-	void setVitesse(const float vit[3]);				// Change la vitesse du joueur
+	void calculeVitesse(float deltaTime);
 	void setDeplacement(const float deplacement[3]);	// Change la vitesse du joueur
 	void getPosition(float pos[3]) const;				// renvoie le pointeur sur la position du joueur
 	void choiceOneEntryPoint();							// Choisi un point d'entr�e sur la Map
 
+	// Accélération
+	void getAcceleration(float vit[3]) const;			// renvoie le pointeur sur l'accélération du joueur
+
 	// Vitesse
+	void setVitesse(const float vit[3]);				// Change la vitesse du joueur
 	void setVitesse(float vx, float vy, float vz);	// change la vitesse du joueur
 	void getVitesse(float vit[3]) const;				// renvoie le pointeur sur la vitesse du joueur
 	float getVitesse() const;							// Renvoie la vitesse du joueur en m/s
@@ -123,7 +128,6 @@ public :
 	void setCri( const char *nomFichier );									// Indique le son du cri du joueur
 
 	CClavier *getClavier();													// Retourne le pointeur sur la classe clavier du joueur
-	void calculeEnvironment(Uint32 now, float deltaTime);						// Exécute l'action périodique associée au joueur
 	void exeContactFunc( float *normal, float distanceW);	// Exécute fonction gestion contacts avec joueur
 
 	// Affichage
@@ -142,12 +146,11 @@ public :
 	void tuer();				// Tue le joueur
 
 	//FONCTIONS DE MISE EN PLACE DES FONCTIONS SPECIALES
-	void changeAction(void (*action)(Uint32 now, CPlayer *player, float deltaTime));		// Change la fonction à effectuer par défaut
 	void changeContact(void (*contact)(CPlayer *player, float *normal, float distanceW));	// Change la fonction à effectuer lors d'un contact avec la map
-	void calculeVitesse(float deltaTime);
+	void calculeAcceleration(bool gravity);
 	void resetDeplacement();
 	void calculeDeplacement(float deltaTime);
-	void deplace(Uint32 now);
+	void deplace();
 	void faitRequeteClavier(Uint32 now, float deltaTime);
 };
 

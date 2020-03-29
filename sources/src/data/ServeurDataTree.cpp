@@ -13,6 +13,7 @@
 #include "util/CollectionsUtils.h"
 #include "util/Trace.h"
 #include "util/TraceMethod.h"
+#include "util/types/Bytes.h"
 #include "data/MarqueurDistant.h"
 #include "data/PrivateBranche.h"
 #include "data/DistantTreeProxy.h"
@@ -43,13 +44,13 @@ ServeurDataTree::ServeurDataTree() : DataTree(TREE_SERVER) {
 
 
 	/********************************************************************/
-	/* Branche des VID (Very Important Data) de l'arbre de données 		*/
+	/* Branche des VID (Very Important Data) de l'arbre de donnï¿½es 		*/
 	/********************************************************************/
 
 	// Branche principale des VID
 	Branche* vidBranche = this->createBranche(0, rootBrancheId, DataTreeUtils::TREE_VID_BRANCHE_NAME);
 
-	// Branche de contrôle de l'arbre de données
+	// Branche de contrï¿½le de l'arbre de donnï¿½es
 	createPrivateBranche(vidBranche->getBrancheFullId(), DataTreeUtils::TREE_CONTROL_BRANCHE_NAME);
 }
 
@@ -150,7 +151,7 @@ Donnee* ServeurDataTree::initDonneeAndMarqueurFromDistant(DistantTreeProxy* clie
 	{
 		vector<DistantTreeProxy*>::const_iterator clIter;
 
-		// Ajoute un marqueur pour chaque distant et met l'identifiant temporaire dans le distant du client qui a créé la donnée
+		// Ajoute un marqueur pour chaque distant et met l'identifiant temporaire dans le distant du client qui a crï¿½ï¿½ la donnï¿½e
 		for(clIter = getDistants().begin() ; clIter != getDistants().end() ; clIter++) {
 			DistantTreeProxy* cl = *clIter;
 
@@ -165,21 +166,21 @@ Donnee* ServeurDataTree::initDonneeAndMarqueurFromDistant(DistantTreeProxy* clie
 	break;
 	case DONNEE_PRIVATE_SUB:
 		if(!client) {
-			cerr << endl << "Initialisation de donnée impossible sans client spécifié sur branche privée";
+			cerr << endl << "Initialisation de donnï¿½e impossible sans client spï¿½cifiï¿½ sur branche privï¿½e";
 		}
 		else if(contains<DistantTreeProxy*>(_clients, client)) {
 			client->addMarqueur(donnee, donneeClientTmpId);
 		}
 		else {
-			cerr << endl << "Initialisation de donnée impossible car client inconnu sur branche privée";
+			cerr << endl << "Initialisation de donnï¿½e impossible car client inconnu sur branche privï¿½e";
 		}
 
 		break;
 	case DONNEE_LOCAL:
-		// Pas besoin d'initialiser les marqueurs en mode local ils ne serviront à rien
+		// Pas besoin d'initialiser les marqueurs en mode local ils ne serviront ï¿½ rien
 		break;
 	default:
-		cerr << endl << "Donnée à initialiser de type inconnu";
+		cerr << endl << "Donnï¿½e ï¿½ initialiser de type inconnu";
 		break;
 	}
 
@@ -299,7 +300,7 @@ void ServeurDataTree::diffuseChangementsToClients(void) {
 				interlocutor = client->getInterlocutor();
 				collecteChangements(changements, client);
 
-				// Priorise et filtre les changements qui seront vraiment envoyés
+				// Priorise et filtre les changements qui seront vraiment envoyï¿½s
 
 				// Emission des changements
 				if(changements.size()) {
@@ -340,7 +341,7 @@ void ServeurDataTree::collecteChangements(vector<Changement*>& changements, Dist
 		branche = *it;
 		marqueur = branche->getMarqueur(distant);
 
-		// NOUVELLE BRANCHE : branche présente sur le serveur mais dont le client n'a pas connaissance
+		// NOUVELLE BRANCHE : branche prï¿½sente sur le serveur mais dont le client n'a pas connaissance
 		if(marqueur->getConfirmedRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
 			changement = new AddBrancheFromServerChangement(branche->getParentBrancheId(), branche->getBrancheId(), branche->getDonneeType(), branche->getRevision(), branche->getBrancheName());
 
@@ -354,11 +355,11 @@ void ServeurDataTree::collecteChangements(vector<Changement*>& changements, Dist
 			changement = 0;
 			marqueur = valeur->getMarqueur(distant);
 
-			// NOUVELLE VALEUR : valeur présente sur le serveur mais dont le client n'a pas connaissance
+			// NOUVELLE VALEUR : valeur prï¿½sente sur le serveur mais dont le client n'a pas connaissance
 			if(marqueur->getConfirmedRevision() == MarqueurDistant::MARQUEUR_REVISION_INIT) {
 				changement = new AddValeurFromServerChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getUpdateMode(), valeur->getRevision(), valeur->getValeurName(), valeur->getValeurData());
 			}
-			// VALEUR MODIFIEE : valeur présente sur le serveur dont le client a connaissance mais qui a changé
+			// VALEUR MODIFIEE : valeur prï¿½sente sur le serveur dont le client a connaissance mais qui a changï¿½
 			else if(marqueur->getConfirmedRevision() != valeur->getRevision()) {
 				changement = new UpdateValeurFromServerChangement(valeur->getBrancheId(), valeur->getValeurId(), valeur->getRevision(), valeur->getValeurData());
 			}
@@ -435,7 +436,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 				istringstream in(str);
 				DataSerializer::fromStream(changements, in);
 
-				// Tri des changements de manière à les effectuer en commençant par ceux qui sont le plus proche de la racine, puis les second niveau, puis etc...
+				// Tri des changements de maniï¿½re ï¿½ les effectuer en commenï¿½ant par ceux qui sont le plus proche de la racine, puis les second niveau, puis etc...
 				std::sort(changements.begin(), changements.end(), Changement::highestPriority);
 
 				vector<Changement*>::iterator itCh;
@@ -447,31 +448,31 @@ void ServeurDataTree::receiveChangementsFromClients() {
 					try {
 						LOGINFO(("serveur from '%s' : '%s'", interlocutor->getName().c_str(), (*itCh)->toString().c_str()));
 
-						// Le client confirme la révision de branche qu'il a reçu
+						// Le client confirme la rï¿½vision de branche qu'il a reï¿½u
 						if(ConfirmBrancheChangement* chgt = dynamic_cast<ConfirmBrancheChangement*>(*itCh)) {
 							Branche* branche = getBranche(distant, chgt->getBrancheId());
 							MarqueurDistant* marqueur = distant->getMarqueur(branche);
 							marqueur->setConfirmedRevision(chgt->getRevision());
 						}
 
-						// Le client confirme la révision de valeur qu'il a reçu
+						// Le client confirme la rï¿½vision de valeur qu'il a reï¿½u
 						else if(ConfirmValeurChangement* chgt = dynamic_cast<ConfirmValeurChangement*>(*itCh)) {
 							Valeur* valeur = getValeur(distant, chgt->getBrancheId(), chgt->getValeurId());
 							MarqueurDistant* marqueur = distant->getMarqueur(valeur);
 							marqueur->setConfirmedRevision(chgt->getRevision());
 						}
 
-						// Le client demande la création d'une nouvelle branche
+						// Le client demande la crï¿½ation d'une nouvelle branche
 						else if(AddBrancheFromClientChangement* chgt = dynamic_cast<AddBrancheFromClientChangement*>(*itCh)) {
 							Branche* branche;
 
 							try {
-								// Si la branche existe déjà on renvoie juste la réponse au client
+								// Si la branche existe dï¿½jï¿½ on renvoie juste la rï¿½ponse au client
 								branche = getBrancheByDistantTmpId(distant, chgt->getParentBrancheId(), chgt->getBrancheTmpId());
 							}
 							catch(NotExistingBrancheException& exception) {
-								// Si la branche n'existe pas encore on la crée
-								cout << endl << "Distant '" << distant->getInterlocutor()->getName() << "' => La branche de parent " << CollectionsUtils::toString(chgt->getParentBrancheId()) << " et d'id temportaire " << chgt->getBrancheTmpId() << " n'existe pas encore, on va la créer" << flush;
+								// Si la branche n'existe pas encore on la crï¿½e
+								cout << endl << "Distant '" << distant->getInterlocutor()->getName() << "' => La branche de parent " << CollectionsUtils::toString(chgt->getParentBrancheId()) << " et d'id temportaire " << chgt->getBrancheTmpId() << " n'existe pas encore, on va la crï¿½er" << flush;
 								branche = addBrancheFromDistant(chgt->getParentBrancheId(), chgt->getBrancheName(), chgt->getBrancheTmpId(), chgt->getRevision(), distant);
 							}
 
@@ -481,12 +482,12 @@ void ServeurDataTree::receiveChangementsFromClients() {
 							answers.push_back(new AcceptAddBrancheFromClientChangement(branche->getParentBrancheId(), chgt->getBrancheTmpId(), branche->getBrancheId(), branche->getRevision()));
 						}
 
-						// Le client demande la création d'une nouvelle valeur
+						// Le client demande la crï¿½ation d'une nouvelle valeur
 						else if(AddValeurFromClientChangement* chgt = dynamic_cast<AddValeurFromClientChangement*>(*itCh)) {
 							Valeur* valeur;
 
 							try {
-								// Si la valeur existe déjà on renvoie juste la réponse au client
+								// Si la valeur existe dï¿½jï¿½ on renvoie juste la rï¿½ponse au client
 								valeur = getValeurByDistantTmpId(distant, chgt->getParentBrancheId(), chgt->getValeurTmpId());
 							}
 							catch(NotExistingValeurException& exception) {
@@ -512,7 +513,7 @@ void ServeurDataTree::receiveChangementsFromClients() {
 								answers.push_back(new ConfirmValeurChangement(valeur->getBrancheId(), chgt->getValeurId(), valeur->getRevision()));
 							}
 							else {
-								LOGERROR((" Exception : La révision client est plus ancienne que celle du serveur"));
+								LOGERROR((" Exception : La rï¿½vision client est plus ancienne que celle du serveur"));
 							}
 						}
 

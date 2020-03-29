@@ -14,7 +14,9 @@
 #include "SDL.h"
 #include "SDL_net.h"
 
-#include "util/types/Bytes.h"
+namespace jkt {
+class Bytes;
+}
 
 class Interlocutor2 {
 	std::string _name;

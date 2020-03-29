@@ -12,7 +12,8 @@
 
 #include "util/V3D.h"
 #include "spatial/basic/MapObject.h"
-#include "spatial/MapLogger.h"
+
+class MapLogger;
 
 namespace jkt {
 

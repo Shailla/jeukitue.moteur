@@ -8,8 +8,9 @@
 #ifndef SRC_SPATIAL_BASIC_SOLIDANDTARGETTABLE_H_
 #define SRC_SPATIAL_BASIC_SOLIDANDTARGETTABLE_H_
 
+#include "includes.h"
+
 #include "util/V3D.h"
-#include "main/Player.h"
 
 namespace jkt {
 

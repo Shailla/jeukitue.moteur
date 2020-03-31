@@ -12,6 +12,7 @@
 
 class CGame;
 
+#include "includes.h"
 #include "util/Erreur.h"
 #include "util/V3D.h"
 #include "util/math_vectoriel.h"
@@ -20,10 +21,10 @@ class CGame;
 #include "util/TableauIndex.cpp"
 #include "son/DemonSons.h"
 #include "reseau/SPA.h"
-#include "main/Player.h"
 #include "reseau/Client.h"
 #include "reseau/Server.h"
 #include "main/RequeteProcess.h"
+#include "main/Player.h"
 #include "spatial/Map.h"
 #include "spatial/objet/Dirigeable.h"
 #include "reseau/NetworkManager.h"
@@ -464,16 +465,7 @@ void CGame::timer(Uint32 now, float deltaTime) {
 			_map->gereContactPlayer(0, player);
 
 			// Déplace le joueur
-			player->deplace();
-
-			// Met à jour sa vitesse
-			float deplacement[3];
-			float vitesse[3];
-			player->getDeplacement(deplacement);
-			vitesse[0] = deplacement[0] / deltaTime;
-			vitesse[1] = deplacement[1] / deltaTime;
-			vitesse[2] = deplacement[2] / deltaTime;
-			player->setVitesse(vitesse);
+			player->deplace(deltaTime);
 
 //			// Calcule du déplacement voulu du joueur
 //			player->getPosition(playerPos);

@@ -7,6 +7,8 @@
 
 #include "plugin/lua/proxy/game/PluginPlayerProxy.h"
 
+#include "main/Player.h"
+
 namespace jkt {
 
 const char PluginPlayerProxy::className[] = "Player";

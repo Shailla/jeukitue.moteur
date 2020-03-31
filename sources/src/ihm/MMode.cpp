@@ -9,23 +9,16 @@
 	#include <windows.h>
 #endif
 
+#include "includes.h"
 
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
-
-class CMaterial;
-class CLight;
-class CMouve;
-class CGame;
-class CGeoObject;
-class CPorte;
 #include "util/V3D.h"
 #include "util/Tableau.h"
 #include "spatial/IfstreamMap.h"
 #include "main/Projectil.h"
 #include "son/DemonSons.h"
 #include "reseau/SPA.h"
-#include "main/Player.h"
 #include "reseau/Client.h"
 #include "reseau/Server.h"
 #include "main/RequeteProcess.h"

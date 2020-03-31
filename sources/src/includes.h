@@ -13,12 +13,18 @@ namespace jkt
 	class CClient ;
 	class CServer;
 	class CMap;
+	class CMaterial;
+	class CLight;
 }
 
+class CPlayer;
+class CMouve;
+class CGame;
+class CGeoObject;
+class CPorte;
 class DistantTreeProxy;
 class UdpController;
 class UdpConnector;
-class CPlayer;
 class MarqueurDistant;
 class ServeurDataTree;
 class DataSerializer;

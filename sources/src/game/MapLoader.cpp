@@ -15,6 +15,7 @@
 #include "main/jkt.h"
 #include "main/RequeteProcess.h"
 #include "main/Game.h"
+#include "main/Player.h"
 #include "ressource/RessourcesLoader.h"
 #include "menu/ConsoleView.h"
 #include "menu/Viewer.h"

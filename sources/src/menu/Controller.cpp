@@ -19,6 +19,7 @@ using namespace boost::filesystem;
 #include "util/StringUtils.h"
 #include "util/Trace.h"
 #include "main/divers.h"
+#include "main/Player.h"
 #include "exception/centralisateur/CentralisateurTcpException.h"
 #include "menu/ConsoleView.h"
 #include "menu/CentralisateurView.h"

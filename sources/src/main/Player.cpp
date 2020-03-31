@@ -587,11 +587,10 @@ void CPlayer::calculeAcceleration(bool gravity) {
 			_acceleration[0] += _accelerationClavier[0] * PLAYER_ACCELERATION;
 			_acceleration[2] += _accelerationClavier[2] * PLAYER_ACCELERATION;
 		}
-
 		// Si le joueur n'avance pas
 		else {
 			// Ralentit la vitesse du joueur
-			_resistance = 0.1f;					// On applique une rÃ©sistance de 10% Ã  la progression du joueur sur le sol
+			_resistance = 8.0f;					// Le joueur perd toute sa vitesse en un cinquième de seconde
 		}
 	}
 
@@ -612,9 +611,13 @@ void CPlayer::calculeVitesse(float deltaTime) {
 
 	// RÃ©sistance de l'environnement
 	if(_resistance != 0.0f) {
-		_vitesse[0] *= (1.0f - _resistance);
-		_vitesse[1] *= (1.0f - _resistance);
-		_vitesse[2] *= (1.0f - _resistance);
+		float factor = 1.0f - (_resistance * deltaTime);
+
+		factor = (factor > 0.0f) ? factor : 0.0f;
+
+		_vitesse[0] *= factor;
+		_vitesse[1] *= factor;
+		_vitesse[2] *= factor;
 	}
 
 	/* *****************************************************
@@ -625,6 +628,7 @@ void CPlayer::calculeVitesse(float deltaTime) {
 	if( _pente < COSINUS_45 ) {
 		float speedHorizCarre = _vitesse[0]*_vitesse[0] + _vitesse[2]*_vitesse[2];
 
+		// Limite la vitesse au sol
 		if(speedHorizCarre > MAX_SPEED_PLAYER_ON_GROUND*MAX_SPEED_PLAYER_ON_GROUND) {
 			float ajust = MAX_SPEED_PLAYER_ON_GROUND / sqrtf(speedHorizCarre);
 			_vitesse[0] *= ajust;
@@ -660,7 +664,27 @@ void CPlayer::calculeDeplacement(float deltaTime) {
 	_deplacement[2] = _vitesse[2] * deltaTime;
 }
 
-void CPlayer::deplace() {
+void CPlayer::deplace(float deltaTime) {
+
+	// On met à jour volontairement la vitesse en fonction du déplacement avant d'éventuellement
+	// annuler le déplacement s'il est trop petit
+	// Ceci afin de permettre au joueur d'accélérer dès les premiers instants
+	_vitesse[0] = _deplacement[0] / deltaTime;
+	_vitesse[1] = _deplacement[1] / deltaTime;
+	_vitesse[2] = _deplacement[2] / deltaTime;
+
+	// Si le joueur est en contact avec le sol (pente infÃ©rieure Ã  45Â°)
+	if( _pente < COSINUS_45 ) {
+		// Si le déplacement est trop faible alors on bouge pas
+		float speedCarre = normeCarre(_vitesse);
+
+		if(speedCarre < MIN_SPEED_PLAYER_ON_GROUND*MIN_SPEED_PLAYER_ON_GROUND) {
+			_deplacement[0] = 0;
+			_deplacement[1] = 0;
+			_deplacement[2] = 0;
+		}
+	}
+
 	// Calcule la nouvelle position
 	_position[0] += _deplacement[0];
 	_position[1] += _deplacement[1];

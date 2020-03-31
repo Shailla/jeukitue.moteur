@@ -7,6 +7,7 @@ const float COSINUS_45 = 0.70710678118654752440084436210485f;
 
 const float GRAVITY_ACCELERATION = 9.81f;							// Accélération de la gravité en m/s^2
 const float PLAYER_ACCELERATION = 1.5f;								// Accélération d'un joueur qui court en m/s^2
+const float MIN_SPEED_PLAYER_ON_GROUND = 0.05f;						// Vitesse au sol en dessous de laquelle on consid�re que le joueur ne bouge pas en m/s
 const float MAX_SPEED_PLAYER_ON_GROUND = 10.0f;						// Vitesse maximale d'un joueur avec les pieds au sol, en m/s
 const float MAX_SPEED_PLAYER = 100.0f;								// Vitesse maximale d'un joueur avec les pieds au sol, en m/s
 const float PROJECTIL_LAUNCH_SPEED = 10.0f;							// Vitesse à laquelle un projectil est lancé par un joueur

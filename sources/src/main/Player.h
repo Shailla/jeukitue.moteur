@@ -40,7 +40,7 @@ class CPlayer {
 
 	// Position, vitesse et orientation du joueur
 	float _acceleration[3];			// Accélération du joueur en m/s²
-	float _resistance;				// Résistance de l'environnement au déplacement
+	float _resistance;				// Résistance de l'environnement au déplacement en proportion par seconde
 	float _vitesse[3];				// Vitesse du joueur
 	float _deplacement[3];			// Déplacement voulu du joueur, calculé en fonction de la vitesse et du temps écoulé
 	float _position[3];				// Position du joueur
@@ -150,7 +150,7 @@ public :
 	void calculeAcceleration(bool gravity);
 	void resetDeplacement();
 	void calculeDeplacement(float deltaTime);
-	void deplace();
+	void deplace(float deltaTime);
 	void faitRequeteClavier(Uint32 now, float deltaTime);
 };
 

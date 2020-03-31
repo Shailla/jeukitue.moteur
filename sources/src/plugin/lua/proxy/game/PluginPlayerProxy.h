@@ -16,7 +16,7 @@ extern "C" {
 
 #include "lunar.h"
 
-#include "main/Player.h"
+#include "includes.h"
 
 #include "plugin/lua/proxy/LunarProxy.h"
 

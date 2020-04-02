@@ -1,7 +1,7 @@
 #ifndef __JKT__DATA_H
 #define __JKT__DATA_H
 
-#include "SDL_net.h"
+#include <SDL_net.h>
 
 class Data
 {

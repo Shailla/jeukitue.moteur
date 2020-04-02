@@ -5,6 +5,7 @@
 	/****************************/
 
 #include <fstream>
+#include <fmod.h>
 
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
@@ -18,7 +19,6 @@
 
 extern CCfg Config;
 
-#include "fmod.h"
 #include "MAudioDrivers.h"
 
 using namespace std;

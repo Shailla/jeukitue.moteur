@@ -2,7 +2,7 @@
 #ifndef __JKT__DIAG_H
 #define __JKT__DIAG_H
 
-#include "SDL.h"
+#include <SDL.h>
 
 namespace jkt
 {
@@ -19,7 +19,7 @@ public:
 	static void afficheMenuActif();						// Affiche le CDlg actif
 
 	virtual void go()=0;								// Affiche le menu
-	virtual void handle_key_down( SDL_Event *event )=0;	// Réagit aux frappes de touches
+	virtual void handle_key_down( SDL_Event *event )=0;	// Rï¿½agit aux frappes de touches
 };
 
 }	// JktMenu

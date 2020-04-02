@@ -3,12 +3,12 @@
 
 #include <string>
 
-#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
-#include "boost/filesystem/fstream.hpp"
+#include <boost/filesystem/operations.hpp> // includes boost/filesystem/path.hpp
+#include <boost/filesystem/fstream.hpp>
 
 class CFindFolder {
 public:
-	static bool isFolder(const std::string& directory);		// Vérifie si un élément est un répertoire
+	static bool isFolder(const std::string& directory);		// Vï¿½rifie si un ï¿½lï¿½ment est un rï¿½pertoire
 	static int mkdir(const std::string& dir);
 };
 

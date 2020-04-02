@@ -16,13 +16,12 @@ using namespace std;
 
 extern CGame Game;
 
-PlayersView::PlayersView(const AG_EventFn controllerCallback)
-:View(controllerCallback)
+PlayersView::PlayersView(const AG_EventFn controllerCallback) : View(controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS|AG_WINDOW_NOMOVE);
 	AG_WindowSetCaption(m_window, "Liste des joueurs");
 
-	// Liste des données
+	// Liste des donnï¿½es
 	_playersTable = AG_TableNew(m_window, AG_TABLE_EXPAND);
 	AG_TableAddCol(_playersTable, "Nom", "<XXXXXXXXXXXXXXXXXX>", NULL);
 	AG_TableAddCol(_playersTable, "IP in", "<XXXXXXXXXXXXXXXXXXXXX>", NULL);
@@ -37,7 +36,7 @@ PlayersView::PlayersView(const AG_EventFn controllerCallback)
 	// Bouton retour
 	AG_ButtonNewFn(boxButtons, 0, "Retour", controllerCallback, "%i", Controller::ShowDebugViewAction);
 
-	// Bouton rafraîchir
+	// Bouton rafraï¿½chir
 	AG_ButtonNewFn(boxButtons, 0, "Rafraichir", PlayersView::refresh, "%p", this);
 
 	AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_TC, 100, 50);

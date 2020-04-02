@@ -1,7 +1,7 @@
 /*
  * IpUtils.h
  *
- *  Created on: 16 août 2013
+ *  Created on: 16 aoï¿½t 2013
  *      Author: Erwin
  */
 
@@ -10,8 +10,8 @@
 
 #include <string>
 
-#include "SDL.h"
-#include "SDL_net.h"
+#include <SDL.h>
+#include <SDL_net.h>
 
 bool operator < (const IPaddress& adr1, const IPaddress& adr2);
 

@@ -9,8 +9,8 @@
 #ifdef WIN32
 	#include <io.h>
 #endif
-#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
-#include "boost/filesystem/fstream.hpp"                       // for std::cout
+#include <boost/filesystem/operations.hpp> // includes boost/filesystem/path.hpp
+#include <boost/filesystem/fstream.hpp>                       // for std::cout
 
 using namespace boost::filesystem;
 
@@ -81,7 +81,7 @@ LOGDEBUG(("lanceMenuOpenMAP(var=%x)", var));
 	vector<MapInformationDto> content;
 	MapService::loadMapDirectoryContent(content);
 
-	int nbrFichier = content.size();	// Nombre de fichiers Map à prendre en compte
+	int nbrFichier = content.size();	// Nombre de fichiers Map ï¿½ prendre en compte
 
 
 	liste_suivant_open_MAP = new PF[ nbrFichier ];
@@ -105,7 +105,7 @@ LOGDEBUG(("lanceMenuOpenMAP(var=%x)", var));
 	CDlg::SetMenuActif( MenuOpenMAP );
 }
 
-void retourMAP(void *var)	// Libérations mémoire et retour au menu supérieur
+void retourMAP(void *var)	// Libï¿½rations mï¿½moire et retour au menu supï¿½rieur
 {
 LOGDEBUG(("retourMAP(var=%x)", var));
 	delete MenuOpenMAP;

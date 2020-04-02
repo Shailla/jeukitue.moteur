@@ -35,13 +35,15 @@ indispensable d'inverser parfois certaines de leurs composantes selon l'utilisat
 #include "boost/program_options.hpp"
 namespace bpo = boost::program_options;
 
-#include "Constantes.h"
-#include "SDL.h"
-#include "SDL_image.h"
-#include "SDL_net.h"
-#include "fmod.h"
-#include "fmod_errors.h"	/* optional */
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_net.h>
+#include <fmod.h>
+#include <fmod_errors.h>	/* optional */
 #include "tinyxml.h"
+
+#include "Constantes.h"
+
 #include "util/XmlHelper.h"
 
 #include "util/GenRef.h"

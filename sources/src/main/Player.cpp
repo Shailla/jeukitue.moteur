@@ -11,8 +11,8 @@
 #include <GL/glew.h>
 #include <GL/glu.h>
 
-#include "fmod.h"
-#include "SDL.h"
+#include <fmod.h>
+#include <SDL.h>
 
 class CGame;
 
@@ -64,7 +64,7 @@ CPlayer::CPlayer() {
 	_vitesse[2] = 0.0f;
 
 	_teta = -90.0f;			// Orientation d'origine
-	_phi = 0.0;
+	_phi = 0.0f;
 
 	_posVue[0] = 0.0f;		// Position du point de vue par rapport au joueur
 	_posVue[1] = 0.1f;
@@ -590,7 +590,7 @@ void CPlayer::calculeAcceleration(bool gravity) {
 		// Si le joueur n'avance pas
 		else {
 			// Ralentit la vitesse du joueur
-			_resistance = 8.0f;					// Le joueur perd toute sa vitesse en un cinquième de seconde
+			_resistance = 8.0f;					// Le joueur perd toute sa vitesse en un cinquiï¿½me de seconde
 		}
 	}
 
@@ -666,16 +666,16 @@ void CPlayer::calculeDeplacement(float deltaTime) {
 
 void CPlayer::deplace(float deltaTime) {
 
-	// On met à jour volontairement la vitesse en fonction du déplacement avant d'éventuellement
-	// annuler le déplacement s'il est trop petit
-	// Ceci afin de permettre au joueur d'accélérer dès les premiers instants
+	// On met ï¿½ jour volontairement la vitesse en fonction du dï¿½placement avant d'ï¿½ventuellement
+	// annuler le dï¿½placement s'il est trop petit
+	// Ceci afin de permettre au joueur d'accï¿½lï¿½rer dï¿½s les premiers instants
 	_vitesse[0] = _deplacement[0] / deltaTime;
 	_vitesse[1] = _deplacement[1] / deltaTime;
 	_vitesse[2] = _deplacement[2] / deltaTime;
 
 	// Si le joueur est en contact avec le sol (pente infÃ©rieure Ã  45Â°)
 	if( _pente < COSINUS_45 ) {
-		// Si le déplacement est trop faible alors on bouge pas
+		// Si le dï¿½placement est trop faible alors on bouge pas
 		float speedCarre = normeCarre(_vitesse);
 
 		if(speedCarre < MIN_SPEED_PLAYER_ON_GROUND*MIN_SPEED_PLAYER_ON_GROUND) {

@@ -9,7 +9,7 @@
 #endif
 #include <GL/glew.h>
 #include <GL/glu.h>
-#include "SDL.h"
+#include <SDL.h>
 
 class CGame;
 #include "util/fonte/Fonte.h"
@@ -49,7 +49,7 @@ CMenu::CMenu(const char *newTitle, const char **newItems, int nbrItems, PF *fct_
 	// Items (verticaux)
 	choixY = 0;							// On focus sur le premier item du menu
 	nbrChoixY = nbrItems;				// Nombre d'items
-	items = new char*[ nbrItems ];		// Crétion et copie des items du menu
+	items = new char*[ nbrItems ];		// Crï¿½tion et copie des items du menu
 	for( int i=0 ; i<nbrChoixY ; i++ ) {
 		items[ i ] = new char[ strlen(newItems[i] )+1 ];
 		strcpy( items[ i ], newItems[ i ] );
@@ -70,11 +70,11 @@ CMenu::CMenu(const char *newTitle, const char **newItems, int nbrItems, PF *fct_
 		arg = 0;
 	}
 
-	fonction_retour = fct_retour;	// Fonction à exécuter au retour du menu
+	fonction_retour = fct_retour;	// Fonction ï¿½ exï¿½cuter au retour du menu
 
-	bItemsDroits = false;		// Indique qu'aucun item droit n'et sélectionné
-	items_droits = 0;			// Pas d'items droits par défaut
-	items_rem = 0;				// Pas d'items remarques par défaut
+	bItemsDroits = false;		// Indique qu'aucun item droit n'et sï¿½lectionnï¿½
+	items_droits = 0;			// Pas d'items droits par dï¿½faut
+	items_rem = 0;				// Pas d'items remarques par dï¿½faut
 	mode = 0;					// Mode normal
 
 	fct_Refresh = fct_refresh;		// Fonction de rafraichissement du menu
@@ -111,8 +111,8 @@ void CMenu::afficheTitre() {
 void CMenu::afficheItems() {
 	int i = 0;
 
-	// Affichage de la barre de défilement
-	if( nbrChoixY > MAXITEM ) {	// S'il y a beaucoup d'items à afficher
+	// Affichage de la barre de dï¿½filement
+	if( nbrChoixY > MAXITEM ) {	// S'il y a beaucoup d'items ï¿½ afficher
 		glDisable(GL_TEXTURE_2D);
 		glDisable(GL_BLEND);
 		glDisable( GL_DEPTH_TEST );
@@ -161,11 +161,11 @@ void CMenu::afficheItems() {
 	// Affichage des items du menu
 	while( i<MAXITEM && i+ajust<nbrChoixY ) {
 		if( i+ajust==choixY )
-			glColor3f( 1.0, 0.0, 0.0 );		// Couleur rouge si focussé
+			glColor3f( 1.0, 0.0, 0.0 );		// Couleur rouge si focussï¿½
 		else if( fonction_suivante[ i+ajust ] == 0 )
 			glColor3f( 0.6f, 0.6f, 0.6f );
 		else
-			glColor3f( 1.0, 1.0, 1.0 );		// Couleur blanche par défaut
+			glColor3f( 1.0, 1.0, 1.0 );		// Couleur blanche par dï¿½faut
 
 		fonte.drawString(items[i+ajust], float(260+CORX), float(300+CORY-((i+1)*20)), INFOFONTESCALAR);
 		i++;
@@ -184,9 +184,9 @@ void CMenu::afficheItemsDroits() {
 			if( fonction_suivante[ i+ajust ]==0 )
 				glColor3f( 0.6f, 0.6f, 0.6f );
 			else if( i+ajust==choixY && bItemsDroits )
-				glColor3f( 0.0, 1.0, 0.0 );		// Couleur blanche par défaut
+				glColor3f( 0.0, 1.0, 0.0 );		// Couleur blanche par dï¿½faut
 			else
-				glColor3f( 1.0, 1.0, 1.0 );		// Couleur rouge si focussé
+				glColor3f( 1.0, 1.0, 1.0 );		// Couleur rouge si focussï¿½
 
 			if( items_droits[i+ajust] )
 				fonte.drawString( items_droits[i+ajust], float(430+CORX), float(300+CORY-(i*20)), INFOFONTESCALAR);
@@ -197,7 +197,7 @@ void CMenu::afficheItemsDroits() {
 
 void CMenu::afficheItemsRem() {
 	if( items_rem ) {
-		// Affichage de la remarque associée à l'item focussé
+		// Affichage de la remarque associï¿½e ï¿½ l'item focussï¿½
 		glColor3f( 0.5f, 0.5f, 0.5f );
 		if( items_rem[choixY] )
 			fonte.drawString( items_rem[choixY], 100, 50+CORY, INFOFONTESCALAR);
@@ -205,13 +205,13 @@ void CMenu::afficheItemsRem() {
 }
 
 void CMenu::go() {
-	if( fct_Refresh )	// S'il y a une fonction de rafraichissement pour ce menu, exécute-la
+	if( fct_Refresh )	// S'il y a une fonction de rafraichissement pour ce menu, exï¿½cute-la
 		fct_Refresh();
 
 	afficheTitre();			// Affiche le titre du menu
 	afficheItems();			// Affiche les items du menu
 	afficheItemsDroits();	// Affiche les items droits du menu
-	afficheItemsRem();		// Affiche la remarque associée à l'item
+	afficheItemsRem();		// Affiche la remarque associï¿½e ï¿½ l'item
 }
 
 void CMenu::down() {
@@ -239,7 +239,7 @@ void *CMenu::argument() {
 		return 0;
 }
 
-void CMenu::add_ItemsDroits(int num, const char *txt) {	// Implémente le num° item droit
+void CMenu::add_ItemsDroits(int num, const char *txt) {	// Implï¿½mente le numï¿½ item droit
 	if( !items_droits ) {
 		items_droits = new char*[ nbrChoixY ];
 
@@ -254,7 +254,7 @@ void CMenu::add_ItemsDroits(int num, const char *txt) {	// Implémente le num° it
 	strcpy( items_droits[ num ], txt );
 }
 
-void CMenu::add_ItemsRem(int num, char *txt) {	// Implémente le num° item droit
+void CMenu::add_ItemsRem(int num, char *txt) {	// Implï¿½mente le numï¿½ item droit
 	if( !items_rem ) {
 		items_rem = new char*[ nbrChoixY ];
 

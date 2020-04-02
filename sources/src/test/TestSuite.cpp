@@ -29,13 +29,13 @@ namespace jkt {
 
 TestSuite::TestSuite() {
 	_tests.push_back(new UtilsTest());
-//	_tests.push_back(new TraceTest());
-//	_tests.push_back(new TableauTest());
-//	_tests.push_back(new RessourcesLoaderTest());
-//	_tests.push_back(new TcpServerTest());
-//	_tests.push_back(new JsonTest());
-//	_tests.push_back(new UdpCommunicationTest());
-//	_tests.push_back(new DataTreeTest());
+	_tests.push_back(new TraceTest());
+	_tests.push_back(new TableauTest());
+	_tests.push_back(new RessourcesLoaderTest());
+	_tests.push_back(new TcpServerTest());
+	_tests.push_back(new JsonTest());
+	_tests.push_back(new UdpCommunicationTest());
+	_tests.push_back(new DataTreeTest());
 }
 
 TestSuite::~TestSuite() {

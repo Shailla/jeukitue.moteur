@@ -1,7 +1,7 @@
 #include <fstream>
 
-#include "SDL_net.h"
-#include "ziparchive/ZipArchive.h"
+#include <SDL_net.h>
+#include <ziparchive/ZipArchive.h>
 
 #include "util/Trace.h"
 #include "reseau/TcpUtils.h"

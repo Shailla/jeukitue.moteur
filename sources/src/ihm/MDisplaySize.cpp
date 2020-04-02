@@ -7,7 +7,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "SDL.h"
+#include <SDL.h>
 
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
@@ -48,11 +48,11 @@ public:
 void lanceMenuConfigVideoDisplay(void *var) {
 LOGDEBUG(("lanceMenuConfigVideoDisplay(var=%x)", var));
 	int nbr;
-		// Récupère la liste des modes vidéo disponibles
+		// Rï¿½cupï¿½re la liste des modes vidï¿½o disponibles
 	SDL_Rect **modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
 
 	// Compte le nombre de modes disponibles
-	for( nbr=0 ; modes[nbr] ; nbr++ );	// Le ';' est tout à fait normal !!!
+	for( nbr=0 ; modes[nbr] ; nbr++ );	// Le ';' est tout ï¿½ fait normal !!!
 
 	PF *liste_suivants = new PF[ nbr ];
 	void **liste_arguments = new void*[ nbr ];

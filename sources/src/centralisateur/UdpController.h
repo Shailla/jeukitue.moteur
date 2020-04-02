@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "SDL_net.h"
+#include <SDL_net.h>
 
 #include "includes.h"
 
@@ -13,13 +13,13 @@ public:
 	enum {
 		// Messages descendant du serveur centralisateur vers le moteur (entrants)
 		CODE_D_PingRequest = 100,	// Demande d'un ping du serveur centralisateur
-		CODE_D_ListJoueurs = 101,	// Liste des joueurs connectés
+		CODE_D_ListJoueurs = 101,	// Liste des joueurs connectï¿½s
 		CODE_D_ChatMessage = 102,	// Message de chat descendant du serveur centralisateur vers le moteur
 
 		// Messages remontant du moteur vers le serveur centralisateur (sortants)
-		CODE_U_Signalement = 200,	// Signalement de présence au serveur centralisateur
-		CODE_U_PingAck = 201,		// Réponse à une demande de ping du serveur centralisateur
-		CODE_U_ListRequest = 202,	// Demande de la liste des connectés
+		CODE_U_Signalement = 200,	// Signalement de prï¿½sence au serveur centralisateur
+		CODE_U_PingAck = 201,		// Rï¿½ponse ï¿½ une demande de ping du serveur centralisateur
+		CODE_U_ListRequest = 202,	// Demande de la liste des connectï¿½s
 		CODE_U_ChatMessage = 203	// Message de chat montant du moteur vers le serveur centralisateur
 	};
 

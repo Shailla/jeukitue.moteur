@@ -9,7 +9,7 @@
 #include <cmath>
 #include <map>
 
-#include "SDL.h"
+#include <SDL.h>
 
 #include "util/Erreur.h"
 #include "util/V3D.h"

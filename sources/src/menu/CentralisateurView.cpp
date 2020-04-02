@@ -17,8 +17,7 @@
 using namespace std;
 using namespace jkt;
 
-CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
-:View(controllerCallback)
+CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback) : View(controllerCallback)
 {
 	m_window = AG_WindowNew(AG_WINDOW_NOBUTTONS | AG_WINDOW_NOMOVE);
     AG_WindowSetCaption(m_window, "Centralisateur");
@@ -38,7 +37,7 @@ CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
 	AG_Pane* paneVert = AG_PaneNewVert(paneHoriz->div[1], AG_PANE_EXPAND);
 	AG_PaneMoveDividerPct(paneVert, 70);
 
-	// Panel des messages reçus
+	// Panel des messages reï¿½us
 	_receivedTextbox = 
 		AG_TextboxNew(	paneVert->div[0],
 						AG_TEXTBOX_MULTILINE|AG_TEXTBOX_EXPAND,
@@ -62,7 +61,7 @@ CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
 
 
 	/******************************
-		Onglet des téléchargements
+		Onglet des tï¿½lï¿½chargements
 	******************************/
 	AG_NotebookTab* tabDownload = AG_NotebookAddTab(book, "Telechargements", AG_BOX_VERT);
 	AG_ButtonNewFn(tabDownload, 0, "Recharger", controllerCallback, "%i", Controller::ReloadDownloadFilesAction);
@@ -79,7 +78,7 @@ CentralisateurView::CentralisateurView(const AG_EventFn controllerCallback)
 	AG_SeparatorNewHoriz(m_window);
     AG_ButtonNewFn(m_window, 0, "Retour", controllerCallback, "%i", Controller::ShowMultijoueursMenuAction);
 
-	// Disposition de la fenêtre
+	// Disposition de la fenï¿½tre
     AG_WindowSetGeometryAlignedPct(m_window, AG_WINDOW_MC, 70, 70);
 	AG_WindowShow(m_window);
     hide();
@@ -140,7 +139,7 @@ void CentralisateurView::setPlayerList(char** playerList, int nombreJoueurs)
 
 	for(int i=0 ; i<nombreJoueurs ; i++) {
 		_playerList.push_back(playerList[i]);
-		LOGINFO(("Joueur connecté au chat : '%s'", playerList[i]));
+		LOGINFO(("Joueur connectï¿½ au chat : '%s'", playerList[i]));
 	}
 }
 

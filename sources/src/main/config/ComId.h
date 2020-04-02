@@ -1,14 +1,14 @@
 /*
  * ComId.h
  *
- *  Created on: 20 août 2019
+ *  Created on: 20 aoï¿½t 2019
  *      Author: VGDJ7997
  */
 
 #ifndef SRC_MAIN_CONFIG_COMID_H_
 #define SRC_MAIN_CONFIG_COMID_H_
 
-#include "SDL.h"
+#include <SDL.h>
 
 class CComID {
 public:

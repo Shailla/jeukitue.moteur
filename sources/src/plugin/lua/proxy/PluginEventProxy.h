@@ -1,7 +1,7 @@
 /*
  * PluginEventProxy.h
  *
- *  Created on: 10 févr. 2014
+ *  Created on: 10 fï¿½vr. 2014
  *      Author: vgdj7997
  */
 
@@ -9,12 +9,12 @@
 #define PLUGINEVENTPROXY_H_
 
 extern "C" {
-#include "lua.h"
-#include "lualib.h"
-#include "lauxlib.h"
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
 }
 
-#include "lunar.h"
+#include <lunar.h>
 
 #include "menu/Controller.h"
 #include "plugin/PluginActionEvent.h"

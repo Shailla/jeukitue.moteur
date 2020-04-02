@@ -1,7 +1,7 @@
 #ifndef __JKT__UDPCONNECTOR_H
 #define __JKT__UDPCONNECTOR_H
 
-#include "SDL_net.h"
+#include <SDL_net.h>
 
 #include "includes.h"
 

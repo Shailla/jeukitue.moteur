@@ -9,8 +9,8 @@
 
 using namespace boost::filesystem;
 
-#include "SDL.h"
-#include "SDL_thread.h"
+#include <SDL.h>
+#include <SDL_thread.h>
 
 #include "FindFolder.h"
 #include "StringUtils.h"
@@ -121,7 +121,7 @@ void Donnees::error(const std::stringstream& txt, ... ) {
 }
 
 void Trace::loadConfigKey(map<string, string>& config, const char* key, string& value) {
-	// Fichier à exclure des log
+	// Fichier ï¿½ exclure des log
 	string var = config[key];
 
 	if(var.length() > 0) {
@@ -130,7 +130,7 @@ void Trace::loadConfigKey(map<string, string>& config, const char* key, string& 
 }
 
 void Trace::loadConfigKeyCommaSeparated(map<string, string>& config, const char* key, vector<string>& value) {
-	// Fichier à exclure des log
+	// Fichier ï¿½ exclure des log
 	string var = config[key];
 
 	if(var.length() > 0) {
@@ -161,7 +161,7 @@ Trace::Trace() {
 	if(logConfig) {
 		string line, key;
 
-		// Lit les clé et valeurs dans le fichier de configuration des log
+		// Lit les clï¿½ et valeurs dans le fichier de configuration des log
 		while(getline(logConfig, line)) {
 			string key, value;
 			StringUtils::splitOnce(line, StringUtils::isEqual, key, value);
@@ -179,14 +179,14 @@ Trace::Trace() {
 		loadConfigKey(config, "logger.level", var);
 		_loggerLevel = (TraceLevel)atoi(var.c_str());
 
-		// Fichier à exclure des log
+		// Fichier ï¿½ exclure des log
 		loadConfigKeyCommaSeparated(config, "logger.file.exclude.debug", _excludeDebugFiles);
 		loadConfigKeyCommaSeparated(config, "logger.file.exclude.info", _excludeInfoFiles);
 		loadConfigKeyCommaSeparated(config, "logger.file.exclude.warn", _excludeWarnFiles);
 		loadConfigKeyCommaSeparated(config, "logger.file.exclude.error", _excludeErrorFiles);
 	}
 
-	// Création du fichier de log
+	// Crï¿½ation du fichier de log
 	rotate();
 
 	_Instance = this;
@@ -201,16 +201,16 @@ void Trace::rotate() {
 	std::stringstream logFile;
 	logFile << TRACE_FOLDER << CURRENT_FICHIER_TRACE;
 
-	// Si un fichier de traces existe déjà, alors renomme-le puis tente à nouveau de l'ouvrir
+	// Si un fichier de traces existe dï¿½jï¿½, alors renomme-le puis tente ï¿½ nouveau de l'ouvrir
 	if( std::ifstream( logFile.str().c_str()) ) {
 		path logPath(TRACE_FOLDER);
 
 		if(!exists(logPath)) {
-			cerr << endl << "Le répertoire '" << TRACE_FOLDER << "' n'existe pas";
+			cerr << endl << "Le rï¿½pertoire '" << TRACE_FOLDER << "' n'existe pas";
 			return;
 		}
 
-		// Recherche un index de fichier de traces disponible après les index déjà utilisés
+		// Recherche un index de fichier de traces disponible aprï¿½s les index dï¿½jï¿½ utilisï¿½s
 		int numeroFichier = -1, num;
 		directory_iterator end_itr; // default construction yields past-the-end
 
@@ -222,7 +222,7 @@ void Trace::rotate() {
 				string filename = itr->path().filename().string();
 
 				if( jkt::StringUtils::isBeginingWith(filename, PREFIX_FICHIER_TRACE) && jkt::StringUtils::isFinishingWith(filename, EXT_FICHIER_TRACE) ) {
-					filename = string( filename.begin()+strlen(PREFIX_FICHIER_TRACE), filename.end()-strlen(EXT_FICHIER_TRACE) );	// Extraction du numéro du fichier trace
+					filename = string( filename.begin()+strlen(PREFIX_FICHIER_TRACE), filename.end()-strlen(EXT_FICHIER_TRACE) );	// Extraction du numï¿½ro du fichier trace
 
 					if( filename == "0" ) {
 						if( numeroFichier < 0 )
@@ -237,7 +237,7 @@ void Trace::rotate() {
 			}
 		}
 
-		numeroFichier++;	// Numéro nouveau fichier = plus grand numéro d'ancien fichier + 1
+		numeroFichier++;	// Numï¿½ro nouveau fichier = plus grand numï¿½ro d'ancien fichier + 1
 
 		stringstream newName;
 		newName << TRACE_FOLDER << PREFIX_FICHIER_TRACE << numeroFichier << EXT_FICHIER_TRACE;
@@ -277,10 +277,10 @@ Trace &Trace::instance() {
 }
 
 bool Trace::isLogLevelEnabled(TraceLevel level, const char *nomFichier) {
-	bool youHaveToLog = (level >= _loggerLevel);	// Si on ne veut pas cette trace-là alors sors
+	bool youHaveToLog = (level >= _loggerLevel);	// Si on ne veut pas cette trace-lï¿½ alors sors
 	string nomCourtFichier;
 
-	// Vérifie si le fichier n'est pas exclu des log
+	// Vï¿½rifie si le fichier n'est pas exclu des log
 	if(youHaveToLog) {
 		nomCourtFichier = nomFichier;
 		size_t pos = nomCourtFichier.find(FICHIER_SOURCE_BASE);
@@ -322,10 +322,10 @@ bool Trace::isLogLevelEnabled(TraceLevel level, const char *nomFichier) {
 void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFichier, const char *txt, va_list &vl) {
 	SDL_LockMutex( _Mutex );
 
-	bool youHaveToLog = (level >= _loggerLevel);	// Si on ne veut pas cette trace-là alors sors
+	bool youHaveToLog = (level >= _loggerLevel);	// Si on ne veut pas cette trace-lï¿½ alors sors
 	string nomCourtFichier;
 
-	// Vérifie si le fichier n'est pas exclu des log
+	// Vï¿½rifie si le fichier n'est pas exclu des log
 	if(youHaveToLog) {
 		nomCourtFichier = nomFichier;
 		size_t pos = nomCourtFichier.find(FICHIER_SOURCE_BASE);
@@ -362,7 +362,7 @@ void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFic
 	}
 
 	if(youHaveToLog) {
-		bool prec = false;	// Indique que le caractère précédent était un %
+		bool prec = false;	// Indique que le caractï¿½re prï¿½cï¿½dent ï¿½tait un %
 		void *THIS = 0;
 		bool bTHIS = false;
 
@@ -415,7 +415,7 @@ void Trace::print(TraceLevel level, TraceType type, int line, const char *nomFic
 		ligne.setf( ios_base::left, ios_base::adjustfield );
 		ligne << var2.str();
 
-		// Message précédé éventuellement par Begin ou End si c'est une TraceMethod
+		// Message prï¿½cï¿½dï¿½ ï¿½ventuellement par Begin ou End si c'est une TraceMethod
 		switch( type ) {
 		case TRACE_BEGIN:
 			ligne << "Begin - ";

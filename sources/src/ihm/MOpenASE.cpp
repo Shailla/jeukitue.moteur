@@ -10,12 +10,12 @@
 	#include <io.h>
 	#include <direct.h>
 #endif
-#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
-#include "boost/filesystem/fstream.hpp"                       // for std::cout
+#include <boost/filesystem/operations.hpp> // includes boost/filesystem/path.hpp
+#include <boost/filesystem/fstream.hpp>                       // for std::cout
 using namespace boost::filesystem;
 
-#include "SDL.h"
-#include "SDL_thread.h"
+#include <SDL.h>
+#include <SDL_thread.h>
 
 #include "util/FindFolder.h"
 #include "ihm/DlgBoite.h"

@@ -10,7 +10,7 @@
 
 #include <string>
 #include <vector>
-#include "SDL.h"
+#include <SDL.h>
 
 #include "data/DataTree.h"
 
@@ -38,7 +38,7 @@ public:
 	 * Serveur local actions
 	 * ****************************************************/
 
-	// Gestion branches et valeurs avec coordonnées vectorielles
+	// Gestion branches et valeurs avec coordonnï¿½es vectorielles
 	Branche* createBranche(DistantTreeProxy* ignored, const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
 	Branche* createPrivateBranche(const std::vector<int>& parentBrancheId, const std::string& brancheName) override;
 

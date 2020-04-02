@@ -1,7 +1,7 @@
 
 #include <iostream>
 
-#include "SDL.h"
+#include <SDL.h>
 #include <agar/core.h>
 #include <agar/gui.h>
 #include <agar/gui/sdl.h>

@@ -1,7 +1,7 @@
 
 
 #include <fstream>
-#include "SDL.h"
+#include <SDL.h>
 
 class CLight;
 class CMaterial;

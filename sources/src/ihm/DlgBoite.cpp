@@ -6,7 +6,8 @@
 #endif
 #include <GL/glew.h>
 #include <GL/glu.h>
-#include "SDL.h"
+#include <SDL.h>
+
 #include "util/fonte/Fonte.h"
 
 #include "util/Trace.h"
@@ -200,7 +201,7 @@ CDlgBoite::CDlgBoite( const char *titre, const char *txt, PF fct_retour, CBouton
 
 	m_FonctionRetour = fct_retour;
 
-		// Implémentation des boutons
+		// Implï¿½mentation des boutons
 	m_Bouton1 = but1;
 	m_Bouton2 = but2;
 	m_Bouton3 = but3;
@@ -255,7 +256,7 @@ void CDlgBoite::afficheCadre()
 	glDepthMask( GL_FALSE );
 	glDisable( GL_DEPTH_TEST );
 
-	// Affiche le fond de la boîte en mode GL_QUADS, puis les contours en mode GL_LINE_LOOP
+	// Affiche le fond de la boï¿½te en mode GL_QUADS, puis les contours en mode GL_LINE_LOOP
 	for( int i=0 ; i<2 ; i++ )
 	{
 		if( i==0 )
@@ -271,7 +272,7 @@ void CDlgBoite::afficheCadre()
 		}
 
 		glBegin( rend );
-			// Affichage du cadre à proprement dit
+			// Affichage du cadre ï¿½ proprement dit
 			glVertex2f( CORX + TAILLEBX,	CORY + TAILLEBY	);
 			glVertex2f( CORX + TAILLEBX,	CORY			);
 			glVertex2f( CORX,				CORY			);
@@ -279,7 +280,7 @@ void CDlgBoite::afficheCadre()
 		glEnd();
 	}
 
-	// Affiche la barre de titre de la boîte de dialogue
+	// Affiche la barre de titre de la boï¿½te de dialogue
 	glBegin( GL_QUADS );
 			glVertex2f( CORX + TAILLEBX,	CORY + TAILLEBY			);
 			glVertex2f( CORX + TAILLEBX,	CORY + TAILLEBY - 30	);
@@ -390,15 +391,15 @@ void CDlgBoite::afficheIcone() {
 }
 
 void CDlgBoite::go() {
-	afficheCadre();		// Affiche le cadre de la boîte de dialogue
-	afficheTitre();		// Affiche le titre dans le cadre de la boîte de dialogue
-	afficheIcone();		// Affiche l'icone associé à la boite de dialogue
-	afficheTexte();		// Affiche le texte de la boîte de dialogue
-	afficheBouton();	// Affiche les bouton dans la boîte de dialogue
+	afficheCadre();		// Affiche le cadre de la boï¿½te de dialogue
+	afficheTitre();		// Affiche le titre dans le cadre de la boï¿½te de dialogue
+	afficheIcone();		// Affiche l'icone associï¿½ ï¿½ la boite de dialogue
+	afficheTexte();		// Affiche le texte de la boï¿½te de dialogue
+	afficheBouton();	// Affiche les bouton dans la boï¿½te de dialogue
 }
 
 void CDlgBoite::right() {
-	bool cbon = false;	// Indique que le focus a été déplacé avec succès
+	bool cbon = false;	// Indique que le focus a ï¿½tï¿½ dï¿½placï¿½ avec succï¿½s
 
 	for(int i=1 ; ( (i<4) && (!cbon) ) ; i++) {
 		switch(m_Focus) {
@@ -424,7 +425,7 @@ void CDlgBoite::right() {
 }
 
 void CDlgBoite::left() {
-	bool cbon = false;	// Indique que le focus a été déplacé avec succès
+	bool cbon = false;	// Indique que le focus a ï¿½tï¿½ dï¿½placï¿½ avec succï¿½s
 
 	for(int i=1 ; ( (i<4) && (!cbon) ) ; i++) {
 		switch( m_Focus ) {

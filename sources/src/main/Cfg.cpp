@@ -10,16 +10,16 @@
 #include <agar/gui.h>
 #include <agar/gui/opengl.h>
 
-#include "boost/filesystem/operations.hpp" // includes boost/filesystem/path.hpp
-#include "boost/filesystem/fstream.hpp"
+#include <boost/filesystem/operations.hpp> // includes boost/filesystem/path.hpp
+#include <boost/filesystem/fstream.hpp>
 
 #include <SDL.h>
 #include <SDL_net.h>
 #include <SDL_image.h>
 
 
-#include "fmod.h"
-#include "fmod_errors.h"
+#include <fmod.h>
+#include <fmod_errors.h>
 
 #include "main/divers.h"
 #include "util/StringUtils.h"

@@ -1,7 +1,7 @@
 #include <string>
 #include <iostream>
 
-#include "SDL_net.h"
+#include <SDL_net.h>
 
 #include "util/Trace.h"
 #include "centralisateur/UdpConnector.h"

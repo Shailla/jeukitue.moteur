@@ -10,7 +10,7 @@
 #include <string.h>
 #include <algorithm>
 
-#include "ctype.h"
+#include <ctype.h>
 
 #include "util/StringUtils.h"
 
@@ -51,7 +51,7 @@ void StringUtils::toChars(const std::string& str, char* out, unsigned int maxLen
 }
 
 /**
- * Attention, cette méthode n'est pas finie, pour l'instant elle vérifie uniquement si la chaîne n'est pas vide !
+ * Attention, cette mï¿½thode n'est pas finie, pour l'instant elle vï¿½rifie uniquement si la chaï¿½ne n'est pas vide !
  * ""		: true
  * "     "	: true
  * "-"		: false
@@ -62,7 +62,7 @@ bool StringUtils::isBlank(const string& s) {
 }
 
 /**
- * Attention, cette méthode n'est pas finie, pour l'instant elle vérifie uniquement si la chaîne n'est pas vide !
+ * Attention, cette mï¿½thode n'est pas finie, pour l'instant elle vï¿½rifie uniquement si la chaï¿½ne n'est pas vide !
  * ""		: true
  * "     "	: true
  * "-"		: false

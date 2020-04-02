@@ -10,11 +10,11 @@
 #include <cmath>
 
 #include <agar/core.h>
-#include "SDL.h"
-#include "fmod.h"
-#include "fmod_errors.h"
-#include "SDL_image.h"
-#include "SDL_net.h"
+#include <SDL.h>
+#include <fmod.h>
+#include <fmod_errors.h>
+#include <SDL_image.h>
+#include <SDL_net.h>
 
 #include "util/fonte/Fonte.h"
 #include "util/Trace.h"

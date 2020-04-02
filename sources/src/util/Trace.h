@@ -9,8 +9,8 @@
 #include <fstream>
 #include <sstream>
 
-#include "SDL.h"
-#include "SDL_thread.h"
+#include <SDL.h>
+#include <SDL_thread.h>
 
 void saveTime(Uint32& time);
 
@@ -128,7 +128,7 @@ public:
 	void print(TraceLevel level, TraceType type, int line, const char *nomFichier, const char *txt , va_list &vl );
 
 	/** ********************************************
-	 * Création du fichier de log
+	 * Crï¿½ation du fichier de log
 	 ***********************************************/
 	void rotate();
 };

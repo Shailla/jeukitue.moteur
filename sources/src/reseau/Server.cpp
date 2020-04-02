@@ -31,7 +31,6 @@
 using namespace std;
 
 void jkt::contactPlayer(CPlayer *player, float *normal, float distanceW);
-void gravitePlayer(Uint32 now, CPlayer *player, float deltaTime);
 
 extern CGame Game;
 class CMap;

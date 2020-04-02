@@ -5,8 +5,7 @@
 	/****************************/
 
 #include <fstream>
-
-#include "fmod.h"
+#include <fmod.h>
 
 #include "ihm/DlgBoite.h"
 #include "ihm/Menu.h"
@@ -35,7 +34,7 @@ namespace jkt
 
 CMenu *MenuDriver;
 
-void retourDriver(void *var)	// Libérations mémoire et retour au menu supérieur
+void retourDriver(void *var)	// Libï¿½rations mï¿½moire et retour au menu supï¿½rieur
 {
 LOGDEBUG(("retourDriver(var=%x)", var));
 	CDlg::SetMenuActif( 0 );

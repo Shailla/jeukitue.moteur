@@ -1,11 +1,11 @@
 /*
  * JktEvent.cpp
  *
- *  Created on: 3 août 2016
+ *  Created on: 3 aoï¿½t 2016
  *      Author: VGDJ7997
  */
 
-#include <main/event/JktEvent.h>
+#include "main/event/JktEvent.h"
 
 namespace jkt {
 

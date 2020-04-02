@@ -13,8 +13,8 @@
 #include <windows.h>
 #endif
 
-#include "GL/glew.h"
-#include "SDL.h"
+#include <GL/glew.h>
+#include <SDL.h>
 
 #include "main/config/ComId.h"
 

@@ -2,8 +2,8 @@
 #include <iostream>
 #include <sstream>
 
-#include "SDL.h"
-#include "SDL_net.h"
+#include <SDL.h>
+#include <SDL_net.h>
 
 #include "util/Trace.h"
 #include "util/Erreur.h"
@@ -18,11 +18,11 @@ using namespace std;
 namespace jkt
 {
 
-int CSPA::m_BytesRec = 0;	// Nombre d'octets pour le comptage du débit en réception
+int CSPA::m_BytesRec = 0;	// Nombre d'octets pour le comptage du dï¿½bit en rï¿½ception
 Uint32 CSPA::m_TimeBytesRec = 0;
 int CSPA::m_NombreRec = 0;
 
-int CSPA::m_BytesEm = 0;	// Nombre d'octets pour le comptage du débit en émmission
+int CSPA::m_BytesEm = 0;	// Nombre d'octets pour le comptage du dï¿½bit en ï¿½mmission
 Uint32 CSPA::m_TimeBytesEm = 0;
 int CSPA::m_NombreEm = 0;
 
@@ -62,7 +62,7 @@ bool CSPA::openInClientMode(const IPaddress &address) {
 		result = openInServerMode(0);
 	}
 
-	// Attachement du socket à l'IP de l'autre
+	// Attachement du socket ï¿½ l'IP de l'autre
 	int channel = 0;
 
 	if(result) {
@@ -105,8 +105,8 @@ UDPsocket CSPA::getSocket() const {
 
 void CSPA::close() {
 	if(m_Socket) {
-		SDLNet_UDP_Unbind(m_Socket, _packetOut.getChannel());	// Libération du canal
-		SDLNet_UDP_Close(m_Socket);								// Libération du socket principal
+		SDLNet_UDP_Unbind(m_Socket, _packetOut.getChannel());	// Libï¿½ration du canal
+		SDLNet_UDP_Close(m_Socket);								// Libï¿½ration du socket principal
 		m_Socket = 0;
 	}
 }
@@ -125,7 +125,7 @@ int CSPA::send() {
 
 	UDPpacket* packet = _packetOut.getPacket();
 
-	// Le channel est spécifié donc l'adresse "m_PacketOut->address" est ignorée pour le choix de la desitination
+	// Le channel est spï¿½cifiï¿½ donc l'adresse "m_PacketOut->address" est ignorï¿½e pour le choix de la desitination
 	return SDLNet_UDP_Send(m_Socket, packet->channel, packet);
 }
 
@@ -137,7 +137,7 @@ int CSPA::send(const IPaddress &destination) {
 	UDPpacket* packet = _packetOut.getPacket();
 	packet->address = destination;
 
-	// Le channel n'est pas spécifié (-1) donc l'adresse "m_PacketOut->address" est utilisée comme desitination
+	// Le channel n'est pas spï¿½cifiï¿½ (-1) donc l'adresse "m_PacketOut->address" est utilisï¿½e comme desitination
 	return SDLNet_UDP_Send(m_Socket, -1, packet);
 }
 
@@ -175,7 +175,7 @@ string CSPA::iPOutToString() {
 
 CSPA::~CSPA() {
 	if(m_Socket) {
-		SDLNet_UDP_Close( m_Socket );		// Libération du socket
+		SDLNet_UDP_Close( m_Socket );		// Libï¿½ration du socket
 		m_Socket = 0;
 	}
 }
@@ -237,12 +237,12 @@ Uint32 CSPA::read32() {
 	return _packetIn.read32();
 }
 
-void CSPA::add( float var )	// Ajoute un flottant (c'est à dire 4 octets)
+void CSPA::add( float var )	// Ajoute un flottant (c'est ï¿½ dire 4 octets)
 {
 	_packetOut.add(var);
 }
 
-float CSPA::readf()	// Lit un flottant (c'est à dire 4 octets)
+float CSPA::readf()	// Lit un flottant (c'est ï¿½ dire 4 octets)
 {
 	return _packetIn.readf();
 }
@@ -295,7 +295,7 @@ void CSPA::addRecapFromServer( const CPlayer &player ) {
 void CSPA::computeDebits(Uint32 currentTime) {
 	float fDebitRec = 0, fTailleRec = 0, fDebitEm = 0, fTailleEm = 0;
 
-	// Calcule du débit en réception
+	// Calcule du dï¿½bit en rï¿½ception
 	if( currentTime - m_TimeBytesRec > 1000 ) {
 		fDebitRec = (float)m_BytesRec / ( currentTime - m_TimeBytesRec );
 
@@ -309,7 +309,7 @@ void CSPA::computeDebits(Uint32 currentTime) {
 		m_NombreRec = 0;
 	}
 
-	// Calcule du débit en émission
+	// Calcule du dï¿½bit en ï¿½mission
 	if(currentTime - m_TimeBytesEm > 1000) {
 		fDebitEm = (float)m_BytesEm / ( currentTime - m_TimeBytesEm );
 

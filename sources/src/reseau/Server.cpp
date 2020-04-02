@@ -7,8 +7,8 @@
 #include <iostream>
 #include <cmath>
 
-#include "SDL.h"
-#include "SDL_net.h"
+#include <SDL.h>
+#include <SDL_net.h>
 
 #include "util/IpUtils.h"
 #include "util/Trace.h"

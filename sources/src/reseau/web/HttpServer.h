@@ -12,8 +12,8 @@
 #include <string>
 #include <map>
 
-#include "SDL.h"
-#include "SDL_net.h"
+#include <SDL.h>
+#include <SDL_net.h>
 
 #include "reseau/web/HttpParameters.h"
 #include "reseau/tcp/TcpServer.h"

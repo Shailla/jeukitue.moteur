@@ -8,8 +8,8 @@
 #include <stdlib.h>
 #include <boost/lexical_cast.hpp>
 
-#include "SDL.h"
-#include "SDL_net.h"
+#include <SDL.h>
+#include <SDL_net.h>
 
 #include "util/FileUtils.h"
 #include "util/StringUtils.h"

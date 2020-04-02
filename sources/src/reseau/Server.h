@@ -5,8 +5,8 @@
 #include <string>
 #include <map>
 
-#include "SDL.h"
-#include "SDL_net.h"
+#include <SDL.h>
+#include <SDL_net.h>
 
 #include "reseau/new/Interlocutor2.h"
 #include "reseau/new/ServerUdpInterlocutor.h"
